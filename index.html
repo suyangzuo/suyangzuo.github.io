@@ -14,144 +14,12 @@
     <script
       src="https://kit.fontawesome.com/d0483e3bd3.js"
       crossorigin="anonymous"></script>
+    <script src="/Scripts/html-include.js"></script>
   </head>
   <body>
     <div class="background-img"></div>
     <!-- --------------------------- ↓ 顶部横幅-------------------------------- -->
-    <div class="top-banner">
-      <a class="nav-to-index" href="/index.html">
-        <img
-          class="logo"
-          src="/Images/Page-Logos/Eternal-logo-square.png"
-          alt="logo" />
-        <img
-          class="homepage"
-          src="/Images/Page-Logos/HomePage-Logo.png"
-          alt="主页图片" />
-      </a>
-      <div class="top-nav">
-        <ul class="nav-ul">
-          <li>
-            <a href="#"
-              >编程开发 <i class="fa-solid fa-circle-chevron-down"></i
-            ></a>
-            <div class="top-nav-dropdown">
-              <ul>
-                <li><a href="/Tutorials/clang.html">C语言</a></li>
-                <li><a href="#">C#</a></li>
-                <li><a href="Tutorials/web-front-end.html">Web前端</a></li>
-                <li><a href="#">Java</a></li>
-                <li><a href="#">Python</a></li>
-                <li><a href="#">Git</a></li>
-                <li><a href="#">数据结构</a></li>
-              </ul>
-            </div>
-          </li>
-          <li>
-            <a href="#"
-              >数据库 <i class="fa-solid fa-circle-chevron-down"></i
-            ></a>
-            <div class="top-nav-dropdown">
-              <ul>
-                <li><a href="#">SQL Server</a></li>
-                <li><a href="#">MySQL</a></li>
-                <li><a href="#">SQLite</a></li>
-                <li><a href="#">PostgreSQL</a></li>
-                <li><a href="#">Oracle</a></li>
-              </ul>
-            </div>
-          </li>
-          <li>
-            <a href="#">网络 <i class="fa-solid fa-circle-chevron-down"></i></a>
-          </li>
-          <li>
-            <a href="#"
-              >操作系统 <i class="fa-solid fa-circle-chevron-down"></i
-            ></a>
-            <div class="top-nav-dropdown">
-              <ul>
-                <li>
-                  <a href="#">Linux <i class="fa-solid fa-caret-down"></i></a>
-                  <div class="top-nav-dropdown-2">
-                    <ul>
-                      <li><a href="#">Ubuntu</a></li>
-                      <li><a href="#">CentOS</a></li>
-                      <li><a href="#">RHEL</a></li>
-                      <li><a href="#">Fedora</a></li>
-                      <li><a href="#">Debian</a></li>
-                    </ul>
-                  </div>
-                </li>
-                <li><a href="#">Windows Server</a></li>
-                <li>
-                  <a href="#">虚拟机 <i class="fa-solid fa-caret-down"></i></a>
-                  <div class="top-nav-dropdown-2">
-                    <ul>
-                      <li><a href="#">VMWare Workstation</a></li>
-                      <li><a href="#">VirtualBox</a></li>
-                      <li><a href="#">Hyper-V</a></li>
-                      <li><a href="#">Parallels Desktop</a></li>
-                    </ul>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </li>
-          <li class="top-nav-ul-li-right-corner">
-            <a href="#">设计 <i class="fa-solid fa-circle-chevron-down"></i></a>
-            <div class="top-nav-dropdown">
-              <ul>
-                <li>
-                  <a href="#">平面 <i class="fa-solid fa-caret-down"></i></a>
-                  <div class="top-nav-dropdown-2">
-                    <ul>
-                      <li><a href="#">Photoshop</a></li>
-                      <li><a href="#">Illustrator</a></li>
-                      <li><a href="#">Clip Studio</a></li>
-                      <li><a href="#">Animate</a></li>
-                      <li><a href="#">Lightroom</a></li>
-                    </ul>
-                  </div>
-                </li>
-                <li>
-                  <a href="#">3D <i class="fa-solid fa-caret-down"></i></a>
-                  <div class="top-nav-dropdown-2">
-                    <ul>
-                      <li><a href="#">3ds Max</a></li>
-                      <li><a href="#">Cinema 4D</a></li>
-                      <li><a href="#">Blender</a></li>
-                      <li><a href="#">Maya</a></li>
-                      <li><a href="#">ZBrush</a></li>
-                    </ul>
-                  </div>
-                </li>
-                <li>
-                  <a href="#"
-                    >影视后期 <i class="fa-solid fa-caret-down"></i
-                  ></a>
-                  <div class="top-nav-dropdown-2">
-                    <ul>
-                      <li><a href="#">Premiere Pro</a></li>
-                      <li><a href="#">After Effects</a></li>
-                      <li><a href="#">DaVinci</a></li>
-                      <li><a href="#">Nuke</a></li>
-                    </ul>
-                  </div>
-                </li>
-                <li>
-                  <a href="#">工程 <i class="fa-solid fa-caret-down"></i></a>
-                  <div class="top-nav-dropdown-2">
-                    <ul>
-                      <li><a href="#">AutoCAD</a></li>
-                    </ul>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
+    <include src="./top-banner.html"></include>
     <!-- --------------------------- ↑ 顶部横幅-------------------------------- -->
 
     <div class="main-content">
@@ -220,24 +88,7 @@
       <!-- --------------------------- ↑ 贡献者-------------------------------- -->
     </div>
 
-    <footer>
-      <div class="author">
-        <p>网站作者：苏扬</p>
-        <p>版权所有：2022</p>
-        <p><a href="/Introduction/purpose.html">网站宗旨</a></p>
-      </div>
-      <address>
-        <a class="address" href="mailto: suyangzuo@gmail.com"
-          ><i class="fa-solid fa-envelope-circle-check"></i
-        ></a>
-        <a
-          class="address"
-          href="https://github.com/suyangzuo/suyangzuo.github.io"
-          target="_blank"
-          ><i class="fa-brands fa-github"></i
-        ></a>
-      </address>
-    </footer>
+    <include src="/bottom-banner.html"></include>
     <script src="Scripts/generate-random-img.js"></script>
   </body>
 </html>
