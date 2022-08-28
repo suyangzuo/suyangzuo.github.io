@@ -1,0 +1,86 @@
+:root {
+  --people-name: #e0a543;
+  --bg-color: #0d1b2a;
+}
+
+.people-hall {
+  margin: 100px 0;
+  width: 100%;
+  max-height: 600px;
+  position: relative;
+}
+
+.people-banner {
+  position: absolute;
+  height: 130%;
+  width: 100vw;
+  top: 50%;
+  transform: translateY(-50%);
+  object-fit: cover;
+  opacity: 20%;
+  z-index: -1;
+}
+
+.people {
+  max-width: 1000px;
+  height: 100%;
+  display: flex;
+  margin: auto;
+  justify-content: space-around;
+  align-items: flex-start;
+  position: relative;
+}
+
+.people-img {
+  max-width: 100%;
+  object-fit: cover;
+  transition: 0.5s;
+}
+
+.people-img img {
+  border-radius: 8%;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+  width: 100%;
+}
+
+.people-brief {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0 30px;
+  text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
+  transition: 0.5s;
+}
+
+.people-name {
+  padding: 10px 0;
+  font-size: 1.5em;
+  color: var(--people-name);
+  transition: 0.5s;
+}
+
+.people-life {
+  padding: 10px 0;
+  transition: 0.3s;
+}
+
+.detail {
+  font-size: 0.95em;
+  top: 100%;
+  margin: 30px 0 0 0;
+}
+
+.detail > a:hover {
+  text-decoration: underline;
+  animation: move-underline 0.3s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes move-underline {
+  from {
+    text-underline-offset: 0.2em;
+  }
+  to {
+    text-underline-offset: 0.5em;
+  }
+}
