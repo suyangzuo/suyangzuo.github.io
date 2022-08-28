@@ -4,6 +4,7 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 100px 50px;
   margin: 150px auto;
+  padding:0 25px;
 }
 
 .tutorials .tutorial-card {

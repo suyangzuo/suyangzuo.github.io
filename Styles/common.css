@@ -16,6 +16,7 @@
 }
 
 body {
+  position: relative;
   background-color: var(--bg-color);
   color: var(--f-color);
   height: 5400px;
@@ -53,4 +54,20 @@ li {
 li > a > i {
   transform: rotateZ(90deg);
   transition: 0.3s;
+}
+
+footer {
+  position: absolute;
+  z-index: 2;
+  bottom: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100vw;
+  height: 100px;
+  background-color: rgba(1, 42, 73, 0.5);
+}
+
+address > a {
+  margin: 0 15px;
 }
