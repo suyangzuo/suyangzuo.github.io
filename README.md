@@ -1,4 +1,5 @@
 # “永恒” 网站简介
+- 网站直达：[永恒](https://suyangzuo.github.io/)
 
 ### 本站由一群职业学校专业教师创建，主要目标：
 
@@ -17,6 +18,8 @@
     - Web 前端
     - Java
     - Python
+  
+  - Git 
 
   - 数据结构
 
@@ -37,6 +40,7 @@
     - Lightroom
   - 三维
     - 3ds Max
+    - Cinema 4D
     - Blender
     - Maya
     - ZBrush
