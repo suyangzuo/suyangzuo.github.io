@@ -1,0 +1,56 @@
+:root {
+  --bg-color: #0d1b2a;
+  --f-color: #eeeeee;
+  --top-banner-color: #9e2a2b;
+  --contributers-bg-color: #183656;
+  --name: #c97719;
+  --hover-link: #222f33;
+  --shadow-color: #101010;
+}
+
+* {
+  font-family: "Microsoft Yahei UI", Courier;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--f-color);
+  height: 5400px;
+}
+
+.background-img {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  opacity: 10%;
+  background-image: url(/Images/Background-Images/Busy-Code-Man.gif);
+  background-repeat: round;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:link {
+  color: aliceblue;
+}
+
+a:hover {
+  cursor: pointer;
+}
+
+a:visited {
+  color: aliceblue;
+}
+
+li {
+  list-style: none;
+}
+
+li > a > i {
+  transform: rotateZ(90deg);
+  transition: 0.3s;
+}

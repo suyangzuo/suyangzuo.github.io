@@ -1,0 +1,155 @@
+.main-content {
+  position: relative;
+  margin: 0 auto;
+}
+
+.welcome-main {
+  max-width: 800px;
+  margin: 50px auto;
+  text-align: center;
+}
+
+#welcome-01 {
+  font-size: 2em;
+  font-weight: bolder;
+  color: cadetblue;
+  margin: 100px 0 10px 0;
+}
+
+#welcome-02 {
+  display: inline-block;
+  color: burlywood;
+  font-size: 2.5em;
+  border-bottom: solid 1px #2fe141;
+  margin: 10px 0 20px 0;
+}
+
+#welcome-02 > span {
+  color: #4cacec;
+  font-size: 1.2em;
+  font-style: italic;
+  font-weight: bolder;
+}
+
+.welcome-main #TechStack-logo {
+  display: block;
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  margin: 50px auto;
+}
+
+.contributers {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+.contributers div {
+  padding: 10px 20px;
+}
+
+.contributers .brief {
+  display: flex;
+  position: relative;
+  align-items: center;
+  margin: 100px 0;
+}
+
+.contributers .brief .brief-text {
+  border-radius: 0 50px 50px 0;
+  font-size: 1em;
+  width: 800px;
+  background-color: var(--contributers-bg-color);
+  margin: 0 auto;
+  padding: 20px 80px;
+  box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.5);
+  transition: 0.3s;
+}
+
+.contributers .brief .brief-text:hover {
+  transform: scale(1.03, 1.1);
+}
+
+.contributers .brief .brief-name {
+  color: var(--name);
+  display: block;
+  font-size: 1.5em;
+  font-weight: bolder;
+}
+
+.contributers .brief .brief-photo {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 75px;
+  position: absolute;
+  left: 100px;
+  box-shadow: 5px 2px 10px 0px rgba(10, 10, 10, 0.5);
+  transition: 0.5s;
+}
+
+.contributers .brief .brief-photo:hover {
+  transform: scale(1.2);
+}
+
+/* -------------------------------------------------------------------------------------- */
+
+/* @media screen and (max-width: 800px) {
+  .top-banner {
+    max-height: 70px;
+  }
+
+  .top-nav .nav-ul li {
+    line-height: 70px;
+    font-size: 1em;
+    padding: 0 0.8em;
+  }
+
+  .contributers {
+    width: auto;
+    max-width: 650px;
+    margin: 0 auto;
+  }
+
+  .contributers .brief .brief-photo {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 40px;
+    position: absolute;
+    left: -20px;
+    top: -30px;
+  }
+
+  .contributers .brief .brief-text {
+    max-height: 120px;
+    padding: 20px 50px;
+    overflow: auto;
+  }
+}
+
+@media screen and (max-width: 512px) {
+  .top-nav {
+    padding: 0 10px 0 0;
+  }
+
+  .top-nav .nav-ul li {
+    font-size: 0.8em;
+    padding: 0 0.5em;
+  }
+
+  .contributers .brief .brief-text {
+    padding: 5px 10px 5px 45px;
+    font-size: 0.8em;
+  }
+
+  .contributers .brief .brief-name {
+    font-size: 1.2em;
+  }
+}
+
+@media screen and (max-width: 332px) {
+  .top-nav .nav-ul {
+    display: none;
+  }
+} */

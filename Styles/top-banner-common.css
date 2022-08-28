@@ -1,0 +1,147 @@
+.top-nav-dropdown {
+  display: none;
+}
+
+.top-banner {
+  top: 0;
+  position: sticky;
+  background-color: var(--top-banner-color);
+  max-height: 100px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 1;
+}
+
+.nav-to-index {
+  display: flex;
+  width: 15%;
+  position: relative;
+}
+
+.logo {
+  width: 100%;
+  object-fit: cover;
+  transition: 0.3s;
+}
+
+.nav-to-index:hover > .logo,
+.nav-to-index:hover > .homepage {
+  filter: contrast(120%);
+}
+
+.nav-to-index > .homepage {
+  position: absolute;
+  width: 25%;
+  left: 65%;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: 0.3s;
+}
+
+.nav-to-index:hover > .homepage {
+  border-radius: 50%;
+  box-shadow: 2px 2px 10px 0 rgba(253, 244, 80, 0.3),
+    -2px -2px 10px 0 rgba(253, 244, 80, 0.3),
+    2px -2px 10px 0 rgba(253, 244, 80, 0.3),
+    -2px 2px 10px 0 rgba(253, 244, 80, 0.3);
+}
+
+/* .top-nav {
+    display: flex;
+    align-items: center;
+  } */
+
+.top-nav .nav-ul {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.top-nav .nav-ul > li {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.top-nav .nav-ul > li:hover {
+  background-color: var(--hover-link);
+  cursor: pointer;
+}
+
+.top-nav .nav-ul > li > a {
+  font-size: 1.2em;
+  padding: 0 1.5em;
+}
+
+.top-nav .nav-ul > li:hover .top-nav-dropdown {
+  background: none;
+  display: block;
+  position: absolute;
+  top: 100%;
+}
+
+.top-nav .nav-ul > .top-nav-ul-li-right-corner:hover .top-nav-dropdown {
+  left: -80%;
+}
+
+.top-nav .nav-ul > li:hover .top-nav-dropdown > ul {
+  background: linear-gradient(#003525, #00a060);
+  display: block;
+  border-radius: 15px;
+  width: 200px;
+  padding: 15px 0;
+  box-shadow: 5px 5px 15px #000;
+  transform: translateY(10px);
+}
+
+.top-nav .nav-ul > li .top-nav-dropdown ul li {
+  width: 100%;
+  position: relative;
+}
+
+.top-nav .nav-ul > li .top-nav-dropdown ul li:hover {
+  background-color: #00294c;
+  border-radius: 10px;
+  box-shadow: 0px 2px 4px 0 #000;
+}
+
+.top-nav .nav-ul > li .top-nav-dropdown ul li > a {
+  padding: 1em 20px;
+  display: block;
+  text-shadow: 2px 2px 2px #00294c;
+  transition: 0.5s;
+}
+
+.top-nav .nav-ul > li .top-nav-dropdown ul li > a:hover {
+  color: orange;
+  transform: translateX(10px);
+}
+
+.top-nav-dropdown-2 {
+  display: none;
+}
+
+.top-nav-dropdown li:hover .top-nav-dropdown-2 {
+  background: none;
+  display: block;
+  position: absolute;
+  top: -30%;
+  left: -100%;
+}
+
+.top-nav-dropdown li:hover .top-nav-dropdown-2 > ul {
+  background: linear-gradient(#003525, #00a060);
+  display: block;
+  border-radius: 15px;
+  width: 200px;
+  padding: 15px 0;
+  box-shadow: 5px 5px 15px #000;
+  transform: translateX(-10px);
+}
+
+/* 实现了菜单项图片展开(旋转)效果 */
+.top-nav .nav-ul > li:hover > a > i,
+.top-nav-dropdown > ul > li:hover > a > i {
+  transform: rotateZ(0deg);
+}
