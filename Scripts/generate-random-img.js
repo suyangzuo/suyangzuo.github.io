@@ -44,10 +44,6 @@ var techStackLogos = [
     img: "Images/TechStack-Logos/SQL-Server-Logo.png",
   },
   {
-    name: "MySQL",
-    img: "Images/TechStack-Logos/MySQL-Logo.png",
-  },
-  {
     name: "SQLite",
     img: "Images/TechStack-Logos/SQLite-Logo.png",
   },
