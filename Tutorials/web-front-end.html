@@ -14,6 +14,7 @@
       rel="stylesheet"
       type="text/css"
       href="/Styles/top-banner-common.css" />
+    <link rel="stylesheet" type="text/css" href="/Styles/people.css" />
     <script
       src="https://kit.fontawesome.com/d0483e3bd3.js"
       crossorigin="anonymous"></script>
@@ -24,8 +25,60 @@
     <include src="/top-banner.html"></include>
     <!-- --------------------------- ↑ 顶部横幅-------------------------------- -->
 
+    <!-- --------------------------- ↓ 人物 -------------------------------- -->
+
+    <div class="people-hall">
+      <img class="people-banner" src="/Images/People/banner.webp" />
+      <div class="people">
+        <div class="people-img">
+          <img src="/Images/People/Timothy-John-Berners-Lee.jpg" />
+        </div>
+        <article class="people-brief">
+          <section class="people-name">
+            伯纳斯·李<br />Timothy John Berners-Lee
+            <p class="detail">
+              <a
+                href="https://zh.wikipedia.org/wiki/蒂姆·伯纳斯-李"
+                target="_blank"
+                >详细生平 <i class="fa-brands fa-wikipedia-w"></i>
+              </a>
+            </p>
+          </section>
+          <section class="people-life">
+            蒂莫西·约翰·伯纳斯-李，英国计算机科学家，万维网、HTML的发明者。<br />
+            1989年夏天，蒂姆成功开发出世界上第一个Web服务器和第一个Web客户端。<br />
+            1989年12月，蒂姆为他的发明正式定名为 World Wide Web。<br />
+            1991年5月，万维网在Internet上首次露面，立即引起轰动，获得了极大的成功，并被广泛推广应用。
+          </section>
+        </article>
+      </div>
+      <div class="people">
+        <div class="people-img">
+          <img src="/Images/People/Brendan-Eich.jpg" />
+        </div>
+        <article class="people-brief">
+          <section class="people-name">
+            布兰登·艾克<br />Brendan Eich
+            <p class="detail">
+              <a
+                href="https://zh.wikipedia.org/wiki/布蘭登·艾克"
+                target="_blank"
+                >详细生平 <i class="fa-brands fa-wikipedia-w"></i>
+              </a>
+            </p>
+          </section>
+          <section class="people-life">
+            布兰登·艾克，1961年7月4日出生于美国加州，美国程序技术专家与企业家，JavaScript主要创造者与架构师，曾任Mozilla公司的首席技术官，并曾短暂担任首席执行官。<br />
+            1995年4月，任职于网景期间，为网景浏览器开发出JavaScript，之后成为网页浏览器领域应用最广泛的脚本语言之一。<br />
+            1998年，艾克协助成立Mozilla.org，2003年在美国在线决定结束网景部门营运后，艾克协助成立了Mozilla基金会。
+          </section>
+        </article>
+      </div>
+    </div>
+    <!-- --------------------------- ↑ 人物 -------------------------------- -->
+
     <!-- --------------------------- ↓ 教程资源卡片组-------------------------------- -->
-    <article class="tutorials">
+    <div class="tutorials">
       <article class="tutorial-card" id="w3-schools">
         <section class="intro">
           <a href="https://www.w3schools.com/" target="_blank"
@@ -142,15 +195,35 @@
           <a href="https://www.w3school.com.cn/" target="_blank">
             <section class="card-text">
               <div class="card-text-title">W3 School</div>
-              中文Web开发学习网站。<br />
-              注意！！！英文网站叫 W3 Schools，中文网站叫 W3
-              School，（区别在于最后有没有s）而且这两个网站似乎没什么直接关系。<br />
-              个人建议去英文网站。
+              <p>
+                中文Web开发学习网站。<br />
+                注意！！！英文网站叫 W3 Schools，中文网站叫 W3
+                School，（区别在于最后有没有s）而且这两个网站似乎没什么直接关系。<br />
+                个人建议去英文网站。
+              </p>
             </section>
           </a>
         </section>
       </article>
-    </article>
+      <article class="tutorial-card" id="javaScript-tutorial">
+        <section class="intro">
+          <a href="https://www.javascripttutorial.net/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Web-Front-End/JavaScript-Tutorial.png"
+          /></a>
+          <a href="https://www.javascripttutorial.net/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">JavaScript Tutorial</div>
+              <p>
+                专门教授JavaScript的站点，由一群JavaScript开发者创办。
+                站内包含了详细的JavaScript讲解、技巧。
+              </p>
+            </section>
+          </a>
+        </section>
+      </article>
+    </div>
     <!-- --------------------------- ↑ 教程资源卡片组-------------------------------- -->
 
     <include src="/bottom-banner.html"></include>

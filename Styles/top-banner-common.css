@@ -109,7 +109,7 @@
 .top-nav .nav-ul > li .top-nav-dropdown ul li > a {
   padding: 1em 20px;
   display: block;
-  text-shadow: 2px 2px 2px #00294c;
+  text-shadow: 1px 1px 1px #00294c;
   transition: 0.5s;
 }
 
