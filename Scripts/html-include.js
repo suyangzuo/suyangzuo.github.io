@@ -9,8 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-function load_file(filename, callback) {
-  fetch(filename)
-    .then((response) => response.text())
+async function load_file(filename, callback) {
+  await fetch(filename)
+    .then(async (response) => await response.text())
     .then((text) => callback(text));
 }

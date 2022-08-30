@@ -47,7 +47,7 @@
 @keyframes show-people-banner {
   from {
     clip-path: inset(0 100% 0 0);
-    opacity: 0;
+    opacity: 5%;
   }
   to {
     clip-path: inset(0 0 0 0);

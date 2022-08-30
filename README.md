@@ -34,6 +34,7 @@
 
   - 二维
     - Photoshop
+    - GIMP
     - Illustrator
     - Animate
     - Clip Studio
