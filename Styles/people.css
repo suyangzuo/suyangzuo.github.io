@@ -4,10 +4,11 @@
 }
 
 .people-hall {
+  /* background-color: rgb(48, 157, 1); */
   margin: 80px 0 50px 0;
   padding: 20px 25px;
   width: 100%;
-  max-height: 500px;
+  height: 400px;
   position: relative;
   display: flex;
   justify-content: space-around;
@@ -16,41 +17,50 @@
 
 .people-banner {
   position: absolute;
-  max-height: 1800px;
+  height: 1200px;
   width: 100vw;
   top: 0%;
-  transform: translateY(-50%);
+  transform: translateY(-60%);
   object-fit: cover;
   opacity: 20%;
   z-index: -1;
 }
 
 .people {
-  max-height: 600px;
-  max-width: 1000px;
+  /* background-color: #e0a543; */
+  height: 100%;
+  max-width: 50%;
   display: flex;
-  margin: auto;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .people-img {
-  max-width: 250px;
+  /* background-color: aqua; */
+  width: 35%;
+  height: 100%;
   margin: auto;
 }
 
-.people-img img {
+.people-img > img {
+  display: block;
+  margin: auto 0 auto auto;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: cover;
   border-radius: 8%;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
-  width: 100%;
 }
 
 .people-brief {
+  /* background-color: blueviolet; */
+  margin: 0 auto 0 0;
+  max-width: 50%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 5px 10px 0 30px;
+  padding: 5px 10px 0 10px;
   text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.5);
+  transform: translate(-6%, 0);
 }
 
 .people-name {
@@ -88,5 +98,5 @@
   padding: 15px 15px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.25),
     -2px -2px 10px rgba(0, 0, 0, 0.25);
-  transform: translate(-3%, -2.5%);
+  transform: translate(-15px, 0);
 }
