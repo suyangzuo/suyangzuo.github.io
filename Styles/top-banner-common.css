@@ -118,26 +118,43 @@
   transform: translateX(10px);
 }
 
-.top-nav-dropdown-2 {
+.top-nav-dropdown-2-left,
+.top-nav-dropdown-2-right {
   display: none;
 }
 
-.top-nav-dropdown li:hover .top-nav-dropdown-2 {
+.top-nav-dropdown li:hover .top-nav-dropdown-2-left,
+.top-nav-dropdown li:hover .top-nav-dropdown-2-right {
   background: none;
   display: block;
   position: absolute;
   top: -30%;
+}
+
+.top-nav-dropdown li:hover .top-nav-dropdown-2-left {
   left: -100%;
 }
 
-.top-nav-dropdown li:hover .top-nav-dropdown-2 > ul {
+.top-nav-dropdown li:hover .top-nav-dropdown-2-right {
+  right: -100%;
+}
+
+.top-nav-dropdown li:hover .top-nav-dropdown-2-left > ul,
+.top-nav-dropdown li:hover .top-nav-dropdown-2-right > ul {
   background: linear-gradient(#003525, #00a060);
   display: block;
   border-radius: 15px;
   width: 200px;
   padding: 15px 0;
   box-shadow: 5px 5px 15px #000;
+}
+
+.top-nav-dropdown li:hover .top-nav-dropdown-2-left > ul {
   transform: translateX(-10px);
+}
+
+.top-nav-dropdown li:hover .top-nav-dropdown-2-right > ul {
+  transform: translateX(10px);
 }
 
 /* 实现了菜单项图片展开(旋转)效果 */
