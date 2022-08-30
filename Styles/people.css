@@ -15,7 +15,7 @@
   align-items: center;
 }
 
-.people-banner {
+.people-hall-banner {
   position: absolute;
   height: 1200px;
   width: 100vw;
@@ -28,10 +28,41 @@
 
 .people {
   /* background-color: #e0a543; */
+  position: relative;
   height: 100%;
   max-width: 50%;
   display: flex;
   justify-content: space-around;
+}
+
+.people-banner {
+  position: absolute;
+  display: none;
+  object-fit: cover;
+  z-index: -1;
+  top: -50%;
+  opacity: 15%;
+}
+
+@keyframes show-people-banner {
+  from {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    opacity: 15%;
+  }
+}
+
+.people:hover > .people-banner {
+  display: block;
+  animation: show-people-banner 0.4s;
+  animation-fill-mode: forwards;
+}
+
+.people-banner > img {
+  object-fit: cover;
 }
 
 .people-img {
@@ -49,6 +80,11 @@
   object-fit: cover;
   border-radius: 8%;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+  transition: 0.5s;
+}
+
+.people-img > img:hover {
+  transform: scale(1.1);
 }
 
 .people-brief {
