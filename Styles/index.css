@@ -131,9 +131,9 @@
   position: absolute;
   max-width: 25%;
   font-size: 5vw;
-  text-shadow: 2px 2px 2px #000;
+  opacity: 60%;
   top: 0;
-  color: #ffffff;
+  color: #fff;
 }
 
 .index-china-computer-banner > div:nth-child(1) > p {
