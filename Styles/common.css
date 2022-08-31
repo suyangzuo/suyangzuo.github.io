@@ -19,7 +19,6 @@ body {
   position: relative;
   background-color: var(--bg-color);
   color: var(--f-color);
-  /* height: 5400px; */
   z-index: 0;
 }
 
@@ -58,7 +57,6 @@ li > a > i {
 }
 
 footer {
-  /* position: absolute; */
   margin: 500px auto 0 auto;
   z-index: 2;
   bottom: 0;
