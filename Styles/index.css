@@ -1,0 +1,118 @@
+.main-content {
+  position: relative;
+  margin: 0 auto;
+  margin: 0 0 150px 0;
+}
+
+.welcome-main {
+  max-width: 800px;
+  margin: 50px auto;
+  text-align: center;
+}
+
+.welcome-main > p:nth-child(1) {
+  background: linear-gradient(
+    45deg,
+    #f18f43 42%,
+    #476098 42%,
+    #476098 51%,
+    #3d98a6 51%,
+    #3d98a6 70%
+  );
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+
+  font-size: 5em;
+  font-weight: bolder;
+  color: cadetblue;
+  margin: 100px 0 10px 0;
+}
+
+.welcome-main > p:nth-child(2) {
+  display: inline-block;
+  color: burlywood;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(
+    45deg,
+    #099715 16.666%,
+    #e16541 16.666%,
+    #e16541 33.333%,
+    #f18f43 33.333%,
+    #f18f43 50%,
+    #8b9862 50%,
+    #8b9862 66.666%,
+    #476098 66.666%,
+    #476098 83.333%,
+    #a7489b 83.333%
+  );
+  font-size: 2.5em;
+  font-weight: bolder;
+  border-bottom: solid 1px #2fe141;
+  margin: 10px 0 0px 0;
+}
+
+.welcome-main > p:nth-child(2) > span {
+  color: #4cacec;
+  font-size: 1.2em;
+  font-style: italic;
+  font-weight: bolder;
+}
+
+.welcome-buttons {
+  /* background-color: #e16541; */
+  max-width: 500px;
+  max-height: 150px;
+  margin: auto;
+  display: flex;
+  justify-content: space-around;
+}
+
+.welcome-buttons > a {
+  /* background-color: #4cacec; */
+  display: block;
+  max-width: 100%;
+  min-width: 25%;
+  transition: 0.3s;
+}
+
+.welcome-buttons > a:hover {
+  flex-grow: 0.5;
+}
+
+.welcome-buttons button {
+  margin: 0 auto;
+  display: block;
+  background-image: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
+  border: 0;
+  border-radius: 8px;
+  box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+  color: #ffffff;
+  font-family: "Microsoft YaHei UI", sans-serif;
+  font-size: 20px;
+  line-height: 1em;
+  width: 100%;
+  padding: 19px 24px;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.welcome-buttons button:active,
+.welcome-buttons button:hover {
+  outline: solid 5px #fff;
+}
+
+.china-tech-banner{
+    /* background-color: #099715; */
+    margin:300px auto;
+}
+
+.china-tech-banner > img{
+    width: 100%;
+    opacity: 50%;
+}
