@@ -71,7 +71,7 @@
 }
 
 .welcome-buttons > a:hover {
-  flex-grow: 0.5;
+  flex: 0.5 1 auto;
 }
 
 .welcome-buttons button {
