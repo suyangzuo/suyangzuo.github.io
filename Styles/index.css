@@ -15,9 +15,10 @@
     45deg,
     #f18f43 42%,
     #476098 42%,
-    #476098 51%,
-    #3d98a6 51%,
-    #3d98a6 70%
+    #476098 47%,
+    #4dff4d 47%,
+    #4dff4d 57%,
+    #2663d3 57%
   );
   -webkit-text-fill-color: transparent;
   -webkit-background-clip: text;
@@ -107,12 +108,38 @@
   outline: solid 5px #fff;
 }
 
-.china-tech-banner{
-    /* background-color: #099715; */
-    margin:300px auto;
+.index-china-computer-banner {
+  /* background-color: #099715; */
+  margin: 300px auto;
 }
 
-.china-tech-banner > img{
-    width: 100%;
-    opacity: 50%;
+.index-china-computer-banner > div:nth-child(1),
+.index-china-computer-banner > div:nth-child(2) {
+  /* background-color: yellow; */
+  position: relative;
+  width: 100%;
+}
+
+.index-china-computer-banner > div:nth-child(1) > img,
+.index-china-computer-banner > div:nth-child(2) > img {
+  width: 100%;
+  opacity: 50%;
+}
+
+.index-china-computer-banner > div:nth-child(1) > p,
+.index-china-computer-banner > div:nth-child(2) > p {
+  position: absolute;
+  max-width: 25%;
+  font-size: 5vw;
+  text-shadow: 2px 2px 2px #000;
+  top: 0;
+  color: #ffffff;
+}
+
+.index-china-computer-banner > div:nth-child(1) > p {
+  left: 3%;
+}
+
+.index-china-computer-banner > div:nth-child(2) > p {
+  left: 77%;
 }
