@@ -126,6 +126,22 @@
   max-width: 100%;
 }
 
+.index-introduction-cards > .index-introduction-card:nth-child(1) > div > img {
+  filter: grayscale(100%) brightness(90%);
+}
+
+.index-introduction-cards > .index-introduction-card:nth-child(2) > div > img {
+  filter: grayscale(100%) brightness(170%);
+}
+
+.index-introduction-cards > .index-introduction-card:nth-child(3) > div > img {
+  filter: hue-rotate(160deg) brightness(63%);
+}
+
+.index-introduction-cards > .index-introduction-card:nth-child(4) > div > img {
+  filter: hue-rotate(170deg) brightness(25%);
+}
+
 .index-introduction-cards > .index-introduction-card > p:nth-child(2) {
   position: absolute;
   top: 5%;
