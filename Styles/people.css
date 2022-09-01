@@ -111,12 +111,14 @@
 
 .detail > a {
   font-size: 0.8em;
+  transition: 0.3s;
 }
 
 .detail > a:hover {
   text-decoration: underline;
   animation: move-underline 0.3s;
   animation-fill-mode: forwards;
+  color: gold;
 }
 
 @keyframes move-underline {
