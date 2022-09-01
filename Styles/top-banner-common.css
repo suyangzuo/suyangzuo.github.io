@@ -127,7 +127,7 @@
   background: none;
   display: block;
   position: absolute;
-  top: -30%;
+  top: -27%;
 }
 
 .top-nav-dropdown li:hover .top-nav-dropdown-2-left {
@@ -162,7 +162,7 @@
   transform: rotateZ(0deg);
 }
 
-@media only screen and (max-width: 820px) {
+@media only screen and (max-width: 825px) {
   .top-nav .nav-ul > li > a {
     font-size: 1em;
   }

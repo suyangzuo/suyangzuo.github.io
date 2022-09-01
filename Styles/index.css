@@ -14,8 +14,8 @@
   background: linear-gradient(
     45deg,
     #f18f43 42%,
-    #476098 42%,
-    #476098 48%,
+    #ffffff 42%,
+    #ffffff 48%,
     #ffff71 48%,
     #ffff71 57%,
     #2663d3 57%
@@ -140,7 +140,7 @@
 .index-introduction-cards
   > .index-introduction-card:nth-child(1)
   > p:nth-child(3) {
-  color: #ffce7f;
+  color: #95e1ff;
 }
 
 .index-introduction-cards
@@ -149,7 +149,7 @@
 .index-introduction-cards
   > .index-introduction-card:nth-child(2)
   > p:nth-child(3) {
-  color: rgb(135, 61, 0);
+  color: rgb(155, 35, 206);
 }
 
 .index-introduction-cards
@@ -158,7 +158,7 @@
 .index-introduction-cards
   > .index-introduction-card:nth-child(3)
   > p:nth-child(3) {
-  color: #c1ddbe;
+  color: #37dac9;
 }
 
 .index-introduction-cards
