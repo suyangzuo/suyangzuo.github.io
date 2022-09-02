@@ -57,7 +57,7 @@ li > a > i {
 }
 
 footer {
-  margin: 500px auto 0 auto;
+  margin: auto;
   z-index: 2;
   bottom: 0;
   display: flex;
