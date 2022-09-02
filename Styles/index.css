@@ -105,6 +105,7 @@
   display: flex;
   justify-content: center;
   padding: 0 25px;
+  transform: translateX(1%);
 }
 
 .index-introduction-cards > .index-introduction-card {
@@ -128,6 +129,7 @@
 
 .index-introduction-cards > .index-introduction-card:nth-child(1) > div > img {
   filter: grayscale(100%) brightness(90%);
+  clip-path: inset(0 12% 0 0);
 }
 
 .index-introduction-cards > .index-introduction-card:nth-child(2) > div > img {
