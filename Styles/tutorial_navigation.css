@@ -2,9 +2,10 @@
   max-width: 1920px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 20vmax;
   gap: 100px 50px;
   margin: 150px auto;
-  padding:0 25px;
+  padding: 0 25px;
 }
 
 .tutorials .tutorial-card {

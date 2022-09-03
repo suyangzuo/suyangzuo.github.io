@@ -30,39 +30,39 @@ body {
 }
 
 .software-category-list > .software-category:nth-child(1) {
-  top: 16%;
+  top: 10%;
 }
 
 .software-category-list > .software-category:nth-child(2) {
-  top: 21%;
+  top: 15%;
 }
 
 .software-category-list > .software-category:nth-child(3) {
-  top: 26%;
+  top: 20%;
 }
 
 .software-category-list > .software-category:nth-child(4) {
-  top: 31%;
+  top: 25%;
 }
 
 .software-category-list > .software-category:nth-child(5) {
-  top: 36%;
+  top: 30%;
 }
 
 .software-category-list > .software-category:nth-child(6) {
-  top: 41%;
+  top: 35%;
 }
 
 .software-category-list > .software-category:nth-child(7) {
-  top: 46%;
+  top: 40%;
 }
 
 .software-category-list > .software-category:nth-child(8) {
-  top: 51%;
+  top: 45%;
 }
 
 .software-category-list > .software-category:nth-child(9) {
-  top: 56%;
+  top: 50%;
 }
 
 .software-category-list > .software-category:hover {
@@ -75,7 +75,7 @@ body {
 
 .software-category-list > .software-category:hover > p {
   color: gold;
-  transform: translateX(20%);
+  transform: translateX(1em);
 }
 
 .software-container {
@@ -87,8 +87,10 @@ body {
   align-content: flex-start;
   gap: 100px;
   grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 21vmax;
   padding: 3% 2%;
   overflow: auto;
+  overflow-y: scroll;
 }
 
 .software-container > .software {
@@ -173,13 +175,13 @@ body {
   padding: 20px 0 0 0;
   /* background-color: rgb(23, 91, 94); */
   width: 100%;
-  height: 25%;
+  height: 35%;
   overflow: auto;
   transition: 0.5s;
 }
 
 .software-container > .software > .software-text:hover {
-  transform: scale(1.1);
+  transform: scale(1.05);
   text-decoration: underline;
   text-underline-offset: 0.2em;
 }
