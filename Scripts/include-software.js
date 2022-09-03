@@ -1,13 +1,15 @@
 const categorys = document.getElementsByClassName("software-category");
 const containers = document.getElementsByClassName("software-container");
+let text = "文本编辑器";
 
 Array.from(categorys).forEach((category) => {
   category.addEventListener("mouseenter", insertSoftwareHTML);
 });
 
 async function insertSoftwareHTML() {
+  if (text === Array.from(this.getElementsByTagName("p"))[0].innerText) return;
   containers[0].innerHTML = "";
-  let text = Array.from(this.getElementsByTagName("p"))[0].innerText;
+  text = Array.from(this.getElementsByTagName("p"))[0].innerText;
   let filename = "";
   switch (text) {
     case "文本编辑器":
@@ -16,7 +18,10 @@ async function insertSoftwareHTML() {
     case "集成开发环境":
       filename = "/Software/ide.html";
       break;
-    case "开发工具":
+    case "数据库":
+      filename = "/Software/database.html";
+      break;
+    case "开发配套工具":
       filename = "/Software/dev-tools.html";
       break;
     case "操作系统":

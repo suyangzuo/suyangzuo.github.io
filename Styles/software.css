@@ -18,9 +18,9 @@ body {
 .software-category-list > .software-category {
   position: fixed;
   padding: 0 0 0 1%;
-  height: 6vh;
+  height: 5vh;
   width: 10vw;
-  font-size: 0.85vw;
+  font-size: 0.7vw;
   display: flex;
   align-items: center;
   background: var(--list-left-color);
@@ -34,31 +34,35 @@ body {
 }
 
 .software-category-list > .software-category:nth-child(2) {
-  top: 22%;
+  top: 21%;
 }
 
 .software-category-list > .software-category:nth-child(3) {
-  top: 28%;
+  top: 26%;
 }
 
 .software-category-list > .software-category:nth-child(4) {
-  top: 34%;
+  top: 31%;
 }
 
 .software-category-list > .software-category:nth-child(5) {
-  top: 40%;
+  top: 36%;
 }
 
 .software-category-list > .software-category:nth-child(6) {
-  top: 46%;
+  top: 41%;
 }
 
 .software-category-list > .software-category:nth-child(7) {
-  top: 52%;
+  top: 46%;
 }
 
 .software-category-list > .software-category:nth-child(8) {
-  top: 58%;
+  top: 51%;
+}
+
+.software-category-list > .software-category:nth-child(9) {
+  top: 56%;
 }
 
 .software-category-list > .software-category:hover {
