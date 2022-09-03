@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  let includes = document.getElementsByTagName("include");
+  let includes = document.getElementsByTagName("insert-e");
   for (let i = 0; i < includes.length; i++) {
     let include = includes[i];
     load_file(include.attributes.src.value, function (text) {

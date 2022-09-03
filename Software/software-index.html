@@ -17,22 +17,19 @@
     <script src="/Scripts/html-include.js"></script>
   </head>
   <body>
-    <include src="/top-banner.html"></include>
+    <insert-e src="/top-banner.html"></insert-e>
     <div class="software-category-list">
       <div class="software-category">
         <p>文本编辑器</p>
       </div>
       <div class="software-category">
-        <p>集成开发环境<br>IDE</IDE></p>
+        <p>集成开发环境</p>
       </div>
       <div class="software-category">
         <p>开发工具</p>
       </div>
       <div class="software-category">
         <p>操作系统</p>
-      </div>
-      <div class="software-category">
-        <p>文本编辑器</p>
       </div>
       <div class="software-category">
         <p>平面设计</p>
@@ -49,9 +46,11 @@
     </div>
 
     <div class="software-container">
-        
+      <insert-e src="/Software/text-editor.html"></insert-e>
     </div>
 
-    <include src="/bottom-banner.html"></include>
+    <insert-e src="/bottom-banner.html"></insert-e>
+    <script src="/Scripts/include-software.js"></script>
+    <script src="/Scripts/software-card-show.js"></script>
   </body>
 </html>
