@@ -85,10 +85,10 @@ body {
   transform: translateX(10vw);
   display: grid;
   align-content: flex-start;
-  gap: 90px 50px;
+  gap: 8vh 50px;
   grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: 21vmax;
-  padding: 2% 2%;
+  grid-auto-rows: 20vmax;
+  padding: 2% 4%;
   overflow: auto;
   overflow-y: scroll;
 }
@@ -110,7 +110,7 @@ body {
 }
 
 .software-container > .software > .software-img:hover {
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
 .software-container > .software > .software-img > img {
@@ -172,7 +172,7 @@ body {
 
 .software-container > .software > .software-text {
   display: block;
-  padding: 20px 0 0 0;
+  padding: 1.5% 0 0 0;
   /* background-color: rgb(23, 91, 94); */
   width: 100%;
   height: 35%;
@@ -181,7 +181,7 @@ body {
 }
 
 .software-container > .software > .software-text:hover {
-  transform: scale(1.05);
+  transform: scale(1.04);
   text-decoration: underline;
   text-underline-offset: 0.2em;
 }
