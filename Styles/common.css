@@ -64,10 +64,18 @@ footer {
   justify-content: space-around;
   align-items: center;
   width: 100vw;
-  height: 100px;
+  height: 8vh;
   background-color: rgba(1, 42, 73);
 }
 
 address > a {
   margin: 0 15px;
+}
+
+@media only screen and (max-height: 900px) {
+  .author {
+    width: 30vw;
+    display: flex;
+    justify-content: space-around;
+  }
 }
