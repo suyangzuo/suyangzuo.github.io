@@ -62,3 +62,9 @@
   text-align: center;
   line-height: 1.15em;
 }
+
+.purpose-container > .purpose:nth-child(5) > p:nth-child(2) > a:hover {
+  filter: hue-rotate(60deg) brightness(70%);
+  user-select: none;
+  -webkit-user-select: none;
+}
