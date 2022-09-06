@@ -1,7 +1,7 @@
 const cards = document.querySelectorAll(".software");
 
 cards.forEach((card) => {
-  card.addEventListener("mouseover", changeCardBrightness);
+  card.addEventListener("mouseenter", changeCardBrightness);
   card.addEventListener("mouseleave", restoreCardBrightness);
 });
 

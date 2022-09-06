@@ -46,5 +46,5 @@ async function insertSoftwareHTML() {
 
   await fetch(filename)
     .then(async (response) => await response.text())
-    .then((text) => (containers[0].innerHTML = text));
+    .then((content) => (containers[0].innerHTML = content));
 }
