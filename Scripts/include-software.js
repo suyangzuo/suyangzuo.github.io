@@ -3,11 +3,13 @@ const containers = document.getElementsByClassName("software-container");
 let text = "文本编辑器";
 
 Array.from(categorys).forEach((category) => {
-  category.addEventListener("mouseenter", insertSoftwareHTML);
+  category.addEventListener("click", insertSoftwareHTML);
 });
 
 async function insertSoftwareHTML() {
   if (text === Array.from(this.getElementsByTagName("p"))[0].innerText) return;
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
   containers[0].innerHTML = "";
   text = Array.from(this.getElementsByTagName("p"))[0].innerText;
   let filename = "";

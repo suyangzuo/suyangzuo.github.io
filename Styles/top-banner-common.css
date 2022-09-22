@@ -5,8 +5,8 @@
 .top-banner {
   top: 0;
   position: sticky;
-  background-color: var(--top-banner-color);
-  max-height: 7vh;
+  background-color: var(--bg-color);
+  height: 50px;
   display: flex;
   justify-content: space-between;
   z-index: 1;
@@ -65,13 +65,30 @@
 }
 
 .top-nav .nav-ul > li:hover {
-  background-color: var(--hover-link);
+  /* background-color: #202020; */
   cursor: pointer;
 }
 
+.top-nav .nav-ul > li:hover > a {
+  animation: text-glow ease-in-out 1s infinite alternate;
+}
+
+@keyframes text-glow {
+  from {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073,
+      0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+  }
+
+  to {
+    text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6,
+      0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+  }
+}
+
 .top-nav .nav-ul > li > a {
-  font-size: 1.2em;
+  font-size: 1.05em;
   padding: 0 1.5em;
+  transition: 0.5s;
 }
 
 .top-nav .nav-ul > li:hover .top-nav-dropdown {
@@ -79,10 +96,11 @@
   display: block;
   position: absolute;
   top: 100%;
+  left: 10%;
 }
 
 .top-nav .nav-ul > .top-nav-ul-li-right-corner:hover .top-nav-dropdown {
-  left: -80%;
+  left: -100%;
 }
 
 .top-nav .nav-ul > li:hover .top-nav-dropdown > ul {

@@ -81,7 +81,7 @@ body {
 .software-container {
   background-color: #151515;
   width: 90vw;
-  height: 85.2vh;
+  min-height: 100vh;
   transform: translateX(10vw);
   display: grid;
   align-content: flex-start;
