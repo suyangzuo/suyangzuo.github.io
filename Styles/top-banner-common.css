@@ -5,29 +5,44 @@
 .top-banner {
   top: 0;
   position: sticky;
-  background-color: var(--bg-color);
-  height: 50px;
+  padding: 0 2vw;
+  background-color: rgba(10, 10, 10, 0.8);
+  height: 65px;
   display: flex;
   justify-content: space-between;
   z-index: 1;
+  backdrop-filter: blur(5px);
 }
 
 .nav-to-index {
+  /* background-color: #00a060; */
   display: flex;
   width: 15%;
   overflow: hidden;
   position: relative;
+  justify-content: center;
+  align-items: center;
 }
 
 .logo {
-  width: 100%;
+  height: 70%;
   object-fit: cover;
   transition: 0.3s;
+  margin: 0 20px 0 0;
 }
 
-.nav-to-index:hover > .logo,
-.nav-to-index:hover > .homepage {
-  filter: contrast(120%);
+.logo-title {
+  font-size: 1.8em;
+  color: #aaa;
+}
+
+.nav-to-index:hover > .logo {
+  filter: hue-rotate(100deg);
+}
+
+.nav-to-index:hover > .logo-title {
+  font-weight: bolder;
+  color: cadetblue;
 }
 
 .nav-to-index > .homepage {

@@ -107,10 +107,13 @@ body {
   max-width: 100%;
   height: 85%;
   transition: 0.5s;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
 }
 
 .software-container > .software > .software-img:hover {
-  transform: scale(1.06);
+  transform: scale(1.02);
 }
 
 .software-container > .software > .software-img > img {
@@ -120,18 +123,17 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 20px;
   box-shadow: 5px 5px 5px 0 #111;
   transition: 0.5s;
 }
 
 .software-container > .software > .software-img:hover > img {
   /* transform: scale(1.08); */
-  animation: colorful-out-glow linear 5s infinite;
+  /* animation: colorful-out-glow linear 5s infinite; */
   /* outline: solid #fff 3px; */
 }
 
-@keyframes colorful-out-glow {
+/* @keyframes colorful-out-glow {
   from {
     box-shadow: 8px 5px 45px 0 #ff0000;
     box-shadow: -2px -3px 45px 0 #ff0000;
@@ -168,30 +170,65 @@ body {
     box-shadow: 8px 5px 45px 0 #ff0000;
     box-shadow: -2px -3px 45px 0 #ff0000;
   }
+} */
+
+.float-brief-container {
+  position: absolute;
+  background: rgba(15, 15, 15, 0.6);
+  opacity: 0;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  transition: 0.3s;
+}
+
+.float-brief {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateY(120%);
+  width: 100%;
+  height: 65%;
+  font-size: 1.1em;
+  padding: 30px;
+  transition: 0.3s;
+}
+
+.software-img:hover > .float-brief-container {
+  opacity: 1;
+}
+
+.software-img:hover .float-brief {
+  transform: translateY(60%);
+  backdrop-filter: blur(7px);
 }
 
 .software-container > .software > .software-text {
   display: block;
+  text-align: center;
   padding: 1.5% 0 0 0;
   /* background-color: rgb(23, 91, 94); */
   width: 100%;
-  height: 35%;
+  height: 15%;
   overflow: auto;
   transition: 0.5s;
 }
 
 .software-container > .software > .software-text:hover {
-  transform: scale(1.04);
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
+  transform: scale(1.05);
+  /* text-decoration: underline;
+  text-underline-offset: 0.2em; */
 }
 
 .software-container > .software > .software-text > .software-title {
+  display: inline-block;
+  /* background-color: #002bff; */
+  /* margin: 0 auto; */
   font-size: 1.5em;
   color: tomato;
   text-shadow: 1px 1px 1px #111;
 }
 
-.software-container > .software > .software-text > .software-brief {
-  text-shadow: 1px 1px 1px #111;
+.software-container > .software > .software-text:hover > .software-title {
+  border-bottom: 2px solid cadetblue;
 }

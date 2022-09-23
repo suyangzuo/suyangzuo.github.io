@@ -11,7 +11,7 @@
 }
 
 .welcome-main > p:nth-child(1) {
-  background: linear-gradient(
+  /* background: linear-gradient(
     45deg,
     #f18f43 42%,
     #ffffff 42%,
@@ -21,7 +21,7 @@
     #2663d3 57%
   );
   -webkit-text-fill-color: transparent;
-  -webkit-background-clip: text;
+  -webkit-background-clip: text; */
 
   font-size: 5em;
   font-weight: bolder;
@@ -31,8 +31,8 @@
 
 .welcome-main > p:nth-child(2) {
   display: inline-block;
-  color: burlywood;
-  -webkit-background-clip: text;
+  color: rgb(255, 255, 255);
+  /* -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-image: linear-gradient(
     45deg,
@@ -46,10 +46,10 @@
     #476098 66.666%,
     #476098 83.333%,
     #a7489b 83.333%
-  );
+  ); */
   font-size: 2.5em;
   font-weight: bolder;
-  border-bottom: solid 1px #2fe141;
+  /* border-bottom: solid 1px #2fe141; */
   margin: 10px 0 0px 0;
 }
 
