@@ -59,13 +59,13 @@ li > a > i {
 footer {
   margin: auto;
   z-index: 2;
-  bottom: 0;
   display: flex;
   justify-content: space-around;
   align-items: center;
   width: 100vw;
-  height: 8vh;
-  background-color: rgba(1, 42, 73);
+  height: 150px;
+  background-color: rgba(1, 42, 73, 0.8);
+  backdrop-filter: blur(5px);
 }
 
 address > a {

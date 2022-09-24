@@ -1,38 +1,118 @@
+body {
+  position: relative;
+}
+
+#contributor-page-bg {
+  /* position: absolute; */
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+#contributor-page-bg > img {
+  width: 100%;
+  height: 95%;
+  object-fit: cover;
+  position: absolute;
+  filter: opacity(0.3);
+  overflow: hidden;
+}
+
 .main-content {
   /* background-color: blueviolet; */
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 500px;
   width: 100%;
   min-height: 100vh;
-  gap: 100px 50px;
   position: relative;
   margin: 0 auto;
   padding: 100px;
 }
 
-.contributor-card {
-  width: 100%;
-  height: 100%;
-  /* background-color: chocolate; */
+.contributor-card-odd,
+.contributor-card-even {
+  /* background-color: blue; */
   display: flex;
-  flex-direction: column;
-  padding: 4%;
-  box-shadow: 4px 4px 10px 0 #000;
+  justify-content: space-between;
+  width: 1000px;
+  height: 250px;
+  margin: 100px auto;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 4px 4px 15px 0 #000;
 }
 
-.contributor-img-name {
-  width: 100%;
-  height: 50%;
-  /* background-color: violet; */
+.contributor-card-odd {
+  transform: translateX(-50px);
+}
+
+.contributor-card-even {
+  transform: translateX(50px);
+}
+
+.contributor-card-odd > .contributor-img-name,
+.contributor-card-even > .contributor-img-name {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  background-color: rgb(24, 35, 41);
+  /* width: 45%; */
+  flex-basis: 45%;
+  height: 100%;
+  margin: 0 -15% 0 0;
+  overflow: hidden;
+  transition: 0.5s;
+}
+
+.contributor-card-odd > .contributor-brief,
+.contributor-card-even > .contributor-brief {
+  background-color: rgb(38, 38, 38, 0.3);
+  flex-basis: 70%;
+  /* width: 70%; */
+  height: 100%;
+  backdrop-filter: blur(15px);
+  z-index: -1;
+  transition: 0.5s;
+}
+
+.contributor-card-odd > .contributor-img-name {
+  clip-path: polygon(0% 0%, 100% 0%, 70% 100%, 0% 100%);
+}
+
+.contributor-card-odd > .contributor-brief {
+  clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+
+.contributor-card-odd:hover > .contributor-img-name {
+  /* width: 65%; */
+  flex-basis: 52%;
+}
+
+.contributor-card-odd:hover > .contributor-brief {
+  /* width: 65%; */
+  flex-basis: 68%;
+  padding-left: 5%;
+}
+
+.contributor-card-even > .contributor-img-name {
+  clip-path: polygon(0% 0%, 70% 0%, 100% 100%, 0% 100%);
+}
+
+.contributor-card-even > .contributor-brief {
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 20% 100%);
+}
+
+.contributor-card-even:hover > .contributor-img-name {
+  /* width: 65%; */
+  flex-basis: 52%;
+}
+
+.contributor-card-even:hover > .contributor-brief {
+  /* width: 65%; */
+  flex-basis: 68%;
+  padding-left: 5%;
 }
 
 .contributor-img-name > .contributor-img {
-  /* background-color: aquamarine; */
-  width: 40%;
   height: 100%;
+  width: 45%;
   overflow: hidden;
 }
 
@@ -45,18 +125,49 @@
 .contributor-img-name > .contributor-name {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  /* background-color: cornflowerblue; */
-  width: 50%;
+  justify-content: space-around;
+  /* background-color: blue; */
+  padding: 40px 10px 40px 20px;
   height: 100%;
+  width: 65%;
 }
 
 .contributor-img-name > .contributor-name > p {
-  margin: 10px 20px;
+  margin: 10px 0;
+  transform: translateY(-15px);
 }
 
-.contributor-img-name > .contributor-name > p:nth-child(1){
-  font-size:1.75em;
+.contributor-img-name > .contributor-name > p:nth-child(1) {
+  font-size: 2em;
   font-weight: bolder;
+  color: cadetblue;
+}
+
+.contributor-img-name > .contributor-name > p:nth-child(2) {
+  word-break: break-all;
+}
+
+.contributor-img-name > .contributor-name > p > span {
+  font-size: 1.3em;
+  color: burlywood;
+  font-weight: bolder;
+}
+
+.contributor-card-odd > .contributor-brief,
+.contributor-card-even > .contributor-brief {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contributor-brief > p {
+  font-size: 1.5em;
+  transition: 0.5s;
+}
+
+.contributor-card-odd:hover > .contributor-brief > p,
+.contributor-card-even:hover > .contributor-brief > p {
+  color: #fff;
+  font-size: 2em;
+  text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff;
 }
