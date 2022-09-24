@@ -79,10 +79,12 @@ body {
 }
 
 .contributor-card-odd:hover > .contributor-img-name {
+  clip-path: polygon(0% 0%, 100% 0%, 75% 100%, 0% 100%);
   flex-basis: 52%;
 }
 
 .contributor-card-odd:hover > .contributor-brief {
+  clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%);
   flex-basis: 68%;
   padding-left: 5%;
 }
@@ -97,11 +99,13 @@ body {
 
 .contributor-card-even:hover > .contributor-img-name {
   /* width: 65%; */
+  clip-path: polygon(0% 0%, 75% 0%, 100% 100%, 0% 100%);
   flex-basis: 52%;
 }
 
 .contributor-card-even:hover > .contributor-brief {
   /* width: 65%; */
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 25% 100%);
   flex-basis: 68%;
   padding-left: 5%;
 }
