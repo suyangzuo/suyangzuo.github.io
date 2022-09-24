@@ -51,20 +51,27 @@ body {
 .contributor-card-odd > .contributor-img-name,
 .contributor-card-even > .contributor-img-name {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   background-color: rgb(24, 35, 41);
   flex-basis: 45%;
   height: 100%;
-  margin: 0 -15% 0 0;
   overflow: hidden;
   transition: 0.5s;
+}
+
+.contributor-card-odd > .contributor-img-name {
+  margin: 0 -15% 0 0;
+}
+
+.contributor-card-even > .contributor-img-name {
+  margin: 0 0 0 -15%;
 }
 
 .contributor-card-odd > .contributor-brief,
 .contributor-card-even > .contributor-brief {
   /* background-color: rgb(38, 38, 38, 0.3); */
-  flex-basis: 70%;
   height: 100%;
+  flex-basis: 70%;
   backdrop-filter: blur(15px);
   z-index: -1;
   transition: 0.5s;
@@ -90,24 +97,25 @@ body {
 }
 
 .contributor-card-even > .contributor-img-name {
-  clip-path: polygon(0% 0%, 70% 0%, 100% 100%, 0% 100%);
+  clip-path: polygon(30% 0%, 100% 0%, 100% 100%, 0% 100%);
 }
 
 .contributor-card-even > .contributor-brief {
-  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 20% 100%);
+  /* background-color: blue; */
+  clip-path: polygon(0% 0%, 100% 0%, 80% 100%, 0% 100%);
 }
 
 .contributor-card-even:hover > .contributor-img-name {
   /* width: 65%; */
-  clip-path: polygon(0% 0%, 75% 0%, 100% 100%, 0% 100%);
+  clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%);
   flex-basis: 52%;
 }
 
 .contributor-card-even:hover > .contributor-brief {
   /* width: 65%; */
-  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 25% 100%);
+  clip-path: polygon(0% 0%, 100% 0%, 75% 100%, 0% 100%);
   flex-basis: 68%;
-  padding-left: 5%;
+  padding-right: 5%;
 }
 
 .contributor-img-name > .contributor-img {
@@ -127,9 +135,18 @@ body {
   flex-direction: column;
   justify-content: space-around;
   /* background-color: blue; */
-  padding: 40px 10px 40px 20px;
   height: 100%;
   width: 65%;
+}
+
+.contributor-card-odd > .contributor-img-name > .contributor-name {
+  padding: 40px 10px 40px 20px;
+}
+
+.contributor-card-even > .contributor-img-name > .contributor-name {
+  /* background-color: rgb(95, 0, 44); */
+  text-align: right;
+  padding: 40px 20px 40px 10px;
 }
 
 .contributor-img-name > .contributor-name > p {
