@@ -1,11 +1,17 @@
 #index-bg-img {
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
 }
 
-#index-bg-img > img {
+#index-bg-img > #fixed-bg-img-layer {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+}
+
+#index-bg-img > #fixed-bg-img-layer > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -21,7 +27,7 @@
   /* background-color: #033369; */
   width: 85%;
   height: 60vh;
-  margin: 100px auto 100px;
+  margin: 15vh auto 25vh;
   text-align: center;
   display: flex;
   justify-content: center;
@@ -170,8 +176,99 @@
   outline: #fff solid 5px;
 }
 
+/* <!-- ------------------ ↓ 学习技巧 ----------------------- --> */
+#learning-hints {
+  width: 100vw;
+  margin: 100px auto 300px auto;
+  display: flex;
+  flex-direction: column;
+}
+
+#learning-hints > .learning-hint {
+  width: 100%;
+  height: 700px;
+  display: flex;
+}
+
+#learning-hints > .learning-hint {
+  margin: 0 0 6% 0;
+}
+
+.hint-text-container {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.learning-hint:nth-child(odd) .hint-text-container {
+  text-align: right;
+  padding: 1% 3% 0 3%;
+}
+
+.learning-hint:nth-child(even) .hint-text-container {
+  padding: 0 3% 1% 3%;
+}
+
+.learning-hint > .hint-img-container {
+  /* background-color: #00ddeb; */
+  width: 65%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.learning-hint:nth-child(odd) > .hint-img-container {
+  border-radius: 20px 0 0 20px;
+}
+
+.learning-hint:nth-child(even) > .hint-img-container {
+  border-radius: 0 20px 20px 0;
+}
+
+.learning-hint > .hint-img-container > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hint-text-container > .hint-text-title {
+  font-size: 2.5em;
+  color: rgb(134, 190, 236);
+  padding: 0 10px 0 0;
+}
+
+.hint-text-content li {
+  margin: 10px 25px 0 0;
+}
+
+.hint-text-content li > a {
+  font-size: 1.5em;
+  text-decoration: none;
+}
+
+.learning-hint:nth-child(2) .hint-text-content li,
+.learning-hint:nth-child(3) .hint-text-content li {
+  list-style: disc;
+}
+
+.learning-hint li > p {
+  font-size: 1.2em;
+  text-align: left;
+}
+
+.hint-text-content li:hover > a {
+  color: goldenrod;
+}
+
+li > p > span {
+  color: salmon;
+  font-weight: bolder;
+}
+/* <!-- ------------------ ↑ 学习技巧 ----------------------- --> */
+
+/* <!-- ------------------ ↓ 主页介绍卡 ----------------------- --> */
 .index-introduction-cards {
-  margin: 100px 50px 200px;
+  margin: 100px 50px 400px;
   max-width: 100%;
   display: flex;
   justify-content: center;
@@ -277,3 +374,4 @@
   top: 50%;
   left: 18%;
 }
+/* <!-- ------------------ ↑ 主页介绍卡 ----------------------- --> */
