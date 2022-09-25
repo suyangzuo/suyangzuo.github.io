@@ -1,14 +1,27 @@
+#index-bg-img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#index-bg-img > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(2px) opacity(50%);
+}
+
 .main-content {
   position: relative;
   margin: 0 auto;
-  margin: 0 0 150px 0;
 }
 
 .welcome-main {
   /* background-color: #033369; */
   width: 85%;
   height: 60vh;
-  margin: 50px auto;
+  margin: 100px auto 100px;
   text-align: center;
   display: flex;
   justify-content: center;
@@ -99,6 +112,7 @@
   font-size: 5em;
   font-weight: bolder;
   color: cadetblue;
+  text-shadow: 1px 1px 5px #111;
   /* margin: 100px 0 10px 0; */
 }
 
@@ -115,7 +129,7 @@
   margin: 0 25px;
   display: flex;
   justify-content: start;
-  padding: 0 0 0 15px;
+  padding: 0 0 0 25px;
 }
 
 #welcome-buttons > a {
@@ -157,7 +171,7 @@
 }
 
 .index-introduction-cards {
-  margin: 200px 50px;
+  margin: 100px 50px 200px;
   max-width: 100%;
   display: flex;
   justify-content: center;
