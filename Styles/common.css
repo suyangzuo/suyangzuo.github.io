@@ -68,6 +68,10 @@ footer {
   backdrop-filter: blur(5px);
 }
 
+footer > .author > p:nth-child(3):hover > a {
+  color: #c97719;
+}
+
 address > a {
   margin: 0 15px;
 }

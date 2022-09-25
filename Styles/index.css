@@ -5,31 +5,60 @@
 }
 
 .welcome-main {
-  max-width: 800px;
+  /* background-color: #033369; */
+  width: 85%;
+  height: 60vh;
   margin: 50px auto;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.welcome-main > p:nth-child(1) {
-  /* background: linear-gradient(
-    45deg,
-    #f18f43 42%,
-    #ffffff 42%,
-    #ffffff 48%,
-    #ffff71 48%,
-    #ffff71 57%,
-    #2663d3 57%
-  );
-  -webkit-text-fill-color: transparent;
-  -webkit-background-clip: text; */
-
-  font-size: 5em;
-  font-weight: bolder;
-  color: cadetblue;
-  margin: 100px 0 10px 0;
+.welcome-main > #welcome-left {
+  /* background-color: #5b42f3; */
+  width: 38%;
+  height: 100%;
+  overflow: hidden;
+  margin: 0 25px 0 150px;
+  border-radius: 25px;
+  overflow: hidden;
 }
 
-.welcome-main > p:nth-child(2) {
+.welcome-main > #welcome-left > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.welcome-main > #welcome-right {
+  /* background-color: #af40ff; */
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.welcome-main > #welcome-right > #welcome-text {
+  width: 100%;
+  /* background-color: #660ca5; */
+  text-align: left;
+  padding: 0 0 100px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.welcome-main > #welcome-right > #welcome-text > p {
+  margin: 0 0 5px 0;
+}
+
+.welcome-main > #welcome-right > #welcome-text > p > span {
+  color: gold;
+  font-size: 1.1em;
+}
+
+.welcome-main > #welcome-right > #welcome-text > p:nth-child(1) {
   display: inline-block;
   color: rgb(255, 255, 255);
   /* -webkit-background-clip: text;
@@ -47,34 +76,62 @@
     #476098 83.333%,
     #a7489b 83.333%
   ); */
-  font-size: 2.5em;
+  color: #95e1ff;
+  font-size: 1.5em;
   font-weight: bolder;
   /* border-bottom: solid 1px #2fe141; */
-  margin: 10px 0 0px 0;
+  /* margin: 10px 0 0px 0; */
 }
 
-.welcome-buttons {
+.welcome-main > #welcome-right > #welcome-text > p:nth-child(2) {
+  /* background: linear-gradient(
+    45deg,
+    #f18f43 42%,
+    #ffffff 42%,
+    #ffffff 48%,
+    #ffff71 48%,
+    #ffff71 57%,
+    #2663d3 57%
+  );
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text; */
+
+  font-size: 5em;
+  font-weight: bolder;
+  color: cadetblue;
+  /* margin: 100px 0 10px 0; */
+}
+
+.welcome-main > #welcome-right > #welcome-text > p:nth-child(3) {
+  /* background-color: cadetblue; */
+  color: rgb(255, 255, 255);
+  margin: 20px 0 0 0;
+  width: 75%;
+}
+
+#welcome-buttons {
   /* background-color: #e16541; */
-  max-width: 500px;
-  max-height: 150px;
-  margin: auto;
+  width: 75%;
+  margin: 0 25px;
   display: flex;
-  justify-content: space-around;
+  justify-content: start;
+  padding: 0 0 0 15px;
 }
 
-.welcome-buttons > a {
+#welcome-buttons > a {
   /* background-color: #4cacec; */
   display: block;
-  max-width: 100%;
-  min-width: 25%;
+  max-width: 35%;
+  min-width: 10%;
   transition: 0.3s;
+  margin: 0 30px 0 0;
 }
 
-.welcome-buttons > a:hover {
-  flex: 0.5 1 auto;
+#welcome-buttons > a:hover {
+  flex: 0.2 1 auto;
 }
 
-.welcome-buttons button {
+#welcome-buttons > a > button {
   margin: 0 auto;
   display: block;
   background-image: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
@@ -95,7 +152,7 @@
   cursor: pointer;
 }
 
-.welcome-buttons button:hover {
+#welcome-buttons button:hover {
   outline: #fff solid 5px;
 }
 
@@ -205,40 +262,4 @@
   max-width: 50%;
   top: 50%;
   left: 18%;
-}
-
-.index-china-computer-banner {
-  /* background-color: #099715; */
-  margin: 500px auto 300px auto;
-}
-
-.index-china-computer-banner > div:nth-child(1),
-.index-china-computer-banner > div:nth-child(2) {
-  /* background-color: yellow; */
-  position: relative;
-  width: 100%;
-}
-
-.index-china-computer-banner > div:nth-child(1) > img,
-.index-china-computer-banner > div:nth-child(2) > img {
-  width: 100%;
-  opacity: 50%;
-}
-
-.index-china-computer-banner > div:nth-child(1) > p,
-.index-china-computer-banner > div:nth-child(2) > p {
-  position: absolute;
-  max-width: 25%;
-  font-size: 5vw;
-  opacity: 60%;
-  top: 0;
-  color: #fff;
-}
-
-.index-china-computer-banner > div:nth-child(1) > p {
-  left: 3%;
-}
-
-.index-china-computer-banner > div:nth-child(2) > p {
-  left: 77%;
 }
