@@ -23,10 +23,11 @@
   margin: 0 auto;
 }
 
+/* <!-- ------------------ ↓ 欢迎内容 ----------------------- --> */
 .welcome-main {
   /* background-color: #033369; */
   width: 85%;
-  height: 60vh;
+  height: 800px;
   margin: 15vh auto 25vh;
   text-align: center;
   display: flex;
@@ -53,6 +54,7 @@
 .welcome-main > #welcome-right {
   /* background-color: #af40ff; */
   width: 50%;
+  max-height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -131,11 +133,11 @@
 
 #welcome-buttons {
   /* background-color: #e16541; */
-  width: 75%;
-  margin: 0 25px;
+  width: 100%;
+  /* margin: 0 25px; */
   display: flex;
   justify-content: start;
-  padding: 0 0 0 25px;
+  padding: 0 0 0 50px;
 }
 
 #welcome-buttons > a {
@@ -148,7 +150,7 @@
 }
 
 #welcome-buttons > a:hover {
-  flex: 0.2 1 auto;
+  flex: 0.07 1 auto;
 }
 
 #welcome-buttons > a > button {
@@ -175,6 +177,97 @@
 #welcome-buttons button:hover {
   outline: #fff solid 5px;
 }
+/* <!-- ------------------ ↑ 欢迎内容 ----------------------- --> */
+
+/* <!-- ------------------ ↓ 大修饰图 ----------------------- --> */
+#art-image-shape-banner {
+  width: 100%;
+  position: relative;
+}
+
+#art-image-shape-banner > .image-shape {
+  background-color: #033369;
+  width: 100%;
+  height: 1000px;
+  overflow: hidden;
+}
+
+#art-image-shape-banner > .image-shape:nth-of-type(1),
+#art-image-shape-banner > .image-shape:nth-of-type(5) {
+  clip-path: polygon(0% 0%, 100% 15%, 100% 85%, 0% 100%);
+}
+
+#art-image-shape-banner > .image-shape:nth-of-type(3) {
+  clip-path: polygon(0% 15%, 100% 0%, 100% 100%, 0% 85%);
+}
+
+#art-image-shape-banner > .image-shape:nth-of-type(3),
+#art-image-shape-banner > .image-shape:nth-of-type(5) {
+  margin: -5% 0 0 0;
+}
+
+#art-image-shape-banner > .image-shape > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#art-image-shape-banner > .hint-content {
+  width: 350px;
+  height: 350px;
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 90px 0;
+  overflow: hidden;
+  border-radius: 50%;
+  backdrop-filter: blur(5px);
+}
+
+#art-image-shape-banner > .hint-content:nth-child(2) {
+  top: 10%;
+  left: 10%;
+}
+
+#art-image-shape-banner > .hint-content:nth-child(4) {
+  /* background-color: #00ddeb; */
+  top: 43%;
+  left: 75%;
+}
+
+#art-image-shape-banner > .hint-content:nth-child(6) {
+  /* background-color: #00ddeb; */
+  top: 75%;
+  left: 10%;
+}
+
+.hint-content > .opacity-layer {
+  background-color: rgb(40, 59, 66);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  opacity: 20%;
+}
+
+.hint-content > .hint-title {
+  font-size: 1.5em;
+  color: rgb(255, 234, 97);
+}
+
+.hint-content > .hint-text {
+  /* background-color: #033369; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 1.2em;
+}
+
+/* <!-- ------------------ ↑ 大修饰图 ----------------------- --> */
 
 /* <!-- ------------------ ↓ 学习技巧 ----------------------- --> */
 #learning-hints {
