@@ -292,17 +292,19 @@
   justify-content: space-evenly;
 }
 
-.hint-content > .hint-text > p {
+.hint-text > ul > li {
+  list-style: disc;
+}
+
+.hint-content > .hint-text p {
   font-size: 1.2em;
   margin: 15px 0 0 0;
   transition: 0.3s;
+  text-align: left;
 }
 
-.hint-content > .hint-text > p:hover {
-  transform: scale(1.25);
-}
-
-.hint-content > .hint-text > p:hover > a {
+.hint-content > .hint-text p:hover,
+.hint-content > .hint-text p:hover > a {
   color: cornflowerblue;
 }
 
