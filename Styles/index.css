@@ -1,21 +1,24 @@
 #index-bg-img {
   position: absolute;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
 }
 
 #index-bg-img > #fixed-bg-img-layer {
   height: 100%;
   width: 100%;
-  position: fixed;
+  display: flex;
+  flex-direction: column;
+  /* position: fixed; */
 }
 
 #index-bg-img > #fixed-bg-img-layer > img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: blur(2px) opacity(50%);
+  filter: blur(5px) opacity(40%);
 }
 
 .main-content {

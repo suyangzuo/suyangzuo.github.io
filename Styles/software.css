@@ -5,64 +5,34 @@
 body {
   position: relative;
   z-index: 0;
+  overflow: hidden;
 }
 
 .software-category-list {
-  background-color: var(--list-left-color);
+  /* background-color: #e9ff3d; */
   height: 100vh;
   width: 10vw;
   position: fixed;
   z-index: -1;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  padding:3% 0 0 0 ;
 }
 
 .software-category-list > .software-category {
-  position: fixed;
-  padding: 0 0 0 1%;
-  height: 5vh;
+  /* position: fixed; */
+  padding:20px 0 20px 30px;
   width: 10vw;
-  font-size: 0.7vw;
+  font-size: 1em;
   display: flex;
-  align-items: center;
-  background: var(--list-left-color);
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  /* background: #259904; */
   cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
-}
-
-.software-category-list > .software-category:nth-child(1) {
-  top: 10%;
-}
-
-.software-category-list > .software-category:nth-child(2) {
-  top: 15%;
-}
-
-.software-category-list > .software-category:nth-child(3) {
-  top: 20%;
-}
-
-.software-category-list > .software-category:nth-child(4) {
-  top: 25%;
-}
-
-.software-category-list > .software-category:nth-child(5) {
-  top: 30%;
-}
-
-.software-category-list > .software-category:nth-child(6) {
-  top: 35%;
-}
-
-.software-category-list > .software-category:nth-child(7) {
-  top: 40%;
-}
-
-.software-category-list > .software-category:nth-child(8) {
-  top: 45%;
-}
-
-.software-category-list > .software-category:nth-child(9) {
-  top: 50%;
 }
 
 .software-category-list > .software-category:hover {
@@ -70,6 +40,7 @@ body {
 }
 
 .software-category-list > .software-category > p {
+  /* background-color: chocolate; */
   transition: 0.5s;
 }
 
