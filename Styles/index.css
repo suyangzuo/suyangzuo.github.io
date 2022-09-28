@@ -18,7 +18,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: blur(3px) opacity(50%);
+  filter: opacity(50%);
 }
 
 .main-content {
@@ -30,18 +30,33 @@
 .welcome-main {
   /* background-color: #033369; */
   width: 85%;
-  height: 800px;
-  margin: 15vh auto 45vh;
+  height: 100vh;
+  margin: 0 auto 0;
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+}
+
+.section-bg-img {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.section-bg-img > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .welcome-main > #welcome-left {
   /* background-color: #5b42f3; */
-  width: 38%;
-  height: 100%;
+  width: 35%;
+  height: 55.5%;
   overflow: hidden;
   margin: 0 25px 0 150px;
   border-radius: 25px;
@@ -184,12 +199,18 @@
 
 /* <!-- ------------------ ↓ 学习技巧翻转卡片 ----------------------- --> */
 #art-image-shape-banner {
+  /* background-color: #ffca1c; */
   width: 100%;
+  height: 100vh;
   position: relative;
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
   padding: 0 100px;
-  margin: 250px 0 500px;
+}
+
+#art-image-shape-banner > .section-bg-img > img {
+  filter: opacity(50%);
 }
 
 .img-card-outer-layer {
@@ -281,8 +302,16 @@
 
 .hint-content > .hint-title {
   font-size: 2em;
+  font-weight: bolder;
   color: gold;
 }
+
+/* #art-image-shape-banner
+  > .img-card-outer-layer:nth-of-type(4)
+  .hint-content
+  > .hint-title {
+  color: gold;
+} */
 
 .hint-content > .hint-text {
   /* background-color: #033369; */
@@ -293,8 +322,20 @@
 }
 
 .hint-text > ul > li {
-  list-style: disc;
+  list-style: none;
+  padding-left: 0.5em;
 }
+
+#art-image-shape-banner > .img-card-outer-layer .hint-text li::marker {
+  content: "→";
+}
+
+/* #art-image-shape-banner
+  > .img-card-outer-layer:nth-of-type(4)
+  .hint-text
+  li::marker {
+  color: #fff;
+} */
 
 .hint-content > .hint-text p {
   font-size: 1.2em;
@@ -303,7 +344,11 @@
   text-align: left;
 }
 
-.hint-content > .hint-text p:hover,
+/* #art-image-shape-banner > .img-card-outer-layer:nth-of-type(4) .hint-text p {
+  color: #090909;
+} */
+
+/* .hint-content > .hint-text p:hover, */
 .hint-content > .hint-text p:hover > a {
   color: cornflowerblue;
 }
@@ -322,19 +367,22 @@
 
 /* <!-- ------------------ ↓ 主页介绍卡 ----------------------- --> */
 .index-introduction-cards {
-  margin: 500px 50px 400px;
-  max-width: 100%;
+  padding: 0 50px 0;
+  width: 100%;
+  height: 100vh;
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 0 25px;
-  transform: translateX(1%);
+  position: relative;
 }
 
 .index-introduction-cards > .index-introduction-card {
   position: relative;
-  max-width: 20%;
+  width: 20%;
   margin: 0 -18.585% 0 -18.585%;
   transition: 0.5s;
+  left: 1%;
 }
 
 .index-introduction-cards > .index-introduction-card:hover {
@@ -349,20 +397,20 @@
   max-width: 100%;
 }
 
-.index-introduction-cards > .index-introduction-card:nth-child(1) > div > img {
+.index-introduction-cards > .index-introduction-card:nth-child(2) > div > img {
   filter: grayscale(100%) brightness(90%);
   clip-path: inset(0 12% 0 0);
 }
 
-.index-introduction-cards > .index-introduction-card:nth-child(2) > div > img {
+.index-introduction-cards > .index-introduction-card:nth-child(3) > div > img {
   filter: grayscale(100%) brightness(170%);
 }
 
-.index-introduction-cards > .index-introduction-card:nth-child(3) > div > img {
+.index-introduction-cards > .index-introduction-card:nth-child(4) > div > img {
   filter: hue-rotate(160deg) brightness(63%);
 }
 
-.index-introduction-cards > .index-introduction-card:nth-child(4) > div > img {
+.index-introduction-cards > .index-introduction-card:nth-child(5) > div > img {
   filter: hue-rotate(170deg) brightness(25%);
 }
 
@@ -375,37 +423,37 @@
 }
 
 .index-introduction-cards
-  > .index-introduction-card:nth-child(1)
+  > .index-introduction-card:nth-child(2)
   > p:nth-child(2),
 .index-introduction-cards
-  > .index-introduction-card:nth-child(1)
+  > .index-introduction-card:nth-child(2)
   > p:nth-child(3) {
   color: #95e1ff;
 }
 
 .index-introduction-cards
-  > .index-introduction-card:nth-child(2)
+  > .index-introduction-card:nth-child(3)
   > p:nth-child(2),
 .index-introduction-cards
-  > .index-introduction-card:nth-child(2)
+  > .index-introduction-card:nth-child(3)
   > p:nth-child(3) {
   color: rgb(155, 35, 206);
 }
 
 .index-introduction-cards
-  > .index-introduction-card:nth-child(3)
+  > .index-introduction-card:nth-child(4)
   > p:nth-child(2),
 .index-introduction-cards
-  > .index-introduction-card:nth-child(3)
+  > .index-introduction-card:nth-child(4)
   > p:nth-child(3) {
   color: #37dac9;
 }
 
 .index-introduction-cards
-  > .index-introduction-card:nth-child(5)
+  > .index-introduction-card:nth-child(6)
   > p:nth-child(2),
 .index-introduction-cards
-  > .index-introduction-card:nth-child(5)
+  > .index-introduction-card:nth-child(6)
   > p:nth-child(3) {
   color: #033369;
 }
