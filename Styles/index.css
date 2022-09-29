@@ -367,6 +367,7 @@
 
 /* <!-- ------------------ ↓ 主页介绍卡 ----------------------- --> */
 .index-introduction-cards {
+  /* background-color: #00ddeb; */
   padding: 0 50px 0;
   width: 100%;
   height: 100vh;
@@ -390,11 +391,11 @@
 }
 
 .index-introduction-cards > .index-introduction-card div {
-  max-width: 100%;
+  width: 100%;
 }
 
 .index-introduction-cards > .index-introduction-card div > img {
-  max-width: 100%;
+  width: 100%;
 }
 
 .index-introduction-cards > .index-introduction-card:nth-child(2) > div > img {
