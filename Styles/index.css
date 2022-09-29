@@ -29,7 +29,7 @@
 /* <!-- ------------------ ↓ 欢迎内容 ----------------------- --> */
 .welcome-main {
   /* background-color: #033369; */
-  width: 85%;
+  width: 100%;
   height: 100vh;
   margin: 0 auto 0;
   text-align: center;
@@ -37,6 +37,7 @@
   justify-content: center;
   align-items: center;
   position: relative;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .section-bg-img {
@@ -55,7 +56,7 @@
 
 .welcome-main > #welcome-left {
   /* background-color: #5b42f3; */
-  width: 55%;
+  width: 45%;
   height: 60%;
   overflow: hidden;
   border-radius: 25px;
@@ -212,6 +213,7 @@
   justify-content: space-evenly;
   align-items: center;
   padding: 0 100px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 #art-image-shape-banner > .section-bg-img > img {
@@ -378,5 +380,88 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.intro-gif-container {
+  /* background-color: #5b42f3; */
+  width: 60%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+}
+
+.intro-gif {
+  position: absolute;
+  width: 50%;
+  height: 22%;
+  overflow: hidden;
+  border-radius: 15px;
+}
+
+.intro-gif-container > .intro-gif:nth-child(1) {
+  top: 14%;
+  left: 5%;
+}
+
+.intro-gif-container > .intro-gif:nth-child(2) {
+  top: 19%;
+  left: 18%;
+}
+
+.intro-gif-container > .intro-gif:nth-child(3) {
+  top: 24%;
+  left: 31%;
+}
+
+.intro-gif-container > .intro-gif:nth-child(4) {
+  top: 39%;
+  left: 44%;
+  z-index: 3;
+}
+
+.intro-gif-container > .intro-gif:nth-child(5) {
+  top: 54%;
+  left: 31%;
+  z-index: 2;
+}
+
+.intro-gif-container > .intro-gif:nth-child(6) {
+  top: 59%;
+  left: 15%;
+  z-index: 1;
+}
+
+.intro-gif-container > .intro-gif:nth-child(7) {
+  top: 64%;
+  left: 5%;
+  z-index: 0;
+}
+
+.intro-gif > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: opacity(70%);
+  backdrop-filter: blur(15px);
+}
+
+.intro-content-container {
+  /* background-color: yellow; */
+  width: 40%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.intro-title {
+  padding-left: 22%;
+  font-size: 4em;
+  color: goldenrod;
 }
 /* <!-- ------------------ ↑ 主页介绍 ----------------------- --> */
