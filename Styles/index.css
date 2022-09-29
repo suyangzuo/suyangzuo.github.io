@@ -55,24 +55,28 @@
 
 .welcome-main > #welcome-left {
   /* background-color: #5b42f3; */
-  width: 35%;
-  height: 55.5%;
+  width: 55%;
+  height: 60%;
   overflow: hidden;
-  margin: 0 25px 0 150px;
   border-radius: 25px;
   overflow: hidden;
 }
 
-.welcome-main > #welcome-left > img {
+#welcome-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+}
+
+#welcome-img > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .welcome-main > #welcome-right {
   /* background-color: #af40ff; */
-  width: 50%;
-  max-height: 100%;
+  width: 40%;
+  height: 60%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -86,6 +90,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  overflow: auto;
 }
 
 .welcome-main > #welcome-right > #welcome-text > p {
@@ -365,116 +370,13 @@
 }
 /* <!-- ------------------ ↑ 学习技巧翻转卡片 ----------------------- --> */
 
-/* <!-- ------------------ ↓ 主页介绍卡 ----------------------- --> */
-.index-introduction-cards {
-  /* background-color: #00ddeb; */
-  padding: 0 50px 0;
+/* <!-- ------------------ ↓ 主页介绍 ----------------------- --> */
+.intro-section {
   width: 100%;
-  height: 100vh;
+  height: 2160px;
+  overflow: hidden;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
-  padding: 0 25px;
-  position: relative;
 }
-
-.index-introduction-cards > .index-introduction-card {
-  position: relative;
-  width: 20%;
-  margin: 0 -18.585% 0 -18.585%;
-  transition: 0.5s;
-  left: 1%;
-}
-
-.index-introduction-cards > .index-introduction-card:hover {
-  transform: translateY(-30px);
-}
-
-.index-introduction-cards > .index-introduction-card div {
-  width: 100%;
-}
-
-.index-introduction-cards > .index-introduction-card div > img {
-  width: 100%;
-}
-
-.index-introduction-cards > .index-introduction-card:nth-child(2) > div > img {
-  filter: grayscale(100%) brightness(90%);
-  clip-path: inset(0 12% 0 0);
-}
-
-.index-introduction-cards > .index-introduction-card:nth-child(3) > div > img {
-  filter: grayscale(100%) brightness(170%);
-}
-
-.index-introduction-cards > .index-introduction-card:nth-child(4) > div > img {
-  filter: hue-rotate(160deg) brightness(63%);
-}
-
-.index-introduction-cards > .index-introduction-card:nth-child(5) > div > img {
-  filter: hue-rotate(170deg) brightness(25%);
-}
-
-.index-introduction-cards > .index-introduction-card > p:nth-child(2) {
-  position: absolute;
-  top: 5%;
-  left: 32%;
-  font-size: 2.5vw;
-  font-weight: bolder;
-}
-
-.index-introduction-cards
-  > .index-introduction-card:nth-child(2)
-  > p:nth-child(2),
-.index-introduction-cards
-  > .index-introduction-card:nth-child(2)
-  > p:nth-child(3) {
-  color: #95e1ff;
-}
-
-.index-introduction-cards
-  > .index-introduction-card:nth-child(3)
-  > p:nth-child(2),
-.index-introduction-cards
-  > .index-introduction-card:nth-child(3)
-  > p:nth-child(3) {
-  color: rgb(155, 35, 206);
-}
-
-.index-introduction-cards
-  > .index-introduction-card:nth-child(4)
-  > p:nth-child(2),
-.index-introduction-cards
-  > .index-introduction-card:nth-child(4)
-  > p:nth-child(3) {
-  color: #37dac9;
-}
-
-.index-introduction-cards
-  > .index-introduction-card:nth-child(6)
-  > p:nth-child(2),
-.index-introduction-cards
-  > .index-introduction-card:nth-child(6)
-  > p:nth-child(3) {
-  color: #033369;
-}
-
-.index-introduction-cards > .index-introduction-card > p:nth-child(3) {
-  /* background-color: #099715; */
-  position: absolute;
-  max-width: 100%;
-  top: 25%;
-  left: 43%;
-  transform: translateX(-43%);
-  font-size: 1.2vw;
-  text-align: center;
-  justify-content: center;
-}
-
-.index-introduction-cards > .index-introduction-card > img:nth-child(4) {
-  position: absolute;
-  max-width: 50%;
-  top: 50%;
-  left: 18%;
-}
-/* <!-- ------------------ ↑ 主页介绍卡 ----------------------- --> */
+/* <!-- ------------------ ↑ 主页介绍 ----------------------- --> */
