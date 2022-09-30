@@ -40,10 +40,15 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.welcome-main > .section-bg-img > img {
+  filter: contrast(1.2) blur(3px) grayscale();
+}
+
 .section-bg-img {
+  /* background-color: violet; */
   position: absolute;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   z-index: -1;
 }
@@ -217,7 +222,7 @@
 }
 
 #art-image-shape-banner > .section-bg-img > img {
-  filter: opacity(50%);
+  filter: brightness(50%);
 }
 
 .img-card-outer-layer {
@@ -374,6 +379,7 @@
 
 /* <!-- ------------------ ↓ 主页介绍 ----------------------- --> */
 .intro-section {
+  /* background-color: #00ddeb; */
   width: 100%;
   height: 150vh;
   overflow: hidden;
@@ -381,6 +387,7 @@
   justify-content: space-around;
   align-items: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
 }
 
 .intro-gif-container {
