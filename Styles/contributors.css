@@ -18,13 +18,31 @@ body {
   overflow: hidden;
 }
 
+.logo-container {
+  width: 10%;
+  aspect-ratio: 1;
+  /* background-color: antiquewhite; */
+  overflow: hidden;
+  margin:150px auto;
+}
+
+.logo-container > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: logo-rotate linear 5s infinite;
+}
+
 .main-content {
   /* background-color: blueviolet; */
   width: 100%;
-  min-height: 100vh;
+  height: 150vh;
   position: relative;
   margin: 0 auto;
   padding: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .contributor-card-odd,
@@ -34,7 +52,7 @@ body {
   justify-content: space-between;
   width: 1000px;
   height: 250px;
-  margin: 100px auto;
+  margin: 0 auto;
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 4px 4px 15px 0 #000;

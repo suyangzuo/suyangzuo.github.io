@@ -1,8 +1,34 @@
+.logo-container {
+  width: 10%;
+  aspect-ratio: 1;
+  /* background-color: antiquewhite; */
+  overflow: hidden;
+  margin:150px auto;
+}
+
+.logo-container > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: logo-rotate linear 5s infinite;
+}
+
+@keyframes logo-rotate {
+  from {
+    transform: rotateZ(0deg);
+    filter: hue-rotate(0deg);
+  }
+  to {
+    transform: rotateZ(360deg);
+    filter: hue-rotate(360deg);
+  }
+}
+
 .purpose-container {
   /* background-color: rgb(134, 76, 0); */
   max-width: 80%;
-  height: 1700px;
-  margin: 150px auto;
+  height: 1800px;
+  margin: 150px auto ;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
