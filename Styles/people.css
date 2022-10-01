@@ -1,6 +1,6 @@
 :root {
   --people-name: #e0a543;
-  --bg-color: #0d1b2a;
+  /* --bg-color: #0d1b2a; */
 }
 
 .people-hall {
@@ -19,11 +19,40 @@
   position: absolute;
   height: 1250px;
   width: 100vw;
-  top: 0%;
-  transform: translateY(-60%);
-  object-fit: cover;
-  opacity: 20%;
+  top: 5%;
+  transform: translateY(-60.5%);
+  overflow: hidden;
   z-index: -1;
+}
+
+.people-hall-banner > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(80%) opacity(60%);
+  animation: hall-banner-motive 40s ease-in-out infinite alternate;
+  /* transition: 0.5s; */
+}
+
+@keyframes hall-banner-motive {
+  from {
+    transform: scale(200%) rotate(0deg);
+  }
+  10% {
+    transform: scale(190%) rotate(10deg);
+  }
+  27% {
+    transform: scale(165%) rotate(15deg);
+  }
+  59% {
+    transform: scale(178%) rotate(-10deg);
+  }
+  81% {
+    transform: scale(185%) rotate(-5deg);
+  }
+  to {
+    transform: scale(200%) rotate(0deg);
+  }
 }
 
 .people {
@@ -31,34 +60,13 @@
   position: relative;
   height: 100%;
   width: 750px;
-  padding:10px 0;
+  padding: 10px 0;
   display: flex;
   justify-content: space-around;
 }
 
-.people-banner {
-  /* background-color: #b619a1; */
-  position: absolute;
-  width: 100vw;
-  /* height: 70%; */
-  z-index: -1;
-  opacity: 15%;
-  top: -25%;
-  left: -85%;
-  overflow: visible;
-}
-
-.people-banner > img {
-  opacity: 0;
-  clip-path: inset(0 100% 0 0);
-  transform: translateX(10%);
-  object-fit: cover;
-  transition: 0.4s;
-}
-
-.people:hover > .people-banner > img {
-  clip-path: inset(0 0 0 0);
-  opacity: 100%;
+.people:hover + .people-hall-banner > img {
+  /* transform: scale(120%) scaleX(120%); */
 }
 
 .people-img {
