@@ -66,6 +66,7 @@
   overflow: hidden;
   border-radius: 25px;
   overflow: hidden;
+  transform: translateY(-5%);
 }
 
 #welcome-img {
@@ -86,6 +87,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  transform: translateY(-15%);
 }
 
 .welcome-main > #welcome-right > #welcome-text {
@@ -294,10 +296,10 @@
 
 .arrow-down {
   position: absolute;
-  top: -35%;
-  left: 37%;
-  width: 25%;
-  height: 25%;
+  transform: translateY(100%);
+  left: 45%;
+  width: 10%;
+  height: 10%;
   overflow: hidden;
   animation: arrow-up-and-down 0.25s ease-in-out infinite alternate;
 }
