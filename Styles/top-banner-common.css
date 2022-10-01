@@ -131,6 +131,16 @@
 .top-nav .nav-ul > li .top-nav-dropdown ul li {
   width: 100%;
   position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+
+.sub-arrow {
+  /* background-color: #00294c; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transform: translateX(-200%);
 }
 
 .top-nav .nav-ul > li .top-nav-dropdown ul li:hover {
@@ -140,13 +150,14 @@
 }
 
 .top-nav .nav-ul > li .top-nav-dropdown ul li > a {
+  /* background-color: #e60073; */
   padding: 1em 20px;
   display: block;
   text-shadow: 1px 1px 1px #00294c;
   transition: 0.5s;
 }
 
-.top-nav .nav-ul > li .top-nav-dropdown ul li > a:hover {
+.top-nav .nav-ul > li .top-nav-dropdown ul li:hover > a {
   color: orange;
   transform: translateX(10px);
 }
@@ -191,8 +202,18 @@
 }
 
 /* 实现了菜单项图片展开(旋转)效果 */
-.top-nav .nav-ul > li:hover > a > i,
-.top-nav-dropdown > ul > li:hover > a > i {
+.sub-arrow > i {
+  transform: rotateZ(90deg);
+  transition: 0.25s;
+}
+
+.top-nav .nav-ul > li .top-nav-dropdown ul li:hover > .sub-arrow > i {
+  transform: rotateZ(0deg);
+  color: goldenrod;
+}
+/* 实现了菜单项图片展开(旋转)效果 */
+
+.top-nav .nav-ul > li:hover > a > i {
   transform: rotateZ(0deg);
 }
 
