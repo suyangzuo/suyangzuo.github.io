@@ -22,15 +22,6 @@ body {
   z-index: 0;
 }
 
-.background-busy-man-img {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  opacity: 10%;
-  background-image: url(/Images/Background-Images/Busy-Code-Man.gif);
-  background-repeat: round;
-}
-
 a {
   text-decoration: none;
 }

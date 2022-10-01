@@ -23,7 +23,6 @@
   top: 5%;
   transform: translateY(-60.5%);
   overflow: hidden;
-  z-index: -1;
 }
 
 .people-hall-banner > img {
@@ -41,7 +40,7 @@
     transform: scale(100%) rotate(0deg);
   }
   10% {
-    transform: scale(150%) rotate(10deg);
+    transform: scale(150%) rotate(-3deg);
   }
   27% {
     transform: scale(215%) rotate(-15deg);
@@ -50,7 +49,7 @@
     transform: scale(178%) rotate(5deg);
   }
   85% {
-    transform: scale(125%) rotate(20deg);
+    transform: scale(155%) rotate(-8deg);
   }
   to {
     transform: scale(100%) rotate(0deg);
