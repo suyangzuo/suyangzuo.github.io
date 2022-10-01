@@ -150,14 +150,19 @@
 }
 
 .top-nav .nav-ul > li .top-nav-dropdown ul li > a {
-  /* background-color: #e60073; */
+  width: 100%;
+  /* background-color: #4a0025; */
   padding: 1em 20px;
   display: block;
   text-shadow: 1px 1px 1px #00294c;
   transition: 0.5s;
 }
 
-.top-nav .nav-ul > li .top-nav-dropdown ul li:hover > a {
+.top-nav .nav-ul > li .top-nav-dropdown ul li > a > p {
+  transition: 0.5s;
+}
+
+.top-nav .nav-ul > li .top-nav-dropdown ul li:hover > a > p {
   color: orange;
   transform: translateX(10px);
 }
