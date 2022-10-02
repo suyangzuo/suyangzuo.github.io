@@ -67,11 +67,3 @@ footer > .author > p:nth-child(3):hover > a {
 address > a {
   margin: 0 15px;
 }
-
-@media only screen and (max-height: 900px) {
-  .author {
-    width: 30vw;
-    display: flex;
-    justify-content: space-around;
-  }
-}

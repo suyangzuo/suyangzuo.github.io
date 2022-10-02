@@ -235,14 +235,29 @@
   transform: rotateZ(0deg);
 }
 
-@media only screen and (max-width: 825px) {
+@media only screen and (max-width: 1024px) {
+  .logo {
+    /* background-color: #e60073; */
+    height: 50%;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+
+  .logo-title {
+    display: none;
+  }
+
+  .nav-ul > li > a > i {
+    display: none;
+  }
+
   .top-nav .nav-ul > li > a {
     font-size: 1em;
   }
 }
 
-@media only screen and (max-width: 690px) {
+@media only screen and (max-width: 750px) {
   .top-nav .nav-ul > li > a {
-    font-size: 0.7em;
+    font-size: 0.5em;
   }
 }

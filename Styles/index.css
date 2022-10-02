@@ -38,7 +38,7 @@
 
 .welcome-main > #welcome-left {
   /* background-color: #5b42f3; */
-  width: 45%;
+  min-width: 45%;
   height: 60%;
   overflow: hidden;
   border-radius: 25px;
@@ -49,7 +49,7 @@
 
 #welcome-img {
   /* background-color: #ead116; */
-  width: 60%;
+  min-width: 60%;
   height: 100%;
   border-radius: 30px;
   overflow: hidden;
@@ -70,19 +70,19 @@
   height: 50%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   transform: translateY(-15%);
 }
 
 .welcome-main > #welcome-right > #welcome-text {
   width: 100%;
-  height: 60%;
+  min-height: 60%;
   /* background-color: #660ca5; */
   text-align: left;
   padding: 0 0 0 50px;
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: center;
   overflow: auto;
 }
 
@@ -150,25 +150,14 @@
 #welcome-buttons {
   /* background-color: #e16541; */
   width: 100%;
-  /* height: 30%; */
-  /* margin: 0 25px; */
   display: flex;
   justify-content: start;
   padding: 0 0 0 50px;
 }
 
-@media only screen and (max-width: 960px) {
-  #welcome-buttons {
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: space-evenly;
-  }
-}
-
 #welcome-buttons > a {
   /* background-color: #4cacec; */
   display: block;
-  /* width: 25%; */
   min-width: 15%;
   transition: 0.3s;
   margin: 0 5% 0 0;
@@ -197,6 +186,8 @@
   touch-action: manipulation;
   white-space: nowrap;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
 }
 
 #welcome-buttons button:hover {
@@ -225,7 +216,6 @@
 .img-cards {
   /* background-color: darkcyan; */
   width: 100%;
-  /* height: 50%; */
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -235,7 +225,6 @@
   background-color: transparent;
   width: 22%;
   aspect-ratio: 1;
-  /* border: 1px solid #f1f1f1; */
   perspective: 1000px; /* Remove this if you don't want the 3D effect */
   border-radius: 15px;
 }
@@ -249,7 +238,6 @@
   transform-style: preserve-3d;
   border-radius: 15px;
   box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.3);
-  /* overflow: hidden; */
 }
 
 .img-card-outer-layer:hover .img-card-inner-layer {
@@ -326,13 +314,6 @@
   color: gold;
 }
 
-/* #art-image-shape-banner
-  > .img-card-outer-layer:nth-of-type(4)
-  .hint-content
-  > .hint-title {
-  color: gold;
-} */
-
 .hint-content > .hint-text {
   /* background-color: #033369; */
   display: flex;
@@ -346,16 +327,9 @@
   padding-left: 0.5em;
 }
 
-#art-image-shape-banner > .img-card-outer-layer .hint-text li::marker {
+.hint-text li::marker {
   content: "→";
 }
-
-/* #art-image-shape-banner
-  > .img-card-outer-layer:nth-of-type(4)
-  .hint-text
-  li::marker {
-  color: #fff;
-} */
 
 .hint-content > .hint-text p {
   font-size: 1.2em;
@@ -364,11 +338,6 @@
   text-align: left;
 }
 
-/* #art-image-shape-banner > .img-card-outer-layer:nth-of-type(4) .hint-text p {
-  color: #090909;
-} */
-
-/* .hint-content > .hint-text p:hover, */
 .hint-content > .hint-text p:hover > a {
   color: cornflowerblue;
 }
@@ -380,6 +349,7 @@
   background-color: dodgerblue;
   z-index: -1;
   opacity: 15%;
+  -webkit-backdrop-filter: blur(15px);
   backdrop-filter: blur(15px);
   border-radius: 15px;
 }
@@ -430,6 +400,7 @@
   overflow: hidden;
   border-radius: 15px;
   filter: opacity(75%);
+  -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
 }
 
@@ -491,3 +462,61 @@
   color: goldenrod;
 }
 /* <!-- ------------------ ↑ 主页介绍 ----------------------- --> */
+
+@media screen and (max-width: 1024px) {
+  .welcome-main {
+    flex-direction: column;
+  }
+
+  #welcome-left {
+    display: none;
+  }
+
+  #welcome-img {
+    display: none;
+  }
+
+  #welcome-img > img {
+    height: 0;
+    display: none;
+  }
+
+  #welcome-right {
+    /* background-color: darkgoldenrod; */
+    width: 100%;
+    min-height: 70%;
+  }
+
+  #welcome-text {
+    /* background-color: tomato; */
+    align-items: center;
+    padding: 0;
+  }
+
+  #welcome-buttons {
+    /* background-color: #00ddeb; */
+    height: 30%;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 0;
+  }
+
+  #welcome-buttons > a > button {
+    font-size: 15px;
+  }
+
+  #art-image-shape-banner {
+    height: 100vh;
+  }
+
+  .intro-section {
+    height: 100vh;
+  }
+
+  .intro-title > p,
+  .img-cards-words > p {
+    font-size: 40px;
+  }
+}
