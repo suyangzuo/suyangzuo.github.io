@@ -1,26 +1,3 @@
-#index-bg-img {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-#index-bg-img > #fixed-bg-img-layer {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  /* position: fixed; */
-}
-
-#index-bg-img > #fixed-bg-img-layer > img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: opacity(50%);
-}
-
 .main-content {
   position: relative;
   margin: 0 auto;
@@ -65,19 +42,26 @@
   height: 60%;
   overflow: hidden;
   border-radius: 25px;
-  overflow: hidden;
   transform: translateY(-5%);
+  display: flex;
+  justify-content: center;
 }
 
 #welcome-img {
-  width: 100%;
+  /* background-color: #ead116; */
+  width: 60%;
   height: 100%;
+  border-radius: 30px;
+  overflow: hidden;
+  clip-path: polygon(0% 0%, 70% 0%, 100% 30%, 100% 80%, 85% 100%, 0% 100%);
 }
 
 #welcome-img > img {
+  /* background-color: #00ddeb; */
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
+  filter: contrast(1.2);
 }
 
 .welcome-main > #welcome-right {
