@@ -36,6 +36,16 @@
   object-fit: cover;
 }
 
+.welcome-main > .section-bg-img::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(115deg, #000 35%, rgba(0, 0, 0, 0));
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 .welcome-main > #welcome-left {
   /* background-color: #5b42f3; */
   min-width: 45%;
@@ -62,6 +72,17 @@
   height: 100%;
   object-fit: cover;
   filter: contrast(1.2);
+}
+
+#welcome-img::after {
+  /* background-color: #096a71; */
+  content: "";
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(0deg, #000, rgba(0, 0, 0, 0) 5%);
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .welcome-main > #welcome-right {
