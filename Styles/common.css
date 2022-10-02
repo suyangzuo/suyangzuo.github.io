@@ -9,7 +9,7 @@
 }
 
 * {
-  font-family: "Segoe UI", "Microsoft Yahei UI";
+  font-family: "Noto Sans SC", sans-serif, "Noto Sans Mono", monospace;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
