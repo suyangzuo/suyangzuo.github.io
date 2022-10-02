@@ -23,7 +23,7 @@ body {
   aspect-ratio: 1;
   /* background-color: antiquewhite; */
   overflow: hidden;
-  margin:150px auto;
+  margin: 150px auto;
 }
 
 .logo-container > img {
@@ -39,7 +39,7 @@ body {
   height: 150vh;
   position: relative;
   margin: 0 auto;
-  padding: 100px;
+  padding: 50px 100px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -71,7 +71,7 @@ body {
   display: flex;
   justify-content: center;
   background-color: rgb(24, 35, 41);
-  flex-basis: 45%;
+  flex-basis: 55%;
   height: 100%;
   overflow: hidden;
   transition: 0.5s;
@@ -90,6 +90,7 @@ body {
   /* background-color: rgb(38, 38, 38, 0.3); */
   height: 100%;
   flex-basis: 70%;
+  -webkit-backdrop-filter: blur(15px);
   backdrop-filter: blur(15px);
   z-index: -1;
   transition: 0.5s;
@@ -105,12 +106,12 @@ body {
 
 .contributor-card-odd:hover > .contributor-img-name {
   clip-path: polygon(0% 0%, 100% 0%, 75% 100%, 0% 100%);
-  flex-basis: 52%;
+  flex-basis: 60%;
 }
 
 .contributor-card-odd:hover > .contributor-brief {
   clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%);
-  flex-basis: 68%;
+  flex-basis: 60%;
   padding-left: 5%;
 }
 
@@ -126,13 +127,13 @@ body {
 .contributor-card-even:hover > .contributor-img-name {
   /* width: 65%; */
   clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%);
-  flex-basis: 52%;
+  flex-basis: 60%;
 }
 
 .contributor-card-even:hover > .contributor-brief {
   /* width: 65%; */
   clip-path: polygon(0% 0%, 100% 0%, 75% 100%, 0% 100%);
-  flex-basis: 68%;
+  flex-basis: 60%;
   padding-right: 5%;
 }
 

@@ -17,13 +17,13 @@ async function insertSoftwareHTML() {
     case "文本编辑器":
       filename = "/Software/text-editor.html";
       break;
-    case "集成开发环境":
+    case "IDE":
       filename = "/Software/ide.html";
       break;
     case "数据库":
       filename = "/Software/database.html";
       break;
-    case "开发配套工具":
+    case "开发环境与工具":
       filename = "/Software/dev-tools.html";
       break;
     case "操作系统":

@@ -1,9 +1,28 @@
+body {
+  position: relative;
+}
+
+.purpose-bg-container {
+  position: absolute;
+  width: 100%;
+  height: 97%;
+  overflow: hidden;
+  z-index: -1;
+  filter: opacity(50%) blur(5px);
+}
+
+.purpose-bg-container > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .logo-container {
   width: 10%;
   aspect-ratio: 1;
   /* background-color: antiquewhite; */
   overflow: hidden;
-  margin:150px auto;
+  margin: 150px auto;
 }
 
 .logo-container > img {
@@ -28,11 +47,12 @@
   /* background-color: rgb(134, 76, 0); */
   max-width: 80%;
   height: 1800px;
-  margin: 150px auto ;
+  margin: 150px auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  overflow: auto;
 }
 
 .purpose-container > .purpose {
@@ -91,6 +111,6 @@
 
 .purpose-container > .purpose:nth-child(5) > p:nth-child(2) > a:hover {
   filter: hue-rotate(60deg) brightness(70%);
-  user-select: none;
   -webkit-user-select: none;
+  user-select: none;
 }

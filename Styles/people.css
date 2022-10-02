@@ -143,5 +143,6 @@
   transform: translate(-15px, 0);
   display: flex;
   align-items: flex-end;
+  -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
 }
