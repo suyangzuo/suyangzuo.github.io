@@ -426,12 +426,12 @@
 }
 
 .intro-gif-container > .intro-gif:nth-child(1) {
-  top: 13%;
+  top: 7%;
   left: 5%;
 }
 
 .intro-gif-container > .intro-gif:nth-child(2) {
-  top: 18%;
+  top: 15%;
   left: 18%;
 }
 
@@ -441,12 +441,12 @@
 }
 
 .intro-gif-container > .intro-gif:nth-child(4) {
-  top: 63%;
+  top: 69%;
   left: 5%;
 }
 
 .intro-gif-container > .intro-gif:nth-child(5) {
-  top: 58%;
+  top: 61%;
   left: 18%;
 }
 
