@@ -63,7 +63,7 @@
   height: 100%;
   border-radius: 30px;
   overflow: hidden;
-  clip-path: polygon(0% 0%, 70% 0%, 100% 30%, 100% 80%, 85% 100%, 0% 100%);
+  clip-path: polygon(0% 0%, 70% 0%, 100% 30%, 100% 80%, 90% 100%, 0% 100%);
 }
 
 #welcome-img > img {
@@ -83,6 +83,25 @@
   position: absolute;
   top: 0;
   left: 0;
+}
+
+#welcome-img:hover::after {
+  white-space: pre;
+  animation: show-author 5s linear 1s;
+  color: #999;
+  font-size: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+@keyframes show-author {
+  from {
+    content: "Create by George Redhawk \A https://teescrevi.wordpress.com/";
+  }
+  to {
+    content: "Create by George Redhawk \A https://teescrevi.wordpress.com/";
+  }
 }
 
 .welcome-main > #welcome-right {
@@ -258,7 +277,7 @@
   transition: transform 0.5s;
   transform-style: preserve-3d;
   border-radius: 15px;
-  box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: 5px 5px 10px 0 rgba(0, 0, 0, 0.5);
 }
 
 .img-card-outer-layer:hover .img-card-inner-layer {
@@ -433,31 +452,38 @@
 .intro-gif-container > .intro-gif:nth-child(2) {
   top: 15%;
   left: 18%;
+  box-shadow: -3px -3px 10px 0 #000;
 }
 
 .intro-gif-container > .intro-gif:nth-child(3) {
   top: 23%;
   left: 31%;
+  box-shadow: -3px -3px 10px 0 #000;
 }
 
 .intro-gif-container > .intro-gif:nth-child(4) {
   top: 69%;
   left: 5%;
+  box-shadow: -3px 3px 10px 0 #000;
 }
 
 .intro-gif-container > .intro-gif:nth-child(5) {
   top: 61%;
   left: 18%;
+  box-shadow: -3px 3px 10px 0 #000;
 }
 
 .intro-gif-container > .intro-gif:nth-child(6) {
   top: 53%;
   left: 31%;
+  box-shadow: -3px 3px 10px 0 #000;
 }
 
 .intro-gif-container > .intro-gif:nth-child(7) {
   top: 38%;
   left: 50%;
+  box-shadow: -3px -3px 10px 0 rgba(0, 0, 0, 0.5),
+    3px 3px 10px 0 rgba(0, 0, 0, 0.5);
 }
 
 .intro-gif > img {
