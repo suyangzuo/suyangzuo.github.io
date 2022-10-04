@@ -59,10 +59,8 @@ function changeCategoryStyle() {
     category.style.background = "none";
     let p = category.firstElementChild;
     p.style.color = "var(--f-color)";
-    // p.style.transform = "translateX(0)";
   });
-  this.style.background = "rgb(31,82,63)";
+  this.setAttribute("style", "background: rgb(31,82,63) !important");
   let p = this.firstElementChild;
   p.style.color = "gold";
-  // p.style.transform = "translateX(1em)";
 }
