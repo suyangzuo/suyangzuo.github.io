@@ -1,7 +1,7 @@
 const categorys = document.getElementsByClassName("software-category");
 const containers = document.getElementsByClassName("software-container");
 let text = "文本编辑器";
-Array.from(categorys)[0].style.background = "rgb(31, 82, 63)";
+Array.from(categorys)[0].setAttribute("style", "background: rgb(31,82,63) !important");
 Array.from(categorys)[0].style.color = "gold";
 
 Array.from(categorys).forEach((category) => {
