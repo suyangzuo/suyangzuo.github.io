@@ -1,17 +1,20 @@
 const categorys = document.getElementsByClassName("software-category");
 const containers = document.getElementsByClassName("software-container");
 let text = "文本编辑器";
+Array.from(categorys)[0].style.background = "rgb(31, 82, 63)";
+Array.from(categorys)[0].style.color = "gold";
 
 Array.from(categorys).forEach((category) => {
   category.addEventListener("click", insertSoftwareHTML);
+  category.addEventListener("click", changeCategoryStyle);
 });
 
 async function insertSoftwareHTML() {
-  if (text === Array.from(this.getElementsByTagName("p"))[0].innerText) return;
+  if (text === this.firstElementChild.innerText) return;
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
   containers[0].innerHTML = "";
-  text = Array.from(this.getElementsByTagName("p"))[0].innerText;
+  text = this.firstElementChild.innerText;
   let filename = "";
   switch (text) {
     case "文本编辑器":
@@ -49,4 +52,17 @@ async function insertSoftwareHTML() {
   await fetch(filename)
     .then(async (response) => await response.text())
     .then((content) => (containers[0].innerHTML = content));
+}
+
+function changeCategoryStyle() {
+  Array.from(categorys).forEach((category) => {
+    category.style.background = "none";
+    let p = category.firstElementChild;
+    p.style.color = "var(--f-color)";
+    // p.style.transform = "translateX(0)";
+  });
+  this.style.background = "rgb(31,82,63)";
+  let p = this.firstElementChild;
+  p.style.color = "gold";
+  // p.style.transform = "translateX(1em)";
 }

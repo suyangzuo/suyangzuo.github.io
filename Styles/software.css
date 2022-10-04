@@ -17,12 +17,12 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: start;
-  padding:3% 0 0 0 ;
+  padding: 3% 0 0 0;
 }
 
 .software-category-list > .software-category {
   /* position: fixed; */
-  padding:20px 0 20px 30px;
+  padding: 20px 0 20px 30px;
   width: 10vw;
   font-size: 1em;
   display: flex;
@@ -36,7 +36,7 @@ body {
 }
 
 .software-category-list > .software-category:hover {
-  background: rgb(41, 52, 63);
+  background: rgba(41, 52, 63, 1) !important;
 }
 
 .software-category-list > .software-category > p {
@@ -44,10 +44,10 @@ body {
   transition: 0.5s;
 }
 
-.software-category-list > .software-category:hover > p {
-  color: gold;
-  transform: translateX(1em);
-}
+/* .software-category-list > .software-category:hover > p {
+  color: gold !important;
+  transform: translateX(1em) !important;
+} */
 
 .software-container {
   background-color: #151515;
