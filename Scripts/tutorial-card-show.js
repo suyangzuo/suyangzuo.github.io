@@ -7,7 +7,7 @@ cards.forEach((card) => {
 
 function changeCardBrightness() {
   cards.forEach((card) => {
-    card.style.filter = "brightness(25%)";
+    card.style.filter = "brightness(50%)";
     this.style.filter = "brightness(100%)";
   });
 }
