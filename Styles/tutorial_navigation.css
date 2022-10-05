@@ -46,7 +46,16 @@
 .intro > a:nth-child(1)::before {
   content: "";
   /* background-color: rgb(68, 130, 5); */
-  background: conic-gradient(#04b0ee 20deg, transparent 120deg);
+  background: conic-gradient(
+      rgba(4, 176, 238, 0) 20deg,
+      rgba(4, 176, 238, 1) 20deg,
+      transparent 120deg
+    ),
+    conic-gradient(
+      rgba(238, 176, 4, 0) 200deg,
+      rgba(238, 176, 4, 1) 200deg,
+      transparent 300deg
+    );
   width: 135%;
   height: 175%;
   position: absolute;
@@ -59,6 +68,19 @@
 .tutorials .tutorial-card a:nth-child(1):hover::before {
   visibility: visible;
   animation: border-rotate 2s linear infinite;
+}
+
+.intro > a:nth-child(1)::after {
+  content: "";
+  /* background-color: rgb(68, 130, 5); */
+  background: conic-gradient(#04b0ee 20deg, transparent 120deg);
+  width: 135%;
+  height: 175%;
+  position: absolute;
+  top: -34%;
+  left: -17.5%;
+  z-index: -1;
+  visibility: hidden;
 }
 
 @keyframes border-rotate {
@@ -105,7 +127,4 @@
 
 /* -------------------------------- ↓ 响应式设计 ----------------------------------- */
 
-
-
 /* -------------------------------- ↑ 响应式设计 ----------------------------------- */
-
