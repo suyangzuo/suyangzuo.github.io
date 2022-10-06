@@ -1,19 +1,23 @@
-const cards = document.querySelectorAll(".tutorial-card");
+const links = document.querySelectorAll(".intro > a");
 
-cards.forEach((card) => {
-  card.addEventListener("mouseenter", changeCardBrightness);
-  card.addEventListener("mouseleave", restoreCardBrightness);
+links.forEach((link) => {
+  link.addEventListener("mouseenter", changeLinkBrightness);
+  link.addEventListener("mouseleave", restoreLinkBrightness);
 });
 
-function changeCardBrightness() {
-  cards.forEach((card) => {
-    card.style.filter = "brightness(45%)";
+function changeLinkBrightness() {
+  links.forEach((link) => {
+    link.style.filter = "brightness(45%)";
     this.style.filter = "brightness(100%)";
+    let previous = this.previousElementSibling;
+    let next = this.nextElementSibling;
+    if (previous !== null) previous.style.filter = "brightness(100%)";
+    if (next !== null) next.style.filter = "brightness(100%)";
   });
 }
 
-function restoreCardBrightness() {
-  cards.forEach((card) => {
-    card.style.filter = "brightness(100%)";
+function restoreLinkBrightness() {
+  links.forEach((link) => {
+    link.style.filter = "brightness(100%)";
   });
 }
