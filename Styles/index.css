@@ -406,6 +406,17 @@
 .img-cards-words > p {
   font-size: 4em;
   color: goldenrod;
+  transition: 1.5s;
+}
+
+.img-cards-words > p:nth-child(1) {
+  transform: translateX(-100%);
+  filter: opacity(0);
+}
+
+.img-cards-words > p:nth-child(2) {
+  transform: translateX(100%);
+  filter: opacity(0);
 }
 /* <!-- ------------------ ↑ 学习技巧翻转卡片 ----------------------- --> */
 
@@ -442,46 +453,47 @@
   filter: opacity(75%);
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
+  transition: 1s;
 }
 
 .intro-gif-container > .intro-gif:nth-child(1) {
   top: 7%;
-  left: 5%;
+  left: 45%;
 }
 
 .intro-gif-container > .intro-gif:nth-child(2) {
   top: 15%;
-  left: 18%;
+  left: 48%;
   box-shadow: -3px -3px 10px 0 #000;
 }
 
 .intro-gif-container > .intro-gif:nth-child(3) {
   top: 23%;
-  left: 31%;
+  left: 51%;
   box-shadow: -3px -3px 10px 0 #000;
 }
 
 .intro-gif-container > .intro-gif:nth-child(4) {
   top: 69%;
-  left: 5%;
+  left: 45%;
   box-shadow: -3px 3px 10px 0 #000;
 }
 
 .intro-gif-container > .intro-gif:nth-child(5) {
   top: 61%;
-  left: 18%;
+  left: 48%;
   box-shadow: -3px 3px 10px 0 #000;
 }
 
 .intro-gif-container > .intro-gif:nth-child(6) {
   top: 53%;
-  left: 31%;
+  left: 51%;
   box-shadow: -3px 3px 10px 0 #000;
 }
 
 .intro-gif-container > .intro-gif:nth-child(7) {
   top: 38%;
-  left: 50%;
+  left: 60%;
   box-shadow: -3px -3px 10px 0 rgba(0, 0, 0, 0.5),
     3px 3px 10px 0 rgba(0, 0, 0, 0.5);
 }
@@ -507,6 +519,20 @@
   padding-left: 22%;
   font-size: 4em;
   color: goldenrod;
+}
+
+.intro-title > p {
+  transition: 1.5s;
+}
+
+.intro-title > p:nth-child(1) {
+  transform: translateY(-200%);
+  filter: opacity(0);
+}
+
+.intro-title > p:nth-child(2) {
+  transform: translateY(200%);
+  filter: opacity(0);
 }
 /* <!-- ------------------ ↑ 主页介绍 ----------------------- --> */
 
