@@ -406,7 +406,7 @@
 .img-cards-words > p {
   font-size: 4em;
   color: goldenrod;
-  transition: 1.5s;
+  transition: 0.75s;
 }
 
 .img-cards-words > p:nth-child(1) {
@@ -522,7 +522,7 @@
 }
 
 .intro-title > p {
-  transition: 1.5s;
+  transition: 0.75s;
 }
 
 .intro-title > p:nth-child(1) {

@@ -55,9 +55,9 @@ function reveaIntroGifs() {
 }
 
 function revealIntroTitles() {
-  let introTitleRevealHeight = 330;
+  let introTitleRevealHeight = 400;
   let windowHeight = window.innerHeight;
-  let introTitleTop = introTitles[1].getBoundingClientRect().top;
+  let introTitleTop = introTitles[0].getBoundingClientRect().top;
   if (introTitleTop < windowHeight - introTitleRevealHeight) {
     introTitles[0].style.transform = "translateY(0)";
     introTitles[1].style.transform = "translateY(0)";
