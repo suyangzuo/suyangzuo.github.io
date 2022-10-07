@@ -116,7 +116,7 @@
 
 .welcome-main > #welcome-right > #welcome-text {
   width: 100%;
-  min-height: 60%;
+  height: 60%;
   /* background-color: #660ca5; */
   text-align: left;
   padding: 0 0 0 50px;
@@ -198,13 +198,19 @@
 #welcome-buttons > a {
   /* background-color: #4cacec; */
   display: block;
-  min-width: 15%;
+  width: 120px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
   transition: 0.3s;
   margin: 0 5% 0 0;
+  outline: #bbb solid 3px;
 }
 
 #welcome-buttons > a:hover {
-  flex: 0.07 1 auto;
+  /* flex: 0.07 1 auto; */
+  transform: scale(1.1);
+  outline: #fff solid 5px;
 }
 
 #welcome-buttons > a > button {
@@ -212,14 +218,12 @@
   display: block;
   background-image: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
   border: 0;
-  border-radius: 8px;
   box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
   color: #fff;
-  font-family: "Microsoft YaHei UI", sans-serif;
-  font-size: 20px;
+  font-size: 1.25em;
   line-height: 1em;
   width: 100%;
-  padding: 19px 24px;
+  height: 100%;
   text-decoration: none;
   -webkit-user-select: none;
   user-select: none;
@@ -227,11 +231,9 @@
   white-space: nowrap;
   cursor: pointer;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-}
-
-#welcome-buttons button:hover {
-  outline: #fff solid 5px;
+  align-items: center;
 }
 /* <!-- ------------------ ↑ 欢迎内容 ----------------------- --> */
 
@@ -569,15 +571,20 @@
   #welcome-buttons {
     /* background-color: #00ddeb; */
     height: 30%;
-    flex-direction: column;
+    /* flex-direction: column; */
     align-items: flex-start;
     justify-content: space-evenly;
     align-items: center;
     padding: 0;
   }
 
+  #welcome-buttons > a {
+    width: 80px;
+  }
+
   #welcome-buttons > a > button {
-    font-size: 15px;
+    border-radius: 5px;
+    font-size: 0.75em;
   }
 
   #art-image-shape-banner {

@@ -58,7 +58,7 @@ body {
   align-content: flex-start;
   gap: 4vh 50px;
   grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 18vmax;
+  grid-auto-rows: 16vmax;
   padding: 2% 4%;
   overflow: auto;
   overflow-y: scroll;
