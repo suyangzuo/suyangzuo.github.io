@@ -32,8 +32,8 @@ function reveaIntroGifs() {
       introGifTop < windowHeight - revealHeight
     ) {
       if (i === 0) introGifs[0].style.transform = "translateX(-175%)";
-      if (i === 1) introGifs[1].style.transform = "translateX(-125%)";
-      if (i === 2) introGifs[2].style.transform = "translateX(-75%)";
+      if (i === 1) introGifs[1].style.transform = "translateX(-117%)";
+      if (i === 2) introGifs[2].style.transform = "translateX(-55%)";
       if (i === 3) introGifs[3].style.transform = "translateX(5%)";
     } else if (i === 0 || i === 1 || i === 2) {
       introGifs[i].style.transform = "translateX(-10%)";
@@ -42,8 +42,8 @@ function reveaIntroGifs() {
     }
 
     if ((i === 4 || i === 5 || i === 6) && introGifTop < windowHeight - 25) {
-      if (i === 4) introGifs[4].style.transform = "translateX(-75%)";
-      if (i === 5) introGifs[5].style.transform = "translateX(-125%)";
+      if (i === 4) introGifs[4].style.transform = "translateX(-55%)";
+      if (i === 5) introGifs[5].style.transform = "translateX(-117%)";
       if (i === 6) introGifs[6].style.transform = "translateX(-175%)";
     } else if (i === 4 || i === 5 || i === 6) {
       introGifs[i].style.transform = "translateX(-10%)";
