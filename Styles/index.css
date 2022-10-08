@@ -7,9 +7,8 @@
 .welcome-main {
   /* background-color: #033369; */
   width: 100%;
-  height: 1368px;
+  height: 100vh;
   margin: 0 auto 0;
-  text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -60,7 +59,7 @@
 
 #welcome-img {
   /* background-color: #ead116; */
-  min-width: 60%;
+  min-width: 40%;
   height: 65%;
   border-radius: 30px;
   overflow: hidden;
@@ -436,7 +435,7 @@
 .intro-section {
   /* background-color: #00ddeb; */
   width: 100%;
-  height: 150vh;
+  height: 100vh;
   overflow: hidden;
   display: flex;
   justify-content: space-around;
@@ -447,18 +446,19 @@
 
 .intro-gif-container {
   /* background-color: #5b42f3; */
-  width: 60%;
+  width: 50%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
+  justify-content: center;
+  align-items: flex-end;
   position: relative;
 }
 
 .intro-gif {
-  position: absolute;
-  width: 50%;
+  /* position: absolute; */
+  margin: -4% 0;
+  width: 30%;
   aspect-ratio: 4 / 2.9;
   overflow: hidden;
   border-radius: 15px;
@@ -468,46 +468,23 @@
   transition: 1s;
 }
 
-.intro-gif-container > .intro-gif:nth-child(1) {
-  top: 7%;
-  left: 45%;
-}
-
-.intro-gif-container > .intro-gif:nth-child(2) {
-  top: 15%;
-  left: 48%;
-  box-shadow: -3px -3px 10px 0 #000;
-}
-
-.intro-gif-container > .intro-gif:nth-child(3) {
-  top: 23%;
-  left: 51%;
+.intro-gif-container > .intro-gif {
   box-shadow: -3px -3px 10px 0 #000;
 }
 
 .intro-gif-container > .intro-gif:nth-child(4) {
-  top: 69%;
-  left: 45%;
-  box-shadow: -3px 3px 10px 0 #000;
+  box-shadow: -3px -3px 10px 0 rgba(0, 0, 0, 0.5),
+    3px 3px 10px 0 rgba(0, 0, 0, 0.5);
+  z-index: 3;
+  width: 40%;
 }
 
 .intro-gif-container > .intro-gif:nth-child(5) {
-  top: 61%;
-  left: 48%;
-  box-shadow: -3px 3px 10px 0 #000;
+  z-index: 2;
 }
 
 .intro-gif-container > .intro-gif:nth-child(6) {
-  top: 53%;
-  left: 51%;
-  box-shadow: -3px 3px 10px 0 #000;
-}
-
-.intro-gif-container > .intro-gif:nth-child(7) {
-  top: 38%;
-  left: 60%;
-  box-shadow: -3px -3px 10px 0 rgba(0, 0, 0, 0.5),
-    3px 3px 10px 0 rgba(0, 0, 0, 0.5);
+  z-index: 1;
 }
 
 .intro-gif > img {
@@ -518,7 +495,7 @@
 
 .intro-content-container {
   /* background-color: yellow; */
-  width: 40%;
+  width: 50%;
   height: 100%;
   display: flex;
   flex-direction: column;
