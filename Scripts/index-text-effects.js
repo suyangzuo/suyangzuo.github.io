@@ -8,11 +8,15 @@ window.addEventListener("scroll", revealImgCardsWords);
 window.addEventListener("scroll", reveaIntroGifs);
 window.addEventListener("scroll", revealIntroTitles);
 
+//窗口滚动 += 显示中层文字
 function revealImgCardsWords() {
   let windowHeight = window.innerHeight;
   for (let i = 0; i < imgCardsWords.length; i++) {
     let paragraphTop = imgCardsWords[i].getBoundingClientRect().top;
-    if (paragraphTop < windowHeight - revealHeight && paragraphTop >= revealHeight) {
+    if (
+      paragraphTop < windowHeight - revealHeight &&
+      paragraphTop >= revealHeight
+    ) {
       imgCardsWords[i].style.transform = "translateX(0)";
       imgCardsWords[i].style.filter = "opacity(1)";
     } else {
@@ -23,6 +27,7 @@ function revealImgCardsWords() {
   }
 }
 
+//窗口滚动 += 显示下层动图
 function reveaIntroGifs() {
   let windowHeight = window.innerHeight;
   for (let i = 0; i < introGifs.length; i++) {
@@ -51,6 +56,7 @@ function reveaIntroGifs() {
   }
 }
 
+//窗口滚动 += 显示下层文字
 function revealIntroTitles() {
   let introTitleRevealHeight = 400;
   let windowHeight = window.innerHeight;
