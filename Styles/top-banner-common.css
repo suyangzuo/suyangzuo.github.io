@@ -190,7 +190,7 @@
   background: none;
   display: block;
   position: absolute;
-  top: -27%;
+  top: -18%;
 }
 
 .top-nav-dropdown li:hover .top-nav-dropdown-2-left {
@@ -207,7 +207,7 @@
   display: block;
   border-radius: 15px;
   width: 200px;
-  padding: 15px 2px;
+  padding: 10px 2px;
   box-shadow: 5px 5px 15px #000;
 }
 
@@ -253,6 +253,10 @@
 
   .top-nav .nav-ul > li > a {
     font-size: 1em;
+  }
+
+  .top-nav .nav-ul > .top-nav-ul-li-right-corner:hover .top-nav-dropdown {
+    left: -150%;
   }
 }
 
