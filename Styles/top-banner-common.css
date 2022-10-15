@@ -212,11 +212,11 @@
 }
 
 .top-nav-dropdown li:hover .top-nav-dropdown-2-left > ul {
-  transform: translateX(-10px);
+  transform: translateX(-15px);
 }
 
 .top-nav-dropdown li:hover .top-nav-dropdown-2-right > ul {
-  transform: translateX(10px);
+  transform: translateX(15px);
 }
 
 /* 实现了菜单项图片展开(旋转)效果 */
