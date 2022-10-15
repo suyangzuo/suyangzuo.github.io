@@ -1,8 +1,62 @@
 const categorys = document.getElementsByClassName("software-category");
 const containers = document.getElementsByClassName("software-container");
-let text = "文本编辑器";
-Array.from(categorys)[0].setAttribute("style", "background: rgb(31,82,63) !important");
-Array.from(categorys)[0].style.color = "gold";
+
+if (sessionStorage.getItem("software-name") === null) {
+  sessionStorage.setItem("software-name", "文本编辑器");
+}
+
+Array.from(categorys).forEach((category) => {
+  category.style.background = "none";
+  let p = category.firstElementChild;
+  p.style.color = "var(--f-color)";
+  if (p.innerText === sessionStorage.getItem("software-name")) {
+    category.setAttribute("style", "background: rgb(31,82,63) !important");
+    p.style.color = "gold";
+  }
+});
+
+let fileName = getSoftwareFileName(sessionStorage.getItem("software-name"));
+
+function getSoftwareFileName(softwareName) {
+  let tempFileName = "";
+  switch (softwareName) {
+    case "文本编辑器":
+      tempFileName = "/Software/text-editor.html";
+      break;
+    case "IDE":
+      tempFileName = "/Software/ide.html";
+      break;
+    case "数据库":
+      tempFileName = "/Software/database.html";
+      break;
+    case "开发环境与工具":
+      tempFileName = "/Software/dev-tools.html";
+      break;
+    case "操作系统":
+      tempFileName = "/Software/os.html";
+      break;
+    case "平面设计":
+      tempFileName = "/Software/graphic-design.html";
+      break;
+    case "3D":
+      tempFileName = "/Software/3d.html";
+      break;
+    case "影视后期":
+      tempFileName = "/Software/video-post.html";
+      break;
+    case "工程":
+      tempFileName = "/Software/engineering.html";
+      break;
+    default:
+      tempFileName = "/Software/text-editor.html";
+      break;
+  }
+  return tempFileName;
+}
+
+fetch(fileName)
+  .then(async (response) => await response.text())
+  .then((content) => (containers[0].innerHTML = content));
 
 Array.from(categorys).forEach((category) => {
   category.addEventListener("click", insertSoftwareHTML);
@@ -10,46 +64,18 @@ Array.from(categorys).forEach((category) => {
 });
 
 async function insertSoftwareHTML() {
-  if (text === this.firstElementChild.innerText) return;
+  if (
+    sessionStorage.getItem("software-name") === this.firstElementChild.innerText
+  )
+    return;
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
   containers[0].innerHTML = "";
-  text = this.firstElementChild.innerText;
-  let filename = "";
-  switch (text) {
-    case "文本编辑器":
-      filename = "/Software/text-editor.html";
-      break;
-    case "IDE":
-      filename = "/Software/ide.html";
-      break;
-    case "数据库":
-      filename = "/Software/database.html";
-      break;
-    case "开发环境与工具":
-      filename = "/Software/dev-tools.html";
-      break;
-    case "操作系统":
-      filename = "/Software/os.html";
-      break;
-    case "平面设计":
-      filename = "/Software/graphic-design.html";
-      break;
-    case "3D":
-      filename = "/Software/3d.html";
-      break;
-    case "影视后期":
-      filename = "/Software/video-post.html";
-      break;
-    case "工程":
-      filename = "/Software/engineering.html";
-      break;
-    default:
-      filename = "/Software/text-editor.html";
-      break;
-  }
 
-  await fetch(filename)
+  sessionStorage.setItem("software-name", this.firstElementChild.innerText);
+  fileName = getSoftwareFileName(sessionStorage.getItem("software-name"));
+
+  await fetch(fileName)
     .then(async (response) => await response.text())
     .then((content) => (containers[0].innerHTML = content));
 }
