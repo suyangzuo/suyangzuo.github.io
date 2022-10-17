@@ -1,9 +1,9 @@
 body {
   /* background-color: rgb(23, 26, 33); */
   background-image: radial-gradient(
-    farthest-corner at 60% 35%,
+    farthest-corner at 60% 500px,
     rgb(63, 69, 91) 0%,
-    rgb(23, 26, 33) 40%
+    rgb(23, 26, 33) 45%
   );
 }
 
