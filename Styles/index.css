@@ -222,7 +222,7 @@
 #welcome-buttons > a > button {
   margin: 0 auto;
   display: block;
-  background: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
+  background: linear-gradient(144deg, #af40ffd5, #5b42f3d5 50%, #00ddebd5);
   border: 0;
   box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
   color: #fff;
