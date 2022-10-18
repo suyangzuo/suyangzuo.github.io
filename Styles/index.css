@@ -244,7 +244,8 @@
 }
 
 #welcome-buttons > a:hover > button {
-  filter: hue-rotate(-150deg);
+  /* filter: hue-rotate(-165deg); */
+  background: linear-gradient(144deg, #af40ff80, #5b42f380 50%, #00ddeb80);
 }
 /* <!-- ------------------ ↑ 欢迎内容 ----------------------- --> */
 

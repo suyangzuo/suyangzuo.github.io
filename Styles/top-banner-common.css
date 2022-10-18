@@ -132,20 +132,25 @@
 }
 
 .top-nav .nav-ul > li:hover .top-nav-dropdown > ul {
-  background: linear-gradient(#003525, #00a060);
+  /* background: linear-gradient(#003525, #00a060); */
+  background: linear-gradient(rgba(53, 59, 81, 1), rgba(83, 89, 111, 1));
   display: block;
   border-radius: 15px;
   width: 200px;
   padding: 10px 2px;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.75);
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.75),
+    -2px 2px 10px rgba(0, 0, 0, 0.75);
   transform: translateY(10px);
 }
 
 .top-nav .nav-ul > li .top-nav-dropdown ul li {
+  /* background-color: #e60073; */
   width: 100%;
+  /* height: 50px; */
   position: relative;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
 }
 
 .sub-arrow {
@@ -157,9 +162,12 @@
 }
 
 .top-nav .nav-ul > li .top-nav-dropdown ul li:hover {
-  background-color: #00294c;
+  /* background-color: #00294c; */
+  /* background-color: rgb(26, 34, 59); */
+  /* outline: solid 2px rgb(210, 75, 138); */
+  outline: solid 2px rgb(33, 184, 33);
   border-radius: 50px;
-  box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, 0.8);
+  /* box-shadow: 0px 1px 4px 0 rgba(0, 0, 0, 0.5); */
 }
 
 .top-nav .nav-ul > li .top-nav-dropdown ul li > a {
@@ -167,16 +175,15 @@
   /* background-color: #4a0025; */
   padding: 1em 20px;
   display: block;
-  text-shadow: 1px 1px 1px #00294c;
-  transition: 0.5s;
+  /* text-shadow: 1px 1px 1px #00294c; */
 }
 
 .top-nav .nav-ul > li .top-nav-dropdown ul li > a > p {
-  transition: 0.5s;
+  transition: 0.25s;
 }
 
 .top-nav .nav-ul > li .top-nav-dropdown ul li:hover > a > p {
-  color: orange;
+  color: gold;
   transform: translateX(10px);
 }
 
@@ -203,12 +210,14 @@
 
 .top-nav-dropdown li:hover .top-nav-dropdown-2-left > ul,
 .top-nav-dropdown li:hover .top-nav-dropdown-2-right > ul {
-  background: linear-gradient(#003525, #00a060);
+  /* background: linear-gradient(#003525, #00a060); */
+  background: linear-gradient(rgba(53, 59, 81, 1), rgba(83, 89, 111, 1));
   display: block;
   border-radius: 15px;
   width: 200px;
   padding: 10px 2px;
-  box-shadow: 5px 5px 15px #000;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.75),
+    -2px 2px 10px rgba(0, 0, 0, 0.75);
 }
 
 .top-nav-dropdown li:hover .top-nav-dropdown-2-left > ul {
