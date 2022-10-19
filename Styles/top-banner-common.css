@@ -166,12 +166,8 @@
 }
 
 .top-nav .nav-ul > li .top-nav-dropdown ul li:hover {
-  /* background-color: #00294c; */
-  /* background-color: rgb(26, 34, 59); */
-  /* outline: solid 2px rgb(210, 75, 138); */
-  outline: solid 2px rgb(33, 184, 33);
+  background: rgb(0, 0, 0, 0.5);
   border-radius: 50px;
-  /* box-shadow: 0px 1px 4px 0 rgba(0, 0, 0, 0.5); */
 }
 
 .top-nav .nav-ul > li .top-nav-dropdown ul li > a {
