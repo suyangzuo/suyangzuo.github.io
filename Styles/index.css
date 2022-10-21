@@ -55,12 +55,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-bottom: 2.5%;
 }
 
 #welcome-img {
   /* background-color: #ead116; */
   min-width: 40%;
-  height: 65%;
+  min-height: 65%;
   border-radius: 30px;
   overflow: hidden;
   transform: translateX(10%);
