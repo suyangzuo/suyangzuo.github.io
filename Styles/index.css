@@ -61,7 +61,7 @@
 #welcome-img {
   /* background-color: #ead116; */
   min-width: 40%;
-  min-height: 65%;
+  height: 65%;
   border-radius: 30px;
   overflow: hidden;
   transform: translateX(10%);
