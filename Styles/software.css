@@ -57,15 +57,15 @@ body {
     rgb(23, 26, 33) 40%
   );
   max-width: 90vw;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   transform: translateX(10vw);
   display: grid;
   align-content: flex-start;
   gap: 4vh 50px;
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 16vmax;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  grid-auto-rows: fit-content;
   padding: 2% 4%;
-  overflow-y: auto;
+  overflow: auto;
 }
 
 .software-container > .software {
@@ -80,7 +80,8 @@ body {
   /* background-color: #002bff; */
   display: block;
   max-width: 100%;
-  height: 85%;
+  aspect-ratio: 4/3;
+  /* height: 85%; */
   transition: 0.5s;
   border-radius: 15px;
   position: relative;

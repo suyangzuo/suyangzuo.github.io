@@ -10,8 +10,9 @@ body {
 .tutorials {
   max-width: 1920px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 530px;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  /* grid-auto-rows: 530px; */
+  grid-auto-rows: fit-content;
   /* grid-template-rows: 2fr; */
   gap: 50px 50px;
   margin: 150px auto;
@@ -49,7 +50,8 @@ body {
   align-items: center;
   /* background-color: crimson; */
   width: 105%;
-  height: 66%;
+  aspect-ratio: 4/3;
+  /* height: 66%; */
   border-radius: 15px;
   overflow: hidden;
 }
@@ -133,7 +135,7 @@ body {
 
 /* -------------------------------- ↓ 响应式设计 ----------------------------------- */
 
-@media screen and (max-width: 1536px) {
+/* @media screen and (max-width: 1536px) {
   .tutorials {
     grid-template-columns: repeat(3, 1fr);
     grid-auto-rows: 42vmax;
@@ -145,6 +147,6 @@ body {
     grid-template-columns: repeat(2, 1fr);
     grid-auto-rows: 42vmax;
   }
-}
+} */
 
 /* -------------------------------- ↑ 响应式设计 ----------------------------------- */
