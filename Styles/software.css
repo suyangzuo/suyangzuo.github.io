@@ -61,7 +61,7 @@ body {
   margin-left: var(--software-category-width);
   display: grid;
   align-content: flex-start;
-  gap: 4vh 50px;
+  gap: 5vh 50px;
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   grid-auto-rows: fit-content;
   padding: 2% 4%;
@@ -70,7 +70,10 @@ body {
 .software-container > .software {
   /* background-color: beige; */
   width: 100%;
-  height: 100%;
+  height: 105%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   /* height: fit-content; */
   transition: 0.5s;
 }
@@ -80,7 +83,6 @@ body {
   display: block;
   max-width: 100%;
   aspect-ratio: 4/3;
-  /* height: 85%; */
   transition: 0.5s;
   border-radius: 15px;
   position: relative;
@@ -187,26 +189,24 @@ body {
   padding: 2.5% 0 0 0;
   /* background-color: rgb(23, 91, 94); */
   width: 100%;
-  height: 11%;
+  height: 12%;
   overflow: visible;
   transition: 0.5s;
-}
-
-.software-container > .software > .software-text:hover {
-  transform: scale(1.05);
-  /* text-decoration: underline;
-  text-underline-offset: 0.2em; */
 }
 
 .software-container > .software > .software-text > .software-title {
   display: inline-block;
   /* background-color: #002bff; */
-  /* margin: 0 auto; */
   font-size: 1.25em;
   color: tomato;
   text-shadow: 1px 1px 1px #111;
+  transition: transform 0.5s;
 }
 
-.software-container > .software > .software-text:hover > .software-title {
-  border-bottom: 2px solid cadetblue;
+.software-container > .software > .software-text > .software-title:hover {
+  /* background-color: blueviolet; */
+  transform: scale(1.05);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-color: cadetblue;
 }
