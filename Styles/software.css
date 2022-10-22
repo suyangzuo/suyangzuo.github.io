@@ -1,17 +1,17 @@
 :root {
   --list-left-color: #202020;
+  --software-category-width: 200px;
 }
 
 body {
   position: relative;
   z-index: 0;
-  overflow: hidden;
 }
 
 .software-category-list {
   background-color: rgb(20, 23, 30);
   height: 100vh;
-  width: 250px !important;
+  width: var(--software-category-width);
   position: fixed;
   z-index: -1;
   display: flex;
@@ -22,7 +22,7 @@ body {
 
 .software-category-list > .software-category {
   /* position: fixed; */
-  padding: 20px 0 20px 30px;
+  padding: 20px 0 20px 20px;
   width: 100%;
   font-size: 1em;
   display: flex;
@@ -50,22 +50,21 @@ body {
 } */
 
 .software-container {
-  /* background-color: rgb(23, 26, 33); */
+  /* background: #402500; */
   background-image: radial-gradient(
     farthest-corner at 60% 5%,
     rgb(63, 69, 91) 0%,
     rgb(23, 26, 33) 40%
   );
-  max-width: 90vw;
-  /* min-height: 100vh; */
-  transform: translateX(10vw);
+  width: calc(100vw - var(--software-category-width));
+  min-height: 100vh;
+  margin-left: var(--software-category-width);
   display: grid;
   align-content: flex-start;
   gap: 4vh 50px;
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   grid-auto-rows: fit-content;
   padding: 2% 4%;
-  overflow: auto;
 }
 
 .software-container > .software {
