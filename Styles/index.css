@@ -141,6 +141,26 @@
 }
 
 .welcome-main > #welcome-right > #welcome-text > p:nth-child(1) {
+  /* background: linear-gradient(
+    45deg,
+    #f18f43 42%,
+    #ffffff 42%,
+    #ffffff 48%,
+    #ffff71 48%,
+    #ffff71 57%,
+    #2663d3 57%
+  );
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text; */
+
+  font-size: 6em;
+  font-weight: bolder;
+  color: cadetblue;
+  text-shadow: 1px 1px 5px #111;
+  /* margin: 100px 0 10px 0; */
+}
+
+.welcome-main > #welcome-right > #welcome-text > p:nth-child(2) {
   display: inline-block;
   color: rgb(255, 255, 255);
   /* -webkit-background-clip: text;
@@ -163,26 +183,6 @@
   font-weight: bolder;
   /* border-bottom: solid 1px #2fe141; */
   /* margin: 10px 0 0px 0; */
-}
-
-.welcome-main > #welcome-right > #welcome-text > p:nth-child(2) {
-  /* background: linear-gradient(
-    45deg,
-    #f18f43 42%,
-    #ffffff 42%,
-    #ffffff 48%,
-    #ffff71 48%,
-    #ffff71 57%,
-    #2663d3 57%
-  );
-  -webkit-text-fill-color: transparent;
-  -webkit-background-clip: text; */
-
-  font-size: 5em;
-  font-weight: bolder;
-  color: cadetblue;
-  text-shadow: 1px 1px 5px #111;
-  /* margin: 100px 0 10px 0; */
 }
 
 .welcome-main > #welcome-right > #welcome-text > p:nth-child(3) {
