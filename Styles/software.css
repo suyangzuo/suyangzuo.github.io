@@ -62,7 +62,7 @@ body {
   display: grid;
   align-content: flex-start;
   gap: 5vh 50px;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
   grid-auto-rows: fit-content;
   padding: 2% 4%;
 }
@@ -153,6 +153,7 @@ body {
 .float-brief-container {
   position: absolute;
   background: rgba(15, 15, 15, 0.6);
+  /* background-color: blue; */
   opacity: 0;
   height: 100%;
   width: 100%;
@@ -165,22 +166,31 @@ body {
 }
 
 .float-brief {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transform: translateY(120%);
+  /* background-color: rgb(240, 156, 47); */
+  position: absolute;
+  top: 65%;
   width: 100%;
   height: 65%;
-  font-size: 1.1em;
-  padding: 30px;
+  font-size: 1em;
   overflow: auto;
   transition: 0.3s;
 }
 
 .software-img:hover .float-brief {
-  transform: translateY(55%);
+  top: 35%;
   background: rgba(0, 0, 0, 0.7);
-  /* backdrop-filter: blur(7px); */
+  /* backdrop-filter: blur(2px); */
+}
+
+.float-brief > span {
+  display: flex;
+  align-items: center;
+  padding: 20px 30px;
+  flex-wrap: wrap;
+  /* background-color: cornflowerblue; */
+  width: 100%;
+  height: 100%;
+  overflow: auto;
 }
 
 .software-container > .software > .software-text {
