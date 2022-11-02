@@ -205,19 +205,19 @@
 #welcome-buttons > a {
   /* background-color: #4cacec; */
   display: block;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
+  width: 170px;
+  height: 70px;
+  border-radius: 175px;
   overflow: hidden;
-  transition: 0.3s;
+  /* transition: 0.3s; */
   margin: 0 5% 0 0;
-  outline: #bbb solid 3px;
+  /* outline: #bbb solid 3px; */
 }
 
 #welcome-buttons > a:hover {
   /* flex: 0.07 1 auto; */
-  transform: scale(1.15);
-  outline: #fff solid 5px;
+  /* transform: scale(1.15); */
+  outline: #fff solid 2px;
 }
 
 #welcome-buttons > a > button {
@@ -241,7 +241,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  transition: 0.3s;
+  /* transition: 0.3s; */
 }
 
 #welcome-buttons > a:hover > button {
@@ -563,15 +563,15 @@
     height: 30%;
     width: 100%;
     align-items: flex-start;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
     padding: 0;
   }
 
   #welcome-buttons > a {
-    width: 100px;
-    height: 100px;
-    margin: 0;
+    width: 150px;
+    height: 60px;
+    margin: 20px;
   }
 
   #welcome-buttons > a > button {
