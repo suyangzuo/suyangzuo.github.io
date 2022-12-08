@@ -10,14 +10,11 @@
   height: 100vh;
   margin: 0 auto 0;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-around;
   align-items: center;
   position: relative;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.welcome-main > .section-bg-img > img {
-  filter: contrast(1.2) blur(3px) grayscale();
 }
 
 .section-bg-img {
@@ -33,9 +30,10 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  filter: contrast(1.2) blur(3px) grayscale();
 }
 
-.welcome-main > .section-bg-img::after {
+.section-bg-img::after {
   content: "";
   width: 100%;
   height: 100%;
@@ -45,209 +43,134 @@
   left: 0;
 }
 
-.welcome-main > #welcome-left {
-  /* background-color: #5b42f3; */
-  width: 50%;
+.site-title {
+  /* background-color: cornflowerblue; */
+  width: 100%;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-bottom: solid 1px #fff;
+  clip-path: inset(0 30% 0 30%);
+}
+
+.site-title > p:nth-child(1) {
+  font-size: 5em;
+  font-weight: bolder;
+  color: seagreen;
+}
+
+.site-title > p:nth-child(2) {
+  font-size: 2em;
+  color: powderblue;
+}
+
+.sub-link {
+  /* background-color: darkcyan; */
+  width: 100%;
+  height: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#software-link {
+  /* background-color: coral; */
+  padding: 50px 10px 0px 10px;
+  width: 450px;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  position: relative;
   overflow: hidden;
-  border-radius: 25px;
-  transform: translateY(-5%);
+}
+
+#software-link > a {
+  display: block;
+  width: 100%;
+  height: 80%;
+  overflow: hidden;
+  outline: solid 10px #aaa;
+}
+
+#software-link > a > img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transform: scale(110%);
+  transition: 1s;
+}
+
+#software-link > a:hover > img {
+  transform: scale(100%);
+}
+
+#software-link-text {
+  width: 100%;
+  height: 20%;
+  clip-path: inset(0 10px 0 10px);
+  position: absolute;
+  top: 61.4%;
+  left: 0;
+  background: rgba(15, 15, 15, 0.75);
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-bottom: 2.5%;
+  font-size: 1.5em;
+  backdrop-filter: blur(3px);
 }
 
-#welcome-img {
-  /* background-color: #ead116; */
-  min-width: 40%;
-  height: 65%;
-  border-radius: 30px;
+#other-link-container {
+  /* background-color: slateblue; */
+  width: 900px;
+  height: 100%;
+  display: grid;
+  gap: 25px 25px;
+  grid-template-columns: repeat(auto-fill, minmax(22%, 30%));
+  grid-template-rows: 300px;
+  justify-content: center;
+  align-content: flex-start;
+  padding: 0 50px;
+}
+
+.other-link-content {
+  /* background-color: brown; */
   overflow: hidden;
-  transform: translateX(10%);
-  clip-path: polygon(0% 0%, 70% 0%, 100% 30%, 100% 80%, 90% 100%, 0% 100%);
 }
 
-#welcome-img > img {
-  /* background-color: #00ddeb; */
+.other-link-content > a {
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
+
+.other-link-content > a > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: contrast(1.2);
+  transform: scale(110%);
+  transition: 1s;
 }
 
-#welcome-img::after {
-  /* background-color: #096a71; */
-  content: "";
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(0deg, rgb(0, 0, 0), rgba(0, 0, 0, 0) 5%);
+.other-link-content > a:hover > img {
+  transform: scale(100%);
+}
+
+.other-link-text {
   position: absolute;
-  top: 0;
+  width: 100%;
+  height: 30%;
+  background: rgba(15, 15, 15, 0.75);
   left: 0;
+  top: 70%;
+  backdrop-filter: blur(5px);
 }
 
-#welcome-img:hover::after {
-  /* background:#95e1ff; */
-  white-space: pre;
-  animation: show-author 5s linear 1s;
-  color: #999;
-  font-size: 1em;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-@keyframes show-author {
-  from {
-    content: "Create by George Redhawk \A https://teescrevi.wordpress.com/";
-  }
-  to {
-    content: "Create by George Redhawk \A https://teescrevi.wordpress.com/";
-  }
-}
-
-.welcome-main > #welcome-right {
-  /* background-color: #af40ff; */
-  width: 45%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  /* transform: translateY(-15%); */
-}
-
-.welcome-main > #welcome-right > #welcome-text {
-  width: 100%;
-  height: 50%;
-  /* background-color: #660ca5; */
-  text-align: left;
-  padding: 0 0 70px 50px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  overflow: auto;
-}
-
-.welcome-main > #welcome-right > #welcome-text > p {
-  /* background-color: darkcyan; */
-  margin: 0 0 5px 0;
-}
-
-.welcome-main > #welcome-right > #welcome-text > p > span {
-  color: gold;
-  font-size: 1.1em;
-}
-
-.welcome-main > #welcome-right > #welcome-text > p:nth-child(1) {
-  /* background: linear-gradient(
-    45deg,
-    #f18f43 42%,
-    #ffffff 42%,
-    #ffffff 48%,
-    #ffff71 48%,
-    #ffff71 57%,
-    #2663d3 57%
-  );
-  -webkit-text-fill-color: transparent;
-  -webkit-background-clip: text; */
-
-  font-size: 6em;
-  font-weight: bolder;
-  color: cadetblue;
-  text-shadow: 1px 1px 5px #111;
-  /* margin: 100px 0 10px 0; */
-}
-
-.welcome-main > #welcome-right > #welcome-text > p:nth-child(2) {
-  display: inline-block;
-  color: rgb(255, 255, 255);
-  /* -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-image: linear-gradient(
-    45deg,
-    #099715 16.666%,
-    #e16541 16.666%,
-    #e16541 33.333%,
-    #f18f43 33.333%,
-    #f18f43 50%,
-    #8b9862 50%,
-    #8b9862 66.666%,
-    #476098 66.666%,
-    #476098 83.333%,
-    #a7489b 83.333%
-  ); */
-  color: #95e1ff;
-  font-size: 1.5em;
-  font-weight: bolder;
-  /* border-bottom: solid 1px #2fe141; */
-  /* margin: 10px 0 0px 0; */
-}
-
-.welcome-main > #welcome-right > #welcome-text > p:nth-child(3) {
-  /* background-color: cadetblue; */
-  color: rgb(255, 255, 255);
-  margin: 20px 0 0 0;
-  min-width: 200px;
-  max-width: 600px;
-}
-
-#welcome-buttons {
-  /* background-color: #e16541; */
-  width: 100%;
-  height: 50%;
-  display: flex;
-  justify-content: start;
-  padding: 70px 0 0 50px;
-}
-
-#welcome-buttons > a {
-  /* background-color: #4cacec; */
-  display: block;
-  width: 160px;
-  height: 70px;
-  border-radius: 175px;
-  overflow: hidden;
-  /* transition: 0.3s; */
-  margin: 0 2.5% 0 0;
-  /* outline: #bbb solid 3px; */
-}
-
-#welcome-buttons > a:hover {
-  /* flex: 0.07 1 auto; */
-  /* transform: scale(1.15); */
-  outline: #fff solid 2px;
-}
-
-#welcome-buttons > a > button {
-  margin: 0 auto;
-  display: block;
-  background: linear-gradient(144deg, #af40ffd5, #5b42f3d5 50%, #00ddebd5);
-  border: 0;
-  box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
-  color: #fff;
-  font-size: 1.25em;
-  line-height: 1em;
-  width: 100%;
-  height: 100%;
-  text-decoration: none;
-  -webkit-user-select: none;
-  user-select: none;
-  touch-action: manipulation;
-  white-space: nowrap;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  /* transition: 0.3s; */
-}
-
-#welcome-buttons > a:hover > button {
-  /* filter: hue-rotate(-165deg); */
-  background: linear-gradient(144deg, #af40ff80, #5b42f380 50%, #00ddeb80);
-}
 /* <!-- ------------------ ↑ 欢迎内容 ----------------------- --> */
 
 /* <!-- ------------------ ↓ 学习技巧翻转卡片 ----------------------- --> */
