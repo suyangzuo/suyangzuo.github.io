@@ -59,12 +59,15 @@
 }
 
 .site-title > p:nth-child(1) {
+  /* background-color: chartreuse; */
   font-size: 5em;
+  line-height: 1.2em;
   font-weight: bolder;
   color: seagreen;
 }
 
 .site-title > p:nth-child(2) {
+  /* background-color: darkcyan; */
   font-size: 2em;
   color: powderblue;
 }
