@@ -30,10 +30,13 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.welcome-main > .section-bg-img > img {
   filter: contrast(1.2) blur(3px) grayscale();
 }
 
-.section-bg-img::after {
+.welcome-main > .section-bg-img::after {
   content: "";
   width: 100%;
   height: 100%;
@@ -46,7 +49,7 @@
 .site-title {
   /* background-color: cornflowerblue; */
   width: 100%;
-  height: 20%;
+  height: 15%;
   display: flex;
   flex-direction: column;
   align-items: center;
