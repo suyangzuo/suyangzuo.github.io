@@ -69,6 +69,7 @@ cardsPool.sort(() => 0.5 - Math.random());
 
 const cardGrid = document.querySelector("#card-grid");
 const timePassedElement = document.querySelector("#time-passed");
+const resetGameButton = document.querySelector(".game-area > button");
 let clickCountElement = document.querySelector("#click-count");
 let clickCount = 0;
 
@@ -78,6 +79,8 @@ let cardsPairIndex = []; //配对组，保存两次点击的图片Id
 let matchCount = 0; //匹配次数
 let timePassed = 0;
 let timerIsRunning = false; //用来记录第1次点击，以计时
+
+resetGameButton.onclick = resetGame;
 
 function createCards() {
   for (let i = 0; i < cardsPool.length; i++) {
@@ -154,14 +157,27 @@ function checkMatch(names, indexs) {
 
 function timerIntervalStart() {
   let countTimeResult = setInterval(() => {
-    timePassed++;
-    let timePassedString = timePassed.toString();
-    timePassedElement.textContent = `${timePassedString.slice(
-      0,
-      timePassedString.length - 1
-    )}.${timePassedString.charAt(timePassedString.length - 1)}`;
-    if (matchCount === cardsPool.length / 2) {
+    if (matchCount === cardsPool.length / 2 || !timerIsRunning) {
       clearInterval(countTimeResult);
+    } else {
+      timePassed++;
+      let timePassedString = timePassed.toString();
+      timePassedElement.textContent = `${timePassedString.slice(
+        0,
+        timePassedString.length - 1
+      )}.${timePassedString.charAt(timePassedString.length - 1)}`;
     }
   }, 100);
+}
+
+function resetGame() {
+  timerIsRunning = false;
+  clickCount = 0;
+  timePassed = 0;
+  matchCount = 0;
+  cardsPairIndex.length = 0;
+  cardsPairName.length = 0;
+  cardsPool.sort(() => 0.5 - Math.random());
+  cardGrid.innerHTML = "";
+  createCards();
 }

@@ -16,6 +16,26 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
+}
+
+.game-area > button {
+  position: absolute;
+  top: 2%;
+  left: 93.5%;
+  width: 100px;
+  height: 100px;
+  font-size: 1.25em;
+  border-radius: 10px;
+  background-color: cornflowerblue;
+  border-style: none;
+}
+
+.game-area > button:hover {
+  cursor: pointer;
+  outline: 2px solid #eee;
+  background-color: slateblue;
+  color: aliceblue;
 }
 
 .game-area > p {
@@ -50,6 +70,10 @@ img {
   /* overflow: hidden; */
   background-color: transparent;
   perspective: 1000px;
+}
+
+.outer:hover {
+  cursor: pointer;
 }
 
 .inner {
