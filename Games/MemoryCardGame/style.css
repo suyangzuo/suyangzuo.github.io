@@ -101,3 +101,37 @@ img {
 .back {
   transform: rotateY(180deg);
 }
+
+@media screen and (max-width: 1000px) {
+  .game-area > button {
+    position: absolute;
+    top: 1%;
+    left: 1.5%;
+    width: 70px;
+    height: 70px;
+    font-size: 1.2em;
+    border-radius: 10px;
+    background-color: cornflowerblue;
+    border-style: none;
+  }
+
+  .game-area > p {
+    font-size: 1.75em;
+  }
+
+  #card-grid {
+    /* background-color: blueviolet; */
+    width: 100vw;
+    height: 80vh;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: flex-start;
+    justify-content: center;
+  }
+
+  .outer {
+    width: 25vw;
+    height: 25vw;
+  }
+}
