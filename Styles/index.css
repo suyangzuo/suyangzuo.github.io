@@ -191,8 +191,8 @@
   height: 100%;
   display: grid;
   gap: 25px 25px;
-  grid-template-columns: repeat(auto-fill, minmax(22%, 30%));
-  grid-template-rows: 300px;
+  grid-template-columns: repeat(auto-fill, minmax(15%, 25%));
+  grid-template-rows: minmax(200px, 300px);
   justify-content: center;
   align-content: flex-start;
   padding: 0 50px;
@@ -243,6 +243,68 @@
 
 .other-link-text > .link-right-area > .link-text {
   font-size: 1em;
+}
+
+#game {
+  height: 80px;
+  grid-column: span 3;
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#game-button {
+  border-radius: 100px;
+  height: 90%;
+  width: 67%;
+  grid-column: span 2;
+  background-color: rgb(221, 221, 221, 40%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+#game-button:hover {
+  background-color: darkslategray;
+  cursor: pointer;
+}
+
+#game-button:hover > p {
+  color: aliceblue;
+}
+
+#game-button > p {
+  color: black;
+  font-size: 2em;
+  z-index: 1;
+  user-select: none;
+}
+
+#game-button > img {
+  height: 95%;
+  position: absolute;
+  animation: mario-running 3s infinite linear;
+}
+
+@keyframes mario-running {
+  from {
+    transform: rotateY(0deg);
+    left: 0%;
+  }
+  50% {
+    transform: rotateY(0deg);
+    left: 88%;
+  }
+  50.1% {
+    left: 88%;
+    transform: rotateY(180deg);
+  }
+  100% {
+    transform: rotateY(180deg);
+    left: 0%;
+  }
 }
 /* <!-- ------------------ ↑ 欢迎内容 ----------------------- --> */
 
