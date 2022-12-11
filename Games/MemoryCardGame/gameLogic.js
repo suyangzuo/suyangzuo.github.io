@@ -111,6 +111,9 @@ function createCards() {
 
 createCards();
 
+let index01 = -1;
+let index02 = -1;
+
 function clickCard() {
   clickCount++;
   clickCountElement.textContent = `${clickCount}`;
@@ -119,16 +122,21 @@ function clickCard() {
     timerIsRunning = true;
   }
   let index = this.getAttribute("index"); //获取outer元素
-  if (cardsPairIndex.length === 1 && cardsPairIndex[0] === index) return;
-
+  if (index === index01 || index === index02) return; //避免在选中2张卡片时，再次点击相同卡片导致的问题
+  if (cardsPairIndex.length === 1 && cardsPairIndex[0] === index) return; //第2次点击了同一张图片
   cardsPairIndex.push(index);
+  if (cardsPairIndex.length === 2) {
+    index01 = cardsPairIndex[0];
+    index02 = cardsPairIndex[1];
+  }
+
   cardsPairName.push(cardsPool[index].name); //将点击的图片名称放入配对组
   let inner = this.firstElementChild; //获取inner元素
   let back = inner.querySelector(".back"); //获取背面元素
   let backImage = back.firstElementChild; //获取背面img元素
   backImage.setAttribute("src", cardsPool[index].img);
   inner.style.transform = "rotateY(180deg)";
-  if (cardsPairName.length >= 2) {
+  if (cardsPairName.length === 2) {
     let names = [...cardsPairName];
     let indexs = [...cardsPairIndex];
     cardsPairName.length = 0;
@@ -153,6 +161,8 @@ function checkMatch(names, indexs) {
   }
   inners[indexs[0]].style.transform = "rotateY(0deg)";
   inners[indexs[1]].style.transform = "rotateY(0deg)";
+  index01 = -1;
+  index02 = -1;
 }
 
 function timerIntervalStart() {
@@ -175,6 +185,8 @@ function resetGame() {
   clickCount = 0;
   timePassed = 0;
   matchCount = 0;
+  index01 = -1;
+  index02 = -1;
   cardsPairIndex.length = 0;
   cardsPairName.length = 0;
   cardsPool.sort(() => 0.5 - Math.random());
