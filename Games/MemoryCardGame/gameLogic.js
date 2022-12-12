@@ -69,7 +69,7 @@ cardsPool.sort(() => 0.5 - Math.random());
 
 const cardGrid = document.querySelector("#card-grid");
 const timePassedElement = document.querySelector("#time-passed");
-const resetGameButton = document.querySelector(".game-area > button");
+const resetGameButton = document.querySelector(".reset-game");
 let clickCountElement = document.querySelector("#click-count");
 let clickCount = 0;
 
@@ -80,7 +80,7 @@ let matchCount = 0; //匹配次数
 let timePassed = 0;
 let timerIsRunning = false; //用来记录第1次点击，以计时
 
-resetGameButton.onclick = resetGame;
+resetGameButton.addEventListener("click", resetGame);
 
 function createCards() {
   for (let i = 0; i < cardsPool.length; i++) {
