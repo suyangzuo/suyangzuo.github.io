@@ -259,7 +259,12 @@
   height: 90%;
   width: 67%;
   grid-column: span 2;
-  background-color: rgb(221, 221, 221, 40%);
+  background: linear-gradient(
+    120deg,
+    rgb(45, 161, 113) 35%,
+    rgb(29, 92, 163)
+  );
+  /* background-color: rgb(221, 221, 221, 40%); */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -267,7 +272,7 @@
 }
 
 #game-button:hover {
-  background-color: darkslategray;
+  background: darkslategray;
   cursor: pointer;
 }
 
@@ -608,6 +613,7 @@
   .site-title {
     /* background-color: cornflowerblue; */
     clip-path: inset(0);
+    border-bottom: none;
   }
 
   .sub-link {

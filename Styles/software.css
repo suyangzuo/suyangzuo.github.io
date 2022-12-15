@@ -66,6 +66,7 @@ body {
   grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
   grid-auto-rows: fit-content;
   padding: 2% 4%;
+  overflow: hidden;
 }
 
 .software-container > .software {
@@ -223,3 +224,28 @@ body {
   text-underline-offset: 0.2em;
   text-decoration-color: cadetblue;
 }
+
+/* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
+@media screen and (max-width: 1000px) {
+  .software-category-list {
+    width: 150px;
+  }
+
+  .software-container {
+    width: calc(100vw - 150px);
+    margin-left: 150px;
+    padding: 2% 1%;
+    gap: 5vh 10px;
+    grid-template-columns: repeat(auto-fill, 250px);
+  }
+
+  .software-container > .software {
+    /* background-color: beige; */
+    height: 105%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    transition: 0.5s;
+  }
+}
+/* <!-- ------------------ ↑ 响应式设计 ------------------- --> */
