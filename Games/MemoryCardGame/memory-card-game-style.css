@@ -8,8 +8,8 @@
   position: relative;
 }
 
-.game-area::before {
-  content: "";
+/* .game-area::before {
+  content: none;
   background-color: rgb(255, 255, 255);
   width: 750px;
   height: 100%;
@@ -18,18 +18,18 @@
   filter: opacity(30%);
   backdrop-filter: blur(5px);
   box-shadow: 5px 5px 10px 0 #222;
-}
+} */
 
 .game-area > p {
   position: relative;
   font-size: 3em;
-  color: rgb(1, 57, 94);
+  color: rgb(223, 207, 71);
   font-weight: bolder;
 }
 
 #time-passed,
 #click-count {
-  color: rgb(177, 15, 15);
+  color: rgb(252, 252, 252);
 }
 
 #card-grid {
@@ -88,6 +88,7 @@
   transform: rotateY(180deg);
 }
 
+/* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
 @media screen and (max-width: 1000px) {
   .game-area::before {
     height: 95%;
@@ -113,3 +114,4 @@
     height: 25vw;
   }
 }
+/* <!-- ------------------ ↑ 响应式设计 ------------------- --> */

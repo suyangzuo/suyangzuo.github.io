@@ -269,8 +269,25 @@
   }
 }
 
+/* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
 @media only screen and (max-width: 750px) {
+  .top-nav .nav-ul {
+    flex-wrap: wrap;
+  }
+
+  .top-nav .nav-ul > li {
+    height: 50%;
+  }
+
   .top-nav .nav-ul > li > a {
-    font-size: 0.5em;
+    font-size: 1em;
+    padding: 0 0.5em;
+    word-break: break-all;
+    word-wrap: break-word;
+  }
+
+  .top-nav .nav-ul > li:hover .top-nav-dropdown {
+    z-index: 1;
   }
 }
+/* <!-- ------------------ ↑ 响应式设计 ------------------- --> */

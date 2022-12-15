@@ -49,7 +49,7 @@ body {
 .game-grid > a > p {
   background-color: rgba(0, 0, 0, 0.5);
   box-shadow: 1px 1px 2px 0 rgba(20, 20, 20, 0.75);
-  width: 60%;
+  width: clamp(50%, 60%, 100%);
   height: 2.2em;
   border-radius: 50px;
   font-size: clamp(1em, 1.25em, 1.5em);
@@ -126,7 +126,7 @@ body {
 }
 .game-15 {
   background-color: blueviolet;
-  grid-area: 18 / 1 / 21 / 4;
+  grid-area: 18 / 1 / 21 / 3;
 }
 .game-16 {
   background-color: slategrey;
@@ -134,7 +134,7 @@ body {
 }
 .game-17 {
   background-color: skyblue;
-  grid-area: 18 / 4 / 21 / 6;
+  grid-area: 18 / 3 / 21 / 5;
 }
 .game-18 {
   background-color: rosybrown;
@@ -146,11 +146,11 @@ body {
 }
 .game-20 {
   background-color: royalblue;
-  grid-area: 12 / 5 / 18 / 7;
+  grid-area: 12 / 5 / 21 / 7;
 }
 .game-21 {
   background-color: rgb(16, 67, 70);
-  grid-area: 18 / 6 / 21 / 9;
+  grid-area: 18 / 7 / 21 / 9;
 }
 .game-22 {
   background-color: darkmagenta;

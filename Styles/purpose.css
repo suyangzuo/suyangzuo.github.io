@@ -114,3 +114,30 @@ body {
   -webkit-user-select: none;
   user-select: none;
 }
+
+/* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
+@media screen and (max-width: 1000px) {
+  .logo-container {
+    width: 200px;
+  }
+
+  .purpose-container {
+    max-width: none;
+    width: 100%;
+  }
+
+  .purpose-container > .purpose {
+    width: 100%;
+  }
+
+  .purpose-container > .purpose > p:nth-child(1) {
+    font-size: 2em;
+  }
+
+  .purpose-container > .purpose > p:nth-child(2) {
+    padding: 0;
+    font-size: 1.25em;
+    width: 90%;
+  }
+}
+/* <!-- ------------------ ↑ 响应式设计 ------------------- --> */
