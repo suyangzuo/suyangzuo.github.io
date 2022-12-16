@@ -6,7 +6,7 @@ const speedSlider = document.querySelector(".slider");
 const resetButton = document.querySelector(".reset-game");
 const boardWidth = gameBoard.width;
 const boardHeight = gameBoard.height;
-const boardBackgroundColor = "gold";
+const boardBackgroundColor = "rgba(0,0,0,0)";
 const snakeColor = "gold";
 const snakeBorder = "black";
 const foodColor = "red";
@@ -62,8 +62,17 @@ function createFood() {
       Math.round((Math.random() * (max - min) + min) / unitSize) * unitSize;
     return randomNumber;
   }
-  foodX = randomFood(0, boardWidth - unitSize);
-  foodY = randomFood(0, boardWidth - unitSize);
+  let overlapped = false;
+  do {
+    foodX = randomFood(0, boardWidth - unitSize);
+    foodY = randomFood(0, boardWidth - unitSize);
+    snake.every((part) => {
+      if (part.x == foodX && part.y == foodY) {
+        overlapped = true;
+        return false;
+      }
+    });
+  } while (overlapped);
 }
 
 function drawFood() {
@@ -113,9 +122,10 @@ function nextTick() {
 }
 
 function clearBoard() {
-  // canvasContext.fillStyle = boardBackgroundColor;
-  // canvasContext.fillRect(0, 0, boardWidth, boardHeight);
-  canvasContext.drawImage(canvasBackgroundImage, 0, 0);
+  canvasContext.clearRect(0, 0, boardWidth, boardHeight);
+  canvasContext.fillStyle = boardBackgroundColor;
+  canvasContext.fillRect(0, 0, boardWidth, boardHeight);
+  // canvasContext.drawImage(canvasBackgroundImage, 0, 0);
 }
 
 function moveSnake() {
