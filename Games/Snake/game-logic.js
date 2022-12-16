@@ -35,6 +35,8 @@ window.addEventListener("keydown", changeDirection);
 resetButton.addEventListener("click", resetGame);
 speedSlider.oninput = changeSpeed;
 
+resetGame();
+
 function changeSpeed() {
   speed = speedSlider.value;
   switch (speed) {

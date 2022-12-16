@@ -32,6 +32,54 @@ const cardsPool = [
     img: "./Images/游戏机.jpg",
   },
   {
+    name: "外星体育馆",
+    img: "./Images/Alien-Stadium.png",
+  },
+  {
+    name: "燃烧骷髅",
+    img: "./Images/Burning-Skeleton.png",
+  },
+  {
+    name: "咖啡豆",
+    img: "./Images/Coffee-Bean.png",
+  },
+  {
+    name: "恐怖来客",
+    img: "./Images/Creepy-Visitor.png",
+  },
+  {
+    name: "神树",
+    img: "./Images/Divine-Tree.jpg",
+  },
+  {
+    name: "华丽厅堂",
+    img: "./Images/Gorgeous-Interior.jpg",
+  },
+  {
+    name: "摩托车手",
+    img: "./Images/Moto-Driver.jpg",
+  },
+  {
+    name: "雪中少女",
+    img: "./Images/Snow-Girl.png",
+  },
+  {
+    name: "奇怪的房子",
+    img: "./Images/Strange-House.png",
+  },
+  {
+    name: "超新星戒指",
+    img: "./Images/Supernova-Ring.jpg",
+  },
+  {
+    name: "窗户边的猫",
+    img: "./Images/Window-Cat.png",
+  },
+  {
+    name: "巫女",
+    img: "./Images/Wizard-Girl.jpg",
+  },
+  {
     name: "乖喵",
     img: "./Images/乖喵.jpg",
   },
@@ -63,8 +111,55 @@ const cardsPool = [
     name: "游戏机",
     img: "./Images/游戏机.jpg",
   },
+  {
+    name: "外星体育馆",
+    img: "./Images/Alien-Stadium.png",
+  },
+  {
+    name: "燃烧骷髅",
+    img: "./Images/Burning-Skeleton.png",
+  },
+  {
+    name: "咖啡豆",
+    img: "./Images/Coffee-Bean.png",
+  },
+  {
+    name: "恐怖来客",
+    img: "./Images/Creepy-Visitor.png",
+  },
+  {
+    name: "神树",
+    img: "./Images/Divine-Tree.jpg",
+  },
+  {
+    name: "华丽厅堂",
+    img: "./Images/Gorgeous-Interior.jpg",
+  },
+  {
+    name: "摩托车手",
+    img: "./Images/Moto-Driver.jpg",
+  },
+  {
+    name: "雪中少女",
+    img: "./Images/Snow-Girl.png",
+  },
+  {
+    name: "奇怪的房子",
+    img: "./Images/Strange-House.png",
+  },
+  {
+    name: "超新星戒指",
+    img: "./Images/Supernova-Ring.jpg",
+  },
+  {
+    name: "窗户边的猫",
+    img: "./Images/Window-Cat.png",
+  },
+  {
+    name: "巫女",
+    img: "./Images/Wizard-Girl.jpg",
+  },
 ];
-
 cardsPool.sort(() => 0.5 - Math.random());
 
 const cardGrid = document.querySelector("#card-grid");

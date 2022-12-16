@@ -34,7 +34,7 @@
 
 #card-grid {
   /* background-color: blueviolet; */
-  width: 600px;
+  max-width: 1500px;
   height: 800px;
   display: flex;
   align-content: flex-start;
@@ -52,7 +52,7 @@
 }
 
 .outer {
-  width: 25%;
+  width: 150px;
   aspect-ratio: 1;
   background-color: transparent;
   perspective: 1000px;
@@ -110,8 +110,8 @@
   }
 
   .outer {
-    width: 25vw;
-    height: 25vw;
+    width: 20vw;
+    height: 20vw;
   }
 }
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */
