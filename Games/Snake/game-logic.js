@@ -14,7 +14,7 @@ const unitSize = 20;
 const canvasBackgroundImage = new Image();
 canvasBackgroundImage.src = "./Images/Snake-01.jpg";
 let speed = 75;
-speedElement.textContent = "一般";
+speedElement.textContent = "情绪稳定";
 
 let gameIsRunning = false;
 let gameFailed = true;
@@ -195,6 +195,7 @@ function checkGameState() {
 
   for (let i = 1; i < snake.length; i++) {
     if (snake[i].x == snake[0].x && snake[i].y == snake[0].y) {
+      gameFailed = true;
       gameIsRunning = false;
     }
   }
