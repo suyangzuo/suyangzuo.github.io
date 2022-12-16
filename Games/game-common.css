@@ -1,10 +1,5 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 body {
+  min-height: 100vh;
   background-color: rgb(50, 84, 85) !important;
   color: aliceblue;
   position: relative;

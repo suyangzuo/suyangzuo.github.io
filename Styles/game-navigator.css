@@ -58,7 +58,7 @@ body {
   color: rgb(255, 255, 255);
   position: relative;
   z-index: 5;
-  margin: 0 5% 5% 0;
+  margin: 0 10px 10px 0;
   backdrop-filter: blur(3px);
   transition: 0.25s;
 }

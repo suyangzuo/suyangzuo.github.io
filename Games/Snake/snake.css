@@ -1,0 +1,111 @@
+#game-container {
+  /* background-color: blueviolet; */
+  width: 1500px;
+  margin: 50px auto 0;
+  position: relative;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+#game-board {
+  border: solid 3px #000;
+}
+
+#game-info {
+  /* background-color: rgb(61, 131, 107); */
+  width: 50%;
+  padding-right: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+#score {
+  font-size: 5em;
+  /* padding-bottom: 5%; */
+}
+
+#score > span {
+  color: rgb(46, 187, 175);
+  font-weight: bold;
+  font-family: "Consolas";
+}
+
+#speed {
+  margin-top: 10%;
+  /* background-color: blue; */
+  width: 100%;
+  height: 25%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-evenly;
+}
+
+.slider {
+  display: block;
+  width: 50%;
+  user-select: none;
+}
+
+.slider:hover {
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb {
+  transform: scale(170%);
+}
+
+#speed > p {
+  width: 50%;
+  font-size: 2em;
+  color: gold;
+}
+
+#game-area {
+  /* background-color: slategrey; */
+  width: 50%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+/* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
+@media screen and (max-width: 1000px) {
+  #game-container {
+    width: 100vw;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #game-info {
+    width: 100%;
+    padding-right: 0;
+    align-items: center;
+  }
+
+  #score {
+    font-size: 2.5em;
+  }
+
+  #speed {
+    align-items: center;
+  }
+
+  .slider {
+    width: 75%;
+  }
+
+  #game-area {
+    margin-top: 50px;
+    justify-content: center;
+  }
+
+  #game-board {
+    width: 400px;
+    height: 400px;
+  }
+}
+/* <!-- ------------------ ↑ 响应式设计 ------------------- --> */
