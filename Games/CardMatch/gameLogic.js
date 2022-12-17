@@ -111,13 +111,12 @@ let index02 = -1;
 const body = document.querySelector("body");
 let clientWidth = document.documentElement.clientWidth;
 
-// getRandomCardForGame();
-// createCards();
 resetGame();
 resetCardGridStyle();
 
 cardCountSlider.oninput = getCardCount;
 resetGameButton.addEventListener("click", resetGame);
+resetGameButton.addEventListener("click", resetCardGridStyle);
 window.onresize = resetCardGridStyle;
 
 function getRandomCardForGame() {
@@ -142,15 +141,7 @@ function getCardCount() {
 function resetCardGridStyle() {
   clientWidth = document.documentElement.clientWidth;
   let outers = document.querySelectorAll(".outer");
-  console.log(cardCount);
-  console.log(outers.length);
-  if (clientWidth >= 1000) {
-    cardGrid.style.width = `${(cardCount * 150) / 4}px`;
-    outers.forEach((item) => {
-      item.style.width = "150px";
-      item.style.height = "150px";
-    });
-  } else {
+  if (window.matchMedia("(max-width: 1000px)").matches) {
     cardGrid.style.width = "100vw";
     let outers = document.querySelectorAll(".outer");
     for (let i = 0; i < outers.length; i++) {
@@ -158,10 +149,10 @@ function resetCardGridStyle() {
         case "16":
         case "20":
         case "24":
+        case "28":
           outers[i].style.width = "25vw";
           outers[i].style.height = "25vw";
           break;
-        case "28":
         case "32":
         case "36":
         case "40":
@@ -170,26 +161,12 @@ function resetCardGridStyle() {
           break;
       }
     }
-
-    // outer.forEach((element) => {
-    //   switch (cardCount) {
-    //     case "16":
-    //     case "20":
-    //     case "24":
-    //       element.style.width = "25vw";
-    //       break;
-    //     case "28":
-    //       element.style.width = "20vw";
-    //       break;
-    //     case "32":
-    //     case "36":
-    //       element.style.width = "16.6vw";
-    //       break;
-    //     case "40":
-    //       element.style.width = "12.5vw";
-    //       break;
-    //   }
-    // });
+  } else {
+    cardGrid.style.width = `${(cardCount * 150) / 4}px`;
+    outers.forEach((item) => {
+      item.style.width = "150px";
+      item.style.height = "150px";
+    });
   }
 }
 
