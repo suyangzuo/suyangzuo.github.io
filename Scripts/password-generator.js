@@ -120,8 +120,10 @@ function getPassword() {
 
 function 数字框被点击() {
   digitChecked = digitBox.checked;
+  getPassword();
 }
 
 function 符号框被点击() {
   symbolChecked = symbolBox.checked;
+  getPassword();
 }

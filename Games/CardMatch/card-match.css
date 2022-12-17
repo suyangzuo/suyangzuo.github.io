@@ -29,6 +29,10 @@
   margin-bottom: 10px;
 }
 
+.slider:hover {
+  cursor: pointer;
+}
+
 .slider::-webkit-slider-thumb {
   transform: scale(170%);
 }
@@ -147,7 +151,7 @@
 
   #card-grid {
     /* background-color: blueviolet; */
-    width: 80vw;
+    width: 100vw;
     height: 80vh;
     display: flex;
     flex-wrap: wrap;
@@ -157,8 +161,8 @@
   }
 
   .outer {
-    width: 16.6vw;
-    height: 16.6vw;
+    width: 20vw;
+    height: 20vw;
   }
 }
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */

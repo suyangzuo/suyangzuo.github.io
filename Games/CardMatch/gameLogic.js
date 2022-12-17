@@ -112,9 +112,9 @@ const body = document.querySelector("body");
 let clientWidth = document.documentElement.clientWidth;
 
 // getRandomCardForGame();
-resetCardGridStyle();
 // createCards();
 resetGame();
+resetCardGridStyle();
 
 cardCountSlider.oninput = getCardCount;
 resetGameButton.addEventListener("click", resetGame);
@@ -130,38 +130,66 @@ function getRandomCardForGame() {
   cardsForGame.sort(() => 0.5 - Math.random());
 }
 
+//获取卡片数量，刷新卡片网格布局，重置游戏
 function getCardCount() {
   cardCount = cardCountSlider.value;
   cardCountTextElement.textContent = cardCount;
-  resetCardGridStyle();
   resetGame();
+  resetCardGridStyle();
 }
 
 //刷新卡片网格布局
 function resetCardGridStyle() {
   clientWidth = document.documentElement.clientWidth;
+  let outers = document.querySelectorAll(".outer");
+  console.log(cardCount);
+  console.log(outers.length);
   if (clientWidth >= 1000) {
     cardGrid.style.width = `${(cardCount * 150) / 4}px`;
+    outers.forEach((item) => {
+      item.style.width = "150px";
+      item.style.height = "150px";
+    });
   } else {
-    switch (cardCount) {
-      case "16":
-      case "20":
-        cardGrid.style.width = `${(cardCount * (clientWidth / 6)) / 4}px`;
-        break;
-      case "24":
-        cardGrid.style.width = `${(cardCount * (clientWidth / 6)) / 6}px`;
-        break;
-      case "28":
-        cardGrid.style.width = `${(cardCount * (clientWidth / 6)) / 7}px`;
-        break;
-      case "36":
-        cardGrid.style.width = `${(cardCount * (clientWidth / 6)) / 6}px`;
-        break;
-      case "32":
-      case "40":
-        cardGrid.style.width = `${(cardCount * (clientWidth / 6)) / 8}px`;
-        break;
+    cardGrid.style.width = "100vw";
+    let outers = document.querySelectorAll(".outer");
+    for (let i = 0; i < outers.length; i++) {
+      switch (cardCount) {
+        case "16":
+        case "20":
+        case "24":
+          outers[i].style.width = "25vw";
+          outers[i].style.height = "25vw";
+          break;
+        case "28":
+        case "32":
+        case "36":
+        case "40":
+          outers[i].style.width = "20vw";
+          outers[i].style.height = "20vw";
+          break;
+      }
     }
+
+    // outer.forEach((element) => {
+    //   switch (cardCount) {
+    //     case "16":
+    //     case "20":
+    //     case "24":
+    //       element.style.width = "25vw";
+    //       break;
+    //     case "28":
+    //       element.style.width = "20vw";
+    //       break;
+    //     case "32":
+    //     case "36":
+    //       element.style.width = "16.6vw";
+    //       break;
+    //     case "40":
+    //       element.style.width = "12.5vw";
+    //       break;
+    //   }
+    // });
   }
 }
 
