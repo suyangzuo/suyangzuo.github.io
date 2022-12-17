@@ -1,11 +1,13 @@
 .game-area {
+  /* background-color: brown; */
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 110px);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   position: relative;
+  overflow: hidden;
 }
 
 /* .game-area::before {
@@ -20,7 +22,38 @@
   box-shadow: 5px 5px 10px 0 #222;
 } */
 
-.game-area > p {
+#game-info {
+  width: 1000px;
+  /* background-color: blueviolet; */
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+#card-count {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.slider {
+  width: 300px;
+  margin-bottom: 10px;
+}
+
+.slider::-webkit-slider-thumb {
+  transform: scale(170%);
+}
+
+#card-count > p {
+  font-size: 1.75em;
+}
+
+#card-count-text {
+  color: cornflowerblue;
+}
+
+#game-info > p {
   position: relative;
   font-size: 3em;
   color: rgb(223, 207, 71);
@@ -34,7 +67,7 @@
 
 #card-grid {
   /* background-color: blueviolet; */
-  max-width: 1500px;
+  width: 900px;
   height: 800px;
   display: flex;
   align-content: flex-start;
@@ -94,13 +127,23 @@
     height: 95%;
   }
 
-  .game-area > p {
+  #game-info {
+    width: 100vw;
+    justify-content: space-around;
+  }
+
+  .slider {
+    width: 150px;
+    margin-bottom: 10px;
+  }
+
+  #game-info > p {
     font-size: 1.75em;
   }
 
   #card-grid {
     /* background-color: blueviolet; */
-    width: 100vw;
+    width: 80vw;
     height: 80vh;
     display: flex;
     flex-wrap: wrap;

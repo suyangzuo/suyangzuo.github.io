@@ -83,6 +83,7 @@
     width: 100vw;
     flex-direction: column;
     align-items: center;
+    margin: 10px auto 0;
   }
 
   #game-info {
@@ -104,13 +105,13 @@
   }
 
   #game-area {
-    margin-top: 50px;
+    margin-top: 20px;
     justify-content: center;
   }
 
   #game-board {
-    width: 380px;
-    height: 380px;
+    width: 340px;
+    height: 340px;
   }
 }
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */

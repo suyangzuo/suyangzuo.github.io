@@ -11,10 +11,7 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&family=Noto+Sans+SC&display=swap"
       rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="../game-common.css" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="./card-match.css" />
+    <link rel="stylesheet" type="text/css" href="./card-match.css" />
     <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
     <link
       rel="stylesheet"
@@ -42,10 +39,22 @@
       </div>
     </div>
     <div class="game-area">
-      <p>
-        游戏用时：<span id="time-passed"></span><br />点击次数：<span
-          id="click-count"></span>
-      </p>
+      <div id="game-info">
+        <div id="card-count">
+          <input
+            type="range"
+            min="16"
+            max="40"
+            value="24"
+            step="4"
+            class="slider" />
+          <p>卡片数量：<span id="card-count-text">24</span></p>
+        </div>
+        <p>
+          游戏用时：<span id="time-passed"></span><br />点击次数：<span
+            id="click-count"></span>
+        </p>
+      </div>
       <div id="card-grid"></div>
     </div>
     <script src="./gameLogic.js"></script>

@@ -2,7 +2,6 @@ body {
   min-height: 100vh;
   background-color: rgb(50, 84, 85) !important;
   color: aliceblue;
-  position: relative;
 }
 
 .background-image {
@@ -123,3 +122,27 @@ body {
     transform: scale(1);
   }
 }
+
+/* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
+@media screen and (max-width: 1000px) {
+  .control-area {
+    /* background-color: violet; */
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 70px;
+    padding: 0 20px;
+  }
+
+  .control-area > div {
+    width: 65px;
+    height: 65px;
+    font-size: 1.25em;
+    border-radius: 10px;
+    border-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+/* <!-- ------------------ ↑ 响应式设计 ------------------- --> */

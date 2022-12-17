@@ -3,86 +3,7 @@ const cardsPool = [
     name: "乖喵",
     img: "./Images/乖喵.jpg",
   },
-  {
-    name: "火山汽车",
-    img: "./Images/火山汽车.jpg",
-  },
-  {
-    name: "卡通狐狸",
-    img: "./Images/卡通狐狸.png",
-  },
-  {
-    name: "科幻城市雨天",
-    img: "./Images/科幻城市雨天.jpg",
-  },
-  {
-    name: "女战士",
-    img: "./Images/女战士.jpg",
-  },
-  {
-    name: "苹果花",
-    img: "./Images/苹果花.jpg",
-  },
-  {
-    name: "群山雪路",
-    img: "./Images/群山雪路.png",
-  },
-  {
-    name: "游戏机",
-    img: "./Images/游戏机.jpg",
-  },
-  {
-    name: "外星体育馆",
-    img: "./Images/Alien-Stadium.png",
-  },
-  {
-    name: "燃烧骷髅",
-    img: "./Images/Burning-Skeleton.png",
-  },
-  {
-    name: "咖啡豆",
-    img: "./Images/Coffee-Bean.png",
-  },
-  {
-    name: "恐怖来客",
-    img: "./Images/Creepy-Visitor.png",
-  },
-  {
-    name: "神树",
-    img: "./Images/Divine-Tree.jpg",
-  },
-  {
-    name: "华丽厅堂",
-    img: "./Images/Gorgeous-Interior.jpg",
-  },
-  {
-    name: "摩托车手",
-    img: "./Images/Moto-Driver.jpg",
-  },
-  {
-    name: "雪中少女",
-    img: "./Images/Snow-Girl.png",
-  },
-  {
-    name: "奇怪的房子",
-    img: "./Images/Strange-House.png",
-  },
-  {
-    name: "超新星戒指",
-    img: "./Images/Supernova-Ring.jpg",
-  },
-  {
-    name: "窗户边的猫",
-    img: "./Images/Window-Cat.png",
-  },
-  {
-    name: "巫女",
-    img: "./Images/Wizard-Girl.jpg",
-  },
-  {
-    name: "乖喵",
-    img: "./Images/乖喵.jpg",
-  },
+
   {
     name: "火山汽车",
     img: "./Images/火山汽车.jpg",
@@ -160,7 +81,16 @@ const cardsPool = [
     img: "./Images/Wizard-Girl.jpg",
   },
 ];
-cardsPool.sort(() => 0.5 - Math.random());
+
+const cardIndexPool = [
+  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+];
+let cardCount = 24; //卡片数量
+
+const cardsForGame = []; //实际用于游戏的卡片池
+
+const cardCountTextElement = document.querySelector("#card-count-text");
+const cardCountSlider = document.querySelector(".slider");
 
 const cardGrid = document.querySelector("#card-grid");
 const timePassedElement = document.querySelector("#time-passed");
@@ -175,10 +105,66 @@ let matchCount = 0; //匹配次数
 let timePassed = 0;
 let timerIsRunning = false; //用来记录第1次点击，以计时
 
+let index01 = -1;
+let index02 = -1;
+
+const body = document.querySelector("body");
+let clientWidth = document.documentElement.clientWidth;
+
+// getRandomCardForGame();
+resetCardGridStyle();
+// createCards();
+resetGame();
+
+cardCountSlider.oninput = getCardCount;
 resetGameButton.addEventListener("click", resetGame);
+window.onresize = resetCardGridStyle;
+
+function getRandomCardForGame() {
+  cardIndexPool.sort(() => 0.5 - Math.random());
+  cardsForGame.length = 0;
+  for (let i = 0; i < cardCount / 2; i++) {
+    cardsForGame.push(cardsPool[cardIndexPool[i]]);
+    cardsForGame.push(cardsPool[cardIndexPool[i]]);
+  }
+  cardsForGame.sort(() => 0.5 - Math.random());
+}
+
+function getCardCount() {
+  cardCount = cardCountSlider.value;
+  cardCountTextElement.textContent = cardCount;
+  resetCardGridStyle();
+  resetGame();
+}
+
+//刷新卡片网格布局
+function resetCardGridStyle() {
+  clientWidth = document.documentElement.clientWidth;
+  if (clientWidth >= 1000) {
+    cardGrid.style.width = `${(cardCount * 150) / 4}px`;
+  } else {
+    switch (cardCount) {
+      case "16":
+      case "20":
+        cardGrid.style.width = `${(cardCount * (clientWidth / 5)) / 4}px`;
+        break;
+      case "24":
+        cardGrid.style.width = `${(cardCount * (clientWidth / 5)) / 6}px`;
+        break;
+      case "28":
+      case "36":
+        cardGrid.style.width = `${(cardCount * (clientWidth / 5)) / 7}px`;
+        break;
+      case "32":
+      case "40":
+        cardGrid.style.width = `${(cardCount * (clientWidth / 5)) / 8}px`;
+        break;
+    }
+  }
+}
 
 function createCards() {
-  for (let i = 0; i < cardsPool.length; i++) {
+  for (let i = 0; i < cardCount; i++) {
     let outer = document.createElement("div"); //生成翻转卡片外层
     outer.className = "outer";
     outer.setAttribute("index", i);
@@ -204,11 +190,6 @@ function createCards() {
   timePassedElement.textContent = `${timePassed}`;
 }
 
-createCards();
-
-let index01 = -1;
-let index02 = -1;
-
 function clickCard() {
   clickCount++;
   clickCountElement.textContent = `${clickCount}`;
@@ -220,16 +201,18 @@ function clickCard() {
   if (index === index01 || index === index02) return; //避免在选中2张卡片时，再次点击相同卡片导致的问题
   if (cardsPairIndex.length === 1 && cardsPairIndex[0] === index) return; //第2次点击了同一张图片
   cardsPairIndex.push(index);
+
+  //在翻转两张卡片时，避免在延时过程(0.5s)中再次点击相同卡片
   if (cardsPairIndex.length === 2) {
-    index01 = cardsPairIndex[0];
-    index02 = cardsPairIndex[1];
+    index01 = cardsPairIndex[0]; //翻转2张卡片时，记录第1张卡片的索引
+    index02 = cardsPairIndex[1]; //翻转2张卡片时，记录第2张卡片的索引
   }
 
-  cardsPairName.push(cardsPool[index].name); //将点击的图片名称放入配对组
+  cardsPairName.push(cardsForGame[index].name); //将点击的图片名称放入配对组
   let inner = this.firstElementChild; //获取inner元素
   let back = inner.querySelector(".back"); //获取背面元素
   let backImage = back.firstElementChild; //获取背面img元素
-  backImage.setAttribute("src", cardsPool[index].img);
+  backImage.setAttribute("src", cardsForGame[index].img);
   inner.style.transform = "rotateY(180deg)";
   if (cardsPairName.length === 2) {
     let names = [...cardsPairName];
@@ -262,7 +245,7 @@ function checkMatch(names, indexs) {
 
 function timerIntervalStart() {
   let countTimeResult = setInterval(() => {
-    if (matchCount === cardsPool.length / 2 || !timerIsRunning) {
+    if (matchCount === cardsForGame.length / 2 || !timerIsRunning) {
       clearInterval(countTimeResult);
     } else {
       timePassed++;
@@ -284,7 +267,7 @@ function resetGame() {
   index02 = -1;
   cardsPairIndex.length = 0;
   cardsPairName.length = 0;
-  cardsPool.sort(() => 0.5 - Math.random());
   cardGrid.innerHTML = "";
+  getRandomCardForGame();
   createCards();
 }
