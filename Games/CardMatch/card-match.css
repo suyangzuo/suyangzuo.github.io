@@ -10,18 +10,6 @@
   overflow: hidden;
 }
 
-/* .game-area::before {
-  content: none;
-  background-color: rgb(255, 255, 255);
-  width: 750px;
-  height: 100%;
-  position: absolute;
-  border-radius: 15px;
-  filter: opacity(30%);
-  backdrop-filter: blur(5px);
-  box-shadow: 5px 5px 10px 0 #222;
-} */
-
 #game-info {
   width: 1000px;
   /* background-color: blueviolet; */
@@ -75,15 +63,6 @@
   flex-wrap: wrap;
 }
 
-.inner img {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  object-fit: cover;
-  transition: 0.2s;
-  -webkit-user-drag: none;
-}
-
 .outer {
   width: 150px;
   aspect-ratio: 1;
@@ -106,7 +85,6 @@
 .outer:hover > .inner {
   transform: scale(1.1);
   z-index: 5;
-  /* transform: rotateY(180deg); */
 }
 
 .front,
@@ -121,13 +99,35 @@
   transform: rotateY(180deg);
 }
 
+.front > img,
+.back > img {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transition: 0.2s;
+  -webkit-user-drag: none;
+}
+
+.front > img {
+  object-fit: scale-down;
+}
+
+.back > img {
+  object-fit: cover;
+}
+
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
 @media screen and (max-width: 1000px) {
+  .game-area {
+    height: auto;
+  }
+
   .game-area::before {
     height: 95%;
   }
 
   #game-info {
+    margin: 10px 0;
     width: 100vw;
     justify-content: space-around;
   }
@@ -137,8 +137,12 @@
     margin-bottom: 10px;
   }
 
+  #card-count > p {
+    font-size: 1.25em;
+  }
+
   #game-info > p {
-    font-size: 1.75em;
+    font-size: 1.25em;
   }
 
   #card-grid {
@@ -153,8 +157,8 @@
   }
 
   .outer {
-    width: 20vw;
-    height: 20vw;
+    width: 16.6vw;
+    height: 16.6vw;
   }
 }
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */

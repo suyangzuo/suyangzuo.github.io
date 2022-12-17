@@ -146,18 +146,20 @@ function resetCardGridStyle() {
     switch (cardCount) {
       case "16":
       case "20":
-        cardGrid.style.width = `${(cardCount * (clientWidth / 5)) / 4}px`;
+        cardGrid.style.width = `${(cardCount * (clientWidth / 6)) / 4}px`;
         break;
       case "24":
-        cardGrid.style.width = `${(cardCount * (clientWidth / 5)) / 6}px`;
+        cardGrid.style.width = `${(cardCount * (clientWidth / 6)) / 6}px`;
         break;
       case "28":
+        cardGrid.style.width = `${(cardCount * (clientWidth / 6)) / 7}px`;
+        break;
       case "36":
-        cardGrid.style.width = `${(cardCount * (clientWidth / 5)) / 7}px`;
+        cardGrid.style.width = `${(cardCount * (clientWidth / 6)) / 6}px`;
         break;
       case "32":
       case "40":
-        cardGrid.style.width = `${(cardCount * (clientWidth / 5)) / 8}px`;
+        cardGrid.style.width = `${(cardCount * (clientWidth / 6)) / 8}px`;
         break;
     }
   }
@@ -228,8 +230,8 @@ function checkMatch(names, indexs) {
   const frontImages = document.querySelectorAll(".front > img");
   const inners = document.querySelectorAll(".inner");
   if (names[0] === names[1]) {
-    frontImages[indexs[0]].setAttribute("src", "./Images/Checked.png");
-    frontImages[indexs[1]].setAttribute("src", "./Images/Checked.png");
+    frontImages[indexs[0]].setAttribute("src", "./Images/Checked-02.png");
+    frontImages[indexs[1]].setAttribute("src", "./Images/Checked-02.png");
     outers[indexs[0]].removeEventListener("click", clickCard);
     outers[indexs[1]].removeEventListener("click", clickCard);
     matchCount++;

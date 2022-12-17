@@ -41,7 +41,7 @@ function changeSpeed() {
   speed = speedSlider.value;
   switch (speed) {
     case "25":
-      speedElement.textContent = "瘫倒在地";
+      speedElement.textContent = "键盘冒烟";
       break;
     case "50":
       speedElement.textContent = "心惊肉跳";
