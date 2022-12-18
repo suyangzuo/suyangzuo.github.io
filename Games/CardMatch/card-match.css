@@ -123,7 +123,7 @@
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
 @media screen and (max-width: 1000px) {
   .game-area {
-    height: auto;
+    height: 100vh;
   }
 
   .game-area::before {

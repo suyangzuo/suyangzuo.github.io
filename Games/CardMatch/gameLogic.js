@@ -192,6 +192,7 @@ function createCards() {
     front.appendChild(frontImage); //将正面img作为正面子元素
     let backImage = document.createElement("img"); //生成背面img
     back.appendChild(backImage); //将背面img作为背面子元素
+    backImage.setAttribute("src", cardsForGame[i].img);
   }
   clickCountElement.textContent = `${clickCount}`;
   timePassedElement.textContent = `${timePassed}`;
@@ -219,7 +220,7 @@ function clickCard() {
   let inner = this.firstElementChild; //获取inner元素
   let back = inner.querySelector(".back"); //获取背面元素
   let backImage = back.firstElementChild; //获取背面img元素
-  backImage.setAttribute("src", cardsForGame[index].img);
+  // backImage.setAttribute("src", cardsForGame[index].img);
   inner.style.transform = "rotateY(180deg)";
   if (cardsPairName.length === 2) {
     let names = [...cardsPairName];

@@ -228,12 +228,20 @@ body {
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
 @media screen and (max-width: 1000px) {
   .software-category-list {
-    width: 150px;
+    width: 110px;
+  }
+
+  .software-category-list > .software-category {
+    padding: 0 0 0 10px;
+    width: 100%;
+    height: 45px;
+    font-size: 0.8em;
   }
 
   .software-container {
-    width: calc(100vw - 150px);
-    margin-left: 150px;
+    /* background: royalblue; */
+    width: 100vw;
+    margin-left: 120px;
     padding: 2% 1%;
     gap: 5vh 10px;
     grid-template-columns: repeat(auto-fill, 250px);
@@ -241,7 +249,7 @@ body {
 
   .software-container > .software {
     /* background-color: beige; */
-    height: 105%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

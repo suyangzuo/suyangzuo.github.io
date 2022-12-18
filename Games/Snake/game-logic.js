@@ -31,6 +31,11 @@ let snake = [
   { x: 0, y: 0 },
 ];
 
+/* window.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+    e.preventDefault();
+  }
+}); */
 window.addEventListener("keydown", changeDirection);
 resetButton.addEventListener("click", resetGame);
 speedSlider.oninput = changeSpeed;
@@ -38,21 +43,21 @@ speedSlider.oninput = changeSpeed;
 resetGame();
 
 function changeSpeed() {
-  speed = speedSlider.value;
+  speed = 150 - parseInt(speedSlider.value, 10);
   switch (speed) {
-    case "25":
-      speedElement.textContent = "键盘冒烟";
+    case 25:
+      speedElement.textContent = "手指抽搐";
       break;
-    case "50":
-      speedElement.textContent = "心惊肉跳";
+    case 50:
+      speedElement.textContent = "笑容凝固";
       break;
-    case "75":
+    case 75:
       speedElement.textContent = "情绪稳定";
       break;
-    case "100":
+    case 100:
       speedElement.textContent = "喝杯咖啡";
       break;
-    case "125":
+    case 125:
       speedElement.textContent = "差点睡着";
       break;
   }
@@ -156,35 +161,27 @@ function drawSnake() {
 
 function changeDirection(event) {
   if (!gameIsRunning && !gameFailed) startGame();
-  const key = event.keyCode;
-  const left = 37;
-  const up = 38;
-  const right = 39;
-  const down = 40;
-  const w = 87;
-  const s = 83;
-  const a = 65;
-  const d = 68;
 
+  const key = event.key;
   const goRight = xSpan == unitSize;
   const goLeft = xSpan == -unitSize;
   const goUp = ySpan == -unitSize;
   const goDown = ySpan == unitSize;
 
   switch (true) {
-    case (key == left || key == a) && !goRight:
+    case (key == "ArrowLeft" || key == "a") && !goRight:
       xSpan = -unitSize;
       ySpan = 0;
       break;
-    case (key == right || key == d) && !goLeft:
+    case (key == "ArrowRight" || key == "d") && !goLeft:
       xSpan = unitSize;
       ySpan = 0;
       break;
-    case (key == up || key == w) && !goDown:
+    case (key == "ArrowUp" || key == "w") && !goDown:
       xSpan = 0;
       ySpan = -unitSize;
       break;
-    case (key == down || key == s) && !goUp:
+    case (key == "ArrowDown" || key == "s") && !goUp:
       xSpan = 0;
       ySpan = unitSize;
       break;
