@@ -40,11 +40,6 @@ body {
   background: rgba(41, 52, 63, 1) !important;
 }
 
-.software-category-list > .software-category > p {
-  /* background-color: chocolate; */
-  transition: 0.5s;
-}
-
 /* .software-category-list > .software-category:hover > p {
   color: gold !important;
   transform: translateX(1em) !important;
@@ -240,11 +235,11 @@ body {
 
   .software-container {
     /* background: royalblue; */
-    width: 100vw;
-    margin-left: 120px;
-    padding: 2% 1%;
+    width: calc(100vw - 110px);
+    margin: 0 0 0 110px;
+    padding: 2% 2%;
     gap: 5vh 10px;
-    grid-template-columns: repeat(auto-fill, 250px);
+    grid-template-columns: repeat(auto-fill, 225px);
   }
 
   .software-container > .software {

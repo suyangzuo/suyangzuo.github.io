@@ -149,10 +149,10 @@ function resetCardGridStyle() {
         case "16":
         case "20":
         case "24":
-        case "28":
           outers[i].style.width = "25vw";
           outers[i].style.height = "25vw";
           break;
+        case "28":
         case "32":
         case "36":
         case "40":
