@@ -76,7 +76,7 @@ function createFood() {
     foodX = randomFood(0, boardWidth - unitSize);
     foodY = randomFood(0, boardWidth - unitSize);
     snake.every((part) => {
-      if (part.x == foodX && part.y == foodY) {
+      if (part.x === foodX && part.y === foodY) {
         overlapped = true;
         return false;
       }
@@ -144,7 +144,7 @@ function moveSnake() {
     y: snake[0].y + ySpan,
   };
   snake.unshift(head);
-  if (snake[0].x == foodX && snake[0].y == foodY) {
+  if (snake[0].x === foodX && snake[0].y === foodY) {
     score++;
     scoreElement.textContent = score;
     createFood();
@@ -172,6 +172,12 @@ function changeDirection(event) {
   const keyIsS = key === "s";
   const keyIsA = key === "a";
   const keyIsD = key === "d";
+  const keyIsEnter = key === "Enter";
+
+  if (keyIsEnter) {
+    resetGame();
+    return;
+  }
 
   const gameKeyPressed =
     keyIsW ||
@@ -184,10 +190,10 @@ function changeDirection(event) {
     keyIsDown;
   if (!gameIsRunning && !gameFailed && gameKeyPressed) startGame();
 
-  const goRight = xSpan == unitSize;
-  const goLeft = xSpan == -unitSize;
-  const goUp = ySpan == -unitSize;
-  const goDown = ySpan == unitSize;
+  const goRight = xSpan === unitSize;
+  const goLeft = xSpan === -unitSize;
+  const goUp = ySpan === -unitSize;
+  const goDown = ySpan === unitSize;
 
   switch (true) {
     case (key === "ArrowLeft" || key === "a") && !goRight:
@@ -227,7 +233,7 @@ function checkGameState() {
   if (gameFailed) return;
 
   for (let i = 1; i < snake.length; i++) {
-    if (snake[i].x == snake[0].x && snake[i].y == snake[0].y) {
+    if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) {
       gameFailed = true;
       gameIsRunning = false;
       failText = "撞击自身";
