@@ -11,10 +11,11 @@ const snakeColor = "gold";
 const snakeBorder = "black";
 const foodColor = "red";
 const unitSize = 20;
-const canvasBackgroundImage = new Image();
-canvasBackgroundImage.src = "./Images/Snake-01.jpg";
+/* const canvasBackgroundImage = new Image();
+canvasBackgroundImage.src = "./Images/Snake-01.jpg"; */
 let speed = 75;
 speedElement.textContent = "情绪稳定";
+let failText = "";
 
 let gameIsRunning = false;
 let gameFailed = true;
@@ -36,6 +37,7 @@ let snake = [
     e.preventDefault();
   }
 }); */
+
 window.addEventListener("keydown", changeDirection);
 resetButton.addEventListener("click", resetGame);
 speedSlider.oninput = changeSpeed;
@@ -96,6 +98,7 @@ function startGame() {
 function resetGame() {
   gameIsRunning = false;
   gameFailed = false;
+  failText = "";
   score = 0;
   xSpan = unitSize;
   ySpan = 0;
@@ -160,28 +163,46 @@ function drawSnake() {
 }
 
 function changeDirection(event) {
-  if (!gameIsRunning && !gameFailed) startGame();
-
   const key = event.key;
+  const keyIsLeft = key === "ArrowLeft";
+  const keyIsRight = key === "ArrowRight";
+  const keyIsUp = key === "ArrowUp";
+  const keyIsDown = key === "ArrowDown";
+  const keyIsW = key === "w";
+  const keyIsS = key === "s";
+  const keyIsA = key === "a";
+  const keyIsD = key === "d";
+
+  const gameKeyPressed =
+    keyIsW ||
+    keyIsS ||
+    keyIsA ||
+    keyIsD ||
+    keyIsLeft ||
+    keyIsRight ||
+    keyIsUp ||
+    keyIsDown;
+  if (!gameIsRunning && !gameFailed && gameKeyPressed) startGame();
+
   const goRight = xSpan == unitSize;
   const goLeft = xSpan == -unitSize;
   const goUp = ySpan == -unitSize;
   const goDown = ySpan == unitSize;
 
   switch (true) {
-    case (key == "ArrowLeft" || key == "a") && !goRight:
+    case (key === "ArrowLeft" || key === "a") && !goRight:
       xSpan = -unitSize;
       ySpan = 0;
       break;
-    case (key == "ArrowRight" || key == "d") && !goLeft:
+    case (key === "ArrowRight" || key === "d") && !goLeft:
       xSpan = unitSize;
       ySpan = 0;
       break;
-    case (key == "ArrowUp" || key == "w") && !goDown:
+    case (key === "ArrowUp" || key === "w") && !goDown:
       xSpan = 0;
       ySpan = -unitSize;
       break;
-    case (key == "ArrowDown" || key == "s") && !goUp:
+    case (key === "ArrowDown" || key === "s") && !goUp:
       xSpan = 0;
       ySpan = unitSize;
       break;
@@ -196,26 +217,34 @@ function checkGameState() {
     case snake[0].y >= boardHeight:
       gameFailed = true;
       gameIsRunning = false;
+      failText = "触碰边界";
       break;
     default:
       gameFailed = false;
       break;
   }
 
+  if (gameFailed) return;
+
   for (let i = 1; i < snake.length; i++) {
     if (snake[i].x == snake[0].x && snake[i].y == snake[0].y) {
       gameFailed = true;
       gameIsRunning = false;
+      failText = "撞击自身";
     }
   }
 }
 
 function displayGameOver() {
-  canvasContext.font = "5em HarmonyOS Sans SC";
+  canvasContext.font = "400% HarmonyOS Sans SC";
   canvasContext.fillStyle = "white";
   canvasContext.textAlign = "center";
   if (gameFailed) {
-    canvasContext.fillText("游戏结束", boardWidth / 2, boardHeight / 2);
+    canvasContext.fillText(
+      `${failText}\n游戏结束`,
+      boardWidth / 2,
+      boardHeight / 2
+    );
   }
   gameIsRunning = false;
 }
