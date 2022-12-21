@@ -72,14 +72,13 @@ function createFood() {
     return randomNumber;
   }
   let overlapped = false;
+
+  //如果食物与蛇身重叠，则重新生成食物
   do {
     foodX = randomFood(0, boardWidth - unitSize);
     foodY = randomFood(0, boardWidth - unitSize);
-    snake.every((part) => {
-      if (part.x === foodX && part.y === foodY) {
-        overlapped = true;
-        return false;
-      }
+    overlapped = snake.some((part) => {
+      part.x === foodX && part.y === foodY;
     });
   } while (overlapped);
 }
