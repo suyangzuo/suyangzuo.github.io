@@ -32,11 +32,28 @@ let snake = [
   { x: 0, y: 0 },
 ];
 
-/* window.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+window.addEventListener(
+  "keydown",
+  (e) => {
+    /* if (
+    e.key === "ArrowUp" ||
+    e.key === "ArrowDown" ||
+    e.key === "ArrowLeft" ||
+    e.key === "ArrowRight" ||
+    e.key === "Space"
+  ) {
     e.preventDefault();
-  }
-}); */
+  } */
+    if (
+      ["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].indexOf(
+        e.code
+      ) > -1
+    ) {
+      e.preventDefault();
+    }
+  },
+  false
+);
 
 window.addEventListener("keydown", changeDirection);
 resetButton.addEventListener("click", resetGame);

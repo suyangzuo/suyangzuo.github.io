@@ -270,9 +270,9 @@
 }
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
-@media only screen and (max-width: 750px) {
+@media only screen and (max-width: 1000px) {
   .top-nav .nav-ul {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
 
   .top-nav .nav-ul > li {
@@ -286,8 +286,127 @@
     word-wrap: break-word;
   }
 
-  .top-nav .nav-ul > li:hover .top-nav-dropdown {
+  .top-nav .nav-ul > li .top-nav-dropdown {
     z-index: 1;
+  }
+
+  .top-nav .nav-ul > li:nth-child(1) .top-nav-dropdown {
+    left: -92.5%;
+  }
+
+  .top-nav .nav-ul > li:nth-child(2) .top-nav-dropdown {
+    left: -240%;
+  }
+
+  .top-nav .nav-ul > li:nth-child(4) .top-nav-dropdown {
+    left: -330%;
+  }
+
+  .top-nav .nav-ul > .top-nav-ul-li-right-corner:hover .top-nav-dropdown {
+    left: -720%;
+  }
+
+  .top-nav .nav-ul > li:hover .top-nav-dropdown > ul {
+    width: 95vw;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .top-nav .nav-ul > li .top-nav-dropdown ul li {
+    /* background-color: #e60073; */
+    width: 33%;
+    height: 60px;
+  }
+
+  .top-nav-dropdown li:hover .top-nav-dropdown-2-left,
+  .top-nav-dropdown li:hover .top-nav-dropdown-2-right {
+    background: none;
+    display: block;
+    position: absolute;
+  }
+
+  .top-nav
+    .nav-ul
+    > li:nth-child(1)
+    .top-nav-dropdown
+    li
+    .top-nav-dropdown-2-right {
+    top: 325%;
+    left: -215%;
+  }
+
+  .top-nav
+    .nav-ul
+    > li:nth-child(4)
+    .top-nav-dropdown
+    li:nth-child(1)
+    .top-nav-dropdown-2-left {
+    top: 125%;
+    left: 10%;
+  }
+
+  .top-nav
+    .nav-ul
+    > li:nth-child(4)
+    .top-nav-dropdown
+    li:nth-child(3)
+    .top-nav-dropdown-2-left {
+    top: 125%;
+    left: -190%;
+  }
+
+  .top-nav
+    .nav-ul
+    > .top-nav-ul-li-right-corner
+    .top-nav-dropdown
+    .top-nav-dropdown-2-left {
+    top: 225%;
+  }
+
+  .top-nav
+    .nav-ul
+    > .top-nav-ul-li-right-corner
+    .top-nav-dropdown
+    li:nth-child(1)
+    .top-nav-dropdown-2-left {
+    left: 10%;
+  }
+
+  .top-nav
+    .nav-ul
+    > .top-nav-ul-li-right-corner
+    .top-nav-dropdown
+    li:nth-child(2)
+    .top-nav-dropdown-2-left {
+    left: -90%;
+  }
+
+  .top-nav
+    .nav-ul
+    > .top-nav-ul-li-right-corner
+    .top-nav-dropdown
+    li:nth-child(3)
+    .top-nav-dropdown-2-left {
+    left: -190%;
+  }
+
+  .top-nav
+    .nav-ul
+    > .top-nav-ul-li-right-corner
+    .top-nav-dropdown
+    li:nth-child(4)
+    .top-nav-dropdown-2-left {
+    top: 125%;
+    left: 10%;
+  }
+
+  .top-nav-dropdown li:hover .top-nav-dropdown-2-left > ul,
+  .top-nav-dropdown li:hover .top-nav-dropdown-2-right > ul {
+    /* background: linear-gradient(#003525, #00a060); */
+    width: 95vw;
+    display: flex;
+    flex-wrap: wrap;
+    /* padding: 10px 2px; */
   }
 }
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */
