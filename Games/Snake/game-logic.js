@@ -16,7 +16,7 @@ canvasBackgroundImage.src = "./Images/Snake-01.jpg"; */
 let speed = 75;
 speedElement.textContent = "情绪稳定";
 let failText = "";
-
+let timeOutID; //nextTick中延时方法的ID
 let gameIsRunning = false;
 let gameFailed = true;
 let xSpan = unitSize;
@@ -31,29 +31,6 @@ let snake = [
   { x: unitSize * 1, y: 0 },
   { x: 0, y: 0 },
 ];
-
-window.addEventListener(
-  "keydown",
-  (e) => {
-    /* if (
-    e.key === "ArrowUp" ||
-    e.key === "ArrowDown" ||
-    e.key === "ArrowLeft" ||
-    e.key === "ArrowRight" ||
-    e.key === "Space"
-  ) {
-    e.preventDefault();
-  } */
-    if (
-      ["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].indexOf(
-        e.code
-      ) > -1
-    ) {
-      e.preventDefault();
-    }
-  },
-  false
-);
 
 window.addEventListener("keydown", changeDirection);
 resetButton.addEventListener("click", resetGame);
@@ -112,6 +89,7 @@ function startGame() {
 }
 
 function resetGame() {
+  clearTimeout(timeOutID);
   gameIsRunning = false;
   gameFailed = false;
   failText = "";
@@ -134,7 +112,7 @@ function resetGame() {
 
 function nextTick() {
   if (gameIsRunning && !gameFailed) {
-    setTimeout(() => {
+    timeOutID = setTimeout(() => {
       clearBoard();
       drawFood();
       moveSnake();
