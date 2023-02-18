@@ -55,7 +55,7 @@ body {
   /* box-shadow: 4px 4px 15px 0 #000; */
   position: relative;
   cursor: pointer;
-  display: flex;
+  /* display: flex; */
 }
 
 .gallery-container > .images-slider {
@@ -75,7 +75,9 @@ body {
 }
 
 .slider2 {
-  right: calc(var(--slider-width) * 2 - var(--edge-width) + var(--image-gap));
+  /* right: calc(var(--slider-width) * 2 - var(--edge-width) + var(--image-gap)); */
+  top: -100%;
+  right: calc(var(--slider-width) - var(--edge-width) + var(--image-gap));
 }
 
 .images-slider > .image-container {
