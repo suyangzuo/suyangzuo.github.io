@@ -69,3 +69,7 @@ footer > .author > p:nth-child(3):hover > a {
 address > a {
   margin: 0 15px;
 }
+
+.address > i {
+  transform: scale(200%);
+}
