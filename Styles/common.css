@@ -8,7 +8,9 @@
   --shadow-color: #101010;
 }
 
-* {
+*,
+*::before,
+*::after {
   font-family: "Noto Sans SC", sans-serif, "Noto Sans Mono", monospace;
   margin: 0;
   padding: 0;

@@ -58,13 +58,37 @@
   clip-path: inset(0 30% 0 30%);
 }
 
-.site-title > p:nth-child(1) {
-  /* background-color: chartreuse; */
+#eternal-title-text {
+  width: 200px;
+  height: 100px;
+  /* background-color: cornflowerblue; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#永,
+#恒 {
+  width: 45%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#永 > img,
+#恒 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(0.9) invert(0.5) sepia(0.5) hue-rotate(110deg) saturate(500%);
+}
+
+/* .site-title > p:nth-child(1) {
+  background-color: chartreuse;
   font-size: clamp(4em, 4.25em, 4.5em);
   line-height: 1.2em;
   font-weight: bolder;
   color: seagreen;
-}
+} */
 
 .site-title > p:nth-child(2) {
   /* background-color: darkcyan; */
@@ -259,11 +283,7 @@
   height: 90%;
   width: 67%;
   grid-column: span 2;
-  background: linear-gradient(
-    120deg,
-    rgb(45, 161, 113) 35%,
-    rgb(29, 92, 163)
-  );
+  background: linear-gradient(120deg, rgb(45, 161, 113) 35%, rgb(29, 92, 163));
   /* background-color: rgb(221, 221, 221, 40%); */
   display: flex;
   justify-content: center;
