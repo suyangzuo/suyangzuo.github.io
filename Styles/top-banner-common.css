@@ -261,18 +261,22 @@
 
 /* 实现了菜单项图片展开(旋转)效果 */
 .sub-arrow > i {
-  transform: rotateZ(90deg);
+  transform: rotateZ(90deg) scale(150%);
   transition: 0.25s;
 }
 
 .top-nav .nav-ul > li .top-nav-dropdown ul li:hover > .sub-arrow > i {
-  transform: rotateZ(0deg);
+  transform: rotateZ(0deg) scale(150%);
   color: goldenrod;
 }
 /* 实现了菜单项图片展开(旋转)效果 */
 
+.top-nav .nav-ul > li > a > i {
+  transform: rotateZ(90deg) scale(150%);
+}
+
 .top-nav .nav-ul > li:hover > a > i {
-  transform: rotateZ(0deg);
+  transform: rotateZ(0deg) scale(150%);
 }
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
