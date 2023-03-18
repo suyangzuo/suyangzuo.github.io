@@ -306,7 +306,7 @@
     object-fit: cover;
   }
 
-  .logo-title {
+  #logo-text {
     display: none;
   }
 

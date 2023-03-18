@@ -320,10 +320,10 @@
   }
   50% {
     transform: rotateY(0deg);
-    left: 88%;
+    left: 86%;
   }
   50.01% {
-    left: 88%;
+    left: 86%;
     transform: rotateY(180deg);
   }
   100% {
