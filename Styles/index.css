@@ -79,16 +79,9 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: brightness(0.9) invert(0.5) sepia(0.5) hue-rotate(110deg) saturate(500%);
+  filter: brightness(0.9) invert(0.5) sepia(0.5) hue-rotate(110deg)
+    saturate(500%);
 }
-
-/* .site-title > p:nth-child(1) {
-  background-color: chartreuse;
-  font-size: clamp(4em, 4.25em, 4.5em);
-  line-height: 1.2em;
-  font-weight: bolder;
-  color: seagreen;
-} */
 
 .site-title > p:nth-child(2) {
   /* background-color: darkcyan; */
@@ -631,9 +624,18 @@
   }
 
   .site-title {
-    /* background-color: cornflowerblue; */
+    /* background-color: rgb(80, 84, 2); */
     clip-path: inset(0);
     border-bottom: none;
+  }
+
+  .site-title > p {
+    display: none;
+  }
+
+  #eternal-title-text {
+    aspect-ratio: 1;
+    height: 100%;
   }
 
   .sub-link {
