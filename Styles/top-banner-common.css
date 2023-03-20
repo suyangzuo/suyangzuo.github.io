@@ -64,8 +64,22 @@
 #logo-text-恒 > img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  filter: invert(80%);
+  object-fit: cover;
+  /* filter: invert(80%); */
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+#logo-text-永 > img {
+  -webkit-mask-image: url(/Images/Index-Images/永.png);
+  mask-image: url(/Images/Index-Images/永.png);
+}
+
+#logo-text-恒 > img {
+  -webkit-mask-image: url(/Images/Index-Images/恒.png);
+  mask-image: url(/Images/Index-Images/恒.png);
 }
 
 .nav-to-index:hover > .logo {

@@ -78,9 +78,23 @@
 #恒 > img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  filter: brightness(0.9) invert(0.5) sepia(0.5) hue-rotate(110deg)
-    saturate(500%);
+  object-fit: cover;
+  -webkit-mask-size: 100%;
+  mask-size: 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  /* filter: brightness(0.9) invert(0.5) sepia(0.5) hue-rotate(110deg)
+    saturate(500%); */
+}
+
+#永 > img {
+  -webkit-mask-image: url(/Images/Index-Images/永.png);
+  mask-image: url(/Images/Index-Images/永.png);
+}
+
+#恒 > img {
+  -webkit-mask-image: url(/Images/Index-Images/恒.png);
+  mask-image: url(/Images/Index-Images/恒.png);
 }
 
 .site-title > p:nth-child(2) {
