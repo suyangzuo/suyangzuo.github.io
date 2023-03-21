@@ -18,12 +18,13 @@
 .nav-to-index {
   /* background-color: #00a060; */
   display: flex;
-  width: 15%;
+  max-width: 250px;
   height: 100%;
   overflow: hidden;
   position: relative;
   justify-content: center;
   align-items: center;
+  padding: 0 1%;
 }
 
 .logo {
@@ -45,7 +46,7 @@
 }
 
 #logo-text {
-  width: 40%;
+  width: 100px;
   height: 100%;
   /* background-color: #ff4da6; */
   display: flex;
@@ -55,7 +56,7 @@
 
 #logo-text-永,
 #logo-text-恒 {
-  width: 30%;
+  width: 40%;
   height: 55%;
   overflow: hidden;
 }
@@ -70,6 +71,8 @@
   mask-size: contain;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
 }
 
 #logo-text-永 > img {
@@ -99,10 +102,9 @@
     rgba(10, 80, 200, 1) 50%,
     rgba(10, 80, 20, 0) 50.01%
   );
-  background-size: 200% 100%;
-  background-position: 100% 0;
+  background-size: 210% 100%;
+  background-position: 105% 0;
   border-bottom: 0px solid rgb(15, 101, 134);
-  clip-path: inset(0 15%);
   transition: 250ms;
   /* background-color: #5f5904; */
 }
@@ -114,10 +116,10 @@
 
 @keyframes 背景渐变刷墙 {
   from {
-    background-position: 100% 0;
+    background-position: 105% 0;
   }
   to {
-    background-position: -100% 0;
+    background-position: -95% 0;
   }
 }
 
