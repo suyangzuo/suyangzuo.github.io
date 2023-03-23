@@ -83,6 +83,8 @@
   mask-size: 100%;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
   /* filter: brightness(0.9) invert(0.5) sepia(0.5) hue-rotate(110deg)
     saturate(500%); */
 }
