@@ -35,7 +35,7 @@ body {
   aspect-ratio: 1;
   /* background-color: antiquewhite; */
   overflow: hidden;
-  margin: 150px auto;
+  margin: 150px auto 100px;
 }
 
 .logo-container > img {
