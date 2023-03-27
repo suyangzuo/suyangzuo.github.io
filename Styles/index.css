@@ -140,7 +140,7 @@
   width: 100%;
   object-fit: cover;
   transform: scale(110%);
-  transition: 1s;
+  transition: 0.5s;
 }
 
 #software-link-container > a:hover > img {
@@ -249,7 +249,7 @@
   height: 100%;
   object-fit: cover;
   transform: scale(110%);
-  transition: 1s;
+  transition: 0.5s;
 }
 
 .other-link-content > a:hover > img {
@@ -320,6 +320,10 @@
   height: 95%;
   position: absolute;
   animation: mario-running 3s infinite linear;
+}
+
+#game-button:hover > img {
+  animation-play-state: paused;
 }
 
 @keyframes mario-running {

@@ -14,28 +14,68 @@ body {
   position: relative;
 }
 
-#contributor-page-bg {
-  /* position: absolute; */
+/* #contributor-page-bg {
   height: 100%;
   width: 100%;
   overflow: hidden;
+  position: absolute;
+  z-index: -1;
 }
 
 #contributor-page-bg > img {
   width: 100%;
   height: 95%;
   object-fit: cover;
-  position: absolute;
   filter: opacity(0.3);
-  overflow: hidden;
+} */
+
+#crew-banner {
+  width: 100%;
+  height: 700px;
+  background: linear-gradient(90deg, #000 0%, transparent 100%),
+    url(/Images/Contributers/brief-bg.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 0% 38%;
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.35);
+}
+
+#brief-content {
+  width: 40%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  padding: 0 2%;
+}
+
+#brief-article {
+  font-size: 3rem;
+  color: gold;
+  font-weight: bold;
+}
+
+#brief-detail {
+  font-size: 1.5rem;
+  color: goldenrod;
 }
 
 .logo-container {
-  width: 200px;
+  width: 150px;
   aspect-ratio: 1;
+  position: absolute;
+  top: 50%;
+  left: 40%;
+  transform: translate(-50%, -50%);
   /* background-color: antiquewhite; */
   overflow: hidden;
-  margin: 150px auto 100px;
 }
 
 .logo-container > img {
@@ -45,205 +85,79 @@ body {
   animation: logo-rotate linear 5s infinite;
 }
 
-.main-content {
+.contributors {
   /* background-color: blueviolet; */
-  width: 100%;
-  min-height: 150vh;
+  min-height: 100dvh;
+  width: 90%;
+  margin: 200px auto 0;
   position: relative;
-  margin: 0 auto;
-  padding: 50px 100px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(2, 45%);
+  grid-auto-rows: clamp(300px, 500px, 600px);
+  place-content: start center;
+  gap: 200px 150px;
+  padding: 5% 0;
 }
 
-.contributor-card-odd,
-.contributor-card-even {
-  /* background-color: blue; */
-  display: flex;
-  justify-content: space-between;
-  width: 1000px;
-  height: 250px;
-  margin: 20px auto;
+.contributor {
+  background-color: rgba(0, 0, 0, 0.5);
+  outline: solid 1px rgb(75, 75, 75);
+  position: relative;
   border-radius: 15px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.portrait-container {
+  height: 35%;
+  aspect-ratio: 1;
+  border-radius: 200px;
   overflow: hidden;
-  box-shadow: 4px 4px 15px 0 #000;
+  position: absolute;
+  top: -12.5%;
+  left: -7.5%;
+  box-shadow: 5px 5px 15px 0 rgba(0, 0, 0, 0.5);
 }
 
-.contributor-card-odd {
-  transform: translateX(-50px);
-}
-
-.contributor-card-even {
-  transform: translateX(50px);
-}
-
-.contributor-card-odd > .contributor-img-name,
-.contributor-card-even > .contributor-img-name {
-  display: flex;
-  justify-content: center;
-  background-color: rgb(24, 35, 41);
-  flex-basis: 55%;
-  height: 100%;
-  overflow: hidden;
-  transition: 0.5s;
-}
-
-.contributor-card-odd > .contributor-img-name {
-  margin: 0 -15% 0 0;
-}
-
-.contributor-card-even > .contributor-img-name {
-  margin: 0 0 0 -15%;
-}
-
-.contributor-card-odd > .contributor-brief,
-.contributor-card-even > .contributor-brief {
-  /* background-color: rgb(38, 38, 38, 0.3); */
-  height: 100%;
-  flex-basis: 70%;
-  -webkit-backdrop-filter: blur(15px);
-  backdrop-filter: blur(15px);
-  z-index: -1;
-  transition: 0.5s;
-}
-
-.contributor-card-odd > .contributor-img-name {
-  clip-path: polygon(0% 0%, 100% 0%, 70% 100%, 0% 100%);
-}
-
-.contributor-card-odd > .contributor-brief {
-  clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%);
-}
-
-.contributor-card-odd:hover > .contributor-img-name {
-  clip-path: polygon(0% 0%, 100% 0%, 75% 100%, 0% 100%);
-  flex-basis: 60%;
-}
-
-.contributor-card-odd:hover > .contributor-brief {
-  clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%);
-  flex-basis: 60%;
-  padding-left: 5%;
-}
-
-.contributor-card-even > .contributor-img-name {
-  clip-path: polygon(30% 0%, 100% 0%, 100% 100%, 0% 100%);
-}
-
-.contributor-card-even > .contributor-brief {
-  /* background-color: blue; */
-  clip-path: polygon(0% 0%, 100% 0%, 80% 100%, 0% 100%);
-}
-
-.contributor-card-even:hover > .contributor-img-name {
-  /* width: 65%; */
-  clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%);
-  flex-basis: 60%;
-}
-
-.contributor-card-even:hover > .contributor-brief {
-  /* width: 65%; */
-  clip-path: polygon(0% 0%, 100% 0%, 75% 100%, 0% 100%);
-  flex-basis: 60%;
-  padding-right: 5%;
-}
-
-.contributor-img-name > .contributor-img {
-  height: 100%;
-  width: 45%;
-  overflow: hidden;
-}
-
-.contributor-img-name > .contributor-img > img {
+.portrait-container > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.contributor-img-name > .contributor-name {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  /* background-color: blue; */
-  height: 100%;
-  width: 65%;
+#贡献者-01 {
+  background: url(/Images/Contributers/contributor-bg-01.jpg);
 }
 
-.contributor-card-odd > .contributor-img-name > .contributor-name {
-  padding: 40px 10px 40px 20px;
+#贡献者-02 {
+  background: url(/Images/Contributers/contributor-bg-02.jpg);
 }
 
-.contributor-card-even > .contributor-img-name > .contributor-name {
-  /* background-color: rgb(95, 0, 44); */
-  text-align: right;
-  padding: 40px 20px 40px 10px;
+#贡献者-03 {
+  background: url(/Images/Contributers/contributor-bg-03.jpg);
 }
 
-.contributor-img-name > .contributor-name > p {
-  margin: 10px 0;
-  transform: translateY(-15px);
+#贡献者-04 {
+  background: url(/Images/Contributers/contributor-bg-04.jpg);
 }
 
-.contributor-img-name > .contributor-name > p:nth-child(1) {
-  font-size: 2em;
-  font-weight: bolder;
-  color: cadetblue;
+#贡献者-05 {
+  background: url(/Images/Contributers/contributor-bg-05.png);
 }
 
-.contributor-img-name > .contributor-name > p:nth-child(2) {
-  word-break: break-all;
+#贡献者-06 {
+  background: url(/Images/Contributers/contributor-bg-06.png);
 }
 
-.contributor-img-name > .contributor-name > p > span {
-  font-size: 1.3em;
-  color: burlywood;
-  font-weight: bolder;
+#贡献者-07 {
+  background: url(/Images/Contributers/contributor-bg-07.jpg);
 }
 
-.contributor-card-odd > .contributor-brief,
-.contributor-card-even > .contributor-brief {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.contributor-brief > p {
-  font-size: 1.5em;
-  transition: 0.5s;
-}
-
-.contributor-card-odd:hover > .contributor-brief > p,
-.contributor-card-even:hover > .contributor-brief > p {
-  color: #fff;
-  font-size: 2em;
-  text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff;
+#贡献者-08 {
+  background: url(/Images/Contributers/contributor-bg-08.jpg);
 }
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
-@media screen and (max-width: 1000px) {
-  .main-content {
-    padding: 0;
-  }
 
-  .contributor-card-odd,
-  .contributor-card-even {
-    width: 100%;
-    transform: translateX(0);
-  }
-
-  .contributor-img {
-    display: none;
-  }
-
-  .contributor-card-odd > .contributor-img-name > .contributor-name {
-    padding: 40px 10px 40px 0;
-  }
-
-  .contributor-card-even > .contributor-img-name > .contributor-name {
-    /* background-color: rgb(95, 0, 44); */
-    text-align: right;
-    padding: 40px 0 40px 10px;
-  }
-}
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */
