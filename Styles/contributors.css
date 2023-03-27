@@ -14,67 +14,25 @@ body {
   position: relative;
 }
 
-/* #contributor-page-bg {
-  height: 100%;
+body::before {
   width: 100%;
-  overflow: hidden;
+  height: 100%;
+  content: "";
+  top: 0;
+  left: 0;
+  background: url(/Images/Contributers/Contributor-Page-Bg.webp);
+  background-size: contain;
+  filter: opacity(0.1);
   position: absolute;
-  z-index: -1;
 }
 
-#contributor-page-bg > img {
-  width: 100%;
-  height: 95%;
-  object-fit: cover;
-  filter: opacity(0.3);
-} */
-
-#crew-banner {
-  width: 100%;
-  height: 700px;
-  background: linear-gradient(90deg, #000 0%, transparent 100%),
-    url(/Images/Contributers/brief-bg.jpg);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: 0% 38%;
-  backdrop-filter: blur(10px);
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  position: relative;
-  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.35);
-}
-
-#brief-content {
-  width: 40%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 30px;
-  padding: 0 2%;
-}
-
-#brief-article {
-  font-size: 3rem;
-  color: gold;
-  font-weight: bold;
-}
-
-#brief-detail {
-  font-size: 1.5rem;
-  color: goldenrod;
-}
-
-.logo-container {
+/* .logo-container {
   width: 150px;
   aspect-ratio: 1;
   position: absolute;
   top: 50%;
   left: 40%;
   transform: translate(-50%, -50%);
-  /* background-color: antiquewhite; */
   overflow: hidden;
 }
 
@@ -83,81 +41,91 @@ body {
   height: 100%;
   object-fit: cover;
   animation: logo-rotate linear 5s infinite;
-}
+} */
 
 .contributors {
   /* background-color: blueviolet; */
   min-height: 100dvh;
-  width: 90%;
+  width: 100%;
   margin: 200px auto 0;
   position: relative;
-  display: grid;
-  grid-template-columns: repeat(2, 45%);
-  grid-auto-rows: clamp(300px, 500px, 600px);
-  place-content: start center;
-  gap: 200px 150px;
-  padding: 5% 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 .contributor {
-  background-color: rgba(0, 0, 0, 0.5);
-  outline: solid 1px rgb(75, 75, 75);
-  position: relative;
-  border-radius: 15px;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
+  width: 100%;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 100px;
 }
 
 .portrait-container {
-  height: 35%;
-  aspect-ratio: 1;
-  border-radius: 200px;
+  height: 75%;
+  aspect-ratio: 1 !important;
   overflow: hidden;
-  position: absolute;
-  top: -12.5%;
-  left: -7.5%;
-  box-shadow: 5px 5px 15px 0 rgba(0, 0, 0, 0.5);
+  border-radius: 500px;
+  /* filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.75)); */
 }
 
 .portrait-container > img {
-  width: 100%;
-  height: 100%;
+  width: 250%;
+  height: 250%;
   object-fit: cover;
+  object-position: -110px -50px;
 }
 
-#贡献者-01 {
-  background: url(/Images/Contributers/contributor-bg-01.jpg);
+.brief {
+  height: 75%;
+  width: 40%;
+  /* background-color: rgb(15, 85, 85); */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-#贡献者-02 {
-  background: url(/Images/Contributers/contributor-bg-02.jpg);
+.brief-head {
+  font-size: 3rem;
+  color: goldenrod;
 }
 
-#贡献者-03 {
-  background: url(/Images/Contributers/contributor-bg-03.jpg);
+.dash {
+  color: skyblue;
 }
 
-#贡献者-04 {
-  background: url(/Images/Contributers/contributor-bg-04.jpg);
+.name {
+  color: rgb(255, 71, 46);
+  font-family: 仿宋;
+  /* font-style: italic; */
+  font-weight: bold;
 }
 
-#贡献者-05 {
-  background: url(/Images/Contributers/contributor-bg-05.png);
-}
-
-#贡献者-06 {
-  background: url(/Images/Contributers/contributor-bg-06.png);
-}
-
-#贡献者-07 {
-  background: url(/Images/Contributers/contributor-bg-07.jpg);
-}
-
-#贡献者-08 {
-  background: url(/Images/Contributers/contributor-bg-08.jpg);
+.brief-body {
+  font-size: 1.5rem;
+  color: whitesmoke;
 }
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
+@media screen and (max-width: 1300px) {
+  .contributor {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 10px;
+  }
 
+  .portrait-container {
+    height: 50%;
+  }
+
+  .brief {
+    width: 90%;
+    height: 50%;
+    justify-content: flex-start;
+  }
+}
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */
