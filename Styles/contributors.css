@@ -22,7 +22,7 @@ body::before {
   left: 0;
   background: url(/Images/Contributers/contributor-bg-01.jpg);
   background-size: contain;
-  filter: opacity(0.1);
+  filter: opacity(0.25);
   position: absolute;
   z-index: -1;
 }
@@ -44,13 +44,13 @@ body::before {
   content: "";
   top: 0;
   left: 0;
-  background: url(/Images/Contributers/contributor-bg-10.png);
+  background: url(/Images/Contributers/contributor-bg-11.webp);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  filter: grayscale(0.6);
+  filter: grayscale(0.6) brightness(0.35);
   z-index: -1;
-  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.75);
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.55);
 }
 
 .banner-brief {
@@ -158,6 +158,17 @@ body::before {
   transition: 0.25s;
   cursor: pointer;
   user-select: none;
+  position: relative;
+}
+
+.banner-button button::before {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  content: "";
+  box-shadow: 2px 2px 8px 0 rgb(0, 0, 0);
 }
 
 .banner-button button:hover {
