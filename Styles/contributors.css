@@ -95,9 +95,11 @@ body::before {
   padding: 1px 10px;
   height: fit-content;
   font-size: 0.8rem;
+  background: linear-gradient(120deg, #333 55%, #666 55.001%);
+  outline: solid 1px #666;
 }
 
-.logo-container > figcaption > p:nth-child(even) {
+/* .logo-container > figcaption > p:nth-child(even) {
   background: #222;
   color: white;
   outline: solid 1px #999;
@@ -106,7 +108,7 @@ body::before {
 .logo-container > figcaption > p:nth-child(odd) {
   background: #ddd;
   color: black;
-}
+} */
 
 @keyframes logo-rotate {
   from {
@@ -297,7 +299,7 @@ body::before {
   aspect-ratio: 1;
   clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 10% 100%, 0% 90%);
   overflow: hidden;
-  background-color: yellowgreen;
+  /* background-color: yellowgreen; */
   border-radius: 10px;
   user-select: none;
 }
@@ -333,8 +335,9 @@ body::before {
 }
 
 .brief-address-date {
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: #aaa;
+  padding: 5px 0;
 }
 
 .brief-content {
@@ -373,6 +376,7 @@ body::before {
     flex-direction: column;
     width: 100%;
     height: auto;
+    display: none;
   }
 
   .banner-nav {
@@ -380,6 +384,10 @@ body::before {
     height: auto;
     grid-template-columns: repeat(2, 1fr);
     grid-auto-rows: 60vw;
+  }
+
+  .分隔栏 {
+    display: none;
   }
 
   .cell-text-container {
@@ -401,6 +409,37 @@ body::before {
   .cell-intro {
     font-size: 5vw;
     align-items: flex-start;
+  }
+
+  .contributors {
+    width: 100%;
+  }
+
+  .contributor {
+    width: 100%;
+    height: auto;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .portrait-container {
+    width: 50vw;
+    height: 50vw;
+  }
+
+  .brief {
+    width: 85%;
+    gap: 20px;
+  }
+
+  .brief-main {
+    width: 100%;
+  }
+
+  .brief-name,
+  .brief-address-date {
+    margin: 0 auto;
   }
 }
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */

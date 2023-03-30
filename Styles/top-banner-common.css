@@ -312,6 +312,10 @@
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
 @media only screen and (max-width: 1000px) {
+  .top-banner {
+    position: relative;
+  }
+
   .logo {
     /* background-color: #e60073; */
     height: 50%;
@@ -328,42 +332,39 @@
   }
 
   .top-nav .nav-ul {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    gap: 0.2rem;
   }
 
   .top-nav .nav-ul > li {
+    position: static;
     height: 50%;
+    flex-shrink: 1;
   }
 
   .top-nav .nav-ul > li > a {
-    font-size: 0.85em;
-    padding: 0 0.5em;
+    font-size: 0.75em;
+    padding: 0;
     word-break: break-all;
     word-wrap: break-word;
   }
 
   .top-nav-dropdown a {
     font-size: 0.85em;
+    padding: 2px;
   }
 
   .top-nav .nav-ul > li .top-nav-dropdown {
     z-index: 1;
   }
 
-  .top-nav .nav-ul > li:nth-child(1) .top-nav-dropdown {
-    left: -120%;
-  }
-
-  .top-nav .nav-ul > li:nth-child(2) .top-nav-dropdown {
-    left: -270%;
-  }
-
-  .top-nav .nav-ul > li:nth-child(4) .top-nav-dropdown {
-    left: -360%;
-  }
-
+  .top-nav .nav-ul > li:nth-child(1) .top-nav-dropdown,
+  .top-nav .nav-ul > li:nth-child(2) .top-nav-dropdown,
+  .top-nav .nav-ul > li:nth-child(3) .top-nav-dropdown,
+  .top-nav .nav-ul > li:nth-child(5) .top-nav-dropdown,
   .top-nav .nav-ul > .top-nav-ul-li-right-corner:hover .top-nav-dropdown {
-    left: -760%;
+    left: 5%;
+    top: 65px;
   }
 
   .top-nav .nav-ul > li:hover .top-nav-dropdown > ul {
@@ -397,7 +398,7 @@
 
   .top-nav
     .nav-ul
-    > li:nth-child(4)
+    > li:nth-child(5)
     .top-nav-dropdown
     li:nth-child(1)
     .top-nav-dropdown-2-left {
@@ -407,7 +408,7 @@
 
   .top-nav
     .nav-ul
-    > li:nth-child(4)
+    > li:nth-child(5)
     .top-nav-dropdown
     li:nth-child(3)
     .top-nav-dropdown-2-left {

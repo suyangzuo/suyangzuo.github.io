@@ -135,18 +135,63 @@ body {
 
 /* -------------------------------- ↓ 响应式设计 ----------------------------------- */
 
-/* @media screen and (max-width: 1536px) {
+@media screen and (max-width: 1200px) {
+  .people-hall {
+    padding: 20px 0;
+  }
+
+  .people {
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .people-img {
+    height: 40%;
+    width: 85%;
+    box-shadow: none;
+  }
+
+  .people-img > img {
+    object-fit: contain;
+  }
+
+  .people-brief {
+    height: 60%;
+    width: 85%;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    overflow: auto;
+    gap: 15px;
+  }
+
+  .people-name {
+    font-size: 1rem;
+  }
+
+  .people-life {
+    padding: 0;
+    transform: none;
+    align-items: flex-start;
+  }
+
   .tutorials {
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 42vmax;
+    max-width: 100%;
+    gap: 50px 0;
+    padding: 0;
+    place-content: center;
+    overflow: hidden;
+  }
+
+  .tutorial-card {
+    width: 85%;
+  }
+
+  .intro > a:nth-child(1),
+  .intro > a:nth-child(2) {
+    width: 85%;
   }
 }
-
-@media screen and (max-width: 1024px) {
-  .tutorials {
-    grid-template-columns: repeat(2, 1fr);
-    grid-auto-rows: 42vmax;
-  }
-} */
-
 /* -------------------------------- ↑ 响应式设计 ----------------------------------- */
