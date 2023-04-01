@@ -194,7 +194,7 @@
   width: 60%;
   height: 50px;
   line-height: 50px;
-  font-size: 0.85em;
+  font-size: 1.1rem;
   color: rgb(255, 255, 255);
   background: linear-gradient(25deg, red, orange 100%);
   border-style: none;
@@ -210,7 +210,7 @@
 }
 
 .link-text {
-  font-size: 0.75em;
+  font-size: 0.95rem;
 }
 
 .link-text:hover {
@@ -270,14 +270,14 @@
 }
 
 .other-link-text > .link-right-area > .link-button {
-  width: 75%;
+  width: 85%;
   height: 35px;
   line-height: 35px;
-  font-size: clamp(0.9em, 1em, 1.1em);
+  font-size: clamp(0.75rem, 0.95rem, 1rem);
 }
 
 .other-link-text > .link-right-area > .link-text {
-  font-size: 1em;
+  font-size: 0.85rem;
 }
 
 #game {
@@ -293,35 +293,57 @@
   border-radius: 100px;
   height: 90%;
   width: 67%;
-  grid-column: span 2;
-  background: linear-gradient(120deg, rgb(45, 161, 113) 35%, rgb(29, 92, 163));
-  /* background-color: rgb(221, 221, 221, 40%); */
+  background: linear-gradient(
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(18, 61, 101, 0.74) 40%
+  );
+  box-shadow: inset 2px 2px 15px rgba(200, 200, 200, 0.5),
+    inset -1px 0 5px rgba(200, 200, 200, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
+  transition: 0.25s;
 }
 
 #game-button:hover {
-  background: darkslategray;
   cursor: pointer;
+  box-shadow: inset 6px 6px 25px rgba(200, 200, 200, 0.5),
+    inset -3px 0 15px rgba(200, 200, 200, 0.5);
 }
 
 #game-button:hover > p {
   color: aliceblue;
+  letter-spacing: 0.2rem;
 }
 
 #game-button > p {
-  color: black;
+  color: aliceblue;
   font-size: 2em;
   z-index: 1;
   user-select: none;
+  transition: 0.25s;
+  text-align: center;
+  text-shadow: 3px 3px 10px rgba(0, 0, 0, 1), -2px -2px 5px rgba(0, 0, 0, 1);
 }
 
 #game-button > img {
-  height: 95%;
   position: absolute;
-  animation: mario-running 3s infinite linear;
+}
+
+.mario-run {
+  height: 95%;
+  left: 0;
+  bottom: 0;
+  animation: mario-running 3s infinite 0.4s linear;
+}
+
+.ball-run {
+  height: 60%;
+  bottom: 0;
+  left: 0;
+  animation: mario-running 3s infinite linear,
+    ball-rotate 1.5s infinite linear alternate;
 }
 
 #game-button:hover > img {
@@ -344,6 +366,15 @@
   100% {
     transform: rotateY(180deg);
     left: 0%;
+  }
+}
+
+@keyframes ball-rotate {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(1260deg);
   }
 }
 /* <!-- ------------------ ↑ 欢迎内容 ------------------- --> */
