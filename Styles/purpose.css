@@ -2,6 +2,54 @@ body {
   position: relative;
 }
 
+.selector-outer {
+  width: 500px;
+  height: 50px;
+  background-color: burlywood;
+  background: linear-gradient(135deg, burlywood 30%, gold 90%);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: fixed;
+  bottom: 2.5%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.5);
+}
+
+.selector-inner {
+  width: 99%;
+  height: 93.5%;
+  border-radius: 50px;
+  /* background-color: rgb(6, 97, 127); */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+}
+
+.宗旨选择器 {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  height: 100%;
+  color: black;
+  user-select: none;
+  transition: 0.15s;
+}
+
+.宗旨选择器:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.3) !important;
+}
+
 .logo-container {
   width: 10%;
   aspect-ratio: 1;
@@ -70,7 +118,7 @@ body {
 .purpose > p:nth-child(2) > a {
   color: aquamarine;
   text-decoration: underline;
-  text-underline-offset: 5px;
+  text-underline-offset: 3px;
 }
 
 .pp-01 {
@@ -136,7 +184,7 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   z-index: -1;
-  filter: opacity(0.5) blur(3px);
+  filter: opacity(0.55) blur(3px);
 }
 
 .purpose::after {
@@ -151,7 +199,7 @@ body {
 
 .purpose:nth-child(odd)::after {
   background: linear-gradient(
-    125deg,
+    115deg,
     rgba(0, 0, 0, 0.3) 48%,
     rgba(0, 0, 0, 0.15) 48.001%
   );
@@ -159,7 +207,7 @@ body {
 
 .purpose:nth-child(even)::after {
   background: linear-gradient(
-    55deg,
+    65deg,
     rgba(0, 0, 0, 0.3) 48%,
     rgba(0, 0, 0, 0.15) 48.001%
   );
@@ -203,6 +251,12 @@ body {
     padding: 0;
     font-size: 1.25em;
     width: 90%;
+  }
+
+  .selector-outer {
+    width: 350px;
+    height: 35px;
+    font-size: 0.6rem;
   }
 }
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */

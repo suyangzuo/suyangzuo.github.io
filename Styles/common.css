@@ -50,6 +50,7 @@ li > a > i {
 }
 
 footer {
+  position: relative;
   margin: auto;
   z-index: 2;
   display: flex;

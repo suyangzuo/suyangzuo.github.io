@@ -4,7 +4,6 @@ const contributors = document.getElementsByClassName("contributor");
 navCells.forEach((navCell) => {
   navCell.addEventListener("click", () => {
     let index = navCells.indexOf(navCell);
-    console.log(contributors[index]);
     contributors[index].scrollIntoView({ behavior: "smooth", block: "center" });
   });
 });

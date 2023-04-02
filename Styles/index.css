@@ -216,7 +216,7 @@
 .link-text:hover {
   text-decoration: underline;
   text-underline-offset: 2px;
-  text-decoration-color: skyblue;
+  text-decoration-color: goldenrod;
 }
 
 #other-link-container {
