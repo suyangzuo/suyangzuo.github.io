@@ -1,26 +1,62 @@
-const selectors = Array.from(document.getElementsByClassName("宗旨选择器"));
+const selectors = document.getElementsByClassName("宗旨选择器");
+const selectorsArray = Array.from(selectors);
 const purposes = document.getElementsByClassName("purpose");
-let prevIndex = -1;
+const selectorOuter = document.querySelector(".selector-outer");
 
-selectors.forEach((selector) => {
+const 选择器浮动层 = document.querySelector(".选择器浮动层");
+// let 浮动层宽度 = window.getComputedStyle(selectors[0]).width;
+// 选择器浮动层.style.width = 浮动层宽度;
+
+let prevIndex = -1;
+let index = -1;
+
+if (sessionStorage.getItem("windowY") !== null) {
+  let y = parseInt(sessionStorage.getItem("windowY"));
+  window.scroll(0, y);
+}
+
+if (sessionStorage.getItem("选择器浮动层位置") !== null) {
+  prevIndex = parseInt(sessionStorage.getItem("选择器浮动层位置"), 10);
+  选择器浮动层.style.visibility = "visible";
+  选择器浮动层.style.filter = "opacity(1)";
+  选择器浮动层.style.width = window.getComputedStyle(
+    selectors[prevIndex]
+  ).width;
+  选择器浮动层.style.left = `${selectors[prevIndex].offsetLeft}px`;
+  selectors[prevIndex].setAttribute("style", "color:white !important");
+}
+
+selectorsArray.forEach((selector) => {
   selector.addEventListener("click", () => {
-    let index = selectors.indexOf(selector);
+    index = selectorsArray.indexOf(selector);
+    sessionStorage.setItem("选择器浮动层位置", index);
 
     if (prevIndex === index) return;
-    else if (prevIndex === -1) {
-      prevIndex = index;
+    if (prevIndex === -1) {
+      选择器浮动层.style.visibility = "visible";
+      选择器浮动层.style.filter = "opacity(1)";
+      选择器浮动层.style.transition = "none";
     } else {
+      选择器浮动层.style.transition = "0.25s";
       selectors[prevIndex].style.backgroundColor = "transparent";
       selectors[prevIndex].style.color = "black";
-      prevIndex = index;
     }
 
+    prevIndex = index;
+    选择器浮动层.style.width = window.getComputedStyle(selectors[index]).width;
+    选择器浮动层.style.left = `${selectors[index].offsetLeft}px`;
     // selectors[index].style.backgroundColor = "#222";
     // selectors[index].style.color = "white";
-    selectors[index].setAttribute(
-      "style",
-      "background-color:#222 !important; color:white !important"
-    );
+    selectors[index].setAttribute("style", "color:white !important");
     purposes[index].scrollIntoView({ behavior: "smooth", block: "center" });
   });
+});
+
+let scrollStopped;
+
+window.addEventListener("scroll", () => {
+  window.clearTimeout("scrollStopped");
+  scrollStopped = setTimeout(() => {
+    sessionStorage.setItem("windowY", window.scrollY);
+  }, 250);
 });

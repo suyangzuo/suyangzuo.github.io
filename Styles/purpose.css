@@ -2,54 +2,6 @@ body {
   position: relative;
 }
 
-.selector-outer {
-  width: 500px;
-  height: 50px;
-  background-color: burlywood;
-  background: linear-gradient(135deg, burlywood 30%, gold 90%);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  position: fixed;
-  bottom: 2.5%;
-  left: 50%;
-  transform: translateX(-50%);
-  border-radius: 50px;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.5);
-}
-
-.selector-inner {
-  width: 99%;
-  height: 93.5%;
-  border-radius: 50px;
-  /* background-color: rgb(6, 97, 127); */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 3px;
-}
-
-.宗旨选择器 {
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50px;
-  height: 100%;
-  color: black;
-  user-select: none;
-  transition: 0.15s;
-}
-
-.宗旨选择器:hover {
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.3) !important;
-}
-
 .logo-container {
   width: 10%;
   aspect-ratio: 1;
@@ -155,22 +107,32 @@ body {
 
 .pp-01::before {
   background: url(/Images/Purpose/bg-01.jpg);
+  -webkit-mask-image: linear-gradient(-90deg, transparent 0%, #000 100%);
+  -mask-image: linear-gradient(-90deg, transparent 0%, #000 100%);
 }
 
 .pp-02::before {
   background: url(/Images/Purpose/bg-02.jpeg);
+  -webkit-mask-image: linear-gradient(transparent 0%, #000 100%);
+  mask-image: linear-gradient(transparent 0%, #000 100%);
 }
 
 .pp-03::before {
   background: url(/Images/Purpose/bg-03.jpg);
+  -webkit-mask-image: radial-gradient(circle at center, #0002 0%, #000 100%);
+  mask-image: radial-gradient(circle at center, #0002 0%, #000 100%);
 }
 
 .pp-04::before {
   background: url(/Images/Purpose/bg-04.jpg);
+  -webkit-mask-image: linear-gradient(90deg,transparent 0%, #000 100%);
+  -mask-image: linear-gradient(transparent 0%, #000 100%);
 }
 
 .pp-05::before {
   background: url(/Images/Purpose/bg-05.jpg);
+  -webkit-mask-image: linear-gradient(-90deg, transparent 0%, #000 100%);
+  -mask-image: linear-gradient(-90deg, transparent 0%, #000 100%);
 }
 
 .purpose::before {
@@ -184,10 +146,10 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   z-index: -1;
-  filter: opacity(0.55) blur(3px);
+  /* filter: opacity(0.55) blur(3px); */
 }
 
-.purpose::after {
+/* .purpose::after {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -211,7 +173,7 @@ body {
     rgba(0, 0, 0, 0.3) 48%,
     rgba(0, 0, 0, 0.15) 48.001%
   );
-}
+} */
 
 .explain-list {
   display: flex;
@@ -220,12 +182,78 @@ body {
 }
 
 .explain-list > li {
-  list-style-type: "\1f44d";
   font-size: 1.5rem;
 }
 
 .explain-list > li > strong {
   color: rgb(123, 255, 131);
+}
+
+.pp-02 > .explain-list > li {
+  list-style-type: "\1f44d";
+}
+
+.pp-03 > .explain-list > li {
+  list-style-type: "\1f37a";
+}
+
+.selector-outer {
+  width: 500px;
+  height: 50px;
+  background-color: burlywood;
+  background: linear-gradient(135deg, burlywood 30%, gold 90%);
+  position: fixed;
+  bottom: 2.5%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.5);
+}
+
+.selector-inner {
+  width: 99%;
+  height: 93.5%;
+  border-radius: 50px;
+  /* background-color: rgb(6, 97, 127); */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  position: relative;
+}
+
+.选择器浮动层 {
+  position: absolute;
+  height: 100%;
+  border-radius: 50px;
+  background-color: black;
+  left: 0;
+  z-index: -1;
+  /* transition: 0.25s; */
+  visibility: hidden;
+  filter: opacity(0);
+}
+
+.宗旨选择器 {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  height: 100%;
+  color: black;
+  user-select: none;
+  transition: 0.2s;
+  /* position: relative; */
+}
+
+.宗旨选择器:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.25) !important;
 }
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
