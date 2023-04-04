@@ -96,7 +96,8 @@ body::before {
   height: fit-content;
   font-size: 0.8rem;
   /* background: linear-gradient(120deg, #333 55%, #666 55.001%); */
-  box-shadow: inset 2px 1px 10px rgba(255,255,255,0.5),inset -2px 1px 10px rgba(255,255,255,0.5);
+  box-shadow: inset 2px 1px 10px rgba(255, 255, 255, 0.5),
+    inset -2px 1px 10px rgba(255, 255, 255, 0.5);
   /* outline: solid 1px #666; */
 }
 
@@ -134,8 +135,12 @@ body::before {
   width: 100%;
   /* text-align: center; */
   font-size: 2rem;
-  color: goldenrod;
+  color: gold;
   font-weight: bold;
+}
+
+.banner-detail-content > span {
+  color: orange;
 }
 
 .banner-button {

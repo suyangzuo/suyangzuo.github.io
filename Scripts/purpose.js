@@ -31,7 +31,10 @@ selectorsArray.forEach((selector) => {
     index = selectorsArray.indexOf(selector);
     sessionStorage.setItem("选择器浮动层位置", index);
 
-    if (prevIndex === index) return;
+    if (prevIndex === index) {
+      purposes[index].scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
     if (prevIndex === -1) {
       选择器浮动层.style.visibility = "visible";
       选择器浮动层.style.filter = "opacity(1)";

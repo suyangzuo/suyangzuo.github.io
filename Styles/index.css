@@ -85,6 +85,7 @@
   mask-repeat: no-repeat;
   -webkit-mask-position: center;
   mask-position: center;
+  -webkit-mask-position: center;
   /* filter: brightness(0.9) invert(0.5) sepia(0.5) hue-rotate(110deg)
     saturate(500%); */
 }
@@ -293,11 +294,9 @@
   border-radius: 100px;
   height: 90%;
   width: 67%;
-  background: url(/Images/Index-Images/game-button-background-01.png);
-  background-size: 125%;
-  background-position: 50% 50%;
-  box-shadow: inset 2px 2px 10px rgba(20, 20, 20, 0.75),
-    inset -1px 0 5px rgba(20, 20, 20, 0.75);
+  background: url(/Images/Index-Images/game-button-background-02.png);
+  background-size: 100%;
+  background-position: center;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -307,8 +306,6 @@
 
 #game-button:hover {
   cursor: pointer;
-  box-shadow: inset 6px 6px 20px rgba(20, 20, 20, 0.75),
-    inset -3px 0 15px rgba(20, 20, 20, 0.75);
 }
 
 #game-button:hover > p {

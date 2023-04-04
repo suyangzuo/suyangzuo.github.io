@@ -247,7 +247,7 @@
 .top-nav .nav-ul > li .top-nav-dropdown ul li > a {
   width: 100%;
   /* background-color: #4a0025; */
-  padding: 1rem 20px;
+  padding: 0 20px;
   display: block;
   /* text-shadow: 1px 1px 1px #00294c; */
 }
