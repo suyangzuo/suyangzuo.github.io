@@ -52,6 +52,15 @@ selectorsArray.forEach((selector) => {
   });
 });
 
+const mediaQuery = window.matchMedia("(max-width: 1000px)");
+
+mediaQuery.addEventListener("change", (e) => {
+  // if (e.matches) {
+  //   window.location.reload();
+  // }
+  window.location.reload();
+});
+
 let scrollStopped;
 
 window.addEventListener("scroll", () => {

@@ -178,10 +178,19 @@
   }
 }
 
-.top-nav .nav-ul > li a {
+.nav-ul a {
+  display: flex;
+  align-items: center;
+}
+
+.top-nav .nav-ul > li > a {
   font-size: 0.95rem;
   padding: 0 1.5em;
   transition: 0.5s;
+}
+
+.top-nav-dropdown li > a {
+  font-size: 0.9rem;
 }
 
 .top-nav .nav-ul > li:hover .top-nav-dropdown {
@@ -238,7 +247,7 @@
 .top-nav .nav-ul > li .top-nav-dropdown ul li > a {
   width: 100%;
   /* background-color: #4a0025; */
-  padding: 1em 20px;
+  padding: 1rem 20px;
   display: block;
   /* text-shadow: 1px 1px 1px #00294c; */
 }
@@ -282,6 +291,10 @@
     -2px 2px 10px rgba(0, 0, 0, 0.75);
 }
 
+.vmware-workstation {
+  height: 55px !important;
+}
+
 .top-nav-dropdown li:hover .top-nav-dropdown-2-left > ul {
   transform: translateX(-15px);
 }
@@ -290,8 +303,13 @@
   transform: translateX(15px);
 }
 
+.sub-arrow {
+  display: flex;
+  align-items: center;
+}
+
 /* 实现了菜单项图片展开(旋转)效果 */
-.sub-arrow > i {
+/* .sub-arrow > i {
   transform: rotateZ(90deg) scale(150%);
   transition: 0.25s;
 }
@@ -299,16 +317,34 @@
 .top-nav .nav-ul > li .top-nav-dropdown ul li:hover > .sub-arrow > i {
   transform: rotateZ(0deg) scale(150%);
   color: goldenrod;
+} */
+
+.triangle-symbol {
+  transform: scale(80%) scaleX(70%);
+  transition: 0.25s;
+}
+
+.nav-ul > li:hover .triangle-symbol {
+  transform: rotateZ(-90deg) scale(80%) scaleX(70%);
+}
+
+.arrow-symbol {
+  transform: rotateZ(180deg) scaleX(60%) translateY(-9%);
+  transition: 0.25s;
+}
+
+.top-nav-dropdown ul li:hover .arrow-symbol {
+  transform: rotateZ(90deg) scaleX(60%) translateY(-9%);
 }
 /* 实现了菜单项图片展开(旋转)效果 */
 
-.top-nav .nav-ul > li > a > i {
+/* .top-nav .nav-ul > li > a > i {
   transform: rotateZ(90deg) scale(150%);
 }
 
 .top-nav .nav-ul > li:hover > a > i {
   transform: rotateZ(0deg) scale(150%);
-}
+} */
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
 @media only screen and (max-width: 1000px) {
@@ -327,7 +363,7 @@
     display: none;
   }
 
-  .nav-ul > li > a > i {
+  .triangle-symbol {
     display: none;
   }
 

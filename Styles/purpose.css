@@ -60,30 +60,19 @@ body {
   transition: 0.3s;
 }
 
-.purpose > p:nth-child(2) {
-  /* background-color: brown; */
-  font-size: 1.5rem;
-  transition: 0.3s;
-  width: 40%;
-}
-
-.purpose > p:nth-child(2) > a {
+.explain-list a {
   color: aquamarine;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 
-.pp-01 {
-  text-align: center;
-}
-
-.pp-01 > p:nth-child(2) > span {
+.pp-01 li > span {
   font-size: 1.2em;
   font-weight: bolder;
   color: tomato;
 }
 
-.pp-01 > p:nth-child(2) > em {
+.pp-01 li > em {
   color: rgb(248, 241, 100);
   text-decoration: underline;
   text-underline-offset: 2px;
@@ -108,7 +97,7 @@ body {
 .pp-01::before {
   background: url(/Images/Purpose/bg-01.jpg);
   -webkit-mask-image: linear-gradient(-90deg, transparent 0%, #000 100%);
-  -mask-image: linear-gradient(-90deg, transparent 0%, #000 100%);
+  mask-image: linear-gradient(-90deg, transparent 0%, #000 100%);
 }
 
 .pp-02::before {
@@ -125,7 +114,7 @@ body {
 
 .pp-04::before {
   background: url(/Images/Purpose/bg-04.jpg);
-  -webkit-mask-image: linear-gradient(90deg,transparent 0%, #000 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 100%);
   -mask-image: linear-gradient(transparent 0%, #000 100%);
 }
 
@@ -183,10 +172,15 @@ body {
 
 .explain-list > li {
   font-size: 1.5rem;
+  padding: 0 0 0 0.5rem;
 }
 
 .explain-list > li > strong {
   color: rgb(123, 255, 131);
+}
+
+.pp-01 > .explain-list > li {
+  list-style-type: "\1F47B";
 }
 
 .pp-02 > .explain-list > li {
@@ -195,6 +189,14 @@ body {
 
 .pp-03 > .explain-list > li {
   list-style-type: "\1f37a";
+}
+
+.pp-04 > .explain-list > li {
+  list-style-type: "\1F525";
+}
+
+.pp-05 > .explain-list > li {
+  list-style-type: "\260E";
 }
 
 .selector-outer {
@@ -272,17 +274,20 @@ body {
   }
 
   .purpose > p:nth-child(1) {
-    font-size: 2em;
+    font-size: 1.5em;
   }
 
-  .purpose > p:nth-child(2) {
-    padding: 0;
-    font-size: 1.25em;
-    width: 90%;
+  .explain-list {
+    width: 70%;
+  }
+
+  .explain-list > li {
+    font-size: 1em;
+    width: 100%;
   }
 
   .selector-outer {
-    width: 350px;
+    width: 300px;
     height: 35px;
     font-size: 0.6rem;
   }
