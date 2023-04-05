@@ -22,6 +22,7 @@ body {
   background-color: var(--bg-color);
   color: var(--f-color);
   z-index: 0;
+  padding-bottom: 150px;
 }
 
 a {
@@ -50,8 +51,8 @@ li > a > i {
 }
 
 footer {
-  position: relative;
-  margin: auto;
+  position: absolute;
+  bottom: 0;
   z-index: 2;
   display: flex;
   justify-content: space-around;
@@ -59,8 +60,8 @@ footer {
   width: 100vw;
   height: 150px;
   background-color: rgba(15, 15, 20, 0.7);
-  -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
 
 footer > .author > p:nth-child(3):hover > a {

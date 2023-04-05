@@ -1,7 +1,7 @@
 .game-area {
   /* background-color: brown; */
   width: 100%;
-  height: calc(100vh - 110px);
+  /* height: calc(100vh - 110px); */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

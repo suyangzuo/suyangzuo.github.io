@@ -1,7 +1,9 @@
 body {
-  min-height: 100vh;
+  height: calc(100vh - 65px);
   background-color: rgb(50, 84, 85) !important;
   color: aliceblue;
+  width: 100vw;
+  overflow: hidden;
 }
 
 .background-image {

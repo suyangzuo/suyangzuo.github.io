@@ -1,6 +1,6 @@
 #game-container {
   /* background-color: blueviolet; */
-  width: 1500px;
+  width: 100vw;
   margin: 50px auto 0;
   position: relative;
   text-align: center;
@@ -51,7 +51,7 @@
 
 .slider {
   display: block;
-  width: 50%;
+  width: 300px;
   user-select: none;
 }
 
@@ -82,7 +82,7 @@
 }
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1200px) {
   #game-container {
     width: 100vw;
     flex-direction: column;
