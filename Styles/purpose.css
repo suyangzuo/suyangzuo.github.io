@@ -62,7 +62,7 @@ body {
   align-items: center; */
 }
 
-.purpose > p:nth-child(1) > img {
+.purpose > p:nth-child(1) img {
   height: 1em;
   aspect-ratio: 1;
   vertical-align: baseline;
@@ -75,6 +75,18 @@ body {
   mask-repeat: no-repeat;
 }
 
+.pp-01 > p:nth-child(1) > .logo {
+  vertical-align: middle;
+}
+
+.pp-01 > p:nth-child(1) > .logo > img {
+  height: 1.2em;
+}
+
+.purpose > p:nth-child(1) img[alt="永恒Logo"] {
+  animation: logo-rotate linear 5s infinite;
+}
+
 .purpose > p:nth-child(1) > img:nth-of-type(1) {
   margin: 0 5px 0 0;
   -webkit-mask-image: url(/Images/Index-Images/永.png);
@@ -84,6 +96,17 @@ body {
 .purpose > p:nth-child(1) > img:nth-of-type(2) {
   -webkit-mask-image: url(/Images/Index-Images/恒.png);
   mask-image: url(/Images/Index-Images/恒.png);
+}
+
+@keyframes logo-rotate {
+  from {
+    transform: rotateZ(0deg);
+    filter: hue-rotate(0deg);
+  }
+  to {
+    transform: rotateZ(360deg);
+    filter: hue-rotate(360deg);
+  }
 }
 
 .explain-list a {
