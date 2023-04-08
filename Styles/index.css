@@ -33,10 +33,24 @@
 }
 
 .welcome-main > .section-bg-img > img {
-  filter: contrast(1.2) blur(3px) grayscale();
+  filter: brightness(50%);
 }
 
-.welcome-main > .section-bg-img::after {
+#art-image-shape-banner > .section-bg-img > img {
+  /* transform: rotateY(180deg); */
+}
+
+.intro-section > .section-bg-img::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(-90deg, #000 0%, rgba(0, 0, 0, 0));
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* .section-bg-img::after {
   content: "";
   width: 100%;
   height: 100%;
@@ -44,7 +58,7 @@
   position: absolute;
   top: 0;
   left: 0;
-}
+} */
 
 .site-title {
   /* background-color: cornflowerblue; */
@@ -284,7 +298,6 @@
 #game {
   height: 80px;
   grid-column: span 3;
-  backdrop-filter: blur(5px);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -390,10 +403,6 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding: 5% 0;
   overflow: hidden;
-}
-
-#art-image-shape-banner > .section-bg-img > img {
-  filter: brightness(50%);
 }
 
 .img-cards {
