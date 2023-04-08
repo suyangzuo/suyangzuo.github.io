@@ -104,14 +104,28 @@
   );
   background-size: 210% 100%;
   background-position: 105% 0;
-  border-bottom: 0px solid rgb(15, 101, 134);
   transition: 250ms;
-  /* background-color: #5f5904; */
 }
 
 .nav-to-index:hover::before {
-  border-bottom: 5px solid rgb(15, 101, 134);
-  animation: 背景渐变刷墙 2s linear infinite;
+  animation: 背景渐变刷墙 2s linear 1s infinite;
+}
+
+.nav-to-index::after {
+  width: 100%;
+  height: 5px;
+  position: absolute;
+  content: "";
+  left: 0;
+  bottom: 0;
+  background-color: rgb(15, 101, 134);
+  transform: scaleY(0);
+  transform-origin: bottom center;
+  transition: 0.25s;
+}
+
+.nav-to-index:hover::after {
+  transform: scaleY(1);
 }
 
 @keyframes 背景渐变刷墙 {
