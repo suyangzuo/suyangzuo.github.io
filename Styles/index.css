@@ -377,7 +377,7 @@
 /* <!-- ------------------ ↑ 欢迎内容 ------------------- --> */
 
 /* <!-- ------------------ ↓ 学习技巧翻转卡片 ------------------- --> */
-#art-image-shape-banner {
+#experience-section {
   /* background-color: #ffca1c; */
   width: 100%;
   height: 100vh;
@@ -391,277 +391,90 @@
   overflow: hidden;
 }
 
-.img-cards {
+.经验分享区 {
+  width: 100%;
+  height: 95%;
   /* background-color: darkcyan; */
-  width: 100%;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-}
-
-.img-card-outer-layer {
-  background-color: transparent;
-  width: 22%;
-  aspect-ratio: 1;
-  perspective: 1000px; /* Remove this if you don't want the 3D effect */
-  border-radius: 15px;
-}
-
-.img-card-inner-layer {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  transition: transform 0.5s;
-  transform-style: preserve-3d;
-  border-radius: 15px;
-  box-shadow: 5px 5px 10px 0 rgba(0, 0, 0, 0.5);
-}
-
-.img-card-outer-layer:hover .img-card-inner-layer {
-  transform: rotateY(180deg);
-}
-
-.image-content,
-.hint-content {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  border-radius: 15px;
-}
-
-.image-content > img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 15px;
-}
-
-.image-content {
-  /* background-color: #bbb; */
-  color: black;
-}
-
-.arrow-down {
-  position: absolute;
-  transform: translateY(100%);
-  left: 45%;
-  width: 10%;
-  height: 10%;
-  overflow: hidden;
-  animation: arrow-up-and-down 0.25s ease-in-out infinite alternate;
-}
-
-.arrow-down > img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  opacity: 50%;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  filter: brightness(3);
-}
-
-@keyframes arrow-up-and-down {
-  from {
-    top: -35%;
-  }
-  to {
-    top: -30%;
-  }
-}
-
-.hint-content {
-  color: white;
-  transform: rotateY(180deg);
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  position: relative;
-  justify-content: space-evenly;
-  padding: 80px 0;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
 }
 
-.hint-content > .hint-title {
-  font-size: 2em;
-  font-weight: bolder;
-  color: gold;
-}
-
-.hint-content > .hint-text {
-  /* background-color: #033369; */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-}
-
-.hint-text > ul > li {
-  list-style: none;
-  padding-left: 0.5em;
-}
-
-.hint-text li::marker {
-  content: "→";
-}
-
-.hint-content > .hint-text p {
-  font-size: 1.2em;
-  margin: 15px 0 0 0;
-  transition: 0.3s;
-  text-align: left;
-}
-
-.hint-content > .hint-text p:hover > a {
-  color: cornflowerblue;
-}
-
-.hint-content > .opacity-layer {
-  position: absolute;
+.经验分享标题 {
   width: 100%;
-  height: 100%;
-  background-color: dodgerblue;
-  z-index: -1;
-  opacity: 15%;
-  -webkit-backdrop-filter: blur(15px);
-  backdrop-filter: blur(15px);
-  border-radius: 15px;
+  height: 15%;
+  /* background-color: rgb(129, 35, 129); */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.img-cards-words {
+.经验分享标题 > button {
+  padding: 1rem 3rem;
+  border-radius: 100px;
+  background: linear-gradient(
+    -30deg,
+    rgba(40, 40, 40, 0.75) 35%,
+    rgba(70, 70, 70, 0.75) 80%
+  );
+  background-position: 5% 0%;
+  background-size: 200%;
+  font-size: 1.5rem;
+  box-shadow: 3px 3px 20px 0 rgba(0, 0, 0, 0.75),
+    inset 0px 1px 1px 0 rgba(255, 255, 255, 0.25);
+  transition: 0.4s;
+  color: aliceblue;
+  border: none;
+}
+
+.经验分享标题 > button:hover {
+  background-position: 50% 50%;
+  cursor: pointer;
+}
+
+.经验分享内容 {
+  width: 100%;
+  height: 85%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
   /* background-color: tomato; */
-  width: 100%;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  padding: 0 9%;
 }
 
-.img-cards-words > p {
-  font-size: 4em;
-  color: goldenrod;
-  transition: 0.75s;
-}
-
-.img-cards-words > p:nth-child(1) {
-  transform: translateX(-100%);
-  filter: opacity(0);
-}
-
-.img-cards-words > p:nth-child(2) {
-  transform: translateX(100%);
-  filter: opacity(0);
-}
-/* <!-- ------------------ ↑ 学习技巧翻转卡片 ------------------- --> */
-
-/* <!-- ------------------ ↓ 主页介绍 ------------------- --> */
-.intro-section {
-  /* background-color: #00ddeb; */
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  position: relative;
-}
-
-.intro-gif-container {
-  /* background-color: #5b42f3; */
-  width: 50%;
-  height: 100%;
+.内容分区 {
   display: flex;
   flex-direction: column;
+}
+
+.内容1区 {
+  background: url(/Images/Index-Images/windows-background.jpg);
+  background-size: cover;
+  width: 800px;
+  height: 500px;
+  border-radius: 5px;
   justify-content: center;
-  align-items: flex-end;
-  position: relative;
+  align-items: center;
+  align-content: start;
+  align-self: flex-start;
+  gap: 50px;
 }
 
-.intro-gif {
-  /* position: absolute; */
-  margin: -5% 0;
-  aspect-ratio: 4 / 2.9;
-  overflow: hidden;
-  border-radius: 15px;
-  filter: opacity(75%);
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
-  transition: 1s;
-  box-shadow: -3px -3px 10px 0 #000;
-}
-
-.intro-gif-container > .intro-gif:nth-child(1),
-.intro-gif-container > .intro-gif:nth-child(7) {
-  width: 30%;
-}
-
-.intro-gif-container > .intro-gif:nth-child(2),
-.intro-gif-container > .intro-gif:nth-child(6) {
-  width: 33%;
-}
-
-.intro-gif-container > .intro-gif:nth-child(3),
-.intro-gif-container > .intro-gif:nth-child(5) {
-  width: 36.2%;
-}
-
-.intro-gif-container > .intro-gif:nth-child(4) {
-  box-shadow: -3px -3px 10px 0 rgba(0, 0, 0, 0.5),
-    3px 3px 10px 0 rgba(0, 0, 0, 0.5);
-  z-index: 3;
-  width: 40%;
-}
-
-.intro-gif-container > .intro-gif:nth-child(5) {
-  z-index: 2;
-}
-
-.intro-gif-container > .intro-gif:nth-child(6) {
-  z-index: 1;
-}
-
-.intro-gif > img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.intro-content-container {
-  /* background-color: yellow; */
-  width: 50%;
-  height: 100%;
+.分区内容 {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  gap: 50px;
   align-items: flex-start;
+  justify-content: center;
 }
 
-.intro-title {
-  /* background-color: cadetblue; */
-  padding-left: 22%;
-  font-size: 4em;
-  color: goldenrod;
+.文章列表 > li {
+  list-style-type: disc;
+  padding: 5px 0;
+  font-size: 0.8rem;
 }
 
-.intro-title > p {
-  transition: 0.75s;
-}
-
-.intro-title > p:nth-child(1) {
-  transform: translateY(-200%);
-  filter: opacity(0);
-}
-
-.intro-title > p:nth-child(2) {
-  transform: translateY(200%);
-  filter: opacity(0);
-}
-/* <!-- ------------------ ↑ 主页介绍 ------------------- --> */
+/* <!-- ------------------ ↑ 学习技巧翻转卡片 ------------------- --> */
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
 @media screen and (max-width: 1000px) {
@@ -747,79 +560,6 @@
   .link-logo,
   .link-text {
     display: none;
-  }
-
-  #art-image-shape-banner {
-    padding: 0;
-  }
-
-  .img-cards {
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    height: 75%;
-    width: 100%;
-  }
-
-  .img-card-outer-layer {
-    height: 25%;
-    width: 60%;
-  }
-
-  .arrow-down {
-    transform: translateY(170%);
-  }
-
-  .hint-content {
-    height: 100%;
-    padding: 0;
-    flex-direction: row;
-  }
-
-  .hint-content > .hint-title {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 50%;
-    height: 100%;
-    font-size: 20px;
-  }
-
-  .hint-title > p {
-    word-wrap: break-word;
-    word-break: break-all;
-  }
-
-  .hint-content > .hint-text {
-    width: 50%;
-    height: 100%;
-    justify-content: center;
-  }
-
-  .hint-content > .hint-text p {
-    margin: 2px 0 2px 0;
-  }
-
-  .img-cards-words > p {
-    font-size: 2em;
-  }
-
-  .intro-section {
-    flex-direction: column;
-  }
-
-  .intro-gif-container {
-    width: 100%;
-    align-items: center;
-    transform: translateX(22.5%);
-  }
-
-  .intro-title {
-    transform: translateY(-100%);
-    margin: 0 auto;
-    padding-left: 0;
-    font-size: 2em;
   }
 }
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */
