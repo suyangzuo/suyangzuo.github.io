@@ -1,3 +1,11 @@
+body {
+  /* background: radial-gradient(
+    farthest-corner at 40px 40px,
+    rgb(86, 116, 137) 35%,
+    rgb(89, 126, 156) 100%
+  ); */
+}
+
 .main-content {
   position: relative;
   margin: 0 auto;
@@ -11,15 +19,18 @@
   margin: 0 auto 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
   position: relative;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  gap: 25px;
+  padding: 7.5% 0 0 0;
 }
 
 .section-bg-img {
   /* background-color: violet; */
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -33,7 +44,7 @@
 }
 
 .welcome-main > .section-bg-img > img {
-  filter: brightness(50%);
+  filter: brightness(75%);
 }
 
 .intro-section > .section-bg-img::after {
@@ -46,16 +57,17 @@
   left: 0;
 }
 
-.site-title {
+.logo-section {
   /* background-color: cornflowerblue; */
-  width: 100%;
-  height: 15%;
+  width: 750px;
+  height: fit-content;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   /* border-bottom: solid 1px rgb(138, 138, 138); */
-  clip-path: inset(0 30% 0 30%);
+  /* clip-path: inset(0 30% 0 30%); */
+  position: relative;
 }
 
 #eternal-title-text {
@@ -65,6 +77,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
 }
 
 #永,
@@ -72,6 +85,7 @@
   width: 45%;
   height: 100%;
   overflow: hidden;
+  filter: drop-shadow(5px 5px 5px #000);
 }
 
 #永 > img,
@@ -100,381 +114,165 @@
   mask-image: url(/Images/Index-Images/恒.png);
 }
 
-.site-title > p:nth-child(2) {
+.logo-title {
   /* background-color: darkcyan; */
   font-size: clamp(1.5em, 1.75em, 2em);
-  color: cadetblue;
+  color: white;
+  text-shadow: 1px 1px 5px rgb(0, 0, 0);
+  padding: 10px 0;
 }
 
-.sub-link {
-  /* background-color: darkcyan; */
-  width: 100%;
-  height: 75%;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-#software-link-container {
-  /* background-color: coral; */
-  width: 450px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-}
-
-#software-link-container > a {
-  display: block;
-  width: 100%;
-  height: 80%;
-  overflow: hidden;
-  border-radius: 10px;
-  position: relative;
-  /* outline: solid 5px #222; */
-}
-
-#software-link-container > a > img {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  transform: scale(100%);
-  transition: 0.5s;
-}
-
-#software-link-container > a:hover > img {
-  transform: scale(110%);
-}
-
-#software-link-text {
-  width: 100%;
-  height: 20%;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  background: rgba(15, 15, 15, 0.75);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 1.5em;
-  backdrop-filter: blur(3px);
-}
-
-.link-logo {
-  /* background-color: chocolate; */
-  height: 65%;
-  margin: auto;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  overflow: hidden;
-}
-
-.link-logo > img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  /* border-radius: 50%; */
-  /* box-shadow: 2px 2px 5px 0 rgb(0, 0, 0); */
-}
-
-.link-right-area {
-  /* background-color: darkgreen; */
-  height: 100%;
-  width: 60%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  /* padding: 10px 0 10px 0; */
-}
-
-.link-button {
-  width: 60%;
-  height: 45px;
-  line-height: 45px;
-  font-size: 1.1rem;
-  color: rgb(255, 255, 255);
-  background: linear-gradient(25deg, red, orange 100%);
-  border-style: none;
-  border-radius: 25px;
-  box-shadow: 2px 2px 4px 0px rgb(24, 24, 24);
-  /* transition: 0.25s; */
-}
-
-.link-button:hover {
-  cursor: pointer;
-  /* color: rgb(0, 0, 0); */
-  outline: solid 2px #eee;
-}
-
-.link-text {
-  font-size: 0.95rem;
-}
-
-.link-text:hover {
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  text-decoration-color: goldenrod;
-}
-
-#other-link-container {
-  /* background-color: slateblue; */
-  width: 900px;
-  height: 100%;
+.logo-brief {
+  color: #aaa;
+  padding: 20px 0;
   display: grid;
-  gap: 25px 25px;
-  grid-template-columns: repeat(auto-fill, minmax(15%, 25%));
-  grid-template-rows: minmax(200px, 300px);
-  justify-content: center;
-  align-content: flex-start;
-  padding: 0 50px;
+  gap: 0 75px;
+  grid-template-columns: repeat(2, 1fr);
 }
 
-.other-link-content {
-  /* background-color: brown; */
-  overflow: hidden;
-}
-
-.other-link-content > a {
-  width: 100%;
-  height: 100%;
-  display: block;
-  position: relative;
-  overflow: hidden;
-  border-radius: 8px;
-}
-
-.other-link-content > a > img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transform: scale(100%);
-  transition: 0.5s;
-}
-
-.other-link-content > a:hover > img {
-  transform: scale(110%);
-}
-
-.other-link-text {
-  position: absolute;
-  width: 100%;
-  height: 30%;
-  background: rgba(15, 15, 15, 0.75);
-  left: 0;
-  top: 70%;
-  backdrop-filter: blur(5px);
+.logo-brief-individual {
+  padding: 5px 0;
   display: flex;
-}
-
-.other-link-text > .link-right-area > .link-button {
-  width: 85%;
-  height: 35px;
-  line-height: 35px;
-  font-size: clamp(0.75rem, 0.95rem, 1rem);
-}
-
-.other-link-text > .link-right-area > .link-text {
-  font-size: 0.85rem;
-}
-
-#game {
-  height: 80px;
-  grid-column: span 3;
-  display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
+  gap: 10px;
+  text-shadow: 1px 1px 3px #000;
+  font-size: 1.25rem;
+  /* color:rgb(227, 135, 126) */
 }
 
-#game-button {
-  border-radius: 100px;
-  height: 90%;
-  width: 67%;
-  background: url(/Images/Index-Images/game-button-background-02.png);
-  background-size: 100%;
-  background-position: center;
+.logo-brief-individual > img {
+  height: 1.5rem;
+  aspect-ratio: 0.85;
+  object-fit: contain;
+}
+
+.checked {
+  filter: sepia(1) hue-rotate(70deg) saturate(4) contrast(0.6);
+  transform: scale(1.2);
+}
+
+.link-section {
+  width: 1000px;
   display: flex;
   justify-content: center;
-  align-items: center;
-  position: relative;
+}
+
+.link {
+  width: 15%;
+  display: block;
+  /* background-color: blueviolet; */
+}
+
+.link-image {
+  margin: 0 auto;
+  width: 100px;
+  height: 150px;
   transition: 0.25s;
 }
 
-#game-button:hover {
-  cursor: pointer;
+.link-image > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
-#game-button:hover > p {
-  letter-spacing: 0.2rem;
+.宗旨 img {
+  filter: grayscale(1) brightness(5);
 }
 
-#game-button > p {
-  color: rgb(66, 200, 137);
-  font-size: 2em;
-  font-weight: bold;
-  z-index: 1;
-  user-select: none;
-  transition: 0.25s;
+.link-title {
+  margin: 0 auto;
+  border-radius: 100px;
+  width: fit-content;
+  background: linear-gradient(-40deg, #222 15%, #31313190 95%);
+  background-size: 200%;
   text-align: center;
-  text-shadow: 3px -3px 10px rgba(30, 30, 30, 1),
-    -3px 3px 5px rgba(30, 30, 30, 1);
+  color: white;
+  padding: 10px 20px;
+  box-shadow: inset 0 1px 1px 0 #fff6;
+  transition: box-shadow 0.4s, color 0.05s, background-position 0.4s;
+  font-size: 0.9rem;
 }
 
-#game-button > img {
-  position: absolute;
+.link:hover .link-image {
+  transform: scale(1.1);
+  animation: 链接图阴影动画 2s ease-in-out infinite alternate;
 }
 
-.mario-run {
-  height: 95%;
-  left: 0;
-  bottom: 0;
-  animation: mario-running 3s infinite 0.4s linear;
-}
-
-.ball-run {
-  height: 60%;
-  bottom: 0;
-  left: 0;
-  animation: mario-running 3s infinite linear,
-    ball-rotate 1.5s infinite linear alternate;
-  filter: drop-shadow(1px 1px 3px #000);
-}
-
-#game-button:hover > img {
-  animation-play-state: paused;
-}
-
-@keyframes mario-running {
+@keyframes 链接图阴影动画 {
   from {
-    transform: rotateY(0deg);
-    left: 0%;
+    filter: drop-shadow(1px 1px 5px black);
   }
-  50% {
-    transform: rotateY(0deg);
-    left: 86%;
-  }
-  50.01% {
-    left: 86%;
-    transform: rotateY(180deg);
-  }
-  100% {
-    transform: rotateY(180deg);
-    left: 0%;
+  to {
+    filter: drop-shadow(5px 5px 15px white);
   }
 }
 
-@keyframes ball-rotate {
-  0% {
-    transform: rotateZ(0deg);
-  }
-  100% {
-    transform: rotateZ(1260deg);
-  }
+.link:hover .link-title {
+  background-position: 100% 0;
+  box-shadow: inset 0 1px 3px 0 #fff9;
+  color: gold;
+  /* font-weight: bolder; */
 }
+
 /* <!-- ------------------ ↑ 欢迎内容 ------------------- --> */
 
-/* <!-- ------------------ ↓ 学习技巧翻转卡片 ------------------- --> */
-#experience-section {
-  /* background-color: #ffca1c; */
+/* <!-- ------------------ ↓ 游戏区 ------------------- --> */
+.game-section {
+  /* background-color: #033369; */
   width: 100%;
   height: 100vh;
   position: relative;
   display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 5% 0;
-  overflow: hidden;
+  justify-content: space-around;
 }
 
-.经验分享区 {
-  width: 100%;
-  height: 95%;
-  /* background-color: darkcyan; */
+.game-title {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-}
-
-.经验分享标题 {
-  width: 100%;
-  height: 15%;
-  /* background-color: rgb(129, 35, 129); */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.经验分享标题 > button {
-  padding: 1rem 3rem;
-  border-radius: 100px;
-  background: linear-gradient(
-    -30deg,
-    rgba(40, 40, 40, 0.75) 35%,
-    rgba(70, 70, 70, 0.75) 80%
-  );
-  background-position: 5% 0%;
-  background-size: 200%;
-  font-size: 1.5rem;
-  box-shadow: 3px 3px 20px 0 rgba(0, 0, 0, 0.75),
-    inset 0px 1px 1px 0 rgba(255, 255, 255, 0.25);
-  transition: 0.4s;
-  color: aliceblue;
-  border: none;
-}
-
-.经验分享标题 > button:hover {
-  background-position: 50% 50%;
-  cursor: pointer;
-}
-
-.经验分享内容 {
-  width: 100%;
-  height: 85%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   gap: 50px;
-  /* background-color: tomato; */
 }
 
-.内容分区 {
-  display: flex;
-  flex-direction: column;
-}
-
-.内容1区 {
-  background: url(/Images/Index-Images/windows-background.jpg);
-  background-size: cover;
-  width: 800px;
+.game-title-main {
+  position: relative;
+  width: 600px;
   height: 500px;
-  border-radius: 5px;
-  justify-content: center;
-  align-items: center;
-  align-content: start;
-  align-self: flex-start;
-  gap: 50px;
+  /* background-color: rgb(47, 74, 19); */
 }
 
-.分区内容 {
-  display: flex;
-  gap: 50px;
-  align-items: flex-start;
-  justify-content: center;
+.game-title-main > p {
+  display: inline-block;
+  position: absolute;
+  text-shadow: 2px 2px 15px #000;
 }
 
-.文章列表 > li {
-  list-style-type: disc;
-  padding: 5px 0;
-  font-size: 0.8rem;
+.游 {
+  font-size: 15rem;
+  font-weight: bold;
+  top: 0%;
+  left: 10%;
+  color: seagreen;
 }
 
-/* <!-- ------------------ ↑ 学习技巧翻转卡片 ------------------- --> */
+.戏 {
+  font-size: 10rem;
+  font-weight: 200;
+  top: 30%;
+  left: 45%;
+  color: rgb(234, 161, 72);
+}
+
+.游戏分割线 {
+  width: 550px;
+  height: 5px;
+  background-color: rgb(255, 86, 86);
+  top: 50%;
+  left: 5%;
+  z-index: 0;
+}
+/* <!-- ------------------ ↑ 游戏区 ------------------- --> */
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
 @media screen and (max-width: 1000px) {
@@ -482,13 +280,15 @@
     justify-content: space-evenly;
   }
 
-  .site-title {
+  .logo-section {
     /* background-color: rgb(80, 84, 2); */
-    clip-path: inset(0);
+    /* clip-path: inset(0); */
     border-bottom: none;
+    height: 20%;
   }
 
-  .site-title > p {
+  .logo-title,
+  .logo-brief {
     display: none;
   }
 
@@ -497,69 +297,34 @@
     height: 100%;
   }
 
-  .sub-link {
+  .link-section {
+    height: 80%;
+    width: 100%;
     flex-direction: column;
     align-items: center;
-    margin-top: 0;
   }
 
-  #software-link-container {
-    padding: 10px 0 0px 0;
-    margin-bottom: 10px;
+  .link {
     width: 100%;
-    height: 40%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
   }
 
-  #software-link-container > a {
-    outline: none;
-    height: 100%;
-    border-radius: 0;
+  .link-image {
+    width: 20%;
+    height: 80%;
+    margin: 0;
   }
 
-  #software-link-container > a > img {
-    object-position: 0 25%;
-  }
-
-  #software-link-text {
-    height: 40%;
-  }
-
-  #software-link-text > .link-right-area {
-    width: 100%;
-  }
-
-  .link-right-area {
-    width: 100%;
-  }
-
-  #other-link-container {
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    width: 100%;
-    height: 60%;
-    gap: 10px 10px;
-    padding: 0;
-  }
-
-  .other-link-content > a {
-    border-radius: 0;
-  }
-
-  .other-link-content {
-    grid-row: span 2;
-  }
-
-  .other-link-text {
-    top: 71%;
-  }
-
-  #game-button {
-    width: 100%;
-  }
-
-  .link-logo,
-  .link-text {
-    display: none;
+  .link-title {
+    width: fit-content;
+    height: 50px;
+    margin: 0;
+    display: flex;
+    align-items: center;
   }
 }
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */
