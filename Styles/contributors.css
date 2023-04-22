@@ -90,27 +90,12 @@ body::before {
 }
 
 .logo-container > figcaption > p {
-  /* outline: solid 1px #aaa; */
   border-radius: 100px;
   padding: 1px 10px;
   height: fit-content;
   font-size: 0.8rem;
-  /* background: linear-gradient(120deg, #333 55%, #666 55.001%); */
-  box-shadow: inset 2px 1px 10px rgba(255, 255, 255, 0.5),
-    inset -2px 1px 10px rgba(255, 255, 255, 0.5);
-  /* outline: solid 1px #666; */
+  box-shadow: inset 0px 1px 1px rgba(255, 255, 255, 0.5), 1px 1px 2px 0 #000;
 }
-
-/* .logo-container > figcaption > p:nth-child(even) {
-  background: #222;
-  color: white;
-  outline: solid 1px #999;
-}
-
-.logo-container > figcaption > p:nth-child(odd) {
-  background: #ddd;
-  color: black;
-} */
 
 @keyframes logo-rotate {
   from {
@@ -394,18 +379,23 @@ body::before {
 .brief-content img[alt="恒"],
 .banner-detail-content img {
   -webkit-mask-size: contain;
+  mask-size: contain;
   -webkit-mask-position: center;
+  mask-position: center;
   -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
 }
 
 .brief-content img[alt="永"],
 .banner-detail-content img[alt="永"] {
   -webkit-mask-image: url(/Images/Index-Images/永.png);
+  mask-image: url(/Images/Index-Images/永.png);
 }
 
 .brief-content img[alt="恒"],
 .banner-detail-content img[alt="恒"] {
   -webkit-mask-image: url(/Images/Index-Images/恒.png);
+  mask-image: url(/Images/Index-Images/恒.png);
 }
 
 .brief-tech-stack {

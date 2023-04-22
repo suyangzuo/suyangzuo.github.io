@@ -1,5 +1,5 @@
 :root {
-  --bg-color: rgb(23, 26, 33);
+  --bg-color: rgb(10, 10, 10);
   --f-color: #eeeeee;
   --top-banner-color: #9e2a2b;
   --contributers-bg-color: #183656;
@@ -59,7 +59,7 @@ footer {
   align-items: center;
   width: 100vw;
   height: 150px;
-  background-color: rgba(15, 15, 20, 0.7);
+  background-color: rgba(10, 10, 10, 0.75);
   /* background-color: rgba(77, 129, 125, 0.75); */
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
@@ -68,6 +68,7 @@ footer {
 footer > .author > p:nth-child(3) > a {
   text-decoration: underline;
   text-underline-offset: 3px;
+  transition: 0.25s;
 }
 
 footer > .author > p:nth-child(3):hover > a {

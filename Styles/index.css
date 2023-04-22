@@ -117,7 +117,7 @@ body {
 .logo-title {
   /* background-color: darkcyan; */
   font-size: clamp(1.5em, 1.75em, 2em);
-  color: white;
+  color: rgb(81, 178, 239);
   text-shadow: 1px 1px 5px rgb(0, 0, 0);
   padding: 10px 0;
 }
@@ -147,15 +147,20 @@ body {
   object-fit: contain;
 }
 
+.motto {
+  font-size: 1rem;
+}
+
 .checked {
   filter: sepia(1) hue-rotate(70deg) saturate(4) contrast(0.6);
-  transform: scale(1.2);
+  transform: scale(1.1);
 }
 
 .link-section {
   width: 1000px;
   display: flex;
   justify-content: center;
+  /* border-top: solid 1px rgb(196, 196, 196); */
 }
 
 .link {
@@ -225,24 +230,40 @@ body {
   height: 100vh;
   position: relative;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+}
+
+.game-section > .section-bg-img {
+  transform: rotateY(180deg);
 }
 
 .game-title {
+  width: 750px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 50px;
+  gap: 150px;
 }
 
 .game-title-main {
+  display: block;
   position: relative;
   width: 600px;
-  height: 500px;
+  height: 400px;
+  transition: 0.25s;
   /* background-color: rgb(47, 74, 19); */
 }
 
-.game-title-main > p {
+.game-title-main:hover {
+  filter: hue-rotate(180deg);
+}
+
+.game-title-main:hover > .gamer-banner > img {
+  animation-play-state: paused;
+}
+
+.game-title-main > p,
+.game-title-main > .gamer-banner {
   display: inline-block;
   position: absolute;
   text-shadow: 2px 2px 15px #000;
@@ -250,27 +271,154 @@ body {
 
 .游 {
   font-size: 15rem;
+  line-height: 15rem;
   font-weight: bold;
   top: 0%;
-  left: 10%;
+  left: 5%;
   color: seagreen;
+  transition: 0.25s;
+}
+
+.game-title-main:hover > .游 {
+  top: 4%;
 }
 
 .戏 {
   font-size: 10rem;
+  line-height: 10rem;
   font-weight: 200;
-  top: 30%;
-  left: 45%;
+  top: 50%;
+  left: 40%;
   color: rgb(234, 161, 72);
+  transition: 0.25s;
+}
+
+.game-title-main:hover > .戏 {
+  top: 46%;
 }
 
 .游戏分割线 {
   width: 550px;
   height: 5px;
-  background-color: rgb(255, 86, 86);
-  top: 50%;
-  left: 5%;
+  background-color: rgb(231, 231, 231);
+  top: 60%;
+  left: 0;
   z-index: 0;
+  box-shadow: 1px 1px 5px 0 #000;
+}
+
+.gamer-banner {
+  height: 10rem;
+  width: 20rem;
+  /* overflow: hidden; */
+  left: 45%;
+  top: 20%;
+  filter: drop-shadow(3px 3px 10px #000);
+  position: relative;
+}
+
+.gamer-banner > img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  position: absolute;
+  top: 0;
+  left: 0;
+  filter: drop-shadow(5px 5px 15px #000);
+}
+
+.gamer-banner > img:nth-child(1) {
+  animation: 玩家Logo交换 4s linear infinite;
+}
+
+.gamer-banner > img:nth-child(2) {
+  filter: opacity(0);
+  animation: 玩家Logo交换 4s linear 2s infinite;
+}
+
+@keyframes 玩家Logo交换 {
+  from {
+    transform: translate(0, 0) scale(0.75);
+    filter: opacity(0);
+    /* z-index: 1; */
+    /* filter: opacity(1); */
+  }
+  50% {
+    transform: translate(25px, -25px) scale(1);
+    filter: opacity(1);
+    /* z-index: 1; */
+  }
+  65% {
+    filter: opacity(0);
+  }
+  to {
+    transform: translate(50px, -50px) scale(1.25);
+    filter: opacity(0);
+    /* z-index: 0; */
+  }
+}
+
+.game-history {
+  width: 500px;
+  border-left: solid 2px white;
+  padding-left: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* background-color: darkcyan; */
+}
+
+.game-history > h1 {
+  color: goldenrod;
+}
+
+.game-history > p {
+  color: rgb(240, 240, 240);
+  text-shadow: 2px 2px 2px #000;
+}
+
+.game-type {
+  width: 800px;
+  display: grid;
+  place-content: center;
+  grid-template-columns: repeat(3, 140px);
+  grid-auto-rows: 200px;
+  gap: 50px;
+  /* background-color: cadetblue; */
+}
+
+.game-type-example {
+  filter: drop-shadow(5px 5px 10px #000);
+  transition: 0.25s;
+}
+
+.game-type-example:hover {
+  transform: perspective(250px) rotateX(15deg);
+}
+
+.game-example-image {
+  height: 66%;
+  width: 100%;
+  overflow: hidden;
+  background-color: tan;
+}
+
+.game-example-image > img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.game-name {
+  height: 34%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 12px;
+  background-color: rgb(127, 174, 255);
+  color: black;
+  clip-path: polygon(0 0, 100% 0, 100% 50%, 55% 100%, 45% 100%, 0 50%);
 }
 /* <!-- ------------------ ↑ 游戏区 ------------------- --> */
 

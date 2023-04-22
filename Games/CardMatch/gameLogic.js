@@ -65,8 +65,8 @@ const cardsPool = [
     img: "./Images/Snow-Girl.png",
   },
   {
-    name: "奇怪的房子",
-    img: "./Images/Strange-House.png",
+    name: "有趣的房子",
+    img: "./Images/Funny-House.jpg",
   },
   {
     name: "超新星戒指",
