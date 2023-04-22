@@ -190,6 +190,7 @@ body {
   margin: 0 auto;
   border-radius: 100px;
   width: fit-content;
+  width: -moz-fit-content;
   background: linear-gradient(-40deg, #222 15%, #31313190 95%);
   background-size: 200%;
   text-align: center;
@@ -425,12 +426,13 @@ body {
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
 @media screen and (max-width: 1000px) {
   .welcome-main {
-    justify-content: space-evenly;
+    justify-content: center;
   }
 
   .logo-section {
     /* background-color: rgb(80, 84, 2); */
     /* clip-path: inset(0); */
+    width: 100%;
     border-bottom: none;
     height: 20%;
   }
@@ -450,11 +452,12 @@ body {
     width: 100%;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
   }
 
   .link {
     width: 100%;
-    height: 20%;
+    height: 15%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -468,11 +471,48 @@ body {
   }
 
   .link-title {
-    width: fit-content;
+    width: 120px;
     height: 50px;
     margin: 0;
     display: flex;
     align-items: center;
+    justify-content: center;
+  }
+
+  .game-section {
+    flex-direction: column;
+    gap: 10px;
+    height: 100vh;
+  }
+
+  .game-title {
+    width: 100%;
+    gap: 0;
+    transform: translateY(-10%);
+    align-items: center;
+  }
+
+  .game-title-main {
+    transform: scale(0.5);
+    height: 400px;
+  }
+
+  .game-history {
+    display: none;
+  }
+
+  .game-type {
+    width: 75vw;
+    transform: translateY(-30%);
+    margin: 0 auto;
+    grid-template-columns: repeat(2, 100px);
+    grid-auto-rows: 120px;
+    gap: 20px 40px;
+  }
+
+  .game-name {
+    padding-top: 5px;
+    font-size: 0.9rem;
   }
 }
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */
