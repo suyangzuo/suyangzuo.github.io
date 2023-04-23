@@ -115,18 +115,13 @@
 }
 
 .logo-title {
-  /* background-color: darkcyan; */
-  background: linear-gradient(
-    177deg,
-    rgb(20, 178, 89) 53%,
-    rgb(175, 255, 225) 53%
-  );
+  background: rgb(222, 222, 222);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
   font-size: clamp(1.5em, 1.8em, 2em);
-  font-weight: bold;
+  font-weight: 600;
   padding: 10px 0;
   filter: drop-shadow(2px 2px 2px #222);
   font-family: "Ma Shan Zheng", cursive;

@@ -61,7 +61,7 @@ body {
   grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
   grid-auto-rows: fit-content;
   padding: 2% 4%;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .software-container > .software {
