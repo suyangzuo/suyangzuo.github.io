@@ -297,6 +297,7 @@ body {
   border-radius: 50px;
   height: 100%;
   color: black;
+  -webkit-user-select: none;
   user-select: none;
   transition: 0.2s;
   /* position: relative; */
@@ -323,7 +324,7 @@ body {
   }
 
   .purpose > p:nth-child(1) {
-    font-size: 1.5em;
+    font-size: 1.5rem;
   }
 
   .explain-list {

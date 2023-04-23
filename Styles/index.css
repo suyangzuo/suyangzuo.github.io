@@ -117,7 +117,7 @@ body {
 .logo-title {
   /* background-color: darkcyan; */
   font-size: clamp(1.5em, 1.75em, 2em);
-  color: rgb(81, 178, 239);
+  color: burlywood;
   text-shadow: 1px 1px 5px rgb(0, 0, 0);
   padding: 10px 0;
 }
@@ -232,6 +232,7 @@ body {
   position: relative;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .game-section > .section-bg-img {
@@ -380,10 +381,11 @@ body {
 
 .game-type {
   width: 800px;
+  height: 700px;
   display: grid;
-  place-content: center;
-  grid-template-columns: repeat(3, 140px);
-  grid-auto-rows: 200px;
+  place-content: flex-start center;
+  grid-template-columns: repeat(4, 100px);
+  grid-auto-rows: 150px;
   gap: 50px;
   /* background-color: cadetblue; */
 }
@@ -394,7 +396,7 @@ body {
 }
 
 .game-type-example:hover {
-  transform: perspective(250px) rotateX(15deg);
+  transform: perspective(400px) rotateX(25deg);
 }
 
 .game-example-image {
@@ -416,10 +418,41 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 12px;
-  background-color: rgb(127, 174, 255);
-  color: black;
+  /* background-image: linear-gradient(
+      90deg,
+      rgba(36, 36, 36, 0.5),
+      rgba(255, 176, 131, 0.5)
+    ),
+    url(/Images/Index-Images/火焰燃烧.gif); */
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
   clip-path: polygon(0 0, 100% 0, 100% 50%, 55% 100%, 45% 100%, 0 50%);
+}
+
+.game-type-example:nth-child(even) > .game-name {
+  background-image: url(/Images/Index-Images/火焰燃烧.gif);
+}
+
+.game-type-example:nth-child(odd) > .game-name {
+  background-image: url(/Images/Index-Images/雪花飘舞.gif);
+}
+
+.game-name > span {
+  width: 100%;
+  text-align: center;
+  font-size: 0.8rem;
+  line-height: 0.8rem;
+  text-shadow: 1px 1px 1px #000;
+  color: white;
+  vertical-align: middle;
+  padding: 5px 10px 6px;
+  background: linear-gradient(
+    280deg,
+    rgba(248, 81, 100, 0.75),
+    rgba(95, 150, 190, 0.75)
+  );
+  /* border-radius: 50px; */
 }
 /* <!-- ------------------ ↑ 游戏区 ------------------- --> */
 
@@ -505,14 +538,13 @@ body {
     width: 75vw;
     transform: translateY(-30%);
     margin: 0 auto;
-    grid-template-columns: repeat(2, 100px);
-    grid-auto-rows: 120px;
+    grid-template-columns: repeat(3, 80px);
+    grid-auto-rows: 115px;
     gap: 20px 40px;
   }
 
-  .game-name {
-    padding-top: 5px;
-    font-size: 0.9rem;
+  .game-name > span {
+    font-size: 0.75rem;
   }
 }
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */

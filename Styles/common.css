@@ -47,7 +47,7 @@ li {
 
 li > a > i {
   transform: rotateZ(90deg);
-  transition: 0.3s;
+  transition: 0.25s;
 }
 
 footer {
@@ -68,17 +68,44 @@ footer {
 footer > .author > p:nth-child(3) > a {
   text-decoration: underline;
   text-underline-offset: 3px;
-  transition: 0.25s;
+  transition: 0.15s;
 }
 
 footer > .author > p:nth-child(3):hover > a {
   color: #c97719;
 }
 
-address > a {
-  margin: 0 15px;
+address {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  font-style: normal;
 }
 
-.address > i {
-  transform: scale(200%);
+.address {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.address > span:hover {
+  animation: 底栏邮箱链接动画 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes 底栏邮箱链接动画 {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.125);
+  }
+}
+
+.address > img {
+  height: 1.5rem;
+  transform: scale(1.2);
+}
+
+.address > img:hover {
+  filter: hue-rotate(50deg);
 }

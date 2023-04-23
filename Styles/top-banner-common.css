@@ -189,6 +189,7 @@
 .top-nav .nav-ul > li > a {
   font-size: 0.95rem;
   padding: 0 1.5em;
+  text-shadow: 1px 1px 1px #000;
   /* transition: 0.5s; */
 }
 
