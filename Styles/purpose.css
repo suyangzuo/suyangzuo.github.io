@@ -63,7 +63,7 @@ body {
 }
 
 .purpose > p:nth-child(1) img {
-  height: 1em;
+  height: 65px;
   aspect-ratio: 1;
   vertical-align: baseline;
   transform: translateY(10%);
@@ -325,6 +325,10 @@ body {
 
   .purpose > p:nth-child(1) {
     font-size: 1.5rem;
+  }
+
+  .purpose > p:nth-child(1) img {
+    height: 25px;
   }
 
   .explain-list {
