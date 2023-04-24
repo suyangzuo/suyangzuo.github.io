@@ -115,20 +115,23 @@
 }
 
 .logo-title {
-  background: rgb(222, 222, 222);
+  font-size: clamp(1.5em, 1.8em, 2em);
+  font-weight: 600;
+  padding: 10px 0;
+  /* filter: drop-shadow(0px 0px 1px #fffc) drop-shadow(-0px -0px 1px #fffc); */
+  font-family: "Ma Shan Zheng", cursive;
+  background-image: url(/Images/Index-Images/Motto-Gif-03.gif);
+  background-size: 100%;
+  background-position: center;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-  font-size: clamp(1.5em, 1.8em, 2em);
-  font-weight: 600;
-  padding: 10px 0;
-  filter: drop-shadow(2px 2px 2px #222);
-  font-family: "Ma Shan Zheng", cursive;
+  filter: brightness(2) drop-shadow(0 0 1px #222);
 }
 
 .logo-brief {
-  color: #aaa;
+  /* color: #aaa; */
   padding: 20px 0;
   display: grid;
   gap: 0 75px;
@@ -141,7 +144,6 @@
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  text-shadow: 1px 1px 3px #000;
   font-size: 1.25rem;
   /* color:rgb(227, 135, 126) */
 }
@@ -154,11 +156,13 @@
 
 .motto {
   font-size: 1rem;
+  color: #ccc;
 }
 
 .checked {
-  filter: sepia(1) hue-rotate(70deg) saturate(4) contrast(0.6);
+  filter: sepia(1) hue-rotate(50deg) saturate(15) contrast(0.65);
   transform: scale(1.1);
+  text-shadow: 1px 1px 3px #000;
 }
 
 .link-section {
@@ -236,7 +240,7 @@
   height: 100vh;
   position: relative;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
 }
 
@@ -389,7 +393,7 @@
   height: 700px;
   display: grid;
   place-content: flex-start center;
-  grid-template-columns: repeat(4, 100px);
+  grid-template-columns: repeat(5, 100px);
   grid-auto-rows: 150px;
   gap: 50px;
   /* background-color: cadetblue; */
@@ -472,7 +476,7 @@
     /* clip-path: inset(0); */
     width: 100%;
     border-bottom: none;
-    height: 20%;
+    height: 25%;
   }
 
   .logo-brief {
@@ -524,6 +528,7 @@
 
   .game-title {
     width: 100%;
+    height: 200px;
     gap: 0;
     transform: translateY(-10%);
     align-items: center;
@@ -534,13 +539,33 @@
     height: 400px;
   }
 
+  .游 {
+    top: -60%;
+  }
+
+  .game-title-main:hover > .游 {
+    top: -50%;
+  }
+
+  .戏 {
+    top: 40%;
+  }
+
+  .game-title-main:hover > .戏 {
+    top: 30%;
+  }
+
+  .gamer-banner {
+    top: -20%;
+  }
+
   .game-history {
     display: none;
   }
 
   .game-type {
     width: 75vw;
-    transform: translateY(-30%);
+    /* transform: translateY(-30%); */
     margin: 0 auto;
     grid-template-columns: repeat(3, 80px);
     grid-auto-rows: 115px;
