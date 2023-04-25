@@ -4,7 +4,7 @@
 ## 2. 网站Logo（该Logo以及`永恒`艺术字，均由本人同事`氯化银`原创设计）
 <img src="/Images/Page-Logos/Eternal-Logo.png" style="width:25%">
 
-### 3. 本站由一位职业学校专业教师创建，主要目标：
+### 3. 本站由一位职业学校专业教师创建，多位同事/贡献者参与其中，主要目标：
 
 - 打造在线教程聚合导航门户
 - 快速定位相关技术栈教程页面
@@ -18,7 +18,7 @@
 
     - C 语言
     - C#
-    - Web 前端
+    - Web
     - Java
     - Python
   
@@ -36,7 +36,19 @@
     - Oracle
     - MariaDB
     - MongoDB
+    - SurrealDB
+    - QuestDB
     - Access
+
+- **游戏引擎**
+
+  - 虚幻
+  - Unity
+  - Godot
+  - PixiJS
+  - Phaser
+  - libGDX
+  - Babylon.js
 
 - **设计**
 
@@ -44,9 +56,12 @@
     - Photoshop
     - GIMP
     - Illustrator
+    - Krita
     - Animate
     - Clip Studio
     - Lightroom
+    - darktable
+    - RawTherapee
   - 三维
     - 3ds Max
     - Cinema 4D

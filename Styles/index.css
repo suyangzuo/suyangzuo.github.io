@@ -161,7 +161,7 @@
   justify-content: space-between;
   gap: 10px;
   font-size: 1.25rem;
-  filter: drop-shadow(2px 2px 1px #333);
+  filter: drop-shadow(2px 2px 2px #333);
   /* color:rgb(227, 135, 126) */
 }
 
@@ -177,9 +177,8 @@
 }
 
 .checked {
-  filter: sepia(1) hue-rotate(50deg) saturate(15) contrast(0.65);
+  color: rgb(42, 207, 111);
   transform: scale(1.1);
-  text-shadow: 1px 1px 3px #000;
 }
 
 .link-section {
