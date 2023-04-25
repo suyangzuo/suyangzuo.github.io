@@ -22,7 +22,7 @@
   justify-content: flex-start;
   align-items: center;
   position: relative;
-  gap: 25px;
+  gap: 50px;
   padding: 7.5% 0 0 0;
 }
 
@@ -66,7 +66,6 @@
   align-items: center;
   justify-content: center;
   /* border-bottom: solid 1px rgb(138, 138, 138); */
-  /* clip-path: inset(0 30% 0 30%); */
   position: relative;
 }
 
@@ -132,10 +131,27 @@
 
 .logo-brief {
   /* color: #aaa; */
-  padding: 20px 0;
+  padding: 20px 100px;
   display: grid;
-  gap: 0 75px;
+  gap: 0 60px;
   grid-template-columns: repeat(2, 1fr);
+  position: relative;
+}
+
+.logo-brief-bg {
+  position: absolute;
+  width: 120%;
+  height: 120%;
+  z-index: -1;
+  left: -10%;
+  top: -5%;
+  transform: scaleX(120%);
+}
+
+.logo-brief-bg > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .logo-brief-individual {
@@ -145,6 +161,7 @@
   justify-content: space-between;
   gap: 10px;
   font-size: 1.25rem;
+  filter: drop-shadow(2px 2px 1px #333);
   /* color:rgb(227, 135, 126) */
 }
 
@@ -469,6 +486,7 @@
 @media screen and (max-width: 1000px) {
   .welcome-main {
     justify-content: center;
+    gap: 25px;
   }
 
   .logo-section {
