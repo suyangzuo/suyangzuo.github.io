@@ -1,9 +1,9 @@
 const links = document.querySelectorAll(".intro > a");
 
-links.forEach((link) => {
-  link.addEventListener("mouseenter", changeLinkBrightness);
-  link.addEventListener("mouseleave", restoreLinkBrightness);
-});
+// links.forEach((link) => {
+//   link.addEventListener("mouseenter", changeLinkBrightness);
+//   link.addEventListener("mouseleave", restoreLinkBrightness);
+// });
 
 function changeLinkBrightness() {
   links.forEach((link) => {

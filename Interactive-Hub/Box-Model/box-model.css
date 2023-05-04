@@ -1,0 +1,411 @@
+body {
+  min-height: 100vh;
+}
+
+.盒子模型展示区 {
+  background: #141e30; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to left,
+    #243b55,
+    #141e30
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to left,
+    #243b55,
+    #141e30
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  height: calc(100vh - 65px);
+  position: relative;
+  overflow: auto;
+}
+
+.交互标题 {
+  position: absolute;
+  width: fit-content;
+  height: 100px;
+  top: 0.5%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  color: white;
+}
+
+.盒子模型展示区 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+}
+
+.盒子 {
+  width: 800px;
+  height: 800px;
+  /* outline: solid 1px rgb(196, 196, 196); */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.盒子 div {
+  position: absolute;
+}
+
+.第4盒 {
+  background-color: rgb(107, 57, 110);
+  width: 700px;
+  height: 700px;
+  animation: 第4盒动画 1s ease-in-out infinite alternate;
+}
+
+@keyframes 第4盒动画 {
+  from {
+    filter: opacity(1);
+  }
+  to {
+    filter: opacity(0.1);
+  }
+}
+
+.第3盒 {
+  background-color: seagreen;
+  width: 500px;
+  height: 500px;
+}
+
+.第2盒 {
+  background-color: goldenrod;
+  width: 300px;
+  height: 300px;
+}
+
+.第1盒 {
+  background-color: steelblue;
+  width: 100px;
+  height: 100px;
+}
+
+.选项 {
+  width: 650px;
+  height: 800px;
+  /* outline: solid 1px rgb(196, 196, 196); */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.单项 {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+}
+
+.单项-外边距 {
+  background-color: #0c172430;
+  border-right: solid 5px rgb(107, 57, 110);
+}
+
+.单项-边框 {
+  background-color: #0c172460;
+  border-right: solid 5px seagreen;
+}
+
+.单项-内边距 {
+  background-color: #0c172490;
+  border-right: solid 5px goldenrod;
+}
+
+.单项-内容 {
+  background-color: #0c1724c0;
+  border-right: solid 5px steelblue;
+}
+
+.单项属性-名称 {
+  width: 100px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(-30deg, #0003 0%, #0007 100%);
+  /* font-weight: bolder; */
+}
+
+.名称中文 {
+  font-size: 1.25rem;
+}
+
+.范围选择 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 5px 0;
+}
+
+.范围单项 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  padding: 5px 0;
+}
+
+.范围选择器 {
+  appearance: none;
+  width: 200px;
+  height: 7px;
+  border-radius: 10px;
+}
+
+.范围选择器::-webkit-slider-thumb {
+  position: relative;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 13px;
+  height: 30px;
+  cursor: ew-resize;
+  background: no-repeat center/100%
+    url(/Images/Interactive-Hub/Web-Front-End/火焰.gif);
+  transform: translateY(-8px) scaleX(1.5);
+}
+
+.单项-外边距 input[type="range"] {
+  appearance: none;
+  background-color: rgb(107, 57, 110);
+}
+
+.单项-边框 input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: seagreen;
+}
+
+.单项-内边距 input[type="range"] {
+  appearance: none;
+  background-color: rgb(170, 127, 18);
+}
+
+.单项-内容 input[type="range"] {
+  appearance: none;
+  background-color: rgb(54, 101, 155);
+}
+
+.单项属性-方向 {
+  width: 70px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 5px;
+}
+
+.中文 {
+  color: gold;
+}
+
+.代码 {
+  color: tomato;
+}
+
+.方向代码 {
+  font-size: 0.85rem;
+}
+
+.值 {
+  width: 65px;
+  color: darkgrey;
+  background-color: rgba(129, 44, 44, 0);
+  padding: 5px 2px;
+  clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 20% 100%, 0% 50%);
+  border-radius: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.85rem;
+}
+
+.值-数字 {
+  display: inline-block;
+  color: white;
+  font-weight: bolder;
+  width: 30px;
+  text-align: right;
+}
+
+.范围单项:has(.范围选择器:hover) > .值 {
+  background-color: rgba(129, 44, 44, 1);
+}
+
+.选项关联区 {
+  padding: 0 0 0 15px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 5px;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.关联方向 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* gap: 5px; */
+}
+
+.关联方向:hover {
+  cursor: pointer;
+}
+
+.单项-外边距 .关联方向 > label {
+  color: rgb(185, 83, 180);
+  padding: 0 5px;
+}
+
+.单项-边框 .关联方向 > label {
+  color: rgb(84, 214, 110);
+  padding: 0 5px;
+}
+
+.单项-内边距 .关联方向 > label {
+  color: rgb(255, 157, 0);
+  padding: 0 5px;
+}
+
+.单项-内容 .关联方向 > label {
+  color: rgb(107, 171, 240);
+  padding: 0 5px;
+}
+
+.关联方向:hover > label {
+  color: rgb(212, 72, 72);
+}
+
+.关联方向:hover input {
+  scale: 1.1;
+}
+
+.关联方向 > label:hover,
+.关联方向 > .checkbox-封装器 > label:hover,
+.关联方向 > .checkbox-封装器 > input:not(:checked):hover {
+  cursor: pointer;
+}
+
+.checkbox-封装器 {
+  position: relative;
+}
+
+.checkbox-封装器 > input {
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  outline: solid 1px gray;
+}
+
+.checkbox-封装器 > span {
+  position: absolute;
+  left: 10%;
+  color: rgb(52, 184, 118);
+  transform: scale(1.5);
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.15s;
+  pointer-events: none;
+}
+
+.checkbox-封装器 > input:checked + span {
+  visibility: visible;
+  opacity: 1;
+}
+
+.盒子尺寸 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 15px 0;
+}
+
+.盒子尺寸代码 {
+  font-size: 0.85rem;
+}
+
+.盒子尺寸类型 {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.盒子尺寸类型-label {
+  color: lightseagreen;
+  /* width: 100px; */
+  padding: 0 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: 0.2s;
+}
+
+.盒子尺寸类型-label > span {
+  color: rgb(155, 246, 241);
+  font-size: 0.85rem;
+}
+
+.盒子尺寸 input {
+  appearance: none;
+  border: solid 1px gray;
+  width: 12px;
+  height: 12px;
+  transition: 0.2s;
+}
+
+.radio封装器 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.radio封装器 > span {
+  position: absolute;
+  top: 20%;
+  left: 15%;
+  transform: scale(1.5);
+  color: rgb(52, 184, 118);
+  visibility: hidden;
+  opacity: 0;
+}
+
+.radio封装器:has(input:checked) > span {
+  visibility: visible;
+  opacity: 1;
+  transition: 0.15s;
+}
+
+.盒子尺寸类型:hover > .盒子尺寸类型-label {
+  filter: brightness(120%);
+  cursor: pointer;
+}
+
+.盒子尺寸类型:hover > .radio封装器 {
+  cursor: pointer;
+}
+
+.盒子尺寸类型:hover input {
+  scale: 1.1;
+}

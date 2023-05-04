@@ -23,7 +23,7 @@
   align-items: center;
   position: relative;
   gap: 50px;
-  padding: 7.5% 0 0 0;
+  padding: 5% 0 0 0;
 }
 
 .section-bg-img {
@@ -183,13 +183,15 @@
 
 .link-section {
   width: 1000px;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(5, 15%);
+  grid-auto-rows: 190px;
   justify-content: center;
+  gap: 50px 0;
   /* border-top: solid 1px rgb(196, 196, 196); */
 }
 
 .link {
-  width: 15%;
   display: block;
   /* background-color: blueviolet; */
 }

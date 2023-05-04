@@ -1,3 +1,13 @@
+@font-face {
+  font-family: HarmonyOS Sans SC;
+  src: url(/Fonts/HarmonyOS_Sans_SC_Regular.ttf);
+}
+
+@font-face {
+  font-family: 霞鹜文楷;
+  src: url(/Fonts/LXGWWenKai-Regular.ttf);
+}
+
 :root {
   --bg-color: rgb(14, 15, 16);
   --f-color: #eeeeee;
@@ -11,7 +21,7 @@
 *,
 *::before,
 *::after {
-  font-family: "Noto Sans SC", sans-serif, "Noto Sans Mono", monospace;
+  font-family: "HarmonyOS Sans SC", sans-serif, "Noto Sans Mono", monospace;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -22,7 +32,7 @@ body {
   background-color: var(--bg-color);
   color: var(--f-color);
   z-index: 0;
-  padding-bottom: 150px;
+  /* padding-bottom: 150px; */
 }
 
 a {
@@ -51,7 +61,7 @@ li > a > i {
 }
 
 footer {
-  position: absolute;
+  /* position: absolute; */
   bottom: 0;
   z-index: 2;
   display: flex;

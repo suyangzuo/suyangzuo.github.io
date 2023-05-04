@@ -1,0 +1,87 @@
+.后退区,
+.重置区 {
+  position: absolute;
+  top: 0.5%;
+  width: 50px;
+  height: 50px;
+}
+
+.后退区 > .后退链接,
+.重置区 > .重置按钮 {
+  display: block;
+  width: 100%;
+  height: 100%;
+  font-size: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  transition: 0.25s;
+}
+
+.重置区 > .重置按钮 {
+  position: relative;
+  background: transparent;
+  border: none;
+}
+
+.后退区 {
+  left: 2%;
+  top: 2%;
+}
+
+.重置区 {
+  right: 2%;
+  top: 2%;
+}
+
+.后退区 > .后退链接:hover,
+.重置区 > .重置按钮:hover {
+  border-radius: 10px;
+  cursor: pointer;
+  filter: hue-rotate(150deg);
+}
+
+.后退区 > .后退链接:hover img,
+.重置区 > .重置按钮:hover img {
+  animation-play-state: paused;
+}
+
+.后退区 img,
+.重置区 img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.后退链接 > img {
+  animation: 后退按钮动画 0.5s linear infinite alternate;
+}
+
+.重置-外图 {
+  animation: 重置按钮动画 2s linear infinite;
+}
+
+@keyframes 后退按钮动画 {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes 重置按钮动画 {
+  from {
+    transform: rotateZ(0deg);
+  }
+  to {
+    transform: rotateZ(360deg);
+  }
+}
+
+.重置-内图 {
+  position: absolute;
+  scale: 45%;
+  animation: 重置按钮动画 2s linear infinite reverse;
+}
