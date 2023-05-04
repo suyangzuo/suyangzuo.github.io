@@ -316,7 +316,8 @@ body {
 .checkbox-封装器 > span {
   position: absolute;
   left: 10%;
-  color: rgb(52, 184, 118);
+  /* color: rgb(52, 184, 118); */
+  color: rgb(124, 255, 216);
   transform: scale(1.5);
   visibility: hidden;
   opacity: 0;
@@ -372,6 +373,7 @@ body {
   width: 12px;
   height: 12px;
   transition: 0.2s;
+  position: relative;
 }
 
 .radio封装器 {
@@ -386,15 +388,26 @@ body {
   top: 20%;
   left: 15%;
   transform: scale(1.5);
-  color: rgb(52, 184, 118);
+  /* color: rgb(52, 184, 118); */
+  color: rgb(255, 107, 84);
   visibility: hidden;
   opacity: 0;
 }
 
-.radio封装器:has(input:checked) > span {
+/* .radio封装器:has(input:checked) > span {
   visibility: visible;
   opacity: 1;
   transition: 0.15s;
+} */
+
+.盒子尺寸 input:checked:after {
+  width: 70%;
+  height: 70%;
+  position: absolute;
+  top: 15%;
+  left: 15%;
+  content: "";
+  background-color: white;
 }
 
 .盒子尺寸类型:hover > .盒子尺寸类型-label {
