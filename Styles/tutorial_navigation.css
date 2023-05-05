@@ -116,6 +116,8 @@ body {
   padding: 5px 10px;
   width: 100%;
   transition: 0.3s;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 .tutorials .tutorial-card .intro .card-text:hover {
@@ -134,49 +136,7 @@ body {
 }
 
 /* -------------------------------- ↓ 响应式设计 ----------------------------------- */
-
 @media screen and (max-width: 1200px) {
-  .people-hall {
-    padding: 20px 0;
-  }
-
-  .people {
-    width: 100%;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-  }
-
-  .people-img {
-    height: 40%;
-    width: 85%;
-    box-shadow: none;
-  }
-
-  .people-img > img {
-    object-fit: contain;
-  }
-
-  .people-brief {
-    height: 60%;
-    width: 85%;
-    margin: 0;
-    padding: 0;
-    align-items: center;
-    overflow: auto;
-    gap: 15px;
-  }
-
-  .people-name {
-    font-size: 1rem;
-  }
-
-  .people-life {
-    padding: 0;
-    transform: none;
-    align-items: flex-start;
-  }
-
   .tutorials {
     max-width: 100%;
     gap: 50px 0;

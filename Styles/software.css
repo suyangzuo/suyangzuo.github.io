@@ -172,7 +172,9 @@ body {
   height: 65%;
   font-size: 1em;
   overflow: auto;
-  transition: 0.3s;
+  transition: 0.25s;
+  text-align: justify;
+  text-justify: inter-cluster;
 }
 
 .software-img:hover .float-brief {

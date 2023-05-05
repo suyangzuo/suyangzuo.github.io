@@ -128,24 +128,44 @@ body {
 }
 
 .交互单项链接 {
+  background: #275b51;
+  border-radius: 100px;
+  overflow: hidden;
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
   text-decoration: none;
-  padding: 10px 20px;
 }
 
 .交互单项链接:hover {
-  background: #275b51; /* fallback for old browsers */
-  border-radius: 100px;
   cursor: pointer;
+  outline: solid 2px white;
+}
+
+.交互单项链接:hover > .序号 {
+  background-color: rgb(32, 32, 32);
+  color: white;
+}
+
+.序号 {
+  background-color: rgb(63, 164, 111);
+  color: black;
+  font-weight: bolder;
+  aspect-ratio: 0.9;
+  height: 60px;
+  border-radius: 50px 2px 2px 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.1rem;
+  /* transition: 0.1s; */
 }
 
 .链接-图 {
-  height: 20px;
+  height: 30px;
   aspect-ratio: 1;
   display: flex;
   justify-content: center;
@@ -159,5 +179,12 @@ body {
 }
 
 .链接-字 {
-  font-size: 1.1rem;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.链接-字-英文 {
+  font-size: 0.9rem;
+  color: rgb(203, 203, 203);
 }

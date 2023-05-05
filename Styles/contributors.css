@@ -124,6 +124,11 @@ body::before {
   font-weight: bold;
 }
 
+.banner-detail-content {
+  text-align: justify;
+  text-justify: inter-cluster;
+}
+
 .banner-detail-content > span,
 .brief-content > span {
   color: orange;
@@ -221,12 +226,12 @@ body::before {
   align-items: center;
   background-color: rgb(38, 82, 152, 0);
   filter: opacity(0);
-  transition: 0.25s;
 }
 
-.cell-img-container:hover::after {
+.nav-cell:hover > .cell-img-container::after {
   background-color: rgb(38, 82, 152, 0.75);
   filter: opacity(1);
+  transition: 0.1s;
 }
 
 .cell-text-container {
@@ -239,11 +244,11 @@ body::before {
   padding-left: 10%;
 }
 
-.cell-text-container:hover {
+/* .cell-text-container:hover {
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-color: goldenrod;
-}
+} */
 
 .cell-name,
 .cell-intro {
@@ -365,6 +370,8 @@ body::before {
 }
 
 .brief-content {
+  text-align: justify;
+  text-justify: inter-cluster;
   font-size: 1rem;
 }
 

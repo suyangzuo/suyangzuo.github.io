@@ -435,3 +435,26 @@ function 刷新数字() {
   }
 });
 // ----------------------- ↑ 方向关联 --------------------------
+
+// ----------------------- ↓ 盒子尺寸类型 --------------------------
+const 内容 = document.querySelector(".单项-内容");
+const 内容中文 = 内容.querySelector(".名称中文");
+const 内容英文 = 内容.querySelector(".名称代码");
+
+边框盒子选择radio.onchange = 盒子尺寸类型被修改;
+内容盒子选择radio.onchange = 盒子尺寸类型被修改;
+
+function 盒子尺寸类型被修改() {
+  if (边框盒子选择radio.checked) {
+    内容中文.innerText = "盒子";
+    内容英文.innerText = "box";
+    第3盒.style.outline = "solid 5px white";
+    第1盒.style.outline = "none";
+  } else {
+    内容中文.innerText = "内容";
+    内容英文.innerText = "content";
+    第3盒.style.outline = "none";
+    第1盒.style.outline = "solid 5px white";
+  }
+}
+// ----------------------- ↑ 盒子尺寸类型 --------------------------

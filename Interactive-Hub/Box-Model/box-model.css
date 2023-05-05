@@ -74,6 +74,7 @@ body {
   background-color: seagreen;
   width: 500px;
   height: 500px;
+  outline: solid 3px white;
 }
 
 .第2盒 {
@@ -169,9 +170,25 @@ body {
   position: relative;
   -webkit-appearance: none;
   appearance: none;
+  cursor: ew-resize;
+  /* width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 20px; */
   width: 13px;
   height: 30px;
+  background: no-repeat center/100%
+    url(/Images/Interactive-Hub/Web-Front-End/火焰.gif);
+  transform: translateY(-8px) scaleX(1.5);
+}
+
+.范围选择器::-moz-range-thumb {
+  position: relative;
+  -moz-appearance: none;
+  appearance: none;
   cursor: ew-resize;
+  width: 13px;
+  height: 30px;
   background: no-repeat center/100%
     url(/Images/Interactive-Hub/Web-Front-End/火焰.gif);
   transform: translateY(-8px) scaleX(1.5);
@@ -196,6 +213,9 @@ body {
 .单项-内容 input[type="range"] {
   appearance: none;
   background-color: rgb(54, 101, 155);
+}
+
+.选择器-跟随数字 {
 }
 
 .单项属性-方向 {
