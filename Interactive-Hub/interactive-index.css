@@ -106,14 +106,14 @@ body {
 }
 
 .Web前端交互页 > h1 {
-  padding: 0 20px;
+  padding: 0 10px;
   color: gold;
 }
 
 .分割线 {
   background-color: rgba(255, 255, 255, 0.5);
   height: 1px;
-  width: calc(100% - 40px);
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -142,7 +142,7 @@ body {
 
 .交互单项链接:hover {
   cursor: pointer;
-  outline: solid 2px white;
+  outline: solid 2px rgb(172, 172, 172);
 }
 
 .交互单项链接:hover > .序号 {
