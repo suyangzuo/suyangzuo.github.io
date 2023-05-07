@@ -431,6 +431,70 @@ body::before {
   color: black;
 }
 
+.侧边栏 {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%) scaleX(0);
+  width: 125px;
+  /* height: calc(400px + 10px * 7); */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 15px;
+  transform-origin: 100% 50%;
+  transition: 0.25s;
+}
+
+.侧边-贡献者容器 {
+  background-color: #222;
+  width: 80%;
+  height: 50px;
+  border-radius: 50px 0 0 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  outline: solid 2px #888;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: width 0.25s;
+}
+
+.侧边-贡献者容器:hover {
+  cursor: pointer;
+  width: 100%;
+  background-color: #aaa;
+  outline: none;
+}
+
+.侧边-序号 {
+  height: 100%;
+  width: 50%;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.侧边-贡献者容器:hover > .侧边-序号 {
+  color: black;
+  font-size: 1.25rem;
+}
+
+.侧边-肖像 {
+  height: 100%;
+  width: 50%;
+  overflow: hidden;
+}
+
+.侧边-肖像 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
 @media screen and (max-width: 1200px) {
   .banner {
@@ -501,6 +565,10 @@ body::before {
   .brief-name,
   .brief-address-date {
     margin: 0 auto;
+  }
+
+  .侧边栏 {
+    display: none;
   }
 }
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */

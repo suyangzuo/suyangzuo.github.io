@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>交互式-盒子模型</title>
+    <link rel="stylesheet" href="/Styles/common.css" />
+    <link rel="stylesheet" href="/Styles/top-banner-common.css" />
+    <link rel="stylesheet" href="../control.css" />
+    <link rel="stylesheet" href="./object-fit.css" />
+    <script src="/Scripts/html-include.js"></script>
+    <script
+      src="https://kit.fontawesome.com/d0483e3bd3.js"
+      crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
+    <insert-e src="/top-banner.html"></insert-e>
+    <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
+
+    <section class="对象匹配展示区">
+      <insert-e src="../control.html"></insert-e>
+      <p class="交互标题">交互式 - 对象匹配</p>
+      <figure class="对象匹配-图像区">
+        <img src="./示例图-已缩放.jpg" alt="示例图" />
+      </figure>
+      <div class="选项区">
+        <section class="盒子选项 选项类型">
+          <p class="选项标题">盒子选项</p>
+          <div class="控件组 盒子控件组">
+            <div class="控件子组">
+              <label for="溢出隐藏">
+                <p class="中文 属性中文">溢出隐藏</p>
+                <p class="代码 属性代码">overflow: hidden</p>
+              </label>
+              <input
+                type="checkbox"
+                id="溢出隐藏"
+                name="溢出隐藏项"
+                class="复选框" />
+            </div>
+          </div>
+        </section>
+        <section class="图像选项 选项类型">
+          <p class="选项标题">图像选项</p>
+          <section class="控件组 图像-控件组">
+            <div class="控件类型区 控件-图像尺寸">
+              <p class="中文 属性中文">图像尺寸</p>
+              <div class="控件子组">
+                <label for="图像尺寸-原始大小">
+                  <p class="中文 值中文">原始大小</p>
+                </label>
+                <input
+                  type="radio"
+                  id="图像尺寸-原始大小"
+                  name="图像尺寸项"
+                  class="复选框" checked/>
+              </div>
+              <section class="选项分隔区"></section>
+              <div class="控件子组">
+                <label for="图像尺寸-百分之百">
+                  <p class="中文 值中文">100%</p>
+                </label>
+                <input
+                  type="radio"
+                  id="图像尺寸-百分之百"
+                  name="图像尺寸项"
+                  class="复选框" />
+              </div>
+              <section class="选项分隔区"></section>
+              <div class="控件子组">
+                <label for="图像尺寸-放大">
+                  <p class="中文 值中文">150%</p>
+                </label>
+                <input
+                  type="radio"
+                  id="图像尺寸-放大"
+                  name="图像尺寸项"
+                  class="复选框" />
+              </div>
+            </div>
+            <div class="控件类型区 控件-对象匹配">
+              <p class="属性名称"><span class="中文 属性中文">对象匹配</span><span class="代码 属性代码">object-fit</span></p>
+              <div class="控件类型操作区">
+                <div class="控件子组">
+                  <label for="对象匹配-等比封面">
+                    <p class="中文 值中文">等比封面</p>
+                    <p class="代码 值代码">cover</p>
+                  </label>
+                  <input
+                    type="radio"
+                    id="对象匹配-等比封面"
+                    name="对象匹配项"
+                    class="单选框" />  
+                </div>
+                <div class="控件子组">
+                  <label for="对象匹配-等比包含">
+                    <p class="中文 值中文">等比包含</p>
+                    <p class="代码 值代码">contain</p>
+                  </label>
+                  <input
+                    type="radio"
+                    id="对象匹配-等比包含"
+                    name="对象匹配项"
+                    class="单选框" />  
+                </div>
+                <div class="控件子组">
+                  <label for="对象匹配-完全填充">
+                    <p class="中文 值中文">完全填充</p>
+                    <p class="代码 值代码">fill</p>
+                  </label>
+                  <input
+                    type="radio"
+                    id="对象匹配-完全填充"
+                    name="对象匹配项"
+                    class="单选框" />  
+                </div>  
+              </div>
+            </div>
+            <div class="控件类型区 控件-对象匹配">
+              <p class="属性名称"><span class="中文 属性中文">对象位置</span><span class="代码 属性代码">object-position</span></p>
+              <div class="控件类型操作区 对象位置操作区">
+                <div class="控件子组">
+                  <label for="对象位置-X轴">
+                    <p class="中文 值中文">X轴</p>
+                  </label>
+                  <input
+                    type="range"
+                    id="对象位置-X轴"
+                    name="对象匹配项"
+                    min="-100"
+                    max="200"
+                    step="1"
+                    value="0"
+                    class="范围条" />
+                  <div class="范围条数字区 X轴数字区">0%</div>
+                </div>
+                <div class="控件子组">
+                  <label for="对象位置-Y轴">
+                    <p class="中文 值中文">Y轴</p>
+                  </label>
+                  <input
+                    type="range"
+                    id="对象位置-Y轴"
+                    name="对象匹配项"
+                    min="-100"
+                    max="200"
+                    step="1"
+                    value="0"
+                    class="范围条" />
+                  <div class="范围条数字区 Y轴数字区">0%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <script src="./object-fit.js"></script>
+  </body>
+</html>

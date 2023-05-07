@@ -95,7 +95,7 @@ body {
 }
 
 .Web前端交互页 {
-  width: 500px;
+  width: 1250px;
   height: 1000px;
   /* outline: solid 1px brown; */
   padding: 2%;
@@ -119,7 +119,7 @@ body {
 
 .Web前端交互列表 {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(5, 20%);
   gap: 20px;
 }
 

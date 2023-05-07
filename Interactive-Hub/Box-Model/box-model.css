@@ -17,6 +17,10 @@ body {
   height: calc(100vh - 65px);
   position: relative;
   overflow: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
 }
 
 .交互标题 {
@@ -30,13 +34,6 @@ body {
   display: flex;
   align-items: center;
   color: white;
-}
-
-.盒子模型展示区 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 50px;
 }
 
 .盒子 {
@@ -213,9 +210,6 @@ body {
 .单项-内容 input[type="range"] {
   appearance: none;
   background-color: rgb(54, 101, 155);
-}
-
-.选择器-跟随数字 {
 }
 
 .单项属性-方向 {

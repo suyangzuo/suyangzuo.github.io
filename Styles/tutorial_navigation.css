@@ -82,7 +82,8 @@ body {
   visibility: hidden;
 }
 
-.tutorials .tutorial-card a:nth-child(1):hover::before {
+.tutorials .tutorial-card a:nth-child(1):hover::before,
+.intro:has(.card-text:hover) a:nth-child(1)::before {
   visibility: visible;
   animation: border-rotate 3s linear infinite;
 }
@@ -123,9 +124,9 @@ body {
 .tutorials .tutorial-card .intro .card-text:hover {
   cursor: pointer;
   transform: scale(1.04);
-  text-decoration: underline;
+  /* text-decoration: underline;
   text-underline-offset: 0.2em;
-  text-decoration-color: #aaa;
+  text-decoration-color: #aaa; */
 }
 
 .tutorials .tutorial-card .intro .card-text .card-text-title {

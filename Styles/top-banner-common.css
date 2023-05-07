@@ -217,6 +217,15 @@
 
 .top-nav-dropdown li > a {
   font-size: 0.9rem;
+  /* background-color: red; */
+  height: 100%;
+}
+
+.top-nav-dropdown li > a > p {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .top-nav .nav-ul > li:hover .top-nav-dropdown {

@@ -1,0 +1,279 @@
+body {
+  min-height: 100vh;
+}
+
+.对象匹配展示区 {
+  background: #141e30; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to left,
+    #243b55,
+    #141e30
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to left,
+    #243b55,
+    #141e30
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  height: calc(100vh - 65px);
+  position: relative;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 150px;
+  gap: 150px;
+}
+
+.交互标题 {
+  position: absolute;
+  width: fit-content;
+  height: 100px;
+  top: 0.5%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  color: white;
+}
+
+.对象匹配-图像区 {
+  width: 500px;
+  height: 350px;
+  outline: solid 5px rgb(183, 49, 49);
+}
+
+.对象匹配-图像区 > img {
+  transition: 0.25s;
+  opacity: 0.75;
+}
+
+.选项区 {
+  width: 500px;
+}
+
+.选项分隔区 {
+  width: 5px;
+}
+
+.选项类型 {
+  outline: 1px solid rgb(177, 177, 177);
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.图像选项 {
+  height: 300px;
+}
+
+.图像-控件组 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  /* gap: 10px; */
+}
+
+.图像-控件组 > div {
+  padding: 8px 0;
+}
+
+.图像-控件组 > div:nth-child(2) {
+  border-top: solid 1px gray;
+  border-bottom: solid 1px gray;
+}
+
+.选项标题 {
+  font-weight: bolder;
+  font-size: 1.2rem;
+  color: rgb(77, 196, 128);
+  padding: 5px 0;
+}
+
+.控件子组 {
+  display: flex;
+  align-items: center;
+}
+
+.控件类型区 {
+  display: flex;
+  gap: 10px;
+}
+
+.控件类型区 > p {
+  width: 100px;
+}
+
+.属性中文 {
+  color: orange;
+}
+
+.值中文 {
+  color: tomato;
+}
+
+.属性名称 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.属性代码 {
+  font-size: 0.8rem;
+  font-family: consolas;
+}
+
+.控件类型操作区 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px 25px;
+  place-content: center start;
+}
+
+.对象位置操作区 {
+  display: flex;
+  flex-direction: column;
+  gap: 45px;
+}
+
+.代码 {
+  font-family: consolas;
+}
+
+.控件子组 label:hover,
+.控件子组 input:hover {
+  cursor: pointer;
+}
+
+label > .代码 {
+  font-size: 0.8rem;
+}
+
+.对象位置操作区 > .控件子组 {
+  position: relative;
+}
+
+.控件子组 > label {
+  padding: 0 8px 0 0;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  /* background-color: rgb(111, 182, 142); */
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  position: relative;
+  border: solid 1px gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+input[type="checkbox"]::after {
+  width: 15px;
+  height: 15px;
+  content: "";
+  background-color: gold;
+  clip-path: polygon(12% 50%, 43% 75%, 90% 5%, 100% 12%, 47% 95%, 5% 61%);
+  transform: scale(0);
+  transition: 0.05s;
+}
+
+input[type="checkbox"]:checked::after {
+  transform: scale(0.8);
+}
+
+input[type="radio"]::after {
+  width: 60%;
+  height: 60%;
+  /* position: absolute; */
+  content: "";
+  box-shadow: inset 15px 15px gold;
+  transform: scale(0);
+  transition: 0.05s;
+}
+
+input[type="radio"]:checked::after {
+  transform: scale(1);
+}
+
+label,
+input {
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: seagreen;
+  width: 300px;
+  height: 5px;
+  border-radius: 5px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 15px;
+  width: 10px;
+  background: no-repeat center/100% url(./进度条指示器.png);
+  filter: grayscale(1) brightness(500%);
+  transform: translateY(-3px);
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  cursor: ew-resize;
+}
+
+.范围条数字区 {
+  position: absolute;
+  width: 40px;
+  height: 30px;
+  border-radius: 3px;
+  background: rgb(41, 126, 78);
+  top: 20px;
+  left: 115px;
+  clip-path: polygon(
+    0% 15%,
+    40% 15%,
+    50% 0%,
+    60% 15%,
+    100% 15%,
+    100% 100%,
+    0% 100%
+  );
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  color: white;
+  font-size: 0.75rem;
+  padding-bottom: 4px;
+  transition: background-color 0.1s;
+}
+
+.控件子组:hover input[type="radio"],
+.控件子组:hover input[type="checkbox"] {
+  animation: 控件子组鼠标悬挂时动画 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes 控件子组鼠标悬挂时动画 {
+  from {
+    border-color: gray;
+    border-width: 1px;
+    transform: scale(1);
+  }
+  to {
+    border-color: white;
+    border-width: 2px;
+    transform: scale(1.15);
+  }
+}
+
+.控件子组:hover .范围条数字区 {
+  background-color: rgb(211, 61, 83);
+}
