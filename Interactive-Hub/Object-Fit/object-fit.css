@@ -41,15 +41,22 @@ body {
   width: 500px;
   height: 350px;
   outline: solid 5px rgb(183, 49, 49);
+  position: relative;
+  z-index: 0;
 }
 
 .对象匹配-图像区 > img {
-  transition: 0.25s;
+  transition: opacity 0.25s;
   opacity: 0.75;
+  pointer-events: none;
+  position: relative;
+  z-index: -1;
 }
 
 .选项区 {
   width: 500px;
+  position: relative;
+  z-index: 0;
 }
 
 .选项分隔区 {
@@ -275,5 +282,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .控件子组:hover .范围条数字区 {
-  background-color: rgb(211, 61, 83);
+  background-color: goldenrod;
+  color: black;
 }
