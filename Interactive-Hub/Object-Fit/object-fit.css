@@ -223,6 +223,10 @@ input[type="range"] {
   border-radius: 5px;
 }
 
+input[type="range"]:focus {
+  outline: none;
+}
+
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -230,7 +234,7 @@ input[type="range"]::-webkit-slider-thumb {
   width: 10px;
   background: no-repeat center/100% url(./进度条指示器.png);
   filter: grayscale(1) brightness(500%);
-  transform: translateY(-3px);
+  transform: translateY(-13px);
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
@@ -281,7 +285,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
   }
 }
 
-.控件子组:hover .范围条数字区 {
+.控件子组:hover .范围条数字区,
+input[type="range"]:focus-visible ~ .范围条数字区 {
   background-color: goldenrod;
   color: black;
 }
