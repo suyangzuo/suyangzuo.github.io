@@ -50,12 +50,18 @@ Array.from(对象匹配组).forEach((控件子组) => {
 
 const x轴数字区 = document.querySelector(".X轴数字区");
 const y轴数字区 = document.querySelector(".Y轴数字区");
+const 数字区宽度 = parseInt(window.getComputedStyle(x轴数字区).width, 10);
 const x轴 = document.querySelector("#对象位置-X轴");
 const y轴 = document.querySelector("#对象位置-Y轴");
+const 轴Label = document.querySelector(".label-x轴");
+const 轴Label宽度 = window.getComputedStyle(轴Label).width;
 let x轴百分比 = x轴.value;
 let y轴百分比 = y轴.value;
-let 横向初始位移 = window.getComputedStyle(x轴数字区).left;
-let 初始百分比 = 50;
+// let 横向初始位移 = window.getComputedStyle(x轴数字区).left;
+const 初始百分比 = 50;
+const 轴正负修正 = 100;
+const 拇指宽度 = 10;
+let 拇指修正 = 0;
 
 x轴.oninput = 修改X轴百分比;
 y轴.oninput = 修改Y轴百分比;
@@ -63,20 +69,70 @@ y轴.oninput = 修改Y轴百分比;
 function 修改X轴百分比() {
   x轴百分比 = x轴.value;
   x轴数字区.innerText = `${x轴百分比}%`;
-  x轴数字区.style.left = `calc(${x轴百分比}px + ${横向初始位移} - ${初始百分比}px)`;
+  if (x轴百分比 <= -100) {
+    拇指修正 = 5;
+  } else if (x轴百分比 <= -70) {
+    拇指修正 = 4;
+  } else if (x轴百分比 <= -40) {
+    拇指修正 = 3;
+  } else if (x轴百分比 <= -10) {
+    拇指修正 = 2;
+  } else if (x轴百分比 <= 20) {
+    拇指修正 = 1;
+  } else if (x轴百分比 <= 50) {
+    拇指修正 = 0;
+  } else if (x轴百分比 <= 80) {
+    拇指修正 = -1;
+  } else if (x轴百分比 <= 110) {
+    拇指修正 = -2;
+  } else if (x轴百分比 <= 140) {
+    拇指修正 = -3;
+  } else if (x轴百分比 <= 170) {
+    拇指修正 = -4;
+  } else {
+    拇指修正 = -5;
+  }
+
+  console.log(拇指修正);
+  x轴数字区.style.left = `calc(${x轴百分比}px + ${轴Label宽度} + ${轴正负修正}px - ${
+    数字区宽度 / 2
+  }px + ${拇指修正}px)`;
   图像.style.objectPosition = `${x轴百分比}% ${y轴百分比}%`;
 }
 
 function 修改Y轴百分比() {
   y轴百分比 = y轴.value;
   y轴数字区.innerText = `${y轴百分比}%`;
-  y轴数字区.style.left = `calc(${y轴百分比}px + ${横向初始位移} - ${初始百分比}px)`;
+  if (y轴百分比 <= -100) {
+    拇指修正 = 5;
+  } else if (y轴百分比 <= -70) {
+    拇指修正 = 4;
+  } else if (y轴百分比 <= -40) {
+    拇指修正 = 3;
+  } else if (y轴百分比 <= -10) {
+    拇指修正 = 2;
+  } else if (y轴百分比 <= 20) {
+    拇指修正 = 1;
+  } else if (y轴百分比 <= 50) {
+    拇指修正 = 0;
+  } else if (y轴百分比 <= 80) {
+    拇指修正 = -1;
+  } else if (y轴百分比 <= 110) {
+    拇指修正 = -2;
+  } else if (y轴百分比 <= 140) {
+    拇指修正 = -3;
+  } else if (y轴百分比 <= 170) {
+    拇指修正 = -4;
+  } else {
+    拇指修正 = -5;
+  }
+  y轴数字区.style.left = `calc(${y轴百分比}px + ${轴Label宽度} + ${轴正负修正}px - ${
+    数字区宽度 / 2
+  }px + ${拇指修正}px)`;
   图像.style.objectPosition = `${x轴百分比}% ${y轴百分比}%`;
 }
 
-const body = document.querySelector("body");
-
-body.onload = () => {
+window.onload = () => {
   const 重置按钮 = document.getElementsByClassName("重置按钮")[0];
   重置按钮.onclick = 重置参数;
 };

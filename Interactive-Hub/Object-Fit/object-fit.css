@@ -162,8 +162,15 @@ label > .代码 {
   position: relative;
 }
 
-.控件子组 > label {
+.盒子选项 .控件子组 > label,
+.控件-图像尺寸 .控件子组 > label,
+.控件-对象匹配 .控件子组 > label {
   padding: 0 8px 0 0;
+}
+
+.label-x轴,
+.label-y轴 {
+  width: 35px;
 }
 
 input[type="radio"],
@@ -221,6 +228,9 @@ input[type="range"] {
   width: 300px;
   height: 5px;
   border-radius: 5px;
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
 }
 
 input[type="range"]:focus {
@@ -275,7 +285,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
   border-radius: 3px;
   background: rgb(41, 126, 78);
   top: 20px;
-  left: 48.4%;
+  left: calc(35px + 150px - 45px / 2);
   clip-path: polygon(
     0% 15%,
     40% 15%,
