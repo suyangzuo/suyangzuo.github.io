@@ -55,6 +55,7 @@ const y轴 = document.querySelector("#对象位置-Y轴");
 let x轴百分比 = x轴.value;
 let y轴百分比 = y轴.value;
 let 横向初始位移 = window.getComputedStyle(x轴数字区).left;
+let 初始百分比 = 50;
 
 x轴.oninput = 修改X轴百分比;
 y轴.oninput = 修改Y轴百分比;
@@ -62,14 +63,14 @@ y轴.oninput = 修改Y轴百分比;
 function 修改X轴百分比() {
   x轴百分比 = x轴.value;
   x轴数字区.innerText = `${x轴百分比}%`;
-  x轴数字区.style.left = `calc(${x轴百分比}px + ${横向初始位移} - 50px + 0.25rem)`;
+  x轴数字区.style.left = `calc(${x轴百分比}px + ${横向初始位移} - ${初始百分比}px)`;
   图像.style.objectPosition = `${x轴百分比}% ${y轴百分比}%`;
 }
 
 function 修改Y轴百分比() {
   y轴百分比 = y轴.value;
   y轴数字区.innerText = `${y轴百分比}%`;
-  y轴数字区.style.left = `calc(${y轴百分比}px + ${横向初始位移} - 50px + 0.225rem)`;
+  y轴数字区.style.left = `calc(${y轴百分比}px + ${横向初始位移} - ${初始百分比}px)`;
   图像.style.objectPosition = `${x轴百分比}% ${y轴百分比}%`;
 }
 
