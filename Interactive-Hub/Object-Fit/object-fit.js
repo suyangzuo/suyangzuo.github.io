@@ -93,7 +93,6 @@ function 修改X轴百分比() {
     拇指修正 = -5;
   }
 
-  console.log(拇指修正);
   x轴数字区.style.left = `calc(${x轴百分比}px + ${轴Label宽度} + ${轴正负修正}px - ${
     数字区宽度 / 2
   }px + ${拇指修正}px)`;
