@@ -163,6 +163,10 @@ body {
   border-radius: 10px;
 }
 
+input[type="range"]:focus {
+  outline: none;
+}
+
 .范围选择器::-webkit-slider-thumb {
   position: relative;
   -webkit-appearance: none;
@@ -176,7 +180,7 @@ body {
   height: 30px;
   background: no-repeat center/100%
     url(/Images/Interactive-Hub/Web-Front-End/火焰.gif);
-  transform: translateY(-8px) scaleX(1.5);
+  transform: translateY(-58.5%) scaleX(1.5);
 }
 
 .范围选择器::-moz-range-thumb {
@@ -254,7 +258,8 @@ body {
   text-align: right;
 }
 
-.范围单项:has(.范围选择器:hover) > .值 {
+.范围单项:has(.范围选择器:hover) > .值,
+.范围单项:has(.范围选择器:focus-visible) > .值 {
   background-color: rgba(129, 44, 44, 1);
 }
 
@@ -384,10 +389,13 @@ body {
 .盒子尺寸 input {
   appearance: none;
   border: solid 1px gray;
-  width: 12px;
-  height: 12px;
+  width: 15px;
+  height: 15px;
   transition: 0.2s;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .radio封装器 {
@@ -415,11 +423,8 @@ body {
 } */
 
 .盒子尺寸 input:checked:after {
-  width: 70%;
-  height: 70%;
-  position: absolute;
-  top: 15%;
-  left: 15%;
+  width: 60%;
+  height: 60%;
   content: "";
   background-color: white;
 }

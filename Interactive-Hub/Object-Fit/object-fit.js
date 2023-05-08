@@ -52,11 +52,8 @@ const x轴数字区 = document.querySelector(".X轴数字区");
 const y轴数字区 = document.querySelector(".Y轴数字区");
 const x轴 = document.querySelector("#对象位置-X轴");
 const y轴 = document.querySelector("#对象位置-Y轴");
-let x轴数字文本 = x轴数字区.innerText;
-let y轴数字文本 = y轴数字区.innerText;
 let x轴百分比 = x轴.value;
 let y轴百分比 = y轴.value;
-let 轴宽度 = parseInt(window.getComputedStyle(x轴).width, 10);
 let 横向初始位移 = window.getComputedStyle(x轴数字区).left;
 
 x轴.oninput = 修改X轴百分比;
@@ -65,14 +62,39 @@ y轴.oninput = 修改Y轴百分比;
 function 修改X轴百分比() {
   x轴百分比 = x轴.value;
   x轴数字区.innerText = `${x轴百分比}%`;
-  x轴数字区.style.left = `calc(${x轴百分比}px + ${横向初始位移})`;
+  x轴数字区.style.left = `calc(${x轴百分比}px + ${横向初始位移} - 50px + 0.25rem)`;
   图像.style.objectPosition = `${x轴百分比}% ${y轴百分比}%`;
 }
 
 function 修改Y轴百分比() {
   y轴百分比 = y轴.value;
   y轴数字区.innerText = `${y轴百分比}%`;
-  y轴数字区.style.left = `calc(${y轴百分比}px + ${横向初始位移})`;
-  x轴数字区.style.left = `calc(${x轴百分比}px + ${横向初始位移})`;
+  y轴数字区.style.left = `calc(${y轴百分比}px + ${横向初始位移} - 50px + 0.225rem)`;
   图像.style.objectPosition = `${x轴百分比}% ${y轴百分比}%`;
+}
+
+const body = document.querySelector("body");
+
+body.onload = () => {
+  const 重置按钮 = document.getElementsByClassName("重置按钮")[0];
+  重置按钮.onclick = 重置参数;
+};
+
+function 重置参数() {
+  溢出隐藏checkbox.checked = false;
+  图像尺寸原始checkbox.checked = true;
+  const 对象匹配控件 = document.querySelector(".控件-对象匹配");
+  const 对象匹配控件子组 = 对象匹配控件.querySelectorAll(".控件子组");
+  对象匹配控件子组.forEach((控件) => {
+    const 单选框 = 控件.querySelector("input[type='radio']");
+    单选框.checked = false;
+  });
+  x轴.value = 50;
+  y轴.value = 50;
+  修改X轴百分比();
+  修改Y轴百分比();
+  图像.style.width = "auto";
+  图像.style.height = "auto";
+  图像.style.opacity = "0.75";
+  图像区.style.overflow = "visible";
 }

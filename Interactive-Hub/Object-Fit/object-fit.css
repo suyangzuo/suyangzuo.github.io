@@ -72,7 +72,7 @@ body {
 }
 
 .图像选项 {
-  height: 300px;
+  height: 330px;
 }
 
 .图像-控件组 {
@@ -84,7 +84,7 @@ body {
 }
 
 .图像-控件组 > div {
-  padding: 8px 0;
+  padding: 15px 0;
 }
 
 .图像-控件组 > div:nth-child(2) {
@@ -234,21 +234,22 @@ input[type="range"]::-webkit-slider-thumb {
   width: 10px;
   background: no-repeat center/100% url(./进度条指示器.png);
   filter: grayscale(1) brightness(500%);
-  transform: translateY(-13px);
+  transform: translateY(-15px) scale(1.2);
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
   cursor: ew-resize;
 }
 
-.范围条数字区 {
+/* input[type="range"]::after {
   position: absolute;
-  width: 40px;
+  top: 90%;
+  left: 0%;
+  content: "50%";
+  width: 45px;
   height: 30px;
-  border-radius: 3px;
+  border-radius: 2px;
   background: rgb(41, 126, 78);
-  top: 20px;
-  left: 115px;
   clip-path: polygon(
     0% 15%,
     40% 15%,
@@ -262,8 +263,34 @@ input[type="range"]::-webkit-slider-thumb:hover {
   align-items: flex-end;
   justify-content: center;
   color: white;
-  font-size: 0.75rem;
-  padding-bottom: 4px;
+  font-size: 0.8rem;
+  padding: 0 0 4px;
+  transition: background-color 0.1s;
+} */
+
+.范围条数字区 {
+  position: absolute;
+  width: 45px;
+  height: 30px;
+  border-radius: 3px;
+  background: rgb(41, 126, 78);
+  top: 20px;
+  left: 48.4%;
+  clip-path: polygon(
+    0% 15%,
+    40% 15%,
+    50% 0%,
+    60% 15%,
+    100% 15%,
+    100% 100%,
+    0% 100%
+  );
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  color: white;
+  font-size: 0.8rem;
+  padding: 0 0 4px;
   transition: background-color 0.1s;
 }
 
@@ -287,6 +314,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .控件子组:hover .范围条数字区,
 input[type="range"]:focus-visible ~ .范围条数字区 {
-  background-color: goldenrod;
-  color: black;
+  background-color: rgb(54, 97, 171);
+
+  color: white;
 }

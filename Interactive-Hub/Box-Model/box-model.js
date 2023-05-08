@@ -458,3 +458,8 @@ function 盒子尺寸类型被修改() {
   }
 }
 // ----------------------- ↑ 盒子尺寸类型 --------------------------
+
+const 全部范围滑块 = document.querySelectorAll("input[type='range']");
+全部范围滑块.forEach((滑块) => {
+  滑块.setAttribute("list", "范围节点");
+});
