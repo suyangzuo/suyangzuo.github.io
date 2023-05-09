@@ -136,7 +136,7 @@ body {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
   text-decoration: none;
 }
 
@@ -186,5 +186,6 @@ body {
 
 .链接-字-英文 {
   font-size: 0.9rem;
-  color: rgb(203, 203, 203);
+  color: rgb(180, 180, 180);
+  font-family: consolas;
 }
