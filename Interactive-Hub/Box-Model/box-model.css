@@ -53,8 +53,8 @@ body {
 
 .第4盒 {
   background-color: rgb(107, 57, 110);
-  width: 700px;
-  height: 700px;
+  width: 350px;
+  height: 350px;
   animation: 第4盒动画 1s ease-in-out infinite alternate;
 }
 
@@ -69,21 +69,21 @@ body {
 
 .第3盒 {
   background-color: seagreen;
-  width: 500px;
-  height: 500px;
+  width: 250px;
+  height: 250px;
   outline: solid 3px white;
 }
 
 .第2盒 {
   background-color: goldenrod;
-  width: 300px;
-  height: 300px;
+  width: 150px;
+  height: 150px;
 }
 
 .第1盒 {
   background-color: steelblue;
-  width: 100px;
-  height: 100px;
+  width: 50px;
+  height: 50px;
 }
 
 .选项 {

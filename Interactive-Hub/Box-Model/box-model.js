@@ -463,3 +463,45 @@ const 全部范围滑块 = document.querySelectorAll("input[type='range']");
 全部范围滑块.forEach((滑块) => {
   滑块.setAttribute("list", "范围节点");
 });
+
+// ----------------------- ↓ 重置逻辑 --------------------------
+window.onload = () => {
+  const 重置按钮 = document.getElementsByClassName("重置按钮")[0];
+  重置按钮.onclick = 重置参数;
+};
+
+function 重置参数() {
+  const 所有checkbox = document.querySelectorAll("input[type='checkbox']");
+  所有checkbox.forEach((checkbox) => {
+    checkbox.checked = false;
+  });
+
+  const 所有范围滑块 = document.querySelectorAll("input[type='range']");
+  所有范围滑块.forEach((滑块) => {
+    滑块.value = 滑块.max / 2;
+    const 值数字 = 滑块.nextElementSibling.querySelector(".值-数字");
+    值数字.innerText = 滑块.value;
+  });
+
+  边框盒子选择radio.checked = true;
+
+  内容宽 = 内容_宽_范围条.value;
+  内容高 = 内容_高_范围条.value;
+
+  内边距上 = 内边距_上_范围条.value;
+  内边距右 = 内边距_右_范围条.value;
+  内边距下 = 内边距_下_范围条.value;
+  内边距左 = 内边距_左_范围条.value;
+
+  边框上 = 边框_上_范围条.value;
+  边框右 = 边框_右_范围条.value;
+  边框下 = 边框_下_范围条.value;
+  边框左 = 边框_左_范围条.value;
+
+  外边距上 = 外边距_上_范围条.value;
+  外边距右 = 外边距_右_范围条.value;
+  外边距下 = 外边距_下_范围条.value;
+  外边距左 = 外边距_左_范围条.value;
+  修改盒子尺寸();
+}
+// ----------------------- ↑ 重置逻辑 --------------------------
