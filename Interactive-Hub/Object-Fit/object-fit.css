@@ -1,40 +1,5 @@
-body {
-  min-height: 100vh;
-}
-
-.对象匹配展示区 {
-  background: #141e30; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to left,
-    #243b55,
-    #141e30
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to left,
-    #243b55,
-    #141e30
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  height: calc(100vh - 65px);
-  position: relative;
-  overflow: auto;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding-top: 150px;
+.展示区 {
   gap: 150px;
-}
-
-.交互标题 {
-  position: absolute;
-  width: fit-content;
-  height: 100px;
-  top: 0.5%;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 2.5rem;
-  display: flex;
-  align-items: center;
-  color: white;
 }
 
 .对象匹配-图像区 {
@@ -221,6 +186,11 @@ input {
   user-select: none;
 }
 
+.滑块区 {
+  width: 300px;
+  position: relative;
+}
+
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
@@ -242,7 +212,8 @@ input[type="range"]::-webkit-slider-thumb {
   appearance: none;
   height: 15px;
   width: 10px;
-  background: no-repeat center/100% url(./进度条指示器.png);
+  background: no-repeat center/100%
+    url(/Images/Interactive-Hub/Web-Front-End/进度条指示器.png);
   filter: grayscale(1) brightness(500%);
   transform: translateY(-15px) scale(1.2);
 }
@@ -285,7 +256,9 @@ input[type="range"]::-webkit-slider-thumb:hover {
   border-radius: 3px;
   background: rgb(41, 126, 78);
   top: 20px;
-  left: calc(35px + 150px - 45px / 2);
+  /* left: calc(35px + 150px - 45px / 2); */
+  left: 50%;
+  transform: translateX(-50%);
   clip-path: polygon(
     0% 15%,
     40% 15%,

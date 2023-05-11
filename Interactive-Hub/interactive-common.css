@@ -1,0 +1,38 @@
+body {
+  min-height: 100vh;
+}
+
+.展示区 {
+  background: #141e30; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to left,
+    #243b55,
+    #141e30
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to left,
+    #243b55,
+    #141e30
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  height: calc(100vh - 65px);
+  position: relative;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 150px;
+  gap: 50px;
+}
+
+.交互标题 {
+  position: absolute;
+  width: fit-content;
+  height: 100px;
+  top: 0.5%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  color: white;
+}

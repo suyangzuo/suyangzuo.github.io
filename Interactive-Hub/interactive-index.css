@@ -127,6 +127,10 @@ body {
   list-style-type: none;
 }
 
+.未完成 {
+  filter: brightness(50%);
+}
+
 .交互单项链接 {
   background: #275b51;
   border-radius: 100px;

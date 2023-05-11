@@ -116,7 +116,7 @@
 .logo-title {
   font-size: clamp(1.5em, 1.8em, 2em);
   font-weight: 600;
-  padding: 10px 0;
+  padding: 10px 0 50px;
   /* filter: drop-shadow(0px 0px 1px #fffc) drop-shadow(-0px -0px 1px #fffc); */
   font-family: "Ma Shan Zheng", cursive;
   background-image: url(/Images/Index-Images/Motto-Gif-03.gif);

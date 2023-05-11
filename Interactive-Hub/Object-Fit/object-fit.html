@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/Styles/common.css" />
     <link rel="stylesheet" href="/Styles/top-banner-common.css" />
     <link rel="stylesheet" href="../control.css" />
+    <link rel="stylesheet" href="../interactive-common.css">
     <link rel="stylesheet" href="./object-fit.css" />
     <script src="/Scripts/html-include.js"></script>
     <script
@@ -20,9 +21,9 @@
     <insert-e src="/top-banner.html"></insert-e>
     <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
 
-    <section class="对象匹配展示区">
+    <section class="对象匹配展示区 展示区">
       <insert-e src="../control.html"></insert-e>
-      <p class="交互标题">交互式 - 对象匹配</p>
+      <p class="交互标题">对象匹配</p>
       <figure class="对象匹配-图像区">
         <img src="./示例图-已缩放.jpg" alt="示例图" />
       </figure>
@@ -126,33 +127,37 @@
                   <label class="label-x轴" for="对象位置-X轴">
                     <p class="中文 值中文">X轴</p>
                   </label>
-                  <input
-                    type="range"
-                    id="对象位置-X轴"
-                    name="对象匹配项"
-                    min="-100"
-                    max="200"
-                    step="1"
-                    value="50"
-                    list="位置节点"
-                    class="范围条" />
-                  <div class="范围条数字区 X轴数字区">50%</div>
+                  <div class="滑块区">
+                    <input
+                      type="range"
+                      id="对象位置-X轴"
+                      name="对象匹配项"
+                      min="-100"
+                      max="200"
+                      step="1"
+                      value="50"
+                      list="位置节点"
+                      class="范围条" />
+                    <div class="范围条数字区 X轴数字区">50%</div>
+                  </div>
                 </div>
                 <div class="控件子组">
                   <label class="label-y轴" for="对象位置-Y轴">
                     <p class="中文 值中文">Y轴</p>
                   </label>
-                  <input
-                    type="range"
-                    id="对象位置-Y轴"
-                    name="对象匹配项"
-                    min="-100"
-                    max="200"
-                    step="1"
-                    value="50"
-                    list="位置节点"
-                    class="范围条" />
-                  <div class="范围条数字区 Y轴数字区">50%</div>
+                  <div class="滑块区">
+                    <input
+                      type="range"
+                      id="对象位置-Y轴"
+                      name="对象匹配项"
+                      min="-100"
+                      max="200"
+                      step="1"
+                      value="50"
+                      list="位置节点"
+                      class="范围条" />
+                    <div class="范围条数字区 Y轴数字区">50%</div>
+                  </div>
                 </div>
                 <datalist id="位置节点">
                   <option value="-100"></option>

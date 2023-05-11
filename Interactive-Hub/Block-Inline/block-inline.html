@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>交互式-盒子模型</title>
+    <link rel="stylesheet" href="/Styles/common.css" />
+    <link rel="stylesheet" href="/Styles/top-banner-common.css" />
+    <link rel="stylesheet" href="../control.css" />
+    <link rel="stylesheet" href="../interactive-common.css" />
+    <link rel="stylesheet" href="./block-inline.css" />
+    <script src="/Scripts/html-include.js"></script>
+    <script
+      src="https://kit.fontawesome.com/d0483e3bd3.js"
+      crossorigin="anonymous"></script>
+    <script src="./block-inline.js" defer></script>
+  </head>
+  <body>
+    <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
+    <insert-e src="/top-banner.html"></insert-e>
+    <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
+
+    <section class="对象匹配展示区 展示区">
+      <insert-e src="../control.html"></insert-e>
+      <p class="交互标题">块 - 行内 - 行内块</p>
+      <figure class="对象匹配-图像区">
+        <div class="图像-块 块-1">1 - block</div>
+        <span class="图像-行内 行内-2">2 - inline</span>
+        <span class="图像-行内块 行内块-3">3 - inline-block</span>
+        <span class="图像-行内 行内-4">4 - inline</span>
+        <div class="图像-弹性 弹性-5">5 - flex</div>
+        <div class="图像-块 块-6">6 - block</div>
+      </figure>
+      <div class="控制区">
+        <section class="块-控制区">
+          <p class="控制标题">块 ：<span>block</span></p>
+          <div class="控件 块-控件">
+            <div class="宽度 块-宽度">
+              <label for="块-宽度">宽度</label>
+              <div class="滑块容器">
+                <input
+                  type="range"
+                  max="600"
+                  min="1"
+                  value="600"
+                  list="节点-0-600"
+                  id="块-宽度"
+                  class="块-滑块" />
+                <p class="滑块数字"></p>
+              </div>
+            </div>
+            <div class="高度 块-高度">
+              <label for="块-高度">高度</label>
+              <div class="滑块容器">
+                <input
+                  type="range"
+                  max="200"
+                  min="1"
+                  value="25"
+                  list="节点-0-200"
+                  id="块-高度"
+                  class="块-滑块" />
+                <p class="滑块数字"></p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="行内-控制区">
+          <p class="控制标题">行内 ：<span>inline</span></p>
+          <div class="控件 行内-控件">
+            <div class="宽度 行内-宽度">
+              <label for="行内-宽度">宽度</label>
+              <div class="滑块容器">
+                <input
+                  type="range"
+                  max="300"
+                  min="1"
+                  value="150"
+                  list="节点-0-300"
+                  id="行内-宽度"
+                  class="行内-滑块" />
+                <p class="滑块数字"></p>
+              </div>
+            </div>
+            <div class="高度 行内-高度">
+              <label for="行内-高度">高度</label>
+              <div class="滑块容器">
+                <input
+                  type="range"
+                  max="300"
+                  min="1"
+                  value="150"
+                  list="节点-0-300"
+                  id="行内-高度"
+                  class="行内-滑块" />
+                <p class="滑块数字"></p>
+              </div>
+            </div>
+            <div class="字体尺寸 行内-字体尺寸">
+              <label for="行内-字体尺寸">字体尺寸</label>
+              <div class="滑块容器">
+                <input
+                  type="range"
+                  max="3"
+                  min="1"
+                  value="1"
+                  list="节点-字体尺寸"
+                  id="行内-字体尺寸"
+                  class="行内-滑块" />
+                <p class="滑块数字"></p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="行内块-控制区">
+          <p class="控制标题">行内块 ：<span>inline-block</span></p>
+          <div class="控件 行内块-控件">
+            <div class="宽度 行内块-宽度">
+              <label for="行内块-宽度">宽度</label>
+              <div class="滑块容器">
+                <input
+                  type="range"
+                  max="300"
+                  min="1"
+                  value="150"
+                  list="节点-0-300"
+                  id="行内块-宽度"
+                  class="行内块-滑块" />
+                <p class="滑块数字"></p>
+              </div>
+            </div>
+            <div class="高度 行内块-高度">
+              <label for="行内块-高度">高度</label>
+              <div class="滑块容器">
+                <input
+                  type="range"
+                  max="300"
+                  min="1"
+                  value="21"
+                  list="节点-0-300"
+                  id="行内块-高度"
+                  class="行内块-滑块" />
+                <p class="滑块数字"></p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="弹性-控制区">
+          <p class="控制标题">弹性 ：<span>flex</span></p>
+          <div class="控件 弹性-控件">
+            <div class="宽度 弹性-宽度">
+              <label for="弹性-宽度">宽度</label>
+              <div class="滑块容器">
+                <input
+                  type="range"
+                  max="600"
+                  min="1"
+                  value="600"
+                  list="节点-0-600"
+                  id="弹性-宽度"
+                  class="弹性-滑块" />
+                <p class="滑块数字"></p>
+              </div>
+            </div>
+            <div class="高度 弹性-高度">
+              <label for="弹性-高度">高度</label>
+              <div class="滑块容器">
+                <input
+                  type="range"
+                  max="200"
+                  min="1"
+                  value="25"
+                  list="节点-0-200"
+                  id="弹性-高度"
+                  class="弹性-滑块" />
+                <p class="滑块数字"></p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <datalist id="节点-0-600">
+          <option value="150"></option>
+          <option value="300"></option>
+          <option value="450"></option>
+        </datalist>
+        <datalist id="节点-0-300">
+          <option value="100"></option>
+          <option value="200"></option>
+        </datalist>
+        <datalist id="节点-0-200">
+          <option value="50"></option>
+          <option value="100"></option>
+          <option value="150"></option>
+        </datalist>
+        <datalist id="节点-字体尺寸">
+          <option value="2"></option>
+        </datalist>
+      </div>
+    </section>
+  </body>
+</html>
