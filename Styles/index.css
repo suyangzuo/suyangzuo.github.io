@@ -433,6 +433,8 @@
 .game-history > p {
   color: rgb(240, 240, 240);
   text-shadow: 2px 2px 2px #000;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 .game-type {

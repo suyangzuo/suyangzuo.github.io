@@ -117,5 +117,5 @@ address {
 }
 
 .address > img:hover {
-  filter: hue-rotate(50deg);
+  filter: contrast(1.5) brightness(0.85);
 }
