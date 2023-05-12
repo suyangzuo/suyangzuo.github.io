@@ -67,9 +67,9 @@ for (let input of 全部input) {
 }
 
 // 重置参数
-window.onload = () => {
+window.addEventListener("load", () => {
   const 重置按钮 = document.querySelector(".重置按钮");
-  重置按钮.onclick = () => {
+  重置按钮.addEventListener("click", () => {
     for (let 控制区 of 控制区组) {
       const input组 = 控制区.querySelectorAll("input[type='range']");
       const 滑块数字组 = 控制区.querySelectorAll(".滑块数字");
@@ -122,5 +122,5 @@ window.onload = () => {
         修改数字区位置(input, 滑块数字组[index]);
       }
     }
-  };
-};
+  });
+});

@@ -141,10 +141,10 @@ function 修改Y轴百分比() {
   图像.style.objectPosition = `${x轴百分比}% ${y轴百分比}%`;
 }
 
-window.onload = () => {
+window.addEventListener("load", () => {
   const 重置按钮 = document.getElementsByClassName("重置按钮")[0];
-  重置按钮.onclick = 重置参数;
-};
+  重置按钮.addEventListener("click", 重置参数);
+});
 
 function 重置参数() {
   溢出隐藏checkbox.checked = false;
