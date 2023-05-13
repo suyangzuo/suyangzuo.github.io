@@ -76,7 +76,9 @@ body::before {
   height: 100%;
   object-fit: contain;
   animation: logo-rotate linear 5s infinite;
+  -webkit-user-select: none;
   user-select: none;
+  -webkit-user-drag: none;
 }
 
 .logo-container > figcaption {

@@ -2,10 +2,9 @@ body {
   position: relative;
 }
 
-.logo-container {
+/* .logo-container {
   width: 10%;
   aspect-ratio: 1;
-  /* background-color: antiquewhite; */
   overflow: hidden;
   margin: 150px auto;
 }
@@ -15,7 +14,7 @@ body {
   height: 100%;
   object-fit: cover;
   animation: logo-rotate linear 5s infinite;
-}
+} */
 
 @keyframes logo-rotate {
   from {
@@ -48,6 +47,12 @@ body {
   align-items: center;
   gap: 25px;
   position: relative;
+}
+
+.purpose img {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .purpose > p:nth-child(1) {
@@ -246,6 +251,45 @@ body {
 
 .pp-05 > .explain-list > li {
   list-style-type: "\260E";
+}
+
+.pp-04 > p:nth-child(1) a {
+  position: relative;
+}
+
+.pp-04 > p:nth-child(1) a:hover {
+  filter: hue-rotate(0);
+}
+
+.pop-up {
+  visibility: hidden;
+  opacity: 0;
+  width: 90px;
+  height: 90px;
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -50%;
+  z-index: -1;
+  font-size: 1rem !important;
+  color: white !important;
+  background: linear-gradient(#111, #252525);
+  transition: opacity 0.5s ease-out, top 0.5s ease-out,
+    box-shadow 0.25s ease-out;
+}
+
+.pop-up:hover {
+  box-shadow: inset 0px 1px 1px 0 rgb(149, 149, 149);
+}
+
+.pp-04 > p:nth-child(1) a:hover .pop-up {
+  visibility: visible;
+  opacity: 1;
+  top: -110%;
 }
 
 .selector-outer {
