@@ -24,7 +24,7 @@ function 点击左箭头() {
   左箭头.removeEventListener("click", 点击左箭头);
   图像索引--;
   图像位移 += 图像容器宽度;
-  图像滑块组.style.transition = `${图像移动时长}ms`;
+  图像滑块组.style.transition = `transform ${图像移动时长}ms ease-out, left 250ms ease-out`;
   图像滑块组.style.transform = `translateX(${图像位移}px)`;
   左箭头.style.filter = "brightness(50%)";
 
@@ -32,7 +32,7 @@ function 点击左箭头() {
     setTimeout(() => {
       图像索引 = 5;
       图像位移 = 初始图像图像位移;
-      图像滑块组.style.transition = "none";
+      图像滑块组.style.transition = "transform 0ms, left 250ms ease-out";
       图像滑块组.style.transform = `translateX(${图像位移}px)`;
     }, 图像移动时长);
   }
@@ -47,7 +47,7 @@ function 点击右箭头() {
   右箭头.removeEventListener("click", 点击右箭头);
   图像索引++;
   图像位移 -= 图像容器宽度;
-  图像滑块组.style.transition = `${图像移动时长}ms`;
+  图像滑块组.style.transition = `transform ${图像移动时长}ms ease-out, left 250ms ease-out`;
   图像滑块组.style.transform = `translateX(${图像位移}px)`;
   右箭头.style.filter = "brightness(50%)";
 
@@ -55,7 +55,7 @@ function 点击右箭头() {
     setTimeout(() => {
       图像索引 = 5;
       图像位移 = 初始图像图像位移;
-      图像滑块组.style.transition = "none";
+      图像滑块组.style.transition = "transform 0ms, left 250ms ease-out";
       图像滑块组.style.transform = `translateX(${图像位移}px)`;
     }, 图像移动时长);
   }
