@@ -522,19 +522,22 @@
 .图像长廊区 {
   width: 100%;
   height: 100vh;
-  background: no-repeat center/cover
-    url(/Images/Background-Images/Abstract-02.webp);
+  background: no-repeat center/cover url(/Images/Background-Images/背景-15.png);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 .图像长廊分区 {
   width: 100%;
-  height: 400px;
+  height: 450px;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(
+  /* -webkit-mask-image: linear-gradient(
     90deg,
     rgba(0, 0, 0, 0) 0.5%,
     rgba(0, 0, 0, 1) 15%,
@@ -551,7 +554,24 @@
   -webkit-mask-size: 100%;
   mask-size: 100%;
   -webkit-mask-position: center;
-  mask-position: center;
+  mask-position: center; */
+}
+
+.图像长廊分区::after {
+  position: absolute;
+  width: 100%;
+  height: 400px;
+  content: "";
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 1) 2.5%,
+    rgba(0, 0, 0, 0) 20%,
+    rgba(0, 0, 0, 0) 80%,
+    rgba(0, 0, 0, 1) 97.5%
+  );
 }
 
 .图像长廊分区 > .箭头 {
@@ -562,6 +582,7 @@
   top: 50%;
   border-radius: 50px;
   background: linear-gradient(135deg, #ddd, #999);
+  box-shadow: 0 0 5px 0 black;
   /* outline: solid 2px black; */
   display: flex;
   justify-content: center;
@@ -572,7 +593,8 @@
 
 .图像长廊分区 > .箭头:hover {
   cursor: pointer;
-  box-shadow: inset 0 1px 0 0 white;
+  box-shadow: 0 0 5px 0 black, inset 0 1px 0 0 white;
+  /* box-shadow: inset 0 1px 0 0 white; */
 }
 
 .图像长廊分区 > .箭头:hover > img {
@@ -609,7 +631,7 @@
 
 .图像滑块组 {
   width: calc(24000px + 200px);
-  height: 100%;
+  height: 400px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -632,7 +654,7 @@
 .图像容器 {
   height: 100%;
   width: 800px;
-  overflow: hidden;
+  /* overflow: hidden; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -643,6 +665,7 @@
   width: 700px;
   border-radius: 3px;
   object-fit: cover;
+  box-shadow: 5px 5px 20px 0 black;
   -webkit-user-select: none;
   user-select: none;
   /* outline: solid 2px gray; */
@@ -766,9 +789,15 @@
 }
 
 @media screen and (max-width: 900px) {
-  .图像长廊分区 {
-    -webkit-mask-image: none;
-    mask-image: none;
+  .图像长廊分区::after {
+    position: absolute;
+    width: 100%;
+    height: 400px;
+    content: "";
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
   }
 
   .图像长廊分区 > .左箭头 {
