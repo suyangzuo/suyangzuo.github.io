@@ -579,6 +579,14 @@
   filter: saturate(2.5);
 }
 
+.图像长廊分区 > .左箭头:hover ~ .图像滑块组 {
+  left: 0.5%;
+}
+
+.图像长廊分区 > .右箭头:hover ~ .图像滑块组 {
+  left: -0.5%;
+}
+
 .图像长廊分区 > .箭头 > img {
   width: 50%;
   height: 50%;
@@ -608,7 +616,9 @@
   /* gap: 50px; */
   position: relative;
   transform: translateX(400px);
-  transition: transform 350ms ease-out;
+  left: 0;
+  right: 0;
+  transition: transform 350ms ease-out, left 250ms ease-out;
 }
 
 .图像滑块 {
@@ -756,6 +766,11 @@
 }
 
 @media screen and (max-width: 900px) {
+  .图像长廊分区 {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
   .图像长廊分区 > .左箭头 {
     left: 2.5%;
     transform: translateX(0) translateY(-50%);
