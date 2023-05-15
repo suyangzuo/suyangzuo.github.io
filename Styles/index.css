@@ -518,6 +518,125 @@
   );
   /* border-radius: 50px; */
 }
+
+.图像长廊区 {
+  width: 100%;
+  height: 100vh;
+  background: no-repeat center/cover
+    url(/Images/Background-Images/Abstract-02.webp);
+}
+
+.图像长廊分区 {
+  width: 100%;
+  height: 400px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0) 0.5%,
+    rgba(0, 0, 0, 1) 15%,
+    rgba(0, 0, 0, 1) 85%,
+    rgba(0, 0, 0, 0) 99.5%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0) 0.5%,
+    rgba(0, 0, 0, 1) 15%,
+    rgba(0, 0, 0, 1) 85%,
+    rgba(0, 0, 0, 0) 99.5%
+  );
+  -webkit-mask-size: 100%;
+  mask-size: 100%;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
+.图像长廊分区 > .箭头 {
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+  position: absolute;
+  top: 50%;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #ddd, #999);
+  /* outline: solid 2px black; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  transition: box-shadow 0.2s;
+}
+
+.图像长廊分区 > .箭头:hover {
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 0 white;
+}
+
+.图像长廊分区 > .箭头:hover > img {
+  filter: saturate(2.5);
+}
+
+.图像长廊分区 > .箭头 > img {
+  width: 50%;
+  height: 50%;
+  object-fit: contain;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  transition: 0.2s;
+}
+
+.图像长廊分区 > .左箭头 {
+  left: 50%;
+  transform: translateX(calc(-50% - 400px)) translateY(-50%);
+}
+
+.图像长廊分区 > .右箭头 {
+  right: 50%;
+  transform: translateX(calc(50% + 400px)) translateY(-50%);
+}
+
+.图像滑块组 {
+  width: calc(24000px + 200px);
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* gap: 50px; */
+  position: relative;
+  transform: translateX(400px);
+  transition: transform 350ms ease-out;
+}
+
+.图像滑块 {
+  height: 100%;
+  width: 8000px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.图像容器 {
+  height: 100%;
+  width: 800px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.图像容器 > img {
+  height: 100%;
+  width: 700px;
+  border-radius: 3px;
+  object-fit: cover;
+  -webkit-user-select: none;
+  user-select: none;
+  /* outline: solid 2px gray; */
+}
 /* <!-- ------------------ ↑ 游戏区 ------------------- --> */
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
@@ -633,6 +752,18 @@
 
   .game-name > span {
     font-size: 0.75rem;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .图像长廊分区 > .左箭头 {
+    left: 2.5%;
+    transform: translateX(0) translateY(-50%);
+  }
+
+  .图像长廊分区 > .右箭头 {
+    right: 2.5%;
+    transform: translateX(0) translateY(-50%);
   }
 }
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */
