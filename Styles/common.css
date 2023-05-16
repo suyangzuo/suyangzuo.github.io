@@ -93,16 +93,17 @@ address {
 }
 
 .address {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   display: flex;
   align-items: center;
 }
 
-.address > span:hover {
-  animation: 底栏邮箱链接动画 0.5s ease-in-out infinite alternate;
+.address > span:hover,
+.address > img:hover {
+  animation: 底栏链接动画 0.5s ease-in-out infinite alternate;
 }
 
-@keyframes 底栏邮箱链接动画 {
+@keyframes 底栏链接动画 {
   from {
     transform: scale(1);
   }
@@ -113,9 +114,5 @@ address {
 
 .address > img {
   height: 1.5rem;
-  transform: scale(1.2);
-}
-
-.address > img:hover {
-  filter: contrast(1.5) brightness(0.85);
+  filter: grayscale(1) brightness(2.5);
 }

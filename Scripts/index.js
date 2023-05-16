@@ -18,7 +18,7 @@ let 图像位移 = 初始图像位移; // --> 图像容器宽度 / 2
 const 初始图像索引 = 5;
 let 图像索引 = 初始图像索引; // --> 中间滑块的第5张图
 
-let mouseIsOver = false; // --> 判断鼠标是否悬停在箭头上
+let mouseIsEnter = false; // --> 判断鼠标是否悬停在箭头上
 
 左箭头.addEventListener("click", 点击左箭头);
 右箭头.addEventListener("click", 点击右箭头);
@@ -26,22 +26,22 @@ let mouseIsOver = false; // --> 判断鼠标是否悬停在箭头上
 let 图像长廊定时滚动 = setInterval(点击右箭头, 自动滚动延时);
 
 左箭头.addEventListener("mouseenter", () => {
-  mouseIsOver = true;
+  mouseIsEnter = true;
   clearInterval(图像长廊定时滚动);
 });
 
 左箭头.addEventListener("mouseleave", () => {
-  mouseIsOver = false;
+  mouseIsEnter = false;
   图像长廊定时滚动 = setInterval(点击右箭头, 自动滚动延时);
 });
 
 右箭头.addEventListener("mouseenter", () => {
-  mouseIsOver = true;
+  mouseIsEnter = true;
   clearInterval(图像长廊定时滚动);
 });
 
 右箭头.addEventListener("mouseleave", () => {
-  mouseIsOver = false;
+  mouseIsEnter = false;
   图像长廊定时滚动 = setInterval(点击右箭头, 自动滚动延时);
 });
 
@@ -51,7 +51,7 @@ function 点击左箭头() {
   图像位移 += 图像容器宽度;
   图像滑块组.style.transition = `transform ${图像移动时长}ms ease-out, left 250ms ease-out`;
   图像滑块组.style.transform = `translateX(${图像位移}px)`;
-  if (mouseIsOver) {
+  if (mouseIsEnter) {
     左箭头.style.filter = "brightness(50%)";
   }
 
@@ -75,7 +75,7 @@ function 点击右箭头() {
   图像位移 -= 图像容器宽度;
   图像滑块组.style.transition = `transform ${图像移动时长}ms ease-out, left 250ms ease-out`;
   图像滑块组.style.transform = `translateX(${图像位移}px)`;
-  if (mouseIsOver) {
+  if (mouseIsEnter) {
     右箭头.style.filter = "brightness(50%)";
   }
 
