@@ -132,7 +132,7 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-  filter: brightness(2) drop-shadow(0 0 1px #222);
+  filter: brightness(1.75) drop-shadow(0 0 1px #222);
 }
 
 .logo-brief {
@@ -218,6 +218,10 @@
 
 .宗旨 img {
   filter: grayscale(1) brightness(5);
+}
+
+.软件 img{
+  filter: hue-rotate(120deg);
 }
 
 .link-title {
