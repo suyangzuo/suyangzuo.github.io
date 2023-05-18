@@ -220,7 +220,7 @@
   filter: grayscale(1) brightness(5);
 }
 
-.软件 img{
+.软件 img {
   filter: hue-rotate(120deg);
 }
 
@@ -576,6 +576,7 @@
     rgba(0, 0, 0, 0) 80%,
     rgba(0, 0, 0, 1) 97.5%
   );
+  pointer-events: none;
 }
 
 .图像长廊分区 > .箭头 {
@@ -605,13 +606,13 @@
   filter: saturate(2.5);
 }
 
-.图像长廊分区 > .左箭头:hover ~ .图像滑块组 {
+/* .图像长廊分区 > .左箭头:hover ~ .图像滑块组 {
   left: 0.5%;
 }
 
 .图像长廊分区 > .右箭头:hover ~ .图像滑块组 {
   left: -0.5%;
-}
+} */
 
 .图像长廊分区 > .箭头 > img {
   width: 50%;
@@ -662,6 +663,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .图像容器 > img {
@@ -673,6 +675,22 @@
   -webkit-user-select: none;
   user-select: none;
   /* outline: solid 2px gray; */
+}
+
+.图像容器 > .img-overlay {
+  height: 100%;
+  width: 700px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  opacity: 0.5;
+  transition: 0.2s;
+}
+
+.图像容器 > .img-overlay:hover {
+  cursor: pointer;
 }
 /* <!-- ------------------ ↑ 游戏区 ------------------- --> */
 
