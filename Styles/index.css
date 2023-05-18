@@ -680,6 +680,7 @@
 .图像容器 > .img-overlay {
   height: 100%;
   width: 700px;
+  border-radius: 3px;
   position: absolute;
   top: 0;
   left: 50%;
