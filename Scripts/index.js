@@ -235,3 +235,33 @@ function 初始化左右图像功能() {
   图覆盖当前.removeEventListener("click", 点击左箭头);
   图覆盖当前.removeEventListener("click", 点击右箭头);
 }
+
+//-------------------- ↓ 图像长廊显隐观察 -----------------------
+const 图像长廊区 = document.getElementsByClassName("图像长廊区")[0];
+const 图像长廊标题 = 图像长廊区.getElementsByClassName("图像长廊标题")[0];
+const 图像长廊标题_p标签 = 图像长廊标题.getElementsByTagName("p");
+const p标签宽度 = 图像长廊标题_p标签[0].style.width;
+
+function 观察者回调(entries) {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      图像长廊标题_p标签[0].style.transform = "translateX(0)";
+      图像长廊标题_p标签[0].style.opacity = "1";
+      图像长廊标题_p标签[1].style.transform = "translateX(0)";
+      图像长廊标题_p标签[1].style.opacity = "1";
+    } else {
+      图像长廊标题_p标签[0].style.transform = "translateX(-40%)";
+      图像长廊标题_p标签[0].style.opacity = "0";
+      图像长廊标题_p标签[1].style.transform = "translateX(40%)";
+      图像长廊标题_p标签[1].style.opacity = "0";
+    }
+  });
+}
+
+let options = {
+  threshold: 0.35,
+};
+
+let 观察者 = new IntersectionObserver(观察者回调, options);
+观察者.observe(图像长廊区);
+//-------------------- ↑ 图像长廊显隐观察 -----------------------
