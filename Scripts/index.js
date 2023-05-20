@@ -1,6 +1,11 @@
 const 图像滑块组 = document.getElementsByClassName("图像滑块组")[0];
 const 图像滑块组成员 = 图像滑块组.getElementsByClassName("图像滑块");
 
+let 鼠标x = 0;
+let 鼠标y = 0;
+
+window.addEventListener("click", 获取鼠标坐标);
+
 图像滑块组成员[0].innerHTML = 图像滑块组成员[1].innerHTML;
 图像滑块组成员[2].innerHTML = 图像滑块组成员[1].innerHTML;
 
@@ -17,6 +22,8 @@ const 图像数量 = 10;
 const 图像移动时长 = 350;
 const 图像容器宽度 = 800;
 
+const 覆盖层宽度 = 700;
+const 覆盖层高度 = 400;
 const 初始图像位移 = 400;
 let 图像位移 = 初始图像位移; // --> 图像容器宽度 / 2
 const 初始图像索引 = 图像数量 - 1 + 图像数量 / 2;
@@ -110,15 +117,15 @@ function 点击左箭头() {
   图覆盖当前.removeEventListener("click", 点击左箭头);
   图覆盖当前.removeEventListener("click", 点击右箭头);
 
-  长廊1区图像容器组[图像索引 - 1].getElementsByClassName(
-    "img-overlay"
-  )[0].style.opacity = "0.5";
-  长廊1区图像容器组[图像索引].getElementsByClassName(
-    "img-overlay"
-  )[0].style.opacity = "0";
-  长廊1区图像容器组[图像索引 + 1].getElementsByClassName(
-    "img-overlay"
-  )[0].style.opacity = "0.5";
+  let 图覆盖后1 =
+    长廊1区图像容器组[图像索引 + 1].getElementsByClassName("img-overlay")[0];
+  let 图覆盖前1 =
+    长廊1区图像容器组[图像索引 - 1].getElementsByClassName("img-overlay")[0];
+
+  图覆盖前1.style.opacity = "0.5";
+  图覆盖后1.style.opacity = "0.5";
+  图覆盖当前.style.opacity = "0";
+
   图像滑块组.style.transition = `transform ${图像移动时长}ms ease-out, left 250ms ease-out`;
   图像滑块组.style.transform = `translateX(${图像位移}px)`;
   if (mouseIsEnter) {
@@ -129,6 +136,10 @@ function 点击左箭头() {
     初始化图像覆盖透明度();
   }
 
+  //---------- ↓ 根据鼠标位置，判断鼠标是否位于左右图上，如是，则左右图覆盖层透明度改为 25% ----------
+  window.addEventListener("mousemove", 获取鼠标坐标);
+  //---------- ↑ 根据鼠标位置，判断鼠标是否位于左右图上，如是，则左右图覆盖层透明度改为 25% ----------
+
   setTimeout(() => {
     if (图像索引 <= 初始图像索引 - 图像数量) {
       图像索引 = 初始图像索引;
@@ -136,12 +147,38 @@ function 点击左箭头() {
       图像长廊位移重置();
     }
 
-    const 图覆盖后1 =
-      长廊1区图像容器组[图像索引 + 1].getElementsByClassName("img-overlay")[0];
-    const 图覆盖前1 =
+    图覆盖前1 =
       长廊1区图像容器组[图像索引 - 1].getElementsByClassName("img-overlay")[0];
+    图覆盖后1 =
+      长廊1区图像容器组[图像索引 + 1].getElementsByClassName("img-overlay")[0];
     图覆盖后1.addEventListener("click", 点击右箭头);
     图覆盖前1.addEventListener("click", 点击左箭头);
+
+    //---------- ↓ 根据鼠标位置，判断鼠标是否位于左右图上，如是，则左右图覆盖层透明度改为 25% ----------
+    let previousOffset = 图覆盖前1.getBoundingClientRect();
+    let previousOffsetLeft = previousOffset.left;
+    let previousOffsetTop = previousOffset.top;
+    let nextOffset = 图覆盖后1.getBoundingClientRect();
+    let nextOffsetLeft = nextOffset.left;
+    let nextOffsetTop = nextOffset.top;
+    if (
+      鼠标x >= previousOffsetLeft &&
+      鼠标x <= previousOffsetLeft + 覆盖层宽度 &&
+      鼠标y >= previousOffsetTop &&
+      鼠标y <= previousOffsetTop + 覆盖层高度
+    ) {
+      图覆盖前1.style.opacity = "0.25";
+    } else if (
+      鼠标x >= nextOffsetLeft &&
+      鼠标x <= nextOffsetLeft + 覆盖层宽度 &&
+      鼠标y >= nextOffsetTop &&
+      鼠标y <= nextOffsetTop + 覆盖层高度
+    ) {
+      图覆盖后1.style.opacity = "0.25";
+    }
+
+    window.removeEventListener("mousemove", 获取鼠标坐标);
+    //---------- ↑ 根据鼠标位置，判断鼠标是否位于左右图上，如是，则左右图覆盖层透明度改为 25% ----------
 
     左箭头.addEventListener("click", 点击左箭头);
     左箭头.style.filter = "brightness(100%)";
@@ -164,15 +201,14 @@ function 点击右箭头() {
   图覆盖当前.removeEventListener("click", 点击左箭头);
   图覆盖当前.removeEventListener("click", 点击右箭头);
 
-  const 图覆盖前1 =
+  let 图覆盖前1 =
     长廊1区图像容器组[图像索引 - 1].getElementsByClassName("img-overlay")[0];
-  const 图覆盖后1 =
+  let 图覆盖后1 =
     长廊1区图像容器组[图像索引 + 1].getElementsByClassName("img-overlay")[0];
+
   图覆盖前1.style.opacity = "0.5";
   图覆盖后1.style.opacity = "0.5";
-  长廊1区图像容器组[图像索引].getElementsByClassName(
-    "img-overlay"
-  )[0].style.opacity = "0";
+  图覆盖当前.style.opacity = "0";
 
   图像滑块组.style.transition = `transform ${图像移动时长}ms ease-out, left 250ms ease-out`;
   图像滑块组.style.transform = `translateX(${图像位移}px)`;
@@ -184,6 +220,8 @@ function 点击右箭头() {
     初始化图像覆盖透明度();
   }
 
+  window.addEventListener("mousemove", 获取鼠标坐标);
+
   setTimeout(() => {
     if (图像索引 >= 初始图像索引 + 图像数量) {
       图像索引 = 初始图像索引;
@@ -191,12 +229,38 @@ function 点击右箭头() {
       图像长廊位移重置();
     }
 
-    const 图覆盖后1 =
+    图覆盖后1 =
       长廊1区图像容器组[图像索引 + 1].getElementsByClassName("img-overlay")[0];
-    const 图覆盖前1 =
+    图覆盖前1 =
       长廊1区图像容器组[图像索引 - 1].getElementsByClassName("img-overlay")[0];
     图覆盖后1.addEventListener("click", 点击右箭头);
     图覆盖前1.addEventListener("click", 点击左箭头);
+
+    //---------- ↓ 根据鼠标位置，判断鼠标是否位于左右图上，如是，则左右图覆盖层透明度改为 25% ----------
+    let previousOffset = 图覆盖前1.getBoundingClientRect();
+    let previousOffsetLeft = previousOffset.left;
+    let previousOffsetTop = previousOffset.top;
+    let nextOffset = 图覆盖后1.getBoundingClientRect();
+    let nextOffsetLeft = nextOffset.left;
+    let nextOffsetTop = nextOffset.top;
+    if (
+      鼠标x >= previousOffsetLeft &&
+      鼠标x <= previousOffsetLeft + 覆盖层宽度 &&
+      鼠标y >= previousOffsetTop &&
+      鼠标y <= previousOffsetTop + 覆盖层高度
+    ) {
+      图覆盖前1.style.opacity = "0.25";
+    } else if (
+      鼠标x >= nextOffsetLeft &&
+      鼠标x <= nextOffsetLeft + 覆盖层宽度 &&
+      鼠标y >= nextOffsetTop &&
+      鼠标y <= nextOffsetTop + 覆盖层高度
+    ) {
+      图覆盖后1.style.opacity = "0.25";
+    }
+
+    window.removeEventListener("mousemove", 获取鼠标坐标);
+    //---------- ↑ 根据鼠标位置，判断鼠标是否位于左右图上，如是，则左右图覆盖层透明度改为 25% ----------
 
     右箭头.addEventListener("click", 点击右箭头);
     右箭头.style.filter = "brightness(100%)";
@@ -236,7 +300,7 @@ function 初始化左右图像功能() {
   图覆盖当前.removeEventListener("click", 点击右箭头);
 }
 
-//-------------------- ↓ 图像长廊显隐观察 -----------------------
+//-------------------- ↓ 图像长廊标题显隐观察 -----------------------
 const 图像长廊区 = document.getElementsByClassName("图像长廊区")[0];
 const 图像长廊标题 = 图像长廊区.getElementsByClassName("图像长廊标题")[0];
 const 图像长廊标题_p标签 = 图像长廊标题.getElementsByTagName("p");
@@ -264,4 +328,9 @@ let options = {
 
 let 观察者 = new IntersectionObserver(观察者回调, options);
 观察者.observe(图像长廊区);
-//-------------------- ↑ 图像长廊显隐观察 -----------------------
+//-------------------- ↑ 图像长廊标题显隐观察 -----------------------
+
+function 获取鼠标坐标(event) {
+  鼠标x = event.clientX;
+  鼠标y = event.clientY;
+}

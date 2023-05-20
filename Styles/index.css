@@ -720,7 +720,7 @@
   transform: translateX(-50%);
   background-color: white;
   opacity: 0.5;
-  transition: 0.2s;
+  transition: 0.25s;
 }
 
 .图像容器 > .img-overlay:hover {
