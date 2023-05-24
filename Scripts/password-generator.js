@@ -24,8 +24,8 @@ for (let i = 0; i < passwordPool.length; i++) {
   else if (i <= 82) passwordPool[i] = String.fromCharCode(i - 17);
   else if (i <= 88) passwordPool[i] = String.fromCharCode(i + 8);
   else passwordPool[i] = String.fromCharCode(i + 34);
-  if (passwordPool[i] === "<") passwordPool[i] = "&lt;";
-  else if (passwordPool[i] === ">") passwordPool[i] = "&gt;";
+  // if (passwordPool[i] === "<") passwordPool[i] = "&lt;";
+  // else if (passwordPool[i] === ">") passwordPool[i] = "&gt;";
 }
 
 passwordTypeSelect.forEach((passwordType) => {
@@ -47,7 +47,7 @@ slider.oninput = getPassword;
 refreshPasswordButton.onclick = getPassword;
 
 copyPasswordButton.onclick = () => {
-  let content = passwordBox.innerHTML;
+  let content = passwordBox.textContent;
   navigator.clipboard.writeText(content);
 };
 
@@ -90,7 +90,6 @@ function getPassword() {
   let maxIndex = 92;
   let length = slider.value;
   lengthNumber.innerHTML = length;
-  let passwordArray = [];
   if (currentPasswordType.innerHTML === "随机密码") {
     if (digitChecked && symbolChecked) {
       minIndex = 0;
@@ -109,13 +108,53 @@ function getPassword() {
     minIndex = 0;
     maxIndex = 9;
   }
+
+  const minIndexSuppose = minIndex;
+  const maxIndexSuppose = maxIndex;
+  // const passwordArray = [];
+  const passwordElement = document.createElement("div");
+  let 已存在字母 = false;
+  let 已存在数字 = false;
+  let 已存在字符 = false;
+
   for (let i = 0; i < length; i++) {
-    passwordArray.push(
-      passwordPool[Math.floor(Math.random() * (maxIndex - minIndex)) + minIndex]
-    );
+    let character = document.createElement("span");
+    minIndex = minIndexSuppose;
+    maxIndex = maxIndexSuppose;
+    if (i === length - 3 || i === length - 2 || i === length - 1) {
+      if (!已存在字母) {
+        minIndex = 10;
+        maxIndex = 61;
+      } else if (!已存在数字 && digitChecked) {
+        minIndex = 0;
+        maxIndex = 9;
+      } else if (!已存在字符 && symbolChecked) {
+        minIndex = 62;
+        maxIndex = 92;
+      }
+    }
+
+    let index = Math.floor(Math.random() * (maxIndex - minIndex)) + minIndex;
+
+    if (index <= 9) {
+      character.classList.add("digit");
+      已存在数字 = true;
+    } else if (index >= 62) {
+      character.classList.add("symbol");
+      已存在字符 = true;
+    } else {
+      character.classList.add("letter");
+      已存在字母 = true;
+    }
+    character.textContent = passwordPool[index];
+    passwordElement.appendChild(character);
+    console.log(passwordPool[index]);
+    // passwordArray.push(
+    //   passwordPool[Math.floor(Math.random() * (maxIndex - minIndex)) + minIndex]
+    // );
   }
-  let password = passwordArray.join("");
-  passwordBox.innerHTML = password;
+  // let password = passwordArray.join("");
+  passwordBox.innerHTML = passwordElement.innerHTML;
 }
 
 function 数字框被点击() {
