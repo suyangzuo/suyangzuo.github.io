@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>openEuler</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&family=Noto+Sans+SC&display=swap"
+      rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/Styles/top-banner-common.css" />
+    <link rel="stylesheet" type="text/css" href="/Styles/people.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/Styles/tutorial_navigation.css" />
+    <script
+      src="https://kit.fontawesome.com/d0483e3bd3.js"
+      crossorigin="anonymous"></script>
+    <script src="/Scripts/html-include.js"></script>
+  </head>
+  <body>
+    <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
+    <insert-e src="/top-banner.html"></insert-e>
+    <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
+
+    <!-- --------------------------- ↓ 人物 -------------------------------- -->
+    <div class="people-hall">
+      <div class="people-hall-banner">
+        <img src="/Images/People/Banner.jpg" alt="人物背景横幅" />
+      </div>
+      <div class="people">
+        <div class="people-img">
+          <img src="/Images/People/开放原子开源基金会.png" />
+        </div>
+        <article class="people-brief">
+          <section class="people-name">
+            开放原子开源基金会<br />OpenAtom
+            <p class="detail">
+              <a href="https://www.openatom.org/about" target="_blank"
+                >基金会详情 <i class="fa-brands fa-wikipedia-w"></i>
+              </a>
+            </p>
+          </section>
+          <section class="people-life">
+            开放原子开源基金会是致力于推动全球开源事业发展的非营利机构，于2020年6月在北京成立，由阿里巴巴、百度、华为、浪潮、360、腾讯、招商银行等多家龙头科技企业联合发起。<br />业务范围主要包括募集资金、专项资助、宣传推广、教育培训、学术交流、国际合作、开源生态建设、咨询服务等。
+          </section>
+        </article>
+      </div>
+    </div>
+    <!-- --------------------------- ↑ 人物 -------------------------------- -->
+
+    <!-- --------------------------- ↓ 教程资源卡片组 -------------------------------- -->
+    <div class="tutorials">
+      <!-- ----------------- ↓ 卡片01 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://docs.openeuler.org/zh/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/openEuler/官方文档.png"
+              alt="SQLite Tutorial"
+          /></a>
+          <a href="https://docs.openeuler.org/zh/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">官方文档</div>
+              <p>
+                openEuler
+                官方文档，包含了所有相关的技术白皮书、规范、指南等内容，且针对不同版本的系统做了相应适配。
+              </p>
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片01 ---------------------- -->
+    </div>
+    <!-- --------------------------- ↑ 教程资源卡片组 -------------------------------- -->
+
+    <script src="/Scripts/tutorial-card-show.js"></script>
+  </body>
+</html>
