@@ -1,3 +1,6 @@
+const root = document.querySelector(":root");
+const rootStyle = window.getComputedStyle(root);
+
 const 图像区 = document.querySelector(".对象匹配-图像区");
 const 图像 = 图像区.querySelector("img");
 const 溢出隐藏checkbox = document.querySelector("#溢出隐藏");
@@ -69,6 +72,8 @@ y轴.oninput = 修改Y轴百分比;
 function 修改X轴百分比() {
   x轴百分比 = x轴.value;
   x轴数字区.innerText = `${x轴百分比}%`;
+  let 真实百分比 = (Number(x轴百分比) + 100) / 3;
+  root.style.setProperty("--进度-X轴", `${真实百分比}%`);
   const 值 = x轴.value;
   const 最小值 = x轴.min ? x轴.min : 0;
   const 最大值 = x轴.max ? x轴.max : 100;
@@ -107,6 +112,8 @@ function 修改X轴百分比() {
 function 修改Y轴百分比() {
   y轴百分比 = y轴.value;
   y轴数字区.innerText = `${y轴百分比}%`;
+  let 真实百分比 = (Number(y轴百分比) + 100) / 3;
+  root.style.setProperty("--进度-Y轴", `${真实百分比}%`);
   const 值 = y轴.value;
   const 最小值 = y轴.min ? y轴.min : 0;
   const 最大值 = y轴.max ? y轴.max : 100;

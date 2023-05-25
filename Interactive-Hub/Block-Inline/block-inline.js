@@ -1,3 +1,6 @@
+const root = document.querySelector(":root");
+const rootStyle = window.getComputedStyle(root);
+
 const 控制区组 = document.querySelectorAll(".控制区 > section");
 const 图像组 = document.getElementsByClassName("对象匹配-图像区")[0].children;
 const 重置按钮 = document.getElementsByClassName("重置按钮");
@@ -29,38 +32,57 @@ for (let input of 全部input) {
     // 相邻数字区 = input.nextElementSibling;
     修改数字区位置(input, 相邻数字区);
     相邻数字区.innerText = input.value;
+    let 真实比例 = 0;
     switch (input.id) {
       case "块-宽度":
         图像组[0].style.width = `${input.value}px`;
         图像组[5].style.width = `${input.value}px`;
+        真实比例 = input.value / 6;
+        root.style.setProperty("--块-宽度比例", `${真实比例}%`);
         break;
       case "块-高度":
         图像组[0].style.height = `${input.value}px`;
         图像组[5].style.height = `${input.value}px`;
+        真实比例 = input.value / 2;
+        root.style.setProperty("--块-高度比例", `${真实比例}%`);
         break;
       case "行内块-宽度":
         图像组[2].style.width = `${input.value}px`;
+        真实比例 = input.value / 3;
+        root.style.setProperty("--行内块-宽度比例", `${真实比例}%`);
         break;
       case "行内块-高度":
         图像组[2].style.height = `${input.value}px`;
+        真实比例 = input.value / 3;
+        root.style.setProperty("--行内块-高度比例", `${真实比例}%`);
         break;
       case "行内-宽度":
         图像组[1].style.width = `${input.value}px`;
         图像组[3].style.width = `${input.value}px`;
+        真实比例 = input.value / 3;
+        root.style.setProperty("--行内-宽度比例", `${真实比例}%`);
         break;
       case "行内-高度":
         图像组[1].style.height = `${input.value}px`;
         图像组[3].style.height = `${input.value}px`;
+        真实比例 = input.value / 3;
+        root.style.setProperty("--行内-高度比例", `${真实比例}%`);
         break;
       case "弹性-宽度":
         图像组[4].style.width = `${input.value}px`;
+        真实比例 = input.value / 6;
+        root.style.setProperty("--弹性-宽度比例", `${真实比例}%`);
         break;
       case "弹性-高度":
         图像组[4].style.height = `${input.value}px`;
+        真实比例 = input.value / 2;
+        root.style.setProperty("--弹性-高度比例", `${真实比例}%`);
         break;
       case "行内-字体尺寸":
         图像组[1].style.fontSize = `${input.value}rem`;
         图像组[3].style.fontSize = `${input.value}rem`;
+        真实比例 = (input.value - 1) * 50;
+        root.style.setProperty("--行内-字体尺寸比例", `${真实比例}%`);
         break;
     }
   };
@@ -79,42 +101,60 @@ window.addEventListener("load", () => {
             input.value = 600;
             图像组[0].style.width = `${input.value}px`;
             图像组[5].style.width = `${input.value}px`;
+            真实比例 = input.value / 6;
+            root.style.setProperty("--块-宽度比例", `${真实比例}%`);
             break;
           case "块-高度":
             input.value = 25;
             图像组[0].style.height = `${input.value}px`;
             图像组[5].style.height = `${input.value}px`;
+            真实比例 = input.value / 2;
+            root.style.setProperty("--块-高度比例", `${真实比例}%`);
             break;
           case "行内块-宽度":
             input.value = 150;
             图像组[2].style.width = `${input.value}px`;
+            真实比例 = input.value / 3;
+            root.style.setProperty("--行内块-宽度比例", `${真实比例}%`);
             break;
           case "行内块-高度":
             input.value = 21;
             图像组[2].style.height = `${input.value}px`;
+            真实比例 = input.value / 3;
+            root.style.setProperty("--行内块-高度比例", `${真实比例}%`);
             break;
           case "行内-宽度":
             input.value = 150;
             图像组[1].style.width = `${input.value}px`;
             图像组[3].style.width = `${input.value}px`;
+            真实比例 = input.value / 3;
+            root.style.setProperty("--行内-宽度比例", `${真实比例}%`);
             break;
           case "行内-高度":
             input.value = 150;
             图像组[1].style.height = `${input.value}px`;
             图像组[3].style.height = `${input.value}px`;
+            真实比例 = input.value / 3;
+            root.style.setProperty("--行内-高度比例", `${真实比例}%`);
             break;
           case "弹性-宽度":
             input.value = 600;
             图像组[4].style.width = `${input.value}px`;
+            真实比例 = input.value / 6;
+            root.style.setProperty("--弹性-宽度比例", `${真实比例}%`);
             break;
           case "弹性-高度":
             input.value = 25;
             图像组[4].style.height = `${input.value}px`;
+            真实比例 = input.value / 2;
+            root.style.setProperty("--弹性-高度比例", `${真实比例}%`);
             break;
           case "行内-字体尺寸":
             input.value = 1;
             图像组[1].style.fontSize = `${input.value}rem`;
             图像组[3].style.fontSize = `${input.value}rem`;
+            真实比例 = (input.value - 1) * 50;
+            root.style.setProperty("--行内-字体尺寸比例", `${真实比例}%`);
             break;
         }
         let index = Array.from(input组).indexOf(input);

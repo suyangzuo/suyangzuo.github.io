@@ -46,10 +46,21 @@ symbolBox.onclick = 符号框被点击;
 slider.oninput = getPassword;
 refreshPasswordButton.onclick = getPassword;
 
-copyPasswordButton.onclick = () => {
+const 密码复制提示 = document.getElementById("密码复制提示");
+const 密码复制动画提示时长 = 2000;
+let 密码复制动画Id = null;
+copyPasswordButton.addEventListener("click", 点击复制密码按钮);
+function 点击复制密码按钮() {
+  copyPasswordButton.removeEventListener("click", 点击复制密码按钮);
   let content = passwordBox.textContent;
   navigator.clipboard.writeText(content);
-};
+  // 密码复制提示.style.animationName = "none";
+  密码复制提示.classList.add("密码复制提示动画");
+  密码复制动画Id = setTimeout(() => {
+    密码复制提示.classList.remove("密码复制提示动画");
+    copyPasswordButton.addEventListener("click", 点击复制密码按钮);
+  }, 密码复制动画提示时长);
+}
 
 passwordTypeSelectContainer.style.display = "none";
 defaultPasswordTypeButton.onclick = () => {
@@ -72,6 +83,7 @@ function resetPasswordType() {
     slider.value = 6;
     lengthNumber.innerHTML = 6;
     passwordCharType.style.display = "none";
+    密码复制提示.classList.remove("密码复制提示动画");
     return;
   }
   if (type === "随机密码") {
@@ -81,8 +93,13 @@ function resetPasswordType() {
     slider.value = 12;
     lengthNumber.innerHTML = 12;
     passwordCharType.style.display = "flex";
+    密码复制提示.style.opacity = "0";
+    密码复制提示.classList.remove("密码复制提示动画");
     return;
   }
+  clearTimeout(密码复制动画Id);
+  密码复制提示.classList.remove("密码复制提示动画");
+  copyPasswordButton.addEventListener("click", 点击复制密码按钮);
 }
 
 function getPassword() {
@@ -148,13 +165,15 @@ function getPassword() {
     }
     character.textContent = passwordPool[index];
     passwordElement.appendChild(character);
-    console.log(passwordPool[index]);
     // passwordArray.push(
     //   passwordPool[Math.floor(Math.random() * (maxIndex - minIndex)) + minIndex]
     // );
   }
   // let password = passwordArray.join("");
   passwordBox.innerHTML = passwordElement.innerHTML;
+  clearTimeout(密码复制动画Id);
+  密码复制提示.classList.remove("密码复制提示动画");
+  copyPasswordButton.addEventListener("click", 点击复制密码按钮);
 }
 
 function 数字框被点击() {

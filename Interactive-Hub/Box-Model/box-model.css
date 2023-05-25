@@ -1,3 +1,30 @@
+:root {
+  --比率-外边距-上: 50%;
+  --比率-外边距-下: 50%;
+  --比率-外边距-左: 50%;
+  --比率-外边距-右: 50%;
+  --比率-内边距-上: 50%;
+  --比率-内边距-下: 50%;
+  --比率-内边距-左: 50%;
+  --比率-内边距-右: 50%;
+  --比率-边框-上: 50%;
+  --比率-边框-下: 50%;
+  --比率-边框-左: 50%;
+  --比率-边框-右: 50%;
+  --比率-盒子-内容-宽: 50%;
+  --比率-盒子-内容-高: 50%;
+  --拇指宽度: 16px;
+  --颜色-外边距: rgb(189, 94, 194);
+  --颜色-边框: rgb(72, 173, 116);
+  --颜色-内边距: goldenrod;
+  --颜色-内容: rgb(107, 159, 219);
+  --进度条颜色-外边距: rgb(149, 55, 154);
+  --进度条颜色-边框: rgb(36, 109, 68);
+  --进度条颜色-内边距: rgb(146, 72, 12);
+  --进度条颜色-内容: rgb(44, 85, 133);
+  --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
+}
+
 .盒子 {
   width: 800px;
   height: 800px;
@@ -14,7 +41,7 @@
 }
 
 .第4盒 {
-  background-color: rgb(107, 57, 110);
+  background-color: var(--颜色-外边距);
   width: 350px;
   height: 350px;
   animation: 第4盒动画 1s ease-in-out infinite alternate;
@@ -30,20 +57,20 @@
 }
 
 .第3盒 {
-  background-color: seagreen;
+  background-color: var(--颜色-边框);
   width: 250px;
   height: 250px;
   outline: solid 3px white;
 }
 
 .第2盒 {
-  background-color: goldenrod;
+  background-color: var(--颜色-内边距);
   width: 150px;
   height: 150px;
 }
 
 .第1盒 {
-  background-color: steelblue;
+  background-color: var(--颜色-内容);
   width: 50px;
   height: 50px;
 }
@@ -69,22 +96,22 @@
 
 .单项-外边距 {
   background-color: #0c172430;
-  border-right: solid 5px rgb(107, 57, 110);
+  border-right: solid 5px var(--颜色-外边距);
 }
 
 .单项-边框 {
   background-color: #0c172460;
-  border-right: solid 5px seagreen;
+  border-right: solid 5px var(--颜色-边框);
 }
 
 .单项-内边距 {
   background-color: #0c172490;
-  border-right: solid 5px goldenrod;
+  border-right: solid 5px var(--颜色-内边距);
 }
 
 .单项-内容 {
   background-color: #0c1724c0;
-  border-right: solid 5px steelblue;
+  border-right: solid 5px var(--颜色-内容);
 }
 
 .单项属性-名称 {
@@ -123,6 +150,19 @@
   width: 200px;
   height: 7px;
   border-radius: 10px;
+  position: relative;
+}
+
+.范围选择器::after {
+  position: absolute;
+  height: 100%;
+  width: calc(100% - var(--拇指宽度));
+  border-radius: 50px;
+  top: 0;
+  left: 0;
+  transform: translateX(calc(var(--拇指宽度) / 2));
+  content: "";
+  z-index: 0;
 }
 
 input[type="range"]:focus {
@@ -131,51 +171,137 @@ input[type="range"]:focus {
 
 .范围选择器::-webkit-slider-thumb {
   position: relative;
+  z-index: 1;
   -webkit-appearance: none;
   appearance: none;
   cursor: ew-resize;
-  /* width: 20px;
-  height: 20px;
-  background-color: white;
-  border-radius: 20px; */
-  width: 13px;
-  height: 30px;
-  background: no-repeat center/100%
-    url(/Images/Interactive-Hub/Web-Front-End/火焰.gif);
-  transform: translateY(-58.5%) scaleX(1.5);
+  width: var(--拇指宽度);
+  aspect-ratio: 1;
+  border-radius: var(--拇指宽度);
+  background: no-repeat center/contain
+    url(/Images/Interactive-Hub/进度条拇指/宝石-02.png);
+  transform: translateY(-50%) scale(1.25);
+  filter: brightness(150%);
 }
 
-.范围选择器::-moz-range-thumb {
-  position: relative;
-  -moz-appearance: none;
-  appearance: none;
-  cursor: ew-resize;
-  width: 13px;
-  height: 30px;
-  background: no-repeat center/100%
-    url(/Images/Interactive-Hub/Web-Front-End/火焰.gif);
-  transform: translateY(-8px) scaleX(1.5);
+input[type="range"] {
+  background-color: var(--进度条颜色-未填充);
 }
 
 .单项-外边距 input[type="range"] {
+  -webkit-appearance: none;
   appearance: none;
-  background-color: rgb(107, 57, 110);
+  background: linear-gradient(
+    90deg,
+    var(--进度条颜色-外边距) 6%,
+    var(--进度条颜色-未填充) 6%
+  );
+  /* background-color: rgb(107, 57, 110); */
 }
 
 .单项-边框 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
-  background-color: seagreen;
+  background: linear-gradient(
+    90deg,
+    var(--进度条颜色-边框) 6%,
+    var(--进度条颜色-未填充) 6%
+  );
+  /* background-color: seagreen; */
 }
 
 .单项-内边距 input[type="range"] {
+  -webkit-appearance: none;
   appearance: none;
-  background-color: rgb(170, 127, 18);
+  background: linear-gradient(
+    90deg,
+    var(--进度条颜色-内边距) 6%,
+    var(--进度条颜色-未填充) 6%
+  );
+  /* background-color: rgb(170, 127, 18); */
 }
 
 .单项-内容 input[type="range"] {
+  -webkit-appearance: none;
   appearance: none;
-  background-color: rgb(54, 101, 155);
+  background: linear-gradient(
+    90deg,
+    var(--进度条颜色-内容) 6%,
+    var(--进度条颜色-未填充) 6%
+  );
+  /* background-color: rgb(54, 101, 155); */
+}
+
+.单项-外边距 input[type="range"]::after {
+  background-color: var(--进度条颜色-外边距);
+}
+
+.单项-边框 input[type="range"]::after {
+  background-color: var(--进度条颜色-边框);
+}
+
+.单项-内边距 input[type="range"]::after {
+  background-color: var(--进度条颜色-内边距);
+}
+
+.单项-内容 input[type="range"]::after {
+  background-color: var(--进度条颜色-内容);
+}
+
+#外边距上::after {
+  clip-path: inset(-5% calc(100% - var(--比率-外边距-上)) -5% 0);
+}
+
+#外边距下::after {
+  clip-path: inset(-5% calc(100% - var(--比率-外边距-下)) -5% 0);
+}
+
+#外边距左::after {
+  clip-path: inset(-5% calc(100% - var(--比率-外边距-左)) -5% 0);
+}
+
+#外边距右::after {
+  clip-path: inset(-5% calc(100% - var(--比率-外边距-右)) -5% 0);
+}
+
+#内边距上::after {
+  clip-path: inset(-5% calc(100% - var(--比率-内边距-上)) -5% 0);
+}
+
+#内边距下::after {
+  clip-path: inset(-5% calc(100% - var(--比率-内边距-下)) -5% 0);
+}
+
+#内边距左::after {
+  clip-path: inset(-5% calc(100% - var(--比率-内边距-左)) -5% 0);
+}
+
+#内边距右::after {
+  clip-path: inset(-5% calc(100% - var(--比率-内边距-右)) -5% 0);
+}
+
+#边框上::after {
+  clip-path: inset(-5% calc(100% - var(--比率-边框-上)) -5% 0);
+}
+
+#边框下::after {
+  clip-path: inset(-5% calc(100% - var(--比率-边框-下)) -5% 0);
+}
+
+#边框左::after {
+  clip-path: inset(-5% calc(100% - var(--比率-边框-左)) -5% 0);
+}
+
+#边框右::after {
+  clip-path: inset(-5% calc(100% - var(--比率-边框-右)) -5% 0);
+}
+
+#内容宽::after {
+  clip-path: inset(-5% calc(100% - var(--比率-盒子-内容-宽)) -5% 0);
+}
+
+#内容高::after {
+  clip-path: inset(-5% calc(100% - var(--比率-盒子-内容-高)) -5% 0);
 }
 
 .单项属性-方向 {
@@ -250,22 +376,22 @@ input[type="range"]:focus {
 }
 
 .单项-外边距 .关联方向 > label {
-  color: rgb(185, 83, 180);
+  color: var(--颜色-外边距);
   padding: 0 5px;
 }
 
 .单项-边框 .关联方向 > label {
-  color: rgb(84, 214, 110);
+  color: var(--颜色-边框);
   padding: 0 5px;
 }
 
 .单项-内边距 .关联方向 > label {
-  color: rgb(255, 157, 0);
+  color: var(--颜色-内边距);
   padding: 0 5px;
 }
 
 .单项-内容 .关联方向 > label {
-  color: rgb(107, 171, 240);
+  color: var(--颜色-内容);
   padding: 0 5px;
 }
 

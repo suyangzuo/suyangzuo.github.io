@@ -1,3 +1,18 @@
+:root {
+  --进度条颜色-已填充: rgb(41, 126, 78);
+  --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
+  --拇指宽度: 16px;
+  --块-宽度比例: 100%;
+  --块-高度比例: 12.5%;
+  --行内-宽度比例: 50%;
+  --行内-高度比例: 50%;
+  --行内-字体尺寸比例: 0%;
+  --行内块-宽度比例: 50%;
+  --行内块-高度比例: 7%;
+  --弹性-宽度比例: 100%;
+  --弹性-高度比例: 12.5%;
+}
+
 .对象匹配-图像区 {
   width: 600px;
   height: 400px;
@@ -13,10 +28,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.对象匹配-图像区 > .行内-2,
-.对象匹配-图像区 > .行内-4 {
 }
 
 .对象匹配-图像区 > * {
@@ -70,7 +81,8 @@
   font-size: 1.25rem;
   font-weight: bolder;
   color: gold;
-  padding: 10px 0;
+  padding: 20px 0 0;
+  text-align: center;
 }
 
 .控制标题 > span {
@@ -86,12 +98,13 @@
 .高度,
 .字体尺寸 {
   display: flex;
+  gap: 15px;
   padding: 20px 0;
 }
 
 .控件 label {
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-end;
   align-items: center;
   width: 75px;
   -webkit-user-select: none;
@@ -113,25 +126,79 @@ input[type="range"]:hover {
 }
 
 input[type="range"] {
+  position: relative;
   -webkit-appearance: none;
   appearance: none;
   height: 5px;
   width: 200px;
-  background: seagreen;
+  border-radius: 50px;
+  background: linear-gradient(
+    90deg,
+    var(--进度条颜色-已填充) 6%,
+    var(--进度条颜色-未填充) 6%
+  );
 }
 
 input[type="range"]::-webkit-slider-thumb {
+  position: relative;
+  z-index: 1;
   appearance: none;
-  width: 16px;
-  height: 21px;
+  width: var(--拇指宽度);
+  aspect-ratio: 1;
   background: no-repeat center/100%
-    url(/Images/Interactive-Hub/Web-Front-End/宝石-03.png);
-  filter: brightness(100%);
-  transform: translateY(-75%);
+    url(/Images/Interactive-Hub/进度条拇指/宝石-02.png);
+  transform: translateY(-50%) scale(1.25);
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
   cursor: ew-resize;
+}
+
+input[type="range"]::after {
+  position: absolute;
+  width: calc(100% - var(--拇指宽度));
+  height: 100%;
+  border-radius: 50px;
+  content: "";
+  left: calc(var(--拇指宽度) / 2);
+  top: 0;
+  background-color: var(--进度条颜色-已填充);
+}
+
+#块-宽度::after {
+  clip-path: inset(-5% calc(100% - var(--块-宽度比例)) -5% 0);
+}
+
+#块-高度::after {
+  clip-path: inset(-5% calc(100% - var(--块-高度比例)) -5% 0);
+}
+
+#行内-宽度::after {
+  clip-path: inset(-5% calc(100% - var(--行内-宽度比例)) -5% 0);
+}
+
+#行内-高度::after {
+  clip-path: inset(-5% calc(100% - var(--行内-高度比例)) -5% 0);
+}
+
+#行内-字体尺寸::after {
+  clip-path: inset(-5% calc(100% - var(--行内-字体尺寸比例)) -5% 0);
+}
+
+#行内块-宽度::after {
+  clip-path: inset(-5% calc(100% - var(--行内块-宽度比例)) -5% 0);
+}
+
+#行内块-高度::after {
+  clip-path: inset(-5% calc(100% - var(--行内块-高度比例)) -5% 0);
+}
+
+#弹性-宽度::after {
+  clip-path: inset(-5% calc(100% - var(--弹性-宽度比例)) -5% 0);
+}
+
+#弹性-高度::after {
+  clip-path: inset(-5% calc(100% - var(--弹性-高度比例)) -5% 0);
 }
 
 .滑块数字 {
@@ -139,7 +206,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
   height: 25px;
   position: absolute;
   background: linear-gradient(rgb(87, 87, 87), rgb(57, 57, 57));
-  top: 75%;
+  top: 110%;
   left: 50%;
   transform: translateX(-50%);
   color: white;
@@ -155,4 +222,9 @@ input[type="range"]::-webkit-slider-thumb:hover {
   text-align: center;
   font-size: 0.8rem;
   padding-top: 3%;
+}
+
+.滑块容器:hover > .滑块数字,
+input[type="range"]:focus-visible ~ .滑块数字 {
+  background: linear-gradient(brown, rgb(192, 70, 70));
 }

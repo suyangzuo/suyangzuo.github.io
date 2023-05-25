@@ -1,3 +1,11 @@
+:root {
+  --进度条颜色-已填充: rgb(41, 126, 78);
+  --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
+  --拇指宽度: 16px;
+  --进度-X轴: 50%;
+  --进度-Y轴: 50%;
+}
+
 .展示区 {
   gap: 150px;
 }
@@ -189,14 +197,21 @@ input {
 .滑块区 {
   width: 300px;
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
-  background-color: seagreen;
+  background: linear-gradient(
+    90deg,
+    var(--进度条颜色-已填充) 6%,
+    var(--进度条颜色-未填充) 6%
+  );
   width: 300px;
   height: 5px;
+  position: relative;
   border-radius: 5px;
   /* display: flex;
   justify-content: center;
@@ -210,16 +225,36 @@ input[type="range"]:focus {
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  height: 15px;
-  width: 10px;
-  background: no-repeat center/100%
-    url(/Images/Interactive-Hub/Web-Front-End/进度条指示器.png);
-  filter: grayscale(1) brightness(500%);
-  transform: translateY(-15px) scale(1.2);
+  width: var(--拇指宽度);
+  aspect-ratio: 1;
+  background: no-repeat center/contain
+    url(/Images/Interactive-Hub/进度条拇指/宝石-02.png);
+  transform: translateY(-50%) scale(1.25);
+  position: relative;
+  z-index: 1;
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
   cursor: ew-resize;
+}
+
+input[type="range"]::after {
+  position: absolute;
+  width: calc(100% - var(--拇指宽度));
+  height: 100%;
+  border-radius: 50px;
+  top: 0;
+  left: calc(var(--拇指宽度) / 2);
+  content: "";
+  background-color: var(--进度条颜色-已填充);
+}
+
+#对象位置-X轴::after {
+  clip-path: inset(-5% calc(100% - var(--进度-X轴)) -5% 0);
+}
+
+#对象位置-Y轴::after {
+  clip-path: inset(-5% calc(100% - var(--进度-Y轴)) -5% 0);
 }
 
 /* input[type="range"]::after {
@@ -255,7 +290,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
   height: 30px;
   border-radius: 3px;
   background: rgb(41, 126, 78);
-  top: 20px;
+  top: 300%;
   /* left: calc(35px + 150px - 45px / 2); */
   left: 50%;
   transform: translateX(-50%);
@@ -297,7 +332,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .控件子组:hover .范围条数字区,
 input[type="range"]:focus-visible ~ .范围条数字区 {
-  background-color: rgb(54, 97, 171);
-
+  /* background-color: rgb(54, 97, 171); */
+  background-color: brown;
   color: white;
 }

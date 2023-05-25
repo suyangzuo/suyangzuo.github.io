@@ -1,3 +1,6 @@
+const root = document.querySelector(":root");
+const rootStyle = window.getComputedStyle(root);
+
 const 第1盒 = document.querySelector(".第1盒");
 const 第2盒 = document.querySelector(".第2盒");
 const 第3盒 = document.querySelector(".第3盒");
@@ -97,10 +100,12 @@ const 内容_宽高框 = 选项.querySelector("#内容-宽高关联-checkbox");
 function 修改内容宽() {
   内容宽 = 内容_宽_范围条.value;
   内容_宽_数字.innerText = 内容宽;
+  root.style.setProperty("--比率-盒子-内容-宽", `${内容宽}%`);
   if (内容_宽高框.checked) {
     内容_高_范围条.value = 内容宽;
     内容_高_数字.innerText = 内容宽;
     内容高 = 内容宽;
+    root.style.setProperty("--比率-盒子-内容-高", `${内容高}%`);
   }
   修改盒子尺寸();
 }
@@ -108,10 +113,12 @@ function 修改内容宽() {
 function 修改内容高() {
   内容高 = 内容_高_范围条.value;
   内容_高_数字.innerText = 内容高;
+  root.style.setProperty("--比率-盒子-内容-高", `${内容高}%`);
   if (内容_宽高框.checked) {
     内容_宽_范围条.value = 内容高;
     内容_宽_数字.innerText = 内容高;
     内容宽 = 内容高;
+    root.style.setProperty("--比率-盒子-内容-宽", `${内容宽}%`);
   }
   修改盒子尺寸();
 }
@@ -119,6 +126,7 @@ function 修改内容高() {
 function 修改内边距上() {
   内边距_上_数字.innerText = 内边距_上_范围条.value;
   内边距上 = 内边距_上_范围条.value;
+  root.style.setProperty("--比率-内边距-上", `${内边距上}%`);
   if (内边距_四向框.checked) {
     let size = 内边距_上_范围条.value;
     四向关联时修改内边距尺寸(size);
@@ -126,6 +134,7 @@ function 修改内边距上() {
     内边距_下_范围条.value = 内边距_上_范围条.value;
     内边距_下_数字.innerText = 内边距_下_范围条.value;
     内边距下 = 内边距_下_范围条.value;
+    root.style.setProperty("--比率-内边距-下", `${内边距下}%`);
   }
   修改盒子尺寸();
 }
@@ -133,6 +142,7 @@ function 修改内边距上() {
 function 修改内边距右() {
   内边距_右_数字.innerText = 内边距_右_范围条.value;
   内边距右 = 内边距_右_范围条.value;
+  root.style.setProperty("--比率-内边距-右", `${内边距右}%`);
   if (内边距_四向框.checked) {
     let size = 内边距_右_范围条.value;
     四向关联时修改内边距尺寸(size);
@@ -140,6 +150,7 @@ function 修改内边距右() {
     内边距_左_范围条.value = 内边距_右_范围条.value;
     内边距_左_数字.innerText = 内边距_右_范围条.value;
     内边距左 = 内边距_左_范围条.value;
+    root.style.setProperty("--比率-内边距-左", `${内边距左}%`);
   }
   修改盒子尺寸();
 }
@@ -147,6 +158,7 @@ function 修改内边距右() {
 function 修改内边距下() {
   内边距_下_数字.innerText = 内边距_下_范围条.value;
   内边距下 = 内边距_下_范围条.value;
+  root.style.setProperty("--比率-内边距-下", `${内边距下}%`);
   if (内边距_四向框.checked) {
     let size = 内边距_下_范围条.value;
     四向关联时修改内边距尺寸(size);
@@ -154,6 +166,7 @@ function 修改内边距下() {
     内边距_上_范围条.value = 内边距_下_范围条.value;
     内边距_上_数字.innerText = 内边距_下_范围条.value;
     内边距上 = 内边距_上_范围条.value;
+    root.style.setProperty("--比率-内边距-上", `${内边距上}%`);
   }
   修改盒子尺寸();
 }
@@ -161,6 +174,7 @@ function 修改内边距下() {
 function 修改内边距左() {
   内边距_左_数字.innerText = 内边距_左_范围条.value;
   内边距左 = 内边距_左_范围条.value;
+  root.style.setProperty("--比率-内边距-左", `${内边距左}%`);
   if (内边距_四向框.checked) {
     let size = 内边距_左_范围条.value;
     四向关联时修改内边距尺寸(size);
@@ -168,6 +182,7 @@ function 修改内边距左() {
     内边距_右_范围条.value = 内边距_左_范围条.value;
     内边距_右_数字.innerText = 内边距_左_范围条.value;
     内边距右 = 内边距_右_范围条.value;
+    root.style.setProperty("--比率-内边距-右", `${内边距右}%`);
   }
   修改盒子尺寸();
 }
@@ -175,6 +190,7 @@ function 修改内边距左() {
 function 修改边框上() {
   边框_上_数字.innerText = 边框_上_范围条.value;
   边框上 = 边框_上_范围条.value;
+  root.style.setProperty("--比率-边框-上", `${边框上}%`);
   if (边框_四向框.checked) {
     let size = 边框_上_范围条.value;
     四向关联时修改边框尺寸(size);
@@ -182,6 +198,7 @@ function 修改边框上() {
     边框_下_范围条.value = 边框_上_范围条.value;
     边框_下_数字.innerText = 边框_下_范围条.value;
     边框下 = 边框_下_范围条.value;
+    root.style.setProperty("--比率-边框-下", `${边框下}%`);
   }
   修改盒子尺寸();
 }
@@ -189,6 +206,7 @@ function 修改边框上() {
 function 修改边框右() {
   边框_右_数字.innerText = 边框_右_范围条.value;
   边框右 = 边框_右_范围条.value;
+  root.style.setProperty("--比率-边框-右", `${边框右}%`);
   if (边框_四向框.checked) {
     let size = 边框_右_范围条.value;
     四向关联时修改边框尺寸(size);
@@ -196,6 +214,7 @@ function 修改边框右() {
     边框_左_范围条.value = 边框_右_范围条.value;
     边框_左_数字.innerText = 边框_右_范围条.value;
     边框左 = 边框_左_范围条.value;
+    root.style.setProperty("--比率-边框-左", `${边框左}%`);
   }
   修改盒子尺寸();
 }
@@ -203,6 +222,7 @@ function 修改边框右() {
 function 修改边框下() {
   边框_下_数字.innerText = 边框_下_范围条.value;
   边框下 = 边框_下_范围条.value;
+  root.style.setProperty("--比率-边框-下", `${边框下}%`);
   if (边框_四向框.checked) {
     let size = 边框_下_范围条.value;
     四向关联时修改边框尺寸(size);
@@ -210,6 +230,7 @@ function 修改边框下() {
     边框_上_范围条.value = 边框_下_范围条.value;
     边框_上_数字.innerText = 边框_下_范围条.value;
     边框上 = 边框_上_范围条.value;
+    root.style.setProperty("--比率-边框-上", `${边框上}%`);
   }
   修改盒子尺寸();
 }
@@ -217,6 +238,7 @@ function 修改边框下() {
 function 修改边框左() {
   边框_左_数字.innerText = 边框_左_范围条.value;
   边框左 = 边框_左_范围条.value;
+  root.style.setProperty("--比率-边框-左", `${边框左}%`);
   if (边框_四向框.checked) {
     let size = 边框_左_范围条.value;
     四向关联时修改边框尺寸(size);
@@ -224,6 +246,7 @@ function 修改边框左() {
     边框_右_范围条.value = 边框_左_范围条.value;
     边框_右_数字.innerText = 边框_左_范围条.value;
     边框右 = 边框_右_范围条.value;
+    root.style.setProperty("--比率-边框-右", `${边框右}%`);
   }
   修改盒子尺寸();
 }
@@ -231,6 +254,7 @@ function 修改边框左() {
 function 修改外边距上() {
   外边距_上_数字.innerText = 外边距_上_范围条.value;
   外边距上 = 外边距_上_范围条.value;
+  root.style.setProperty("--比率-外边距-上", `${外边距上}%`);
   if (外边距_四向框.checked) {
     let size = 外边距_上_范围条.value;
     四向关联时修改外边距尺寸(size);
@@ -238,6 +262,7 @@ function 修改外边距上() {
     外边距_下_范围条.value = 外边距_上_范围条.value;
     外边距_下_数字.innerText = 外边距_下_范围条.value;
     外边距下 = 外边距_下_范围条.value;
+    root.style.setProperty("--比率-外边距-下", `${外边距下}%`);
   }
   修改盒子尺寸();
 }
@@ -245,6 +270,7 @@ function 修改外边距上() {
 function 修改外边距右() {
   外边距_右_数字.innerText = 外边距_右_范围条.value;
   外边距右 = 外边距_右_范围条.value;
+  root.style.setProperty("--比率-外边距-右", `${外边距右}%`);
   if (外边距_四向框.checked) {
     let size = 外边距_右_范围条.value;
     四向关联时修改外边距尺寸(size);
@@ -252,6 +278,7 @@ function 修改外边距右() {
     外边距_左_范围条.value = 外边距_右_范围条.value;
     外边距_左_数字.innerText = 外边距_右_范围条.value;
     外边距左 = 外边距_左_范围条.value;
+    root.style.setProperty("--比率-外边距-左", `${外边距左}%`);
   }
   修改盒子尺寸();
 }
@@ -259,6 +286,7 @@ function 修改外边距右() {
 function 修改外边距下() {
   外边距_下_数字.innerText = 外边距_下_范围条.value;
   外边距下 = 外边距_下_范围条.value;
+  root.style.setProperty("--比率-外边距-下", `${外边距下}%`);
   if (外边距_四向框.checked) {
     let size = 外边距_下_范围条.value;
     四向关联时修改外边距尺寸(size);
@@ -266,6 +294,7 @@ function 修改外边距下() {
     外边距_上_范围条.value = 外边距_下_范围条.value;
     外边距_上_数字.innerText = 外边距_下_范围条.value;
     外边距上 = 外边距_上_范围条.value;
+    root.style.setProperty("--比率-外边距-上", `${外边距上}%`);
   }
   修改盒子尺寸();
 }
@@ -273,6 +302,7 @@ function 修改外边距下() {
 function 修改外边距左() {
   外边距_左_数字.innerText = 外边距_左_范围条.value;
   外边距左 = 外边距_左_范围条.value;
+  root.style.setProperty("--比率-外边距-左", `${外边距左}%`);
   if (外边距_四向框.checked) {
     let size = 外边距_左_范围条.value;
     四向关联时修改外边距尺寸(size);
@@ -280,6 +310,7 @@ function 修改外边距左() {
     外边距_右_范围条.value = 外边距_左_范围条.value;
     外边距_右_数字.innerText = 外边距_左_范围条.value;
     外边距右 = 外边距_右_范围条.value;
+    root.style.setProperty("--比率-外边距-右", `${外边距右}%`);
   }
   修改盒子尺寸();
 }
@@ -297,6 +328,10 @@ function 四向关联时修改外边距尺寸(size) {
   外边距右 = 外边距_右_范围条.value;
   外边距下 = 外边距_下_范围条.value;
   外边距左 = 外边距_左_范围条.value;
+  root.style.setProperty("--比率-外边距-上", `${外边距上}%`);
+  root.style.setProperty("--比率-外边距-下", `${外边距下}%`);
+  root.style.setProperty("--比率-外边距-左", `${外边距左}%`);
+  root.style.setProperty("--比率-外边距-右", `${外边距右}%`);
 }
 
 function 四向关联时修改边框尺寸(size) {
@@ -312,6 +347,10 @@ function 四向关联时修改边框尺寸(size) {
   边框右 = 边框_右_范围条.value;
   边框下 = 边框_下_范围条.value;
   边框左 = 边框_左_范围条.value;
+  root.style.setProperty("--比率-边框-上", `${边框上}%`);
+  root.style.setProperty("--比率-边框-下", `${边框下}%`);
+  root.style.setProperty("--比率-边框-左", `${边框左}%`);
+  root.style.setProperty("--比率-边框-右", `${边框右}%`);
 }
 
 function 四向关联时修改内边距尺寸(size) {
@@ -327,6 +366,10 @@ function 四向关联时修改内边距尺寸(size) {
   内边距右 = 内边距_右_范围条.value;
   内边距下 = 内边距_下_范围条.value;
   内边距左 = 内边距_左_范围条.value;
+  root.style.setProperty("--比率-内边距-上", `${内边距上}%`);
+  root.style.setProperty("--比率-内边距-下", `${内边距下}%`);
+  root.style.setProperty("--比率-内边距-左", `${内边距左}%`);
+  root.style.setProperty("--比率-内边距-右", `${内边距右}%`);
 }
 
 function 修改盒子尺寸() {
@@ -502,6 +545,22 @@ function 重置参数() {
   外边距右 = 外边距_右_范围条.value;
   外边距下 = 外边距_下_范围条.value;
   外边距左 = 外边距_左_范围条.value;
+
+  root.style.setProperty("--比率-盒子-内容-宽", `${内容宽}%`);
+  root.style.setProperty("--比率-盒子-内容-高", `${内容高}%`);
+  root.style.setProperty("--比率-内边距-上", `${内边距上}%`);
+  root.style.setProperty("--比率-内边距-下", `${内边距下}%`);
+  root.style.setProperty("--比率-内边距-左", `${内边距左}%`);
+  root.style.setProperty("--比率-内边距-右", `${内边距右}%`);
+  root.style.setProperty("--比率-外边距-上", `${外边距上}%`);
+  root.style.setProperty("--比率-外边距-下", `${外边距下}%`);
+  root.style.setProperty("--比率-外边距-左", `${外边距左}%`);
+  root.style.setProperty("--比率-外边距-右", `${外边距右}%`);
+  root.style.setProperty("--比率-边框-上", `${边框上}%`);
+  root.style.setProperty("--比率-边框-下", `${边框下}%`);
+  root.style.setProperty("--比率-边框-左", `${边框左}%`);
+  root.style.setProperty("--比率-边框-右", `${边框右}%`);
+
   修改盒子尺寸();
 }
 // ----------------------- ↑ 重置逻辑 --------------------------
