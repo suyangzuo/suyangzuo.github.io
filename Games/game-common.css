@@ -43,7 +43,7 @@ body {
 }
 
 .control-area > .reset-game:hover {
-  cursor: pointer;
+  cursor: url(/Images/Common/鼠标-指向.png), pointer;
 }
 
 .control-area > div img {
@@ -95,7 +95,7 @@ body {
 }
 
 .back-to-navigator:hover img {
-  cursor: pointer;
+  cursor: url(/Images/Common/鼠标-指向.png), pointer;
   animation: backToNavigatorScale 0.75s infinite linear;
 }
 

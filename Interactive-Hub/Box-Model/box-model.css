@@ -87,11 +87,26 @@
 }
 
 .单项 {
+  position: relative;
   width: 100%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   gap: 20px;
+}
+
+.单项:hover::after {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  content: "";
+  /* background-color: red; */
+  border-top: solid 2px gray;
+  border-left: solid 2px gray;
+  border-bottom: solid 2px gray;
+  pointer-events: none;
 }
 
 .单项-外边距 {
@@ -153,6 +168,10 @@
   position: relative;
 }
 
+.范围选择器:hover {
+  cursor: url(/Images/Common/鼠标-指向.png), pointer;
+}
+
 .范围选择器::after {
   position: absolute;
   height: 100%;
@@ -174,14 +193,29 @@ input[type="range"]:focus {
   z-index: 1;
   -webkit-appearance: none;
   appearance: none;
-  cursor: ew-resize;
+  cursor: url(/Images/Common/鼠标-横向缩放.png) 16 6, ew-resize;
   width: var(--拇指宽度);
   aspect-ratio: 1;
   border-radius: var(--拇指宽度);
   background: no-repeat center/contain
-    url(/Images/Interactive-Hub/进度条拇指/宝石-02.png);
+    url(/Images/Interactive-Hub/进度条拇指/闪电球.png);
   transform: translateY(-50%) scale(1.25);
-  filter: brightness(150%);
+  filter: brightness(150%) drop-shadow(0 0 2px black);
+}
+
+.范围选择器::-moz-range-thumb {
+  position: relative;
+  z-index: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: url(/Images/Common/鼠标-横向缩放.png) 16 6, ew-resize;
+  width: var(--拇指宽度);
+  aspect-ratio: 1;
+  border-radius: var(--拇指宽度);
+  background: no-repeat center/contain
+    url(/Images/Interactive-Hub/进度条拇指/闪电球.png);
+  transform: translateY(-50%) scale(1.25);
+  filter: brightness(150%) drop-shadow(0 0 2px black);
 }
 
 input[type="range"] {
@@ -372,7 +406,7 @@ input[type="range"] {
 }
 
 .关联方向:hover {
-  cursor: pointer;
+  cursor: url(/Images/Common/鼠标-指向.png), pointer;
 }
 
 .单项-外边距 .关联方向 > label {
@@ -405,8 +439,9 @@ input[type="range"] {
 
 .关联方向 > label:hover,
 .关联方向 > .checkbox-封装器 > label:hover,
-.关联方向 > .checkbox-封装器 > input:not(:checked):hover {
-  cursor: pointer;
+.关联方向 > .checkbox-封装器 > input:hover,
+input[type="radio"]:hover {
+  cursor: url(/Images/Common/鼠标-指向.png), pointer;
 }
 
 .checkbox-封装器 {
@@ -418,6 +453,10 @@ input[type="range"] {
   width: 10px;
   height: 10px;
   outline: solid 1px gray;
+}
+
+.checkbox-封装器:hover > input {
+  cursor: url(/Images/Common/鼠标-指向.png), pointer;
 }
 
 .checkbox-封装器 > span {
@@ -452,7 +491,7 @@ input[type="range"] {
 .盒子尺寸类型 {
   display: flex;
   justify-content: center;
-  gap: 5px;
+  /* gap: 5px; */
   -webkit-user-select: none;
   user-select: none;
   -webkit-user-drag: none;
@@ -461,7 +500,7 @@ input[type="range"] {
 .盒子尺寸类型-label {
   color: lightseagreen;
   /* width: 100px; */
-  padding: 0 5px;
+  padding: 0 10px 0 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -519,11 +558,11 @@ input[type="range"] {
 
 .盒子尺寸类型:hover > .盒子尺寸类型-label {
   filter: brightness(120%);
-  cursor: pointer;
+  cursor: url(/Images/Common/鼠标-指向.png), pointer;
 }
 
 .盒子尺寸类型:hover > .radio封装器 {
-  cursor: pointer;
+  cursor: url(/Images/Common/鼠标-指向.png), pointer;
 }
 
 .盒子尺寸类型:hover input {

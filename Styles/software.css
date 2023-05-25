@@ -33,7 +33,7 @@ body {
   justify-content: center;
   align-items: flex-start;
   /* background: #259904; */
-  cursor: pointer;
+  cursor: url(/Images/Common/鼠标-指向.png), pointer;
   user-select: none;
   -webkit-user-select: none;
 }

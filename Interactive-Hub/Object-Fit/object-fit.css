@@ -124,7 +124,7 @@
 
 .控件子组 label:hover,
 .控件子组 input:hover {
-  cursor: pointer;
+  cursor: url(/Images/Common/鼠标-指向.png), pointer;
 }
 
 label > .代码 {
@@ -228,14 +228,28 @@ input[type="range"]::-webkit-slider-thumb {
   width: var(--拇指宽度);
   aspect-ratio: 1;
   background: no-repeat center/contain
-    url(/Images/Interactive-Hub/进度条拇指/宝石-02.png);
+    url(/Images/Interactive-Hub/进度条拇指/闪电球.png);
+  filter: drop-shadow(0 0 2px black);
+  transform: translateY(-50%) scale(1.25);
+  position: relative;
+  z-index: 1;
+}
+
+input[type="range"]::-moz-range-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--拇指宽度);
+  aspect-ratio: 1;
+  background: no-repeat center/contain
+    url(/Images/Interactive-Hub/进度条拇指/闪电球.png);
+  filter: drop-shadow(0 0 2px black);
   transform: translateY(-50%) scale(1.25);
   position: relative;
   z-index: 1;
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
-  cursor: ew-resize;
+  cursor: url(/Images/Common/鼠标-横向缩放.png) 16 6, ew-resize;;
 }
 
 input[type="range"]::after {
@@ -333,6 +347,6 @@ input[type="range"]::after {
 .控件子组:hover .范围条数字区,
 input[type="range"]:focus-visible ~ .范围条数字区 {
   /* background-color: rgb(54, 97, 171); */
-  background-color: brown;
+  background-color: rgb(177, 58, 58);
   color: white;
 }

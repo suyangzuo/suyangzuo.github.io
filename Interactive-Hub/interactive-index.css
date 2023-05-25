@@ -173,7 +173,7 @@ body {
 }
 
 .交互单项链接:hover {
-  cursor: pointer;
+  cursor: url(/Images/Common/鼠标-指向.png), pointer;
   outline: solid 2px rgb(172, 172, 172);
 }
 

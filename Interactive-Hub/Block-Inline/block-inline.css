@@ -77,6 +77,12 @@
   /* outline: solid 2px gray; */
 }
 
+.控制分区:hover {
+  outline: solid 2px gray;
+  position: relative;
+  z-index: 1;
+}
+
 .控制标题 {
   font-size: 1.25rem;
   font-weight: bolder;
@@ -122,7 +128,7 @@
 
 .滑块容器:hover,
 input[type="range"]:hover {
-  cursor: pointer;
+  cursor: url(/Images/Common/鼠标-指向.png), pointer;
 }
 
 input[type="range"] {
@@ -146,12 +152,25 @@ input[type="range"]::-webkit-slider-thumb {
   width: var(--拇指宽度);
   aspect-ratio: 1;
   background: no-repeat center/100%
-    url(/Images/Interactive-Hub/进度条拇指/宝石-02.png);
+    url(/Images/Interactive-Hub/进度条拇指/闪电球.png);
   transform: translateY(-50%) scale(1.25);
+  filter: drop-shadow(0 0 2px black);
+}
+
+input[type="range"]::-moz-range-thumb {
+  position: relative;
+  z-index: 1;
+  appearance: none;
+  width: var(--拇指宽度);
+  aspect-ratio: 1;
+  background: no-repeat center/100%
+    url(/Images/Interactive-Hub/进度条拇指/闪电球.png);
+  transform: translateY(-50%) scale(1.25);
+  filter: drop-shadow(0 0 2px black);
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
-  cursor: ew-resize;
+  cursor: url(/Images/Common/鼠标-横向缩放.png) 16 6, ew-resize;;
 }
 
 input[type="range"]::after {

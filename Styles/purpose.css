@@ -169,13 +169,13 @@ body {
 .pp-04::before {
   background: url(/Images/Purpose/bg-04.jpg);
   -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 100%);
-  -mask-image: linear-gradient(transparent 0%, #000 100%);
+  mask-image: linear-gradient(transparent 0%, #000 100%);
 }
 
 .pp-05::before {
   background: url(/Images/Purpose/bg-05.jpg);
   -webkit-mask-image: linear-gradient(-90deg, transparent 0%, #000 100%);
-  -mask-image: linear-gradient(-90deg, transparent 0%, #000 100%);
+  mask-image: linear-gradient(-90deg, transparent 0%, #000 100%);
 }
 
 .purpose::before {
@@ -349,7 +349,7 @@ body {
 }
 
 .宗旨选择器:hover {
-  cursor: pointer;
+  cursor: url(/Images/Common/鼠标-指向.png), pointer;
   background-color: rgba(0, 0, 0, 0.25) !important;
 }
 

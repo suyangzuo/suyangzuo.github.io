@@ -30,7 +30,7 @@
 }
 
 .slider:hover {
-  cursor: pointer;
+  cursor: url(/Images/Common/鼠标-指向.png), pointer;
 }
 
 .slider::-webkit-slider-thumb {
@@ -75,7 +75,7 @@
 }
 
 .outer:hover {
-  cursor: pointer;
+  cursor: url(/Images/Common/鼠标-指向.png), pointer;
 }
 
 .inner {

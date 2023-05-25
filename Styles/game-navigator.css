@@ -24,7 +24,7 @@ body {
 .game-grid:hover {
   transform: scale(1.15);
   z-index: 1;
-  cursor: pointer;
+  cursor: url(/Images/Common/鼠标-指向.png), pointer;
   box-shadow: 2px 2px 10px 0 #000, -2px -2px 10px 0 #000;
 }
 

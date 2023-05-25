@@ -122,7 +122,7 @@ body {
 }
 
 .tutorials .tutorial-card .intro .card-text:hover {
-  cursor: pointer;
+  cursor: url(/Images/Common/鼠标-指向.png), pointer;
   transform: scale(1.04);
   /* text-decoration: underline;
   text-underline-offset: 0.2em;
