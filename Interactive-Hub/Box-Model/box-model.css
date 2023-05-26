@@ -391,7 +391,7 @@ input[type="range"] {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   gap: 5px;
   -webkit-user-select: none;
   user-select: none;
@@ -446,12 +446,17 @@ input[type="radio"]:hover {
 
 .checkbox-封装器 {
   position: relative;
+  height: 10px;
+  width: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .checkbox-封装器 > input {
   appearance: none;
-  width: 10px;
-  height: 10px;
+  width: 100%;
+  height: 100%;
   outline: solid 1px gray;
 }
 
@@ -461,10 +466,13 @@ input[type="radio"]:hover {
 
 .checkbox-封装器 > span {
   position: absolute;
-  left: 10%;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: -80%;
   /* color: rgb(52, 184, 118); */
   color: rgb(124, 255, 216);
-  transform: scale(1.5);
+  transform: scale(1.25);
   visibility: hidden;
   opacity: 0;
   transition: 0.15s;
@@ -491,6 +499,7 @@ input[type="radio"]:hover {
 .盒子尺寸类型 {
   display: flex;
   justify-content: center;
+  align-items: center;
   /* gap: 5px; */
   -webkit-user-select: none;
   user-select: none;
@@ -526,6 +535,7 @@ input[type="radio"]:hover {
 }
 
 .radio封装器 {
+  height: fit-content;
   display: flex;
   justify-content: center;
   align-items: center;
