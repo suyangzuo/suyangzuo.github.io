@@ -1,3 +1,6 @@
+const root = document.querySelector(":root");
+const rootStyle = window.getComputedStyle(root);
+
 const 图像滑块组 = document.getElementsByClassName("图像滑块组")[0];
 const 图像滑块组成员 = 图像滑块组.getElementsByClassName("图像滑块");
 
@@ -20,11 +23,16 @@ const 右箭头 = 箭头组[1];
 const 自动滚动延时 = 4000;
 const 图像数量 = 10;
 const 图像移动时长 = 350;
-const 图像容器宽度 = 800;
 
-const 覆盖层宽度 = 700;
-const 覆盖层高度 = 400;
-const 初始图像位移 = 400;
+const 图像容器宽度 = parseInt(rootStyle.getPropertyValue("--图像容器宽度"), 10);
+const 实际图像间距 = parseInt(rootStyle.getPropertyValue("--实际图像间距"), 10);
+const 图像宽度 = 图像容器宽度 - 实际图像间距;
+const 图像容器高度 = 图像宽度 * 9 / 16;
+const 图像高度 = 图像宽度 * 9 / 16;
+
+const 覆盖层宽度 = 图像宽度;
+const 覆盖层高度 = 图像高度;
+const 初始图像位移 = 图像容器宽度 / 2;
 let 图像位移 = 初始图像位移; // --> 图像容器宽度 / 2
 const 初始图像索引 = 图像数量 - 1 + 图像数量 / 2;
 let 图像索引 = 初始图像索引; // --> 中间滑块的第5张图
@@ -58,7 +66,7 @@ function 初始化图像覆盖透明度() {
     clearInterval(图像长廊定时滚动);
     当前所指图像索引 = 长廊1区图像容器组.indexOf(图像容器);
     if (当前所指图像索引 !== 图像索引) {
-      图像覆盖.style.opacity = 0.25;
+      图像覆盖.style.opacity = "0.25";
       if (当前所指图像索引 > 图像索引) {
         图像滑块组.style.left = "-0.5%";
       } else {
@@ -71,7 +79,7 @@ function 初始化图像覆盖透明度() {
     图像长廊定时滚动 = setInterval(点击右箭头, 自动滚动延时);
     当前所指图像索引 = 长廊1区图像容器组.indexOf(图像容器);
     if (当前所指图像索引 !== 图像索引) {
-      图像覆盖.style.opacity = 0.5;
+      图像覆盖.style.opacity = "0.5";
       图像滑块组.style.left = "0";
     }
   });
@@ -163,16 +171,16 @@ function 点击左箭头() {
     let nextOffsetTop = nextOffset.top;
     if (
       鼠标x >= previousOffsetLeft &&
-      鼠标x <= previousOffsetLeft + 覆盖层宽度 &&
+      鼠标x <= previousOffsetLeft + 图像宽度 &&
       鼠标y >= previousOffsetTop &&
-      鼠标y <= previousOffsetTop + 覆盖层高度
+      鼠标y <= previousOffsetTop + 图像高度
     ) {
       图覆盖前1.style.opacity = "0.25";
     } else if (
       鼠标x >= nextOffsetLeft &&
-      鼠标x <= nextOffsetLeft + 覆盖层宽度 &&
+      鼠标x <= nextOffsetLeft + 图像宽度 &&
       鼠标y >= nextOffsetTop &&
-      鼠标y <= nextOffsetTop + 覆盖层高度
+      鼠标y <= nextOffsetTop + 图像高度
     ) {
       图覆盖后1.style.opacity = "0.25";
     }
