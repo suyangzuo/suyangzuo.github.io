@@ -4,6 +4,7 @@
   --图像宽度: calc(var(--图像容器宽度) - var(--实际图像间距));
   --图像容器高度: calc(var(--图像宽度) * 9 / 16);
   --图像长廊分区高度: calc(var(--图像容器高度) + 50px);
+  --图像移动时长: 350ms;
 }
 
 /* body {
@@ -686,7 +687,7 @@
   transform: translateX(calc(var(--图像容器宽度) / 2));
   left: 0;
   right: 0;
-  transition: transform 350ms ease-out, left 250ms ease-out;
+  transition: transform var(--图像移动时长) ease-out, left 250ms ease-out;
 }
 
 .图像滑块 {

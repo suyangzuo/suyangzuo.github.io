@@ -2,15 +2,15 @@ const root = document.querySelector(":root");
 const rootStyle = window.getComputedStyle(root);
 
 const 图像滑块组 = document.getElementsByClassName("图像滑块组")[0];
-const 图像滑块组成员 = 图像滑块组.getElementsByClassName("图像滑块");
+const 图像滑块 = 图像滑块组.getElementsByClassName("图像滑块");
 
 let 鼠标x = 0;
 let 鼠标y = 0;
 
 window.addEventListener("click", 获取鼠标坐标);
 
-图像滑块组成员[0].innerHTML = 图像滑块组成员[1].innerHTML;
-图像滑块组成员[2].innerHTML = 图像滑块组成员[1].innerHTML;
+图像滑块[0].innerHTML = 图像滑块[1].innerHTML;
+图像滑块[2].innerHTML = 图像滑块[1].innerHTML;
 
 const 长廊1区图像容器组 = Array.from(
   document.getElementsByClassName("图像容器")
@@ -21,14 +21,14 @@ const 左箭头 = 箭头组[0];
 const 右箭头 = 箭头组[1];
 
 const 自动滚动延时 = 4000;
-const 图像数量 = 10;
-const 图像移动时长 = 350;
+const 图像数量 = 图像滑块[1].children.length;
+const 图像移动时长 = parseInt(rootStyle.getPropertyValue("--图像移动时长"), 10);
 
 const 图像容器宽度 = parseInt(rootStyle.getPropertyValue("--图像容器宽度"), 10);
 const 实际图像间距 = parseInt(rootStyle.getPropertyValue("--实际图像间距"), 10);
 const 图像宽度 = 图像容器宽度 - 实际图像间距;
-const 图像容器高度 = 图像宽度 * 9 / 16;
-const 图像高度 = 图像宽度 * 9 / 16;
+const 图像容器高度 = (图像宽度 * 9) / 16;
+const 图像高度 = (图像宽度 * 9) / 16;
 
 const 覆盖层宽度 = 图像宽度;
 const 覆盖层高度 = 图像高度;
@@ -42,6 +42,11 @@ let mouseIsEnter = false; // --> 判断鼠标是否悬停在箭头上
 let 图像长廊定时滚动 = setInterval(点击右箭头, 自动滚动延时);
 
 let 当前所指图像索引 = 初始图像索引;
+
+function 获取鼠标坐标(event) {
+  鼠标x = event.clientX;
+  鼠标y = event.clientY;
+}
 
 function 初始化图像覆盖透明度() {
   长廊1区图像容器组[初始图像索引 - 1].getElementsByClassName(
@@ -80,8 +85,8 @@ function 初始化图像覆盖透明度() {
     当前所指图像索引 = 长廊1区图像容器组.indexOf(图像容器);
     if (当前所指图像索引 !== 图像索引) {
       图像覆盖.style.opacity = "0.5";
-      图像滑块组.style.left = "0";
     }
+    图像滑块组.style.left = "0";
   });
 });
 // ------- ↑ 此处有Bug：当鼠标不动、图片移动时，mouseenter 和 mouseleave 无法触发-------
@@ -337,8 +342,3 @@ let options = {
 let 观察者 = new IntersectionObserver(观察者回调, options);
 观察者.observe(图像长廊区);
 //-------------------- ↑ 图像长廊标题显隐观察 -----------------------
-
-function 获取鼠标坐标(event) {
-  鼠标x = event.clientX;
-  鼠标y = event.clientY;
-}
