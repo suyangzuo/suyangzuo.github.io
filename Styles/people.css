@@ -87,9 +87,9 @@
   transition: 0.5s;
 }
 
-.people-img > img:hover {
+/* .people-img > img:hover {
   transform: scale(1.1);
-}
+} */
 
 .people-brief {
   /* background-color: blueviolet; */

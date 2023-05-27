@@ -38,7 +38,7 @@
 .后退区 > .后退链接:hover,
 .重置区 > .重置按钮:hover {
   border-radius: 10px;
-  cursor: url(/Images/Common/鼠标-指向.png), pointer;
+  cursor: url(/Images/Common/鼠标-指向.cur), pointer;
   filter: hue-rotate(150deg);
 }
 
