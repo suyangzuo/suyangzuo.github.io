@@ -639,7 +639,7 @@
 }
 
 .图像长廊分区 > .箭头:hover {
-  cursor: url(/Images/Common/鼠标-指向.png), pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   box-shadow: 0 0 5px 0 black, inset 0 1px 0 0 white;
   /* box-shadow: inset 0 1px 0 0 white; */
 }
@@ -733,7 +733,7 @@
 }
 
 .图像容器 > .img-overlay:hover {
-  cursor: url(/Images/Common/鼠标-指向.png), pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 /* <!-- ------------------ ↑ 游戏区 ------------------- --> */
 

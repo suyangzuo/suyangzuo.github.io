@@ -32,7 +32,6 @@ body {
   background-color: var(--bg-color);
   color: var(--f-color);
   z-index: 0;
-  cursor: url("/Images/Common/鼠标-默认.png"), auto;
   /* padding-bottom: 150px; */
 }
 
@@ -46,7 +45,7 @@ a:link {
 
 button:hover,
 a:hover {
-  cursor: url(/Images/Common/鼠标-指向.png), pointer !important;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 a:visited {

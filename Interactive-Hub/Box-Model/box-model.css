@@ -169,7 +169,7 @@
 }
 
 .范围选择器:hover {
-  cursor: url(/Images/Common/鼠标-指向.png), pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 .范围选择器::after {
@@ -406,7 +406,7 @@ input[type="range"] {
 }
 
 .关联方向:hover {
-  cursor: url(/Images/Common/鼠标-指向.png), pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 .单项-外边距 .关联方向 > label {
@@ -441,7 +441,7 @@ input[type="range"] {
 .关联方向 > .checkbox-封装器 > label:hover,
 .关联方向 > .checkbox-封装器 > input:hover,
 input[type="radio"]:hover {
-  cursor: url(/Images/Common/鼠标-指向.png), pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 .checkbox-封装器 {
@@ -461,7 +461,7 @@ input[type="radio"]:hover {
 }
 
 .checkbox-封装器:hover > input {
-  cursor: url(/Images/Common/鼠标-指向.png), pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 .checkbox-封装器 > span {
@@ -568,11 +568,11 @@ input[type="radio"]:hover {
 
 .盒子尺寸类型:hover > .盒子尺寸类型-label {
   filter: brightness(120%);
-  cursor: url(/Images/Common/鼠标-指向.png), pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 .盒子尺寸类型:hover > .radio封装器 {
-  cursor: url(/Images/Common/鼠标-指向.png), pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 .盒子尺寸类型:hover input {

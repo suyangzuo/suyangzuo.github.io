@@ -192,7 +192,7 @@
   ); */
   /* background-color: rgba(41, 41, 41, 0.25); */
   /* border-radius: 5px; */
-  cursor: url(/Images/Common/鼠标-指向.png), pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 .top-nav .nav-ul > li > a {

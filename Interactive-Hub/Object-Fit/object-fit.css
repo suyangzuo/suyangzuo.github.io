@@ -124,7 +124,7 @@
 
 .控件子组 label:hover,
 .控件子组 input:hover {
-  cursor: url(/Images/Common/鼠标-指向.png), pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 label > .代码 {

@@ -161,7 +161,7 @@ body::before {
   color: white;
   border: none;
   transition: 0.25s;
-  cursor: url(/Images/Common/鼠标-指向.png), pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   user-select: none;
   position: relative;
 }
@@ -198,7 +198,7 @@ body::before {
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  cursor: url(/Images/Common/鼠标-指向.png), pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 .cell-img-container {
@@ -466,7 +466,7 @@ body::before {
 }
 
 .侧边-贡献者容器:hover {
-  cursor: url(/Images/Common/鼠标-指向.png), pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   width: 100%;
   background-color: #aaa;
   outline: none;
