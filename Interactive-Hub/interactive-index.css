@@ -7,17 +7,20 @@ body {
 }
 
 .交互式概念中心 {
-  background: #141e30; /* fallback for old browsers */
+  background: #0f2027; /* fallback for old browsers */
   background: -webkit-linear-gradient(
     to left,
-    #243b55,
-    #141e30
+    #2c5364,
+    #203a43,
+    #0f2027
   ); /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(
     to left,
-    #243b55,
-    #141e30
+    #2c5364,
+    #203a43,
+    #0f2027
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
   width: 100%;
   height: calc(100vh - 65px);
   overflow: auto;
@@ -157,6 +160,7 @@ body {
 .交互单项 {
   position: relative;
   list-style-type: none;
+  filter: drop-shadow(2px 2px 5px #0008);
 }
 
 .交互单项链接 {

@@ -120,19 +120,19 @@
 
 .detail > a:hover {
   text-decoration: underline;
-  animation: move-underline 0.3s;
-  animation-fill-mode: forwards;
+  text-underline-offset: 0.2rem;
+  /* animation: move-underline 0.3s forwards; */
   color: gold;
 }
 
-@keyframes move-underline {
+/* @keyframes move-underline {
   from {
     text-underline-offset: 0.1em;
   }
   to {
     text-underline-offset: 0.2em;
   }
-}
+} */
 
 .people-life {
   height: 70%;
