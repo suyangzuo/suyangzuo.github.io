@@ -13,53 +13,53 @@
   --弹性-高度比例: 12.5%;
 }
 
-.对象匹配-图像区 {
+.块行内-图像区 {
   width: 600px;
   height: 400px;
   outline: solid 5px skyblue;
   /* overflow: hidden; */
 }
 
-.对象匹配-图像区 > .行内块-3 {
+.块行内-图像区 > .行内块-3 {
   display: inline-block;
 }
 
-.对象匹配-图像区 > .弹性-5 {
+.块行内-图像区 > .弹性-5 {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.对象匹配-图像区 > * {
+.块行内-图像区 > * {
   white-space: nowrap;
 }
 
-.对象匹配-图像区 > .图像-块,
-.对象匹配-图像区 > .图像-弹性 {
+.块行内-图像区 > .图像-块,
+.块行内-图像区 > .图像-弹性 {
   height: 25px;
 }
 
-.对象匹配-图像区 > :nth-child(1) {
+.块行内-图像区 > :nth-child(1) {
   background-color: rgb(9, 138, 0);
 }
 
-.对象匹配-图像区 > :nth-child(2) {
+.块行内-图像区 > :nth-child(2) {
   background-color: rgb(227, 68, 68);
 }
 
-.对象匹配-图像区 > :nth-child(3) {
+.块行内-图像区 > :nth-child(3) {
   background-color: rgb(124, 29, 161);
 }
 
-.对象匹配-图像区 > :nth-child(4) {
+.块行内-图像区 > :nth-child(4) {
   background-color: rgb(44, 96, 193);
 }
 
-.对象匹配-图像区 > :nth-child(5) {
+.块行内-图像区 > :nth-child(5) {
   background-color: rgb(158, 62, 70);
 }
 
-.对象匹配-图像区 > :nth-child(6) {
+.块行内-图像区 > :nth-child(6) {
   background-color: rgb(155, 98, 41);
 }
 

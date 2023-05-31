@@ -2,7 +2,7 @@ const root = document.querySelector(":root");
 const rootStyle = window.getComputedStyle(root);
 
 const 控制区组 = document.querySelectorAll(".控制区 > section");
-const 图像组 = document.getElementsByClassName("对象匹配-图像区")[0].children;
+const 图像组 = document.getElementsByClassName("块行内-图像区")[0].children;
 const 重置按钮 = document.getElementsByClassName("重置按钮");
 
 //初始化所有滑块数字
