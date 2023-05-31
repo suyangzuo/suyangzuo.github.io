@@ -55,7 +55,8 @@ body {
     rgb(23, 26, 33) 40%
   );
   width: calc(100vw - var(--software-category-width));
-  min-height: 100vh;
+  /* min-height: 100vh; */
+  height: calc(100vh - 50px);
   margin-left: var(--software-category-width);
   display: grid;
   align-content: flex-start;

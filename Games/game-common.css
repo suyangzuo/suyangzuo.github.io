@@ -1,5 +1,5 @@
 body {
-  min-height: calc(100vh - 65px);
+  min-height: calc(100vh - 50px);
   background-color: rgb(24, 25, 26) !important;
   color: aliceblue;
   width: 100vw;

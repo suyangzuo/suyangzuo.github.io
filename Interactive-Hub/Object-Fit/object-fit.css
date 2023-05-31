@@ -24,6 +24,7 @@
   pointer-events: none;
   position: relative;
   z-index: -1;
+  transition: width 0.5s, height 0.5s;
 }
 
 .选项区 {
@@ -249,7 +250,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
-  cursor: url(/Images/Common/鼠标-横向缩放.png) 16 6, ew-resize;;
+  cursor: url(/Images/Common/鼠标-横向缩放.png) 16 6, ew-resize;
 }
 
 input[type="range"]::after {
