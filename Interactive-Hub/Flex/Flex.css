@@ -1,0 +1,247 @@
+:root {
+  --拇指宽度: 16px;
+  --填充颜色: seagreen;
+  --未填充颜色: rgb(224, 224, 224);
+  --收缩值左偏移: 50%;
+  --扩张值左偏移: 50%;
+  --盒子数量值左偏移: 50%;
+}
+
+.弹性总区 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5vw;
+  overflow: hidden;
+}
+
+.弹性-展示区 {
+  width: 600px;
+  height: 600px;
+  position: relative;
+  outline: solid 2px white;
+}
+
+.弹性-操作区 {
+  position: relative;
+  z-index: 1;
+  width: 500px;
+  /* height: 800px; */
+  outline: solid 1px gray;
+}
+
+.操作分区 {
+  padding: 15px 0;
+  background: linear-gradient(0deg, #111 0%, #333 100%);
+}
+
+.标题 {
+  width: 100%;
+  padding: 5px 0;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.标题中文 {
+  color: rgb(83, 201, 164);
+  font-size: 1.25rem;
+}
+
+.标题代码 {
+  color: rgb(207, 128, 97);
+  font-size: 1rem;
+  font-family: consolas;
+}
+
+.布局区 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.布局选项 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}
+
+.布局按钮区 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.标签 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-right: 10px;
+}
+
+.中文 {
+  font-size: 1rem;
+  color: gold;
+}
+
+.代码 {
+  font-size: 0.85rem;
+  color: goldenrod;
+  font-family: consolas;
+}
+
+label:hover,
+input:hover {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border: solid 1px rgb(223, 223, 223);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+input[type="radio"]::after,
+input[type="checkbox"]::after {
+  width: 70%;
+  height: 70%;
+  content: "";
+  background-color: black;
+  clip-path: polygon(12% 50%, 43% 75%, 90% 5%, 100% 12%, 47% 95%, 5% 61%);
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-5%, 5%);
+  transition: 0.05s;
+}
+
+input[type="radio"]:checked,
+input[type="checkbox"]:checked {
+  border: none;
+  background-color: #d6d6d6;
+}
+
+input[type="radio"]:checked::after,
+input[type="checkbox"]:checked::after {
+  visibility: visible;
+}
+
+.标签:hover,
+input:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+#box-count::after {
+  left: var(--盒子数量值左偏移);
+  content: attr(盒子数量);
+}
+
+.主轴方向选项 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}
+
+input[type="range"] {
+  position: relative;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 10px;
+  border-radius: 10px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  position: relative;
+  z-index: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--拇指宽度);
+  aspect-ratio: 1;
+  border-radius: 50px;
+  background: linear-gradient(145deg, #bbb 0%, #eee 100%);
+  transform: translateY(-35%) scale(2);
+  filter: drop-shadow(0 0 2px black);
+}
+
+.尺寸分区 {
+  padding: 10px 0;
+}
+
+input[type="range"] {
+  width: 250px;
+}
+
+input[type="range"]::after {
+  position: absolute;
+  z-index: 2;
+  width: calc(var(--拇指宽度) * 2);
+  aspect-ratio: 1;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: -110%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+#flex-shrink::after {
+  left: var(--收缩值左偏移);
+  content: attr(收缩值);
+}
+
+#flex-grow::after {
+  left: var(--扩张值左偏移);
+  content: attr(扩张值);
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  cursor: url("/Images/Common/鼠标-横向缩放.png"), ew-resize;
+}
+
+.盒子数量按钮区,
+.收缩按钮区,
+.扩张按钮区 {
+  flex-direction: column;
+  height: 75px;
+  align-items: center;
+}
+
+.滑块区 {
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+datalist {
+  transform: translateY(-73.5%);
+  width: 125%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+}
+
+option {
+  width: 15px;
+  text-align: center;
+}
+
+.盒子数量按钮区 label,
+.尺寸分区 label {
+  transform: translateY(-25%);
+}

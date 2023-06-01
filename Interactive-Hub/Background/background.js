@@ -61,7 +61,7 @@ function 修改背景尺寸(event) {
 }
 
 window.addEventListener("load", () => {
-  const 重置按钮 = document.querySelector(".重置按钮");
+  const 重置按钮 = document.getElementsByClassName("重置按钮")[0];
   重置按钮.addEventListener("click", 重置参数);
 });
 

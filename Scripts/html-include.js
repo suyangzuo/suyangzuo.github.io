@@ -14,3 +14,9 @@ async function load_file(filename, callback) {
     .then(async (response) => await response.text())
     .then((text) => callback(text));
 }
+
+// function load_file(filename, callback) {
+//   fetch(filename)
+//     .then((response) => response.text())
+//     .then((text) => callback(text));
+// }

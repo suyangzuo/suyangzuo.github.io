@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>弹性布局</title>
+    <link
+      rel="icon"
+      href="/Images/Interactive-Hub/HQ/背景.png"
+      type="image/x-icon" />
+    <link rel="stylesheet" href="/Styles/common.css" />
+    <link rel="stylesheet" href="/Styles/top-banner-common.css" />
+    <link rel="stylesheet" href="../control.css" />
+    <link rel="stylesheet" href="../interactive-common.css" />
+    <link rel="stylesheet" href="./Flex.css" />
+    <script src="/Scripts/html-include.js"></script>
+    <script
+      src="https://kit.fontawesome.com/d0483e3bd3.js"
+      crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
+    <insert-e src="/top-banner.html"></insert-e>
+    <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
+
+    <section class="弹性总区 总区">
+      <insert-e src="../control.html"></insert-e>
+      <p class="交互标题">弹性布局</p>
+      <div class="弹性-展示区"></div>
+      <div class="弹性-操作区">
+        <div class="操作分区 盒子数量区">
+          <p class="标题 盒子数量标题">
+            <span class="标题中文">盒子数量</span><span class="标题代码"></span>
+          </p>
+          <div class="盒子数量选项">
+            <div class="布局按钮区 盒子数量按钮区">
+              <div class="滑块区">
+                <input
+                  type="range"
+                  id="box-count"
+                  min="1"
+                  max="30"
+                  value="12"
+                  step="1"
+                  list="box-count-marks" />
+                <datalist id="box-count-marks">
+                  <option value="1" label="1"></option>
+                  <!-- <option value="0.25" label="0.25"></option>
+                    <option value="0.5" label="0.5"></option>
+                    <option value="0.75" label="0.75"></option> -->
+                  <option value="30" label="30"></option>
+                </datalist>
+              </div>
+              <label for="box-count" class="标签"
+                ><span class="中文 盒子数量中文">盒子数量</span
+                ><span class="代码 盒子数量代码"></span
+              ></label>
+            </div>
+          </div>
+        </div>
+        <div class="操作分区 布局区">
+          <p class="标题 布局标题">
+            <span class="标题中文">布局</span
+            ><span class="标题代码">display</span>
+          </p>
+          <div class="布局选项">
+            <div class="块布局按钮区 布局按钮区">
+              <label for="display-block" class="标签"
+                ><span class="中文 布局中文">块</span
+                ><span class="代码 布局代码">block</span></label
+              >
+              <input type="radio" id="display-block" name="display" checked />
+            </div>
+            <div class="弹性布局按钮区 布局按钮区">
+              <label for="display-flex" class="标签"
+                ><span class="中文 布局中文">弹性</span
+                ><span class="代码 布局代码">flex</span></label
+              >
+              <input type="radio" id="display-flex" name="display" />
+            </div>
+          </div>
+        </div>
+        <div class="操作分区 轴区">
+          <div class="轴方向">
+            <p class="标题 主轴方向标题">
+              <span class="标题中文">主轴方向</span
+              ><span class="标题代码">flex-direction</span>
+            </p>
+            <div class="主轴方向选项">
+              <div class="布局按钮区 主轴水平按钮区">
+                <label for="flex-direction-row" class="标签"
+                  ><span class="中文 主轴中文">水平</span
+                  ><span class="代码 主轴代码">row</span></label
+                >
+                <input
+                  type="radio"
+                  id="flex-direction-row"
+                  name="flex-direction"
+                  checked />
+              </div>
+              <div class="布局按钮区 主轴垂直按钮区">
+                <label for="flex-direction-column" class="标签"
+                  ><span class="中文 主轴中文">垂直</span
+                  ><span class="代码 主轴代码">column</span></label
+                >
+                <input
+                  type="radio"
+                  id="flex-direction-column"
+                  name="flex-direction" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="操作分区 包裹区">
+          <div class="包裹">
+            <p class="标题 包裹标题">
+              <span class="标题中文">弹性包裹</span
+              ><span class="标题代码">flex-wrap</span>
+            </p>
+            <div class="主轴方向选项">
+              <div class="布局按钮区 主轴垂直按钮区">
+                <label for="flex-wrap" class="标签"
+                  ><span class="中文 主轴中文">包裹</span
+                  ><span class="代码 主轴代码">wrap</span></label
+                >
+                <input type="checkbox" id="flex-wrap" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="操作分区 尺寸区">
+          <div class="尺寸分区 收缩">
+            <p class="标题 收缩标题">
+              <span class="标题中文">弹性收缩</span
+              ><span class="标题代码">flex-shrink</span>
+            </p>
+            <div class="收缩选项">
+              <div class="布局按钮区 收缩按钮区">
+                <div class="滑块区">
+                  <input
+                    type="range"
+                    id="flex-shrink"
+                    min="0"
+                    max="1"
+                    value="1"
+                    step="0.25"
+                    list="flex-shrink-marks" />
+                  <datalist id="flex-shrink-marks">
+                    <option value="0" label="0"></option>
+                    <!-- <option value="0.25" label="0.25"></option>
+                    <option value="0.5" label="0.5"></option>
+                    <option value="0.75" label="0.75"></option> -->
+                    <option value="1" label="1"></option>
+                  </datalist>
+                </div>
+                <label for="flex-shrink" class="标签"
+                  ><span class="中文 收缩中文">收缩比例</span
+                  ><span class="代码 收缩代码"></span
+                ></label>
+              </div>
+            </div>
+          </div>
+          <div class="尺寸分区 扩张">
+            <p class="标题 扩张标题">
+              <span class="标题中文">弹性扩张</span
+              ><span class="标题代码">flex-grow</span>
+            </p>
+            <div class="扩张选项">
+              <div class="布局按钮区 扩张按钮区">
+                <div class="滑块区">
+                  <input
+                    type="range"
+                    id="flex-grow"
+                    min="0"
+                    max="3"
+                    value="0"
+                    step="0.1"
+                    list="flex-grow-marks" />
+                  <datalist id="flex-grow-marks">
+                    <option value="0" label="0"></option>
+                    <!-- <option value="0.25" label="0.25"></option>
+                    <option value="0.5" label="0.5"></option>
+                    <option value="0.75" label="0.75"></option> -->
+                    <option value="3" label="3"></option>
+                  </datalist>
+                </div>
+                <label for="flex-grow" class="标签"
+                  ><span class="中文 扩张中文">扩张比例</span
+                  ><span class="代码 扩张代码"></span
+                ></label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="./Flex.js"></script>
+  </body>
+</html>
