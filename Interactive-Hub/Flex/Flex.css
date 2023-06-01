@@ -32,12 +32,12 @@
 
 .操作分区 {
   padding: 15px 0;
-  background: linear-gradient(0deg, #111 0%, #333 100%);
+  background: linear-gradient(0deg, #111e 0%, #333e 100%);
 }
 
 .标题 {
   width: 100%;
-  padding: 5px 0;
+  padding: 0 0 5px 0;
   text-align: center;
   display: flex;
   justify-content: center;
@@ -160,6 +160,7 @@ input[type="range"] {
   appearance: none;
   height: 10px;
   border-radius: 10px;
+  background-color: gray;
 }
 
 input[type="range"]::-webkit-slider-thumb {
@@ -170,9 +171,10 @@ input[type="range"]::-webkit-slider-thumb {
   width: var(--拇指宽度);
   aspect-ratio: 1;
   border-radius: 50px;
-  background: linear-gradient(145deg, #bbb 0%, #eee 100%);
+  /* background: linear-gradient(145deg, #bbb 0%, #eee 100%); */
+  background: linear-gradient(145deg, #146864 0%, #0f935c 100%);
   transform: translateY(-35%) scale(2);
-  filter: drop-shadow(0 0 2px black);
+  filter: drop-shadow(0 0 2px rgb(39, 39, 39));
 }
 
 .尺寸分区 {
@@ -193,6 +195,7 @@ input[type="range"]::after {
   justify-content: center;
   align-items: center;
   top: -110%;
+  color: rgb(201, 241, 255);
   transform: translateX(-50%);
   pointer-events: none;
 }
@@ -234,6 +237,7 @@ datalist {
   justify-content: space-between;
   align-items: center;
   pointer-events: none;
+  color: gray;
 }
 
 option {
@@ -244,4 +248,73 @@ option {
 .盒子数量按钮区 label,
 .尺寸分区 label {
   transform: translateY(-25%);
+}
+
+.轴分布区 {
+  padding: 0;
+}
+
+.轴分布三区 {
+  position: relative;
+}
+
+.轴分布分区 {
+  padding: 10px 0 20px 0;
+}
+
+.轴分布类型 {
+  width: 100%;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.轴分布分区 .标题 {
+  padding-bottom: 15px;
+}
+
+.轴分布类型按钮 {
+  width: calc(100% / 3);
+  height: 100%;
+  font-size: 1rem;
+  outline: none;
+  /* border: none; */
+  background: linear-gradient(90deg, rgb(29, 29, 29) 0%, rgb(45, 45, 45) 100%);
+  color: white;
+}
+
+.轴分布选项 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.轴分布选项 .布局按钮区 {
+  padding: 0 10px;
+}
+
+.轴分布分区 {
+  transition: 0.1s;
+}
+
+.交叉轴单行分布区 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.交叉轴多行分布区 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  opacity: 0;
 }

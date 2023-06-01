@@ -29,7 +29,7 @@ function 创建块元素(数量) {
     element.style.display = "flex";
     element.style.justifyContent = "center";
     element.style.alignItems = "center";
-    element.style.fontSize = "1.5rem";
+    element.style.fontSize = "clamp(0.5rem, 1rem, 1.5rem)";
     弹性展示区.appendChild(element);
   }
 }
@@ -102,6 +102,67 @@ function 修改弹性包裹() {
   弹性展示区.style.flexWrap = 弹性包裹.checked ? "wrap" : "nowrap";
   console.log(弹性展示区.style.flexWrap);
 }
+
+const 主轴分布区 = document.getElementsByClassName("主轴分布区")[0];
+const 交叉轴单行分布区 = document.getElementsByClassName("交叉轴单行分布区")[0];
+const 交叉轴多行分布区 = document.getElementsByClassName("交叉轴多行分布区")[0];
+const 主轴按钮 = document.getElementsByClassName("主轴按钮")[0];
+const 交叉轴单行按钮 = document.getElementsByClassName("交叉轴单行按钮")[0];
+const 交叉轴多行按钮 = document.getElementsByClassName("交叉轴多行按钮")[0];
+
+主轴按钮.addEventListener("click", (event) => {
+  event.target.style.background =
+    "linear-gradient(90deg, rgb(159, 159, 159) 0%, rgb(205, 205, 205) 100%)";
+  event.target.style.color = "black";
+  主轴分布区.style.visibility = "visible";
+  主轴分布区.style.opacity = "1";
+  交叉轴单行分布区.style.visibility = "hidden";
+  交叉轴单行分布区.style.opacity = "0";
+  交叉轴单行按钮.style.background =
+    "linear-gradient(90deg, rgb(29, 29, 29) 0%, rgb(45, 45, 45) 100%)";
+  交叉轴单行按钮.style.color = "white";
+  交叉轴多行分布区.style.visibility = "hidden";
+  交叉轴多行分布区.style.visibility = "0";
+  交叉轴多行按钮.style.background =
+    "linear-gradient(90deg, rgb(29, 29, 29) 0%, rgb(45, 45, 45) 100%)";
+  交叉轴多行按钮.style.color = "white";
+});
+
+交叉轴单行按钮.addEventListener("click", (event) => {
+  event.target.style.background =
+    "linear-gradient(90deg, rgb(159, 159, 159) 0%, rgb(205, 205, 205) 100%)";
+  event.target.style.color = "black";
+  主轴分布区.style.visibility = "hidden";
+  主轴分布区.style.opacity = "0";
+  主轴按钮.style.background =
+    "linear-gradient(90deg, rgb(29, 29, 29) 0%, rgb(45, 45, 45) 100%)";
+  主轴按钮.style.color = "white";
+  交叉轴单行分布区.style.visibility = "visible";
+  交叉轴单行分布区.style.opacity = "1";
+  交叉轴多行分布区.style.visibility = "hidden";
+  交叉轴多行分布区.style.visibility = "0";
+  交叉轴多行按钮.style.background =
+    "linear-gradient(90deg, rgb(29, 29, 29) 0%, rgb(45, 45, 45) 100%)";
+  交叉轴多行按钮.style.color = "white";
+});
+
+交叉轴多行按钮.addEventListener("click", (event) => {
+  event.target.style.background =
+    "linear-gradient(90deg, rgb(159, 159, 159) 0%, rgb(205, 205, 205) 100%)";
+  event.target.style.color = "black";
+  主轴分布区.style.visibility = "hidden";
+  主轴分布区.style.opacity = "0";
+  主轴按钮.style.background =
+    "linear-gradient(90deg, rgb(29, 29, 29) 0%, rgb(45, 45, 45) 100%)";
+  主轴按钮.style.color = "white";
+  交叉轴单行分布区.style.visibility = "hidden";
+  交叉轴单行分布区.style.opacity = "0";
+  交叉轴单行按钮.style.background =
+    "linear-gradient(90deg, rgb(29, 29, 29) 0%, rgb(45, 45, 45) 100%)";
+  交叉轴单行按钮.style.color = "white";
+  交叉轴多行分布区.style.visibility = "visible";
+  交叉轴多行分布区.style.opacity = "1";
+});
 
 const 收缩滑块 = document.getElementById("flex-shrink");
 const 扩张滑块 = document.getElementById("flex-grow");

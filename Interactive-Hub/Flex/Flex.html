@@ -81,50 +81,278 @@
             </div>
           </div>
         </div>
-        <div class="操作分区 轴区">
-          <div class="轴方向">
-            <p class="标题 主轴方向标题">
-              <span class="标题中文">主轴方向</span
-              ><span class="标题代码">flex-direction</span>
-            </p>
-            <div class="主轴方向选项">
-              <div class="布局按钮区 主轴水平按钮区">
-                <label for="flex-direction-row" class="标签"
-                  ><span class="中文 主轴中文">水平</span
-                  ><span class="代码 主轴代码">row</span></label
-                >
-                <input
-                  type="radio"
-                  id="flex-direction-row"
-                  name="flex-direction"
-                  checked />
-              </div>
-              <div class="布局按钮区 主轴垂直按钮区">
-                <label for="flex-direction-column" class="标签"
-                  ><span class="中文 主轴中文">垂直</span
-                  ><span class="代码 主轴代码">column</span></label
-                >
-                <input
-                  type="radio"
-                  id="flex-direction-column"
-                  name="flex-direction" />
-              </div>
+        <div class="操作分区 轴方向区">
+          <p class="标题 主轴方向标题">
+            <span class="标题中文">主轴方向</span
+            ><span class="标题代码">flex-direction</span>
+          </p>
+          <div class="主轴方向选项">
+            <div class="布局按钮区 主轴水平按钮区">
+              <label for="flex-direction-row" class="标签"
+                ><span class="中文 主轴中文">水平</span
+                ><span class="代码 主轴代码">row</span></label
+              >
+              <input
+                type="radio"
+                id="flex-direction-row"
+                name="flex-direction"
+                checked />
+            </div>
+            <div class="布局按钮区 主轴垂直按钮区">
+              <label for="flex-direction-column" class="标签"
+                ><span class="中文 主轴中文">垂直</span
+                ><span class="代码 主轴代码">column</span></label
+              >
+              <input
+                type="radio"
+                id="flex-direction-column"
+                name="flex-direction" />
             </div>
           </div>
         </div>
         <div class="操作分区 包裹区">
-          <div class="包裹">
-            <p class="标题 包裹标题">
-              <span class="标题中文">弹性包裹</span
-              ><span class="标题代码">flex-wrap</span>
-            </p>
-            <div class="主轴方向选项">
-              <div class="布局按钮区 主轴垂直按钮区">
-                <label for="flex-wrap" class="标签"
-                  ><span class="中文 主轴中文">包裹</span
-                  ><span class="代码 主轴代码">wrap</span></label
-                >
-                <input type="checkbox" id="flex-wrap" />
+          <p class="标题 包裹标题">
+            <span class="标题中文">弹性包裹</span
+            ><span class="标题代码">flex-wrap</span>
+          </p>
+          <div class="主轴方向选项">
+            <div class="布局按钮区 主轴垂直按钮区">
+              <label for="flex-wrap" class="标签"
+                ><span class="中文 主轴中文">包裹</span
+                ><span class="代码 主轴代码">wrap</span></label
+              >
+              <input type="checkbox" id="flex-wrap" />
+            </div>
+          </div>
+        </div>
+        <div class="操作分区 轴分布区">
+          <div class="轴分布类型">
+            <button type="button" class="轴分布类型按钮 主轴按钮">主轴</button>
+            <button type="button" class="轴分布类型按钮 交叉轴单行按钮">
+              交叉轴-单行
+            </button>
+            <button type="button" class="轴分布类型按钮 交叉轴多行按钮">
+              交叉轴-多行
+            </button>
+          </div>
+          <div class="轴分布三区">
+            <div class="轴分布分区 主轴分布区">
+              <p class="标题 轴分布标题">
+                <span class="标题中文">主轴分布</span
+                ><span class="标题代码">justify-content</span>
+              </p>
+              <div class="轴分布选项">
+                <div class="布局按钮区 主轴分布按钮区">
+                  <label for="主轴-弹性开端" class="标签"
+                    ><span class="中文 轴分布中文">弹性开端</span
+                    ><span class="代码 轴分布代码">flex-start</span></label
+                  >
+                  <input
+                    type="radio"
+                    id="主轴-弹性开端"
+                    name="主轴分布"
+                    checked />
+                </div>
+                <div class="布局按钮区 主轴分布按钮区">
+                  <label for="主轴-弹性末端" class="标签"
+                    ><span class="中文 轴分布中文">弹性末端</span
+                    ><span class="代码 轴分布代码">flex-end</span></label
+                  >
+                  <input type="radio" id="主轴-弹性末端" name="主轴分布" />
+                </div>
+                <div class="布局按钮区 主轴分布按钮区">
+                  <label for="主轴-居中" class="标签"
+                    ><span class="中文 轴分布中文">居中</span
+                    ><span class="代码 轴分布代码">center</span></label
+                  >
+                  <input type="radio" id="主轴-居中" name="主轴分布" />
+                </div>
+                <div class="布局按钮区 主轴分布按钮区">
+                  <label for="主轴-拉伸" class="标签"
+                    ><span class="中文 轴分布中文">拉伸</span
+                    ><span class="代码 轴分布代码">stretch</span></label
+                  >
+                  <input type="radio" id="主轴-拉伸" name="主轴分布" />
+                </div>
+                <div class="布局按钮区 主轴分布按钮区">
+                  <label for="主轴-两端对齐" class="标签"
+                    ><span class="中文 轴分布中文">两端对齐</span
+                    ><span class="代码 轴分布代码">space-between</span></label
+                  >
+                  <input type="radio" id="主轴-两端对齐" name="主轴分布" />
+                </div>
+                <div class="布局按钮区 主轴分布按钮区">
+                  <label for="主轴-空间围绕" class="标签"
+                    ><span class="中文 轴分布中文">空间围绕</span
+                    ><span class="代码 轴分布代码">space-around</span></label
+                  >
+                  <input type="radio" id="主轴-空间围绕" name="主轴分布" />
+                </div>
+                <div class="布局按钮区 主轴分布按钮区">
+                  <label for="主轴-空间均匀" class="标签"
+                    ><span class="中文 轴分布中文">空间均匀</span
+                    ><span class="代码 轴分布代码">space-evenly</span></label
+                  >
+                  <input type="radio" id="主轴-空间均匀" name="主轴分布" />
+                </div>
+              </div>
+            </div>
+            <div class="轴分布分区 交叉轴单行分布区">
+              <p class="标题 轴分布标题">
+                <span class="标题中文">交叉轴分布 - 单行</span
+                ><span class="标题代码">align-items</span>
+              </p>
+              <div class="轴分布选项">
+                <div class="布局按钮区 交叉轴单行分布按钮区">
+                  <label for="交叉轴单行-弹性开端" class="标签"
+                    ><span class="中文 轴分布中文">弹性开端</span
+                    ><span class="代码 轴分布代码">flex-start</span></label
+                  >
+                  <input
+                    type="radio"
+                    id="交叉轴单行-弹性开端"
+                    name="交叉轴单行分布"
+                    checked />
+                </div>
+                <div class="布局按钮区 交叉轴单行分布按钮区">
+                  <label for="交叉轴单行-弹性末端" class="标签"
+                    ><span class="中文 轴分布中文">弹性末端</span
+                    ><span class="代码 轴分布代码">flex-end</span></label
+                  >
+                  <input
+                    type="radio"
+                    id="交叉轴单行-弹性末端"
+                    name="交叉轴单行分布" />
+                </div>
+                <div class="布局按钮区 交叉轴单行分布按钮区">
+                  <label for="交叉轴单行-居中" class="标签"
+                    ><span class="中文 轴分布中文">居中</span
+                    ><span class="代码 轴分布代码">center</span></label
+                  >
+                  <input
+                    type="radio"
+                    id="交叉轴单行-居中"
+                    name="交叉轴单行分布" />
+                </div>
+                <div class="布局按钮区 交叉轴单行分布按钮区">
+                  <label for="交叉轴单行-拉伸" class="标签"
+                    ><span class="中文 轴分布中文">拉伸</span
+                    ><span class="代码 轴分布代码">stretch</span></label
+                  >
+                  <input
+                    type="radio"
+                    id="交叉轴单行-拉伸"
+                    name="交叉轴单行分布" />
+                </div>
+                <div class="布局按钮区 交叉轴单行分布按钮区">
+                  <label for="交叉轴单行-两端对齐" class="标签"
+                    ><span class="中文 轴分布中文">两端对齐</span
+                    ><span class="代码 轴分布代码">space-between</span></label
+                  >
+                  <input
+                    type="radio"
+                    id="交叉轴单行-两端对齐"
+                    name="交叉轴单行分布" />
+                </div>
+                <div class="布局按钮区 交叉轴单行分布按钮区">
+                  <label for="交叉轴单行-空间围绕" class="标签"
+                    ><span class="中文 轴分布中文">空间围绕</span
+                    ><span class="代码 轴分布代码">space-around</span></label
+                  >
+                  <input
+                    type="radio"
+                    id="交叉轴单行-空间围绕"
+                    name="交叉轴单行分布" />
+                </div>
+                <div class="布局按钮区 交叉轴单行分布按钮区">
+                  <label for="交叉轴单行-空间均匀" class="标签"
+                    ><span class="中文 轴分布中文">空间均匀</span
+                    ><span class="代码 轴分布代码">space-evenly</span></label
+                  >
+                  <input
+                    type="radio"
+                    id="交叉轴单行-空间均匀"
+                    name="交叉轴单行分布" />
+                </div>
+              </div>
+            </div>
+            <div class="轴分布分区 交叉轴多行分布区">
+              <p class="标题 轴分布标题">
+                <span class="标题中文">交叉轴分布 - 多行</span
+                ><span class="标题代码">align-Content</span>
+              </p>
+              <div class="轴分布选项">
+                <div class="布局按钮区 交叉轴多行分布按钮区">
+                  <label for="交叉轴多行-弹性开端" class="标签"
+                    ><span class="中文 轴分布中文">弹性开端</span
+                    ><span class="代码 轴分布代码">flex-start</span></label
+                  >
+                  <input
+                    type="radio"
+                    id="交叉轴多行-弹性开端"
+                    name="交叉轴多行分布"
+                    checked />
+                </div>
+                <div class="布局按钮区 交叉轴多行分布按钮区">
+                  <label for="交叉轴多行-弹性末端" class="标签"
+                    ><span class="中文 轴分布中文">弹性末端</span
+                    ><span class="代码 轴分布代码">flex-end</span></label
+                  >
+                  <input
+                    type="radio"
+                    id="交叉轴多行-弹性末端"
+                    name="交叉轴多行分布" />
+                </div>
+                <div class="布局按钮区 交叉轴多行分布按钮区">
+                  <label for="交叉轴多行-居中" class="标签"
+                    ><span class="中文 轴分布中文">居中</span
+                    ><span class="代码 轴分布代码">center</span></label
+                  >
+                  <input
+                    type="radio"
+                    id="交叉轴多行-居中"
+                    name="交叉轴多行分布" />
+                </div>
+                <div class="布局按钮区 交叉轴多行分布按钮区">
+                  <label for="交叉轴多行-拉伸" class="标签"
+                    ><span class="中文 轴分布中文">拉伸</span
+                    ><span class="代码 轴分布代码">stretch</span></label
+                  >
+                  <input
+                    type="radio"
+                    id="交叉轴多行-拉伸"
+                    name="交叉轴多行分布" />
+                </div>
+                <div class="布局按钮区 交叉轴多行分布按钮区">
+                  <label for="交叉轴多行-两端对齐" class="标签"
+                    ><span class="中文 轴分布中文">两端对齐</span
+                    ><span class="代码 轴分布代码">space-between</span></label
+                  >
+                  <input
+                    type="radio"
+                    id="交叉轴多行-两端对齐"
+                    name="交叉轴多行分布" />
+                </div>
+                <div class="布局按钮区 交叉轴多行分布按钮区">
+                  <label for="交叉轴多行-空间围绕" class="标签"
+                    ><span class="中文 轴分布中文">空间围绕</span
+                    ><span class="代码 轴分布代码">space-around</span></label
+                  >
+                  <input
+                    type="radio"
+                    id="交叉轴多行-空间围绕"
+                    name="交叉轴多行分布" />
+                </div>
+                <div class="布局按钮区 交叉轴多行分布按钮区">
+                  <label for="交叉轴多行-空间均匀" class="标签"
+                    ><span class="中文 轴分布中文">空间均匀</span
+                    ><span class="代码 轴分布代码">space-evenly</span></label
+                  >
+                  <input
+                    type="radio"
+                    id="交叉轴多行-空间均匀"
+                    name="交叉轴多行分布" />
+                </div>
               </div>
             </div>
           </div>
