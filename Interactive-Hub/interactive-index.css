@@ -159,12 +159,20 @@ body {
 
 .交互单项 {
   position: relative;
+  border-radius: 100px;
   list-style-type: none;
   filter: drop-shadow(2px 2px 5px #0008);
 }
 
-.交互单项链接 {
+.交互单项:nth-child(odd) {
   background: #275b51;
+}
+
+.交互单项:nth-child(even) {
+  background: #205179;
+}
+
+.交互单项链接 {
   border-radius: 100px;
   overflow: hidden;
   width: 100%;
@@ -187,7 +195,6 @@ body {
 }
 
 .序号 {
-  background-color: rgb(63, 164, 111);
   color: black;
   font-weight: bolder;
   aspect-ratio: 0.9;
@@ -198,6 +205,14 @@ body {
   align-items: center;
   font-size: 1.1rem;
   /* transition: 0.1s; */
+}
+
+.交互单项:nth-child(odd) .序号 {
+  background-color: rgb(63, 164, 111);
+}
+
+.交互单项:nth-child(even) .序号 {
+  background-color: #5795c8;
 }
 
 .链接-图 {
