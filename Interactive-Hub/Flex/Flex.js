@@ -47,6 +47,8 @@ function 修改盒子数量() {
   调整盒子数量数字位置();
   弹性展示区.innerHTML = "";
   创建块元素(盒子数量滑块.value);
+  let 盒子比率 = (盒子数量滑块.value * 100) / 盒子数量滑块.max;
+  root.style.setProperty("--盒子数量比率", `${盒子比率}%`);
   const 展示区块数组 = Array.from(展示区块组);
   展示区块数组.forEach((element) => {
     element.style.flexShrink = 收缩滑块.value;
@@ -171,12 +173,16 @@ function 修改行间隙值() {
   行间隙.setAttribute("行间隙值", `${行间隙.value}`);
   调整行间隙位置();
   弹性展示区.style.rowGap = `${行间隙.value}px`;
+  let 行间隙比率 = (行间隙.value * 100) / 行间隙.max;
+  root.style.setProperty("--行间隙比率", `${行间隙比率}%`);
 }
 
 function 修改列间隙值() {
   列间隙.setAttribute("列间隙值", `${列间隙.value}`);
   调整列间隙位置();
   弹性展示区.style.columnGap = `${列间隙.value}px`;
+  let 列间隙比率 = (列间隙.value * 100) / 列间隙.max;
+  root.style.setProperty("--列间隙比率", `${列间隙比率}%`);
 }
 
 function 调整行间隙位置() {
@@ -330,6 +336,8 @@ const 尺寸区 = document.getElementsByClassName("尺寸区")[0];
 function 修改弹性收缩() {
   收缩滑块.setAttribute("收缩值", 收缩滑块.value);
   调整收缩数字位置();
+  let 收缩比率 = (收缩滑块.value * 100) / 收缩滑块.max;
+  root.style.setProperty("--收缩比率", `${收缩比率}%`);
   Array.from(展示区块组).forEach((element) => {
     element.style.flexShrink = 收缩滑块.value;
   });
@@ -338,6 +346,8 @@ function 修改弹性收缩() {
 function 修改弹性扩张() {
   扩张滑块.setAttribute("扩张值", 扩张滑块.value);
   调整扩张数字位置();
+  let 扩张比率 = (扩张滑块.value * 100) / 扩张滑块.max;
+  root.style.setProperty("--扩张比率", `${扩张比率}%`);
   Array.from(展示区块组).forEach((element) => {
     element.style.flexGrow = 扩张滑块.value;
   });
@@ -444,4 +454,15 @@ function 重置参数() {
   扩张滑块.value = 0;
   扩张滑块.setAttribute("扩张值", 扩张滑块.value);
   调整扩张数字位置();
+
+  let 盒子比率 = (盒子数量滑块.value * 100) / 盒子数量滑块.max;
+  root.style.setProperty("--盒子数量比率", `${盒子比率}%`);
+  let 行间隙比率 = (行间隙.value * 100) / 行间隙.max;
+  root.style.setProperty("--行间隙比率", `${行间隙比率}%`);
+  let 列间隙比率 = (列间隙.value * 100) / 列间隙.max;
+  root.style.setProperty("--列间隙比率", `${列间隙比率}%`);
+  let 收缩比率 = (收缩滑块.value * 100) / 收缩滑块.max;
+  root.style.setProperty("--收缩比率", `${收缩比率}%`);
+  let 扩张比率 = (扩张滑块.value * 100) / 扩张滑块.max;
+  root.style.setProperty("--扩张比率", `${扩张比率}%`);
 }

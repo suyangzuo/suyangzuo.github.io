@@ -1,12 +1,23 @@
 :root {
   --拇指宽度: 16px;
-  --填充颜色: seagreen;
-  --未填充颜色: rgb(224, 224, 224);
+  --进度条渐变-已填充: radial-gradient(
+    circle farthest-corner at 10% 20%,
+    rgba(255, 94, 247, 1) 12.8%,
+    rgba(2, 245, 255, 1) 85.2%
+  );
+  --未填充颜色: gray;
   --收缩值左偏移: 50%;
   --扩张值左偏移: 50%;
   --盒子数量值左偏移: 50%;
   --行间隙值左偏移: 0%;
   --列间隙值左偏移: 0%;
+  --滑块长度-盒子数量-收缩扩张: 250px;
+  --滑块长度-间隙: 200px;
+  --盒子数量比率: 40%;
+  --行间隙比率: 0%;
+  --列间隙比率: 0%;
+  --收缩比率: 100%;
+  --扩张比率: 0%;
 }
 
 .弹性总区 {
@@ -181,11 +192,12 @@ input:hover {
 
 input[type="range"] {
   position: relative;
+  width: var(--滑块长度-盒子数量-收缩扩张);
   -webkit-appearance: none;
   appearance: none;
   height: 10px;
   border-radius: 10px;
-  background-color: gray;
+  background: linear-gradient(90deg, rgba(255, 94, 247, 1) 6%, gray 3.5%);
 }
 
 input[type="range"]::-webkit-slider-thumb {
@@ -237,7 +249,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 .行间隙按钮区 input[type="range"],
 .列间隙按钮区 input[type="range"] {
-  width: 200px;
+  width: var(--滑块长度-间隙);
 }
 
 .行间隙按钮区 datalist,
@@ -254,6 +266,8 @@ input[type="range"]::-webkit-slider-thumb {
 .行间隙按钮区 label,
 .列间隙按钮区 label {
   transform: translateY(-25%);
+  padding: 0;
+  margin-top: 5px;
 }
 
 #x-gap::after {
@@ -274,8 +288,15 @@ input[type="range"]::-webkit-slider-thumb {
   padding: 10px 0 0 0;
 }
 
-input[type="range"] {
-  width: 250px;
+input[type="range"]::before {
+  position: absolute;
+  width: calc(100% - var(--拇指宽度));
+  height: 100%;
+  border-radius: 50px;
+  content: "";
+  left: calc(var(--拇指宽度) / 2);
+  top: 0;
+  background: var(--进度条渐变-已填充);
 }
 
 input[type="range"]::after {
@@ -411,4 +432,24 @@ option {
   left: 0;
   visibility: hidden;
   opacity: 0;
+}
+
+#box-count::before {
+  clip-path: inset(-5% calc(100% - var(--盒子数量比率)) -5% 0);
+}
+
+#x-gap::before {
+  clip-path: inset(-5% calc(100% - var(--行间隙比率)) -5% 0);
+}
+
+#y-gap::before {
+  clip-path: inset(-5% calc(100% - var(--列间隙比率)) -5% 0);
+}
+
+#flex-shrink::before {
+  clip-path: inset(-5% calc(100% - var(--收缩比率)) -5% 0);
+}
+
+#flex-grow::before {
+  clip-path: inset(-5% calc(100% - var(--扩张比率)) -5% 0);
 }
