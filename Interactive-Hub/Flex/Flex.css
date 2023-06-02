@@ -81,10 +81,11 @@
   position: absolute;
   width: 1px;
   height: 75%;
-  background-color: gray;
+  background-color: #fff3;
   top: 50%;
   left: 50%;
   transform: translateY(-50%);
+  z-index: 1;
 }
 
 .布局选项 {
