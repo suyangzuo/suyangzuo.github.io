@@ -159,17 +159,18 @@ body {
 
 .交互单项 {
   position: relative;
+  height: 60px;
+  background-color: #5b6467;
+  background-image: linear-gradient(315deg, #5b6467 0%, #8b939a 74%);
   border-radius: 100px;
   list-style-type: none;
   filter: drop-shadow(2px 2px 5px #0008);
+  overflow: hidden;
 }
 
-.交互单项:nth-child(odd) {
-  background: #275b51;
-}
-
-.交互单项:nth-child(even) {
-  background: #205179;
+.交互单项:hover {
+  background-color: #2b4162;
+  background-image: linear-gradient(315deg, #2b4162 0%, #242830 74%);
 }
 
 .交互单项链接 {
@@ -186,33 +187,18 @@ body {
 
 .交互单项链接:hover {
   cursor: url(/Images/Common/鼠标-指向.cur), pointer;
-  outline: solid 2px rgb(172, 172, 172);
-}
-
-.交互单项链接:hover > .序号 {
-  background-color: rgb(32, 32, 32);
-  color: white;
 }
 
 .序号 {
   color: black;
   font-weight: bolder;
-  aspect-ratio: 0.9;
-  height: 60px;
-  border-radius: 50px 2px 2px 50px;
+  aspect-ratio: 1;
+  height: 90%;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 1.1rem;
   /* transition: 0.1s; */
-}
-
-.交互单项:nth-child(odd) .序号 {
-  background-color: rgb(63, 164, 111);
-}
-
-.交互单项:nth-child(even) .序号 {
-  background-color: #5795c8;
 }
 
 .链接-图 {
@@ -227,16 +213,31 @@ body {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  filter: drop-shadow(0 0 2px #000a);
 }
 
 .链接-字 {
   font-size: 1rem;
   display: flex;
   flex-direction: column;
+  color: black;
 }
 
 .链接-字-英文 {
   font-size: 0.9rem;
-  color: rgb(180, 180, 180);
+  color: rgb(41, 41, 41);
   font-family: consolas;
+}
+
+.交互单项:hover .序号,
+.交互单项:hover .链接-字 {
+  color: rgb(210, 210, 210);
+}
+
+.交互单项:hover .链接-字-英文 {
+  color: rgb(170, 170, 170);
+}
+
+.交互单项:hover .链接-图 > img {
+  filter: none;
 }
