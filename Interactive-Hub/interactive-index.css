@@ -171,6 +171,7 @@ body {
 .交互单项:hover {
   background-color: #2b4162;
   background-image: linear-gradient(315deg, #2b4162 0%, #242830 74%);
+  box-shadow: inset 0 1px 0 gray;
 }
 
 .交互单项链接 {

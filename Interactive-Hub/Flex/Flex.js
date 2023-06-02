@@ -4,6 +4,7 @@ window.addEventListener("load", () => {
 });
 
 const root = document.querySelector(":root");
+const 轴区切换时长 = 100;
 
 const 弹性展示区 = document.getElementsByClassName("弹性-展示区")[0];
 

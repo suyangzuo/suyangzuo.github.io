@@ -3,7 +3,7 @@
   --进度条渐变-已填充: radial-gradient(
     circle farthest-corner at 10% 20%,
     rgba(255, 94, 247, 1) 12.8%,
-    rgba(2, 245, 255, 1) 85.2%
+    rgba(2, 245, 255, 1) 80.2%
   );
   --未填充颜色: gray;
   --收缩值左偏移: 50%;
@@ -197,7 +197,11 @@ input[type="range"] {
   appearance: none;
   height: 10px;
   border-radius: 10px;
-  background: linear-gradient(90deg, rgba(255, 94, 247, 1) 6%, gray 3.5%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 94, 247, 1) 6%,
+    var(--未填充颜色) 3.5%
+  );
 }
 
 input[type="range"]::-webkit-slider-thumb {
@@ -410,10 +414,6 @@ option {
   padding: 0 10px;
 }
 
-.轴分布分区 {
-  transition: 0.1s;
-}
-
 .交叉轴单行分布区 {
   position: absolute;
   width: 100%;
@@ -432,6 +432,32 @@ option {
   left: 0;
   visibility: hidden;
   opacity: 0;
+}
+
+.轴分布-入 {
+  animation: 轴分布切换动画-入 0.25s ease-out;
+}
+
+.轴分布-出 {
+  animation: 轴分布切换动画-出 0.25s ease-out;
+}
+
+@keyframes 轴分布切换动画-入 {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100px);
+  }
+}
+
+@keyframes 轴分布切换动画-出 {
+  from {
+    transform: translateX(100px);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 
 #box-count::before {
