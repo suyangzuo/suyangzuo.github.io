@@ -41,7 +41,7 @@
                   id="box-count"
                   min="1"
                   max="30"
-                  value="12"
+                  value="5"
                   step="1"
                   list="box-count-marks" />
                 <datalist id="box-count-marks">
@@ -123,8 +123,8 @@
             <div class="包裹选项">
               <div class="布局按钮区 包裹按钮区">
                 <label for="flex-wrap" class="标签"
-                  ><span class="中文 包裹中文">包裹</span
-                  ><span class="代码 包裹代码">wrap</span></label
+                  ><span class="中文 包裹中文">不包裹</span
+                  ><span class="代码 包裹代码">nowrap</span></label
                 >
                 <input type="checkbox" id="flex-wrap" />
               </div>
@@ -197,15 +197,18 @@
               </p>
               <div class="轴分布选项">
                 <div class="布局按钮区 主轴分布按钮区">
+                  <label for="主轴-正常" class="标签"
+                    ><span class="中文 轴分布中文">正常</span
+                    ><span class="代码 轴分布代码">normal</span></label
+                  >
+                  <input type="radio" id="主轴-正常" name="主轴分布" checked />
+                </div>
+                <div class="布局按钮区 主轴分布按钮区">
                   <label for="主轴-弹性开端" class="标签"
                     ><span class="中文 轴分布中文">弹性开端</span
                     ><span class="代码 轴分布代码">flex-start</span></label
                   >
-                  <input
-                    type="radio"
-                    id="主轴-弹性开端"
-                    name="主轴分布"
-                    checked />
+                  <input type="radio" id="主轴-弹性开端" name="主轴分布" />
                 </div>
                 <div class="布局按钮区 主轴分布按钮区">
                   <label for="主轴-弹性末端" class="标签"
@@ -258,6 +261,17 @@
               </p>
               <div class="轴分布选项">
                 <div class="布局按钮区 交叉轴单行分布按钮区">
+                  <label for="交叉轴单行-正常" class="标签"
+                    ><span class="中文 轴分布中文">正常</span
+                    ><span class="代码 轴分布代码">normal</span></label
+                  >
+                  <input
+                    type="radio"
+                    id="交叉轴单行-正常"
+                    name="交叉轴单行分布"
+                    checked />
+                </div>
+                <div class="布局按钮区 交叉轴单行分布按钮区">
                   <label for="交叉轴单行-弹性开端" class="标签"
                     ><span class="中文 轴分布中文">弹性开端</span
                     ><span class="代码 轴分布代码">flex-start</span></label
@@ -265,8 +279,7 @@
                   <input
                     type="radio"
                     id="交叉轴单行-弹性开端"
-                    name="交叉轴单行分布"
-                    checked />
+                    name="交叉轴单行分布" />
                 </div>
                 <div class="布局按钮区 交叉轴单行分布按钮区">
                   <label for="交叉轴单行-弹性末端" class="标签"
@@ -299,16 +312,6 @@
                     name="交叉轴单行分布" />
                 </div>
                 <div class="布局按钮区 交叉轴单行分布按钮区">
-                  <label for="交叉轴单行-正常" class="标签"
-                    ><span class="中文 轴分布中文">正常</span
-                    ><span class="代码 轴分布代码">normal</span></label
-                  >
-                  <input
-                    type="radio"
-                    id="交叉轴单行-正常"
-                    name="交叉轴单行分布" />
-                </div>
-                <div class="布局按钮区 交叉轴单行分布按钮区">
                   <label for="交叉轴单行-左" class="标签"
                     ><span class="中文 轴分布中文">左</span
                     ><span class="代码 轴分布代码">left</span></label
@@ -337,6 +340,17 @@
               </p>
               <div class="轴分布选项">
                 <div class="布局按钮区 交叉轴多行分布按钮区">
+                  <label for="交叉轴多行-正常" class="标签"
+                    ><span class="中文 轴分布中文">正常</span
+                    ><span class="代码 轴分布代码">normal</span></label
+                  >
+                  <input
+                    type="radio"
+                    id="交叉轴多行-正常"
+                    name="交叉轴多行分布"
+                    checked />
+                </div>
+                <div class="布局按钮区 交叉轴多行分布按钮区">
                   <label for="交叉轴多行-弹性开端" class="标签"
                     ><span class="中文 轴分布中文">弹性开端</span
                     ><span class="代码 轴分布代码">flex-start</span></label
@@ -344,8 +358,7 @@
                   <input
                     type="radio"
                     id="交叉轴多行-弹性开端"
-                    name="交叉轴多行分布"
-                    checked />
+                    name="交叉轴多行分布" />
                 </div>
                 <div class="布局按钮区 交叉轴多行分布按钮区">
                   <label for="交叉轴多行-弹性末端" class="标签"

@@ -4,11 +4,12 @@ window.addEventListener("load", () => {
 });
 
 const root = document.querySelector(":root");
+const rootStyle = window.getComputedStyle(root);
 const 轴区切换时长 = 100;
 
 const 弹性展示区 = document.getElementsByClassName("弹性-展示区")[0];
 
-const 初始块元素数量 = 12;
+const 初始块元素数量 = rootStyle.getPropertyValue("--初始盒子数量");
 const 最低尺寸百分比 = 2;
 const 最高尺寸百分比 = 20;
 创建块元素(初始块元素数量);
@@ -151,9 +152,13 @@ const 弹性包裹 = document.getElementById("flex-wrap");
 const 包裹区 = document.getElementsByClassName("包裹区")[0];
 包裹区.style.filter = "brightness(50%)";
 包裹区.style.pointerEvents = "none";
+const 包裹中文 = 包裹区.getElementsByClassName("包裹中文")[0];
+const 包裹代码 = 包裹区.getElementsByClassName("包裹代码")[0];
 
 function 修改弹性包裹() {
-  弹性展示区.style.flexWrap = 弹性包裹.checked ? "wrap" : "nowrap";
+  包裹中文.textContent = 弹性包裹.checked ? "包裹" : "不包裹";
+  包裹代码.textContent = 弹性包裹.checked ? "wrap" : "nowrap";
+  弹性展示区.style.flexWrap = 包裹代码.textContent;
 }
 
 const 行间隙 = document.getElementById("x-gap");
@@ -377,7 +382,7 @@ function 调整扩张数字位置() {
 }
 
 function 重置参数() {
-  盒子数量滑块.value = 12;
+  盒子数量滑块.value = 初始块元素数量;
   盒子数量滑块.setAttribute("盒子数量", 盒子数量滑块.value);
   调整盒子数量数字位置();
   弹性展示区.innerHTML = "";
@@ -391,6 +396,9 @@ function 重置参数() {
   主轴列.checked = false;
 
   弹性包裹.checked = false;
+  包裹中文.textContent = "不包裹";
+  包裹代码.textContent = "nowrap";
+  弹性展示区.style.flexWrap = 包裹代码.textContent;
 
   行间隙.value = 0;
   行间隙.setAttribute("行间隙值", `${行间隙.value}`);
@@ -415,21 +423,21 @@ function 重置参数() {
     "linear-gradient(90deg, rgb(29, 29, 29) 0%, rgb(45, 45, 45) 100%)";
   交叉轴多行按钮.style.color = "white";
   主轴分布全部选项.forEach((element) => {
-    if (element.id.includes("弹性开端")) {
+    if (element.id.includes("正常")) {
       element.checked = true;
     } else {
       element.checked = false;
     }
   });
   交叉轴单行分布全部选项.forEach((element) => {
-    if (element.id.includes("弹性开端")) {
+    if (element.id.includes("正常")) {
       element.checked = true;
     } else {
       element.checked = false;
     }
   });
   交叉轴多行分布全部选项.forEach((element) => {
-    if (element.id.includes("弹性开端")) {
+    if (element.id.includes("正常")) {
       element.checked = true;
     } else {
       element.checked = false;
