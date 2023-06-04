@@ -363,12 +363,13 @@ function 点击右箭头延迟运行() {
   图像自动滚动中 = false;
 }
 
+let 当前图像指示器索引 = -1;
+
 Array.from(图像序号指示器组).forEach((指示器) => {
   指示器.addEventListener("click", 点击图像序号指示器);
 });
 
-let 当前图像指示器索引 = -1;
-
+// --------------------- ↓ 点击图像序号指示器 ---------------------
 function 点击图像序号指示器(event) {
   if (图像自动滚动中) return;
   图像受指示器滚动中 = true;
@@ -449,6 +450,10 @@ function 点击图像序号指示器(event) {
   图覆盖后1.style.opacity = "0.5";
   图覆盖当前.style.opacity = "0";
 
+  window.addEventListener("mousemove", (e) => {
+    获取鼠标坐标(e);
+  });
+
   setTimeout(() => {
     图覆盖前1.addEventListener("click", 点击左箭头);
     图覆盖后1.addEventListener("click", 点击右箭头);
@@ -458,13 +463,45 @@ function 点击图像序号指示器(event) {
     图像序号指示器组[当前图像指示器索引]
       .getElementsByClassName("指示器内部")[0]
       .style.setProperty("background", 图像序号指示器颜色_当前, "important");
-    图像长廊定时滚动 = setInterval(点击右箭头, 自动滚动延时);
+
+    // ---------- ↓ 判断鼠标是否位于视口图像内，如是，则停止自动滚动 ----------
+    let previousOffset = 图覆盖前1.getBoundingClientRect();
+    let previousOffsetLeft = previousOffset.left;
+    let previousOffsetTop = previousOffset.top;
+    let nextOffset = 图覆盖后1.getBoundingClientRect();
+    let nextOffsetLeft = nextOffset.left;
+    let nextOffsetTop = nextOffset.top;
+    let currentOffset = 图覆盖当前.getBoundingClientRect();
+    let currentOffsetLeft = currentOffset.left;
+    let currentOffsetTop = currentOffset.top;
+    if (
+      !(
+        (鼠标x >= previousOffsetLeft &&
+          鼠标x <= previousOffsetLeft + 覆盖层宽度 &&
+          鼠标y >= previousOffsetTop &&
+          鼠标y <= previousOffsetTop + 覆盖层高度) ||
+        (鼠标x >= nextOffsetLeft &&
+          鼠标x <= nextOffsetLeft + 覆盖层宽度 &&
+          鼠标y >= nextOffsetTop &&
+          鼠标y <= nextOffsetTop + 覆盖层高度) ||
+        (鼠标x >= currentOffsetLeft &&
+          鼠标x <= currentOffsetLeft + 覆盖层宽度 &&
+          鼠标y >= currentOffsetTop &&
+          鼠标y <= currentOffsetTop + 覆盖层高度)
+      )
+    ) {
+      图像长廊定时滚动 = setInterval(点击右箭头, 自动滚动延时);
+    }
+    // ---------- ↑ 判断鼠标是否位于视口图像内，如是，则停止自动滚动 ----------
+
+    window.removeEventListener("mousemove", 获取鼠标坐标);
     Array.from(图像序号指示器组).forEach((指示器) => {
       指示器.addEventListener("click", 点击图像序号指示器);
     });
     图像受指示器滚动中 = false;
   }, 图像移动时长);
 }
+// --------------------- ↑ 点击图像序号指示器 ---------------------
 
 function 初始化左右图像功能() {
   const 图覆盖后1 =
