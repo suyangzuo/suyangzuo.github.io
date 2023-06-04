@@ -3,7 +3,7 @@
   --实际图像间距: 100px;
   --图像宽度: calc(var(--图像容器宽度) - var(--实际图像间距));
   --图像容器高度: calc(var(--图像宽度) * 9 / 16);
-  --图像长廊分区高度: calc(var(--图像容器高度) + 50px);
+  --图像长廊分区高度: calc(var(--图像容器高度) + 150px);
   --图像移动时长: 350ms;
 }
 
@@ -539,7 +539,8 @@
 .图像长廊区 {
   width: 100%;
   height: 100vh;
-  background: no-repeat center/cover url(/Images/Background-Images/背景-15.png);
+  background: no-repeat center/cover
+    url(/Images/Background-Images/夜色下的天空.jpg);
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -736,6 +737,45 @@
 
 .图像容器 > .img-overlay:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.图像序号指示器组 {
+  position: absolute;
+  width: 500px;
+  height: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.图像序号指示器 {
+  width: 8.5%;
+  height: 100%;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.图像序号指示器:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.指示器内部 {
+  width: 100%;
+  height: 5px;
+  border-radius: 50px;
+  background: rgba(173, 173, 173, 0.75);
+  box-shadow: 0 0 1px 0 #000;
+  pointer-events: none;
+  transition: 0.25s;
+}
+
+.图像序号指示器:hover .指示器内部 {
+  background: rgb(175, 224, 247) !important;
 }
 /* <!-- ------------------ ↑ 游戏区 ------------------- --> */
 

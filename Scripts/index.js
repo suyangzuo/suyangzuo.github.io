@@ -3,6 +3,10 @@ const rootStyle = window.getComputedStyle(root);
 
 const 图像滑块组 = document.getElementsByClassName("图像滑块组")[0];
 const 图像滑块 = 图像滑块组.getElementsByClassName("图像滑块");
+const 图像序号指示器组 = document.getElementsByClassName("图像序号指示器");
+const 图像序号指示器颜色_当前 = "#a03020";
+const 图像序号指示器颜色_未选中 = "rgba(173, 173, 173, 0.75)";
+const 图像序号指示器颜色_鼠标悬停 = "rgb(175, 224, 247)";
 
 let 鼠标x = 0;
 let 鼠标y = 0;
@@ -43,10 +47,17 @@ let 图像长廊定时滚动 = setInterval(点击右箭头, 自动滚动延时);
 
 let 当前所指图像索引 = 初始图像索引;
 
+let 图像自动滚动中 = false;
+let 图像受指示器滚动中 = false;
+
 function 获取鼠标坐标(event) {
   鼠标x = event.clientX;
   鼠标y = event.clientY;
 }
+
+图像序号指示器组[初始图像索引 - 图像数量].getElementsByClassName(
+  "指示器内部"
+)[0].style.background = 图像序号指示器颜色_当前;
 
 function 初始化图像覆盖透明度() {
   长廊1区图像容器组[初始图像索引 - 1].getElementsByClassName(
@@ -68,7 +79,9 @@ function 初始化图像覆盖透明度() {
   const 图像覆盖 = 图像容器.getElementsByClassName("img-overlay")[0];
 
   图像覆盖.addEventListener("mouseenter", () => {
+    if (图像受指示器滚动中) return;
     clearInterval(图像长廊定时滚动);
+    图像长廊定时滚动 = null;
     当前所指图像索引 = 长廊1区图像容器组.indexOf(图像容器);
     if (当前所指图像索引 !== 图像索引) {
       图像覆盖.style.opacity = "0.25";
@@ -81,7 +94,10 @@ function 初始化图像覆盖透明度() {
   });
 
   图像覆盖.addEventListener("mouseleave", () => {
-    图像长廊定时滚动 = setInterval(点击右箭头, 自动滚动延时);
+    if (图像受指示器滚动中) return;
+    if (!图像长廊定时滚动) {
+      图像长廊定时滚动 = setInterval(点击右箭头, 自动滚动延时);
+    }
     当前所指图像索引 = 长廊1区图像容器组.indexOf(图像容器);
     if (当前所指图像索引 !== 图像索引) {
       图像覆盖.style.opacity = "0.5";
@@ -97,6 +113,7 @@ function 初始化图像覆盖透明度() {
 左箭头.addEventListener("mouseenter", () => {
   mouseIsEnter = true;
   clearInterval(图像长廊定时滚动);
+  图像长廊定时滚动 = null;
 });
 
 左箭头.addEventListener("mouseleave", () => {
@@ -107,6 +124,7 @@ function 初始化图像覆盖透明度() {
 右箭头.addEventListener("mouseenter", () => {
   mouseIsEnter = true;
   clearInterval(图像长廊定时滚动);
+  图像长廊定时滚动 = null;
 });
 
 右箭头.addEventListener("mouseleave", () => {
@@ -153,52 +171,81 @@ function 点击左箭头() {
   window.addEventListener("mousemove", 获取鼠标坐标);
   //---------- ↑ 根据鼠标位置，判断鼠标是否位于左右图上，如是，则左右图覆盖层透明度改为 25% ----------
 
-  setTimeout(() => {
-    if (图像索引 <= 初始图像索引 - 图像数量) {
-      图像索引 = 初始图像索引;
-      图像位移 = 初始图像位移;
-      图像长廊位移重置();
-    }
+  setTimeout(点击左箭头延迟运行, 图像移动时长);
+}
 
-    图覆盖前1 =
-      长廊1区图像容器组[图像索引 - 1].getElementsByClassName("img-overlay")[0];
-    图覆盖后1 =
-      长廊1区图像容器组[图像索引 + 1].getElementsByClassName("img-overlay")[0];
-    图覆盖后1.addEventListener("click", 点击右箭头);
-    图覆盖前1.addEventListener("click", 点击左箭头);
+function 点击左箭头延迟运行() {
+  if (图像索引 <= 初始图像索引 - 图像数量) {
+    图像索引 = 初始图像索引;
+    图像位移 = 初始图像位移;
+    图像长廊位移重置();
+  }
 
-    //---------- ↓ 根据鼠标位置，判断鼠标是否位于左右图上，如是，则左右图覆盖层透明度改为 25% ----------
-    let previousOffset = 图覆盖前1.getBoundingClientRect();
-    let previousOffsetLeft = previousOffset.left;
-    let previousOffsetTop = previousOffset.top;
-    let nextOffset = 图覆盖后1.getBoundingClientRect();
-    let nextOffsetLeft = nextOffset.left;
-    let nextOffsetTop = nextOffset.top;
-    if (
-      鼠标x >= previousOffsetLeft &&
-      鼠标x <= previousOffsetLeft + 图像宽度 &&
-      鼠标y >= previousOffsetTop &&
-      鼠标y <= previousOffsetTop + 图像高度
-    ) {
-      图覆盖前1.style.opacity = "0.25";
-    } else if (
-      鼠标x >= nextOffsetLeft &&
-      鼠标x <= nextOffsetLeft + 图像宽度 &&
-      鼠标y >= nextOffsetTop &&
-      鼠标y <= nextOffsetTop + 图像高度
-    ) {
-      图覆盖后1.style.opacity = "0.25";
-    }
+  图覆盖前1 =
+    长廊1区图像容器组[图像索引 - 1].getElementsByClassName("img-overlay")[0];
+  图覆盖后1 =
+    长廊1区图像容器组[图像索引 + 1].getElementsByClassName("img-overlay")[0];
+  图覆盖后1.addEventListener("click", 点击右箭头);
+  图覆盖前1.addEventListener("click", 点击左箭头);
 
-    window.removeEventListener("mousemove", 获取鼠标坐标);
-    //---------- ↑ 根据鼠标位置，判断鼠标是否位于左右图上，如是，则左右图覆盖层透明度改为 25% ----------
+  //---------- ↓ 根据鼠标位置，判断鼠标是否位于左右图上，如是，则左右图覆盖层透明度改为 25% ----------
+  let previousOffset = 图覆盖前1.getBoundingClientRect();
+  let previousOffsetLeft = previousOffset.left;
+  let previousOffsetTop = previousOffset.top;
+  let nextOffset = 图覆盖后1.getBoundingClientRect();
+  let nextOffsetLeft = nextOffset.left;
+  let nextOffsetTop = nextOffset.top;
+  if (
+    鼠标x >= previousOffsetLeft &&
+    鼠标x <= previousOffsetLeft + 图像宽度 &&
+    鼠标y >= previousOffsetTop &&
+    鼠标y <= previousOffsetTop + 图像高度
+  ) {
+    图覆盖前1.style.opacity = "0.25";
+  } else if (
+    鼠标x >= nextOffsetLeft &&
+    鼠标x <= nextOffsetLeft + 图像宽度 &&
+    鼠标y >= nextOffsetTop &&
+    鼠标y <= nextOffsetTop + 图像高度
+  ) {
+    图覆盖后1.style.opacity = "0.25";
+  }
 
-    左箭头.addEventListener("click", 点击左箭头);
-    左箭头.style.filter = "brightness(100%)";
-  }, 图像移动时长);
+  if (图像索引 >= 10 && 图像索引 <= 19) {
+    let 之前图像索引 = 图像索引 === 19 ? 0 : 图像索引 - 图像数量 + 1;
+    图像序号指示器组[之前图像索引].getElementsByClassName(
+      "指示器内部"
+    )[0].style.background = 图像序号指示器颜色_未选中;
+    图像序号指示器组[图像索引 - 图像数量]
+      .getElementsByClassName("指示器内部")[0]
+      .style.setProperty("background", 图像序号指示器颜色_当前, "important");
+  } else if (图像索引 <= 9) {
+    let 之前图像索引 = 图像索引 === 9 ? 0 : 图像索引 + 1;
+    图像序号指示器组[之前图像索引].getElementsByClassName(
+      "指示器内部"
+    )[0].style.background = 图像序号指示器颜色_未选中;
+    图像序号指示器组[图像索引]
+      .getElementsByClassName("指示器内部")[0]
+      .style.setProperty("background", 图像序号指示器颜色_当前, "important");
+  } else if (图像索引 >= 20) {
+    let 之前图像索引 = 图像索引 === 29 ? 0 : 图像索引 - 图像数量 * 2 + 1;
+    图像序号指示器组[之前图像索引].getElementsByClassName(
+      "指示器内部"
+    )[0].style.background = 图像序号指示器颜色_未选中;
+    图像序号指示器组[图像索引 - 图像数量 * 2]
+      .getElementsByClassName("指示器内部")[0]
+      .style.setProperty("background", 图像序号指示器颜色_当前, "important");
+  }
+
+  window.removeEventListener("mousemove", 获取鼠标坐标);
+  //---------- ↑ 根据鼠标位置，判断鼠标是否位于左右图上，如是，则左右图覆盖层透明度改为 25% ----------
+
+  左箭头.addEventListener("click", 点击左箭头);
+  左箭头.style.filter = "brightness(100%)";
 }
 
 function 点击右箭头() {
+  图像自动滚动中 = true;
   右箭头.removeEventListener("click", 点击右箭头);
   图像索引++;
   图像位移 -= 图像容器宽度;
@@ -233,56 +280,190 @@ function 点击右箭头() {
     初始化图像覆盖透明度();
   }
 
+  //---------- ↓ 根据鼠标位置，判断鼠标是否位于左右图上，如是，则左右图覆盖层透明度改为 25% ----------
   window.addEventListener("mousemove", 获取鼠标坐标);
+  //---------- ↑ 根据鼠标位置，判断鼠标是否位于左右图上，如是，则左右图覆盖层透明度改为 25% ----------
 
-  setTimeout(() => {
-    if (图像索引 >= 初始图像索引 + 图像数量) {
-      图像索引 = 初始图像索引;
-      图像位移 = 初始图像位移;
-      图像长廊位移重置();
-    }
-
-    图覆盖后1 =
-      长廊1区图像容器组[图像索引 + 1].getElementsByClassName("img-overlay")[0];
-    图覆盖前1 =
-      长廊1区图像容器组[图像索引 - 1].getElementsByClassName("img-overlay")[0];
-    图覆盖后1.addEventListener("click", 点击右箭头);
-    图覆盖前1.addEventListener("click", 点击左箭头);
-
-    //---------- ↓ 根据鼠标位置，判断鼠标是否位于左右图上，如是，则左右图覆盖层透明度改为 25% ----------
-    let previousOffset = 图覆盖前1.getBoundingClientRect();
-    let previousOffsetLeft = previousOffset.left;
-    let previousOffsetTop = previousOffset.top;
-    let nextOffset = 图覆盖后1.getBoundingClientRect();
-    let nextOffsetLeft = nextOffset.left;
-    let nextOffsetTop = nextOffset.top;
-    if (
-      鼠标x >= previousOffsetLeft &&
-      鼠标x <= previousOffsetLeft + 覆盖层宽度 &&
-      鼠标y >= previousOffsetTop &&
-      鼠标y <= previousOffsetTop + 覆盖层高度
-    ) {
-      图覆盖前1.style.opacity = "0.25";
-    } else if (
-      鼠标x >= nextOffsetLeft &&
-      鼠标x <= nextOffsetLeft + 覆盖层宽度 &&
-      鼠标y >= nextOffsetTop &&
-      鼠标y <= nextOffsetTop + 覆盖层高度
-    ) {
-      图覆盖后1.style.opacity = "0.25";
-    }
-
-    window.removeEventListener("mousemove", 获取鼠标坐标);
-    //---------- ↑ 根据鼠标位置，判断鼠标是否位于左右图上，如是，则左右图覆盖层透明度改为 25% ----------
-
-    右箭头.addEventListener("click", 点击右箭头);
-    右箭头.style.filter = "brightness(100%)";
-  }, 图像移动时长);
+  setTimeout(点击右箭头延迟运行, 图像移动时长);
 }
 
 function 图像长廊位移重置() {
   图像滑块组.style.transition = "transform 0ms, left 250ms ease-out";
   图像滑块组.style.transform = `translateX(${初始图像位移}px)`;
+}
+
+function 点击右箭头延迟运行() {
+  if (图像索引 >= 初始图像索引 + 图像数量) {
+    图像索引 = 初始图像索引;
+    图像位移 = 初始图像位移;
+    图像长廊位移重置();
+  }
+
+  图覆盖后1 =
+    长廊1区图像容器组[图像索引 + 1].getElementsByClassName("img-overlay")[0];
+  图覆盖前1 =
+    长廊1区图像容器组[图像索引 - 1].getElementsByClassName("img-overlay")[0];
+  图覆盖后1.addEventListener("click", 点击右箭头);
+  图覆盖前1.addEventListener("click", 点击左箭头);
+
+  //---------- ↓ 根据鼠标位置，判断鼠标是否位于左右图上，如是，则左右图覆盖层透明度改为 25% ----------
+  let previousOffset = 图覆盖前1.getBoundingClientRect();
+  let previousOffsetLeft = previousOffset.left;
+  let previousOffsetTop = previousOffset.top;
+  let nextOffset = 图覆盖后1.getBoundingClientRect();
+  let nextOffsetLeft = nextOffset.left;
+  let nextOffsetTop = nextOffset.top;
+  if (
+    鼠标x >= previousOffsetLeft &&
+    鼠标x <= previousOffsetLeft + 覆盖层宽度 &&
+    鼠标y >= previousOffsetTop &&
+    鼠标y <= previousOffsetTop + 覆盖层高度
+  ) {
+    图覆盖前1.style.opacity = "0.25";
+  } else if (
+    鼠标x >= nextOffsetLeft &&
+    鼠标x <= nextOffsetLeft + 覆盖层宽度 &&
+    鼠标y >= nextOffsetTop &&
+    鼠标y <= nextOffsetTop + 覆盖层高度
+  ) {
+    图覆盖后1.style.opacity = "0.25";
+  }
+
+  if (图像索引 >= 10 && 图像索引 <= 19) {
+    let 之前图像索引 = 图像索引 === 10 ? 9 : 图像索引 - 图像数量 - 1;
+    图像序号指示器组[之前图像索引].getElementsByClassName(
+      "指示器内部"
+    )[0].style.background = 图像序号指示器颜色_未选中;
+    图像序号指示器组[图像索引 - 图像数量]
+      .getElementsByClassName("指示器内部")[0]
+      .style.setProperty("background", 图像序号指示器颜色_当前, "important");
+  } else if (图像索引 <= 9) {
+    let 之前图像索引 = 图像索引 === 0 ? 9 : 图像索引 - 1;
+    图像序号指示器组[之前图像索引].getElementsByClassName(
+      "指示器内部"
+    )[0].style.background = 图像序号指示器颜色_未选中;
+    图像序号指示器组[图像索引]
+      .getElementsByClassName("指示器内部")[0]
+      .style.setProperty("background", 图像序号指示器颜色_当前, "important");
+  } else if (图像索引 >= 20) {
+    let 之前图像索引 = 图像索引 === 20 ? 9 : 图像索引 - 图像数量 * 2 - 1;
+    图像序号指示器组[之前图像索引].getElementsByClassName(
+      "指示器内部"
+    )[0].style.background = 图像序号指示器颜色_未选中;
+    图像序号指示器组[图像索引 - 图像数量 * 2]
+      .getElementsByClassName("指示器内部")[0]
+      .style.setProperty("background", 图像序号指示器颜色_当前, "important");
+  }
+
+  window.removeEventListener("mousemove", 获取鼠标坐标);
+  //---------- ↑ 根据鼠标位置，判断鼠标是否位于左右图上，如是，则左右图覆盖层透明度改为 25% ----------
+
+  右箭头.addEventListener("click", 点击右箭头);
+  右箭头.style.filter = "brightness(100%)";
+  图像自动滚动中 = false;
+}
+
+Array.from(图像序号指示器组).forEach((指示器) => {
+  指示器.addEventListener("click", 点击图像序号指示器);
+});
+
+let 当前图像指示器索引 = -1;
+
+function 点击图像序号指示器(event) {
+  if (图像自动滚动中) return;
+  图像受指示器滚动中 = true;
+  clearInterval(图像长廊定时滚动);
+  图像长廊定时滚动 = null;
+  Array.from(图像序号指示器组).forEach((指示器) => {
+    指示器.removeEventListener("click", 点击图像序号指示器);
+  });
+  let 之前图像指示器索引 = 图像索引;
+  if (图像索引 >= 10 && 图像索引 <= 19) {
+    之前图像指示器索引 = 图像索引 - 图像数量;
+  } else if (图像索引 >= 20) {
+    之前图像指示器索引 = 图像索引 - 图像数量 * 2;
+  }
+
+  长廊1区图像容器组.forEach((element) => {
+    const 覆盖层 = element.getElementsByClassName("img-overlay")[0];
+    覆盖层.removeEventListener("click", 点击左箭头);
+    覆盖层.removeEventListener("click", 点击右箭头);
+  });
+
+  let 图覆盖当前 =
+    长廊1区图像容器组[图像索引].getElementsByClassName("img-overlay")[0];
+  let 图覆盖前1 =
+    长廊1区图像容器组[图像索引 - 1].getElementsByClassName("img-overlay")[0];
+  let 图覆盖后1 =
+    长廊1区图像容器组[图像索引 + 1].getElementsByClassName("img-overlay")[0];
+
+  图覆盖前1.style.opacity = "0";
+  图覆盖后1.style.opacity = "0";
+  图覆盖当前.style.opacity = "0";
+
+  当前图像指示器索引 = Array.from(图像序号指示器组).indexOf(event.target);
+
+  图像索引 = 当前图像指示器索引 + 图像数量; //点击指示器后更新索引
+  switch (当前图像指示器索引) {
+    case 0:
+      图像位移 = 初始图像位移 + 图像容器宽度 * 4;
+      break;
+    case 1:
+      图像位移 = 初始图像位移 + 图像容器宽度 * 3;
+      break;
+    case 2:
+      图像位移 = 初始图像位移 + 图像容器宽度 * 2;
+      break;
+    case 3:
+      图像位移 = 初始图像位移 + 图像容器宽度 * 1;
+      break;
+    case 4:
+      图像位移 = 初始图像位移;
+      break;
+    case 5:
+      图像位移 = 初始图像位移 - 图像容器宽度 * 1;
+      break;
+    case 6:
+      图像位移 = 初始图像位移 - 图像容器宽度 * 2;
+      break;
+    case 7:
+      图像位移 = 初始图像位移 - 图像容器宽度 * 3;
+      break;
+    case 8:
+      图像位移 = 初始图像位移 - 图像容器宽度 * 4;
+      break;
+    case 9:
+      图像位移 = 初始图像位移 - 图像容器宽度 * 5;
+      break;
+  }
+
+  图像滑块组.style.transform = `translateX(${图像位移}px)`; //先移动图像
+
+  图覆盖当前 =
+    长廊1区图像容器组[图像索引].getElementsByClassName("img-overlay")[0];
+  图覆盖前1 =
+    长廊1区图像容器组[图像索引 - 1].getElementsByClassName("img-overlay")[0];
+  图覆盖后1 =
+    长廊1区图像容器组[图像索引 + 1].getElementsByClassName("img-overlay")[0];
+  图覆盖前1.style.opacity = "0.5";
+  图覆盖后1.style.opacity = "0.5";
+  图覆盖当前.style.opacity = "0";
+
+  setTimeout(() => {
+    图覆盖前1.addEventListener("click", 点击左箭头);
+    图覆盖后1.addEventListener("click", 点击右箭头);
+    图像序号指示器组[之前图像指示器索引].getElementsByClassName(
+      "指示器内部"
+    )[0].style.background = 图像序号指示器颜色_未选中;
+    图像序号指示器组[当前图像指示器索引]
+      .getElementsByClassName("指示器内部")[0]
+      .style.setProperty("background", 图像序号指示器颜色_当前, "important");
+    图像长廊定时滚动 = setInterval(点击右箭头, 自动滚动延时);
+    Array.from(图像序号指示器组).forEach((指示器) => {
+      指示器.addEventListener("click", 点击图像序号指示器);
+    });
+    图像受指示器滚动中 = false;
+  }, 图像移动时长);
 }
 
 function 初始化左右图像功能() {

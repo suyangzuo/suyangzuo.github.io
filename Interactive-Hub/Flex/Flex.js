@@ -113,6 +113,14 @@ function 修改布局() {
     间隙区.style.pointerEvents = "auto";
     轴分布类型.style.filter = "brightness(100%)";
     轴分布类型.style.pointerEvents = "auto";
+    交叉轴多行按钮.style.filter = 弹性包裹.checked
+      ? "brightness(100%)"
+      : "brightness(50%)";
+    交叉轴多行按钮.style.pointerEvents = 弹性包裹.checked ? "auto" : "none";
+    交叉轴多行分布区.style.filter = 弹性包裹.checked
+      ? "brightness(100%)"
+      : "brightness(50%)";
+    交叉轴多行分布区.style.pointerEvents = 弹性包裹.checked ? "auto" : "none";
     尺寸区.style.filter = "brightness(100%)";
     尺寸区.style.pointerEvents = "auto";
   }
@@ -159,6 +167,14 @@ function 修改弹性包裹() {
   包裹中文.textContent = 弹性包裹.checked ? "包裹" : "不包裹";
   包裹代码.textContent = 弹性包裹.checked ? "wrap" : "nowrap";
   弹性展示区.style.flexWrap = 包裹代码.textContent;
+  交叉轴多行按钮.style.filter = 弹性包裹.checked
+    ? "brightness(100%)"
+    : "brightness(50%)";
+  交叉轴多行按钮.style.pointerEvents = 弹性包裹.checked ? "auto" : "none";
+  交叉轴多行分布区.style.filter = 弹性包裹.checked
+    ? "brightness(100%)"
+    : "brightness(50%)";
+  交叉轴多行分布区.style.pointerEvents = 弹性包裹.checked ? "auto" : "none";
 }
 
 const 行间隙 = document.getElementById("x-gap");
