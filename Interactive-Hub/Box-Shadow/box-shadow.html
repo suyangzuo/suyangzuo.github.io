@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>盒子阴影</title>
+    <link
+      rel="icon"
+      href="/Images/Interactive-Hub/HQ/盒子阴影.png"
+      type="image/x-icon" />
+    <link rel="stylesheet" href="/Styles/common.css" />
+    <link rel="stylesheet" href="/Styles/top-banner-common.css" />
+    <link rel="stylesheet" href="../control.css" />
+    <link rel="stylesheet" href="../interactive-common.css" />
+    <link rel="stylesheet" href="./box-shadow.css" />
+    <script src="/Scripts/html-include.js"></script>
+    <script
+      src="https://kit.fontawesome.com/d0483e3bd3.js"
+      crossorigin="anonymous"></script>
+    <script src="./box-shadow.js" defer></script>
+  </head>
+  <body>
+    <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
+    <insert-e src="/top-banner.html"></insert-e>
+    <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
+
+    <section class="盒子阴影总区 总区">
+      <insert-e src="../control.html"></insert-e>
+      <p class="交互标题">盒子阴影</p>
+      <div class="主区域">
+        <div class="数量与展示区">
+          <div class="数量区">
+            <button type="button" class="增加阴影数量按钮">
+              <span class="增加中文">增加阴影</span
+              ><span class="增加符号"> &#10009;</span>
+            </button>
+            <ul class="阴影列表"></ul>
+          </div>
+          <div class="展示区">
+            <div class="本体">本体</div>
+          </div>
+        </div>
+        <div class="控制与代码区">
+          <div class="控制区">
+            <div class="阴影内嵌">
+              <label for="shadow-inset" class="阴影内嵌-label"
+                ><span class="中文">内嵌</span
+                ><span class="代码">inset</span></label
+              >
+              <input type="checkbox" id="shadow-inset" />
+            </div>
+            <div class="阴影属性组">
+              <div class="阴影属性 x轴偏移">
+                <label for="x轴偏移" class="阴影属性标签"
+                  ><span class="中文">x轴偏移</span
+                  ><span class="代码">offset-x</span></label
+                >
+                <button class="阴影属性按钮 减">&#8722;</button>
+                <div class="滑块区">
+                  <input
+                    type="range"
+                    min="-300"
+                    max="300"
+                    value="0"
+                    id="x轴偏移"
+                    class="阴影属性滑块"
+                    list="x轴偏移标签" />
+                  <datalist class="阴影滑块标签" id="x轴偏移标签">
+                    <option value="-300" label="-300"></option>
+                    <option value="-200" label="-200"></option>
+                    <option value="-100" label="-100"></option>
+                    <option value="0" label="0"></option>
+                    <option value="100" label="100"></option>
+                    <option value="200" label="200"></option>
+                    <option value="300" label="300"></option>
+                  </datalist>
+                </div>
+                <button class="阴影属性按钮 加">&#43;</button>
+              </div>
+              <div class="阴影属性 y轴偏移">
+                <label for="y轴偏移" class="阴影属性标签"
+                  ><span class="中文">y轴偏移</span
+                  ><span class="代码">offset-y</span></label
+                >
+                <button class="阴影属性按钮 减">&#8722;</button>
+                <div class="滑块区">
+                  <input
+                    type="range"
+                    min="-300"
+                    max="300"
+                    value="0"
+                    id="y轴偏移"
+                    class="阴影属性滑块"
+                    list="y轴偏移标签" />
+                  <datalist class="阴影滑块标签" id="y轴偏移标签">
+                    <option value="-300" label="-300"></option>
+                    <option value="-200" label="-200"></option>
+                    <option value="-100" label="-100"></option>
+                    <option value="0" label="0"></option>
+                    <option value="100" label="100"></option>
+                    <option value="200" label="200"></option>
+                    <option value="300" label="300"></option>
+                  </datalist>
+                </div>
+                <button class="阴影属性按钮 加">&#43;</button>
+              </div>
+              <div class="阴影属性 模糊半径">
+                <label for="模糊半径" class="阴影属性标签"
+                  ><span class="中文">模糊半径</span
+                  ><span class="代码">blur-radius</span></label
+                >
+                <button class="阴影属性按钮 减" 已屏蔽>&#8722;</button>
+                <div class="滑块区">
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="0"
+                    id="模糊半径"
+                    class="阴影属性滑块"
+                    list="模糊半径标签" />
+                  <datalist class="阴影滑块标签" id="模糊半径标签">
+                    <option value="0" label="0"></option>
+                    <option value="25" label="25"></option>
+                    <option value="50" label="50"></option>
+                    <option value="75" label="75"></option>
+                    <option value="100" label="100"></option>
+                  </datalist>
+                </div>
+                <button class="阴影属性按钮 加">&#43;</button>
+              </div>
+              <div class="阴影属性 扩散半径">
+                <label for="扩散半径" class="阴影属性标签"
+                  ><span class="中文">扩散半径</span
+                  ><span class="代码">spread-radius</span></label
+                >
+                <button class="阴影属性按钮 减">&#8722;</button>
+                <div class="滑块区">
+                  <input
+                    type="range"
+                    min="-100"
+                    max="100"
+                    value="0"
+                    id="扩散半径"
+                    class="阴影属性滑块"
+                    list="扩散半径标签" />
+                  <datalist class="阴影滑块标签" id="扩散半径标签">
+                    <option value="-100" label="-100"></option>
+                    <option value="-50" label="-50"></option>
+                    <option value="0" label="0"></option>
+                    <option value="50" label="50"></option>
+                    <option value="100" label="100"></option>
+                  </datalist>
+                </div>
+                <button class="阴影属性按钮 加">&#43;</button>
+              </div>
+            </div>
+          </div>
+          <div class="颜色区">
+            <input type="color" id="颜色选择器" />
+            <div class="颜色数据区">
+              <label for="颜色选择器" class="颜色数据 红数据"
+                ><span class="颜色名称 红名称">红</span
+                ><span class="颜色值 红值">0</span></label
+              >
+              <label for="颜色选择器" class="颜色数据 绿数据"
+                ><span class="颜色名称 绿名称">绿</span
+                ><span class="颜色值 绿值">0</span></label
+              >
+              <label for="颜色选择器" class="颜色数据 蓝数据"
+                ><span class="颜色名称 蓝名称">蓝</span
+                ><span class="颜色值 蓝值">0</span></label
+              >
+            </div>
+          </div>
+          <div class="代码区"></div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
