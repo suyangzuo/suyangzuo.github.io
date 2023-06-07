@@ -1,7 +1,12 @@
 const root = document.querySelector(":root");
 const rootStyle = window.getComputedStyle(root);
+let 阴影包围框垂直偏移 =
+  rootStyle.getPropertyValue("--当前阴影代码包围框垂直偏移");
+let 阴影包围框透明度 = rootStyle.getPropertyValue("--当前阴影代码包围框透明度");
+let 阴影包围框可见性 = rootStyle.getPropertyValue("--当前阴影代码包围框可见性");
 
 const 阴影内嵌复选框 = document.getElementById("shadow-inset");
+const 滑块组 = document.querySelectorAll('input[type="range"]');
 const 滑块_x轴偏移 = document.getElementById("x轴偏移");
 const 滑块_y轴偏移 = document.getElementById("y轴偏移");
 const 滑块_模糊半径 = document.getElementById("模糊半径");
@@ -10,7 +15,8 @@ const 滑块_扩散半径 = document.getElementById("扩散半径");
 const 增加阴影数量按钮 = document.getElementsByClassName("增加阴影数量按钮")[0];
 const 阴影列表 = document.getElementsByClassName("阴影列表")[0];
 
-const 阴影序号池 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+let 阴影序号池 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const 已加入序号池 = [];
 let 当前阴影序号 = -1;
 
 const 本体 = document.getElementsByClassName("本体")[0];
@@ -79,6 +85,8 @@ function 点击增加阴影数量按钮(event) {
   const 序号元素 = document.createElement("span");
   序号元素.className = "阴影序号";
   const 序号 = 阴影序号池.shift();
+  已加入序号池.push(序号);
+  已加入序号池.sort((a, b) => a - b);
   阴影项.setAttribute("序号", 序号);
   序号元素.textContent = 序号;
   阴影项.appendChild(序号元素);
@@ -101,6 +109,18 @@ function 点击增加阴影数量按钮(event) {
   const 实际代码 = `${有效代码组.join(",")}`;
   本体.style.boxShadow = 实际代码;
   打印代码(有效代码组);
+
+  let 代码序号 = 已加入序号池.indexOf(当前阴影序号);
+  if (阴影序号池.length === 10 || 代码序号 === -1) {
+    root.style.setProperty("--当前阴影代码包围框可见性", "hidden");
+    root.style.setProperty("--当前阴影代码包围框透明度", "0%");
+    root.style.setProperty("--当前阴影代码包围框垂直偏移", 阴影包围框垂直偏移);
+  } else {
+    root.style.setProperty(
+      "--当前阴影代码包围框垂直偏移",
+      `calc(${阴影包围框垂直偏移} + 18.8px * ${代码序号 + 1})`
+    );
+  }
 }
 
 let 之前选中阴影项 = null;
@@ -116,7 +136,7 @@ function 点击阴影项(event) {
     之前选中阴影项.removeAttribute("已选中");
   }
   之前选中阴影项 = 阴影项;
-  const 序号 = 阴影项.getAttribute("序号");
+  const 序号 = parseInt(阴影项.getAttribute("序号"), 10);
   当前阴影序号 = 序号;
   const 阴影属性 = 阴影属性组[序号 - 1];
   根据阴影参数修改控件(阴影属性);
@@ -125,9 +145,18 @@ function 点击阴影项(event) {
   修改颜色时更新颜色值();
 
   本体.style.transition = "box-shadow 250ms";
-  阴影属性.模糊半径 += 20;
-  阴影属性.扩散半径 += 40;
+  阴影属性.模糊半径 = parseInt(阴影属性.模糊半径, 10) + 20;
+  阴影属性.扩散半径 = parseInt(阴影属性.扩散半径, 10) + 40;
   阴影属性.完整代码 = `${阴影属性.内嵌} ${阴影属性.x轴偏移}px ${阴影属性.y轴偏移}px ${阴影属性.模糊半径}px ${阴影属性.扩散半径}px ${阴影属性.颜色}`;
+
+  root.style.setProperty("--当前阴影代码包围框可见性", "visible");
+  root.style.setProperty("--当前阴影代码包围框透明度", "100%");
+
+  let 代码序号 = 已加入序号池.indexOf(当前阴影序号);
+  root.style.setProperty(
+    "--当前阴影代码包围框垂直偏移",
+    `calc(${阴影包围框垂直偏移} + 18.8px * ${代码序号 + 1})`
+  );
 
   const 有效属性组 = 阴影属性组.filter((阴影属性) => 阴影属性.完整代码 !== "");
   const 有效代码组 = [];
@@ -160,7 +189,14 @@ function 点击阴影项(event) {
 function 点击删除阴影按钮(event) {
   event.stopPropagation();
   const 阴影项 = event.currentTarget.parentElement;
-  const 序号 = event.currentTarget.previousElementSibling.textContent;
+  // const 序号 = event.currentTarget.previousElementSibling.textContent;
+  const 序号 = parseInt(阴影项.getAttribute("序号"), 10);
+  if (序号 === 当前阴影序号) {
+    当前阴影序号 = -1;
+  }
+  let index = 已加入序号池.indexOf(parseInt(序号, 10));
+  已加入序号池.splice(index, 1);
+  已加入序号池.sort((a, b) => a - b);
   阴影序号池.push(序号);
   阴影序号池.sort((a, b) => a - b);
   if (阴影序号池.length > 0) {
@@ -176,6 +212,18 @@ function 点击删除阴影按钮(event) {
   const 实际代码 = `${有效代码组.join(",")}`;
   本体.style.boxShadow = 实际代码;
   打印代码(有效代码组);
+
+  let 代码序号 = 已加入序号池.indexOf(当前阴影序号);
+  if (阴影序号池.length === 10 || 代码序号 === -1) {
+    root.style.setProperty("--当前阴影代码包围框可见性", "hidden");
+    root.style.setProperty("--当前阴影代码包围框透明度", "0%");
+    root.style.setProperty("--当前阴影代码包围框垂直偏移", 阴影包围框垂直偏移);
+  } else {
+    root.style.setProperty(
+      "--当前阴影代码包围框垂直偏移",
+      `calc(${阴影包围框垂直偏移} + 18.8px * ${代码序号 + 1})`
+    );
+  }
 }
 
 const x轴偏移 = document.getElementById("x轴偏移");
@@ -311,8 +359,8 @@ function 点击增加或减少按钮(event) {
 阴影内嵌复选框.addEventListener("click", 点击阴影内嵌复选框);
 
 function 点击阴影内嵌复选框(event) {
-  const 滑块 = event.currentTarget;
-  if (滑块.checked) {
+  const 复选框 = event.currentTarget;
+  if (复选框.checked) {
     root.style.setProperty("--阴影内嵌浮动层左偏移", "55%");
     root.style.setProperty("--阴影内嵌浮动层背景色", "rgb(0,210,136)");
   } else {
@@ -401,4 +449,92 @@ function 打印代码(有效代码组) {
   let 分行代码 = 有效代码组.join(",\n");
   const 最终代码 = `box-shadow:\n${分行代码};`;
   代码区.textContent = 最终代码;
+}
+
+window.addEventListener("load", () => {
+  const 重置按钮 = document.getElementsByClassName("重置按钮")[0];
+  重置按钮.addEventListener("click", 重置参数);
+});
+
+function 重置参数(event) {
+  本体.style.transition = "none";
+  增加阴影数量按钮.removeAttribute("已屏蔽");
+  阴影列表.innerHTML = "";
+  阴影序号池 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  当前阴影序号 = -1;
+  之前选中阴影项 = null;
+  for (let i = 0; i < 阴影属性组.length; i++) {
+    阴影属性组[i] = {
+      内嵌: "",
+      x轴偏移: 0,
+      y轴偏移: 0,
+      模糊半径: 0,
+      扩散半径: 0,
+      红: 0,
+      绿: 0,
+      蓝: 0,
+      透明度: 1,
+      颜色: `rgba(${this.红},${this.绿},${this.蓝},${this.透明度})`,
+      完整代码: "",
+    };
+  }
+
+  阴影内嵌复选框.checked = false;
+  if (阴影内嵌复选框.checked) {
+    root.style.setProperty("--阴影内嵌浮动层左偏移", "55%");
+    root.style.setProperty("--阴影内嵌浮动层背景色", "rgb(0,210,136)");
+  } else {
+    root.style.setProperty("--阴影内嵌浮动层左偏移", "0%");
+    root.style.setProperty("--阴影内嵌浮动层背景色", "rgb(152, 58, 58)");
+  }
+  x轴偏移.value = 0;
+  y轴偏移.value = 0;
+  模糊半径.value = 0;
+  扩散半径.value = 0;
+
+  Array.from(加减按钮组).forEach((按钮) => {
+    if (
+      按钮.className.includes("减") &&
+      按钮.parentElement.classList.contains("模糊半径")
+    ) {
+      按钮.setAttribute("已屏蔽", "");
+      return;
+    }
+    按钮.removeAttribute("已屏蔽");
+  });
+
+  滑块组.forEach((滑块) => {
+    let value = parseInt(滑块.value, 10);
+    let max = parseInt(滑块.max, 10);
+    let min = parseInt(滑块.min, 10);
+    let id = 滑块.id;
+    let 比率 = `${
+      ((id === "模糊半径" ? value : value + max) / (max - min)) * 100
+    }%`;
+    root.style.setProperty(`--${id}比率`, 比率);
+    let 补充名称 = id === "模糊半径" || id === "扩散半径" ? "偏移" : "";
+    const 当前值 = 滑块.value;
+    const 修正min = 滑块.min ? 滑块.min : 0;
+    const 修正max = 滑块.max ? 滑块.max : 100;
+    const 修正值 = Number(((当前值 - 修正min) * 100) / (修正max - 修正min));
+    root.style.setProperty(
+      `--${id}${补充名称}`,
+      `calc(${修正值}% + (${8 - 修正值 * 0.15}px))`
+    );
+    滑块.setAttribute(`${id}值`, 当前值);
+  });
+
+  红值.textContent = 0;
+  绿值.textContent = 0;
+  蓝值.textContent = 0;
+
+  颜色选择器.value = "#000000";
+
+  本体.style.boxShadow = "";
+  代码区.textContent = "";
+
+  root.style.setProperty("--当前阴影代码包围框可见性", "hidden");
+  root.style.setProperty("--当前阴影代码包围框透明度", "0%");
+  root.style.setProperty("--当前阴影代码包围框垂直偏移", 阴影包围框垂直偏移);
+  已加入序号池.length = 0;
 }

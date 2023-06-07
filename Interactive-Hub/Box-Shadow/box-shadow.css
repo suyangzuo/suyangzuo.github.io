@@ -29,6 +29,9 @@
   --阴影颜色-8号: rgb(88, 139, 202);
   --阴影颜色-9号: rgb(219, 130, 28);
   --阴影颜色-10号: rgb(33, 184, 106);
+  --当前阴影代码包围框可见性: "hidden";
+  --当前阴影代码包围框透明度: 0%;
+  --当前阴影代码包围框垂直偏移: 9.09090909%;
 }
 
 .主区域 {
@@ -482,8 +485,24 @@
 }
 
 .代码区 {
+  position: relative;
+  height: 245px;
+  z-index: 1;
   font-family: consolas;
   padding: 20px;
-  font-size: 0.9rem;
+  font-size: 1rem;
   white-space: pre-line;
+}
+
+.代码区::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 1rem;
+  left: 0;
+  top: var(--当前阴影代码包围框垂直偏移);
+  visibility: var(--当前阴影代码包围框可见性);
+  opacity: var(--当前阴影代码包围框透明度);
+  outline: solid 1.5px tomato;
+  transition: 0.25s;
 }
