@@ -1,5 +1,9 @@
 const root = document.querySelector(":root");
 const rootStyle = window.getComputedStyle(root);
+
+const 控制区 = document.getElementsByClassName("控制区")[0];
+const 颜色区 = document.getElementsByClassName("颜色区")[0];
+
 let 阴影包围框垂直偏移 =
   rootStyle.getPropertyValue("--当前阴影代码包围框垂直偏移");
 let 阴影包围框透明度 = rootStyle.getPropertyValue("--当前阴影代码包围框透明度");
@@ -127,6 +131,8 @@ function 点击增加阴影数量按钮(event) {
 let 之前选中阴影项 = null;
 
 function 点击阴影项(event) {
+  控制区.removeAttribute("已屏蔽");
+  颜色区.removeAttribute("已屏蔽");
   const 所有阴影项 = document.querySelectorAll(".阴影项");
   所有阴影项.forEach((项) => {
     项.style.pointerEvents = "none";
@@ -215,6 +221,8 @@ function 点击删除阴影按钮(event) {
 
   let 代码序号 = 已加入序号池.indexOf(当前阴影序号);
   if (阴影序号池.length === 10 || 代码序号 === -1) {
+    控制区.setAttribute("已屏蔽", "");
+    颜色区.setAttribute("已屏蔽", "");
     root.style.setProperty("--当前阴影代码包围框可见性", "hidden");
     root.style.setProperty("--当前阴影代码包围框透明度", "0%");
     root.style.setProperty("--当前阴影代码包围框垂直偏移", 阴影包围框垂直偏移);
@@ -532,4 +540,7 @@ function 重置参数(event) {
   root.style.setProperty("--当前阴影代码包围框透明度", "0%");
   root.style.setProperty("--当前阴影代码包围框垂直偏移", 阴影包围框垂直偏移);
   已加入序号池.length = 0;
+
+  控制区.setAttribute("已屏蔽", "");
+  颜色区.setAttribute("已屏蔽", "");
 }

@@ -351,8 +351,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 datalist {
-  transform: translateY(-73.5%);
-  width: 125%;
+  transform: translateY(80%);
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;

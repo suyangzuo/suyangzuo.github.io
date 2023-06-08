@@ -211,6 +211,13 @@
   justify-content: center;
   align-items: center;
   row-gap: 20px;
+  transition: filter 0.25s;
+}
+
+.控制区[已屏蔽],
+.颜色区[已屏蔽] {
+  filter: blur(5px);
+  pointer-events: none;
 }
 
 .中文 {
@@ -287,7 +294,7 @@
 .阴影属性:has(input[type="range"]:hover) .中文,
 .阴影属性:has(button:hover) .中文,
 .阴影内嵌:hover .中文 {
-  filter: hue-rotate(80deg) brightness(90%);
+  filter: hue-rotate(300deg) brightness(90%);
 }
 
 .阴影属性标签 {
@@ -439,6 +446,7 @@
   justify-content: center;
   align-items: center;
   gap: 20px;
+  transition: filter 0.25s;
 }
 
 #颜色选择器 {
@@ -492,16 +500,20 @@
 
 .代码区 {
   position: relative;
+  width: 100%;
   height: 245px;
   z-index: 1;
   font-family: consolas;
   padding: 20px;
   font-size: 1rem;
   white-space: pre-line;
+  display: flex;
+  justify-content: center;
 }
 
 .代码区::before {
   position: absolute;
+  z-index: -1;
   content: "";
   width: 100%;
   height: 1rem;
@@ -509,6 +521,6 @@
   top: var(--当前阴影代码包围框垂直偏移);
   visibility: var(--当前阴影代码包围框可见性);
   opacity: var(--当前阴影代码包围框透明度);
-  outline: solid 1.5px tomato;
+  background-color: rgb(138, 65, 66);
   transition: 0.25s;
 }
