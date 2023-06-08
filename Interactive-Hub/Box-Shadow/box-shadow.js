@@ -31,7 +31,7 @@ const 绿值 = document.getElementsByClassName("绿值")[0];
 const 蓝值 = document.getElementsByClassName("蓝值")[0];
 
 const 代码区 = document.getElementsByClassName("代码区")[0];
-const 代码行高度 = "18.8px";
+const 代码行高度 = "18.7333333px";
 
 const 阴影属性组 = new Array(阴影序号池.length);
 for (let i = 0; i < 阴影属性组.length; i++) {

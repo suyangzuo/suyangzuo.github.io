@@ -485,3 +485,9 @@ option {
 #flex-grow::before {
   clip-path: inset(-5% calc(100% - var(--扩张比率)) -5% 0);
 }
+
+@media screen and (height <= 1080px) {
+  .弹性总区 {
+    align-items: flex-start;
+  }
+}

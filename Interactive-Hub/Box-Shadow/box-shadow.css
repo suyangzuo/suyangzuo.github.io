@@ -53,7 +53,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 10px;
+  /* gap: 10px; */
 }
 
 .控制与代码区 {
@@ -183,7 +183,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  outline: solid 1px gray;
+  /* outline: solid 1px gray; */
 }
 
 .本体 {
@@ -204,13 +204,13 @@
   position: relative;
   z-index: 1;
   width: 100%;
-  height: 35%;
+  height: 40%;
   outline: solid 1px gray;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  row-gap: 20px;
+  row-gap: 10px;
   transition: filter 0.25s;
 }
 
@@ -227,6 +227,7 @@
 .代码 {
   color: rgb(169, 169, 169);
   font-family: consolas;
+  text-align: right;
 }
 
 .阴影内嵌 {
@@ -237,12 +238,17 @@
 
 .阴影内嵌-label {
   display: flex;
-  flex-direction: column;
-  padding-right: 10px;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .阴影内嵌-label:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.标签滑块分隔区 {
+  height: 100%;
+  width: 10px;
 }
 
 #shadow-inset {
@@ -281,7 +287,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  row-gap: 10px;
+  /* row-gap: 10px; */
 }
 
 .阴影属性 {
@@ -291,18 +297,29 @@
   gap: 15px;
 }
 
-.阴影属性:has(input[type="range"]:hover) .中文,
-.阴影属性:has(button:hover) .中文,
-.阴影内嵌:hover .中文 {
-  filter: hue-rotate(300deg) brightness(90%);
+.阴影属性:has(input[type="range"]:hover) .标签内部,
+.阴影属性:has(button:hover) .标签内部,
+.阴影内嵌:hover .标签内部 {
+  box-shadow: inset 0.5px 0.5px 2px 0 white, 0.25px 0.25px 4px 0 #000a;
+  background-color: #384c5e;
 }
 
 .阴影属性标签 {
-  width: 100px;
+  width: 120px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.标签内部 {
+  width: fit-content;
+  height: fit-content;
+  padding: 5px 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
+  border-radius: 3px;
 }
 
 .代码 {
@@ -446,6 +463,7 @@
   justify-content: center;
   align-items: center;
   gap: 20px;
+  flex-grow: 1;
   transition: filter 0.25s;
 }
 
@@ -513,7 +531,7 @@
 
 .代码区::before {
   position: absolute;
-  z-index: -1;
+  /* z-index: -1; */
   content: "";
   width: 100%;
   height: 1rem;
@@ -521,6 +539,7 @@
   top: var(--当前阴影代码包围框垂直偏移);
   visibility: var(--当前阴影代码包围框可见性);
   opacity: var(--当前阴影代码包围框透明度);
-  background-color: rgb(138, 65, 66);
+  background-color: rgb(211, 202, 98);
+  mix-blend-mode: exclusion;
   transition: 0.25s;
 }

@@ -366,3 +366,10 @@ label[for="bg-repeat"] {
   align-items: center;
   padding-right: 10px;
 }
+
+@media screen and (height <= 1080px) {
+  .背景-展示区 {
+    width: 500px;
+    height: 500px;
+  }
+}
