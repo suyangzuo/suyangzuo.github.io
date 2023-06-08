@@ -26,7 +26,8 @@
   justify-content: center;
   align-items: center;
   gap: 5vw;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .弹性-展示区 {

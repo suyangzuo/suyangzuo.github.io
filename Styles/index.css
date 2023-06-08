@@ -203,7 +203,7 @@
   grid-template-columns: repeat(5, 15%);
   grid-auto-rows: 190px;
   justify-content: center;
-  gap: 50px 0;
+  gap: 2vh 0;
   /* border-top: solid 1px rgb(196, 196, 196); */
 }
 

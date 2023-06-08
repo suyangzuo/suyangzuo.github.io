@@ -236,6 +236,14 @@ body {
   filter: brightness(25%);
 }
 
+/* :where(.盒子模型, .背景, .对象匹配) img {
+  filter: invert(80%);
+}
+
+:where(.盒子模型, .背景, .对象匹配):hover img {
+  filter: none;
+} */
+
 :where(.字体尺寸, .宽度与高度, .盒子阴影):hover img {
   filter: invert(80%);
 }

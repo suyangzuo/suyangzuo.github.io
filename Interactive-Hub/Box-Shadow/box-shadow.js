@@ -27,6 +27,7 @@ const 绿值 = document.getElementsByClassName("绿值")[0];
 const 蓝值 = document.getElementsByClassName("蓝值")[0];
 
 const 代码区 = document.getElementsByClassName("代码区")[0];
+const 代码行高度 = "18.8px";
 
 const 阴影属性组 = new Array(阴影序号池.length);
 for (let i = 0; i < 阴影属性组.length; i++) {
@@ -118,7 +119,7 @@ function 点击增加阴影数量按钮(event) {
   } else {
     root.style.setProperty(
       "--当前阴影代码包围框垂直偏移",
-      `calc(${阴影包围框垂直偏移} + 18.8px * ${代码序号 + 1})`
+      `calc(${阴影包围框垂直偏移} + ${代码行高度} * ${代码序号 + 1})`
     );
   }
 }
@@ -142,7 +143,6 @@ function 点击阴影项(event) {
   根据阴影参数修改控件(阴影属性);
 
   获取16进制颜色(阴影属性);
-  修改颜色时更新颜色值();
 
   本体.style.transition = "box-shadow 250ms";
   阴影属性.模糊半径 = parseInt(阴影属性.模糊半径, 10) + 20;
@@ -155,7 +155,7 @@ function 点击阴影项(event) {
   let 代码序号 = 已加入序号池.indexOf(当前阴影序号);
   root.style.setProperty(
     "--当前阴影代码包围框垂直偏移",
-    `calc(${阴影包围框垂直偏移} + 18.8px * ${代码序号 + 1})`
+    `calc(${阴影包围框垂直偏移} + ${代码行高度} * ${代码序号 + 1})`
   );
 
   const 有效属性组 = 阴影属性组.filter((阴影属性) => 阴影属性.完整代码 !== "");
@@ -221,7 +221,7 @@ function 点击删除阴影按钮(event) {
   } else {
     root.style.setProperty(
       "--当前阴影代码包围框垂直偏移",
-      `calc(${阴影包围框垂直偏移} + 18.8px * ${代码序号 + 1})`
+      `calc(${阴影包围框垂直偏移} + ${代码行高度} * ${代码序号 + 1})`
     );
   }
 }
@@ -397,22 +397,16 @@ function 根据阴影参数修改控件(阴影属性) {
 }
 
 颜色选择器.addEventListener("input", 修改颜色);
-颜色选择器.addEventListener("input", 修改颜色时更新颜色值);
 
-function 修改颜色时更新颜色值() {
+function 修改颜色() {
   const red = parseInt(`0x${颜色选择器.value.slice(1, 3)}`, 16);
   const green = parseInt(`0x${颜色选择器.value.slice(3, 5)}`, 16);
   const blue = parseInt(`0x${颜色选择器.value.slice(5, 7)}`, 16);
   红值.textContent = red;
   绿值.textContent = green;
   蓝值.textContent = blue;
-}
-
-function 修改颜色() {
   if (当前阴影序号 === -1) return;
-  const red = parseInt(`0x${颜色选择器.value.slice(1, 3)}`, 16);
-  const green = parseInt(`0x${颜色选择器.value.slice(3, 5)}`, 16);
-  const blue = parseInt(`0x${颜色选择器.value.slice(5, 7)}`, 16);
+
   const 阴影属性 = 阴影属性组[当前阴影序号 - 1];
   阴影属性.红 = red;
   阴影属性.绿 = green;
@@ -428,6 +422,7 @@ function 修改颜色() {
   });
   const 实际代码 = `${有效代码组.join(",")}`;
   本体.style.boxShadow = 实际代码;
+  打印代码(有效代码组);
 }
 
 function 获取16进制颜色(阴影属性) {

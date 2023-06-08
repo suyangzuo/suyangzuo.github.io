@@ -121,7 +121,7 @@
   height: 30px;
   border-radius: 3px;
   font-size: 0.9rem;
-  background-color: rgb(193, 198, 203);
+  background: linear-gradient(147deg, #f9fcff 0%, #dee4ea 74%);
   color: black;
   display: flex;
   justify-content: center;
@@ -132,12 +132,12 @@
 }
 
 .阴影项[已选中] {
-  background-color: rgb(57, 108, 175) !important;
-  color: white;
+  background: linear-gradient(315deg, #4369bd 0%, #3375cb 74%) !important;
+  color: white !important;
 }
 
 .阴影项:hover {
-  background-color: rgb(156, 79, 34);
+  background: linear-gradient(147deg, #86a0bc 0%, #5d7e9c 74%);
   color: white;
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
@@ -261,6 +261,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: 0 0 2.5px #000a;
   transition: 0.25s;
 }
 
@@ -308,6 +309,7 @@
   background-color: rgb(34, 123, 155);
   color: white;
   border: none;
+  border-radius: 2px;
   box-shadow: 0px 0px 3px 0 #000a;
 }
 
@@ -442,6 +444,10 @@
 #颜色选择器 {
   width: 100px;
   height: 100px;
+}
+
+#颜色选择器:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 .颜色数据区 {
