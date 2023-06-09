@@ -85,8 +85,13 @@ function 点击增加阴影数量按钮(event) {
   if (阴影序号池.length === 0) return;
   const 阴影项 = document.createElement("li");
   阴影项.className = "阴影项";
-  阴影项.textContent = "阴影";
   阴影列表.appendChild(阴影项);
+  const 阴影颜色标记 = document.createElement("span");
+  阴影颜色标记.className = "阴影颜色标记";
+  阴影项.appendChild(阴影颜色标记);
+  const 阴影文本 = document.createElement("span");
+  阴影文本.textContent = "阴影";
+  阴影项.appendChild(阴影文本);
   const 序号元素 = document.createElement("span");
   序号元素.className = "阴影序号";
   const 序号 = 阴影序号池.shift();
@@ -106,6 +111,7 @@ function 点击增加阴影数量按钮(event) {
   删除阴影按钮.addEventListener("click", 点击删除阴影按钮);
 
   初始化阴影属性(阴影属性组[序号 - 1]);
+  阴影颜色标记.style.backgroundColor = 阴影属性组[序号 - 1].颜色;
   const 有效属性组 = 阴影属性组.filter((阴影属性) => 阴影属性.完整代码 !== "");
   const 有效代码组 = [];
   有效属性组.forEach((属性) => {
@@ -422,6 +428,10 @@ function 修改颜色() {
   阴影属性.颜色 = `rgba(${阴影属性.红},${阴影属性.绿},${阴影属性.蓝},${阴影属性.透明度})`;
 
   阴影属性.完整代码 = `${阴影属性.内嵌} ${阴影属性.x轴偏移}px ${阴影属性.y轴偏移}px ${阴影属性.模糊半径}px ${阴影属性.扩散半径}px ${阴影属性.颜色}`;
+
+  const 当前阴影颜色标记 =
+    之前选中阴影项.getElementsByClassName("阴影颜色标记")[0];
+  当前阴影颜色标记.style.backgroundColor = 阴影属性.颜色;
 
   const 有效属性组 = 阴影属性组.filter((阴影属性) => 阴影属性.完整代码 !== "");
   const 有效代码组 = [];

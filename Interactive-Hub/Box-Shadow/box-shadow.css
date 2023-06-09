@@ -124,9 +124,10 @@
   background: linear-gradient(147deg, #f9fcff 0%, #dee4ea 74%);
   color: black;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   gap: 5px;
+  padding-left: 10%;
   -webkit-user-select: none;
   user-select: none;
 }
@@ -142,16 +143,22 @@
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
+.阴影颜色标记 {
+  width: 13px;
+  height: 13px;
+  border-radius: 13px;
+}
+
 .阴影序号 {
   background-color: rgb(37, 37, 37);
   color: aliceblue;
   width: 20px;
   height: 20px;
+  border-radius: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 20px;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   pointer-events: none;
 }
 

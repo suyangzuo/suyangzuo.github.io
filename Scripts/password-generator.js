@@ -30,8 +30,8 @@ for (let i = 0; i < passwordPool.length; i++) {
 
 passwordTypeSelect.forEach((passwordType) => {
   passwordType.onclick = () => {
-    let content = passwordType.innerHTML;
-    currentPasswordType.innerHTML = content;
+    let content = passwordType.textContent;
+    currentPasswordType.textContent = content;
     resetPasswordType();
     getPassword();
   };
@@ -76,12 +76,21 @@ passwordTypeSelectContainer.onmouseleave = () => {
 };
 
 function resetPasswordType() {
-  let type = currentPasswordType.innerHTML;
+  let type = currentPasswordType.textContent;
   if (type === "PIN") {
     slider.setAttribute("min", 3);
     slider.setAttribute("max", 12);
     slider.value = 6;
-    lengthNumber.innerHTML = 6;
+    lengthNumber.textContent = 6;
+    passwordCharType.style.display = "none";
+    密码复制提示.classList.remove("密码复制提示动画");
+    return;
+  }
+  if (type === "易记密码") {
+    slider.setAttribute("min", 3);
+    slider.setAttribute("max", 15);
+    slider.value = 5;
+    lengthNumber.textContent = 5;
     passwordCharType.style.display = "none";
     密码复制提示.classList.remove("密码复制提示动画");
     return;
@@ -91,7 +100,7 @@ function resetPasswordType() {
     slider.setAttribute("max", 100);
     slider.setAttribute("value", 12);
     slider.value = 12;
-    lengthNumber.innerHTML = 12;
+    lengthNumber.textContent = 12;
     passwordCharType.style.display = "flex";
     密码复制提示.style.opacity = "0";
     密码复制提示.classList.remove("密码复制提示动画");
@@ -106,8 +115,9 @@ function getPassword() {
   let minIndex = 0;
   let maxIndex = 92;
   let length = slider.value;
-  lengthNumber.innerHTML = length;
-  if (currentPasswordType.innerHTML === "随机密码") {
+  lengthNumber.textContent = length;
+  const 密码类型 = currentPasswordType.textContent;
+  if (密码类型 === "随机密码") {
     if (digitChecked && symbolChecked) {
       minIndex = 0;
       maxIndex = 92;
@@ -121,9 +131,12 @@ function getPassword() {
       minIndex = 10;
       maxIndex = 61;
     }
-  } else if (currentPasswordType.innerHTML === "PIN") {
+  } else if (密码类型 === "PIN") {
     minIndex = 0;
     maxIndex = 9;
+  } else if (密码类型 === "易记密码") {
+    minIndex = 10;
+    maxIndex = 61;
   }
 
   const minIndexSuppose = minIndex;
@@ -138,7 +151,7 @@ function getPassword() {
     let character = document.createElement("span");
     minIndex = minIndexSuppose;
     maxIndex = maxIndexSuppose;
-    if (i === length - 3 || i === length - 2 || i === length - 1) {
+    if (密码类型 === "随机密码" && i >= length - 3) {
       if (!已存在字母) {
         minIndex = 10;
         maxIndex = 61;

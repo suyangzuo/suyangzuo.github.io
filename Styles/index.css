@@ -215,7 +215,7 @@
 
 .link-image {
   margin: 0 auto;
-  width: 100px;
+  width: 105px;
   height: 150px;
   transition: 0.25s;
 }
@@ -288,7 +288,7 @@
   transform: scale(0.75);
   opacity: 0;
   transition: 0.25s;
-  pointer-events: none;
+  /* pointer-events: none; */
 }
 
 .未完成链接:hover::after {
