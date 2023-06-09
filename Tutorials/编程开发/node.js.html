@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Node.js</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&family=Noto+Sans+SC&display=swap"
+      rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/Styles/top-banner-common.css" />
+    <link rel="stylesheet" type="text/css" href="/Styles/people.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/Styles/tutorial_navigation.css" />
+    <script
+      src="https://kit.fontawesome.com/d0483e3bd3.js"
+      crossorigin="anonymous"></script>
+    <script src="/Scripts/html-include.js"></script>
+  </head>
+  <body>
+    <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
+    <insert-e src="/top-banner.html"></insert-e>
+    <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
+
+    <!-- --------------------------- ↓ 人物 -------------------------------- -->
+    <div class="people-hall">
+      <div class="people-hall-banner">
+        <img src="/Images/People/Banner.jpg" alt="人物背景横幅" />
+      </div>
+      <div class="people">
+        <div class="people-img">
+          <img src="/Images/People/Ryan-Dahl.jpg" alt="Ryan Dahl" />
+        </div>
+        <article class="people-brief">
+          <section class="people-name">
+            瑞安·达尔<br />Ryan Dahl
+            <p class="detail">
+              <a href="https://zh.wikipedia.org/wiki/瑞安·達爾" target="_blank"
+                >详细生平 <i class="fa-brands fa-wikipedia-w"></i>
+              </a>
+            </p>
+          </section>
+          <section class="people-life">
+            瑞安·达尔（1981年－至今）是美国的软件工程师，为可在编程语言
+            JavaScript 下运作的执行环境包“Node.js”、“Deno”的开发者。<br />
+            瑞安·达尔在2009年推出名为“Node.js”的项目，他注意到 Flickr
+            网站在回应多个图片上传请求的处理上并不良好，想写一套能让网页服务器方便处理异步请求的软件框架，当时
+            Google 又推出了名为“V8”的 JavaScript 引擎，瑞安便采用 Javascript
+            编程语言在该引擎上编写出他所构想的内容。
+          </section>
+        </article>
+      </div>
+    </div>
+    <!-- --------------------------- ↑ 人物 -------------------------------- -->
+
+    <!-- --------------------------- ↓ 教程资源卡片组 -------------------------------- -->
+    <div class="tutorials">
+      <!-- ----------------- ↓ 卡片01 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://nodejs.org/zh-cn/docs/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Node.js/Nodejs.org.png"
+          /></a>
+          <a href="https://nodejs.org/zh-cn/docs/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">Nodejs.org</div>
+              <p>Node.js 官网，有LTS版本和最新版本的详细API文档。</p>
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片01 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片02 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://nodejs.dev/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Node.js/Nodejs.dev.png"
+          /></a>
+          <a href="https://nodejs.dev/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">Nodejs.dev</div>
+              <p>使用 Gatsby.js 框架对 Nodejs.org 进行重新设计后的版本。</p>
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片02 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片03 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://www.tutorialspoint.com/nodejs/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Node.js/Tutorials-Point.png"
+              alt="Tutorials Point"
+          /></a>
+          <a href="https://www.tutorialspoint.com/nodejs/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">Tutorials Point</div>
+              <p>
+                创建于2006年的在线教程网站，条目清晰，案例详实，对各种概念解释得也很到位。
+              </p>
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片03 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片04 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://www.w3schools.com/nodejs/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Node.js/W3-Schools.png"
+              alt="W3 Schools"
+          /></a>
+          <a href="https://www.w3schools.com/nodejs/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">W3 Schools</div>
+              <p>
+                最知名的在线教程网站，每个月约6000万访问量。拥有多种语言的教程，其中以Web开发教程最为著名。
+              </p>
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片04 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片05 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://www.geeksforgeeks.org/nodejs/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Node.js/GeeksforGeeks.png"
+              alt="GeeksforGeeks"
+          /></a>
+          <a href="https://www.geeksforgeeks.org/nodejs/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">GeeksforGeeks</div>
+              <p>
+                由印度人 Sandeep Jain
+                创办。教程分为多个模块，有详细的解释与代码示例。
+              </p>
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片05 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片06 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://www.javatpoint.com/nodejs-tutorial" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Node.js/Java-T-Point.png"
+              alt="JavaTpoint"
+          /></a>
+          <a href="https://www.javatpoint.com/nodejs-tutorial" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">JavaTpoint</div>
+              <p>
+                由印度人 Sonoo Jaiswal
+                创办。除了基础教程外，还有使用Node.js访问数据库的教程等。
+              </p>
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片06 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片07 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://www.tutorialsteacher.com/nodejs" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Node.js/Tutorials-Teacher.png"
+              alt="TutorialsTeacher"
+          /></a>
+          <a href="https://www.tutorialsteacher.com/nodejs" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">TutorialsTeacher</div>
+              <p>
+                TutorialsTeacher 专为逐步学习Web技术而优化，其中的示例简单易懂，以提高易读性和理解能力。
+              </p>
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片07 ---------------------- -->
+    </div>
+    <!-- --------------------------- ↑ 教程资源卡片组 -------------------------------- -->
+
+    <script src="/Scripts/tutorial-card-show.js"></script>
+    <script src="/Scripts/top-banner.js" defer></script>
+  </body>
+</html>

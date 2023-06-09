@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web前端</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&family=Noto+Sans+SC&display=swap"
+      rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/Styles/top-banner-common.css" />
+    <link rel="stylesheet" type="text/css" href="/Styles/people.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/Styles/tutorial_navigation.css" />
+    <script
+      src="https://kit.fontawesome.com/d0483e3bd3.js"
+      crossorigin="anonymous"></script>
+    <script src="/Scripts/html-include.js"></script>
+  </head>
+  <body>
+    <!-- --------------------------- ↓ 顶部横幅-------------------------------- -->
+    <insert-e src="/top-banner.html"></insert-e>
+    <!-- --------------------------- ↑ 顶部横幅-------------------------------- -->
+
+    <!-- --------------------------- ↓ 人物 -------------------------------- -->
+    <div class="people-hall">
+      <div class="people-hall-banner">
+        <img src="/Images/People/Banner.jpg" alt="人物背景横幅" />
+      </div>
+      <div class="people">
+        <div class="people-img">
+          <img
+            src="/Images/People/Timothy-John-Berners-Lee.jpg"
+            alt="Timothy John Berners-Lee" />
+        </div>
+        <article class="people-brief">
+          <section class="people-name">
+            伯纳斯·李<br />Timothy John Berners-Lee
+            <p class="detail">
+              <a
+                href="https://zh.wikipedia.org/wiki/蒂姆·伯纳斯-李"
+                target="_blank"
+                >详细生平 <i class="fa-brands fa-wikipedia-w"></i>
+              </a>
+            </p>
+          </section>
+          <section class="people-life">
+            蒂莫西·约翰·伯纳斯-李，英国计算机科学家，万维网、HTML的发明者。<br />
+            1989年夏天，蒂姆成功开发出世界上第一个Web服务器和第一个Web客户端；1989年12月，蒂姆为他的发明正式定名为
+            World Wide Web。<br />
+            1991年5月，万维网在Internet上首次露面，立即引起轰动，获得了极大的成功，并被广泛推广应用。
+          </section>
+        </article>
+      </div>
+      <div class="people">
+        <div class="people-img">
+          <img src="/Images/People/Brendan-Eich.jpg" alt="Brendan Eich" />
+        </div>
+        <article class="people-brief">
+          <section class="people-name">
+            布兰登·艾克<br />Brendan Eich
+            <p class="detail">
+              <a
+                href="https://zh.wikipedia.org/wiki/布蘭登·艾克"
+                target="_blank"
+                >详细生平 <i class="fa-brands fa-wikipedia-w"></i>
+              </a>
+            </p>
+          </section>
+          <section class="people-life">
+            布兰登·艾克，1961年7月4日出生于美国加州，美国程序技术专家与企业家，JavaScript主要创造者与架构师，曾任Mozilla公司的首席技术官，并曾短暂担任首席执行官。<br />
+            1995年4月，任职于网景期间，为网景浏览器开发出JavaScript，之后成为网页浏览器领域应用最广泛的脚本语言之一。<br />
+            1998年，艾克协助成立Mozilla.org，2003年在美国在线决定结束网景部门营运后，艾克协助成立了Mozilla基金会。
+          </section>
+        </article>
+      </div>
+    </div>
+    <!-- --------------------------- ↑ 人物 -------------------------------- -->
+
+    <!-- --------------------------- ↓ 教程资源卡片组-------------------------------- -->
+    <div class="tutorials">
+      <!-- ----------------- ↓ 卡片01 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://www.w3schools.com/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Web-Front-End/W3-Schools.png"
+              alt="W3 Schools"
+          /></a>
+          <a href="https://www.w3schools.com/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">W3 Schools</div>
+              最知名的在线教程网站，每个月约6000万访问量。拥有多种语言的教程，其中以Web开发教程最为著名。
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片01 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片02 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://developer.mozilla.org/zh-CN/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Web-Front-End/MDN.png"
+              alt="MDN Web Docs"
+          /></a>
+          <a href="https://developer.mozilla.org/zh-CN/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">MDN Web Docs</div>
+              由现代Web技术标准的创建者：Mozilla公司（也是火狐浏览器的拥有者）于2005年创建，专注于Web开发相关的资源和教程。
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片02 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片03 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://learncssgrid.com/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Web-Front-End/Learn-CSS-Grid.png"
+              alt="Learn CSS Grid"
+          /></a>
+          <a href="https://learncssgrid.com/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">Learn CSS Grid</div>
+              专门讲解CSS网格布局的网站，对网格布局做了全面的概述，图文并茂，直观易懂。
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↓ 卡片03 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片04 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://cssreference.io/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Web-Front-End/CSS-Reference.png"
+              alt="CSS Reference"
+          /></a>
+          <a href="https://cssreference.io/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">CSS Reference</div>
+              罗列了所有的CSS属性，以及每个属性在不同值下的效果图，非常直观。
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片04 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片05 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://marksheet.io/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Web-Front-End/MarkSheet.png"
+              alt="MarkSheet"
+          /></a>
+          <a href="https://marksheet.io/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">MarkSheet</div>
+              一个学习Web前端的综合网站，章节清晰明了。
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片05 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片06 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://zh.javascript.info/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Web-Front-End/JavaScript.Info.png"
+              alt="JavaScript.Info"
+          /></a>
+          <a href="https://zh.javascript.info/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">JavaScript.Info</div>
+              从俄罗斯最大的 JavaScript 教程和学习平台 learn.javascript.ru
+              演化而来，有简体中文版。教程覆盖范围广，每个条目细则都有案例代码可供参考。
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片06 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片07 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://css-tricks.com/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Web-Front-End/CSS-Tricks.png"
+              alt="CSS-Tricks"
+          /></a>
+          <a href="https://css-tricks.com/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">CSS-Tricks</div>
+              专门讲解CSS高端技巧的网站，拥有各路高手炫酷的CSS案例。建议拥有扎实的Web开发基本功后再去深造。
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片07 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片08 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://www.w3school.com.cn/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Web-Front-End/W3-School.png"
+              alt="W3 School"
+          /></a>
+          <a href="https://www.w3school.com.cn/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">W3 School</div>
+              <p>
+                中文Web开发学习网站。<br />
+                注意！！！英文网站叫 W3 Schools，中文网站叫 W3
+                School，（区别在于最后有没有s）而且这两个网站似乎没什么直接关系。个人建议去英文网站。
+              </p>
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片08 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片09 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://www.javascripttutorial.net/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Web-Front-End/JavaScript-Tutorial.png"
+              alt="JavaScript Tutorial"
+          /></a>
+          <a href="https://www.javascripttutorial.net/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">JavaScript Tutorial</div>
+              <p>
+                专门教授JavaScript的站点，由一群JavaScript开发者创办。
+                站内包含了详细的JavaScript讲解、技巧。
+              </p>
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片09 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片10 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://www.w3.org/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Web-Front-End/W3C.png"
+              alt="W3C"
+          /></a>
+          <a href="https://www.w3.org/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">W3C</div>
+              <p>
+                World Wide Web Consortium
+                (W3C)，万维网联盟，是一个国际性的社区，致力于开发及维护Web标准，
+                在这里能找到最权威、最详细的Web标准解释，当然最权威也意味着最枯燥、最冗长……
+                <span>&#128575;</span>
+                强烈建议拥有一定的Web开发基础后再来。
+              </p>
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片10 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片11 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://cssgradient.io/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Web-Front-End/CSS-Gradient.png"
+              alt="CSS Gradient"
+          /></a>
+          <a href="https://cssgradient.io/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">CSS Gradient</div>
+              <p>
+                顾名思义，一个专门学习CSS渐变的网站。网站采用了交互式可视化设计，并提供了大量预设的渐变，可直接预览效果并复制代码。
+              </p>
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片11 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片12 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://caniuse.com/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Web-Front-End/Can-I-Use.png"
+              alt="Can I Use"
+          /></a>
+          <a href="https://caniuse.com/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">Can I Use</div>
+              <p>
+                前端开发最头疼的问题就是不同的浏览器对Web标准的支持程度不同，因此开发时总要想着：啊，那个浏览器支持这个特性么？
+                Can I Use
+                就是帮你解决这个问题的。只要输入某个属性，网站就会以直观的表格形式，列出不同浏览器对此属性的支持程度。
+              </p>
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片12 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片13 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://getcssscan.com/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Web-Front-End/CSS-Scan.png"
+              alt="CSS Scan"
+          /></a>
+          <a href="https://getcssscan.com/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">CSS Scan</div>
+              <p>
+                可以直接在页面上使用交互式方式查看任何组件的样式，同时还提供多种免费的预设阴影、按钮、形状样式。
+              </p>
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片13 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片14 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://www.sitepoint.com/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Web-Front-End/SitePoint.png"
+              alt="SitePoint"
+          /></a>
+          <a href="https://www.sitepoint.com/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">SitePoint</div>
+              <p>
+                SitePoint是Web开发人员分享经验与热情的中心。该站由 Mark
+                Harbottle 和 Matt Mickiewicz
+                于1999年创立，面向网络专业人士，如：开发人员、设计师、程序员、产品创造者和企业家等。
+              </p>
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片14 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片15 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://coolcssanimation.com/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Web-Front-End/Cool-CSS-Animation.png"
+              alt="Cool CSS Animation"
+          /></a>
+          <a href="https://coolcssanimation.com/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">Cool CSS Animation</div>
+              <p>
+                由 Nick Ciliak
+                创建的网站。顾名思义，在这里能学到很多CSS动画与特效，有案例、有代码，非常直观。
+              </p>
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片15 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片16 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://www.webdesign-inspiration.com/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Web-Front-End/Web-Design-Inspiration.png"
+              alt="Web Design Inspiration"
+          /></a>
+          <a href="https://www.webdesign-inspiration.com/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">Web Design Inspiration</div>
+              <p>
+                Web Deisn Inspiration
+                的功能和“永恒”相似，都是一个聚合导航门户，只是聚焦点不同而已。
+                该站致力于寻找并展示最好的网页设计灵感和趋势，汇集了大量来自世界各地的创意机构和网站设计师提出的新鲜创意。
+              </p>
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片16 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片17 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://www.tutorialrepublic.com/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Web-Front-End/Tutorial-Republic.png"
+              alt="Tutorial Republic"
+          /></a>
+          <a href="https://www.tutorialrepublic.com/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">Tutorial Republic</div>
+              <p>
+                Tutorial Republic
+                提供了Web开发技术的学习主题，涵盖了从基本到高级的主题，以及现实生活中的实践示例和有用的参考资料。
+              </p>
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片17 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片18 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://symbl.cc/cn/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Web-Front-End/Symbl.cc.png"
+              alt="SYMBL"
+          /></a>
+          <a href="https://symbl.cc/cn/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">SYMBL</div>
+              <p>
+                汇聚了网络上大量可用的表情、符号的代码，分类清晰、易于查询。
+              </p>
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片18 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片19 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://rwd.is/index.html" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Web-Front-End/Responsivedesign.png"
+              alt="Responsivedesign"
+          /></a>
+          <a href="https://rwd.is/index.html" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">Responsivedesign</div>
+              <p>
+                Responsivedesign.is 是 Justin Avery & Simple Things
+                的附带项目，该项目提供了很多响应式网站的设计建议。
+              </p>
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片19 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片20 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://moderncss.dev/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Web-Front-End/Modern-CSS-Solutions.png"
+              alt="Modern CSS"
+          /></a>
+          <a href="https://moderncss.dev/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">Modern CSS</div>
+              <p>
+                使用现代化的CSS方案，解决古老的CSS问题。该站由 Stephanie Eckles
+                创办。
+              </p>
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片20 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片21 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://blog.webdevsimplified.com/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Web-Front-End/Web-Dev-Simplified-Blog.png"
+              alt="Web Dev Simplified Blog"
+          /></a>
+          <a href="https://blog.webdevsimplified.com/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">Web Dev Simplified Blog</div>
+              <p>
+                由 Kyle
+                编写的Web开发日志，包含了很多开发中遇到的问题以及解决方案。他从2015年成为了全栈开发者。
+              </p>
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片21 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片22 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://defensivecss.dev/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Web-Front-End/Defensive-CSS.png"
+              alt="Defensive CSS"
+          /></a>
+          <a href="https://defensivecss.dev/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">Defensive CSS</div>
+              <p>
+                由经验丰富的前端设计师 Ahmad Shadeed
+                创建，旨在传递实用的CSS和设计技巧，构建经得起未来考验的用户界面。
+              </p>
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片22 ---------------------- -->
+
+      <!-- ----------------- ↓ 卡片23 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a href="https://webtips.dev/" target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Web-Front-End/Webtips.png"
+              alt="Webtips"
+          /></a>
+          <a href="https://webtips.dev/" target="_blank">
+            <section class="card-text">
+              <div class="card-text-title">Webtips</div>
+              <p>
+                该站覆盖了你能想到的与Web技术相关的所有内容。如：HTML、CSS、JavaScript；框架和库：React、Svelte、Node、Express，等等。
+              </p>
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片23 ---------------------- -->
+    </div>
+    <!-- --------------------------- ↑ 教程资源卡片组-------------------------------- -->
+
+    <script src="/Scripts/tutorial-card-show.js"></script>
+    <script src="/Scripts/top-banner.js" defer></script>
+  </body>
+</html>

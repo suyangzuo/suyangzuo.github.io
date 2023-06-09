@@ -16,3 +16,5 @@ window.addEventListener("load", () => {
     删除搜索内容按钮.style.visibility = "hidden";
   });
 });
+
+console.log("hahha");

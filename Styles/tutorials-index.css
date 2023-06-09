@@ -1,0 +1,98 @@
+body {
+  /* background-image: radial-gradient(
+    circle farthest-corner at 10% 20%,
+    rgba(100, 43, 115, 1) 0%,
+    rgb(26, 2, 26) 90%
+  ); */
+  background-image: radial-gradient(
+    circle farthest-corner at 24.1% 68.8%,
+    rgba(50, 50, 50, 1) 0%,
+    rgba(0, 0, 0, 1) 99.4%
+  );
+}
+
+.主内容 {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  padding: 100px 0;
+}
+
+.导航区 {
+  width: 1100px;
+  height: fit-content;
+  /* background-color: cadetblue; */
+}
+
+.标题 {
+  width: fit-content;
+  height: 80px;
+  font-size: 1.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+}
+
+.教程区 {
+  background: rgb(24, 24, 24);
+  border-radius: 10px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 120px));
+  grid-auto-rows: 150px;
+  gap: 20px 15px;
+  place-content: center;
+  padding: 15px 0;
+  box-shadow: inset 1px 1px 2px 0 #ffffff2a, 3px 3px 15px 0 #000a;
+  /* box-shadow: 3px 3px 15px 0 #000a; */
+}
+
+.教程区网格 {
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 0;
+}
+
+.教程区网格:hover {
+  background-color: rgb(48, 48, 48);
+}
+
+.教程Logo {
+  width: 80px;
+  height: 80px;
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+
+.教程Logo[alt="Zbrush"] {
+  filter: invert(85%);
+}
+
+.教程Logo[alt="Windows Server"]{
+  filter: brightness(5);
+}
+
+.教程名称 {
+  /* height: 50px; */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 0.925rem;
+  text-align: center;
+}
+
+@media screen and (width <= 1120px) {
+  .导航区 {
+    width: 95vw;
+  }
+}
