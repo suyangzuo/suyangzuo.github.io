@@ -211,6 +211,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-right: 2.5px;
+  font-size: 1.25rem;
 }
 
 .放大镜:hover {
@@ -281,7 +283,7 @@
 .GitHub按钮 {
   height: 100%;
   width: 40px;
-  border-radius: 50px;
+  border-radius: 5px;
 }
 
 .GitHub按钮:hover {
