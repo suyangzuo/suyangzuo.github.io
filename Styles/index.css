@@ -780,6 +780,29 @@
 /* <!-- ------------------ ↑ 游戏区 ------------------- --> */
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
+@media screen and (max-width: 1100px) {
+  .图像长廊分区::after {
+    position: absolute;
+    width: 100%;
+    height: 400px;
+    content: "";
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+  }
+
+  .图像长廊分区 > .左箭头 {
+    left: 2.5%;
+    transform: translateX(0) translateY(-50%);
+  }
+
+  .图像长廊分区 > .右箭头 {
+    right: 2.5%;
+    transform: translateX(0) translateY(-50%);
+  }
+}
+
 @media screen and (max-width: 1000px) {
   .welcome-main {
     justify-content: center;
@@ -892,29 +915,6 @@
 
   .game-name > span {
     font-size: 0.75rem;
-  }
-}
-
-@media screen and (max-width: 1100px) {
-  .图像长廊分区::after {
-    position: absolute;
-    width: 100%;
-    height: 400px;
-    content: "";
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-  }
-
-  .图像长廊分区 > .左箭头 {
-    left: 2.5%;
-    transform: translateX(0) translateY(-50%);
-  }
-
-  .图像长廊分区 > .右箭头 {
-    right: 2.5%;
-    transform: translateX(0) translateY(-50%);
   }
 }
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */

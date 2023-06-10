@@ -59,17 +59,18 @@ body {
 .第三方标题中文 {
   font-size: 5rem;
   font-weight: 600;
-  color: rgb(55, 141, 92);
+  color: rgb(84, 182, 126);
 }
 
 .第三方标题英文 {
   font-size: 2rem;
   text-align: right;
   color: rgb(178, 178, 178);
+  font-family: 'Courier New';
 }
 
 .说明词 {
-  font-size: 2.25rem;
+  font-size: 2.1rem;
   color: rgb(167, 69, 114);
 }
 
@@ -81,7 +82,7 @@ body {
   /* flex-direction: column; */
   justify-content: center;
   gap: 50px;
-  padding: 75px 0;
+  padding: 10vh 0;
 }
 
 .导航区 {
