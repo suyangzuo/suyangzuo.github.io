@@ -1,4 +1,6 @@
 .top-banner {
+  width: 100%;
+  overflow: hidden;
   top: 0;
   position: sticky;
   padding: 0 2vw;
@@ -152,6 +154,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  gap: 20px;
 }
 
 .搜索区 {
@@ -216,22 +219,50 @@
 }
 
 .注册登录区 {
-  width: 150px;
+  width: 200px;
   height: 60%;
   /* background-color: sandybrown; */
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.注册登录区链接 {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.登录按钮 {
-  width: 100px;
+.注册登录区链接::after {
+  position: absolute;
+  content: "后端未完成";
+  width: 100%;
   height: 100%;
-  border-radius: 50px;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  opacity: 0;
+  background-color: #0008;
+  backdrop-filter: blur(3px);
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  font-size: 0.8rem;
+  transition: 0.2s;
+}
+
+.注册登录区链接[未完成]:hover::after {
+  visibility: visible;
+  opacity: 1;
+  cursor: url("/Images/Common/鼠标-默认.cur"), auto;
+}
+
+.登录按钮 {
+  width: 80px;
+  height: 100%;
+  border-radius: 50px;
+  gap: 7.5px;
   transition: 0.125s;
 }
 
@@ -240,13 +271,46 @@
 }
 
 .登录Logo {
-  height: 55%;
+  height: 45%;
   aspect-ratio: 1;
   object-fit: contain;
+  filter: invert(70%);
+  transition: 150ms;
+}
+
+.GitHub按钮 {
+  height: 100%;
+  width: 40px;
+  border-radius: 50px;
+}
+
+.GitHub按钮:hover {
+  background-color: rgb(67, 67, 67);
+}
+
+.GitHub-Logo {
+  height: 65%;
+  aspect-ratio: 1;
+  filter: invert(80%) grayscale(1);
+  transition: 150ms;
 }
 
 .登录文本 {
   font-size: 0.9rem;
+  color: rgb(201, 201, 201);
+  transition: 150ms;
+}
+
+.注册登录区链接:hover .登录Logo {
+  filter: invert(100%);
+}
+
+.注册登录区链接:hover .登录文本 {
+  color: white;
+}
+
+.注册登录区链接:hover .GitHub-Logo {
+  filter: invert(100%) brightness(2) grayscale(1);
 }
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
@@ -264,6 +328,22 @@
 
   #logo-text {
     display: none;
+  }
+
+  #搜索框 {
+    width: 75%;
+  }
+}
+
+@media only screen and (max-width: 750px) {
+  .搜索注册登录区 {
+    width: 350px;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .搜索注册登录区 {
+    width: 250px;
   }
 }
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */
