@@ -14,19 +14,6 @@ body {
   position: relative;
 }
 
-body::before {
-  width: 100%;
-  height: 100%;
-  content: "";
-  top: 0;
-  left: 0;
-  background: url(/Images/Contributers/contributor-bg-01.jpg);
-  background-size: contain;
-  filter: opacity(0.25);
-  position: absolute;
-  z-index: -1;
-}
-
 .banner {
   width: 100dvw;
   height: 600px;
@@ -35,6 +22,7 @@ body::before {
   align-items: center;
   gap: 20px;
   position: relative;
+  z-index: 0;
 }
 
 .banner::before {
@@ -285,6 +273,19 @@ body::before {
   justify-content: center;
   align-items: center;
   gap: 150px;
+  padding: 250px 0;
+}
+
+.contributors::before {
+  width: 100%;
+  height: 100%;
+  content: "";
+  top: 0;
+  left: 0;
+  filter: opacity(0.25);
+  position: absolute;
+  z-index: -1;
+  background: url(/Images/Contributers/contributor-bg-01.jpg);
 }
 
 .contributor {
@@ -312,6 +313,10 @@ body::before {
   object-fit: cover;
   clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 10% 100%, 0% 90%);
   border-radius: 10px;
+}
+
+img[待定] {
+  object-fit: contain;
 }
 
 /* .extra-info {
@@ -433,13 +438,12 @@ body::before {
   color: black;
 }
 
-.侧边栏 {
+/* .侧边栏 {
   position: fixed;
   top: 50%;
   right: 0;
   transform: translateY(-50%) scaleX(0);
   width: 125px;
-  /* height: calc(400px + 10px * 7); */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -496,7 +500,64 @@ body::before {
   width: 100%;
   height: 100%;
   object-fit: cover;
+} */
+
+.指示器 {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 5%;
+  width: 30px;
+  height: 600px;
+  /* background-color: gray; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: 0.25s;
 }
+
+.贯穿线 {
+  position: absolute;
+  width: 1px;
+  height: 95%;
+  background-color: #aaa;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.贡献者标识 {
+  position: relative;
+  width: 35px;
+  height: 35px;
+  border-radius: 30px;
+  /* background-color: brown; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.贡献者标识:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.贡献者标识 > img {
+  width: 50%;
+  height: 50%;
+  border-radius: 30px;
+  object-fit: cover;
+  transition: 0.25s;
+  outline: solid 0.5px gray;
+}
+
+.贡献者标识:hover > img {
+  transform: scale(3) !important;
+  filter: brightness(0.5) !important;
+}
+
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
 @media screen and (max-width: 1200px) {
   .banner {
@@ -567,6 +628,10 @@ body::before {
   .brief-name,
   .brief-address-date {
     margin: 0 auto;
+  }
+
+  .指示器 {
+    display: none;
   }
 
   .侧边栏 {
