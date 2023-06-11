@@ -331,6 +331,7 @@
   position: relative;
   width: 600px;
   height: 400px;
+  border-radius: 10px;
   transition: 0.25s;
   /* background-color: rgb(47, 74, 19); */
 }

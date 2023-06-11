@@ -1,22 +1,24 @@
 const navCells = Array.from(document.getElementsByClassName("nav-cell"));
 const contributors = document.getElementsByClassName("contributor");
 
-const 指示器 = document.getElementsByClassName("指示器")[0];
-const 指示器肖像组 = 指示器.querySelectorAll("img");
-指示器肖像组.forEach((肖像) => {
-  肖像.addEventListener("click", (event) => {
-    window.removeEventListener("scroll", 根据Y轴偏移修改指示器样式);
-    setTimeout(() => {
-      window.addEventListener("scroll", 根据Y轴偏移修改指示器样式);
-    }, 350);
-    let index = Array.from(指示器肖像组).indexOf(event.target);
+navCells.forEach((navCell) => {
+  navCell.addEventListener("click", () => {
+    let index = navCells.indexOf(navCell);
     contributors[index].scrollIntoView({ behavior: "smooth", block: "center" });
   });
 });
 
-navCells.forEach((navCell) => {
-  navCell.addEventListener("click", () => {
-    let index = navCells.indexOf(navCell);
+let 屏蔽肖像放大效果 = false;
+
+const 指示器 = document.getElementsByClassName("指示器")[0];
+const 指示器肖像组 = 指示器.querySelectorAll("img");
+指示器肖像组.forEach((肖像) => {
+  肖像.addEventListener("click", (event) => {
+    屏蔽肖像放大效果 = true;
+    setTimeout(() => {
+      屏蔽肖像放大效果 = false;
+    }, 400);
+    let index = Array.from(指示器肖像组).indexOf(event.target);
     contributors[index].scrollIntoView({ behavior: "smooth", block: "center" });
   });
 });
@@ -35,12 +37,14 @@ function 根据Y轴偏移修改指示器样式() {
       // if (window.scrollY >= 3850) {
       //   index = 7;
       // }
-      指示器肖像组[index].style.transform = "scale(3)";
-      指示器肖像组[index].style.setProperty(
-        "filter",
-        "brightness(1)",
-        "important"
-      );
+      if (!屏蔽肖像放大效果) {
+        指示器肖像组[index].style.transform = "scale(3)";
+        指示器肖像组[index].style.setProperty(
+          "filter",
+          "brightness(1)",
+          "important"
+        );
+      }
       if (之前肖像索引 !== -1 && 之前肖像索引 !== index) {
         指示器肖像组[之前肖像索引].style.transform = "scale(1)";
         指示器肖像组[之前肖像索引].style.setProperty("filter", "brightness(1)");

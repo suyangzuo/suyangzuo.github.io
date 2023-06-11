@@ -1,0 +1,228 @@
+:root {
+  --侧边栏宽度: 300px;
+  --侧边栏颜色-已选中: rgb(29, 32, 37);
+  --侧边栏颜色-鼠标悬停: rgb(54, 86, 130);
+  --侧边栏背景: linear-gradient(60deg, #222931 0%, #2d363f 100%);
+  --专题内容区背景: linear-gradient(60deg, #222931 0%, #2d363f 100%);
+}
+
+.技术栈选择栏 {
+  position: fixed;
+  width: 600px;
+  height: 900px;
+  bottom: 25px;
+  right: 25px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.技术栈选择器 {
+  position: absolute;
+  width: 65px;
+  height: 65px;
+  border-radius: 50px;
+  /* background-image: linear-gradient(15deg, #13547a 0%, #80d0c7 100%); */
+  background: no-repeat center/contain url("./选择器修饰.png"),
+    radial-gradient(circle at center, #80d0c744 0%, #13547a11 50%);
+  bottom: 0;
+  right: 0;
+  /* transform-origin: 100% 100%; */
+  transition: 0.25s;
+}
+
+.技术栈选择器:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  animation: 旋转技术栈选择器 2s linear infinite !important;
+}
+
+@keyframes 旋转技术栈选择器 {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.技术栈内容 {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12.5%, 17.5%));
+  grid-auto-rows: 120px;
+  gap: 15px;
+  place-content: start start;
+  background: #000a;
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  transform-origin: 100% 100%;
+  transform: scale(0);
+  transition: 0.25s;
+}
+
+.技术栈 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  border-radius: 5px;
+}
+
+.博客导航页 {
+  grid-column: 1 / span 5;
+}
+
+.博客导航页 > p {
+  height: fit-content !important;
+}
+
+.技术栈[未完成] {
+  pointer-events: none;
+  filter: brightness(50%);
+}
+
+.技术栈:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  background: #fff2;
+}
+
+.技术栈 > img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.技术栈 > p {
+  height: 40px;
+  font-size: 0.85rem;
+}
+
+.侧边栏 {
+  width: var(--侧边栏宽度);
+  height: 100dvh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  /* background: #0a0a0a; */
+  background-image: var(--侧边栏背景);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  row-gap: 20px;
+  padding-top: 150px;
+}
+
+.专题名称 {
+  padding: 0 15px;
+  font-size: 1.125rem;
+  color: white;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.专题名称 > img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.专题列表 {
+  width: 100%;
+  height: fit-content;
+  overflow-y: auto;
+}
+
+.专题项 {
+  width: 100%;
+  padding: 0 15px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 5px;
+}
+
+.专题项:hover {
+  background: var(--侧边栏颜色-鼠标悬停) !important;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.专题项-标记 {
+  width: 15px;
+  height: 100%;
+  aspect-ratio: 1;
+  text-align: center;
+}
+
+.专题项[原创] .专题项-标记 {
+  color: rgb(62, 163, 106);
+}
+
+.专题项[转载] .专题项-标记 {
+  color: orange;
+}
+
+.专题项-内容 {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 0.9rem;
+}
+
+span[符号] {
+  width: 20px;
+  height: 20px;
+  background-color: rgb(60, 60, 60);
+  box-shadow: 1px 1px 3px 0 #000a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  margin: 0 5px;
+}
+
+.专题内容区 {
+  width: 100%;
+  min-height: 100vh;
+  /* background-color: rgb(21, 21, 21); */
+  background-image: var(--专题内容区背景);
+  padding: 50px 50px 50px calc(var(--侧边栏宽度) + 50px);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 100px;
+}
+
+.专题横幅 {
+  width: 95%;
+  height: 500px;
+  background-color: darkgoldenrod;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.专题横幅 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.专题内容 {
+  width: 1200px;
+  min-height: 200px;
+  border-radius: 10px;
+  background: #101010;
+  padding: 50px;
+}

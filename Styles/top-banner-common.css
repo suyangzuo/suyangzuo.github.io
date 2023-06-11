@@ -4,7 +4,7 @@
   top: 0;
   position: sticky;
   padding: 0 5vw;
-  /* background-color: rgba(10, 10, 10, 0.8); */
+  background-color: rgba(10, 10, 10, 0.8);
   height: 50px;
   display: flex;
   justify-content: space-between;
@@ -348,8 +348,13 @@
 }
 
 @media only screen and (max-width: 550px) {
+  .top-banner {
+    padding: 0;
+  }
+
   .搜索注册登录区 {
     width: 350px;
+    gap: 0;
   }
 
   #搜索框 {
