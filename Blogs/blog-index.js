@@ -7,6 +7,7 @@ const 侧边栏 = document.getElementsByClassName("侧边栏")[0];
 const 技术栈选择器 = document.getElementsByClassName("技术栈选择器")[0];
 const 技术栈内容 = document.getElementsByClassName("技术栈内容")[0];
 const 技术栈组 = document.querySelectorAll(".技术栈");
+const 专题内容区 = document.getElementsByClassName("专题内容区")[0];
 let 专题组 = null;
 let 专题标记组 = null;
 
@@ -26,38 +27,58 @@ if (sessionStorage.getItem("页面技术栈") === null) {
   技术栈名称 = sessionStorage.getItem("页面技术栈");
 }
 
+let index = JSON.parse(sessionStorage.getItem("专题索引记录")).find(
+  (记录) => 记录.技术栈 === 技术栈名称
+).专题索引;
+let 专题名称 = "首页";
+let 专题文件路径 = `./博客内容/${技术栈名称}/${专题名称}.html`;
+
 let 前一专题 = null;
 
-设置侧边栏内容();
+设置侧边栏();
+设置内容();
 
-async function 设置侧边栏内容() {
+async function 设置侧边栏() {
   let fileName = `./侧边栏/${技术栈名称}.html`;
 
   await fetch(fileName)
-    .then(async (response) => await response.text())
+    .then((response) => response.text())
     .then((content) => (侧边栏.innerHTML = content));
 
   专题组 = document.querySelectorAll(".专题");
   专题标记组 = document.querySelectorAll(".专题-标记");
 
-  console.log(JSON.parse(sessionStorage.getItem("专题索引记录")));
-  let index = JSON.parse(sessionStorage.getItem("专题索引记录")).find(
+  index = JSON.parse(sessionStorage.getItem("专题索引记录")).find(
     (记录) => 记录.技术栈 === 技术栈名称
   ).专题索引;
 
   专题组[index].style.setProperty("background", 侧边栏颜色_已选中, "important");
   专题组.forEach((专题) => {
     专题.addEventListener("click", 修改专题样式);
+    专题.addEventListener("click", 设置内容);
     const 标记 = 专题.querySelector(".专题-标记");
     标记.textContent = "\u2666";
   });
 
   前一专题 = 专题组[index];
+  专题名称 = 专题组[index].getElementsByClassName("专题-内容")[0].textContent;
+
+  设置内容();
+}
+
+async function 设置内容() {
+  console.log(专题名称);
+
+  专题文件路径 = `./博客内容/${技术栈名称}/${专题名称}.html`;
+
+  await fetch(专题文件路径)
+    .then((response) => response.text())
+    .then((content) => (专题内容区.innerHTML = content));
 }
 
 技术栈组.forEach((技术栈) => {
   技术栈.addEventListener("click", 点选技术栈);
-  技术栈.addEventListener("click", 设置侧边栏内容);
+  技术栈.addEventListener("click", 设置侧边栏);
 });
 
 function 点选技术栈(event) {
@@ -82,7 +103,9 @@ function 修改专题样式(event) {
   }
   专题.style.setProperty("background", 侧边栏颜色_已选中, "important");
   前一专题 = 专题;
-  let index = Array.from(专题组).indexOf(专题);
+  专题名称 = 专题.getElementsByClassName("专题-内容")[0].textContent;
+
+  index = Array.from(专题组).indexOf(专题);
   if (!专题索引记录.some((记录) => 记录.技术栈 === 技术栈名称)) {
     专题索引记录.push({ 技术栈: 技术栈名称, 专题索引: index });
   } else {

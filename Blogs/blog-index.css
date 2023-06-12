@@ -1,9 +1,9 @@
 :root {
   --侧边栏宽度: 300px;
-  --侧边栏颜色-鼠标悬停: rgb(29, 32, 37);
-  --侧边栏颜色-已选中: rgb(54, 86, 130);
-  --侧边栏背景: linear-gradient(60deg, #222931 0%, #2d363f 100%);
-  --专题内容区背景: linear-gradient(60deg, #222931 0%, #2d363f 100%);
+  --侧边栏颜色-鼠标悬停: rgb(54, 62, 78);
+  --侧边栏颜色-已选中: rgb(122, 67, 107);
+  --侧边栏背景: linear-gradient(60deg, #1f242b 0%, #252c32 100%);
+  --专题内容区背景: linear-gradient(60deg, #181c20 0%, #262d35 100%);
 }
 
 .技术栈选择栏 {
@@ -196,7 +196,7 @@ span[符号] {
 
 .专题内容区 {
   width: 100%;
-  min-height: 100vh;
+  min-height: calc(100vh - 50px);
   /* background-color: rgb(21, 21, 21); */
   background-image: var(--专题内容区背景);
   padding: 50px 50px 50px calc(var(--侧边栏宽度) + 50px);
@@ -205,7 +205,7 @@ span[符号] {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  gap: 50px;
+  gap: 25px;
 }
 
 .专题横幅 {
@@ -213,6 +213,7 @@ span[符号] {
   height: 500px;
   /* background-color: darkgoldenrod; */
   border-radius: 10px;
+  margin-bottom: 50px;
   overflow: hidden;
 }
 
@@ -224,7 +225,8 @@ span[符号] {
 
 .专题简介 {
   position: relative;
-  width: 1200px;
+  min-width: 500px;
+  width: 70%;
   height: 100px;
   /* background-color: #000a; */
   display: flex;
@@ -235,6 +237,23 @@ span[符号] {
 p[简介标题] {
   font-size: 2.5rem;
   color: orange;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+span[简介标题符号] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.25rem;
+  width: 30px;
+  height: 30px;
+  border-radius: 50px;
+  background-color: rgb(73, 146, 129);
+  color: black;
+  box-shadow: 1px 1px 5px 0 #000a;
 }
 
 p[作者信息] {
@@ -246,20 +265,73 @@ p[作者信息] {
   justify-content: center;
   align-items: center;
   gap: 10px;
+  filter: drop-shadow(1px 1px 2px #000c);
 }
 
 span[姓名] {
+  width: 70px;
+  height: 32px;
   font-size: 1rem;
+  line-height: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+}
+
+span[姓名="转载"],
+a[邮箱="转载"] {
+  background-color: sandybrown;
+  color: black;
+}
+
+span[姓名="原创"],
+a[邮箱="原创"] {
+  background-color: #086142;
+  color: white;
 }
 
 a[邮箱] {
-  font-size: 1.75rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 32px;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.专题内容 {
-  width: 1200px;
-  min-height: 200px;
+a[邮箱="原创"] .fa-solid {
+  color: white;
+}
+
+a[邮箱="转载"] .fa-solid {
+  color: black;
+}
+
+a[邮箱]:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.专题正文区 {
+  min-width: 75%;
+  max-width: 1200px;
+  min-height: 500px;
   border-radius: 10px;
-  background: #101010;
+  background: #101010a0;
   padding: 50px;
 }
+
+/* ------------------------------ ↓ 响应式设计 ------------------------------ */
+@media screen and (width < 1700px) {
+  .专题横幅 > img {
+    object-fit: cover;
+  }
+}
+
+@media screen and (width < 1600px) {
+  .专题正文区 {
+    min-width: 95%;
+  }
+}
+/* ------------------------------ ↑ 响应式设计 ------------------------------ */
