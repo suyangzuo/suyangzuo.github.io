@@ -7,10 +7,18 @@ const 侧边栏 = document.getElementsByClassName("侧边栏")[0];
 const 技术栈选择器 = document.getElementsByClassName("技术栈选择器")[0];
 const 技术栈内容 = document.getElementsByClassName("技术栈内容")[0];
 const 技术栈组 = document.querySelectorAll(".技术栈");
-let 专题项组 = null;
-let 专题项标记组 = null;
+let 专题组 = null;
+let 专题标记组 = null;
 
 let 技术栈名称 = "博客导航页";
+let 专题索引记录 = [{ 技术栈: "博客导航页", 专题索引: 0 }];
+
+//需要记录多个技术栈的索引，因此将专题索引记录数组转化为'JSON'格式保存在会话中
+if (sessionStorage.getItem("专题索引记录") === null) {
+  sessionStorage.setItem("专题索引记录", JSON.stringify(专题索引记录));
+} else {
+  专题索引记录 = JSON.parse(sessionStorage.getItem("专题索引记录"));
+}
 
 if (sessionStorage.getItem("页面技术栈") === null) {
   sessionStorage.setItem("页面技术栈", 技术栈名称);
@@ -18,7 +26,7 @@ if (sessionStorage.getItem("页面技术栈") === null) {
   技术栈名称 = sessionStorage.getItem("页面技术栈");
 }
 
-let 前一专题项 = null;
+let 前一专题 = null;
 
 设置侧边栏内容();
 
@@ -29,34 +37,30 @@ async function 设置侧边栏内容() {
     .then(async (response) => await response.text())
     .then((content) => (侧边栏.innerHTML = content));
 
-  专题项组 = document.querySelectorAll(".专题项");
-  专题项标记组 = document.querySelectorAll(".专题项-标记");
+  专题组 = document.querySelectorAll(".专题");
+  专题标记组 = document.querySelectorAll(".专题-标记");
 
-  let index =
-    sessionStorage.getItem("专题项索引") === null
-      ? 0
-      : sessionStorage.getItem("专题项索引");
+  console.log(JSON.parse(sessionStorage.getItem("专题索引记录")));
+  let index = JSON.parse(sessionStorage.getItem("专题索引记录")).find(
+    (记录) => 记录.技术栈 === 技术栈名称
+  ).专题索引;
 
-  专题项组[index].style.setProperty(
-    "background",
-    侧边栏颜色_已选中,
-    "important"
-  );
-  专题项组.forEach((专题项) => {
-    专题项.addEventListener("click", 修改专题项样式);
-    const 标记 = 专题项.querySelector(".专题项-标记");
+  专题组[index].style.setProperty("background", 侧边栏颜色_已选中, "important");
+  专题组.forEach((专题) => {
+    专题.addEventListener("click", 修改专题样式);
+    const 标记 = 专题.querySelector(".专题-标记");
     标记.textContent = "\u2666";
   });
 
-  前一专题项 = 专题项组[index];
+  前一专题 = 专题组[index];
 }
 
 技术栈组.forEach((技术栈) => {
-  技术栈.addEventListener("click", 获取侧边栏技术栈名称);
+  技术栈.addEventListener("click", 点选技术栈);
   技术栈.addEventListener("click", 设置侧边栏内容);
 });
 
-function 获取侧边栏技术栈名称(event) {
+function 点选技术栈(event) {
   const 技术栈 = event.currentTarget;
   let 技术栈文本 = 技术栈.getElementsByTagName("p")[0].textContent;
   技术栈名称 = 技术栈文本;
@@ -64,17 +68,28 @@ function 获取侧边栏技术栈名称(event) {
     技术栈名称 = "Web前端-原生开发";
   }
   sessionStorage.setItem("页面技术栈", 技术栈名称);
+  if (!专题索引记录.some((item) => item.技术栈 === 技术栈名称)) {
+    专题索引记录.push({ 技术栈: 技术栈名称, 专题索引: 0 });
+    sessionStorage.setItem("专题索引记录", JSON.stringify(专题索引记录));
+  }
 }
 
-function 修改专题项样式(event) {
-  const 专题项 = event.currentTarget;
-  if (前一专题项 === 专题项) return;
-  if (前一专题项 !== null) {
-    前一专题项.style.setProperty("background", "transparent");
+function 修改专题样式(event) {
+  const 专题 = event.currentTarget;
+  if (前一专题 === 专题) return;
+  if (前一专题 !== null) {
+    前一专题.style.setProperty("background", "transparent");
   }
-  专题项.style.setProperty("background", 侧边栏颜色_已选中, "important");
-  前一专题项 = 专题项;
-  sessionStorage.setItem("专题项索引", Array.from(专题项组).indexOf(专题项));
+  专题.style.setProperty("background", 侧边栏颜色_已选中, "important");
+  前一专题 = 专题;
+  let index = Array.from(专题组).indexOf(专题);
+  if (!专题索引记录.some((记录) => 记录.技术栈 === 技术栈名称)) {
+    专题索引记录.push({ 技术栈: 技术栈名称, 专题索引: index });
+  } else {
+    let 记录 = 专题索引记录.find((记录) => 记录.技术栈 === 技术栈名称);
+    记录.专题索引 = index;
+  }
+  sessionStorage.setItem("专题索引记录", JSON.stringify(专题索引记录));
 }
 
 技术栈选择器.addEventListener("click", 显示技术栈内容);
