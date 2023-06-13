@@ -67,8 +67,6 @@ async function 设置侧边栏() {
 }
 
 async function 设置内容() {
-  console.log(专题名称);
-
   专题文件路径 = `./博客内容/${技术栈名称}/${专题名称}.html`;
 
   await fetch(专题文件路径)

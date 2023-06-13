@@ -4,6 +4,7 @@
   --侧边栏颜色-已选中: rgb(122, 67, 107);
   --侧边栏背景: linear-gradient(60deg, #1f242b 0%, #252c32 100%);
   --专题内容区背景: linear-gradient(60deg, #181c20 0%, #262d35 100%);
+  --超链接颜色-正文: skyblue;
 }
 
 .技术栈选择栏 {
@@ -14,6 +15,7 @@
   bottom: 25px;
   right: 25px;
   border-radius: 10px;
+  pointer-events: none;
 }
 
 .技术栈选择器 {
@@ -26,6 +28,7 @@
     radial-gradient(circle at center, #80d0c744 0%, #13547a11 50%);
   bottom: 0;
   right: 0;
+  pointer-events: all;
   /* transform-origin: 100% 100%; */
   transition: 0.25s;
 }
@@ -62,6 +65,7 @@
   transform-origin: 100% 100%;
   transform: scale(0);
   box-shadow: -2px 2px 12px 0 #000a;
+  pointer-events: all;
   transition: 0.25s;
 }
 
@@ -182,9 +186,10 @@
   font-size: 0.9rem;
 }
 
-span[符号] {
+span[侧边栏专题符号] {
   width: 20px;
   height: 20px;
+  color: yellowgreen;
   background-color: rgb(60, 60, 60);
   box-shadow: 1px 1px 3px 0 #000a;
   display: flex;
@@ -220,7 +225,7 @@ span[符号] {
 .专题横幅 > img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 .专题简介 {
@@ -230,7 +235,7 @@ span[符号] {
   height: 100px;
   /* background-color: #000a; */
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 }
 
@@ -251,8 +256,12 @@ span[简介标题符号] {
   width: 30px;
   height: 30px;
   border-radius: 50px;
-  background-color: rgb(73, 146, 129);
-  color: black;
+  background-image: linear-gradient(
+    136.3deg,
+    rgba(0, 119, 182, 1) 3.6%,
+    rgb(24, 49, 120) 87.6%
+  );
+  color: white;
   box-shadow: 1px 1px 5px 0 #000a;
 }
 
@@ -279,15 +288,27 @@ span[姓名] {
   border-radius: 50px;
 }
 
+img[原创认证] {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
 span[姓名="转载"],
 a[邮箱="转载"] {
-  background-color: sandybrown;
+  background-color: #fbab7e;
+  background-image: linear-gradient(62deg, #fbab7e 0%, #f7ce68 100%);
   color: black;
 }
 
 span[姓名="原创"],
 a[邮箱="原创"] {
-  background-color: #086142;
+  background: linear-gradient(
+    to right,
+    #2c5364,
+    #203a43,
+    #19333f
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   color: white;
 }
 
@@ -309,6 +330,10 @@ a[邮箱="转载"] .fa-solid {
   color: black;
 }
 
+a[邮箱="原创"]:hover {
+  filter: brightness(150%);
+}
+
 a[邮箱]:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
@@ -318,8 +343,59 @@ a[邮箱]:hover {
   max-width: 1200px;
   min-height: 500px;
   border-radius: 10px;
-  background: #101010a0;
+  /* background: #101010a0; */
   padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.专题正文-h1 {
+  height: 75px;
+  display: flex;
+  align-items: center;
+}
+
+.专题正文-列表 p {
+  padding: 2.5px 0;
+}
+
+.专题正文-列表 > li {
+  font-size: 1.125rem;
+}
+
+.专题正文-1级列表 {
+  padding: 10px 0;
+}
+
+.专题正文-1级列表 > li {
+  list-style-type: disc;
+}
+
+.专题正文-1级列表 > li::marker {
+  color: goldenrod;
+}
+
+a[超链接] {
+  color: var(--超链接颜色-正文);
+  text-decoration: underline;
+  text-underline-offset: 2.5px;
+}
+
+.博客导航页-专题正文区 .专题正文-h1,
+.博客导航页-专题正文区 .专题正文-1级列表 {
+  width: fit-content;
+  /* margin: 0 auto; */
+}
+
+.专题正文-2级列表 > li {
+  list-style-type: circle;
+  color: rgb(150, 150, 150);
+  margin-left: 2em;
+}
+
+.专题正文-2级列表 > li::marker {
+  color: goldenrod;
 }
 
 /* ------------------------------ ↓ 响应式设计 ------------------------------ */
