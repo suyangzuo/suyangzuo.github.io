@@ -121,10 +121,15 @@ function 显示技术栈内容() {
   技术栈内容.style.transform = "scale(1)";
   技术栈选择器.style.setProperty("animation", "none");
   技术栈选择器.style.transform = "scale(0)";
+  console.log(技术栈选择器.style.transform);
 }
 
 function 隐藏技术栈内容() {
   技术栈内容.style.opacity = "0";
   技术栈内容.style.transform = "scale(0)";
   技术栈选择器.style.transform = "scale(1)";
+  技术栈选择器.style.setProperty(
+    "animation",
+    "旋转技术栈选择器 5s linear infinite"
+  );
 }

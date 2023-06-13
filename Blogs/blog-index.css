@@ -30,12 +30,13 @@
   right: 0;
   pointer-events: all;
   /* transform-origin: 100% 100%; */
+  animation: 旋转技术栈选择器 5s linear infinite;
   transition: 0.25s;
 }
 
 .技术栈选择器:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
-  animation: 旋转技术栈选择器 2s linear infinite !important;
+  animation-play-state: paused !important;
 }
 
 @keyframes 旋转技术栈选择器 {
@@ -218,7 +219,7 @@ span[侧边栏专题符号] {
   height: 500px;
   /* background-color: darkgoldenrod; */
   border-radius: 10px;
-  margin-bottom: 50px;
+  margin-bottom: 150px;
   overflow: hidden;
 }
 
@@ -230,22 +231,37 @@ span[侧边栏专题符号] {
 
 .专题简介 {
   position: relative;
+  /* z-index: 1; */
   min-width: 500px;
-  width: 70%;
-  height: 100px;
-  /* background-color: #000a; */
+  width: 100%;
+  height: fit-content;
+  background: #0005;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-around;
   align-items: center;
+  padding: 25px 5%;
+  border-radius: 10px;
+}
+
+.专题简介-背景伪元素 {
+  position: absolute;
+  z-index: 0;
+  width: 120%;
+  height: 120%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
 }
 
 p[简介标题] {
-  font-size: 2.5rem;
+  position: relative;
+  font-size: 3.5rem;
   color: orange;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
 }
 
 span[简介标题符号] {
@@ -266,10 +282,10 @@ span[简介标题符号] {
 }
 
 p[作者信息] {
-  position: absolute;
+  /* position: absolute;
   right: 5%;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-50%); */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -344,16 +360,23 @@ a[邮箱]:hover {
   min-height: 500px;
   border-radius: 10px;
   /* background: #101010a0; */
-  padding: 50px;
+  padding: 25px 50px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
 .专题正文-h1 {
-  height: 75px;
+  height: 85px;
   display: flex;
   align-items: center;
+  padding-left: 10px;
+}
+
+.专题正文-列表 li:has(.专题正文-h1)::marker {
+  content: "\262F";
+  font-size: 2rem;
+  color: rgb(38, 152, 154);
 }
 
 .专题正文-列表 p {
@@ -408,6 +431,10 @@ a[超链接] {
 @media screen and (width < 1600px) {
   .专题正文区 {
     min-width: 95%;
+  }
+
+  .专题简介 {
+    width: 100%;
   }
 }
 /* ------------------------------ ↑ 响应式设计 ------------------------------ */
