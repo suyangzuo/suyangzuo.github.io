@@ -60,7 +60,12 @@
   grid-auto-rows: 105px;
   gap: 15px;
   place-content: start space-evenly;
-  background: #000a;
+  /* background: #000a; */
+  background: linear-gradient(
+    to right,
+    #29323caa,
+    #485563aa
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   backdrop-filter: blur(10px);
   opacity: 0;
   transform-origin: 100% 100%;
@@ -165,7 +170,6 @@
 .专题-标记 {
   width: 15px;
   height: 100%;
-  aspect-ratio: 1;
   text-align: center;
 }
 
