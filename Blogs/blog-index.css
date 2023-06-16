@@ -7,6 +7,10 @@
   --超链接颜色-正文: skyblue;
 }
 
+body {
+  width: 100dvw;
+}
+
 .技术栈选择栏 {
   position: fixed;
   z-index: 1;
@@ -114,6 +118,26 @@
   padding-top: 2px;
 }
 
+.侧边栏收缩容器 {
+  position: absolute;
+  z-index: 1;
+  width: 40px;
+  height: 35px;
+  /* background-color: red; */
+  top: 55px;
+  left: 5px;
+  font-size: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.侧边栏收缩容器:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
 .侧边栏 {
   width: var(--侧边栏宽度);
   height: 100dvh;
@@ -168,6 +192,7 @@
 }
 
 .专题-标记 {
+  flex-shrink: 0;
   width: 15px;
   height: 100%;
   text-align: center;
@@ -192,6 +217,7 @@
 }
 
 span[侧边栏专题符号] {
+  flex-shrink: 0;
   width: 20px;
   height: 20px;
   color: yellowgreen;
@@ -223,7 +249,7 @@ span[侧边栏专题符号] {
   height: 500px;
   /* background-color: darkgoldenrod; */
   border-radius: 10px;
-  margin-bottom: 150px;
+  margin-bottom: 100px;
   overflow: hidden;
 }
 
@@ -241,7 +267,7 @@ span[侧边栏专题符号] {
   height: fit-content;
   background: #0005;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
   padding: 25px 5%;
   border-radius: 10px;
@@ -261,7 +287,7 @@ span[侧边栏专题符号] {
 p[简介标题] {
   position: relative;
   font-size: 3.5rem;
-  color: orange;
+  color: rgb(40, 144, 196);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -359,70 +385,224 @@ a[邮箱]:hover {
 }
 
 .专题正文区 {
-  min-width: 75%;
-  max-width: 1200px;
-  min-height: 500px;
+  min-width: 400px;
+  max-width: 1000px;
+  /* min-height: 500px; */
   border-radius: 10px;
   /* background: #101010a0; */
-  padding: 25px 50px;
+  padding: 25px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
-.专题正文-h1 {
-  height: 85px;
+.专题正文区 ul,
+.专题正文区 li {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.符号-h2 {
+  height: 27px;
+  width: 27px;
+  object-fit: contain;
+  object-position: center;
+}
+
+.标题-h2 {
+  height: 70px;
+  padding: 0 25px;
+  border-radius: 100px;
   display: flex;
+  justify-content: center;
   align-items: center;
-  padding-left: 10px;
+  background: linear-gradient(
+    to right,
+    #2e4754,
+    #284252
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  color: white;
+  box-shadow: 1px 1px 5px 0 #000a;
+  letter-spacing: 2px;
 }
 
-.专题正文-列表 li:has(.专题正文-h1)::marker {
-  content: "\262F";
-  font-size: 2rem;
-  color: rgb(38, 152, 154);
+.正文列表 {
+  padding: 15px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
 }
 
-.专题正文-列表 p {
-  padding: 2.5px 0;
+.正文列表-1级 {
+  gap: 20px;
+  padding: 30px 0;
 }
 
-.专题正文-列表 > li {
-  font-size: 1.125rem;
-}
-
-.专题正文-1级列表 {
-  padding: 10px 0;
-}
-
-.专题正文-1级列表 > li {
-  list-style-type: disc;
-}
-
-.专题正文-1级列表 > li::marker {
+.正文列表项-1级::marker {
   color: goldenrod;
 }
 
-a[超链接] {
-  color: var(--超链接颜色-正文);
+.正文列表项-2级::marker {
+  color: rgb(218, 113, 32);
+}
+
+.正文列表项-3级::marker {
+  color: rgb(255, 97, 97);
+}
+
+.正文列表项-1级 {
+  list-style-type: disc;
+  font-size: 1.125rem;
+}
+
+.正文列表-2级 {
+  gap: 10px;
+  padding-left: 2em;
+}
+
+.正文列表项-2级 {
+  font-size: 1rem;
+  list-style-type: square;
+  color: rgb(220, 220, 220);
+}
+
+.正文列表-3级 {
+  gap: 7.5px;
+  padding-left: 3em;
+}
+
+.正文列表项-3级 {
+  font-size: 0.925rem;
+  list-style-type: circle;
+  color: rgb(190, 190, 190);
+}
+
+span[举例标题] {
+  background-color: rgb(153, 168, 183);
+  color: black;
+  border-radius: 3px;
+  padding: 1px 3px;
+}
+
+.语言 {
+  display: inline-block;
+  background-color: #3a434b;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.超链接 {
+  color: yellowgreen;
   text-decoration: underline;
   text-underline-offset: 2.5px;
 }
 
-.博客导航页-专题正文区 .专题正文-h1,
-.博客导航页-专题正文区 .专题正文-1级列表 {
-  width: fit-content;
-  /* margin: 0 auto; */
+.超链接:visited {
+  color: yellowgreen;
 }
 
-.专题正文-2级列表 > li {
-  list-style-type: circle;
-  color: rgb(150, 150, 150);
-  margin-left: 2em;
+.超链接:hover {
+  color: rgb(173, 104, 238);
 }
 
-.专题正文-2级列表 > li::marker {
-  color: goldenrod;
+.正文-表格 {
+  width: 400px;
+  padding: 15px 0;
+}
+
+.Web前端首页表格-列格式 > col:nth-child(1) {
+  width: 45%;
+}
+
+.Web前端首页表格-列格式 > col:nth-child(2) {
+  width: 55%;
+}
+
+.正文-表格 > thead > tr {
+  width: 150px;
+  background-color: rgb(191, 206, 216) !important;
+  color: rgb(37, 55, 109);
+}
+
+.正文-表格 > thead {
+  text-align: center;
+  height: 40px;
+}
+
+.正文-表格 td {
+  font-size: 0.9rem;
+}
+
+.正文-表格 > tbody > tr {
+  height: 30px;
+}
+
+.正文-表格 > tbody td {
+  text-align: center;
+}
+
+.正文-表格 tr:nth-child(even) {
+  background-color: #499984;
+  color: black;
+}
+
+.正文-表格 tr:nth-child(odd) {
+  background-color: #2c5364;
+}
+
+.td-上下 {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+}
+
+.td-上下-上 {
+  width: 100%;
+  height: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+span[特别提醒] {
+  width: 100%;
+  height: 50%;
+  padding: 4px 10px;
+  background-color: #181c2077;
+  color: rgb(220, 218, 81);
+  font-size: 0.8rem;
+  /* border-radius: 50px; */
+}
+
+span[圆括号] {
+  color: tomato;
+}
+
+span[圆括号内容] {
+  background-color: rgb(53, 89, 157);
+  border-radius: 3px;
+  /* color: black; */
+  padding: 2px 5px;
+  margin: 0 5px;
+  font-size: 0.9em;
+}
+
+span[注释] {
+  padding: 2px 5px;
+  margin: 0 5px;
+  border-radius: 3px;
+  background-color: rgb(74, 193, 128);
+  font-size: 0.6rem;
+  color: black;
+}
+
+img[图含义="永恒代码统计"] {
+  height: 400px;
+  padding: 10px 0;
 }
 
 /* ------------------------------ ↓ 响应式设计 ------------------------------ */
@@ -434,11 +614,40 @@ a[超链接] {
 
 @media screen and (width < 1600px) {
   .专题正文区 {
-    min-width: 95%;
+    max-width: 95%;
   }
 
   .专题简介 {
     width: 100%;
+  }
+}
+
+@media screen and (width < 1600px) {
+  .专题简介 {
+    flex-direction: column;
+    row-gap: 20px;
+  }
+}
+
+@media screen and (width < 800px) {
+  .侧边栏收缩容器 {
+    visibility: visible;
+    opacity: 1;
+    z-index: 2;
+  }
+
+  .侧边栏 {
+    visibility: hidden !important;
+    opacity: 0 !important;
+    z-index: 1;
+  }
+
+  .专题内容区 {
+    padding: 50px 25px 25px;
+  }
+
+  .技术栈选择栏 {
+    width: 100% !important;
   }
 }
 /* ------------------------------ ↑ 响应式设计 ------------------------------ */

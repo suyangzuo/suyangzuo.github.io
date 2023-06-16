@@ -3,6 +3,7 @@ const rootStyle = window.getComputedStyle(root);
 const 侧边栏颜色_已选中 = rootStyle.getPropertyValue("--侧边栏颜色-已选中");
 const 侧边栏颜色_鼠标悬停 = rootStyle.getPropertyValue("--侧边栏颜色-鼠标悬停");
 
+const 侧边栏收缩容器 = document.getElementsByClassName("侧边栏收缩容器")[0];
 const 侧边栏 = document.getElementsByClassName("侧边栏")[0];
 const 技术栈选择器 = document.getElementsByClassName("技术栈选择器")[0];
 const 技术栈内容 = document.getElementsByClassName("技术栈内容")[0];
@@ -132,4 +133,32 @@ function 隐藏技术栈内容() {
     "animation",
     "旋转技术栈选择器 5s linear infinite"
   );
+}
+
+侧边栏收缩容器.addEventListener("click", 修改侧边栏可见性);
+let 侧边栏可见 = false;
+const 视口宽度低于800px = window.matchMedia("(width < 800px)");
+
+function 修改侧边栏可见性(event) {
+  if (!侧边栏可见) {
+    侧边栏.style.setProperty("visibility", "visible", "important");
+    侧边栏.style.setProperty("opacity", "1", "important");
+    侧边栏可见 = true;
+  } else {
+    侧边栏.style.visibility = "hidden";
+    侧边栏.style.opacity = "0";
+    侧边栏可见 = false;
+  }
+}
+
+window.addEventListener("resize", 修改视口尺寸);
+
+function 修改视口尺寸() {
+  if (!视口宽度低于800px.matches) {
+    侧边栏.style.visibility = "visible";
+    侧边栏.style.opacity = "1";
+    侧边栏可见 = true;
+  } else {
+    侧边栏可见 = false;
+  }
 }
