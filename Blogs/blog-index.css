@@ -60,9 +60,9 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(10.5%, 13.5%));
+  grid-template-columns: repeat(auto-fill, minmax(10.5%, 14.5%));
   grid-auto-rows: 105px;
-  gap: 15px;
+  gap: 10px;
   place-content: start space-evenly;
   /* background: #000a; */
   background: linear-gradient(
@@ -103,7 +103,22 @@ body {
 
 .技术栈:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
-  background: #fff2;
+  background: linear-gradient(-45deg, #8d5240, #962c54, #1f718f, #11614f);
+  background-size: 400% 400%;
+  animation: 技术栈背景动画 5s ease infinite;
+  box-shadow: 1px 1px 4px 0 #0005;
+}
+
+@keyframes 技术栈背景动画 {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .技术栈 > img {
@@ -286,7 +301,7 @@ span[侧边栏专题符号] {
 
 p[简介标题] {
   position: relative;
-  font-size: 3.5rem;
+  font-size: 2.75rem;
   color: rgb(40, 144, 196);
   display: flex;
   justify-content: center;
@@ -403,10 +418,11 @@ a[邮箱]:hover {
 }
 
 .符号-h2 {
-  height: 27px;
-  width: 27px;
+  height: 25px;
+  width: 25px;
   object-fit: contain;
   object-position: center;
+  filter: drop-shadow(1px 1px 2px #000a);
 }
 
 .标题-h2 {
@@ -427,6 +443,7 @@ a[邮箱]:hover {
 }
 
 .正文列表 {
+  width: 100%;
   padding: 15px 0;
   display: flex;
   flex-direction: column;
@@ -437,6 +454,10 @@ a[邮箱]:hover {
 .正文列表-1级 {
   gap: 20px;
   padding: 30px 0;
+}
+
+.正文列表项 {
+  width: 100%;
 }
 
 .正文列表项-1级::marker {
@@ -508,8 +529,11 @@ span[举例标题] {
 }
 
 .正文-表格 {
-  width: 400px;
   padding: 15px 0;
+}
+
+.Web前端首页表格 {
+  width: 400px;
 }
 
 .Web前端首页表格-列格式 > col:nth-child(1) {
@@ -601,8 +625,9 @@ span[注释] {
 }
 
 img[图含义="永恒代码统计"] {
-  height: 400px;
+  width: 500px;
   padding: 10px 0;
+  object-fit: contain;
 }
 
 /* ------------------------------ ↓ 响应式设计 ------------------------------ */
@@ -619,17 +644,43 @@ img[图含义="永恒代码统计"] {
 
   .专题简介 {
     width: 100%;
-  }
-}
-
-@media screen and (width < 1600px) {
-  .专题简介 {
     flex-direction: column;
     row-gap: 20px;
   }
 }
 
+@media screen and (width < 1200px) {
+  p[简介标题] {
+    font-size: 2.25rem;
+  }
+}
+
+@media screen and (width < 950px) {
+  .Web前端首页表格 {
+    width: auto;
+    max-width: 400px;
+  }
+
+  img[图含义="永恒代码统计"] {
+    width: 100%;
+  }
+}
+
 @media screen and (width < 800px) {
+  .专题简介 {
+    width: 95dvw;
+    min-width: auto;
+    padding: 25px 0;
+  }
+
+  p[简介标题] {
+    font-size: 1.5rem;
+  }
+
+  .专题正文区 {
+    min-width: 100dvw;
+  }
+
   .侧边栏收缩容器 {
     visibility: visible;
     opacity: 1;
@@ -647,7 +698,18 @@ img[图含义="永恒代码统计"] {
   }
 
   .技术栈选择栏 {
-    width: 100% !important;
+    width: 97.5% !important;
+    height: auto;
+    top: 25px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    z-index: 3;
+  }
+
+  .技术栈选择器 {
+    right: 1%;
+    bottom: 0.5%;
   }
 }
 /* ------------------------------ ↑ 响应式设计 ------------------------------ */
