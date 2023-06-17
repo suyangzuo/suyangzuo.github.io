@@ -27,13 +27,11 @@ body {
   width: 65px;
   height: 65px;
   border-radius: 50px;
-  /* background-image: linear-gradient(15deg, #13547a 0%, #80d0c7 100%); */
   background: no-repeat center/contain url("./选择器修饰.png"),
     radial-gradient(circle at center, #80d0c744 0%, #13547a11 50%);
   bottom: 0;
   right: 0;
   pointer-events: all;
-  /* transform-origin: 100% 100%; */
   animation: 旋转技术栈选择器 5s linear infinite;
   transition: 0.25s;
 }
@@ -262,7 +260,6 @@ span[侧边栏专题符号] {
 .专题横幅 {
   width: 95%;
   height: 500px;
-  /* background-color: darkgoldenrod; */
   border-radius: 10px;
   margin-bottom: 100px;
   overflow: hidden;
@@ -301,12 +298,18 @@ span[侧边栏专题符号] {
 
 p[简介标题] {
   position: relative;
-  font-size: 2.75rem;
-  color: rgb(40, 144, 196);
+  font-size: 1.5rem;
+  color: rgb(227, 227, 227);
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px;
+  gap: 7.5px;
+}
+
+p[简介标题] > img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
 }
 
 span[简介标题符号] {
@@ -477,6 +480,14 @@ a[邮箱]:hover {
   font-size: 1.125rem;
 }
 
+.正文列表项-1级 > p {
+  background: linear-gradient(50deg, #2c3e50, #4b5157);
+  color: white;
+  padding: 7.5px 10px;
+  border-radius: 5px;
+  width: fit-content;
+}
+
 .正文列表-2级 {
   gap: 10px;
   padding-left: 2em;
@@ -610,18 +621,30 @@ span[圆括号内容] {
   background-color: rgb(53, 89, 157);
   border-radius: 3px;
   /* color: black; */
-  padding: 2px 5px;
+  padding: 1px 5px;
   margin: 0 5px;
-  font-size: 0.9em;
+  font-size: 1em;
+}
+
+.正文列表项-1级 > p > span[圆括号内容] {
+  background: none;
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  text-underline-offset: 3px;
+  text-decoration-color: rgb(89, 230, 176);
+  color: white;
+  padding: 0 2.5px;
+  margin: 0 0;
+  font-size: 1em;
 }
 
 span[注释] {
   padding: 2px 5px;
   margin: 0 5px;
   border-radius: 3px;
-  background-color: rgb(74, 193, 128);
+  outline: solid 1.25px rgb(74, 193, 128);
   font-size: 0.6rem;
-  color: black;
+  color: rgb(225, 225, 225);
 }
 
 img[图含义="永恒代码统计"] {

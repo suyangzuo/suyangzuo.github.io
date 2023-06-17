@@ -21,16 +21,21 @@ body {
     rgba(9, 29, 85, 1) 0.2%,
     rgba(0, 0, 0, 1) 100.2%
   ); */
+  background-image: radial-gradient(
+    circle 815px at 23.4% -21.8%,
+    rgb(52, 62, 92) 0.2%,
+    rgb(42, 54, 72) 100.2%
+  );
   box-shadow: 0 1px 5px 0 #000a;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 50px;
+  gap: 25px;
   text-shadow: 1px 1px 5px #000a;
 }
 
-.说明区::before {
+/* .说明区::before {
   position: absolute;
   z-index: -1;
   content: "";
@@ -40,10 +45,12 @@ body {
   top: 0;
   background: no-repeat center url("/Images/Background-Images/曲线.png");
   background-size: 100% 75%;
-  opacity: 0.25;
-}
+  opacity: 0.5;
+} */
 
 .第三方标题 {
+  position: relative;
+  z-index: 1;
   width: 650px;
   display: flex;
   flex-direction: column;
@@ -59,7 +66,7 @@ body {
 .第三方标题中文 {
   font-size: 5rem;
   font-weight: 600;
-  color: rgb(84, 182, 126);
+  color: rgb(74, 211, 147);
 }
 
 .第三方标题英文 {
@@ -69,9 +76,8 @@ body {
   font-family: "Courier New";
 }
 
-.说明词 {
-  font-size: 2.1rem;
-  color: rgb(167, 69, 114);
+.说明配图区 {
+  font-size: 2.25rem;
 }
 
 .主内容 {
@@ -110,8 +116,8 @@ body {
 .教程区 {
   background: linear-gradient(
     43deg,
-    rgba(73, 84, 101, 0.5),
-    rgba(68, 95, 123, 0.5)
+    rgba(73, 84, 101, 0.95),
+    rgba(68, 95, 123, 0.95)
   );
   border-radius: 10px;
   width: 100%;
@@ -121,7 +127,7 @@ body {
   gap: 20px 15px;
   place-content: center;
   padding: 15px 0;
-  box-shadow: inset 1px 1px 2px 0 #ffffff2a, 3px 3px 15px 0 #000a;
+  box-shadow: inset 1px 1px 2px 0 #ffffff2a, 6px 6px 15px 0 #0008;
 }
 
 .教程区网格 {

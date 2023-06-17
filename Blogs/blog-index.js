@@ -120,19 +120,13 @@ function 修改专题样式(event) {
 function 显示技术栈内容() {
   技术栈内容.style.opacity = "1";
   技术栈内容.style.transform = "scale(1)";
-  技术栈选择器.style.setProperty("animation", "none");
-  技术栈选择器.style.transform = "scale(0)";
-  console.log(技术栈选择器.style.transform);
+  技术栈选择器.style.scale = "0";
 }
 
 function 隐藏技术栈内容() {
   技术栈内容.style.opacity = "0";
   技术栈内容.style.transform = "scale(0)";
-  技术栈选择器.style.transform = "scale(1)";
-  技术栈选择器.style.setProperty(
-    "animation",
-    "旋转技术栈选择器 5s linear infinite"
-  );
+  技术栈选择器.style.scale = "1";
 }
 
 侧边栏收缩容器.addEventListener("click", 修改侧边栏可见性);
