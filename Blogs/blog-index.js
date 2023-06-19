@@ -37,7 +37,17 @@ let 专题文件路径 = `./博客内容/${技术栈名称}/${专题名称}.html
 let 前一专题 = null;
 
 设置侧边栏();
-设置内容();
+// 设置内容();
+
+function 刷新代码格式化脚本() {
+  const 代码格式化脚本元素 = document.querySelector("script[代码格式化]");
+  代码格式化脚本元素.remove();
+  const 新脚本 = document.createElement("script");
+  新脚本.src = "/Scripts/prism.js";
+  // 新脚本.setAttribute("defer", "");
+  新脚本.setAttribute("代码格式化", "");
+  document.body.appendChild(新脚本);
+}
 
 async function 设置侧边栏() {
   let fileName = `./侧边栏/${技术栈名称}.html`;
@@ -72,7 +82,10 @@ async function 设置内容() {
 
   await fetch(专题文件路径)
     .then((response) => response.text())
-    .then((content) => (专题内容区.innerHTML = content));
+    .then((content) => {
+      专题内容区.innerHTML = content;
+      刷新代码格式化脚本();
+    });
 }
 
 技术栈组.forEach((技术栈) => {
@@ -156,3 +169,5 @@ function 修改视口尺寸() {
     侧边栏可见 = false;
   }
 }
+
+// window.addEventListener("load", 刷新代码格式化脚本);

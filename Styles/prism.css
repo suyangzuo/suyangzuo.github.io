@@ -49,6 +49,7 @@ pre[class*="language-"] {
 .token.namespace,
 .token.tag {
   color: #e2777a;
+  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
 }
 .token.function-name {
   color: #6196cc;
@@ -63,6 +64,7 @@ pre[class*="language-"] {
 .token.property,
 .token.symbol {
   color: #f8c555;
+  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
 }
 .token.atrule,
 .token.builtin,
@@ -77,6 +79,7 @@ pre[class*="language-"] {
 .token.string,
 .token.variable {
   color: #7ec699;
+  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
 }
 .token.entity,
 .token.operator,
