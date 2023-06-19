@@ -11,6 +11,34 @@ body {
   width: 100dvw;
 }
 
+code[class*="language-"] {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  font-family: consolas !important;
+  outline: solid 1.5px gray;
+  background-color: #fff2;
+  color: white;
+  padding: 5px 10px;
+  margin: 15px 0;
+  border-radius: 3px;
+}
+
+.代码-标签括号 {
+  font-family: consolas !important;
+  color: rgb(248, 132, 244);
+}
+
+.代码-标签属性 {
+  font-family: consolas !important;
+  color: lightgreen;
+}
+
+.代码-样式属性 {
+  font-family: consolas !important;
+  color: rgb(247, 149, 131);
+}
+
 .技术栈选择栏 {
   position: fixed;
   z-index: 1;
@@ -514,15 +542,16 @@ span[举例标题] {
   background-color: rgb(153, 168, 183);
   color: black;
   border-radius: 3px;
-  padding: 1px 3px;
+  padding: 1px 5px;
 }
 
 .语言 {
   display: inline-block;
   background-color: #3a434b;
   color: white;
-  padding: 5px 10px;
+  padding: 3px 7.5px;
   border-radius: 5px;
+  font-family: consolas;
 }
 
 .超链接 {
@@ -669,12 +698,6 @@ img[图含义="永恒代码统计"] {
     width: 100%;
     flex-direction: column;
     row-gap: 20px;
-  }
-}
-
-@media screen and (width < 1200px) {
-  p[简介标题] {
-    font-size: 2.25rem;
   }
 }
 
