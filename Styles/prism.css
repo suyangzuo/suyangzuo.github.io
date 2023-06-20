@@ -4,7 +4,7 @@ code[class*="language-"],
 pre[class*="language-"] {
   color: #ccc;
   background: 0 0;
-  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  font-family: "JetBrains Mono", Monaco, "Andale Mono", "Ubuntu Mono", monospace;
   font-size: 1em;
   text-align: left;
   white-space: pre;
@@ -21,13 +21,14 @@ pre[class*="language-"] {
   hyphens: none;
 }
 pre[class*="language-"] {
-  padding: 1em;
-  margin: 0.5em 0;
+  padding: 1rem;
+  margin: 1rem 0;
   overflow: auto;
 }
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] {
-  background: #2d2d2d;
+  background: #0e1114;
+  border-radius: 3px;
 }
 :not(pre) > code[class*="language-"] {
   padding: 0.1em;
@@ -49,7 +50,7 @@ pre[class*="language-"] {
 .token.namespace,
 .token.tag {
   color: #e2777a;
-  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  /* font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace; */
 }
 .token.function-name {
   color: #6196cc;
@@ -64,7 +65,7 @@ pre[class*="language-"] {
 .token.property,
 .token.symbol {
   color: #f8c555;
-  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  /* font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace; */
 }
 .token.atrule,
 .token.builtin,
@@ -79,7 +80,7 @@ pre[class*="language-"] {
 .token.string,
 .token.variable {
   color: #7ec699;
-  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  /* font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace; */
 }
 .token.entity,
 .token.operator,
