@@ -31,6 +31,7 @@ const 绿值 = document.getElementsByClassName("绿值")[0];
 const 蓝值 = document.getElementsByClassName("蓝值")[0];
 
 const 代码区 = document.getElementsByClassName("代码区")[0];
+const 代码文本元素 = 代码区.getElementsByClassName("代码文本")[0];
 const 代码行高度 = "18.7333333px";
 
 const 阴影属性组 = new Array(阴影序号池.length);
@@ -461,7 +462,7 @@ function 打印代码(有效代码组) {
   }
   let 分行代码 = 有效代码组.join(",\n");
   const 最终代码 = `box-shadow:\n${分行代码};`;
-  代码区.textContent = 最终代码;
+  代码文本元素.textContent = 最终代码;
 }
 
 window.addEventListener("load", () => {
