@@ -11,6 +11,10 @@ body {
   width: 100dvw;
 }
 
+a:hover {
+  color: skyblue;
+}
+
 .技术栈选择栏 {
   position: fixed;
   z-index: 1;
@@ -212,11 +216,11 @@ body {
 }
 
 .专题[原创] .专题-标记 {
-  color: rgb(62, 163, 106);
+  color: cadetblue;
 }
 
 .专题[转载] .专题-标记 {
-  color: orange;
+  color: tan;
 }
 
 .专题-内容 {
@@ -380,8 +384,8 @@ a[邮箱] {
   width: 32px;
   height: 32px;
   border-radius: 32px;
-  font-size: 1rem;
-  display: flex;
+  font-size: 0.85rem;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
 }
@@ -417,7 +421,7 @@ a[邮箱]:hover {
 .专题正文区 ul,
 .专题正文区 li {
   text-align: justify;
-  text-justify: inter-word;
+  text-justify: inter-cluster;
 }
 
 .符号-h2 {
@@ -519,6 +523,8 @@ span[举例标题] {
   color: black;
   border-radius: 3px;
   padding: 1px 5px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .语言 {
@@ -629,6 +635,8 @@ span[圆括号内容] {
   padding: 1px 5px;
   margin: 0 5px;
   font-size: 1em;
+  display: inline-flex;
+  align-items: center;
 }
 
 .正文列表项-1级 > p > span[圆括号内容] {
@@ -644,12 +652,19 @@ span[圆括号内容] {
 }
 
 span[注释] {
-  padding: 2px 5px;
+  padding: 1px 5px;
   margin: 0 5px;
   border-radius: 3px;
   outline: solid 1.25px rgb(74, 193, 128);
   font-size: 0.6rem;
   color: rgb(225, 225, 225);
+}
+
+span[举例标题] > span[注释] {
+  padding: 1px 5px;
+  color: white;
+  outline: none;
+  background-color: rgb(56, 56, 56);
 }
 
 img[图含义="永恒代码统计"] {
@@ -659,8 +674,7 @@ img[图含义="永恒代码统计"] {
 }
 
 img[图含义="控制台输出"] {
-  margin: 10px 0;
-  max-height: 500px;
+  margin: 20px 0;
 }
 
 /* ------------------------------ ↓ 响应式设计 ------------------------------ */
