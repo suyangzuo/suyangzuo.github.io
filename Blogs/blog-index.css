@@ -172,15 +172,27 @@ a:hover {
 }
 
 .专题名称 {
+  position: relative;
+  width: 100%;
   padding: 0 15px;
   font-size: 1.125rem;
   color: white;
   font-weight: 600;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   gap: 10px;
 }
+
+/* .专题名称::before {
+  position: absolute;
+  width: 100%;
+  height: 0.5px;
+  top: 150%;
+  left: 0;
+  content: "";
+  background-color: #fff3;
+} */
 
 .专题名称 > img {
   width: 20px;
@@ -384,7 +396,7 @@ a[邮箱] {
   width: 32px;
   height: 32px;
   border-radius: 32px;
-  font-size: 0.85rem;
+  font-size: 1.1rem;
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -421,7 +433,7 @@ a[邮箱]:hover {
 .专题正文区 ul,
 .专题正文区 li {
   text-align: justify;
-  text-justify: inter-cluster;
+  text-justify: inter-ideograph;
 }
 
 .符号-h2 {

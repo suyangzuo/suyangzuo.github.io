@@ -4,3 +4,9 @@
   --拇指宽度: 16px;
 }
 
+input {
+  font-family: "JetBrains Mono", Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  background-color: #333;
+  color: white;
+  padding-left: 5px;
+}

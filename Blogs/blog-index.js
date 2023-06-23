@@ -66,7 +66,7 @@ async function 设置侧边栏() {
   专题组[index].style.setProperty("background", 侧边栏颜色_已选中, "important");
   专题组.forEach((专题) => {
     专题.addEventListener("click", 修改专题样式);
-    专题.addEventListener("click", 设置内容);
+    // 专题.addEventListener("click", 设置内容);
     const 标记 = 专题.querySelector(".专题-标记");
     标记.textContent = "\u2666";
   });
@@ -86,6 +86,7 @@ async function 设置内容() {
       专题内容区.innerHTML = content;
       刷新代码格式化脚本();
     });
+  window.scrollTo(0, 0);
 }
 
 技术栈组.forEach((技术栈) => {
@@ -125,6 +126,8 @@ function 修改专题样式(event) {
     记录.专题索引 = index;
   }
   sessionStorage.setItem("专题索引记录", JSON.stringify(专题索引记录));
+
+  设置内容();
 }
 
 技术栈选择器.addEventListener("click", 显示技术栈内容);

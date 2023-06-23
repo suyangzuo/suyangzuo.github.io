@@ -336,7 +336,7 @@ function 根据参数调整对应阴影效果(序号) {
 
 const 加减按钮组 = document.getElementsByClassName("阴影属性按钮");
 Array.from(加减按钮组).forEach((按钮) => {
-  按钮.addEventListener("click", 点击增加或减少按钮);
+  按钮.addEventListener("mousedown", 点击增加或减少按钮);
 });
 
 function 点击增加或减少按钮(event) {
@@ -453,6 +453,9 @@ function 获取16进制颜色(阴影属性) {
   const 蓝_hex = 蓝_dec.toString(16).padStart(2, "0");
   const 颜色 = `#${红_hex}${绿_hex}${蓝_hex}`;
   颜色选择器.value = 颜色;
+  红值.textContent = 阴影属性.红;
+  绿值.textContent = 阴影属性.绿;
+  蓝值.textContent = 阴影属性.蓝;
 }
 
 function 打印代码(有效代码组) {
