@@ -29,11 +29,12 @@
   margin: 0 auto 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   position: relative;
-  gap: 50px;
-  padding: 0 0 calc(5% + 65px) 0;
+  /* gap: 50px; */
+  /* padding: 0 0 calc(5% + 65px) 0; */
+  padding: 0 0 50px 0;
 }
 
 .section-bg-img {
@@ -149,7 +150,7 @@
   /* color: #aaa; */
   padding: 20px 100px;
   display: grid;
-  gap: 0 60px;
+  gap: 0 30px;
   grid-template-columns: repeat(2, 1fr);
   position: relative;
 }
@@ -175,7 +176,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 5px;
   font-size: 1.25rem;
   filter: drop-shadow(2px 2px 2px #333);
   /* color:rgb(227, 135, 126) */
@@ -192,38 +193,54 @@
   color: #ccc;
 }
 
-.checked {
-  color: rgb(42, 207, 111);
-  transform: scale(1.1);
-}
-
 .link-section {
-  width: 1000px;
+  width: 1200px;
   display: grid;
-  grid-template-columns: repeat(5, 15%);
-  grid-auto-rows: 190px;
+  grid-template-columns: repeat(5, 170px);
+  grid-auto-rows: 300px;
   justify-content: center;
-  gap: 2vh 0;
+  gap: 35px;
   /* border-top: solid 1px rgb(196, 196, 196); */
 }
 
 .link {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   position: relative;
   /* background-color: blueviolet; */
 }
 
 .link-image {
   margin: 0 auto;
-  width: 105px;
-  height: 150px;
-  transition: 0.25s;
+  width: 165px;
+  height: 180px;
+  transition: background 0.25s;
+  background: rgba(15, 15, 15, 0.5);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  backdrop-filter: blur(10px);
+}
+
+.link:hover .link-image {
+  background: rgba(18, 18, 18, 0.75);
+  outline: solid 2px rgb(161, 92, 138);
 }
 
 .link-image > img {
-  width: 100%;
-  height: 100%;
+  width: 80px;
+  aspect-ratio: 1;
   object-fit: contain;
+}
+
+.link-image > figcaption {
+  font-size: 0.95rem;
+  color: white;
 }
 
 .宗旨 img {
@@ -236,40 +253,22 @@
 
 .link-title {
   margin: 0 auto;
-  border-radius: 100px;
   width: fit-content;
   width: -moz-fit-content;
-  background: linear-gradient(-40deg, #222 15%, #31313190 95%);
-  background-size: 200%;
-  text-align: center;
-  color: white;
-  padding: 10px 20px;
-  box-shadow: inset 0 1px 1px 0 #fffa;
-  transition: box-shadow 0.4s, color 0.05s, background-position 0.4s;
-  font-size: 0.9rem;
-  backdrop-filter: blur(5px);
-  filter: drop-shadow(1px 1px 2px #0008);
+  height: 75px;
+  color: rgb(230, 230, 230);
+  padding: 20px 5px 0;
+  font-size: 0.85rem;
 }
 
-.link:hover .link-image {
-  transform: scale(1.1);
-  animation: 链接图阴影动画 2s ease-in-out infinite alternate;
+.link-title > li {
+  padding: 2.5px 0 5px 5px;
 }
 
-@keyframes 链接图阴影动画 {
-  from {
-    filter: drop-shadow(1px 1px 5px black);
-  }
-  to {
-    filter: drop-shadow(5px 5px 15px white);
-  }
-}
-
-.link:hover .link-title {
-  background-position: 100% 0;
-  /* box-shadow: inset 0 1px 1px 0 #fffc; */
-  color: gold;
-  /* font-weight: bolder; */
+.link-title > li::marker {
+  content: "\2713";
+  font-size: 0.85rem;
+  color: aquamarine;
 }
 
 .未完成链接::after {
@@ -280,14 +279,16 @@
   top: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
-  font-size: 1.25rem;
+  align-items: flex-start;
+  padding-top: 55%;
+  font-size: 1.5rem;
+  color: rgb(202, 82, 110);
   text-shadow: 2px 2px 2px black;
   content: "未完成";
   visibility: hidden;
   transform: scale(0.75);
   opacity: 0;
-  transition: 0.25s;
+  transition: 0.2s;
   /* pointer-events: none; */
 }
 

@@ -396,7 +396,8 @@ a[邮箱] {
   width: 32px;
   height: 32px;
   border-radius: 32px;
-  font-size: 1.1rem;
+  font-size: 0.95rem;
+  padding-bottom: 3px;
   display: inline-flex;
   justify-content: center;
   align-items: center;
