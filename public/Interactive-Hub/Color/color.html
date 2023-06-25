@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>颜色</title>
+    <link
+      rel="icon"
+      href="/Images/Interactive-Hub/HQ/颜色.png"
+      type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC&family=JetBrains+Mono:ital@0;1&display=swap"
+      rel="stylesheet" />
+    <link rel="stylesheet" href="/Styles/common.css" />
+    <link rel="stylesheet" href="/Styles/top-banner-common.css" />
+    <link rel="stylesheet" href="../control.css" />
+    <link rel="stylesheet" href="../interactive-common.css" />
+    <link rel="stylesheet" href="./color.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css" />
+    <script src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"></script>
+    <script src="/Scripts/html-include.js"></script>
+    <script
+      src="https://kit.fontawesome.com/d0483e3bd3.js"
+      crossorigin="anonymous"></script>
+    <script src="/Scripts/chroma.min.js"></script>
+  </head>
+  <body>
+    <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
+    <insert-e src="/top-banner.html"></insert-e>
+    <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
+
+    <section class="颜色总区 总区">
+      <insert-e src="../control.html"></insert-e>
+      <p class="交互标题">颜色</p>
+      <figure class="展示区">
+        <input
+          type="text"
+          data-coloris
+          id="颜色选择器"
+          placeholder="点击此处展开" />
+      </figure>
+      <div class="控制区">
+        <div class="Hex颜色区 颜色区">
+          <label for="Hex颜色">Hex 模式</label>
+          <input type="text" id="Hex颜色" />
+        </div>
+        <div class="RGB颜色区 颜色区">
+          <label for="Hex颜色">RGBA 模式</label>
+          <input type="text" id="RGB颜色" />
+        </div>
+        <div class="颜色分割区"></div>
+        <div class="颜色单区组">
+          <div class="颜色单区">
+            <div class="颜色分区">
+              <label for="Hex-红">Hex 红</label>
+              <input type="text" id="Hex-红" />
+              <div class="颜色模式标记">&#9327;</div>
+            </div>
+            <div class="颜色分区">
+              <label for="RGB-红">RGB 红</label>
+              <input type="text" id="RGB-红" />
+              <div class="颜色模式标记">&#9321;</div>
+            </div>
+          </div>
+          <div class="颜色单区">
+            <div class="颜色分区">
+              <label for="Hex-绿">Hex 绿</label>
+              <input type="text" id="Hex-绿" />
+              <div class="颜色模式标记">&#9327;</div>
+            </div>
+            <div class="颜色分区">
+              <label for="RGB-绿">RGB 绿</label>
+              <input type="text" id="RGB-绿" />
+              <div class="颜色模式标记">&#9321;</div>
+            </div>
+          </div>
+          <div class="颜色单区">
+            <div class="颜色分区">
+              <label for="Hex-蓝">Hex 蓝</label>
+              <input type="text" id="Hex-蓝" />
+              <div class="颜色模式标记">&#9327;</div>
+            </div>
+            <div class="颜色分区">
+              <label for="RGB-蓝">RGB 蓝</label>
+              <input type="text" id="RGB-蓝" />
+              <div class="颜色模式标记">&#9321;</div>
+            </div>
+          </div>
+          <div class="颜色单区">
+            <div class="颜色分区">
+              <label for="Hex-透明度">Hex 透明度</label>
+              <input type="text" id="Hex-透明度" />
+              <div class="颜色模式标记">&#9327;</div>
+            </div>
+            <div class="颜色分区">
+              <label for="RGB-透明度">RGB 透明度</label>
+              <input type="text" id="RGB-透明度" />
+              <div class="颜色模式标记">&#9321;</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="/Scripts/top-banner.js" defer></script>
+    <script src="./color.js"></script>
+  </body>
+</html>
