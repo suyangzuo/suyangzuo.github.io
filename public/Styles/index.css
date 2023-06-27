@@ -133,7 +133,7 @@
 }
 
 .logo-title {
-  font-size: clamp(1.5em, 1.8em, 2em);
+  font-size: clamp(1.5rem, 1.6rem, 1.75rem);
   font-weight: 600;
   margin: 15px 0 25px;
   padding: 15px 20px;
@@ -152,10 +152,14 @@
 
 .logo-brief {
   /* color: #aaa; */
+  width: 490px;
+  height: 119px;
   padding: 20px 100px;
   display: grid;
   gap: 0 30px;
   grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 35px;
+  place-content: center;
   position: relative;
 }
 
@@ -177,6 +181,7 @@
 }
 
 .logo-brief-individual {
+  width: 130px;
   padding: 5px 0;
   display: flex;
   align-items: center;
@@ -222,7 +227,6 @@
   margin: 0 auto;
   width: 165px;
   height: 180px;
-  transition: background 0.25s;
   background: rgba(15, 15, 15, 0.55);
   border-radius: 10px;
   display: flex;
@@ -231,13 +235,14 @@
   align-items: center;
   gap: 20px;
   backdrop-filter: blur(10px);
+  transition: background 0.15s;
 }
 
 .link:hover .link-image {
-  background: rgba(15, 15, 15, 0.75);
+  background: rgba(15, 15, 15, 0.25);
   /* outline: solid 4px rgb(161, 92, 138); */
   /* outline: solid 4px rgb(228, 114, 194); */
-  box-shadow: inset 0.5px 1px 1px 0 #fffa, 3px 3px 5px 0 #000a;
+  box-shadow: inset 1px 1px 1.25px 0 #fffa, 3px 3px 5px 0 #000a;
 }
 
 .link-image > img {
