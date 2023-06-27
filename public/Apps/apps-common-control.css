@@ -1,0 +1,23 @@
+.返回 {
+  position: fixed;
+  width: 75px;
+  height: 75px;
+  border-radius: 75px;
+  background-color: #fffa;
+  right: 1%;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+}
+
+.返回 > span {
+  filter: contrast(1.75);
+  transition: 0.2s;
+}
+
+.返回:hover > span {
+  filter: contrast(1.75) hue-rotate(50deg);
+}

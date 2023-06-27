@@ -29,9 +29,25 @@
 }
 
 .顶栏标题 {
+  background: #c9d6ff; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #e2e2e2,
+    #c9d6ff
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #e2e2e2,
+    #c9d6ff
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
   width: 100%;
   font-size: 5rem;
   font-weight: bold;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 
 .顶栏简介 {
@@ -100,23 +116,30 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.5rem;
+  font-size: 3rem;
   width: fit-content;
-  height: 65px;
-  padding: 0 40px;
-  border-radius: 5px;
-  /* background-color: rgb(49, 59, 91); */
-  background-color: #fff2;
+  /* height: 65px; */
+  padding: 10px 25px;
+  border-radius: 7.5px;
+  background: linear-gradient(
+    to right,
+    #126465,
+    #366a60
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  color: white !important;
+  text-shadow: 2px 2px 2px #000a;
+  box-shadow: 2px 2px 3px 0 #0006;
 }
 
 .app-链接:hover {
-  outline: solid 1.5px #fffa;
+  outline: solid 2px orange;
 }
 
 .app-简介 {
   padding: 10px;
   border-radius: 5px;
   background-color: rgb(63, 72, 91);
+  font-size: 1.1rem;
 }
 
 .app-描述 {
@@ -124,20 +147,11 @@
 }
 
 .app-描述 > li {
-  /* list-style-position: inside; */
   list-style-type: disc;
   color: rgb(195, 195, 195);
-}
-
-.app-描述 > li:nth-child(1) {
-  list-style-type: square;
-  color: white;
+  padding: 2.5px 0;
 }
 
 .app-描述 > li::marker {
-  color: gold;
-}
-
-.app-描述 > li:nth-child(1)::marker {
   color: yellowgreen;
 }
