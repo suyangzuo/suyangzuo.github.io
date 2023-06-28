@@ -85,7 +85,7 @@ for (let i = 1; i &lt;= 10; i++) {
 }</code></pre>
       <p 列表1级内容>&#9997; 初始值是100，每次循环自增10，循环10遍，那应该是 110 → 120 → 130 ………… 直到 200 吧？</p>
       <p 列表1级内容>&#9997; 但这回，你不确定了……于是你在循环里加入了控制台输出，来检验输出结果是否如同预期，聪明！</p>
-      <img 图含义="控制台输出" src="/Images/Blogs/Web前端-原生开发/字符串与数值的转换/CSS变量循环自增.png" alt="CSS变量循环自增" style="max-width:400px;">
+      <img 图含义="控制台输出" src="/Images/Blogs/Web前端-原生开发/字符串与数值的转换/CSS变量循环自增.png" alt="CSS变量循环自增">
       <p 列表1级内容 style="font-size: 1.25rem;">😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠</p>
       <p 列表1级内容>&#9997; 就问你服不服？你应该意识到了，数值 100，肯定在某个地方被自动转换成字符串 "100" 了，因此，数值的叠加，变成了字符串的拼接。到底是在哪里转换的呢？哪一句读取了 <span class="语言">"--宽度"</span>  变量，就是哪一句的问题。那就只能是 <span class="语言">getPropertyValue("--宽度")</span> 的问题了。直接到 <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/CSSStyleDeclaration/getPropertyValue" title="MDN Web Docs" target="_blank" style="text-decoration: underline; text-underline-offset: 3px; text-decoration-color: orange;">MDN Web Docs</a> 上找答案吧！</p>
       <img 图含义="控制台输出" src="/Images/Blogs/Web前端-原生开发/字符串与数值的转换/getPropertyValue_MDN.png" alt="MDN getPropertyValue" style="max-width: 100%;">
