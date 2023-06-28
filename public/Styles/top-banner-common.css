@@ -355,10 +355,33 @@
   .搜索注册登录区 {
     width: 350px;
     gap: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .搜索区 {
+    width: 250px;
+  }
+
+  .放大镜 {
+    flex-grow: 1;
+  }
+
+  .注册登录区 {
+    width: fit-content;
   }
 
   #搜索框 {
-    width: 70%;
+    width: 80%;
+  }
+
+  .登录按钮 {
+    width: 30px;
+  }
+
+  .登录文本 {
+    display: none;
   }
 }
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */

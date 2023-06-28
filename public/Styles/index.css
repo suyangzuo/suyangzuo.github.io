@@ -227,7 +227,11 @@
   margin: 0 auto;
   width: 165px;
   height: 180px;
-  background: rgba(70, 103, 125, 0.65);
+  background: linear-gradient(
+    to bottom,
+    rgba(70, 103, 125, 0.65),
+    rgba(46, 214, 206, 0.25)
+  );
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -589,38 +593,28 @@
   }
 }
 
+/* ----------------------------------------- */
+
 @media screen and (max-width: 1000px) {
   .welcome-main {
-    justify-content: center;
+    height: fit-content;
+    min-height: 100vh;
+    /* justify-content: center; */
     gap: 25px;
-  }
-
-  .logo-section {
-    /* background-color: rgb(80, 84, 2); */
-    /* clip-path: inset(0); */
-    width: 100%;
-    border-bottom: none;
-    height: 25%;
-  }
-
-  .logo-brief {
-    display: none;
   }
 
   #eternal-title-text {
     aspect-ratio: 1;
-    height: 100%;
+    height: 100px;
   }
 
   .link-section {
-    height: 100%;
-    width: 100%;
-    /* flex-direction: column;
-    align-items: center;
-    justify-content: flex-start; */
-    grid-template-columns: repeat(2, 1fr);
-    grid-auto-rows: 50px;
-    gap: 25px 0;
+    width: 97.5dvw;
+    height: fit-content;
+    grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+    grid-auto-rows: minmax(150px, 220px);
+    justify-content: center;
+    gap: 15px;
   }
 
   .link {
@@ -629,16 +623,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    /* gap: 50px; */
   }
 
   .link-image {
-    width: 20%;
+    width: 90%;
     height: 80%;
     margin: 0;
   }
 
   .link-title {
+    display: none !important;
     width: 120px;
     height: 50px;
     margin: 0;
@@ -647,60 +641,28 @@
     justify-content: center;
   }
 
-  .game-section {
-    flex-direction: column;
-    gap: 10px;
-    height: 100vh;
-  }
-
-  .game-title {
-    width: 100%;
-    height: 200px;
-    gap: 0;
-    transform: translateY(-10%);
-    align-items: center;
-  }
-
-  .game-title-main {
-    transform: scale(0.5);
-    height: 400px;
-  }
-
-  .游 {
-    top: -60%;
-  }
-
-  .game-title-main:hover > .游 {
-    top: -50%;
-  }
-
-  .戏 {
-    top: 40%;
-  }
-
-  .game-title-main:hover > .戏 {
-    top: 30%;
-  }
-
-  .gamer-banner {
-    top: -20%;
-  }
-
-  .game-history {
+  .图像长廊标题 {
     display: none;
   }
+}
 
-  .game-type {
-    width: 75vw;
-    /* transform: translateY(-30%); */
-    margin: 0 auto;
-    grid-template-columns: repeat(3, 80px);
-    grid-auto-rows: 115px;
-    gap: 20px 40px;
+@media screen and (width <= 700px) {
+  .logo-title {
+    margin-bottom: 0;
   }
 
-  .game-name > span {
-    font-size: 0.75rem;
+  .logo-brief {
+    display: none;
+  }
+}
+
+@media screen and (width <= 550px) {
+  .welcome-main {
+    padding: 25px 0;
+  }
+
+  .图像序号指示器组 {
+    width: 95%;
   }
 }
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */

@@ -1,10 +1,12 @@
 .app-banner {
+  position: relative;
   height: 800px;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 100px;
+  background: no-repeat center/cover url("/Images/Background-Images/bg-03.jpg");
 }
 
 .顶栏图片 {
@@ -19,6 +21,7 @@
 }
 
 .顶栏文字 {
+  position: relative;
   width: 700px;
   height: 500px;
   display: flex;
@@ -78,6 +81,7 @@
 }
 
 .app {
+  position: relative;
   width: 100%;
   height: 600px;
   display: flex;
@@ -103,6 +107,7 @@
 }
 
 .文字区 {
+  position: relative;
   padding: 10px;
   height: 350px;
   max-width: 750px;
@@ -154,4 +159,87 @@
 
 .app-描述 > li::marker {
   color: yellowgreen;
+}
+
+@media screen and (width < 1400px) {
+  .app-banner::before {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    content: "";
+    top: 0;
+    left: 0;
+    background-color: #0007;
+    backdrop-filter: blur(10px);
+  }
+
+  .顶栏图片 {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .顶栏文字 {
+    z-index: 2;
+  }
+}
+
+@media screen and (width < 1200px) {
+  .app::before {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    content: "";
+    top: 0;
+    left: 0;
+    background-color: #0007;
+    backdrop-filter: blur(10px);
+  }
+
+  .app .图片区 {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+  }
+
+  .app .文字区 {
+    z-index: 2;
+    height: 95%;
+    width: 95%;
+  }
+}
+
+@media screen and (width < 700px) {
+  .app-banner {
+    height: 650px;
+    overflow: hidden;
+  }
+
+  .顶栏标题 {
+    font-size: 4rem;
+  }
+
+  .顶栏文字 {
+    width: 90%;
+    height: 95%;
+  }
+
+  .顶栏列表 > li {
+    list-style-position: inside;
+  }
+
+  .顶栏列表 > li::marker {
+    content: "\26e4\00a0";
+  }
+}
+
+@media screen and (width < 550px) {
+  .顶栏标题 {
+    font-size: 2.5rem;
+  }
 }

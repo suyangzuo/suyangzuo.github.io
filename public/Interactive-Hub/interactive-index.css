@@ -22,13 +22,14 @@ body {
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
   width: 100%;
-  height: calc(100vh - 50px);
+  min-height: calc(100vh - 50px);
   overflow: auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   gap: 50px;
+  padding: 50px 0 0 0;
 }
 
 .中心标题 {
@@ -95,11 +96,12 @@ body {
 .交互技术栈 {
   display: flex;
   justify-content: center;
+  height: 100%;
 }
 
 .Web前端交互页 {
   width: 1500px;
-  height: 1000px;
+  height: fit-content;
   /* outline: solid 1px brown; */
   padding: 2%;
   display: flex;
@@ -246,4 +248,36 @@ body {
 
 :where(.字体尺寸, .宽度与高度, .盒子阴影):hover img {
   filter: invert(80%);
+}
+
+@media screen and (width < 1450px) {
+  .交互技术栈 {
+    width: 100%;
+  }
+
+  .Web前端交互页 {
+    width: 97.5%;
+  }
+
+  .Web前端交互列表 {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+
+  .交互单项链接 {
+    justify-content: flex-start;
+    padding-left: 10%;
+  }
+
+  .序号 {
+    width: 25px;
+    aspect-ratio: unset;
+  }
+}
+
+@media screen and (width < 600px) {
+  .中心标题 {
+    letter-spacing: 2.5px;
+    font-size: 2.5rem;
+  }
 }

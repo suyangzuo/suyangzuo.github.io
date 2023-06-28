@@ -28,6 +28,7 @@
 
 body {
   position: relative;
+  overflow-x: hidden;
   background-color: var(--bg-color);
   color: var(--f-color);
   z-index: 0;
@@ -117,4 +118,14 @@ address {
 .address > img {
   height: 1.5rem;
   filter: grayscale(1) brightness(2.5);
+}
+
+@media screen and (width<=550px) {
+  .author {
+    width: 55%;
+  }
+
+  .author > p {
+    font-size: 0.85rem;
+  }
 }
