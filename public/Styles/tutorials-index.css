@@ -206,7 +206,7 @@ body {
 }
 
 /* ------------------------- ↓ 响应式设计 ------------------------- */
-@media screen and (width <= 1580px) {
+@media screen and (max-width: 1580px) {
   .主内容 {
     flex-wrap: nowrap;
     flex-direction: column;
@@ -220,7 +220,7 @@ body {
   }
 }
 
-@media screen and (width <= 1120px) {
+@media screen and (max-width: 1120px) {
   .说明区 {
     display: none;
   }

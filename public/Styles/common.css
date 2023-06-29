@@ -120,7 +120,8 @@ address {
   filter: grayscale(1) brightness(2.5);
 }
 
-@media screen and (width<=550px) {
+/* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
+@media screen and (max-width: 550px) {
   .author {
     width: 55%;
   }
@@ -129,3 +130,4 @@ address {
     font-size: 0.85rem;
   }
 }
+/* <!-- ------------------ ↑ 响应式设计 ------------------- --> */

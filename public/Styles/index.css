@@ -211,7 +211,6 @@
   grid-auto-rows: 300px;
   justify-content: center;
   gap: 35px;
-  /* border-top: solid 1px rgb(196, 196, 196); */
 }
 
 .link {
@@ -243,9 +242,9 @@
 }
 
 .link:hover .link-image {
-  background: rgba(39, 39, 39, 0.35);
+  /* background: rgba(39, 39, 39, 0.35); */
+  background-image: linear-gradient(to top, #09203f55 0%, #53789555 100%);
   outline: solid 4px rgb(161, 92, 138);
-  /* outline: solid 4px rgb(228, 114, 194); */
 }
 
 .link-image > img {
@@ -592,9 +591,9 @@
     transform: translateX(0) translateY(-50%);
   }
 }
-
 /* ----------------------------------------- */
 
+/* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
 @media screen and (max-width: 1000px) {
   .welcome-main {
     height: fit-content;
@@ -646,7 +645,7 @@
   }
 }
 
-@media screen and (width <= 700px) {
+@media screen and (max-width: 700px) {
   .logo-title {
     margin-bottom: 0;
   }
@@ -656,7 +655,7 @@
   }
 }
 
-@media screen and (width <= 550px) {
+@media screen and (max-width: 550px) {
   .welcome-main {
     padding: 25px 0;
   }
