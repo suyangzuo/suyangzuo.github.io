@@ -19,9 +19,9 @@ a:hover {
   position: fixed;
   z-index: 1;
   width: 600px;
-  height: 900px;
-  bottom: 25px;
-  right: 25px;
+  height: 850px;
+  bottom: 1.5%;
+  right: 0.75%;
   border-radius: 10px;
   pointer-events: none;
 }

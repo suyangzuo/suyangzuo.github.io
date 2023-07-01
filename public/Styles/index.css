@@ -664,9 +664,13 @@
 }
 
 @media screen and (max-height: 1000px) {
+  .logo-section{
+    gap: 10px;
+  }
+
   #eternal-title-text {
-    width: 175px;
-    height: 82.5px;
+    width: 185px;
+    height: 90px;
   }
 
   .logo-title {
@@ -676,19 +680,21 @@
 
   .logo-brief {
     height: 100px;
+    margin-top: 10px;
   }
 
   .logo-brief-individual {
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
 
   .motto {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
   .link-section {
-    grid-template-columns: repeat(5, 120px);
+    grid-template-columns: repeat(5, 130px);
     grid-auto-rows: 200px;
+    gap: 35px 50px;
   }
 
   .link {

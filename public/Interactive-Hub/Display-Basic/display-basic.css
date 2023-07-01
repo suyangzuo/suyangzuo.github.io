@@ -170,7 +170,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
-  cursor: url(/Images/Common/鼠标-横向缩放.png) 16 6, ew-resize;;
+  cursor: url(/Images/Common/鼠标-横向缩放.png) 16 6, ew-resize;
 }
 
 input[type="range"]::after {
@@ -246,4 +246,25 @@ input[type="range"]::after {
 .滑块容器:hover > .滑块数字,
 input[type="range"]:focus-visible ~ .滑块数字 {
   background: linear-gradient(brown, rgb(192, 70, 70));
+}
+
+@media screen and (max-height: 1000px) {
+  .控制区 {
+    height: 750px;
+    justify-content: flex-start;
+  }
+
+  .控制区 > section {
+    padding: 10px 20px 20px;
+  }
+
+  .控制标题 {
+    padding: 5px 0;
+  }
+
+  .宽度,
+  .高度,
+  .字体尺寸 {
+    padding: 5px 0 25px;
+  }
 }

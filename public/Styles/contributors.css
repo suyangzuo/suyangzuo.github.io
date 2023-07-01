@@ -505,9 +505,9 @@ img[待定] {
   position: fixed;
   top: 50%;
   transform: translateY(-50%);
-  right: 5%;
+  right: 3%;
   width: 30px;
-  height: 600px;
+  height: 60vh;
   /* background-color: gray; */
   display: flex;
   flex-direction: column;
@@ -547,8 +547,8 @@ img[待定] {
 }
 
 .贡献者标识 > img {
-  width: 50%;
-  height: 50%;
+  width: 35%;
+  height: 35%;
   border-radius: 30px;
   object-fit: cover;
   transition: 0.25s;
