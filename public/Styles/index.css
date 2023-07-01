@@ -591,9 +591,7 @@
     transform: translateX(0) translateY(-50%);
   }
 }
-/* ----------------------------------------- */
 
-/* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
 @media screen and (max-width: 1000px) {
   .welcome-main {
     height: fit-content;
@@ -662,6 +660,71 @@
 
   .图像序号指示器组 {
     width: 95%;
+  }
+}
+
+@media screen and (max-height: 1000px) {
+  #eternal-title-text {
+    width: 175px;
+    height: 82.5px;
+  }
+
+  .logo-title {
+    padding: 10px 15px;
+    margin: 10px 0 15px;
+  }
+
+  .logo-brief {
+    height: 100px;
+  }
+
+  .logo-brief-individual {
+    font-size: 1rem;
+  }
+
+  .motto {
+    font-size: 0.9rem;
+  }
+
+  .link-section {
+    grid-template-columns: repeat(5, 120px);
+    grid-auto-rows: 200px;
+  }
+
+  .link {
+    justify-content: flex-start;
+  }
+
+  .link-image {
+    width: 100%;
+    height: 140px;
+    flex-shrink: 0;
+  }
+
+  .link-image > figcaption {
+    font-size: 0.825rem;
+  }
+
+  .link-title {
+    height: 85px;
+    font-size: 0.75rem;
+    padding: 7.5px 2.5px 0;
+  }
+
+  .link-title li {
+    white-space: nowrap;
+    padding: 1px 0 2px;
+  }
+}
+
+@media screen and (max-height: 1000px) and (max-width: 1000px) {
+  .link-section {
+    width: 97.5dvw;
+    height: fit-content;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    grid-auto-rows: minmax(150px, 200px);
+    justify-content: center;
+    gap: 15px;
   }
 }
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */
