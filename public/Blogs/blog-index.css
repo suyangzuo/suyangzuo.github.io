@@ -11,6 +11,12 @@ body {
   width: 100dvw;
 }
 
+a {
+  text-decoration: underline;
+  text-decoration-color: orange;
+  text-underline-offset: 3px;
+}
+
 a:hover {
   color: skyblue;
 }
@@ -33,8 +39,8 @@ a:hover {
   border-radius: 50px;
   background: no-repeat center/contain url("./选择器修饰.png"),
     radial-gradient(circle at center, #80d0c744 0%, #13547a11 50%);
-  bottom: 0;
-  right: 0;
+  bottom: 10px;
+  right: 10px;
   pointer-events: all;
   animation: 旋转技术栈选择器 5s linear infinite;
   transition: 0.25s;
@@ -56,7 +62,10 @@ a:hover {
 
 .技术栈内容 {
   width: 100%;
-  height: 100%;
+  height: 90dvh;
+  min-height: 300px;
+  position: absolute;
+  bottom: 0;
   padding: 20px;
   border-radius: 10px;
   overflow-x: hidden;
@@ -464,7 +473,7 @@ a[邮箱]:hover {
 
 .正文列表 {
   width: 100%;
-  padding: 15px 0;
+  padding: 10px 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -529,24 +538,6 @@ a[邮箱]:hover {
   font-size: 0.925rem;
   list-style-type: circle;
   color: rgb(190, 190, 190);
-}
-
-span[举例标题] {
-  background-color: rgb(153, 168, 183);
-  color: black;
-  border-radius: 3px;
-  padding: 1px 5px;
-  display: inline-flex;
-  align-items: center;
-}
-
-.语言 {
-  display: inline-block;
-  background-color: #3a434b;
-  color: white;
-  padding: 3px 7.5px;
-  border-radius: 5px;
-  font-family: "JetBrains Mono", Monaco, "Andale Mono", "Ubuntu Mono", monospace;
 }
 
 .超链接 {
@@ -627,24 +618,39 @@ span[举例标题] {
   align-items: center;
 }
 
-span[特别提醒] {
-  width: 100%;
-  height: 50%;
-  padding: 4px 10px;
-  background-color: #181c2077;
-  color: rgb(220, 218, 81);
-  font-size: 0.8rem;
-  /* border-radius: 50px; */
+span[含义="举例标题"] {
+  background-color: rgb(153, 168, 183);
+  color: black;
+  border-radius: 3px;
+  padding: 1px 5px;
+  display: inline-flex;
+  align-items: center;
 }
 
-span[圆括号] {
+span[含义="语言"] {
+  display: inline-block;
+  background-color: #3a434b !important;
+  color: white;
+  padding: 3px 7.5px;
+  border-radius: 5px;
+  font-size: 1em;
+  font-family: "JetBrains Mono", Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+}
+
+span[含义="特别提醒"] {
+  /* background-color: #181c2077; */
+  color: yellow;
+  font-size: 1em;
+}
+
+span[含义="圆括号"] {
   color: tomato;
 }
 
-span[圆括号内容] {
-  background-color: rgb(53, 89, 157);
+span[含义="行内名词"] {
+  background-color: rgb(73, 76, 80);
+  color: white;
   border-radius: 3px;
-  /* color: black; */
   padding: 1px 5px;
   margin: 0 5px;
   font-size: 1em;
@@ -652,11 +658,27 @@ span[圆括号内容] {
   align-items: center;
 }
 
-.正文列表项-1级 > p > span[圆括号内容] {
+p[列表1级标题] > span[含义="行内名词"] {
+  background-color: rgb(176, 230, 212);
+  color: black;
+}
+
+span[含义="圆括号内容"] {
+  background-color: rgb(53, 89, 157);
+  border-radius: 3px;
+  color: white;
+  padding: 1px 5px;
+  margin: 0 5px;
+  font-size: 1em;
+  display: inline-flex;
+  align-items: center;
+}
+
+.正文列表项-1级 > p > span[含义="圆括号内容"] {
   background: none;
   text-decoration: underline;
   text-decoration-style: dashed;
-  text-underline-offset: 3px;
+  text-underline-offset: 4px;
   text-decoration-color: rgb(89, 230, 176);
   color: white;
   padding: 0 2.5px;
@@ -664,7 +686,7 @@ span[圆括号内容] {
   font-size: 1em;
 }
 
-span[注释] {
+span[含义="注释"] {
   padding: 1px 5px;
   margin: 0 5px;
   border-radius: 3px;
@@ -673,11 +695,20 @@ span[注释] {
   color: rgb(225, 225, 225);
 }
 
-span[举例标题] > span[注释] {
+span[含义] > span[含义="注释"] {
+  margin: 0 0 0 5px;
+}
+
+span[含义="举例标题"] > span[含义="注释"] {
   padding: 1px 5px;
   color: white;
   outline: none;
   background-color: rgb(56, 56, 56);
+}
+
+span[含义="名词内间隔"] {
+  display: inline-block;
+  width: 5px;
 }
 
 img[图含义="永恒代码统计"] {
@@ -686,11 +717,8 @@ img[图含义="永恒代码统计"] {
   object-fit: contain;
 }
 
-img[图含义="控制台输出"] {
-  margin: 20px 0;
-}
-
 img[图含义] {
+  margin: 15px 0;
   max-width: 100%;
 }
 
@@ -766,13 +794,13 @@ img[图含义] {
   }
 
   .技术栈选择器 {
-    right: 1%;
-    bottom: 1%;
+    right: 2%;
+    bottom: 2%;
   }
 
   .技术栈内容 {
-    grid-template-columns: repeat(auto-fill, minmax(22%, 1fr));
-    grid-auto-rows: 90px;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    grid-auto-rows: 100px;
     gap: 15px 5px;
     width: 95%;
     height: 80%;
@@ -788,7 +816,7 @@ img[图含义] {
   }
 
   .技术栈 > p {
-    height: 25px;
+    height: 30px;
     font-size: 0.6rem;
     padding-top: 2px;
   }

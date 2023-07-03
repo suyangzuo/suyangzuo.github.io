@@ -67,7 +67,7 @@ let 二者相加的px形式 = `${二者相加}px`;
         "10" <span style="filter:brightness(150%); font-size: 0.9rem;">&#x2795;</span> 10，谁会做这种事啊？
       </p>
       <p 列表1级内容>&#9997; 正常人应该干不出来……确实，很少有人刻意干这种事。但是，有的时候，你会无意间这么做。</p>
-      <p 列表1级内容>&#9997; 假设你在CSS中定义了一个宽度变量，值为100，看清楚，这时候它可是数值类型哦。<span 注释>为了区分，还定义了高度变量，类型为字符串。</span></p列表1级内容>
+      <p 列表1级内容>&#9997; 假设你在CSS中定义了一个宽度变量，值为100，看清楚，这时候它可是数值类型哦。<span 含义="注释">为了区分，还定义了高度变量，类型为字符串。</span></p列表1级内容>
       <pre class="lang-css"><code>:root {
   --滑块进度: 50%;
   --宽度: 100;
@@ -87,9 +87,9 @@ for (let i = 1; i &lt;= 10; i++) {
       <p 列表1级内容>&#9997; 但这回，你不确定了……于是你在循环里加入了控制台输出，来检验输出结果是否如同预期，聪明！</p>
       <img 图含义="控制台输出" src="/Images/Blogs/Web前端-原生开发/字符串与数值的转换/CSS变量循环自增.png" alt="CSS变量循环自增">
       <p 列表1级内容 style="font-size: 1.25rem;">😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠</p>
-      <p 列表1级内容>&#9997; 就问你服不服？你应该意识到了，数值 100，肯定在某个地方被自动转换成字符串 "100" 了，因此，数值的叠加，变成了字符串的拼接。到底是在哪里转换的呢？哪一句读取了 <span class="语言">"--宽度"</span>  变量，就是哪一句的问题。那就只能是 <span class="语言">getPropertyValue("--宽度")</span> 的问题了。直接到 <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/CSSStyleDeclaration/getPropertyValue" title="MDN Web Docs" target="_blank" style="text-decoration: underline; text-underline-offset: 3px; text-decoration-color: orange;">MDN Web Docs</a> 上找答案吧！</p>
+      <p 列表1级内容>&#9997; 就问你服不服？你应该意识到了，数值 100，肯定在某个地方被自动转换成字符串 "100" 了，因此，数值的叠加，变成了字符串的拼接。到底是在哪里转换的呢？哪一句读取了 <span 含义="语言">"--宽度"</span>  变量，就是哪一句的问题。那就只能是 <span 含义="语言">getPropertyValue("--宽度")</span> 的问题了。直接到 <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/CSSStyleDeclaration/getPropertyValue" title="MDN Web Docs" target="_blank" style="text-decoration: underline; text-underline-offset: 3px; text-decoration-color: orange;">MDN Web Docs</a> 上找答案吧！</p>
       <img 图含义="控制台输出" src="/Images/Blogs/Web前端-原生开发/字符串与数值的转换/getPropertyValue_MDN.png" alt="MDN getPropertyValue" style="max-width: 100%;">
-      <p 列表1级内容>&#9997; 这回清清楚楚了，返回值是 <span class="语言">DOMString</span> 类型，是字符串！也就是说，虽然CSS变量是数值类型，但在JavaScript中用 <span class="语言">getPropertyValue()</span> 读取后，返回的却是字符串类型！</p>
+      <p 列表1级内容>&#9997; 这回清清楚楚了，返回值是 <span 含义="语言">DOMString</span> 类型，是字符串！也就是说，虽然CSS变量是数值类型，但在JavaScript中用 <span 含义="语言">getPropertyValue()</span> 读取后，返回的却是字符串类型！</p>
     </li>
     <li class="正文列表项 正文列表项-1级">
       <p 列表1级标题>怎么办？</p>
@@ -115,10 +115,10 @@ for (let i = 1; i <= 10; i++) {
           JavaScript 是动态类型语言，数值与字符串相加，有可能不会报错，结果是字符串形式的拼接。
         </li>
         <li class="正文列表项 正文列表项-2级">
-          <span 举例标题>数值转换为字符串</span> <span class="语言">数值变量.toString()</span>
+          <span 含义="举例标题">数值转换为字符串</span> <span 含义="语言">数值变量.toString()</span>
         </li>
         <li class="正文列表项 正文列表项-2级">
-          <span 举例标题>字符串转换为10进制整数</span> <span class="语言">parseInt(字符串, 10)</span>
+          <span 含义="举例标题">字符串转换为10进制整数</span> <span 含义="语言">parseInt(字符串, 10)</span>
         </li>
         <li class="正文列表项 正文列表项-2级">
           JavaScript 中绝大部分读取属性的函数，返回值都是字符串形式。
