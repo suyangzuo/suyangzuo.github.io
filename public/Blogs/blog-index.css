@@ -64,6 +64,7 @@ a:hover {
   width: 100%;
   height: 90dvh;
   min-height: 300px;
+  max-height: 850px;
   position: absolute;
   bottom: 0;
   padding: 20px;
@@ -708,7 +709,7 @@ span[含义="举例标题"] > span[含义="注释"] {
 
 span[含义="名词内间隔"] {
   display: inline-block;
-  width: 5px;
+  width: 4px;
 }
 
 img[图含义="永恒代码统计"] {
