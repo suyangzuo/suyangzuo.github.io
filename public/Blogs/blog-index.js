@@ -12,8 +12,8 @@ const 专题内容区 = document.getElementsByClassName("专题内容区")[0];
 let 专题组 = null;
 let 专题标记组 = null;
 
-let 技术栈名称 = "博客导航页";
-let 专题索引记录 = [{ 技术栈: "博客导航页", 专题索引: 0 }];
+let 技术栈名称 = "经验之谈";
+let 专题索引记录 = [{ 技术栈: "经验之谈", 专题索引: 0 }];
 
 //需要记录多个技术栈的索引，因此将专题索引记录数组转化为'JSON'格式保存在会话中
 if (sessionStorage.getItem("专题索引记录") === null) {

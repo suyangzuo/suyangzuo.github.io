@@ -76,10 +76,6 @@
   color: thistle;
 }
 
-.app-center {
-  min-height: 100dvh;
-}
-
 .app {
   position: relative;
   width: 100%;
@@ -90,7 +86,7 @@
   gap: 100px;
 }
 
-.密码生成器 {
+.图像编辑器 {
   background-color: rgb(43, 51, 73);
 }
 

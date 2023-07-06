@@ -1,0 +1,255 @@
+<article class="专题简介">
+  <p 简介标题>&#127861;&nbsp;&nbsp;Git 下载-安装-更新</p>
+  <p 作者信息>
+    <span 姓名="原创">苏扬</span
+    ><a 邮箱="原创" href="mailto:suyangzuo@gmail.com" title="发送电子邮件"
+      >&#128233;</a
+    ><img
+      原创认证
+      src="/Blogs/博客内容/原创.png"
+      alt="原创"
+      title="原创" /><span 日期>2023年6月15日</span>
+  </p>
+</article>
+<div class="专题正文区">
+  <h2 class="标题-h2">初次接触 Git&#10068; 你来对地方了&#10069;</h2>
+  <ul class="正文列表 正文列表-1级">
+    <li class="正文列表项 正文列表项-1级">
+      <p 列表1级标题>下载 Git</p>
+      <ul class="正文列表 正文列表-2级">
+        <li class="正文列表项 正文列表项-2级">
+          访问
+          <a class="超链接" href="https://git-scm.com/" target="_black"
+            >Git 官网</a
+          >，点击专门的 Windows 版本链接。
+        </li>
+        <li class="正文列表项 正文列表项-2级">
+          Git 原本是 Linux 上的系统软件，后来才出现了独立的 Windows 版本，称之为
+          <a
+            class="超链接"
+            href="https://github.com/git-for-windows/git"
+            target="_black"
+            title="GitHub 仓库"
+            >Git for Windows</a
+          >，有<a
+            class="超链接"
+            href="https://gitforwindows.org/"
+            target="_black"
+            >独立的官网</a
+          >。
+        </li>
+        <li class="正文列表项 正文列表项-2级">
+          如果官网太慢，也可以访问<a
+            href="https://npm.taobao.org/mirrors/git-for-windows/"
+            target="_blank"
+            class="超链接"
+            >镜像站点</a
+          >，选择对应版本下载。
+        </li>
+      </ul>
+    </li>
+    <li class="正文列表项 正文列表项-1级">
+      <p 列表1级标题>安装 Git</p>
+      <p 列表1级内容>
+        <span 含义="序号">1</span>
+        用户协议，没什么好说的，不同意就无法安装。
+      </p>
+      <img
+        src="/Images/Blogs/Git/Git 下载-安装-更新/Git-01-用户协议.png"
+        alt="用户协议"
+        style="border-radius: 10px"
+        图含义 />
+      <p 列表1级内容>
+        <span 含义="序号">2</span>
+        安装路径，没什么特殊需求就不用改。
+      </p>
+      <img
+        src="/Images/Blogs/Git/Git 下载-安装-更新/Git-02-安装路径.png"
+        alt="安装路径"
+        style="border-radius: 10px"
+        图含义 />
+      <p 列表1级内容>
+        <span 含义="序号">3</span>
+        选择模块，没有特殊需求的话，默认就可以。
+      </p>
+      <p 列表1级内容>
+        &#128226; Git Bash 是一个专门为 Git 开发的命令行工具，可以直观地提供 Git
+        使用中的信息。但如果你使用了 Oh My Posh 的话，很大程度上可以替代 Git
+        Bash。建议装起来，以备不时之需；并且将其添加到 Windows 终端
+        中，以统一界面。
+      </p>
+      <img
+        src="/Images/Blogs/Git/Git 下载-安装-更新/Git-03-选择模块.png"
+        alt="选择模块"
+        style="border-radius: 10px"
+        图含义 />
+      <p 列表1级内容>
+        <span 含义="序号">4</span>
+        是否创建开始菜单。
+      </p>
+      <img
+        src="/Images/Blogs/Git/Git 下载-安装-更新/Git-04-开始菜单.png"
+        alt="用户协议"
+        style="border-radius: 10px"
+        图含义 />
+      <p 列表1级内容>
+        <span 含义="序号">5</span>
+        选择 Git 使用的默认编辑器。
+      </p>
+      <p 列表1级内容 style="text-align: left">
+        &#128226; 默认的编辑器是 Vim。<span 含义="特别提醒">注意，</span
+        >第1个提醒说到：<span 含义="圆括号内容"
+          >Vim 只是因为历史遗留原因，才成为了 Git
+          的默认编辑器，强烈建议另选一个拥有现代化界面的替代品。</span
+        >
+      </p>
+      <img
+        src="/Images/Blogs/Git/Git 下载-安装-更新/Git-05-默认编辑器.png"
+        alt="用户协议"
+        style="border-radius: 10px"
+        图含义 />
+      <p 列表1级内容>
+        <span 含义="序号">6</span>
+        选择初始分支的名称。
+      </p>
+      <p>
+        &#128226; 这里有一个很有意思的事情：长期以来，初始分支的名称都是<span
+          含义="行内名词"
+          >master</span
+        >。然而，由于欧美国家过去长期的殖民侵略历史，有人觉得用<span
+          含义="行内名词"
+          >master</span
+        >不合适，因为<span 含义="行内名词">master</span
+        ><span 含义="注释">主人</span>对应的词汇是<span 含义="行内名词"
+          >slave</span
+        ><span 含义="注释">奴隶</span
+        >，所以现在很多项目都将主分支的名称改成了<span 含义="行内名词"
+          >main</span
+        ><span 含义="注释">主要的</span>。
+      </p>
+      <p>
+        <span 含义="注释" style="margin: 0"
+          >欧美国家特别喜欢干这种浮于表面，彰显自己道德标杆，又不用付出真金白银的事情，比如举标语、黑名贵、各种环保抗议等。然而当真的要他们放弃传统污染能源、踏踏实实种树、归还掠夺宝物时，一个个开始找各种冠冕堂皇的理由，其虚伪无耻可谓叹为观止。所以，main
+          还是 master，随便！</span
+        >
+      </p>
+      <img
+        src="/Images/Blogs/Git/Git 下载-安装-更新/Git-06-初始分支名称.png"
+        alt="用户协议"
+        style="border-radius: 10px"
+        图含义 />
+      <p 列表1级内容>
+        <span 含义="序号">7</span>
+        调整环境变量，选中间的推荐选项即可。
+      </p>
+      <img
+        src="/Images/Blogs/Git/Git 下载-安装-更新/Git-07-调整环境变量.png"
+        alt="用户协议"
+        style="border-radius: 10px"
+        图含义 />
+      <p 列表1级内容>
+        <span 含义="序号">8</span>
+        选择 SSH 客户端，选第1个集成的即可。
+      </p>
+      <img
+        src="/Images/Blogs/Git/Git 下载-安装-更新/Git-08-SSH客户端.png"
+        alt="用户协议"
+        style="border-radius: 10px"
+        图含义 />
+      <p 列表1级内容>
+        <span 含义="序号">9</span>
+        HTTPS 传输协议库选择，第1个即可。
+      </p>
+      <img
+        src="/Images/Blogs/Git/Git 下载-安装-更新/Git-09-HTTPS传输.png"
+        alt="用户协议"
+        style="border-radius: 10px"
+        图含义 />
+      <p 列表1级内容>
+        <span 含义="序号">10</span>
+        选择怎样处理回车换行符，我们用第1种就行。
+      </p>
+      <img
+        src="/Images/Blogs/Git/Git 下载-安装-更新/Git-10-行结束.png"
+        alt="用户协议"
+        style="border-radius: 10px"
+        图含义 />
+      <p 列表1级内容>
+        <span 含义="序号">11</span>
+        选择终端模拟器，选第1个就行，反正后面都用<span 含义="行内名词"
+          >Windows<span 含义="名词内间隔"></span>终端</span
+        >。
+      </p>
+      <img
+        src="/Images/Blogs/Git/Git 下载-安装-更新/Git-11-终端模拟器.png"
+        alt="用户协议"
+        style="border-radius: 10px"
+        图含义 />
+      <p 列表1级内容>
+        <span 含义="序号">12</span>
+        选择 <span 含义="语言">git pull</span> 的默认行为，默认选项即可。
+      </p>
+      <img
+        src="/Images/Blogs/Git/Git 下载-安装-更新/Git-12-Git_Pull_默认行为.png"
+        alt="用户协议"
+        style="border-radius: 10px"
+        图含义 />
+      <p 列表1级内容>
+        <span 含义="序号">13</span>
+        选择凭据管理器，选第1个即可。
+      </p>
+      <img
+        src="/Images/Blogs/Git/Git 下载-安装-更新/Git-13-证书管理器.png"
+        alt="用户协议"
+        style="border-radius: 10px"
+        图含义 />
+      <p 列表1级内容>
+        <span 含义="序号">14</span>
+        附加选项，保持默认不变即可。
+      </p>
+      <img
+        src="/Images/Blogs/Git/Git 下载-安装-更新/Git-14-附加选项.png"
+        alt="用户协议"
+        style="border-radius: 10px"
+        图含义 />
+      <p 列表1级内容>
+        <span 含义="序号">15</span>
+        实验性选项，既然是<span 含义="圆括号内容">实验性</span
+        >，说明还不完善，就别选了。
+      </p>
+      <img
+        src="/Images/Blogs/Git/Git 下载-安装-更新/Git-15-实验性选项.png"
+        alt="用户协议"
+        style="border-radius: 10px"
+        图含义 />
+      <p 列表1级内容>
+        <span 含义="序号">16</span>
+        安装完成，第1个选项是完成后打开
+        <span 含义="语言">Git Bash</span
+        >，第2个选项是完成后查看发布说明，自己看着办，我都去掉了。
+      </p>
+      <img
+        src="/Images/Blogs/Git/Git 下载-安装-更新/Git-16-安装完成.png"
+        alt="用户协议"
+        style="border-radius: 10px"
+        图含义 />
+    </li>
+    <li class="正文列表项 正文列表项-1级">
+      <p 列表1级标题>更新 Git</p>
+      <p 间隔方向="上">&#128226; 要更新Git，有2种方法：</p>
+      <ul class="正文列表 正文列表-2级">
+        <li class="正文列表项 正文列表项-2级">
+          <p>下载新版本的 Git，再次安装。</p>
+        </li>
+        <li class="正文列表项 正文列表项-2级">
+          <p>
+            使用命令行更新：<span 含义="语言">git update-git-for-windows</span>
+            <span 含义="注释"
+              >本质也是在后台自动下载 Git，速度可能较慢，还可能连不上。</span
+            >
+          </p>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>

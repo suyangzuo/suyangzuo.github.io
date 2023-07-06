@@ -11,13 +11,15 @@ body {
   width: 100dvw;
 }
 
-a {
+.专题简介 a:not([邮箱]),
+.专题正文区 a:not([邮箱]) {
   text-decoration: underline;
   text-decoration-color: orange;
   text-underline-offset: 3px;
 }
 
-a:hover {
+.专题简介 a:hover,
+.专题正文区 a:hover {
   color: skyblue;
 }
 
@@ -100,11 +102,11 @@ a:hover {
   border-radius: 5px;
 }
 
-.博客导航页 {
+.经验之谈 {
   grid-column: 1 / -1;
 }
 
-.博客导航页 > p {
+.经验之谈 > p {
   height: fit-content !important;
 }
 
@@ -429,6 +431,20 @@ a[邮箱]:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
+.超链接 {
+  color: yellowgreen !important;
+  text-decoration: underline;
+  text-underline-offset: 2.5px;
+}
+
+.超链接:visited {
+  color: yellowgreen;
+}
+
+.超链接:hover {
+  color: rgb(173, 104, 238) !important;
+}
+
 .专题正文区 {
   min-width: 500px;
   max-width: 1000px;
@@ -444,7 +460,6 @@ a[邮箱]:hover {
 .专题正文区 ul,
 .专题正文区 li {
   text-align: justify;
-  text-justify: inter-ideograph;
 }
 
 .符号-h2 {
@@ -515,8 +530,8 @@ a[邮箱]:hover {
   font-size: 1.125rem;
 }
 
-.正文列表项-1级 > p[列表1级标题] + p[列表1级内容] {
-  margin-top: 20px;
+.正文列表项-1级 > p[列表1级标题] ~ p[列表1级内容] {
+  margin-top: 10px;
 }
 
 .正文列表-2级 {
@@ -532,7 +547,7 @@ a[邮箱]:hover {
 
 .正文列表-3级 {
   gap: 7.5px;
-  padding-left: 3em;
+  padding-left: 2em;
 }
 
 .正文列表项-3级 {
@@ -541,18 +556,16 @@ a[邮箱]:hover {
   color: rgb(190, 190, 190);
 }
 
-.超链接 {
-  color: yellowgreen;
-  text-decoration: underline;
-  text-underline-offset: 2.5px;
+p[间隔方向="上"] {
+  margin: 10px 0 0 0;
 }
 
-.超链接:visited {
-  color: yellowgreen;
+p[间隔方向="下"] {
+  margin: 0 0 10px 0;
 }
 
-.超链接:hover {
-  color: rgb(173, 104, 238);
+p[间隔方向="上下"] {
+  margin: 10px 0;
 }
 
 .正文-表格 {
@@ -659,6 +672,18 @@ span[含义="行内名词"] {
   align-items: center;
 }
 
+span[含义="序号"] {
+  font-size: 0.9em;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 1.65em;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background-color: rgb(158, 178, 199);
+  color: black;
+}
+
 p[列表1级标题] > span[含义="行内名词"] {
   background-color: rgb(176, 230, 212);
   color: black;
@@ -675,7 +700,7 @@ span[含义="圆括号内容"] {
   align-items: center;
 }
 
-.正文列表项-1级 > p > span[含义="圆括号内容"] {
+.正文列表项-1级 > p:nth-child(1) > span[含义="圆括号内容"] {
   background: none;
   text-decoration: underline;
   text-decoration-style: dashed;
