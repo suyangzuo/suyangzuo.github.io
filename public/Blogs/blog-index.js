@@ -100,6 +100,8 @@ function 点选技术栈(event) {
   技术栈名称 = 技术栈文本;
   if (技术栈名称 === "Web前端原生开发") {
     技术栈名称 = "Web前端-原生开发";
+  } else if (技术栈名称 === "C#") {
+    技术栈名称 = "CSharp";
   }
   sessionStorage.setItem("页面技术栈", 技术栈名称);
   if (!专题索引记录.some((item) => item.技术栈 === 技术栈名称)) {
