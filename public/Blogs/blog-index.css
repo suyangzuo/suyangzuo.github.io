@@ -748,6 +748,11 @@ img[图含义] {
   max-width: 100%;
 }
 
+#永恒代码统计图表 + p,
+#永恒代码统计图表 + p + .正文列表-3级 {
+  display: none;
+}
+
 /* ------------------------------ ↓ 响应式设计 ------------------------------ */
 @media screen and (width < 1700px) {
   .专题横幅 > img {
@@ -764,6 +769,20 @@ img[图含义] {
     width: 100%;
     flex-direction: column;
     row-gap: 20px;
+  }
+}
+
+@media screen and (width < 1200px) {
+  #永恒代码统计图表 {
+    display: none;
+  }
+
+  #永恒代码统计图表 + p {
+    display: block;
+  }
+
+  #永恒代码统计图表 + p + .正文列表-3级 {
+    display: flex;
   }
 }
 

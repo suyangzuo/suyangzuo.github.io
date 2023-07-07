@@ -175,4 +175,89 @@ function 修改视口尺寸() {
   }
 }
 
-// window.addEventListener("load", 刷新代码格式化脚本);
+//------------------- ↓ 监控专题内容区内 DOM 修改 -------------------
+const mutationObserver = new MutationObserver(专题改变时运行);
+mutationObserver.observe(专题内容区, {
+  childList: true,
+});
+
+function 专题改变时运行() {
+  if (!(技术栈名称 === "Web前端-原生开发" && 专题名称 === "首页")) {
+    return;
+  }
+
+  生成永恒代码统计图表();
+}
+
+function 生成永恒代码统计图表() {
+  // 基于准备好的dom，初始化echarts实例
+  const myChart = echarts.init(
+    document.getElementById("永恒代码统计图表"),
+    "dark"
+  );
+
+  // 指定图表的配置项和数据
+  const option = {
+    backgroundColor: "#fff1",
+    title: {
+      text: "永恒代码量统计",
+      textStyle: {
+        color: "gold",
+      },
+      padding: 25,
+    },
+    tooltip: {},
+    legend: {
+      data: ["代码行数"],
+      padding: [25, 0, 0, 0],
+    },
+    xAxis: {
+      data: ["总行数", "HTML", "CSS", "JavaScript"],
+      axisLabel: {
+        margin: 15,
+        fontSize: 13,
+        color: "white",
+      },
+    },
+    yAxis: {},
+    grid: {
+      height: "70%",
+      width: "75%",
+      top: "17.5%",
+      left: "15%",
+    },
+    series: [
+      {
+        name: "代码行数",
+        type: "bar",
+        data: [40334, 19572, 17310, 3372],
+        label: {
+          position: "top",
+          distance: 10,
+          show: true,
+          formatter: ["{c}"],
+          color: "orange",
+        },
+        showBackground: true,
+        backgroundStyle: {
+          color: "rgba(180, 180, 180, 0.075)",
+        },
+      },
+    ],
+    // media: [
+    //   {
+    //     query: {
+    //       maxWidth: 1200,
+    //     },
+    //     option: {
+    //       width: 375,
+    //       height: 300,
+    //     },
+    //   },
+    // ],
+  };
+
+  // 使用刚指定的配置项和数据显示图表。
+  myChart.setOption(option);
+}
+//------------------- ↑ 监控专题内容区内 DOM 修改 -------------------

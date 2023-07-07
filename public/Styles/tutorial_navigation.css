@@ -152,6 +152,27 @@ body {
   font-size: 0.9rem;
 }
 
+.返回 {
+  position: fixed;
+  width: 100px;
+  height: 50px;
+  bottom: 1.5%;
+  right: 1%;
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.75rem;
+  outline: solid 1.5px #fffa;
+  background-color: #fff2;
+  filter: brightness(3);
+}
+
+.返回:hover {
+  background-color: #fffa;
+  filter: contrast(2);
+}
+
 /* -------------------------------- ↓ 响应式设计 ----------------------------------- */
 @media screen and (max-width: 1200px) {
   .tutorials {
@@ -169,6 +190,15 @@ body {
   .intro > a:nth-child(1),
   .intro > a:nth-child(2) {
     width: 85%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .返回 {
+    right: 2%;
+    width: 75px;
+    height: 35px;
+    font-size: 1.35rem;
   }
 }
 /* -------------------------------- ↑ 响应式设计 ----------------------------------- */

@@ -11,4 +11,52 @@
       title="原创" /><span 日期>2023年6月15日</span>
   </p>
 </article>
-<div class="专题正文区"></div>
+<div class="专题正文区">
+  <h2 class="标题-h2">使用 Git Config 命令进行配置</h2>
+  <ul class="正文列表 正文列表-1级">
+    <li class="正文列表项 正文列表项-1级">
+      <p 列表1级标题>配置用户名</p>
+      <ul class="正文列表 正文列表-2级">
+        <li class="正文列表项 正文列表项-2级">
+          <pre
+            class="lang-git"
+            style="
+              margin: 0;
+            "><code>git config --global user.name "用户名"</code></pre>
+        </li>
+        <li class="正文列表项 正文列表项-2级">
+          <span 含义="语言">--global</span>
+          代表全局设置，只需设置一次，今后所有的Git项目都会自动使用这个用户名。如果不使用这个参数，则用户名仅对当前仓库有效，每个Git仓库都要单独设置用户名。
+        </li>
+        <li class="正文列表项 正文列表项-2级">
+          尽管用户名可以随便写，但最好还是和你代码托管平台<span 含义="行内名词"
+            >例如 GitHub</span
+          >的用户名保持一致，以免推送时出现问题。
+        </li>
+      </ul>
+    </li>
+    <li class="正文列表项 正文列表项-1级">
+      <p 列表1级标题>
+        配置用户邮箱
+      </p>
+      <ul class="正文列表 正文列表-2级">
+        <li class="正文列表项 正文列表项-2级">
+          <pre
+            class="lang-git"
+            style="
+              margin: 0;
+            "><code>git config --global user.email "用户邮箱"</code></pre>
+        </li>
+        <li class="正文列表项 正文列表项-2级">
+          <span 含义="语言">--global</span>
+          代表全局设置，只需设置一次，今后所有的Git项目都会自动使用这个邮箱。如果不使用这个参数，则邮箱仅对当前仓库有效，每个Git仓库都要单独设置邮箱。
+        </li>
+        <li class="正文列表项 正文列表项-2级">
+          尽管邮箱可以随便写，但最好还是和你代码托管平台<span 含义="行内名词"
+            >例如 GitHub</span
+          >的邮箱保持一致，以免推送时出现问题。
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>

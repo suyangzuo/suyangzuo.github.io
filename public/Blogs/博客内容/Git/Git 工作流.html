@@ -11,4 +11,106 @@
       title="原创" /><span 日期>2023年6月15日</span>
   </p>
 </article>
-<div class="专题正文区"></div>
+<div class="专题正文区">
+  <h2 class="标题-h2">掌握 Git 的基础使用流程</h2>
+  <ul class="正文列表 正文列表-1级">
+    <li class="正文列表项 正文列表项-1级">
+      <p 列表1级标题>Git 工作流</p>
+      <img
+        图含义
+        src="/Images/Blogs/Git/Git 工作流/Git工作流.png"
+        alt="Git 工作流" />
+      <p>如图所示，Git 工作流整体上分为2部分：</p>
+      <ul class="正文列表 正文列表-2级">
+        <li class="正文列表项 正文列表项-2级">
+          <span 含义="举例标题">本地仓库</span> 图中白色部分，离线也可正常工作。
+        </li>
+        <li class="正文列表项 正文列表项-2级">
+          <span 含义="举例标题">远程仓库</span>
+          图中灰色部分，必须联网，所谓远程仓库就是托管在 GitHub 或者 Gitee
+          之类的平台上的仓库。
+        </li>
+      </ul>
+      <p>让我们暂时聚焦于本地，只要关注下图所涵盖的范围即可：</p>
+      <img
+        src="/Images/Blogs/Git/Git 工作流/Git工作流-本地.png"
+        alt="Git 本地工作流"
+        图含义 />
+    </li>
+    <li class="正文列表项 正文列表项-1级">
+      <p 列表1级标题>初始化 Git 本地仓库</p>
+      <ul class="正文列表 正文列表-2级">
+        <li class="正文列表项 正文列表项-2级">
+          <pre class="lang-git" style="margin: 0"><code>git init</code></pre>
+        </li>
+        <li class="正文列表项 正文列表项-2级">
+          在你的项目文件夹<span 含义="注释">工作区</span
+          >输入如上命令，会将当前文件夹转化为一个<span 含义="行内名词"
+            >Git 本地仓库</span
+          >，并在其中创建一个<span 含义="行内名词">隐藏的 .git 子文件夹</span
+          >，里面保存了项目历史记录所需要的所有数据；与此同时，Git
+          会自动追踪项目文件夹内的所有更改<span 含义="注释"
+            >添加、修改、删除</span
+          >。
+        </li>
+        <li class="正文列表项 正文列表项-2级">
+          尽管邮箱可以随便写，但最好还是和你代码托管平台<span 含义="行内名词"
+            >例如 GitHub</span
+          >的邮箱保持一致，以免推送时出现问题。
+        </li>
+      </ul>
+    </li>
+    <li class="正文列表项 正文列表项-1级">
+      <p 列表1级标题>暂存、提交</p>
+      <ul class="正文列表 正文列表-2级">
+        <li class="正文列表项 正文列表项-2级">
+          <span 含义="行内名词">提交</span>是 Git
+          的核心，是整个工作流最重要的步骤。一次提交就是一个记录节点。
+        </li>
+        <li class="正文列表项 正文列表项-2级">
+          可以直接提交<span 含义="注释">工作区 → 本地仓库</span
+          >，但不提倡。为了在提交前有一个缓冲<span 含义="注释"
+            >因为提交了就会生成记录</span
+          >，可以将你所做的修改先<span 含义="行内名词">暂存</span>到<span
+            含义="行内名词"
+            >暂存区</span
+          >。可以多次暂存，再一口气全部提交。
+        </li>
+        <li class="正文列表项 正文列表项-2级">
+          <span 含义="语言">暂存</span>
+          ，将当前文件夹以及所有子文件夹中的更改全部记录到暂存区。
+          <pre class="lang-git"><code>git add .</code></pre>
+          <p>
+            暂存之后，<span 含义="行内名词">更改</span>会变成<span
+              含义="行内名词"
+              >暂存的更改</span
+            >。
+          </p>
+          <div>
+            <img
+              style="margin-right: 50px"
+              src="/Images/Blogs/Git/Git 工作流/Git-更改.png"
+              alt="更改"
+              图含义 />
+            <img
+              src="/Images/Blogs/Git/Git 工作流/Git-暂存的更改.png"
+              alt="暂存的更改"
+              图含义 />
+          </div>
+        </li>
+        <li class="正文列表项 正文列表项-2级">
+          <span 含义="语言">提交</span> ，将暂存区所有的更改记录提交到本地仓库。
+          <pre class="lang-git"><code>git commit -m "初始提交"</code></pre>
+          -m
+          表示需要输入简明扼要的提交信息，概括一下这次提交主要更改了什么。<span
+            含义="特别提醒"
+            >注意：提交信息是必需的，也是提交的规范，不可省略；一般第1次提交的信息都写<span
+              含义="圆括号内容"
+              >初始提交</span
+            >。</span
+          >
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
