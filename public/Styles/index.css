@@ -176,7 +176,7 @@
 
 .site-brief-text {
   font-size: 1.35rem;
-  font-family: 霞鹜文楷;
+  /* font-family: 霞鹜文楷; */
   font-weight: 550;
   letter-spacing: 0.05rem;
   line-height: 1.75rem;
@@ -212,7 +212,7 @@
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
-  gap: 15px 10px;
+  gap: 10px 10px;
 }
 
 .平台特色Logo {
@@ -220,16 +220,10 @@
   height: 60px;
   border-radius: 50px;
   /* background-color: #3c4248aa; */
-  outline: solid 1.5px #3c4248cc;
+  /* outline: solid 1.5px #3c4248cc; */
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.平台特色Logo > img {
-  width: 50%;
-  height: 50%;
-  object-fit: contain;
 }
 
 .欢迎链接区 {
@@ -249,11 +243,12 @@
   height: 50px;
   border-radius: 50px;
   background-color: rgb(36, 108, 67);
-  transition: 0.25s;
+  transition: 0.2s;
 }
 
 #宗旨链接:hover {
-  background-color: rgb(26, 83, 51);
+  background-color: #1e242b;
+  box-shadow: inset 0px 0px 12.5px 0 #fff8;
 }
 
 #贡献者链接 {
@@ -267,9 +262,9 @@
 }
 
 #贡献者链接:hover {
-  color: white;
-  border: solid 2px rgba(35, 93, 60, 0);
-  background-color: rgb(36, 108, 67);
+  border: solid 2px #fff4;
+  box-shadow: inset 0px 0px 10px 0 #fff7;
+  color: rgb(205, 205, 205);
 }
 /* <!-- ------------------ ↑ 欢迎内容 ------------------- --> */
 
@@ -340,8 +335,8 @@
   /* background-image: linear-gradient(to top, #0e2441 0%, #293f4f 100%); */
   background: linear-gradient(
     50deg,
-    #734b6d,
-    #543371
+    #61405c,
+    #75408a
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
   position: absolute;
@@ -435,10 +430,15 @@
 .learn-service-link {
   position: relative;
   height: 25%;
-  width: 200px;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: background-color 0.2s;
+}
+
+.learn-service-link:hover {
+  background-color: #1e242b;
 }
 
 .link-text {
@@ -455,7 +455,7 @@
   opacity: 0;
   transform: translateX(0);
   transition: 0.2s;
-  color: gold;
+  color: rgb(114, 227, 106);
 }
 
 .learn-service-link:hover .link-text > p:nth-child(1) {
@@ -471,8 +471,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-bottom: 4%;
-  font-size: 3rem;
+  padding-bottom: 2%;
+  font-size: 1.75rem;
   width: 50px;
   height: 50px;
   border-radius: 50px;
@@ -514,6 +514,7 @@
 .games-and-software {
   width: 100dvw;
   height: 100dvh;
+  /* background-color: #29323c; */
 }
 /* <!-- ------------------ ↑ 游戏与软件下载 ------------------- --> */
 
@@ -881,7 +882,7 @@
   .link-arrow {
     width: 45px;
     height: 45px;
-    font-size: 2.5rem;
+    font-size: 1.5rem;
   }
 }
 
@@ -906,7 +907,7 @@
     height: 50px;
     aspect-ratio: 1;
     width: fit-content;
-    font-size: 2.5rem;
+    font-size: 1.5rem;
   }
 }
 
