@@ -121,7 +121,7 @@
   height: 30px;
   border-radius: 3px;
   font-size: 0.9rem;
-  background: linear-gradient(147deg, #f9fcff 0%, #dee4ea 74%);
+  background: linear-gradient(to right, #7f93aa, #9ab5d2);
   color: black;
   display: flex;
   justify-content: flex-start;
@@ -138,7 +138,8 @@
 }
 
 .阴影项:hover {
-  background: linear-gradient(147deg, #86a0bc 0%, #5d7e9c 74%);
+  background: linear-gradient(to right, #36424e, #4f5d6c);
+
   color: white;
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }

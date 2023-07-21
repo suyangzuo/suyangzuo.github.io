@@ -140,8 +140,7 @@ body {
 }
 
 .number {
-  background-color: #5b6467;
-  background-image: linear-gradient(315deg, #5b6467 0%, #8b939a 74%);
+  background-image: linear-gradient(315deg, #727d81 0%, #a1a9b0 74%);
   color: black;
   display: flex;
   justify-content: center;
