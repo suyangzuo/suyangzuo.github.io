@@ -508,6 +508,7 @@ img[待定] {
   right: 3%;
   width: 30px;
   height: 60vh;
+  max-height: 650px;
   /* background-color: gray; */
   display: flex;
   flex-direction: column;

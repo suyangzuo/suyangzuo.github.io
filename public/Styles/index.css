@@ -29,9 +29,10 @@
   height: calc(100dvh - 50px);
   margin: 0 auto;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10dvw;
+  gap: 5dvh;
   position: relative;
   /* gap: 50px; */
   /* padding: 0 0 calc(5% + 65px) 0; */
@@ -39,14 +40,17 @@
   overflow: hidden;
 }
 
-/* .section-bg-img {
+.welcome-main > :not(.section-bg-img) {
+  z-index: 0;
+}
+
+.section-bg-img {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  z-index: -1;
 }
 
 .section-bg-img > img {
@@ -55,7 +59,7 @@
   object-fit: cover;
 }
 
-.welcome-main > .section-bg-img > img {
+/* .welcome-main > .section-bg-img > img {
   filter: brightness(75%);
 }
 
@@ -72,42 +76,30 @@
 .logo-section {
   /* background-color: cornflowerblue; */
   position: relative;
-  width: 500px;
-  height: 500px;
+  width: 300px;
+  height: fit-content;
   padding: 1% 0 0 0;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
   justify-content: flex-start;
-  gap: 50px;
+  gap: 15px;
   /* border-bottom: solid 1px rgb(138, 138, 138); */
 }
 
-.logo-section::before {
-  position: absolute;
-  width: 175%;
-  height: 150%;
-  top: -35%;
-  left: -37.5%;
-  content: "";
-  background: no-repeat center/cover url("../Images/Index-Images/金色泡泡.png");
-  opacity: 25%;
-  -webkit-mask-image: linear-gradient(#000 90%, #0000 100%);
-  mask-image: linear-gradient(#000 90%, #0000 100%);
-}
-
 #eternal-title-text {
-  width: 500px;
-  height: 250px;
+  width: 300px;
+  height: 150px;
   /* background-color: cornflowerblue; */
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 40px;
+  gap: 20px;
   position: relative;
   -webkit-user-drag: none;
   -webkit-user-select: none;
   user-select: none;
+  filter: drop-shadow(5px 5px 5px #000);
 }
 
 #永,
@@ -149,124 +141,92 @@
 
 .logo-brief {
   position: relative;
-  background-color: #762b43;
-  font-size: 2rem;
+  /* background-color: #762b43; */
+  font-size: 1.45rem;
   font-family: 霞鹜文楷;
-  width: 480px;
+  width: 280px;
   text-align: center;
-  padding: 15px 0;
+  text-shadow: 2px 2px 2px #222;
+  /* padding: 15px 0; */
   border-radius: 5px;
-}
-
-.site-brief {
-  width: 600px;
-  height: 500px;
-  /* background-color: #485563; */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: 75px;
-}
-
-.欢迎文本区 {
-  display: flex;
-  flex-direction: column;
-  gap: 35px;
-}
-
-.site-brief-text {
-  font-size: 1.35rem;
-  /* font-family: 霞鹜文楷; */
-  font-weight: 550;
-  letter-spacing: 0.05rem;
-  line-height: 1.75rem;
-  line-break: anywhere;
-  color: #ccc;
-}
-
-.平台特色区 {
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-  /* gap: 40px; */
-}
-
-.平台特色列表 {
-  width: 120px;
-}
-
-.平台特色列表 > li {
-  width: 120px;
-  padding: 5px 0 5px 7.5px;
-  flex-shrink: 0;
-  color: lightseagreen;
-}
-
-.平台特色列表 > li::marker {
-  content: "\2714";
-  color: orange;
-  font-size: 0.85rem;
-}
-
-.平台特色Logo区 {
-  width: 360px;
-  display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  gap: 10px 10px;
-}
-
-.平台特色Logo {
-  width: 60px;
-  height: 60px;
-  border-radius: 50px;
-  /* background-color: #3c4248aa; */
-  /* outline: solid 1.5px #3c4248cc; */
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .欢迎链接区 {
   display: flex;
-  gap: 20px;
-}
-
-.欢迎链接区 > a {
-  display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.125rem;
+  gap: 50px;
 }
 
-#宗旨链接 {
-  width: 175px;
-  height: 50px;
-  border-radius: 50px;
-  background-color: rgb(36, 108, 67);
-  transition: 0.2s;
+.欢迎链接区 > * {
+  flex-shrink: 0;
 }
 
-#宗旨链接:hover {
-  background-color: #1e242b;
-  box-shadow: inset 0px 0px 12.5px 0 #fff8;
+.欢迎链接 {
+  width: 325px;
+  height: 335px;
+  /* background-color: #999; */
+  filter: drop-shadow(5px 5px 5px #222);
+  overflow: hidden;
 }
 
-#贡献者链接 {
-  width: 125px;
-  height: 50px;
-  border-radius: 50px;
-  border: solid 2px rgb(35, 93, 60);
-  background-color: #1e242b;
-  color: rgb(171, 171, 171);
-  transition: 0.2s;
+.欢迎链接:nth-child(1) {
+  border-radius: 0 15px 0 15px;
 }
 
-#贡献者链接:hover {
-  border: solid 2px #fff4;
-  box-shadow: inset 0px 0px 10px 0 #fff7;
-  color: rgb(205, 205, 205);
+.欢迎链接:nth-child(2) {
+  border-radius: 15px 0 15px 0;
 }
+
+.欢迎链接:hover img {
+  filter: brightness(50%);
+  animation: 欢迎链接背景动画 15s ease-in-out infinite;
+}
+
+@keyframes 欢迎链接背景动画 {
+  2.5% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.125;
+  }
+  97.5% {
+    scale: 1;
+  }
+}
+
+.欢迎链接 > a {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position: relative;
+}
+
+.欢迎链接背景 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+  transition: 250ms;
+}
+
+.欢迎标题 {
+  position: relative;
+  z-index: 0;
+  font-size: 1.25rem;
+  margin: 0 0 12.5% 0;
+  text-shadow: 2px 2px 2px #222;
+}
+
+/* .欢迎 {
+  width: calc(650px / 4);
+  height: 150px;
+  background-color: #61405c;
+} */
 /* <!-- ------------------ ↑ 欢迎内容 ------------------- --> */
 
 /* <!-- ------------------ ↓ 学习服务 ------------------- --> */
@@ -516,7 +476,7 @@
   position: relative;
   width: 100dvw;
   height: 100dvh;
-  background: no-repeat center/65% url("../Images/Index-Images/监视器.png");
+  background: no-repeat center/55% url("../Images/Index-Images/监视器.png");
   /* background-color: #29323c; */
 }
 
@@ -545,7 +505,9 @@
 .game-play-text {
   font-size: clamp(30px, 2.5dvw, 3dvw);
   width: fit-content;
-  text-shadow: 0.5px 0.5px 5px #0008;
+  /* text-shadow: 0.5px 0.5px 5px #0008; */
+  color: rgb(23, 24, 25);
+  font-weight: bold;
 }
 
 .game-play-image {
@@ -1049,6 +1011,10 @@
   .link-arrow {
     width: 35px;
     height: 35px;
+  }
+
+  .game-play-text {
+    color: white;
   }
 }
 
