@@ -471,76 +471,91 @@
 }
 /* <!-- ------------------ ↑ 学习服务 ------------------- --> */
 
-/* <!-- ------------------ ↓ 游戏与软件下载 ------------------- --> */
+/* <!-- ------------------ ↓ 游戏 ------------------- --> */
 .games {
   position: relative;
   width: 100dvw;
   height: 100dvh;
-  background: no-repeat center/55% url("../Images/Index-Images/监视器.png");
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background: no-repeat center/55% url("../Images/Index-Images/监视器.png"); */
   /* background-color: #29323c; */
 }
 
-.game-ui {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -57.5%);
-  width: 50%;
-  height: 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 5dvh;
+.games-ui {
+  position: relative;
+  width: 12.5vw;
+  height: 12.5vw;
+  border-radius: 50vw;
+  overflow: hidden;
+  /* background-color: #5f7081; */
 }
 
-.game-play {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.game-play-text {
-  font-size: clamp(30px, 2.5dvw, 3dvw);
+.games-portal {
+  height: 100%;
   width: fit-content;
-  /* text-shadow: 0.5px 0.5px 5px #0008; */
-  color: rgb(23, 24, 25);
-  font-weight: bold;
+  /* background-color: #75408a85; */
+  display: flex;
+  animation: 游戏角色长廊移动 28s 1s linear infinite;
+  /* overflow: hidden; */
 }
 
-.game-play-image {
-  width: clamp(120px, 10dvw, 12.5dvw);
-  aspect-ratio: 1.5;
+.games-portal:hover {
+  animation-play-state: paused;
+  opacity: 0.5;
 }
 
-.game-play-image > img {
-  width: 100%;
+@keyframes 游戏角色长廊移动 {
+  from {
+    translate: 0;
+  }
+  to {
+    translate: calc(-12.5vw * 7);
+  }
+}
+
+.角色长廊 {
+  flex-shrink: 0;
+  display: flex;
+}
+
+.游戏角色容器 {
+  flex-shrink: 0;
   height: 100%;
-  object-fit: contain;
-  transition: 0.2s;
-}
-
-.game-play-image > img:hover {
-  filter: brightness(1.75);
-}
-
-.game-joystick {
-  width: 100%;
-  height: 75px;
+  aspect-ratio: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 2dvw;
 }
 
-.game-joystick > img {
-  width: clamp(25px, fit-content, 50px);
-  height: 100%;
+.游戏角色 {
+  width: 75%;
+  height: 75%;
   object-fit: contain;
 }
-/* <!-- ------------------ ↑ 游戏与软件下载 ------------------- --> */
+
+.游戏入口文本 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  background-color: #0007;
+  pointer-events: none;
+  opacity: 0;
+  backdrop-filter: blur(5px);
+  transition: 0.25s;
+}
+
+.games-portal:hover + .游戏入口文本 {
+  opacity: 1;
+}
+/* <!-- ------------------ ↑ 游戏 ------------------- --> */
 
 /* <!-- ------------------ ↓ 美图欣赏 ------------------- --> */
 .图像长廊区 {
@@ -787,18 +802,18 @@
 /* <!-- ------------------ ↑ 美图欣赏 ------------------- --> */
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
+@media screen and (width <= 1920px) {
+  .欢迎链接 {
+    width: 225px;
+    height: 235px;
+  }
+
+  .欢迎标题 {
+    font-size: 1.05rem;
+  }
+}
+
 @media screen and (max-width: 1200px) {
-  .welcome-main {
-    flex-direction: column;
-    gap: 1.5dvh;
-  }
-
-  .logo-section {
-    padding: 0;
-    justify-content: center;
-    align-items: center;
-  }
-
   .learn-title,
   .learn-brief {
     width: 90dvw;
@@ -850,6 +865,14 @@
 }
 
 @media screen and (max-height: 1100px) {
+  .learn-page {
+    justify-content: center;
+  }
+
+  .learn-brief {
+    display: none;
+  }
+
   .learn-service {
     height: 42.5%;
   }
@@ -866,21 +889,6 @@
 }
 
 @media screen and (max-height: 1000px) {
-  .logo-section {
-    height: 400px;
-    gap: 30px;
-  }
-
-  .site-brief {
-    height: 400px;
-    gap: 30px;
-  }
-
-  #eternal-title-text {
-    height: 200px;
-    width: 400px;
-  }
-
   .learn-page {
     gap: 2dvh;
     padding-top: 2.5dvh;
@@ -1012,10 +1020,6 @@
     width: 35px;
     height: 35px;
   }
-
-  .game-play-text {
-    color: white;
-  }
 }
 
 @media screen and (max-height: 900px) and (max-width: 1000px) {
@@ -1034,22 +1038,6 @@
   .logo-brief {
     width: 95dvw;
     font-size: 1.35rem;
-  }
-
-  .site-brief {
-    align-items: center;
-    justify-content: center;
-    height: 300px;
-    overflow: hidden;
-  }
-
-  .site-brief-text {
-    width: 95dvw;
-    font-size: 1rem;
-  }
-
-  .平台特色区 {
-    display: none;
   }
 
   .learn-brief {
