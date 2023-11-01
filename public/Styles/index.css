@@ -483,76 +483,101 @@
   /* background-color: #29323c; */
 }
 
-.games-ui {
-  position: relative;
-  width: 12.5vw;
-  height: 12.5vw;
-  border-radius: 50vw;
-  overflow: hidden;
-  /* background-color: #5f7081; */
+.games > :not(.section-bg-img) {
+  z-index: 0;
 }
 
-.games-portal {
-  height: 100%;
-  width: fit-content;
-  /* background-color: #75408a85; */
-  display: flex;
-  animation: 游戏角色长廊移动 28s 1s linear infinite;
-  /* overflow: hidden; */
+.games-entrance {
+  display: block;
+  width: 200px;
+  height: 200px;
 }
 
-.games-portal:hover {
-  animation-play-state: paused;
-  opacity: 0.5;
-}
-
-@keyframes 游戏角色长廊移动 {
-  from {
-    translate: 0;
-  }
-  to {
-    translate: calc(-12.5vw * 7);
-  }
-}
-
-.角色长廊 {
-  flex-shrink: 0;
-  display: flex;
-}
-
-.游戏角色容器 {
-  flex-shrink: 0;
-  height: 100%;
-  aspect-ratio: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.游戏角色 {
-  width: 75%;
-  height: 75%;
-  object-fit: contain;
-}
-
-.游戏入口文本 {
+.游戏入口提示 {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  scale: 0;
+  font-size: 1.75rem;
+  color: white;
+  text-shadow: 2px 2px 4px #000;
+  opacity: 0;
+  transition: 0.25s;
+}
+
+.游戏入口提示::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
   left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: white;
+  scale: 0;
+  box-shadow: 2px 2px 5px 0 #444;
+}
+
+.游戏入口 {
+  position: absolute;
+  width: 165px;
+  height: 165px;
+  border-radius: 200px;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 1.5rem;
-  background-color: #0007;
-  pointer-events: none;
-  opacity: 0;
+  background-color: #fffa;
   backdrop-filter: blur(5px);
+  box-shadow: 5px 5px 10px 0 #444;
   transition: 0.25s;
 }
 
-.games-portal:hover + .游戏入口文本 {
+.games-entrance:hover > .游戏入口 {
+  background-color: #fff5;
+  scale: 1.25;
+  translate: -50% -75%;
+}
+
+.games-entrance:hover > .游戏入口提示 {
+  translate: -50% 200%;
+  scale: 1;
+  opacity: 1;
+}
+
+.games-entrance:hover > .游戏入口提示::after {
+  animation: 下划线动画 0.25s linear 250ms forwards;
+}
+
+@keyframes 下划线动画 {
+  from {
+    scale: 0;
+  }
+  to {
+    scale: 1;
+  }
+}
+
+.游戏入口 > img {
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+  transition: 250ms;
+}
+
+.游戏入口 > img:nth-child(2) {
+  opacity: 0;
+}
+
+.games-entrance:hover > .游戏入口 > img:nth-child(1) {
+  opacity: 0;
+}
+
+.games-entrance:hover > .游戏入口 > img:nth-child(2) {
   opacity: 1;
 }
 /* <!-- ------------------ ↑ 游戏 ------------------- --> */
