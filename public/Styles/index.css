@@ -530,20 +530,20 @@
   justify-content: center;
   align-items: center;
   font-size: 1.5rem;
-  background-color: #fffa;
+  background-color: #000a;
   backdrop-filter: blur(5px);
-  box-shadow: 5px 5px 10px 0 #444;
+  box-shadow: 5px 5px 10px 0 #333;
   transition: 0.25s;
 }
 
 .games-entrance:hover > .游戏入口 {
-  background-color: #fff5;
+  background-color: #fff4;
   scale: 1.25;
   translate: -50% -75%;
 }
 
 .games-entrance:hover > .游戏入口提示 {
-  translate: -50% 200%;
+  translate: -50% 225%;
   scale: 1;
   opacity: 1;
 }
