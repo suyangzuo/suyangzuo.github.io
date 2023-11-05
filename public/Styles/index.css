@@ -163,8 +163,8 @@
 }
 
 .欢迎链接 {
-  width: 325px;
-  height: 335px;
+  width: 225px;
+  height: 235px;
   /* background-color: #999; */
   filter: drop-shadow(5px 5px 5px #222);
   overflow: hidden;
@@ -828,11 +828,6 @@
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
 @media screen and (width <= 1920px) {
-  .欢迎链接 {
-    width: 225px;
-    height: 235px;
-  }
-
   .欢迎标题 {
     font-size: 1.05rem;
   }
