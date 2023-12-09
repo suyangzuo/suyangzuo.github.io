@@ -460,7 +460,7 @@ function 获取16进制颜色(阴影属性) {
 
 function 打印代码(有效代码组) {
   if (阴影序号池.length === 10) {
-    代码区.textContent = "";
+    代码文本元素.textContent = "";
     return;
   }
   let 分行代码 = 有效代码组.join(",\n");
@@ -548,7 +548,7 @@ function 重置参数(event) {
   颜色选择器.value = "#000000";
 
   本体.style.boxShadow = "";
-  代码区.textContent = "";
+  代码文本元素.textContent = "";
 
   root.style.setProperty("--当前阴影代码包围框可见性", "hidden");
   root.style.setProperty("--当前阴影代码包围框透明度", "0%");

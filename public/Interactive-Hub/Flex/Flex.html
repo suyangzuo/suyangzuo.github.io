@@ -14,18 +14,24 @@
     <link rel="stylesheet" href="../control.css" />
     <link rel="stylesheet" href="../interactive-common.css" />
     <link rel="stylesheet" href="./Flex.css" />
-    <script src="/Scripts/html-include.js"></script>
+    <script src="/Scripts/top-banner.js" defer></script>
     <script
       src="https://kit.fontawesome.com/d0483e3bd3.js"
       crossorigin="anonymous"></script>
   </head>
   <body>
     <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
-    <insert-e src="/top-banner.html"></insert-e>
+    <script
+      src="../../Scripts/html-include.js"
+      target="../../top-banner.html"
+      position="afterbegin"></script>
     <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
 
     <section class="弹性总区 总区">
-      <insert-e src="../control.html"></insert-e>
+      <script
+        src="../../Scripts/html-include.js"
+        target="../control.html"
+        position="afterbegin"></script>
       <p class="交互标题">弹性布局</p>
       <div class="弹性-展示区"></div>
       <div class="弹性-操作区">
@@ -492,6 +498,5 @@
     </section>
 
     <script src="./Flex.js"></script>
-    <script src="/Scripts/top-banner.js" defer></script>
   </body>
 </html>

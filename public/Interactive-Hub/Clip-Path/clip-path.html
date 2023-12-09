@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="../control.css" />
     <link rel="stylesheet" href="../interactive-common.css" />
     <link rel="stylesheet" href="./clip-path.css" />
-    <script src="/Scripts/html-include.js"></script>
+    <script src="/Scripts/top-banner.js" defer></script>
     <script
       src="https://kit.fontawesome.com/d0483e3bd3.js"
       crossorigin="anonymous"></script>
@@ -22,18 +22,20 @@
   </head>
   <body>
     <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
-    <insert-e src="/top-banner.html"></insert-e>
+    <script
+      src="../../Scripts/html-include.js"
+      target="../../top-banner.html"
+      position="afterbegin"></script>
     <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
 
     <section class="修剪路径总区 总区">
-      <insert-e src="../control.html"></insert-e>
+      <script
+        src="../../Scripts/html-include.js"
+        target="../control.html"
+        position="afterbegin"></script>
       <p class="交互标题">修剪路径</p>
-      <figure class="展示区">
-      </figure>
-      <div class="控制区">
-      </div>
+      <figure class="展示区"></figure>
+      <div class="控制区"></div>
     </section>
-
-    <script src="/Scripts/top-banner.js" defer></script>
   </body>
 </html>

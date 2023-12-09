@@ -27,11 +27,14 @@
     <script
       src="https://kit.fontawesome.com/d0483e3bd3.js"
       crossorigin="anonymous"></script>
-    <script src="/Scripts/html-include.js"></script>
+    <script src="/Scripts/top-banner.js" defer></script>
   </head>
   <body>
     <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
-    <insert-e src="/top-banner.html"></insert-e>
+    <script
+      src="../../Scripts/html-include.js"
+      target="../../top-banner.html"
+      position="afterbegin"></script>
     <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
 
     <!-- --------------------------- ↓ 人物 -------------------------------- -->
@@ -125,8 +128,10 @@
           <a href="https://www.javatpoint.com/sqlite-tutorial" target="_blank">
             <section class="card-text">
               <div class="card-text-title">JavaTpoint</div>
-              <p>由印度人 Sonoo Jaiswal
-                创办。拥有详实的SQLite教程，每个章节都配有相应的范例、截图。</p>
+              <p>
+                由印度人 Sonoo Jaiswal
+                创办。拥有详实的SQLite教程，每个章节都配有相应的范例、截图。
+              </p>
             </section>
           </a>
         </section>
@@ -145,7 +150,9 @@
           <a href="https://www.w3resource.com/sqlite/" target="_blank">
             <section class="card-text">
               <div class="card-text-title">W3resource</div>
-              <p>成立于2008年10月，2011年2月7日上线，w3resource.com旨在成为最大的在线Web开发资源，初学者可以将其用作综合学习资源，经验丰富的Web开发人员可以将其作为参考。</p>
+              <p>
+                成立于2008年10月，2011年2月7日上线，w3resource.com旨在成为最大的在线Web开发资源，初学者可以将其用作综合学习资源，经验丰富的Web开发人员可以将其作为参考。
+              </p>
             </section>
           </a>
         </section>
@@ -164,8 +171,10 @@
           <a href="https://www.guru99.com/sqlite-tutorial.html" target="_blank">
             <section class="card-text">
               <div class="card-text-title">Guru99</div>
-              <p>Guru99是由 Krishna
-                创办的在线教程网站，宗旨是致力于让大众负担得起优质教育。提供了详实的SQLite教程。</p>
+              <p>
+                Guru99是由 Krishna
+                创办的在线教程网站，宗旨是致力于让大众负担得起优质教育。提供了详实的SQLite教程。
+              </p>
             </section>
           </a>
         </section>
@@ -188,7 +197,11 @@
             target="_blank">
             <section class="card-text">
               <div class="card-text-title">TechOnTheNet</div>
-              <p>由一群技术爱好者创办的技术教程网站，提供了在工作中使用的数据库和 MS Office 产品的信息来源。当需要快速查找语法或示例时，该站点总是可以提供必要信息。</p>
+              <p>
+                由一群技术爱好者创办的技术教程网站，提供了在工作中使用的数据库和
+                MS Office
+                产品的信息来源。当需要快速查找语法或示例时，该站点总是可以提供必要信息。
+              </p>
             </section>
           </a>
         </section>
@@ -197,8 +210,10 @@
     </div>
     <!-- --------------------------- ↑ 教程资源卡片组 -------------------------------- -->
 
-    <insert-e src="../back.html"></insert-e>
+    <script
+      src="../../Scripts/html-include.js"
+      target="../back.html"
+      position="afterbegin"></script>
     <script src="/Scripts/tutorial-card-show.js"></script>
-    <script src="/Scripts/top-banner.js" defer></script>
   </body>
 </html>

@@ -20,10 +20,13 @@
     <script
       src="https://kit.fontawesome.com/d0483e3bd3.js"
       crossorigin="anonymous"></script>
-    <script src="/Scripts/html-include.js"></script>
+    <script src="/Scripts/top-banner.js" defer></script>
   </head>
   <body>
-    <insert-e src="/top-banner.html"></insert-e>
+    <script
+      src="../Scripts/html-include.js"
+      target="../top-banner.html"
+      position="afterbegin"></script>
 
     <!-- <div class="logo-container">
       <img src="/Images/Page-Logos/Eternal-Logo.png" alt="永恒Logo" />
@@ -43,7 +46,8 @@
         <ul class="explain-list">
           <li>
             永恒<span>是</span
-            ><em> 探索/试验性质的 </em>复合型<span>学习网站</span>概念站，仍然在不断发展、改进、完善中。
+            ><em> 探索/试验性质的 </em
+            >复合型<span>学习网站</span>概念站，仍然在不断发展、改进、完善中。
           </li>
           <li>
             永恒<span>是</span>众人<span>贡献/分享/建设</span>形成的<span>教程资料/学习心得</span>交流平台。
@@ -144,8 +148,10 @@
       </div>
     </div>
 
-    <insert-e src="/bottom-banner.html"></insert-e>
+    <script
+      src="../Scripts/html-include.js"
+      target="../bottom-banner.html"
+      position="beforeend"></script>
     <script src="/Scripts/purpose.js"></script>
-    <script src="/Scripts/top-banner.js" defer></script>
   </body>
 </html>

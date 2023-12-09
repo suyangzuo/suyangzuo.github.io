@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="../control.css" />
     <link rel="stylesheet" href="../interactive-common.css" />
     <link rel="stylesheet" href="./display-basic.css" />
-    <script src="/Scripts/html-include.js"></script>
+    <script src="/Scripts/top-banner.js" defer></script>
     <script
       src="https://kit.fontawesome.com/d0483e3bd3.js"
       crossorigin="anonymous"></script>
@@ -22,11 +22,17 @@
   </head>
   <body>
     <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
-    <insert-e src="/top-banner.html"></insert-e>
+    <script
+      src="../../Scripts/html-include.js"
+      target="../../top-banner.html"
+      position="afterbegin"></script>
     <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
 
     <section class="块行内总区 总区">
-      <insert-e src="../control.html"></insert-e>
+      <script
+        src="../../Scripts/html-include.js"
+        target="../control.html"
+        position="afterbegin"></script>
       <p class="交互标题">基础布局</p>
       <figure class="块行内-图像区">
         <div class="图像-块 块-1">1 - block</div>
@@ -202,7 +208,5 @@
         </datalist>
       </div>
     </section>
-
-    <script src="/Scripts/top-banner.js" defer></script>
   </body>
 </html>

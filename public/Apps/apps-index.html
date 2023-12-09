@@ -20,10 +20,13 @@
     <link rel="stylesheet" href="/Font-Awesome-Free/css/brands.css" />
     <link rel="stylesheet" href="/Font-Awesome-Free/css/solid.css" />
     <link rel="stylesheet" href="./apps-index.css" />
-    <script src="/Scripts/html-include.js"></script>
+    <script src="/Scripts/top-banner.js" defer></script>
   </head>
   <body>
-    <insert-e src="/top-banner.html"></insert-e>
+    <script
+      src="../../Scripts/html-include.js"
+      target="../../top-banner.html"
+      position="afterbegin"></script>
     <section class="app-banner">
       <figure class="顶栏图片">
         <img src="/Images/Apps/App-例图03.png" alt="App" />
@@ -68,7 +71,10 @@
       </div>
       <div class="app 图像编辑器"></div>
     </section>
-    <insert-e src="/bottom-banner.html"></insert-e>
+    <script
+      src="../Scripts/html-include.js"
+      target="../bottom-banner.html"
+      position="beforeend"></script>
     <script src="/Apps/apps.js"></script>
   </body>
 </html>

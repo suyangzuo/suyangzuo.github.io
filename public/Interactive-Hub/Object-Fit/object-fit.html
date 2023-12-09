@@ -12,9 +12,9 @@
     <link rel="stylesheet" href="/Styles/common.css" />
     <link rel="stylesheet" href="/Styles/top-banner-common.css" />
     <link rel="stylesheet" href="../control.css" />
-    <link rel="stylesheet" href="../interactive-common.css">
+    <link rel="stylesheet" href="../interactive-common.css" />
     <link rel="stylesheet" href="./object-fit.css" />
-    <script src="/Scripts/html-include.js"></script>
+    <script src="/Scripts/top-banner.js" defer></script>
     <script
       src="https://kit.fontawesome.com/d0483e3bd3.js"
       crossorigin="anonymous"></script>
@@ -22,16 +22,22 @@
   </head>
   <body>
     <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
-    <insert-e src="/top-banner.html"></insert-e>
+    <script
+      src="../../Scripts/html-include.js"
+      target="../../top-banner.html"
+      position="afterbegin"></script>
     <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
 
     <section class="对象匹配总区 总区">
-      <insert-e src="../control.html"></insert-e>
+      <script
+        src="../../Scripts/html-include.js"
+        target="../control.html"
+        position="afterbegin"></script>
       <p class="交互标题">对象匹配</p>
       <figure class="对象匹配-图像区">
         <img src="./示例图-已缩放.jpg" alt="示例图" />
       </figure>
-      <div class="选项区">
+      <section class="选项区">
         <section class="盒子选项 选项类型">
           <p class="选项标题">盒子选项</p>
           <div class="控件组 盒子控件组">
@@ -61,7 +67,8 @@
                   type="radio"
                   id="图像尺寸-原始大小"
                   name="图像尺寸项"
-                  class="复选框" checked/>
+                  class="复选框"
+                  checked />
               </div>
               <section class="选项分隔区"></section>
               <div class="控件子组">
@@ -87,7 +94,10 @@
               </div>
             </div>
             <div class="控件类型区 控件-对象匹配">
-              <p class="属性名称"><span class="中文 属性中文">对象匹配</span><span class="代码 属性代码">object-fit</span></p>
+              <p class="属性名称">
+                <span class="中文 属性中文">对象匹配</span
+                ><span class="代码 属性代码">object-fit</span>
+              </p>
               <div class="控件类型操作区">
                 <div class="控件子组">
                   <label for="对象匹配-覆盖">
@@ -98,7 +108,7 @@
                     type="radio"
                     id="对象匹配-覆盖"
                     name="对象匹配项"
-                    class="单选框" />  
+                    class="单选框" />
                 </div>
                 <div class="控件子组">
                   <label for="对象匹配-包含">
@@ -109,7 +119,7 @@
                     type="radio"
                     id="对象匹配-包含"
                     name="对象匹配项"
-                    class="单选框" />  
+                    class="单选框" />
                 </div>
                 <div class="控件子组">
                   <label for="对象匹配-填充">
@@ -120,12 +130,15 @@
                     type="radio"
                     id="对象匹配-填充"
                     name="对象匹配项"
-                    class="单选框" />  
-                </div>  
+                    class="单选框" />
+                </div>
               </div>
             </div>
             <div class="控件类型区 控件-对象位置">
-              <p class="属性名称"><span class="中文 属性中文">对象位置</span><span class="代码 属性代码">object-position</span></p>
+              <p class="属性名称">
+                <span class="中文 属性中文">对象位置</span
+                ><span class="代码 属性代码">object-position</span>
+              </p>
               <div class="控件类型操作区 对象位置操作区">
                 <div class="控件子组">
                   <label class="label-x轴" for="对象位置-X轴">
@@ -174,11 +187,9 @@
                 </datalist>
               </div>
             </div>
-          </div>
+          </section>
         </section>
-      </div>
+      </section>
     </section>
-
-    <script src="/Scripts/top-banner.js" defer></script>
   </body>
 </html>

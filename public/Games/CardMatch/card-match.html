@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-  <title>卡片记忆</title>
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>卡片记忆</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -20,10 +20,14 @@
     <script
       src="https://kit.fontawesome.com/d0483e3bd3.js"
       crossorigin="anonymous"></script>
-    <script src="/Scripts/html-include.js"></script>
+    <script src="/Scripts/top-banner.js" defer></script>
   </head>
   <body>
-    <insert-e src="/top-banner.html"></insert-e>
+    <script
+      src="/Scripts/html-include.js"
+      target="/top-banner.html"
+      position="afterbegin"></script>
+
     <div class="background-image">
       <img src="../Images-Common/Game-Background-02.webp" alt="游戏背景墙" />
     </div>
@@ -57,6 +61,5 @@
       <div id="card-grid"></div>
     </div>
     <script src="./gameLogic.js"></script>
-    <script src="/Scripts/top-banner.js" defer></script>
   </body>
 </html>

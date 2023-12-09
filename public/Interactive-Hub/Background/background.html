@@ -18,14 +18,21 @@
     <script
       src="https://kit.fontawesome.com/d0483e3bd3.js"
       crossorigin="anonymous"></script>
+    <script src="/Scripts/top-banner.js" defer></script>
   </head>
   <body>
     <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
-    <insert-e src="/top-banner.html"></insert-e>
+    <script
+      src="../../Scripts/html-include.js"
+      target="../../top-banner.html"
+      position="afterbegin"></script>
     <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
 
     <section class="背景总区 总区">
-      <insert-e src="../control.html"></insert-e>
+      <script
+        src="../../Scripts/html-include.js"
+        target="../control.html"
+        position="afterbegin"></script>
       <p class="交互标题">背景</p>
       <div class="背景-展示区">
         <div class="背景-参考层"></div>
@@ -140,6 +147,5 @@
     </section>
 
     <script src="./background.js"></script>
-    <script src="/Scripts/top-banner.js" defer></script>
   </body>
 </html>

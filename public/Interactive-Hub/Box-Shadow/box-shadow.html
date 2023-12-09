@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="../control.css" />
     <link rel="stylesheet" href="../interactive-common.css" />
     <link rel="stylesheet" href="./box-shadow.css" />
-    <script src="/Scripts/html-include.js"></script>
+    <script src="/Scripts/top-banner.js" defer></script>
     <script
       src="https://kit.fontawesome.com/d0483e3bd3.js"
       crossorigin="anonymous"></script>
@@ -22,11 +22,17 @@
   </head>
   <body>
     <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
-    <insert-e src="/top-banner.html"></insert-e>
+    <script
+      src="../../Scripts/html-include.js"
+      target="../../top-banner.html"
+      position="afterbegin"></script>
     <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
 
     <section class="盒子阴影总区 总区">
-      <insert-e src="../control.html"></insert-e>
+      <script
+        src="../../Scripts/html-include.js"
+        target="../control.html"
+        position="afterbegin"></script>
       <p class="交互标题">盒子阴影</p>
       <div class="主区域">
         <div class="数量与展示区">
@@ -45,18 +51,21 @@
           <div class="控制区" 已屏蔽>
             <div class="阴影内嵌">
               <label for="shadow-inset" class="阴影内嵌-label"
-                >
-                <div class="标签内部"><span class="中文">内嵌</span
-                  ><span class="代码">inset</span></label
-                ></div>
-                <div class="标签滑块分隔区" for="shadow-inset"></div>
+                ><div class="标签内部">
+                  <span class="中文">内嵌</span><span class="代码">inset</span>
+                </div></label
+              >
+              <div class="标签滑块分隔区" for="shadow-inset"></div>
               <input type="checkbox" id="shadow-inset" />
             </div>
             <div class="阴影属性组">
               <div class="阴影属性 x轴偏移">
                 <label for="x轴偏移" class="阴影属性标签"
-                  ><div class="标签内部"><span class="中文">x轴偏移</span>
-                    <span class="代码">offset-x</span></div></label>
+                  ><div class="标签内部">
+                    <span class="中文">x轴偏移</span>
+                    <span class="代码">offset-x</span>
+                  </div></label
+                >
                 <button class="阴影属性按钮 减">&#8722;</button>
                 <div class="滑块区">
                   <input
@@ -81,8 +90,11 @@
               </div>
               <div class="阴影属性 y轴偏移">
                 <label for="y轴偏移" class="阴影属性标签"
-                  ><div class="标签内部"><span class="中文">y轴偏移</span
-                    ><span class="代码">offset-y</span></div></label>
+                  ><div class="标签内部">
+                    <span class="中文">y轴偏移</span
+                    ><span class="代码">offset-y</span>
+                  </div></label
+                >
                 <button class="阴影属性按钮 减">&#8722;</button>
                 <div class="滑块区">
                   <input
@@ -107,8 +119,11 @@
               </div>
               <div class="阴影属性 模糊半径">
                 <label for="模糊半径" class="阴影属性标签"
-                  ><div class="标签内部"><span class="中文">模糊半径</span
-                    ><span class="代码">blur-radius</span></div></label>
+                  ><div class="标签内部">
+                    <span class="中文">模糊半径</span
+                    ><span class="代码">blur-radius</span>
+                  </div></label
+                >
                 <button class="阴影属性按钮 减" 已屏蔽>&#8722;</button>
                 <div class="滑块区">
                   <input
@@ -131,8 +146,11 @@
               </div>
               <div class="阴影属性 扩散半径">
                 <label for="扩散半径" class="阴影属性标签"
-                  ><div class="标签内部"><span class="中文">扩散半径</span
-                    ><span class="代码">spread-radius</span></div></label>
+                  ><div class="标签内部">
+                    <span class="中文">扩散半径</span
+                    ><span class="代码">spread-radius</span>
+                  </div></label
+                >
                 <button class="阴影属性按钮 减">&#8722;</button>
                 <div class="滑块区">
                   <input
@@ -178,7 +196,5 @@
         </div>
       </div>
     </section>
-
-    <script src="/Scripts/top-banner.js" defer></script>
   </body>
 </html>

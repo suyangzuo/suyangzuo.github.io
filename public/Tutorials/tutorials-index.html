@@ -23,11 +23,14 @@
     <script
       src="https://kit.fontawesome.com/d0483e3bd3.js"
       crossorigin="anonymous"></script>
-    <script src="/Scripts/html-include.js"></script>
+    <script src="/Scripts/top-banner.js" defer></script>
   </head>
   <body>
     <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
-    <insert-e src="/top-banner.html"></insert-e>
+    <script
+      src="../Scripts/html-include.js"
+      target="../top-banner.html"
+      position="afterbegin"></script>
     <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
 
     <div class="说明区">
@@ -614,7 +617,9 @@
       </div>
     </div>
 
-    <insert-e src="/bottom-banner.html"></insert-e>
-    <script src="/Scripts/top-banner.js" defer></script>
+    <script
+      src="../Scripts/html-include.js"
+      target="../bottom-banner.html"
+      position="beforeend"></script>
   </body>
 </html>

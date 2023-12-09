@@ -5,10 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>游戏导航</title>
-    <link
-      rel="icon"
-      href="/Games/Mario-Run.gif"
-      type="image/x-icon" />
+    <link rel="icon" href="/Games/Mario-Run.gif" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -23,10 +20,13 @@
     <script
       src="https://kit.fontawesome.com/d0483e3bd3.js"
       crossorigin="anonymous"></script>
-    <script src="/Scripts/html-include.js"></script>
+    <script src="/Scripts/top-banner.js" defer></script>
   </head>
   <body>
-    <insert-e src="/top-banner.html"></insert-e>
+    <script
+      src="/Scripts/html-include.js"
+      target="/top-banner.html"
+      position="afterbegin"></script>
 
     <div class="games-navigator">
       <div class="game-grid game-1" id="card-match">
@@ -64,8 +64,9 @@
       <div class="game-grid game-23" id=""></div>
       <div class="game-grid game-24" id=""></div>
     </div>
-    <insert-e src="/bottom-banner.html"></insert-e>
-
-    <script src="/Scripts/top-banner.js" defer></script>
+    <script
+      src="/Scripts/html-include.js"
+      target="/bottom-banner.html"
+      position="beforeend"></script>
   </body>
 </html>
