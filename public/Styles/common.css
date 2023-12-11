@@ -65,6 +65,7 @@ li > a > i {
 
 footer {
   /* position: absolute; */
+  position: relative;
   bottom: 0;
   z-index: 2;
   display: flex;

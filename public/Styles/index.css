@@ -144,11 +144,13 @@
   /* background-color: #762b43; */
   font-size: 1.45rem;
   font-family: 霞鹜文楷;
-  width: 280px;
+  /* width: 280px; */
   text-align: center;
   text-shadow: 2px 2px 2px #222;
-  /* padding: 15px 0; */
-  border-radius: 5px;
+  padding: 10px 15px;
+  border-radius: 10px;
+  background-image: linear-gradient(#000d 20%, #333c 80%);
+  box-shadow: inset 0 2px 1px #fff5, 0 2px 2px #000a;
 }
 
 .欢迎链接区 {
