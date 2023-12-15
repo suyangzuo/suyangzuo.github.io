@@ -35,7 +35,7 @@
   position: relative;
   /* gap: 50px; */
   /* padding: 0 0 calc(5% + 65px) 0; */
-  padding: 0 0 10dvh 0;
+  padding: 0 0 17.5dvh 0;
   overflow: hidden;
 }
 
@@ -82,7 +82,7 @@
 .欢迎按钮:nth-child(2) {
   width: 120px;
   justify-content: center;
-  gap: 10px;
+  gap: 5px;
 }
 
 .欢迎按钮:nth-child(1) > span:nth-child(1) {
@@ -133,11 +133,11 @@
 }
 
 .欢迎按钮:nth-child(2):hover .宗旨箭头 {
-  background-color: white;
+  scale: 1.25;
 }
 
 .欢迎图像容器 {
-  width: min(500px, 50vw);
+  width: min(700px, 50vw);
   height: 100%;
 }
 
@@ -398,13 +398,20 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
   /* background: no-repeat center/55% url("../Images/Index-Images/监视器.png"); */
   /* background-color: #29323c; */
 }
 
-.games > :not(.section-bg-img) {
+.灯光 {
+  position: absolute;
   z-index: 0;
+  border-radius: 500px;
 }
+
+/* .games > :not(.section-bg-img) {
+  z-index: 0;
+} */
 
 .games-entrance {
   display: block;
@@ -419,7 +426,7 @@
   translate: -50% -50%;
   scale: 0;
   font-size: 1.75rem;
-  color: white;
+  color: rgb(42, 151, 140);
   text-shadow: 2px 2px 4px #000;
   opacity: 0;
   transition: 0.25s;
@@ -431,14 +438,15 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 2px;
-  background-color: white;
+  height: 1px;
+  background-color: #fffa;
   scale: 0;
   box-shadow: 2px 2px 5px 0 #444;
 }
 
 .游戏入口 {
   position: absolute;
+  z-index: 1;
   width: 165px;
   height: 165px;
   border-radius: 200px;
@@ -451,7 +459,7 @@
   font-size: 1.5rem;
   background-color: #000a;
   backdrop-filter: blur(5px);
-  box-shadow: 5px 5px 10px 0 #333;
+  /* box-shadow: 5px 5px 10px 0 #333; */
   transition: 0.25s;
 }
 
@@ -894,37 +902,17 @@
 }
 
 @media screen and (max-width: 650px) {
-  .logo-section {
-    width: 100dvw;
-  }
-
-  #eternal-title-text {
-    width: 90%;
-    height: auto;
-    aspect-ratio: 2 !important;
-  }
-
-  .logo-brief {
-    width: 90%;
-    font-size: 6dvw;
-  }
-
-  .site-brief {
-    width: 90dvw;
-    align-items: center;
-  }
-
   .欢迎文本区 {
-    width: 100%;
+    width: 90%;
   }
 
-  .site-brief-text {
-    text-align: justify;
+  .欢迎文本区 > h1 {
+    font-size: 2.25rem;
   }
 
-  .平台特色Logo {
-    width: 30%;
-    height: 50px;
+  .欢迎图像容器 {
+    width: min(500px, 95vw);
+    height: 100%;
   }
 
   .图像序号指示器组 {
@@ -973,23 +961,6 @@
 }
 
 @media screen and (max-height: 900px) and (max-width: 1000px) {
-  .logo-section {
-    height: 300px;
-    gap: 4dvh;
-    overflow: hidden;
-  }
-
-  #eternal-title-text {
-    height: 120px;
-    width: 240px;
-    gap: 15px;
-  }
-
-  .logo-brief {
-    width: 95dvw;
-    font-size: 1.35rem;
-  }
-
   .learn-brief {
     display: none;
   }

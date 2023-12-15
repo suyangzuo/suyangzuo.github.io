@@ -9,7 +9,7 @@
 }
 
 :root {
-  --bg-color: rgb(33, 34, 44);
+  --bg-color: rgb(23, 28, 33);
   --f-color: #eeeeee;
   --top-banner-color: #9e2a2b;
   --contributers-bg-color: #183656;
@@ -73,7 +73,7 @@ footer {
   align-items: center;
   width: 100vw;
   height: 150px;
-  background-color: rgba(25, 26, 32, 0.8);
+  /* background-color: rgba(25, 26, 32, 0.8); */
   /* background-color: rgba(77, 129, 125, 0.75); */
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
