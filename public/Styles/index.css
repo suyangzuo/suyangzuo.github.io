@@ -16,7 +16,7 @@
 } */
 
 .main-content {
-  background-image: linear-gradient(60deg, #0d0f11 0%, #101315 100%);
+  background-image: linear-gradient(60deg, #0d0f11 0%, #22272b 100%);
   position: relative;
   margin: 0 auto;
   width: 100%;
@@ -29,10 +29,9 @@
   height: calc(100dvh - 50px);
   margin: 0 auto;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 5dvh;
+  gap: 10%;
   position: relative;
   /* gap: 50px; */
   /* padding: 0 0 calc(5% + 65px) 0; */
@@ -40,195 +39,113 @@
   overflow: hidden;
 }
 
-.welcome-main > :not(.section-bg-img) {
-  z-index: 0;
-}
-
-.section-bg-img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.section-bg-img > img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* .welcome-main > .section-bg-img > img {
-  filter: brightness(75%);
-}
-
-.intro-section > .section-bg-img::after {
-  content: "";
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(-90deg, #000 0%, rgba(0, 0, 0, 0));
-  position: absolute;
-  top: 0;
-  left: 0;
-} */
-
-.logo-section {
-  /* background-color: cornflowerblue; */
+.欢迎文本区 {
   position: relative;
-  width: 300px;
-  height: fit-content;
-  padding: 1% 0 0 0;
+  z-index: 1;
+  width: min(500px, 95vw);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 15px;
-  /* border-bottom: solid 1px rgb(138, 138, 138); */
+  gap: 25px;
 }
 
-#eternal-title-text {
-  width: 300px;
-  height: 150px;
-  /* background-color: cornflowerblue; */
+.欢迎文本区 > h1 {
+  font-size: 3rem;
+}
+
+.欢迎文本区 > p {
+  color: gray;
+}
+
+.欢迎按钮区 {
+  margin: 50px 0 0 0;
+  display: flex;
+  gap: 40px;
+}
+
+.欢迎按钮 {
+  border-radius: 200px;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  font-size: 1.05rem;
   position: relative;
-  -webkit-user-drag: none;
-  -webkit-user-select: none;
-  user-select: none;
-  filter: drop-shadow(5px 5px 5px #000);
-}
-
-#永,
-#恒 {
-  width: 45%;
-  height: 100%;
-  overflow: hidden;
-  filter: drop-shadow(10px 10px 10px #000a);
-}
-
-#永 > img,
-#恒 > img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  -webkit-mask-size: 100%;
-  mask-size: 100%;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-  -webkit-mask-position: center;
-  -webkit-user-drag: none;
-  -webkit-user-select: none;
-  user-select: none;
-  /* filter: brightness(0.9) invert(0.5) sepia(0.5) hue-rotate(110deg)
-    saturate(500%); */
-}
-
-#永 > img {
-  -webkit-mask-image: url(/Images/Index-Images/永.png);
-  mask-image: url(/Images/Index-Images/永.png);
-}
-
-#恒 > img {
-  -webkit-mask-image: url(/Images/Index-Images/恒.png);
-  mask-image: url(/Images/Index-Images/恒.png);
-}
-
-.logo-brief {
-  position: relative;
-  /* background-color: #762b43; */
-  font-size: 1.45rem;
-  font-family: 霞鹜文楷;
-  /* width: 280px; */
-  text-align: center;
-  text-shadow: 2px 2px 2px #222;
-  padding: 10px 15px;
-  border-radius: 10px;
-  background-image: linear-gradient(#000d 20%, #333c 80%);
-  box-shadow: inset 0 2px 1px #fff5, 0 2px 2px #000a;
-}
-
-.欢迎链接区 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 50px;
-}
-
-.欢迎链接区 > * {
-  flex-shrink: 0;
-}
-
-.欢迎链接 {
-  width: 225px;
-  height: 235px;
-  /* background-color: #999; */
-  filter: drop-shadow(5px 5px 5px #222);
   overflow: hidden;
 }
 
-.欢迎链接:nth-child(1) {
-  border-radius: 0 15px 0 15px;
+.欢迎按钮:nth-child(1) {
+  background-color: rgb(42, 151, 140);
+  width: 200px;
+  padding: 0 20px;
 }
 
-.欢迎链接:nth-child(2) {
-  border-radius: 15px 0 15px 0;
+.欢迎按钮:nth-child(2) {
+  width: 120px;
+  justify-content: center;
+  gap: 10px;
 }
 
-.欢迎链接:hover img {
-  filter: brightness(50%);
-  animation: 欢迎链接背景动画 15s ease-in-out infinite;
+.欢迎按钮:nth-child(1) > span:nth-child(1) {
+  translate: -30% 0;
 }
 
-@keyframes 欢迎链接背景动画 {
-  2.5% {
-    scale: 1;
-  }
-  50% {
-    scale: 1.125;
-  }
-  97.5% {
-    scale: 1;
-  }
-}
-
-.欢迎链接 > a {
-  width: 100%;
-  height: 100%;
+.欢迎箭头 {
+  font-size: 0.8rem;
+  color: rgb(42, 151, 140);
   display: flex;
   justify-content: center;
-  align-items: flex-end;
-  position: relative;
-}
-
-.欢迎链接背景 {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  object-fit: cover;
+  align-items: center;
   transition: 250ms;
 }
 
-.欢迎标题 {
-  position: relative;
-  z-index: 0;
-  font-size: 1.25rem;
-  margin: 0 0 12.5% 0;
-  text-shadow: 2px 2px 2px #222;
+.贡献者箭头 {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 5rem;
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  right: 2.5%;
+  translate: 0 -50%;
 }
 
-/* .欢迎 {
-  width: calc(650px / 4);
-  height: 150px;
-  background-color: #61405c;
-} */
+.欢迎按钮:nth-child(1):hover .贡献者箭头 {
+  width: 3.5rem;
+  height: 3.5rem;
+  right: 0;
+  border-radius: 0;
+  font-size: 1rem;
+}
+
+.宗旨箭头 {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.欢迎按钮:nth-child(2):hover span:nth-child(1) {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgb(42, 151, 140);
+}
+
+.欢迎按钮:nth-child(2):hover .宗旨箭头 {
+  background-color: white;
+}
+
+.欢迎图像容器 {
+  width: min(500px, 50vw);
+  height: 100%;
+}
+
+.欢迎图像容器 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 /* <!-- ------------------ ↑ 欢迎内容 ------------------- --> */
 
 /* <!-- ------------------ ↓ 学习服务 ------------------- --> */
@@ -829,13 +746,11 @@
 /* <!-- ------------------ ↑ 美图欣赏 ------------------- --> */
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
-@media screen and (width <= 1920px) {
-  .欢迎标题 {
-    font-size: 1.05rem;
-  }
-}
-
 @media screen and (max-width: 1200px) {
+  .welcome-main {
+    gap: 5%;
+  }
+
   .learn-title,
   .learn-brief {
     width: 90dvw;
@@ -858,6 +773,19 @@
 }
 
 @media screen and (max-width: 1100px) {
+  .欢迎图像区 {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    translate: 50% -50%;
+    opacity: 25%;
+  }
+
+  .欢迎图像容器 {
+    width: min(500px, 75vw);
+    height: 100%;
+  }
+
   .图像长廊分区::after {
     position: absolute;
     width: 100%;
