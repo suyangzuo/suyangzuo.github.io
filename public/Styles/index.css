@@ -181,13 +181,13 @@
   0% {
     clip-path: inset(0 0 0 0);
   }
-  45% {
+  47.5% {
     clip-path: inset(0 0 0 100%);
   }
   50% {
     clip-path: inset(0 0 0 100%);
   }
-  95% {
+  97.5% {
     clip-path: inset(0 0 0 0);
   }
   100% {
@@ -215,12 +215,10 @@
     left: 0;
   }
   45% {
-    left: 100%;
-  }
-  45% {
     opacity: 1;
   }
   50% {
+    left: calc(100% + 75px);
     opacity: 0;
   }
   100% {
@@ -242,12 +240,10 @@
     right: 0;
   }
   45% {
-    right: 100%;
-  }
-  45% {
     opacity: 1;
   }
   50% {
+    right: calc(100% + 75px);
     opacity: 0;
   }
   100% {

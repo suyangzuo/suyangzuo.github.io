@@ -63,72 +63,172 @@ li > a > i {
   transition: 0.25s;
 }
 
-footer {
-  /* position: absolute; */
+#公共页脚 {
   position: relative;
   bottom: 0;
-  z-index: 2;
+  z-index: 100;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
+  gap: 10vw;
   width: 100vw;
-  height: 150px;
-  /* background-color: rgba(25, 26, 32, 0.8); */
-  /* background-color: rgba(77, 129, 125, 0.75); */
-  backdrop-filter: blur(5px);
+  padding: 100px 5vw;
+  backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(5px);
 }
 
-footer > .author > p:nth-child(3) > a {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  transition: 0.15s;
-}
-
-footer > .author > p:nth-child(3):hover > a {
-  color: #c97719;
-}
-
-address {
+#页脚Logo区 {
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 50px;
+}
+
+#页脚Logo图像区 {
+  display: flex;
+  justify-content: center;
   align-items: center;
   gap: 25px;
-  font-style: normal;
 }
 
-.address {
-  font-size: 1.25rem;
+#页脚Logo容器 {
+  width: 100px;
+  height: 100px;
+  border-radius: 300px;
+  overflow: hidden;
+}
+
+#页脚Logo容器 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+#永恒Logo文字区 {
   display: flex;
+  justify-content: center;
   align-items: center;
+  gap: 7.5px;
 }
 
-.address > span:hover,
-.address > img:hover {
-  animation: 底栏链接动画 0.5s ease-in-out infinite alternate;
+.永恒Logo文字背景 {
+  width: 75px;
+  height: 75px;
+  background: center/cover url(../Images/Index-Images/黄金质感-01.jpg);
 }
 
-@keyframes 底栏链接动画 {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(1.125);
-  }
+.永恒Logo文字背景-永 {
+  outline: solid 5px white;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-image: url(../Images/Index-Images/永.png);
+  mask-image: url(../Images/Index-Images/永.png);
 }
 
-.address > img {
-  height: 1.5rem;
-  filter: grayscale(1) brightness(2.5);
+.永恒Logo文字背景-恒 {
+  outline: solid 5px white;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-image: url(../Images/Index-Images/恒.png);
+  mask-image: url(../Images/Index-Images/恒.png);
 }
 
+.永恒Logo文字背景 > img {
+  height: 100%;
+  width: 45%;
+  object-fit: contain;
+}
+
+#页脚文本容器 {
+  max-width: 450px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+#页脚文本容器 > p:nth-child(2) {
+  color: #aaa;
+}
+
+#页脚信息区 {
+  display: flex;
+  align-items: flex-start;
+  gap: 5vw;
+}
+
+.页脚信息分区标题 {
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.页脚信息分区链接 {
+  width: fit-content;
+  height: 100%;
+  padding: 7.5px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12.5px;
+}
+
+.页脚信息分区链接图容器 {
+  height: 60%;
+  width: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.页脚信息分区链接图容器 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.页脚信息分区链接 > span {
+  color: gray;
+  transition: 200ms;
+}
+
+.页脚信息分区链接:hover > span {
+  color: rgb(42, 151, 140);
+}
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
+@media screen and (width < 1300px) {
+  #公共页脚 {
+    flex-direction: column;
+    gap: 50px;
+  }
+}
+
 @media screen and (max-width: 550px) {
-  .author {
-    width: 55%;
+  #公共页脚 {
+    padding: 50px 0;
   }
 
-  .author > p {
-    font-size: 0.85rem;
+  #页脚Logo区 {
+    padding: 0 10px;
+  }
+
+  #页脚信息区 {
+    gap: 10px;
+  }
+
+  .页脚信息分区标题 {
+    font-size: 1rem;
+    padding: 10px 2.5px;
+  }
+
+  .页脚信息分区链接 {
+    padding: 7.5px 2.5px;
+  }
+
+  .页脚信息分区链接 > span {
+    font-size: 0.75rem;
   }
 }
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */
