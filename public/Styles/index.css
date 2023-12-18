@@ -278,7 +278,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: clamp(100px, 15vh, 300px);
+  gap: clamp(100px, 7.5vh, 300px);
 }
 
 .learn-profile {
@@ -286,21 +286,24 @@
   height: max(300px, 30vh);
   aspect-ratio: 0.8;
   background-image: radial-gradient(
-    circle at 10% 10%,
-    rgba(0, 0, 0, 0.85) 25%,
-    rgba(0, 0, 0, 0.55) 90%
+    circle at 30% 30%,
+    rgba(40, 40, 40, 0.85) 25%,
+    rgba(20, 20, 20, 0.45) 90%
   );
   box-shadow: 5px 5px 10px 0 #0005;
   border-radius: 10px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
-  /* gap: 50px; */
-  padding: 25px 0;
+  gap: 50px;
 }
 
 .profile-title {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
   height: fit-content;
   display: flex;
   flex-direction: column;
@@ -308,40 +311,32 @@
   gap: 10px;
 }
 
-.profile-logo-container {
+.profile-github-banner-container {
   width: 100%;
-  height: 35px;
-  border-radius: 200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 100px;
 }
 
-.profile-logo {
-  width: 30%;
+.profile-github-banner-container > img {
+  width: 100%;
   height: 100%;
-  object-fit: contain;
-  animation: profile-logo-rotate 5s linear infinite;
+  object-fit: cover;
 }
 
-@keyframes profile-logo-rotate {
-  from {
-    rotate: 0;
-    filter: hue-rotate(0);
-  }
-  to {
-    rotate: 360deg;
-    filter: hue-rotate(360deg);
-  }
+.profile-avatar-container {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  border-radius: 50px;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  overflow: hidden;
 }
 
-.profile-logo-container > h3 {
-  color: White;
-}
-
-.profile-title > p:nth-child(2) {
-  color: gray;
-  text-shadow: 2px 2px 2px #0005;
+.profile-avatar-container > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .profile-brief {
@@ -379,14 +374,31 @@
 
 .profile-github > h4 {
   font-weight: normal;
-  color: goldenrod;
+  color: gray;
   text-align: center;
+  justify-content: center;
 }
 
 .profile-link {
-  padding: 15px 20px;
+  padding: 10px 20px;
   border-radius: 5px;
   background-color: var(--网站风格颜色);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  transition: 150ms;
+}
+
+.profile-link > span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+}
+
+.profile-link:hover {
+  filter: brightness(150%);
 }
 
 .learn-list {
@@ -967,6 +979,16 @@
   .欢迎图像容器 {
     width: min(500px, 95vw);
     height: 100%;
+  }
+
+  .欢迎按钮区 {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .欢迎按钮:nth-child(2) {
+    font-size: 0.95rem;
   }
 
   .图像序号指示器组 {
