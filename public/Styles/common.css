@@ -1,3 +1,7 @@
+:root {
+  --网站风格颜色: rgb(42, 151, 140);
+}
+
 @font-face {
   font-family: HarmonyOS Sans SC;
   src: url(/Fonts/HarmonyOS_Sans_SC_Regular.ttf);
@@ -63,6 +67,7 @@ li > a > i {
   transition: 0.25s;
 }
 
+/* ------------------------- ↓ 页脚 ------------------------- */
 #公共页脚 {
   position: relative;
   bottom: 0;
@@ -149,6 +154,10 @@ li > a > i {
   gap: 15px;
 }
 
+#页脚文本容器 > h3 {
+  color: #ccc;
+}
+
 #页脚文本容器 > p:nth-child(2) {
   color: #aaa;
 }
@@ -195,8 +204,10 @@ li > a > i {
 }
 
 .页脚信息分区链接:hover > span {
-  color: rgb(42, 151, 140);
+  color: var(--网站风格颜色);
 }
+/* ------------------------- ↓ 页脚 ------------------------- */
+
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
 @media screen and (width < 1300px) {
   #公共页脚 {

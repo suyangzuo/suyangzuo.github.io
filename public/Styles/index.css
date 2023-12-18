@@ -5,6 +5,7 @@
   --图像容器高度: calc(var(--图像宽度) * 9 / 16);
   --图像长廊分区高度: calc(var(--图像容器高度) + 150px);
   --图像移动时长: 350ms;
+  --网站风格颜色: rgb(42, 151, 140);
 }
 
 /* body {
@@ -74,31 +75,31 @@
 }
 
 .欢迎按钮:nth-child(1) {
-  background-color: rgb(42, 151, 140);
+  background-color: var(--网站风格颜色);
   width: 200px;
   padding: 0 20px;
 }
 
 .欢迎按钮:nth-child(2) {
-  width: 120px;
+  width: fit-content;
   justify-content: center;
   gap: 5px;
 }
 
 .欢迎按钮:nth-child(1) > span:nth-child(1) {
-  translate: -30% 0;
+  translate: -15% 0;
 }
 
 .欢迎箭头 {
   font-size: 0.8rem;
-  color: rgb(42, 151, 140);
+  color: var(--网站风格颜色);
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: 250ms;
+  transition: 150ms;
 }
 
-.贡献者箭头 {
+.交互式学习中心箭头 {
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 5rem;
@@ -109,15 +110,15 @@
   translate: 0 -50%;
 }
 
-.欢迎按钮:nth-child(1):hover .贡献者箭头 {
-  width: 3.5rem;
+.欢迎按钮:nth-child(1):hover .交互式学习中心箭头 {
+  width: 3rem;
   height: 3.5rem;
   right: 0;
   border-radius: 0;
   font-size: 1rem;
 }
 
-.宗旨箭头 {
+.第三方教程箭头 {
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 3rem;
@@ -129,10 +130,10 @@
 .欢迎按钮:nth-child(2):hover span:nth-child(1) {
   text-decoration: underline;
   text-underline-offset: 3px;
-  text-decoration-color: rgb(42, 151, 140);
+  text-decoration-color: var(--网站风格颜色);
 }
 
-.欢迎按钮:nth-child(2):hover .宗旨箭头 {
+.欢迎按钮:nth-child(2):hover .第三方教程箭头 {
   scale: 1.25;
 }
 
@@ -205,7 +206,7 @@
 
 .剪刀 {
   left: 0;
-  translate: -100% -50%;
+  translate: -100% -53%;
   rotate: y 180deg;
   animation: 剪刀动画 5s linear infinite;
 }
@@ -269,247 +270,179 @@
 
 /* <!-- ------------------ ↑ 欢迎内容 ------------------- --> */
 
-/* <!-- ------------------ ↓ 学习服务 ------------------- --> */
+/* <!-- ------------------ ↓ 学习内容 ------------------- --> */
 .learn-page {
-  width: 100dvw;
-  height: 100dvh;
-  /* background-image: linear-gradient(60deg, #151618 0%, #171a1f 100%); */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 5dvh;
-  padding-top: 5dvh;
-  overflow: hidden;
-}
-
-.learn-banner {
-  margin: 0 auto;
-  width: fit-content;
+  min-height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 30px;
+  gap: clamp(100px, 15vh, 300px);
 }
 
-.learn-title {
-  width: 650px;
-  font-size: 3.5rem;
-  font-family: 霞鹜文楷;
-  text-align: center;
+.learn-profile {
+  position: relative;
+  height: max(300px, 30vh);
+  aspect-ratio: 0.8;
+  background-image: radial-gradient(
+    circle at 10% 10%,
+    rgba(0, 0, 0, 0.85) 25%,
+    rgba(0, 0, 0, 0.55) 90%
+  );
+  box-shadow: 5px 5px 10px 0 #0005;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  /* gap: 50px; */
+  padding: 25px 0;
 }
 
-.learn-brief {
-  width: 850px;
-  font-size: 1.15rem;
-  line-height: 2rem;
-  text-align: justify;
+.profile-title {
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-logo-container {
+  width: 100%;
+  height: 35px;
+  border-radius: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-logo {
+  width: 30%;
+  height: 100%;
+  object-fit: contain;
+  animation: profile-logo-rotate 5s linear infinite;
+}
+
+@keyframes profile-logo-rotate {
+  from {
+    rotate: 0;
+    filter: hue-rotate(0);
+  }
+  to {
+    rotate: 360deg;
+    filter: hue-rotate(360deg);
+  }
+}
+
+.profile-logo-container > h3 {
+  color: White;
+}
+
+.profile-title > p:nth-child(2) {
+  color: gray;
+  text-shadow: 2px 2px 2px #0005;
+}
+
+.profile-brief {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+}
+
+.profile-brief-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.profile-brief-cell > h4 {
+  font-weight: bolder;
+}
+
+.profile-brief-cell > p {
+  font-size: 0.85rem;
   color: gray;
 }
 
-.learn-services {
-  width: 1200px;
-  height: 75%;
-  max-width: 95dvw;
-  display: flex;
-  justify-content: center;
-  align-content: flex-start;
-  flex-wrap: wrap;
-  gap: 3dvw 2dvw;
-}
-
-.learn-service {
-  position: relative;
-  width: 360px;
-  height: 40%;
-  background-image: linear-gradient(60deg, #29323c 0%, #485563 100%);
-  border-radius: 10px;
-  box-shadow: 2px 2px 5px 0 #0005;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow: hidden;
-}
-
-.learn-service::before {
-  /* background-image: linear-gradient(to top, #0e2441 0%, #293f4f 100%); */
-  background: linear-gradient(
-    50deg,
-    #61405c,
-    #75408a
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  content: "";
-  visibility: hidden;
-  opacity: 0;
-  transition: 0.2s;
-}
-
-.learn-service:hover::before {
-  visibility: visible;
-  opacity: 1;
-}
-
-.learn-service-text {
-  position: relative;
-  width: 100%;
-  height: 75%;
+.profile-github {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 10px;
+  width: 75%;
 }
 
-.learn-service-title {
-  position: relative;
-  font-size: 1.45rem;
-  height: 35%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: rgb(81, 179, 162);
-}
-
-.learn-service-title::before {
-  position: absolute;
-  width: 45px;
-  height: fit-content;
-  left: calc(0% - 50px);
-  font-size: 1.5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* filter: saturate(2) brightness(1.5); */
-}
-
-.learn-service:nth-child(1) .learn-service-title::before {
-  content: "\1F916";
-}
-
-.learn-service:nth-child(2) .learn-service-title::before {
-  content: "\1F47e";
-}
-
-.learn-service:nth-child(3) .learn-service-title::before {
-  content: "\1F43b";
-}
-
-.learn-service:nth-child(4) .learn-service-title::before {
-  content: "\1F989";
-}
-
-.learn-service:nth-child(5) .learn-service-title::before {
-  content: "\1F981";
-}
-
-.learn-service:nth-child(6) .learn-service-title::before {
-  content: "\1F976";
-}
-
-.learn-service-content {
-  text-align: justify;
-  width: 85%;
-  height: 65%;
-  line-height: 1.5rem;
-  overflow-y: auto;
-}
-
-.learn-service-content > a {
-  color: skyblue;
-}
-
-.learn-service-content > a:hover {
-  color: rgb(179, 109, 193);
-}
-
-.learn-service-link {
-  position: relative;
-  height: 25%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: background-color 0.2s;
-}
-
-.learn-service-link:hover {
-  background-color: #1e242b;
-}
-
-.link-text {
-  position: relative;
-  width: fit-content;
-}
-
-.link-text > p:nth-child(1) {
-  width: fit-content;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  visibility: hidden;
-  opacity: 0;
-  transform: translateX(0);
-  transition: 0.2s;
-  color: rgb(114, 227, 106);
-}
-
-.learn-service-link:hover .link-text > p:nth-child(1) {
-  transform: translateX(20%);
-  /* transform: translateX(0); */
-  visibility: visible;
-  opacity: 1;
-}
-
-.link-arrow {
-  position: absolute;
-  z-index: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-bottom: 2%;
-  font-size: 1.75rem;
-  width: 50px;
-  height: 50px;
-  border-radius: 50px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #5f7081;
-  box-shadow: 2px 2px 5px 0 #0005;
-  transition: 0.2s;
-}
-
-.link-arrow::before {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 100px;
-  top: 0;
-  left: 0;
-  border: solid 2px #fff5;
-  content: "";
-  visibility: hidden;
-  opacity: 0;
-}
-
-.learn-service-link:hover .link-arrow {
-  background-color: rgb(50, 55, 63);
+.profile-github > h4 {
+  font-weight: normal;
   color: goldenrod;
-  left: 22.5%;
-  transform: translate(-120%, -50%) scale(80%);
+  text-align: center;
 }
 
-.learn-service-link:hover .link-arrow::before {
-  visibility: visible;
-  opacity: 1;
+.profile-link {
+  padding: 15px 20px;
+  border-radius: 5px;
+  background-color: var(--网站风格颜色);
 }
-/* <!-- ------------------ ↑ 学习服务 ------------------- --> */
+
+.learn-list {
+  position: relative;
+  z-index: 100;
+  width: min(95%, 1000px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  gap: max(50px, 7.5vh) 10vw;
+}
+
+.special-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: 25px;
+  height: 25px;
+  border-radius: 100px;
+  border: solid 5px gold;
+  pointer-events: none;
+  transition: opacity 150ms;
+  opacity: 0;
+}
+
+.learn-link {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 15px;
+  mix-blend-mode: exclusion;
+}
+
+.learn-img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.learn-text {
+  width: 250px;
+  height: fit-content;
+}
+
+.learn-text > h3 {
+  margin-bottom: 0.25ch;
+}
+
+.learn-text > p {
+  font-size: 0.9rem;
+  color: gray;
+}
+/* <!-- ------------------ ↑ 学习内容 ------------------- --> */
 
 /* <!-- ------------------ ↓ 游戏 ------------------- --> */
 .games {
@@ -547,7 +480,7 @@
   translate: -50% -50%;
   scale: 0;
   font-size: 1.75rem;
-  color: rgb(42, 151, 140);
+  color: var(--网站风格颜色);
   text-shadow: 2px 2px 4px #000;
   opacity: 0;
   transition: 0.25s;
