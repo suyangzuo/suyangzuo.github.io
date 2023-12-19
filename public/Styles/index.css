@@ -298,6 +298,7 @@
   justify-content: flex-start;
   align-items: center;
   gap: 50px;
+  outline: solid 2px gray;
 }
 
 .profile-title {
@@ -368,18 +369,25 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
   width: 75%;
 }
 
-.profile-github > h4 {
+.profile-github > h3 {
   font-weight: normal;
-  color: gray;
+  color: gold;
   text-align: center;
   justify-content: center;
 }
 
+.profile-github > p {
+  color: #fff;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
 .profile-link {
+  margin-top: 10px;
   padding: 10px 20px;
   border-radius: 5px;
   background-color: var(--网站风格颜色);
@@ -403,27 +411,15 @@
 
 .learn-list {
   position: relative;
+  padding: 100px 50px;
+  border-radius: 10px;
   z-index: 100;
-  width: min(95%, 1000px);
+  width: min(95%, 1100px);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-content: center;
-  gap: max(50px, 7.5vh) 10vw;
-}
-
-.special-item {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  translate: -50% -50%;
-  width: 25px;
-  height: 25px;
-  border-radius: 100px;
-  border: solid 5px gold;
-  pointer-events: none;
-  transition: opacity 150ms;
-  opacity: 0;
+  gap: max(50px, 5vh) 10vw;
 }
 
 .learn-link {

@@ -15,8 +15,8 @@
       rgba(0, 0, 0, 0.5) 50%
     );
   background-blend-mode: soft-light, screen;
-  right: 1%;
-  top: 50%;
+  right: 2%;
+  bottom: 1%;
   transform: translateY(-50%);
   display: flex;
   justify-content: center;

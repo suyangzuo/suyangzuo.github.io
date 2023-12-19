@@ -1,4 +1,3 @@
-const 链接金刚圈 = document.querySelector(".special-item");
 const 学习列表 = document.querySelector(".learn-list");
 const 学习链接 = document.querySelectorAll(".learn-link");
 
@@ -7,25 +6,16 @@ const 学习链接 = document.querySelectorAll(".learn-link");
   const 矩形 = 链接.getBoundingClientRect();
   const x = event.clientX - 矩形.left;
   const y = event.clientY - 矩形.top;
-  链接金刚圈.style.top = `${y}px`;
-  链接金刚圈.style.left = `${x}px`;
-  链接金刚圈.style.opacity = "100%";
+  学习列表.style.backgroundImage = `radial-gradient(
+    circle at ${x}px ${y}px,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 90%
+  )`;
 });
 
 学习列表.addEventListener("mouseleave", (event) => {
-  链接金刚圈.style.opacity = "0";
+  学习列表.style.backgroundImage = "none";
 });
-
-/* 学习链接.forEach((链接) => {
-  链接.addEventListener("mousemove", 学习链接背景特效);
-  链接.addEventListener("mouseleave", () => {
-    链接金刚圈.style.opacity = "0";
-  });
-}); */
-
-function 学习链接背景特效(event) {
-  链接金刚圈.style.opacity = "100%";
-}
 
 let 灯光特效初始启动 = true;
 
