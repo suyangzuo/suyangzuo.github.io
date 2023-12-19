@@ -283,7 +283,7 @@
 
 .learn-profile {
   position: relative;
-  height: max(300px, 30vh);
+  height: max(400px, 30vh);
   aspect-ratio: 0.8;
   background-image: radial-gradient(
     circle at 30% 30%,
@@ -535,6 +535,10 @@
   translate: -50% 225%;
   scale: 1;
   opacity: 1;
+}
+
+.games-entrance:hover > .游戏入口提示:hover {
+  filter: brightness(150%);
 }
 
 .games-entrance:hover > .游戏入口提示::after {

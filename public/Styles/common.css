@@ -77,7 +77,7 @@ li > a > i {
   align-items: center;
   gap: 10vw;
   width: 100vw;
-  padding: 100px 5vw;
+  padding: 100px 5vw 150px;
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(5px);
 }
@@ -86,7 +86,7 @@ li > a > i {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 50px;
+  gap: 40px;
 }
 
 #页脚Logo图像区 {
@@ -151,15 +151,10 @@ li > a > i {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 15px;
 }
 
-#页脚文本容器 > h3 {
+#页脚文本容器 > p {
   color: #ccc;
-}
-
-#页脚文本容器 > p:nth-child(2) {
-  color: #aaa;
 }
 
 #页脚信息区 {
@@ -206,6 +201,24 @@ li > a > i {
 .页脚信息分区链接:hover > span {
   color: var(--网站风格颜色);
 }
+
+#页脚版权提示区 {
+  width: min(735px, 85%);
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  translate: -50% 0;
+}
+
+#第三方版权声明 {
+  font-size: 0.9rem;
+  color: gray;
+}
+
+#第一方版权声明 {
+  font-size: 0.9rem;
+  color: gray;
+}
 /* ------------------------- ↓ 页脚 ------------------------- */
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
@@ -218,11 +231,12 @@ li > a > i {
 
 @media screen and (max-width: 550px) {
   #公共页脚 {
-    padding: 50px 0;
+    padding: 50px 0 150px 0;
   }
 
   #页脚Logo区 {
-    padding: 0 10px;
+    padding: 0 20px;
+    align-items: center;
   }
 
   #页脚信息区 {
@@ -236,6 +250,7 @@ li > a > i {
 
   .页脚信息分区链接 {
     padding: 7.5px 2.5px;
+    gap: 7.5px;
   }
 
   .页脚信息分区链接 > span {
