@@ -820,6 +820,30 @@
 /* <!-- ------------------ ↑ 美图欣赏 ------------------- --> */
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
+@media screen and (width <= 1350px) {
+  .welcome-main {
+    gap: 5%;
+    padding: 0 0 10dvh 0;
+  }
+
+  .欢迎文本区 {
+    width: min(500px, 95vw);
+  }
+
+  .欢迎图像容器 {
+    width: min(500px, 50vw);
+    height: 100%;
+  }
+
+  .欢迎动画区 {
+    bottom: 5%;
+  }
+
+  .learn-list {
+    padding: 75px 35px;
+  }
+}
+
 @media screen and (max-width: 1200px) {
   .welcome-main {
     gap: 5%;
@@ -914,56 +938,21 @@
 
 @media screen and (max-height: 1000px) {
   .learn-page {
-    gap: 2dvh;
+    gap: 75px;
     padding-top: 2.5dvh;
   }
 
-  .learn-services {
-    align-content: center;
+  .learn-profile {
+    height: max(350px, 30vh);
+    gap: 25px;
   }
 
-  .learn-service {
-    height: 42.5%;
+  .profile-github {
+    width: 85%;
   }
 
-  /* .learn-service-title {
-    height: 30%;
-  } */
-
-  .learn-service-content {
-    /* height: 70%; */
-    font-size: 1rem;
-  }
-
-  .link-arrow {
-    width: 45px;
-    height: 45px;
-    font-size: 1.5rem;
-  }
-}
-
-@media screen and (max-width: 1200px) and (max-height: 1000px) {
-  .learn-services {
-    width: 95dvw;
-    align-content: flex-start;
-    row-gap: 25px;
-  }
-
-  .learn-service {
-    width: 45%;
-    max-width: 300px;
-    height: 25%;
-  }
-
-  .learn-service-link {
-    height: 50%;
-  }
-
-  .link-arrow {
-    height: 50px;
-    aspect-ratio: 1;
-    width: fit-content;
-    font-size: 1.5rem;
+  .图像长廊标题 {
+    display: none;
   }
 }
 
@@ -993,52 +982,6 @@
 
   .图像序号指示器组 {
     width: 95%;
-  }
-
-  .learn-title {
-    font-size: clamp(1.5rem, 7.5dvw, 2.5rem);
-  }
-
-  .learn-service-title::before {
-    display: none;
-  }
-
-  .learn-service {
-    width: 45%;
-    min-width: auto;
-    height: 25%;
-  }
-
-  .learn-service-content {
-    display: none;
-  }
-
-  .learn-service-text {
-    height: 50%;
-  }
-
-  .learn-service-link {
-    height: 50%;
-  }
-
-  .link-text {
-    height: 100%;
-  }
-
-  .link-text > p:nth-child(1) {
-    height: 100%;
-    font-size: 0.9rem;
-  }
-
-  .link-arrow {
-    width: 35px;
-    height: 35px;
-  }
-}
-
-@media screen and (max-height: 900px) and (max-width: 1000px) {
-  .learn-brief {
-    display: none;
   }
 }
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */
