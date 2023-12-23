@@ -232,12 +232,14 @@
   right: 0;
   translate: 100% -50%;
   transform-origin: 0 50%;
+  opacity: 0;
   animation: 胶水动画 5s linear 2.5s infinite,
     胶水摇晃 0.5s linear 2.5s infinite;
 }
 
 @keyframes 胶水动画 {
   0% {
+    opacity: 1;
     right: 0;
   }
   45% {
@@ -820,7 +822,7 @@
 /* <!-- ------------------ ↑ 美图欣赏 ------------------- --> */
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
-@media screen and (width <= 1350px) {
+@media screen and (width <= 1500px) {
   .welcome-main {
     gap: 5%;
     padding: 0 0 10dvh 0;
@@ -828,15 +830,6 @@
 
   .欢迎文本区 {
     width: min(500px, 95vw);
-  }
-
-  .欢迎图像容器 {
-    width: min(500px, 50vw);
-    height: 100%;
-  }
-
-  .欢迎动画区 {
-    bottom: 5%;
   }
 
   .learn-list {
@@ -937,6 +930,15 @@
 }
 
 @media screen and (max-height: 1000px) {
+  .欢迎图像容器 {
+    width: min(600px, 50vw);
+    height: 100%;
+  }
+
+  .欢迎动画区 {
+    bottom: 6%;
+  }
+
   .learn-page {
     gap: 75px;
     padding-top: 2.5dvh;
