@@ -69,6 +69,7 @@ li > a > i {
 
 /* ------------------------- ↓ 页脚 ------------------------- */
 #公共页脚 {
+  background-color: #171c21;
   position: relative;
   bottom: 0;
   z-index: 100;
