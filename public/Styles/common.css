@@ -79,8 +79,6 @@ li > a > i {
   gap: 10vw;
   width: 100vw;
   padding: 100px 5vw 150px;
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(5px);
 }
 
 #页脚Logo区 {
@@ -220,6 +218,7 @@ li > a > i {
   font-size: 0.9rem;
   color: gray;
 }
+
 /* ------------------------- ↓ 页脚 ------------------------- */
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
@@ -227,6 +226,10 @@ li > a > i {
   #公共页脚 {
     flex-direction: column;
     gap: 50px;
+  }
+
+  #页脚Logo区 {
+    height: 250px !important;
   }
 }
 
@@ -236,8 +239,7 @@ li > a > i {
   }
 
   #页脚Logo区 {
-    padding: 0 20px;
-    align-items: center;
+    padding: 0 20px; /*align-items: center;*/
   }
 
   #页脚信息区 {
@@ -258,4 +260,5 @@ li > a > i {
     font-size: 0.75rem;
   }
 }
+
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */
