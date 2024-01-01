@@ -141,48 +141,48 @@ function getPassword() {
 
   const minIndexSuppose = minIndex;
   const maxIndexSuppose = maxIndex;
-  // const passwordArray = [];
+
+  let indexPool = Array.from({ length: length }, (_, i) => i);
+  let indexForRemove = Math.floor(Math.random() * indexPool.length);
+  const indexForDigit = indexPool[indexForRemove];
+  indexPool.splice(indexForRemove, 1);
+  indexForRemove = Math.floor(Math.random() * indexPool.length);
+  const indexForSymbol = indexPool[indexForRemove];
+  indexPool.splice(indexForRemove, 1);
+  indexForRemove = Math.floor(Math.random() * indexPool.length);
+  const indexForLetter = indexPool[indexForRemove];
+  indexPool = null;
+
   const passwordElement = document.createElement("div");
-  let 已存在字母 = false;
-  let 已存在数字 = false;
-  let 已存在字符 = false;
 
   for (let i = 0; i < length; i++) {
     let character = document.createElement("span");
     minIndex = minIndexSuppose;
     maxIndex = maxIndexSuppose;
-    if (密码类型 === "随机密码" && i >= length - 3) {
-      if (!已存在字母) {
-        minIndex = 10;
-        maxIndex = 61;
-      } else if (!已存在数字 && digitChecked) {
-        minIndex = 0;
-        maxIndex = 9;
-      } else if (!已存在字符 && symbolChecked) {
-        minIndex = 62;
-        maxIndex = 92;
-      }
+    if (i === indexForLetter) {
+      minIndex = 10;
+      maxIndex = 61;
+    } else if (i === indexForDigit) {
+      minIndex = 0;
+      maxIndex = 9;
+    } else if (i === indexForSymbol) {
+      minIndex = 62;
+      maxIndex = 92;
     }
 
     let index = Math.floor(Math.random() * (maxIndex - minIndex)) + minIndex;
 
     if (index <= 9) {
       character.classList.add("digit");
-      已存在数字 = true;
     } else if (index >= 62) {
       character.classList.add("symbol");
-      已存在字符 = true;
     } else {
       character.classList.add("letter");
-      已存在字母 = true;
     }
     character.textContent = passwordPool[index];
     passwordElement.appendChild(character);
-    // passwordArray.push(
-    //   passwordPool[Math.floor(Math.random() * (maxIndex - minIndex)) + minIndex]
-    // );
   }
-  // let password = passwordArray.join("");
+
   passwordBox.innerHTML = passwordElement.innerHTML;
   clearTimeout(密码复制动画Id);
   密码复制提示.classList.remove("密码复制提示动画");
