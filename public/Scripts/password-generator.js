@@ -30,8 +30,7 @@ for (let i = 0; i < passwordPool.length; i++) {
 
 passwordTypeSelect.forEach((passwordType) => {
   passwordType.onclick = () => {
-    let content = passwordType.textContent;
-    currentPasswordType.textContent = content;
+    currentPasswordType.textContent = passwordType.textContent;
     resetPasswordType();
     getPassword();
   };
@@ -162,10 +161,10 @@ function getPassword() {
     if (i === indexForLetter) {
       minIndex = 10;
       maxIndex = 61;
-    } else if (i === indexForDigit) {
+    } else if (digitChecked && i === indexForDigit) {
       minIndex = 0;
       maxIndex = 9;
-    } else if (i === indexForSymbol) {
+    } else if (symbolChecked && i === indexForSymbol) {
       minIndex = 62;
       maxIndex = 92;
     }
