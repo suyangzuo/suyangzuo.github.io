@@ -40,7 +40,7 @@ body {
   height: 65px;
   border-radius: 50px;
   background: no-repeat center/contain url("./选择器修饰.png"),
-    radial-gradient(circle at center, #80d0c744 0%, #13547a11 50%);
+  radial-gradient(circle at center, #80d0c744 0%, #13547a11 50%);
   bottom: 10px;
   right: 10px;
   pointer-events: all;
@@ -285,20 +285,6 @@ span[侧边栏专题符号] {
   gap: 25px;
 }
 
-.专题横幅 {
-  width: 95%;
-  height: 500px;
-  border-radius: 10px;
-  margin-bottom: 100px;
-  overflow: hidden;
-}
-
-.专题横幅 > img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 .专题简介 {
   position: relative;
   /* z-index: 1; */
@@ -446,16 +432,146 @@ a[邮箱]:hover {
 }
 
 .专题正文区 {
-  min-width: 500px;
-  max-width: 1000px;
-  /* min-height: 500px; */
+  width: min(90%, 850px);
   border-radius: 10px;
-  /* background: #101010a0; */
   padding: 25px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  gap: 35px;
 }
+
+.正文分区 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: #ddd;
+}
+
+.分区标题 {
+  position: relative;
+  background: linear-gradient(50deg, #2c3e50, #4b5157);
+  color: white;
+  padding: 7.5px 10px;
+  border-radius: 5px;
+  width: fit-content;
+}
+
+.分区标题::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  translate: -150% -50%;
+  font-family: "Font Awesome 6 Free";
+  content: "\f002";
+  font-weight: 900;
+  color: lightskyblue;
+}
+
+.分区列表项 {
+  list-style-type: disc;
+  padding: 5px 0;
+}
+
+.分区列表项::marker {
+  color: gold;
+}
+
+.分区2级列表 {
+  margin: 5px 0 5px 1rem;
+}
+
+.分区2级列表项 {
+  list-style-type: circle;
+  padding: 5px 0;
+}
+
+.分区2级列表项::marker {
+  color: orange;
+}
+
+.分区3级列表 {
+  margin: 5px 0 5px 1rem;
+}
+
+.分区3级列表项 {
+  list-style-type: square;
+  padding: 5px 0;
+}
+
+.分区3级列表项::marker {
+  color: darkgoldenrod;
+}
+
+.截图容器 {
+  width: fit-content;
+  max-width: 100%;
+  margin: 15px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff1;
+  border-radius: 0 0 10px 10px;
+}
+
+.截图容器 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.截图序号 {
+  color: #999;
+  font-size: 15px;
+  padding: 10px 0;
+}
+
+
+.专业名词 {
+  background-color: #3a434b;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 3px;
+}
+
+.附加说明 {
+  font-size: 14px;
+  background-color: rgb(53, 89, 157);
+  color: white;
+  padding: 3px 5px;
+  border-radius: 3px;
+  margin-left: 5px;
+}
+
+.分区普通文本 {
+  line-height: 1.5rem;
+}
+
+.提醒 {
+  background-color: #2b4162;
+  border-radius: 10px;
+  padding: 10px 25px 20px;
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.提醒标题 {
+  color: seagreen;
+}
+
+.提醒标题 > i {
+  color: yellow;
+}
+
+.强调 {
+  font-weight: bolder;
+  color: #e85656;
+}
+
+/*------------------------------------------------*/
 
 .专题正文区 ul,
 .专题正文区 li {
@@ -754,25 +870,19 @@ img[图含义] {
 }
 
 /* ------------------------------ ↓ 响应式设计 ------------------------------ */
-@media screen and (width < 1700px) {
-  .专题横幅 > img {
-    object-fit: cover;
-  }
-}
-
 @media screen and (width < 1600px) {
   .专题正文区 {
     width: 100%;
   }
+}
 
+@media screen and (width < 1200px) {
   .专题简介 {
     width: 100%;
     flex-direction: column;
     row-gap: 20px;
   }
-}
 
-@media screen and (width < 1200px) {
   #永恒代码统计图表 {
     display: none;
   }
@@ -894,4 +1004,5 @@ img[图含义] {
     font-size: 0.85em;
   }
 }
+
 /* ------------------------------ ↑ 响应式设计 ------------------------------ */
