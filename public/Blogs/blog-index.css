@@ -87,7 +87,7 @@ body {
 
 .关闭技术栈对话框:hover {
   background-color: #920808;
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 .关闭技术栈对话框 > span {
