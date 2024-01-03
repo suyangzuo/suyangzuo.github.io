@@ -3,7 +3,7 @@
   --侧边栏颜色-鼠标悬停: rgb(54, 62, 78);
   --侧边栏颜色-已选中: rgb(122, 67, 107);
   --侧边栏背景: linear-gradient(60deg, #1f242b 0%, #252c32 100%);
-  --专题内容区背景: linear-gradient(60deg, #181c20 0%, #262d35 100%);
+  --专题内容区背景: linear-gradient(90deg, #181c20 0%, #262d35 100%);
   --超链接颜色-正文: skyblue;
 }
 
@@ -23,26 +23,16 @@ body {
   color: skyblue;
 }
 
-.技术栈选择栏 {
-  position: fixed;
-  z-index: 1;
-  width: 600px;
-  height: 850px;
-  bottom: 1.5%;
-  right: 0.75%;
-  border-radius: 10px;
-  pointer-events: none;
-}
-
 .技术栈选择器 {
-  position: absolute;
+  position: fixed;
   width: 65px;
   height: 65px;
   border-radius: 50px;
-  background: no-repeat center/contain url("./选择器修饰.png"),
-  radial-gradient(circle at center, #80d0c744 0%, #13547a11 50%);
-  bottom: 10px;
-  right: 10px;
+  background:
+    no-repeat center/contain url("./选择器修饰.png"),
+    radial-gradient(circle at center, #80d0c744 0%, #13547a11 50%);
+  bottom: 40px;
+  right: 50px;
   pointer-events: all;
   animation: 旋转技术栈选择器 5s linear infinite;
   transition: 0.25s;
@@ -62,11 +52,65 @@ body {
   }
 }
 
+.技术栈对话框 {
+  position: fixed;
+  width: max(750px, 60%);
+  height: max(850px, 75%);
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  border-radius: 10px;
+  background-color: #fff1;
+  box-shadow: 10px 10px 30px 0 #000a;
+  backdrop-filter: blur(20px);
+  border: none;
+  outline: solid 2px #fff4;
+  overflow: hidden;
+}
+
+.技术栈对话框::backdrop {
+  backdrop-filter: brightness(35%);
+}
+
+.关闭技术栈对话框 {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 2rem;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  border-radius: 50px;
+}
+
+.关闭技术栈对话框:hover {
+  background-color: #920808;
+  cursor: pointer;
+}
+
+.关闭技术栈对话框 > span {
+  color: #bbb;
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  transition: 100ms;
+}
+
+.关闭技术栈对话框 > span > i {
+  font-size: 16px;
+}
+
+.关闭技术栈对话框:hover span {
+  color: white;
+}
+
 .技术栈内容 {
+  color: white;
   width: 100%;
-  height: 90dvh;
-  min-height: 300px;
-  max-height: 850px;
+  height: calc(100% - 75px);
   position: absolute;
   bottom: 0;
   padding: 20px;
@@ -74,21 +118,10 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(10.5%, 14.5%));
+  grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
   grid-auto-rows: 105px;
   gap: 10px;
   place-content: start space-evenly;
-  /* background: #000a; */
-  background: linear-gradient(
-    to right,
-    #29323caa,
-    #485563aa
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  backdrop-filter: blur(10px);
-  opacity: 0;
-  transform-origin: 100% 100%;
-  transform: scale(0);
-  box-shadow: -2px 2px 12px 0 #000a;
   pointer-events: all;
   transition: 0.25s;
 }
@@ -196,16 +229,6 @@ body {
   gap: 10px;
 }
 
-/* .专题名称::before {
-  position: absolute;
-  width: 100%;
-  height: 0.5px;
-  top: 150%;
-  left: 0;
-  content: "";
-  background-color: #fff3;
-} */
-
 .专题名称 > img {
   width: 20px;
   height: 20px;
@@ -240,11 +263,11 @@ body {
 }
 
 .专题[原创] .专题-标记 {
-  color: cadetblue;
+  color: seagreen;
 }
 
 .专题[转载] .专题-标记 {
-  color: tan;
+  color: tomato;
 }
 
 .专题-内容 {
@@ -285,110 +308,122 @@ span[侧边栏专题符号] {
   gap: 25px;
 }
 
+/*------------------------------------ ↓ 内容区顶栏 ------------------------------------*/
 .专题简介 {
   position: relative;
-  /* z-index: 1; */
-  min-width: 500px;
-  width: 100%;
+  width: min(90%, 850px);
   height: fit-content;
-  background: #0005;
+  border-bottom: solid 1px #aaaa;
   display: flex;
-  justify-content: space-evenly;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
-  padding: 25px 5%;
-  border-radius: 10px;
+  gap: 50px;
+  padding: 25px 0;
+  overflow: hidden;
 }
 
-.专题简介-背景伪元素 {
-  position: absolute;
-  z-index: 0;
-  width: 120%;
-  height: 120%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: none;
+.简介标题 {
+  font-size: 3rem;
+  letter-spacing: 0.25rem;
 }
 
-p[简介标题] {
-  position: relative;
-  font-size: 1.5rem;
-  color: rgb(227, 227, 227);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 7.5px;
-}
-
-p[简介标题] > img {
-  width: 32px;
-  height: 32px;
-  object-fit: contain;
-}
-
-span[简介标题符号] {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.原创,
+.转载 {
+  margin-left: 2ch;
   font-size: 1.25rem;
-  width: 30px;
-  height: 30px;
-  border-radius: 50px;
-  background-image: linear-gradient(
-    136.3deg,
-    rgba(0, 119, 182, 1) 3.6%,
-    rgb(24, 49, 120) 87.6%
-  );
-  color: white;
-  box-shadow: 1px 1px 5px 0 #000a;
+  letter-spacing: normal;
 }
 
-p[作者信息] {
-  /* position: absolute;
-  right: 5%;
-  top: 50%;
-  transform: translateY(-50%); */
+.原创 {
+  color: seagreen;
+  margin-left: 1rem;
+}
+
+.转载 {
+  color: coral;
+}
+
+.简介信息 {
   display: flex;
-  justify-content: center;
   align-items: center;
+  gap: 50px;
+}
+
+.简介信息文本 {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 10px;
-  filter: drop-shadow(1px 1px 2px #000c);
 }
 
-span[姓名] {
-  width: 70px;
-  height: 32px;
-  font-size: 1rem;
-  line-height: 1;
+.作者,
+.日期,
+.原文,
+.译者 {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  border-radius: 50px;
 }
 
-img[原创认证] {
-  width: 32px;
-  height: 32px;
+.前缀 {
+  width: 100px;
+  text-align: right;
+  font-size: 1rem;
+  color: #aaa;
+}
+
+.作者姓名,
+.日期文本,
+.原文链接,
+.译者姓名 {
+  color: gold;
+  max-width: 300px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.原文链接 {
+  display: inline-flex;
+  align-items: center;
+}
+
+.原文链接 > a {
+  display: inline-block;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.简介信息图像 {
+  width: 50%;
+  aspect-ratio: 1;
+}
+
+.简介信息图像 > img {
+  width: 125px;
+  height: 125px;
   object-fit: contain;
 }
 
-span[姓名="转载"],
-a[邮箱="转载"] {
-  background-color: #fbab7e;
-  background-image: linear-gradient(62deg, #fbab7e 0%, #f7ce68 100%);
-  color: black;
+.联系方式列表 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px 35px;
+  flex-wrap: wrap;
 }
 
-span[姓名="原创"],
-a[邮箱="原创"] {
-  background: linear-gradient(
-    to right,
-    #2c5364,
-    #203a43,
-    #19333f
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  color: white;
+.专题简介 .fa-solid,
+.专题简介 .fa-brands {
+  font-size: 1.5rem;
+  /*color: darkseagreen;*/
 }
+
+/*------------------------------------ ↑ 内容区顶栏 ------------------------------------*/
 
 a[邮箱] {
   width: 32px;
@@ -525,7 +560,6 @@ a[邮箱]:hover {
   font-size: 15px;
   padding: 10px 0;
 }
-
 
 .专业名词 {
   background-color: #3a434b;
@@ -939,14 +973,10 @@ img[图含义] {
     padding: 50px 25px 25px;
   }
 
-  .技术栈选择栏 {
+  .技术栈对话框 {
     width: 97.5% !important;
     height: 90%;
-    bottom: 0;
-    left: 0;
-    right: 0;
     margin: 0 auto;
-    z-index: 3;
   }
 
   .技术栈选择器 {
@@ -955,26 +985,11 @@ img[图含义] {
   }
 
   .技术栈内容 {
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    grid-auto-rows: 100px;
     gap: 15px 5px;
     width: 95%;
-    height: 80%;
     position: absolute;
     right: 2.5%;
     bottom: 1%;
-  }
-
-  .技术栈 > img {
-    width: 35px;
-    height: 35px;
-    object-fit: contain;
-  }
-
-  .技术栈 > p {
-    height: 30px;
-    font-size: 0.6rem;
-    padding-top: 2px;
   }
 }
 

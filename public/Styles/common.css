@@ -63,7 +63,7 @@ li {
 }
 
 li > a > i {
-  transform: rotateZ(90deg);
+  /*transform: rotateZ(90deg);*/
   transition: 0.25s;
 }
 

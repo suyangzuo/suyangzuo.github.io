@@ -6,6 +6,8 @@ const 侧边栏颜色_鼠标悬停 = rootStyle.getPropertyValue("--侧边栏颜�
 const 侧边栏收缩容器 = document.getElementsByClassName("侧边栏收缩容器")[0];
 const 侧边栏 = document.getElementsByClassName("侧边栏")[0];
 const 技术栈选择器 = document.getElementsByClassName("技术栈选择器")[0];
+const 技术栈对话框 = document.querySelector(".技术栈对话框");
+const 关闭技术栈对话框按钮 = document.querySelector(".关闭技术栈对话框");
 const 技术栈内容 = document.getElementsByClassName("技术栈内容")[0];
 const 技术栈组 = document.querySelectorAll(".技术栈");
 const 专题内容区 = document.getElementsByClassName("专题内容区")[0];
@@ -29,7 +31,7 @@ if (sessionStorage.getItem("页面技术栈") === null) {
 }
 
 let index = JSON.parse(sessionStorage.getItem("专题索引记录")).find(
-  (记录) => 记录.技术栈 === 技术栈名称
+  (记录) => 记录.技术栈 === 技术栈名称,
 ).专题索引;
 let 专题名称 = "首页";
 let 专题文件路径 = `./博客内容/${技术栈名称}/${专题名称}.html`;
@@ -37,6 +39,7 @@ let 专题文件路径 = `./博客内容/${技术栈名称}/${专题名称}.html
 let 前一专题 = null;
 
 设置侧边栏();
+
 // 设置内容();
 
 function 刷新代码格式化脚本() {
@@ -44,7 +47,6 @@ function 刷新代码格式化脚本() {
   代码格式化脚本元素.remove();
   const 新脚本 = document.createElement("script");
   新脚本.src = "/Scripts/prism.js";
-  // 新脚本.setAttribute("defer", "");
   新脚本.setAttribute("代码格式化", "");
   document.body.appendChild(新脚本);
 }
@@ -60,13 +62,12 @@ async function 设置侧边栏() {
   专题标记组 = document.querySelectorAll(".专题-标记");
 
   index = JSON.parse(sessionStorage.getItem("专题索引记录")).find(
-    (记录) => 记录.技术栈 === 技术栈名称
+    (记录) => 记录.技术栈 === 技术栈名称,
   ).专题索引;
 
   专题组[index].style.setProperty("background", 侧边栏颜色_已选中, "important");
   专题组.forEach((专题) => {
     专题.addEventListener("click", 修改专题样式);
-    // 专题.addEventListener("click", 设置内容);
     const 标记 = 专题.querySelector(".专题-标记");
     标记.textContent = "\u2666";
   });
@@ -92,6 +93,11 @@ async function 设置内容() {
 技术栈组.forEach((技术栈) => {
   技术栈.addEventListener("click", 点选技术栈);
   技术栈.addEventListener("click", 设置侧边栏);
+  技术栈.addEventListener("click", () => {
+    if (技术栈对话框.open) {
+      隐藏技术栈内容();
+    }
+  });
 });
 
 function 点选技术栈(event) {
@@ -135,17 +141,16 @@ function 修改专题样式(event) {
 }
 
 技术栈选择器.addEventListener("click", 显示技术栈内容);
-技术栈内容.addEventListener("mouseleave", 隐藏技术栈内容);
+// 技术栈内容.addEventListener("mouseleave", 隐藏技术栈内容);
+关闭技术栈对话框按钮.addEventListener("click", 隐藏技术栈内容);
 
 function 显示技术栈内容() {
-  技术栈内容.style.opacity = "1";
-  技术栈内容.style.transform = "scale(1)";
+  技术栈对话框.showModal();
   技术栈选择器.style.scale = "0";
 }
 
 function 隐藏技术栈内容() {
-  技术栈内容.style.opacity = "0";
-  技术栈内容.style.transform = "scale(0)";
+  技术栈对话框.close();
   技术栈选择器.style.scale = "1";
 }
 
@@ -195,7 +200,7 @@ function 生成永恒代码统计图表() {
   // 基于准备好的dom，初始化echarts实例
   const myChart = echarts.init(
     document.getElementById("永恒代码统计图表"),
-    "dark"
+    "dark",
   );
 
   // 指定图表的配置项和数据
@@ -262,4 +267,5 @@ function 生成永恒代码统计图表() {
   // 使用刚指定的配置项和数据显示图表。
   myChart.setOption(option);
 }
+
 //------------------- ↑ 监控专题内容区内 DOM 修改 -------------------
