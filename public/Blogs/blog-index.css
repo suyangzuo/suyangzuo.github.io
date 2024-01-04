@@ -345,13 +345,16 @@ span[侧边栏专题符号] {
 }
 
 .简介信息 {
+  width: 500px;
   display: flex;
-  align-items: center;
+  justify-content: space-between;
+  align-items: flex-start;
   gap: 50px;
 }
 
 .简介信息文本 {
   width: fit-content;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -368,7 +371,7 @@ span[侧边栏专题符号] {
 }
 
 .前缀 {
-  width: 100px;
+  width: 50px;
   text-align: right;
   font-size: 1rem;
   color: #aaa;
@@ -378,8 +381,12 @@ span[侧边栏专题符号] {
 .日期文本,
 .原文链接,
 .译者姓名 {
-  color: #7ec699;
+  font-size: 0.9rem;
+  background-color: #c9d6ff;
+  color: black;
   max-width: 300px;
+  padding: 1px 5px;
+  border-radius: 3px;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -391,23 +398,28 @@ span[侧边栏专题符号] {
 }
 
 .原文链接 > a {
-  color: #7ec699;
+  color: #094f2a;
   text-decoration: none !important;
   display: inline-block;
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  transition: 150ms;
+}
+
+.原文链接 > a:hover {
+  color: #962c54;
 }
 
 .简介信息图像 {
-  width: 50%;
+  width: 125px;
   aspect-ratio: 1;
 }
 
 .简介信息图像 > img {
-  width: 125px;
-  height: 125px;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 
@@ -485,6 +497,7 @@ a[邮箱]:hover {
   color: rgb(173, 104, 238) !important;
 }
 
+/*------------------------------------ ↓ 专题正文区 ------------------------------------*/
 .专题正文区 {
   width: min(90%, 850px);
   border-radius: 10px;
@@ -495,66 +508,76 @@ a[邮箱]:hover {
   gap: 35px;
 }
 
+.分割线 {
+  width: 100%;
+  height: 75px;
+}
+
 .正文分区 {
   display: flex;
   flex-direction: column;
-  gap: 10px;
   color: #ddd;
 }
 
 .分区标题 {
   position: relative;
-  background: linear-gradient(50deg, #2c3e50, #4b5157);
   color: white;
-  padding: 7.5px 10px;
   border-radius: 5px;
   width: fit-content;
 }
 
-.分区标题::before {
+.分区2级标题 {
+  background: linear-gradient(50deg, #2c3e50, #4b5157);
+  padding: 8px 10px;
+  margin: 100px 0 0 0;
+}
+
+.分区2级标题::before {
   position: absolute;
   top: 50%;
-  left: 0;
-  translate: -150% -50%;
+  right: 0;
+  translate: 150% -50%;
   font-family: "Font Awesome 6 Free";
-  content: "\f002";
+  content: "\f1dc";
   font-weight: 900;
   color: lightskyblue;
 }
 
-.分区列表项 {
-  list-style-type: disc;
-  padding: 5px 0;
+.分区3级标题 {
+  margin-top: 50px;
 }
 
-.分区列表项::marker {
-  color: gold;
-}
-
-.分区2级列表 {
-  margin: 5px 0 5px 1rem;
-}
-
-.分区2级列表项 {
-  list-style-type: circle;
-  padding: 5px 0;
-}
-
-.分区2级列表项::marker {
+.分区3级标题::before {
+  position: absolute;
+  content: "\f1ea";
+  top: 50%;
+  right: 0;
+  translate: 150% -50%;
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
   color: orange;
 }
 
-.分区3级列表 {
-  margin: 5px 0 5px 1rem;
+.分区3级标题 i {
+  margin-left: 5px;
+  color: orange;
 }
 
-.分区3级列表项 {
+.分区列表 {
+  margin: 5px 0 5px 0.5rem;
+}
+
+.分区列表项 {
   list-style-type: square;
   padding: 5px 0;
 }
 
-.分区3级列表项::marker {
+.分区列表项::marker {
   color: darkgoldenrod;
+}
+
+.圆圈序号 {
+  margin-right: 5px;
 }
 
 .截图容器 {
@@ -581,9 +604,23 @@ a[邮箱]:hover {
 }
 
 .专业名词 {
-  background-color: #3a434b;
-  color: white;
-  padding: 3px 8px;
+  background-color: rgb(153, 168, 183);
+  color: black;
+  border-radius: 3px;
+  padding: 1px 5px;
+}
+
+.行内专业名词 {
+  color: #67cdcc;
+  margin: 0 0.5ch;
+}
+
+.代码 {
+  font-family: "JetBrains Mono";
+  background-color: #8b939a;
+  color: black;
+  padding: 1px 5px;
+  margin: 0 2px;
   border-radius: 3px;
 }
 
@@ -597,13 +634,15 @@ a[邮箱]:hover {
 }
 
 .分区普通文本 {
-  line-height: 1.5rem;
+  line-height: 1.75rem;
+  padding: 10px 0;
+  color: #b4c5d7;
 }
 
 .提醒 {
   background-color: #2b4162;
   border-radius: 10px;
-  padding: 10px 25px 20px;
+  padding: 20px 25px;
   margin: 10px 0;
   display: flex;
   flex-direction: column;
@@ -612,11 +651,16 @@ a[邮箱]:hover {
 }
 
 .提醒标题 {
-  color: seagreen;
+  color: lightseagreen;
+}
+
+.提醒 > p {
+  line-height: 1.75rem;
 }
 
 .提醒标题 > i {
   color: yellow;
+  margin-right: 15px;
 }
 
 .强调 {
@@ -1013,6 +1057,35 @@ img[图含义] {
 }
 
 @media screen and (width < 550px) {
+  .简介标题 {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .原创,
+  .转载 {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .简介信息 {
+    width: 90dvw;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .简介信息文本 {
+    width: 100%;
+  }
+
+  .原文链接 {
+    max-width: calc(90dvw - 50px);
+  }
+
+  .联系方式列表 {
+    width: 75dvw;
+  }
+
   p[简介标题] {
     font-size: 1.25rem;
   }
