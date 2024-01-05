@@ -190,10 +190,23 @@ mutationObserver.observe(专题内容区, {
 
 function 专题改变时运行() {
   if (!(技术栈名称 === "Web前端-原生开发" && 专题名称 === "首页")) {
+    更新图像序号();
     return;
   }
 
   生成永恒代码统计图表();
+}
+
+function 更新图像序号() {
+  const screenShotsContainers = document.querySelectorAll(".截图容器");
+  screenShotsContainers.forEach((container) => {
+    const number = container.querySelector(".截图序号");
+    const index = Array.from(screenShotsContainers).indexOf(container);
+    number.textContent = `图 ${index + 1}`;
+
+    const siblingText = container.nextElementSibling.querySelector(".行内截图序号");
+    siblingText.textContent = ` ·图${index + 1}· `;
+  });
 }
 
 function 生成永恒代码统计图表() {

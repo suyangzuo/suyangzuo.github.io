@@ -499,21 +499,18 @@ a[邮箱]:hover {
 
 /*------------------------------------ ↓ 专题正文区 ------------------------------------*/
 .专题正文区 {
-  width: min(90%, 850px);
+  width: min(97.5%, 850px);
   border-radius: 10px;
   padding: 25px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 35px;
-}
-
-.分割线 {
-  width: 100%;
-  height: 75px;
+  /*overflow-x: hidden;*/
 }
 
 .正文分区 {
+  width: 100%;
   display: flex;
   flex-direction: column;
   color: #ddd;
@@ -530,6 +527,7 @@ a[邮箱]:hover {
   background: linear-gradient(50deg, #2c3e50, #4b5157);
   padding: 8px 10px;
   margin: 100px 0 0 0;
+  font-size: 2rem;
 }
 
 .分区2级标题::before {
@@ -545,6 +543,7 @@ a[邮箱]:hover {
 
 .分区3级标题 {
   margin-top: 50px;
+  font-size: 1.5rem;
 }
 
 .分区3级标题::before {
@@ -603,11 +602,16 @@ a[邮箱]:hover {
   padding: 10px 0;
 }
 
+.行内截图序号 {
+  color: lightskyblue;
+}
+
 .专业名词 {
   background-color: rgb(153, 168, 183);
   color: black;
   border-radius: 3px;
   padding: 1px 5px;
+  margin: 0 2px;
 }
 
 .行内专业名词 {
@@ -630,7 +634,7 @@ a[邮箱]:hover {
   color: white;
   padding: 3px 5px;
   border-radius: 3px;
-  margin-left: 5px;
+  margin: 0 5px;
 }
 
 .分区普通文本 {
@@ -646,12 +650,12 @@ a[邮箱]:hover {
   margin: 10px 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 10px;
 }
 
 .提醒标题 {
   color: lightseagreen;
+  text-align: center;
 }
 
 .提醒 > p {
@@ -669,6 +673,54 @@ a[邮箱]:hover {
 }
 
 /*------------------------------------------------*/
+
+/*------------------------------ ↓ 单独表格样式 ------------------------------*/
+#终端表 {
+  border-collapse: collapse;
+  margin-top: 50px;
+  outline: solid 2px lightslategray;
+}
+
+#终端表 caption {
+  padding: 20px 0;
+  background-color: lightslategray;
+  color: white;
+  font-size: 2rem;
+  font-weight: bolder;
+}
+
+#终端-表头区 > tr {
+  height: 60px;
+  font-size: 1.25rem;
+}
+
+#终端表 th,
+#终端表 td {
+  border: solid 1px gray;
+}
+
+#终端表 td {
+  text-align: center;
+  padding: 20px 0;
+}
+
+#终端-表头区 {
+  background-color: #8b939a20;
+}
+
+#终端-表头区 > tr > th {
+  color: greenyellow;
+}
+
+#终端-表身区 > tr > th {
+  color: sandybrown;
+  padding: 0 10px;
+}
+
+.终端-默认 {
+  font-size: 1.5rem;
+}
+/*------------------------------ ↑ 单独表格样式 ------------------------------*/
 
 .专题正文区 ul,
 .专题正文区 li {
@@ -967,9 +1019,9 @@ img[图含义] {
 }
 
 /* ------------------------------ ↓ 响应式设计 ------------------------------ */
-@media screen and (width < 1600px) {
+@media screen and (width < 1300px) {
   .专题正文区 {
-    width: 100%;
+    padding: 25px 0;
   }
 }
 
@@ -1017,7 +1069,7 @@ img[图含义] {
   }
 
   .专题正文区 {
-    min-width: 100dvw;
+    width: 100%;
   }
 
   .侧边栏收缩容器 {
