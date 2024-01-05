@@ -563,12 +563,13 @@ a[邮箱]:hover {
 }
 
 .分区列表 {
-  margin: 5px 0 5px 0.5rem;
+  margin: 5px 0;
 }
 
 .分区列表项 {
   list-style-type: square;
   padding: 5px 0;
+  color: #b4c5d7;
 }
 
 .分区列表项::marker {
@@ -617,6 +618,10 @@ a[邮箱]:hover {
 .行内专业名词 {
   color: #67cdcc;
   margin: 0 0.5ch;
+}
+
+.分区3级标题 > .行内专业名词:first-child {
+  margin: 0 0.5ch 0 0;
 }
 
 .代码 {
