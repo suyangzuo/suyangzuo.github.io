@@ -105,45 +105,37 @@
   </ul>
 </article>
 <div class="专题正文区">
-  <h2 class="标题-h2">使用 Git Config 命令进行配置</h2>
-  <ul class="正文列表 正文列表-1级">
-    <li class="正文列表项 正文列表项-1级">
-      <p 列表1级标题>配置用户名</p>
-      <ul class="正文列表 正文列表-2级">
-        <li class="正文列表项 正文列表项-2级">
-          <pre
-            style="margin: 0"
-          ><code class="lang-git">git config --global user.name "用户名"</code></pre>
-        </li>
-        <li class="正文列表项 正文列表项-2级">
-          <span 含义="语言">--global</span>
-          代表全局设置，只需设置一次，今后所有的Git项目都会自动使用这个用户名。如果不使用这个参数，则用户名仅对当前仓库有效，每个Git仓库都要单独设置用户名。
-        </li>
-        <li class="正文列表项 正文列表项-2级">
-          尽管用户名可以随便写，但最好还是和你代码托管平台<span 含义="行内名词"
-            >例如 GitHub</span
-          >的用户名保持一致，以免推送时出现问题。
-        </li>
-      </ul>
-    </li>
-    <li class="正文列表项 正文列表项-1级">
-      <p 列表1级标题>配置用户邮箱</p>
-      <ul class="正文列表 正文列表-2级">
-        <li class="正文列表项 正文列表项-2级">
-          <pre
-            style="margin: 0"
-          ><code class="lang-git">git config --global user.email "用户邮箱"</code></pre>
-        </li>
-        <li class="正文列表项 正文列表项-2级">
-          <span 含义="语言">--global</span>
-          代表全局设置，只需设置一次，今后所有的Git项目都会自动使用这个邮箱。如果不使用这个参数，则邮箱仅对当前仓库有效，每个Git仓库都要单独设置邮箱。
-        </li>
-        <li class="正文列表项 正文列表项-2级">
-          尽管邮箱可以随便写，但最好还是和你代码托管平台<span 含义="行内名词"
-            >例如 GitHub</span
-          >的邮箱保持一致，以免推送时出现问题。
-        </li>
-      </ul>
-    </li>
-  </ul>
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">使用命令进行 Git 配置</h2>
+    <h3 class="分区标题 分区3级标题">配置用户名</h3>
+    <p class="分区普通文本">在终端运行如下命令：</p>
+    <pre
+      style="margin: 0"
+    ><code class="lang-git">git config --global user.name "用户名"</code></pre>
+    <p class="分区普通文本">
+      <span class="代码">--global</span>
+      代表全局设置，只需设置一次，今后所有 Git
+      仓库的提交都会自动使用这个用户名。如果不使用这个参数，则用户名仅对当前仓库有效，每个
+      Git 仓库都要单独设置用户名。
+    </p>
+    <p class="分区普通文本">用户名可以跟 GitHub 用户名不一样。</p>
+
+    <h2 class="分区标题 分区2级标题">使用命令进行 Git 配置</h2>
+    <h3 class="分区标题 分区3级标题">配置用户邮箱</h3>
+    <p class="分区普通文本">在终端运行如下命令：</p>
+    <pre
+      style="margin: 0"
+    ><code class="lang-git">git config --global user.email "用户邮箱"</code></pre>
+    <p class="分区普通文本">
+      <span class="代码">--global</span>
+      代表全局设置，只需设置一次，今后所有 Git
+      仓库的提交都会自动使用这个邮箱。如果不使用这个参数，则邮箱仅对当前仓库有效，每个
+      Git 仓库都要单独设置邮箱。
+    </p>
+    <p class="分区普通文本">
+      邮箱<span class="强调">一定</span>要和 GitHub 邮箱<span class="强调"
+        >一致</span
+      >。
+    </p>
+  </article>
 </div>

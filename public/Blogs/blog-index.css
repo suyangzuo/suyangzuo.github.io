@@ -382,7 +382,7 @@ span[侧边栏专题符号] {
 .原文链接,
 .译者姓名 {
   font-size: 0.9rem;
-  background-color: #c9d6ff;
+  background-color: #c9d6ffbb;
   color: black;
   max-width: 300px;
   padding: 1px 5px;
@@ -542,8 +542,12 @@ a[邮箱]:hover {
 }
 
 .分区3级标题 {
-  margin-top: 50px;
+  margin-top: 75px;
   font-size: 1.5rem;
+}
+
+.分区2级标题 + .分区3级标题 {
+  margin-top: 50px;
 }
 
 .分区3级标题::before {
@@ -580,6 +584,29 @@ a[邮箱]:hover {
   margin-right: 5px;
 }
 
+.分区列表:has(.有序列表项) {
+  counter-reset: li;
+}
+
+.分区列表项.有序列表项 {
+  list-style-type: none;
+}
+
+.分区列表项.有序列表项::before {
+  position: absolute;
+  width: 23px;
+  height: 23px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  content: counter(li);
+  counter-increment: li;
+  translate: -35px 0;
+  background-color: #8b939a;
+  color: black;
+  border-radius: 50%;
+}
+
 .截图容器 {
   width: fit-content;
   max-width: 100%;
@@ -588,7 +615,8 @@ a[邮箱]:hover {
   flex-direction: column;
   align-items: center;
   background-color: #fff1;
-  border-radius: 0 0 10px 10px;
+  border-radius: 5px 5px 10px 10px;
+  overflow: hidden;
 }
 
 .截图容器 > img {
@@ -612,7 +640,7 @@ a[邮箱]:hover {
   color: black;
   border-radius: 3px;
   padding: 1px 5px;
-  margin: 0 2px;
+  margin: 0 4px;
 }
 
 .行内专业名词 {
@@ -626,11 +654,11 @@ a[邮箱]:hover {
 
 .代码 {
   font-family: "JetBrains Mono";
-  /*background-color: #8b939a;*/
+  background-color: #8b939a50;
   color: #ccc;
-  outline: solid 1px #90ee90a0;
+  /*outline: solid 1px #90ee90a0;*/
   padding: 1px 5px;
-  margin: 0 5px;
+  margin: 0 4px;
   border-radius: 3px;
   font-size: 0.95rem;
 }
@@ -639,9 +667,15 @@ a[邮箱]:hover {
   font-size: 14px;
   background-color: rgb(53, 89, 157);
   color: white;
-  padding: 3px 5px;
+  padding: 1px 5px;
   border-radius: 3px;
-  margin: 0 5px;
+  margin: 0 4px;
+}
+
+.专业名词 + .附加说明,
+.行内专业名词 + .附加说明,
+.代码 + .附加说明 {
+  margin-left: 2px;
 }
 
 .分区普通文本 {
@@ -661,12 +695,21 @@ a[邮箱]:hover {
 }
 
 .提醒标题 {
+  position: relative;
   color: lightseagreen;
   text-align: center;
+  width: fit-content;
+  margin: 0 auto;
 }
 
-.提醒 > p {
-  line-height: 1.75rem;
+.提醒标题::before {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  translate: -150% -50%;
+  content: "\f05a";
+  color: yellow;
+  font-family: "Font Awesome 6 Free";
 }
 
 .提醒标题 > i {
@@ -674,9 +717,14 @@ a[邮箱]:hover {
   margin-right: 15px;
 }
 
+.提醒 > p {
+  line-height: 1.75rem;
+}
+
 .强调 {
   font-weight: bolder;
   color: #e85656;
+  margin: 0 2px;
 }
 
 /*------------------------------------------------*/

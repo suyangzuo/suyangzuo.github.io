@@ -204,8 +204,11 @@ function 更新图像序号() {
     const index = Array.from(screenShotsContainers).indexOf(container);
     number.textContent = `图 ${index + 1}`;
 
-    const siblingText = container.nextElementSibling.querySelector(".行内截图序号");
-    siblingText.textContent = ` ·图${index + 1}· `;
+    const containerSibling = container.nextElementSibling;
+    const 行内截图序号 = document.createElement("span");
+    行内截图序号.className = "行内截图序号";
+    行内截图序号.textContent = `·图${index + 1}·`;
+    containerSibling.prepend("如", 行内截图序号, "所示，");
   });
 }
 
