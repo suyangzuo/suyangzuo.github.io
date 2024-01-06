@@ -28,8 +28,7 @@ body {
   width: 65px;
   height: 65px;
   border-radius: 50px;
-  background:
-    no-repeat center/contain url("./选择器修饰.png"),
+  background: no-repeat center/contain url("./选择器修饰.png"),
     radial-gradient(circle at center, #80d0c744 0%, #13547a11 50%);
   bottom: 40px;
   right: 50px;
