@@ -626,10 +626,11 @@ a[邮箱]:hover {
 
 .代码 {
   font-family: "JetBrains Mono";
-  background-color: #8b939a;
-  color: black;
+  /*background-color: #8b939a;*/
+  color: #ccc;
+  outline: solid 1px #90ee90a0;
   padding: 1px 5px;
-  margin: 0 2px;
+  margin: 0 5px;
   border-radius: 3px;
   font-size: 0.95rem;
 }

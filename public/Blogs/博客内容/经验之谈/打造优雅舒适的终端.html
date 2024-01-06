@@ -106,9 +106,9 @@
 </article>
 <div class="专题正文区 博客导航页-专题正文区">
   <article class="正文分区">
-    <h2 class="分区标题 分区2级标题">Windows官方终端简介</h2>
+    <h2 class="分区标题 分区2级标题">Windows 官方终端简介</h2>
     <h3 class="分区标题 分区3级标题">
-      <span class="行内专业名词">Windows官方终端</span>有哪些？
+      <span class="行内专业名词">Windows 官方终端</span>有哪些？
     </h3>
     <figure class="截图容器">
       <img
@@ -168,7 +168,7 @@
       <li class="分区列表项">功能不够强大</li>
     </ul>
     <h3 class="分区标题 分区3级标题">
-      <span>什么是</span><span class="行内专业名词">Windows终端</span>？
+      <span>什么是</span><span class="行内专业名词">Windows 终端</span>？
     </h3>
     <figure class="截图容器">
       <img
@@ -189,7 +189,7 @@
       首发于2019年2月，由微软公司研发，是一款面向命令行用户的新型、现代化、功能丰富、高效的终端应用程序。它包括Windows命令行社区最常要求的许多功能，包括对选项卡、富文本、全球化、可配置性、主题化和样式化等的支持。
     </p>
     <h3 class="分区标题 分区3级标题">
-      <span class="行内专业名词">Windows终端</span>有什么优点？
+      <span class="行内专业名词">Windows 终端</span>有什么优点？
     </h3>
     <ul class="分区列表">
       <li class="分区列表项">免费开源</li>
@@ -343,6 +343,10 @@
         <i class="fa-solid fa-lightbulb"></i>Oh My Posh 是什么？
       </h3>
       <p class="分区普通文本">
+        <span class="行内专业名词" style="margin-left: 0">Oh My Posh</span
+        >是一个 Shell 提示符主题引擎。
+      </p>
+      <p class="分区普通文本">
         我们已经安装了<span class="行内专业名词">Windows 终端</span
         >，可以使用选项卡、壁纸等设置，获得美观的外壳；使用<span
           class="行内专业名词"
@@ -439,7 +443,7 @@
       如<span class="行内截图序号"></span
       >所示，配置文件有4种，从上往下优先级依次递增。也就是说，下方的配置文件，会覆盖上方的配置文件。因此，优先级最高的配置文件类型是：<span
         class="强调"
-        >当前用户，当前主机</span
+        >当前用户、当前主机</span
       >。其中，<span class="专业名词">Windows</span>版本的路径有一个变量叫<span
         class="代码"
         >$HOME</span
@@ -560,6 +564,27 @@
         >Windows 终端</span
       >，点击顶栏的倒三角图标，选择<span class="行内专业名词">PowerShell</span
       >，大功告成！
+    </p>
+    <h3 class="分区标题 分区3级标题">更换主题</h3>
+    <p class="分区普通文本">
+      访问<span class="行内专业名词">Oh My Posh</span
+      ><a class="超链接" href="https://ohmyposh.dev/docs/themes" target="_blank"
+        >官网主题预览页面</a
+      >，选择喜欢的主题。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/博客导航页/美化终端/获取主题文件名.gif"
+        alt="获取主题文件名"
+      />
+      <span class="截图序号"></span>
+    </figure>
+    <p class="分区普通文本">
+      如<span class="行内截图序号"></span>所示，点击喜欢的主题名称，进入该主题
+      GitHub 代码页，复制文件名，打开 PowerShell
+      配置文件，替换路径中的文件名，保存。此时重启 Windows
+      终端，或者在终端运行<span class="代码">. $profile</span
+      >命令，新主题即可生效。
     </p>
   </article>
 </div>
