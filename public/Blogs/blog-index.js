@@ -31,7 +31,7 @@ if (sessionStorage.getItem("页面技术栈") === null) {
 }
 
 let index = JSON.parse(sessionStorage.getItem("专题索引记录")).find(
-  (记录) => 记录.技术栈 === 技术栈名称,
+  (记录) => 记录.技术栈 === 技术栈名称
 ).专题索引;
 let 专题名称 = "首页";
 let 专题文件路径 = `./博客内容/${技术栈名称}/${专题名称}.html`;
@@ -62,7 +62,7 @@ async function 设置侧边栏() {
   专题标记组 = document.querySelectorAll(".专题-标记");
 
   index = JSON.parse(sessionStorage.getItem("专题索引记录")).find(
-    (记录) => 记录.技术栈 === 技术栈名称,
+    (记录) => 记录.技术栈 === 技术栈名称
   ).专题索引;
 
   专题组[index].style.setProperty("background", 侧边栏颜色_已选中, "important");
@@ -88,6 +88,7 @@ async function 设置内容() {
       刷新代码格式化脚本();
     });
   window.scrollTo(0, 0);
+  特殊元素样式补充();
 }
 
 技术栈组.forEach((技术栈) => {
@@ -154,6 +155,71 @@ function 隐藏技术栈内容() {
   技术栈选择器.style.scale = "1";
 }
 
+//---------------------- ↓ 对内容中的特殊元素补充样式 ----------------------
+function 特殊元素样式补充() {
+  const 分区3级标题组 = document.querySelectorAll(".分区3级标题");
+  分区3级标题组.forEach((标题) => {
+    let 首节点 = 标题.childNodes[0];
+
+    if (首节点.textContent.trim().length === 0) 首节点 = 标题.childNodes[1];
+
+    if (首节点.nodeType === Node.ELEMENT_NODE) {
+      首节点.style.marginLeft = "0";
+    }
+  });
+
+  const 附加说明组 = document.querySelectorAll(".附加说明");
+  附加说明组.forEach((附加说明) => {
+    const 前一节点 = 附加说明.previousSibling;
+    if (
+      前一节点.className !== "超链接" &&
+      前一节点.nodeType === Node.ELEMENT_NODE
+    ) {
+      附加说明.style.marginLeft = "2px";
+    }
+  });
+
+  const 超链接组 = document.querySelectorAll(".超链接");
+  超链接组.forEach((超链接) => {
+    const 前一节点 = 超链接.previousSibling;
+    if (前一节点.textContent.trim().length === 0) {
+      超链接.style.marginLeft = "0";
+    }
+  });
+
+  const 行内专业名词组 = document.querySelectorAll(".行内专业名词");
+  行内专业名词组.forEach((行内专业名词) => {
+    const 前一节点 = 行内专业名词.previousSibling;
+    if (
+      前一节点.nodeType === Node.TEXT_NODE &&
+      (前一节点.textContent.at(-1) === "，" ||
+        前一节点.textContent.at(-1) === "。" ||
+        前一节点.textContent.at(-1) === "：" ||
+        前一节点.textContent.at(-1) === "；" ||
+        前一节点.textContent.at(-1) === "、")
+    ) {
+      行内专业名词.style.marginLeft = "0";
+    }
+  });
+
+  const 提醒 = document.querySelector(".提醒");
+  const 专业名词组 = 提醒.querySelectorAll(".专业名词");
+  专业名词组.forEach((专业名词) => {
+    const 前一节点 = 专业名词.previousSibling;
+    if (
+      前一节点.textContent.at(-1) === " " ||
+      前一节点.textContent.at(-1) === "，" ||
+      前一节点.textContent.at(-1) === "。" ||
+      前一节点.textContent.at(-1) === "：" ||
+      前一节点.textContent.at(-1) === "；" ||
+      前一节点.textContent.at(-1) === "、"
+    ) {
+      专业名词.style.marginLeft = "0";
+    }
+  });
+}
+//---------------------- ↑ 对内容中的特殊元素补充样式 ----------------------
+
 侧边栏收缩容器.addEventListener("click", 修改侧边栏可见性);
 let 侧边栏可见 = false;
 const 视口宽度低于800px = window.matchMedia("(width < 800px)");
@@ -200,9 +266,11 @@ function 专题改变时运行() {
 function 更新图像序号() {
   const screenShotsContainers = document.querySelectorAll(".截图容器");
   screenShotsContainers.forEach((container) => {
-    const number = container.querySelector(".截图序号");
+    const 截图序号 = document.createElement("span");
+    截图序号.className = "截图序号";
+    container.appendChild(截图序号);
     const index = Array.from(screenShotsContainers).indexOf(container);
-    number.textContent = `图 ${index + 1}`;
+    截图序号.textContent = `图 ${index + 1}`;
 
     const containerSibling = container.nextElementSibling;
     const 行内截图序号 = document.createElement("span");
@@ -216,7 +284,7 @@ function 生成永恒代码统计图表() {
   // 基于准备好的dom，初始化echarts实例
   const myChart = echarts.init(
     document.getElementById("永恒代码统计图表"),
-    "dark",
+    "dark"
   );
 
   // 指定图表的配置项和数据

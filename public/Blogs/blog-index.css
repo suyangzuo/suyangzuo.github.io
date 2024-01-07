@@ -5,22 +5,11 @@
   --侧边栏背景: linear-gradient(60deg, #1f242b 0%, #252c32 100%);
   --专题内容区背景: linear-gradient(90deg, #181c20 0%, #262d35 100%);
   --超链接颜色-正文: skyblue;
+  --正文分区-宽度: 800px;
 }
 
 body {
   width: 100dvw;
-}
-
-.专题简介 a:not([邮箱]),
-.专题正文区 a:not([邮箱]) {
-  text-decoration: underline;
-  text-decoration-color: orange;
-  text-underline-offset: 3px;
-}
-
-.专题简介 a:hover,
-.专题正文区 a:hover {
-  color: skyblue;
 }
 
 .技术栈选择器 {
@@ -205,7 +194,6 @@ body {
   position: fixed;
   left: 0;
   top: 0;
-  /* background: #0a0a0a; */
   background-image: var(--侧边栏背景);
   display: flex;
   flex-direction: column;
@@ -296,7 +284,6 @@ span[侧边栏专题符号] {
 .专题内容区 {
   width: 100%;
   min-height: calc(100vh - 50px);
-  /* background-color: rgb(21, 21, 21); */
   background-image: var(--专题内容区背景);
   padding: 50px 50px 50px calc(var(--侧边栏宽度) + 50px);
   color: white;
@@ -450,42 +437,15 @@ span[侧边栏专题符号] {
 .专题简介 .fa-solid,
 .专题简介 .fa-brands {
   font-size: 1.5rem;
-  /*color: darkseagreen;*/
 }
 
 /*------------------------------------ ↑ 内容区顶栏 ------------------------------------*/
-
-a[邮箱] {
-  width: 32px;
-  height: 32px;
-  border-radius: 32px;
-  font-size: 0.95rem;
-  padding-bottom: 3px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-}
-
-a[邮箱="原创"] .fa-solid {
-  color: white;
-}
-
-a[邮箱="转载"] .fa-solid {
-  color: black;
-}
-
-a[邮箱="原创"]:hover {
-  filter: brightness(150%);
-}
-
-a[邮箱]:hover {
-  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
-}
-
 .超链接 {
   color: yellowgreen !important;
   text-decoration: underline;
+  text-decoration-color: orange;
   text-underline-offset: 2.5px;
+  margin: 0 3px;
 }
 
 .超链接:visited {
@@ -505,7 +465,6 @@ a[邮箱]:hover {
   flex-direction: column;
   align-items: flex-start;
   gap: 35px;
-  /*overflow-x: hidden;*/
 }
 
 .正文分区 {
@@ -572,7 +531,12 @@ a[邮箱]:hover {
 .分区列表项 {
   list-style-type: square;
   padding: 5px 0;
-  color: #b4c5d7;
+  color: #84a7a0;
+}
+
+.分区列表项 > span {
+  display: inline-block;
+  text-align: center;
 }
 
 .分区列表项::marker {
@@ -624,6 +588,11 @@ a[邮箱]:hover {
   object-fit: contain;
 }
 
+.截图容器 > video {
+  width: var(--正文分区-宽度);
+  transition: 1s;
+}
+
 .截图序号 {
   color: #999;
   font-size: 15px;
@@ -647,15 +616,10 @@ a[邮箱]:hover {
   margin: 0 0.5ch;
 }
 
-.分区3级标题 > .行内专业名词:first-child {
-  margin: 0 0.5ch 0 0;
-}
-
 .代码 {
   font-family: "JetBrains Mono";
   background-color: #8b939a50;
   color: #ccc;
-  /*outline: solid 1px #90ee90a0;*/
   padding: 1px 5px;
   margin: 0 4px;
   border-radius: 3px;
@@ -671,16 +635,14 @@ a[邮箱]:hover {
   margin: 0 4px;
 }
 
-.专业名词 + .附加说明,
-.行内专业名词 + .附加说明,
-.代码 + .附加说明 {
-  margin-left: 2px;
-}
-
 .分区普通文本 {
   line-height: 1.75rem;
   padding: 10px 0;
   color: #b4c5d7;
+}
+
+.分区普通文本:has(+ .分区列表) {
+  padding-bottom: 0;
 }
 
 .提醒 {
@@ -721,12 +683,11 @@ a[邮箱]:hover {
 }
 
 .强调 {
-  font-weight: bolder;
   color: #e85656;
   margin: 0 2px;
 }
 
-/*------------------------------------------------*/
+/*------------------------------------ ↑ 专题正文区 ------------------------------------*/
 
 /*------------------------------ ↓ 单独表格样式 ------------------------------*/
 #终端表 {
@@ -971,7 +932,6 @@ span[含义="语言"] {
 }
 
 span[含义="特别提醒"] {
-  /* background-color: #181c2077; */
   color: yellow;
   font-size: 1em;
 }
