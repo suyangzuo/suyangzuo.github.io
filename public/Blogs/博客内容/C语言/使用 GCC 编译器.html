@@ -246,8 +246,10 @@
             <span class="专业名词">链接器</span>将各个模块的<span
               class="行内代码"
               >.o</span
-            >文件<span class="行内专业名词">链接</span
-            >起来生成一个可执行程序<span class="行内代码">.exe</span>文件。
+            >文件<span class="行内专业名词">链接</span>起来生成可执行程序<span
+              class="行内代码"
+              >.exe</span
+            >文件。
             <figure class="截图容器">
               <img
                 src="/Images/Blogs/C语言/使用 GCC 编译器/链接.gif"
@@ -355,7 +357,11 @@
           <td><span class="专业名词">静态链接库</span></td>
         </tr>
         <tr>
-          <td><span class="行内代码">.out</span></td>
+          <td>
+            <span class="行内代码">.out</span><br /><span class="行内代码"
+              >.exe</span
+            >
+          </td>
           <td>
             <span class="专业名词">可执行文件</span
             >，但可执行文件没有统一的后缀，系统从文件的属性来区分可执行文件和不可执行文件。如果没有给出可执行文件的名字，GCC将生成一个名为
@@ -386,7 +392,8 @@
         <tr>
           <th><span class="行内代码">-E</span></th>
           <td>
-            预处理指定的源文件，但不进行编译。<br />默认情况下，预处理器的输出会被导入到标准输出流（如显示器），可以利用-o选项把它导入到某个输出文件。
+            预处理指定的源文件，但不进行编译。<br />默认情况下，预处理器的输出会被导入到标准输出流（如显示器），可以利用
+            -o 选项把它导入到某个输出文件。
           </td>
           <td><span class="行内代码">gcc -E circle.c -o circle.i</span></td>
         </tr>
@@ -406,7 +413,7 @@
           <td><span class="行内代码">gcc -c test1.c test2.c</span></td>
         </tr>
         <tr>
-          <th><span class="行内代码">-c</span></th>
+          <th><span class="行内代码">-o</span></th>
           <td>
             编译、汇编指定的源文件生成目标文件，但不进行链接。通常用于编译不包含主程序的子程序文件。
           </td>
