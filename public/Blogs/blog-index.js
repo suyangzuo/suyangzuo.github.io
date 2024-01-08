@@ -157,10 +157,15 @@ function 隐藏技术栈内容() {
 
 //---------------------- ↓ 对内容中的特殊元素补充样式 ----------------------
 function 特殊元素样式补充() {
+  const 原创转载 = document.querySelector(".简介标题 > span");
+  if (原创转载.className === "转载") {
+    const 原文链接 = document.querySelector(".原文链接 > a");
+    原文链接.style.marginLeft = "0";
+  }
+
   const 分区3级标题组 = document.querySelectorAll(".分区3级标题");
   分区3级标题组.forEach((标题) => {
     let 首节点 = 标题.childNodes[0];
-
     if (首节点.textContent.trim().length === 0) 首节点 = 标题.childNodes[1];
 
     if (首节点.nodeType === Node.ELEMENT_NODE) {
@@ -182,7 +187,7 @@ function 特殊元素样式补充() {
   const 超链接组 = document.querySelectorAll(".超链接");
   超链接组.forEach((超链接) => {
     const 前一节点 = 超链接.previousSibling;
-    if (前一节点.textContent.trim().length === 0) {
+    if (前一节点?.textContent.trim().length === 0) {
       超链接.style.marginLeft = "0";
     }
   });
@@ -202,11 +207,26 @@ function 特殊元素样式补充() {
     }
   });
 
+  const 分区普通文本组 = document.querySelectorAll(".分区普通文本");
+  分区普通文本组?.forEach((分区普通文本) => {
+    const 首节点 = 分区普通文本.firstChild;
+    if (
+      首节点.nodeType === Node.TEXT_NODE &&
+      首节点.textContent.trim().length === 0
+    ) {
+      const 第2节点 = 首节点.nextSibling;
+      if (第2节点.nodeType === Node.ELEMENT_NODE) {
+        第2节点.style.marginLeft = "0";
+      }
+    }
+  });
+
   const 提醒 = document.querySelector(".提醒");
-  const 专业名词组 = 提醒.querySelectorAll(".专业名词");
-  专业名词组.forEach((专业名词) => {
+  const 专业名词组 = document.querySelectorAll(".专业名词");
+  专业名词组?.forEach((专业名词) => {
     const 前一节点 = 专业名词.previousSibling;
     if (
+      前一节点 === null ||
       前一节点.textContent.at(-1) === " " ||
       前一节点.textContent.at(-1) === "，" ||
       前一节点.textContent.at(-1) === "。" ||
@@ -215,6 +235,14 @@ function 特殊元素样式补充() {
       前一节点.textContent.at(-1) === "、"
     ) {
       专业名词.style.marginLeft = "0";
+    }
+  });
+
+  const 表格组 = document.querySelectorAll(".表格");
+  表格组?.forEach((表格) => {
+    const 表格后元素 = 表格.nextElementSibling;
+    if (表格后元素?.className === "提醒") {
+      表格.style.marginBottom = "50px";
     }
   });
 }
@@ -276,7 +304,7 @@ function 更新图像序号() {
     const 行内截图序号 = document.createElement("span");
     行内截图序号.className = "行内截图序号";
     行内截图序号.textContent = `·图${index + 1}·`;
-    containerSibling.prepend("如", 行内截图序号, "所示，");
+    containerSibling?.prepend("如", 行内截图序号, "所示，");
   });
 }
 
