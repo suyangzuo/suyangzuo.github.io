@@ -99,4 +99,325 @@
     </li>
   </ul>
 </article>
-<div class="专题正文区"></div>
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">编译器简介</h2>
+
+    <h3 class="分区标题 分区3级标题">
+      常见<span class="行内专业名词">C语言</span>编译器
+    </h3>
+    <table class="表格">
+      <caption class="表格标题">
+        常见<span class="行内代码">C/C++</span
+        >编译器
+      </caption>
+      <thead class="表头区">
+        <tr>
+          <th style="width: 4em">名称</th>
+          <th style="width: 7em">可执行文件</th>
+          <th>官方网站</th>
+        </tr>
+      </thead>
+      <tbody class="表身区">
+        <tr>
+          <th>GCC</th>
+          <td><span class="行内代码">gcc.exe</span></td>
+          <td>
+            <a class="超链接" href="https://gcc.gnu.org/" target="_blank"
+              >https://gcc.gnu.org/</a
+            >
+          </td>
+        </tr>
+        <tr>
+          <th>Clang</th>
+          <td><span class="行内代码">clang.exe</span></td>
+          <td>
+            <a class="超链接" href="https://clang.llvm.org/" target="_blank"
+              >https://clang.llvm.org/</a
+            >
+          </td>
+        </tr>
+        <tr>
+          <th>MSVC</th>
+          <td><span class="行内代码">cl.exe</span></td>
+          <td>
+            <a
+              class="超链接"
+              target="_blank"
+              href="https://learn.microsoft.com/zh-cn/cpp/build/reference/compiling-a-c-cpp-program"
+              >https://learn.microsoft.com/zh-cn/cpp/build/reference/compiling-a-c-cpp-program</a
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </article>
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">编译器历史</h2>
+
+    <h3 class="分区标题 分区3级标题">
+      C语言<span class="强调">不是</span>为了 Windows 而生
+    </h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词">C语言</span>诞生于<span class="强调">1972</span
+      >年，<span class="行内专业名词">Windows 1.0</span>发布于<span class="强调"
+        >1985</span
+      >年。<span class="行内专业名词">C语言</span>是为了编写<span
+        class="行内专业名词"
+        >Unix</span
+      >系统而设计出来的。因此，最初的 C语言编译器 也不可能是为 Windows
+      设计的。很长一段时间，编译器都运行在
+      <span class="行内专业名词"
+        >Unix-like<span class="附加说明"
+          >包括 Linux，尽管它诞生于 1991 年</span
+        ></span
+      >系统上。比如 <span class="行内专业名词">GCC</span>编译器，是<a
+        class="超链接"
+        target="_blank"
+        href="https://zh.wikipedia.org/wiki/理查德·斯托曼"
+        >理查德·斯托曼</a
+      >为了引导<a
+        class="超链接"
+        href="https://zh.wikipedia.org/wiki/GNU"
+        target="_blank"
+        >GNU 操作系统</a
+      >开发的编译器。<br />
+      然而，随着时间的推移，Windows 变得越来越受欢迎，但是 Windows
+      上却没有一个好的编译器！怎么办呢？当然是移植！
+    </p>
+
+    <h3 class="分区标题 分区3级标题">GCC 移植项目</h3>
+    <p class="分区普通文本">比较有名的项目主要有 2 个：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <a class="超链接" target="_blank" href="https://www.cygwin.com/"
+          >Cygwin</a
+        >
+      </li>
+      <li class="分区列表项">
+        <a class="超链接" target="_blank" href="https://www.mingw-w64.org/"
+          >MinGW-w64</a
+        >
+      </li>
+    </ul>
+    <section class="提醒">
+      <h3 class="提醒标题">MinGW</h3>
+      <p>
+        MinGW<span class="附加说明">Minimalist GNU for Windows</span
+        >项目，又称<span class="行内专业名词">Mingw32</span>，诞生于 1998
+        年，是将<span class="行内专业名词">GCC</span>编译器和 GNU Binutils
+        移植到 Windows 平台下的产物。为了支持 64位 操作系统以及新的 API，于 2007
+        年诞生了新的分支：<span class="行内专业名词">MinGW-w64</span
+        >，并独立发展。<br />简而言之，MinGW 项目带来了能在 Windows 系统上运行的
+        GCC 编译器。
+      </p>
+    </section>
+  </article>
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">安装编译环境</h2>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">MSYS2</span>简介
+    </h3>
+    <p class="分区普通文本">
+      如何下载 MinGW-w64 项目的编译工具集，是个很让人头大的事情。<a
+        class="超链接"
+        target="_blank"
+        href="https://www.mingw-w64.org/downloads/"
+        >官网下载页面</a
+      >列出了一个巨大的表格：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/安装 GCC 编译器/MinGW-w64-管理表.png"
+        alt="MinGW-w64 管理工具表" />
+    </figure>
+    <p class="分区普通文本">
+      有很多的工具包可以用来管理 Mingw-w64，我个人推荐使用<span
+        class="行内专业名词"
+        >MSYS2</span
+      >。<br /><span class="行内专业名词">MSYS2</span>
+      是一个工具和库的集合，为开发者提供了一个易于使用的环境，用于构建、安装和运行原生
+      Windows 软件。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      下载<span class="行内专业名词">MSYS2</span>
+    </h3>
+    <p class="分区普通文本">
+      访问<a class="超链接" target="_blank" href="https://www.msys2.org/"
+        >MSYS2 官方网站</a
+      >，直接点击下载按钮即可：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/安装 GCC 编译器/MSYS2-下载.png"
+        alt="下载 MSYS2" />
+    </figure>
+
+    <h3 class="分区标题 分区3级标题">
+      安装<span class="行内专业名词">MSYS2</span>
+    </h3>
+    <ol class="分区列表 有序列表">
+      <li class="分区列表项">
+        安装路径
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/C语言/安装 GCC 编译器/安装-路径.png"
+            alt="安装路径" />
+        </figure>
+        <section class="提醒" style="margin-bottom: 50px">
+          <h3 class="提醒标题">提醒</h3>
+          <p>
+            MSYS2
+            对安装路径要求比较严格，不能有特殊字符，也不能有空格，只能是字母与数字的组合。
+          </p>
+        </section>
+      </li>
+      <li class="分区列表项">
+        完成安装
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/C语言/安装 GCC 编译器/安装-完成.png"
+            alt="完成安装" />
+        </figure>
+        <section class="提醒" style="margin-bottom: 50px">
+          <h3 class="提醒标题">提醒</h3>
+          <p class="分区普通文本">
+            如<span class="行内截图序号">·图4·</span
+            >所示，完成安装时，有一个选项：<span class="专业名词"
+              >立即运行 MSYS2</span
+            >。如果勾选，在点击<span class="行内专业名词">Finish</span
+            >后，会自动打开一个终端窗口：
+          </p>
+          <figure class="截图容器">
+            <img
+              src="/Images/Blogs/C语言/安装 GCC 编译器/安装-终端.png"
+              alt="完成安装" />
+          </figure>
+          <p class="分区普通文本">
+            MSYS2 主要就是在这个终端中，调用<span class="行内专业名词"
+              >Pacman</span
+            >包管理器命令，来下载各种工具包。不过，我们并不是非要使用这个终端不可，只要把
+            Pacman 可执行文件所在的路径，添加到环境变量，在任何终端都可以调用
+            Pacman。
+          </p>
+        </section>
+      </li>
+      <li class="分区列表项">
+        将<span class="行内代码">Pacman.exe</span>所在路径添加到环境变量
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/C语言/安装 GCC 编译器/Pacman-路径.png"
+            alt="Pacman.exe 路径" />
+        </figure>
+        <p class="分区普通文本">
+          <span class="行内代码">pacman.exe</span>的路径是：<span class="代码"
+            >MSYS2安装路径\usr\bin</span
+          >，将此路径添加到环境变量：
+        </p>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/C语言/安装 GCC 编译器/环境变量.png"
+            alt="环境变量" />
+        </figure>
+      </li>
+    </ol>
+
+    <h3 class="分区标题 分区3级标题">
+      使用<span class="行内专业名词">Pacman</span>安装<span class="行内专业名词"
+        >MinGW-w64</span
+      >工具集
+    </h3>
+    <ol class="分区列表 有序列表">
+      <li class="分区列表项">
+        在<a class="超链接" href="https://www.msys2.org/" target="_blank"
+          >MSYS2 官方网站</a
+        >查找需要安装的<span class="行内专业名词">包</span>名称
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/C语言/安装 GCC 编译器/查找Pacman包名称.gif"
+            alt="查找 Pacman包 名称" />
+        </figure>
+        <p class="分区普通文本">
+          在这个页面可以找到包名称的<span class="行内专业名词">前缀</span>：
+        </p>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/C语言/安装 GCC 编译器/包前缀.png"
+            alt="包名称前缀" />
+        </figure>
+        <p class="分区普通文本">
+          有了前缀，就可以推导出自己想要的包名称了。比如：你想下载<span
+            class="行内专业名词"
+            >MinGW-w64</span
+          >的<span class="行内专业名词">GCC</span
+          >工具集，那么完整的包名称就是：<span class="代码"
+            >mingw-w64-x86_64-GCC</span
+          >。打开<span class="行内专业名词">Windows 终端</span
+          >，运行如下命令：<span class="代码"
+            >pacman -S mingw-w64-x86_64-GCC</span
+          >，就可以开始安装了。
+        </p>
+      </li>
+    </ol>
+
+    <h3 class="分区标题 分区3级标题">
+      调用<span class="行内专业名词">GCC</span>编译器
+    </h3>
+    <ol class="分区列表 有序列表">
+      <li class="分区列表项">
+        将<span class="行内代码">gcc.exe</span>所在路径添加到环境变量
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/C语言/安装 GCC 编译器/GCC路径.png"
+            alt="gcc.exe 路径" />
+        </figure>
+        <p class="分区普通文本">
+          <span class="行内代码">gcc.exe</span>的路径是：<span class="代码"
+            >MSYS2安装路径\mingw64\bin</span
+          >，将此路径添加到环境变量：
+        </p>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/C语言/安装 GCC 编译器/GCC环境变量.png"
+            alt="将 gcc.exe 路径添加到环境变量" />
+        </figure>
+      </li>
+      <li class="分区列表项">
+        调用<span class="行内代码">gcc.exe</span>
+        <p class="分区普通文本">
+          打开<span class="行内专业名词">Windows 终端</span>，输入<span
+            class="代码"
+            >gcc --version</span
+          ><span class="附加说明"
+            ><span class="行内代码">--version</span>
+            是查看版本的参数，几乎所有编程开发工具都可以调用这个参数。</span
+          >
+        </p>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/C语言/安装 GCC 编译器/GCC版本.gif"
+            alt="GCC 版本" />
+        </figure>
+        <p class="分区普通文本">
+          只要出现白色文字信息，就表示<span class="行内代码">gcc.exe</span
+          >已经可以成功调用了，我们可以看到，图中安装的 GCC
+          版本是：13.2.0。如果出现以下错误信息：
+        </p>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/C语言/安装 GCC 编译器/GCC错误.png"
+            alt="GCC 错误" />
+        </figure>
+        <p class="分区普通文本">只要出现红色错误信息，最可能的问题有：</p>
+        <ul class="分区列表">
+          <li class="分区列表项">环境变量错误，仔细检查添加的路径是否正确</li>
+          <li class="分区列表项">
+            在添加环境变量之前，就启动了终端，添加之后没有重启终端
+          </li>
+        </ul>
+      </li>
+    </ol>
+  </article>
+</div>

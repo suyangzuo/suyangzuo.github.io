@@ -12,6 +12,7 @@ body {
   width: 100dvw;
 }
 
+/* --------------------- ↓ 技术栈选择 --------------------- */
 .技术栈选择器 {
   position: fixed;
   width: 65px;
@@ -167,7 +168,9 @@ body {
   font-size: 0.8rem;
   padding-top: 2px;
 }
+/* --------------------- ↑ 技术栈选择 --------------------- */
 
+/* -------------------------- ↓ 侧边栏样式 -------------------------- */
 .侧边栏收缩容器 {
   position: absolute;
   z-index: 1;
@@ -203,7 +206,6 @@ body {
   padding-top: 150px;
 }
 
-/* -------------------------- ↓ 侧边栏样式 -------------------------- */
 .专题名称 {
   position: relative;
   width: 100%;
@@ -255,7 +257,7 @@ body {
 }
 
 .专题[转载] .专题-标记 {
-  color: tomato;
+  color: orange;
 }
 
 .专题-内容 {
@@ -284,10 +286,20 @@ body {
 
 .超链接 {
   color: yellowgreen !important;
+  margin: 0 3px;
   text-decoration: underline;
   text-decoration-color: orange;
   text-underline-offset: 2.5px;
-  margin: 0 3px;
+}
+
+.表格 .超链接 {
+  text-decoration: none;
+}
+
+.表格 .超链接:hover {
+  text-decoration: underline;
+  text-decoration-color: orange;
+  text-underline-offset: 2.5px;
 }
 
 .超链接:visited {
@@ -440,6 +452,10 @@ body {
   text-decoration: none !important;
 }
 
+.联系方式项 > a:hover {
+  filter: sepia(80%) saturate(2500%) hue-rotate(320deg);
+}
+
 .专题简介 .fa-solid,
 .专题简介 .fa-brands {
   font-size: 1.5rem;
@@ -456,6 +472,7 @@ body {
   flex-direction: column;
   align-items: flex-start;
   gap: 35px;
+  font-size: 18px;
 }
 
 .正文分区 {
@@ -517,12 +534,35 @@ body {
 
 .分区列表 {
   margin: 5px 0;
+  font-size: 17px;
+}
+
+.分区列表.有序列表 {
+  counter-reset: li;
 }
 
 .分区列表项 {
   list-style-type: square;
   padding: 5px 0;
   color: #84a7a0;
+}
+
+.分区列表.有序列表 > .分区列表项 {
+  list-style-type: none;
+  counter-increment: li;
+}
+
+.分区列表.有序列表 > .分区列表项::before {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  content: counter(li);
+  width: 1.5em;
+  height: 1.5em;
+  font-size: 0.9em;
+  border-radius: 3em;
+  border: solid 2px #fff5;
+  margin-right: 0.5em;
 }
 
 .分区列表项::marker {
@@ -558,12 +598,12 @@ body {
 
 .截图容器 {
   width: fit-content;
-  max-width: 100%;
   margin: 15px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: #fff1;
+  border: solid 3px #fff2;
   border-radius: 5px 5px 10px 10px;
   overflow: hidden;
 }
@@ -609,18 +649,18 @@ body {
   padding: 1px 5px;
   margin: 0 4px;
   border-radius: 3px;
-  font-size: 0.95rem;
+  font-size: 0.95em;
 }
 
 .行内代码 {
   font-family: "JetBrains Mono";
   color: #67cdcc;
   margin: 0 4px;
-  font-size: 0.95rem;
+  font-size: 0.95em;
 }
 
 .附加说明 {
-  font-size: 14px;
+  font-size: 0.9em;
   background-color: rgb(53, 89, 157);
   color: white;
   padding: 1px 5px;
@@ -629,6 +669,7 @@ body {
 }
 
 .分区普通文本 {
+  font-size: 18px;
   line-height: 1.75rem;
   padding: 10px 0;
   color: #b4c5d7;
@@ -638,8 +679,20 @@ body {
   padding-bottom: 0;
 }
 
+.分区普通文本 > .fa-1 {
+  font-size: 0.8em;
+  background-color: #fff3;
+  width: 1.5em;
+  height: 1.5em;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2em;
+}
+
 .提醒 {
   background-color: #2b4162;
+  color: #b4c5d7;
   border-radius: 10px;
   padding: 20px 25px;
   margin: 10px 0;
@@ -679,7 +732,6 @@ body {
   color: #e85656;
   margin: 0 2px;
 }
-
 /*-------------- ↑ 专题正文区 --------------*/
 
 /*-------------- ↓ 单独表格样式 --------------*/
@@ -708,7 +760,7 @@ body {
 }
 
 .表头区 > tr > th {
-  color: greenyellow;
+  color: skyblue;
   padding: 0 10px;
 }
 
@@ -722,8 +774,13 @@ body {
   border: solid 1px gray;
 }
 
+.表格 tbody th {
+  font-size: 0.95em;
+}
+
 .表格 td {
   padding: 20px 15px;
+  font-size: 0.9em;
 }
 
 .单元格-居中 {
@@ -747,6 +804,10 @@ body {
   justify-content: center;
   align-items: center;
   border-radius: 100px;
+}
+
+.表脚区 {
+  color: darkgoldenrod;
 }
 
 .终端-默认 {

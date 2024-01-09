@@ -301,10 +301,15 @@ function 更新图像序号() {
     截图序号.textContent = `图 ${index + 1}`;
 
     const containerSibling = container.nextElementSibling;
-    const 行内截图序号 = document.createElement("span");
-    行内截图序号.className = "行内截图序号";
-    行内截图序号.textContent = `·图${index + 1}·`;
-    containerSibling?.prepend("如", 行内截图序号, "所示，");
+    if (
+      containerSibling !== null &&
+      containerSibling.className === "分区普通文本"
+    ) {
+      const 行内截图序号 = document.createElement("span");
+      行内截图序号.className = "行内截图序号";
+      行内截图序号.textContent = `·图${index + 1}·`;
+      containerSibling?.prepend("如", 行内截图序号, "所示，");
+    }
   });
 }
 
