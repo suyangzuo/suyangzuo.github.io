@@ -73,7 +73,9 @@ async function 设置侧边栏() {
   });
 
   前一专题 = 专题组[index];
-  专题名称 = 专题组[index].getElementsByClassName("专题-内容")[0].textContent;
+  专题名称 = 专题组[index]
+    .getElementsByClassName("专题-内容")[0]
+    .textContent.trim();
 
   设置内容();
 }
@@ -103,7 +105,7 @@ async function 设置内容() {
 
 function 点选技术栈(event) {
   const 技术栈 = event.currentTarget;
-  let 技术栈文本 = 技术栈.getElementsByTagName("p")[0].textContent;
+  let 技术栈文本 = 技术栈.getElementsByTagName("p")[0].textContent.trim();
   技术栈名称 = 技术栈文本;
   if (技术栈名称 === "Web前端原生开发") {
     技术栈名称 = "Web前端-原生开发";
@@ -127,7 +129,7 @@ function 修改专题样式(event) {
   }
   专题.style.setProperty("background", 侧边栏颜色_已选中, "important");
   前一专题 = 专题;
-  专题名称 = 专题.getElementsByClassName("专题-内容")[0].textContent;
+  专题名称 = 专题.getElementsByClassName("专题-内容")[0].textContent.trim();
 
   index = Array.from(专题组).indexOf(专题);
   if (!专题索引记录.some((记录) => 记录.技术栈 === 技术栈名称)) {
@@ -196,12 +198,13 @@ function 特殊元素样式补充() {
   行内专业名词组.forEach((行内专业名词) => {
     const 前一节点 = 行内专业名词.previousSibling;
     if (
-      前一节点.nodeType === Node.TEXT_NODE &&
-      (前一节点.textContent.at(-1) === "，" ||
-        前一节点.textContent.at(-1) === "。" ||
-        前一节点.textContent.at(-1) === "：" ||
-        前一节点.textContent.at(-1) === "；" ||
-        前一节点.textContent.at(-1) === "、")
+      前一节点.tagName === "BR" ||
+      (前一节点.nodeType === Node.TEXT_NODE &&
+        (前一节点.textContent.at(-1) === "，" ||
+          前一节点.textContent.at(-1) === "。" ||
+          前一节点.textContent.at(-1) === "：" ||
+          前一节点.textContent.at(-1) === "；" ||
+          前一节点.textContent.at(-1) === "、"))
     ) {
       行内专业名词.style.marginLeft = "0";
     }
@@ -324,9 +327,10 @@ function 生成永恒代码统计图表() {
   const option = {
     backgroundColor: "#fff1",
     title: {
-      text: "永恒代码量统计",
+      text: "永恒代码量，2024年1月10日",
       textStyle: {
         color: "gold",
+        fontSize: 16,
       },
       padding: 25,
     },
@@ -354,7 +358,7 @@ function 生成永恒代码统计图表() {
       {
         name: "代码行数",
         type: "bar",
-        data: [40334, 19572, 17310, 3372],
+        data: [121227, 23437, 20896, 23437],
         label: {
           position: "top",
           distance: 10,

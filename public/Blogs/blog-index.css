@@ -212,17 +212,18 @@ body {
   padding: 0 15px;
   font-size: 1.125rem;
   color: white;
+  font-family: "Jetbrains Mono", "Noto Sans SC";
   font-weight: 600;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 10px;
 }
 
 .专题名称 > img {
   width: 20px;
   height: 20px;
   object-fit: contain;
+  margin-right: 10px;
 }
 
 .专题列表 {
@@ -268,6 +269,11 @@ body {
   white-space: nowrap;
   text-overflow: ellipsis;
   font-size: 0.9rem;
+}
+
+.标题内符号 {
+  margin: 0 5px;
+  color: palegoldenrod;
 }
 /* -------------------------- ↑ 侧边栏样式 -------------------------- */
 
@@ -326,6 +332,7 @@ body {
 }
 
 .简介标题 {
+  font-family: "Jetbrains Mono", "Noto Sans SC";
   font-size: 3rem;
   letter-spacing: 0.25rem;
 }
@@ -508,12 +515,12 @@ body {
 }
 
 .分区3级标题 {
-  margin-top: 75px;
+  margin: 75px 0 15px 0;
   font-size: 1.75rem;
 }
 
 .分区2级标题 + .分区3级标题 {
-  margin-top: 50px;
+  margin: 50px 0 15px 0;
 }
 
 .分区3级标题::before {
@@ -603,7 +610,7 @@ body {
   flex-direction: column;
   align-items: center;
   background-color: #fff1;
-  border: solid 3px #fff2;
+  border: solid 3px #c0c0c050;
   border-radius: 5px 5px 10px 10px;
   overflow: hidden;
 }
@@ -694,7 +701,7 @@ body {
   background-color: #2b4162;
   color: #b4c5d7;
   border-radius: 10px;
-  padding: 20px 25px;
+  padding: 30px;
   margin: 10px 0;
   display: flex;
   flex-direction: column;
@@ -706,7 +713,7 @@ body {
   color: lightseagreen;
   text-align: center;
   width: fit-content;
-  margin: 0 auto;
+  margin: 0 auto 15px;
 }
 
 .提醒标题::before {
@@ -742,6 +749,10 @@ body {
   outline: solid 2px lightslategray;
 }
 
+.分区3级标题 + .表格 {
+  margin-top: 15px;
+}
+
 .表格标题 {
   padding: 20px 0;
   background-color: lightslategray;
@@ -752,6 +763,7 @@ body {
 
 .表头区 {
   background-color: #8b939a20;
+  border-bottom: solid 3px lightslategray;
 }
 
 .表头区 > tr {
@@ -808,6 +820,7 @@ body {
 
 .表脚区 {
   color: darkgoldenrod;
+  border-top: solid 3px lightslategray;
 }
 
 .终端-默认 {
@@ -1105,11 +1118,6 @@ img[图含义] {
   max-width: 100%;
 }
 
-#永恒代码统计图表 + p,
-#永恒代码统计图表 + p + .正文列表-3级 {
-  display: none;
-}
-
 /* ------------------------------ ↓ 响应式设计 ------------------------------ */
 @media screen and (width < 1300px) {
   .专题正文区 {
@@ -1126,15 +1134,6 @@ img[图含义] {
 
   #永恒代码统计图表 {
     display: none;
-  }
-
-  #永恒代码统计图表 + p {
-    display: block;
-    margin: 10px 0 0 0;
-  }
-
-  #永恒代码统计图表 + p + .正文列表-3级 {
-    display: flex;
   }
 }
 
