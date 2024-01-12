@@ -42,6 +42,16 @@ let 前一专题 = null;
 
 // 设置内容();
 
+技术栈组.forEach((技术栈) => {
+  技术栈.addEventListener("click", 点选技术栈);
+  技术栈.addEventListener("click", 设置侧边栏);
+  技术栈.addEventListener("click", () => {
+    if (技术栈对话框.open) {
+      隐藏技术栈内容();
+    }
+  });
+});
+
 function 刷新代码格式化脚本() {
   const 代码格式化脚本元素 = document.querySelector("script[代码格式化]");
   代码格式化脚本元素.remove();
@@ -93,16 +103,6 @@ async function 设置内容() {
   特殊元素样式补充();
 }
 
-技术栈组.forEach((技术栈) => {
-  技术栈.addEventListener("click", 点选技术栈);
-  技术栈.addEventListener("click", 设置侧边栏);
-  技术栈.addEventListener("click", () => {
-    if (技术栈对话框.open) {
-      隐藏技术栈内容();
-    }
-  });
-});
-
 function 点选技术栈(event) {
   const 技术栈 = event.currentTarget;
   let 技术栈文本 = 技术栈.getElementsByTagName("p")[0].textContent.trim();
@@ -122,6 +122,7 @@ function 点选技术栈(event) {
 }
 
 function 修改专题样式(event) {
+  event.stopPropagation();
   const 专题 = event.currentTarget;
   if (前一专题 === 专题) return;
   if (前一专题 !== null) {
@@ -159,6 +160,9 @@ function 隐藏技术栈内容() {
 
 //---------------------- ↓ 对内容中的特殊元素补充样式 ----------------------
 function 特殊元素样式补充() {
+  const topicContentArea = document.getElementsByClassName("专题内容区")[0];
+  if (topicContentArea.innerHTML === "") return;
+
   const 原创转载 = document.querySelector(".简介标题 > span");
   if (原创转载.className === "转载") {
     const 原文链接 = document.querySelector(".原文链接 > a");

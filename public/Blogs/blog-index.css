@@ -12,9 +12,271 @@ body {
   width: 100dvw;
 }
 
+/* ------------------- ↓ 收藏栏 ------------------- */
+#收藏栏 {
+  position: fixed;
+  top: 50px;
+  left: 0;
+  background-color: #00000020;
+  box-shadow: 0 15px 25px 0 #0005;
+  z-index: 9998;
+  width: 100%;
+  height: fit-content;
+  max-height: 65vh;
+  padding: 50px 75px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: flex-start;
+  gap: 35px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  backdrop-filter: blur(20px);
+  border: none;
+}
+
+#收藏栏::backdrop {
+  backdrop-filter: brightness(50%);
+}
+
+#关闭收藏栏 {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 35px;
+  height: 35px;
+  border-radius: 100px;
+  background-color: transparent;
+  border: solid 2px #aaa;
+  color: #aaa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 250ms;
+}
+
+#关闭收藏栏:hover {
+  border: none;
+  background-color: #ccc;
+  color: black;
+}
+
+#关闭收藏栏:active {
+  background-color: white;
+}
+
+.收藏条目 {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  outline: solid 1px #fff5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+}
+
+.收藏条目:hover {
+  cursor: pointer;
+  background-color: #fff1;
+}
+
+#删除条目按钮 {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  top: -10px;
+  right: -10px;
+  border-radius: 100px;
+  background-color: #aaa;
+  border: none;
+  color: black;
+  visibility: hidden;
+  opacity: 0;
+  transition: 150ms;
+}
+
+.收藏条目:hover #删除条目按钮 {
+  visibility: visible;
+  opacity: 1;
+}
+
+#删除条目按钮:hover {
+  background-color: #ccc;
+}
+
+#删除条目按钮:active {
+  background-color: white;
+}
+
+#收藏条目-添加 > button {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5rem;
+  border: none;
+  background-color: transparent;
+  color: #fffa;
+  transition: 0.25s;
+}
+
+#收藏条目-添加:hover > button {
+  color: white;
+}
+
+#收藏条目-添加 > button:active {
+  background-color: #fff4;
+}
+
+.收藏条目-标志 {
+  width: 100%;
+  height: 35%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.收藏条目-标志 > img {
+  width: 100%;
+  height: 80%;
+  object-fit: contain;
+}
+
+.收藏信息区 {
+  width: fit-content;
+  max-width: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 5px;
+  padding: 0 20px;
+}
+
+.收藏信息 {
+  width: fit-content;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.收藏信息-技术栈 .收藏信息-标志 {
+  translate: 0 5px;
+}
+
+.收藏信息-技术栈 .收藏信息-文本 {
+  font-size: 1.05rem;
+  font-weight: bold;
+}
+
+.收藏信息-标志 {
+  font-size: 1rem;
+  translate: 0 2px;
+  color: gold;
+}
+
+.收藏信息-文本 {
+  width: fit-content;
+  font-size: 0.9rem;
+}
+
+.收藏信息:nth-child(1) .收藏信息-文本 {
+  color: lightseagreen;
+}
+
+.收藏信息:nth-child(3) .收藏信息-文本 {
+  color: #aaa;
+}
+/* ------------------- ↑ 收藏栏 ------------------- */
+
+/* ------------------- ↓ 收藏区 ------------------- */
+.收藏区 {
+  position: fixed;
+  z-index: 9999;
+  right: 50px;
+  bottom: calc(40px + 150px);
+  width: 65px;
+  height: 150px;
+  border-radius: 200px;
+  /* outline: solid 1px gray; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+}
+
+.收藏区 button {
+  width: 36px;
+  aspect-ratio: 1;
+  border-radius: 200px;
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  position: relative;
+}
+
+#收藏数量 {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  border-radius: 100px;
+  background-color: brown;
+  color: white;
+  bottom: 60%;
+  left: 60%;
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+}
+
+#收藏提示 {
+  position: absolute;
+  top: 100%;
+  right: 140%;
+  display: block;
+  width: 200px;
+  text-align: right;
+  font-size: 1.15rem;
+  color: gray;
+  font-family: "JetBrainsMono Nerd Font", "思源黑体 CN";
+  opacity: 0;
+  pointer-events: none;
+}
+
+#收藏提示.添加收藏提示动画,
+#收藏提示.删除收藏提示动画 {
+  animation: 收藏提示动画 1.25s ease-out;
+}
+
+@keyframes 收藏提示动画 {
+  from {
+    opacity: 0;
+    top: 25%;
+  }
+  25% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    top: -100%;
+  }
+}
+/* ------------------- ↑ 收藏区 ------------------- */
+
 /* --------------------- ↓ 技术栈选择 --------------------- */
 .技术栈选择器 {
   position: fixed;
+  z-index: 9999;
   width: 65px;
   height: 65px;
   border-radius: 50px;
@@ -438,7 +700,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 25px 35px;
+  gap: 25px 25px;
   flex-wrap: wrap;
 }
 
@@ -459,15 +721,24 @@ body {
   text-decoration: none !important;
 }
 
-.联系方式项 > a:hover {
+.联系方式项:not(:last-child) > a:hover {
   filter: sepia(80%) saturate(2500%) hue-rotate(320deg);
+}
+
+.联系方式项:last-child > a:hover {
+  filter: sepia(100%) saturate(500%) hue-rotate(320deg);
+}
+
+.联系方式项 > a > img {
+  width: 95%;
+  height: 95%;
+  object-fit: contain;
 }
 
 .专题简介 .fa-solid,
 .专题简介 .fa-brands {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
 }
-
 /*-------------- ↑ 内容区顶栏 --------------*/
 
 /*-------------- ↓ 专题正文区 --------------*/
@@ -622,7 +893,7 @@ body {
 }
 
 .截图容器 > video {
-  width: var(--正文分区-宽度);
+  width: 100%;
   transition: 1s;
 }
 
@@ -1186,7 +1457,7 @@ img[图含义] {
   }
 
   .技术栈选择器 {
-    right: 2%;
+    right: 5%;
     bottom: 2%;
   }
 
