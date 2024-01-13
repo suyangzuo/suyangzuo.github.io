@@ -39,12 +39,12 @@ let 专题文件路径 = `./博客内容/${技术栈名称}/${专题名称}.html
 let 前一专题 = null;
 
 设置侧边栏();
-
-// 设置内容();
+设置内容();
 
 技术栈组.forEach((技术栈) => {
   技术栈.addEventListener("click", 点选技术栈);
   技术栈.addEventListener("click", 设置侧边栏);
+  技术栈.addEventListener("click", 设置内容);
   技术栈.addEventListener("click", () => {
     if (技术栈对话框.open) {
       隐藏技术栈内容();
@@ -120,8 +120,6 @@ function 设置侧边栏() {
   专题名称 = 专题组[index]
     .getElementsByClassName("专题-内容")[0]
     .textContent.trim();
-
-  设置内容();
 }
 
 async function 设置内容() {
@@ -338,8 +336,8 @@ function 更新图像序号() {
     const 截图序号 = document.createElement("span");
     截图序号.className = "截图序号";
     container.appendChild(截图序号);
-    const index = Array.from(screenShotsContainers).indexOf(container);
-    截图序号.textContent = `图 ${index + 1}`;
+    const imageIndex = Array.from(screenShotsContainers).indexOf(container);
+    截图序号.textContent = `图 ${imageIndex + 1}`;
 
     const containerSibling = container.nextElementSibling;
     if (
@@ -348,7 +346,7 @@ function 更新图像序号() {
     ) {
       const 行内截图序号 = document.createElement("span");
       行内截图序号.className = "行内截图序号";
-      行内截图序号.textContent = `·图${index + 1}·`;
+      行内截图序号.textContent = `·图${imageIndex + 1}·`;
       containerSibling?.prepend("如", 行内截图序号, "所示，");
     }
   });
@@ -365,7 +363,7 @@ function 生成永恒代码统计图表() {
   const option = {
     backgroundColor: "#fff1",
     title: {
-      text: "永恒代码量，2024年1月10日",
+      text: "统计日期：2024年1月13日",
       textStyle: {
         color: "gold",
         fontSize: 16,
@@ -396,7 +394,7 @@ function 生成永恒代码统计图表() {
       {
         name: "代码行数",
         type: "bar",
-        data: [121227, 23437, 20896, 23437],
+        data: [48203, 23030, 21124, 4042],
         label: {
           position: "top",
           distance: 10,

@@ -35,6 +35,7 @@ body {
 
 #收藏栏布局区 {
   width: 100%;
+  translate: 0 -100%;
   height: fit-content;
   display: flex;
   flex-wrap: wrap;
@@ -42,6 +43,7 @@ body {
   align-content: flex-start;
   gap: 35px;
   padding: 50px 75px;
+  transition: 0.5s;
 }
 
 #关闭收藏栏 {
