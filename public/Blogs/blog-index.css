@@ -17,26 +17,31 @@ body {
   position: fixed;
   top: 50px;
   left: 0;
-  background-color: #00000020;
-  box-shadow: 0 15px 25px 0 #0005;
+  background-color: #8af1;
+  box-shadow: 0 15px 45px 0 #0005;
   z-index: 9998;
   width: 100%;
   height: fit-content;
   max-height: 65vh;
-  padding: 50px 75px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  backdrop-filter: blur(10px);
+  border: none;
+}
+
+#收藏栏::backdrop {
+  backdrop-filter: brightness(35%);
+}
+
+#收藏栏布局区 {
+  width: 100%;
+  height: fit-content;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
   align-content: flex-start;
   gap: 35px;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  backdrop-filter: blur(20px);
-  border: none;
-}
-
-#收藏栏::backdrop {
-  backdrop-filter: brightness(50%);
+  padding: 50px 75px;
 }
 
 #关闭收藏栏 {
@@ -81,7 +86,7 @@ body {
   background-color: #fff1;
 }
 
-#删除条目按钮 {
+.删除条目按钮 {
   position: absolute;
   width: 30px;
   height: 30px;
@@ -96,16 +101,16 @@ body {
   transition: 150ms;
 }
 
-.收藏条目:hover #删除条目按钮 {
+.收藏条目:hover .删除条目按钮 {
   visibility: visible;
   opacity: 1;
 }
 
-#删除条目按钮:hover {
+.删除条目按钮:hover {
   background-color: #ccc;
 }
 
-#删除条目按钮:active {
+.删除条目按钮:active {
   background-color: white;
 }
 
@@ -132,7 +137,7 @@ body {
 
 .收藏条目-标志 {
   width: 100%;
-  height: 35%;
+  height: 45%;
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -153,7 +158,7 @@ body {
   justify-content: center;
   align-items: flex-start;
   gap: 5px;
-  padding: 0 20px;
+  padding: 0 15px;
 }
 
 .收藏信息 {
@@ -168,7 +173,7 @@ body {
 }
 
 .收藏信息-技术栈 .收藏信息-文本 {
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: bold;
 }
 

@@ -61,12 +61,46 @@ function 刷新代码格式化脚本() {
   document.body.appendChild(新脚本);
 }
 
-async function 设置侧边栏() {
+function 设置侧边栏() {
+  侧边栏.innerHTML = "";
+
   let fileName = `./侧边栏/${技术栈名称}.html`;
 
-  await fetch(fileName)
-    .then((response) => response.text())
-    .then((content) => (侧边栏.innerHTML = content));
+  const xhr = new XMLHttpRequest();
+  xhr.open("GET", fileName, false); /* false -> 同步请求 */
+  xhr.send();
+
+  if (xhr.status === 200) {
+    侧边栏.insertAdjacentHTML("afterbegin", xhr.responseText);
+  }
+
+  // fetch(fileName)
+  //   .then((response) => response.text())
+  //   .then((content) => (侧边栏.innerHTML = content))
+  //   .then(() => {
+  //     专题组 = document.querySelectorAll(".专题");
+  //     专题标记组 = document.querySelectorAll(".专题-标记");
+
+  //     index = JSON.parse(sessionStorage.getItem("专题索引记录")).find(
+  //       (记录) => 记录.技术栈 === 技术栈名称
+  //     ).专题索引;
+
+  //     专题组[index].style.setProperty(
+  //       "background",
+  //       侧边栏颜色_已选中,
+  //       "important"
+  //     );
+  //     专题组.forEach((专题) => {
+  //       专题.addEventListener("click", 修改专题样式);
+  //       const 标记 = 专题.querySelector(".专题-标记");
+  //       标记.textContent = "\u2666";
+  //     });
+
+  //     前一专题 = 专题组[index];
+  //     专题名称 = 专题组[index]
+  //       .getElementsByClassName("专题-内容")[0]
+  //       .textContent.trim();
+  //   });
 
   专题组 = document.querySelectorAll(".专题");
   专题标记组 = document.querySelectorAll(".专题-标记");

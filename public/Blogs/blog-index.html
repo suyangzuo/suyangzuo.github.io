@@ -41,29 +41,10 @@
       position="afterbegin"></script>
     <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
     <dialog id="收藏栏">
-      <div class="收藏条目">
-        <figure class="收藏条目-标志">
-          <img src="/Images/Page-Logos/编程开发/Git.png" alt="" />
-        </figure>
-        <div class="收藏信息区">
-          <p class="收藏信息 收藏信息-技术栈">
-            <i class="fa-solid fa-microchip 收藏信息-标志"></i
-            ><span class="收藏信息-文本 收藏文本-技术栈">Angular</span>
-          </p>
-          <p class="收藏信息 收藏信息-专题">
-            <i class="fa-regular fa-newspaper 收藏信息-标志"></i
-            ><span class="收藏信息-文本 收藏文本-专题"
-              >Visual Studio Code<br />使用指南</span
-            >
-          </p>
-          <p class="收藏信息 收藏信息-日期">
-            <i class="fa-solid fa-clock 收藏信息-标志"></i
-            ><span class="收藏信息-文本 收藏文本-时间">2024年12月24日</span>
-          </p>
+      <div id="收藏栏布局区">
+        <div class="收藏条目" id="收藏条目-添加">
+          <button><i class="fa-solid fa-plus"></i></button>
         </div>
-      </div>
-      <div class="收藏条目" id="收藏条目-添加">
-        <button><i class="fa-solid fa-plus"></i></button>
       </div>
       <button id="关闭收藏栏"><i class="fa-solid fa-xmark"></i></button>
     </dialog>
@@ -73,7 +54,9 @@
         <i class="fa-solid fa-book"></i><span id="收藏数量"></span
         ><span id="收藏提示"></span>
       </button>
-      <button id="收藏按钮"><i class="fa-solid fa-star"></i></button>
+      <button id="收藏按钮" class="收藏按钮">
+        <i class="fa-solid fa-star"></i>
+      </button>
     </div>
 
     <div class="技术栈选择器"></div>
