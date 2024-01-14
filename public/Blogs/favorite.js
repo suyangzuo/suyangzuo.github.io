@@ -1,12 +1,3 @@
-const 收藏栏按钮 = document.getElementById("收藏栏按钮");
-const 收藏按钮 = document.getElementById("收藏按钮");
-const 收藏数量 = document.getElementById("收藏数量");
-const 收藏提示 = document.getElementById("收藏提示");
-const 收藏栏 = document.getElementById("收藏栏");
-const 收藏栏布局区 = document.getElementById("收藏栏布局区");
-const 收藏栏添加按钮 = document.getElementById("收藏条目-添加");
-const 关闭收藏栏按钮 = document.getElementById("关闭收藏栏");
-
 let 本次操作为添加 = true;
 let 博客收藏 = [];
 let 条目技术栈名称 = 技术栈名称;
@@ -20,34 +11,23 @@ if (localStorage.getItem("博客收藏") !== null) {
 初始化收藏栏();
 
 function 初始化收藏操作区() {
-  const 本地收藏解析结果 = JSON.parse(localStorage.getItem("博客收藏"));
-
-  if (本地收藏解析结果 === null || 本地收藏解析结果.length === 0) return;
-  收藏数量.textContent = 本地收藏解析结果.length;
+  if (博客收藏 === null || 博客收藏.length === 0) return;
+  收藏数量.textContent = 博客收藏.length;
   收藏数量.style.visibility = "visible";
-  const 当前页面已收藏 = 本地收藏解析结果.some(
-    (entry) => entry.技术栈 === 技术栈名称 && entry.专题 === 专题名称
-  );
 
-  if (当前页面已收藏) {
-    收藏按钮.style.color = "gold";
+  if (该页已被收藏()) {
+    // 收藏按钮.style.color = "seagreen";
+    收藏按钮.classList.add("已收藏状态按钮");
+    收藏按钮.classList.remove("未收藏状态按钮");
   } else {
-    收藏按钮.style.color = "white";
+    // 收藏按钮.style.color = "white";
+    收藏按钮.classList.remove("已收藏状态按钮");
+    收藏按钮.classList.add("未收藏状态按钮");
   }
 }
 
 技术栈组.forEach((技术栈) => {
-  技术栈.addEventListener("click", () => {
-    if (
-      JSON.parse(localStorage.getItem("博客收藏"))?.some((收藏) => {
-        收藏.技术栈 === 技术栈名称 && 收藏.专题 === 专题名称;
-      })
-    ) {
-      收藏按钮.style.color = "gold";
-    } else {
-      收藏按钮.style.color = "white";
-    }
-  });
+  技术栈.addEventListener("click", 当前专题已被收藏时刷新收藏按钮样式);
 });
 
 收藏按钮.addEventListener("click", 收藏博客);
@@ -73,11 +53,11 @@ function 收藏博客(event) {
 收藏栏添加按钮.addEventListener("click", (event) => {
   event.stopPropagation();
   if (该页已被收藏()) {
-    收藏提示.textContent = "本专题已在收藏夹中";
-    收藏提示.style.color = "orange";
-    收藏提示.style.animation = "none";
-    收藏提示.offsetHeight;
-    收藏提示.style.animation = "收藏提示动画 1.25s ease-out";
+    收藏栏重复提示.innerHTML = "本专题已在收藏夹中<br>请勿重复收藏";
+    收藏栏重复提示.style.animation = "none";
+    收藏栏重复提示.offsetHeight;
+    const 动画时长 = 2000;
+    收藏栏重复提示.style.animation = `收藏栏重复提示动画 ${动画时长}ms ease-out`;
   } else {
     本次操作为添加 = true;
     添加博客到本地存储();
@@ -160,6 +140,7 @@ function 从收藏栏删除博客(event) {
 }
 
 function 点击条目删除按钮时更新条目技术栈和专题(event) {
+  event.stopPropagation();
   const 条目 = event.currentTarget.parentElement;
   条目技术栈名称 = 条目.querySelector(".收藏文本-技术栈").textContent;
   条目专题名称 = 条目.querySelector(".收藏文本-专题").textContent;
@@ -252,7 +233,9 @@ function 刷新收藏操作区(event) {
   }
 
   if (本次操作为添加) {
-    收藏按钮.style.color = "orange";
+    // 收藏按钮.style.color = "seagreen";
+    收藏按钮.classList.add("已收藏状态按钮");
+    收藏按钮.classList.remove("未收藏状态按钮");
     收藏提示.textContent = "已添加到收藏栏";
     收藏提示.style.color = "seagreen";
   } else {
@@ -260,9 +243,11 @@ function 刷新收藏操作区(event) {
       (事件发起者类名 === "删除条目按钮" &&
         技术栈名称 === 条目技术栈名称 &&
         专题名称 === 条目专题名称) ||
-      事件发起者类名 === "收藏按钮"
+      事件发起者类名.includes("收藏按钮")
     ) {
-      收藏按钮.style.color = "white";
+      // 收藏按钮.style.color = "white";
+      收藏按钮.classList.remove("已收藏状态按钮");
+      收藏按钮.classList.add("未收藏状态按钮");
     }
     收藏提示.textContent = "已从收藏栏删除";
     收藏提示.style.color = "hotpink";
@@ -291,11 +276,13 @@ function 该页已被收藏() {
 function 显示收藏栏() {
   收藏栏.showModal();
   收藏栏布局区.style.translate = "0";
+  收藏栏重复提示.style.animation = "none";
 }
 
 function 关闭收藏栏() {
   收藏栏.close();
   收藏栏布局区.style.translate = "0 -100%";
+  收藏栏重复提示.style.animation = "none";
 }
 
 function 初始化收藏栏() {
@@ -375,6 +362,7 @@ function 点击收藏栏条目访问博客(event) {
     专题.addEventListener("click", 修改专题样式);
     const 标记 = 专题.querySelector(".专题-标记");
     标记.textContent = "\u2666";
+    专题.addEventListener("click", 当前专题已被收藏时刷新收藏按钮样式);
   });
   前一专题 = 专题;
 
@@ -386,5 +374,5 @@ function 点击收藏栏条目访问博客(event) {
     记录.专题索引 = index;
   }
   sessionStorage.setItem("专题索引记录", JSON.stringify(专题索引记录));
-  console.log(技术栈名称);
+  当前专题已被收藏时刷新收藏按钮样式();
 }

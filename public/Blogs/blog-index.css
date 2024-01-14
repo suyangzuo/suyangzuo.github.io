@@ -116,6 +116,10 @@ body {
   background-color: white;
 }
 
+#收藏条目-添加 {
+  overflow: hidden;
+}
+
 #收藏条目-添加 > button {
   width: 100%;
   height: 100%;
@@ -135,6 +139,38 @@ body {
 
 #收藏条目-添加 > button:active {
   background-color: #fff4;
+}
+
+#收藏栏重复提示 {
+  display: block;
+  width: 100%;
+  padding: 20px 0;
+  text-align: center;
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  translate: -50%;
+  background-color: rgb(44, 54, 75);
+  color: yellow;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes 收藏栏重复提示动画 {
+  from {
+    opacity: 0;
+    bottom: 10%;
+  }
+  25% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    bottom: 35%;
+  }
 }
 
 .收藏条目-标志 {
@@ -171,17 +207,17 @@ body {
 }
 
 .收藏信息-技术栈 .收藏信息-标志 {
-  translate: 0 5px;
+  translate: 0 4px;
 }
 
 .收藏信息-技术栈 .收藏信息-文本 {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: bold;
 }
 
 .收藏信息-标志 {
-  font-size: 1rem;
-  translate: 0 2px;
+  font-size: 0.9rem;
+  translate: 0 3px;
   color: gold;
 }
 
@@ -225,6 +261,26 @@ body {
   color: white;
   font-size: 2rem;
   position: relative;
+}
+
+.收藏区 button:hover::after {
+  position: absolute;
+  top: 50%;
+  right: 125%;
+  translate: 0 -50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 100px;
+  background-color: orange;
+  content: "";
+}
+
+.收藏区 .已收藏状态按钮 {
+  color: seagreen;
+}
+
+.收藏区 .未收藏状态按钮 {
+  color: white;
 }
 
 #收藏数量 {

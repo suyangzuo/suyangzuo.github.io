@@ -11,6 +11,17 @@ const 关闭技术栈对话框按钮 = document.querySelector(".关闭技术栈�
 const 技术栈内容 = document.getElementsByClassName("技术栈内容")[0];
 const 技术栈组 = document.querySelectorAll(".技术栈");
 const 专题内容区 = document.getElementsByClassName("专题内容区")[0];
+
+const 收藏栏按钮 = document.getElementById("收藏栏按钮");
+const 收藏按钮 = document.getElementById("收藏按钮");
+const 收藏数量 = document.getElementById("收藏数量");
+const 收藏提示 = document.getElementById("收藏提示");
+const 收藏栏 = document.getElementById("收藏栏");
+const 收藏栏布局区 = document.getElementById("收藏栏布局区");
+const 收藏栏添加按钮 = document.getElementById("收藏条目-添加");
+const 关闭收藏栏按钮 = document.getElementById("关闭收藏栏");
+const 收藏栏重复提示 = document.getElementById("收藏栏重复提示");
+
 let 专题组 = null;
 let 专题标记组 = null;
 
@@ -114,6 +125,7 @@ function 设置侧边栏() {
     专题.addEventListener("click", 修改专题样式);
     const 标记 = 专题.querySelector(".专题-标记");
     标记.textContent = "\u2666";
+    专题.addEventListener("click", 当前专题已被收藏时刷新收藏按钮样式);
   });
 
   前一专题 = 专题组[index];
@@ -303,7 +315,9 @@ function 修改侧边栏可见性(event) {
   }
 }
 
-window.addEventListener("resize", 修改视口尺寸);
+视口宽度低于800px.addEventListener("change", (event) => {
+  修改视口尺寸();
+});
 
 function 修改视口尺寸() {
   if (!视口宽度低于800px.matches) {
@@ -312,6 +326,22 @@ function 修改视口尺寸() {
     侧边栏可见 = true;
   } else {
     侧边栏可见 = false;
+  }
+}
+
+function 当前专题已被收藏时刷新收藏按钮样式() {
+  if (
+    JSON.parse(localStorage.getItem("博客收藏"))?.some(
+      (收藏) => 收藏.技术栈 === 技术栈名称 && 收藏.专题 === 专题名称
+    )
+  ) {
+    // 收藏按钮.style.color = "seagreen";
+    收藏按钮.classList.add("已收藏状态按钮");
+    收藏按钮.classList.remove("未收藏状态按钮");
+  } else {
+    // 收藏按钮.style.color = "white";
+    收藏按钮.classList.remove("已收藏状态按钮");
+    收藏按钮.classList.add("未收藏状态按钮");
   }
 }
 
