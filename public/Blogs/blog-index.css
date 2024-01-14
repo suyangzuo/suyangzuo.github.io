@@ -275,6 +275,10 @@ body {
   content: "";
 }
 
+#收藏按钮:focus {
+  outline: none;
+}
+
 .收藏区 .已收藏状态按钮 {
   color: seagreen;
 }

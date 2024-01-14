@@ -120,9 +120,11 @@ function 从本地存储删除博客(event) {
     (博客) =>
       !(
         博客.技术栈 ===
-          (事件发起者.className === "收藏按钮" ? 技术栈名称 : 条目技术栈名称) &&
+          (事件发起者.className.includes("收藏按钮")
+            ? 技术栈名称
+            : 条目技术栈名称) &&
         博客.专题 ===
-          (事件发起者.className === "收藏按钮" ? 专题名称 : 条目专题名称)
+          (事件发起者.className.includes("收藏按钮") ? 专题名称 : 条目专题名称)
       )
   );
 
@@ -133,8 +135,8 @@ function 从本地存储删除博客(event) {
 function 从收藏栏删除博客(event) {
   const 事件发起者 = event.currentTarget;
   const 待删除条目 = 从技术栈和专题获取收藏栏条目(
-    事件发起者.className === "收藏按钮" ? 技术栈名称 : 条目技术栈名称,
-    事件发起者.className === "收藏按钮" ? 专题名称 : 条目专题名称
+    事件发起者.className.includes("收藏按钮") ? 技术栈名称 : 条目技术栈名称,
+    事件发起者.className.includes("收藏按钮") ? 专题名称 : 条目专题名称
   );
   待删除条目?.remove();
 }
