@@ -1,0 +1,302 @@
+<article class="专题简介">
+  <h1 class="简介标题">Git 本地工作流<span class="原创">原创</span></h1>
+  <div class="简介信息">
+    <section class="简介信息文本">
+      <p class="作者">
+        <span class="作者前缀 前缀">作者：</span>
+        <span class="作者姓名">苏扬</span>
+      </p>
+      <p class="日期">
+        <span class="日期前缀 前缀">日期：</span>
+        <span class="日期文本">2023年7月7日</span>
+      </p>
+    </section>
+    <section class="简介信息图像">
+      <img src="/Images/Contributers/Extreme Hunter.jpg" alt="苏扬" />
+    </section>
+  </div>
+  <ul class="联系方式列表">
+    <li class="联系方式项">
+      <a class="联系方式链接" href="mailto:suyangzuo@gmail.com" target="_blank">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://github.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-github"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.deviantart.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-deviantart"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dev.to/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-dev"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.freecodecamp.org/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-free-code-camp"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://codepen.io/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-codepen"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://dribbble.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-dribbble"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.artstation.com/user-7893655"
+        target="_blank"
+        ><i class="fa-brands fa-artstation"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://codesandbox.io/u/suyangzuo"
+        target="_blank">
+        <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
+      /></a>
+    </li>
+  </ul>
+</article>
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">Git 本地工作流简介</h2>
+
+    <h3 class="分区标题 分区3级标题">Git 管理本地文件的 3 个区域</h3>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 本地工作流/Git工作流-本地.png"
+        alt="Git 本地工作3区域" />
+    </figure>
+    <p class="分区普通文本">Git 将本地文件的管理分为 3 个区域：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="专业名词">工作区</span>：也就是项目文件夹
+      </li>
+      <li class="分区列表项">
+        <span class="专业名词">暂存区</span>：<span class="代码"
+          >项目文件夹/.git/index</span
+        >，一个很小的文件，持续追踪并存放<span class="行内专业名词">工作区</span
+        >、<span class="行内专业名词">暂存区</span>、<span class="行内专业名词"
+          >本地仓库</span
+        >的文件关键信息。暂存区可以说是工作区和本地仓库的桥梁，通过暂存区的信息更新，能极快地追踪工作区和本地仓库中<span
+          class="行内专业名词"
+          >文件的更改</span
+        >。
+      </li>
+      <li class="分区列表项">
+        <span class="专业名词">本地仓库</span>：提交的记录就存放在此，包括<span
+          class="行内专业名词"
+          >HEAD</span
+        >指针，代表当前分支。
+      </li>
+    </ul>
+    <section class="提醒">
+      <h3 class="提醒标题">小知识</h3>
+      <p>
+        <span class="专业名词">文件的更改</span>主要指 3 个方面：<span
+          class="行内专业名词"
+          >添加文件</span
+        >、<span class="行内专业名词">删除文件</span>、<span
+          class="行内专业名词"
+          >修改文件内容</span
+        >。
+      </p>
+      <p>
+        <span class="强调">注意</span>：<span class="行内专业名词">删除</span
+        >也是一种更改，在本地工作流中，这种更改同样要<span class="行内专业名词"
+          >添加</span
+        >到暂存区并提交到本地仓库。
+      </p>
+    </section>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">Git 本地工作流操作</h2>
+
+    <h3 class="分区标题 分区3级标题">初始化 Git 仓库</h3>
+    <p class="分区普通文本">将终端的路径定位到项目文件夹，运行命令：</p>
+    <pre class="lang-git" style="margin: 0"><code>git init</code></pre>
+    <p class="分区普通文本">
+      这个命令会在项目文件夹中，生成一个名为<span class="行内代码">.git</span
+      >的子文件夹。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 本地工作流/dot-git.png"
+        alt=".git 文件夹" />
+    </figure>
+    <p class="分区普通文本">
+      这个文件夹默认是隐藏的。<span class="强调">千万不要删！</span
+      >否则你会丢失所有的 Git 记录。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">查看 Git 状态</h3>
+    <p class="分区普通文本">将终端的路径定位到项目文件夹，运行命令：</p>
+    <pre class="lang-git" style="margin: 0"><code>git status</code></pre>
+    <p class="分区普通文本">
+      这是一个非常常用的命令，会显示当前 Git
+      仓库的状态，包括：添加了几个文件、删除了几个文件、修改了几个文件、这些文件名是什么，以及这些更改是否已暂存、已提交。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 本地工作流/git-status-未暂存.png"
+        alt="git status 未暂存" />
+    </figure>
+    <p class="分区普通文本">
+      <span class="代码">git status</span>非常清楚地表明：
+    </p>
+    <ol class="分区列表 有序列表">
+      <li class="分区列表项">
+        目前处于<span class="代码">master</span>分支。<span class="附加说明"
+          >On branch master</span
+        >
+      </li>
+      <li class="分区列表项">
+        尚未进行任何提交。<span class="附加说明">No commits yet</span>
+      </li>
+      <li class="分区列表项">
+        有 2 个未追踪文件：<span class="代码">index.css</span>、<span
+          class="代码"
+          >index.css</span
+        >
+      </li>
+      <section class="提醒">
+        <h3 class="提醒标题">提醒</h3>
+        <p>
+          作者安装了<span class="专业名词">Oh My Posh</span
+          >，因此在终端的命令提示符上，能够直接显示出当前分支为<span
+            class="行内专业名词"
+            >master</span
+          >，并且有 2
+          个未追踪文件。这在一定程度上可以减轻程序员的负担，不用输入复杂的命令也能快速查看一些基本信息。
+        </p>
+        <p>
+          有关<span class="专业名词">Oh My Posh</span
+          >的安装和使用，可以参考<span class="行内专业名词">经验之谈</span
+          >中的<span class="行内专业名词">打造优雅舒适的终端</span>专题。
+        </p>
+      </section>
+    </ol>
+
+    <h3 class="分区标题 分区3级标题">暂存</h3>
+    <p class="分区普通文本">将终端的路径定位到项目文件夹，运行命令：</p>
+    <pre class="lang-git" style="margin: 0"><code>git add .</code></pre>
+    <p class="分区普通文本">
+      命令中的<span class="代码">.</span
+      >表示将工作区的所有文件更改全部记录到暂存区。再次使用<span class="代码"
+        >git status</span
+      >查看状态：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 本地工作流/git-status-已暂存.png"
+        alt="git status 已暂存" />
+    </figure>
+    <p class="分区普通文本">
+      Git 状态发生了改变，原来的<span class="专业名词">未追踪文件</span
+      >变成了<span class="专业名词">待提交的更改</span
+      ><span class="附加说明">Changes to be committed</span>。这意味着<span
+        class="行内专业名词"
+        >文件的更改</span
+      >从<span class="行内专业名词">工作区</span>记录到了<span
+        class="行内专业名词"
+        >暂存区</span
+      >。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">提交</h3>
+    <p class="分区普通文本">将终端的路径定位到项目文件夹，运行命令：</p>
+    <pre
+      class="lang-git"
+      style="margin: 0"><code>git commit -m "初始提交"</code></pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 本地工作流/git-commit.gif"
+        alt="git commit" />
+    </figure>
+    <p class="分区普通文本">
+      这样就完成了一次<span class="行内专业名词">提交</span>。<span
+        class="行内专业名词"
+        >提交</span
+      >是 Git 本地工作流
+      <span class="强调">最重要</span
+      >的操作，每次提交就会产生一条记录，包含了本次提交的时间、作者用户名、作者邮箱、提交的内容快照等等。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p>
+        提交时，必须写一条简短的说明，简述本次提交的主要内容，这就是<span
+          class="代码"
+          >-m</span
+        >参数的作用，紧跟其后的字符串就是简短说明；这是提交时必须遵守的规范。
+      </p>
+      <p>
+        仓库的第一次提交，简短说明一般都写<span class="专业名词">初始提交</span
+        >。
+      </p>
+    </section>
+    <p class="分区普通文本">
+      再次使用<span class="代码">git status</span>查看状态：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 本地工作流/git-status-已提交.png"
+        alt="git status 已提交" />
+    </figure>
+    <p class="分区普通文本">
+      所有的文件更改，都从<span class="行内专业名词">暂存区</span>提交到了<span
+        class="行内专业名词"
+        >本地仓库</span
+      >。信息再次发生改变，由于刚刚完成提交，还没做任何新的更改，因此信息很少：在<span
+        class="行内专业名词"
+        >master</span
+      >分支上，没有任何更改需要提交<span class="附加说明"
+        >nothing to commit</span
+      >，工作树很干净<span class="附加说明">working tree clean</span>。<br />
+    </p>
+
+    <h3 class="分区标题 分区3级标题">查看提交记录</h3>
+    <p class="分区普通文本">
+      只要有过 1 次提交，就可以用以下命令查看提交的历史记录：
+    </p>
+    <pre class="lang-git" style="margin: 0"><code>git log</code></pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Git/Git 本地工作流/git-log.png" alt="git log" />
+    </figure>
+    <p class="分区普通文本">
+      <span class="代码">git log</span>命令列出了提交的主要信息，<span
+        class="代码"
+        >HEAD</span
+      >代表当前分支<span class="附加说明">实际上是指向当前分支的指针</span
+      >，按照图中显示，当前分支是<span class="专业名词">master</span>。那段长达
+      50 位的字符串是本次提交的校验码。
+    </p>
+  </article>
+</div>

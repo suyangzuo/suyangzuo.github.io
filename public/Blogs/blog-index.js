@@ -272,7 +272,6 @@ function 特殊元素样式补充() {
     }
   });
 
-  const 提醒 = document.querySelector(".提醒");
   const 专业名词组 = document.querySelectorAll(".专业名词");
   专业名词组?.forEach((专业名词) => {
     const 前一节点 = 专业名词.previousSibling;
@@ -286,6 +285,22 @@ function 特殊元素样式补充() {
       前一节点.textContent.at(-1) === "、"
     ) {
       专业名词.style.marginLeft = "0";
+    }
+  });
+
+  const 代码组 = document.querySelectorAll(".代码");
+  代码组?.forEach((代码) => {
+    const 前一节点 = 代码.previousSibling;
+    if (
+      前一节点 === null ||
+      前一节点.textContent.at(-1) === " " ||
+      前一节点.textContent.at(-1) === "，" ||
+      前一节点.textContent.at(-1) === "。" ||
+      前一节点.textContent.at(-1) === "：" ||
+      前一节点.textContent.at(-1) === "；" ||
+      前一节点.textContent.at(-1) === "、"
+    ) {
+      代码.style.marginLeft = "0";
     }
   });
 

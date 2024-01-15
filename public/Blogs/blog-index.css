@@ -2,10 +2,13 @@
   --侧边栏宽度: 300px;
   --侧边栏颜色-鼠标悬停: rgb(54, 62, 78);
   --侧边栏颜色-已选中: rgb(122, 67, 107);
-  --侧边栏背景: linear-gradient(60deg, #1f242b 0%, #252c32 100%);
+  /* --侧边栏背景: linear-gradient(60deg, #1f242b 0%, #252c32 100%); */
+  --侧边栏背景: linear-gradient(60deg, #141518 0%, #171c21 100%);
   --专题内容区背景: linear-gradient(90deg, #181c20 0%, #262d35 100%);
   --超链接颜色-正文: skyblue;
   --正文分区-宽度: 800px;
+  --专题标记-原创: rgb(76, 179, 160);
+  --专题标记-转载: orange;
 }
 
 body {
@@ -59,7 +62,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: 250ms;
 }
 
 #关闭收藏栏:hover {
@@ -158,11 +160,8 @@ body {
 
 @keyframes 收藏栏重复提示动画 {
   from {
-    opacity: 0;
-    bottom: 10%;
-  }
-  25% {
     opacity: 1;
+    bottom: 10%;
   }
   75% {
     opacity: 1;
@@ -526,7 +525,7 @@ body {
   position: fixed;
   left: 0;
   top: 0;
-  background-image: var(--侧边栏背景);
+  background: var(--侧边栏背景);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -583,11 +582,11 @@ body {
 }
 
 .专题[原创] .专题-标记 {
-  color: seagreen;
+  color: var(--专题标记-原创);
 }
 
 .专题[转载] .专题-标记 {
-  color: orange;
+  color: var(--专题标记-转载);
 }
 
 .专题-内容 {
@@ -674,12 +673,12 @@ body {
 }
 
 .原创 {
-  color: seagreen;
+  color: var(--专题标记-原创);
   margin-left: 1rem;
 }
 
 .转载 {
-  color: coral;
+  color: var(--专题标记-转载);
 }
 
 .简介信息 {
@@ -888,8 +887,9 @@ body {
 
 .分区列表项 {
   list-style-type: square;
-  padding: 5px 0;
+  padding: 3px 0;
   color: #84a7a0;
+  line-height: 1.6em;
 }
 
 .分区列表.有序列表 > .分区列表项 {
@@ -978,8 +978,9 @@ body {
   background-color: rgb(153, 168, 183);
   color: black;
   border-radius: 3px;
-  padding: 1px 5px;
+  padding: 0 5px;
   margin: 0 4px;
+  font-size: 0.95em;
 }
 
 .行内专业名词 {
@@ -991,7 +992,7 @@ body {
   font-family: "JetBrains Mono";
   background-color: #8b939a50;
   color: #ccc;
-  padding: 1px 5px;
+  padding: 0 5px;
   margin: 0 4px;
   border-radius: 3px;
   font-size: 0.95em;
@@ -1487,6 +1488,10 @@ img[图含义] {
 }
 
 @media screen and (width < 800px) {
+  .收藏区 {
+    right: 5%;
+  }
+
   .专题简介 {
     width: 95dvw;
     min-width: auto;
@@ -1538,6 +1543,10 @@ img[图含义] {
 }
 
 @media screen and (width < 550px) {
+  .收藏区 {
+    width: 50px;
+  }
+
   .简介标题 {
     display: flex;
     flex-direction: column;
