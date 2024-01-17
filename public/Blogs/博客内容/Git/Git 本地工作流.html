@@ -142,7 +142,7 @@
 
     <h3 class="分区标题 分区3级标题">初始化 Git 仓库</h3>
     <p class="分区普通文本">将终端的路径定位到项目文件夹，运行命令：</p>
-    <pre class="lang-git" style="margin: 0"><code>git init</code></pre>
+    <pre style="margin: 0"><code class="lang-bash">git init</code></pre>
     <p class="分区普通文本">
       这个命令会在项目文件夹中，生成一个名为<span class="行内代码">.git</span
       >的子文件夹。
@@ -159,7 +159,7 @@
 
     <h3 class="分区标题 分区3级标题">查看状态</h3>
     <p class="分区普通文本">将终端的路径定位到项目文件夹，运行命令：</p>
-    <pre class="lang-git" style="margin: 0"><code>git status</code></pre>
+    <pre style="margin: 0"><code class="lang-bash">git status</code></pre>
     <p class="分区普通文本">
       这是一个非常常用的命令，会显示当前 Git
       仓库的状态，包括：添加了哪些文件、删除了哪些文件、修改了哪些文件、以及这些更改是否已暂存、已提交。
@@ -217,7 +217,7 @@
 
     <h3 class="分区标题 分区3级标题">暂存</h3>
     <p class="分区普通文本">将终端的路径定位到项目文件夹，运行命令：</p>
-    <pre class="lang-git" style="margin: 0"><code>git add .</code></pre>
+    <pre style="margin: 0"><code class="lang-bash">git add .</code></pre>
     <figure class="截图容器">
       <img src="/Images/Blogs/Git/Git 本地工作流/git-add.gif" alt="git add" />
     </figure>
@@ -249,7 +249,7 @@
     <pre
       style="
         margin: 0;
-      "><code class="language-bash">git commit -m "初始提交"</code></pre>
+      "><code class="lang-bash">git commit -m "初始提交"</code></pre>
     <figure class="截图容器">
       <img
         src="/Images/Blogs/Git/Git 本地工作流/git-commit.gif"
@@ -300,7 +300,7 @@
     <p class="分区普通文本">
       只要有过 1 次提交，就可以用以下命令查看提交的历史记录：
     </p>
-    <pre style="margin: 0"><code class="lang-git">git log</code></pre>
+    <pre style="margin: 0"><code class="lang-bash">git log</code></pre>
     <figure class="截图容器">
       <img src="/Images/Blogs/Git/Git 本地工作流/git-log.png" alt="git log" />
     </figure>
@@ -340,7 +340,7 @@
     <pre
       style="
         margin: 0;
-      "><code class="lang-git">git update-ref -d HEAD</code></pre>
+      "><code class="lang-bash">git update-ref -d HEAD</code></pre>
     <figure class="截图容器">
       <img
         src="/Images/Blogs/Git/Git 本地工作流/撤销初始提交.gif"
@@ -367,8 +367,8 @@
           >实际上就是在移动<span class="代码">HEAD</span
           >指针，将其指向上一次提交</span
         >。而此命令会<span class="强调">直接删除</span
-        ><span class="代码">HEAD</span
-        >指针！这会导致你无法定位提交记录！<span class="附加说明"
+        ><span class="代码">HEAD</span>指针！这会导致你无法定位提交记录！<span
+          class="附加说明"
           >虽然也有办法恢复，但仍然存在风险，不要惹没必要的麻烦</span
         >
       </p>
@@ -382,7 +382,7 @@
       对于<span class="行内专业名词">未暂存</span>的更改，可以输入如下命令撤销：
     </p>
     <pre
-      style="margin: 0"><code class="lang-git">git restore 文件名</code></pre>
+      style="margin: 0"><code class="lang-bash">git restore 文件名</code></pre>
     <p class="分区普通文本">
       如果需要撤销所有的更改，直接输入<span class="代码">git restore .</span
       >即可。此命令会撤销所有的内容修改、恢复被删除的文件。
@@ -406,10 +406,10 @@
             >未暂存</span
           ></span
         >
-        <pre><code class="lang-git">git reset 文件名</code></pre>
+        <pre><code class="lang-bash">git reset 文件名</code></pre>
       </li>
       <li class="分区列表项"><span>恢复被删除和被修改的文件</span></li>
-      <pre><code class="lang-git">git restore 文件名</code></pre>
+      <pre><code class="lang-bash">git restore 文件名</code></pre>
     </ol>
 
     <h3 class="分区标题 分区3级标题">
@@ -444,27 +444,27 @@
         撤销当前提交，自上次提交以来的所有更改变为<span class="行内专业名词"
           >已暂存</span
         ><span class="附加说明">待提交</span>状态
-        <pre><code class="lang-git">git reset --soft HEAD~1</code></pre>
+        <pre><code class="lang-bash">git reset --soft HEAD~1</code></pre>
       </li>
       <li class="分区列表项" style="margin-top: 50px">
         撤销当前提交，自上次提交以来的所有更改变为<span class="行内专业名词"
           >未暂存</span
         >状态<span class="附加说明">默认模式</span>
-        <pre><code class="lang-git">git reset --mixed HEAD~1</code></pre>
+        <pre><code class="lang-bash">git reset --mixed HEAD~1</code></pre>
         <section class="提醒">
           <h3 class="提醒标题">提醒</h3>
           <p>
             <span class="代码">--mixed</span
             >是默认模式，可以省略，因此代码可以简写为：
           </p>
-          <pre><code class="lang-git">git reset HEAD~1</code></pre>
+          <pre><code class="lang-bash">git reset HEAD~1</code></pre>
         </section>
       </li>
       <li class="分区列表项" style="margin-top: 50px">
         撤销当前提交，自上次提交以来的所有更改全部丢弃。<span class="强调"
           >三思！慎用！</span
         >
-        <pre><code class="lang-git">git reset --hard HEAD~1</code></pre>
+        <pre><code class="lang-bash">git reset --hard HEAD~1</code></pre>
       </li>
     </ul>
   </article>

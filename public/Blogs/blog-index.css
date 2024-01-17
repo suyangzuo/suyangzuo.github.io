@@ -619,8 +619,9 @@ body {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
   transition: padding 250ms;
+  font-size: 0.75em;
 }
 
 .侧边栏:has(#侧边栏布局:not(:checked)) .专题 {
@@ -952,7 +953,7 @@ body {
   height: 1.75em;
   margin-right: 20px;
   border-radius: 10em;
-  border: solid 2px gray;
+  border: solid 2px #fff3;
   color: #aaa;
 }
 
@@ -1267,290 +1268,17 @@ body {
 }
 /*-------------- ↑ 单独表格样式 --------------*/
 
-.符号-h2 {
-  height: 25px;
-  width: 25px;
-  object-fit: contain;
-  object-position: center;
-  filter: drop-shadow(1px 1px 2px #000a);
+/* ------------------- ↓ 代码格式化 ------------------- */
+.token.space {
+  visibility: hidden;
 }
 
-.标题-h2 {
-  height: 70px;
-  padding: 0 25px;
-  border-radius: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(
-    to right,
-    #2e4754,
-    #284252
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  color: white;
-  box-shadow: 1px 1px 5px 0 #000a;
-  letter-spacing: 2px;
+code[class*="language-"],
+pre[class*="language-"] {
+  font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
+    "微软雅黑" !important;
 }
-
-.正文列表 {
-  width: 100%;
-  padding: 10px 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-.正文列表-1级 {
-  gap: 20px;
-  padding: 30px 0;
-}
-
-.正文列表项 {
-  width: 100%;
-}
-
-.正文列表项-1级::marker {
-  color: goldenrod;
-}
-
-.正文列表项-2级::marker {
-  color: rgb(218, 113, 32);
-}
-
-.正文列表项-3级::marker {
-  color: rgb(255, 97, 97);
-}
-
-.正文列表项-1级 {
-  list-style-type: disc;
-}
-
-.正文列表项-1级 > p[列表1级标题] {
-  background: linear-gradient(50deg, #2c3e50, #4b5157);
-  color: white;
-  padding: 7.5px 10px;
-  border-radius: 5px;
-  width: fit-content;
-  font-size: 1.125rem;
-}
-
-.正文列表项-1级 > p[列表1级标题] ~ p[列表1级内容] {
-  margin-top: 10px;
-}
-
-.正文列表-2级 {
-  gap: 10px;
-  padding-left: 2em;
-}
-
-.正文列表项-2级 {
-  font-size: 1rem;
-  list-style-type: square;
-  color: rgb(220, 220, 220);
-}
-
-.正文列表-3级 {
-  gap: 7.5px;
-  padding-left: 2em;
-}
-
-.正文列表项-3级 {
-  font-size: 0.925rem;
-  list-style-type: circle;
-  color: rgb(190, 190, 190);
-}
-
-p[间隔方向="上"] {
-  margin: 10px 0 0 0;
-}
-
-p[间隔方向="下"] {
-  margin: 0 0 10px 0;
-}
-
-p[间隔方向="上下"] {
-  margin: 10px 0;
-}
-
-.正文-表格 {
-  padding: 15px 0;
-}
-
-.Web前端首页表格 {
-  width: 400px;
-}
-
-.Web前端首页表格-列格式 > col:nth-child(1) {
-  width: 45%;
-}
-
-.Web前端首页表格-列格式 > col:nth-child(2) {
-  width: 55%;
-}
-
-.正文-表格 > thead > tr {
-  width: 150px;
-  background-color: rgb(191, 206, 216) !important;
-  color: rgb(37, 55, 109);
-}
-
-.正文-表格 > thead {
-  text-align: center;
-  height: 40px;
-}
-
-.正文-表格 td {
-  font-size: 0.9rem;
-}
-
-.正文-表格 > tbody > tr {
-  height: 30px;
-}
-
-.正文-表格 > tbody td {
-  text-align: center;
-}
-
-.正文-表格 tr:nth-child(even) {
-  background-color: #499984;
-  color: black;
-}
-
-.正文-表格 tr:nth-child(odd) {
-  background-color: #2c5364;
-}
-
-.td-上下 {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  height: 50px;
-}
-
-.td-上下-上 {
-  width: 100%;
-  height: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-span[含义="举例标题"] {
-  background-color: rgb(153, 168, 183);
-  color: black;
-  border-radius: 3px;
-  padding: 1px 5px;
-  display: inline-flex;
-  align-items: center;
-}
-
-span[含义="语言"] {
-  display: inline-block;
-  background-color: #3a434b !important;
-  color: white;
-  padding: 3px 7.5px;
-  border-radius: 5px;
-  font-size: 1em;
-  font-family: "JetBrains Mono", Monaco, "Andale Mono", "Ubuntu Mono", monospace;
-}
-
-span[含义="特别提醒"] {
-  color: yellow;
-  font-size: 1em;
-}
-
-span[含义="圆括号"] {
-  color: tomato;
-}
-
-span[含义="行内名词"] {
-  background-color: rgb(73, 76, 80);
-  color: white;
-  border-radius: 3px;
-  padding: 1px 5px;
-  margin: 0 5px;
-  font-size: 1em;
-  display: inline-flex;
-  align-items: center;
-}
-
-span[含义="序号"] {
-  font-size: 0.9em;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  height: 1.65em;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background-color: rgb(158, 178, 199);
-  color: black;
-}
-
-p[列表1级标题] > span[含义="行内名词"] {
-  background-color: rgb(176, 230, 212);
-  color: black;
-}
-
-span[含义="圆括号内容"] {
-  background-color: rgb(53, 89, 157);
-  border-radius: 3px;
-  color: white;
-  padding: 1px 5px;
-  margin: 0 5px;
-  font-size: 1em;
-  display: inline-flex;
-  align-items: center;
-}
-
-.正文列表项-1级 > p:nth-child(1) > span[含义="圆括号内容"] {
-  background: none;
-  text-decoration: underline;
-  text-decoration-style: dashed;
-  text-underline-offset: 4px;
-  text-decoration-color: rgb(89, 230, 176);
-  color: white;
-  padding: 0 2.5px;
-  margin: 0 0;
-  font-size: 1em;
-}
-
-span[含义="注释"] {
-  padding: 1px 5px;
-  margin: 0 5px;
-  border-radius: 3px;
-  outline: solid 1.25px rgb(74, 193, 128);
-  font-size: 0.6rem;
-  color: rgb(225, 225, 225);
-}
-
-span[含义] > span[含义="注释"] {
-  margin: 0 0 0 5px;
-}
-
-span[含义="举例标题"] > span[含义="注释"] {
-  padding: 1px 5px;
-  color: white;
-  outline: none;
-  background-color: rgb(56, 56, 56);
-}
-
-span[含义="名词内间隔"] {
-  display: inline-block;
-  width: 4px;
-}
-
-img[图含义="永恒代码统计"] {
-  width: 500px;
-  padding: 10px 0;
-  object-fit: contain;
-}
-
-img[图含义] {
-  margin: 15px 0;
-  max-width: 100%;
-}
+/* ------------------- ↑ 代码格式化 ------------------- */
 
 /* ------------------------------ ↓ 响应式设计 ------------------------------ */
 @media screen and (width < 1300px) {
@@ -1571,17 +1299,6 @@ img[图含义] {
   }
 }
 
-@media screen and (width < 950px) {
-  .Web前端首页表格 {
-    width: auto;
-    max-width: 400px;
-  }
-
-  img[图含义="永恒代码统计"] {
-    width: 100%;
-  }
-}
-
 @media screen and (width < 800px) {
   .收藏区 {
     right: 5%;
@@ -1591,10 +1308,6 @@ img[图含义] {
     width: 95dvw;
     min-width: auto;
     padding: 25px 0;
-  }
-
-  p[简介标题] {
-    font-size: 1.5rem;
   }
 
   .专题正文区 {
@@ -1675,29 +1388,9 @@ img[图含义] {
     width: 75dvw;
   }
 
-  p[简介标题] {
-    font-size: 1.25rem;
-  }
-
   .技术栈选择器 {
     width: 50px;
     height: 50px;
-  }
-
-  .标题-h2 {
-    font-size: 1.25rem;
-  }
-
-  .正文列表-2级 {
-    padding-left: 0.75em;
-  }
-
-  .正文列表-3级 {
-    padding-left: 1.5em;
-  }
-
-  .span[含义] {
-    font-size: 0.85em;
   }
 }
 
