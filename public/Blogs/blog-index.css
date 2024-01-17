@@ -33,7 +33,16 @@ body {
 }
 
 #收藏栏::backdrop {
-  backdrop-filter: brightness(35%);
+  animation: 收藏栏开启过渡动画 250ms linear forwards;
+}
+
+@keyframes 收藏栏开启过渡动画 {
+  from {
+    backdrop-filter: brightness(100%);
+  }
+  to {
+    backdrop-filter: brightness(35%);
+  }
 }
 
 #收藏栏布局区 {
@@ -534,12 +543,56 @@ body {
   padding-top: 150px;
 }
 
+#侧边栏布局标签 {
+  position: absolute;
+  top: 80px;
+  left: 0;
+  padding: 0 15px;
+}
+
+#侧边栏布局 {
+  position: relative;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100px;
+  height: 30px;
+  background-color: #4a4a4a;
+  border-radius: 200px;
+}
+
+#侧边栏布局:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+#侧边栏布局::after {
+  position: absolute;
+  content: attr(layout);
+  width: 75%;
+  height: 110%;
+  top: 50%;
+  left: 0;
+  translate: 0 -50%;
+  background-color: #3f3f3f;
+  border: solid 2px gray;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 200px;
+  pointer-events: none;
+  transition: left 250ms;
+}
+
+#侧边栏布局:not(:checked)::after {
+  left: 25%;
+}
+
 .专题名称 {
   position: relative;
   width: 100%;
   padding: 0 15px;
   font-size: 1.125rem;
-  color: white;
+  color: lightgoldenrodyellow;
   font-family: "Jetbrains Mono", "Noto Sans SC";
   font-weight: 600;
   display: flex;
@@ -567,6 +620,11 @@ body {
   justify-content: flex-start;
   align-items: center;
   gap: 5px;
+  transition: padding 250ms;
+}
+
+.侧边栏:has(#侧边栏布局:not(:checked)) .专题 {
+  padding: 10px 15px;
 }
 
 .专题:hover {
@@ -835,9 +893,12 @@ body {
 
 .分区2级标题 {
   background: linear-gradient(50deg, #2c3e50, #4b5157);
-  padding: 8px 10px;
+  padding: 8px 20px;
   margin: 100px 0 0 0;
   font-size: 2.5rem;
+  box-shadow: 5px 5px 10px 0 #0007;
+  display: flex;
+  align-items: center;
 }
 
 .分区2级标题::before {
@@ -851,13 +912,48 @@ body {
   color: lightskyblue;
 }
 
+.标题序号-2级 {
+  font-family: "consolas";
+  font-size: 0.65em;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.5em;
+  height: 1.5em;
+  margin-right: 20px;
+  border-radius: 10em;
+  background-image: linear-gradient(
+    150deg,
+    rgba(96, 104, 107, 0.667) 0%,
+    rgba(137, 149, 152, 0.667) 100%
+  );
+  color: #eee;
+  box-shadow: 2px 2px 3px 0 #0005;
+}
+
 .分区3级标题 {
   margin: 75px 0 15px 0;
   font-size: 1.75rem;
+  display: flex;
+  align-items: center;
 }
 
 .分区2级标题 + .分区3级标题 {
   margin: 50px 0 15px 0;
+}
+
+.标题序号-3级 {
+  font-family: "consolas";
+  font-size: 0.65em;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 3.25em;
+  height: 1.75em;
+  margin-right: 20px;
+  border-radius: 10em;
+  border: solid 2px gray;
+  color: #aaa;
 }
 
 .分区3级标题::before {
@@ -904,9 +1000,9 @@ body {
   content: counter(li);
   width: 1.5em;
   height: 1.5em;
-  font-size: 0.9em;
+  font-size: 0.8em;
   border-radius: 3em;
-  border: solid 2px #fff5;
+  border: solid 1px #fff5;
   margin-right: 0.5em;
 }
 
@@ -949,7 +1045,7 @@ body {
   align-items: center;
   background-color: #fff1;
   border: solid 3px #c0c0c050;
-  border-radius: 5px 5px 10px 10px;
+  border-radius: 10px;
   overflow: hidden;
 }
 
@@ -1047,6 +1143,10 @@ body {
   gap: 10px;
 }
 
+.分区2级标题 + .提醒 {
+  margin-top: 50px;
+}
+
 .提醒标题 {
   position: relative;
   color: lightseagreen;
@@ -1075,7 +1175,7 @@ body {
 }
 
 .强调 {
-  color: #e85656;
+  color: #e86686;
   margin: 0 2px;
 }
 /*-------------- ↑ 专题正文区 --------------*/
@@ -1166,11 +1266,6 @@ body {
   font-size: 1.5rem;
 }
 /*-------------- ↑ 单独表格样式 --------------*/
-
-.专题正文区 ul,
-.专题正文区 li {
-  text-align: justify;
-}
 
 .符号-h2 {
   height: 25px;

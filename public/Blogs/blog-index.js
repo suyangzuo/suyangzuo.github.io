@@ -22,6 +22,11 @@ const 收藏栏添加按钮 = document.getElementById("收藏条目-添加");
 const 关闭收藏栏按钮 = document.getElementById("关闭收藏栏");
 const 收藏栏重复提示 = document.getElementById("收藏栏重复提示");
 
+let 侧边栏布局 = sessionStorage.getItem("侧边栏布局");
+if (侧边栏布局 === null) {
+  侧边栏布局 = "紧凑";
+  sessionStorage.setItem("侧边栏布局", 侧边栏布局);
+}
 let 专题组 = null;
 let 专题标记组 = null;
 
@@ -68,8 +73,31 @@ function 刷新代码格式化脚本() {
   代码格式化脚本元素.remove();
   const 新脚本 = document.createElement("script");
   新脚本.src = "/Scripts/prism.js";
+  新脚本.type = "text/javascript";
   新脚本.setAttribute("代码格式化", "");
   document.body.appendChild(新脚本);
+}
+
+function 生成侧边栏标签() {
+  const 侧边栏标签 = document.createElement("label");
+  侧边栏标签.setAttribute("for", "侧边栏布局");
+  侧边栏标签.id = "侧边栏布局标签";
+  const 侧边栏布局复选框 = document.createElement("input");
+  侧边栏布局复选框.setAttribute("type", "checkbox");
+  侧边栏布局复选框.id = "侧边栏布局";
+  侧边栏布局复选框.setAttribute("layout", 侧边栏布局);
+  侧边栏布局复选框.checked = 侧边栏布局 === "紧凑";
+  侧边栏标签.appendChild(侧边栏布局复选框);
+  侧边栏布局复选框.addEventListener("input", () => {
+    if (侧边栏布局复选框.checked) {
+      侧边栏布局 = "紧凑";
+    } else {
+      侧边栏布局 = "宽松";
+    }
+    侧边栏布局复选框.setAttribute("layout", 侧边栏布局);
+    sessionStorage.setItem("侧边栏布局", 侧边栏布局);
+  });
+  return 侧边栏标签;
 }
 
 function 设置侧边栏() {
@@ -84,6 +112,9 @@ function 设置侧边栏() {
   if (xhr.status === 200) {
     侧边栏.insertAdjacentHTML("afterbegin", xhr.responseText);
   }
+
+  const 侧边栏标签 = 生成侧边栏标签();
+  侧边栏.prepend(侧边栏标签);
 
   // fetch(fileName)
   //   .then((response) => response.text())
@@ -141,10 +172,10 @@ async function 设置内容() {
     .then((response) => response.text())
     .then((content) => {
       专题内容区.innerHTML = content;
-      刷新代码格式化脚本();
     });
   window.scrollTo(0, 0);
   特殊元素样式补充();
+  刷新代码格式化脚本();
 }
 
 function 点选技术栈(event) {
@@ -213,6 +244,28 @@ function 特殊元素样式补充() {
     原文链接.style.marginLeft = "0";
   }
 
+  const 分区2级标题组 = document.querySelectorAll(".分区2级标题");
+  分区2级标题组.forEach((标题, 索引) => {
+    const 标题序号 = document.createElement("span");
+    标题序号.className = "标题序号-2级";
+    标题序号.textContent = 索引 + 1;
+    标题.prepend(标题序号);
+
+    const 首个2级行内专业名词 = 标题.querySelector(".行内专业名词");
+    const 首个2级行内专业名词前一节点 = 首个2级行内专业名词?.previousSibling;
+    if (首个2级行内专业名词前一节点?.textContent.trim() === "") {
+      首个2级行内专业名词.style.marginLeft = "0";
+    }
+
+    const 下属3级标题组 = 标题.parentElement.querySelectorAll(".分区3级标题");
+    下属3级标题组.forEach((下属3级标题, 下属索引) => {
+      const 下属序号 = document.createElement("span");
+      下属序号.className = "标题序号-3级";
+      下属序号.textContent = `${索引 + 1}-${下属索引 + 1}`;
+      下属3级标题.prepend(下属序号);
+    });
+  });
+
   const 分区3级标题组 = document.querySelectorAll(".分区3级标题");
   分区3级标题组.forEach((标题) => {
     let 首节点 = 标题.childNodes[0];
@@ -220,6 +273,17 @@ function 特殊元素样式补充() {
 
     if (首节点.nodeType === Node.ELEMENT_NODE) {
       首节点.style.marginLeft = "0";
+    }
+
+    const 内部行内专业名词 = 标题.querySelector(".行内专业名词");
+    const 内部行内专业名词前一节点 = 内部行内专业名词?.previousSibling;
+
+    if (
+      内部行内专业名词 !== null &&
+      内部行内专业名词前一节点.nodeType === Node.TEXT_NODE &&
+      内部行内专业名词前一节点.textContent.trim() === ""
+    ) {
+      内部行内专业名词.style.marginLeft = "0";
     }
   });
 
@@ -301,6 +365,22 @@ function 特殊元素样式补充() {
       前一节点.textContent.at(-1) === "、"
     ) {
       代码.style.marginLeft = "0";
+    }
+  });
+
+  const 强调组 = document.querySelectorAll(".强调");
+  强调组?.forEach((强调) => {
+    const 前一节点 = 强调.previousSibling;
+    if (
+      前一节点 === null ||
+      前一节点.textContent.at(-1) === " " ||
+      前一节点.textContent.at(-1) === "，" ||
+      前一节点.textContent.at(-1) === "。" ||
+      前一节点.textContent.at(-1) === "：" ||
+      前一节点.textContent.at(-1) === "；" ||
+      前一节点.textContent.at(-1) === "、"
+    ) {
+      强调.style.marginLeft = "0";
     }
   });
 

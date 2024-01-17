@@ -346,6 +346,9 @@ function 点击收藏栏条目访问博客(event) {
     侧边栏.insertAdjacentHTML("afterbegin", xhr.responseText);
   }
 
+  const 侧边栏标签 = 生成侧边栏标签();
+  侧边栏.prepend(侧边栏标签);
+
   设置内容();
 
   专题组 = document.querySelectorAll(".专题");
