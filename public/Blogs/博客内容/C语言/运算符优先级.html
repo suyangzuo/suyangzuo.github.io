@@ -115,6 +115,10 @@
           color: goldenrod;
           font-size: 2em;
         }
+
+        tr:nth-child(even) > td:not(td[rowspan]) {
+          background-color: #0003;
+        }
       </style>
       <caption class="表格标题">
         C语言 运算符优先级 参照表
@@ -260,7 +264,7 @@
           <th>13</th>
           <td><span class="代码">?:</span></td>
           <td>三元条件</td>
-          <td>
+          <td rowspan="1">
             <i class="fa-solid fa-left-long"></i>
           </td>
         </tr>
@@ -299,7 +303,7 @@
           <th>15</th>
           <td><span class="代码">,</span></td>
           <td>逗号</td>
-          <td>
+          <td rowspan="1">
             <i class="fa-solid fa-right-long"></i>
           </td>
         </tr>

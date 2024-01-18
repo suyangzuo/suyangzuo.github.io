@@ -1287,7 +1287,6 @@ pre[class*="language-"] {
   position: relative;
   border-radius: 5px;
   background: linear-gradient(315deg, #424e59 0%, #36434f 74%) !important;
-  box-shadow: inset 1px 1px 3px 0 #fff8, 2px 2px 5px 0 #0008;
 }
 
 code[class*="language-"],
