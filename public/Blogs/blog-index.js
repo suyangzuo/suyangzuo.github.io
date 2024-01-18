@@ -253,7 +253,10 @@ function 特殊元素样式补充() {
 
     const 首个2级行内专业名词 = 标题.querySelector(".行内专业名词");
     const 首个2级行内专业名词前一节点 = 首个2级行内专业名词?.previousSibling;
-    if (首个2级行内专业名词前一节点?.textContent.trim() === "") {
+    if (
+      首个2级行内专业名词前一节点?.textContent.trim() === "" ||
+      首个2级行内专业名词前一节点.className.includes("标题序号")
+    ) {
       首个2级行内专业名词.style.marginLeft = "0";
     }
 
@@ -279,9 +282,10 @@ function 特殊元素样式补充() {
     const 内部行内专业名词前一节点 = 内部行内专业名词?.previousSibling;
 
     if (
-      内部行内专业名词 !== null &&
-      内部行内专业名词前一节点.nodeType === Node.TEXT_NODE &&
-      内部行内专业名词前一节点.textContent.trim() === ""
+      (内部行内专业名词 !== null &&
+        内部行内专业名词前一节点.nodeType === Node.TEXT_NODE &&
+        内部行内专业名词前一节点.textContent.trim() === "") ||
+      内部行内专业名词前一节点?.className.includes("标题序号")
     ) {
       内部行内专业名词.style.marginLeft = "0";
     }

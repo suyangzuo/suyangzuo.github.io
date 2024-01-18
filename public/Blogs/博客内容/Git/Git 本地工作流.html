@@ -115,7 +115,7 @@
         <span class="专业名词">本地仓库</span>：提交的记录就存放在此，包括<span
           class="行内专业名词"
           >HEAD</span
-        >指针<span class="附加说明">当前分支的最后一次提交</span>。
+        >指针<span class="附加说明">指向当前分支的最后一次提交</span>。
       </li>
     </ul>
     <section class="提醒">
@@ -142,7 +142,7 @@
 
     <h3 class="分区标题 分区3级标题">初始化 Git 仓库</h3>
     <p class="分区普通文本">将终端的路径定位到项目文件夹，运行命令：</p>
-    <pre style="margin: 0"><code class="lang-bash">git init</code></pre>
+    <pre><code class="lang-bash">git init</code></pre>
     <p class="分区普通文本">
       这个命令会在项目文件夹中，生成一个名为<span class="行内代码">.git</span
       >的子文件夹。
@@ -159,7 +159,7 @@
 
     <h3 class="分区标题 分区3级标题">查看状态</h3>
     <p class="分区普通文本">将终端的路径定位到项目文件夹，运行命令：</p>
-    <pre style="margin: 0"><code class="lang-bash">git status</code></pre>
+    <pre><code class="lang-bash">git status</code></pre>
     <p class="分区普通文本">
       这是一个非常常用的命令，会显示当前 Git
       仓库的状态，包括：添加了哪些文件、删除了哪些文件、修改了哪些文件、以及这些更改是否已暂存、已提交。
@@ -217,7 +217,7 @@
 
     <h3 class="分区标题 分区3级标题">暂存</h3>
     <p class="分区普通文本">将终端的路径定位到项目文件夹，运行命令：</p>
-    <pre style="margin: 0"><code class="lang-bash">git add .</code></pre>
+    <pre><code class="lang-bash">git add .</code></pre>
     <figure class="截图容器">
       <img src="/Images/Blogs/Git/Git 本地工作流/git-add.gif" alt="git add" />
     </figure>
@@ -300,7 +300,7 @@
     <p class="分区普通文本">
       只要有过 1 次提交，就可以用以下命令查看提交的历史记录：
     </p>
-    <pre style="margin: 0"><code class="lang-bash">git log</code></pre>
+    <pre><code class="lang-bash">git log</code></pre>
     <figure class="截图容器">
       <img src="/Images/Blogs/Git/Git 本地工作流/git-log.png" alt="git log" />
     </figure>
@@ -321,9 +321,10 @@
       <h3 class="提醒标题">提醒</h3>
       <p>
         对于<span class="强调">未追踪文件</span>，Git
-        <span class="强调">无法</span>对其进行任何<span class="强调">操作</span
-        >！新文件至少要<span class="强调">添加到暂存区</span>1 次，才可以被 Git
-        追踪，追踪之后 Git 才能对该文件进行其它操作。
+        <span class="强调">无法</span>对其进行<span class="强调"
+          >恢复和删除</span
+        >操作！新文件至少要<span class="强调">添加到暂存区</span>1 次，才可以被
+        Git 追踪，追踪之后 Git 才能对该文件进行恢复、删除等操作。
       </p>
       <p>可以用<span class="代码">git status</span>查看是否存在未追踪文件。</p>
     </section>

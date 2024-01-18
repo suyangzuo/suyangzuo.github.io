@@ -320,7 +320,7 @@ body {
   text-align: right;
   font-size: 1.15rem;
   color: gray;
-  font-family: "JetBrainsMono Nerd Font", "思源黑体 CN";
+  font-family: "JetBrains Mono", "思源黑体 CN";
   opacity: 0;
   pointer-events: none;
 }
@@ -592,7 +592,7 @@ body {
   width: 100%;
   padding: 0 15px;
   font-size: 1.125rem;
-  color: lightgoldenrodyellow;
+  color: rgb(255, 255, 255);
   font-family: "Jetbrains Mono", "Noto Sans SC";
   font-weight: 600;
   display: flex;
@@ -660,7 +660,7 @@ body {
 
 .标题内符号 {
   margin: 0 5px;
-  color: palegoldenrod;
+  color: orange;
 }
 /* -------------------------- ↑ 侧边栏样式 -------------------------- */
 
@@ -983,7 +983,8 @@ body {
 }
 
 .分区列表项 {
-  list-style-type: square;
+  list-style-type: disc;
+  list-style-position: inside;
   padding: 3px 0;
   color: #84a7a0;
   line-height: 1.6em;
@@ -1273,10 +1274,36 @@ body {
   visibility: hidden;
 }
 
+.token.cr:before,
+.token.lf:before,
+.token.space:before,
+.token.tab:not(:empty):before {
+  visibility: hidden;
+}
+
+pre[class*="language-"] {
+  position: relative;
+  border-radius: 5px;
+  background: linear-gradient(315deg, #424e59 0%, #3c4a58 74%) !important;
+  box-shadow: inset 1px 1px 3px 0 #fff8, 2px 2px 5px 0 #0008;
+}
+
 code[class*="language-"],
 pre[class*="language-"] {
   font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
     "微软雅黑" !important;
+}
+
+div.code-toolbar > .toolbar > .toolbar-item > a,
+div.code-toolbar > .toolbar > .toolbar-item > button,
+div.code-toolbar > .toolbar > .toolbar-item > span {
+  margin-left: 2px;
+  background-color: #0007 !important;
+  border-radius: 5px !important;
+}
+
+div.code-toolbar > .toolbar {
+  opacity: 1 !important;
 }
 /* ------------------- ↑ 代码格式化 ------------------- */
 

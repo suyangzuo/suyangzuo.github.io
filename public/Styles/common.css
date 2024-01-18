@@ -1,18 +1,5 @@
 :root {
   --网站风格颜色: rgb(42, 151, 140);
-}
-
-@font-face {
-  font-family: HarmonyOS Sans SC;
-  src: url(/Fonts/HarmonyOS_Sans_SC_Regular.ttf);
-}
-
-@font-face {
-  font-family: 霞鹜文楷;
-  src: url(/Fonts/LXGWWenKai-Regular.ttf);
-}
-
-:root {
   --bg-color: rgb(23, 28, 33);
   --f-color: #eeeeee;
   --top-banner-color: #9e2a2b;
@@ -37,7 +24,7 @@ body {
   color: var(--f-color);
   z-index: 0;
   cursor: url("/Images/Common/鼠标-默认.cur"), auto;
-  font-family: "HarmonyOS Sans SC", sans-serif, "Noto Sans Mono", monospace;
+  font-family: "Noto Sans SC", sans-serif, "Noto Sans Mono", monospace;
   /* padding-bottom: 150px; */
 }
 

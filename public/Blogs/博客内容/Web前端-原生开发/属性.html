@@ -85,134 +85,168 @@
   </ul>
 </article>
 <div class="专题正文区">
-  <h2 class="标题-h2">属性&#128558; 属性&#128552; 属性&#129324;</h2>
-  <ul class="正文列表 正文列表-1级">
-    <li class="正文列表项 正文列表项-1级">
-      <p 列表1级标题>
-        Web前端的<span 含义="圆括号内容">属性</span
-        >确实有点烦人，但你可以松开拳头吗？&#128519;
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">
+      <span class="行内专业名词">3</span>种语言，<span class="行内专业名词"
+        >3</span
+      >种属性
+    </h2>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">HTML</span>属性
+    </h3>
+    <p class="分区普通文本">
+      假设在<span class="行内专业名词">HTML</span>文件内有如下元素：
+    </p>
+    <pre>
+      <code class="lang-html">&lt;a 
+        class="联系方式链接" 
+        href="https://www.artstation.com/"
+        target="_blank"&gt;
+        ArtStation
+      &lt;/a&gt;</code>
+    </pre>
+    <p class="分区普通文本">
+      这是一个<span class="代码">a</span
+      >标签，表示超链接元素。在这个元素中，有<span class="行内专业名词">3</span
+      >个<span class="专业名词">HTML属性</span>：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="代码">class</span>，属性值为：<span class="行内代码"
+          >联系方式链接</span
+        >
+      </li>
+      <li class="分区列表项">
+        <span class="代码">href</span>，属性值为：<span class="行内代码"
+          >https://www.artstation.com/</span
+        >
+      </li>
+      <li class="分区列表项">
+        <span class="代码">target</span>，属性值为：<span class="行内代码"
+          >_blank</span
+        >
+      </li>
+    </ul>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">CSS</span>属性
+    </h3>
+    <p class="分区普通文本">
+      假设一个<span class="行内代码">CSS</span>选择器包含了如下样式：
+    </p>
+    <pre>
+      <code class="lang-css">body {
+        width: 100%;
+        min-height: 100vh;
+        background-color: #354045;
+        color: white;
+      }</code>
+    </pre>
+    <p class="分区普通文本">
+      这是一个<span class="行内代码">body</span>元素选择器，其中包含<span
+        class="行内专业名词"
+        >4</span
+      >个<span class="专业名词">CSS属性</span>：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="代码">width</span>，属性值为：<span class="行内代码"
+          >100%</span
+        >
+      </li>
+      <li class="分区列表项">
+        <span class="代码">min-height</span>，属性值为：<span class="行内代码"
+          >100vh</span
+        >
+      </li>
+      <li class="分区列表项">
+        <span class="代码">background-color</span>，属性值为：<span
+          class="行内代码"
+          >#354045</span
+        >
+      </li>
+      <li class="分区列表项">
+        <span class="代码">color</span>，属性值为：<span class="行内代码"
+          >white</span
+        >
+      </li>
+    </ul>
+
+    <section class="提醒" style="margin-top: 50px">
+      <h3 class="提醒标题">提醒</h3>
+      <p>
+        有时，我们会把<span class="行内专业名词">CSS样式</span>写在<span
+          class="行内专业名词"
+          >HTML标签</span
+        >内部，称为：<span class="专业名词">行内样式</span>
       </p>
-    </li>
-    <li class="正文列表项 正文列表项-1级">
-      <p 列表1级标题>属性分为3种。</p>
-      <ul class="正文列表 正文列表-2级">
-        <li class="正文列表项 正文列表项-2级">
-          <p>
-            <span 含义="举例标题">Attribute<span 含义="注释">HTML</span></span
-            >&nbsp;中文翻译就叫<span 含义="圆括号内容">属性</span>，指的是<span
-              含义="圆括号内容"
-              >HTML元素属性</span
-            >。比如有如下元素：
-          </p>
-          <pre
-            class="language-html"><code class="language-html">&lt;img src="./rabbit.png" alt="兔子照片" title="兔子" /&gt;</code></pre>
-          <p>
-            这是一个<span 含义="圆括号内容">img元素</span>，包含<span
-              含义="圆括号内容"
-              >3个属性<span 含义="注释">HTML元素属性</span
-              >，即3个attribute</span
-            >：
-          </p>
-          <ul class="正文列表 正文列表-3级">
-            <li class="正文列表项 正文列表项-3级">
-              <span 含义="语言">src</span>&nbsp;&nbsp;图片来源。
-            </li>
-            <li class="正文列表项 正文列表项-3级">
-              <span 含义="语言">alt</span
-              >&nbsp;&nbsp;图片加载失败时显示的替换文本。
-            </li>
-            <li class="正文列表项 正文列表项-3级">
-              <span 含义="语言">title</span
-              >&nbsp;&nbsp;鼠标指向图片时弹出的信息。
-            </li>
-          </ul>
-          <p>
-            因此，在JavaScript中，要修改图片的来源，可以用&nbsp;<span
-              含义="语言"
-              >setAttribute()</span
-            >&nbsp;方法。
-          </p>
-        </li>
-        <li class="正文列表项 正文列表项-2级">
-          <p>
-            <span 含义="举例标题">Property<span 含义="注释">CSS</span></span
-            >&nbsp;中文翻译也叫<span 含义="圆括号内容">属性</span
-            >，但指的是<span 含义="圆括号内容">CSS样式属性</span
-            ><span 含义="注释">一种特征</span>。比如有如下元素：
-          </p>
-          <pre
-            class="language-html"><code class="language-html">&lt;div style="color: red; font-size: 1rem; margin: 10px"&gt;&lt;/div&gt;</code></pre>
-          <p>
-            这是一个<span 含义="圆括号内容">div标签</span>，包含<span
-              含义="圆括号内容"
-              >1个属性<span 含义="注释">HTML元素属性</span
-              >，即1个attribute</span
-            >：
-          </p>
-          <ul class="正文列表 正文列表-3级">
-            <li class="正文列表项 正文列表项-3级">
-              <span 含义="语言">style</span>&nbsp;&nbsp;div元素的样式。
-            </li>
-          </ul>
-          <p>
-            而<span 含义="圆括号内容">style</span>中包含<span 含义="圆括号内容"
-              >3个属性<span 含义="注释">样式属性</span>，即3个property</span
-            >：
-          </p>
-          <ul class="正文列表 正文列表-3级">
-            <li class="正文列表项 正文列表项-3级">
-              <span 含义="语言">color</span>&nbsp;&nbsp;文本颜色。
-            </li>
-            <li class="正文列表项 正文列表项-3级">
-              <span 含义="语言">font-size</span>&nbsp;&nbsp;字体尺寸。
-            </li>
-            <li class="正文列表项 正文列表项-3级">
-              <span 含义="语言">margin</span>&nbsp;&nbsp;外边距。
-            </li>
-          </ul>
-          <p>
-            因此，在JavaScript中，要修改样式中的文本颜色，可以用&nbsp;<span
-              含义="语言"
-              >setProperty()</span
-            >&nbsp;方法。
-          </p>
-        </li>
-        <li class="正文列表项 正文列表项-2级">
-          <p>
-            <span 含义="举例标题"
-              >Property<span 含义="注释">JavaScript</span></span
-            >
-            &nbsp;中文翻译同样是<span 含义="圆括号内容">属性</span>，是
-            JavaScript 中对象<span 含义="注释">object</span
-            >的成员，在这里就不展开阐述了。
-          </p>
-        </li>
-      </ul>
-    </li>
-    <li class="正文列表项 正文列表项-1级">
-      <p 列表1级标题>来总结一下吧！&#127853;</p>
-      <ul class="正文列表 正文列表-2级">
-        <li class="正文列表项 正文列表项-2级">
-          <span 含义="举例标题">HTML元素属性</span>&nbsp;<span 含义="语言"
-            >Attribute</span
-          >
-        </li>
-        <li class="正文列表项 正文列表项-2级">
-          <span 含义="举例标题">CSS属性</span>&nbsp;<span 含义="语言"
-            >Property</span
-          >
-        </li>
-        <li class="正文列表项 正文列表项-2级">
-          <span 含义="举例标题">JavaScript对象的成员</span>&nbsp;<span
-            含义="语言"
-            >Property</span
-          >
-        </li>
-        <li class="正文列表项 正文列表项-2级">
-          只是因为中文翻译的问题，都叫<span 含义="圆括号内容">属性</span
-          >，其实英文不一样。
-        </li>
-      </ul>
-    </li>
-  </ul>
+      <pre>
+        <code class="lang-html">&lt;div 
+          id="交互容器" 
+          class="容器" 
+          style="width: 100%; height: 100%"&gt;
+        &lt;/div&gt;</code>
+      </pre>
+      <p>
+        此时，<span class="行内代码">id</span>、<span class="行内代码"
+          >class</span
+        >、<span class="行内代码">style</span>是 3 个<span class="专业名词"
+          >HTML属性</span
+        >，而<span class="行内代码">width</span>和<span class="行内代码"
+          >height</span
+        >则是 2 个<span class="专业名词">CSS属性</span>
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">JavaScript</span>属性
+    </h3>
+    <p class="分区普通文本">
+      假设有这样一段<span class="行内专业名词">JavaScript</span>代码：
+    </p>
+    <pre>
+      <code class="lang-javascript">const student_001 = {
+        name: "张三",
+        gender: "男",
+        age: 21,
+        grade: "2024",
+        classNumber: "2465",
+      };
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      这是一个<span class="行内专业名词">JavaScript</span>对象，定义了<span
+        class="行内专业名词"
+        >5</span
+      >个<span class="专业名词">JavaScript属性</span>：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="代码">name</span>，属性值为：<span class="行内代码"
+          >"张三"</span
+        >
+      </li>
+      <li class="分区列表项">
+        <span class="代码">gender</span>，属性值为：<span class="行内代码"
+          >"男"</span
+        >
+      </li>
+      <li class="分区列表项">
+        <span class="代码">age</span>，属性值为：<span class="行内代码"
+          >21</span
+        >
+      </li>
+      <li class="分区列表项">
+        <span class="代码">grade</span>，属性值为：<span class="行内代码"
+          >"2024"</span
+        >
+      </li>
+      <li class="分区列表项">
+        <span class="代码">classNumber</span>，属性值为：<span class="行内代码"
+          >"2465"</span
+        >
+      </li>
+    </ul>
+  </article>
 </div>

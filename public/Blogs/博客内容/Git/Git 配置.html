@@ -89,34 +89,25 @@
     <h2 class="分区标题 分区2级标题">使用命令进行 Git 配置</h2>
     <h3 class="分区标题 分区3级标题">配置用户名</h3>
     <p class="分区普通文本">在终端运行如下命令：</p>
-    <pre
-      style="
-        margin: 0;
-      "><code class="lang-bash">git config --global user.name "用户名"</code></pre>
-    <p class="分区普通文本">
-      <span class="代码">--global</span>
-      代表全局设置，只需设置一次，今后所有 Git
-      仓库的提交都会自动使用这个用户名。如果不使用这个参数，则用户名仅对当前仓库有效，每个
-      Git 仓库都要单独设置用户名。
-    </p>
+    <pre><code class="lang-bash">git config --global user.name "用户名"</code></pre>
     <p class="分区普通文本">用户名可以跟 GitHub 用户名不一样。</p>
 
     <h3 class="分区标题 分区3级标题">配置用户邮箱</h3>
     <p class="分区普通文本">在终端运行如下命令：</p>
-    <pre
-      style="
-        margin: 0;
-      "><code class="lang-bash">git config --global user.email "用户邮箱"</code></pre>
-    <p class="分区普通文本">
-      <span class="代码">--global</span>
-      代表全局设置，只需设置一次，今后所有 Git
-      仓库的提交都会自动使用这个邮箱。如果不使用这个参数，则邮箱仅对当前仓库有效，每个
-      Git 仓库都要单独设置邮箱。
-    </p>
+    <pre><code class="lang-bash">git config --global user.email "用户邮箱"</code></pre>
     <p class="分区普通文本">
       邮箱<span class="强调">一定</span>要和 GitHub 邮箱<span class="强调"
         >一致</span
       >。
     </p>
+
+    <section class="提醒" style="margin-top: 75px">
+      <h3 class="提醒标题">提醒</h3>
+      <p>
+        <span class="代码">--global</span>
+        代表全局设置，只需设置一次，所有 Git
+        仓库的提交都会自动使用这个配置。如果不使用这个参数，则配置仅对当前仓库有效。
+      </p>
+    </section>
   </article>
 </div>
