@@ -121,8 +121,8 @@ li > a > i {
   mask-size: contain;
   mask-repeat: no-repeat;
   mask-position: center;
-  -webkit-mask-image: url(../Images/Index-Images/永.png);
   mask-image: url(../Images/Index-Images/永.png);
+  -webkit-mask-image: url(../Images/Index-Images/永.png);
 }
 
 .永恒Logo文字背景-恒 {
@@ -130,8 +130,8 @@ li > a > i {
   mask-size: contain;
   mask-repeat: no-repeat;
   mask-position: center;
-  -webkit-mask-image: url(../Images/Index-Images/恒.png);
   mask-image: url(../Images/Index-Images/恒.png);
+  -webkit-mask-image: url(../Images/Index-Images/恒.png);
 }
 
 .永恒Logo文字背景 > img {

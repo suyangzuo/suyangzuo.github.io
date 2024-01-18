@@ -797,7 +797,7 @@ body {
 }
 
 .原文链接 > a {
-  text-decoration: none !important;
+  text-decoration: none;
   display: inline-block;
   width: 100%;
   overflow: hidden;
@@ -808,6 +808,8 @@ body {
 
 .原文链接 > a:hover {
   color: #962c54;
+  text-decoration: underline;
+  text-decoration-color: goldenrod;
 }
 
 .简介信息图像 {
@@ -897,7 +899,7 @@ body {
   padding: 8px 20px;
   margin: 100px 0 0 0;
   font-size: 2.5rem;
-  box-shadow: 5px 5px 10px 0 #0007;
+  box-shadow: 5px 5px 5px 0 #0007;
   display: flex;
   align-items: center;
 }
@@ -1284,14 +1286,14 @@ body {
 pre[class*="language-"] {
   position: relative;
   border-radius: 5px;
-  background: linear-gradient(315deg, #424e59 0%, #3c4a58 74%) !important;
+  background: linear-gradient(315deg, #424e59 0%, #36434f 74%) !important;
   box-shadow: inset 1px 1px 3px 0 #fff8, 2px 2px 5px 0 #0008;
 }
 
 code[class*="language-"],
 pre[class*="language-"] {
   font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
-    "微软雅黑" !important;
+    "Noto Sans SC" !important;
 }
 
 div.code-toolbar > .toolbar > .toolbar-item > a,
@@ -1299,7 +1301,7 @@ div.code-toolbar > .toolbar > .toolbar-item > button,
 div.code-toolbar > .toolbar > .toolbar-item > span {
   margin-left: 2px;
   background-color: #0007 !important;
-  border-radius: 5px !important;
+  border-radius: 2px !important;
 }
 
 div.code-toolbar > .toolbar {
