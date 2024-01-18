@@ -1,0 +1,557 @@
+:root {
+  --进度条预填充颜色: #fd6e6a;
+  --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
+  --进度条渐变-已填充: linear-gradient(
+    135deg,
+    var(--进度条预填充颜色) 10%,
+    #ffc600 100%
+  );
+  --拇指渐变背景: linear-gradient(to right, #eaeaea, #dbdbdb, #c4c0ac);
+  --拇指宽度: 16px;
+  --范围滑块宽度: 250px;
+  --x轴偏移比率: 50%;
+  --y轴偏移比率: 50%;
+  --模糊半径比率: 0%;
+  --扩散半径比率: 50%;
+  --x轴偏移: 50%;
+  --y轴偏移: 50%;
+  --模糊半径偏移: calc(0% + var(--拇指宽度) / 2);
+  --扩散半径偏移: 50%;
+  --阴影内嵌浮动层左偏移: 0%;
+  --阴影内嵌浮动层背景色: rgb(152, 58, 58);
+  --阴影颜色-1号: rgb(100, 165, 174);
+  --阴影颜色-2号: rgb(198, 149, 111);
+  --阴影颜色-3号: rgb(216, 71, 90);
+  --阴影颜色-4号: rgb(150, 124, 150);
+  --阴影颜色-5号: rgb(211, 129, 206);
+  --阴影颜色-6号: rgb(239, 212, 162);
+  --阴影颜色-7号: rgb(162, 239, 168);
+  --阴影颜色-8号: rgb(88, 139, 202);
+  --阴影颜色-9号: rgb(219, 130, 28);
+  --阴影颜色-10号: rgb(33, 184, 106);
+  --当前阴影代码包围框可见性: "hidden";
+  --当前阴影代码包围框透明度: 0%;
+  --当前阴影代码包围框垂直偏移: 9.09090909%;
+}
+
+.主区域 {
+  width: 1500px;
+  height: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.数量与展示区,
+.控制与代码区 {
+  height: 100%;
+  outline: solid 1px gray;
+}
+
+.数量与展示区 {
+  width: 65%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  /* gap: 10px; */
+}
+
+.控制与代码区 {
+  width: 35%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.数量区 {
+  position: relative;
+  z-index: 1;
+  width: 125px;
+  height: 100%;
+  outline: solid 1px gray;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.增加阴影数量按钮 {
+  font-size: 0.9rem;
+  padding: 5px 10px;
+  border-radius: 100px;
+  background-color: rgb(93, 192, 119);
+  color: black;
+  border: none;
+  transition: 50ms;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.增加阴影数量按钮[已屏蔽] {
+  filter: brightness(50%);
+  pointer-events: none;
+}
+
+.增加阴影数量按钮:hover {
+  background-color: rgb(40, 82, 125);
+  color: white;
+  outline: none;
+}
+
+.增加阴影数量按钮:active {
+  filter: brightness(85%);
+}
+
+.阴影列表 {
+  width: 100%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}
+
+.阴影项 {
+  position: relative;
+  width: 90%;
+  height: 30px;
+  border-radius: 3px;
+  font-size: 0.9rem;
+  background: linear-gradient(to right, #7f93aa, #9ab5d2);
+  color: black;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 5px;
+  padding-left: 10%;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.阴影项[已选中] {
+  background: linear-gradient(315deg, #4369bd 0%, #3375cb 74%) !important;
+  color: white !important;
+}
+
+.阴影项:hover {
+  background: linear-gradient(to right, #36424e, #4f5d6c);
+
+  color: white;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.阴影颜色标记 {
+  width: 13px;
+  height: 13px;
+  border-radius: 13px;
+}
+
+.阴影序号 {
+  background-color: rgb(37, 37, 37);
+  color: aliceblue;
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.75rem;
+  pointer-events: none;
+}
+
+.删除阴影按钮 {
+  position: absolute;
+  right: 5%;
+  height: 100%;
+  font-size: 1.5rem;
+  line-height: 1.125;
+  vertical-align: middle;
+  color: rgb(168, 168, 168);
+  transform: scale(0);
+  transition: transform 125ms;
+}
+
+.删除阴影按钮:hover {
+  color: tomato;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.阴影项:hover .删除阴影按钮 {
+  transform: scale(1);
+}
+
+.展示区 {
+  width: auto;
+  height: 100%;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* outline: solid 1px gray; */
+}
+
+.本体 {
+  width: 250px;
+  height: 150px;
+  background-color: burlywood;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+  color: black;
+  border: solid 3px black;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.控制区 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 40%;
+  outline: solid 1px gray;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 10px;
+  transition: filter 0.25s;
+}
+
+.控制区[已屏蔽],
+.颜色区[已屏蔽] {
+  filter: blur(5px);
+  pointer-events: none;
+}
+
+.中文 {
+  color: gold;
+}
+
+.代码 {
+  color: rgb(169, 169, 169);
+  font-family: consolas;
+  text-align: right;
+}
+
+.阴影内嵌 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.阴影内嵌-label {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.阴影内嵌-label:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.标签滑块分隔区 {
+  height: 100%;
+  width: 10px;
+}
+
+#shadow-inset {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 50px;
+  height: 10px;
+  border-radius: 10px;
+  background-color: gray;
+  position: relative;
+}
+
+#shadow-inset::after {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  border-radius: 30px;
+  top: -75%;
+  left: var(--阴影内嵌浮动层左偏移);
+  transform: translateX(-5%);
+  background-color: var(--阴影内嵌浮动层背景色);
+  content: "";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 2.5px #000a;
+  transition: 0.25s;
+}
+
+#shadow-inset:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.阴影属性组 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* row-gap: 10px; */
+}
+
+.阴影属性 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.阴影属性:has(input[type="range"]:hover) .标签内部,
+.阴影属性:has(button:hover) .标签内部,
+.阴影内嵌:hover .标签内部 {
+  box-shadow: inset 0.5px 0.5px 2px 0 white, 0.25px 0.25px 4px 0 #000a;
+  background-color: #384c5e;
+}
+
+.阴影属性标签 {
+  width: 120px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.标签内部 {
+  width: fit-content;
+  height: fit-content;
+  padding: 5px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  border-radius: 3px;
+}
+
+.代码 {
+  font-size: 0.85rem;
+}
+
+.阴影属性按钮 {
+  width: 20px;
+  height: 20px;
+  font-weight: bolder;
+  background-color: rgb(34, 123, 155);
+  color: white;
+  border: none;
+  border-radius: 2px;
+  box-shadow: 0px 0px 3px 0 #000a;
+}
+
+.阴影属性按钮:active {
+  filter: brightness(75%);
+}
+
+.阴影属性按钮:focus {
+  outline: none;
+}
+
+.阴影属性按钮[已屏蔽] {
+  filter: brightness(50%);
+  pointer-events: none;
+}
+
+.阴影属性滑块 {
+  position: relative;
+  width: var(--范围滑块宽度);
+  -webkit-appearance: none;
+  appearance: none;
+  height: 10px;
+  border-radius: 10px;
+  background: linear-gradient(
+    90deg,
+    var(--进度条预填充颜色) 6%,
+    var(--进度条颜色-未填充) 3.5%
+  );
+}
+
+.阴影属性滑块:focus {
+  outline: none;
+}
+
+.阴影属性滑块::-webkit-slider-thumb {
+  position: relative;
+  z-index: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--拇指宽度);
+  aspect-ratio: 1;
+  border-radius: 50px;
+  background: #ada996; /* fallback for old browsers */
+  background: var(--拇指渐变背景);
+  transform: translateY(-40%) scale(2);
+  filter: drop-shadow(0 0 2px rgba(39, 39, 39, 0.5));
+}
+
+.阴影属性滑块:hover {
+  cursor: url("/Images/Common/鼠标-横向缩放.png"), ew-resize;
+}
+
+.阴影属性滑块::before {
+  position: absolute;
+  width: calc(100% - var(--拇指宽度));
+  height: 100%;
+  border-radius: 50px;
+  content: "";
+  left: calc(var(--拇指宽度) / 2);
+  top: 0;
+  background: var(--进度条渐变-已填充);
+}
+
+#x轴偏移::before {
+  clip-path: inset(-5% calc(100% - var(--x轴偏移比率)) -5% 0%);
+}
+
+#y轴偏移::before {
+  clip-path: inset(-5% calc(100% - var(--y轴偏移比率)) -5% 0);
+}
+
+#模糊半径::before {
+  clip-path: inset(-5% calc(100% - var(--模糊半径比率)) -5% 0);
+}
+
+#扩散半径::before {
+  clip-path: inset(-5% calc(100% - var(--扩散半径比率)) -5% 0);
+}
+
+.阴影属性滑块::after {
+  position: absolute;
+  z-index: 1;
+  width: calc(var(--拇指宽度) * 2);
+  aspect-ratio: 1;
+  border-radius: 50px;
+  color: black;
+  content: "";
+  top: -110%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.75rem;
+}
+
+#x轴偏移::after {
+  left: var(--x轴偏移);
+  content: attr(x轴偏移值);
+}
+
+#y轴偏移::after {
+  left: var(--y轴偏移);
+  content: attr(y轴偏移值);
+}
+
+#模糊半径::after {
+  left: var(--模糊半径偏移);
+  transform: translateX(-50%);
+  content: attr(模糊半径值);
+}
+
+#扩散半径::after {
+  left: var(--扩散半径偏移);
+  content: attr(扩散半径值);
+}
+
+:where(#x轴偏移, #y轴偏移, #扩散半径)::after {
+  transform: translateX(-50%);
+}
+
+.颜色区 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 150px;
+  outline: solid 1px gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex-grow: 1;
+  transition: filter 0.25s;
+}
+
+#颜色选择器 {
+  width: 100px;
+  height: 100px;
+}
+
+#颜色选择器:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.颜色数据区 {
+  width: 100px;
+  /* background-color: seagreen; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.颜色数据 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.颜色名称 {
+  font-size: 1.1rem;
+}
+
+.颜色值 {
+  font-family: consolas;
+}
+
+.红名称,
+.红值 {
+  color: rgb(255, 116, 116);
+}
+
+.绿名称,
+.绿值 {
+  color: rgb(73, 230, 84);
+}
+
+.蓝名称,
+.蓝值 {
+  color: lightskyblue;
+}
+
+.代码区 {
+  position: relative;
+  width: 100%;
+  height: 245px;
+  z-index: 1;
+  font-family: consolas;
+  padding: 20px;
+  font-size: 1rem;
+  white-space: pre-line;
+  display: flex;
+  justify-content: center;
+}
+
+.代码文本 {
+  width: 450px;
+}
+
+.代码区::before {
+  position: absolute;
+  /* z-index: -1; */
+  content: "";
+  width: 100%;
+  height: 1rem;
+  left: 0;
+  top: var(--当前阴影代码包围框垂直偏移);
+  visibility: var(--当前阴影代码包围框可见性);
+  opacity: var(--当前阴影代码包围框透明度);
+  background-color: rgb(211, 202, 98);
+  mix-blend-mode: exclusion;
+  transition: 0.25s;
+}

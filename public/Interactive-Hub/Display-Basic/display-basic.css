@@ -1,0 +1,270 @@
+:root {
+  --进度条颜色-已填充: rgb(41, 126, 78);
+  --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
+  --拇指宽度: 16px;
+  --块-宽度比例: 100%;
+  --块-高度比例: 12.5%;
+  --行内-宽度比例: 50%;
+  --行内-高度比例: 50%;
+  --行内-字体尺寸比例: 0%;
+  --行内块-宽度比例: 50%;
+  --行内块-高度比例: 7%;
+  --弹性-宽度比例: 100%;
+  --弹性-高度比例: 12.5%;
+}
+
+.块行内-图像区 {
+  width: 600px;
+  height: 400px;
+  outline: solid 5px skyblue;
+  /* overflow: hidden; */
+}
+
+.块行内-图像区 > .行内块-3 {
+  display: inline-block;
+}
+
+.块行内-图像区 > .弹性-5 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.块行内-图像区 > * {
+  white-space: nowrap;
+}
+
+.块行内-图像区 > .图像-块,
+.块行内-图像区 > .图像-弹性 {
+  height: 25px;
+}
+
+.块行内-图像区 > :nth-child(1) {
+  background-color: rgb(9, 138, 0);
+}
+
+.块行内-图像区 > :nth-child(2) {
+  background-color: rgb(227, 68, 68);
+}
+
+.块行内-图像区 > :nth-child(3) {
+  background-color: rgb(124, 29, 161);
+}
+
+.块行内-图像区 > :nth-child(4) {
+  background-color: rgb(44, 96, 193);
+}
+
+.块行内-图像区 > :nth-child(5) {
+  background-color: rgb(158, 62, 70);
+}
+
+.块行内-图像区 > :nth-child(6) {
+  background-color: rgb(155, 98, 41);
+}
+
+.控制区 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* gap: 20px; */
+}
+
+.控制区 > section {
+  width: 375px;
+  padding: 5px 20px 20px;
+  background: linear-gradient(rgb(33, 60, 78), rgb(49, 76, 105));
+  /* outline: solid 2px gray; */
+}
+
+.控制分区:hover {
+  outline: solid 2px gray;
+  position: relative;
+  z-index: 1;
+}
+
+.控制标题 {
+  font-size: 1.25rem;
+  font-weight: bolder;
+  color: gold;
+  padding: 20px 0 0;
+  text-align: center;
+}
+
+.控制标题 > span {
+  font-family: consolas;
+  color: goldenrod;
+}
+
+.控件 > div:has(.滑块容器:hover) label {
+  color: tomato;
+}
+
+.宽度,
+.高度,
+.字体尺寸 {
+  display: flex;
+  gap: 15px;
+  padding: 20px 0;
+}
+
+.控件 label {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 75px;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.控件 .滑块容器 {
+  width: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.滑块容器:hover,
+input[type="range"]:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+input[type="range"] {
+  position: relative;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 5px;
+  width: 200px;
+  border-radius: 50px;
+  background: linear-gradient(
+    90deg,
+    var(--进度条颜色-已填充) 6%,
+    var(--进度条颜色-未填充) 6%
+  );
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  position: relative;
+  z-index: 1;
+  appearance: none;
+  width: var(--拇指宽度);
+  aspect-ratio: 1;
+  background: no-repeat center/100%
+    url(/Images/Interactive-Hub/进度条拇指/闪电球.png);
+  transform: translateY(-50%) scale(1.25);
+  filter: drop-shadow(0 0 2px black);
+}
+
+input[type="range"]::-moz-range-thumb {
+  position: relative;
+  z-index: 1;
+  appearance: none;
+  width: var(--拇指宽度);
+  aspect-ratio: 1;
+  background: no-repeat center/100%
+    url(/Images/Interactive-Hub/进度条拇指/闪电球.png);
+  transform: translateY(-50%) scale(1.25);
+  filter: drop-shadow(0 0 2px black);
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  cursor: url(/Images/Common/鼠标-横向缩放.png) 16 6, ew-resize;
+}
+
+input[type="range"]::after {
+  position: absolute;
+  width: calc(100% - var(--拇指宽度));
+  height: 100%;
+  border-radius: 50px;
+  content: "";
+  left: calc(var(--拇指宽度) / 2);
+  top: 0;
+  background-color: var(--进度条颜色-已填充);
+}
+
+#块-宽度::after {
+  clip-path: inset(-5% calc(100% - var(--块-宽度比例)) -5% 0);
+}
+
+#块-高度::after {
+  clip-path: inset(-5% calc(100% - var(--块-高度比例)) -5% 0);
+}
+
+#行内-宽度::after {
+  clip-path: inset(-5% calc(100% - var(--行内-宽度比例)) -5% 0);
+}
+
+#行内-高度::after {
+  clip-path: inset(-5% calc(100% - var(--行内-高度比例)) -5% 0);
+}
+
+#行内-字体尺寸::after {
+  clip-path: inset(-5% calc(100% - var(--行内-字体尺寸比例)) -5% 0);
+}
+
+#行内块-宽度::after {
+  clip-path: inset(-5% calc(100% - var(--行内块-宽度比例)) -5% 0);
+}
+
+#行内块-高度::after {
+  clip-path: inset(-5% calc(100% - var(--行内块-高度比例)) -5% 0);
+}
+
+#弹性-宽度::after {
+  clip-path: inset(-5% calc(100% - var(--弹性-宽度比例)) -5% 0);
+}
+
+#弹性-高度::after {
+  clip-path: inset(-5% calc(100% - var(--弹性-高度比例)) -5% 0);
+}
+
+.滑块数字 {
+  width: 40px;
+  height: 25px;
+  position: absolute;
+  background: linear-gradient(rgb(87, 87, 87), rgb(57, 57, 57));
+  top: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  clip-path: polygon(
+    0% 15%,
+    45% 15%,
+    50% 0%,
+    55% 15%,
+    100% 15%,
+    100% 100%,
+    0% 100%
+  );
+  text-align: center;
+  font-size: 0.8rem;
+  padding-top: 3%;
+}
+
+.滑块容器:hover > .滑块数字,
+input[type="range"]:focus-visible ~ .滑块数字 {
+  background: linear-gradient(brown, rgb(192, 70, 70));
+}
+
+@media screen and (max-height: 1000px) {
+  .控制区 {
+    height: 750px;
+    justify-content: flex-start;
+  }
+
+  .控制区 > section {
+    padding: 10px 20px 20px;
+  }
+
+  .控制标题 {
+    padding: 5px 0;
+  }
+
+  .宽度,
+  .高度,
+  .字体尺寸 {
+    padding: 5px 0 25px;
+  }
+}

@@ -1,0 +1,243 @@
+body {
+  /* background-image: radial-gradient(
+    circle farthest-corner at 10% 20%,
+    rgba(100, 43, 115, 1) 0%,
+    rgb(26, 2, 26) 90%
+  ); */
+  background-image: radial-gradient(
+    circle farthest-corner at 24.1% 68.8%,
+    rgba(50, 50, 50, 1) 0%,
+    rgba(0, 0, 0, 1) 99.4%
+  );
+}
+
+.说明区 {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  height: 450px;
+  /* background-image: radial-gradient(
+    circle 815px at 23.4% -21.8%,
+    rgba(9, 29, 85, 1) 0.2%,
+    rgba(0, 0, 0, 1) 100.2%
+  ); */
+  background-image: radial-gradient(
+    circle 815px at 23.4% -21.8%,
+    rgb(52, 62, 92) 0.2%,
+    rgb(42, 54, 72) 100.2%
+  );
+  box-shadow: 0 1px 5px 0 #000a;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  text-shadow: 1px 1px 5px #000a;
+}
+
+/* .说明区::before {
+  position: absolute;
+  z-index: -1;
+  content: "";
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: no-repeat center url("/Images/Background-Images/曲线.png");
+  background-size: 100% 75%;
+  opacity: 0.5;
+} */
+
+.第三方标题 {
+  position: relative;
+  z-index: 1;
+  width: 650px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.第三方标题 > span {
+  width: 100%;
+  line-height: 1;
+}
+
+.第三方标题中文 {
+  font-size: 5rem;
+  font-weight: 600;
+  color: rgb(74, 211, 147);
+}
+
+.第三方标题英文 {
+  font-size: 2rem;
+  text-align: right;
+  color: rgb(178, 178, 178);
+  font-family: "Courier New";
+}
+
+.说明配图区 {
+  font-size: 2.25rem;
+}
+
+.主内容 {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  /* flex-direction: column; */
+  justify-content: center;
+  gap: 50px;
+  padding: 10vh 0;
+}
+
+.导航区 {
+  width: 750px;
+  height: fit-content;
+}
+
+.标题 {
+  width: fit-content;
+  height: 65px;
+  font-size: 1.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  /* padding: 15px; */
+}
+
+.标题图 {
+  height: 30px;
+  width: 30px;
+  object-fit: contain;
+}
+
+.教程区 {
+  background: linear-gradient(
+    43deg,
+    rgba(73, 84, 101, 0.95),
+    rgba(68, 95, 123, 0.95)
+  );
+  border-radius: 10px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 120px));
+  grid-auto-rows: 150px;
+  gap: 20px 15px;
+  place-content: center;
+  padding: 15px 0;
+  box-shadow: inset 1px 1px 2px 0 #ffffff2a, 6px 6px 15px 0 #0008;
+}
+
+.教程区网格 {
+  position: relative;
+  z-index: 0;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 0;
+}
+
+/* .教程区网格:hover {
+  animation: 教程区网格背景动画 2s infinite alternate linear;
+  box-shadow: inset 1px 1px 1.5px 0 #fff5, 1px 1px 4px 0 #0008;
+} */
+
+.教程区网格::before {
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  top: 0;
+  left: 0;
+  content: "";
+  background: no-repeat center/cover
+    url("/Images/Metal-Texture/金属质感-02.jpg");
+  visibility: hidden;
+  opacity: 0;
+  filter: contrast(1) brightness(65%);
+  transition: 0.15s;
+}
+
+.教程区网格:hover::before {
+  box-shadow: inset 1.5px 1.5px 1.5px 0 #ffff, 1px 1px 4px 0 #0008;
+  visibility: visible;
+  opacity: 1;
+}
+
+@keyframes 教程区网格背景动画 {
+  from {
+    background: hsl(224, 41%, 31%);
+  }
+  to {
+    background: hsl(338, 37%, 29%);
+  }
+}
+
+.教程Logo {
+  width: 80px;
+  height: 80px;
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+
+.教程Logo[alt="Zbrush"] {
+  filter: invert(85%);
+}
+
+.教程Logo[alt="Windows Server"] {
+  filter: brightness(5);
+}
+
+.教程名称 {
+  /* height: 50px; */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 0.925rem;
+  text-align: center;
+  padding: 0 5px;
+}
+
+/* ------------------------- ↓ 响应式设计 ------------------------- */
+@media screen and (max-width: 1580px) {
+  .主内容 {
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .导航区 {
+    width: 1100px;
+    height: fit-content;
+  }
+}
+
+@media screen and (max-width: 1120px) {
+  .说明区 {
+    display: none;
+  }
+
+  .导航区 {
+    width: 95vw;
+  }
+
+  .教程区 {
+    grid-template-columns: repeat(auto-fill, minmax(90px, 100px));
+    grid-auto-rows: 150px;
+    gap: 20px 15px;
+    padding: 15px 0;
+  }
+
+  .主内容 {
+    padding: 5vh 0;
+  }
+}
+/* ------------------------- ↑ 响应式设计 ------------------------- */

@@ -1,0 +1,1425 @@
+:root {
+  --侧边栏宽度: 300px;
+  --侧边栏颜色-鼠标悬停: rgb(54, 62, 78);
+  --侧边栏颜色-已选中: rgb(122, 67, 107);
+  /* --侧边栏背景: linear-gradient(60deg, #1f242b 0%, #252c32 100%); */
+  --侧边栏背景: linear-gradient(60deg, #141518 0%, #171c21 100%);
+  --专题内容区背景: linear-gradient(90deg, #181c20 0%, #262d35 100%);
+  --超链接颜色-正文: skyblue;
+  --正文分区-宽度: 800px;
+  --专题标记-原创: rgb(76, 179, 160);
+  --专题标记-转载: orange;
+}
+
+body {
+  width: 100dvw;
+}
+
+/* ------------------- ↓ 收藏栏 ------------------- */
+#收藏栏 {
+  position: fixed;
+  top: 50px;
+  left: 0;
+  background-color: #8af1;
+  box-shadow: 0 15px 45px 0 #0005;
+  z-index: 9998;
+  width: 100%;
+  height: fit-content;
+  max-height: 65vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  backdrop-filter: blur(10px);
+  border: none;
+}
+
+#收藏栏::backdrop {
+  animation: 收藏栏开启过渡动画 250ms linear forwards;
+}
+
+@keyframes 收藏栏开启过渡动画 {
+  from {
+    backdrop-filter: brightness(100%);
+  }
+  to {
+    backdrop-filter: brightness(35%);
+  }
+}
+
+#收藏栏布局区 {
+  width: 100%;
+  translate: 0 -100%;
+  height: fit-content;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: flex-start;
+  gap: 35px;
+  padding: 50px 75px;
+  transition: 0.5s;
+}
+
+#关闭收藏栏 {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 35px;
+  height: 35px;
+  border-radius: 100px;
+  background-color: transparent;
+  border: solid 2px #aaa;
+  color: #aaa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#关闭收藏栏:hover {
+  border: none;
+  background-color: #ccc;
+  color: black;
+}
+
+#关闭收藏栏:active {
+  background-color: white;
+}
+
+.收藏条目 {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  outline: solid 1px #fff5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+}
+
+.收藏条目:hover {
+  cursor: pointer;
+  background-color: #fff1;
+}
+
+.删除条目按钮 {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  top: -10px;
+  right: -10px;
+  border-radius: 100px;
+  background-color: #aaa;
+  border: none;
+  color: black;
+  visibility: hidden;
+  opacity: 0;
+  transition: 150ms;
+}
+
+.收藏条目:hover .删除条目按钮 {
+  visibility: visible;
+  opacity: 1;
+}
+
+.删除条目按钮:hover {
+  background-color: #ccc;
+}
+
+.删除条目按钮:active {
+  background-color: white;
+}
+
+#收藏条目-添加 {
+  overflow: hidden;
+}
+
+#收藏条目-添加 > button {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5rem;
+  border: none;
+  background-color: transparent;
+  color: #fffa;
+  transition: 0.25s;
+}
+
+#收藏条目-添加:hover > button {
+  color: white;
+}
+
+#收藏条目-添加 > button:active {
+  background-color: #fff4;
+}
+
+#收藏栏重复提示 {
+  display: block;
+  width: 100%;
+  padding: 20px 0;
+  text-align: center;
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  translate: -50%;
+  background-color: rgb(44, 54, 75);
+  color: yellow;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes 收藏栏重复提示动画 {
+  from {
+    opacity: 1;
+    bottom: 10%;
+  }
+  75% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    bottom: 35%;
+  }
+}
+
+.收藏条目-标志 {
+  width: 100%;
+  height: 45%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.收藏条目-标志 > img {
+  width: 100%;
+  height: 80%;
+  object-fit: contain;
+}
+
+.收藏信息区 {
+  width: fit-content;
+  max-width: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 5px;
+  padding: 0 15px;
+}
+
+.收藏信息 {
+  width: fit-content;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.收藏信息-技术栈 .收藏信息-标志 {
+  translate: 0 4px;
+}
+
+.收藏信息-技术栈 .收藏信息-文本 {
+  font-size: 0.95rem;
+  font-weight: bold;
+}
+
+.收藏信息-标志 {
+  font-size: 0.9rem;
+  translate: 0 3px;
+  color: gold;
+}
+
+.收藏信息-文本 {
+  width: fit-content;
+  font-size: 0.9rem;
+}
+
+.收藏信息:nth-child(1) .收藏信息-文本 {
+  color: lightseagreen;
+}
+
+.收藏信息:nth-child(3) .收藏信息-文本 {
+  color: #aaa;
+}
+/* ------------------- ↑ 收藏栏 ------------------- */
+
+/* ------------------- ↓ 收藏区 ------------------- */
+.收藏区 {
+  position: fixed;
+  z-index: 9999;
+  right: 50px;
+  bottom: calc(40px + 150px);
+  width: 65px;
+  height: 150px;
+  border-radius: 200px;
+  /* outline: solid 1px gray; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+}
+
+.收藏区 button {
+  width: 36px;
+  aspect-ratio: 1;
+  border-radius: 200px;
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  position: relative;
+}
+
+.收藏区 button:hover::after {
+  position: absolute;
+  top: 50%;
+  right: 125%;
+  translate: 0 -50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 100px;
+  background-color: orange;
+  content: "";
+}
+
+#收藏按钮:focus {
+  outline: none;
+}
+
+.收藏区 .已收藏状态按钮 {
+  color: seagreen;
+}
+
+.收藏区 .未收藏状态按钮 {
+  color: white;
+}
+
+#收藏数量 {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  border-radius: 100px;
+  background-color: brown;
+  color: white;
+  bottom: 60%;
+  left: 60%;
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+}
+
+#收藏提示 {
+  position: absolute;
+  top: 100%;
+  right: 140%;
+  display: block;
+  width: 200px;
+  text-align: right;
+  font-size: 1.15rem;
+  color: gray;
+  font-family: "JetBrains Mono", "思源黑体 CN";
+  opacity: 0;
+  pointer-events: none;
+}
+
+#收藏提示.添加收藏提示动画,
+#收藏提示.删除收藏提示动画 {
+  animation: 收藏提示动画 1.25s ease-out;
+}
+
+@keyframes 收藏提示动画 {
+  from {
+    opacity: 0;
+    top: 25%;
+  }
+  25% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    top: -100%;
+  }
+}
+/* ------------------- ↑ 收藏区 ------------------- */
+
+/* --------------------- ↓ 技术栈选择 --------------------- */
+.技术栈选择器 {
+  position: fixed;
+  z-index: 9999;
+  width: 65px;
+  height: 65px;
+  border-radius: 50px;
+  background: no-repeat center/contain url("./选择器修饰.png"),
+    radial-gradient(circle at center, #80d0c744 0%, #13547a11 50%);
+  bottom: 40px;
+  right: 50px;
+  pointer-events: all;
+  animation: 旋转技术栈选择器 5s linear infinite;
+  transition: 0.25s;
+}
+
+.技术栈选择器:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  animation-play-state: paused !important;
+}
+
+@keyframes 旋转技术栈选择器 {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.技术栈对话框 {
+  position: fixed;
+  width: max(750px, 60%);
+  height: max(850px, 75%);
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  border-radius: 10px;
+  background-color: #fff1;
+  box-shadow: 10px 10px 30px 0 #000a;
+  backdrop-filter: blur(20px);
+  border: none;
+  outline: solid 2px #fff4;
+  overflow: hidden;
+}
+
+.技术栈对话框::backdrop {
+  backdrop-filter: brightness(35%);
+}
+
+.关闭技术栈对话框 {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 2rem;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  border-radius: 50px;
+}
+
+.关闭技术栈对话框:hover {
+  background-color: #920808;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.关闭技术栈对话框 > span {
+  color: #bbb;
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  transition: 100ms;
+}
+
+.关闭技术栈对话框 > span > i {
+  font-size: 16px;
+}
+
+.关闭技术栈对话框:hover span {
+  color: white;
+}
+
+.技术栈内容 {
+  color: white;
+  width: 100%;
+  height: calc(100% - 75px);
+  position: absolute;
+  bottom: 0;
+  padding: 20px;
+  border-radius: 10px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+  grid-auto-rows: 105px;
+  gap: 10px;
+  place-content: start space-evenly;
+  pointer-events: all;
+  transition: 0.25s;
+}
+
+.技术栈 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  border-radius: 5px;
+}
+
+.经验之谈 {
+  grid-column: 1 / -1;
+}
+
+.经验之谈 > p {
+  height: fit-content !important;
+}
+
+.技术栈[未完成] {
+  pointer-events: none;
+  filter: brightness(50%);
+}
+
+.技术栈:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  background: linear-gradient(-45deg, #8d5240, #962c54, #1f718f, #11614f);
+  background-size: 400% 400%;
+  animation: 技术栈背景动画 5s ease infinite;
+  box-shadow: 1px 1px 4px 0 #0005;
+}
+
+@keyframes 技术栈背景动画 {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.技术栈 > img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.技术栈 > p {
+  height: 36px;
+  font-size: 0.8rem;
+  padding-top: 2px;
+}
+/* --------------------- ↑ 技术栈选择 --------------------- */
+
+/* -------------------------- ↓ 侧边栏样式 -------------------------- */
+.侧边栏收缩容器 {
+  position: absolute;
+  z-index: 1;
+  width: 40px;
+  height: 35px;
+  /* background-color: red; */
+  top: 55px;
+  left: 5px;
+  font-size: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.侧边栏收缩容器:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.侧边栏 {
+  width: var(--侧边栏宽度);
+  height: 100dvh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: var(--侧边栏背景);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  row-gap: 20px;
+  padding-top: 150px;
+}
+
+#侧边栏布局标签 {
+  position: absolute;
+  top: 80px;
+  left: 0;
+  padding: 0 15px;
+}
+
+#侧边栏布局 {
+  position: relative;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100px;
+  height: 30px;
+  background-color: #4a4a4a;
+  border-radius: 200px;
+}
+
+#侧边栏布局:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+#侧边栏布局::after {
+  position: absolute;
+  content: attr(layout);
+  width: 75%;
+  height: 110%;
+  top: 50%;
+  left: 0;
+  translate: 0 -50%;
+  background-color: #3f3f3f;
+  border: solid 2px gray;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 200px;
+  pointer-events: none;
+  transition: left 250ms;
+}
+
+#侧边栏布局:not(:checked)::after {
+  left: 25%;
+}
+
+.专题名称 {
+  position: relative;
+  width: 100%;
+  padding: 0 15px;
+  font-size: 1.125rem;
+  color: rgb(255, 255, 255);
+  font-family: "Jetbrains Mono", "Noto Sans SC";
+  font-weight: 600;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.专题名称 > img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  margin-right: 10px;
+}
+
+.专题列表 {
+  width: 100%;
+  height: fit-content;
+  overflow-y: auto;
+}
+
+.专题 {
+  width: 100%;
+  padding: 0 15px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  transition: padding 250ms;
+  font-size: 0.75em;
+}
+
+.侧边栏:has(#侧边栏布局:not(:checked)) .专题 {
+  padding: 10px 15px;
+}
+
+.专题:hover {
+  background: var(--侧边栏颜色-鼠标悬停) !important;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.专题-标记 {
+  flex-shrink: 0;
+  width: 15px;
+  height: 100%;
+  text-align: center;
+}
+
+.专题[原创] .专题-标记 {
+  color: var(--专题标记-原创);
+}
+
+.专题[转载] .专题-标记 {
+  color: var(--专题标记-转载);
+}
+
+.专题-内容 {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 0.9rem;
+}
+
+.标题内符号 {
+  margin: 0 5px;
+  color: orange;
+}
+/* -------------------------- ↑ 侧边栏样式 -------------------------- */
+
+.专题内容区 {
+  width: 100%;
+  min-height: calc(100vh - 50px);
+  background-image: var(--专题内容区背景);
+  padding: 50px 50px 50px calc(var(--侧边栏宽度) + 50px);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 25px;
+}
+
+.超链接 {
+  color: yellowgreen !important;
+  margin: 0 3px;
+  text-decoration: underline;
+  text-decoration-color: orange;
+  text-underline-offset: 2.5px;
+}
+
+.表格 .超链接 {
+  text-decoration: none;
+}
+
+.表格 .超链接:hover {
+  text-decoration: underline;
+  text-decoration-color: orange;
+  text-underline-offset: 2.5px;
+}
+
+.超链接:visited {
+  color: yellowgreen;
+}
+
+.超链接:hover {
+  color: rgb(173, 104, 238) !important;
+}
+
+/*-------------- ↓ 内容区顶栏 --------------*/
+.专题简介 {
+  position: relative;
+  width: min(90%, 850px);
+  height: fit-content;
+  border-bottom: solid 1px #aaaa;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 50px;
+  padding: 25px 0;
+  overflow: hidden;
+}
+
+.简介标题 {
+  font-family: "Jetbrains Mono", "Noto Sans SC";
+  font-size: 3rem;
+  letter-spacing: 0.25rem;
+}
+
+.原创,
+.转载 {
+  margin-left: 2ch;
+  font-size: 1.25rem;
+  letter-spacing: normal;
+}
+
+.原创 {
+  color: var(--专题标记-原创);
+  margin-left: 1rem;
+}
+
+.转载 {
+  color: var(--专题标记-转载);
+}
+
+.简介信息 {
+  width: 500px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 50px;
+}
+
+.简介信息文本 {
+  width: fit-content;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.作者,
+.日期,
+.原文,
+.译者 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.前缀 {
+  width: 50px;
+  text-align: right;
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+.作者姓名,
+.日期文本,
+.原文链接,
+.译者姓名 {
+  max-width: 300px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.作者姓名,
+.日期文本,
+.译者姓名 {
+  color: rgb(134, 162, 249);
+}
+
+.原文链接 {
+  display: inline-flex;
+  align-items: center;
+}
+
+.原文链接 > a {
+  text-decoration: none;
+  display: inline-block;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: 150ms;
+}
+
+.原文链接 > a:hover {
+  color: #962c54;
+  text-decoration: underline;
+  text-decoration-color: goldenrod;
+}
+
+.简介信息图像 {
+  width: 125px;
+  aspect-ratio: 1;
+}
+
+.简介信息图像 > img {
+  /* width: 100%; */
+  height: 100%;
+  object-fit: contain;
+}
+
+.联系方式列表 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px 25px;
+  flex-wrap: wrap;
+}
+
+.联系方式项 {
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.联系方式项 > a {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none !important;
+}
+
+.联系方式项:not(:last-child) > a:hover {
+  filter: sepia(80%) saturate(2500%) hue-rotate(320deg);
+}
+
+.联系方式项:last-child > a:hover {
+  filter: sepia(100%) saturate(500%) hue-rotate(320deg);
+}
+
+.联系方式项 > a > img {
+  width: 95%;
+  height: 95%;
+  object-fit: contain;
+}
+
+.专题简介 .fa-solid,
+.专题简介 .fa-brands {
+  font-size: 1.25rem;
+}
+/*-------------- ↑ 内容区顶栏 --------------*/
+
+/*-------------- ↓ 专题正文区 --------------*/
+.专题正文区 {
+  width: min(97.5%, 850px);
+  border-radius: 10px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 35px;
+  font-size: 18px;
+}
+
+.正文分区 {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  color: #ddd;
+}
+
+.分区标题 {
+  position: relative;
+  color: white;
+  border-radius: 5px;
+  width: fit-content;
+}
+
+.分区2级标题 {
+  background: linear-gradient(50deg, #2c3e50, #4b5157);
+  padding: 8px 20px;
+  margin: 100px 0 0 0;
+  font-size: 2.5rem;
+  box-shadow: 5px 5px 5px 0 #0007;
+  display: flex;
+  align-items: center;
+}
+
+.分区2级标题::before {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  translate: 150% -50%;
+  font-family: "Font Awesome 6 Free";
+  content: "\f1dc";
+  font-weight: 900;
+  color: lightskyblue;
+}
+
+.标题序号-2级 {
+  font-family: "consolas";
+  font-size: 0.65em;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.5em;
+  height: 1.5em;
+  margin-right: 20px;
+  border-radius: 10em;
+  background-image: linear-gradient(
+    150deg,
+    rgba(96, 104, 107, 0.667) 0%,
+    rgba(137, 149, 152, 0.667) 100%
+  );
+  color: #eee;
+  box-shadow: 2px 2px 3px 0 #0005;
+}
+
+.分区3级标题 {
+  margin: 75px 0 15px 0;
+  font-size: 1.75rem;
+  display: flex;
+  align-items: center;
+}
+
+.分区2级标题 + .分区3级标题 {
+  margin: 50px 0 15px 0;
+}
+
+.标题序号-3级 {
+  font-family: "consolas";
+  font-size: 0.65em;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 3.25em;
+  height: 1.75em;
+  margin-right: 20px;
+  border-radius: 10em;
+  border: solid 2px #fff3;
+  color: #aaa;
+}
+
+.分区3级标题::before {
+  position: absolute;
+  content: "\f1ea";
+  top: 50%;
+  right: 0;
+  translate: 150% -50%;
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  color: orange;
+}
+
+.分区3级标题 i {
+  margin-left: 5px;
+  color: orange;
+}
+
+.分区列表 {
+  margin: 5px 0;
+  font-size: 17px;
+}
+
+.分区列表.有序列表 {
+  counter-reset: li;
+}
+
+.分区列表项 {
+  list-style-type: disc;
+  list-style-position: inside;
+  padding: 3px 0;
+  color: #84a7a0;
+  line-height: 1.6em;
+}
+
+.分区列表.有序列表 > .分区列表项 {
+  list-style-type: none;
+  counter-increment: li;
+}
+
+.分区列表.有序列表 > .分区列表项::before {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  content: counter(li);
+  width: 1.5em;
+  height: 1.5em;
+  font-size: 0.8em;
+  border-radius: 3em;
+  border: solid 1px #fff5;
+  margin-right: 0.5em;
+}
+
+.分区列表项::marker {
+  color: darkgoldenrod;
+}
+
+.圆圈序号 {
+  margin-right: 5px;
+}
+
+.分区列表:has(.有序列表项) {
+  counter-reset: li;
+}
+
+.分区列表项.有序列表项 {
+  list-style-type: none;
+}
+
+.分区列表项.有序列表项::before {
+  position: absolute;
+  width: 23px;
+  height: 23px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  content: counter(li);
+  counter-increment: li;
+  translate: -35px 0;
+  background-color: #8b939a;
+  color: black;
+  border-radius: 50%;
+}
+
+.截图容器 {
+  width: fit-content;
+  margin: 15px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff1;
+  border: solid 3px #c0c0c050;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.截图容器 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.截图容器 > video {
+  width: 100%;
+  transition: 1s;
+}
+
+.截图序号 {
+  color: #999;
+  font-size: 15px;
+  padding: 10px 0;
+}
+
+.行内截图序号 {
+  color: lightskyblue;
+}
+
+.专业名词 {
+  background-color: rgb(153, 168, 183);
+  color: black;
+  border-radius: 3px;
+  padding: 0 5px;
+  margin: 0 4px;
+  font-size: 0.95em;
+}
+
+.行内专业名词 {
+  color: #67cdcc;
+  margin: 0 0.5ch;
+}
+
+.代码 {
+  font-family: "JetBrains Mono";
+  background-color: #8b939a50;
+  color: #ccc;
+  padding: 0 5px;
+  margin: 0 4px;
+  border-radius: 3px;
+  font-size: 0.95em;
+}
+
+.行内代码 {
+  font-family: "JetBrains Mono";
+  color: #67cdcc;
+  margin: 0 4px;
+  font-size: 0.95em;
+}
+
+.附加说明 {
+  font-size: 0.9em;
+  background-color: rgb(53, 89, 157);
+  color: white;
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin: 0 4px;
+}
+
+.分区普通文本 {
+  font-size: 18px;
+  line-height: 1.75rem;
+  padding: 10px 0;
+  color: #b4c5d7;
+}
+
+.分区普通文本:has(+ .分区列表) {
+  padding-bottom: 0;
+}
+
+.分区普通文本 > .fa-1 {
+  font-size: 0.8em;
+  background-color: #fff3;
+  width: 1.5em;
+  height: 1.5em;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2em;
+}
+
+.提醒 {
+  background-color: #2b4162;
+  color: #b4c5d7;
+  border-radius: 10px;
+  padding: 30px;
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.分区2级标题 + .提醒 {
+  margin-top: 50px;
+}
+
+.提醒标题 {
+  position: relative;
+  color: lightseagreen;
+  text-align: center;
+  width: fit-content;
+  margin: 0 auto 15px;
+}
+
+.提醒标题::before {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  translate: -150% -50%;
+  content: "\f05a";
+  color: yellow;
+  font-family: "Font Awesome 6 Free";
+}
+
+.提醒标题 > i {
+  color: yellow;
+  margin-right: 15px;
+}
+
+.提醒 > p {
+  line-height: 1.75rem;
+}
+
+.强调 {
+  color: #e86686;
+  margin: 0 2px;
+}
+/*-------------- ↑ 专题正文区 --------------*/
+
+/*-------------- ↓ 单独表格样式 --------------*/
+.表格 {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 50px;
+  outline: solid 2px lightslategray;
+}
+
+.分区3级标题 + .表格 {
+  margin-top: 15px;
+}
+
+.表格标题 {
+  padding: 20px 0;
+  background-color: lightslategray;
+  color: white;
+  font-size: 2rem;
+  font-weight: bolder;
+}
+
+.表头区 {
+  background-color: #8b939a20;
+  border-bottom: solid 3px lightslategray;
+}
+
+.表头区 > tr {
+  height: 60px;
+  font-size: 1.25rem;
+}
+
+.表头区 > tr > th {
+  color: skyblue;
+  padding: 0 10px;
+}
+
+.表脚区 > tr > th {
+  padding: 20px 0;
+  background-color: #fff1;
+}
+
+.表格 th,
+.表格 td {
+  border: solid 1px gray;
+}
+
+.表格 tbody th {
+  font-size: 0.95em;
+}
+
+.表格 td {
+  padding: 20px 15px;
+  font-size: 0.9em;
+}
+
+.单元格-居中 {
+  text-align: center;
+}
+
+#终端表 td {
+  text-align: center;
+}
+
+.表身区 > tr > th {
+  color: rgb(218, 113, 32);
+  padding: 0 10px;
+}
+
+.表身区 > tr > th > i {
+  font-size: 0.8rem;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+}
+
+.表脚区 {
+  color: darkgoldenrod;
+  border-top: solid 3px lightslategray;
+}
+
+.终端-默认 {
+  font-size: 1.5rem;
+}
+/*-------------- ↑ 单独表格样式 --------------*/
+
+/* ------------------- ↓ 代码格式化 ------------------- */
+.token.space {
+  visibility: hidden;
+}
+
+.token.cr:before,
+.token.lf:before,
+.token.space:before,
+.token.tab:not(:empty):before {
+  visibility: hidden;
+}
+
+pre[class*="language-"] {
+  position: relative;
+  border-radius: 5px;
+  background: linear-gradient(315deg, #424e59 0%, #36434f 74%) !important;
+}
+
+code[class*="language-"],
+pre[class*="language-"] {
+  font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
+    "Noto Sans SC" !important;
+}
+
+div.code-toolbar > .toolbar > .toolbar-item > a,
+div.code-toolbar > .toolbar > .toolbar-item > button,
+div.code-toolbar > .toolbar > .toolbar-item > span {
+  margin-left: 2px;
+  background-color: #0007 !important;
+  border-radius: 2px !important;
+}
+
+div.code-toolbar > .toolbar {
+  opacity: 1 !important;
+}
+/* ------------------- ↑ 代码格式化 ------------------- */
+
+/* ------------------------------ ↓ 响应式设计 ------------------------------ */
+@media screen and (width < 1300px) {
+  .专题正文区 {
+    padding: 25px 0;
+  }
+}
+
+@media screen and (width < 1200px) {
+  .专题简介 {
+    width: 100%;
+    flex-direction: column;
+    row-gap: 20px;
+  }
+
+  #永恒代码统计图表 {
+    display: none;
+  }
+}
+
+@media screen and (width < 800px) {
+  .收藏区 {
+    right: 5%;
+  }
+
+  .专题简介 {
+    width: 95dvw;
+    min-width: auto;
+    padding: 25px 0;
+  }
+
+  .专题正文区 {
+    width: 100%;
+  }
+
+  .侧边栏收缩容器 {
+    visibility: visible;
+    opacity: 1;
+    z-index: 2;
+  }
+
+  .侧边栏 {
+    visibility: hidden !important;
+    opacity: 0 !important;
+    z-index: 1;
+  }
+
+  .专题内容区 {
+    padding: 50px 25px 25px;
+  }
+
+  .技术栈对话框 {
+    width: 97.5% !important;
+    height: 90%;
+    margin: 0 auto;
+  }
+
+  .技术栈选择器 {
+    right: 5%;
+    bottom: 2%;
+  }
+
+  .技术栈内容 {
+    gap: 15px 5px;
+    width: 95%;
+    position: absolute;
+    right: 2.5%;
+    bottom: 1%;
+  }
+}
+
+@media screen and (width < 550px) {
+  .收藏区 {
+    width: 50px;
+  }
+
+  .简介标题 {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .原创,
+  .转载 {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .简介信息 {
+    width: 90dvw;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .简介信息文本 {
+    width: 100%;
+  }
+
+  .简介信息图像 > img {
+    width: 100%;
+  }
+
+  .原文链接 {
+    max-width: calc(90dvw - 50px);
+  }
+
+  .联系方式列表 {
+    width: 75dvw;
+  }
+
+  .技术栈选择器 {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+/* ------------------------------ ↑ 响应式设计 ------------------------------ */

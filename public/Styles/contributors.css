@@ -1,0 +1,645 @@
+:root {
+  --image-width: 960px;
+  --image-gap: 150px;
+  --image-count: 10;
+  --gallery-width: 100vw;
+  --edge-width: calc((var(--gallery-width) - var(--image-width)) / 2);
+  --slider-width: calc(
+    var(--image-width) * var(--image-count) + var(--image-gap) *
+      (var(--image-count) - 1)
+  );
+}
+
+body {
+  position: relative;
+}
+
+.banner {
+  width: 100dvw;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+  z-index: 0;
+}
+
+.banner::before {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  background: url(/Images/Contributers/contributor-bg-11.webp);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: grayscale(0.6) brightness(0.35);
+  z-index: -1;
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.55);
+}
+
+.banner-brief {
+  width: 550px;
+  height: 100%;
+  /* background-color: #111; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.logo-container {
+  height: 35%;
+  width: 90%;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+}
+
+.logo-container > img {
+  aspect-ratio: 1;
+  height: 100%;
+  object-fit: contain;
+  animation: logo-rotate linear 5s infinite;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.logo-container > figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  align-self: flex-start;
+  gap: 5px;
+  padding: 3% 0 3% 5%;
+  user-select: none;
+}
+
+.logo-container > figcaption > p {
+  border-radius: 100px;
+  padding: 1px 10px;
+  height: fit-content;
+  font-size: 0.8rem;
+  box-shadow: inset 0px 1px 1px rgba(255, 255, 255, 0.5), 1px 1px 2px 0 #000;
+}
+
+@keyframes logo-rotate {
+  from {
+    transform: rotateZ(0deg);
+    filter: hue-rotate(0deg);
+  }
+  to {
+    transform: rotateZ(360deg);
+    filter: hue-rotate(360deg);
+  }
+}
+
+.banner-detail {
+  height: 35%;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.banner-detail-caption {
+  width: 100%;
+  /* text-align: center; */
+  font-size: 2rem;
+  color: gold;
+  font-weight: bold;
+}
+
+.banner-detail-content {
+  text-align: justify;
+  text-justify: inter-cluster;
+}
+
+.banner-detail-content > span,
+.brief-content > span {
+  color: orange;
+}
+
+.banner-detail-content > .special {
+  color: orangered;
+}
+
+.banner-button {
+  flex-grow: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.banner-button > a {
+  height: 60%;
+  width: 30%;
+}
+
+.banner-button button {
+  height: 100%;
+  width: 100%;
+  font-size: 1rem;
+  border-radius: 5px;
+  background-color: rgb(7, 112, 8);
+  color: white;
+  border: none;
+  transition: 0.25s;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  user-select: none;
+  position: relative;
+}
+
+.banner-button button::before {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  content: "";
+  box-shadow: 2px 2px 8px 0 rgb(0, 0, 0);
+}
+
+.banner-button button:hover {
+  box-shadow: inset 2px 2px 10px 0 rgb(83, 210, 87),
+    inset -2px -2px 10px 0 rgb(83, 210, 87);
+}
+
+.banner-nav {
+  width: 650px;
+  height: 100%;
+  /* background-color: #111; */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 40%;
+  gap: 35px 15px;
+  place-content: center;
+}
+
+.nav-cell {
+  /* background-color: cadetblue; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.cell-img-container {
+  height: 70%;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 10% 100%, 0% 90%);
+  user-select: none;
+}
+
+.cell-img-container > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cell-img-container::after {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  content: "查看完整档案";
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(38, 82, 152, 0);
+  filter: opacity(0);
+}
+
+.nav-cell:hover > .cell-img-container::after {
+  background-color: rgb(38, 82, 152, 0.75);
+  filter: opacity(1);
+  transition: 0.1s;
+}
+
+.cell-text-container {
+  height: 30%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: 10%;
+}
+
+/* .cell-text-container:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: goldenrod;
+} */
+
+.cell-name,
+.cell-intro {
+  flex-grow: 1;
+  display: flex;
+}
+
+.cell-name {
+  font-weight: bold;
+  font-size: 1rem;
+  color: rgb(77, 172, 204);
+  align-items: flex-end;
+  height: 40%;
+}
+
+.cell-intro {
+  align-items: center;
+  color: #aaa;
+  font-size: 0.9rem;
+  align-items: flex-start;
+  height: 60%;
+}
+
+.分隔栏 {
+  width: 100%;
+  height: 200px;
+}
+
+.contributors {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 150px;
+  padding: 250px 0;
+}
+
+.contributors::before {
+  width: 100%;
+  height: 100%;
+  content: "";
+  top: 0;
+  left: 0;
+  filter: opacity(0.25);
+  position: absolute;
+  z-index: -1;
+  background: no-repeat center/cover
+    url(/Images/Contributers/contributor-bg-01.jpg);
+}
+
+.contributor {
+  width: 1100px;
+  height: 400px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 50px;
+}
+
+.portrait-container {
+  height: 90%;
+  aspect-ratio: 1;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 10% 100%, 0% 90%);
+  border-radius: 10px;
+  user-select: none;
+  position: relative;
+}
+
+.portrait-container > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+img[待定] {
+  object-fit: contain;
+}
+
+/* .extra-info {
+  width: 210%;
+  height: 125%;
+  content: "";
+  position: absolute;
+  left: 100%;
+  top: -12.5%;
+  clip-path: polygon(
+    0% 37.5%,
+    2% 30%,
+    2% 0%,
+    100% 0%,
+    100% 100%,
+    2% 100%,
+    2% 45%
+  );
+  border-radius: 10px;
+  visibility: hidden;
+  filter: opacity(0);
+}
+
+.portrait-container:hover > .extra-info {
+  visibility: visible;
+  filter: opacity(1);
+  transition: 0.3s 0.75s;
+} */
+
+.brief {
+  height: 90%;
+  width: 60%;
+  flex-grow: 1;
+  padding: 1% 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.brief-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.brief-name {
+  font-size: 2rem;
+  color: goldenrod;
+  font-weight: bold;
+}
+
+.brief-address-date {
+  font-size: 0.9rem;
+  color: #aaa;
+  padding: 5px 0;
+}
+
+.brief-content {
+  text-align: justify;
+  text-justify: inter-cluster;
+  font-size: 1rem;
+}
+
+.brief-content img,
+.banner-detail-content img {
+  height: 1.2rem;
+  width: 1.2rem;
+  vertical-align: middle;
+}
+
+.brief-content img[alt="永"],
+.brief-content img[alt="恒"],
+.banner-detail-content img {
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.brief-content img[alt="永"],
+.banner-detail-content img[alt="永"] {
+  -webkit-mask-image: url(/Images/Index-Images/永.png);
+  mask-image: url(/Images/Index-Images/永.png);
+}
+
+.brief-content img[alt="恒"],
+.banner-detail-content img[alt="恒"] {
+  -webkit-mask-image: url(/Images/Index-Images/恒.png);
+  mask-image: url(/Images/Index-Images/恒.png);
+}
+
+.brief-tech-stack {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  width: 100%;
+}
+
+.brief-tech-stack > p {
+  padding: 0.2% 3%;
+  border-radius: 100px;
+  font-size: 0.8rem;
+}
+
+.brief-tech-stack > p:nth-child(even) {
+  background-color: #222;
+  color: white;
+  outline: solid 1px #999;
+}
+
+.brief-tech-stack > p:nth-child(odd) {
+  background-color: #ccc;
+  color: black;
+}
+
+/* .侧边栏 {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%) scaleX(0);
+  width: 125px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 15px;
+  transform-origin: 100% 50%;
+  transition: 0.25s;
+}
+
+.侧边-贡献者容器 {
+  background-color: #222;
+  width: 80%;
+  height: 50px;
+  border-radius: 50px 0 0 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  outline: solid 2px #888;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: width 0.25s;
+}
+
+.侧边-贡献者容器:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  width: 100%;
+  background-color: #aaa;
+  outline: none;
+}
+
+.侧边-序号 {
+  height: 100%;
+  width: 50%;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.侧边-贡献者容器:hover > .侧边-序号 {
+  color: black;
+  font-size: 1.25rem;
+}
+
+.侧边-肖像 {
+  height: 100%;
+  width: 50%;
+  overflow: hidden;
+}
+
+.侧边-肖像 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+} */
+
+.指示器 {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 3%;
+  width: 30px;
+  height: 60vh;
+  max-height: 650px;
+  /* background-color: gray; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  -webkit-user-select: none;
+  user-select: none;
+  visibility: hidden;
+  opacity: 0;
+  transform-origin: 50% 0;
+  transition: 0.25s;
+}
+
+.贯穿线 {
+  position: absolute;
+  width: 1px;
+  height: 95%;
+  background-color: #aaa;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.贡献者标识 {
+  position: relative;
+  width: 35px;
+  height: 35px;
+  border-radius: 30px;
+  /* background-color: brown; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.贡献者标识:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.贡献者标识 > img {
+  width: 35%;
+  height: 35%;
+  border-radius: 30px;
+  object-fit: cover;
+  transition: 0.25s;
+  outline: solid 0.5px gray;
+}
+
+.贡献者标识:hover > img {
+  transform: scale(3) !important;
+  filter: brightness(0.5) !important;
+}
+
+/* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
+@media screen and (max-width: 1200px) {
+  .banner {
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    display: none;
+  }
+
+  .banner-nav {
+    width: 100vw;
+    height: auto;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 60vw;
+  }
+
+  .分隔栏 {
+    display: none;
+  }
+
+  .cell-text-container {
+    padding: 0;
+  }
+
+  .cell-name,
+  .cell-intro {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .cell-name {
+    font-size: 6vw;
+    align-items: center;
+  }
+
+  .cell-intro {
+    font-size: 5vw;
+    align-items: flex-start;
+  }
+
+  .contributors {
+    width: 100%;
+    padding: 50px 0;
+  }
+
+  .contributor {
+    width: 100%;
+    height: auto;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .portrait-container {
+    width: 50vw;
+    height: 50vw;
+  }
+
+  .brief {
+    width: 85%;
+    gap: 20px;
+  }
+
+  .brief-main {
+    width: 100%;
+  }
+
+  .brief-name,
+  .brief-address-date {
+    margin: 0 auto;
+  }
+
+  .指示器 {
+    display: none;
+  }
+
+  .侧边栏 {
+    display: none;
+  }
+}
+/* <!-- ------------------ ↑ 响应式设计 ------------------- --> */

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>背景</title>
+    <link
+      rel="icon"
+      href="/Images/Interactive-Hub/HQ/背景.jpg"
+      type="image/x-icon" />
+    <link rel="stylesheet" href="/Styles/common.css" />
+    <link rel="stylesheet" href="/Styles/top-banner-common.css" />
+    <link rel="stylesheet" href="../control.css" />
+    <link rel="stylesheet" href="../interactive-common.css" />
+    <link rel="stylesheet" href="./background.css" />
+    <script src="/Scripts/html-include.js"></script>
+    <script
+      src="https://kit.fontawesome.com/d0483e3bd3.js"
+      crossorigin="anonymous"></script>
+    <script src="/Scripts/top-banner.js" defer></script>
+  </head>
+  <body>
+    <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
+    <script
+      src="../../Scripts/html-include.js"
+      target="../../top-banner.html"
+      position="afterbegin"></script>
+    <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
+
+    <section class="背景总区 总区">
+      <script
+        src="../../Scripts/html-include.js"
+        target="../control.html"
+        position="afterbegin"></script>
+      <p class="交互标题">背景</p>
+      <div class="背景-展示区">
+        <div class="背景-参考层"></div>
+        <div class="背景-容器"></div>
+      </div>
+      <div class="背景-操作区">
+        <div class="属性区 尺寸区">
+          <div class="尺寸-百分比">
+            <label for="bg-size" class="标签 属性标签"
+              ><span class="中文 属性中文">背景尺寸</span
+              ><span class="代码 属性代码">background-size</span></label
+            >
+            <input
+              type="range"
+              class="范围滑块"
+              id="bg-size"
+              min="25"
+              max="200"
+              value="100"
+              step="25"
+              size="200"
+              list="bg-size-marks" />
+            <datalist id="bg-size-marks">
+              <option value="25" label="25"></option>
+              <option value="50" label="50"></option>
+              <option value="75" label="75"></option>
+              <option value="100" label="100"></option>
+              <option value="125" label="125"></option>
+              <option value="150" label="150"></option>
+              <option value="175" label="175"></option>
+              <option value="200" label="200"></option>
+            </datalist>
+          </div>
+          <div class="尺寸-等比缩放">
+            <label for="bg-size-auto" class="标签 值标签"
+              ><span class="中文 值中文">自动</span
+              ><span class="代码 值代码">auto</span></label
+            >
+            <input
+              type="radio"
+              id="bg-size-auto"
+              name="bg-size-scale"
+              value="bg-size-auto"
+              checked />
+
+            <label for="bg-size-cover" class="标签 值标签"
+              ><span class="中文 值中文">覆盖</span
+              ><span class="代码 值代码">cover</span></label
+            >
+            <input
+              type="radio"
+              id="bg-size-cover"
+              name="bg-size-scale"
+              value="bg-size-cover" />
+
+            <label for="bg-size-contain" class="标签 值标签"
+              ><span class="中文 值中文">包含</span
+              ><span class="代码 值代码">contain</span></label
+            >
+            <input
+              type="radio"
+              id="bg-size-contain"
+              name="bg-size-scale"
+              value="bg-size-contain" />
+          </div>
+        </div>
+        <div class="属性区 位置区">
+          <p class="属性标题 位置标题">
+            <span class="中文 属性中文">背景位置</span
+            ><span class="代码 属性代码">background-position</span>
+          </p>
+          <div class="位置 位置-X轴">
+            <label for="x-axis" class="标签 属性标签">X轴</label>
+            <input
+              type="range"
+              min="-100"
+              max="100"
+              value="0"
+              id="x-axis"
+              class="范围滑块"
+              list="axis-marks" />
+            <p class="轴数字 x轴数字">0%</p>
+          </div>
+          <div class="位置 位置-Y轴">
+            <label for="y-axis" class="标签 属性标签">Y轴</label>
+            <input
+              type="range"
+              min="-100"
+              max="100"
+              value="0"
+              id="y-axis"
+              class="范围滑块"
+              list="axis-marks" />
+            <p class="轴数字 y轴数字">0%</p>
+          </div>
+          <datalist id="axis-marks">
+            <option value="-100" label="-100"></option>
+            <option value="-50" label="-50"></option>
+            <option value="0" label="0"></option>
+            <option value="50" label="50"></option>
+            <option value="100" label="100"></option>
+          </datalist>
+        </div>
+        <div class="属性区 重复区">
+          <label for="bg-repeat"
+            ><span class="中文 属性中文">背景重复</span
+            ><span class="代码 属性代码">background-repeat</span></label
+          >
+          <input type="checkbox" id="bg-repeat" checked />
+        </div>
+      </div>
+    </section>
+
+    <script src="./background.js"></script>
+  </body>
+</html>

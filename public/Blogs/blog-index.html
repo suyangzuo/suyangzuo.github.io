@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>经验之谈</title>
+    <link
+      rel="icon"
+      href="/Images/Blogs/经验之谈-Logo.png"
+      type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC&family=JetBrains+Mono:ital@0;1&display=swap"
+      rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
+    <link rel="stylesheet" type="text/css" href="./blog-index.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/Styles/top-banner-common.css" />
+    <link rel="stylesheet" type="text/css" href="/Styles/prism.css" />
+    <link rel="stylesheet" href="/Font-Awesome-Free/css/fontawesome.css" />
+    <link rel="stylesheet" href="/Font-Awesome-Free/css/brands.css" />
+    <link rel="stylesheet" href="/Font-Awesome-Free/css/solid.css" />
+    <script src="https://cdn.lordicon.com/lordicon.js" defer></script>
+    <!-- <script
+      src="https://kit.fontawesome.com/d0483e3bd3.js"
+      crossorigin="anonymous"></script> -->
+    <script src="/Scripts/top-banner.js" defer></script>
+    <script src="/Scripts/echarts.js"></script>
+    <script src="/Blogs/blog-index.js" defer></script>
+    <script src="./favorite.js" defer></script>
+  </head>
+  <body>
+    <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
+    <script
+      src="../Scripts/html-include.js"
+      target="../top-banner.html"
+      position="afterbegin"></script>
+    <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
+    <dialog id="收藏栏">
+      <div id="收藏栏布局区">
+        <div class="收藏条目" id="收藏条目-添加">
+          <button><i class="fa-solid fa-plus"></i></button>
+          <span id="收藏栏重复提示"></span>
+        </div>
+      </div>
+      <button id="关闭收藏栏">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </dialog>
+
+    <div class="收藏区">
+      <button id="收藏栏按钮">
+        <i class="fa-solid fa-book"></i><span id="收藏数量"></span
+        ><span id="收藏提示"></span>
+      </button>
+      <button id="收藏按钮" class="收藏按钮">
+        <i class="fa-solid fa-star"></i>
+      </button>
+    </div>
+
+    <div class="技术栈选择器"></div>
+
+    <dialog class="技术栈对话框">
+      <button title="关闭" type="button" class="关闭技术栈对话框">
+        <span><i class="fa-solid fa-xmark"></i></span>
+      </button>
+      <div class="技术栈内容">
+        <div class="技术栈 经验之谈">
+          <img src="/Images/Blogs/经验之谈-Logo.png" alt="经验之谈" />
+          <p>经验之谈</p>
+        </div>
+        <div class="技术栈 Git">
+          <img src="/Images/Page-Logos/编程开发/Git.png" alt="Git" />
+          <p>Git</p>
+        </div>
+        <div class="技术栈 Web前端-原生开发">
+          <img
+            src="/Images/Page-Logos/编程开发/Web前端-原生开发.png"
+            alt="Web前端 原生开发" />
+          <p>Web前端<br />原生开发</p>
+        </div>
+        <div class="技术栈 Node.js">
+          <img src="/Images/Page-Logos/编程开发/Node.js.png" alt="Node.js" />
+          <p>Node.js</p>
+        </div>
+        <div class="技术栈 jQuery">
+          <img src="/Images/Page-Logos/编程开发/jQuery.png" alt="jQuery" />
+          <p>jQuery</p>
+        </div>
+        <div class="技术栈 React">
+          <img src="/Images/Page-Logos/编程开发/React.png" alt="React" />
+          <p>React</p>
+        </div>
+        <div class="技术栈 Vue">
+          <img src="/Images/Page-Logos/编程开发/Vue.png" alt="Vue" />
+          <p>Vue</p>
+        </div>
+        <div class="技术栈 MongoDB">
+          <img src="/Images/Page-Logos/数据库/MongoDB.webp" alt="MongoDB" />
+          <p>MongoDB</p>
+        </div>
+        <div class="技术栈 PHP">
+          <img src="/Images/Page-Logos/编程开发/PHP.png" alt="PHP" />
+          <p>PHP</p>
+        </div>
+        <div class="技术栈 C语言">
+          <img src="/Images/Page-Logos/编程开发/C.png" alt="C语言" />
+          <p>C语言</p>
+        </div>
+        <div class="技术栈 C#">
+          <img src="/Images/Page-Logos/编程开发/CSharp.png" alt="C#" />
+          <p>C#</p>
+        </div>
+        <div class="技术栈 Java">
+          <img src="/Images/Page-Logos/编程开发/Java.png" alt="Java" />
+          <p>Java</p>
+        </div>
+        <div class="技术栈 Python">
+          <img src="/Images/Page-Logos/编程开发/Python.png" alt="Python" />
+          <p>Python</p>
+        </div>
+      </div>
+    </dialog>
+    <div class="侧边栏收缩容器"><i class="fa-solid fa-bars"></i></div>
+    <aside class="侧边栏">
+      <label for="侧边栏布局" id="侧边栏布局标签">
+        <input type="checkbox" id="侧边栏布局" layout="紧凑" checked />
+      </label>
+    </aside>
+    <div class="专题内容区"></div>
+
+    <script src="/Scripts/prism.js" 代码格式化></script>
+  </body>
+</html>

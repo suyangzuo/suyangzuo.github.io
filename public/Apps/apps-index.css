@@ -1,0 +1,243 @@
+.app-banner {
+  position: relative;
+  height: 800px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 100px;
+  background: no-repeat center/cover url("/Images/Background-Images/bg-03.jpg");
+}
+
+.顶栏图片 {
+  height: 600px;
+  width: 600px;
+}
+
+.顶栏图片 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.顶栏文字 {
+  position: relative;
+  width: 700px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.顶栏标题 {
+  background: #c9d6ff; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #e2e2e2,
+    #c9d6ff
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #e2e2e2,
+    #c9d6ff
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  width: 100%;
+  font-size: 5rem;
+  font-weight: bold;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.顶栏简介 {
+  width: 100%;
+  font-size: 1.25rem;
+  text-align: justify;
+  text-justify: inter-cluster;
+  color: #fffa;
+}
+
+.顶栏列表 {
+  width: 100%;
+  padding: 40px 0;
+}
+
+.顶栏列表 > li {
+  list-style-type: disc;
+  padding: 5px 0 5px 5px;
+}
+
+.顶栏列表 > li::marker {
+  content: "\26e4";
+  color: thistle;
+}
+
+.app {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 100px;
+}
+
+.图像编辑器 {
+  background-color: rgb(43, 51, 73);
+}
+
+.图片区 {
+  flex-shrink: 0;
+  height: 350px;
+  width: 350px;
+}
+
+.图片区 > img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
+.文字区 {
+  position: relative;
+  padding: 10px;
+  height: 350px;
+  max-width: 750px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: normal;
+}
+
+.app-链接 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+  width: fit-content;
+  /* height: 65px; */
+  padding: 10px 25px;
+  border-radius: 7.5px;
+  background: linear-gradient(
+    to right,
+    #126465,
+    #366a60
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  color: white !important;
+  text-shadow: 2px 2px 2px #000a;
+  box-shadow: 2px 2px 3px 0 #0006;
+}
+
+.app-链接:hover {
+  outline: solid 2px orange;
+}
+
+.app-简介 {
+  padding: 10px;
+  border-radius: 5px;
+  background-color: rgb(63, 72, 91);
+  font-size: 1.1rem;
+}
+
+.app-描述 {
+  padding: 10px;
+}
+
+.app-描述 > li {
+  list-style-type: disc;
+  color: rgb(195, 195, 195);
+  padding: 2.5px 0;
+}
+
+.app-描述 > li::marker {
+  color: yellowgreen;
+}
+
+/* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
+@media screen and (max-width: 1400px) {
+  .app-banner::before {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    content: "";
+    top: 0;
+    left: 0;
+    background-color: #0007;
+    backdrop-filter: blur(10px);
+  }
+
+  .顶栏图片 {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .顶栏文字 {
+    z-index: 2;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .app::before {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    content: "";
+    top: 0;
+    left: 0;
+    background-color: #0007;
+    backdrop-filter: blur(10px);
+  }
+
+  .app .图片区 {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+  }
+
+  .app .文字区 {
+    z-index: 2;
+    height: 95%;
+    width: 95%;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .app-banner {
+    height: 650px;
+    overflow: hidden;
+  }
+
+  .顶栏标题 {
+    font-size: 4rem;
+  }
+
+  .顶栏文字 {
+    width: 90%;
+    height: 95%;
+  }
+
+  .顶栏列表 > li {
+    list-style-position: inside;
+  }
+
+  .顶栏列表 > li::marker {
+    content: "\26e4\00a0";
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .顶栏标题 {
+    font-size: 2.5rem;
+  }
+}
+/* <!-- ------------------ ↑ 响应式设计 ------------------- --> */

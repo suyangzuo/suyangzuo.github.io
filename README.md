@@ -2,7 +2,7 @@
 ## 1. 网站直达：[永恒](https://suyangzuo.github.io/)
 
 ## 2. 网站Logo（该Logo以及`永恒`艺术字，均由本人同事`氯化银`原创设计）
-<img src="/Images/Page-Logos/Eternal-Logo.png" style="width:25%">
+<img src="/public/Images/Page-Logos/Eternal-Logo.png" style="width:25%">
 
 ### 3. 本站由一位职业学校专业教师创建，多位同事/贡献者参与其中，主要目标：
 

@@ -1,0 +1,36 @@
+.返回 {
+  position: fixed;
+  z-index: 100;
+  width: 75px;
+  height: 75px;
+  border-radius: 75px;
+  background-color: #dcd9d4;
+  background-image: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.5) 0%,
+      rgba(0, 0, 0, 0.5) 100%
+    ),
+    radial-gradient(
+      at 50% 0%,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(0, 0, 0, 0.5) 50%
+    );
+  background-blend-mode: soft-light, screen;
+  right: 2%;
+  bottom: 1%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 5px;
+  font-size: 2rem;
+}
+
+.返回 > span {
+  filter: contrast(1.75);
+  transition: 0.2s;
+}
+
+.返回:hover > span {
+  filter: contrast(1.75) hue-rotate(50deg);
+}
