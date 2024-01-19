@@ -156,11 +156,11 @@
 
         ///下面是2个对象式宏
         #define PI 3.1415926
-        #define name "祖冲之"
+        #define NAME "祖冲之"
 
         int main(int argc, char* argv[]) {
-          // PI会被 3.1415926 代替，name会被 "祖冲之" 代替
-          printf(" 圆周率的近似值是：%d\n", PI);
+          // PI会被 3.1415926 代替，NAME会被 "祖冲之" 代替
+          printf("%s发现了圆周率，它的值近似于：%.7lf\n", NAME, PI);
         }
       </code>
     </pre>
@@ -190,18 +190,18 @@
         #include &lt;stdio.h&gt;
 
         // 下面是2个函数式宏
-        #define getPerimeter(width, height) ((width + height) * 2)
-        #define getArea(width, height) (width * height);
+        #define GET_PERIMETER(width, height) ((width + height) * 2)
+        #define GET_AREA(width, height) (width * height);
           
         int main(int argc, char* argv[]) {
           int width = 40;
           int height = 85;
           
           //调用函数式宏，求矩形周长
-          int perimeter = getPerimeter(width, height);
+          int perimeter = GET_PERIMETER(width, height);
           
           //调用函数式宏，求矩形面积
-          int area = getArea(width, height);
+          int area = GET_AREA(width, height);
               
           printf("矩形的周长：%d\n矩形的面积：%d\n", perimeter, area);
         }

@@ -19,7 +19,8 @@ body {
 #收藏栏 {
   position: fixed;
   top: 50px;
-  left: 0;
+  left: 50%;
+  translate: -50% 0;
   background-color: #8af1;
   box-shadow: 0 15px 45px 0 #0005;
   z-index: 9998;
@@ -505,7 +506,7 @@ body {
 
 .技术栈:nth-child(1) {
   background-color: #acf2;
-  box-shadow: 5px 5px 5px 0 #0008;
+  box-shadow: 2px 2px 4px 0 #0008;
   gap: 10px;
 }
 
