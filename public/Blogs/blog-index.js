@@ -151,7 +151,11 @@ function 设置侧边栏() {
     (记录) => 记录.技术栈 === 技术栈名称
   ).专题索引;
 
-  专题组[index].style.setProperty("background", 侧边栏颜色_已选中, "important");
+  专题组[index]?.style.setProperty(
+    "background",
+    侧边栏颜色_已选中,
+    "important"
+  );
   专题组.forEach((专题) => {
     专题.addEventListener("click", 修改专题样式);
     const 标记 = 专题.querySelector(".专题-标记");
@@ -161,7 +165,7 @@ function 设置侧边栏() {
 
   前一专题 = 专题组[index];
   专题名称 = 专题组[index]
-    .getElementsByClassName("专题-内容")[0]
+    ?.getElementsByClassName("专题-内容")[0]
     .textContent.trim();
 }
 
@@ -186,9 +190,9 @@ function 点选技术栈(event) {
     技术栈名称 = "Web前端-原生开发";
   } else if (技术栈名称 === "C#") {
     技术栈名称 = "CSharp";
-  } else if (技术栈名称 === "PHP") {
+  } /* else if (技术栈名称 === "PHP") {
     技术栈名称 = "php";
-  }
+  } */
   sessionStorage.setItem("页面技术栈", 技术栈名称);
   if (!专题索引记录.some((item) => item.技术栈 === 技术栈名称)) {
     专题索引记录.push({ 技术栈: 技术栈名称, 专题索引: 0 });
@@ -239,13 +243,13 @@ function 特殊元素样式补充() {
   if (topicContentArea.innerHTML === "") return;
 
   const 原创转载 = document.querySelector(".简介标题 > span");
-  if (原创转载.className === "转载") {
+  if (原创转载?.className === "转载") {
     const 原文链接 = document.querySelector(".原文链接 > a");
     原文链接.style.marginLeft = "0";
   }
 
   const 分区2级标题组 = document.querySelectorAll(".分区2级标题");
-  分区2级标题组.forEach((标题, 索引) => {
+  分区2级标题组?.forEach((标题, 索引) => {
     const 标题序号 = document.createElement("span");
     标题序号.className = "标题序号-2级";
     标题序号.textContent = 索引 + 1;
