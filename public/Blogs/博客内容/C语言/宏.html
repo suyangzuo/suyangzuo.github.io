@@ -227,11 +227,93 @@
     <h3 class="分区标题 分区3级标题">
       <span class="行内专业名词">多行</span>宏
     </h3>
+    <p class="分区普通文本">
+      多行宏其实是对象式宏的扩展。要使用多行宏，可用反斜杠<span class="代码"
+        >\</span
+      >换行。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        #include &lt;stdio.h&gt;
+
+          // 下面是一个多行宏
+          #define CREW_NAMES 35, \
+          42, \
+          31
+          
+          int main(int argc, char* argv[]) {
+              // 多行宏在此处自动替换为数组中的元素
+              int crew_names[3] = { CREW_NAMES };
+          
+              for (int i = 0; i &lt; 3; i++) {
+                  printf("%d号团队成员年龄：%d\n", i + 1, crew_names[i]);
+              }
+          }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/C语言/宏/多行宏.gif" alt="多行宏" />
+    </figure>
+    <p class="分区普通文本">
+      宏名称在编译时被替换成宏内容，多个数字用逗号隔开，变成了数组中的元素。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">预定义</span>宏
+    </h3>
+    <p class="分区普通文本">
+      C语言中有几个特别的预定义宏，开发人员可直接使用，无需自己定义，但也无法修改它们。
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="代码">__DATE__</span>：以字符串形式显示当前日期
+      </li>
+      <li class="分区列表项">
+        <span class="代码">__TIME__</span>：以字符串形式显示当前时间
+      </li>
+      <li class="分区列表项">
+        <span class="代码">__FILE__</span>：以字符串形式显示当前文件名
+      </li>
+      <li class="分区列表项">
+        <span class="代码">__LINE__</span>：以字符串形式显示当前代码所在行
+      </li>
+      <li class="分区列表项">
+        <span class="代码">__STDC__</span>：如果编译器使用<span class="行内代码"
+          >ANSI</span
+        >标准，则显示<span class="行内代码">1</span>
+      </li>
+    </ul>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p>
+        预定义宏名称包含了一种特殊符号：字下线<span class="代码">_</span
+        >；以双字下线开头，也以双字下线结尾，例如：只写<span class="代码"
+          >FILE</span
+        >是<span class="强调">错</span>的，应该写成：<span class="代码"
+          >__FILE__</span
+        >。
+      </p>
+    </section>
   </article>
 
   <article class="正文分区">
-    <h2 class="分区标题 分区2级标题">
-      <span class="行内专业名词">预定义</span>宏
-    </h2>
+    <h2 class="分区标题 分区2级标题">常见问题</h2>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">宏</span>存储在哪里？
+    </h3>
+    <p class="分区普通文本">
+      宏不会存储在内存中；相反，每次在代码中遇到宏都会调用它。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">宏</span>的作用是什么？
+    </h3>
+    <p class="分区普通文本">宏可以降低代码的冗余度，提高代码效率和可读性。</p>
+
+    <h3 class="分区标题 分区3级标题">
+      相较于函数，<span class="行内专业名词">宏</span>有何优势？
+    </h3>
+    <p class="分区普通文本">宏更快、更高效。</p>
   </article>
 </div>
