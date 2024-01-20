@@ -87,6 +87,10 @@
 <div class="专题正文区">
   <article class="正文分区">
     <h2 class="分区标题 分区2级标题">使用命令进行 Git 配置</h2>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p>Git 安装之后，第一件事情就是配置用户名和邮箱，否则无法进行提交。</p>
+    </section>
     <h3 class="分区标题 分区3级标题">配置用户名</h3>
     <p class="分区普通文本">在终端运行如下命令：</p>
     <pre><code class="lang-bash">git config --global user.name "用户名"</code></pre>
@@ -117,6 +121,37 @@
         代表全局设置，只需设置一次，所有 Git
         仓库的提交都会自动使用这个配置。如果不使用这个参数，则配置仅对当前仓库有效。
       </p>
+    </section>
+  </article>
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">查看配置</h2>
+
+    <h3 class="分区标题 分区3级标题">查看用户名配置</h3>
+    <p class="分区普通文本">在终端运行如下命令：</p>
+    <pre>
+      <code class="lang-bash">
+        git config user.name
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 配置/查看用户名.gif"
+        alt="查看 Git 用户名" />
+    </figure>
+
+    <h3 class="分区标题 分区3级标题">查看邮箱配置</h3>
+    <p class="分区普通文本">在终端运行如下命令：</p>
+    <pre>
+      <code class="lang-bash">
+        git config user.email
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Git/Git 配置/查看邮箱.gif" alt="查看 Git 邮箱" />
+    </figure>
+    <section class="提醒" style="margin-top: 75px">
+      <h3 class="提醒标题">提醒</h3>
+      <p>如果运行查看命令后，结果是空的，说明用户名或邮箱尚未配置。</p>
     </section>
   </article>
 </div>
