@@ -580,9 +580,9 @@ body {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
-#侧边栏布局::after {
+#侧边栏布局::before {
   position: absolute;
-  content: attr(layout);
+  content: "";
   width: 75%;
   height: 110%;
   top: 50%;
@@ -596,9 +596,41 @@ body {
   align-items: center;
   border-radius: 200px;
   pointer-events: none;
-  transition: left 250ms;
+  transition: left 250ms, border 250ms;
 }
 
+#侧边栏布局:hover::before {
+  border: solid 2px #bbb;
+}
+
+#侧边栏布局::after {
+  position: absolute;
+  /* content: attr(layout); */
+  font-family: "Font Awesome 6 Free";
+  content: "\f03a";
+  width: 75%;
+  height: 110%;
+  top: 50%;
+  left: 0;
+  translate: 0 -50%;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 200px;
+  pointer-events: none;
+  transition: left 250ms, scale 250ms;
+}
+
+#侧边栏布局[layout="紧凑"]::after {
+  scale: 1;
+}
+
+#侧边栏布局[layout="宽松"]::after {
+  scale: 1 1.5;
+}
+
+#侧边栏布局:not(:checked)::before,
 #侧边栏布局:not(:checked)::after {
   left: 25%;
 }
@@ -1101,7 +1133,7 @@ body {
   border-radius: 3px;
   padding: 0 5px;
   margin: 0 4px;
-  font-size: 0.95em;
+  font-size: 0.9em;
 }
 
 .行内专业名词 {
@@ -1116,7 +1148,7 @@ body {
   padding: 0 5px;
   margin: 0 4px;
   border-radius: 3px;
-  font-size: 0.95em;
+  font-size: 0.9em;
 }
 
 .行内代码 {
@@ -1130,7 +1162,7 @@ body {
   font-size: 0.9em;
   background-color: rgb(53, 89, 157);
   color: white;
-  padding: 1px 5px;
+  padding: 0 5px;
   border-radius: 3px;
   margin: 0 4px;
 }
