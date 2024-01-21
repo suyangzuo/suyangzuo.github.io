@@ -425,10 +425,7 @@ body {
   justify-content: center;
   align-content: center;
   transition: 100ms;
-}
-
-.关闭技术栈对话框 > span > i {
-  font-size: 16px;
+  font-size: 0.9rem;
 }
 
 .关闭技术栈对话框:hover span {
