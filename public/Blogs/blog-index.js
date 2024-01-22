@@ -22,10 +22,10 @@ const 收藏栏添加按钮 = document.getElementById("收藏条目-添加");
 const 关闭收藏栏按钮 = document.getElementById("关闭收藏栏");
 const 收藏栏重复提示 = document.getElementById("收藏栏重复提示");
 
-let 侧边栏布局 = sessionStorage.getItem("侧边栏布局");
+let 侧边栏布局 = localStorage.getItem("侧边栏布局");
 if (侧边栏布局 === null) {
   侧边栏布局 = "紧凑";
-  sessionStorage.setItem("侧边栏布局", 侧边栏布局);
+  localStorage.setItem("侧边栏布局", 侧边栏布局);
 }
 let 专题组 = null;
 let 专题标记组 = null;
@@ -95,7 +95,7 @@ function 生成侧边栏标签() {
       侧边栏布局 = "宽松";
     }
     侧边栏布局复选框.setAttribute("layout", 侧边栏布局);
-    sessionStorage.setItem("侧边栏布局", 侧边栏布局);
+    localStorage.setItem("侧边栏布局", 侧边栏布局);
   });
   return 侧边栏标签;
 }
