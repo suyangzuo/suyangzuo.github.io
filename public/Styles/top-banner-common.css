@@ -168,21 +168,24 @@
 
     .导航1级菜单 {
       height: 100%;
+      width: 120px;
       display: flex;
       flex-direction: column;
+      /* align-items: center; */
 
       .导航1级文本 {
         flex-shrink: 0;
         display: block;
         height: 100%;
-        padding: 0 15px;
+        width: 100%;
+        /* padding: 0 15px; */
         display: flex;
         justify-content: center;
         align-items: center;
         color: #ddd;
         font-size: 0.9em;
-        user-select: none;
         -webkit-user-select: none;
+        user-select: none;
       }
 
       .导航1级文本 > i {
@@ -204,6 +207,7 @@
 }
 
 .导航2级菜单列表 {
+  width: fit-content;
   flex-shrink: 0;
   border-radius: 8px;
   visibility: hidden;
@@ -212,29 +216,30 @@
   pointer-events: none;
 
   .导航2级菜单 {
+    width: fit-content;
     display: flex;
     flex-direction: column;
     translate: 0 110px;
     background-color: rgb(23, 28, 33);
     border-radius: 10px;
-    outline: solid 1px #fff2;
+    outline: solid 2px #fff2;
     overflow: hidden;
     transition: 350ms ease-out;
+    box-shadow: 5px 5px 10px 0 #0008;
 
     .导航2级链接 {
-      width: 100%;
-      padding: 15px 25px;
+      width: 150px;
+      padding: 15px 22px;
       display: flex;
       justify-content: flex-start;
       align-items: center;
       font-size: 0.85em;
-      user-select: none;
       -webkit-user-select: none;
+      user-select: none;
     }
   }
 
   .导航2级链接:hover {
-    /* background-color: rgb(43, 50, 57); */
     background-color: rgb(172, 184, 196);
     color: black;
   }
