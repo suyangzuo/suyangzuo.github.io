@@ -1,6 +1,6 @@
 .top-banner {
   width: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */
   top: 0;
   position: sticky;
   padding: 0 5vw;
@@ -147,14 +147,97 @@
   }
 }
 
-.搜索注册登录区 {
-  width: 600px;
+.导航功能区 {
   height: 100%;
   /* background-color: brown; */
   display: flex;
   justify-content: flex-start;
   align-items: center;
   gap: 20px;
+}
+
+.菜单区 {
+  height: 100%;
+
+  .导航1级菜单列表 {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 50px;
+
+    .导航1级菜单 {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+
+      .导航1级文本 {
+        flex-shrink: 0;
+        display: block;
+        height: 100%;
+        padding: 0 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #ddd;
+        font-size: 0.9em;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+
+      .导航1级文本 > i {
+        font-size: 0.8em;
+        rotate: z 180deg;
+        transition: 250ms;
+      }
+
+      .导航1级文本:hover {
+        background-color: rgb(43, 50, 57);
+        cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+      }
+
+      .导航1级文本:has(+ .导航2级菜单列表:hover) {
+        background-color: rgb(43, 50, 57);
+      }
+    }
+  }
+}
+
+.导航2级菜单列表 {
+  flex-shrink: 0;
+  border-radius: 8px;
+  visibility: hidden;
+  opacity: 0;
+  transition: 350ms ease-out;
+  pointer-events: none;
+
+  .导航2级菜单 {
+    display: flex;
+    flex-direction: column;
+    translate: 0 110px;
+    background-color: rgb(23, 28, 33);
+    border-radius: 10px;
+    outline: solid 1px #fff2;
+    overflow: hidden;
+    transition: 350ms ease-out;
+
+    .导航2级链接 {
+      width: 100%;
+      padding: 15px 25px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      font-size: 0.85em;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+  }
+
+  .导航2级链接:hover {
+    /* background-color: rgb(43, 50, 57); */
+    background-color: rgb(172, 184, 196);
+    color: black;
+  }
 }
 
 .搜索区 {
@@ -221,12 +304,12 @@
 }
 
 .注册登录区 {
-  width: 200px;
   height: 60%;
   /* background-color: sandybrown; */
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  gap: 5px;
 }
 
 .注册登录区链接 {
@@ -267,6 +350,7 @@
   border-radius: 50px;
   gap: 7.5px;
   transition: 0.125s;
+  background-color: rgb(45, 134, 45);
 }
 
 .登录按钮:hover {
@@ -277,30 +361,13 @@
   height: 45%;
   aspect-ratio: 1;
   object-fit: contain;
-  filter: invert(70%);
-  transition: 150ms;
-}
-
-.GitHub按钮 {
-  height: 100%;
-  aspect-ratio: 1;
-  border-radius: 5px;
-}
-
-.GitHub按钮:hover {
-  background-color: rgb(67, 67, 67);
-}
-
-.GitHub-Logo {
-  height: 65%;
-  aspect-ratio: 1;
-  filter: invert(80%) grayscale(1);
+  filter: invert(100%);
   transition: 150ms;
 }
 
 .登录文本 {
   font-size: 0.9rem;
-  color: rgb(201, 201, 201);
+  /* color: rgb(201, 201, 201); */
   transition: 150ms;
 }
 
@@ -311,11 +378,6 @@
 .注册登录区链接:hover .登录文本 {
   color: white;
 }
-
-.注册登录区链接:hover .GitHub-Logo {
-  filter: invert(100%) brightness(2) grayscale(1);
-}
-
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
 @media only screen and (max-width: 1000px) {
   .top-banner {
@@ -339,7 +401,7 @@
 }
 
 @media only screen and (max-width: 750px) {
-  .搜索注册登录区 {
+  .导航功能区 {
     width: 450px;
   }
 
@@ -353,7 +415,7 @@
     padding: 0 2%;
   }
 
-  .搜索注册登录区 {
+  .导航功能区 {
     width: 350px;
     gap: 0;
     display: flex;
