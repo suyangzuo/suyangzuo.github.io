@@ -363,26 +363,14 @@
 }
 
 .登录Logo {
-  height: 45%;
-  aspect-ratio: 1;
-  object-fit: contain;
-  filter: invert(100%);
   transition: 150ms;
 }
 
 .登录文本 {
   font-size: 0.9rem;
-  /* color: rgb(201, 201, 201); */
   transition: 150ms;
 }
 
-.注册登录区链接:hover .登录Logo {
-  filter: invert(100%);
-}
-
-.注册登录区链接:hover .登录文本 {
-  color: white;
-}
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
 @media only screen and (max-width: 1000px) {
   .top-banner {

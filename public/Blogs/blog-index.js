@@ -328,7 +328,8 @@ function 特殊元素样式补充() {
           前一节点.textContent.at(-1) === "。" ||
           前一节点.textContent.at(-1) === "：" ||
           前一节点.textContent.at(-1) === "；" ||
-          前一节点.textContent.at(-1) === "、"))
+          前一节点.textContent.at(-1) === "、" ||
+          前一节点.textContent.trim() === ""))
     ) {
       行内专业名词.style.marginLeft = "0";
     }
