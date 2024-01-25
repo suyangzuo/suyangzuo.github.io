@@ -532,7 +532,32 @@ function 生成永恒代码统计图表() {
       {
         name: "代码行数",
         type: "bar",
-        data: [48203, 23030, 21124, 4042],
+        data: [
+          {
+            value: 48203,
+            itemStyle: {
+              color: "#b0c3da",
+            },
+          },
+          {
+            value: 23030,
+            itemStyle: {
+              color: "#b5a925",
+            },
+          },
+          {
+            value: 21124,
+            itemStyle: {
+              color: "#33c765",
+            },
+          },
+          {
+            value: 4042,
+            itemStyle: {
+              color: "#2999ee",
+            },
+          },
+        ],
         label: {
           position: "top",
           distance: 10,

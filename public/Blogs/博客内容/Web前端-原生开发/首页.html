@@ -100,7 +100,8 @@
       <li class="分区列表项">
         <span class="专业名词">Web前端</span>：负责<span class="行内专业名词"
           >用户界面</span
-        ><span class="附加说明">UI</span>，直接面向用户；要求：美观、辨识度高、易用。
+        ><span class="附加说明">UI</span
+        >，直接面向用户；要求：美观、辨识度高、易用。
       </li>
       <li class="分区列表项">
         <span class="专业名词">Web后端</span>：负责<span class="行内专业名词"
@@ -220,14 +221,40 @@
       <h3 class="提醒标题">提醒</h3>
       <p>
         为了提高开发效率，<span class="行内专业名词">永恒</span
-        >项目也引用了一些第三方库，比如上面的图表，就引用了<a
-          class="超链接"
-          target="_blank"
-          href="https://echarts.apache.org/zh/index.html"
-          >Apache ECharts</a
-        >库，这些库其实就是大量事先编写好的<span class="行内代码"
-          >JavaScript</span
-        >代码，因此作者自己编写的 JavaScript 代码并没有这么多。
+        >项目也引用了一些第三方库<span class="附加说明"
+          >它们都已从代码统计数据中剔除</span
+        >，比如：
+      </p>
+      <ul class="分区列表">
+        <li class="分区列表项">
+          上面的图表，引用了<a
+            class="超链接"
+            target="_blank"
+            href="https://echarts.apache.org/zh/index.html"
+            >Apache ECharts</a
+          >
+        </li>
+        <li class="分区列表项">
+          需要呈现大量代码时，引用了<a
+            class="超链接"
+            target="_blank"
+            href="https://prismjs.com/"
+            >Prism</a
+          >
+        </li>
+        <li class="分区列表项">
+          为了处理不同颜色格式之间的转换，引用了<a
+            class="超链接"
+            target="_blank"
+            href="https://www.vis4.net/chromajs/"
+            >chroma.js</a
+          >
+        </li>
+      </ul>
+      <p>
+        这些库其实就是大量事先编写好的<span class="行内代码">JavaScript</span
+        >和<span class="行内代码">CSS</span
+        >代码。我们当然也可以自己纯手动编写来实现图表、代码格式化等等功能，但这样太花时间、太费精力。如果是闲暇有空学了玩玩还行，真正开发项目时，效率非常重要，要尽可能快地交付产品，不可能等着你慢慢开发基础功能。
       </p>
     </section>
   </article>
