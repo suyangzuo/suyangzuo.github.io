@@ -1093,6 +1093,7 @@ body {
 
 .截图容器 {
   width: fit-content;
+  max-width: 100%;
   margin: 15px 0;
   display: flex;
   flex-direction: column;
@@ -1109,9 +1110,8 @@ body {
   object-fit: contain;
 }
 
-.截图容器 > video {
+.截图容器:has(.video-js) {
   width: 100%;
-  transition: 1s;
 }
 
 .截图序号 {

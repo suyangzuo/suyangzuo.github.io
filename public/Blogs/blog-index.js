@@ -71,11 +71,19 @@ let 前一专题 = null;
 function 刷新代码格式化脚本() {
   const 代码格式化脚本元素 = document.querySelector("script[代码格式化]");
   代码格式化脚本元素.remove();
-  const 新脚本 = document.createElement("script");
-  新脚本.src = "/Scripts/prism.js";
-  新脚本.type = "text/javascript";
-  新脚本.setAttribute("代码格式化", "");
-  document.body.appendChild(新脚本);
+  const 代码格式化新脚本 = document.createElement("script");
+  代码格式化新脚本.src = "/Scripts/prism.js";
+  代码格式化新脚本.type = "text/javascript";
+  代码格式化新脚本.setAttribute("代码格式化", "");
+
+  const 视频回放脚本元素 = document.querySelector("script[视频回放]");
+  视频回放脚本元素.remove();
+  const 视频回放新脚本 = document.createElement("script");
+  视频回放新脚本.src = "https://vjs.zencdn.net/8.10.0/video.min.js";
+  视频回放新脚本.type = "text/javascript";
+  视频回放新脚本.setAttribute("视频回放", "");
+
+  document.body.append(代码格式化新脚本, 视频回放新脚本);
 }
 
 function 生成侧边栏标签() {
