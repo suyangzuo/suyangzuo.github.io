@@ -180,7 +180,17 @@ async function 设置内容() {
     .then((response) => response.text())
     .then((content) => {
       专题内容区.innerHTML = content;
+      const parser = new DOMParser();
+      const document = parser.parseFromString(content, "text/html");
+      const 脚本组 = document.body.querySelectorAll("script");
+      脚本组.forEach((脚本) => {
+        const 脚本代码 = 脚本.textContent.trim();
+        Function(`'use strict'; return ${脚本代码}`)();
+      });
     });
+  // .then((content) => {
+  //   专题内容区.innerHTML = content;
+  // );
   window.scrollTo(0, 0);
   特殊元素样式补充();
   刷新代码格式化脚本();
@@ -460,12 +470,7 @@ mutationObserver.observe(专题内容区, {
 });
 
 function 专题改变时运行() {
-  if (!(技术栈名称 === "Web前端-原生开发" && 专题名称 === "首页")) {
-    更新图像序号();
-    return;
-  }
-
-  生成永恒代码统计图表();
+  更新图像序号();
 }
 
 function 更新图像序号() {

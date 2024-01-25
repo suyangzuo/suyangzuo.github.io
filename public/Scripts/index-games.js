@@ -45,13 +45,20 @@ function 游戏区观察者回调(entries) {
 
 function 生成灯光() {
   const 灯光上限 = 20;
+  const 宽度上限 = 100;
+  const 宽度下限 = 10;
+  const 高度上限 = 300;
+  const 高度下限 = 100;
+  const 模糊上限 = 10;
+  const 模糊下限 = 2;
+  const 顶距离上限 = 110;
+  const 顶距离下限 = 80;
+  const 左距离上限 = 92.5;
+  const 左距离下限 = 5;
+
   for (let i = 1; i <= 灯光上限; i++) {
     const 灯光 = document.createElement("div");
     灯光.className = "灯光";
-    const 宽度上限 = 100;
-    const 宽度下限 = 10;
-    const 高度上限 = 300;
-    const 高度下限 = 100;
     const width = Math.floor(Math.random() * (宽度上限 - 宽度下限) + 宽度下限);
     const height = Math.floor(Math.random() * (高度上限 - 高度下限) + 高度下限);
     灯光.style.width = `${width}px`;
@@ -64,21 +71,15 @@ function 生成灯光() {
     const 背景色 = `rgba(${红}, ${绿}, ${蓝}, ${透明度})`;
     灯光.style.backgroundColor = 背景色;
 
-    const 模糊上限 = 10;
-    const 模糊下限 = 2;
     const 模糊尺寸 = Math.floor(
       Math.random() * (模糊上限 - 模糊下限) + 模糊下限
     );
     灯光.style.filter = `blur(${模糊尺寸}px)`;
 
-    const 顶距离上限 = 110;
-    const 顶距离下限 = 80;
     const 顶距离 = Math.floor(
       Math.random() * (顶距离上限 - 顶距离下限) + 顶距离下限
     );
     灯光.style.top = `${顶距离}%`;
-    const 左距离上限 = 92.5;
-    const 左距离下限 = 5;
     const 左距离 = Math.floor(
       Math.random() * (左距离上限 - 左距离下限) + 左距离下限
     );
