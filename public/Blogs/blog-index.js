@@ -68,7 +68,7 @@ let 前一专题 = null;
   });
 });
 
-function 刷新代码格式化脚本() {
+function 刷新第三方库() {
   const 代码格式化脚本元素 = document.querySelector("script[代码格式化]");
   代码格式化脚本元素.remove();
   const 代码格式化新脚本 = document.createElement("script");
@@ -83,7 +83,14 @@ function 刷新代码格式化脚本() {
   视频回放新脚本.type = "text/javascript";
   视频回放新脚本.setAttribute("视频回放", "");
 
-  document.body.append(代码格式化新脚本, 视频回放新脚本);
+  const 标注脚本元素 = document.querySelector("script[标注]");
+  标注脚本元素.remove();
+  const 标注新脚本 = document.createElement("script");
+  标注新脚本.src = "https://unpkg.com/rough-notation/lib/rough-notation.iife.js";
+  标注新脚本.type = "text/javascript";
+  标注新脚本.setAttribute("标注", "");
+
+  document.body.append(代码格式化新脚本, 视频回放新脚本, 标注新脚本);
 }
 
 function 生成侧边栏标签() {
@@ -179,6 +186,10 @@ function 设置侧边栏() {
   专题名称 = 专题组[index]
     ?.getElementsByClassName("专题-内容")[0]
     .textContent.trim();
+
+  const 选项卡图标 = document.querySelector("link[rel='icon']");
+  const 技术栈图标 = document.querySelector(".专题名称 > img");
+  选项卡图标.href = 技术栈图标.src;
 }
 
 async function 设置内容() {
@@ -191,17 +202,17 @@ async function 设置内容() {
       const parser = new DOMParser();
       const document = parser.parseFromString(content, "text/html");
       const 脚本组 = document.body.querySelectorAll("script");
-      脚本组.forEach((脚本) => {
+      脚本组?.forEach((脚本) => {
         const 脚本代码 = 脚本.textContent.trim();
         Function(`'use strict'; return ${脚本代码}`)();
       });
     });
-  // .then((content) => {
-  //   专题内容区.innerHTML = content;
-  // );
+  
+  const 选项卡标题 = document.querySelector("title");
+  选项卡标题.textContent = `${技术栈名称}-${专题名称}`;
   window.scrollTo(0, 0);
   特殊元素样式补充();
-  刷新代码格式化脚本();
+  刷新第三方库();
 }
 
 function 点选技术栈(event) {

@@ -78,10 +78,254 @@
       <a
         class="联系方式链接"
         href="https://codesandbox.io/u/suyangzuo"
-        target="_blank">
+        target="_blank"
+      >
         <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
       /></a>
     </li>
   </ul>
 </article>
-<div class="专题正文区"></div>
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">颜色表示法类型</h2>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">RGB</span>表示法<span class="附加说明"
+        >三原色表示法</span
+      >
+    </h3>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p>
+        <span class="专业名词">原色</span
+        >，指的是无法通过其它颜色混合得到的颜色。在不同语境下，原色有不同的含义：
+      </p>
+      <ul class="分区列表">
+        <li class="分区列表项">
+          <span class="专业名词">光的三原色</span>：<span class="行内专业名词"
+            >红</span
+          ><span class="附加说明">Red</span>，<span class="行内专业名词"
+            >绿</span
+          ><span class="附加说明">Green</span>，<span class="行内专业名词"
+            >蓝</span
+          ><span class="附加说明">Blue</span
+          >；英文单词的第1个字母合起来就是<span class="行内专业名词">RGB</span>
+        </li>
+        <li class="分区列表项">
+          <span class="专业名词"
+            >印刷三原色<span class="附加说明">颜料三原色</span></span
+          >：<span class="行内专业名词">青</span
+          ><span class="附加说明">Cyan</span>，<span class="行内专业名词"
+            >品红</span
+          ><span class="附加说明">Magenta</span>，<span class="行内专业名词"
+            >黄</span
+          ><span class="附加说明">Yellow</span>
+        </li>
+      </ul>
+      <p>
+        我们在屏幕上见到的颜色，都是屏幕的电子元件发出的光，因此我们所说的<span
+          class="行内专业名词"
+          >三原色</span
+        >通常指<span class="行内专业名词">光的三原色</span>，即<span
+          class="行内专业名词"
+          >RGB</span
+        >。
+      </p>
+    </section>
+    <p class="分区普通文本">
+      <span class="行内专业名词">RGB</span
+      >是编程中用得最广泛、最频繁的颜色表示法，因此我们在下一章节会重点阐述。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">HSL</span>表示法
+    </h3>
+    <p class="分区普通文本">
+      这是设计师和艺术家比较喜欢的颜色表示法，其含义为：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="代码">H</span>：<span class="行内专业名词">Hue</span
+        ><span class="附加说明">色相</span>
+      </li>
+      <li class="分区列表项">
+        <span class="代码">S</span>：<span class="行内专业名词">Saturation</span
+        ><span class="附加说明">饱和度</span>
+      </li>
+      <li class="分区列表项">
+        <span class="代码">L</span>：<span class="行内专业名词">Lightness</span
+        ><span class="附加说明">亮度</span>
+      </li>
+    </ul>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">HWB</span>表示法
+    </h3>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="代码">H</span>：<span class="行内专业名词">Hue</span
+        ><span class="附加说明">色相</span>
+      </li>
+      <li class="分区列表项">
+        <span class="代码">W</span>：<span class="行内专业名词">Whiteness</span
+        ><span class="附加说明">白度</span>
+      </li>
+      <li class="分区列表项">
+        <span class="代码">B</span>：<span class="行内专业名词">Blackness</span
+        ><span class="附加说明">黑度</span>
+      </li>
+    </ul>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">
+      <span class="行内专业名词">RGB</span>表示法
+    </h2>
+
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p>
+        颜色表示法对字母大小写<span class="强调">不敏感</span
+        >，无论大小写都可以正确显示颜色。
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">16 进制</span>表示法
+    </h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词">16 进制</span>表示法必须以<span class="代码"
+        >#</span
+      >开头：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项"><span class="代码">#5a9</span></li>
+      <li class="分区列表项"><span class="代码">#3e70f5</span></li>
+      <li class="分区列表项"><span class="代码">#91eb</span></li>
+      <li class="分区列表项"><span class="代码">#84c6fdee</span></li>
+    </ul>
+    <p class="分区普通文本">
+      很多初学者会感到很困惑，怎么数值位数一会儿 3 位，一会儿 4 位，一会儿又变成
+      6 位和 8 位呢？我们来了解一下数值的含义。
+    </p>
+    <p class="分区普通文本">
+      无论是几进制，表示的都是<span class="行内专业名词">RGB</span
+      >，因此其下限和上限也遵照规范，最低为<span class="代码">0</span
+      >，最高为<span class="代码">255</span>；换算成<span class="行内专业名词"
+        >16 进制<span class="附加说明">默认用 2 位表示</span></span
+      >，最低就是<span class="代码">00</span>，最高则是<span class="代码"
+        >FF</span
+      >。
+    </p>
+    <p class="分区普通文本">
+      红、绿、蓝，3 种原色都要用 2 位来表示，合起来就是 6 位。比如：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="行内专业名词">纯黑色</span>：<span class="代码"
+          >#000000</span
+        >
+      </li>
+      <li class="分区列表项">
+        <span class="行内专业名词">纯白色</span>：<span class="代码"
+          >#ffffff</span
+        >
+      </li>
+    </ul>
+
+    <p class="分区普通文本">
+      在此基础之上，我们可以再加上 2 位，用来表示<span class="专业名词"
+        >透明度</span
+      >，在<span class="行内专业名词">16 进制</span>下范围同样是从<span
+        class="代码"
+        >00</span
+      >到<span class="代码">FF</span>：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="代码">#00FF0000</span>：最后 2 个<span class="行内代码"
+          >00</span
+        >代表完全透明，因此此颜色虽然是纯蓝色，但根本看不见。
+      </li>
+      <li class="分区列表项">
+        <span class="代码">#FF0000FF</span>：最后 2 个<span class="行内代码"
+          >FF</span
+        >代表完全不透明，因此呈现为纯红色。
+      </li>
+    </ul>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p>
+        透明度如果省略，则默认为<span class="代码">FF</span>，因此<span
+          class="代码"
+          >#3984A7FF</span
+        >和<span class="代码">#3984A7</span>是完全等价的。
+      </p>
+    </section>
+    <p class="分区普通文本">
+      假设 3 个原色<span class="附加说明">透明度也一样</span>值的 2位
+      是一样的，则可以简写为 1 位：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="代码">#99ccaa</span>可以简写为：<span class="代码"
+          >#9ca</span
+        >，二者完全等价。
+      </li>
+      <li class="分区列表项">
+        <span class="代码">#2277cc99</span>可以简写为：<span class="代码"
+          >#27c9</span
+        >，二者完全等价。
+      </li>
+    </ul>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p>
+        只有<span class="行内专业名词">红</span>、<span class="行内专业名词"
+          >绿</span
+        >、<span class="行内专业名词">蓝</span>3 者<span class="附加说明"
+          >如果有透明度，那就是 4 者</span
+        >的 2
+        位数值都是一样的，才可以用简写，只要有一个不一样，就不能简写，比如：
+        <span class="代码">#8866442a</span
+        ><span class="强调">不可以简写为</span>：<span class="代码">#8642a</span
+        >。
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">10 进制</span>表示法
+    </h3>
+    <p class="分区普通文本">
+      10进制表示法，以<span class="代码">rgb</span
+      >函数的方式书写，原色的值范围依然是从<span class="代码">0</span>到<span
+        class="代码"
+        >255</span
+      >。不过，10进制表示法拥有更加灵活的语法：红、绿、蓝，可以用百分比表示。
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项"><span class="代码">rgb(180, 65, 233)</span></li>
+      <li class="分区列表项"><span class="代码">rgb(35%，108, 98%)</span></li>
+    </ul>
+    <p class="分区普通文本">
+      当然，10进制表示法也可以添加透明度，但是函数名要从<span class="代码"
+        >rgb</span
+      >改成<span class="代码">rgba</span
+      ><span class="附加说明">a 代表 Alpha通道，即透明度</span>。有 2
+      种方式，一种是数字，从<span class="代码">0</span>到<span class="代码"
+        >1</span
+      >，可以用浮点数；第2种是用百分比，从<span class="代码">0%</span>到<span
+        class="代码"
+        >100%</span
+      >。以下两种表示透明度的方式都是正确的：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="代码">rgba(45, 100, 255, 0.25)</span>
+      </li>
+      <li class="分区列表项">
+        <span class="代码">rgba(45, 100, 255, 25%)</span>
+      </li>
+    </ul>
+  </article>
+</div>
