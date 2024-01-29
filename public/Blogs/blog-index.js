@@ -83,14 +83,7 @@ function 刷新第三方库() {
   视频回放新脚本.type = "text/javascript";
   视频回放新脚本.setAttribute("视频回放", "");
 
-  const 标注脚本元素 = document.querySelector("script[标注]");
-  标注脚本元素.remove();
-  const 标注新脚本 = document.createElement("script");
-  标注新脚本.src = "https://unpkg.com/rough-notation/lib/rough-notation.iife.js";
-  标注新脚本.type = "text/javascript";
-  标注新脚本.setAttribute("标注", "");
-
-  document.body.append(代码格式化新脚本, 视频回放新脚本, 标注新脚本);
+  document.body.append(代码格式化新脚本, 视频回放新脚本);
 }
 
 function 生成侧边栏标签() {

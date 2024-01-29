@@ -78,7 +78,8 @@
       <a
         class="联系方式链接"
         href="https://codesandbox.io/u/suyangzuo"
-        target="_blank">
+        target="_blank"
+      >
         <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
       /></a>
     </li>
@@ -88,13 +89,14 @@
   <article class="正文分区">
     <h2 class="分区标题 分区2级标题">Git 本地工作流简介</h2>
 
-    <h3 class="分区标题 分区3级标题">Git 管理本地文件的 3 个区域</h3>
+    <h3 class="分区标题 分区3级标题">Git 管理本地文件更改的 3 个区域</h3>
     <figure class="截图容器">
       <img
         src="/Images/Blogs/Git/Git 本地工作流/Git工作流-本地.png"
-        alt="Git 本地工作3区域" />
+        alt="Git 本地工作3区域"
+      />
     </figure>
-    <p class="分区普通文本">Git 将本地文件的管理分为 3 个区域：</p>
+    <p class="分区普通文本">Git 将管理本地文件的更改分为 3 个区域：</p>
     <ul class="分区列表">
       <li class="分区列表项">
         <span class="专业名词">工作区</span>：也就是项目文件夹
@@ -150,7 +152,8 @@
     <figure class="截图容器">
       <img
         src="/Images/Blogs/Git/Git 本地工作流/dot-git.png"
-        alt=".git 文件夹" />
+        alt=".git 文件夹"
+      />
     </figure>
     <p class="分区普通文本">
       这个文件夹默认是隐藏的。<span class="强调">千万不要删！</span
@@ -167,7 +170,8 @@
     <figure class="截图容器">
       <img
         src="/Images/Blogs/Git/Git 本地工作流/git-status-未暂存.png"
-        alt="git status 未暂存" />
+        alt="git status 未暂存"
+      />
     </figure>
     <p class="分区普通文本">
       <span class="代码">git status</span>非常清楚地表明：
@@ -187,39 +191,40 @@
           >index.css</span
         >
       </li>
-      <section class="提醒">
-        <h3 class="提醒标题">提醒</h3>
-        <p>
-          <span class="强调">未追踪文件</span
-          ><span class="附加说明">Untracked files</span>，意味着<span
-            class="专业名词"
-            >暂存区</span
-          ><span class="附加说明">索引</span>
-          没有关于这些文件的记录，这样的文件如果被误删，Git 是<span class="强调"
-            >无法恢复</span
-          >的！
-        </p>
-        <p>
-          作者的项目文件夹在初始化之前就已经存在 2
-          个文件了。如果你是在空文件夹初始化的，可以在初始化之后，新建 2
-          个文件，再运行<span class="代码">git status</span
-          >命令，即可达到相同效果。
-        </p>
-        <p>
-          作者安装了<span class="专业名词">Oh My Posh</span
-          >，因此在终端的命令提示符上，能够直接显示出当前分支为<span
-            class="行内专业名词"
-            >master</span
-          >，并且有 2
-          个未追踪文件。这在一定程度上可以减轻程序员的负担，不用输入复杂的命令也能快速查看一些基本信息。
-        </p>
-        <p>
-          有关<span class="专业名词">Oh My Posh</span
-          >的安装和使用，可以参考<span class="行内专业名词">经验之谈</span
-          >中的<span class="行内专业名词">打造优雅舒适的终端</span>专题。
-        </p>
-      </section>
     </ol>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p>
+        <span class="强调">未追踪文件</span
+        ><span class="附加说明">Untracked files</span>，意味着<span
+          class="专业名词"
+          >暂存区</span
+        ><span class="附加说明">索引</span>
+        没有关于这些文件的记录，这样的文件如果被误删，Git 是<span class="强调"
+          >无法恢复</span
+        >的！
+      </p>
+      <p>
+        作者的项目文件夹在初始化之前就已经存在 2
+        个文件了。如果你是在空文件夹初始化的，可以在初始化之后，新建 2
+        个文件，再运行<span class="代码">git status</span
+        >命令，即可达到相同效果。
+      </p>
+      <p>
+        作者安装了<span class="专业名词">Oh My Posh</span
+        >，因此在终端的命令提示符上，能够直接显示出当前分支为<span
+          class="行内专业名词"
+          >master</span
+        >，并且有 2
+        个未追踪文件。这在一定程度上可以减轻程序员的负担，不用输入复杂的命令也能快速查看一些基本信息。
+      </p>
+      <p>
+        有关<span class="专业名词">Oh My Posh</span>的安装和使用，可以参考<span
+          class="行内专业名词"
+          >经验之谈</span
+        >中的<span class="行内专业名词">打造优雅舒适的终端</span>专题。
+      </p>
+    </section>
 
     <h3 class="分区标题 分区3级标题">暂存</h3>
     <p class="分区普通文本">将终端的路径定位到项目文件夹，运行命令：</p>
@@ -236,7 +241,8 @@
     <figure class="截图容器">
       <img
         src="/Images/Blogs/Git/Git 本地工作流/git-status-已暂存.png"
-        alt="git status 已暂存" />
+        alt="git status 已暂存"
+      />
     </figure>
     <p class="分区普通文本">
       Git 状态发生了改变，原来的<span class="专业名词">未追踪文件</span
@@ -253,13 +259,13 @@
     <h3 class="分区标题 分区3级标题">提交</h3>
     <p class="分区普通文本">将终端的路径定位到项目文件夹，运行命令：</p>
     <pre
-      style="
-        margin: 0;
-      "><code class="lang-bash">git commit -m "初始提交"</code></pre>
+      style="margin: 0"
+    ><code class="lang-bash">git commit -m "初始提交"</code></pre>
     <figure class="截图容器">
       <img
         src="/Images/Blogs/Git/Git 本地工作流/git-commit.gif"
-        alt="git commit" />
+        alt="git commit"
+      />
     </figure>
     <p class="分区普通文本">
       这样就完成了一次<span class="行内专业名词">提交</span>。<span
@@ -288,7 +294,8 @@
     <figure class="截图容器">
       <img
         src="/Images/Blogs/Git/Git 本地工作流/git-status-已提交.png"
-        alt="git status 已提交" />
+        alt="git status 已提交"
+      />
     </figure>
     <p class="分区普通文本">
       所有的文件更改，都从<span class="行内专业名词">暂存区</span>提交到了<span
@@ -345,13 +352,13 @@
       >，因此需要输入一个特殊的命令：
     </p>
     <pre
-      style="
-        margin: 0;
-      "><code class="lang-bash">git update-ref -d HEAD</code></pre>
+      style="margin: 0"
+    ><code class="lang-bash">git update-ref -d HEAD</code></pre>
     <figure class="截图容器">
       <img
         src="/Images/Blogs/Git/Git 本地工作流/撤销初始提交.gif"
-        alt="撤销初始提交" />
+        alt="撤销初始提交"
+      />
     </figure>
     <p class="分区普通文本">
       运行此命令后，用<span class="代码">git log</span
@@ -389,7 +396,8 @@
       对于<span class="行内专业名词">未暂存</span>的更改，可以输入如下命令撤销：
     </p>
     <pre
-      style="margin: 0"><code class="lang-bash">git restore 文件名</code></pre>
+      style="margin: 0"
+    ><code class="lang-bash">git restore 文件名</code></pre>
     <p class="分区普通文本">
       如果需要撤销所有的更改，直接输入<span class="代码">git restore .</span
       >即可。此命令会撤销所有的内容修改、恢复被删除的文件。
