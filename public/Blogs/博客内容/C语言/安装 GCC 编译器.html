@@ -78,7 +78,8 @@
       <a
         class="联系方式链接"
         href="https://codesandbox.io/u/suyangzuo"
-        target="_blank">
+        target="_blank"
+      >
         <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
       /></a>
     </li>
@@ -213,7 +214,8 @@
     <figure class="截图容器">
       <img
         src="/Images/Blogs/C语言/安装 GCC 编译器/MinGW-w64-管理表.png"
-        alt="MinGW-w64 管理工具表" />
+        alt="MinGW-w64 管理工具表"
+      />
     </figure>
     <p class="分区普通文本">
       有很多的工具包可以用来管理 Mingw-w64，我个人推荐使用<span
@@ -235,7 +237,8 @@
     <figure class="截图容器">
       <img
         src="/Images/Blogs/C语言/安装 GCC 编译器/MSYS2-下载.png"
-        alt="下载 MSYS2" />
+        alt="下载 MSYS2"
+      />
     </figure>
 
     <h3 class="分区标题 分区3级标题">
@@ -247,7 +250,8 @@
         <figure class="截图容器">
           <img
             src="/Images/Blogs/C语言/安装 GCC 编译器/安装-路径.png"
-            alt="安装路径" />
+            alt="安装路径"
+          />
         </figure>
         <section class="提醒" style="margin-bottom: 50px">
           <h3 class="提醒标题">提醒</h3>
@@ -262,7 +266,8 @@
         <figure class="截图容器">
           <img
             src="/Images/Blogs/C语言/安装 GCC 编译器/安装-完成.png"
-            alt="完成安装" />
+            alt="完成安装"
+          />
         </figure>
         <section class="提醒" style="margin-bottom: 50px">
           <h3 class="提醒标题">提醒</h3>
@@ -276,7 +281,8 @@
           <figure class="截图容器">
             <img
               src="/Images/Blogs/C语言/安装 GCC 编译器/安装-终端.png"
-              alt="完成安装" />
+              alt="完成安装"
+            />
           </figure>
           <p class="分区普通文本">
             MSYS2 主要就是在这个终端中，调用<span class="行内专业名词"
@@ -292,7 +298,8 @@
         <figure class="截图容器">
           <img
             src="/Images/Blogs/C语言/安装 GCC 编译器/Pacman-路径.png"
-            alt="Pacman.exe 路径" />
+            alt="Pacman.exe 路径"
+          />
         </figure>
         <p class="分区普通文本">
           <span class="行内代码">pacman.exe</span>的路径是：<span class="代码"
@@ -302,7 +309,8 @@
         <figure class="截图容器">
           <img
             src="/Images/Blogs/C语言/安装 GCC 编译器/环境变量.png"
-            alt="环境变量" />
+            alt="环境变量"
+          />
         </figure>
         <p class="分区普通文本">
           将路径加入环境变量后，就可以在任意路径下直接调用<span class="行内代码"
@@ -321,41 +329,45 @@
       <li class="分区列表项">
         在<a class="超链接" href="https://www.msys2.org/" target="_blank"
           >MSYS2 官方网站</a
-        >查找需要安装的<span class="行内专业名词">包</span>名称
-        <figure class="截图容器">
-          <img
-            src="/Images/Blogs/C语言/安装 GCC 编译器/查找Pacman包名称.gif"
-            alt="查找 Pacman包 名称" />
-        </figure>
+        >查找所需的<span class="行内专业名词">包安装命令</span>
         <p class="分区普通文本">
-          在这个页面可以找到包名称的<span class="行内专业名词">前缀</span>：
+          MSYS2 有一个<span class="专业名词"
+            >Package Index<span class="附加说明">包索引</span></span
+          >页面，列出了所有包的相关信息，包括安装命令。
         </p>
         <figure class="截图容器">
           <img
-            src="/Images/Blogs/C语言/安装 GCC 编译器/包前缀.png"
-            alt="包名称前缀" />
+            src="/Images/Blogs/C语言/安装 GCC 编译器/MSYS2-包索引菜单.png"
+            alt="MSYS2 包索引菜单"
+          />
         </figure>
         <p class="分区普通文本">
-          有了前缀，就可以推导出自己想要的包名称了。比如：你想下载<span
-            class="行内专业名词"
-            >MinGW-w64</span
-          >的<span class="行内专业名词">GCC</span
-          >工具集，完整的包名称就是：<span class="代码"
+          点击<span class="行内专业名词">包索引</span>菜单，进入包索引页面。
+        </p>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/C语言/安装 GCC 编译器/MSYS2-包索引页面获取安装命令.gif"
+            alt="包索引页面"
+          />
+        </figure>
+        <p class="分区普通文本">
+          通过搜索<span class="行内专业名词">gcc</span>关键词，最终获得了<span
+            class="专业名词"
             >mingw-w64-x86_64-gcc</span
-          ><span class="附加说明"
-            >注意：包名称里的<span class="行内代码">gcc</span>必须<span
-              class="强调"
-              >小写</span
-            ></span
-          >。打开<span class="行内专业名词">Windows 终端</span
-          >，运行如下命令：<span class="代码"
+          >这个包的安装命令。<span class="强调">注意</span>：包名称里的<span
+            class="行内代码"
+            >gcc</span
+          >必须<span class="强调">小写</span>。打开<span class="行内专业名词"
+            >Windows 终端</span
+          >，复制或者手动输入刚刚搜索到的安装命令：<br /><span class="代码"
             >pacman -S mingw-w64-x86_64-gcc</span
           >，就可以开始安装了。
         </p>
         <figure class="截图容器">
           <img
             src="/Images/Blogs/C语言/安装 GCC 编译器/安装Mingw-w64-gcc.gif"
-            alt="包名称前缀" />
+            alt="包名称前缀"
+          />
         </figure>
         <p class="分区普通文本">
           安装过程中，会询问<span class="代码"
@@ -377,7 +389,8 @@
         <figure class="截图容器">
           <img
             src="/Images/Blogs/C语言/安装 GCC 编译器/GCC路径.png"
-            alt="gcc.exe 路径" />
+            alt="gcc.exe 路径"
+          />
         </figure>
         <p class="分区普通文本">
           <span class="行内代码">gcc.exe</span>的路径是：<span class="代码"
@@ -387,7 +400,8 @@
         <figure class="截图容器">
           <img
             src="/Images/Blogs/C语言/安装 GCC 编译器/GCC环境变量.png"
-            alt="将 gcc.exe 路径添加到环境变量" />
+            alt="将 gcc.exe 路径添加到环境变量"
+          />
         </figure>
       </li>
       <li class="分区列表项">
@@ -404,7 +418,8 @@
         <figure class="截图容器">
           <img
             src="/Images/Blogs/C语言/安装 GCC 编译器/GCC版本.gif"
-            alt="GCC 版本" />
+            alt="GCC 版本"
+          />
         </figure>
         <p class="分区普通文本">
           只要出现白色文字信息，就表示<span class="行内代码">gcc.exe</span
@@ -414,7 +429,8 @@
         <figure class="截图容器">
           <img
             src="/Images/Blogs/C语言/安装 GCC 编译器/GCC错误.png"
-            alt="GCC 错误" />
+            alt="GCC 错误"
+          />
         </figure>
         <p class="分区普通文本">只要出现红色错误信息，最可能的问题有：</p>
         <ul class="分区列表">
