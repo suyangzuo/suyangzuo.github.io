@@ -74,26 +74,59 @@ body {
   isolation: isolate;
 }
 
-#章节区 a:hover::after {
+.锚链接-3级标题:hover::after {
   position: absolute;
   width: calc(100% + 25px);
-  height: 110%;
+  height: 100%;
   top: 50%;
   left: -10px;
   translate: 0 -50%;
-  background-color: #402c7c;
   content: "";
   z-index: -1;
   border-radius: 5px;
+  background-color: #402c7c;
 }
 
 .锚链接-2级标题 {
+  position: relative;
   padding: 10px 0;
+  margin-bottom: 5px;
   font-size: 1.1em;
   color: lightskyblue;
   font-weight: 500;
   display: flex;
   align-items: center;
+}
+
+.锚链接-2级标题::before {
+  position: absolute;
+  width: calc(100% + 30px);
+  height: 100%;
+  top: 50%;
+  left: -15px;
+  translate: 0 -50%;
+  z-index: -1;
+  background-color: rgb(68, 77, 82);
+  content: "";
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    black 5%,
+    black 95%,
+    transparent 100%
+  );
+
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    black 5%,
+    black 95%,
+    transparent 100%
+  );
+}
+
+.锚链接-2级标题:hover::before {
+  background-color: #402c7c;
 }
 
 .锚链接-2级标题:link {
@@ -105,7 +138,7 @@ body {
 }
 
 .锚链接-2级标题:not(:first-child) {
-  margin-top: 20px;
+  margin-top: 25px;
 }
 
 .锚链接-2级标题 > .标题序号-2级 {
