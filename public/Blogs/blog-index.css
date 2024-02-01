@@ -11,9 +11,110 @@
   --专题标记-转载: orange;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 75px;
+}
+
 body {
   width: 100dvw;
 }
+
+/* ------------------- ↓ 章节区 ------------------- */
+#章节区 {
+  position: fixed;
+  top: calc(50px + 50px);
+  right: 10vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.章节区标题 {
+  padding: 10px 25px;
+  color: gold;
+}
+
+.章节区内容 {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0 25px;
+}
+
+.章节区内容::before {
+  position: absolute;
+  width: 1px;
+  height: calc(100% - 10px);
+  background-color: white;
+  left: 0;
+  top: 50%;
+  translate: 0 -50%;
+  content: "";
+}
+
+#章节区 a {
+  position: relative;
+}
+
+#章节区 a:hover::after {
+  position: absolute;
+  width: calc(100% + 25px);
+  height: 110%;
+  top: 50%;
+  left: -10px;
+  translate: 0 -50%;
+  background-color: #402c7c;
+  content: "";
+  z-index: -1;
+  border-radius: 5px;
+}
+
+.锚链接-2级标题 {
+  padding: 10px 0;
+  font-size: 1.1em;
+  color: lightskyblue;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.锚链接-2级标题:link {
+  color: lightskyblue;
+}
+
+.锚链接-2级标题:visited {
+  color: lightskyblue;
+}
+
+.锚链接-2级标题:not(:first-child) {
+  margin-top: 20px;
+}
+
+.锚链接-2级标题 > .标题序号-2级 {
+  margin-right: 12px;
+  width: 2.5em;
+  padding: 0.5em 0;
+  font-size: 0.8em;
+}
+
+.锚链接-3级标题 {
+  padding: 8px 0;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+}
+
+.锚链接-3级标题 > .标题序号-3级 {
+  margin-right: 10px;
+  width: 4em;
+  height: 2em;
+}
+
+/* ------------------- ↑ 章节区 ------------------- */
 
 /* ------------------- ↓ 收藏栏 ------------------- */
 #收藏栏 {
@@ -716,12 +817,12 @@ body {
   width: 100%;
   min-height: calc(100vh - 50px);
   background-image: var(--专题内容区背景);
-  padding: 50px 50px 50px calc(var(--侧边栏宽度) + 50px);
+  padding: 50px 50px 50px calc(var(--侧边栏宽度) + 10vw);
   color: white;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   gap: 25px;
 }
 
@@ -1407,6 +1508,18 @@ div.code-toolbar > .toolbar {
 /* ------------------- ↑ 代码格式化 ------------------- */
 
 /* ------------------------------ ↓ 响应式设计 ------------------------------ */
+@media screen and (width < 1800px) {
+  #章节区 {
+    right: 10px;
+  }
+}
+
+@media screen and (width < 1400px) {
+  .专题内容区 {
+    padding: 50px 50px 50px calc(var(--侧边栏宽度) + 5vw);
+  }
+}
+
 @media screen and (width < 1300px) {
   .专题正文区 {
     padding: 25px 0;

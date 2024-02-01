@@ -12,6 +12,9 @@ const 技术栈内容 = document.getElementsByClassName("技术栈内容")[0];
 const 技术栈组 = document.querySelectorAll(".技术栈");
 const 专题内容区 = document.getElementsByClassName("专题内容区")[0];
 
+const 章节区 = document.getElementById("章节区");
+const 章节区内容 = 章节区.querySelector(".章节区内容");
+
 const 收藏栏按钮 = document.getElementById("收藏栏按钮");
 const 收藏按钮 = document.getElementById("收藏按钮");
 const 收藏数量 = document.getElementById("收藏数量");
@@ -47,7 +50,7 @@ if (sessionStorage.getItem("页面技术栈") === null) {
 }
 
 let index = JSON.parse(sessionStorage.getItem("专题索引记录")).find(
-  (记录) => 记录.技术栈 === 技术栈名称
+  (记录) => 记录.技术栈 === 技术栈名称,
 ).专题索引;
 let 专题名称 = "首页";
 let 专题文件路径 = `./博客内容/${技术栈名称}/${专题名称}.html`;
@@ -55,12 +58,14 @@ let 专题文件路径 = `./博客内容/${技术栈名称}/${专题名称}.html
 let 前一专题 = null;
 
 设置侧边栏();
-设置内容();
+设置内容().then((r) => 生成章节());
 
 技术栈组.forEach((技术栈) => {
   技术栈.addEventListener("click", 点选技术栈);
   技术栈.addEventListener("click", 设置侧边栏);
-  技术栈.addEventListener("click", 设置内容);
+  技术栈.addEventListener("click", () => {
+    设置内容().then(() => 生成章节());
+  });
   技术栈.addEventListener("click", () => {
     if (技术栈对话框.open) {
       隐藏技术栈内容();
@@ -156,13 +161,13 @@ function 设置侧边栏() {
   专题标记组 = document.querySelectorAll(".专题-标记");
 
   index = JSON.parse(sessionStorage.getItem("专题索引记录")).find(
-    (记录) => 记录.技术栈 === 技术栈名称
+    (记录) => 记录.技术栈 === 技术栈名称,
   ).专题索引;
 
   专题组[index]?.style.setProperty(
     "background",
     侧边栏颜色_已选中,
-    "important"
+    "important",
   );
   专题组.forEach((专题) => {
     专题.addEventListener("click", 修改专题样式);
@@ -200,7 +205,7 @@ async function 设置内容() {
         Function(`'use strict'; return ${脚本代码}`)();
       });
     });
-  
+
   const 选项卡标题 = document.querySelector("title");
   选项卡标题.textContent = `${技术栈名称}-${专题名称}`;
   window.scrollTo(0, 0);
@@ -210,8 +215,7 @@ async function 设置内容() {
 
 function 点选技术栈(event) {
   const 技术栈 = event.currentTarget;
-  let 技术栈文本 = 技术栈.getElementsByTagName("p")[0].textContent.trim();
-  技术栈名称 = 技术栈文本;
+  技术栈名称 = 技术栈.getElementsByTagName("p")[0].textContent.trim();
   if (技术栈名称 === "Web前端原生开发") {
     技术栈名称 = "Web前端-原生开发";
   } else if (技术栈名称 === "C#") {
@@ -246,7 +250,7 @@ function 修改专题样式(event) {
   }
   sessionStorage.setItem("专题索引记录", JSON.stringify(专题索引记录));
 
-  设置内容();
+  设置内容().then((r) => 生成章节());
 }
 
 技术栈选择器.addEventListener("click", 显示技术栈内容);
@@ -261,6 +265,49 @@ function 显示技术栈内容() {
 function 隐藏技术栈内容() {
   技术栈对话框.close();
   技术栈选择器.style.scale = "1";
+}
+
+function 生成章节() {
+  章节区内容.innerHTML = "";
+  const 专题正文区 = document.querySelector(".专题正文区");
+  if (专题正文区 === null || 专题正文区.innerHTML === "") return;
+  const 二级标题组 = document.querySelectorAll(".分区2级标题");
+  if (二级标题组.length === 0) {
+    const 三级标题组 = document.querySelectorAll(".分区3级标题");
+    三级标题组.forEach((三级标题, index) => {
+      三级标题.id = `三级标题-${index + 1}`;
+      const 锚链接 = document.createElement("a");
+      锚链接.className = "锚链接-3级标题";
+      锚链接.innerHTML = 三级标题.innerHTML;
+      锚链接.href = `#${三级标题.id}`;
+      const 序号 = document.createElement("span");
+      序号.className = "标题序号-3级";
+      序号.textContent = `${index + 1}`;
+      锚链接.prepend(序号);
+      章节区内容.appendChild(锚链接);
+    });
+  } else {
+    二级标题组.forEach((二级标题, index_2) => {
+      二级标题.id = `二级标题-${index_2 + 1}`;
+      const 二级锚链接 = document.createElement("a");
+      二级锚链接.className = "锚链接-2级标题";
+      二级锚链接.innerHTML = 二级标题.innerHTML;
+      const 标题序号2级 = 二级锚链接.querySelector(".标题序号-2级");
+      二级锚链接.href = `#${二级标题.id}`;
+      章节区内容.appendChild(二级锚链接);
+      const 三级标题组 = document.querySelectorAll(
+        `#${二级标题.id} ~ .分区3级标题`,
+      );
+      三级标题组.forEach((三级标题, index_3) => {
+        三级标题.id = `三级标题-${二级标题.id}-${index_3 + 1}`;
+        const 三级锚链接 = document.createElement("a");
+        三级锚链接.className = "锚链接-3级标题";
+        三级锚链接.innerHTML = 三级标题.innerHTML;
+        三级锚链接.href = `#${三级标题.id}`;
+        章节区内容.appendChild(三级锚链接);
+      });
+    });
+  }
 }
 
 //---------------------- ↓ 对内容中的特殊元素补充样式 ----------------------
@@ -278,7 +325,7 @@ function 特殊元素样式补充() {
   分区2级标题组?.forEach((标题, 索引) => {
     const 标题序号 = document.createElement("span");
     标题序号.className = "标题序号-2级";
-    标题序号.textContent = 索引 + 1;
+    标题序号.textContent = `${索引 + 1}`;
     标题.prepend(标题序号);
 
     const 首个2级行内专业名词 = 标题.querySelector(".行内专业名词");
@@ -427,6 +474,7 @@ function 特殊元素样式补充() {
     }
   });
 }
+
 //---------------------- ↑ 对内容中的特殊元素补充样式 ----------------------
 
 侧边栏收缩容器.addEventListener("click", 修改侧边栏可见性);
@@ -462,7 +510,7 @@ function 修改视口尺寸() {
 function 当前专题已被收藏时刷新收藏按钮样式() {
   if (
     JSON.parse(localStorage.getItem("博客收藏"))?.some(
-      (收藏) => 收藏.技术栈 === 技术栈名称 && 收藏.专题 === 专题名称
+      (收藏) => 收藏.技术栈 === 技术栈名称 && 收藏.专题 === 专题名称,
     )
   ) {
     // 收藏按钮.style.color = "seagreen";
@@ -511,7 +559,7 @@ function 生成永恒代码统计图表() {
   // 基于准备好的dom，初始化echarts实例
   const myChart = echarts.init(
     document.getElementById("永恒代码统计图表"),
-    "dark"
+    "dark",
   );
 
   // 指定图表的配置项和数据
