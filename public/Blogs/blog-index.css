@@ -21,14 +21,27 @@ body {
 }
 
 /* ------------------- ↓ 章节区 ------------------- */
+#章节区容器 {
+  position: absolute;
+  height: 100%;
+  top: 125px;
+  left: calc(100% + 5vw);
+}
+
 #章节区 {
-  position: fixed;
-  top: calc(50px + 50px);
-  right: 10vw;
+  position: sticky;
+  top: 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  width: max(350px, 500px);
+}
+
+#章节区 img {
+  width: 1em;
+  height: 1em;
+  margin-right: 7px;
 }
 
 .章节区标题 {
@@ -58,6 +71,7 @@ body {
 
 #章节区 a {
   position: relative;
+  isolation: isolate;
 }
 
 #章节区 a:hover::after {
@@ -460,7 +474,7 @@ body {
   height: 65px;
   border-radius: 50px;
   background: no-repeat center/contain url("./选择器修饰.png"),
-  radial-gradient(circle at center, #80d0c744 0%, #13547a11 50%);
+    radial-gradient(circle at center, #80d0c744 0%, #13547a11 50%);
   bottom: 40px;
   right: 50px;
   pointer-events: all;
@@ -1025,6 +1039,7 @@ body {
 
 /*-------------- ↓ 专题正文区 --------------*/
 .专题正文区 {
+  position: relative;
   width: min(97.5%, 850px);
   border-radius: 10px;
   padding: 25px;
@@ -1490,7 +1505,7 @@ pre[class*="language-"] {
 code[class*="language-"],
 pre[class*="language-"] {
   font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
-  "Noto Sans SC" !important;
+    "Noto Sans SC" !important;
 }
 
 div.code-toolbar > .toolbar > .toolbar-item > a,
