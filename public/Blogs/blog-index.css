@@ -1,5 +1,5 @@
 :root {
-  --侧边栏宽度: 300px;
+  --侧边栏宽度: 250px;
   --侧边栏颜色-鼠标悬停: rgb(54, 62, 78);
   --侧边栏颜色-已选中: rgb(122, 67, 107);
   /* --侧边栏背景: linear-gradient(60deg, #1f242b 0%, #252c32 100%); */
@@ -23,19 +23,26 @@ body {
 /* ------------------- ↓ 章节区 ------------------- */
 #章节区容器 {
   position: absolute;
-  height: 100%;
-  top: 125px;
+  height: calc(100% - 75px);
+  top: 75px;
   left: calc(100% + 5vw);
 }
 
 #章节区 {
   position: sticky;
-  top: 100px;
+  top: 75px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
-  width: max(350px, 500px);
+  width: 400px;
+  height: calc(100vh - 50px);
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+#章节区::-webkit-scrollbar {
+  display: none;
 }
 
 #章节区 img {
@@ -109,14 +116,6 @@ body {
   background-color: rgb(68, 77, 82);
   content: "";
   mask-image: linear-gradient(
-    90deg,
-    transparent 0%,
-    black 5%,
-    black 95%,
-    transparent 100%
-  );
-
-  -webkit-mask-image: linear-gradient(
     90deg,
     transparent 0%,
     black 5%,
@@ -507,7 +506,7 @@ body {
   height: 65px;
   border-radius: 50px;
   background: no-repeat center/contain url("./选择器修饰.png"),
-    radial-gradient(circle at center, #80d0c744 0%, #13547a11 50%);
+  radial-gradient(circle at center, #80d0c744 0%, #13547a11 50%);
   bottom: 40px;
   right: 50px;
   pointer-events: all;
@@ -810,7 +809,7 @@ body {
 
 .专题 {
   width: 100%;
-  padding: 0 15px;
+  padding: 0 10px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -820,7 +819,7 @@ body {
 }
 
 .侧边栏:has(#侧边栏布局:not(:checked)) .专题 {
-  padding: 10px 15px;
+  padding: 10px;
 }
 
 .专题:hover {
@@ -1538,7 +1537,7 @@ pre[class*="language-"] {
 code[class*="language-"],
 pre[class*="language-"] {
   font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
-    "Noto Sans SC" !important;
+  "Noto Sans SC" !important;
 }
 
 div.code-toolbar > .toolbar > .toolbar-item > a,
@@ -1556,15 +1555,15 @@ div.code-toolbar > .toolbar {
 /* ------------------- ↑ 代码格式化 ------------------- */
 
 /* ------------------------------ ↓ 响应式设计 ------------------------------ */
-@media screen and (width < 1800px) {
-  #章节区 {
-    right: 10px;
+@media screen and (width <= 1920px) {
+  .专题内容区 {
+    padding: 50px 50px 50px calc(var(--侧边栏宽度) + 3.5vw);
   }
 }
 
-@media screen and (width < 1400px) {
-  .专题内容区 {
-    padding: 50px 50px 50px calc(var(--侧边栏宽度) + 5vw);
+@media screen and (width < 1800px) {
+  #章节区 {
+    right: 10px;
   }
 }
 
@@ -1678,6 +1677,41 @@ div.code-toolbar > .toolbar {
   .技术栈选择器 {
     width: 50px;
     height: 50px;
+  }
+}
+
+@media screen and (height < 1080px) {
+  .章节区标题 {
+    font-size: 1.25em;
+  }
+
+  .锚链接-2级标题 {
+    padding: 7px 0;
+    margin-bottom: 10px;
+    font-size: 1em;
+  }
+
+  .锚链接-2级标题:not(:first-child) {
+    margin-top: 15px;
+  }
+
+  .锚链接-3级标题 {
+    padding: 4px 0;
+    font-size: 0.8em;
+  }
+
+  .锚链接-2级标题 > .标题序号-2级 {
+    margin-right: 12px;
+    width: 3.1em;
+    padding: 0.5em 0;
+    font-size: 0.8em;
+  }
+
+  .锚链接-3级标题 > .标题序号-3级 {
+    margin-right: 10px;
+    width: 4em;
+    height: 2em;
+    font-size: 0.85em;
   }
 }
 

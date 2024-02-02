@@ -47,7 +47,7 @@ if (sessionStorage.getItem("页面技术栈") === null) {
 }
 
 let index = JSON.parse(sessionStorage.getItem("专题索引记录")).find(
-  (记录) => 记录.技术栈 === 技术栈名称
+  (记录) => 记录.技术栈 === 技术栈名称,
 ).专题索引;
 let 专题名称 = "首页";
 let 专题文件路径 = `./博客内容/${技术栈名称}/${专题名称}.html`;
@@ -162,13 +162,13 @@ function 设置侧边栏() {
   专题标记组 = document.querySelectorAll(".专题-标记");
 
   index = JSON.parse(sessionStorage.getItem("专题索引记录")).find(
-    (记录) => 记录.技术栈 === 技术栈名称
+    (记录) => 记录.技术栈 === 技术栈名称,
   ).专题索引;
 
   专题组[index]?.style.setProperty(
     "background",
     侧边栏颜色_已选中,
-    "important"
+    "important",
   );
   专题组.forEach((专题) => {
     专题.addEventListener("click", 修改专题样式);
@@ -209,7 +209,11 @@ async function 设置内容() {
 
   const 选项卡标题 = document.querySelector("title");
   选项卡标题.textContent = `${技术栈名称}-${专题名称}`;
-  window.scrollTo(0, 0);
+  window.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: "instant",
+  });
   特殊元素样式补充();
   刷新第三方库();
 }
@@ -322,7 +326,7 @@ function 生成章节() {
       二级锚链接.href = `#${二级标题.id}`;
       章节区内容.appendChild(二级锚链接);
       const 三级标题组 = document.querySelectorAll(
-        `#${二级标题.id} ~ .分区3级标题`
+        `#${二级标题.id} ~ .分区3级标题`,
       );
       三级标题组.forEach((三级标题, index_3) => {
         三级标题.id = `三级标题-${二级标题.id}-${index_3 + 1}`;
@@ -536,7 +540,7 @@ function 修改视口尺寸() {
 function 当前专题已被收藏时刷新收藏按钮样式() {
   if (
     JSON.parse(localStorage.getItem("博客收藏"))?.some(
-      (收藏) => 收藏.技术栈 === 技术栈名称 && 收藏.专题 === 专题名称
+      (收藏) => 收藏.技术栈 === 技术栈名称 && 收藏.专题 === 专题名称,
     )
   ) {
     // 收藏按钮.style.color = "seagreen";
@@ -585,7 +589,7 @@ function 生成永恒代码统计图表() {
   // 基于准备好的dom，初始化echarts实例
   const myChart = echarts.init(
     document.getElementById("永恒代码统计图表"),
-    "dark"
+    "dark",
   );
 
   // 指定图表的配置项和数据
