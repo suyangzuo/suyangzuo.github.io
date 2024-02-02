@@ -120,13 +120,21 @@
     <p class="分区普通文本">这里提供 2 份 Git 命令速查表，作为参考：</p>
     <ul class="分区列表">
       <style>
+        .超链接 {
+          text-decoration: none;
+        }
+
         .超链接 img {
           border-radius: 10px;
-          transition: 250ms;
           max-width: 100%;
         }
+
+        .超链接:hover span {
+          text-decoration: underline;
+        }
+
         .超链接:hover img {
-          filter: brightness(50%);
+          outline: solid 5px tomato;
         }
       </style>
       <li class="分区列表项">

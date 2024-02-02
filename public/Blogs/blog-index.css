@@ -23,7 +23,7 @@ body {
 /* ------------------- ↓ 章节区 ------------------- */
 #章节区容器 {
   position: absolute;
-  height: 100%;
+  height: calc(100% - 125px);
   top: 125px;
   left: calc(100% + 5vw);
 }
