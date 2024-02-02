@@ -1557,13 +1557,30 @@ div.code-toolbar > .toolbar {
 /* ------------------------------ ↓ 响应式设计 ------------------------------ */
 @media screen and (width <= 1920px) {
   .专题内容区 {
-    padding: 50px 50px 50px calc(var(--侧边栏宽度) + 3.5vw);
+    padding: 50px 50px 50px calc(var(--侧边栏宽度) + 7.5vw);
+  }
+
+  code[class*="language-"],
+  pre[class*="language-"] {
+    font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
+    "Noto Sans SC" !important;
+    font-size: 0.95em !important;
   }
 }
 
 @media screen and (width < 1800px) {
   #章节区 {
     right: 10px;
+  }
+
+  .专题内容区 {
+    padding: 50px 50px 50px calc(var(--侧边栏宽度) + 5vw);
+  }
+}
+
+@media screen and (width < 1700px) {
+  .专题内容区 {
+    padding: 50px 50px 50px calc(var(--侧边栏宽度) + 50px);
   }
 }
 
