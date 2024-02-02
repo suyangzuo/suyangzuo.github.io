@@ -36,7 +36,6 @@ body {
   justify-content: flex-start;
   align-items: flex-start;
   width: 400px;
-  height: calc(100vh - 50px);
   overflow-y: scroll;
   scrollbar-width: none;
 }
@@ -506,7 +505,7 @@ body {
   height: 65px;
   border-radius: 50px;
   background: no-repeat center/contain url("./选择器修饰.png"),
-  radial-gradient(circle at center, #80d0c744 0%, #13547a11 50%);
+    radial-gradient(circle at center, #80d0c744 0%, #13547a11 50%);
   bottom: 40px;
   right: 50px;
   pointer-events: all;
@@ -1537,7 +1536,7 @@ pre[class*="language-"] {
 code[class*="language-"],
 pre[class*="language-"] {
   font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
-  "Noto Sans SC" !important;
+    "Noto Sans SC" !important;
 }
 
 div.code-toolbar > .toolbar > .toolbar-item > a,
@@ -1563,7 +1562,7 @@ div.code-toolbar > .toolbar {
   code[class*="language-"],
   pre[class*="language-"] {
     font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
-    "Noto Sans SC" !important;
+      "Noto Sans SC" !important;
     font-size: 0.95em !important;
   }
 }
