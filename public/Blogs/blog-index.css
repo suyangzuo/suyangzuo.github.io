@@ -35,7 +35,7 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  width: 400px;
+  width: 450px;
   overflow-y: scroll;
   scrollbar-width: none;
 }
@@ -862,7 +862,7 @@ body {
   width: 100%;
   min-height: calc(100vh - 50px);
   background-image: var(--专题内容区背景);
-  padding: 50px 50px 50px calc(var(--侧边栏宽度) + 10vw);
+  padding: 50px 50px 50px calc(var(--侧边栏宽度) + 15vw);
   color: white;
   display: flex;
   flex-direction: column;
