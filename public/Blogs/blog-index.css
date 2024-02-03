@@ -80,7 +80,7 @@ body {
   isolation: isolate;
 }
 
-.锚链接-3级标题:hover::after {
+/* .锚链接-3级标题.入::after {
   position: absolute;
   width: calc(100% + 25px);
   height: 100%;
@@ -91,7 +91,7 @@ body {
   z-index: -1;
   border-radius: 5px;
   background-color: #402c7c;
-}
+} */
 
 .锚链接-2级标题 {
   position: relative;
@@ -106,7 +106,7 @@ body {
 
 .锚链接-2级标题::before {
   position: absolute;
-  width: calc(100% + 30px);
+  width: calc(100% + 40px);
   height: 100%;
   top: 50%;
   left: -15px;
@@ -127,6 +127,10 @@ body {
   background-color: #402c7c;
 }
 
+/* .锚链接-2级标题.入::before {
+  background-color: #402c7c;
+} */
+
 .锚链接-2级标题:link {
   color: lightskyblue;
 }
@@ -141,24 +145,37 @@ body {
 
 .锚链接-2级标题 > .标题序号-2级 {
   margin-right: 12px;
-  width: 2.5em;
+  width: 2.65em;
   padding: 0.5em 0;
   font-size: 0.8em;
 }
 
 .锚链接-3级标题 {
-  padding: 8px 0;
+  padding: 6px 0;
   font-size: 0.9em;
   display: flex;
   align-items: center;
 }
 
-.锚链接-3级标题 > .标题序号-3级 {
-  margin-right: 10px;
-  width: 4em;
-  height: 2em;
+.锚链接-3级标题:hover::after {
+  position: absolute;
+  width: calc(100% + 25px);
+  height: 100%;
+  top: 50%;
+  left: -10px;
+  translate: 0 -50%;
+  content: "";
+  z-index: -1;
+  border-radius: 5px;
+  background-color: #402c7c;
 }
 
+.锚链接-3级标题 > .标题序号-3级 {
+  margin-right: 10px;
+  width: 3.5em;
+  height: 2em;
+  font-size: 0.8em;
+}
 /* ------------------- ↑ 章节区 ------------------- */
 
 /* ------------------- ↓ 收藏栏 ------------------- */
