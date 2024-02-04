@@ -585,11 +585,18 @@
               alt="git push -u origin main" />
           </figure>
           <p class="分区普通文本">
-            运行命令后，只要看到类似的文本<span class="附加说明"
-              >尤其是：<span class="行内代码"
-                >Writing objects: 100% (x/x), x bytes | x KiB/s, done.
-              </span></span
-            >，就表示推送成功了！赶紧刷新一下远程仓库试试！
+            运行命令后，会看到类似的文本。这就表示推送成功了！
+          </p>
+          <p class="分区普通文本">
+            如果<span class="强调">失败</span>，会看到些许不同的信息：
+          </p>
+          <figure class="截图容器">
+            <img
+              src="/Images/Blogs/Git/Git 远程工作流/GitHub-推送失败.png"
+              alt="GitHub 推送失败" />
+          </figure>
+          <p class="分区普通文本">
+            红框中的错误信息，说明推送时跟远程服务器失去了连接，此时就要再次推送。
           </p>
         </div>
       </li>
