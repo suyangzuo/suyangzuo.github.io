@@ -1329,7 +1329,7 @@ body {
   color: black;
   border-radius: 3px;
   padding: 0 5px;
-  margin: 0 4px;
+  margin: 0 0.25em;
   font-size: 0.9em;
   font-weight: 500;
 }
@@ -1344,7 +1344,7 @@ body {
   background-color: #464a4c;
   color: #ccc;
   padding: 0 5px;
-  margin: 0 4px;
+  margin: 0 0.25em;
   border-radius: 3px;
   font-size: 0.9em;
 }
@@ -1352,7 +1352,7 @@ body {
 .行内代码 {
   font-family: "JetBrains Mono", "Noto Sans SC", sans-serif;
   color: #67cdcc;
-  margin: 0 4px;
+  margin: 0 0.25em;
   font-size: 0.95em;
 }
 
@@ -1362,7 +1362,7 @@ body {
   color: white;
   padding: 0 5px;
   border-radius: 3px;
-  margin: 0 4px;
+  margin: 0 0.25em;
 }
 
 .分区普通文本 {
