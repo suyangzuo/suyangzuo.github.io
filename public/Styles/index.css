@@ -412,6 +412,29 @@
   justify-content: center;
   align-content: center;
   gap: max(50px, 5vh) 10vw;
+  --gradient-x: "0px";
+  --gradient-y: "0px";
+}
+
+.learn-list::before {
+  position: absolute;
+  content: "";
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  background-image: radial-gradient(
+    circle at var(--gradient-x) var(--gradient-y),
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 90%
+  );
+  opacity: 0;
+  transition: 250ms;
+}
+
+.learn-list:hover::before {
+  opacity: 1;
 }
 
 .learn-link {
