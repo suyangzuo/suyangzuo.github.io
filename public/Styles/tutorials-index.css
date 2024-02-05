@@ -139,7 +139,7 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
   padding: 10px 0;
 }
 
@@ -181,9 +181,8 @@ body {
 }
 
 .教程Logo {
-  width: 80px;
-  height: 80px;
-  aspect-ratio: 1;
+  width: 80%;
+  height: 60px;
   object-fit: contain;
 }
 
