@@ -803,7 +803,7 @@ body {
   padding: 0 15px;
   font-size: 1.125rem;
   color: rgb(255, 255, 255);
-  font-family: "Jetbrains Mono", "Noto Sans SC";
+  font-family: "Titillium Web", "Noto Sans SC";
   font-weight: 600;
   display: flex;
   justify-content: flex-start;
@@ -930,6 +930,7 @@ body {
 }
 
 .简介标题 {
+  font-family: "Titillium Web", "Noto Sans SC";
   font-size: 3rem;
   letter-spacing: 0.25rem;
   display: flex;
@@ -1354,6 +1355,11 @@ body {
   color: #67cdcc;
   margin: 0 0.25em;
   font-size: 0.95em;
+}
+
+:where(.分区2级标题, .分区3级标题) > .行内代码 {
+  font-size: 0.75em;
+  translate: 0 0.1em;
 }
 
 .附加说明 {
