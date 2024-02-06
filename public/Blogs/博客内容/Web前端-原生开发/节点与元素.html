@@ -449,5 +449,100 @@
         alt="内部元素示意图" />
     </figure>
     <p class="分区普通文本">规则没有变：只有被标签包裹的才是元素。</p>
+
+    <h3 class="分区标题 分区3级标题">陷阱</h3>
+    <p class="分区普通文本">
+      使用 JavaScript
+      处理节点时，可能会遇到一些非常难以察觉的问题。假设有如下代码：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-html">
+        &lt;div id="测试"&gt;&lt;span&gt;谢谢&lt;/span&gt;&lt;/div&gt;
+      </code>
+    </pre>
+    <p class="分区普通文本">试问：测试元素内部，有几个节点？有几个元素？</p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/节点与元素/单元素换行前-节点元素数量.png"
+        alt="单元素换行前-节点元素数量" />
+    </figure>
+    <p class="分区普通文本">
+      正确答案是：1 个节点，1 个元素。<span class="代码"
+        >&lt;span&gt;谢谢&lt;/span&gt;</span
+      >既是 1 个元素节点，也是 1 个元素。我们分别访问<span class="代码"
+        >&lt;div id="测试"&gt;&lt;/div&gt;</span
+      >内的第 1 个节点和第 1 个元素：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/节点与元素/单元素换行前-首节点元素.png"
+        alt="单元素换行前-首节点元素" />
+    </figure>
+    <p class="分区普通文本">
+      在这种情况下，第 1 个节点和第 1 个元素都是<span class="代码">span</span
+      >元素，二者完全一样。
+    </p>
+    <p class="分区普通文本">但是，如果代码变成了下面这种写法呢？</p>
+    <pre class="line-numbers">
+      <code class="lang-html">
+        &lt;div id="测试"&gt;
+          &lt;span&gt;谢谢&lt;/span&gt;
+        &lt;/div&gt;
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      很多时候，并非程序员刻意这样写代码，而是由代码格式化功能导致的结果。现在还是同样的问题：测试元素内部，有几个节点？几个元素？
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/节点与元素/单元素换行后-节点元素数量.png"
+        alt="单元素换行后-节点元素数量" />
+    </figure>
+    <p class="分区普通文本">
+      正确答案是：3 个节点，1 个元素。突然就多出了 2
+      个节点！这是很多不明就里的初学者摸不着头脑的地方。让我们看看多出来的 2
+      个节点都是什么：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/节点与元素/单元素换行后-文本节点值.png"
+        alt="单元素换行后-文本节点值" />
+    </figure>
+    <p class="分区普通文本">
+      多出的都是文本节点，值都是换行符加上几个空格。如果你理解了<span
+        class="代码"
+        >2-2</span
+      >的内容，那么应该明白是怎么回事了。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/节点与元素/单元素换行后-格式化说明.png"
+        alt="单元素换行后-格式化说明" />
+    </figure>
+    <p class="分区普通文本">
+      多出来的 2 个文本节点，就是因为格式化后换行而产生的。每个文本节点包含 1
+      个换行符 + 若干空格。
+    </p>
+    <p class="分区普通文本">
+      此时，我们再次访问<span class="代码"
+        >&lt;div id="测试"&gt;&lt;/div&gt;</span
+      >内的第 1 个节点和第 1 个元素：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/节点与元素/单元素换行后-首节点元素.png"
+        alt="单元素换行后-首节点元素" />
+    </figure>
+    <p class="分区普通文本">
+      在这种情况下，第 1 个节点是文本节点，而第 1 个元素是<span class="代码"
+        >span</span
+      >元素。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p>
+        通过上述内容，我们了解到：处理节点相关的数据，尤其是节点数量、节点顺序时，一定要当心，因为换行或其它空白字符会导致节点数量、顺序都产生变化。而换行很多时候不在预料之中，而是由代码格式化功能导致的。
+      </p>
+    </section>
   </article>
 </div>
