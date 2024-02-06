@@ -60,7 +60,7 @@ let 前一专题 = null;
 设置内容()
   .then(() => 生成章节区())
   .then(() => 生成章节());
-  // .then(() => 获取章节区标题组());
+// .then(() => 获取章节区标题组());
 
 技术栈组.forEach((技术栈) => {
   技术栈.addEventListener("click", 点选技术栈);
@@ -69,7 +69,7 @@ let 前一专题 = null;
     设置内容()
       .then(() => 生成章节区())
       .then(() => 生成章节());
-      // .then(() => 获取章节区标题组());
+    // .then(() => 获取章节区标题组());
   });
   技术栈.addEventListener("click", () => {
     if (技术栈对话框.open) {
@@ -261,7 +261,7 @@ function 修改专题样式(event) {
   设置内容()
     .then(() => 生成章节区())
     .then(() => 生成章节());
-    // .then(() => 获取章节区标题组());
+  // .then(() => 获取章节区标题组());
 }
 
 技术栈选择器.addEventListener("click", 显示技术栈内容);
@@ -373,7 +373,7 @@ function 特殊元素样式补充() {
     const 首个2级行内专业名词前一节点 = 首个2级行内专业名词?.previousSibling;
     if (
       首个2级行内专业名词前一节点?.textContent.trim() === "" ||
-      首个2级行内专业名词前一节点?.className.includes("标题序号")
+      首个2级行内专业名词前一节点?.className?.includes("标题序号")
     ) {
       首个2级行内专业名词.style.marginLeft = "0";
     }
@@ -432,14 +432,15 @@ function 特殊元素样式补充() {
   行内专业名词组.forEach((行内专业名词) => {
     const 前一节点 = 行内专业名词.previousSibling;
     if (
-      前一节点.tagName === "BR" ||
-      (前一节点.nodeType === Node.TEXT_NODE &&
-        (前一节点.textContent.at(-1) === "，" ||
-          前一节点.textContent.at(-1) === "。" ||
-          前一节点.textContent.at(-1) === "：" ||
-          前一节点.textContent.at(-1) === "；" ||
-          前一节点.textContent.at(-1) === "、" ||
-          前一节点.textContent.trim() === ""))
+      前一节点 !== null &&
+      (前一节点.tagName === "BR" ||
+        (前一节点.nodeType === Node.TEXT_NODE &&
+          (前一节点.textContent.at(-1) === "，" ||
+            前一节点.textContent.at(-1) === "。" ||
+            前一节点.textContent.at(-1) === "：" ||
+            前一节点.textContent.at(-1) === "；" ||
+            前一节点.textContent.at(-1) === "、" ||
+            前一节点.textContent.trim() === "")))
     ) {
       行内专业名词.style.marginLeft = "0";
     }

@@ -9,6 +9,8 @@
   --正文分区-宽度: 800px;
   --专题标记-原创: rgb(76, 179, 160);
   --专题标记-转载: orange;
+  --表身区-奇数行背景色: #234;
+  --超链接-悬停颜色: rgb(173, 104, 238);
 }
 
 html {
@@ -911,7 +913,11 @@ body {
 }
 
 .超链接:hover {
-  color: rgb(173, 104, 238) !important;
+  color: var(--超链接-悬停颜色) !important;
+}
+
+.超链接:hover > * {
+  color: var(--超链接-悬停颜色) !important;
 }
 
 /*-------------- ↓ 内容区顶栏 --------------*/
@@ -1335,6 +1341,11 @@ body {
   font-weight: 500;
 }
 
+:where(.分区2级标题, .分区3级标题) > .专业名词 {
+  font-size: 0.75em;
+  translate: 0 0.1em;
+}
+
 .行内专业名词 {
   color: #67cdcc;
   margin: 0 0.5ch;
@@ -1359,6 +1370,11 @@ body {
 
 :where(.分区2级标题, .分区3级标题) > .行内代码 {
   font-size: 0.75em;
+  translate: 0 0.1em;
+}
+
+.章节区内容 .行内代码 {
+  font-size: 0.85em;
   translate: 0 0.1em;
 }
 
