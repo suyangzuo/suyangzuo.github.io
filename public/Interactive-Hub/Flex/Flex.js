@@ -100,6 +100,9 @@ function 修改布局() {
     尺寸区.style.pointerEvents = "none";
   } else {
     弹性展示区.style.display = "flex";
+    修改主轴方向();
+    修改行间隙值();
+    修改列间隙值();
     主轴按钮.style.background =
       "linear-gradient(90deg, rgb(159, 159, 159) 0%, rgb(205, 205, 205) 100%)";
     主轴按钮.style.color = "black";
@@ -422,6 +425,7 @@ function 重置参数() {
   列间隙.value = 0;
   列间隙.setAttribute("列间隙值", `${列间隙.value}`);
   调整列间隙位置();
+  console.log(行间隙.value);
 
   主轴按钮.style.background =
     "linear-gradient(90deg, rgb(29, 29, 29) 0%, rgb(45, 45, 45) 100%)";
