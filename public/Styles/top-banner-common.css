@@ -221,7 +221,7 @@
     flex-direction: column;
     translate: 0 110px;
     background-color: rgb(23, 28, 33);
-    border-radius: 10px;
+    border-radius: 5px;
     outline: solid 2px #fff2;
     overflow: hidden;
     transition: 350ms ease-out;
@@ -240,8 +240,7 @@
   }
 
   .导航2级链接:hover {
-    background-color: rgb(172, 184, 196);
-    color: black;
+    background-color: rgb(47, 95, 69);
   }
 }
 
