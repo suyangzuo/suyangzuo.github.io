@@ -193,7 +193,6 @@ body {
   height: fit-content;
   max-height: 65vh;
   overflow-x: hidden;
-  overflow-y: scroll;
   backdrop-filter: blur(10px);
   border: none;
 }
@@ -226,11 +225,11 @@ body {
 
 #关闭收藏栏 {
   position: absolute;
-  top: 15px;
-  right: 15px;
-  width: 35px;
-  height: 35px;
-  border-radius: 100px;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
   background-color: transparent;
   border: solid 2px #aaa;
   color: #aaa;
@@ -241,7 +240,7 @@ body {
 
 #关闭收藏栏:hover {
   border: none;
-  background-color: #ccc;
+  background-color: #aaa;
   color: black;
 }
 
@@ -657,7 +656,7 @@ body {
 }
 
 .技术栈 > img {
-  width: 50px;
+  width: 80%;
   height: 50px;
   object-fit: contain;
 }

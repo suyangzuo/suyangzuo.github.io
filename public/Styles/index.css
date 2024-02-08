@@ -463,6 +463,11 @@
   justify-content: flex-start;
   align-items: center;
   gap: 15px;
+  transition: 250ms;
+}
+
+.learn-item:hover .learn-text > h3 {
+  color: lightblue;
 }
 
 .learn-text > h3 > i {
@@ -480,6 +485,11 @@
 
 .learn-text > p {
   color: gray;
+  transition: 250ms;
+}
+
+.learn-item:hover .learn-text > p {
+  color: #ccc;
 }
 
 /* <!-- ------------------ ↑ 学习内容 ------------------- --> */
