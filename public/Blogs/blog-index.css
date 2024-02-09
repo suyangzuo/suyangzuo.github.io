@@ -231,7 +231,7 @@ body {
   height: 30px;
   border-radius: 5px;
   background-color: transparent;
-  border: solid 2px #aaa;
+  /* border: solid 2px #aaa; */
   color: #aaa;
   display: flex;
   justify-content: center;
