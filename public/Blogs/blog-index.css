@@ -1367,6 +1367,11 @@ body {
   font-size: 0.95em;
 }
 
+.行内代码:first-child,
+.标题序号-3级 + .行内代码 {
+  margin-left: 0;
+}
+
 :where(.分区2级标题, .分区3级标题) > .行内代码 {
   font-size: 0.75em;
   translate: 0 0.1em;
