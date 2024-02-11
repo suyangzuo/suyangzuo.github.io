@@ -50,15 +50,24 @@
 }
 
 .欢迎文本区 > h1 {
+  font-size: 2.5rem;
+  font-weight: 450;
+}
+
+.欢迎文本区 > h1 > span {
   font-size: 3rem;
+  font-weight: 600;
+  color: goldenrod;
 }
 
 .欢迎文本区 > p {
+  font-size: 1.125rem;
   color: gray;
+  line-height: 2rem;
 }
 
 .欢迎按钮区 {
-  margin: 50px 0 0 0;
+  margin: 100px 0 0 0;
   display: flex;
   gap: 40px;
 }
