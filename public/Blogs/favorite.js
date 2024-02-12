@@ -162,7 +162,8 @@ function 从技术栈和专题获取收藏栏条目(技术栈名称参数, 专�
 function 生成条目删除按钮() {
   const 删除条目按钮 = document.createElement("button");
   删除条目按钮.className = "删除条目按钮";
-  删除条目按钮.innerHTML = "<i class='fa-solid fa-xmark'></i>";
+  删除条目按钮.innerHTML =
+    '<lord-icon src="https://cdn.lordicon.com/uwibpbyg.json" trigger="loop" stroke="light" delay="3000" colors="primary:#121331,secondary:#1a2530,tertiary:#a4a4a4" style="width:100%;height:100%"></lord-icon>';
   删除条目按钮.addEventListener(
     "click",
     点击条目删除按钮时更新条目技术栈和专题

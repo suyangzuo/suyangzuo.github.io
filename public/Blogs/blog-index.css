@@ -231,7 +231,6 @@ body {
   height: 30px;
   border-radius: 5px;
   background-color: transparent;
-  /* border: solid 2px #aaa; */
   color: #aaa;
   display: flex;
   justify-content: center;
@@ -271,7 +270,7 @@ body {
   top: -10px;
   right: -10px;
   border-radius: 100px;
-  background-color: #aaa;
+  background-color: #fff0;
   border: none;
   color: black;
   visibility: hidden;
@@ -285,7 +284,7 @@ body {
 }
 
 .删除条目按钮:hover {
-  background-color: #ccc;
+  filter: brightness(150%);
 }
 
 .删除条目按钮:active {
@@ -310,7 +309,7 @@ body {
 }
 
 #收藏条目-添加:hover > button {
-  color: white;
+  filter: brightness(150%);
 }
 
 #收藏条目-添加 > button:active {
