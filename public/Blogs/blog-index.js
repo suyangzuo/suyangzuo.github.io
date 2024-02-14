@@ -31,7 +31,6 @@ if (侧边栏布局 === null) {
 }
 let 专题组 = null;
 let 专题标记组 = null;
-
 let 技术栈名称 = "经验之谈";
 let 专题索引记录 = [{ 技术栈: "经验之谈", 专题索引: 0 }];
 
@@ -51,7 +50,14 @@ if (sessionStorage.getItem("页面技术栈") === null) {
 let index = JSON.parse(sessionStorage.getItem("专题索引记录")).find(
   (记录) => 记录.技术栈 === 技术栈名称
 ).专题索引;
+
 let 专题名称 = "首页";
+if (sessionStorage.getItem("专题") === null) {
+  sessionStorage.setItem("专题", 专题名称);
+} else {
+  专题名称 = sessionStorage.getItem("专题");
+}
+
 let 专题文件路径 = `./博客内容/${技术栈名称}/${专题名称}.html`;
 
 let 前一专题 = null;
@@ -83,6 +89,7 @@ function 从网址获取技术栈和专题() {
   const 专题 = paramsString.get("article");
   技术栈名称 = 技术栈;
   专题名称 = 专题;
+  sessionStorage.setItem("专题", 专题名称);
 }
 
 技术栈组.forEach((技术栈) => {
@@ -203,12 +210,14 @@ function 设置侧边栏(event) {
     // 专题名称 = 专题.getElementsByClassName("专题-内容")[0].textContent.trim();
 
     index = Array.from(专题组).indexOf(当前专题);
+
     if (!专题索引记录.some((记录) => 记录.技术栈 === 技术栈名称)) {
       专题索引记录.push({ 技术栈: 技术栈名称, 专题索引: index });
     } else {
       let 记录 = 专题索引记录.find((记录) => 记录.技术栈 === 技术栈名称);
       记录.专题索引 = index;
     }
+
     sessionStorage.setItem("专题索引记录", JSON.stringify(专题索引记录));
   }
 
@@ -238,6 +247,7 @@ function 设置侧边栏(event) {
   专题名称 = 专题组[index]
     ?.getElementsByClassName("专题-内容")[0]
     .textContent.trim();
+  sessionStorage.setItem("专题", 专题名称);
 
   const 选项卡图标 = document.querySelector("link[rel='icon']");
   const 技术栈图标 = document.querySelector(".专题名称 > img");
@@ -297,6 +307,7 @@ function 修改专题样式(event) {
   专题.style.setProperty("background", 侧边栏颜色_已选中, "important");
   前一专题 = 专题;
   专题名称 = 专题.getElementsByClassName("专题-内容")[0].textContent.trim();
+  sessionStorage.setItem("专题", 专题名称);
 
   index = Array.from(专题组).indexOf(专题);
   if (!专题索引记录.some((记录) => 记录.技术栈 === 技术栈名称)) {
