@@ -866,6 +866,7 @@ body {
   white-space: nowrap;
   text-overflow: ellipsis;
   font-size: 0.9rem;
+  color: rgb(202, 202, 202);
 }
 
 .标题内符号 {
@@ -1119,6 +1120,7 @@ body {
 
 .分区2级标题 {
   background: linear-gradient(50deg, #2c3e50, #4b5157);
+  color: lightskyblue;
   padding: 8px 20px;
   margin: 100px 0 0 0;
   font-size: 2.5rem;
@@ -1388,6 +1390,10 @@ body {
   padding: 0 5px;
   border-radius: 3px;
   margin: 0 0.25em;
+}
+
+*[class*="2级标题"] > .附加说明 {
+  background-color: rgb(71, 110, 183);
 }
 
 .分区普通文本 {
