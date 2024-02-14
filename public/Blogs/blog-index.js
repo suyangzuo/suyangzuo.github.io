@@ -56,11 +56,34 @@ let 专题文件路径 = `./博客内容/${技术栈名称}/${专题名称}.html
 
 let 前一专题 = null;
 
+从网址获取技术栈和专题();
+
 设置侧边栏();
 设置内容()
   .then(() => 生成章节区())
-  .then(() => 生成章节());
+  .then(() => 生成章节())
+  .then(() => 更新网址(技术栈名称, 专题名称));
 // .then(() => 获取章节区标题组());
+
+function 更新网址(技术栈, 专题) {
+  const newUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?tech=${技术栈}&article=${专题}`;
+  const state = { path: newUrl };
+  const unused = "";
+  window.history.pushState(state, unused, newUrl);
+}
+
+function 从网址获取技术栈和专题() {
+  const url = new URL(decodeURI(window.location.href));
+  const paramsString = url.searchParams; //返回 url 中的参数对象
+  const 包含技术栈 = paramsString.has("tech");
+  const 包含专题 = paramsString.has("article");
+  if (!包含技术栈 || !包含专题) return;
+
+  const 技术栈 = paramsString.get("tech");
+  const 专题 = paramsString.get("article");
+  技术栈名称 = 技术栈;
+  专题名称 = 专题;
+}
 
 技术栈组.forEach((技术栈) => {
   技术栈.addEventListener("click", 点选技术栈);
@@ -68,7 +91,8 @@ let 前一专题 = null;
   技术栈.addEventListener("click", () => {
     设置内容()
       .then(() => 生成章节区())
-      .then(() => 生成章节());
+      .then(() => 生成章节())
+      .then(() => 更新网址(技术栈名称, 专题名称));
     // .then(() => 获取章节区标题组());
   });
   技术栈.addEventListener("click", () => {
@@ -118,7 +142,7 @@ function 生成侧边栏标签() {
   return 侧边栏标签;
 }
 
-function 设置侧边栏() {
+function 设置侧边栏(event) {
   侧边栏.innerHTML = "";
 
   let fileName = `./侧边栏/${技术栈名称}.html`;
@@ -163,6 +187,31 @@ function 设置侧边栏() {
   //   });
 
   专题组 = document.querySelectorAll(".专题");
+
+  if (event === undefined) {
+    const 当前专题 = Array.from(专题组).find(
+      (专题) =>
+        专题名称 ===
+        专题.getElementsByClassName("专题-内容")[0].textContent.trim()
+    );
+
+    if (前一专题 !== null && 前一专题 !== 当前专题) {
+      前一专题.style.setProperty("background", "transparent");
+    }
+    当前专题.style.setProperty("background", 侧边栏颜色_已选中, "important");
+    前一专题 = 当前专题;
+    // 专题名称 = 专题.getElementsByClassName("专题-内容")[0].textContent.trim();
+
+    index = Array.from(专题组).indexOf(当前专题);
+    if (!专题索引记录.some((记录) => 记录.技术栈 === 技术栈名称)) {
+      专题索引记录.push({ 技术栈: 技术栈名称, 专题索引: index });
+    } else {
+      let 记录 = 专题索引记录.find((记录) => 记录.技术栈 === 技术栈名称);
+      记录.专题索引 = index;
+    }
+    sessionStorage.setItem("专题索引记录", JSON.stringify(专题索引记录));
+  }
+
   专题标记组 = document.querySelectorAll(".专题-标记");
 
   index = JSON.parse(sessionStorage.getItem("专题索引记录")).find(
@@ -260,7 +309,8 @@ function 修改专题样式(event) {
 
   设置内容()
     .then(() => 生成章节区())
-    .then(() => 生成章节());
+    .then(() => 生成章节())
+    .then(() => 更新网址(技术栈名称, 专题名称));
   // .then(() => 获取章节区标题组());
 }
 
