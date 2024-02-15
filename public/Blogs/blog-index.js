@@ -389,6 +389,17 @@ function 生成章节() {
       序号.className = "标题序号-3级";
       序号.textContent = `${index + 1}`;
       锚链接.prepend(序号);
+
+      锚链接.addEventListener("click", (event) => {
+        event.preventDefault(); //防止将锚链接加入历史记录
+
+        //上一行也会同时屏蔽锚链接的滚动，下面的代码恢复滚动功能
+        const targetElement = document.querySelector(
+          锚链接.getAttribute("href")
+        );
+        targetElement.scrollIntoView();
+      });
+
       章节区内容.appendChild(锚链接);
     });
   } else {
@@ -399,16 +410,38 @@ function 生成章节() {
       二级锚链接.innerHTML = 二级标题.innerHTML;
       const 标题序号2级 = 二级锚链接.querySelector(".标题序号-2级");
       二级锚链接.href = `#${二级标题.id}`;
+
+      二级锚链接.addEventListener("click", (event) => {
+        event.preventDefault(); //防止将锚链接加入历史记录
+
+        //上一行也会同时屏蔽锚链接的滚动，下面的代码恢复滚动功能
+        const targetElement = document.querySelector(
+          二级锚链接.getAttribute("href")
+        );
+        targetElement.scrollIntoView();
+      });
+
       章节区内容.appendChild(二级锚链接);
       const 三级标题组 = document.querySelectorAll(
         `#${二级标题.id} ~ .分区3级标题`
       );
       三级标题组.forEach((三级标题, index_3) => {
-        三级标题.id = `三级标题-${二级标题.id}-${index_3 + 1}`;
+        三级标题.id = `三级标题-${index_2 + 1}-${index_3 + 1}`;
         const 三级锚链接 = document.createElement("a");
         三级锚链接.className = "锚链接-3级标题";
         三级锚链接.innerHTML = 三级标题.innerHTML;
         三级锚链接.href = `#${三级标题.id}`;
+
+        三级锚链接.addEventListener("click", (event) => {
+          event.preventDefault(); //防止将锚链接加入历史记录
+
+          //上一行也会同时屏蔽锚链接的滚动，下面的代码恢复滚动功能
+          const targetElement = document.querySelector(
+            三级锚链接.getAttribute("href")
+          );
+          targetElement.scrollIntoView();
+        });
+
         章节区内容.appendChild(三级锚链接);
       });
     });
