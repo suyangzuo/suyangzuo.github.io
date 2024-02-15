@@ -71,6 +71,15 @@ let 前一专题 = null;
   .then(() => 更新网址(技术栈名称, 专题名称));
 // .then(() => 获取章节区标题组());
 
+window.addEventListener("popstate", (event) => {
+  从网址获取技术栈和专题();
+
+  设置侧边栏();
+  设置内容()
+    .then(() => 生成章节区())
+    .then(() => 生成章节());
+});
+
 function 更新网址(技术栈, 专题) {
   const newUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?tech=${技术栈}&article=${专题}`;
   const state = { path: newUrl };
