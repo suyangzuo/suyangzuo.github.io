@@ -350,7 +350,10 @@ function 点击收藏栏条目访问博客(event) {
   const 侧边栏标签 = 生成侧边栏标签();
   侧边栏.prepend(侧边栏标签);
 
-  设置内容();
+  设置内容()
+    .then(() => 生成章节区())
+    .then(() => 生成章节())
+    .then(() => 更新网址(技术栈名称, 专题名称));
 
   专题组 = document.querySelectorAll(".专题");
   专题 = Array.from(专题组).find(
