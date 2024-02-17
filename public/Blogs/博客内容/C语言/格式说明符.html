@@ -135,6 +135,11 @@
             font-family: "JetBrains Mono", sans-serif;
           }
 
+          .表身区 > tr > th > span {
+            color: yellowgreen;
+            margin-right: 2px;
+          }
+
           .表身区 > tr > td:nth-child(3) {
             text-align: center;
             width: 35%;
@@ -154,101 +159,100 @@
       </thead>
       <tbody class="表身区">
         <tr>
-          <th>%d</th>
+          <th><span>&#x0025;</span>d</th>
           <td>有符号整数</td>
           <td>int</td>
         </tr>
         <tr>
-          <th>%u</th>
+          <th><span>&#x0025;</span>u</th>
           <td>无符号整数</td>
           <td>unsigned int</td>
         </tr>
         <tr>
-          <th>%f</th>
+          <th><span>&#x0025;</span>f</th>
           <td>单精度浮点数</td>
           <td>float</td>
         </tr>
         <tr>
-          <th>%lf</th>
+          <th><span>&#x0025;</span>lf</th>
           <td>双精度浮点数</td>
           <td>double</td>
         </tr>
         <tr>
-          <th>%c</th>
+          <th><span>&#x0025;</span>c</th>
           <td>字符</td>
           <td>char</td>
         </tr>
         <tr>
-          <th>%s</th>
+          <th><span>&#x0025;</span>s</th>
           <td>字符串</td>
           <td>char[] <span class="强调">/</span> char*</td>
         </tr>
         <tr>
-          <th>%p</th>
+          <th><span>&#x0025;</span>p</th>
           <td>指针</td>
           <td>void*</td>
         </tr>
         <tr>
-          <th>%%</th>
+          <th><span>&#x0025;</span>zu</th>
+          <td>对象的最大占用空间</td>
+          <td>size_t</td>
+        </tr>
+        <tr>
+          <th><span>&#x0025;</span>x</th>
+          <td>16进制无符号整数</td>
+          <td>unsigned int</td>
+        </tr>
+        <tr style="border-bottom: solid 2px goldenrod">
+          <th><span>&#x0025;</span>%</th>
           <td>百分号</td>
           <td>%</td>
         </tr>
         <tr>
-          <th>%hd</th>
+          <th><span>&#x0025;</span>hd</th>
           <td>短有符号整数</td>
           <td>short int</td>
         </tr>
         <tr>
-          <th>%hu</th>
+          <th><span>&#x0025;</span>hu</th>
           <td>短无符号整数</td>
           <td>unsigned short int</td>
         </tr>
         <tr>
-          <th>%ld</th>
+          <th><span>&#x0025;</span>ld</th>
           <td>长有符号整数</td>
           <td>long int</td>
         </tr>
         <tr>
-          <th>%lu</th>
+          <th><span>&#x0025;</span>lu</th>
           <td>长无符号整数</td>
           <td>unsigned long int</td>
         </tr>
         <tr>
-          <th>%lld</th>
+          <th><span>&#x0025;</span>lld</th>
           <td>超长有符号整数</td>
           <td>long long int</td>
         </tr>
         <tr>
-          <th>%llu</th>
+          <th><span>&#x0025;</span>llu</th>
           <td>超长无符号整数</td>
           <td>unsigned long long int</td>
         </tr>
         <tr>
-          <th>%x</th>
-          <td>16进制无符号整数</td>
-          <td>unsigned int</td>
-        </tr>
-        <tr>
-          <th>%Lf</th>
+          <th><span>&#x0025;</span>Lf</th>
           <td>长精度浮点数</td>
           <td>long double</td>
         </tr>
         <tr>
-          <th>%e</th>
+          <th><span>&#x0025;</span>e</th>
           <td>科学记数法形式的浮点数</td>
           <td>double</td>
         </tr>
         <tr>
-          <th>%zd</th>
+          <th><span>&#x0025;</span>zd</th>
           <td>可能的负空间占用或偏移</td>
           <td>ssize_t</td>
         </tr>
-        <tr>
-          <th>%zu</th>
-          <td>对象的最大占用空间</td>
-          <td>size_t</td>
-        </tr>
-        <tr></tr>
       </tbody>
     </table>
   </article>

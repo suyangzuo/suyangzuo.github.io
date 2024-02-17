@@ -22,6 +22,9 @@ const 收藏栏添加按钮 = document.getElementById("收藏条目-添加");
 const 关闭收藏栏按钮 = document.getElementById("关闭收藏栏");
 const 收藏栏重复提示 = document.getElementById("收藏栏重复提示");
 
+// let 章节区标题观察器 = null;
+let 上一激活标题 = null;
+
 // let 章节区标题组 = [];
 
 let 侧边栏布局 = localStorage.getItem("侧边栏布局");
@@ -68,6 +71,7 @@ let 前一专题 = null;
 设置内容()
   .then(() => 生成章节区())
   .then(() => 生成章节())
+  .then(() => 初始化章节观察器())
   .then(() => 更新网址(技术栈名称, 专题名称));
 // .then(() => 获取章节区标题组());
 
@@ -77,7 +81,8 @@ window.addEventListener("popstate", (event) => {
   设置侧边栏();
   设置内容()
     .then(() => 生成章节区())
-    .then(() => 生成章节());
+    .then(() => 生成章节())
+    .then(() => 初始化章节观察器());
 });
 
 function 更新网址(技术栈, 专题) {
@@ -108,6 +113,7 @@ function 从网址获取技术栈和专题() {
     设置内容()
       .then(() => 生成章节区())
       .then(() => 生成章节())
+      .then(() => 初始化章节观察器())
       .then(() => 更新网址(技术栈名称, 专题名称));
     // .then(() => 获取章节区标题组());
   });
@@ -330,6 +336,7 @@ function 修改专题样式(event) {
   设置内容()
     .then(() => 生成章节区())
     .then(() => 生成章节())
+    .then(() => 初始化章节观察器())
     .then(() => 更新网址(技术栈名称, 专题名称));
   // .then(() => 获取章节区标题组());
 }
@@ -408,7 +415,7 @@ function 生成章节() {
       const 二级锚链接 = document.createElement("a");
       二级锚链接.className = "锚链接-2级标题";
       二级锚链接.innerHTML = 二级标题.innerHTML;
-      const 标题序号2级 = 二级锚链接.querySelector(".标题序号-2级");
+      // const 标题序号2级 = 二级锚链接.querySelector(".标题序号-2级");
       二级锚链接.href = `#${二级标题.id}`;
 
       二级锚链接.addEventListener("click", (event) => {
@@ -446,6 +453,45 @@ function 生成章节() {
       });
     });
   }
+}
+
+function 初始化章节观察器() {
+  // 章节区标题观察器 = null;
+  const 正文区标题组 = document.querySelectorAll(".分区3级标题");
+  const 章节区标题组 = document.querySelectorAll(".锚链接-3级标题");
+  const 参数 = {
+    rootMargin: "-100px 0px -50% 0px",
+    threshold: 1,
+  };
+  const 正文区标题观察器 = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      /* const 标题矩形 = entry.boundingClientRect;
+      if (
+        !entry.isIntersecting ||
+        (entry.isIntersecting && 标题矩形.top <= 400)
+      ) {
+        const 标题索引 = Array.from(正文区标题组).indexOf(entry.target);
+        章节区标题组[标题索引].classList.add("已激活");
+        if (上一激活标题 !== null && 上一激活标题 !== 章节区标题组[标题索引]) {
+          上一激活标题.classList.remove("已激活");
+        }
+        上一激活标题 = 章节区标题组[标题索引];
+      } */
+
+      if (entry.isIntersecting) {
+        const 标题索引 = Array.from(正文区标题组).indexOf(entry.target);
+        章节区标题组[标题索引].classList.add("已激活");
+        if (上一激活标题 !== null && 上一激活标题 !== 章节区标题组[标题索引]) {
+          上一激活标题.classList.remove("已激活");
+        }
+        上一激活标题 = 章节区标题组[标题索引];
+      }
+    });
+  }, 参数);
+
+  正文区标题组.forEach((标题) => {
+    正文区标题观察器.observe(标题);
+  });
 }
 
 /* function 获取章节区标题组() {

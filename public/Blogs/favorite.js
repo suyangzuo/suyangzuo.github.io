@@ -353,6 +353,7 @@ function 点击收藏栏条目访问博客(event) {
   设置内容()
     .then(() => 生成章节区())
     .then(() => 生成章节())
+    .then(() => 初始化章节观察器())
     .then(() => 更新网址(技术栈名称, 专题名称));
 
   专题组 = document.querySelectorAll(".专题");

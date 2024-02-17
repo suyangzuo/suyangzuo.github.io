@@ -67,7 +67,7 @@ li > a > i {
   background-color: #171c21;
   position: relative;
   bottom: 0;
-  z-index: 9998;
+  z-index: 9990;
   display: flex;
   justify-content: center;
   align-items: center;
