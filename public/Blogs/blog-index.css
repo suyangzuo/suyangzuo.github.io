@@ -1,7 +1,7 @@
 :root {
   --侧边栏宽度: 250px;
   --侧边栏颜色-鼠标悬停: rgb(54, 62, 78);
-  --侧边栏颜色-已选中: rgb(122, 67, 107);
+  --侧边栏颜色-已选中: rgb(96, 50, 83);
   /* --侧边栏背景: linear-gradient(60deg, #1f242b 0%, #252c32 100%); */
   --侧边栏背景: linear-gradient(60deg, #141518 0%, #171c21 100%);
   --专题内容区背景: linear-gradient(90deg, #181c20 0%, #262d35 100%);
@@ -867,6 +867,10 @@ body {
 .专题:hover {
   background: var(--侧边栏颜色-鼠标悬停) !important;
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.专题.当前专题 {
+  background-color: var(--侧边栏颜色-已选中) !important;
 }
 
 .专题-标记 {

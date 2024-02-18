@@ -22,7 +22,6 @@ const 收藏栏添加按钮 = document.getElementById("收藏条目-添加");
 const 关闭收藏栏按钮 = document.getElementById("关闭收藏栏");
 const 收藏栏重复提示 = document.getElementById("收藏栏重复提示");
 
-// let 章节区标题观察器 = null;
 let 上一激活标题 = null;
 
 // let 章节区标题组 = [];
@@ -211,16 +210,17 @@ function 设置侧边栏(event) {
   专题组 = document.querySelectorAll(".专题");
 
   if (event === undefined) {
-    console.log(专题名称);
     const 当前专题 = Array.from(专题组).find(
       (专题) =>
         专题名称 === 专题.getElementsByClassName("专题-内容")[0].innerText,
     );
 
     if (前一专题 !== null && 前一专题 !== 当前专题) {
-      前一专题.style.setProperty("background", "transparent");
+      // 前一专题.style.setProperty("background", "transparent");
+      前一专题.classList.remove("当前专题");
     }
-    当前专题.style.setProperty("background", 侧边栏颜色_已选中, "important");
+    // 当前专题.style.setProperty("background", 侧边栏颜色_已选中, "important");
+    当前专题.classList.add("当前专题");
     前一专题 = 当前专题;
     // 专题名称 = 专题.getElementsByClassName("专题-内容")[0].textContent.trim();
 
@@ -242,11 +242,12 @@ function 设置侧边栏(event) {
     (记录) => 记录.技术栈 === 技术栈名称,
   ).专题索引;
 
-  专题组[index]?.style.setProperty(
+  /*专题组[index]?.style.setProperty(
     "background",
     侧边栏颜色_已选中,
     "important",
-  );
+  );*/
+  专题组[index]?.classList.add("当前专题");
   专题组.forEach((专题) => {
     专题.addEventListener("click", 修改专题样式);
     const 标记 = 专题.querySelector(".专题-标记");
@@ -317,9 +318,11 @@ function 修改专题样式(event) {
   const 专题 = event.currentTarget;
   if (前一专题 === 专题) return;
   if (前一专题 !== null) {
-    前一专题.style.setProperty("background", "transparent");
+    // 前一专题.style.setProperty("background", "transparent");
+    前一专题.classList.remove("当前专题");
   }
-  专题.style.setProperty("background", 侧边栏颜色_已选中, "important");
+  // 专题.style.setProperty("background", 侧边栏颜色_已选中, "important");
+  专题.classList.add("当前专题");
   前一专题 = 专题;
   专题名称 = 专题.getElementsByClassName("专题-内容")[0].innerText;
   sessionStorage.setItem("专题", 专题名称);
@@ -456,7 +459,7 @@ function 生成章节() {
 }
 
 function 初始化章节观察器() {
-  // 章节区标题观察器 = null;
+  const 简介标题 = document.querySelector(".简介标题");
   const 正文区标题组 = document.querySelectorAll(".分区3级标题");
   const 章节区标题组 = document.querySelectorAll(".锚链接-3级标题");
   const 参数 = {
@@ -479,16 +482,27 @@ function 初始化章节观察器() {
       } */
 
       if (entry.isIntersecting) {
-        const 标题索引 = Array.from(正文区标题组).indexOf(entry.target);
-        章节区标题组[标题索引].classList.add("已激活");
+        let 标题索引 =
+          entry.target.className === 简介标题.className
+            ? -1
+            : Array.from(正文区标题组).indexOf(entry.target);
+
+        if (entry.target.className !== 简介标题.className) {
+          章节区标题组[标题索引].classList.add("已激活");
+        }
+
         if (上一激活标题 !== null && 上一激活标题 !== 章节区标题组[标题索引]) {
           上一激活标题.classList.remove("已激活");
         }
-        上一激活标题 = 章节区标题组[标题索引];
+
+        if (entry.target.className !== 简介标题.className) {
+          上一激活标题 = 章节区标题组[标题索引];
+        }
       }
     });
   }, 参数);
 
+  正文区标题观察器.observe(简介标题);
   正文区标题组.forEach((标题) => {
     正文区标题观察器.observe(标题);
   });

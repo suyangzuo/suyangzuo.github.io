@@ -118,6 +118,44 @@
       >最好使用相同的注册邮箱。
     </p>
 
+    <h3 class="分区标题 分区3级标题">配置代理</h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词">GitHub</span
+      >在大陆地区难以访问，经常会遇到代码无法推送或拉取的情况，如果你使用了<span
+        class="专业名词"
+        >VPN</span
+      >，需要设置<span class="行内专业名词">Git</span
+      >将本地计算机作为代理。在终端运行如下代码：
+    </p>
+    <pre><code class="lang-bash">
+      git config --global http.proxy 127.0.0.1:端口
+      git config --global https.proxy 127.0.0.1:端口
+    </code></pre>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p>代理的端口，要在代理软件中查看：</p>
+      <figure class="截图容器">
+        <img
+          src="/Images/Blogs/Git/Git 配置/Git代理端口.png"
+          alt="git 代理端口"
+        />
+      </figure>
+      <p class="分区普通文本">
+        我用的代理软件是<span class="专业名词">Clash Verge</span
+        >，它使用的端口是<span class="代码">7890</span>。
+      </p>
+    </section>
+    <p class="分区普通文本">
+      设置代理后，必须开启 VPN 才能跟 GitHub 通信。如果你的网络不需要 VPN
+      也能正常推送和拉取，那么你需要取消代理。在终端运行如下代码：
+    </p>
+    <pre><code class="lang-bash">
+      git config --global --unset http.proxy
+      git config --global --unset https.proxy
+    </code></pre>
+    <p class="分区普通文本">
+      运行上述代码之后，<span class="行内专业名词">Git</span>将不再使用代理。
+    </p>
     <section class="提醒" style="margin-top: 75px">
       <h3 class="提醒标题">提醒</h3>
       <p>
@@ -154,9 +192,31 @@
     <figure class="截图容器">
       <img src="/Images/Blogs/Git/Git 配置/查看邮箱.gif" alt="查看 Git 邮箱" />
     </figure>
+
+    <h3 class="分区标题 分区3级标题">查看代理</h3>
+    <p class="分区普通文本">在终端运行如下命令：</p>
+    <pre>
+      <code class="lang-bash">
+        git config http.proxy
+        git config https.proxy
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 配置/查看http代理.gif"
+        alt="查看 http 代理"
+      />
+    </figure>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 配置/查看https代理.gif"
+        alt="查看 https 代理"
+      />
+    </figure>
+
     <section class="提醒" style="margin-top: 75px">
       <h3 class="提醒标题">提醒</h3>
-      <p>如果运行查看命令后，结果是空的，说明用户名或邮箱尚未配置。</p>
+      <p>如果运行查看命令后，结果是空的，说明没有相关配置。</p>
     </section>
   </article>
 </div>
