@@ -202,6 +202,7 @@ body {
   height: 2em;
   font-size: 0.8em;
 }
+
 /* ------------------- ↑ 章节区 ------------------- */
 
 /* ------------------- ↓ 收藏栏 ------------------- */
@@ -546,7 +547,7 @@ body {
   height: 65px;
   border-radius: 50px;
   background: no-repeat center/contain url("./选择器修饰.png"),
-    radial-gradient(circle at center, #80d0c744 0%, #13547a11 50%);
+  radial-gradient(circle at center, #80d0c744 0%, #13547a11 50%);
   bottom: 40px;
   right: 50px;
   pointer-events: all;
@@ -899,13 +900,29 @@ body {
   color: orange;
 }
 
+.专题-内容 .专题内名词 {
+  color: #6dabe0;
+}
+
+.专题-内容 .专题内名词.左 {
+  margin-right: 0.25em;
+}
+
+.专题-内容 .专题内名词.中 {
+  margin: 0 0.25em;
+}
+
+.专题-内容 .专题内名词.右 {
+  margin-left: 0.25em;
+}
+
 /* -------------------------- ↑ 侧边栏样式 -------------------------- */
 
 .专题内容区 {
   width: 100%;
   min-height: calc(100vh - 50px);
   background-image: var(--专题内容区背景);
-  padding: 50px 50px 50px calc(var(--侧边栏宽度) + 15vw);
+  padding: 50px 50px 250px calc(var(--侧边栏宽度) + 15vw);
   color: white;
   display: flex;
   flex-direction: column;
@@ -968,6 +985,22 @@ body {
   align-items: center;
   gap: 10px;
   color: #fff;
+}
+
+.简介标题 .简介标题内名词 {
+  color: #0778d5;
+}
+
+.简介标题 .简介标题内名词.左 {
+  margin-right: 0.25em;
+}
+
+.简介标题 .简介标题内名词.中 {
+  margin: 0 0.25em;
+}
+
+.简介标题 .简介标题内名词.右 {
+  margin-left: 0.25em;
 }
 
 .原创,
@@ -1613,7 +1646,7 @@ pre[class*="language-"] {
 code[class*="language-"],
 pre[class*="language-"] {
   font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
-    "Noto Sans SC" !important;
+  "Noto Sans SC" !important;
 }
 
 div.code-toolbar > .toolbar > .toolbar-item > a,
@@ -1633,13 +1666,13 @@ div.code-toolbar > .toolbar {
 /* ------------------------------ ↓ 响应式设计 ------------------------------ */
 @media screen and (width <= 1920px) {
   .专题内容区 {
-    padding: 50px 50px 50px calc(var(--侧边栏宽度) + 7.5vw);
+    padding-left: calc(var(--侧边栏宽度) + 7.5vw);
   }
 
   code[class*="language-"],
   pre[class*="language-"] {
     font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
-      "Noto Sans SC" !important;
+    "Noto Sans SC" !important;
     font-size: 0.95em !important;
   }
 }
@@ -1650,13 +1683,13 @@ div.code-toolbar > .toolbar {
   }
 
   .专题内容区 {
-    padding: 50px 50px 50px calc(var(--侧边栏宽度) + 5vw);
+    padding-left: calc(var(--侧边栏宽度) + 5vw);
   }
 }
 
 @media screen and (width < 1700px) {
   .专题内容区 {
-    padding: 50px 50px 50px calc(var(--侧边栏宽度) + 50px);
+    padding-left: calc(var(--侧边栏宽度) + 50px);
   }
 }
 

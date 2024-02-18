@@ -51,7 +51,7 @@ if (sessionStorage.getItem("页面技术栈") === null) {
 }
 
 let index = JSON.parse(sessionStorage.getItem("专题索引记录")).find(
-  (记录) => 记录.技术栈 === 技术栈名称
+  (记录) => 记录.技术栈 === 技术栈名称,
 ).专题索引;
 
 let 专题名称 = "首页";
@@ -211,10 +211,10 @@ function 设置侧边栏(event) {
   专题组 = document.querySelectorAll(".专题");
 
   if (event === undefined) {
+    console.log(专题名称);
     const 当前专题 = Array.from(专题组).find(
       (专题) =>
-        专题名称 ===
-        专题.getElementsByClassName("专题-内容")[0].textContent.trim()
+        专题名称 === 专题.getElementsByClassName("专题-内容")[0].innerText,
     );
 
     if (前一专题 !== null && 前一专题 !== 当前专题) {
@@ -239,13 +239,13 @@ function 设置侧边栏(event) {
   专题标记组 = document.querySelectorAll(".专题-标记");
 
   index = JSON.parse(sessionStorage.getItem("专题索引记录")).find(
-    (记录) => 记录.技术栈 === 技术栈名称
+    (记录) => 记录.技术栈 === 技术栈名称,
   ).专题索引;
 
   专题组[index]?.style.setProperty(
     "background",
     侧边栏颜色_已选中,
-    "important"
+    "important",
   );
   专题组.forEach((专题) => {
     专题.addEventListener("click", 修改专题样式);
@@ -321,7 +321,7 @@ function 修改专题样式(event) {
   }
   专题.style.setProperty("background", 侧边栏颜色_已选中, "important");
   前一专题 = 专题;
-  专题名称 = 专题.getElementsByClassName("专题-内容")[0].textContent.trim();
+  专题名称 = 专题.getElementsByClassName("专题-内容")[0].innerText;
   sessionStorage.setItem("专题", 专题名称);
 
   index = Array.from(专题组).indexOf(专题);
@@ -402,7 +402,7 @@ function 生成章节() {
 
         //上一行也会同时屏蔽锚链接的滚动，下面的代码恢复滚动功能
         const targetElement = document.querySelector(
-          锚链接.getAttribute("href")
+          锚链接.getAttribute("href"),
         );
         targetElement.scrollIntoView();
       });
@@ -423,14 +423,14 @@ function 生成章节() {
 
         //上一行也会同时屏蔽锚链接的滚动，下面的代码恢复滚动功能
         const targetElement = document.querySelector(
-          二级锚链接.getAttribute("href")
+          二级锚链接.getAttribute("href"),
         );
         targetElement.scrollIntoView();
       });
 
       章节区内容.appendChild(二级锚链接);
       const 三级标题组 = document.querySelectorAll(
-        `#${二级标题.id} ~ .分区3级标题`
+        `#${二级标题.id} ~ .分区3级标题`,
       );
       三级标题组.forEach((三级标题, index_3) => {
         三级标题.id = `三级标题-${index_2 + 1}-${index_3 + 1}`;
@@ -444,7 +444,7 @@ function 生成章节() {
 
           //上一行也会同时屏蔽锚链接的滚动，下面的代码恢复滚动功能
           const targetElement = document.querySelector(
-            三级锚链接.getAttribute("href")
+            三级锚链接.getAttribute("href"),
           );
           targetElement.scrollIntoView();
         });
@@ -701,7 +701,7 @@ function 修改视口尺寸() {
 function 当前专题已被收藏时刷新收藏按钮样式() {
   if (
     JSON.parse(localStorage.getItem("博客收藏"))?.some(
-      (收藏) => 收藏.技术栈 === 技术栈名称 && 收藏.专题 === 专题名称
+      (收藏) => 收藏.技术栈 === 技术栈名称 && 收藏.专题 === 专题名称,
     )
   ) {
     // 收藏按钮.style.color = "seagreen";
@@ -751,7 +751,7 @@ function 生成永恒代码统计图表() {
   // 基于准备好的dom，初始化echarts实例
   const myChart = echarts.init(
     document.getElementById("永恒代码统计图表"),
-    "dark"
+    "dark",
   );
 
   // 指定图表的配置项和数据
