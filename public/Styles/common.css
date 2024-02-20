@@ -7,6 +7,9 @@
   --name: #c97719;
   --hover-link: #222f33;
   --shadow-color: #101010;
+  --scrollbar-track-color: #222426;
+  --scrollbar-thumb-color: #426556;
+  --scrollbar-width: 14px;
 }
 
 *,
@@ -25,7 +28,23 @@ body {
   z-index: 0;
   cursor: url("/Images/Common/鼠标-默认.cur"), auto;
   font-family: "Noto Sans SC", sans-serif, "Noto Sans Mono", monospace;
-  /* padding-bottom: 150px; */
+}
+
+body::-webkit-scrollbar {
+  width: var(--scrollbar-width);
+}
+
+body::-webkit-scrollbar:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--scrollbar-track-color);
+}
+
+body::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-color);
+  border-radius: 30px;
 }
 
 a {
@@ -58,7 +77,6 @@ li {
 }
 
 li > a > i {
-  /*transform: rotateZ(90deg);*/
   transition: 0.25s;
 }
 
@@ -214,7 +232,7 @@ li > a > i {
   color: gray;
 }
 
-/* ------------------------- ↓ 页脚 ------------------------- */
+/* ------------------------- ↑ 页脚 ------------------------- */
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
 @media screen and (width < 1300px) {
@@ -234,7 +252,7 @@ li > a > i {
   }
 
   #页脚Logo区 {
-    padding: 0 20px; /*align-items: center;*/
+    padding: 0 20px;
   }
 
   #页脚信息区 {
@@ -253,6 +271,12 @@ li > a > i {
 
   .页脚信息分区链接 > span {
     font-size: 0.75rem;
+  }
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  body {
+    scrollbar-color: var(--scrollbar-thumb-color) var(--scrollbar-track-color);
   }
 }
 

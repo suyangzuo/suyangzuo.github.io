@@ -3,7 +3,7 @@ body {
 }
 
 .games-navigator {
-  margin: 20px auto;
+  margin: 75px auto 100px;
   min-height: 100vh;
   width: 98%;
   display: grid;
@@ -74,94 +74,117 @@ body {
   /* background-color: rgb(0, 255, 255); */
   grid-area: 1 / 1 / 8 / 3;
 }
+
 .game-2 {
   background-color: cadetblue;
   grid-area: 1 / 3 / 4 / 6;
 }
+
 .game-3 {
   background-color: goldenrod;
   grid-area: 4 / 3 / 8 / 5;
 }
+
 .game-4 {
   background-color: yellowgreen;
   grid-area: 4 / 5 / 8 / 6;
 }
+
 .game-5 {
   background-color: violet;
   grid-area: 1 / 6 / 7 / 8;
 }
+
 .game-6 {
   background-color: tomato;
   grid-area: 7 / 6 / 9 / 8;
 }
+
 .game-7 {
   background-color: thistle;
   grid-area: 1 / 8 / 5 / 10;
 }
+
 .game-8 {
   background-color: chartreuse;
   grid-area: 1 / 10 / 8 / 11;
 }
+
 .game-9 {
   background-color: chocolate;
   grid-area: 5 / 8 / 12 / 10;
 }
+
 .game-10 {
   background-color: cornflowerblue;
   grid-area: 8 / 1 / 14 / 2;
 }
+
 .game-11 {
   background-color: darkblue;
   grid-area: 8 / 2 / 12 / 4;
 }
+
 .game-12 {
   background-color: crimson;
   grid-area: 12 / 2 / 15 / 5;
 }
+
 .game-13 {
   background-color: darkmagenta;
   grid-area: 8 / 4 / 12 / 6;
 }
+
 .game-14 {
   background-color: rgb(44, 88, 90);
   grid-area: 14 / 1 / 18 / 2;
 }
+
 .game-15 {
   background-color: blueviolet;
   grid-area: 18 / 1 / 21 / 3;
 }
+
 .game-16 {
   background-color: slategrey;
   grid-area: 15 / 2 / 18 / 5;
 }
+
 .game-17 {
   background-color: skyblue;
   grid-area: 18 / 3 / 21 / 5;
 }
+
 .game-18 {
   background-color: rosybrown;
   grid-area: 9 / 6 / 12 / 8;
 }
+
 .game-19 {
   background-color: rgb(11, 66, 102);
   grid-area: 8 / 10 / 11 / 11;
 }
+
 .game-20 {
   background-color: royalblue;
   grid-area: 12 / 5 / 21 / 7;
 }
+
 .game-21 {
   background-color: rgb(16, 67, 70);
   grid-area: 18 / 7 / 21 / 9;
 }
+
 .game-22 {
   background-color: darkmagenta;
   grid-area: 12 / 7 / 18 / 10;
 }
+
 .game-23 {
   background-color: rgb(107, 189, 134);
   grid-area: 11 / 10 / 21 / 11;
 }
+
 .game-24 {
   background-color: rgb(179, 128, 51);
   grid-area: 18 / 9 / 21 / 10;
@@ -182,97 +205,121 @@ body {
   .game-1 {
     grid-area: 1 / 1 / span 2 / span 2;
   }
+
   .game-2 {
     background-color: cadetblue;
     grid-area: 3 / 1 / span 2 / span 2;
   }
+
   .game-3 {
     background-color: goldenrod;
     grid-area: 5 / 1 / span 2 / span 2;
   }
+
   .game-4 {
     background-color: yellowgreen;
     grid-area: 7 / 1 / span 2 / span 2;
   }
+
   .game-5 {
     background-color: violet;
     grid-area: 9 / 1 / span 2 / span 2;
   }
+
   .game-6 {
     background-color: tomato;
     grid-area: 11 / 1 / span 2 / span 2;
   }
+
   .game-7 {
     background-color: thistle;
     grid-area: 13 / 1 / span 2 / span 2;
   }
+
   .game-8 {
     background-color: chartreuse;
     grid-area: 15 / 1 / span 2 / span 2;
   }
+
   .game-9 {
     background-color: chocolate;
     grid-area: 17 / 1 / span 2 / span 2;
   }
+
   .game-10 {
     background-color: cornflowerblue;
     grid-area: 19 / 1 / span 2 / span 2;
   }
+
   .game-11 {
     background-color: darkblue;
     grid-area: 21 / 1 / span 2 / span 2;
   }
+
   .game-12 {
     background-color: crimson;
     grid-area: 23 / 1 / span 2 / span 2;
   }
+
   .game-13 {
     background-color: darkmagenta;
     grid-area: 25 / 1 / span 2 / span 2;
   }
+
   .game-14 {
     background-color: rgb(44, 88, 90);
     grid-area: 27 / 1 / span 2 / span 2;
   }
+
   .game-15 {
     background-color: blueviolet;
     grid-area: 29 / 1 / span 2 / span 2;
   }
+
   .game-16 {
     background-color: slategrey;
     grid-area: 31 / 1 / span 2 / span 2;
   }
+
   .game-17 {
     background-color: skyblue;
     grid-area: 33 / 1 / span 2 / span 2;
   }
+
   .game-18 {
     background-color: rosybrown;
     grid-area: 35 / 1 / span 2 / span 2;
   }
+
   .game-19 {
     background-color: rgb(11, 66, 102);
     grid-area: 37 / 1 / span 2 / span 2;
   }
+
   .game-20 {
     background-color: royalblue;
     grid-area: 39 / 1 / span 2 / span 2;
   }
+
   .game-21 {
     background-color: rgb(16, 67, 70);
     grid-area: 41 / 1 / span 2 / span 2;
   }
+
   .game-22 {
     background-color: darkmagenta;
     grid-area: 43 / 1 / span 2 / span 2;
   }
+
   .game-23 {
     background-color: rgb(107, 189, 134);
     grid-area: 45 / 1 / span 2 / span 2;
   }
+
   .game-24 {
     background-color: rgb(179, 128, 51);
     grid-area: 47 / 1 / span 2 / span 2;
   }
 }
+
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */

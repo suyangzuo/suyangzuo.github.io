@@ -120,7 +120,7 @@
         <span class="专业名词">本地仓库</span>：提交的记录就存放在此，包括<span
           class="行内专业名词"
           >HEAD</span
-        >指针<span class="附加说明">指向当前分支的最后一次提交</span>。
+        >指针<span class="附加说明">指向某个分支指针的指针</span>。
       </li>
     </ul>
     <section class="提醒">
@@ -222,10 +222,12 @@
         个未追踪文件。这在一定程度上可以减轻程序员的负担，不用输入复杂的命令也能快速查看一些基本信息。
       </p>
       <p>
-        有关<span class="专业名词">Oh My Posh</span>的安装和使用，可以参考<span
-          class="行内专业名词"
-          >经验之谈</span
-        >中的<span class="行内专业名词">打造优雅舒适的终端</span>专题。
+        有关<span class="专业名词">Oh My Posh</span>的安装和使用，可以参考<a
+          class="超链接"
+          target="_blank"
+          href="https://suyang.vercel.app/Blogs/blog-index.html?tech=经验之谈&article=打造优雅舒适的终端"
+          >打造优雅舒适的终端</a
+        >专题。
       </p>
     </section>
 
@@ -325,7 +327,10 @@
         class="代码"
         >HEAD</span
       >代表当前分支<span class="附加说明"
-        >实际上是指向当前分支最后一次提交的指针</span
+        >实际上是指向分支指针的指针，此处<span class="行内代码">HEAD</span
+        >指针<span class="行内专业名词">指向</span>了<span class="行内代码"
+          >master</span
+        >指针，因此<span class="行内代码">master</span>就是当前分支</span
       >，按照图中显示，当前分支是<span class="专业名词">master</span>。那段长达
       50 位的字符串是本次提交的校验码。
     </p>

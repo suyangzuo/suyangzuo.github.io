@@ -22,6 +22,8 @@ const 收藏栏添加按钮 = document.getElementById("收藏条目-添加");
 const 关闭收藏栏按钮 = document.getElementById("关闭收藏栏");
 const 收藏栏重复提示 = document.getElementById("收藏栏重复提示");
 
+const 远距标点组 = [" ", "，", "。", "：", "；", "、"];
+
 let 上一激活标题 = null;
 
 // let 章节区标题组 = [];
@@ -489,6 +491,10 @@ function 初始化章节观察器() {
 
         if (entry.target.className !== 简介标题.className) {
           章节区标题组[标题索引].classList.add("已激活");
+          const top偏移 = 章节区标题组[标题索引].offsetTop;
+          const 高度 = window.getComputedStyle(章节区标题组[标题索引]).height;
+          root.style.setProperty("--章节区位置-偏移-top", `${top偏移}px`);
+          root.style.setProperty("--章节区位置-高度", 高度);
         }
 
         if (上一激活标题 !== null && 上一激活标题 !== 章节区标题组[标题索引]) {
@@ -597,12 +603,15 @@ function 特殊元素样式补充() {
     if (
       前一节点 !== null &&
       (前一节点.tagName === "BR" ||
-        (前一节点.nodeType === Node.TEXT_NODE &&
-          (前一节点.textContent.at(-1) === "，" ||
+        (前一节点.nodeType ===
+          Node.TEXT_NODE /*前一节点.textContent.at(-1) === "，" ||
             前一节点.textContent.at(-1) === "。" ||
             前一节点.textContent.at(-1) === "：" ||
             前一节点.textContent.at(-1) === "；" ||
-            前一节点.textContent.at(-1) === "、" ||
+            前一节点.textContent.at(-1) === "、" ||*/ &&
+          (远距标点组
+            .slice(-(远距标点组.length - 1))
+            .some((标点) => 标点 === 前一节点.textContent.at(-1)) ||
             前一节点.textContent.trim() === "")))
     ) {
       行内专业名词.style.marginLeft = "0";
@@ -628,12 +637,13 @@ function 特殊元素样式补充() {
     const 前一节点 = 专业名词.previousSibling;
     if (
       前一节点 === null ||
-      前一节点.textContent.at(-1) === " " ||
+      远距标点组.some((标点) => 标点 === 前一节点.textContent.at(-1))
+      /*前一节点.textContent.at(-1) === " " ||
       前一节点.textContent.at(-1) === "，" ||
       前一节点.textContent.at(-1) === "。" ||
       前一节点.textContent.at(-1) === "：" ||
       前一节点.textContent.at(-1) === "；" ||
-      前一节点.textContent.at(-1) === "、"
+      前一节点.textContent.at(-1) === "、"*/
     ) {
       专业名词.style.marginLeft = "0";
     }
@@ -644,14 +654,22 @@ function 特殊元素样式补充() {
     const 前一节点 = 代码.previousSibling;
     if (
       前一节点 === null ||
-      前一节点.textContent.at(-1) === " " ||
+      远距标点组.some((标点) => 标点 === 前一节点.textContent.at(-1))
+      /*前一节点.textContent.at(-1) === " " ||
       前一节点.textContent.at(-1) === "，" ||
       前一节点.textContent.at(-1) === "。" ||
       前一节点.textContent.at(-1) === "：" ||
       前一节点.textContent.at(-1) === "；" ||
-      前一节点.textContent.at(-1) === "、"
+      前一节点.textContent.at(-1) === "、"*/
     ) {
       代码.style.marginLeft = "0";
+    }
+  });
+
+  const 行内代码组 = document.querySelectorAll(".行内代码");
+  行内代码组?.forEach((行内代码) => {
+    if (行内代码 === 行内代码.parentNode.firstChild) {
+      行内代码.style.marginLeft = "0";
     }
   });
 
@@ -660,12 +678,13 @@ function 特殊元素样式补充() {
     const 前一节点 = 强调.previousSibling;
     if (
       前一节点 === null ||
-      前一节点.textContent.at(-1) === " " ||
+      远距标点组.some((标点) => 标点 === 前一节点.textContent.at(-1))
+      /*前一节点.textContent.at(-1) === " " ||
       前一节点.textContent.at(-1) === "，" ||
       前一节点.textContent.at(-1) === "。" ||
       前一节点.textContent.at(-1) === "：" ||
       前一节点.textContent.at(-1) === "；" ||
-      前一节点.textContent.at(-1) === "、"
+      前一节点.textContent.at(-1) === "、"*/
     ) {
       强调.style.marginLeft = "0";
     }
@@ -736,7 +755,6 @@ mutationObserver.observe(专题内容区, {
 
 function 专题改变时运行() {
   更新图像序号();
-  // 监控标题();
 }
 
 function 更新图像序号() {
@@ -861,35 +879,3 @@ function 生成永恒代码统计图表() {
 
 //------------------- ↑ 监控专题内容区内 DOM 修改 -------------------
 
-//------------------- ↓ 监控标题是否进入视口 -------------------
-/* function 监控标题() {
-  const titleObserveOptions = {
-    rootMargin: "-300px",
-    threshold: 1,
-  };
-
-  const titleObserver = new IntersectionObserver(
-    titleCallback,
-    titleObserveOptions
-  );
-
-  const 标题组 = document.querySelectorAll(".分区标题");
-  标题组.forEach((标题) => {
-    titleObserver.observe(标题);
-  });
-
-  function titleCallback(entries) {
-    const 标题数组 = Array.from(标题组);
-
-    entries.forEach((entry) => {
-      const index = 标题数组.indexOf(entry.target);
-      const 选中章节 = 章节区标题组[index];
-      if (entry.isIntersecting) {
-        选中章节.classList.add("入");
-      } else {
-        选中章节.classList.remove("入");
-      }
-    });
-  }
-} */
-//------------------- ↑ 监控标题是否进入视口 -------------------

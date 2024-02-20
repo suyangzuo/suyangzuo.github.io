@@ -11,6 +11,8 @@
   --专题标记-转载: orange;
   --表身区-奇数行背景色: #234;
   --超链接-悬停颜色: rgb(173, 104, 238);
+  --章节区位置-高度: 0px;
+  --章节区位置-偏移-top: 0px;
 }
 
 html {
@@ -82,6 +84,23 @@ body {
   content: "";
 }
 
+.章节区内容::after {
+  position: absolute;
+  width: 2px;
+  height: var(--章节区位置-高度);
+  top: 0;
+  left: 0;
+  content: "";
+  background-color: rgb(106, 192, 106);
+  translate: 0 var(--章节区位置-偏移-top);
+  opacity: 0;
+  transition: 400ms;
+}
+
+.章节区内容:has(.已激活)::after {
+  opacity: 1;
+}
+
 #章节区 a {
   position: relative;
   isolation: isolate;
@@ -91,7 +110,7 @@ body {
   color: rgb(236, 175, 61) !important;
 }
 
-#章节区 .已激活::after {
+/*#章节区 .已激活::after {
   position: absolute;
   width: 2px;
   height: 100%;
@@ -99,25 +118,12 @@ body {
   left: -25px;
   content: "";
   background-color: rgb(106, 192, 106);
-}
+}*/
 
 #章节区 .已激活 > span:nth-child(1) {
   border: solid 2px rgb(106, 192, 106);
   color: rgb(106, 192, 106);
 }
-
-/* .锚链接-3级标题.入::after {
-  position: absolute;
-  width: calc(100% + 25px);
-  height: 100%;
-  top: 50%;
-  left: -10px;
-  translate: 0 -50%;
-  content: "";
-  z-index: -1;
-  border-radius: 5px;
-  background-color: #402c7c;
-} */
 
 .锚链接-2级标题 {
   position: relative;
@@ -152,10 +158,6 @@ body {
 .锚链接-2级标题:hover::before {
   background-color: #744882;
 }
-
-/* .锚链接-2级标题.入::before {
-  background-color: #402c7c;
-} */
 
 .锚链接-2级标题:link {
   color: lightskyblue;
@@ -1293,7 +1295,7 @@ body {
 
 .分区列表:not(.有序列表) > .分区列表项 {
   padding-left: 1.5em;
-  text-indent: -1.5em;
+  text-indent: -1.425em;
 }
 
 .分区列表:not(.有序列表) > .分区列表项 p {
@@ -1371,10 +1373,12 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #fff1;
-  border: solid 3px #c0c0c050;
+  background: linear-gradient(#555 0%, #555 100%) content-box, linear-gradient(#aaa 0%, #555 95%) border-box;
+  /*background-color: #fff1;*/
+  border: solid 3px transparent;
   border-radius: 10px;
   overflow: hidden;
+  box-shadow: 2px 2px 4px 0 #0007;
 }
 
 .截图容器 > img {
@@ -1388,7 +1392,7 @@ body {
 }
 
 .截图序号 {
-  color: #999;
+  color: #bbb;
   font-size: 15px;
   padding: 10px 0;
 }
@@ -1434,7 +1438,6 @@ body {
   font-size: 0.95em;
 }
 
-.行内代码:first-child,
 .标题序号-3级 + .行内代码 {
   margin-left: 0;
 }
@@ -1459,14 +1462,21 @@ body {
 }
 
 *[class*="2级标题"] > .附加说明 {
-  background-color: rgb(71, 110, 183);
+  background-color: rgb(62, 101, 169);
+  font-size: 0.8em;
+  box-shadow: 2px 2px 0.1em 0 #0002;
+}
+
+.专题正文区 .fa-star {
+  color: goldenrod;
 }
 
 .分区普通文本 {
   font-size: 18px;
   line-height: 1.75rem;
   padding: 10px 0;
-  color: #b4c5d7;
+  /*color: #b4c5d7;*/
+  color: #bbb;
 }
 
 .分区列表 .分区普通文本 {
@@ -1490,7 +1500,8 @@ body {
 
 .提醒 {
   background-color: #2b4162;
-  color: #b4c5d7;
+  /*color: #b4c5d7;*/
+  color: #bbb;
   border-radius: 10px;
   padding: 30px;
   margin: 10px 0;
