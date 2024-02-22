@@ -193,7 +193,7 @@ function 生成收藏信息技术栈(技术栈名称参数) {
   return 收藏信息_技术栈;
 }
 
-function 生成收藏信息专题(专题名称改参数) {
+function 生成收藏信息专题(专题名称参数) {
   const 收藏信息_专题 = document.createElement("p");
   收藏信息_专题.className = "收藏信息";
   收藏信息_专题.classList.add("收藏信息-专题");
@@ -204,7 +204,7 @@ function 生成收藏信息专题(专题名称改参数) {
   const 收藏信息_文本_专题 = document.createElement("span");
   收藏信息_文本_专题.className = "收藏信息-文本";
   收藏信息_文本_专题.classList.add("收藏文本-专题");
-  收藏信息_文本_专题.textContent = 专题名称改参数;
+  收藏信息_文本_专题.textContent = 专题名称参数;
   收藏信息_专题.append(fontAwesome_专题, 收藏信息_文本_专题);
   return 收藏信息_专题;
 }
@@ -228,7 +228,7 @@ function 生成收藏信息日期(时间参数) {
 function 刷新收藏操作区(event) {
   const 事件发起者类名 = event.currentTarget.className;
 
-  收藏数量.textContent = 博客收藏.length;
+  收藏数量.textContent = 博客收藏.length.toString();
   if (收藏数量.textContent === "0") {
     收藏数量.style.visibility = "hidden";
   } else {
@@ -357,7 +357,7 @@ function 点击收藏栏条目访问博客(event) {
     .then(() => 更新网址(技术栈名称, 专题名称));
 
   专题组 = document.querySelectorAll(".专题");
-  专题 = Array.from(专题组).find(
+  const 专题 = Array.from(专题组).find(
     (entry) =>
       entry.getElementsByClassName("专题-内容")[0].textContent.trim() ===
       专题名称
@@ -365,9 +365,9 @@ function 点击收藏栏条目访问博客(event) {
 
   if (前一专题 === 专题) return;
   if (前一专题 !== null) {
-    前一专题.style.setProperty("background", "transparent");
+    前一专题.classList.remove("当前专题");
   }
-  专题.style.setProperty("background", 侧边栏颜色_已选中, "important");
+  专题.classList.add("当前专题");
   专题组.forEach((专题) => {
     专题.addEventListener("click", 修改专题样式);
     const 标记 = 专题.querySelector(".专题-标记");

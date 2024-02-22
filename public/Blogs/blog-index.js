@@ -1,14 +1,12 @@
 const root = document.querySelector(":root");
 const rootStyle = window.getComputedStyle(root);
 const 侧边栏颜色_已选中 = rootStyle.getPropertyValue("--侧边栏颜色-已选中");
-const 侧边栏颜色_鼠标悬停 = rootStyle.getPropertyValue("--侧边栏颜色-鼠标悬停");
 
 const 侧边栏收缩容器 = document.getElementsByClassName("侧边栏收缩容器")[0];
 const 侧边栏 = document.getElementsByClassName("侧边栏")[0];
 const 技术栈选择器 = document.getElementsByClassName("技术栈选择器")[0];
 const 技术栈对话框 = document.querySelector(".技术栈对话框");
 const 关闭技术栈对话框按钮 = document.querySelector(".关闭技术栈对话框");
-const 技术栈内容 = document.getElementsByClassName("技术栈内容")[0];
 const 技术栈组 = document.querySelectorAll(".技术栈");
 const 专题内容区 = document.getElementsByClassName("专题内容区")[0];
 
@@ -74,16 +72,15 @@ let 前一专题 = null;
   .then(() => 生成章节())
   .then(() => 初始化章节观察器())
   .then(() => 更新网址(技术栈名称, 专题名称));
-// .then(() => 获取章节区标题组());
 
-window.addEventListener("popstate", (event) => {
+window.addEventListener("popstate", () => {
   从网址获取技术栈和专题();
-
   设置侧边栏();
   设置内容()
     .then(() => 生成章节区())
     .then(() => 生成章节())
-    .then(() => 初始化章节观察器());
+    .then(() => 初始化章节观察器())
+    .then(() => 当前专题已被收藏时刷新收藏按钮样式());
 });
 
 function 更新网址(技术栈, 专题) {
@@ -105,6 +102,7 @@ function 从网址获取技术栈和专题() {
   技术栈名称 = 技术栈;
   专题名称 = 专题;
   sessionStorage.setItem("专题", 专题名称);
+  sessionStorage.setItem("页面技术栈", 技术栈名称);
 }
 
 技术栈组.forEach((技术栈) => {
@@ -116,7 +114,6 @@ function 从网址获取技术栈和专题() {
       .then(() => 生成章节())
       .then(() => 初始化章节观察器())
       .then(() => 更新网址(技术栈名称, 专题名称));
-    // .then(() => 获取章节区标题组());
   });
   技术栈.addEventListener("click", () => {
     if (技术栈对话框.open) {
@@ -181,47 +178,52 @@ function 设置侧边栏(event) {
   const 侧边栏标签 = 生成侧边栏标签();
   侧边栏.prepend(侧边栏标签);
 
-  // fetch(fileName)
-  //   .then((response) => response.text())
-  //   .then((content) => (侧边栏.innerHTML = content))
-  //   .then(() => {
-  //     专题组 = document.querySelectorAll(".专题");
-  //     专题标记组 = document.querySelectorAll(".专题-标记");
+  /*fetch(fileName)
+    .then((response) => response.text())
+    .then((content) => (侧边栏.innerHTML = content))
+    .then(() => {
+      专题组 = document.querySelectorAll(".专题");
+      专题标记组 = document.querySelectorAll(".专题-标记");
 
-  //     index = JSON.parse(sessionStorage.getItem("专题索引记录")).find(
-  //       (记录) => 记录.技术栈 === 技术栈名称
-  //     ).专题索引;
+      index = JSON.parse(sessionStorage.getItem("专题索引记录")).find(
+        (记录) => 记录.技术栈 === 技术栈名称
+      ).专题索引;
 
-  //     专题组[index].style.setProperty(
-  //       "background",
-  //       侧边栏颜色_已选中,
-  //       "important"
-  //     );
-  //     专题组.forEach((专题) => {
-  //       专题.addEventListener("click", 修改专题样式);
-  //       const 标记 = 专题.querySelector(".专题-标记");
-  //       标记.textContent = "\u2666";
-  //     });
+      专题组[index].style.setProperty(
+        "background",
+        侧边栏颜色_已选中,
+        "important"
+      );
+      专题组.forEach((专题) => {
+        专题.addEventListener("click", 修改专题样式);
+        const 标记 = 专题.querySelector(".专题-标记");
+        标记.textContent = "\u2666";
+      });
 
-  //     前一专题 = 专题组[index];
-  //     专题名称 = 专题组[index]
-  //       .getElementsByClassName("专题-内容")[0]
-  //       .textContent.trim();
-  //   });
+      前一专题 = 专题组[index];
+      专题名称 = 专题组[index]
+        .getElementsByClassName("专题-内容")[0]
+        .textContent.trim();
+    });*/
 
   专题组 = document.querySelectorAll(".专题");
+  if (event !== undefined && event.type === "click") {
+    专题名称 = 专题组[index].getElementsByClassName("专题-内容")[0].innerText;
+  }
 
+  // 此if用于后退、前进时
   if (event === undefined) {
     const 当前专题 = Array.from(专题组).find(
       (专题) =>
         专题名称 === 专题.getElementsByClassName("专题-内容")[0].innerText,
     );
 
+    if (当前专题 === undefined) return;
+
     if (前一专题 !== null && 前一专题 !== 当前专题) {
-      // 前一专题.style.setProperty("background", "transparent");
       前一专题.classList.remove("当前专题");
     }
-    // 当前专题.style.setProperty("background", 侧边栏颜色_已选中, "important");
+
     当前专题.classList.add("当前专题");
     前一专题 = 当前专题;
     // 专题名称 = 专题.getElementsByClassName("专题-内容")[0].textContent.trim();
@@ -244,11 +246,6 @@ function 设置侧边栏(event) {
     (记录) => 记录.技术栈 === 技术栈名称,
   ).专题索引;
 
-  /*专题组[index]?.style.setProperty(
-    "background",
-    侧边栏颜色_已选中,
-    "important",
-  );*/
   专题组[index]?.classList.add("当前专题");
   专题组.forEach((专题) => {
     专题.addEventListener("click", 修改专题样式);
@@ -262,9 +259,9 @@ function 设置侧边栏(event) {
   });
 
   前一专题 = 专题组[index];
-  专题名称 = 专题组[index]
+  /*专题名称 = 专题组[index]
     ?.getElementsByClassName("专题-内容")[0]
-    .textContent.trim();
+    .textContent.trim();*/
   sessionStorage.setItem("专题", 专题名称);
 
   const 选项卡图标 = document.querySelector("link[rel='icon']");
@@ -307,12 +304,16 @@ function 点选技术栈(event) {
   } else if (技术栈名称 === "C#") {
     技术栈名称 = "CSharp";
   }
-
   sessionStorage.setItem("页面技术栈", 技术栈名称);
+
   if (!专题索引记录.some((item) => item.技术栈 === 技术栈名称)) {
     专题索引记录.push({ 技术栈: 技术栈名称, 专题索引: 0 });
-    sessionStorage.setItem("专题索引记录", JSON.stringify(专题索引记录));
+    index = 0;
+  } else {
+    const 记录 = 专题索引记录.find((记录) => 记录.技术栈 === 技术栈名称);
+    index = 记录.专题索引;
   }
+  sessionStorage.setItem("专题索引记录", JSON.stringify(专题索引记录));
 }
 
 function 修改专题样式(event) {
@@ -320,10 +321,8 @@ function 修改专题样式(event) {
   const 专题 = event.currentTarget;
   if (前一专题 === 专题) return;
   if (前一专题 !== null) {
-    // 前一专题.style.setProperty("background", "transparent");
     前一专题.classList.remove("当前专题");
   }
-  // 专题.style.setProperty("background", 侧边栏颜色_已选中, "important");
   专题.classList.add("当前专题");
   前一专题 = 专题;
   专题名称 = 专题.getElementsByClassName("专题-内容")[0].innerText;
@@ -333,7 +332,7 @@ function 修改专题样式(event) {
   if (!专题索引记录.some((记录) => 记录.技术栈 === 技术栈名称)) {
     专题索引记录.push({ 技术栈: 技术栈名称, 专题索引: index });
   } else {
-    let 记录 = 专题索引记录.find((记录) => 记录.技术栈 === 技术栈名称);
+    const 记录 = 专题索引记录.find((记录) => 记录.技术栈 === 技术栈名称);
     记录.专题索引 = index;
   }
   sessionStorage.setItem("专题索引记录", JSON.stringify(专题索引记录));
@@ -343,7 +342,6 @@ function 修改专题样式(event) {
     .then(() => 生成章节())
     .then(() => 初始化章节观察器())
     .then(() => 更新网址(技术栈名称, 专题名称));
-  // .then(() => 获取章节区标题组());
 }
 
 技术栈选择器.addEventListener("click", 显示技术栈内容);
@@ -420,7 +418,6 @@ function 生成章节() {
       const 二级锚链接 = document.createElement("a");
       二级锚链接.className = "锚链接-2级标题";
       二级锚链接.innerHTML = 二级标题.innerHTML;
-      // const 标题序号2级 = 二级锚链接.querySelector(".标题序号-2级");
       二级锚链接.href = `#${二级标题.id}`;
 
       二级锚链接.addEventListener("click", (event) => {
@@ -462,27 +459,15 @@ function 生成章节() {
 
 function 初始化章节观察器() {
   const 简介标题 = document.querySelector(".简介标题");
+  if (简介标题 === null) return;
   const 正文区标题组 = document.querySelectorAll(".分区3级标题");
   const 章节区标题组 = document.querySelectorAll(".锚链接-3级标题");
   const 参数 = {
-    rootMargin: "-100px 0px -50% 0px",
+    rootMargin: "-100px 0px -66.666667% 0px",
     threshold: 1,
   };
   const 正文区标题观察器 = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
-      /* const 标题矩形 = entry.boundingClientRect;
-      if (
-        !entry.isIntersecting ||
-        (entry.isIntersecting && 标题矩形.top <= 400)
-      ) {
-        const 标题索引 = Array.from(正文区标题组).indexOf(entry.target);
-        章节区标题组[标题索引].classList.add("已激活");
-        if (上一激活标题 !== null && 上一激活标题 !== 章节区标题组[标题索引]) {
-          上一激活标题.classList.remove("已激活");
-        }
-        上一激活标题 = 章节区标题组[标题索引];
-      } */
-
       if (entry.isIntersecting) {
         let 标题索引 =
           entry.target.className === 简介标题.className
@@ -513,12 +498,6 @@ function 初始化章节观察器() {
     正文区标题观察器.observe(标题);
   });
 }
-
-/* function 获取章节区标题组() {
-  const 章节区内容 = document.querySelector(".章节区内容");
-  章节区标题组 = 章节区内容.querySelectorAll("[class*='锚链接']");
-  console.log(章节区标题组);
-} */
 
 //---------------------- ↓ 对内容中的特殊元素补充样式 ----------------------
 function 特殊元素样式补充() {
@@ -638,12 +617,6 @@ function 特殊元素样式补充() {
     if (
       前一节点 === null ||
       远距标点组.some((标点) => 标点 === 前一节点.textContent.at(-1))
-      /*前一节点.textContent.at(-1) === " " ||
-      前一节点.textContent.at(-1) === "，" ||
-      前一节点.textContent.at(-1) === "。" ||
-      前一节点.textContent.at(-1) === "：" ||
-      前一节点.textContent.at(-1) === "；" ||
-      前一节点.textContent.at(-1) === "、"*/
     ) {
       专业名词.style.marginLeft = "0";
     }
@@ -655,12 +628,6 @@ function 特殊元素样式补充() {
     if (
       前一节点 === null ||
       远距标点组.some((标点) => 标点 === 前一节点.textContent.at(-1))
-      /*前一节点.textContent.at(-1) === " " ||
-      前一节点.textContent.at(-1) === "，" ||
-      前一节点.textContent.at(-1) === "。" ||
-      前一节点.textContent.at(-1) === "：" ||
-      前一节点.textContent.at(-1) === "；" ||
-      前一节点.textContent.at(-1) === "、"*/
     ) {
       代码.style.marginLeft = "0";
     }
@@ -679,12 +646,6 @@ function 特殊元素样式补充() {
     if (
       前一节点 === null ||
       远距标点组.some((标点) => 标点 === 前一节点.textContent.at(-1))
-      /*前一节点.textContent.at(-1) === " " ||
-      前一节点.textContent.at(-1) === "，" ||
-      前一节点.textContent.at(-1) === "。" ||
-      前一节点.textContent.at(-1) === "：" ||
-      前一节点.textContent.at(-1) === "；" ||
-      前一节点.textContent.at(-1) === "、"*/
     ) {
       强调.style.marginLeft = "0";
     }
@@ -705,7 +666,7 @@ function 特殊元素样式补充() {
 let 侧边栏可见 = false;
 const 视口宽度低于800px = window.matchMedia("(width < 800px)");
 
-function 修改侧边栏可见性(event) {
+function 修改侧边栏可见性() {
   if (!侧边栏可见) {
     侧边栏.style.setProperty("visibility", "visible", "important");
     侧边栏.style.setProperty("opacity", "1", "important");
@@ -717,7 +678,7 @@ function 修改侧边栏可见性(event) {
   }
 }
 
-视口宽度低于800px.addEventListener("change", (event) => {
+视口宽度低于800px.addEventListener("change", () => {
   修改视口尺寸();
 });
 

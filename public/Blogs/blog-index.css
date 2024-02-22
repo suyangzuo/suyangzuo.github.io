@@ -1,12 +1,13 @@
 :root {
   --侧边栏宽度: 250px;
   --侧边栏颜色-鼠标悬停: rgb(54, 62, 78);
-  --侧边栏颜色-已选中: rgb(96, 50, 83);
+  --侧边栏颜色-已选中: rgb(106, 50, 83);
   /* --侧边栏背景: linear-gradient(60deg, #1f242b 0%, #252c32 100%); */
   --侧边栏背景: linear-gradient(60deg, #141518 0%, #171c21 100%);
   --专题内容区背景: linear-gradient(90deg, #181c20 0%, #262d35 100%);
   --超链接颜色-正文: skyblue;
   --正文分区-宽度: 800px;
+  --正文颜色: #c0c5ca;
   --专题标记-原创: rgb(76, 179, 160);
   --专题标记-转载: orange;
   --表身区-奇数行背景色: #234;
@@ -44,8 +45,6 @@ body {
   justify-content: flex-start;
   align-items: flex-start;
   width: 450px;
-  overflow-y: scroll;
-  /* overflow-x: visible; */
   scrollbar-width: none;
 }
 
@@ -86,13 +85,13 @@ body {
 
 .章节区内容::after {
   position: absolute;
-  width: 2px;
+  width: 5px;
   height: var(--章节区位置-高度);
   top: 0;
   left: 0;
   content: "";
-  background-color: rgb(106, 192, 106);
-  translate: 0 var(--章节区位置-偏移-top);
+  background-color: rgb(83, 152, 83);
+  translate: -50% var(--章节区位置-偏移-top);
   opacity: 0;
   transition: 400ms;
 }
@@ -276,18 +275,20 @@ body {
 
 .收藏条目 {
   position: relative;
-  width: 200px;
-  height: 200px;
+  width: 220px;
+  height: 250px;
   outline: solid 1px #fff5;
   display: flex;
   flex-direction: column;
   align-items: center;
   color: white;
+  transition: 250ms;
 }
 
 .收藏条目:hover {
   cursor: pointer;
   background-color: #fff1;
+  outline: solid 1px #acb5;
 }
 
 .删除条目按钮 {
@@ -381,7 +382,7 @@ body {
 }
 
 .收藏条目-标志 > img {
-  width: 100%;
+  width: 80%;
   height: 80%;
   object-fit: contain;
 }
@@ -410,7 +411,7 @@ body {
 }
 
 .收藏信息-技术栈 .收藏信息-文本 {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: bold;
 }
 
@@ -422,7 +423,7 @@ body {
 
 .收藏信息-文本 {
   width: fit-content;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 .收藏信息:nth-child(1) .收藏信息-文本 {
@@ -512,7 +513,7 @@ body {
   text-align: right;
   font-size: 1.15rem;
   color: gray;
-  font-family: "JetBrains Mono", "思源黑体 CN";
+  font-family: "JetBrains Mono", "思源黑体 CN", monospace;
   opacity: 0;
   pointer-events: none;
 }
@@ -537,6 +538,11 @@ body {
     opacity: 0;
     top: -100%;
   }
+}
+
+#收藏栏按钮 > i, #收藏按钮 > i {
+  width: 100%;
+  height: 100%;
 }
 
 /* ------------------- ↑ 收藏区 ------------------- */
@@ -910,7 +916,7 @@ body {
   color: #6dabe0;
 }
 
-.专题-内容 .专题内名词.左 {
+/*.专题-内容 .专题内名词.左 {
   margin-right: 0.25em;
 }
 
@@ -920,7 +926,7 @@ body {
 
 .专题-内容 .专题内名词.右 {
   margin-left: 0.25em;
-}
+}*/
 
 /* -------------------------- ↑ 侧边栏样式 -------------------------- */
 
@@ -941,8 +947,13 @@ body {
   color: yellowgreen !important;
   margin: 0 3px;
   text-decoration: underline;
+  text-decoration-color: #ffa500a0;
+  text-underline-offset: 3px;
+  transition: 125ms;
+}
+
+.超链接:hover {
   text-decoration-color: orange;
-  text-underline-offset: 2.5px;
 }
 
 .表格 .超链接 {
@@ -952,7 +963,7 @@ body {
 .表格 .超链接:hover {
   text-decoration: underline;
   text-decoration-color: orange;
-  text-underline-offset: 2.5px;
+  text-underline-offset: 3px;
 }
 
 .超链接:visited {
@@ -1172,7 +1183,7 @@ body {
   width: 100%;
   display: flex;
   flex-direction: column;
-  color: #ddd;
+  color: #ccc;
 }
 
 .分区标题 {
@@ -1254,6 +1265,7 @@ body {
   border-radius: 10em;
   border: solid 2px #fff2;
   color: #aaa;
+  box-shadow: 2px 2px 2px 0 #0003;
 }
 
 .分区3级标题::before {
@@ -1381,6 +1393,13 @@ body {
   box-shadow: 2px 2px 4px 0 #0007;
 }
 
+.截图容器 > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
 .截图容器 > img {
   width: 100%;
   height: 100%;
@@ -1431,6 +1450,10 @@ body {
   font-size: 0.9em;
 }
 
+.提醒 .代码 {
+  background-color: #202a35;
+}
+
 .行内代码 {
   font-family: "JetBrains Mono", "Noto Sans SC", sans-serif;
   color: #67cdcc;
@@ -1461,10 +1484,15 @@ body {
   margin: 0 0.25em;
 }
 
+.专业名词 > .附加说明:last-child {
+  margin-right: 0;
+}
+
 *[class*="2级标题"] > .附加说明 {
   background-color: rgb(62, 101, 169);
   font-size: 0.8em;
   box-shadow: 2px 2px 0.1em 0 #0002;
+  translate: 0 0.075em;
 }
 
 .专题正文区 .fa-star {
@@ -1476,7 +1504,7 @@ body {
   line-height: 1.75rem;
   padding: 10px 0;
   /*color: #b4c5d7;*/
-  color: #bbb;
+  color: var(--正文颜色);
 }
 
 .分区列表 .分区普通文本 {
@@ -1501,13 +1529,13 @@ body {
 .提醒 {
   background-color: #2b4162;
   /*color: #b4c5d7;*/
-  color: #bbb;
+  color: var(--正文颜色);
   border-radius: 10px;
   padding: 30px;
   margin: 10px 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  /*gap: 5px;*/
 }
 
 .分区2级标题 + .提醒 {
@@ -1864,7 +1892,7 @@ div.code-toolbar > .toolbar {
     width: 40px;
     height: 1.75em;
     font-size: 0.85em;
-    border: solid 1px #555;
+    border: solid 2px #fff2;
   }
 
   #章节区 .已激活 > span:nth-child(1) {
