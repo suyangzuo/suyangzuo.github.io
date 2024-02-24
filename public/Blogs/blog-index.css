@@ -454,8 +454,8 @@ body {
 }
 
 .收藏区 button {
-  width: 36px;
-  aspect-ratio: 1;
+  width: 50px;
+  height: 50px;
   border-radius: 200px;
   background-color: transparent;
   border: none;
@@ -467,7 +467,7 @@ body {
 .收藏区 button:hover::after {
   position: absolute;
   top: 50%;
-  right: 125%;
+  right: 115%;
   translate: 0 -50%;
   width: 5px;
   height: 5px;
@@ -538,11 +538,6 @@ body {
     opacity: 0;
     top: -100%;
   }
-}
-
-#收藏栏按钮 > i, #收藏按钮 > i {
-  width: 100%;
-  height: 100%;
 }
 
 /* ------------------- ↑ 收藏区 ------------------- */
@@ -1728,6 +1723,14 @@ div.code-toolbar > .toolbar {
   .专题内容区 {
     padding-left: calc(var(--侧边栏宽度) + 5vw);
   }
+
+  .技术栈选择器 {
+    right: 25px;
+  }
+
+  .收藏区 {
+    right: 25px;
+  }
 }
 
 @media screen and (width < 1700px) {
@@ -1766,10 +1769,6 @@ div.code-toolbar > .toolbar {
     padding-left: 5vw;
   }
 
-  .收藏区 {
-    right: 5%;
-  }
-
   .专题简介 {
     width: 95dvw;
     min-width: auto;
@@ -1800,11 +1799,6 @@ div.code-toolbar > .toolbar {
     width: 97.5% !important;
     height: 90%;
     margin: 0 auto;
-  }
-
-  .技术栈选择器 {
-    right: 5%;
-    bottom: 2%;
   }
 
   .技术栈内容 {
@@ -1897,7 +1891,6 @@ div.code-toolbar > .toolbar {
 
   #章节区 .已激活 > span:nth-child(1) {
     border: solid 1px rgb(73, 208, 136);
-    color: white;
   }
 }
 
