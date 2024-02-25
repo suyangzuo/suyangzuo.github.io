@@ -600,6 +600,7 @@ function 特殊元素样式补充() {
   const 分区普通文本组 = document.querySelectorAll(".分区普通文本");
   分区普通文本组?.forEach((分区普通文本) => {
     const 首节点 = 分区普通文本.firstChild;
+    if (首节点 === null) return;
     if (
       首节点.nodeType === Node.TEXT_NODE &&
       首节点.textContent.trim().length === 0
