@@ -1343,8 +1343,8 @@ body {
   font-weight: 500;
   border-radius: 3em;
   margin-right: 0.5em;
-  background-color: #833f23;
-  color: #ddd;
+  background-color: goldenrod;
+  color: black;
 }
 
 .分区列表项::marker {
@@ -1391,6 +1391,14 @@ body {
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 2px 2px 4px 0 #0007;
+}
+
+.分区普通文本 + .截图容器 {
+  margin-top: 35px;
+}
+
+.截图容器:has(+ .分区普通文本) {
+  margin-bottom: 5px;
 }
 
 .截图容器 > div {
