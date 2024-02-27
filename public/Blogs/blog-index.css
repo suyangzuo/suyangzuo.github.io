@@ -904,7 +904,11 @@ body {
   white-space: nowrap;
   text-overflow: ellipsis;
   font-size: 0.9rem;
-  color: rgb(222, 222, 222);
+  color: #bbb;
+}
+
+.专题.当前专题 .专题-内容 {
+  color: white;
 }
 
 .标题内符号 {
