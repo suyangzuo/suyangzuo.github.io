@@ -1343,8 +1343,9 @@ body {
   font-weight: 500;
   border-radius: 3em;
   margin-right: 0.5em;
-  background-color: goldenrod;
-  color: black;
+  background-color: #222;
+  border: solid 2px #a0a0a0;
+  color: silver;
 }
 
 .分区列表项::marker {
@@ -1445,7 +1446,7 @@ body {
 
 .行内专业名词 {
   color: #67cdcc;
-  margin: 0 0.5ch;
+  margin: 0 0.35ch;
 }
 
 .代码 {

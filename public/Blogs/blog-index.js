@@ -566,6 +566,10 @@ function 特殊元素样式补充() {
     ) {
       附加说明.style.marginLeft = "2px";
     }
+
+    if (附加说明 === 附加说明.parentElement.lastChild) {
+      附加说明.style.marginRight = "0";
+    }
   });
 
   const 超链接组 = document.querySelectorAll(".超链接");

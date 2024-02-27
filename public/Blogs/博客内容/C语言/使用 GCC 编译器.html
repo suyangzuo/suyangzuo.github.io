@@ -93,7 +93,8 @@
       <a
         class="联系方式链接"
         href="https://codesandbox.io/u/suyangzuo"
-        target="_blank">
+        target="_blank"
+      >
         <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
       /></a>
     </li>
@@ -183,7 +184,8 @@
             <figure class="截图容器">
               <img
                 src="/Images/Blogs/C语言/使用 GCC 编译器/预处理.gif"
-                alt="预处理" />
+                alt="预处理"
+              />
             </figure>
           </td>
         </tr>
@@ -202,7 +204,8 @@
             <figure class="截图容器">
               <img
                 src="/Images/Blogs/C语言/使用 GCC 编译器/编译.gif"
-                alt="编译" />
+                alt="编译"
+              />
             </figure>
           </td>
         </tr>
@@ -218,7 +221,8 @@
             <figure class="截图容器">
               <img
                 src="/Images/Blogs/C语言/使用 GCC 编译器/汇编.gif"
-                alt="汇编" />
+                alt="汇编"
+              />
             </figure>
           </td>
         </tr>
@@ -237,7 +241,8 @@
             <figure class="截图容器">
               <img
                 src="/Images/Blogs/C语言/使用 GCC 编译器/链接.gif"
-                alt="链接" />
+                alt="链接"
+              />
             </figure>
           </td>
         </tr>
@@ -263,7 +268,8 @@
       <figure class="截图容器">
         <img
           src="/Images/Blogs/C语言/使用 GCC 编译器/一次性编译.gif"
-          alt="一次性编译" />
+          alt="一次性编译"
+        />
       </figure>
       <p class="分区普通文本">
         一次性编译，将 4 个步骤合而为一，直接从源代码文件得到可执行文件。
@@ -404,7 +410,12 @@
         <tr>
           <th><span class="行内代码">-o</span></th>
           <td>
-            编译、汇编指定的源文件生成目标文件，但不进行链接。通常用于编译不包含主程序的子程序文件。
+            链接并生成可执行文件
+            <span class="强调">或</span>
+            一次性编译并生成可执行文件。如果忽略此参数，会生成默认名称为<span
+              class="行内专业名词"
+              >a.exe</span
+            >的可执行文件。
           </td>
           <td><span class="行内代码">gcc main.c func.c -o app.out</span></td>
         </tr>
