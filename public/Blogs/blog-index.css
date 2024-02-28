@@ -1317,7 +1317,7 @@ body {
   line-height: 1.6em;
 }
 
-.分区列表项:not(:first-child):has(.截图容器) {
+.分区列表项:has(.截图容器) + .分区列表项 {
   margin-top: 50px;
 }
 
