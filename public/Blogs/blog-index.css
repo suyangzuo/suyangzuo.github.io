@@ -907,6 +907,14 @@ body {
   color: #bbb;
 }
 
+.专题:hover .专题-内容 {
+  color: white;
+}
+
+.专题:hover .专题-内容 .专题内名词 {
+  color: #7ad0ea;
+}
+
 .专题.当前专题 .专题-内容 {
   color: white;
 }
