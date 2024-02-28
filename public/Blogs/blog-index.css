@@ -920,6 +920,10 @@ body {
   color: #6dabe0;
 }
 
+.专题.当前专题 .专题-内容 .专题内名词 {
+  color: #7ad0ea;
+}
+
 /*.专题-内容 .专题内名词.左 {
   margin-right: 0.25em;
 }
@@ -1305,6 +1309,10 @@ body {
   line-height: 1.6em;
 }
 
+.分区列表项:not(:first-child):has(.截图容器) {
+  margin-top: 50px;
+}
+
 .分区列表项 > .分区列表 > .分区列表项 {
   list-style-type: circle;
 }
@@ -1333,6 +1341,10 @@ body {
 .分区列表.有序列表 > .分区列表项 {
   list-style-type: none;
   counter-increment: li;
+}
+
+.分区列表.有序列表 > .分区列表项:not(:first-child) {
+  margin-top: 50px;
 }
 
 .分区列表.有序列表 > .分区列表项::before {
