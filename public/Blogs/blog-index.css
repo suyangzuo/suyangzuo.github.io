@@ -1472,6 +1472,10 @@ body {
   font-weight: 500;
 }
 
+.分区列表项 > .专业名词:first-child {
+  font-size: 1em;
+}
+
 :where(.分区2级标题, .分区3级标题) > .专业名词 {
   font-size: 0.75em;
   translate: 0 0.1em;
