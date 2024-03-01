@@ -29,6 +29,10 @@ body {
   padding-left: var(--侧边栏宽度);
 }
 
+.官网对齐 {
+  padding-right: 1.25em;
+}
+
 /* ------------------- ↓ 章节区 ------------------- */
 #章节区容器 {
   position: absolute;
@@ -1330,6 +1334,10 @@ body {
   text-indent: -1.425em;
 }
 
+.分区列表项:has(.分区列表) + .分区列表项 {
+  margin-top: 50px;
+}
+
 .分区列表:not(.有序列表) > .分区列表项 p {
   text-indent: 0;
 }
@@ -1370,6 +1378,7 @@ body {
   background-color: #222;
   border: solid 2px #a0a0a0;
   color: silver;
+  translate: 0 -0.075em;
 }
 
 .分区列表项::marker {
@@ -1723,6 +1732,11 @@ code[class*="language-"],
 pre[class*="language-"] {
   font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
   "Noto Sans SC" !important;
+  font-size: 0.95em !important;
+}
+
+pre[class*="language-"] {
+  padding-top: 1.5em !important;
 }
 
 div.code-toolbar > .toolbar > .toolbar-item > a,
@@ -1735,6 +1749,7 @@ div.code-toolbar > .toolbar > .toolbar-item > span {
 
 div.code-toolbar > .toolbar {
   opacity: 1 !important;
+  top: 0 !important;
 }
 
 /* ------------------- ↑ 代码格式化 ------------------- */
