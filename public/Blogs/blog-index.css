@@ -14,6 +14,10 @@
   --超链接-悬停颜色: rgb(173, 104, 238);
   --章节区位置-高度: 0px;
   --章节区位置-偏移-top: 0px;
+  --专题高亮色: #789bde;
+  /*--行内名词代码颜色: #67cdcc;*/
+  --行内专业名词颜色: #709de8;
+  --行内代码颜色: #54a976;
 }
 
 html {
@@ -916,7 +920,7 @@ body {
 }
 
 .专题:hover .专题-内容 .专题内名词 {
-  color: #7ad0ea;
+  color: var(--专题高亮色);
 }
 
 .专题.当前专题 .专题-内容 {
@@ -929,11 +933,13 @@ body {
 }
 
 .专题-内容 .专题内名词 {
-  color: #6dabe0;
+  /*color: #6dabe0;*/
+  color: #5e7ccb;
 }
 
 .专题.当前专题 .专题-内容 .专题内名词 {
-  color: #7ad0ea;
+  /*color: #7ad0ea;*/
+  color: var(--专题高亮色);
 }
 
 /*.专题-内容 .专题内名词.左 {
@@ -970,6 +976,10 @@ body {
   text-decoration-color: #ffa500a0;
   text-underline-offset: 3px;
   transition: 125ms;
+}
+
+.原文链接 > .超链接 {
+  margin-left: 0;
 }
 
 .超链接:hover {
@@ -1482,7 +1492,7 @@ body {
 }
 
 .行内专业名词 {
-  color: #67cdcc;
+  color: var(--行内专业名词颜色);
   margin: 0 0.35ch;
 }
 
@@ -1502,7 +1512,7 @@ body {
 
 .行内代码 {
   font-family: "JetBrains Mono", "Noto Sans SC", sans-serif;
-  color: #67cdcc;
+  color: var(--行内代码颜色);
   margin: 0 0.25em;
   font-size: 0.95em;
 }

@@ -586,12 +586,7 @@ function 特殊元素样式补充() {
     if (
       前一节点 !== null &&
       (前一节点.tagName === "BR" ||
-        (前一节点.nodeType ===
-          Node.TEXT_NODE /*前一节点.textContent.at(-1) === "，" ||
-            前一节点.textContent.at(-1) === "。" ||
-            前一节点.textContent.at(-1) === "：" ||
-            前一节点.textContent.at(-1) === "；" ||
-            前一节点.textContent.at(-1) === "、" ||*/ &&
+        (前一节点.nodeType === Node.TEXT_NODE &&
           (远距标点组
             .slice(-(远距标点组.length - 1))
             .some((标点) => 标点 === 前一节点.textContent.at(-1)) ||
@@ -642,6 +637,12 @@ function 特殊元素样式补充() {
   行内代码组?.forEach((行内代码) => {
     if (行内代码 === 行内代码.parentNode.firstChild) {
       行内代码.style.marginLeft = "0";
+    } else {
+      const 前一节点 = 行内代码.previousSibling;
+      const 修剪文本 = 前一节点.textContent.trim();
+      if (修剪文本 === "" || 远距标点组.some((标点) => 标点 === 修剪文本)) {
+        行内代码.style.marginLeft = "0";
+      }
     }
   });
 

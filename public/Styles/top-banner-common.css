@@ -222,7 +222,7 @@
     translate: 0 110px;
     background-color: rgb(23, 28, 33);
     border-radius: 5px;
-    outline: solid 2px #fff2;
+    outline: solid 2px #444;
     overflow: hidden;
     transition: 350ms ease-out;
     box-shadow: 5px 5px 10px 0 #0008;
