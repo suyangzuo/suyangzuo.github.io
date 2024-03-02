@@ -31,6 +31,11 @@ body {
 
 #公共页脚 {
   padding-left: var(--侧边栏宽度);
+  gap: 5vw;
+}
+
+#页脚信息区 {
+  gap: 2.5vw;
 }
 
 .官网对齐 {
