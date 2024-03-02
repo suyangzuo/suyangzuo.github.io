@@ -217,6 +217,10 @@ body {
   border-color: #fff8;
 }
 
+*[class*="锚链接"]:hover .行内专业名词 {
+  filter: brightness(150%) saturate(200%);
+}
+
 /* ------------------- ↑ 章节区 ------------------- */
 
 /* ------------------- ↓ 收藏栏 ------------------- */
@@ -1499,6 +1503,7 @@ body {
 .附加说明 .行内专业名词 {
   mix-blend-mode: color-dodge;
 }
+
 
 .代码 {
   font-family: "JetBrains Mono", "Noto Sans SC", sans-serif;

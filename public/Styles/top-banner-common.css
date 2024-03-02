@@ -1,3 +1,7 @@
+:root {
+  --二级菜单色: rgb(47, 95, 69);
+}
+
 .top-banner {
   width: 100%;
   /* overflow: hidden; */
@@ -175,7 +179,6 @@
 
       .导航1级文本 {
         flex-shrink: 0;
-        display: block;
         height: 100%;
         width: 100%;
         /* padding: 0 15px; */
@@ -222,10 +225,9 @@
     translate: 0 110px;
     background-color: rgb(23, 28, 33);
     border-radius: 5px;
-    outline: solid 2px #444;
     overflow: hidden;
     transition: 350ms ease-out;
-    box-shadow: 5px 5px 10px 0 #0008;
+    box-shadow: 5px 5px 10px 0 #0008, inset 0 0 0 1px var(--二级菜单色);
 
     .导航2级链接 {
       width: 150px;
@@ -240,7 +242,7 @@
   }
 
   .导航2级链接:hover {
-    background-color: rgb(47, 95, 69);
+    background-color: var(--二级菜单色);
   }
 }
 
@@ -439,4 +441,5 @@
     display: none;
   }
 }
+
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */
