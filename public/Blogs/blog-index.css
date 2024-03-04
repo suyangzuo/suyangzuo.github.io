@@ -472,7 +472,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 25px;
+  gap: 15px;
 }
 
 .收藏区 button {
@@ -1489,16 +1489,11 @@ body {
   padding: 0 5px;
   margin: 0 0.25em;
   font-size: 0.9em;
-  font-weight: 500;
 }
 
 .专业名词.亮 {
   background-color: rgb(153, 168, 183);
   color: black;
-}
-
-.分区列表项 > .专业名词:first-child {
-  font-size: 1em;
 }
 
 :where(.分区2级标题, .分区3级标题) > .专业名词 {
@@ -1511,8 +1506,12 @@ body {
   margin: 0 0.35ch;
 }
 
+.提醒 .行内专业名词 {
+  color: #92c4ec;
+}
+
 .附加说明 .行内专业名词 {
-  mix-blend-mode: color-dodge;
+  color: #8bb5f5;
 }
 
 .代码 {
@@ -1651,6 +1650,21 @@ body {
 .强调 {
   color: #e86686;
   margin: 0 2px;
+}
+
+.次要 {
+  color: #999;
+  font-size: 0.9em;
+  margin: 0 5px;
+}
+
+.专题-内容 .次要 {
+  font-size: 0.95em;
+  margin: 0 2px;
+}
+
+.专题.当前专题 .专题-内容 .次要 {
+  color: #bbb;
 }
 
 /*-------------- ↑ 专题正文区 --------------*/

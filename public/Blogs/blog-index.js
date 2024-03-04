@@ -10,6 +10,9 @@ const 关闭技术栈对话框按钮 = document.querySelector(".关闭技术栈�
 const 技术栈组 = document.querySelectorAll(".技术栈");
 const 专题内容区 = document.getElementsByClassName("专题内容区")[0];
 
+const 转载提醒文本 =
+  "基于对初学者友好、易读易懂的原则，译者对原文内容和格式作了一些调整和补充。";
+
 const 收藏栏按钮 = document.getElementById("收藏栏按钮");
 const 收藏按钮 = document.getElementById("收藏按钮");
 const 收藏数量 = document.getElementById("收藏数量");
@@ -294,6 +297,7 @@ async function 设置内容() {
   });
   特殊元素样式补充();
   刷新第三方库();
+  插入转载提醒内容();
 }
 
 function 点选技术栈(event) {
@@ -667,6 +671,14 @@ function 特殊元素样式补充() {
 }
 
 //---------------------- ↑ 对内容中的特殊元素补充样式 ----------------------
+
+function 插入转载提醒内容() {
+  const 转载提醒 = document.querySelector(".转载提醒");
+  if (转载提醒 === null) return;
+  const 转载提醒段落 = document.createElement("p");
+  转载提醒段落.textContent = 转载提醒文本;
+  转载提醒.appendChild(转载提醒段落);
+}
 
 侧边栏收缩容器.addEventListener("click", 修改侧边栏可见性);
 let 侧边栏可见 = false;
