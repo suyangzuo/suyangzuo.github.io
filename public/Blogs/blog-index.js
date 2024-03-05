@@ -681,20 +681,18 @@ function 插入转载提醒内容() {
 }
 
 侧边栏收缩容器.addEventListener("click", 修改侧边栏可见性);
-let 侧边栏可见 = false;
-const 视口宽度低于800px = window.matchMedia("(width < 800px)");
+let 侧边栏可见 = !侧边栏.className.includes("隐藏");
 
 function 修改侧边栏可见性() {
   if (!侧边栏可见) {
-    侧边栏.style.setProperty("visibility", "visible", "important");
-    侧边栏.style.setProperty("opacity", "1", "important");
-    侧边栏可见 = true;
+    侧边栏.classList.remove("侧边栏隐藏");
   } else {
-    侧边栏.style.visibility = "hidden";
-    侧边栏.style.opacity = "0";
-    侧边栏可见 = false;
+    侧边栏.classList.add("侧边栏隐藏");
   }
+  侧边栏可见 = !侧边栏.className.includes("隐藏");
 }
+
+const 视口宽度低于800px = window.matchMedia("(width < 1000px)");
 
 视口宽度低于800px.addEventListener("change", () => {
   修改视口尺寸();
@@ -702,12 +700,11 @@ function 修改侧边栏可见性() {
 
 function 修改视口尺寸() {
   if (!视口宽度低于800px.matches) {
-    侧边栏.style.visibility = "visible";
-    侧边栏.style.opacity = "1";
-    侧边栏可见 = true;
+    侧边栏.classList.remove("侧边栏隐藏");
   } else {
-    侧边栏可见 = false;
+    侧边栏.classList.add("侧边栏隐藏");
   }
+  侧边栏可见 = !侧边栏.className.includes("隐藏");
 }
 
 function 当前专题已被收藏时刷新收藏按钮样式() {

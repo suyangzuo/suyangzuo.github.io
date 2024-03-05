@@ -373,6 +373,26 @@
 }
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
+@media only screen and (width < 1200px) {
+  .菜单区 .导航1级菜单列表 {
+    padding: 0 15px;
+  }
+
+  .菜单区 .导航1级菜单列表 .导航1级菜单 {
+    width: 100px;
+  }
+
+  .菜单区 .导航1级菜单列表 .导航1级菜单 .导航1级文本 {
+    font-size: 0.85em;
+  }
+}
+
+@media only screen and (width < 1100px) {
+  .搜索区 {
+    display: none;
+  }
+}
+
 @media only screen and (max-width: 1000px) {
   .top-banner {
     position: relative;
@@ -384,29 +404,26 @@
     aspect-ratio: 1;
     object-fit: cover;
   }
-
-  #logo-text {
-    display: none;
-  }
-
-  #搜索框 {
-    width: 85%;
-  }
 }
 
 @media only screen and (max-width: 750px) {
   .导航功能区 {
     width: 450px;
-  }
-
-  #搜索框 {
-    width: 80%;
+    gap: 0;
   }
 }
 
 @media only screen and (max-width: 550px) {
   .top-banner {
     padding: 0 2%;
+  }
+
+  .菜单区 .导航1级菜单列表 {
+    padding: 0 0 0 10px;
+  }
+
+  .菜单区 .导航1级菜单列表 .导航1级菜单 {
+    width: 90px;
   }
 
   .导航功能区 {
@@ -417,27 +434,7 @@
     justify-content: flex-end;
   }
 
-  .搜索区 {
-    width: 250px;
-  }
-
-  .放大镜 {
-    flex-grow: 1;
-  }
-
   .注册登录区 {
-    width: fit-content;
-  }
-
-  #搜索框 {
-    width: 80%;
-  }
-
-  .登录按钮 {
-    width: 30px;
-  }
-
-  .登录文本 {
     display: none;
   }
 }

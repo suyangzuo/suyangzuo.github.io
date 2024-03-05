@@ -737,19 +737,24 @@ body {
 
 /* -------------------------- ↓ 侧边栏样式 -------------------------- */
 .侧边栏收缩容器 {
-  position: absolute;
+  position: fixed;
   z-index: 1;
   width: 40px;
-  height: 35px;
+  height: 40px;
   /* background-color: red; */
-  top: 55px;
-  left: 5px;
-  font-size: 3rem;
+  top: 60px;
+  right: 10px;
+  font-size: 2.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
   visibility: hidden;
   opacity: 0;
+}
+
+.侧边栏收缩容器 > i {
+  width: 100%;
+  height: 100%;
 }
 
 .侧边栏收缩容器:hover {
@@ -770,6 +775,11 @@ body {
   row-gap: 20px;
   padding-top: 150px;
   z-index: 9991;
+  transition: translate 500ms;
+}
+
+.侧边栏.侧边栏隐藏 {
+  translate: -100%;
 }
 
 #侧边栏布局标签 {
@@ -1631,7 +1641,7 @@ body {
 .提醒标题::before {
   position: absolute;
   top: 50%;
-  left: 0%;
+  left: 0;
   translate: -150% -50%;
   content: "\f05a";
   color: yellow;
@@ -1862,11 +1872,7 @@ div.code-toolbar > .toolbar {
   }
 }
 
-@media screen and (width < 800px) {
-  #公共页脚 {
-    padding-left: 5vw;
-  }
-
+@media screen and (width < 1000px) {
   .专题简介 {
     width: 95dvw;
     min-width: auto;
@@ -1877,21 +1883,26 @@ div.code-toolbar > .toolbar {
     width: 100%;
   }
 
+  .简介标题 {
+    font-size: 2rem;
+  }
+
   .侧边栏收缩容器 {
     visibility: visible;
     opacity: 1;
     z-index: 2;
   }
 
-  .侧边栏 {
-    visibility: hidden !important;
-    opacity: 0 !important;
-    z-index: 1;
-  }
-
   .专题内容区 {
     padding: 50px 25px 25px;
   }
+}
+
+@media screen and (width < 800px) {
+  #公共页脚 {
+    padding-left: 5vw;
+  }
+
 
   .技术栈对话框 {
     width: 97.5% !important;
