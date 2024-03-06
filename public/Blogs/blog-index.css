@@ -1350,7 +1350,7 @@ body {
   line-height: 1.6em;
 }
 
-.分区列表项:has(.截图容器) + .分区列表项 {
+.分区列表项:has(.截图容器 + .分区普通文本:last-child, .截图容器 ~ .提醒:last-child) + .分区列表项 {
   margin-top: 50px;
 }
 
@@ -1363,8 +1363,12 @@ body {
   text-indent: -1.425em;
 }
 
-.分区列表项:has(.分区列表) + .分区列表项 {
-  margin-top: 50px;
+.分区列表项:has(.分区列表:last-child) + .分区列表项 {
+  margin-top: 25px;
+}
+
+.分区列表项:has(.分区普通文本:last-child) + .分区列表项 {
+  margin-top: 15px;
 }
 
 .分区列表:not(.有序列表) > .分区列表项 p {
@@ -1450,7 +1454,7 @@ body {
   align-items: center;
   background: linear-gradient(#555 0%, #555 100%) content-box, linear-gradient(#aaa 0%, #555 95%) border-box;
   /*background-color: #fff1;*/
-  border: solid 3px transparent;
+  border: solid 2px transparent;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 2px 2px 4px 0 #0007;
@@ -1524,6 +1528,10 @@ body {
   color: #8bb5f5;
 }
 
+.表格标题 .行内专业名词 {
+  mix-blend-mode: color-dodge;
+}
+
 .代码 {
   font-family: "JetBrains Mono", "Noto Sans SC", monospace;
   background-color: #464a4c;
@@ -1546,6 +1554,10 @@ body {
 }
 
 .附加说明 .行内代码 {
+  mix-blend-mode: color-dodge;
+}
+
+.表格标题 .行内代码 {
   mix-blend-mode: color-dodge;
 }
 
@@ -1660,6 +1672,10 @@ body {
 .强调 {
   color: #e86686;
   margin: 0 2px;
+}
+
+.强调:has(+ .专业名词, + .代码,  + .行内专业名词, + .行内代码) {
+  margin-right: 0;
 }
 
 .次要 {
