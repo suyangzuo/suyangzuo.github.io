@@ -6,18 +6,25 @@
   --侧边栏背景: linear-gradient(60deg, #141518 0%, #171c21 100%);
   --专题内容区背景: linear-gradient(90deg, #181c20 0%, #262d35 100%);
   --超链接颜色-正文: skyblue;
+  --超链接-悬停颜色: rgb(173, 104, 238);
+  --超链接-下划线颜色: #ffa500a0;
+  --超链接-下划线悬停颜色: orange;
   --正文分区-宽度: 800px;
   --正文颜色: #c0c5ca;
   --专题标记-原创: rgb(76, 179, 160);
   --专题标记-转载: orange;
   --表身区-奇数行背景色: #234;
-  --超链接-悬停颜色: rgb(173, 104, 238);
   --章节区位置-高度: 0px;
   --章节区位置-偏移-top: 0px;
   --专题高亮色: #789bde;
   /*--行内名词代码颜色: #67cdcc;*/
   --行内专业名词颜色: #709de8;
   --行内代码颜色: #54a976;
+  --标题字体集: "Titillium Web", "Noto Sans SC", sans-serif;
+  --代码字体集: "JetBrains Mono", "Noto Sans SC", monospace;
+  --font-awesome-字体集: "Font Awesome 6 Free";
+  --代码块字体集: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
+  "Noto Sans SC", monospace !important;
 }
 
 html {
@@ -864,7 +871,7 @@ body {
   padding: 0 10px;
   font-size: 1.125rem;
   color: rgb(255, 255, 255);
-  font-family: "Titillium Web", "Noto Sans SC";
+  font-family: "Titillium Web", "Noto Sans SC", sans-serif;
   font-weight: 600;
   display: flex;
   justify-content: flex-start;
@@ -1005,6 +1012,10 @@ body {
   text-decoration-color: orange;
 }
 
+.超链接 * {
+  margin: 0 !important;
+}
+
 .表格 .超链接 {
   text-decoration: none;
 }
@@ -1043,7 +1054,7 @@ body {
 }
 
 .简介标题 {
-  font-family: "Titillium Web", "Noto Sans SC";
+  font-family: "Titillium Web", "Noto Sans SC", sans-serif;
   font-size: 3rem;
   letter-spacing: 0.25rem;
   display: flex;
