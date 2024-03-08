@@ -205,77 +205,77 @@
       <li class="分区列表项"><span class="代码">#84c6fdee</span></li>
     </ul>
     <p class="分区普通文本">
-      很多初学者会感到很困惑，怎么数值位数一会儿 3 位，一会儿 4 位，一会儿又变成
-      6 位和 8 位呢？我们来了解一下数值的含义。
+      很多初学者会感到很困惑，怎么数值位数一会儿<span class="行内专业名词"
+        >3</span
+      >位，一会儿<span class="行内专业名词">4</span>位，一会儿又变成<span
+        class="行内专业名词"
+        >6</span
+      >位和<span class="行内专业名词">8</span>位呢？
     </p>
     <p class="分区普通文本">
-      无论是几进制，表示的都是<span class="行内专业名词">RGB</span
-      >，因此其下限和上限也遵照规范，最低为<span class="代码">0</span
-      >，最高为<span class="代码">255</span>；换算成<span class="行内专业名词"
+      无论是几位写法，<span class="行内专业名词">RGB</span
+      >都是必需的，其数值上限和下限也遵照规范：最高为<span class="代码"
+        >255</span
+      >，最低为<span class="代码">0</span>；换算成<span class="行内专业名词"
         >16 进制<span class="附加说明">默认用 2 位表示</span></span
-      >，最低就是<span class="代码">00</span>，最高则是<span class="代码"
+      >，最高是<span class="代码">FF</span>，最低是<span class="代码">00</span
+      >。<br /><span class="行内专业名词">透明度</span
+      ><span class="强调">不一定</span>要写。如果不写，默认为最大值<span
+        class="代码"
         >FF</span
       >。
     </p>
-    <p class="分区普通文本">
-      红、绿、蓝，3 种原色都要用 2 位来表示，合起来就是 6 位。比如：
-    </p>
-    <ul class="分区列表">
+    <ul class="分区列表" style="margin-top: 25px">
       <li class="分区列表项">
-        <span class="行内专业名词">纯黑色</span>：<span class="代码"
-          >#000000</span
+        <span class="专业名词">6</span>位表示法：<span class="附加说明"
+          ><span class="强调">无</span>透明度</span
         >
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/Web前端-原生开发/颜色表示法/16进制-6位.webp"
+            alt="16进制 6位颜色表示法"
+          />
+        </figure>
       </li>
       <li class="分区列表项">
-        <span class="行内专业名词">纯白色</span>：<span class="代码"
-          >#ffffff</span
+        <span class="专业名词">8</span>位表示法：<span class="附加说明"
+          ><span class="强调">有</span>透明度</span
         >
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/Web前端-原生开发/颜色表示法/16进制-8位.webp"
+            alt="16进制 8位颜色表示法"
+          />
+        </figure>
       </li>
     </ul>
-
-    <p class="分区普通文本">
-      在此基础之上，我们可以再加上 2 位，用来表示<span class="专业名词"
-        >透明度</span
-      >，在<span class="行内专业名词">16 进制</span>下范围同样是从<span
-        class="代码"
-        >00</span
-      >到<span class="代码">FF</span>：
+    <p class="分区普通文本" style="margin-top: 50px">
+      <span class="强调">注意：</span>如果<span class="专业名词">16进制</span
+      >表示法中的每 2 位全都一样，可以使用简化写法：
     </p>
-    <ul class="分区列表">
+    <ul class="分区列表" style="margin-top: 25px">
       <li class="分区列表项">
-        <span class="代码">#00FF0000</span>：最后 2 个<span class="行内代码"
-          >00</span
-        >代表完全透明，因此此颜色虽然是纯蓝色，但根本看不见。
+        <span class="专业名词">3</span>位表示法：<span class="附加说明"
+          ><span class="强调">无</span>透明度</span
+        >；<span class="代码">#f4a</span>=<span class="代码">#ff44aa</span
+        >=<span class="代码">#f4af</span>=<span class="代码">#ff44aaff</span>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/Web前端-原生开发/颜色表示法/16进制-3位.webp"
+            alt="16进制 3位颜色表示法"
+          />
+        </figure>
       </li>
       <li class="分区列表项">
-        <span class="代码">#FF0000FF</span>：最后 2 个<span class="行内代码"
-          >FF</span
-        >代表完全不透明，因此呈现为纯红色。
-      </li>
-    </ul>
-    <section class="提醒">
-      <h3 class="提醒标题">提醒</h3>
-      <p>
-        透明度如果省略，则默认为<span class="代码">FF</span>，因此<span
-          class="代码"
-          >#3984A7FF</span
-        >和<span class="代码">#3984A7</span>是完全等价的。
-      </p>
-    </section>
-    <p class="分区普通文本">
-      假设 3 个原色<span class="附加说明">透明度也一样</span>值的 2位
-      是一样的，则可以简写为 1 位：
-    </p>
-    <ul class="分区列表">
-      <li class="分区列表项">
-        <span class="代码">#99ccaa</span>可以简写为：<span class="代码"
-          >#9ca</span
-        >，二者完全等价。
-      </li>
-      <li class="分区列表项">
-        <span class="代码">#2277cc99</span>可以简写为：<span class="代码"
-          >#27c9</span
-        >，二者完全等价。
+        <span class="专业名词">4</span>位表示法：<span class="附加说明"
+          ><span class="强调">有</span>透明度</span
+        >；<span class="代码">#d91c</span>=<span class="代码">#dd9911cc</span>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/Web前端-原生开发/颜色表示法/16进制-4位.webp"
+            alt="16进制 4位颜色表示法"
+          />
+        </figure>
       </li>
     </ul>
     <section class="提醒">
@@ -297,34 +297,60 @@
       <span class="行内专业名词">10 进制</span>表示法
     </h3>
     <p class="分区普通文本">
-      10进制表示法，以<span class="代码">rgb</span
+      <span class="行内专业名词">10进制</span>表示法，以<span class="代码"
+        >rgb</span
       >函数的方式书写，原色的值范围依然是从<span class="代码">0</span>到<span
         class="代码"
         >255</span
       >。不过，10进制表示法拥有更加灵活的语法：红、绿、蓝，可以用百分比表示。
     </p>
     <ul class="分区列表">
-      <li class="分区列表项"><span class="代码">rgb(180, 65, 233)</span></li>
-      <li class="分区列表项"><span class="代码">rgb(35%，108, 98%)</span></li>
+      <li class="分区列表项">
+        <span class="代码"
+          >rgb(<span style="color: hotpink">180</span>,
+          <span style="color: lightgreen">65</span>,
+          <span style="color: lightskyblue">233</span>)</span
+        >
+      </li>
+      <li class="分区列表项">
+        <span class="代码"
+          >rgb(<span style="color: hotpink">35%</span>，<span
+            style="color: lightgreen"
+            >108</span
+          >, <span style="color: lightskyblue">98%</span>)</span
+        >
+      </li>
     </ul>
     <p class="分区普通文本">
-      当然，10进制表示法也可以添加透明度，但是函数名要从<span class="代码"
+      <span class="行内专业名词">10进制</span>表示法也有透明度，将函数名从<span
+        class="代码"
         >rgb</span
       >改成<span class="代码">rgba</span
-      ><span class="附加说明">a 代表 Alpha通道，即透明度</span>。有 2
-      种方式，一种是数字，从<span class="代码">0</span>到<span class="代码"
+      ><span class="附加说明">a 代表 Alpha通道，即透明度</span
+      >。有两种方式表示透明度，一种是数字，从<span class="代码">0</span>到<span
+        class="代码"
         >1</span
       >，可以用浮点数；另一种是用百分比，从<span class="代码">0%</span>到<span
         class="代码"
         >100%</span
-      >。以下 2 种表示透明度的方式都是正确的：
+      >。以下两种写法都是正确的：
     </p>
     <ul class="分区列表">
       <li class="分区列表项">
-        <span class="代码">rgba(45, 100, 255, 0.25)</span>
+        <span class="代码"
+          >rgba(<span style="color: hotpink">45</span>,
+          <span style="color: lightgreen">100</span>,
+          <span style="color: lightskyblue">255</span>,
+          <span style="color: darkgray">0.25</span>)</span
+        >
       </li>
       <li class="分区列表项">
-        <span class="代码">rgba(45, 100, 255, 25%)</span>
+        <span class="代码"
+          >rgba(<span style="color: hotpink">45</span>,
+          <span style="color: lightgreen">100</span>,
+          <span style="color: lightskyblue">255</span>,
+          <span style="color: darkgray">25%</span>)</span
+        >
       </li>
     </ul>
   </article>

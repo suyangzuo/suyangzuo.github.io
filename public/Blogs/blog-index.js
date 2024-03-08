@@ -587,16 +587,23 @@ function 特殊元素样式补充() {
   const 行内专业名词组 = document.querySelectorAll(".行内专业名词");
   行内专业名词组.forEach((行内专业名词) => {
     const 前一节点 = 行内专业名词.previousSibling;
+    const 后一节点 = 行内专业名词.nextSibling;
+    if (前一节点 === null) return;
     if (
-      前一节点 !== null &&
-      (前一节点.tagName === "BR" ||
-        (前一节点.nodeType === Node.TEXT_NODE &&
-          (远距标点组
-            .slice(-(远距标点组.length - 1))
-            .some((标点) => 标点 === 前一节点.textContent.at(-1)) ||
-            前一节点.textContent.trim() === "")))
+      前一节点.tagName === "BR" ||
+      (前一节点.nodeType === Node.TEXT_NODE &&
+        (远距标点组
+          .slice(-(远距标点组.length - 1))
+          .some((标点) => 标点 === 前一节点.textContent.at(-1)) ||
+          前一节点.textContent.trim() === ""))
     ) {
       行内专业名词.style.marginLeft = "0";
+    }
+
+    if (后一节点 === null || 后一节点.nodeType !== Node.ELEMENT_NODE) return;
+    const 后一节点元素 = 行内专业名词.nextElementSibling;
+    if (后一节点元素.className.includes("强调")) {
+      行内专业名词.style.marginRight = "0";
     }
   });
 
@@ -658,6 +665,12 @@ function 特殊元素样式补充() {
       远距标点组.some((标点) => 标点 === 前一节点.textContent.at(-1))
     ) {
       强调.style.marginLeft = "0";
+    }
+
+    const 后一节点 = 强调.nextSibling;
+    if (后一节点 === null) return;
+    if (后一节点.nodeType === Node.TEXT_NODE) {
+      强调.style.marginRight = "2px";
     }
   });
 

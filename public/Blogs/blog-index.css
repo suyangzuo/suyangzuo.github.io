@@ -126,7 +126,8 @@ body {
 }
 
 #章节区 .已激活 {
-  color: rgb(236, 175, 61) !important;
+  /*color: rgb(236, 175, 61) !important;*/
+  color: orchid !important;
 }
 
 /*#章节区 .已激活::after {
@@ -1314,7 +1315,7 @@ body {
 }
 
 .标题序号-3级 {
-  font-family: "consolas";
+  font-family: "consolas", monospace;
   font-size: 0.65em;
   display: inline-flex;
   justify-content: center;
@@ -1359,6 +1360,10 @@ body {
   padding: 3px 0;
   color: #84a7a0;
   line-height: 1.6em;
+}
+
+.分区列表项:has(.截图容器):not(:first-child) {
+  margin-top: 25px;
 }
 
 .分区列表项:has(.截图容器 + .分区普通文本:last-child, .截图容器 ~ .提醒:last-child) + .分区列表项 {
@@ -1683,6 +1688,10 @@ body {
 .强调 {
   color: #e86686;
   margin: 0 2px;
+}
+
+.附加说明 .强调 {
+  mix-blend-mode: color-dodge;
 }
 
 .强调:has(+ .专业名词, + .代码,  + .行内专业名词, + .行内代码) {
