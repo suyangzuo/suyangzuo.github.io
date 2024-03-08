@@ -126,8 +126,7 @@ body {
 }
 
 #章节区 .已激活 {
-  /*color: rgb(236, 175, 61) !important;*/
-  color: orchid !important;
+  color: #ec98db !important;
 }
 
 /*#章节区 .已激活::after {
