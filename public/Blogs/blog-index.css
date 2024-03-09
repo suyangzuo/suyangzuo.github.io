@@ -1,8 +1,9 @@
 :root {
   --侧边栏宽度: 250px;
-  --侧边栏颜色-鼠标悬停: rgb(54, 62, 78);
+  /*--侧边栏颜色-鼠标悬停: rgb(54, 62, 78);*/
+  --侧边栏颜色-鼠标悬停: #2a303a;
   --侧边栏颜色-已选中: rgb(106, 50, 83);
-  /* --侧边栏背景: linear-gradient(60deg, #1f242b 0%, #252c32 100%); */
+  /*--侧边栏颜色-已选中: #2a303a;*/
   --侧边栏背景: linear-gradient(60deg, #141518 0%, #171c21 100%);
   --专题内容区背景: linear-gradient(90deg, #181c20 0%, #262d35 100%);
   --超链接颜色-正文: skyblue;
@@ -126,7 +127,7 @@ body {
 }
 
 #章节区 .已激活 {
-  color: #ec98db !important;
+  color: #e15078 !important;
 }
 
 /*#章节区 .已激活::after {
@@ -214,7 +215,7 @@ body {
   content: "";
   z-index: -1;
   border-radius: 5px;
-  background-color: #744882;
+  background-color: #345;
 }
 
 .锚链接-3级标题 > .标题序号-3级 {
@@ -227,10 +228,6 @@ body {
 .锚链接-3级标题:hover > .标题序号-3级 {
   color: white;
   border-color: #fff8;
-}
-
-*[class*="锚链接"]:hover .行内专业名词 {
-  filter: brightness(150%) saturate(200%);
 }
 
 /* ------------------- ↑ 章节区 ------------------- */
@@ -941,14 +938,6 @@ body {
   color: #bbb;
 }
 
-.专题:hover .专题-内容 {
-  color: white;
-}
-
-.专题:hover .专题-内容 .专题内名词 {
-  color: var(--专题高亮色);
-}
-
 .专题.当前专题 .专题-内容 {
   color: white;
 }
@@ -959,13 +948,11 @@ body {
 }
 
 .专题-内容 .专题内名词 {
-  /*color: #6dabe0;*/
   color: #5e7ccb;
 }
 
-.专题.当前专题 .专题-内容 .专题内名词 {
-  /*color: #7ad0ea;*/
-  color: var(--专题高亮色);
+.专题.当前专题 .专题内名词 {
+  color: #78ade1;
 }
 
 /*.专题-内容 .专题内名词.左 {
@@ -1276,7 +1263,7 @@ body {
 }
 
 .标题序号-2级 {
-  font-family: "consolas";
+  font-family: "consolas", monospace;
   font-size: 0.65em;
   display: inline-flex;
   justify-content: center;
@@ -2028,7 +2015,7 @@ div.code-toolbar > .toolbar {
   .锚链接-3级标题 > .标题序号-3级 {
     margin-right: 10px;
     width: 40px;
-    height: 1.75em;
+    height: 1.65em;
     font-size: 0.85em;
     border: solid 2px #fff2;
   }
