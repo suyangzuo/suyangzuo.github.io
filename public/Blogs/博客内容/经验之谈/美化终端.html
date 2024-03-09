@@ -370,7 +370,62 @@
     </section>
 
     <h3 class="分区标题 分区3级标题">
-      <span>下载</span><span class="行内专业名词">Oh My Posh</span>
+      <span class="行内专业名词">Oh My Posh</span>使用概述
+    </h3>
+    <p class="分区普通文本">
+      要使用<span class="行内专业名词">Oh My Posh</span>，需要做四件事情：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        下载<span class="行内专业名词">Oh My Posh</span>可执行文件<span
+          class="附加说明"
+          >见<span class="行内代码">3-3</span></span
+        >
+      </li>
+      <li class="分区列表项">
+        下载<span class="行内专业名词">Oh My Posh</span>主题文件夹<span
+          class="附加说明"
+          >见<span class="行内代码">3-4</span></span
+        >
+      </li>
+      <li class="分区列表项">
+        创建并修改<span class="行内专业名词">PowerShell</span>配置文件<span
+          class="附加说明"
+          >见<span class="行内代码">3-5</span></span
+        >
+      </li>
+      <li class="分区列表项">
+        下载、安装<span class="行内专业名词">Nerd</span>字体，在<span
+          class="行内专业名词"
+          >Windows 终端</span
+        >内设置相关字体<span class="附加说明"
+          >见<span class="行内代码">3-8</span></span
+        >
+      </li>
+    </ul>
+    <section class="提醒">
+      <h3 class="提醒标题">提示</h3>
+      <p class="分区普通文本">
+        上述三件事情涉及的文件和文件夹，建议放到同一个路径里，避免混乱。
+      </p>
+      <figure class="截图容器">
+        <img
+          src="/Images/Blogs/经验之谈/美化终端/Oh-My-Posh-相关文件.png"
+          alt="Oh My Posh 相关文件和文件夹"
+        />
+      </figure>
+      <p class="分区普通文本">
+        因为<span class="专业名词"
+          ><span class="行内专业名词">PowerShell</span>配置文件</span
+        >必须放在<span class="代码">$HOME\Documents\PowerShell</span
+        >文件夹内，因此建议将<span class="行内专业名词"
+          >Oh My Posh 可执行文件</span
+        >和<span class="行内专业名词">themes</span>文件夹也放在相同文件夹。
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">
+      <span>下载</span><span class="行内专业名词">Oh My Posh</span>可执行文件
     </h3>
     <p class="分区普通文本">
       访问<a
@@ -394,7 +449,7 @@
     </section>
 
     <h3 class="分区标题 分区3级标题">
-      <span>下载</span><span class="行内专业名词">主题文件</span>
+      <span>下载</span><span class="行内专业名词">主题</span>文件夹
     </h3>
     <p class="分区普通文本">
       访问<a class="超链接" href="https://github.com/JanDeDobbeleer/oh-my-posh"
@@ -462,8 +517,16 @@
         >C:\Users\suyang\Documents\PowerShell</span
       >，在此路径创建名为<span class="代码"
         >Microsoft.PowerShell_profile.ps1</span
-      >的文件，并用任意文本编辑器打开<span class="附加说明"
-        >可能要用管理员权限打开</span
+      >的文件：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/经验之谈/美化终端/创建PowerShell配置文件.png"
+        alt="创建 PowerShell 配置文件"
+      />
+    </figure>
+    <p class="分区普通文本">
+      用任意文本编辑器打开<span class="附加说明">可能要用管理员权限打开</span
       >，添加如下代码，并保存文件：
     </p>
     <pre
@@ -485,7 +548,7 @@
         alt="PowerShell 配置语句"
       />
     </figure>
-    <p class="分区普通文本">配置语句分为2种：</p>
+    <p class="分区普通文本">配置语句分为两种模式：</p>
     <ul class="分区列表" style="margin-left: 0">
       <li class="分区列表项" style="list-style-type: none">
         <span class="圆圈序号">&#9312;</span
@@ -507,10 +570,10 @@
         <li class="分区列表项">
           可执行文件名
           <p class="分区普通文本">
-            我的代码使用的文件名是：<span class="代码">posh-windows-amd64</span
-            >，而官方文档中使用的文件名是：<span class="代码">oh-my-posh</span
-            >；请根据自己下载的<span class="行内专业名词">Oh My Posh</span
-            >实际文件名为准。
+            我的代码使用的文件名：<span class="代码">posh-windows-amd64</span
+            >，<br />官方文档使用的文件名：<span class="代码">oh-my-posh</span
+            >；<br />请根据自己下载的<span class="行内专业名词">Oh My Posh</span
+            >可执行文件的实际文件名为准。
           </p>
         </li>
         <li class="分区列表项">
