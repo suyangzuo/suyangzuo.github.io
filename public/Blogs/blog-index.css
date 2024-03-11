@@ -23,7 +23,7 @@
   --行内代码颜色: #54a976;
   --标题字体集: "Titillium Web", "Noto Sans SC", sans-serif;
   --代码字体集: "JetBrains Mono", "Noto Sans SC", monospace;
-  --font-awesome-字体集: "Font Awesome 6 Free";
+  --font-awesome-字体集: "Font Awesome 6 Free", ui-rounded;
   --代码块字体集: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
   "Noto Sans SC", monospace !important;
 }
@@ -495,11 +495,14 @@ body {
   top: 50%;
   right: 115%;
   translate: 0 -50%;
-  width: 5px;
-  height: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 100px;
-  background-color: orange;
-  content: "";
+  color: orange;
+  font-family: var(--font-awesome-字体集);
+  font-size: 0.5em;
+  content: "\f30b";
 }
 
 #收藏按钮:focus {
@@ -833,7 +836,7 @@ body {
 #侧边栏布局::after {
   position: absolute;
   /* content: attr(layout); */
-  font-family: "Font Awesome 6 Free";
+  font-family: var(--font-awesome-字体集);
   content: "\f03a";
   width: 75%;
   height: 110%;
@@ -1256,7 +1259,7 @@ body {
   top: 50%;
   right: 0;
   translate: 150% -50%;
-  font-family: "Font Awesome 6 Free";
+  font-family: var(--font-awesome-字体集);
   content: "\f1dc";
   font-weight: 900;
   color: lightskyblue;
@@ -1321,7 +1324,7 @@ body {
   top: 50%;
   right: 0;
   translate: 150% -50%;
-  font-family: "Font Awesome 6 Free";
+  font-family: var(--font-awesome-字体集);
   font-weight: 900;
   color: orange;
 }
@@ -1659,7 +1662,7 @@ body {
   translate: -150% -50%;
   content: "\f05a";
   color: yellow;
-  font-family: "Font Awesome 6 Free";
+  font-family: var(--font-awesome-字体集);
 }
 
 .提醒标题 > i {

@@ -564,6 +564,12 @@ function 特殊元素样式补充() {
   const 附加说明组 = document.querySelectorAll(".附加说明");
   附加说明组.forEach((附加说明) => {
     const 前一节点 = 附加说明.previousSibling;
+    if (前一节点 === null) return;
+
+    if (远距标点组.some((标点) => 标点 === 前一节点.textContent.at(-1))) {
+      附加说明.style.marginLeft = "0";
+    }
+
     if (
       前一节点.className !== "超链接" &&
       前一节点.nodeType === Node.ELEMENT_NODE
