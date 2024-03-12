@@ -199,7 +199,7 @@ body {
 }
 
 .锚链接-3级标题 {
-  padding: 6px 0;
+  padding: 5px 0;
   font-size: 0.9em;
   display: flex;
   align-items: center;
@@ -641,7 +641,7 @@ body {
 }
 
 .关闭技术栈对话框 > span {
-  color: #bbb;
+  color: #ccc;
   border-radius: 100px;
   display: flex;
   justify-content: center;
@@ -938,7 +938,7 @@ body {
   white-space: nowrap;
   text-overflow: ellipsis;
   font-size: 0.9rem;
-  color: #bbb;
+  color: #ccc;
 }
 
 .专题.当前专题 .专题-内容 {
@@ -956,6 +956,21 @@ body {
 
 .专题.当前专题 .专题内名词 {
   color: #78ade1;
+}
+
+.次要 {
+  color: #aaa;
+  font-size: 0.9em;
+  margin: 0 5px;
+}
+
+.专题-内容 .次要 {
+  font-size: 0.95em;
+  margin: 0 2px;
+}
+
+.专题.当前专题 .专题-内容 .次要 {
+  color: #ccc;
 }
 
 /*.专题-内容 .专题内名词.左 {
@@ -1465,9 +1480,9 @@ body {
   box-shadow: 2px 2px 4px 0 #0007;
 }
 
-.分区普通文本 + .截图容器 {
+/*.分区普通文本 + .截图容器 {
   margin-top: 35px;
-}
+}*/
 
 .截图容器:has(+ .分区普通文本) {
   margin-bottom: 5px;
@@ -1491,7 +1506,7 @@ body {
 }
 
 .截图序号 {
-  color: #bbb;
+  color: #ccc;
   font-size: 15px;
   padding: 10px 0;
 }
@@ -1685,21 +1700,6 @@ body {
 
 .强调:has(+ .专业名词, + .代码,  + .行内专业名词, + .行内代码) {
   margin-right: 0;
-}
-
-.次要 {
-  color: #999;
-  font-size: 0.9em;
-  margin: 0 5px;
-}
-
-.专题-内容 .次要 {
-  font-size: 0.95em;
-  margin: 0 2px;
-}
-
-.专题.当前专题 .专题-内容 .次要 {
-  color: #bbb;
 }
 
 /*-------------- ↑ 专题正文区 --------------*/
