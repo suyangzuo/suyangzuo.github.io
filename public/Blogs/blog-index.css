@@ -127,7 +127,7 @@ body {
 }
 
 #章节区 .已激活 {
-  color: #e15078 !important;
+  color: #ee78b7 !important;
 }
 
 /*#章节区 .已激活::after {
@@ -200,7 +200,7 @@ body {
 
 .锚链接-3级标题 {
   padding: 5px 0;
-  font-size: 0.9em;
+  font-size: 0.85em;
   display: flex;
   align-items: center;
 }
@@ -221,7 +221,7 @@ body {
 .锚链接-3级标题 > .标题序号-3级 {
   margin-right: 10px;
   width: 45px;
-  height: 2em;
+  height: 1.75em;
   font-size: 0.8em;
 }
 
@@ -1325,10 +1325,10 @@ body {
   justify-content: center;
   align-items: center;
   width: 3.25em;
-  height: 1.75em;
+  height: 1.625em;
   margin-right: 20px;
   border-radius: 10em;
-  border: solid 2px #fff2;
+  border: solid 2px #555;
   color: #aaa;
   box-shadow: 2px 2px 2px 0 #0003;
 }
@@ -1988,6 +1988,16 @@ div.code-toolbar > .toolbar {
   }
 }
 
+@media screen and (height < 1200px) {
+  .锚链接-2级标题:not(:first-child) {
+    margin-top: 15px;
+  }
+
+  .锚链接-3级标题 {
+    padding: 3px 0;
+  }
+}
+
 @media screen and (height < 1080px) {
   .章节区标题 {
     font-size: 1.25em;
@@ -1999,12 +2009,7 @@ div.code-toolbar > .toolbar {
     font-size: 1em;
   }
 
-  .锚链接-2级标题:not(:first-child) {
-    margin-top: 15px;
-  }
-
   .锚链接-3级标题 {
-    padding: 4px 0;
     font-size: 0.8em;
   }
 
