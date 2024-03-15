@@ -88,4 +88,180 @@
     </li>
   </ul>
 </article>
-<div class="专题正文区"></div>
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">账户管理</h2>
+
+    <h3 class="分区标题 分区3级标题">身份验证</h3>
+    <p class="分区普通文本">
+      在安装<span class="行内专业名词">MySQL</span
+      >时，有一步是选择身份验证方式：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-07-验证方法.png"
+        alt="MySQL 验证方法"
+      />
+    </figure>
+    <p class="分区普通文本">
+      <span class="行内专业名词">MySQL</span
+      >包含多个用于身份验证的插件，其中用得最多的两个是：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="代码">caching_sha2_password</span>，<span
+          class="行内专业名词"
+          >MySQL 8.x</span
+        >的默认验证方式，安全性更高。
+      </li>
+      <li class="分区列表项">
+        <span class="代码">mysql_native_password</span>，兼容<span
+          class="行内专业名词"
+          >MySQL 5.x</span
+        >。从<span class="行内专业名词">MySQL 8.0.34</span>开始，<span
+          class="行内代码"
+          >mysql_native_password</span
+        >身份验证插件已被弃用，并可能在未来版本中删除。
+      </li>
+    </ul>
+    <p class="分区普通文本">
+      新建账户时，可以指定身份验证方式；已有的账户，可以修改身份验证方式。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">查询账户信息</h3>
+    <p class="分区普通文本">
+      账户信息都存储于<span class="行内代码">mysql</span>数据库的<span
+        class="行内代码"
+        >user</span
+      >数据表中，该表拥有 51 个字段。我们只需要查询<span class="行内专业名词"
+        >用户<span class="附加说明">user</span></span
+      >、<span class="行内专业名词">主机<span class="附加说明">host</span></span
+      >、<span class="行内专业名词"
+        >身份验证插件<span class="附加说明">plugin</span>即可</span
+      >。
+    </p>
+    <pre>
+      <code class="lang-sql">
+        select user,host,plugin from mysql.user;
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/MySQL/账户与权限/用户信息查询结果.png"
+        alt="用户信息查询结果"
+      />
+    </figure>
+    <p class="分区普通文本">
+      所有用户对应的主机都是<span class="行内代码">localhost</span
+      >，并且身份验证方式都是<span class="行内代码">caching_sha2_password</span
+      >。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        完整的账户名称包含 2 个部分：<span class="行内专业名词">用户名</span
+        >和<span class="行内专业名词">主机名</span>，其语法是：<span
+          class="行内代码"
+          >'用户名'</span
+        >@<span class="行内代码">'主机名'</span>。该语法遵循以下规则：
+      </p>
+      <ul class="分区列表">
+        <li class="分区列表项">
+          <span class="行内专业名词">主机名</span
+          >可以省略；如果省略，则表示<span class="行内专业名词">%</span
+          ><span class="附加说明">所有主机</span>。例如：<span class="代码"
+            >'runner'</span
+          ><i
+            style="margin: 0 5px; color: gold; font-size: 0.8em"
+            class="fa-solid fa-equals"
+          ></i
+          ><span class="代码">'runner'@'%'</span>。
+        </li>
+        <li class="分区列表项">
+          如果<span class="行内专业名词">用户名</span>和<span
+            class="行内专业名词"
+            >主机名</span
+          >是合法的，可以不加引号。以下情况必须加引号：
+          <ul class="分区列表">
+            <li class="分区列表项">
+              <span class="行内专业名词">用户名</span>包含特殊字符，如<span
+                class="代码"
+                >空格</span
+              >、<span class="代码">-</span>
+            </li>
+            <li class="分区列表项">
+              <span class="行内专业名词">主机名</span>包含特殊字符，如<span
+                class="代码"
+                >.</span
+              >、<span class="代码">%</span>
+            </li>
+          </ul>
+          例如：<span class="代码">'su-yang'@'x.com'</span>，<span
+            class="行内专业名词"
+            >用户名</span
+          >和<span class="行内专业名词">主机名</span>都必须加引号。
+        </li>
+      </ul>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">创建账户</h3>
+    <p class="分区普通文本">
+      可以使用<span class="代码">create user</span
+      >语句来创建账户，完整的语法参数非常多，我们只需要最常用的：
+    </p>
+    <pre>
+      <code class="lang-sql">
+        # create user '用户名'@'主机名' identified with 验证方式 by '密码';
+        create user runner@localhost identified with caching_sha2_password by 'letmepass';
+      </code>
+    </pre>
+    <p class="分区普通文本">成功运行命令后，再次查询账户信息：</p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/MySQL/账户与权限/创建账户后-查询账户信息.png"
+        alt="创建账户后查询账户信息"
+      />
+    </figure>
+    <p class="分区普通文本">
+      成功地创建了账户：<span class="代码">runner@localhost</span>。
+    </p>
+    <p class="分区普通文本">
+      假设我们省略<span class="行内专业名词">主机名</span>和<span
+        class="行内专业名词"
+        >验证方式</span
+      >，看看会有什么结果：
+    </p>
+    <pre>
+      <code class="lang-sql">
+        # create user '用户名' identified by '密码';
+        create user tester identified by 'letmepass';
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/MySQL/账户与权限/创建账户-省略主机名和验证方式-查询账户信息.png"
+        alt="创建账户：省略主机名和验证方式 查询账户信息"
+      />
+    </figure>
+    <p class="分区普通文本">
+      省略<span class="行内专业名词">主机名</span>，则<span class="行内专业名词"
+        >主机名</span
+      >自动设置为<span class="代码">%</span
+      ><span class="附加说明">所有主机</span>。省略<span class="行内专业名词"
+        >验证方式</span
+      >，则默认为<span class="行内代码">caching_sha2_password</span>。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        事实上，创建账户语句连<span class="代码">identified by '密码'</span
+        >也可以省略，这样的账户不需要密码就可以登录<span class="行内专业名词"
+          >MySQL</span
+        >。但是，这与数据库的安全性需求是完全背道而驰的。信息时代，数据库的重要性无以复加，因此实际工作中<span
+          class="强调"
+          >绝对不要创建无密码账户</span
+        >！
+      </p>
+    </section>
+  </article>
+</div>

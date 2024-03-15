@@ -26,6 +26,7 @@
   --font-awesome-字体集: "Font Awesome 6 Free", ui-rounded;
   --代码块字体集: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
   "Noto Sans SC", monospace !important;
+  --分区列表项-字体颜色: #84a7a0;
 }
 
 html {
@@ -199,7 +200,7 @@ body {
 }
 
 .锚链接-3级标题 {
-  padding: 5px 0;
+  padding: 4px 0;
   font-size: 0.85em;
   display: flex;
   align-items: center;
@@ -1362,7 +1363,7 @@ body {
   list-style-type: disc;
   list-style-position: inside;
   padding: 3px 0;
-  color: #84a7a0;
+  color: var(--分区列表项-字体颜色);
   /*line-height: 1.6em;*/
 }
 
