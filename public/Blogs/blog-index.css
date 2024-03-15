@@ -149,7 +149,7 @@ body {
   position: relative;
   padding: 10px 0;
   margin-bottom: 5px;
-  font-size: 1.1em;
+  font-size: 1em;
   color: lightskyblue;
   font-weight: 500;
   display: flex;
@@ -1263,7 +1263,7 @@ body {
   color: lightskyblue;
   padding: 8px 20px;
   margin: 100px 0 0 0;
-  font-size: 2.5rem;
+  font-size: 2.25rem;
   box-shadow: 5px 5px 5px 0 #0007;
   display: flex;
   align-items: center;
@@ -1363,7 +1363,7 @@ body {
   list-style-position: inside;
   padding: 3px 0;
   color: #84a7a0;
-  line-height: 1.6em;
+  /*line-height: 1.6em;*/
 }
 
 .分区列表项:has(.截图容器):not(:first-child) {
