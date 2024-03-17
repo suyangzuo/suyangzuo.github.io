@@ -387,363 +387,401 @@
     <p class="分区普通文本">
       当所有产品前面都显示&#9989;，代表安装完成，点击<span class="行内专业名词"
         >Next</span
-      >：
+      >进入产品配置。
     </p>
 
     <h3 class="分区标题 分区3级标题">
       产品配置：<span class="行内专业名词">MySQL Server</span
       ><span class="附加说明">服务器</span>
     </h3>
-    <figure class="截图容器">
-      <img
-        src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-04-产品配置向导-Server.png"
-        alt="MySQL 产品安装完成"
-      />
-    </figure>
-    <p class="分区普通文本">
-      有 3 个产品需要进行配置，配置向导会带着你一步步完成。点击<span
-        class="行内专业名词"
-        >Next</span
-      >进行<span class="行内专业名词">MySQL Server</span>配置：
-    </p>
+    <ul class="分区列表 有序列表">
+      <li class="分区列表项">
+        准备配置<span class="行内专业名词">MySQL Server</span
+        ><span class="附加说明">服务器</span>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-04-产品配置向导-Server.png"
+            alt="MySQL 产品安装完成"
+          />
+        </figure>
+        <p class="分区普通文本">
+          有 3 个产品需要进行配置，配置向导会带着你一步步完成。点击<span
+            class="行内专业名词"
+            >Next</span
+          >进行<span class="行内专业名词">MySQL Server</span>配置：
+        </p>
+      </li>
+      <li class="分区列表项">
+        类型与网络
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-05-类型与网络.png"
+            alt="MySQL 类型与网络"
+          />
+        </figure>
+        <p class="分区普通文本">
+          这里主要是选择端口号和配置类型。端口号默认<span class="专业名词"
+            >3306</span
+          >，无特殊需求不用改。
+        </p>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-06-服务器配置类型.png"
+            alt="MySQL 类型与网络"
+          />
+        </figure>
+        <p class="分区普通文本">配置类型分为 3 种：</p>
+        <ul class="分区列表">
+          <li class="分区列表项">
+            <span class="专业名词">Development Computer</span
+            ><span class="附加说明">开发机</span
+            >：做开发用的电脑，会安装运行大量软件，<span class="行内专业名词"
+              >MySQL</span
+            >只占用少许内存。
+          </li>
+          <li class="分区列表项">
+            <span class="专业名词">Server Computer</span
+            ><span class="附加说明">服务器</span
+            >：电脑上会运行几个别的程序，如果电脑是网络服务器或者应用服务器，可以选这个。<span
+              class="行内专业名词"
+              >MySQL</span
+            >占用中等量内存。
+          </li>
+          <li class="分区列表项">
+            <span class="专业名词">Dedicated Computer</span
+            ><span class="附加说明">专用服务器</span>：电脑上只运行<span
+              class="行内专业名词"
+              >MySQL 服务</span
+            >，<span class="行内专业名词">MySQL</span>会占用所有可用内存。
+          </li>
+        </ul>
+        <p class="分区普通文本">
+          根据实际情况选择，我们的电脑是私人电脑，因此选择<span
+            class="行内专业名词"
+            >Development Computer</span
+          >。选好后点击<span class="行内专业名词">Next</span>。
+        </p>
+      </li>
+      <li class="分区列表项">
+        验证方法
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-07-验证方法.png"
+            alt="MySQL 验证方法"
+          />
+        </figure>
+        <p class="分区普通文本">身份验证的方式分为两种：</p>
+        <ul class="分区列表">
+          <li class="分区列表项">
+            <span class="专业名词"
+              >Use Strong Password Encryption for Authentication
+              (RECOMMANDED)</span
+            ><span class="附加说明">推荐</span>：使用基于<span class="专业名词"
+              >SHA-256</span
+            >的密码加密模式，<span class="强调">不兼容</span
+            ><span class="行内专业名词">MySQL 5.x</span>
+            版本。
+          </li>
+          <li class="分区列表项">
+            <span class="专业名词"
+              >Use Legacy Authentication Method (Retain MySQL 5.x
+              Compatibility)</span
+            >：使用传统验证方法，<span class="强调">兼容</span
+            ><span class="行内专业名词">MySQL 5.x</span>
+            版本。
+          </li>
+        </ul>
+        <section class="提醒">
+          <h3 class="提醒标题">提醒</h3>
+          <p class="分区普通文本">
+            加密模式是可以修改的，因此选错了也不要紧。出于安全考虑，肯定是选择推荐模式比较好。不过，个别数据库客户端只支持老的验证方法，用推荐模式会导致无法登录。
+          </p>
+        </section>
+        <p class="分区普通文本">
+          确定验证方法后，点击<span class="行内专业名词">Next</span>。
+        </p>
+      </li>
+      <li class="分区列表项">
+        账户与角色
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-08-账户与角色.png"
+            alt="MySQL 账户与角色"
+          />
+        </figure>
+        <p class="分区普通文本">
+          为<span class="行内专业名词">root</span
+          >账户设置密码，两次密码要一致方可。
+        </p>
+        <section class="提醒">
+          <h3 class="提醒标题">提醒</h3>
+          <p class="分区普通文本">
+            <span class="专业名词">root</span>是<span class="行内专业名词"
+              >MySQL</span
+            >数据库最重要、权限最大、对安全性要求最高的账户，因此在实际工作过程中，一定要为该账户设置足够复杂的密码！像<span
+              class="行内专业名词"
+              >图 18</span
+            >中的密码就不符合要求，因为出现了<span class="强调">Weak</span
+            ><span class="附加说明">弱</span>提示！实际工作请务必使用<span
+              class="强调"
+              style="color: lightgreen"
+              >Strong</span
+            ><span class="附加说明">强</span>密码！
+          </p>
+        </section>
+        <p class="分区普通文本">
+          下方则是添加其它账户，我们可以以后再添加。点击<span
+            class="行内专业名词"
+            >Next</span
+          >：
+        </p>
+      </li>
+      <li class="分区列表项">
+        Windows 服务
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-09-Windows服务.png"
+            alt="MySQL Windows服务"
+          />
+        </figure>
+        <p class="分区普通文本">
+          可以将<span class="行内专业名词">MySQL Server</span>配置为<span
+            class="行内专业名词"
+            >Windows 服务</span
+          >，能够更加方便地自动启动、运行、停止。还能给服务起名字，默认叫<span
+            class="专业名词"
+            >MySQL80</span
+          >。其它选项保持默认，点击<span class="行内专业名词">Next</span>。
+        </p>
 
-    <h3 class="分区标题 分区3级标题">类型与网络</h3>
-    <figure class="截图容器">
-      <img
-        src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-05-类型与网络.png"
-        alt="MySQL 类型与网络"
-      />
-    </figure>
-    <p class="分区普通文本">
-      这里主要是选择端口号和配置类型。端口号默认<span class="专业名词"
-        >3306</span
-      >，无特殊需求不用改。
-    </p>
-    <figure class="截图容器">
-      <img
-        src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-06-服务器配置类型.png"
-        alt="MySQL 类型与网络"
-      />
-    </figure>
-    <p class="分区普通文本">配置类型分为 3 种：</p>
-    <ul class="分区列表">
-      <li class="分区列表项">
-        <span class="专业名词">Development Computer</span
-        ><span class="附加说明">开发机</span
-        >：做开发用的电脑，会安装运行大量软件，<span class="行内专业名词"
-          >MySQL</span
-        >只占用少许内存。
+        <h3 class="分区标题 分区3级标题">服务器文件许可</h3>
+        <p class="分区普通文本">
+          <span class="行内专业名词">MySQL 8.0</span>的数据默认存放在<span
+            class="代码"
+            >C:\ProgramData\MySQL\MySQL Server 8.0\Data</span
+          >路径中，此处会询问你，是否希望安装程序为你更新服务器文件访问许可：
+        </p>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-10-服务器文件许可.png"
+            alt="MySQL 服务器文件许可"
+          />
+        </figure>
+        <p class="分区普通文本">有 3 种选择：</p>
+        <ul class="分区列表">
+          <li class="分区列表项">
+            <span class="专业名词">Yes</span
+            >，允许当前用户和管理员组成员对数据库进行完全访问，其它用户和组不允许访问。
+          </li>
+          <li class="分区列表项">
+            <span class="专业名词">Yes</span>，但是让我检查和配置访问级别。
+          </li>
+          <li class="分区列表项">
+            <span class="专业名词">No</span
+            >，我会在服务器配置结束后自己管理访问许可。
+          </li>
+        </ul>
+        <p class="分区普通文本">
+          根据需求选择，我们这里选择第 1 个即可，点击<span class="行内专业名词"
+            >Next</span
+          >：
+        </p>
       </li>
       <li class="分区列表项">
-        <span class="专业名词">Server Computer</span
-        ><span class="附加说明">服务器</span
-        >：电脑上会运行几个别的程序，如果电脑是网络服务器或者应用服务器，可以选这个。<span
-          class="行内专业名词"
-          >MySQL</span
-        >占用中等量内存。
-      </li>
-      <li class="分区列表项">
-        <span class="专业名词">Dedicated Computer</span
-        ><span class="附加说明">专用服务器</span>：电脑上只运行<span
-          class="行内专业名词"
-          >MySQL 服务</span
-        >，<span class="行内专业名词">MySQL</span>会占用所有可用内存。
+        应用配置
+        <p class="分区普通文本">此处列出了你之前选择的所有配置：</p>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-11-应用配置.png"
+            alt="MySQL 应用配置"
+          />
+        </figure>
+        <p class="分区普通文本">
+          如果觉得哪里不对，点击<span class="行内专业名词"
+            >Back<span class="附加说明">返回</span></span
+          >进行更改；没问题就点击<span class="行内专业名词"
+            >Execute<span class="附加说明">执行</span></span
+          >，耐心等待：
+        </p>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-12-应用配置完成.png"
+            alt="MySQL 应用配置完成"
+          />
+        </figure>
+        <p class="分区普通文本">
+          当所有配置都显示&#9989;，表示<span class="行内专业名词"
+            >MySQL Server</span
+          >配置完成。点击<span class="行内专业名词">Finish</span>。
+        </p>
       </li>
     </ul>
-    <p class="分区普通文本">
-      根据实际情况选择，我们的电脑是私人电脑，因此选择<span class="行内专业名词"
-        >Development Computer</span
-      >。选好后点击<span class="行内专业名词">Next</span>：
-    </p>
-
-    <h3 class="分区标题 分区3级标题">验证方法</h3>
-    <figure class="截图容器">
-      <img
-        src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-07-验证方法.png"
-        alt="MySQL 验证方法"
-      />
-    </figure>
-    <p class="分区普通文本">身份验证的方式分为两种：</p>
-    <ul class="分区列表">
-      <li class="分区列表项">
-        <span class="专业名词"
-          >Use Strong Password Encryption for Authentication (RECOMMANDED)</span
-        ><span class="附加说明">官方推荐</span>：使用基于<span class="专业名词"
-          >SHA-256</span
-        >的密码加密模式，<span class="强调">不兼容</span
-        ><span class="行内专业名词">MySQL 5.x</span>
-        版本。
-      </li>
-      <li class="分区列表项">
-        <span class="专业名词"
-          >Use Legacy Authentication Method (Retain MySQL 5.x
-          Compatibility)</span
-        >：使用传统验证方法，<span class="强调">兼容</span
-        ><span class="行内专业名词">MySQL 5.x</span>
-        版本。
-      </li>
-    </ul>
-    <section class="提醒">
-      <h3 class="提醒标题">提醒</h3>
-      <p class="分区普通文本">
-        加密模式是可以修改的，因此选错了也不要紧。出于安全考虑，肯定是选择推荐模式比较好。不过，个别数据库客户端只支持老的验证方法，用推荐模式会导致无法登录。
-      </p>
-    </section>
-    <p class="分区普通文本">
-      确定验证方法后，点击<span class="行内专业名词">Next</span>：
-    </p>
-
-    <h3 class="分区标题 分区3级标题">账户与角色</h3>
-    <figure class="截图容器">
-      <img
-        src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-08-账户与角色.png"
-        alt="MySQL 账户与角色"
-      />
-    </figure>
-    <p class="分区普通文本">
-      为<span class="行内专业名词">root</span>账户设置密码，两次密码要一致方可。
-    </p>
-    <section class="提醒">
-      <h3 class="提醒标题">提醒</h3>
-      <p class="分区普通文本">
-        <span class="专业名词">root</span>是<span class="行内专业名词"
-          >MySQL</span
-        >数据库最重要、权限最大、对安全性要求最高的账户，因此在实际工作过程中，一定要为该账户设置足够复杂的密码！像<span
-          class="行内专业名词"
-          >图 18</span
-        >中的密码就不符合要求，因为出现了<span class="强调">Weak</span
-        ><span class="附加说明">弱</span>提示！实际工作请务必使用<span
-          class="强调"
-          style="color: lightgreen"
-          >Strong</span
-        ><span class="附加说明">强</span>密码！
-      </p>
-    </section>
-    <p class="分区普通文本">
-      下方则是添加其它账户，我们可以以后再添加。点击<span class="行内专业名词"
-        >Next</span
-      >：
-    </p>
-
-    <h3 class="分区标题 分区3级标题">Windows 服务</h3>
-    <figure class="截图容器">
-      <img
-        src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-09-Windows服务.png"
-        alt="MySQL Windows服务"
-      />
-    </figure>
-    <p class="分区普通文本">
-      可以将<span class="行内专业名词">MySQL Server</span>配置为<span
-        class="行内专业名词"
-        >Windows 服务</span
-      >，能够更加方便地自动启动、运行、停止。还能给服务起名字，默认叫<span
-        class="专业名词"
-        >MySQL80</span
-      >。其它选项保持默认，点击<span class="行内专业名词">Next</span>：
-    </p>
-
-    <h3 class="分区标题 分区3级标题">服务器文件许可</h3>
-    <p class="分区普通文本">
-      <span class="行内专业名词">MySQL 8.0</span>的数据默认存放在<span
-        class="代码"
-        >C:\ProgramData\MySQL\MySQL Server 8.0\Data</span
-      >路径中，此处会询问你，是否希望安装程序为你更新服务器文件访问许可：
-    </p>
-    <figure class="截图容器">
-      <img
-        src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-10-服务器文件许可.png"
-        alt="MySQL 服务器文件许可"
-      />
-    </figure>
-    <p class="分区普通文本">有 3 种选择：</p>
-    <ul class="分区列表">
-      <li class="分区列表项">
-        <span class="专业名词">Yes</span
-        >，允许当前用户和管理员组成员对数据库进行完全访问，其它用户和组不允许访问。
-      </li>
-      <li class="分区列表项">
-        <span class="专业名词">Yes</span>，但是让我检查和配置访问级别。
-      </li>
-      <li class="分区列表项">
-        <span class="专业名词">No</span
-        >，我会在服务器配置结束后自己管理访问许可。
-      </li>
-    </ul>
-    <p class="分区普通文本">
-      根据需求选择，我们这里选择第 1 个即可，点击<span class="行内专业名词"
-        >Next</span
-      >：
-    </p>
-
-    <h3 class="分区标题 分区3级标题">应用配置</h3>
-    <p class="分区普通文本">此处列出了你之前选择的所有配置：</p>
-    <figure class="截图容器">
-      <img
-        src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-11-应用配置.png"
-        alt="MySQL 应用配置"
-      />
-    </figure>
-    <p class="分区普通文本">
-      如果觉得哪里不对，点击<span class="行内专业名词"
-        >Back<span class="附加说明">返回</span></span
-      >进行更改；没问题就点击<span class="行内专业名词"
-        >Execute<span class="附加说明">执行</span></span
-      >，耐心等待：
-    </p>
-    <figure class="截图容器">
-      <img
-        src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-12-应用配置完成.png"
-        alt="MySQL 应用配置完成"
-      />
-    </figure>
-    <p class="分区普通文本">
-      当所有配置都显示&#9989;，表示<span class="行内专业名词">MySQL Server</span
-      >配置完成。点击<span class="行内专业名词">Finish</span>。
-    </p>
 
     <h3 class="分区标题 分区3级标题">
       产品配置：<span class="行内专业名词">MySQL Router</span
       ><span class="附加说明">路由器</span>
     </h3>
-    <p class="分区普通文本">
-      来到这一步，会发现<span class="行内专业名词">MySQL Server</span
-      >已经配置完成<span class="附加说明">Configuration complete</span>。
-    </p>
-    <figure class="截图容器">
-      <img
-        src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-13-产品配置向导-Router.png"
-        alt="MySQL Router 配置"
-      />
-    </figure>
-    <p class="分区普通文本">
-      下一步是配置<span class="附加说明">MySQL Router</span>，点击<span
-        class="行内专业名词"
-        >Next</span
-      >：
-    </p>
-
-    <h3 class="分区标题 分区3级标题">
-      为<span class="行内专业名词">InnoDB 集群</span>配置<span
-        class="行内专业名词"
-        >MySQL 路由器</span
-      >
-    </h3>
-    <p class="分区普通文本">
-      <span class="行内专业名词">MySQL Router</span>的配置只有 1 步：
-    </p>
-    <figure class="截图容器">
-      <img
-        src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-14-Router-配置.png"
-        alt="MySQL Router 配置"
-      />
-    </figure>
-    <p class="分区普通文本">
-      只有使用集群，才需要配置路由器。因此这里啥也不用改，直接点击<span
-        class="行内专业名词"
-        >Finish</span
-      >完成路由器配置。
-    </p>
+    <ul class="分区列表 有序列表">
+      <li class="分区列表项">
+        准备配置<span class="行内专业名词">MySQL Router</span
+        ><span class="附加说明">路由器</span>
+        <p class="分区普通文本">
+          来到这一步，会发现<span class="行内专业名词">MySQL Server</span
+          >已经配置完成<span class="附加说明">Configuration complete</span>。
+        </p>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-13-产品配置向导-Router.png"
+            alt="MySQL Router 配置"
+          />
+        </figure>
+        <p class="分区普通文本">
+          下一步是配置<span class="附加说明">MySQL Router</span>，点击<span
+            class="行内专业名词"
+            >Next</span
+          >：
+        </p>
+      </li>
+      <li class="分区列表项">
+        为<span class="行内专业名词">InnoDB 集群</span>配置<span
+          class="行内专业名词"
+          >MySQL 路由器</span
+        >
+        <p class="分区普通文本">
+          <span class="行内专业名词">MySQL Router</span>的配置只有 1 步：
+        </p>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-14-Router-配置.png"
+            alt="MySQL Router 配置"
+          />
+        </figure>
+        <p class="分区普通文本">
+          只有使用集群，才需要配置路由器。因此这里啥也不用改，直接点击<span
+            class="行内专业名词"
+            >Finish</span
+          >完成路由器配置。
+        </p>
+      </li>
+    </ul>
 
     <h3 class="分区标题 分区3级标题">
       产品配置<span class="行内专业名词">Samples and Examples</span
       ><span class="附加说明">样本与示例</span>
     </h3>
-    <figure class="截图容器">
-      <img
-        src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-15-产品配置向导-Samples-Examples.png"
-        alt="MySQL Router 配置完成"
-      />
-    </figure>
-    <p class="分区普通文本">
-      因为上一步什么也没改，因此<span class="行内专业名词">MySQL Router</span
-      >直接显示<span class="行内专业名词">Configuration not needed</span
-      ><span class="附加说明">无需配置</span>。点击<span class="行内专业名词"
-        >Next</span
-      >开始配置样本与示例：
-    </p>
-
-    <h3 class="分区标题 分区3级标题">连接到服务器</h3>
-    <p class="分区普通文本">此处需要测试服务器连接是否正常：</p>
-    <figure class="截图容器">
-      <img
-        src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-16-案例与样本-连接到服务器.png"
-        alt="MySQL 样本与示例 连接到服务器"
-      />
-    </figure>
-    <p class="分区普通文本">
-      因为我们没有创建别的账户，因此直接用<span class="行内专业名词">root</span
-      >账户，输入密码，点击<span class="行内专业名词">check</span>，如果出现
-      <span style="color: seagreen">&#10004;</span> 和
-      <span style="color: seagreen">Connection succeeded</span
-      >，表示连接成功。点击<span class="行内专业名词">Next</span>：
-    </p>
-
-    <h3 class="分区标题 分区3级标题">应用配置</h3>
-    <p class="分区普通文本">此处列出了样本和示例的配置选项：</p>
-    <figure class="截图容器">
-      <img
-        src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-17-应用配置.png"
-        alt="MySQL 样本与示例 应用配置"
-      />
-    </figure>
-    <p class="分区普通文本">
-      没有问题就点击<span class="行内专业名词">Execute</span
-      ><span class="附加说明">执行</span>，耐心等待：
-    </p>
-    <figure class="截图容器">
-      <img
-        src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-18-应用配置完成.png"
-        alt="MySQL 样本与示例 应用配置完成"
-      />
-    </figure>
-    <p class="分区普通文本">
-      当所有配置都显示&#9989;，表示<span class="行内专业名词"
-        >MySQL 样本与示例</span
-      >配置完成。点击<span class="行内专业名词">Finish</span>。
-    </p>
-
-    <h3 class="分区标题 分区3级标题">产品配置：全部完成</h3>
-    <p class="分区普通文本">至此，所有产品配置全部完成：</p>
-    <figure class="截图容器">
-      <img
-        src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-19-产品配置.png"
-        alt="MySQL 产品配置全部完成"
-      />
-    </figure>
-    <p class="分区普通文本">
-      3 个产品全部配置完成，点击<span class="行内专业名词">Next</span>：
-    </p>
-
-    <h3 class="分区标题 分区3级标题">完成安装</h3>
-    <p class="分区普通文本">这是安装过程的最后一步：</p>
-    <figure class="截图容器">
-      <img
-        src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-20-安装完成.png"
-        alt="MySQL 安装完成"
-      />
-    </figure>
-    <p class="分区普通文本">此处有 2 个选项：</p>
-    <ul class="分区列表">
+    <ul class="分区列表 有序列表">
       <li class="分区列表项">
-        <span class="专业名词">Start MySQL Workbench after setup</span
-        ><span class="附加说明"
-          >安装完成后，自动打开<span class="行内专业名词">MySQL Workbench</span
-          >图形界面管理软件</span
-        >
+        准备配置<span class="行内专业名词">Samples and Examples</span
+        ><span class="附加说明">样本与示例</span>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-15-产品配置向导-Samples-Examples.png"
+            alt="MySQL Router 配置完成"
+          />
+        </figure>
+        <p class="分区普通文本">
+          因为上一步什么也没改，因此<span class="行内专业名词"
+            >MySQL Router</span
+          >直接显示<span class="行内专业名词">Configuration not needed</span
+          ><span class="附加说明">无需配置</span>。点击<span
+            class="行内专业名词"
+            >Next</span
+          >开始配置样本与示例：
+        </p>
       </li>
       <li class="分区列表项">
-        <span class="专业名词">Start MySQL Shell after setup</span
-        ><span class="附加说明"
-          >安装完成后，自动打开<span class="行内专业名词">MySQL Shell</span
-          >命令行工具</span
-        >
+        连接到服务器
+        <p class="分区普通文本">此处需要测试服务器连接是否正常：</p>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-16-案例与样本-连接到服务器.png"
+            alt="MySQL 样本与示例 连接到服务器"
+          />
+        </figure>
+        <p class="分区普通文本">
+          因为我们没有创建别的账户，因此直接用<span class="行内专业名词"
+            >root</span
+          >账户，输入密码，点击<span class="行内专业名词">check</span>，如果出现
+          <span style="color: seagreen">&#10004;</span> 和
+          <span style="color: seagreen">Connection succeeded</span
+          >，表示连接成功。点击<span class="行内专业名词">Next</span>。
+        </p>
+      </li>
+      <li class="分区列表项">
+        应用配置
+        <p class="分区普通文本">此处列出了样本和示例的配置选项：</p>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-17-应用配置.png"
+            alt="MySQL 样本与示例 应用配置"
+          />
+        </figure>
+        <p class="分区普通文本">
+          没有问题就点击<span class="行内专业名词">Execute</span
+          ><span class="附加说明">执行</span>，耐心等待：
+        </p>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-18-应用配置完成.png"
+            alt="MySQL 样本与示例 应用配置完成"
+          />
+        </figure>
+        <p class="分区普通文本">
+          当所有配置都显示&#9989;，表示<span class="行内专业名词"
+            >MySQL 样本与示例</span
+          >配置完成。点击<span class="行内专业名词">Finish</span>。
+        </p>
       </li>
     </ul>
-    <p class="分区普通文本">
-      自行决定是否需要自动打开这些软件。选好后点击<span class="行内专业名词"
-        >Finish</span
-      >，即可完成整个安装过程。
-    </p>
+
+    <h3 class="分区标题 分区3级标题">完成安装</h3>
+    <ul class="分区列表 有序列表">
+      <li class="分区列表项">
+        产品配置：全部完成
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-19-产品配置.png"
+            alt="MySQL 产品配置全部完成"
+          />
+        </figure>
+        <p class="分区普通文本">
+          3 个产品全部配置完成，点击<span class="行内专业名词">Next</span>。
+        </p>
+      </li>
+      <li class="分区列表项">
+        完成安装
+        <p class="分区普通文本">这是安装过程的最后一步：</p>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/MySQL/下载与安装/MySQL-安装-20-安装完成.png"
+            alt="MySQL 安装完成"
+          />
+        </figure>
+        <p class="分区普通文本">此处有 2 个选项：</p>
+        <ul class="分区列表">
+          <li class="分区列表项">
+            <span class="专业名词">Start MySQL Workbench after setup</span
+            ><span class="附加说明"
+              >安装完成后，自动打开<span class="行内专业名词"
+                >MySQL Workbench</span
+              >图形界面管理软件</span
+            >
+          </li>
+          <li class="分区列表项">
+            <span class="专业名词">Start MySQL Shell after setup</span
+            ><span class="附加说明"
+              >安装完成后，自动打开<span class="行内专业名词">MySQL Shell</span
+              >命令行工具</span
+            >
+          </li>
+        </ul>
+        <p class="分区普通文本">
+          自行决定是否需要自动打开这些软件。选好后点击<span class="行内专业名词"
+            >Finish</span
+          >，即可完成整个安装过程。
+        </p>
+      </li>
+    </ul>
   </article>
 
   <article class="正文分区">

@@ -27,6 +27,8 @@
   --代码块字体集: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
   "Noto Sans SC", monospace !important;
   --分区列表项-字体颜色: #84a7a0;
+  /*--已激活章节标题-字体颜色: #ee78b7 !important;*/
+  --已激活章节标题-字体颜色: rgb(106, 192, 106) !important;
 }
 
 html {
@@ -128,7 +130,7 @@ body {
 }
 
 #章节区 .已激活 {
-  color: #ee78b7 !important;
+  color: var(--已激活章节标题-字体颜色);
 }
 
 /*#章节区 .已激活::after {
@@ -1703,6 +1705,10 @@ body {
   margin-right: 0;
 }
 
+br + :is(.代码, .专业名词, .附加说明) {
+  margin-left: 0;
+}
+
 /*-------------- ↑ 专题正文区 --------------*/
 
 /*-------------- ↓ 单独表格样式 --------------*/
@@ -1818,7 +1824,7 @@ code[class*="language-"],
 pre[class*="language-"] {
   font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
   "Noto Sans SC", monospace !important;
-  font-size: 0.95em !important;
+  font-size: 0.925em !important;
 }
 
 div.code-toolbar > .toolbar > .toolbar-item > a,
@@ -1845,7 +1851,7 @@ div.code-toolbar > .toolbar {
   pre[class*="language-"] {
     font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
     "Noto Sans SC", monospace !important;
-    font-size: 0.95em !important;
+    font-size: 0.925em !important;
   }
 }
 
