@@ -1024,6 +1024,10 @@ body {
   margin: 0 !important;
 }
 
+.超链接 > img {
+  margin-top: 15px !important;
+}
+
 .表格 .超链接 {
   text-decoration: none;
 }
@@ -1353,7 +1357,7 @@ body {
 }
 
 .分区列表 {
-  margin: 5px 0;
+  margin: 15px 0;
   font-size: 17px;
 }
 
@@ -1392,6 +1396,10 @@ body {
 
 .分区列表项:has(.分区普通文本:last-child) + .分区列表项 {
   margin-top: 15px;
+}
+
+.分区列表项:has(img:last-child) + .分区列表项 {
+  margin-top: 30px;
 }
 
 .分区列表:not(.有序列表) > .分区列表项 p {
@@ -1824,7 +1832,13 @@ code[class*="language-"],
 pre[class*="language-"] {
   font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
   "Noto Sans SC", monospace !important;
-  font-size: 0.925em !important;
+  font-size: 0.925em !important; /*修改字号会导致行号高度无法匹配*/
+}
+
+/*此样式是修正因修改代码字体导致行号高度无法匹配的问题*/
+.line-numbers .line-numbers-rows {
+  font-size: calc(100% * (100 / 92.5)) !important;
+  translate: 0 -0.075em;
 }
 
 div.code-toolbar > .toolbar > .toolbar-item > a,
@@ -1838,7 +1852,6 @@ div.code-toolbar > .toolbar > .toolbar-item > span {
 div.code-toolbar > .toolbar {
   transition: opacity 250ms !important;
 }
-
 /* ------------------- ↑ 代码格式化 ------------------- */
 
 /* ------------------------------ ↓ 响应式设计 ------------------------------ */
@@ -2039,5 +2052,4 @@ div.code-toolbar > .toolbar {
     border: solid 1px rgb(73, 208, 136);
   }
 }
-
 /* ------------------------------ ↑ 响应式设计 ------------------------------ */
