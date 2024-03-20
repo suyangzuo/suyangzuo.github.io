@@ -1604,6 +1604,11 @@ body {
   translate: 0 0.1em;
 }
 
+.侧边栏 .行内代码 {
+  font-size: 1.075em;
+  font-family: 'M PLUS 1 Code', monospace;
+}
+
 .附加说明 {
   font-size: 0.9em;
   background-color: rgb(53, 89, 157);
