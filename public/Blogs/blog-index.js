@@ -668,6 +668,17 @@ function 特殊元素样式补充() {
     }
   });
 
+  const 换行符后续块内组 = document.querySelectorAll(
+    "br + :is(.代码, .专业名词, .附加说明)",
+  );
+  换行符后续块内组?.forEach((元素) => {
+    let 前一节点 = 元素.previousSibling;
+    let 前一元素 = 元素.previousElementSibling;
+    if (前一节点.textContent !== 前一元素.textContent) {
+      元素.style.marginLeft = "0.25em";
+    }
+  });
+
   const 强调组 = document.querySelectorAll(".强调");
   强调组?.forEach((强调) => {
     const 前一节点 = 强调.previousSibling;

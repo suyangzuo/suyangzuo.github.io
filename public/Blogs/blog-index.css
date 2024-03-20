@@ -1582,6 +1582,10 @@ body {
   font-size: 0.95em;
 }
 
+.代码 .行内代码 {
+  color: darkgreen;
+}
+
 .附加说明 .行内代码 {
   color: lightgreen;
 }
@@ -1835,7 +1839,7 @@ code[class*="language-"],
 pre[class*="language-"] {
   font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
   "Noto Sans SC", monospace !important;
-  font-size: 0.925em !important; /*修改字号会导致行号高度无法匹配*/
+  font-size: 0.95em !important; /*修改字号会导致行号高度无法匹配*/
 }
 
 /*此样式是修正因修改代码字体导致行号高度无法匹配的问题*/
