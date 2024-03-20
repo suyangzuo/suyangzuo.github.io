@@ -896,17 +896,17 @@ body {
 
 .专题 {
   width: 100%;
-  padding: 0 10px;
+  padding: 0 8px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   transition: padding 250ms;
   font-size: 0.75em;
 }
 
 .侧边栏:has(#侧边栏布局:not(:checked)) .专题 {
-  padding: 10px;
+  padding: 10px 8px;
 }
 
 .专题:hover {
@@ -1529,7 +1529,7 @@ body {
   background-color: rgb(45, 56, 75);
   box-shadow: inset 0 0 0 1px rgb(91, 113, 147);
   border-radius: 3px;
-  padding: 0 5px;
+  padding: 1px 5px;
   margin: 0 0.25em;
   font-size: 0.9em;
 }
@@ -1549,6 +1549,10 @@ body {
   margin: 0 0.35ch;
 }
 
+.代码 .行内专业名词 {
+  color: #14a;
+}
+
 .提醒 .行内专业名词 {
   color: #92c4ec;
 }
@@ -1563,16 +1567,12 @@ body {
 
 .代码 {
   font-family: "JetBrains Mono", "Noto Sans SC", monospace;
-  background-color: #464a4c;
-  color: white;
-  padding: 0 5px;
+  background-color: #fffc;
+  color: black;
+  padding: 1px 5px;
   margin: 0 0.25em;
   border-radius: 3px;
   font-size: 0.9em;
-}
-
-.提醒 .代码 {
-  background-color: #152a45;
 }
 
 .行内代码 {
@@ -1608,7 +1608,7 @@ body {
   font-size: 0.9em;
   background-color: rgb(53, 89, 157);
   color: white;
-  padding: 0 5px;
+  padding: 1px 5px;
   border-radius: 3px;
   margin: 0 0.25em;
 }
@@ -1763,12 +1763,12 @@ br + :is(.代码, .专业名词, .附加说明) {
 }
 
 .表格 tbody th {
-  font-size: 0.95em;
+  font-size: 1em;
 }
 
 .表格 td {
   padding: 20px 15px;
-  font-size: 0.9em;
+  font-size: 0.95em;
 }
 
 .单元格-居中 {
@@ -1896,6 +1896,12 @@ div.code-toolbar > .toolbar {
     flex-direction: column;
     gap: 50px;
   }
+
+  #页脚版权提示区 {
+    width: min(600px, 85%);
+    translate: calc(-50% + var(--侧边栏宽度) / 2) 0;
+  }
+
 }
 
 @media screen and (width < 1300px) {
@@ -1940,13 +1946,21 @@ div.code-toolbar > .toolbar {
   .专题内容区 {
     padding: 50px 25px 25px;
   }
+
+  #公共页脚 {
+    padding-left: 0;
+  }
+
+  #页脚版权提示区 {
+    width: min(600px, 85%);
+    translate: -50% 0;
+  }
 }
 
 @media screen and (width < 800px) {
   #公共页脚 {
     padding-left: 5vw;
   }
-
 
   .技术栈对话框 {
     width: 97.5% !important;
