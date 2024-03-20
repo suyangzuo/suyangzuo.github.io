@@ -1368,7 +1368,11 @@ body {
   list-style-position: inside;
   padding: 3px 0;
   color: var(--分区列表项-字体颜色);
-  /*line-height: 1.6em;*/
+  line-height: 1.5em;
+}
+
+.分区列表项 > .分区列表 {
+  margin-top: 5px;
 }
 
 .分区列表项:has(.截图容器):not(:first-child) {
@@ -1389,7 +1393,7 @@ body {
 }
 
 .分区列表项:has(.分区列表:last-child) + .分区列表项 {
-  margin-top: 25px;
+  /*margin-top: 25px;*/
 }
 
 .分区列表项:has(.分区普通文本:last-child) + .分区列表项 {
@@ -1872,7 +1876,7 @@ div.code-toolbar > .toolbar {
   pre[class*="language-"] {
     font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
     "Noto Sans SC", monospace !important;
-    font-size: 0.925em !important;
+    /*font-size: 0.925em !important;*/
   }
 }
 

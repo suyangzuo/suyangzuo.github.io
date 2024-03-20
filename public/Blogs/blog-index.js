@@ -606,7 +606,9 @@ function 特殊元素样式补充() {
         (远距标点组
           .slice(-(远距标点组.length - 1))
           .some((标点) => 标点 === 前一节点.textContent.at(-1)) ||
-          前一节点.textContent.trim() === ""))
+          前一节点.textContent.trim() === "")) ||
+      (前一节点.nodeType === Node.ELEMENT_NODE &&
+        行内专业名词.previousElementSibling.className === "专业名词")
     ) {
       行内专业名词.style.marginLeft = "0";
     }
