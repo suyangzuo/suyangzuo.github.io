@@ -676,7 +676,10 @@ function 特殊元素样式补充() {
   换行符后续块内组?.forEach((元素) => {
     let 前一节点 = 元素.previousSibling;
     let 前一元素 = 元素.previousElementSibling;
-    if (前一节点.textContent !== 前一元素.textContent) {
+    if (
+      前一节点.textContent !== 前一元素.textContent &&
+      前一元素.tagName !== "BR" /* 注意：<br>元素的tagName是"BR" */
+    ) {
       元素.style.marginLeft = "0.25em";
     }
   });
