@@ -1554,7 +1554,7 @@ body {
 }
 
 .代码 .行内专业名词 {
-  color: #14a;
+  color: #59e;
 }
 
 .提醒 .行内专业名词 {
@@ -1571,12 +1571,16 @@ body {
 
 .代码 {
   font-family: "JetBrains Mono", "Noto Sans SC", monospace;
-  background-color: #fffc;
-  color: black;
+  background-color: #456;
+  color: white;
   padding: 1px 5px;
   margin: 0 0.25em;
   border-radius: 3px;
   font-size: 0.9em;
+}
+
+.提醒 .代码 {
+  box-shadow: 0 0 0 1px #fff3;
 }
 
 .行内代码 {
@@ -1587,7 +1591,7 @@ body {
 }
 
 .代码 .行内代码 {
-  color: darkgreen;
+  color: lightgreen;
 }
 
 .附加说明 .行内代码 {
@@ -1781,7 +1785,7 @@ br + :is(.代码, .专业名词, .附加说明) {
 
 .表格 td {
   padding: 20px 15px;
-  font-size: 0.95em;
+  font-size: 0.965em;
 }
 
 .单元格-居中 {
@@ -1843,13 +1847,13 @@ code[class*="language-"],
 pre[class*="language-"] {
   font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
   "Noto Sans SC", monospace !important;
-  font-size: 0.95em !important; /*修改字号会导致行号高度无法匹配*/
+  font-size: 1em !important; /*修改字号会导致行号高度无法匹配*/
 }
 
 /*此样式是修正因修改代码字体导致行号高度无法匹配的问题*/
 .line-numbers .line-numbers-rows {
-  font-size: calc(100% * (100 / 92.5)) !important;
-  translate: 0 -0.075em;
+  /*font-size: calc(100% * (100 / 92.5)) !important;*/
+  /*translate: 0 -0.075em;*/
 }
 
 div.code-toolbar > .toolbar > .toolbar-item > a,

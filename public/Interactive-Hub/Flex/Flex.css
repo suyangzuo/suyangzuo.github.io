@@ -28,6 +28,7 @@
   gap: 5vw;
   overflow-x: hidden;
   overflow-y: auto;
+  scrollbar-gutter: stable both-edges;
 }
 
 .弹性-展示区 {
