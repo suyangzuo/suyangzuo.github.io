@@ -1426,7 +1426,7 @@ body {
   counter-increment: li;
 }
 
-.分区列表.有序列表 > .分区列表项:not(:first-child) {
+.分区列表.有序列表 > .分区列表项:not(:first-child):has(.截图容器, .提醒, pre) {
   margin-top: 50px;
 }
 
