@@ -12,7 +12,7 @@ if (localStorage.getItem("博客收藏") !== null) {
 
 function 初始化收藏操作区() {
   if (博客收藏 === null || 博客收藏.length === 0) return;
-  收藏数量.textContent = 博客收藏.length;
+  收藏数量.textContent = 博客收藏.length.toString();
   收藏数量.style.visibility = "visible";
 
   if (该页已被收藏()) {
@@ -110,6 +110,7 @@ function 添加博客到收藏栏() {
   条目.addEventListener("click", 点击收藏栏条目访问博客);
   收藏栏添加按钮.before(条目);
 }
+
 // ------------------------- ↑ 添加博客 -------------------------
 
 // ------------------------- ↓ 删除博客 -------------------------
@@ -125,7 +126,7 @@ function 从本地存储删除博客(event) {
             : 条目技术栈名称) &&
         博客.专题 ===
           (事件发起者.className.includes("收藏按钮") ? 专题名称 : 条目专题名称)
-      )
+      ),
   );
 
   localStorage.setItem("博客收藏", JSON.stringify(博客收藏_已过滤));
@@ -136,7 +137,7 @@ function 从收藏栏删除博客(event) {
   const 事件发起者 = event.currentTarget;
   const 待删除条目 = 从技术栈和专题获取收藏栏条目(
     事件发起者.className.includes("收藏按钮") ? 技术栈名称 : 条目技术栈名称,
-    事件发起者.className.includes("收藏按钮") ? 专题名称 : 条目专题名称
+    事件发起者.className.includes("收藏按钮") ? 专题名称 : 条目专题名称,
   );
   待删除条目?.remove();
 }
@@ -147,16 +148,16 @@ function 点击条目删除按钮时更新条目技术栈和专题(event) {
   条目技术栈名称 = 条目.querySelector(".收藏文本-技术栈").textContent;
   条目专题名称 = 条目.querySelector(".收藏文本-专题").textContent;
 }
+
 // ------------------------- ↑ 删除博客 -------------------------
 
 function 从技术栈和专题获取收藏栏条目(技术栈名称参数, 专题名称参数) {
   const 所有条目 = document.querySelectorAll(".收藏条目:not(#收藏条目-添加)");
-  const 条目 = Array.from(所有条目).find(
+  return Array.from(所有条目).find(
     (entry) =>
       entry.querySelector(".收藏文本-技术栈").textContent === 技术栈名称参数 &&
-      entry.querySelector(".收藏文本-专题").textContent === 专题名称参数
+      entry.querySelector(".收藏文本-专题").textContent === 专题名称参数,
   );
-  return 条目;
 }
 
 function 生成条目删除按钮() {
@@ -166,7 +167,7 @@ function 生成条目删除按钮() {
     '<lord-icon src="https://cdn.lordicon.com/uwibpbyg.json" trigger="loop" stroke="light" delay="3000" colors="primary:#121331,secondary:#1a2530,tertiary:#a4a4a4" style="width:100%;height:100%"></lord-icon>';
   删除条目按钮.addEventListener(
     "click",
-    点击条目删除按钮时更新条目技术栈和专题
+    点击条目删除按钮时更新条目技术栈和专题,
   );
   删除条目按钮.addEventListener("click", () => {
     本次操作为添加 = false;
@@ -263,16 +264,14 @@ function 刷新收藏操作区(event) {
 
 function 获取当前日期() {
   const today = new Date();
-  const 收藏时间 = `${today.getFullYear()}年${
+  return `${today.getFullYear()}年${
     today.getMonth() + 1
   }月${today.getDate()}日`;
-
-  return 收藏时间;
 }
 
 function 该页已被收藏() {
   return 博客收藏.some(
-    (博客) => 博客.技术栈 === 技术栈名称 && 博客.专题 === 专题名称
+    (博客) => 博客.技术栈 === 技术栈名称 && 博客.专题 === 专题名称,
   );
 }
 
@@ -318,8 +317,8 @@ function 初始化收藏栏() {
       imageSource = htmlText.querySelector(".专题名称 img");
     }
 
-    image.src = imageSource.src;
-    image.alt = imageSource.alt;
+    image.src = imageSource === null ? "" : imageSource.src;
+    image.alt = imageSource === null ? "" : imageSource.alt;
     const 收藏条目_标志 = document.createElement("figure");
     收藏条目_标志.className = "收藏条目-标志";
     收藏条目_标志.appendChild(image);
@@ -360,7 +359,7 @@ function 点击收藏栏条目访问博客(event) {
   const 专题 = Array.from(专题组).find(
     (entry) =>
       entry.getElementsByClassName("专题-内容")[0].textContent.trim() ===
-      专题名称
+      专题名称,
   );
 
   if (前一专题 === 专题) return;
