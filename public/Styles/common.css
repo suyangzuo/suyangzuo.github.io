@@ -47,6 +47,10 @@ body::-webkit-scrollbar-thumb {
   border-radius: 30px;
 }
 
+body::-webkit-scrollbar-thumb:hover {
+  background-color: #577e6d;
+}
+
 a {
   text-decoration: none;
 }

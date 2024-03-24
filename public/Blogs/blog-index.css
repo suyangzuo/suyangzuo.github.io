@@ -1824,6 +1824,23 @@ br + :is(.代码, .专业名词, .附加说明) {
 /*-------------- ↑ 单独表格样式 --------------*/
 
 /* ------------------- ↓ 代码格式化 ------------------- */
+pre::-webkit-scrollbar {
+  height: 10px;
+}
+
+pre::-webkit-scrollbar-track {
+  background-color: #222426;
+}
+
+pre::-webkit-scrollbar-thumb {
+  background-color: #426556;
+  /*border-radius: 100px;*/
+}
+
+pre::-webkit-scrollbar-thumb:hover {
+  background-color: #577e6d;
+}
+
 .token.space {
   visibility: hidden;
 }
