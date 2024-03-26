@@ -668,6 +668,10 @@ function 特殊元素样式补充() {
         行内代码.style.marginLeft = "0";
       }
     }
+
+    if (行内代码 === 行内代码.parentNode.lastChild) {
+      行内代码.style.marginRight = "0";
+    }
   });
 
   const 换行符后续块内组 = document.querySelectorAll(

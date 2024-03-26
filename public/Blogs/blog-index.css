@@ -1,9 +1,7 @@
 :root {
   --侧边栏宽度: 250px;
-  /*--侧边栏颜色-鼠标悬停: rgb(54, 62, 78);*/
   --侧边栏颜色-鼠标悬停: #2a303a;
   --侧边栏颜色-已选中: rgb(106, 50, 83);
-  /*--侧边栏颜色-已选中: #2a303a;*/
   --侧边栏背景: linear-gradient(60deg, #141518 0%, #171c21 100%);
   --专题内容区背景: linear-gradient(90deg, #181c20 0%, #262d35 100%);
   --超链接颜色-正文: skyblue;
@@ -18,17 +16,15 @@
   --章节区位置-高度: 0px;
   --章节区位置-偏移-top: 0px;
   --专题高亮色: #789bde;
-  /*--行内名词代码颜色: #67cdcc;*/
   --行内专业名词颜色: #709de8;
-  --行内代码颜色: #54a976;
+  --行内代码颜色: #4aa66f;
   --标题字体集: "Titillium Web", "Noto Sans SC", sans-serif;
   --代码字体集: "JetBrains Mono", "Noto Sans SC", monospace;
   --font-awesome-字体集: "Font Awesome 6 Free", ui-rounded;
   --代码块字体集: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
   "Noto Sans SC", monospace !important;
   --分区列表项-字体颜色: #84a7a0;
-  /*--已激活章节标题-字体颜色: #ee78b7 !important;*/
-  --已激活章节标题-字体颜色: rgb(106, 192, 106) !important;
+  --已激活章节标题-字体颜色: rgb(129, 206, 129) !important;
 }
 
 html {
@@ -69,11 +65,24 @@ body {
   justify-content: flex-start;
   align-items: flex-start;
   width: 450px;
-  scrollbar-width: none;
+  height: calc(95vh - 75px);
+  overflow-y: auto;
 }
 
 #章节区::-webkit-scrollbar {
-  display: none;
+  width: 10px;
+}
+
+#章节区::-webkit-scrollbar-track {
+  background-color: #222;
+}
+
+#章节区::-webkit-scrollbar-thumb {
+  background-color: #5193ad;
+}
+
+#章节区::-webkit-scrollbar-thumb:hover {
+  background-color: skyblue;
 }
 
 #章节区 img {
@@ -109,13 +118,13 @@ body {
 
 .章节区内容::after {
   position: absolute;
-  width: 5px;
+  width: 4px;
   height: var(--章节区位置-高度);
   top: 0;
   left: 0;
   content: "";
-  background-color: rgb(83, 152, 83);
-  translate: -50% var(--章节区位置-偏移-top);
+  background-color: var(--已激活章节标题-字体颜色);
+  translate: 0 var(--章节区位置-偏移-top);
   opacity: 0;
   transition: 400ms;
 }
@@ -144,8 +153,8 @@ body {
 }*/
 
 #章节区 .已激活 > span:nth-child(1) {
-  border: solid 2px rgb(106, 192, 106);
-  color: rgb(106, 192, 106);
+  border: solid 2px var(--已激活章节标题-字体颜色);
+  color: var(--已激活章节标题-字体颜色);
 }
 
 .锚链接-2级标题 {
@@ -167,7 +176,7 @@ body {
   left: -15px;
   translate: 0 -50%;
   z-index: -1;
-  background-color: rgb(68, 77, 82);
+  background-color: rgb(58, 67, 72);
   content: "";
   mask-image: linear-gradient(
     90deg,
@@ -894,6 +903,23 @@ body {
   overflow-y: auto;
 }
 
+.专题列表::-webkit-scrollbar {
+  width: 12px;
+}
+
+.专题列表::-webkit-scrollbar-track {
+  background-color: #222426;
+}
+
+.专题列表::-webkit-scrollbar-thumb {
+  background-color: #426556;
+  /*border-radius: 100px;*/
+}
+
+.专题列表::-webkit-scrollbar-thumb:hover {
+  background-color: #577e6d;
+}
+
 .专题 {
   width: 100%;
   padding: 0 8px;
@@ -1534,7 +1560,7 @@ body {
   background-color: rgb(45, 56, 75);
   box-shadow: inset 0 0 0 1px rgb(91, 113, 147, 0.5);
   border-radius: 3px;
-  padding: 1px 5px;
+  padding: 2px 5px;
   margin: 0 0.25em;
   font-size: 0.9em;
 }
@@ -1574,7 +1600,7 @@ body {
   font-family: "JetBrains Mono", "Noto Sans SC", monospace;
   background-color: #456;
   color: white;
-  padding: 1px 5px;
+  padding: 2px 5px;
   margin: 0 0.25em;
   border-radius: 3px;
   font-size: 0.9em;
@@ -1582,6 +1608,10 @@ body {
 
 .提醒 .代码 {
   box-shadow: 0 0 0 1px #fff3;
+}
+
+*[class*="2级标题"] > .代码 {
+  background-color: #678;
 }
 
 .行内代码 {
@@ -1884,6 +1914,10 @@ div.code-toolbar > .toolbar > .toolbar-item > span {
 
 div.code-toolbar > .toolbar {
   transition: opacity 250ms !important;
+}
+
+.分区列表 div.code-toolbar > .toolbar {
+  top: -0.175em; /*分区列表中的代码工具栏会向下偏移更多，此为修正值*/
 }
 
 /* ------------------- ↑ 代码格式化 ------------------- */
