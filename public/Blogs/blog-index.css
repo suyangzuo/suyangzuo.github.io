@@ -1895,7 +1895,7 @@ code[class*="language-"],
 pre[class*="language-"] {
   font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
   "Noto Sans SC", monospace !important;
-  font-size: 0.9875em !important; /*修改字号会导致行号高度无法匹配*/
+  font-size: 0.975rem !important; /*修改字号会导致行号高度无法匹配*/
 }
 
 /*此样式是修正因修改代码字体导致行号高度无法匹配的问题*/
@@ -1932,7 +1932,7 @@ div.code-toolbar > .toolbar {
   pre[class*="language-"] {
     font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
     "Noto Sans SC", monospace !important;
-    /*font-size: 0.925em !important;*/
+    /*font-size: 0.925rem !important;*/
   }
 }
 

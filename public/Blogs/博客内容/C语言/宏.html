@@ -157,8 +157,8 @@
         #define NAME "祖冲之"
 
         int main(int argc, char* argv[]) {
-          // PI会被 3.1415926 代替，NAME会被 "祖冲之" 代替
-          printf("%s发现了圆周率，它的值近似于：%.7lf\n", NAME, PI);
+            // PI会被 3.1415926 代替，NAME会被 "祖冲之" 代替
+            printf("%s发现了圆周率，它的值近似于：%.7lf\n", NAME, PI);
         }
       </code>
     </pre>
@@ -192,16 +192,16 @@
         #define GET_AREA(width, height) (width * height);
           
         int main(int argc, char* argv[]) {
-          int width = 40;
-          int height = 85;
-          
-          //调用函数式宏，求矩形周长
-          int perimeter = GET_PERIMETER(width, height);
-          
-          //调用函数式宏，求矩形面积
-          int area = GET_AREA(width, height);
-              
-          printf("矩形的周长：%d\n矩形的面积：%d\n", perimeter, area);
+            int width = 40;
+            int height = 85;
+
+            //调用函数式宏，求矩形周长
+            int perimeter = GET_PERIMETER(width, height);
+
+            //调用函数式宏，求矩形面积
+            int area = GET_AREA(width, height);
+
+            printf("矩形的周长：%d\n矩形的面积：%d\n", perimeter, area);
         }
           
       </code>

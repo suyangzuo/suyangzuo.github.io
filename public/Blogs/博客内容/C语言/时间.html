@@ -8,7 +8,7 @@
       </p>
       <p class="日期">
         <span class="日期前缀 前缀">日期：</span>
-        <span class="日期文本">待定</span>
+        <span class="日期文本">2024年3月26日</span>
       </p>
     </section>
     <section class="简介信息图像">
@@ -142,15 +142,15 @@
         <pre class="line-numbers">
           <code class="lang-c">
             struct tm {
-              int tm_hour;  /* 小时，范围：0-23 */
-              int tm_min;   /* 分钟，范围：0-59 */
-              int tm_sec;   /* 秒，范围：0-59 */
-              int tm_year;  /* 年，从 1900 至今的数字 */
-              int tm_mon;   /* 月，范围：0-11 */
-              int tm_mday;  /* 日，范围：0-31 */
-              int tm_wday;  /* 工作日，范围：0-6 */
-              int tm_yday;  /* 一年中的第几天，范围：0-365 */
-              int tm_isdst; /* 夏令时 */
+                int tm_hour;  /* 小时，范围：0-23 */
+                int tm_min;   /* 分钟，范围：0-59 */
+                int tm_sec;   /* 秒，范围：0-59 */
+                int tm_year;  /* 年，从 1900 至今的数字 */
+                int tm_mon;   /* 月，范围：0-11 */
+                int tm_mday;  /* 日，范围：0-31 */
+                int tm_wday;  /* 工作日，范围：0-6 */
+                int tm_yday;  /* 一年中的第几天，范围：0-365 */
+                int tm_isdst; /* 夏令时 */
             }
           </code>
         </pre>
@@ -315,11 +315,11 @@
         #include &lt;time.h&gt;
 
         int main(void) {
-          time_t calendar_time = time(NULL);
+            time_t calendar_time = time(NULL);
 
-          // time_t 是 long long int，对应的格式说明符是 %lld
-          printf("自 \"1970年1月1日-00时00分00秒-UTC\" 至今，已经经过了：%lld 秒\n",
-                  calendar_time);
+            // time_t 是 long long int，对应的格式说明符是 %lld
+            printf("自 \"1970年1月1日-00时00分00秒-UTC\" 至今，已经经过了：%lld 秒\n",
+                    calendar_time);
         }
       </code>
     </pre>
@@ -335,7 +335,7 @@
   </article>
 
   <article class="正文分区">
-    <h2 class="分区标题 分区2级标题">当前时间和自定义时间</h2>
+    <h2 class="分区标题 分区2级标题">当前时间</h2>
 
     <h3 class="分区标题 分区3级标题">获取当前时间</h3>
     <p class="分区普通文本">
@@ -350,11 +350,11 @@
         #include &lt;time.h&gt;
         
         int main(void) {
-          time_t calendar_time = time(NULL); //获取日历时间（秒）
+            time_t calendar_time = time(NULL); //获取日历时间（秒）
 
-          //gmtime()不会转换为本地时区
-          struct tm* time_f_now = gmtime(&calendar_time);
-          printf("%s\n", asctime(time_f_now)); //asctime()将时间转换为字符串格式
+            //gmtime()不会转换为本地时区
+            struct tm* time_f_now = gmtime(&calendar_time);
+            printf("%s\n", asctime(time_f_now)); //asctime()将时间转换为字符串格式
         }
       </code>
     </pre>
@@ -389,11 +389,11 @@
         #include &lt;time.h&gt;
         
         int main(void) {
-          time_t calendar_time = time(NULL); //获取日历时间（秒）
+            time_t calendar_time = time(NULL); //获取日历时间（秒）
 
-          //localtime()会转换为本地时区
-          struct tm* time_f_now = localtime(&calendar_time);
-          printf("%s\n", asctime(time_f_now)); //asctime()将时间转换为字符串格式
+            //localtime()会转换为本地时区
+            struct tm* time_f_now = localtime(&calendar_time);
+            printf("%s\n", asctime(time_f_now)); //asctime()将时间转换为字符串格式
         }
       </code>
     </pre>
@@ -408,26 +408,26 @@
       >后，日历时间会被转换为根据本地时区调整后的结构体，因此显示的时间与右下角的时钟是一致的。
     </p>
 
-    <h3 class="分区标题 分区3级标题">自定义时间</h3>
+    <h3 class="分区标题 分区3级标题">调用时间结构体成员</h3>
     <p class="分区普通文本">
-      想要创造自定义时间<span class="附加说明">比如生日</span
-      >，最佳方法是将其存储在结构体内，这样可以方便地调用年、月、日等数据。假设生日为：1985年6月15日，星期六。
+      如果直接调用时间结构体成员，其数值往往无法满足业务需求：
     </p>
-    <pre class="line-numbers">
-      <code class="lang-c">
-        struct tm birthday = {
-            //这种初始化结构体的方式没有顺序要求，任意顺序皆可
-            tm_year : 1985 - 1900, //年，从 1900 至今的数字
-            tm_mon : 6 - 1, //月，范围：0-11
-            tm_mday : 15,
-            tm_hour : 0,
-            tm_min : 0,
-            tm_sec : 0,
-            tm_wday : 6, //工作日，星期天为0
-            tm_isdst : 0 //最后一个成员后面不需要添加逗号
-            //还有 tm_yday，代表一年中的第几天，懒得算，直接不填，默认为0
-        };
-      </code>
-    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/时间/直接调用结构体成员.png"
+        alt="直接调用结构体成员"
+      />
+    </figure>
+    <p class="分区普通文本">
+      由于年份是从 1900 年开始算起，因此数值只有 124。而月份的范围是 0-11，因此
+      3 月被计算为 2月。因此，我们需要自己对相关数值进行处理：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/时间/调用结构体成员后再调整.png"
+        alt="调用结构体成员后再调整"
+      />
+    </figure>
+    <p class="分区普通文本">经过简单处理后，所得数值与实际日期一致。</p>
   </article>
 </div>
