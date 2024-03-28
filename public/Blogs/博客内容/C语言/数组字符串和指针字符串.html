@@ -11,7 +11,7 @@
       </p>
       <p class="日期">
         <span class="日期前缀 前缀">日期：</span>
-        <span class="日期文本">待定</span>
+        <span class="日期文本">2024年3月28日</span>
       </p>
     </section>
     <section class="简介信息图像">
@@ -122,18 +122,18 @@
         字符串变量
         <ul class="分区列表">
           <li class="分区列表项">
-            <span class="行内专业名词">数组字符串</span>变量仅可<span
+            <span class="行内专业名词">数组字符串</span>变量就是数组，可<span
               class="强调"
-              >用作</span
-            >指针，但<span class="强调">不是</span
-            >指针类型，因此无法指向其它内存地址，<span class="强调">不可</span
+              >当做</span
+            >指针使用，但<span class="强调">不是</span>指针类型，<span
+              class="强调"
+              >不可</span
             >重新赋值。
           </li>
           <li class="分区列表项">
-            <span class="行内专业名词">指针字符串</span
-            >变量就是指针类型，因此可以指向其它内存地址，<span class="强调"
-              >可以</span
-            >重新赋值。
+            <span class="行内专业名词">指针字符串</span>变量<span class="强调"
+              >是</span
+            >指针类型，<span class="强调">可以</span>重新赋值。
           </li>
         </ul>
       </li>
@@ -147,9 +147,9 @@
             >，可以修改。
           </li>
           <li class="分区列表项">
-            <span class="行内专业名词">数组字符串数据</span>分配在内存<span
+            <span class="行内专业名词">指针字符串数据</span>分配在内存<span
               class="强调"
-              >代码段</span
+              >静态存储区</span
             >，无法修改。
           </li>
         </ul>
@@ -263,6 +263,19 @@
         ><span class="强调">错误: </span>向数组类型赋值</span
       >。<br />这再次证明了<span class="行内代码">name</span>是数组，不是指针。
     </p>
+    <p class="分区普通文本">我们还可以通过输出内存地址来看清楚这一点：</p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/数组字符串和指针字符串/数组字符串变量自身地址和保存的地址.png"
+        alt="数组字符串变量自身地址和保存的地址"
+      />
+    </figure>
+    <p class="分区普通文本">
+      <span class="代码">name</span>自身的地址和保存的地址是一致的，说明<span
+        class="行内代码"
+        >name</span
+      >本身就是数组。
+    </p>
 
     <h3 class="分区标题 分区3级标题">修改数组字符串对象</h3>
     <p class="分区普通文本">数组对象分配在内存栈上，因此可以修改：</p>
@@ -311,11 +324,10 @@
     <p class="分区普通文本">
       看起来语法差别不大，但<span class="代码">name</span
       >的本质却不同。这里的<span class="行内代码">name</span
-      >是个真正的指针，它<span class="强调">指向</span
+      >是个真正的指针，分配在内存栈上，它<span class="强调">指向</span
       ><span class="行内代码">"suyang"</span>，但<span class="强调">不是</span
-      ><span class="行内代码">"suyang"</span>。而<span class="代码"
-        >"suyang"</span
-      >对象被分配在内存代码段上，无法修改。
+      ><span class="行内代码">"suyang"</span>。<span class="代码">"suyang"</span
+      >对象被分配在内存静态存储区，无法修改。
     </p>
     <figure class="截图容器">
       <img
@@ -364,12 +376,33 @@
         alt="修改指针字符串变量的本质"
       />
     </figure>
+    <p class="分区普通文本">这段代码可以用动画表示：</p>
+    <figure
+      class="截图容器"
+      style="
+        background:
+          linear-gradient(#5550 0%, #5550 100%) content-box,
+          linear-gradient(#aaa2 0%, #5552 95%) border-box;
+      "
+    >
+      <img
+        src="/Images/Blogs/C语言/数组字符串和指针字符串/修改指针字符串变量动画.webp"
+        alt="修改指针字符串变量动画"
+        style="background-color: #ffffff0a"
+      />
+    </figure>
+    <p class="分区普通文本">
+      修改<span class="代码">name</span>，并没有修改<span class="行内代码"
+        >"suyang"</span
+      >，而是在静态存储区生成一个新字符串<span class="行内代码">"Hacker"</span
+      >并更新<span class="行内代码">name</span>保存的内存地址。
+    </p>
 
     <h3 class="分区标题 分区3级标题">修改指针字符串对象</h3>
     <p class="分区普通文本">
       <span class="代码">char* name = "suyang"</span>里的<span class="行内代码"
         >"suyang"</span
-      >分配在内存代码段上，是无法修改的。
+      >分配在内存静态存储区，是无法修改的。
     </p>
     <pre class="line-numbers">
       <code class="lang-c">
@@ -381,5 +414,15 @@
         name[0] = 'H';
       </code>
     </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/数组字符串和指针字符串/按数组方式修改指针.webp"
+        alt="按数组方式修改指针"
+      />
+    </figure>
+    <p class="分区普通文本">
+      此时<span class="行内代码">name</span
+      >已被改得不是指针了，因此运行程序之后什么结果也没有。
+    </p>
   </article>
 </div>

@@ -65,7 +65,7 @@ body {
   justify-content: flex-start;
   align-items: flex-start;
   width: 450px;
-  height: calc(95vh - 75px);
+  height: calc(97.5vh - 75px);
   overflow-y: auto;
 }
 
@@ -1748,7 +1748,7 @@ body {
 }
 
 .代码 .强调{
-  color: #ff6969;
+  color: #ff84a1;
 }
 
 .附加说明 .强调 {
