@@ -655,6 +655,26 @@ function 特殊元素样式补充() {
     ) {
       代码.style.marginLeft = "0";
     }
+
+    const 父元素 = 代码.parentElement;
+    if (父元素 === null) return;
+    if (
+      父元素.className === "行内专业名词" &&
+      父元素.style.marginRight !== "0"
+    ) {
+      代码.style.marginRight = "0";
+    }
+
+    /*const 父节点后一节点 = 代码.parentNode.nextSibling;
+    if (
+      父节点后一节点 === null ||
+      父节点后一节点.nodeType !== Node.ELEMENT_NODE
+    )
+      return;
+    const 父节点后一元素 = 代码.parentElement.nextElementSibling;
+    if (父节点后一元素.className === "附加说明") {
+      代码.style.marginRight = "0";
+    }*/
   });
 
   const 行内代码组 = document.querySelectorAll(".行内代码");
