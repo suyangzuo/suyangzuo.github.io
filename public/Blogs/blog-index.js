@@ -666,6 +666,8 @@ function 特殊元素样式补充() {
       const 修剪文本 = 前一节点.textContent.trim();
       if (修剪文本 === "" || 远距标点组.some((标点) => 标点 === 修剪文本)) {
         行内代码.style.marginLeft = "0";
+      } else {
+        行内代码.style.marginLeft = "0.25em";
       }
     }
 

@@ -29,12 +29,24 @@ body {
 
 .purpose-container {
   /* background-color: rgb(134, 76, 0); */
+  position: relative;
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   overflow: auto;
+}
+
+.purpose-container::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: no-repeat center/cover url("/Images/Purpose/宗旨页背景.jpg");
+  filter: brightness(50%);
 }
 
 .purpose {
@@ -148,36 +160,6 @@ body {
   user-select: none;
 }
 
-.pp-01::before {
-  background: url(/Images/Purpose/bg-01.jpg);
-  -webkit-mask-image: linear-gradient(-90deg, transparent 0%, #000 100%);
-  mask-image: linear-gradient(-90deg, transparent 0%, #000 100%);
-}
-
-.pp-02::before {
-  background: url(/Images/Purpose/bg-02.jpeg);
-  -webkit-mask-image: linear-gradient(transparent 0%, #000 100%);
-  mask-image: linear-gradient(transparent 0%, #000 100%);
-}
-
-.pp-03::before {
-  background: url(/Images/Purpose/bg-03.jpg);
-  -webkit-mask-image: radial-gradient(circle at center, #0002 0%, #000 100%);
-  mask-image: radial-gradient(circle at center, #0002 0%, #000 100%);
-}
-
-.pp-04::before {
-  background: url(/Images/Purpose/bg-04.jpg);
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 100%);
-  mask-image: linear-gradient(transparent 0%, #000 100%);
-}
-
-.pp-05::before {
-  background: url(/Images/Purpose/bg-05.jpg);
-  -webkit-mask-image: linear-gradient(-90deg, transparent 0%, #000 100%);
-  mask-image: linear-gradient(-90deg, transparent 0%, #000 100%);
-}
-
 .purpose::before {
   position: absolute;
   width: 100%;
@@ -191,32 +173,6 @@ body {
   z-index: -1;
   /* filter: opacity(0.55) blur(3px); */
 }
-
-/* .purpose::after {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  content: "";
-  left: 0;
-  top: 0;
-  z-index: -1;
-}
-
-.purpose:nth-child(odd)::after {
-  background: linear-gradient(
-    115deg,
-    rgba(0, 0, 0, 0.3) 48%,
-    rgba(0, 0, 0, 0.15) 48.001%
-  );
-}
-
-.purpose:nth-child(even)::after {
-  background: linear-gradient(
-    65deg,
-    rgba(0, 0, 0, 0.3) 48%,
-    rgba(0, 0, 0, 0.15) 48.001%
-  );
-} */
 
 .explain-list {
   display: flex;
@@ -279,7 +235,7 @@ body {
   color: white !important;
   background: linear-gradient(#111, #252525);
   transition: opacity 0.5s ease-out, top 0.5s ease-out,
-    box-shadow 0.25s ease-out;
+  box-shadow 0.25s ease-out;
 }
 
 .pop-up:hover {
@@ -391,4 +347,5 @@ body {
     font-size: 0.6rem;
   }
 }
+
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */
