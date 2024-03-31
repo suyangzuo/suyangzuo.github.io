@@ -115,6 +115,23 @@
         / <span class="行内专业名词">指针字符串</span>
       </li>
     </ul>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        使用<span class="行内专业名词">数组字符串</span
+        >，至少要多留一个字符的位置给<span class="代码">'\0'</span>。
+      </p>
+      <p class="分区普通文本">
+        使用<span class="行内专业名词">指针字符串</span
+        >直接初始化，字符串内容分配在内存<span class="行内专业名词"
+          >静态存储区</span
+        >，因而无法修改内容。<br />使用<span class="行内专业名词"
+          >指针字符串</span
+        >接收输入函数的输入，字符串内容分配在内存<span class="行内专业名词"
+          >栈</span
+        >上，这时可以修改字符串内容。
+      </p>
+    </section>
 
     <h3 class="分区标题 分区3级标题">输入函数选择</h3>
     <p class="分区普通文本">
@@ -122,12 +139,28 @@
     </p>
     <ul class="分区列表">
       <li class="分区列表项">
-        字符串中间有空格：<span class="代码">fgets()</span>
+        字符串包含空白字符：<span class="代码">fgets()</span>
       </li>
       <li class="分区列表项">
-        字符串中间无空格：<span class="代码">scanf()</span>
+        字符串没有空白字符：<span class="代码">scanf()</span>
       </li>
     </ul>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">C语言中的空白字符有 6 种：</p>
+      <ul class="分区列表">
+        <li class="分区列表项"><span class="代码">' '</span>，空格</li>
+        <li class="分区列表项"><span class="代码">'\n'</span>，换行</li>
+        <li class="分区列表项">
+          <span class="代码">'\r'</span>，回车<span class="附加说明"
+            >不是回车键</span
+          >
+        </li>
+        <li class="分区列表项"><span class="代码">'\t'</span>，水平制表符</li>
+        <li class="分区列表项"><span class="代码">'\v'</span>，垂直制表符</li>
+        <li class="分区列表项"><span class="代码">'\f'</span>，换页</li>
+      </ul>
+    </section>
   </article>
 
   <article class="正文分区">
@@ -136,8 +169,89 @@
     </h2>
 
     <h3 class="分区标题 分区3级标题">
-      调用<span class="行内代码">scanf()</span>
+      <span class="行内代码">scanf()</span>用法
     </h3>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        使用<span class="代码">%s</span>作为字符串的格式说明符
+      </li>
+      <li class="分区列表项">忽略前置的空白字符</li>
+      <li class="分区列表项">
+        从第1个非空白字符开始正常读取，直到遇到空白字符
+      </li>
+      <li class="分区列表项">
+        正常读取后遇到的空白字符及其之后的字符放回缓冲区，包括回车字符
+      </li>
+      <li class="分区列表项">
+        会自动在读取的字符后面加上<span class="代码">'\0'</span>字符
+      </li>
+    </ul>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内代码">scanf()</span>处理字符长度
+    </h3>
+    <p class="分区普通文本">
+      <span class="代码">scanf()</span
+      >函数默认不会检查字符的长度，这可能会导致输入的字符长度超出数组长度：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/输入字符串/scanf-超出数组长度.png"
+        alt="scanf 输入字符串长度超出数组长度"
+      />
+    </figure>
+    <p class="分区普通文本">
+      数组只有 7 个字符的长度，却输入了 14 个字符，再加上<span class="行内代码"
+        >'\0'</span
+      >，一共 15 字节。在输出结果中，数组占用空间为 7 字节，然而字符串长度却是
+      14<span class="附加说明"
+        ><span class="行内代码">strlen()</span>函数是不将<span class="行内代码"
+          >'\0'</span
+        >计算在内的</span
+      >。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        这里最危险的地方在于：明明输入的字符串长度超出了数组的限制，编译器却没有报错，运行程序也没有错误！这看似挺让人满意的，实际上会导致无法及时发现一些严重的潜在问题，当这些问题爆发时，程序就会出人意料地崩溃。因此，编写
+        C语言 程序时，需要非常小心！
+      </p>
+    </section>
+    <p class="分区普通文本">
+      我们显然不能任由这种<span class="强调">明明有错，却不报错</span
+      >的情况发生。因此，使用<span class="行内代码">scanf</span
+      >函数输入字符串时，我们需要通过格式说明符来<span class="行内专业名词"
+        >限制长度</span
+      >。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        char name[7];
+        scanf("%6s", name); //需要留1个字符的位置给'\0'，因此我们可以输入6个字符
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/输入字符串/scanf-限制输入长度.png"
+        alt="scanf 限制输入长度"
+      />
+    </figure>
+    <p class="分区普通文本">
+      虽然输入了 10 个字符，但是<span class="行内代码">scanf</span>只接收了 6
+      个字符，再加上自动添加的<span class="行内代码">'\0'</span
+      >，刚好符合数组的长度。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内代码">scanf()</span>处理空白字符
+    </h3>
+    <p class="分区普通文本">
+      <span class="代码">scanf</span
+      >不应该用来处理空白字符，但是，万一遇到空白字符，我们应该了解<span
+        class="行内代码"
+        >scanf</span
+      >是怎么运作的。
+    </p>
   </article>
 
   <article class="正文分区">
@@ -146,7 +260,7 @@
     </h2>
 
     <h3 class="分区标题 分区3级标题">
-      调用<span class="行内代码">fgets()</span>
+      <span class="行内代码">fgets()</span>用法
     </h3>
   </article>
 </div>
