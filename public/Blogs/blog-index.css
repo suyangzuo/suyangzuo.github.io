@@ -18,13 +18,14 @@
   --专题高亮色: #789bde;
   --行内专业名词颜色: #709de8;
   --行内代码颜色: #4aa66f;
-  --标题字体集: "Titillium Web", "Noto Sans SC", sans-serif;
-  --代码字体集: "JetBrains Mono", "Noto Sans SC", monospace;
+  --标题字体集: "Titillium Web", "Segoe UI Emoji", "Noto Sans SC", sans-serif;
+  --代码字体集: "JetBrains Mono", "Segoe UI Emoji", "Noto Sans SC", monospace;
   --font-awesome-字体集: "Font Awesome 6 Free", ui-rounded;
-  --代码块字体集: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
+  --代码块字体集: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono", "Segoe UI Emoji",
   "Noto Sans SC", monospace !important;
   --分区列表项-字体颜色: #84a7a0;
   --已激活章节标题-字体颜色: rgb(129, 206, 129) !important;
+  --正文字体: "Noto Sans SC", sans-serif, "Noto Sans Mono", "Segoe UI Emoji", monospace;
 }
 
 html {
@@ -1275,6 +1276,7 @@ body {
   flex-direction: column;
   align-items: flex-start;
   gap: 35px;
+  font-family: var(--正文字体);
 }
 
 .正文分区 {
@@ -1589,7 +1591,8 @@ body {
 }
 
 .附加说明 .行内专业名词 {
-  color: #8bb5f5;
+  /*color: #8bb5f5;*/
+  color: #9bc5f5;
 }
 
 .表格标题 .行内专业名词 {
@@ -1597,7 +1600,7 @@ body {
 }
 
 .代码 {
-  font-family: "JetBrains Mono", "Noto Sans SC", monospace;
+  font-family: "JetBrains Mono", "Segoe UI Emoji", "Noto Sans SC", monospace;
   background-color: #456;
   color: white;
   padding: 2px 5px;
@@ -1615,7 +1618,7 @@ body {
 }
 
 .行内代码 {
-  font-family: "JetBrains Mono", "Noto Sans SC", monospace;
+  font-family: "JetBrains Mono", "Segoe UI Emoji", "Noto Sans SC", monospace;
   color: var(--行内代码颜色);
   margin: 0 0.25em;
   font-size: 0.95em;
@@ -1747,7 +1750,7 @@ body {
   margin: 0 2px;
 }
 
-.代码 .强调{
+.代码 .强调 {
   color: #ff84a1;
 }
 

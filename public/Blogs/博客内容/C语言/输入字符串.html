@@ -150,7 +150,11 @@
       <p class="分区普通文本">C语言中的空白字符有 6 种：</p>
       <ul class="分区列表">
         <li class="分区列表项"><span class="代码">' '</span>，空格</li>
-        <li class="分区列表项"><span class="代码">'\n'</span>，换行</li>
+        <li class="分区列表项">
+          <span class="代码">'\n'</span>，换行<span class="附加说明"
+            >按回车键</span
+          >
+        </li>
         <li class="分区列表项">
           <span class="代码">'\r'</span>，回车<span class="附加说明"
             >不是回车键</span
@@ -169,7 +173,7 @@
     </h2>
 
     <h3 class="分区标题 分区3级标题">
-      <span class="行内代码">scanf()</span>用法
+      <span class="行内代码">scanf()</span>用法和规则
     </h3>
     <ul class="分区列表">
       <li class="分区列表项">
@@ -177,10 +181,10 @@
       </li>
       <li class="分区列表项">忽略前置的空白字符</li>
       <li class="分区列表项">
-        从第1个非空白字符开始正常读取，直到遇到空白字符
+        从第1个非空白字符开始正常读取，直到再次遇到空白字符
       </li>
       <li class="分区列表项">
-        正常读取后遇到的空白字符及其之后的字符放回缓冲区，包括回车字符
+        正常读取后遇到的空白字符及其之后的字符放回缓冲区，包括换行符
       </li>
       <li class="分区列表项">
         会自动在读取的字符后面加上<span class="代码">'\0'</span>字符
@@ -241,6 +245,11 @@
       个字符，再加上自动添加的<span class="行内代码">'\0'</span
       >，刚好符合数组的长度。
     </p>
+    <p class="分区普通文本">
+      <span class="强调">注意：</span>超出长度的字符<span class="附加说明"
+        >包括<span class="行内专业名词">换行符</span></span
+      >并未被丢弃，而是被放回了<span class="专业名词">缓冲区</span>。
+    </p>
 
     <h3 class="分区标题 分区3级标题">
       <span class="行内代码">scanf()</span>处理空白字符
@@ -250,7 +259,91 @@
       >不应该用来处理空白字符，但是，万一遇到空白字符，我们应该了解<span
         class="行内代码"
         >scanf</span
-      >是怎么运作的。
+      >是怎么运作的，<span class="行内专业名词">2-1</span
+      >节已经说明了对于空白字符的处理方式。假如有这样一段代码，连续两次用<span
+        class="行内代码"
+        >scanf</span
+      >输入字符串，并且第一次输入<span class="代码"> su yang↩︎</span
+      >会得到什么结果呢？
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        char name[7];
+        printf("第1次输入：");
+        scanf("%6s", name);
+        printf("姓名：%s\n\n", name, name);
+
+        printf("--------------------------\n\n");
+
+        printf("第2次输入：");
+        scanf("%6s", name);
+        printf("姓名：%s\n\n", name, name);
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        style="background-color: #222"
+        src="/Images/Blogs/C语言/输入字符串/连续两次scanf-代码动图.webp"
+        alt="连续两次 scanf 代码动图"
+      />
+    </figure>
+    <p class="分区普通文本">
+      第一次<span class="代码">scanf</span>等待用户输入了<span class="行内代码">
+        su yang↩︎</span
+      >，但输出的结果只有<span class="行内代码">su</span>；第二次<span
+        class="代码"
+        >scanf</span
+      >根本就没有等待用户输入，输出的结果是<span class="行内代码">yang</span
+      >。请根据<span class="行内专业名词">2-1</span
+      >节对空白字符的处理方式，想想为什么是这个结果？哪些字符被忽略？哪些字符被放回了缓冲区？
+    </p>
+    <p class="分区普通文本">对于上述程序，我们可以用图示的方法来表示：</p>
+    <figure class="截图容器">
+      <img
+        style="background-color: #222"
+        src="/Images/Blogs/C语言/输入字符串/连续两次scanf-原理分析.webp"
+        alt="连续两次 scanf 原理分析"
+      />
+    </figure>
+
+    <h3 class="分区标题 分区3级标题">刷新缓冲区</h3>
+    <p class="分区普通文本">
+      现在大多数的输入函数，都是采用<span class="行内专业名词">缓冲输入</span
+      >的方式，先把输入的内容放到<span class="行内专业名词">缓冲区</span
+      >，等输入完成后再一起处理。但是，这也造成一些容易让人困扰的问题，比如<span
+        class="行内专业名词"
+        >输入函数将不符合条件的字符放回了缓冲区</span
+      >，而下一个输入函数会优先读取缓冲区，读到的就是上一次残留的字符。
+    </p>
+    <p class="分区普通文本">
+      因此，我们自然而然地想到：有没有办法<span class="行内专业名词"
+        >刷新缓冲区</span
+      >？答案是：<span class="行内专业名词">有</span>。
+    </p>
+    <p class="分区普通文本">
+      <span class="代码">fflush()</span
+      >函数就可以刷新文件流的缓存。如果我们要刷新<span class="行内专业名词"
+        >标准输入</span
+      ><span class="附加说明">也就是键盘输入</span>的缓冲区，就要把<span
+        class="行内代码"
+        >stdin</span
+      >作为参数。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        fflush(stdin); //刷新标准输入的缓冲区
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        style="background-color: #222"
+        src="/Images/Blogs/C语言/输入字符串/两次scanf之间刷新缓冲区.webp"
+        alt="两次scanf之间刷新缓冲区"
+      />
+    </figure>
+    <p class="分区普通文本">
+      第二次<span class="行内专业名词">scanf</span
+      >运行之前，刷新了缓冲区，因此可以正常输入字符。
     </p>
   </article>
 
@@ -260,7 +353,7 @@
     </h2>
 
     <h3 class="分区标题 分区3级标题">
-      <span class="行内代码">fgets()</span>用法
+      <span class="行内代码">fgets()</span>用法和规则
     </h3>
   </article>
 </div>

@@ -613,6 +613,13 @@ function 特殊元素样式补充() {
       行内专业名词.style.marginLeft = "0";
     }
 
+    if (
+      行内专业名词.parentElement.className === "附加说明" &&
+      行内专业名词 === 行内专业名词.parentNode.lastChild
+    ) {
+      行内专业名词.style.marginRight = "0";
+    }
+
     if (后一节点 === null || 后一节点.nodeType !== Node.ELEMENT_NODE) return;
     const 后一节点元素 = 行内专业名词.nextElementSibling;
     if (后一节点元素.className.includes("强调")) {
