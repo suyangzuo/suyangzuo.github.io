@@ -506,6 +506,40 @@
         >fflush(stdin)</span
       >即可，具体方法与<span class="行内专业名词">2-4</span>节相同，不再赘述。
     </p>
+
+    <h3 class="分区标题 分区3级标题">删除换行符</h3>
+    <p class="分区普通文本">
+      绝大多数情况下，我们都会为字符串准备足够的长度，因此<span class="行内代码"
+        >fgets</span
+      >在绝大多数情况下都会将换行符保存在字符串中。这么做有何意义？在<span
+        class="专业名词"
+        >C Primer Plus 第6版 第11章 11.2.3</span
+      >中，作者有这样的描述：<span class="行内专业名词"
+        >The fact that
+        <span style="font-family: &quot;JetBrains Mono&quot;">fgets()</span>
+        stores the newline presents a problem and an opportunity. The problem is
+        that you might not want the newline as part of the string you store. The
+        opportunity is the presence or absence of a newline character in the
+        stored string can be used to tell whether the whole line was read. If it
+        wasn’t, then you can decide what to do with the rest of the line.
+      </span>
+    </p>
+    <p class="分区普通文本">
+      作者认为：保留换行符有好有坏。好处是可以通过换行符来判断是否已经读取了一整行。这一点我没有想明白，因为换行符后面紧跟着的是<span
+        class="行内代码"
+        >'\0'</span
+      >，同样可以用来判断是否读取了一整行啊？
+    </p>
+    <p class="分区普通文本">
+      不过，有一点我很认同，作者认为保留换行符的坏处是：大多数情况下没人想要换行符。因此，我们需要想办法将换行符替换成<span
+        class="行内代码"
+        >'\0'</span
+      >。<span class="专业名词">C Primer Plus 第6版</span
+      >的作者采用的是简单粗暴<span class="附加说明">但有效</span>的<span
+        class="行内代码"
+        >while</span
+      >循环迭代查找换行符。而我希望能用一个更为优雅的办法。
+    </p>
   </article>
 
   <article class="正文分区">
