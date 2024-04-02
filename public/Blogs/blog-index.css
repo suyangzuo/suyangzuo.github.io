@@ -192,6 +192,10 @@ body {
   background-color: #744882;
 }
 
+.锚链接-2级标题:hover .行内代码 {
+  color: #5abe83;
+}
+
 .锚链接-2级标题:link {
   color: lightskyblue;
 }

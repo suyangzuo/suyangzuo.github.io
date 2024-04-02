@@ -184,7 +184,7 @@
         从第1个非空白字符开始正常读取，直到再次遇到空白字符
       </li>
       <li class="分区列表项">
-        正常读取后遇到的空白字符及其之后的字符放回缓冲区，包括换行符
+        正常读取后遇到的空白字符及其之后的字符会留在缓冲区，包括换行符
       </li>
       <li class="分区列表项">
         会自动在读取的字符后面加上<span class="代码">'\0'</span>字符
@@ -342,7 +342,7 @@
       />
     </figure>
     <p class="分区普通文本">
-      第二次<span class="行内专业名词">scanf</span
+      第二次<span class="行内代码">scanf</span
       >运行之前，刷新了缓冲区，因此可以正常输入字符。
     </p>
   </article>
@@ -354,6 +354,167 @@
 
     <h3 class="分区标题 分区3级标题">
       <span class="行内代码">fgets()</span>用法和规则
+    </h3>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="行内代码">fgets</span
+        >是处理文件流的，如果要处理标准输入，要将<span class="行内代码"
+          >stdin</span
+        >作为第 3 个参数
+      </li>
+      <li class="分区列表项">通过第 2 个参数，可以控制输入的字符数量</li>
+      <li class="分区列表项">可以正常接收空格</li>
+      <li class="分区列表项">
+        一定会在字符串最后放入<span class="行内代码">'\0'</span>
+      </li>
+      <li class="分区列表项">
+        如果字符串有多余位置，会在<span class="行内代码">'\0'</span>前放入换行符
+      </li>
+      <li class="分区列表项">如果字符串没有多余位置，换行符会留在缓冲区</li>
+      <li class="分区列表项">超出长度的字符会留在缓冲区</li>
+    </ul>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内代码">fgets()</span>处理字符长度
+    </h3>
+    <p class="分区普通文本">
+      <span class="行内代码">fgets</span>通过第 2
+      个参数来处理输入字符的长度。<span class="强调">注意：</span
+      ><span class="行内代码">fgets</span>会留一个字符的位置给<span
+        class="行内代码"
+        >'\0'</span
+      >，因此能够从输入中接收的字符数量是<span class="代码">长度 - 1</span>。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        #include &lt;stdio.h&gt;
+        #include &lt;windows.h&gt;
+        
+        #define NAME_LENGTH 7 //定义数组长度
+        
+        int main(void) {
+            SetConsoleOutputCP(CP_UTF8);
+        
+            char name[NAME_LENGTH];
+            printf("输入姓名：");
+            fgets(name, NAME_LENGTH, stdin);
+            printf("姓名：%s\n", name);
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/输入字符串/fgets输入字符超出长度.png"
+        alt="fgets 输入字符超出长度"
+      />
+    </figure>
+    <p class="分区普通文本">
+      虽然输入了14个字符，实际只接收了6个。因为数组长度为
+      7，但会自动留下一个字符的位置给<span class="行内代码">'\0'</span
+      >；并且<span class="行内代码">suyang</span
+      >后面也没有空行，因为没有多余的位置留给换行符。
+    </p>
+    <p class="分区普通文本">
+      要保留换行符，需要空出 2 个字符的位置，一个给<span class="行内代码"
+        >'\n'</span
+      >，一个给<span class="行内代码">'\0'</span>。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/输入字符串/fgets输入保留2个字符的位置.png"
+        alt="fgets 输入保留2个字符的位置"
+      />
+    </figure>
+    <p class="分区普通文本">
+      数组长度为 7，一共输入了 5 个字符，还有 2 个字符的位置留给换行符和<span
+        class="行内代码"
+        >'\0'</span
+      >，因此<span class="行内代码">suyan</span>后面有一个空行。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内代码">fgets()</span>处理换行符
+    </h3>
+    <p class="分区普通文本">
+      基本规则很简单：有空位，就放入换行符；没空位，换行符就留在缓冲区。我们尝试连续输入两次姓名，以便理解<span
+        class="行内代码"
+        >fgets</span
+      >任何处理换行符。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        #include &lt;stdio.h&gt;
+        #include &lt;windows.h&gt;
+        
+        #define NAME_LENGTH 7 //定义数组长度
+        
+        int main(void) {
+            SetConsoleOutputCP(CP_UTF8);
+
+            char name[NAME_LENGTH];
+        
+            printf("第1次输入姓名：");
+            fgets(name, NAME_LENGTH, stdin);
+            printf("姓名：%s\n", name);
+        
+            printf("--------------------------\n");
+        
+            printf("第2次输入姓名：");
+            fgets(name, NAME_LENGTH, stdin);
+            printf("姓名：%s\n", name);
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/输入字符串/连续两次fgets.webp"
+        alt="连续两次 fgets"
+      />
+    </figure>
+    <p class="分区普通文本">
+      第 1 次输入，读取了<span class="代码">su yan</span>共 6 个字符，<span
+        class="代码"
+        >g↩︎</span
+      >留在了缓冲区。因此第二次<span class="行内代码">fgets</span
+      >首先读取缓冲区内容，得到的就是<span class="代码">g↩︎</span
+      >，因为缓冲区内本身就有换行符，导致第二次<span class="行内代码"
+        >fgets</span
+      >并没有等待用户输入；同时，<span class="行内代码">name</span>除去<span
+        class="行内代码"
+        >'\0'</span
+      >有 6 个字符的位置，第二次只读取了 2
+      个字符，其中一个还是换行符，有充足的空位，因此换行符得以保留，于是我们在<span
+        class="行内代码"
+        >g</span
+      >后面看到了一个空行。这段程序也可以用图示表示。
+    </p>
+    <figure class="截图容器">
+      <img
+        style="background-color: #222"
+        src="/Images/Blogs/C语言/输入字符串/连续两次fgets-原理分析.webp"
+        alt="连续两次fgets 原理分析"
+      />
+    </figure>
+    <p class="分区普通文本">
+      <span class="行内代码">fgets</span
+      >是可以读取空格的，并且在字符串有多余空位时会保留换行符。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">刷新缓冲区</h3>
+    <p class="分区普通文本">
+      两次<span class="行内代码">scanf</span>之间使用<span class="代码"
+        >fflush(stdin)</span
+      >即可，具体方法与<span class="行内专业名词">2-4</span>节相同，不再赘述。
+    </p>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">
+      输入字符串到<span class="代码">char *</span>
+    </h2>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="代码">char *</span>用法和规则
     </h3>
   </article>
 </div>
