@@ -122,16 +122,15 @@
         字符串变量
         <ul class="分区列表">
           <li class="分区列表项">
-            <span class="行内专业名词">以数组形式初始化：</span>变量就是数组，可<span
+            <span class="行内专业名词">以数组形式初始化：</span
+            >变量就是数组，可<span class="强调">当做</span>指针使用，但<span
               class="强调"
-              >当做</span
-            >指针使用，但<span class="强调">不是</span>指针类型，<span
-              class="强调"
-              >不可</span
-            >重新赋值。
+              >不是</span
+            >指针类型，<span class="强调">不可</span>重新赋值。
           </li>
           <li class="分区列表项">
-            <span class="行内专业名词">以指针形式初始化：</span>变量<span class="强调"
+            <span class="行内专业名词">以指针形式初始化：</span>变量<span
+              class="强调"
               >是</span
             >指针类型，<span class="强调">可以</span>重新赋值。
           </li>
@@ -408,9 +407,8 @@
       <code class="lang-c">
         char* name = "suyang";
 
-        // 错误，因为修改的根本就不是 's'，而是 name 的值
-        // name 是指针，不是数组，因此 name[0] 没有意义
-        // 修改之后会产生未知效果
+        // 错误，"suyang"分配在静态存储区，内部数据无法修改
+        // 强行修改会产生未知效果
         name[0] = 'H';
       </code>
     </pre>
@@ -421,8 +419,7 @@
       />
     </figure>
     <p class="分区普通文本">
-      此时<span class="行内代码">name</span
-      >已被改得不是指针了，因此运行程序之后什么结果也没有。
+      修改之后可能出现各种莫名其妙的结果，但都是不符合预期的。
     </p>
   </article>
 </div>

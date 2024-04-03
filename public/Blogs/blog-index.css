@@ -1192,6 +1192,10 @@ body {
   color: rgb(134, 162, 249);
 }
 
+.日期文本 {
+  font-family: "JetBrains Mono", "Noto Sans SC", sans-serif;
+}
+
 .原文链接 {
   display: inline-flex;
   align-items: center;

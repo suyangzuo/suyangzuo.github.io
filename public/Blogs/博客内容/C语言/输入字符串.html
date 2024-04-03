@@ -8,7 +8,7 @@
       </p>
       <p class="日期">
         <span class="日期前缀 前缀">日期：</span>
-        <span class="日期文本">待定</span>
+        <span class="日期文本">2024年4月3日</span>
       </p>
     </section>
     <section class="简介信息图像">
@@ -101,35 +101,17 @@
         >数组字符串和指针字符串</a
       >专题中，我们知道了C语言的字符串有两种形式，当需要向字符串输入数据时，我们应该用哪一种呢？
     </p>
-    <ul class="分区列表">
-      <li class="分区列表项">
-        只输入一次，后续无需修改：<span class="行内专业名词"
-          >指针字符串<span class="附加说明">推荐</span></span
-        >
-        / <span class="行内专业名词">数组字符串</span>
-      </li>
-      <li class="分区列表项">
-        输入多次，后续需反复修改：<span class="行内专业名词"
-          >数组字符串<span class="附加说明">推荐</span></span
-        >
-        / <span class="行内专业名词">指针字符串</span>
-      </li>
-    </ul>
+    <p class="分区普通文本">
+      我个人的理解是：输入字符串时，<span class="强调"
+        >强烈建议使用数组形式</span
+      >，而不是指针形式。理由请查阅本专题<span class="行内专业名词">第4章</span
+      >。
+    </p>
     <section class="提醒">
       <h3 class="提醒标题">提醒</h3>
       <p class="分区普通文本">
         使用<span class="行内专业名词">数组字符串</span
         >，至少要多留一个字符的位置给<span class="代码">'\0'</span>。
-      </p>
-      <p class="分区普通文本">
-        使用<span class="行内专业名词">指针字符串</span
-        >直接初始化，字符串内容分配在内存<span class="行内专业名词"
-          >静态存储区</span
-        >，因而无法修改内容。<br />使用<span class="行内专业名词"
-          >指针字符串</span
-        >接收输入函数的输入，字符串内容分配在内存<span class="行内专业名词"
-          >栈</span
-        >上，这时可以修改字符串内容。
       </p>
     </section>
 
@@ -507,21 +489,28 @@
       >即可，具体方法与<span class="行内专业名词">2-4</span>节相同，不再赘述。
     </p>
 
-    <h3 class="分区标题 分区3级标题">删除换行符</h3>
+    <h3 class="分区标题 分区3级标题">替换换行符</h3>
     <p class="分区普通文本">
       绝大多数情况下，我们都会为字符串准备足够的长度，因此<span class="行内代码"
         >fgets</span
-      >在绝大多数情况下都会将换行符保存在字符串中。这么做有何意义？在<span
-        class="专业名词"
-        >C Primer Plus 第6版 第11章 11.2.3</span
-      >中，作者有这样的描述：<span class="行内专业名词"
+      >在绝大多数情况下都会将换行符保存在字符串中。这么做有何意义？在<a
+        class="超链接"
+        target="_blank"
+        href="https://lshoshia.science.tsu.ge/C/Stephen Prata C Primer Plus  2013.pdf"
+        >C Primer Plus 第6版</a
+      ><span class="行内代码">第11章 11.2.3</span
+      >中，有这样一段描述：<br /><span class="行内专业名词"
         >The fact that
-        <span style="font-family: &quot;JetBrains Mono&quot;">fgets()</span>
-        stores the newline presents a problem and an opportunity. The problem is
-        that you might not want the newline as part of the string you store. The
-        opportunity is the presence or absence of a newline character in the
-        stored string can be used to tell whether the whole line was read. If it
-        wasn’t, then you can decide what to do with the rest of the line.
+        <span class="行内代码">fgets()</span>
+        stores the newline presents a
+        <span style="color: #ec60af">problem</span> and an
+        <span style="color: #ec60af">opportunity</span>. The
+        <span style="color: #ec60af">problem</span> is that you might not want
+        the newline as part of the string you store. The
+        <span style="color: #ec60af">opportunity</span> is the presence or
+        absence of a newline character in the stored string can be used to tell
+        whether the whole line was read. If it wasn’t, then you can decide what
+        to do with the rest of the line.
       </span>
     </p>
     <p class="分区普通文本">
@@ -531,15 +520,178 @@
       >，同样可以用来判断是否读取了一整行啊？
     </p>
     <p class="分区普通文本">
-      不过，有一点我很认同，作者认为保留换行符的坏处是：大多数情况下没人想要换行符。因此，我们需要想办法将换行符替换成<span
+      不过，对于保留换行符的坏处，我和作者的想法是一致的：大多数情况下没人想要换行符。因此，我们需要想办法将换行符替换成<span
         class="行内代码"
         >'\0'</span
       >。<span class="专业名词">C Primer Plus 第6版</span
       >的作者采用的是简单粗暴<span class="附加说明">但有效</span>的<span
         class="行内代码"
         >while</span
-      >循环迭代查找换行符。而我希望能用一个更为优雅的办法。
+      >循环迭代查找换行符。而我希望能用一些更为优雅的办法。
     </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        使用<span class="代码">strchr</span>函数
+        <pre>
+          <code class="lang-c">
+            char* strchr(const char* str, int ch) //函数定义
+          </code>
+        </pre>
+        <p class="分区普通文本">
+          定义解释：在字符串<span class="行内代码">str</span>内搜索字符<span
+            class="行内代码"
+            >ch</span
+          >，能找到就返回<span class="行内代码">ch</span
+          >的指针，找不到就返回<span class="行内代码">NULL</span>。<br /><span
+            class="强调"
+            >注意：</span
+          >字符<span class="行内代码">ch</span>会被提升为<span class="行内代码"
+            >int</span
+          >类型进行传递，但函数内部还是会将其作为<span class="行内代码"
+            >char</span
+          >处理。
+        </p>
+        <pre class="line-numbers">
+          <code class="lang-c">
+            #include &lt;stdio.h&gt;
+            #include &lt;windows.h&gt;
+            #include &lt;string.h&gt; //需要包含此头文件，才能调用strchr()函数
+            
+            #define NAME_LENGTH 10
+            
+            int main(void) {
+                SetConsoleOutputCP(CP_UTF8);
+            
+                char name[NAME_LENGTH];
+                printf("输入姓名：");
+                fgets(name, NAME_LENGTH, stdin);
+
+                //返回的是指向'\n'的指针
+                char* p_NewLineChar = strchr(name, '\n');
+
+                //不能保证一定会找到'\n'，因此需要判断此指针是否为NULL
+                if (p_NewLineChar)
+                    *p_NewLineChar = '\0';
+            
+                printf("姓名：%s\n", name);
+            }
+          </code>
+        </pre>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/C语言/输入字符串/strchr替换换行符.png"
+            alt="strchr 替换换行符"
+          />
+        </figure>
+        <p class="分区普通文本">
+          输出结果后面没有空行，说明<span class="行内代码">'\n'</span
+          >已被替换成<span class="行内代码">'\0'</span>。
+        </p>
+      </li>
+      <li class="分区列表项">
+        使用<span class="代码">strcspn</span>函数
+        <pre>
+          <code class="lang-c">
+            size_t strcspn(const char* str1, const char* str2) //函数定义
+          </code>
+        </pre>
+        <p class="分区普通文本">
+          定义解释：在<span class="行内代码">str1</span>内搜索<span
+            class="行内代码"
+            >str2</span
+          >包含的所有字符，计算每个能找到的字符之前的字符数量，取其中的最小值；如果没有找到任何结果，则返回<span
+            class="行内代码"
+            >str1</span
+          >的长度<span class="附加说明"
+            >不包含<span class="行内代码">'\0'</span></span
+          >。
+        </p>
+        <p class="分区普通文本">这听上去有些难以理解，让我们举个例子：</p>
+        <pre class="line-numbers">
+          <code class="lang-c">
+            #include &lt;stdio.h&gt;
+            #include &lt;windows.h&gt;
+            #include &lt;string.h&gt; //需要包含此头文件，才能调用strchr()函数
+
+            int main(void) {
+                SetConsoleOutputCP(CP_UTF8);
+            
+                char name1[] = "suyang";
+                char* name2 = "any";
+
+                //在name1内部查找name2包含的所有字符：
+                //在name1中查找'a' → 'a'前面有3个字符
+                //在name1中查找'n' → 'n'前面有4个字符
+                //在name1中查找'y' → 'y'前面有2个字符
+                //所有查找结果取最小值，得到 2
+                size_t count = strcspn(name1, name2);
+                printf("数量: %llu\n", count);
+            }
+          </code>
+        </pre>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/C语言/输入字符串/strcspn案例.png"
+            alt="strcspn 案例"
+          />
+        </figure>
+        <p class="分区普通文本">
+          <span class="行内代码">"any"</span>包含的所有字符中，首次出现在<span
+            class="行内代码"
+            >"suyang"</span
+          >中且前面的字符最少的就是<span class="行内代码">'y'</span
+          >，它的前面只有<span class="行内代码">'s'</span>和<span
+            class="行内代码"
+            >'u'</span
+          >两个字符，所以结果为 2。
+        </p>
+        <p class="分区普通文本">
+          我们可以只查找换行符<span class="行内代码">'\n'</span>，也就是将<span
+            class="行内代码"
+            >strcspn</span
+          >的第二个参数设置为<span class="行内代码">"\n"</span
+          ><span class="附加说明">必须是字符串形式</span
+          >。试想一下，假设换行符前面有 5 个字符，换行符就是第 6
+          个字符，索引为<span class="行内代码">[5]</span>，也就是说<span
+            class="行内代码"
+            >strcspn</span
+          >返回的结果恰好就是换行符的索引。
+        </p>
+        <pre class="line-numbers">
+          <code class="lang-c">
+            #include &lt;stdio.h&gt;
+            #include &lt;windows.h&gt;
+            #include &lt;string.h&gt; //需要包含此头文件，才能调用strcspn()函数
+
+            int main(void) {
+                SetConsoleOutputCP(CP_UTF8);
+
+                char name[NAME_LENGTH];
+                printf("输入姓名：");
+                fgets(name, NAME_LENGTH, stdin);
+
+                size_t count = strcspn(name, "\n");
+                if (count == strlen(name)) //此分支代表没有找到任何结果
+                    printf("姓名中没有匹配\"\\n\"的字符。\n");
+                else //此分支代表找到了结果，count是'\n'前面的字符数量，也是'\n'的索引
+                    name[count] = '\0';
+
+                printf("姓名：%s\n", name);
+            }
+          </code>
+        </pre>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/C语言/输入字符串/strcspn替换换行符.png"
+            alt="strcspn 替换换行符"
+          />
+        </figure>
+        <p class="分区普通文本">
+          输出结果后面没有空行，说明<span class="行内代码">'\n'</span
+          >已被替换成<span class="行内代码">'\0'</span>。
+        </p>
+      </li>
+    </ul>
   </article>
 
   <article class="正文分区">
@@ -547,8 +699,76 @@
       输入字符串到<span class="代码">char *</span>
     </h2>
 
-    <h3 class="分区标题 分区3级标题">
-      <span class="代码">char *</span>用法和规则
-    </h3>
+    <h3 class="分区标题 分区3级标题"><span class="代码">char *</span>的问题</h3>
+    <p class="分区普通文本">
+      <span class="代码">char*</span
+      >类型字符串有个特点，变量和字符串对象是分开的，分别占用不同的内存空间。所以，如果简单地用<span
+        class="行内代码"
+        >char*</span
+      >类型，无法预知需要占用多少内存空间：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        #include &lt;stdio.h&gt;
+        #include &lt;windows.h&gt;
+        int main(void) {
+            SetConsoleOutputCP(CP_UTF8);
+
+            char* name;
+            printf("输入姓名：");
+            scanf("%s", name); //没有指定输入长度，想输入多长都可以
+            printf("姓名：%s\n", name, name);
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/输入字符串/指针字符串-scanf.png"
+        alt="指针字符串 scanf"
+      />
+    </figure>
+    <p class="分区普通文本">
+      从结果看没啥问题，而且输入多长都可以，都会分配足够的内存空间，似乎很爽。但是，这种<span
+        class="强调"
+        >不受控制</span
+      >的行为，<span class="强调">不符合</span>C语言
+      <span class="强调">小心谨慎地对待内存</span
+      >的编程规范。试想一下，用户可以不受控制地输入任意数量的字符，假如输入<span
+        class="行内专业名词"
+        >10000</span
+      >个字符呢？假如输入一整本三国演义会如何？你确定有这么大的连续内存空间能容纳整本小说？因此，我们应该<span
+        class="强调"
+        >控制用户的输入</span
+      >，不能让用户随意发挥，这对程序是很危险的事。
+    </p>
+
+    <h3 class="分区标题 分区3级标题"><span class="代码">char *</span>怎么用</h3>
+    <p class="分区普通文本">
+      简而言之就是：为<span class="行内代码">char*</span
+      >指针所指的字符串对象，事先分配好内存空间。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        #include &lt;stdio.h&gt;
+        #include &lt;windows.h&gt;
+        #include &lt;stdlib.h&gt; //包含此头文件，方可调用 malloc() 函数
+
+        #define NAME_LENGTH 10
+        
+        int main(void) {
+            SetConsoleOutputCP(CP_UTF8);
+            
+            //事先分配好内存空间，占用空间为：单个字符占用空间 × 字符数量
+            //再将 malloc 返回的泛类型指针 void* 转化为特定类型指针 char*
+            char* name = (char*)malloc(sizeof(char) * NAME_LENGTH);
+            printf("输入姓名：");
+            fgets(name, NAME_LENGTH, stdin);
+            printf("姓名：%s\n", name);
+        }
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      问题在于：这么写的话，还不如用数组来得方便。因此，更加推荐使用数组接收字符串输入。
+    </p>
   </article>
 </div>
