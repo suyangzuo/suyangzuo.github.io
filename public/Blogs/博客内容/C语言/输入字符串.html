@@ -513,14 +513,17 @@
         to do with the rest of the line.
       </span>
     </p>
+    <p class="分区普通文本">作者认为：保留换行符有好有坏。</p>
     <p class="分区普通文本">
-      作者认为：保留换行符有好有坏。好处是可以通过换行符来判断是否已经读取了一整行。这一点我没有想明白，因为换行符后面紧跟着的是<span
+      <span class="专业名词">优点</span
+      >：可以通过换行符来判断是否已经读取了一整行。什么意思呢？<span
         class="行内代码"
-        >'\0'</span
-      >，同样可以用来判断是否读取了一整行啊？
+        >fgets</span
+      >可以用来处理多行数据，每次读取一行。怎么判断一行已经到头了？当然是通过换行符。
     </p>
     <p class="分区普通文本">
-      不过，对于保留换行符的坏处，我和作者的想法是一致的：大多数情况下没人想要换行符。因此，我们需要想办法将换行符替换成<span
+      <span class="专业名词">缺点</span
+      >：只有一行时，你可能不想要换行符。因此需要想办法将换行符替换成<span
         class="行内代码"
         >'\0'</span
       >。<span class="专业名词">C Primer Plus 第6版</span
@@ -663,6 +666,8 @@
             #include &lt;windows.h&gt;
             #include &lt;string.h&gt; //需要包含此头文件，才能调用strcspn()函数
 
+            #define NAME_LENGTH 10
+
             int main(void) {
                 SetConsoleOutputCP(CP_UTF8);
 
@@ -671,9 +676,7 @@
                 fgets(name, NAME_LENGTH, stdin);
 
                 size_t count = strcspn(name, "\n");
-                if (count == strlen(name)) //此分支代表没有找到任何结果
-                    printf("姓名中没有匹配\"\\n\"的字符。\n");
-                else //此分支代表找到了结果，count是'\n'前面的字符数量，也是'\n'的索引
+                if (count < strlen(name)) //如果count等于有效字符数，说明找不到'\n'
                     name[count] = '\0';
 
                 printf("姓名：%s\n", name);
@@ -716,7 +719,8 @@
         int main(void) {
             SetConsoleOutputCP(CP_UTF8);
 
-            char* name;
+            char* name; //仅声明指针变量，没有为字符串对象分配内存
+
             printf("输入姓名：");
             scanf("%s", name); //没有指定输入长度，想输入多长都可以
             printf("姓名：%s\n", name, name);
@@ -765,6 +769,7 @@
             //事先分配好内存空间，占用空间为：单个字符占用空间 × 字符数量
             //再将 malloc 返回的泛类型指针 void* 转化为特定类型指针 char*
             char* name = (char*)malloc(sizeof(char) * NAME_LENGTH);
+
             printf("输入姓名：");
             fgets(name, NAME_LENGTH, stdin);
             printf("姓名：%s\n", name);
