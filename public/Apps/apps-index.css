@@ -1,3 +1,7 @@
+body {
+  background-color: #151819;
+}
+
 .app-banner {
   position: relative;
   height: 800px;
@@ -6,12 +10,12 @@
   align-items: center;
   justify-content: center;
   gap: 100px;
-  background: no-repeat center/cover url("/Images/Background-Images/bg-03.jpg");
+  border-bottom: solid 1px #fff3;
 }
 
 .顶栏图片 {
-  height: 600px;
-  width: 600px;
+  height: 750px;
+  width: 750px;
 }
 
 .顶栏图片 > img {
@@ -22,13 +26,12 @@
 
 .顶栏文字 {
   position: relative;
-  width: 700px;
+  width: 1000px;
   height: 500px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  gap: 15px;
+  align-items: flex-start;
 }
 
 .顶栏标题 {
@@ -45,7 +48,7 @@
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
   width: 100%;
-  font-size: 5rem;
+  font-size: 4rem;
   font-weight: bold;
   -webkit-text-fill-color: transparent;
   color: transparent;
@@ -53,47 +56,38 @@
   background-clip: text;
 }
 
-.顶栏简介 {
-  width: 100%;
-  font-size: 1.25rem;
-  text-align: justify;
-  text-justify: inter-cluster;
-  color: #fffa;
-}
-
-.顶栏列表 {
-  width: 100%;
-  padding: 40px 0;
-}
-
-.顶栏列表 > li {
-  list-style-type: disc;
-  padding: 5px 0 5px 15px;
-}
-
-.顶栏列表 > li::marker {
-  content: "\f0eb";
-  color: thistle;
+.app-center {
+  padding: 100px 10% 300px;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .app {
   position: relative;
-  width: 100%;
-  height: 600px;
+  width: 400px;
+  height: 450px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 100px;
-}
-
-.图像编辑器 {
-  background-color: rgb(43, 51, 73);
+  background-color: #111;
+  box-shadow: 2px 2px 2px 0 #111;
+  border-radius: 10px;
+  padding: 20px;
+  outline: solid 1px #fff3;
+  isolation: isolate;
 }
 
 .图片区 {
   flex-shrink: 0;
-  height: 350px;
-  width: 350px;
+  height: 90%;
+  width: 90%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  opacity: 0.2;
+  z-index: 0;
 }
 
 .图片区 > img {
@@ -103,32 +97,26 @@
   transition: 250ms;
 }
 
-.图片区:hover > img {
-  filter: invert(100%);
-}
-
 .文字区 {
   position: relative;
-  padding: 10px;
-  height: 350px;
-  max-width: 750px;
+  padding: 0 20px 20px;
+  height: 75%;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: normal;
+  align-items: center;
 }
 
-.app-链接 {
+.app-名称 {
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 3rem;
   width: fit-content;
   padding: 10px 0;
-  border-radius: 7.5px;
-}
-
-.app-链接:hover {
-  color: orange;
+  border-radius: 8px;
+  color: #9ab;
+  font-weight: bold;
 }
 
 .app-描述 {
@@ -137,17 +125,52 @@
 }
 
 .app-描述 > li {
-  list-style-type: "\f023";
+  list-style-type: "\2705";
   color: rgb(195, 195, 195);
-  padding: 2.5px 0 2.5px 15px;
+  padding: 2px 0 2px 5px;
 }
 
 .app-描述 > li::marker {
   color: yellowgreen;
 }
 
+.app-链接 {
+  position: relative;
+  border: none;
+  background-color: #345;
+  color: white;
+  font-size: 18px;
+  padding: 10px 25px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-链接:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  background-color: #456;
+}
+
+.app-链接 .fa-solid {
+  transition: 250ms;
+}
+
+.app-链接:hover .fa-solid {
+  scale: 120%;
+}
+
+.app-链接:active {
+  background-color: #567;
+}
+
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
 @media screen and (max-width: 1400px) {
+  .app-center {
+    padding: 100px 2.5% 300px;
+  }
+
   .app-banner::before {
     position: absolute;
     z-index: 1;
@@ -171,6 +194,11 @@
 
   .顶栏文字 {
     z-index: 2;
+    align-items: center;
+  }
+
+  .顶栏标题 {
+    text-align: center;
   }
 }
 
@@ -200,6 +228,13 @@
   }
 }
 
+@media screen and (max-width: 1000px) {
+  .app-center {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
 @media screen and (max-width: 700px) {
   .app-banner {
     height: 650px;
@@ -214,14 +249,6 @@
     width: 90%;
     height: 95%;
   }
-
-  .顶栏列表 > li {
-    list-style-position: inside;
-  }
-
-  .顶栏列表 > li::marker {
-    content: "\26e4\00a0";
-  }
 }
 
 @media screen and (max-width: 550px) {
@@ -229,4 +256,5 @@
     font-size: 2.5rem;
   }
 }
+
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */

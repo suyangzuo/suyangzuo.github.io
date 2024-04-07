@@ -593,6 +593,13 @@ function 特殊元素样式补充() {
     if (前一节点?.textContent.trim().length === 0) {
       超链接.style.marginLeft = "0";
     }
+
+    if (
+      前一节点.nodeType === Node.TEXT_NODE &&
+      远距标点组.some((标点) => 标点 === 前一节点.textContent.at(-1))
+    ) {
+      超链接.style.marginLeft = "0";
+    }
   });
 
   const 行内专业名词组 = document.querySelectorAll(".行内专业名词");
