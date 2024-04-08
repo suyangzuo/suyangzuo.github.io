@@ -273,30 +273,30 @@
       次。
     </p>
 
-    <h3 class="分区标题 分区3级标题">指定随机数范围</h3>
+    <h3 class="分区标题 分区3级标题">控制随机数范围</h3>
     <p class="分区普通文本">
       <span class="行内代码">rand()</span>的生成范围是：<span class="代码"
         ><span style="color: gold">[</span>0
         <span style="color: #bbb">~</span> 32767<span style="color: gold"
           >]</span
         ></span
-      >，但是绝大多数情况下，我们都希望指定范围，因此需要对生成结果进行二次运算，将数值控制在指定范围内。
+      >，但是绝大多数情况下，我们都需要控制随机数的范围，因此需要对生成结果进行二次运算，将数值控制在指定范围内。
     </p>
     <p class="分区普通文本">
       常用的方式是：<span class="行内专业名词">取余数</span
       ><span class="附加说明">也叫<span class="行内专业名词">求模</span></span
-      >。比如：<span class="行内专业名词">除以 10 的余数</span>，只可能是<span
+      >。比如：<span class="行内专业名词">除以 10 的余数</span>是<span
         class="代码"
         ><span style="color: gold">[</span>0
         <span style="color: #bbb">~</span> 9<span style="color: gold"
           >]</span
         ></span
-      >，这就可以控制范围了。假设我们需要将范围控制在<span class="代码"
+      >，这就可以控制范围了。假设我们想将范围控制在<span class="代码"
         ><span style="color: gold">[</span>3
         <span style="color: #bbb">~</span> 25<span style="color: gold"
           >]</span
         ></span
-      >，那就先将整数<span class="行内专业名词">除以 23</span>，得到<span
+      >，可先将整数<span class="行内专业名词">除以 23 取余数</span>，得到<span
         class="代码"
         ><span style="color: gold">[</span>0
         <span style="color: #bbb">~</span> 22<span style="color: gold"
@@ -317,7 +317,7 @@
             srand(time(NULL));
 
             for (int i = 1; i <= 10; i++) {
-                int result = rand() % (RAND_CEIL - RAND_FLOOR) + RAND_FLOOR;
+                int result = rand() % (RAND_CEIL - RAND_FLOOR + 1) + RAND_FLOOR;
                 printf("%d, ", result);
             }
         }
@@ -330,12 +330,12 @@
       />
     </figure>
     <p class="分区普通文本">
-      使用公式：<span class="代码"
+      使用公式<span class="代码"
         >rand<span style="color: gold">()</span>
         <span style="color: lightskyblue">%</span>
         <span style="color: gold">(</span>最大值
-        <span style="color: lightskyblue">-</span> 最小值<span
-          style="color: gold"
+        <span style="color: lightskyblue">-</span> 最小值
+        <span style="color: lightskyblue">+</span> 1<span style="color: gold"
           >)</span
         >
         <span style="color: lightskyblue">+</span> 最小值</span
