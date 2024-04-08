@@ -77,8 +77,8 @@ passwordTypeSelectContainer.onmouseleave = () => {
 function resetPasswordType() {
   let type = currentPasswordType.textContent;
   if (type === "PIN") {
-    slider.setAttribute("min", 3);
-    slider.setAttribute("max", 12);
+    slider.setAttribute("min", "3");
+    slider.setAttribute("max", "12");
     slider.value = 6;
     lengthNumber.textContent = 6;
     passwordCharType.style.display = "none";
@@ -86,8 +86,8 @@ function resetPasswordType() {
     return;
   }
   if (type === "易记密码") {
-    slider.setAttribute("min", 3);
-    slider.setAttribute("max", 15);
+    slider.setAttribute("min", "3");
+    slider.setAttribute("max", "15");
     slider.value = 5;
     lengthNumber.textContent = 5;
     passwordCharType.style.display = "none";
@@ -95,11 +95,11 @@ function resetPasswordType() {
     return;
   }
   if (type === "随机密码") {
-    slider.setAttribute("min", 8);
-    slider.setAttribute("max", 100);
-    slider.setAttribute("value", 12);
-    slider.value = 12;
-    lengthNumber.textContent = 12;
+    slider.setAttribute("min", "8");
+    slider.setAttribute("max", "100");
+    slider.setAttribute("value", "16");
+    slider.value = 16;
+    lengthNumber.textContent = "16";
     passwordCharType.style.display = "flex";
     密码复制提示.style.opacity = "0";
     密码复制提示.classList.remove("密码复制提示动画");

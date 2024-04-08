@@ -13,6 +13,17 @@ body {
   border-bottom: solid 1px #fff3;
 }
 
+.app-banner::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 175px;
+  background-color: slateblue;
+  left: 0;
+  top: 24%;
+  z-index: -1;
+}
+
 .顶栏图片 {
   height: 750px;
   width: 750px;
@@ -27,10 +38,10 @@ body {
 .顶栏文字 {
   position: relative;
   width: 1000px;
-  height: 500px;
+  height: 75%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
 }
 
@@ -56,6 +67,11 @@ body {
   background-clip: text;
 }
 
+.创意 {
+  font-size: 9rem;
+  color: goldenrod
+}
+
 .app-center {
   padding: 100px 10% 300px;
   display: flex;
@@ -64,8 +80,8 @@ body {
 
 .app {
   position: relative;
-  width: 400px;
-  height: 450px;
+  width: 275px;
+  height: 350px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -73,7 +89,7 @@ body {
   background-color: #111;
   box-shadow: 2px 2px 2px 0 #111;
   border-radius: 10px;
-  padding: 20px;
+  padding: 20px 10px;
   outline: solid 1px #fff3;
   isolation: isolate;
 }
@@ -86,8 +102,9 @@ body {
   top: 50%;
   left: 50%;
   translate: -50% -50%;
-  opacity: 0.2;
+  opacity: 0.15;
   z-index: 0;
+  overflow: hidden;
 }
 
 .图片区 > img {
@@ -99,7 +116,7 @@ body {
 
 .文字区 {
   position: relative;
-  padding: 0 20px 20px;
+  padding: 0 0 20px;
   height: 75%;
   width: 100%;
   display: flex;
@@ -111,7 +128,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 3rem;
+  font-size: 2rem;
   width: fit-content;
   padding: 10px 0;
   border-radius: 8px;
@@ -120,18 +137,20 @@ body {
 }
 
 .app-描述 {
-  padding: 10px;
-  font-size: 1.125em;
+  padding: 20px;
+  font-size: 1em;
 }
 
 .app-描述 > li {
-  list-style-type: "\2705";
+  /*list-style-position: inside;*/
+  list-style-type: "\2713";
   color: rgb(195, 195, 195);
-  padding: 2px 0 2px 5px;
+  padding: 2px 0 2px 10px;
 }
 
 .app-描述 > li::marker {
-  color: yellowgreen;
+  color: mediumseagreen;
+  font-weight: bold;
 }
 
 .app-链接 {
@@ -199,32 +218,6 @@ body {
 
   .顶栏标题 {
     text-align: center;
-  }
-}
-
-@media screen and (max-width: 1200px) {
-  .app::before {
-    position: absolute;
-    z-index: 1;
-    width: 100%;
-    height: 100%;
-    content: "";
-    top: 0;
-    left: 0;
-    background-color: #0007;
-    backdrop-filter: blur(10px);
-  }
-
-  .app .图片区 {
-    position: absolute;
-    width: 90%;
-    height: 90%;
-  }
-
-  .app .文字区 {
-    z-index: 2;
-    height: 95%;
-    width: 95%;
   }
 }
 

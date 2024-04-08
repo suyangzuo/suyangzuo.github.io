@@ -829,8 +829,8 @@ function 更新图像序号() {
     ) {
       const 行内截图序号 = document.createElement("span");
       行内截图序号.className = "行内截图序号";
-      行内截图序号.textContent = `·图${imageIndex + 1}·`;
-      containerSibling?.prepend("如", 行内截图序号, "所示：");
+      行内截图序号.textContent = `· 图${imageIndex + 1} ·`;
+      containerSibling?.prepend("如 ", 行内截图序号, " 所示：");
     }
   });
 }

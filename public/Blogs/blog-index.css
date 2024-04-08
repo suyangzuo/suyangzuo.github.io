@@ -25,7 +25,7 @@
   "Noto Sans SC", monospace !important;
   --分区列表项-字体颜色: #84a7a0;
   --已激活章节标题-字体颜色: rgb(129, 206, 129) !important;
-  --正文字体: "Noto Sans SC", sans-serif, "Noto Sans Mono", "Segoe UI Emoji", monospace;
+  --正文字体: "IBM Plex Sans", "Noto Sans SC", sans-serif, "Noto Sans Mono", "Segoe UI Emoji", monospace;
 }
 
 html {
@@ -966,6 +966,7 @@ body {
 }
 
 .专题-内容 {
+  font-family: "IBM Plex Sans", "Noto Sans SC", sans-serif, "Noto Sans Mono", monospace;
   height: 30px;
   display: flex;
   align-items: center;
@@ -1099,7 +1100,8 @@ body {
 }
 
 .简介标题 {
-  font-family: "Titillium Web", "Noto Sans SC", sans-serif;
+  /*font-family: "Titillium Web", "Noto Sans SC", sans-serif;*/
+  font-family: "IBM Plex Sans", "Noto Sans SC", sans-serif;
   font-size: 3rem;
   letter-spacing: 0.25rem;
   display: flex;
@@ -1664,7 +1666,7 @@ body {
   font-size: 0.9em;
   background-color: rgb(53, 89, 157);
   color: white;
-  padding: 1px 5px;
+  padding: 2px 5px;
   border-radius: 3px;
   margin: 0 0.25em;
 }
