@@ -8,7 +8,7 @@
       </p>
       <p class="日期">
         <span class="日期前缀 前缀">日期：</span>
-        <span class="日期文本">待定</span>
+        <span class="日期文本">2024年4月9日</span>
       </p>
     </section>
     <section class="简介信息图像">
@@ -345,5 +345,25 @@
     <h3 class="分区标题 分区3级标题">
       超越<span class="行内代码">RAND_MAX</span>
     </h3>
+    <p class="分区普通文本">
+      如何生成<span class="行内专业名词">大于</span
+      ><span class="行内代码">RAND_MAX</span>的随机数呢？答案也很简单：多个<span
+        class="行内代码"
+        >rand()</span
+      >拼凑即可。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/随机数/超越-RAND_MAX.png"
+        alt="超越 RAND_MAX"
+      />
+    </figure>
+    <p class="分区普通文本">
+      这里只是抛砖引玉，还有很多算法可以实现这个目的。但不论什么算法都遵循一个规则：<span
+        class="强调"
+        >只用一个</span
+      ><span class="行内代码">RAND_MAX</span>是<span class="强调">不行</span
+      >的。
+    </p>
   </article>
 </div>

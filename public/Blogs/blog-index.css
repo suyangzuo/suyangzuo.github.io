@@ -1196,7 +1196,7 @@ body {
 }
 
 .日期文本 {
-  font-family: "JetBrains Mono", "Noto Sans SC", sans-serif;
+  font-family: "IBM Plex Sans", "Noto Sans SC", sans-serif;
 }
 
 .原文链接 {
@@ -1590,7 +1590,7 @@ body {
 
 .行内专业名词 {
   color: var(--行内专业名词颜色);
-  margin: 0 0.35ch;
+  margin: 0 0.25ch;
 }
 
 .代码 .行内专业名词 {

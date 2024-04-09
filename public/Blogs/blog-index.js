@@ -697,6 +697,13 @@ function 特殊元素样式补充() {
       行内代码.style.marginLeft = "0";
     } else {
       const 前一节点 = 行内代码.previousSibling;
+      if (前一节点.nodeType === Node.ELEMENT_NODE) {
+        const 前一元素 = 行内代码.previousElementSibling;
+        if (前一元素.className === "行内专业名词") {
+          行内代码.style.marginLeft = "0";
+          return;
+        }
+      }
       const 修剪文本 = 前一节点.textContent.trim();
       if (
         修剪文本 === "" ||
