@@ -1,3 +1,7 @@
+const 页脚信息区 = document.getElementById("页脚信息区");
+const 页脚Logo区 = document.getElementById("页脚Logo区");
+页脚Logo区.style.height = window.getComputedStyle(页脚信息区).height;
+
 const root = document.querySelector(":root");
 const rootStyle = window.getComputedStyle(root);
 const 侧边栏颜色_已选中 = rootStyle.getPropertyValue("--侧边栏颜色-已选中");
@@ -595,8 +599,8 @@ function 特殊元素样式补充() {
     }
 
     if (
-      前一节点.nodeType === Node.TEXT_NODE &&
-      远距标点组.some((标点) => 标点 === 前一节点.textContent.at(-1))
+      前一节点?.nodeType === Node.TEXT_NODE &&
+      远距标点组.some((标点) => 标点 === 前一节点?.textContent.at(-1))
     ) {
       超链接.style.marginLeft = "0";
     }

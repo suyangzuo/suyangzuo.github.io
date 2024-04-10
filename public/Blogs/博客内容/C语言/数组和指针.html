@@ -314,7 +314,7 @@
     </figure>
     <p class="分区普通文本">
       因为是<span class="行内专业名词">64位</span>的程序<span class="附加说明"
-        >8位 / 字节</span
+        >8位 <span style="color: #bbb">/</span> 字节</span
       >，因此指针占用 8 字节。
     </p>
   </article>
@@ -328,10 +328,13 @@
 
     <h3 class="分区标题 分区3级标题">什么是类型退化？</h3>
     <p class="分区普通文本">
-      类型退化，指<span class="行内专业名词">更广泛的类型</span>退化为<span
+      类型退化，指<span class="行内专业名词">潜在的类型转换</span>导致<span
         class="行内专业名词"
-        >更具体的类型</span
-      >。比如：当一个函数的参数中包含数组时，这个数组会退化为指针。
+        >失去原始类型的特性</span
+      >。比如：当一个函数的参数中包含数组时，这个数组会退化为指针，这会导致<span
+        class="行内专业名词"
+        >失去数组的长度</span
+      >。
     </p>
     <pre class="line-numbers">
       <code class="lang-c">

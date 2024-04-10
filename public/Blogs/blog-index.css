@@ -988,6 +988,7 @@ body {
 
 .专题-内容 .专题内名词 {
   color: #5e7ccb;
+  font-weight: 500;
 }
 
 .专题.当前专题 .专题内名词 {
@@ -1978,6 +1979,10 @@ div.code-toolbar > .toolbar {
   #公共页脚 {
     flex-direction: column;
     gap: 50px;
+  }
+
+  #页脚Logo区 {
+    height: 250px !important;
   }
 
   #页脚版权提示区 {

@@ -110,7 +110,12 @@
             在C语言中，即使参数是数组，实际上传递的还是指针，从而导致无法识别数组的长度，这种现象称为<span
               class="行内专业名词"
               >数组退化</span
-            >。解决方法是：将数组长度作为另一个参数传递。
+            >。解决方法是：将数组长度作为另一个参数传递，详情可参阅<a
+              class="超链接"
+              target="_blank"
+              href="/Blogs/blog-index.html?tech=C语言&article=数组和指针"
+              >数组和指针</a
+            >第 2 章。
           </p>
         </section>
       </li>
@@ -166,11 +171,13 @@
         单引号字符
         <pre class="line-numbers">
           <code class="lang-c">
-            //预留一个字符的位置给'\0'，编译器会自动在 name[6] 补上'\0'
-            char name[7] = {'s', 'u', 'y', 'a', 'n', 'g'};
-
-            //当然也可以自己在最后手写'\0'
-            char name[7] = {'s', 'u', 'y', 'a', 'n', 'g', '\0'};
+            //最后一个字符必须是'\0'
+            //既是字符数组，也是字符串
+            char name[7] = {'s', 'u', 'y', 'a', 'n', 'g', '\0'}; //正确的字符串写法
+            
+            //只是字符数组，不是字符串
+            char name[6] = {'s', 'u', 'y', 'a', 'n', 'g'}; //错误的字符串写法
+            char name[] = {'s', 'u', 'y', 'a', 'n', 'g'}; //错误的字符串写法
           </code>
         </pre>
         <section class="提醒">
@@ -181,7 +188,7 @@
               // []内不写数字，如果强行将其当做字符串对待，
               // 编译器会在'g'后继续读取字符，直到在内存中读到'\0'
               // 而'g'后面是什么无法预知，因此会导致乱码和错误
-              char name[] = {'s', 'u', 'y', 'a', 'n', 'g'};
+              char name[] = {'s', 'u', 'y', 'a', 'n', 'g'}; //不是字符串
             </code>
           </pre>
           <figure class="截图容器">
@@ -191,16 +198,13 @@
             />
           </figure>
           <p class="分区普通文本">
-            第 8 行既没有手写<span class="代码">'\0'</span>，也没有为<span
-              class="代码"
-              >'\0'</span
-            >留下空位<span class="附加说明">这一点尤为致命</span>，因此<span
+            第 8 行的<span class="代码">char[]</span
+            >方括号内没有显式指定长度，编译器会按照元素数量计算长度，长度为 6
+            。因为最后一个字符不是<span class="代码">'\0'</span>，所以<span
               class="行内代码"
               >name</span
-            >根本就<span class="强调">不是字符串</span>，只是一个<span
-              class="行内专业名词"
-              >字符数组</span
-            >。
+            ><span class="强调" style="margin-left: 0">不是字符串</span
+            >，只是一个<span class="行内专业名词">字符数组</span>。
           </p>
         </section>
       </li>
@@ -229,7 +233,7 @@
           <h3 class="提醒标题">提醒</h3>
           <p class="分区普通文本">
             <span class="代码">"suyang"</span>等价于<span class="代码"
-              >{ 's', 'u', 'y', 'a', 'n', 'g', '\n' }</span
+              >{ 's', 'u', 'y', 'a', 'n', 'g', '\0' }</span
             >。双引号的写法既方便，又安全，因此除非特殊情况，初始化字符串建议使用双引号写法。
           </p>
         </section>
@@ -387,7 +391,7 @@
       <img
         src="/Images/Blogs/C语言/数组字符串和指针字符串/修改指针字符串变量动画.webp"
         alt="修改指针字符串变量动画"
-        style="background-color: #ffffff0a"
+        style="background-color: #151515"
       />
     </figure>
     <p class="分区普通文本">
