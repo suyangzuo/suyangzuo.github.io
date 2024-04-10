@@ -674,6 +674,16 @@ function 特殊元素样式补充() {
       代码.style.marginLeft = "0";
     }
 
+    const 前一元素 = 代码.previousElementSibling;
+    if (
+      前一元素 !== null &&
+      前一元素.tagName === "BR" &&
+      前一节点 !== null &&
+      前一节点.nodeType === Node.TEXT_NODE
+    ) {
+      代码.style.marginLeft = "0.25em";
+    }
+
     const 父元素 = 代码.parentElement;
     if (父元素 === null) return;
     if (
@@ -712,7 +722,8 @@ function 特殊元素样式补充() {
       if (
         修剪文本 === "" ||
         远距标点组.some((标点) => 标点 === 修剪文本) ||
-        远距标点组.some((标点) => 标点 === 修剪文本.at(-1))
+        远距标点组.some((标点) => 标点 === 修剪文本.at(-1)) ||
+        前一节点.textContent.at(-1) === " "
       ) {
         行内代码.style.marginLeft = "0";
       } else {
