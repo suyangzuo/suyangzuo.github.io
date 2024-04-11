@@ -124,50 +124,74 @@
         <ul class="分区列表">
           <li class="分区列表项">
             <span class="专业名词">可以<span class="强调">当作</span>指针</span
-            >：<span class="行内代码">array</span>==<span class="行内代码"
-              ><span style="color: skyblue">&</span>array<span
+            >：<br /><span class="行内代码"
+              >array <span style="color: var(--分区列表项-字体颜色)">==</span>
+              <span style="color: skyblue">&</span>array<span
                 style="color: palevioletred"
                 >[</span
               ><span style="color: #bbb">0</span
               ><span style="color: palevioletred">]</span></span
-            >
-            <span style="color: lightgreen">&#10004;</span
+            ><span style="color: lightgreen; margin-left: 10px">&#10003;</span
             ><span style="margin-left: 20px"
               >数组的名称可以<span class="强调">当作</span
               >第一个元素的指针</span
-            ><br /><span style="display: inline-block; width: 15.85%"></span
-            ><span class="行内代码"
-              ><span style="color: skyblue">*</span>array</span
-            >==<span class="行内代码"
-              >array<span style="color: palevioletred">[</span
+            ><br /><span class="行内代码"
+              ><span style="color: skyblue">&</span>array
+              <span style="color: skyblue">==</span> array</span
+            ><span style="color: lightgreen; margin-left: 10px">&#10003;</span
+            ><span style="margin-left: 20px"
+              >数组名称的地址等于数组第一个元素的地址</span
+            ><br /><span class="行内代码"
+              ><span style="color: skyblue">*</span>array
+              <span style="color: var(--分区列表项-字体颜色)">==</span>
+              array<span style="color: palevioletred">[</span
               ><span style="color: #bbb">0</span
               ><span style="color: palevioletred">]</span></span
-            >
-            <span style="color: lightgreen">&#10004;</span
+            ><span style="color: lightgreen; margin-left: 10px">&#10003;</span
             ><span style="margin-left: 20px"
               ><span class="行内专业名词" style="margin-left: 0">解开</span
               >第一个元素的<span class="行内专业名词">地址</span>，<span
                 class="行内专业名词"
                 >得到</span
               >第一个元素的<span class="行内专业名词">值</span></span
-            ><br /><span style="display: inline-block; width: 15.85%"></span
-            ><span class="行内代码"
-              >int<span style="color: skyblue">* </span>ptr</span
-            >=<span class="行内代码">array</span>
-            <span style="color: lightgreen"
-              >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#10004;</span
+            ><br /><span class="行内代码"
+              >int<span style="color: skyblue">* </span>ptr
+              <span style="color: var(--分区列表项-字体颜色)">=</span>
+              array</span
+            ><span style="color: lightgreen; margin-left: 10px">&#10003;</span
             ><span style="margin-left: 20px"
               >可以将第一个元素的地址传递给其它指针变量</span
+            ><br /><span class="行内代码"
+              ><span style="color: skyblue">sizeof</span
+              ><span style="color: palevioletred">(</span>ptr_array<span
+                style="color: palevioletred"
+                >)</span
+              >
+              <span style="color: var(--分区列表项-字体颜色)">==</span>
+              <span style="color: skyblue">sizeof</span
+              ><span style="color: palevioletred">(</span>int<span
+                style="color: palevioletred"
+                >)</span
+              >
+              <span style="color: skyblue">*</span>
+              <span style="color: #bbb">5</span></span
+            ><span style="color: lightgreen; margin-left: 10px">&#10003;</span
+            ><span style="margin-left: 20px"
+              >数组名称是<span class="行内专业名词">数组类型</span
+              >变量，代表数组本身</span
             >
           </li>
           <li class="分区列表项">
             <span class="专业名词"
               ><span class="强调" style="padding-left: 2px">不是</span
               >指针类型</span
-            >：<span class="行内代码"
+            >：<br /><span class="行内代码"
               >array<span style="color: skyblue">++</span></span
-            >
-            &#10060;<span style="margin-left: 20px">数组名称的值不可修改</span>
+            ><i
+              class="fa-solid fa-xmark"
+              style="color: #f64040; margin-left: 10px"
+            ></i
+            ><span style="margin-left: 20px">数组名称的值不可修改</span>
           </li>
         </ul>
       </li>
@@ -193,22 +217,20 @@
           >名称</span
         >就代表数组<span class="行内专业名词">本身</span>，因此<span
           class="行内专业名词"
-          >数组名称占用的内存空间</span
-        >就是<span class="行内专业名词">整个数组占用的内存空间</span>。
+          >数组名称</span
+        >和<span class="行内专业名词">数组</span>是一体的。
       </p>
     </section>
     <figure class="截图容器">
       <img
-        src="/Images/Blogs/C语言/数组和指针/指针方式迭代数组.png"
-        alt="指针方式迭代数组"
+        src="/Images/Blogs/C语言/数组和指针/数组类型的各种地址.png"
+        alt="数组类型的各种地址"
       />
     </figure>
     <p class="分区普通文本">
-      以<span class="强调">指针的方式</span>迭代数组，但是<span class="强调"
-        >没有修改数组名称<span class="附加说明"
-          ><span class="行内代码">array</span></span
-        ></span
-      >。
+      三个地址完全一致，证明了<span class="强调"
+        >数组名称就是数组本身，同时也是数组第一个元素的地址。</span
+      >
     </p>
 
     <h3 class="分区标题 分区3级标题">
@@ -235,73 +257,74 @@
             <span class="专业名词"
               ><span class="强调" style="padding-left: 2px">就是</span
               >指针类型</span
-            >：<span class="行内代码">array</span>==<span class="行内代码"
-              ><span style="color: skyblue">&</span>array<span
+            >：<br /><span class="行内代码"
+              >array <span style="color: var(--分区列表项-字体颜色)">==</span>
+              <span style="color: skyblue">&</span>array<span
                 style="color: palevioletred"
                 >[</span
               ><span style="color: #bbb">0</span
               ><span style="color: palevioletred">]</span></span
-            >
-            <span style="color: lightgreen">&#10004;</span
-            ><span style="margin-left: 20px"
-              >数组的名称可以<span class="强调">当作</span
-              >第一个元素的指针</span
-            ><br /><span style="display: inline-block; width: 15.85%"></span
-            ><span class="行内代码"
-              ><span style="color: skyblue">*</span>array</span
-            >==<span class="行内代码"
-              >array<span style="color: palevioletred">[</span
+            ><span style="color: lightgreen; margin-left: 10px">&#10003;</span
+            ><span style="margin-left: 20px">指针保存的是第一个元素的地址</span
+            ><br /><span class="行内代码"
+              ><span style="color: skyblue">*</span>array
+              <span style="color: var(--分区列表项-字体颜色)">==</span>
+              array<span style="color: palevioletred">[</span
               ><span style="color: #bbb">0</span
               ><span style="color: palevioletred">]</span></span
-            >
-            <span style="color: lightgreen">&#10004;</span
+            ><span style="color: lightgreen; margin-left: 10px">&#10003;</span
             ><span style="margin-left: 20px"
               ><span class="行内专业名词" style="margin-left: 0">解开</span
               >第一个元素的<span class="行内专业名词">地址</span>，<span
                 class="行内专业名词"
                 >得到</span
               >第一个元素的<span class="行内专业名词">值</span></span
-            ><br /><span style="display: inline-block; width: 15.85%"></span
-            ><span class="行内代码"
-              >int<span style="color: skyblue">* </span>ptr</span
-            >=<span class="行内代码">array</span>
-            <span style="color: lightgreen"
-              >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#10004;</span
+            ><br /><span class="行内代码"
+              >int<span style="color: skyblue">* </span>ptr
+              <span style="color: var(--分区列表项-字体颜色)">=</span>
+              array</span
+            ><span style="color: lightgreen; margin-left: 10px">&#10003;</span
             ><span style="margin-left: 20px"
               >可以将第一个元素的地址传递给其它指针变量</span
-            ><br /><span style="display: inline-block; width: 15.85%"></span
-            ><span class="行内代码"
+            ><br /><span class="行内代码"
               >array<span style="color: skyblue">++</span></span
-            >
-            <span style="color: lightgreen"
-              >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#10004;</span
+            ><span style="color: lightgreen; margin-left: 10px">&#10003;</span
             ><span style="margin-left: 20px">指针的值可以修改</span>
           </li>
           <li class="分区列表项">
             <span class="专业名词"
               ><span class="强调" style="padding-left: 2px">不是</span
               >数组类型</span
-            >：<span class="行内代码"
+            >：<br /><span class="行内代码"
+              ><span style="color: skyblue">&</span>array
+              <span style="color: skyblue">==</span> array</span
+            ><i
+              class="fa-solid fa-xmark"
+              style="color: #f64040; margin-left: 10px"
+            ></i
+            ><span style="margin-left: 20px"
+              >指针自身和指针所指数组，位于内存的不同区域</span
+            ><br /><span class="行内代码"
               ><span style="color: skyblue">sizeof</span
               ><span style="color: palevioletred">(</span>ptr_array<span
                 style="color: palevioletred"
                 >)</span
-              ></span
-            >==<span class="行内代码"
-              ><span style="color: skyblue">sizeof</span
+              >
+              <span style="color: var(--分区列表项-字体颜色)">==</span>
+              <span style="color: skyblue">sizeof</span
               ><span style="color: palevioletred">(</span>int<span
                 style="color: palevioletred"
                 >)</span
               >
               <span style="color: skyblue">*</span>
-              <span style="color: white">5</span></span
-            >
-            &#10060;<br /><span style="display: inline-block; width: 13%"></span
+              <span style="color: #bbb">5</span></span
+            ><i
+              class="fa-solid fa-xmark"
+              style="color: #f64040; margin-left: 10px"
+            ></i
             ><span style="margin-left: 20px"
-              >指针和数组分别占用不同的内存空间，指针只是<span class="强调"
-                >指向</span
-              >数组，<span class="强调">不是</span>数组本身</span
-            >。
+              >指针和数组是独立的，占用不同的内存空间</span
+            >
           </li>
         </ul>
       </li>
@@ -316,6 +339,32 @@
       因为是<span class="行内专业名词">64位</span>的程序<span class="附加说明"
         >8位 <span style="color: #bbb">/</span> 字节</span
       >，因此指针占用 8 字节。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">总结</h3>
+      <p class="分区普通文本">
+        指针变量<span class="强调">可以</span>用<span class="附加说明">读</span
+        >，<span class="强调">也可以</span>改<span class="附加说明">写</span
+        >。<br />指针变量<span class="行内专业名词">指向</span>数组<span
+          class="附加说明"
+          >保存着数组的内存地址</span
+        >，但<span class="强调">不是</span>数组本身，因此<span
+          class="行内专业名词"
+          >指针变量</span
+        >和<span class="行内专业名词">数组</span>是分离的。
+      </p>
+    </section>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/数组和指针/指针型数组的各种地址.png"
+        alt="指针型数组的各种地址"
+      />
+    </figure>
+    <p class="分区普通文本">
+      指针变量<span class="行内专业名词">自己的地址</span>和<span
+        class="行内专业名词"
+        >保存的地址<span class="附加说明">数组的地址</span></span
+      >不同，证明了<span class="强调">指针变量和数组是分离的</span>。
     </p>
   </article>
 
