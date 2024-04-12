@@ -938,7 +938,7 @@ body {
 }
 
 .侧边栏:has(#侧边栏布局:not(:checked)) .专题 {
-  padding: 10px 8px;
+  padding: 5px 8px;
 }
 
 .专题:hover {
