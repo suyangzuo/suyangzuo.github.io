@@ -502,7 +502,10 @@
     </p>
 
     <h3 class="分区标题 分区3级标题">
-      <span class="行内专业名词">VSCode</span>运行和调试
+      <span class="行内专业名词">VSCode</span>运行和调试<span
+        class="行内专业名词"
+        >按钮</span
+      >
     </h3>
     <p class="分区普通文本">
       如果既不想手动输入 GCC 调试命令，也不想用 Code Runner，我们还可以用 VSCode
@@ -534,10 +537,13 @@
     <p class="分区普通文本">
       每个电脑上弹出的调试配置可能不一样，选择带有<span class="行内专业名词"
         >gcc.exe</span
-      >的选项。点击之后，VSCode 会在<span class="行内专业名词">.vscode</span
+      >的选项。点击之后，<span class="行内专业名词">VSCode</span>会在<span
+        class="行内专业名词"
+        >.vscode</span
       >目录内生成一个叫<span class="行内专业名词">task.json</span
-      >的文件，里面是运行和调试代码的各种设置，<strong>VSCode</strong>
-      会自动用这些选项运行代码。不出意外的话，会发生意外，因为默认选项无法识别<span
+      >的文件，里面是运行和调试代码的各种设置，<span class="行内专业名词"
+        >VSCode</span
+      >会自动用这些选项运行代码。不出意外的话，会发生意外，因为默认选项无法识别<span
         class="行内专业名词"
         >mysql.h</span
       >和<span class="行内专业名词">libmysql.dll</span>的路径。
@@ -580,6 +586,201 @@
       />
     </figure>
     <p class="分区普通文本">这次可以顺利编译、运行了。</p>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">VSCode</span>运行和调试<span
+        class="行内专业名词"
+        >选项卡</span
+      >
+    </h3>
+    <p class="分区普通文本">
+      我们还可以通过<span class="行内专业名词">运行和调试</span
+      >选项卡，添加<span class="行内专业名词">launch.json</span
+      >配置文件，来详细定制调试的各种选项。首先点击<span class="行内专业名词"
+        >VSCode</span
+      >左侧边栏的<span class="行内专业名词">运行和调试</span>选项卡：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/运行和调试选项卡.png"
+        alt="运行和调试选项卡"
+      />
+    </figure>
+    <p class="分区普通文本">
+      如果直接点击<span class="行内专业名词">运行和调试</span>，那就还是用<span
+        class="行内专业名词"
+        >task.json</span
+      >里的设置进行默认的运行调试。如果要自定义运行和调试的详细选项，就要点击<span
+        class="行内专业名词"
+        >创建 launch.json 文件</span
+      >：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/选择调试器.png"
+        alt="选择调试器"
+      />
+    </figure>
+    <p class="分区普通文本">
+      此时会弹出<span class="行内专业名词">选择调试器</span
+      >对话框。为了配合<span class="行内专业名词">GCC 编译器</span
+      >，我们当然是选择配套的<span class="行内专业名词">GDB 调试器</span
+      >，因此点击<span class="行内专业名词">C++ (GDB/LLDB)</span>。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        需要先安装<span class="行内专业名词">GDB 调试器</span
+        >，这里才会出现对应的选项。安装过程请参阅<a
+          class="超链接"
+          target="_blank"
+          href="/Blogs/blog-index.html?tech=C语言&article=安装 GCC 编译器"
+          >安装 <span class="行内专业名词">GCC</span> 编译器</a
+        >的<span class="行内专业名词">3-4</span>。
+      </p>
+    </section>
+    <p class="分区普通文本">
+      <span class="行内专业名词">VSCode</span>会自动在<span class="行内专业名词"
+        >.vscode</span
+      >目录生成名为<span>launch.json</span>的文件：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/launch.json初始内容.png"
+        alt="launch.json 无配置"
+      />
+    </figure>
+    <p class="分区普通文本">
+      此时<span class="行内专业名词">launch.json</span>的配置是空的，点击<span
+        class="行内专业名词"
+        >添加配置</span
+      >：
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/C语言/操作 MySQL/添加配置.png" alt="添加配置" />
+    </figure>
+    <p class="分区普通文本">
+      有很多配置可选。因为要用<span class="专业名词">GDB 调试器</span
+      >，所以我们选择<span class="专业名词">C/C++: (gdb)启动</span>。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/gdb启动初始内容.png"
+        alt="gdb启动-初始内容"
+      />
+    </figure>
+    <p class="分区普通文本">
+      <span class="专业名词">C/C++: (gdb)启动</span>的配置已经自动添加到<span
+        class="行内专业名词"
+        >launch.json</span
+      >中。不过，部分选项要进行修改：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="行内代码">program</span
+        >：要改成程序可执行文件的完整路径。可以用<span class="行内代码"
+          >${workspaceFolder}</span
+        >表示<span class="行内专业名词">项目文件夹</span>
+      </li>
+      <li class="分区列表项" style="margin-top: 0">
+        <span class="行内代码">miDebuggerPath</span>：要改成<span
+          class="行内专业名词"
+          >gdb.exe</span
+        >的完整路径
+        <p class="分区普通文本">
+          如果你也是用<span class="行内专业名词">MSYS2</span>安装的<span
+            class="行内专业名词"
+            >GDB</span
+          >，那么它的路径默认为：
+        </p>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/C语言/操作 MySQL/gdb.exe-路径.png"
+            alt="gdb.exe 路径"
+          />
+        </figure>
+        <p class="分区普通文本">
+          将<span class="行内专业名词">gdb.exe</span>的完整路径，复制到<span
+            class="行内专业名词"
+            >launch.json</span
+          >的<span class="行内代码">miDebuggerPath</span>选项里。
+        </p>
+      </li>
+    </ul>
+    <p class="分区普通文本">两个路径改好之后，可以参考下图：</p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/设置好程序可执行文件和调试器路径.png"
+        alt="设置好程序可执行文件和调试器路径"
+      />
+    </figure>
+    <p class="分区普通文本">
+      此时可以点击<span class="行内专业名词">运行和调试</span>选项卡里的<span
+        class="专业名词"
+        >&#9655;</span
+      >开始调试程序。也可以用快捷键：按<span class="专业名词">F5</span
+      >调试程序，按<span class="专业名词">Ctrl + F5</span>运行程序。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/无task调试.webp"
+        alt="无preLaunchTask调试"
+      />
+    </figure>
+    <p class="分区普通文本">
+      <span class="强调">注意</span>：<span class="行内专业名词"
+        >launch.json</span
+      >只管运行和调试，不管编译。假设你修改了源代码，接着直接按<span
+        class="专业名词"
+        >F5</span
+      >，运行的还是旧程序，修改后的代码会不起作用：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/未编译就开始调试.png"
+        alt="未编译就开始调试"
+      />
+    </figure>
+    <p class="分区普通文本">
+      源代码第 30 行已经修改，但是运行的结果还是修改前的，因为<span class="强调"
+        >没有编译生成</span
+      ><span class="行内专业名词">新的可执行文件</span>。因此，我们要在<span
+        class="行内专业名词"
+        >launch.json</span
+      >里添加一个配置选项：<span class="行内代码">preLaunchTask</span
+      >，其实就是在<span class="行内专业名词">launch.json</span>之前先运行<span
+        class="行内专业名词"
+        >task.json</span
+      >进行编译。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/设置preLaunchTask.png"
+        alt="设置 preLaunchTask"
+      />
+    </figure>
+    <p class="分区普通文本">
+      <span class="强调">注意</span>：<span class="行内专业名词"
+        >launch.json</span
+      >的<span class="行内代码">preLaunchTask</span>的值，必须和<span
+        class="行内专业名词"
+        >task.json</span
+      >的<span class="行内代码">label</span>的值<span class="强调"
+        >完全一致</span
+      >。此时再按<span class="专业名词">F5</span>，就会先用<span
+        class="行内专业名词"
+        >task.json</span
+      >的配置进行编译，生成新的可执行文件，再用<span class="行内专业名词"
+        >launch.json</span
+      >的配置运行和调试。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/设置preLaunchTask后再调试.png"
+        alt="设置 preLaunchTask"
+      />
+    </figure>
+    <p class="分区普通文本">运行结果与源代码一致。</p>
   </article>
 
   <article class="正文分区">
@@ -624,19 +825,17 @@
       </li>
     </ul>
     <pre class="line-numbers">
-        <code class="lang-c">
-          #include &lt;stdio.h&gt;
-          #include &lt;windows.h&gt;
-          #include "mysql.h"
-
-          int main() {
-              SetConsoleOutputCP(CP_UTF8);
-
-              MYSQL mysql; //声明 MySQL对象
-              mysql_init(&mysql); //初始化 MySQL对象
-          }
-        </code>
-      </pre>
+      <code class="lang-c">
+        #include &lt;stdio.h&gt;
+        #include &lt;windows.h&gt;
+        #include "mysql.h"
+        int main() {
+            SetConsoleOutputCP(CP_UTF8);
+            MYSQL mysql; //声明 MySQL对象
+            mysql_init(&mysql); //初始化 MySQL对象
+        }
+      </code>
+    </pre>
     <figure class="截图容器">
       <img
         src="/Images/Blogs/C语言/操作 MySQL/MYSQL对象初始化.webp"
@@ -666,5 +865,138 @@
                                   unsigned long client_flag)
       </code>
     </pre>
+    <p class="分区普通文本">
+      <span class="行内代码">mysql_real_connect()</span>函数说明：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="专业名词">参数</span>：
+        <ul class="分区列表">
+          <li class="分区列表项">
+            <span class="代码">host</span>：主机名，<span class="专业名词"
+              >字符串</span
+            >
+          </li>
+          <li class="分区列表项">
+            <span class="代码">user</span>：用户名，<span class="专业名词"
+              >字符串</span
+            >
+          </li>
+          <li class="分区列表项">
+            <span class="代码">passwd</span>：密码，<span class="专业名词"
+              >字符串</span
+            >
+          </li>
+          <li class="分区列表项">
+            <span class="代码">db</span>：数据库名，<span class="专业名词"
+              >字符串</span
+            >
+          </li>
+          <li class="分区列表项" style="margin-top: 0">
+            <span class="代码">port</span>：端口号，<span class="专业名词"
+              >无符号整数</span
+            >
+            <section class="提醒">
+              <h3 class="提醒标题">提醒</h3>
+              <p class="分区普通文本">
+                端口号可在<span class="行内专业名词">MySQL</span
+                >环境下用以下命令查询：
+              </p>
+              <pre class="line-numbers">
+                <code class="lang-sql">
+                  show global variables like "port";
+                </code>
+              </pre>
+              <figure class="截图容器">
+                <img
+                  src="/Images/Blogs/C语言/操作 MySQL/显示MySQL端口.png"
+                  alt="显示MySQL端口"
+                />
+              </figure>
+              <p class="分区普通文本">
+                端口号为<span class="行内代码">3306</span>。
+              </p>
+            </section>
+          </li>
+          <li class="分区列表项" style="margin-top: 0">
+            <span class="代码">unix_socket</span>：<span class="行内专业名词"
+              >Windows</span
+            >系统上没啥用，<span class="专业名词">字符串</span>
+          </li>
+          <li class="分区列表项">
+            <span class="代码">client_flag</span>：客户端标识，<span
+              class="专业名词"
+              >无符号整数</span
+            >
+          </li>
+        </ul>
+      </li>
+      <li class="分区列表项">
+        <span class="专业名词">返回值</span>：<span class="行内代码">MYSQL</span
+        >对象的指针；如果连接失败，会返回<span class="行内专业名词">NULL</span>
+      </li>
+    </ul>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        #include &lt;stdio.h&gt;
+        #include &lt;windows.h&gt;
+        #include "mysql.h"
+
+        #define HOST "localhost"       //主机名
+        #define USER "suyang"          //用户名
+        #define PASSWORD "ntzzxxdl318" //密码
+        #define DATABASE "test_db"     //数据库名
+        #define PORT 3306              //端口号
+        #define UNIX_SOCKET NULL       //平时不用可指定为NULL
+        #define CLIENT_FLAG 0          //通常为0
+
+        int main() {
+            SetConsoleOutputCP(CP_UTF8);
+
+            MYSQL mysql;
+            mysql_init(&mysql);
+
+            if (!(&mysql)) {
+                printf("没有足够的内存，初始化失败！");
+                return 1;
+            }
+
+            //连接失败返回NULL指针
+            if (!mysql_real_connect(&mysql, HOST, USER, PASSWORD, DATABASE, PORT,
+                                    UNIX_SOCKET, CLIENT_FLAG)) {
+                printf("数据库连接失败！");
+                return 1;
+            }
+
+            printf("数据库连接成功！");
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/数据库连接成功.webp"
+        alt="连接 MySQL 数据库"
+      />
+    </figure>
+    <p class="分区普通文本">
+      <span class="行内代码">mysql_real_connect()</span>需要提供 7 个参数。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">小知识</h3>
+      <p class="分区普通文本">
+        <span class="行内代码">mysql_real_connect()</span
+        >的名称不禁让人有此一问：<span class="强调">真</span
+        >连接？莫非还有假链接？其实是因为很久以前<span class="行内专业名词"
+          >MySQL</span
+        >用的是<a
+          class="超链接"
+          target="_blank"
+          href="https://dev.mysql.com/doc/c-api/5.7/en/mysql-connect.html"
+          ><span class="行内代码">mysql_connect()</span></a
+        >，如今此函数已被废弃。为了区分名称，新的函数叫<span class="行内代码"
+          >mysql_real_connect()</span
+        >。
+      </p>
+    </section>
   </article>
 </div>

@@ -343,6 +343,13 @@
         >MinGW-w64</span
       >工具集
     </h3>
+    <p class="分区普通文本">
+      这套工具集里最重要的就是<span class="专业名词"
+        ><span class="行内专业名词">GCC</span>编译器</span
+      >和<span class="专业名词"
+        ><span class="行内专业名词">GDB</span>调试器</span
+      >。为了能顺利安装，首先需要找到相关的安装命令。
+    </p>
     <ol class="分区列表 有序列表">
       <li class="分区列表项">
         在<a class="超链接" href="https://www.msys2.org/" target="_blank"
@@ -375,9 +382,14 @@
           >这个包的安装命令。<span class="强调">注意</span>：包名称里的<span
             class="行内代码"
             >gcc</span
-          >必须<span class="强调">小写</span>。打开<span class="行内专业名词"
-            >Windows 终端</span
-          >，复制或者手动输入刚刚搜索到的安装命令：<br /><span class="代码"
+          >必须<span class="强调">小写</span>。
+        </p>
+      </li>
+      <li class="分区列表项">
+        使用终端运行包安装命令
+        <p class="分区普通文本">
+          打开<span class="行内专业名词">Windows 终端</span
+          >，复制或者手动输入刚刚搜索到的安装命令：<span class="代码"
             >pacman -S mingw-w64-x86_64-gcc</span
           >，就可以开始安装了。
         </p>
@@ -394,6 +406,20 @@
             class="行内代码"
             >y</span
           >，按回车键，即可开始安装。
+        </p>
+      </li>
+      <li class="分区列表项">
+        <span class="专业名词"><span class="行内专业名词">GDB</span>调试器</span
+        >的安装命令也可以用类似的搜索方式找到：
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/C语言/安装 GCC 编译器/GDB调试器安装命令.png"
+            alt="GDB调试器安装命令"
+          />
+        </figure>
+        <p class="分区普通文本">
+          在终端运行<span class="代码">pacman -S mingw-w64-x86_64-gdb</span
+          >进行安装。
         </p>
       </li>
     </ol>

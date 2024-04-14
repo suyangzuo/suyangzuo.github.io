@@ -381,10 +381,14 @@
     <h3 class="分区标题 分区3级标题">
       <span class="行内专业名词">GCC</span>常用编译选项
     </h3>
-    <table class="表格">
+    <table class="表格" id="GCC编译参数表">
       <style>
         tbody > tr > td:nth-child(3) > .行内代码 {
           margin: 0;
+        }
+
+        #GCC编译参数表 td {
+          padding: 15px;
         }
       </style>
       <caption class="表格标题">
@@ -445,6 +449,30 @@
             >只是使编译器打印有关潜在问题的警告。是否处理这些警告由程序员决定。
           </td>
           <td><span class="行内代码">gcc -Wall myfile.c</span></td>
+        </tr>
+        <tr>
+          <th><span class="行内代码">-I</span></th>
+          <td>
+            指定搜索<span class="行内专业名词">.h</span>头文件的<span
+              class="行内专业名词"
+              >include</span
+            >路径。
+          </td>
+          <td><span class="行内代码">gcc -I "d:/include"</span></td>
+        </tr>
+        <tr>
+          <th><span class="行内代码">-L</span></th>
+          <td>
+            指定搜索<span class="行内专业名词">.dll</span>动态链接库的路径。
+          </td>
+          <td><span class="行内代码">gcc -L "d:/dlls"</span></td>
+        </tr>
+        <tr>
+          <th><span class="行内代码">-l</span></th>
+          <td>
+            指定链接的<span class="行内专业名词">.dll</span>动态链接库文件名。
+          </td>
+          <td><span class="行内代码">gcc -L "d:/dlls" -l libmysql</span></td>
         </tr>
       </tbody>
     </table>
