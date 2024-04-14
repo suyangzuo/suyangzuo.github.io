@@ -837,6 +837,41 @@ mutationObserver.observe(专题内容区, {
 
 function 专题改变时运行() {
   更新图像序号();
+  双击图像生成图像对话框();
+}
+
+function 双击图像生成图像对话框() {
+  const 截图容器组 = document.getElementsByClassName("截图容器");
+  for (const 截图容器 of 截图容器组) {
+    const 图像 = 截图容器.querySelector("img");
+    const 图像源 = 图像.src;
+    const 图像替换文本 = 图像.alt;
+    图像.title = "单击以放大";
+
+    图像.addEventListener("click", () => {
+      const 对话框 = document.createElement("dialog");
+      对话框.className = "图像对话框";
+      对话框.addEventListener("click", () => {
+        对话框.remove();
+      });
+
+      const 关闭按钮 = document.createElement("button");
+      关闭按钮.className = "图像对话框关闭按钮";
+      关闭按钮.textContent = "✖";
+      关闭按钮.addEventListener("click", () => {
+        对话框.remove();
+      });
+
+      const image = document.createElement("img");
+      image.src = 图像源;
+      image.alt = 图像替换文本;
+      image.className = "原始图";
+      对话框.append(关闭按钮, image);
+
+      截图容器.appendChild(对话框);
+      对话框.show();
+    });
+  }
 }
 
 function 更新图像序号() {

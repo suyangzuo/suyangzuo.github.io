@@ -1556,6 +1556,10 @@ body {
   object-fit: contain;
 }
 
+.截图容器 > img:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
 .截图容器:has(.video-js) {
   width: 100%;
 }
@@ -1784,6 +1788,52 @@ br + :is(.代码, .专业名词, .附加说明) {
 }
 
 /*-------------- ↑ 专题正文区 --------------*/
+
+/*---------- ↓ 图像对话框样式 ----------*/
+.图像对话框 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #0005;
+  backdrop-filter: blur(25px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.图像对话框 .图像对话框关闭按钮 {
+  position: absolute;
+  top: 30px;
+  right: 40px;
+  width: 45px;
+  height: 45px;
+  border-radius: 5px;
+  border: solid 2px #aaa;
+  outline: none;
+  background-color: transparent;
+  color: #aaa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.25rem;
+}
+
+.图像对话框 .图像对话框关闭按钮:hover {
+  background-color: #333;
+}
+
+.图像对话框 .原始图 {
+  width: fit-content;
+  height: fit-content;
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+}
+
+/*---------- ↑ 图像对话框样式 ----------*/
 
 /*-------------- ↓ 单独表格样式 --------------*/
 .表格 {

@@ -113,5 +113,558 @@
         需要<span class="代码">libmysql.dll</span>动态链接库
       </li>
     </ul>
+    <figure class="截图容器">
+      <img
+        style="background-color: #1a1a1a"
+        src="/Images/Blogs/C语言/操作 MySQL/mysql.h-libmysql.dll-作用.webp"
+        alt="mysql.h 和 libmysql.dll 的作用"
+      />
+    </figure>
+
+    <h3 class="分区标题 分区3级标题">
+      包含<span class="行内专业名词">mysql.h</span>
+    </h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词">MySQL</span>为我们提供了大量的官方<span
+        class="行内专业名词"
+        >API</span
+      >，以便在 C语言 中访问<span class="行内专业名词">MySQL 数据库</span
+      >。这些<span class="行内专业名词">API</span
+      >的定义都写在各种头文件中。其中最常用的头文件就是<span
+        class="行内专业名词"
+        >mysql.h</span
+      >。
+    </p>
+    <figure class="截图容器">
+      <img
+        style="background-color: #1a1a1a"
+        src="/Images/Blogs/C语言/操作 MySQL/include-mysql.h-错误.png"
+        alt="#include <mysql.h> 错误"
+      />
+    </figure>
+    <p class="分区普通文本">
+      直接在代码中包含<span class="行内专业名词">mysql.h</span>会报错，因为<span
+        class="行内专业名词"
+        >mysql.h</span
+      >不是标准库，编辑器无法直接识别它的路径，因此，我们要手动将其路径添加到<span
+        class="行内专业名词"
+        >C/C++ 属性配置文件</span
+      >中。
+    </p>
+    <p class="分区普通文本">
+      <span class="行内专业名词">C/C++ 属性配置文件</span>的文件名是<span
+        class="专业名词"
+        >c_cpp_properties.json</span
+      >。如果没有这个文件，可用<span class="专业名词">Ctrl + Shift + P</span
+      >快捷键弹出命令，输入<span class="行内代码">c/c++</span
+      >即可过滤出相关命令：
+    </p>
+    <figure class="截图容器">
+      <img
+        style="background-color: #1a1a1a"
+        src="/Images/Blogs/C语言/操作 MySQL/命令对话框显示C-Cpp编辑配置.png"
+        alt="命令对话框 显示C-Cpp编辑配置"
+      />
+    </figure>
+    <p class="分区普通文本">
+      <span class="行内专业名词">编辑配置</span>有<span class="专业名词"
+        >UI</span
+      >和<span class="专业名词">JSON</span>两种选择：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="专业名词">UI</span>：图形化用户界面进行配置
+      </li>
+      <li class="分区列表项">
+        <span class="专业名词">JSON</span>：纯配置进行配置
+      </li>
+    </ul>
+    <figure class="截图容器">
+      <img
+        style="background-color: #1a1a1a"
+        src="/Images/Blogs/C语言/操作 MySQL/C-Cpp-配置-UI-JSON.png"
+        alt="C/C++ 配置：UI 和 JSON"
+      />
+    </figure>
+    <p class="分区普通文本">
+      左边是<span class="专业名词">UI</span>，右边是<span class="专业名词"
+        >JSON</span
+      >。仔细观察会发现二者的作用其实是一样的。在<span class="行内专业名词"
+        >UI</span
+      >中设置选项，就会自动在<span class="行内专业名词">JSON</span
+      >中生成对应的配置代码。喜欢用哪种方式完全取决于自身喜好。不过，<span
+        class="行内专业名词"
+        >UI</span
+      >有时不会提供全部的选项，部分选项只能用<span class="行内专业名词"
+        >JSON</span
+      >编写。
+    </p>
+    <p class="分区普通文本">
+      我们需要把<span class="行内专业名词">mysql.h</span>的路径，添加到<span
+        class="行内专业名词"
+        >c_cpp_properties.json</span
+      >的<span class="行内专业名词"
+        >包含路径<span class="附加说明"
+          ><span class="行内代码">includePath</span></span
+        ></span
+      >中。<span class="行内专业名词">mysql.h</span>的路径默认为：<span
+        class="专业名词"
+        >MySQL安装路径/MySQL Server 8.0/include</span
+      >：
+    </p>
+    <figure class="截图容器">
+      <img
+        style="background-color: #1a1a1a"
+        src="/Images/Blogs/C语言/操作 MySQL/mysql.h-路径.png"
+        alt="mysql 路径"
+      />
+    </figure>
+    <p class="分区普通文本">
+      在我的电脑上，<span class="行内专业名词">mysql.h</span>的路径为：<span
+        class="专业名词"
+        >C:\Program Files\MySQL\MySQL Server 8.0\include</span
+      >，将此路径复制并粘贴到<span class="行内专业名词">UI</span>的<span
+        class="行内专业名词"
+        >包含路径</span
+      >：
+    </p>
+    <figure class="截图容器">
+      <img
+        style="background-color: #1a1a1a"
+        src="/Images/Blogs/C语言/操作 MySQL/包含mysql.h路径-UI.png"
+        alt="包含mysql.h路径 UI"
+      />
+    </figure>
+    <p class="分区普通文本">
+      按照<span class="行内专业名词">UI</span
+      >的提示：每行一个包含路径，进行复制粘贴。粘贴完成后，你会发现在<span
+        class="行内专业名词"
+        >c_cpp_properties.json</span
+      >文件内自动添加了第 7 行：
+    </p>
+    <figure class="截图容器">
+      <img
+        style="background-color: #1a1a1a"
+        src="/Images/Blogs/C语言/操作 MySQL/包含mysql.h路径-JSON.png"
+        alt="包含mysql.h路径 JSON"
+      />
+    </figure>
+    <p class="分区普通文本">
+      第 7 行代码是自动添加的，再次说明在<span class="行内专业名词">UI</span
+      >内添加配置，等同于在<span class="行内专业名词"
+        >c_cpp_properties.json</span
+      >文件里直接写代码。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        <span class="行内专业名词">UI</span>的语法和<span class="行内专业名词"
+          >c_cpp_properties.json</span
+        >文件略有区别。<span class="行内专业名词">UI</span>可以直接粘贴<span
+          class="行内专业名词"
+          >windows 风格</span
+        >的路径，包含<span class="代码">\</span>。但是在<span
+          class="行内专业名词"
+          >JSON</span
+        >文件的代码里，必须写成<span class="代码">\\</span>或者<span
+          class="代码"
+          >/</span
+        >，这一点要注意。
+      </p>
+    </section>
+    <p class="分区普通文本">
+      添加路径之后，回到源代码文件，你会发现<span class="代码"
+        >#include "mysql.h"</span
+      >的错误已经消失。
+    </p>
+    <figure class="截图容器">
+      <img
+        style="background-color: #1a1a1a"
+        src="/Images/Blogs/C语言/操作 MySQL/include-mysql.h-正确.png"
+        alt="#include mysql.h 正确"
+      />
+    </figure>
+    <p class="分区普通文本">
+      现在可以正常地包含<span class="行内专业名词">mysql.h</span>头文件了。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      复制<span class="行内专业名词">libmysql.dll</span>
+    </h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词">libmysql.dll</span>的默认路径是：<span
+        class="专业名词"
+        >MySQL安装路径/MySQL Server 8.0/lib</span
+      >：
+    </p>
+    <figure class="截图容器">
+      <img
+        style="background-color: #1a1a1a"
+        src="/Images/Blogs/C语言/操作 MySQL/libmysql.dll-路径.png"
+        alt="libmysql.dll 路径"
+      />
+    </figure>
+    <p class="分区普通文本">
+      在我的电脑上，<span class="行内专业名词">libmysql.dll</span
+      >的路径为：<span class="专业名词"
+        >C:\Program Files\MySQL\MySQL Server 8.0\lib</span
+      >。
+    </p>
+    <p class="分区普通文本">
+      <span class="行内专业名词">libmysql.dll</span
+      >是运行时动态链接库。每次运行程序，<span class="行内专业名词"
+        >Windows</span
+      >系统都要解决一个问题：<span class="行内专业名词"
+        >动态链接库文件在哪儿</span
+      >？<span class="行内专业名词">Windows</span
+      ><a
+        class="超链接"
+        target="_blank"
+        style="margin-left: 0"
+        href="https://learn.microsoft.com/zh-cn/windows/win32/dlls/dynamic-link-library-search-order"
+        >用以下顺序搜索动态链接库</a
+      >：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项" style="list-style-type: decimal">
+        &nbsp;加载应用程序的文件夹
+      </li>
+      <li class="分区列表项" style="list-style-type: decimal">
+        &nbsp;系统文件夹，例如：<span class="专业名词"
+          >C:\Windows\System32</span
+        >
+      </li>
+      <li class="分区列表项" style="list-style-type: decimal">
+        &nbsp;16位系统文件夹
+      </li>
+      <li class="分区列表项" style="list-style-type: decimal">
+        &nbsp;Windows文件夹，例如：<span class="专业名词">C:\Windows</span>
+      </li>
+      <li class="分区列表项" style="list-style-type: decimal">
+        &nbsp;当前文件夹
+      </li>
+      <li class="分区列表项" style="list-style-type: decimal">
+        &nbsp;环境变量中列出的<span class="专业名词">PATH</span>目录
+      </li>
+    </ul>
+    <p class="分区普通文本">
+      将<span class="行内专业名词">libmysql.dll</span>放在以上 6
+      个位置中的任意一个都可以。我选择将其放在<span class="行内专业名词"
+        >项目文件夹根目录</span
+      >中，因为生成的可执行文件也会位于此路径内。
+    </p>
+    <figure class="截图容器">
+      <img
+        style="background-color: #1a1a1a"
+        src="/Images/Blogs/C语言/操作 MySQL/libmysql.dll-存放路径.png"
+        alt="libmysql.dll 存放路径"
+      />
+    </figure>
+    <p class="分区普通文本">
+      我将<span class="行内专业名词">libmysql.dll</span>存放在<span
+        class="专业名词"
+        >项目文件夹的根目录</span
+      >下。
+    </p>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">编译<span class="次要">和</span>运行</h2>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">GCC</span>手动编译运行
+    </h3>
+    <p class="分区普通文本">
+      这次的编译和以往不同，除了源文件，还要包含非标准库的头文件以及动态链接库，其语法如下：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-bash">
+        gcc 源文件 -o 输出文件名 -I "头文件包含路径" -L "动态链接库路径" -l 动态链接库文件名
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/gcc-头文件目录-库目录.webp"
+        alt="GCC 编译：包含头文件目录、库目录、库文件名"
+      />
+    </figure>
+    <p class="分区普通文本">经过编译之后，成功生成了可执行文件。</p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        <span class="行内专业名词">2-1</span>、<span class="行内专业名词"
+          >2-2</span
+        >、<span class="行内专业名词">2-3</span>的本质都是添加<span
+          class="专业名词"
+          >GCC 编译选项</span
+        >。因此，<span class="行内专业名词">2-1</span
+        >的手动写法虽然麻烦，却是必须掌握的根基，是最重要的一环，切勿跳过！
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">
+      使用<span class="专业名词">Code Runner</span>自动化编译运行
+    </h3>
+    <p class="分区普通文本">
+      <span class="专业名词">Code Runner</span
+      >的优点就是可以用快捷键代替手动输入编译指令。但是，<span class="专业名词"
+        >Code Runner</span
+      >的默认设置只能完成最基本的编译，没有<span class="行内代码">-I</span
+      >、<span class="行内代码">-L</span>等参数。我们可以手动在<span
+        class="专业名词"
+        >Code Runner</span
+      >的设置里添加参数，但这会覆盖默认设置。如果希望保留默认设置，仅仅对当前项目采用定制的编译命令，怎么办呢？答案是：使用<span
+        class="行内专业名词"
+        >工作区设置</span
+      >。
+    </p>
+    <p class="分区普通文本">
+      默认的设置保存在<span class="行内专业名词">用户设置</span>里，对<span
+        class="行内专业名词"
+        >用户</span
+      >生效。而<span class="行内专业名词">工作区设置</span>只对<span
+        class="行内专业名词"
+        >工作区</span
+      >生效。打开设置选项卡，切换到<span class="专业名词">工作区</span
+      >，输入<span class="代码">code runner</span>过滤选项：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/工作区设置-Code-Runner-Executor-Map.png"
+        alt="工作区设置 Code-Runner Executor Map"
+      />
+    </figure>
+    <p class="分区普通文本">
+      点击<span class="专业名词"
+        >在<span class="行内专业名词">settings.json</span>中编辑</span
+      >。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/工作区-Code-Runner-Executor-Map-文件.webp"
+        alt="工作区设置 Code-Runner Executor Map 文件"
+      />
+    </figure>
+    <p class="分区普通文本">
+      点击之后，会发现项目文件夹下的<span class="专业名词">.vscode</span
+      >文件夹下多了一个<span class="专业名词">settings.json</span
+      >文件，这就是<span class="行内专业名词">工作区设置</span>文件。<span
+        class="行内专业名词"
+        >工作区设置</span
+      >里的相应配置，会覆盖<span class="行内专业名词">用户设置</span
+      >的相应配置。
+    </p>
+    <p class="分区普通文本">
+      <span class="专业名词">Code Runner</span>的<span class="代码"
+        >code-runner.executorMap</span
+      >设置包含了很多语言的默认执行命令，我们找到 C语言 的：<br />
+      <span class="代码"
+        >"c": "cd $dir && gcc $fileName -o $fileNameWithoutExt &&
+        $dir$fileNameWithoutExt"</span
+      >
+    </p>
+    <p class="分区普通文本">
+      这就是默认的执行命令，仔细看一下，命令的意思是：用<span
+        class="行内专业名词"
+        >GCC</span
+      >编译<span class="行内专业名词">当前源文件</span
+      >，并执行生成的可执行文件。我们只需要把<span class="行内专业名词"
+        >2-1</span
+      >节<span class="行内专业名词">GCC</span>编译的额外参数加进去就好了：<br />
+      <span class="代码"
+        >"c": "cd $dir && gcc $fileName -o $fileNameWithoutExt -I 'C:/Program
+        Files/MySQL/MySQL Server 8.0/include' -L './' -l libmysql &&
+        $dir$fileNameWithoutExt",</span
+      ><br /><span class="强调">注意</span
+      >：双引号内部不能再用双引号，必须用单引号。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/Code-Runner-Executor-Map-C语言-修改后.png"
+        alt="工作区设置 Code-Runner Executor Map C语言 修改后"
+      />
+    </figure>
+    <p class="分区普通文本">
+      执行命令修改完成后，我们就可以用快捷键调用<span class="专业名词"
+        >Code Runner</span
+      >来自动编译、运行了，非常方便。快捷键默认是<span class="专业名词"
+        >Ctrl + Alt + N</span
+      >：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/Code-Runner-自动编译运行.webp"
+        alt="Code-Runner 自动编译运行"
+      />
+    </figure>
+    <p class="分区普通文本">
+      实际上就和手动编译、手动执行一样，只不过现在只需要用快捷键就行了，省时省力。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">VSCode</span>运行和调试
+    </h3>
+    <p class="分区普通文本">
+      如果既不想手动输入 GCC 调试命令，也不想用 Code Runner，我们还可以用 VSCode
+      内置的调试功能。选择<span class="专业名词">.c 源文件</span
+      >，此时右上角会出现<span class="专业名词"
+        >&#9655;<i
+          style="margin-left: 4px; font-size: 0.9em"
+          class="fa-solid fa-angle-down"
+        ></i></span
+      >图标，点击<span class="专业名词"
+        ><i style="font-size: 0.9em" class="fa-solid fa-angle-down"></i></span
+      >：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/源文件-运行选项.png"
+        alt="源文件 运行选项"
+      />
+    </figure>
+    <p class="分区普通文本">
+      点击<span class="专业名词">运行 C/C++ 文件</span>，弹出调试配置：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/选择调试配置.png"
+        alt="选择调试配置"
+      />
+    </figure>
+    <p class="分区普通文本">
+      每个电脑上弹出的调试配置可能不一样，选择带有<span class="行内专业名词"
+        >gcc.exe</span
+      >的选项。点击之后，VSCode 会在<span class="行内专业名词">.vscode</span
+      >目录内生成一个叫<span class="行内专业名词">task.json</span
+      >的文件，里面是运行和调试代码的各种设置，<strong>VSCode</strong>
+      会自动用这些选项运行代码。不出意外的话，会发生意外，因为默认选项无法识别<span
+        class="行内专业名词"
+        >mysql.h</span
+      >和<span class="行内专业名词">libmysql.dll</span>的路径。
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/C语言/操作 MySQL/调试错误.png" alt="调试错误" />
+    </figure>
+    <p class="分区普通文本">
+      终端显示的结果里用红字标识了错误，点击<span class="行内专业名词"
+        >中止</span
+      >。当然，你也可以点击<span class="行内专业名词">显示错误</span>，VSCode
+      会跳转到<span class="行内专业名词">问题</span>选项卡：
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/C语言/操作 MySQL/问题.png" alt="问题" />
+    </figure>
+    <p class="分区普通文本">
+      其实还是老问题，默认的调试选项无法识别<span class="行内专业名词"
+        >mysql.h</span
+      >的路径。因此，我们需要打开<span class="行内专业名词">task.json</span
+      >，自己添加相关的编译参数和选项。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/task.json-自定义GCC编译选项.png"
+        alt="task.json 自定义GCC编译选项"
+      />
+    </figure>
+    <p class="分区普通文本">
+      红框内就是添加的编译选项。<span class="强调">注意格式</span
+      >：除了最后一行，每行后面都要加逗号。搞定后，再次回到源代码文件，点击<span
+        class="专业名词"
+        >&#9655;</span
+      >运行：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/运行C-Cpp文件.webp"
+        alt="运行 C/C++ 文件"
+      />
+    </figure>
+    <p class="分区普通文本">这次可以顺利编译、运行了。</p>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">
+      操作<span class="行内专业名词">MySQL</span>
+    </h2>
+
+    <h3 class="分区标题 分区3级标题">
+      初始化<span class="行内专业名词">MySQL</span>对象
+    </h3>
+    <p class="分区普通文本">
+      调用<span class="行内代码">mysql_init()</span>函数，对<span
+        class="行内专业名词"
+        >MySQL</span
+      >对象进行初始化。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        MYSQL* mysql_init(MYSQL *mysql) //函数定义
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      <span class="行内代码">mysql_init()</span>函数说明：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="专业名词">参数</span>：<span class="行内代码">MYSQL</span
+        >对象的指针
+      </li>
+      <li class="分区列表项">
+        <span class="专业名词">返回值</span>：经过初始化的<span class="行内代码"
+          >MYSQL</span
+        >对象的指针；如果没有足够的内存，会返回<span class="行内专业名词"
+          >NULL</span
+        >
+      </li>
+      <li class="分区列表项">
+        当使用<span class="行内代码">mysql_close()</span>关闭连接时，会释放<span
+          class="行内专业名词"
+          >MYSQL</span
+        >对象管理的内存。
+      </li>
+    </ul>
+    <pre class="line-numbers">
+        <code class="lang-c">
+          #include &lt;stdio.h&gt;
+          #include &lt;windows.h&gt;
+          #include "mysql.h"
+
+          int main() {
+              SetConsoleOutputCP(CP_UTF8);
+
+              MYSQL mysql; //声明 MySQL对象
+              mysql_init(&mysql); //初始化 MySQL对象
+          }
+        </code>
+      </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/MYSQL对象初始化.webp"
+        alt="MYSQL对象初始化"
+      />
+    </figure>
+
+    <h3 class="分区标题 分区3级标题">
+      连接<span class="行内专业名词">MySQL</span>数据库
+    </h3>
+    <p class="分区普通文本">
+      调用<span class="行内代码">mysql_real_connect()</span>函数，连接<span
+        class="行内专业名词"
+        >MySQL</span
+      >数据库。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        //函数定义
+        MYSQL* mysql_real_connect(MYSQL* mysql,
+                                  const char* host,
+                                  const char* user,
+                                  const char* passwd,
+                                  const char* db,
+                                  unsigned int port,
+                                  const char* unix_socket,
+                                  unsigned long client_flag)
+      </code>
+    </pre>
   </article>
 </div>
