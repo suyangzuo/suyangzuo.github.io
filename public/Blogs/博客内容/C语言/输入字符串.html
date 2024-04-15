@@ -421,7 +421,7 @@
       基本规则很简单：有空位，就放入换行符；没空位，换行符就留在缓冲区。我们尝试连续输入两次姓名，以便理解<span
         class="行内代码"
         >fgets</span
-      >任何处理换行符。
+      >如何处理换行符。
     </p>
     <pre class="line-numbers">
       <code class="lang-c">
@@ -484,7 +484,7 @@
 
     <h3 class="分区标题 分区3级标题">刷新缓冲区</h3>
     <p class="分区普通文本">
-      两次<span class="行内代码">scanf</span>之间使用<span class="代码"
+      两次<span class="行内代码">fgets</span>之间使用<span class="代码"
         >fflush(stdin)</span
       >即可，具体方法与<span class="行内专业名词">2-4</span>节相同，不再赘述。
     </p>
