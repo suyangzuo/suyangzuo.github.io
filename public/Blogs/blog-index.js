@@ -851,15 +851,25 @@ function 双击图像生成图像对话框() {
     图像.addEventListener("click", () => {
       const 对话框 = document.createElement("dialog");
       对话框.className = "图像对话框";
+      对话框.classList.add("图像对话框出现");
       对话框.addEventListener("click", () => {
-        对话框.remove();
+        对话框.classList.remove("图像对话框出现");
+        对话框.classList.add("图像对话框消失");
+        setTimeout(() => {
+          对话框.remove();
+        }, 250);
       });
 
       const 关闭按钮 = document.createElement("button");
       关闭按钮.className = "图像对话框关闭按钮";
       关闭按钮.textContent = "✖";
-      关闭按钮.addEventListener("click", () => {
-        对话框.remove();
+      关闭按钮.addEventListener("click", (event) => {
+        event.stopPropagation();
+        对话框.classList.remove("图像对话框出现");
+        对话框.classList.add("图像对话框消失");
+        setTimeout(() => {
+          对话框.remove();
+        }, 250);
       });
 
       const image = document.createElement("img");
