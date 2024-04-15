@@ -369,7 +369,9 @@
   </article>
 
   <article class="正文分区">
-    <h2 class="分区标题 分区2级标题">编译<span class="次要">和</span>运行</h2>
+    <h2 class="分区标题 分区2级标题">
+      编译<span class="次要">-</span>运行<span class="次要">-</span>调试
+    </h2>
 
     <h3 class="分区标题 分区3级标题">
       <span class="行内专业名词">GCC</span>手动编译运行
@@ -502,10 +504,7 @@
     </p>
 
     <h3 class="分区标题 分区3级标题">
-      <span class="行内专业名词">VSCode</span>运行和调试<span
-        class="行内专业名词"
-        >按钮</span
-      >
+      <span class="行内专业名词">VSCode</span>生成和调试
     </h3>
     <p class="分区普通文本">
       如果既不想手动输入 GCC 调试命令，也不想用 Code Runner，我们还可以用 VSCode
@@ -541,9 +540,8 @@
         class="行内专业名词"
         >.vscode</span
       >目录内生成一个叫<span class="行内专业名词">task.json</span
-      >的文件，里面是运行和调试代码的各种设置，<span class="行内专业名词"
-        >VSCode</span
-      >会自动用这些选项运行代码。不出意外的话，会发生意外，因为默认选项无法识别<span
+      >的文件，里面主要是编译的各种设置，<span class="行内专业名词">VSCode</span
+      >使用这些选项编译、生成、运行、调试。不出意外的话，会发生意外，因为默认选项无法识别<span
         class="行内专业名词"
         >mysql.h</span
       >和<span class="行内专业名词">libmysql.dll</span>的路径。
@@ -588,10 +586,7 @@
     <p class="分区普通文本">这次可以顺利编译、运行了。</p>
 
     <h3 class="分区标题 分区3级标题">
-      <span class="行内专业名词">VSCode</span>运行和调试<span
-        class="行内专业名词"
-        >选项卡</span
-      >
+      <span class="行内专业名词">VSCode</span>自定义运行和调试
     </h3>
     <p class="分区普通文本">
       我们还可以通过<span class="行内专业名词">运行和调试</span
@@ -743,10 +738,8 @@
     </figure>
     <p class="分区普通文本">
       源代码第 30 行已经修改，但是运行的结果还是修改前的，因为<span class="强调"
-        >没有编译生成</span
-      ><span class="行内专业名词">新的可执行文件</span>。因此，我们要在<span
-        class="行内专业名词"
-        >launch.json</span
+        >没有编译生成新的</span
+      >可执行文件。因此，我们要在<span class="行内专业名词">launch.json</span
       >里添加一个配置选项：<span class="行内代码">preLaunchTask</span
       >，其实就是在<span class="行内专业名词">launch.json</span>之前先运行<span
         class="行内专业名词"
@@ -899,8 +892,10 @@
             <section class="提醒">
               <h3 class="提醒标题">提醒</h3>
               <p class="分区普通文本">
-                端口号可在<span class="行内专业名词">MySQL</span
-                >环境下用以下命令查询：
+                端口号可在<span class="行内专业名词">MySQL</span>环境下用<span
+                  class="行内代码"
+                  >show</span
+                >命令查询：
               </p>
               <pre class="line-numbers">
                 <code class="lang-sql">
