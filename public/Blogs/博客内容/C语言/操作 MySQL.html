@@ -1110,9 +1110,7 @@
       返回<span class="行内代码">0</span>代表查询成功。
     </p>
 
-    <h3 class="分区标题 分区3级标题">
-      保存<span class="行内专业名词">结果集</span>
-    </h3>
+    <h3 class="分区标题 分区3级标题">保存结果集</h3>
     <section class="提醒">
       <h3 class="提醒标题">结果集<span class="次要">和</span>受影响行</h3>
       <p class="分区普通文本">
@@ -1355,7 +1353,6 @@
         >。
       </p>
     </section>
-
     <p class="分区普通文本">
       要从一条数据行中提取每一个数据，需要先取得以下信息：
     </p>
@@ -1413,5 +1410,39 @@
         >MySQL</span
       >默认采用<span class="行内专业名词">utf8mb4</span>编码，中文占用 3 字节。
     </p>
+
+    <h3 class="分区标题 分区3级标题">释放结果集</h3>
+    <p class="分区普通文本">结果集使用完毕后，我们要释放结果集占用的内存。</p>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        #include &lt;stdio.h&gt;
+        #include &lt;windows.h&gt;
+        #include "mysql.h"
+
+        int main() {
+            //所有需要结果集的操作已经结束
+            mysql_free_result(result);
+            //释放之后不要再用result指针访问内存
+        }
+      </code>
+    </pre>
+
+    <h3 class="分区标题 分区3级标题">关闭数据库连接</h3>
+    <p class="分区普通文本">
+      当整个数据库连接对应的工作都执行完毕时，我们需要手动关闭连接。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        #include &lt;stdio.h&gt;
+        #include &lt;windows.h&gt;
+        #include "mysql.h"
+
+        int main() {
+            //所有数据库相关工作已执行完毕
+            mysql_close(&mysql);
+            //释放之后不要再使用mysql
+        }
+      </code>
+    </pre>
   </article>
 </div>
