@@ -350,8 +350,9 @@
     <p class="分区普通文本">
       将<span class="行内专业名词">libmysql.dll</span>放在以上 6
       个位置中的任意一个都可以。我选择将其放在<span class="行内专业名词"
-        >项目文件夹根目录</span
-      >中，因为生成的可执行文件也会位于此路径内。
+        >加载应用程序的文件夹</span
+      >，这意味着可执行文件在哪里，<span class="行内专业名词">libmysql.dll</span
+      >就在哪里。
     </p>
     <figure class="截图容器">
       <img
@@ -363,8 +364,8 @@
     <p class="分区普通文本">
       我将<span class="行内专业名词">libmysql.dll</span>存放在<span
         class="专业名词"
-        >项目文件夹的根目录</span
-      >下。
+        >加载应用程序的文件夹</span
+      >下，生成的可执行文件也存放到这里。
     </p>
   </article>
 
@@ -457,14 +458,16 @@
       >的相应配置。
     </p>
     <p class="分区普通文本">
-      <span class="专业名词">Code Runner</span>的<span class="代码"
+      <span class="专业名词">Code Runner</span>设置里的<span class="代码"
         >code-runner.executorMap</span
-      >设置包含了很多语言的默认执行命令，我们找到 C语言 的：<br />
-      <span class="代码"
-        >"c": "cd $dir && gcc $fileName -o $fileNameWithoutExt &&
-        $dir$fileNameWithoutExt"</span
-      >
+      >包含了很多语言的默认执行命令，找到 C语言 的：
     </p>
+    <pre class="line-numbers">
+      <code class="lang-coderunner">
+        "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
+      </code>
+    </pre>
+
     <p class="分区普通文本">
       这就是默认的执行命令，仔细看一下，命令的意思是：用<span
         class="行内专业名词"
@@ -472,13 +475,15 @@
       >编译<span class="行内专业名词">当前源文件</span
       >，并执行生成的可执行文件。我们只需要把<span class="行内专业名词"
         >2-1</span
-      >节<span class="行内专业名词">GCC</span>编译的额外参数加进去就好了：<br />
-      <span class="代码"
-        >"c": "cd $dir && gcc $fileName -o $fileNameWithoutExt -I 'C:/Program
-        Files/MySQL/MySQL Server 8.0/include' -L './' -l libmysql &&
-        $dir$fileNameWithoutExt",</span
-      ><br /><span class="强调">注意</span
-      >：双引号内部不能再用双引号，必须用单引号。
+      >节<span class="行内专业名词">GCC</span>编译的额外参数加进去就好了：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-coderunner">
+        "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt -I 'C:/Program Files/MySQL/MySQL Server 8.0/include' -L './' -l libmysql && $dir$fileNameWithoutExt"
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      <span class="强调">注意</span>：双引号内部不能再用双引号，必须用单引号。
     </p>
     <figure class="截图容器">
       <img
@@ -508,7 +513,9 @@
     </h3>
     <p class="分区普通文本">
       如果既不想手动输入 GCC 调试命令，也不想用 Code Runner，我们还可以用 VSCode
-      内置的调试功能。选择<span class="专业名词">.c 源文件</span
+      内置的<span class="行内专业名词">运行或调试</span>功能。选择<span
+        class="专业名词"
+        >.c 源文件</span
       >，此时右上角会出现<span class="专业名词"
         >&#9655;<i
           style="margin-left: 4px; font-size: 0.9em"
@@ -541,8 +548,11 @@
         >.vscode</span
       >目录内生成一个叫<span class="行内专业名词">task.json</span
       >的文件，里面主要是编译的各种设置，<span class="行内专业名词">VSCode</span
-      >使用这些选项编译、生成、运行、调试。不出意外的话，会发生意外，因为默认选项无法识别<span
+      >使用这些选项编译、生成、运行、调试。如果代码里只包含了标准库，应该就能正常运行了；但是，我的代码里包含了非标准库<span
         class="行内专业名词"
+        >mysql.h</span
+      >，编译时还需要链接<span class="行内专业名词">libmysql.dll</span
+      >，因此会产生错误，因为默认选项无法识别<span class="行内专业名词"
         >mysql.h</span
       >和<span class="行内专业名词">libmysql.dll</span>的路径。
     </p>
