@@ -143,20 +143,15 @@
           target="_blank"
           href="https://bobbyhadz.com/blog/detect-the-scroll-direction-using-javascript"
           >原文</a
-        >中使用了<span class="强调">后备值</span>：<br /><span class="代码"
-          >window.scrollY
-          <span class="行内代码" style="margin-left: 0; margin-right: 0"
-            >||</span
-          >
-          document.documentElement.scrollTop</span
-        >。<br />此代码含义为：以<span class="代码">||</span
-        >为分界，<br />左边的<span class="行内代码">window.scrollY</span
-        >能正常获取，就用<span class="行内代码">window.scrollY</span
-        >；<br />左边的<span class="行内代码">window.scrollY</span
-        >无法正常获取，则使用右边的<span class="行内代码"
-          >document.documentElement.scrollTop</span
-        >。
+        >中使用了<span class="专业名词">后备值</span>：
       </p>
+      <pre>
+        <code class="lang-js">
+          // 默认返回 window.scrollY
+          // 如果 window.scrollY 为 null，则返回 document.documentElement.scrollTop
+          window.scrollY || document.documentElement.scrollTop
+        </code>
+      </pre>
       <p>
         <span class="强调">此处到底需不需要使用后备值？</span>译者认为：<span
           class="强调"

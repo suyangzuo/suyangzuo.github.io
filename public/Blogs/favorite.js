@@ -370,7 +370,11 @@ function 点击收藏栏条目访问博客(event) {
   专题组.forEach((专题) => {
     专题.addEventListener("click", 修改专题样式);
     const 标记 = 专题.querySelector(".专题-标记");
-    标记.textContent = "\u2666";
+    if (专题.hasAttribute("原创")) {
+      标记.innerHTML = "<i class='fa-solid fa-mug-hot'></i>";
+    } else {
+      标记.innerHTML = "<i class='fa-solid fa-circle-nodes'></i>";
+    }
     专题.addEventListener("click", 当前专题已被收藏时刷新收藏按钮样式);
   });
   前一专题 = 专题;
