@@ -37,6 +37,10 @@ body {
   width: 100dvw;
 }
 
+body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
+  overflow: hidden;
+}
+
 #公共页脚 {
   padding-left: var(--侧边栏宽度);
   gap: 5vw;
@@ -630,7 +634,7 @@ body {
   box-shadow: 10px 10px 30px 0 #000a;
   backdrop-filter: blur(20px);
   border: none;
-  outline: solid 2px #fff4;
+  outline: solid 2px #3a3a3a;
   overflow: hidden;
 }
 
