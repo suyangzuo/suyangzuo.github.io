@@ -163,8 +163,9 @@ body {
   align-items: center;
   font-size: 1.75rem;
   outline: solid 1.5px #fffa;
-  background-color: #fff2;
+  background-color: #111;
   filter: brightness(3);
+  z-index: 1;
 }
 
 .返回:hover {

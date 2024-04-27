@@ -1002,7 +1002,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
 .次要 {
   color: #aaa;
   font-size: 0.9em;
-  margin: 0 0.35ch;
+  margin: 0 0.25ch;
 }
 
 .专题-内容 .次要 {
