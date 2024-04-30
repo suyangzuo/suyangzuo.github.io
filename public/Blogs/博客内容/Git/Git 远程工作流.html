@@ -187,17 +187,38 @@
         >，规定了别人可以如何使用你的远程仓库。里面是一些复杂的规范、条文，这里暂时不做详细介绍。
       </li>
     </ul>
+    <p class="分区普通文本">
+      本示例没有选择任何文件，点击右下角的<span class="专业名词"
+        >Create repository</span
+      >，就可以创建一个没有任何提交记录的空仓库。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 远程工作流/GitHub-新空仓库.png"
+        alt="GitHub 新空仓库"
+      />
+    </figure>
+    <p class="分区普通文本">
+      这是刚刚创建好的空仓库，没有任何文件。<span class="附加说明"
+        >实际上有个隐藏的<span class="行内专业名词">.git</span>文件夹</span
+      >。只有空仓库才会看到图中这样大量的命令，提示你后续步骤<span
+        class="附加说明"
+        >但我们并不按照它推荐的步骤来</span
+      >。
+    </p>
     <section class="提醒">
-      <h3 class="提醒标题">提醒</h3>
+      <h3 class="提醒标题">
+        避免<span class="行内专业名词">无关的提交历史</span>
+      </h3>
       <p>
         <span class="专业名词">自述文档</span>、<span class="专业名词"
           >Git 忽略列表</span
         >、<span class="专业名词">许可证</span>，3 者只要选了 1
-        个，你创建的这个仓库就会<span class="强调">存在文件</span>，并且会<span
+        个，创建的新仓库就会<span class="强调">存在文件</span>，并且会<span
           class="强调"
           >自动生成</span
-        >一个<span class="强调">初始提交</span>。如果 1
-        个都不选，那这个仓库就是一个没有任何提交记录的<span class="强调"
+        >一个<span class="强调">初始提交</span
+        >。如果都不选，新仓库就是一个没有任何提交记录的<span class="强调"
           >空仓库</span
         >。那么到底该不该选呢？
       </p>
@@ -216,35 +237,23 @@
           </ul>
         </li>
         <li class="分区列表项">
-          <span class="专业名词"
-            >本地已有项目文件夹，且已有本地提交记录，准备推送到远程仓库</span
-          >：强烈建议不要选，否则远程提交记录和本地提交记录会产生冲突，徒增麻烦。
+          <span class="专业名词">本地已有项目文件夹，且已有本地提交记录</span
+          >：强烈建议不要选，否则远程提交记录和本地提交记录会产生冲突，成为<span
+            class="行内专业名词"
+            >历史不相关</span
+          >的提交；这意味着远程提交记录和本地提交记录，不是从同一个祖先提交记录继承而来，要尽量避免这种情况！
         </li>
       </ul>
-      <p>
-        <span class="强调">建议</span
-        >项目一开始就从远程仓库建立，然后克隆到本地进行开发。
-      </p>
+      <p><span class="强调">总结</span>：</p>
+      <ul class="分区列表" style="margin-top: 0">
+        <li class="分区列表项">
+          项目一开始就从远程仓库建立，然后克隆到本地进行开发
+        </li>
+        <li class="分区列表项">
+          如果项目一开始是从本地开发的，创建远程仓库时，自述文档、Git忽略列表、许可证都不要选，保证新建时是空仓库
+        </li>
+      </ul>
     </section>
-    <p class="分区普通文本">
-      本示例没有选择任何文件，此时点击右下角的<span class="专业名词"
-        >Create repository</span
-      >，就可以创建一个没有任何提交记录的空仓库。
-    </p>
-    <figure class="截图容器">
-      <img
-        src="/Images/Blogs/Git/Git 远程工作流/GitHub-新空仓库.png"
-        alt="GitHub 新空仓库"
-      />
-    </figure>
-    <p class="分区普通文本">
-      这是刚刚创建好的空仓库，没有任何文件。<span class="附加说明"
-        >实际上有个隐藏的<span class="行内专业名词">.git</span>文件夹</span
-      >。只有空仓库才会看到图中这样大量的命令，提示你后续步骤<span
-        class="附加说明"
-        >但我们并不按照它推荐的步骤来</span
-      >。
-    </p>
   </article>
 
   <article class="正文分区">
@@ -284,9 +293,8 @@
       运行命令之后，一个叫<span class="专业名词">test</span
       >的文件夹出现了，这就是我们的远程仓库，现在它被克隆到了本地，成为一个本地仓库。仔细观察的话，命令运行之后，出现了一句警告：<span
         class="强调"
-        >You appear to have cloned an empty repository.<span class="附加说明"
-          >你似乎克隆了一个空仓库。</span
-        ></span
+        >You appear to have cloned an empty repository.</span
+      ><span class="附加说明">你似乎克隆了一个空仓库。</span
       >没错！我克隆的正是空仓库。
     </p>
     <section class="提醒">
@@ -474,14 +482,14 @@
             >。
           </p>
           <section class="提醒">
-            <h3 class="提醒标题">是否需要为远程仓库地址添加别名？</h3>
+            <h3 class="提醒标题">何时需要为远程仓库地址添加别名？</h3>
             <ul class="分区列表">
               <li class="分区列表项">
-                <span class="行内专业名词">从远程克隆的本地仓库</span
+                <span class="行内专业名词">仓库是从远程创建的</span
                 >：不用添加别名，因为远程仓库创建时已经添加好了。
               </li>
               <li class="分区列表项">
-                <span class="行内专业名词">直接在本地创建的仓库</span
+                <span class="行内专业名词">仓库是从本地创建的</span
                 >：需要添加别名。
               </li>
             </ul>
