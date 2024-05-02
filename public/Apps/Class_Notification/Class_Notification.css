@@ -1,0 +1,184 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #2a2d30;
+  min-height: 100vh;
+}
+
+#信息提供区 {
+  height: 600px;
+  width: 100%;
+  color: white;
+  outline: solid 2px #30353a;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+}
+
+.标签区 {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.标签 {
+  width: 100px;
+  text-align: right;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: #def;
+  -webkit-box-shadow: 0 0 0 1000px #555 inset;
+}
+
+.输入框 {
+  font-size: 1rem;
+  background-color: #555;
+  color: #def;
+  border: none;
+  padding: 5px;
+  width: 300px;
+  height: 40px;
+}
+
+.输入框::placeholder {
+  font-size: 1rem;
+  color: #aaa;
+}
+
+.输入框:focus {
+  outline: solid 2px lightblue;
+}
+
+#选项区 {
+  height: 120px;
+  display: flex;
+  align-items: center;
+}
+
+.选项标签 {
+  display: flex;
+  align-items: center;
+}
+
+.选项文本 {
+  padding: 0 5px;
+}
+
+.选项复选框 {
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  background-color: #777;
+  position: relative;
+}
+
+.选项复选框:checked::before {
+  position: absolute;
+  content: "\2713";
+  color: gold;
+  font-weight: bold;
+}
+
+#生成截图 {
+  flex-shrink: 0;
+  width: 150px;
+  height: 50px;
+  font-size: 1.25rem;
+  background-color: seagreen;
+  color: white;
+  border: solid 2px transparent;
+  transition: 250ms;
+}
+
+#生成截图:hover {
+  border: solid 2px rgb(72, 180, 119);
+  cursor: pointer;
+}
+
+#生成截图:active {
+  background-color: lightseagreen;
+}
+
+#截图生成区 {
+  background-color: #1a1a1a;
+  margin: 50px auto 0;
+  width: 500px;
+  padding: 25px 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 25px;
+  color: white;
+  font-family: "微软雅黑", sans-serif;
+}
+
+.时间区 {
+  width: 100%;
+  text-align: center;
+  color: #888;
+}
+
+.班级名称区 {
+  padding: 15px;
+  border-bottom: solid 1px #444;
+  font-size: 1.2rem;
+  width: 100%;
+}
+
+.个人区 {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.头像区 {
+  width: 30px;
+  height: 30px;
+  border-radius: 500px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.头像 {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.姓名内容区 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.姓名区 {
+  color: #888;
+}
+
+.内容区 {
+  padding: 10px;
+  background-color: #333;
+  border-radius: 10px;
+  line-height: 1.5em;
+}

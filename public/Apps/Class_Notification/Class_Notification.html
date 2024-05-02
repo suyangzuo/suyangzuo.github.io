@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>班级回复截图生成器</title>
+    <link rel="icon" href="/Images/Index-Images/密码.png" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&family=Noto+Sans+SC&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/Styles/top-banner-common.css"
+    />
+    <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
+    <link rel="stylesheet" href="../apps-common-control.css" />
+    <link rel="stylesheet" href="./Class_Notification.css" />
+    <script
+      src="https://kit.fontawesome.com/d0483e3bd3.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="/Scripts/top-banner.js" defer></script>
+    <script src="./Class_Notification.js" defer></script>
+  </head>
+  <body>
+    <script
+      src="../../Scripts/html-include.js"
+      target="../../top-banner.html"
+      position="afterbegin"
+    ></script>
+
+    <script
+      src="/Scripts/html-include.js"
+      target="../apps-common-control.html"
+      position="afterbegin"
+    ></script>
+
+    <section id="信息提供区">
+      <label for="班级名称" class="标签区">
+        <span class="标签">班级名称</span>
+        <input
+          type="text"
+          id="班级名称"
+          class="输入框"
+          placeholder="输入班级姓名"
+        />
+      </label>
+      <label for="班级人数" class="标签区">
+        <span class="标签">班级人数</span>
+        <input
+          type="text"
+          id="班级人数"
+          class="输入框"
+          placeholder="输入班级人数"
+        />
+      </label>
+      <label for="班主任姓名" class="标签区">
+        <span class="标签">班主任姓名</span>
+        <input
+          type="text"
+          id="班主任姓名"
+          class="输入框"
+          placeholder="输入班主任姓名"
+        />
+      </label>
+      <label for="通知信息" class="标签区">
+        <span class="标签">通知信息</span>
+        <input
+          type="text"
+          id="通知信息"
+          class="输入框"
+          placeholder="输入要通知班级的消息"
+        />
+      </label>
+      <label for="学生姓名" class="标签区">
+        <span class="标签">学生姓名</span>
+        <input
+          type="text"
+          id="学生姓名"
+          class="输入框"
+          placeholder="多个学生姓名之间用中文逗号，隔开"
+        />
+      </label>
+      <div id="选项区">
+        <label for="随机生成回复" class="选项标签"
+          ><span class="选项文本">随机生成回复</span
+          ><input type="checkbox" id="随机生成回复" class="选项复选框"
+        /></label>
+      </div>
+      <button id="生成截图">生成截图</button>
+    </section>
+    <section id="截图生成区"></section>
+  </body>
+</html>
