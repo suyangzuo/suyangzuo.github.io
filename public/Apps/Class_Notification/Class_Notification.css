@@ -70,6 +70,7 @@ select:-webkit-autofill:focus {
   height: 120px;
   display: flex;
   align-items: center;
+  gap: 35px;
 }
 
 .选项标签 {
@@ -81,19 +82,58 @@ select:-webkit-autofill:focus {
   padding: 0 5px;
 }
 
-.选项复选框 {
+#随机生成回复 {
   appearance: none;
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
   background-color: #777;
   position: relative;
 }
 
-.选项复选框:checked::before {
+#随机生成回复:hover {
+  outline: solid 1px lightcyan;
+}
+
+#随机生成回复:checked::before {
   position: absolute;
   content: "\2713";
-  color: gold;
+  color: lightgreen;
   font-weight: bold;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+}
+
+#颜色模式 {
+  appearance: none;
+  width: 100px;
+  height: 35px;
+  border-radius: 500px;
+  position: relative;
+  background-color: #4a4a4a;
+}
+
+#颜色模式::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60%;
+  height: 100%;
+  border-radius: 500px;
+  background-color: darkolivegreen;
+  content: "\1F319";
+  font-size: 1rem;
+  transition: 250ms;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#颜色模式:checked::before {
+  left: 40%;
+  top: 0;
+  content: "\263c";
+  color: white;
 }
 
 #生成截图 {
@@ -120,7 +160,7 @@ select:-webkit-autofill:focus {
   background-color: #1a1a1a;
   margin: 50px auto 0;
   width: 500px;
-  padding: 25px 15px;
+  padding: 25px 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -138,16 +178,19 @@ select:-webkit-autofill:focus {
 
 .班级名称区 {
   padding: 15px;
-  border-bottom: solid 1px #444;
+  border-bottom: solid 1px #333;
   font-size: 1.2rem;
   width: 100%;
 }
 
 .个人区 {
   display: flex;
-  justify-content: center;
   align-items: flex-start;
   gap: 8px;
+}
+
+.个人区.班主任区 {
+  flex-direction: row-reverse;
 }
 
 .头像区 {
@@ -170,10 +213,32 @@ select:-webkit-autofill:focus {
   justify-content: flex-start;
   align-items: flex-start;
   gap: 5px;
+  width: 80%;
+}
+
+.个人区.班主任区 .姓名内容区 {
+  align-items: flex-end;
 }
 
 .姓名区 {
   color: #888;
+  position: relative;
+}
+
+.个人区.班主任区 .姓名区::before {
+  position: absolute;
+  top: 0;
+  right: 120%;
+  content: "班主任";
+  padding: 2px 0;
+  border-radius: 5px;
+  background-color: goldenrod;
+  color: white;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8em;
 }
 
 .内容区 {
@@ -181,4 +246,19 @@ select:-webkit-autofill:focus {
   background-color: #333;
   border-radius: 10px;
   line-height: 1.5em;
+}
+
+#截图生成区[浅色模式] {
+  background-color: #eee;
+  color: black;
+}
+
+#截图生成区[浅色模式] .个人区.班主任区 .内容区 {
+  background-color: #0099ff;
+  color: white;
+}
+
+#截图生成区[浅色模式] .内容区 {
+  background-color: #fff;
+  color: black;
 }

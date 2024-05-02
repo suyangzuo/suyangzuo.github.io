@@ -3,6 +3,7 @@ const 标签区集合 = 信息提供区.querySelectorAll(".标签区");
 const 生成截图按钮 = document.getElementById("生成截图");
 const 截图生成区 = document.getElementById("截图生成区");
 const 随机回复复选框 = document.getElementById("随机生成回复");
+const 颜色模式复选框 = document.getElementById("颜色模式");
 const 回复词集合 = [
   "已收到",
   "收到",
@@ -12,6 +13,43 @@ const 回复词集合 = [
   "收到！",
   "明白！",
 ];
+
+let 随机回复 = false;
+let 颜色模式 = "dark";
+
+if (localStorage.getItem("随机回复") === null) {
+  localStorage.setItem("随机回复", 随机回复.toString());
+} else {
+  随机回复 = JSON.parse(localStorage.getItem("随机回复"));
+  随机回复复选框.checked = 随机回复;
+}
+
+if (localStorage.getItem("颜色模式") === null) {
+  localStorage.setItem("颜色模式", 颜色模式);
+} else {
+  颜色模式 = localStorage.getItem("颜色模式");
+  颜色模式复选框.checked = 颜色模式 === "light";
+  if (颜色模式复选框.checked) {
+    截图生成区.setAttribute("浅色模式", "");
+  } else {
+    截图生成区.removeAttribute("浅色模式");
+  }
+}
+
+随机回复复选框.addEventListener("input", () => {
+  随机回复 = 随机回复复选框.checked;
+  localStorage.setItem("随机回复", 随机回复.toString());
+});
+
+颜色模式复选框.addEventListener("input", () => {
+  颜色模式 = 颜色模式复选框.checked ? "light" : "dark";
+  if (颜色模式复选框.checked) {
+    截图生成区.setAttribute("浅色模式", "");
+  } else {
+    截图生成区.removeAttribute("浅色模式");
+  }
+  localStorage.setItem("颜色模式", 颜色模式);
+});
 
 生成截图按钮.addEventListener("click", 生成截图);
 
@@ -53,7 +91,7 @@ function 生成截图() {
   const 通知信息输入框 = document.getElementById("通知信息");
   const 通知信息 = 通知信息输入框.value;
 
-  生成个人信息(`${班主任姓名}-班主任`, 通知信息);
+  生成个人信息(班主任姓名, 通知信息);
 
   const 学生姓名输入框 = document.getElementById("学生姓名");
   const 学生姓名 = 学生姓名输入框.value;
@@ -65,6 +103,8 @@ function 生成截图() {
     const 回复信息 = 随机回复复选框.checked ? 回复词集合[回复索引] : "已收到";
     生成个人信息(姓名, 回复信息);
   }
+
+  截图生成区.querySelectorAll(".个人区").item(0).classList.add("班主任区");
 }
 
 function 生成个人信息(name, info) {
@@ -76,7 +116,7 @@ function 生成个人信息(name, info) {
   头像区.className = "头像区";
   const 头像 = document.createElement("img");
   头像.className = "头像";
-  const 头像号码 = Math.floor(Math.random() * 101);
+  const 头像号码 = Math.floor(Math.random() * 100 + 1);
   头像.src = `./Images/头像/${头像号码}.jpg`;
   头像.alt = "头像";
   头像区.appendChild(头像);
