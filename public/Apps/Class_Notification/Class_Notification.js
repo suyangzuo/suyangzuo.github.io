@@ -3,6 +3,7 @@ const 标签区集合 = 信息提供区.querySelectorAll(".标签区");
 const 生成截图按钮 = document.getElementById("生成截图");
 const 截图生成区 = document.getElementById("截图生成区");
 const 随机回复复选框 = document.getElementById("随机生成回复");
+const 分割回复时间复选框 = document.getElementById("分割回复时间");
 const 颜色模式复选框 = document.getElementById("颜色模式");
 const 回复词集合 = [
   "已收到",
@@ -15,6 +16,7 @@ const 回复词集合 = [
 ];
 
 let 随机回复 = false;
+let 分割回复时间 = true;
 let 颜色模式 = "dark";
 
 if (localStorage.getItem("随机回复") === null) {
@@ -22,6 +24,13 @@ if (localStorage.getItem("随机回复") === null) {
 } else {
   随机回复 = JSON.parse(localStorage.getItem("随机回复"));
   随机回复复选框.checked = 随机回复;
+}
+
+if (localStorage.getItem("分割回复时间") === null) {
+  localStorage.setItem("分割回复时间", 分割回复时间.toString());
+} else {
+  分割回复时间 = JSON.parse(localStorage.getItem("分割回复时间"));
+  分割回复时间复选框.checked = 分割回复时间;
 }
 
 if (localStorage.getItem("颜色模式") === null) {
@@ -39,6 +48,11 @@ if (localStorage.getItem("颜色模式") === null) {
 随机回复复选框.addEventListener("input", () => {
   随机回复 = 随机回复复选框.checked;
   localStorage.setItem("随机回复", 随机回复.toString());
+});
+
+分割回复时间复选框.addEventListener("input", () => {
+  分割回复时间 = 分割回复时间复选框.checked;
+  localStorage.setItem("分割回复时间", 分割回复时间.toString());
 });
 
 颜色模式复选框.addEventListener("input", () => {
@@ -74,10 +88,12 @@ function 生成截图() {
   const 时间区 = document.createElement("h6");
   时间区.className = "时间区";
   const 当前日历时间 = Date.now();
-  const 当前日期 = new Date(当前日历时间);
+  let 当前日期 = new Date(当前日历时间);
   const 小时 = 当前日期.getHours();
   const 分钟 = 当前日期.getMinutes();
-  时间区.textContent = `${小时}:${分钟}`;
+  const 小时文本 = 小时 < 10 ? `0${小时}` : 小时.toString();
+  const 分钟文本 = 分钟 < 10 ? `0${分钟}` : 分钟.toString();
+  时间区.textContent = `${小时文本}:${分钟文本}`;
   截图生成区.appendChild(时间区);
 
   const 班级名称输入框 = document.getElementById("班级名称");
@@ -104,6 +120,31 @@ function 生成截图() {
   const 后缀字符串 = 后缀输入框.value;
   const 后缀集合 = 后缀字符串.split("，");
 
+  let 时间段数 = 0;
+  let 最大值 = 0;
+  let 最小值 = 0;
+  if (姓名集合.length <= 5) {
+    最小值 = 0;
+    最大值 = 1;
+  } else if (姓名集合.length <= 10) {
+    最小值 = 1;
+    最大值 = 3;
+  } else if (姓名集合.length <= 20) {
+    最小值 = 3;
+    最大值 = 5;
+  } else if (姓名集合.length <= 30) {
+    最小值 = 3;
+    最大值 = 7;
+  } else if (姓名集合.length <= 40) {
+    最小值 = 4;
+    最大值 = 8;
+  } else {
+    最小值 = 5;
+    最大值 = 10;
+  }
+  时间段数 = Math.floor(Math.random() * (最大值 - 最小值 + 1) + 最小值);
+
+  let 发送时间使用计数 = 0;
   for (const 姓名 of 姓名集合) {
     const 回复索引 = Math.floor(Math.random() * 回复词集合.length);
     const 回复信息 = 随机回复复选框.checked ? 回复词集合[回复索引] : "已收到";
@@ -112,6 +153,26 @@ function 生成截图() {
     const 后缀 = 后缀集合[后缀索引];
 
     生成个人信息(`${姓名}${后缀}`, 回复信息);
+
+    const 需要添加时间 =
+      Math.floor(Math.random() * (最大值 - 最小值 + 1) + 最小值) === 最大值;
+    if (!分割回复时间复选框.checked) continue;
+    if (!需要添加时间) continue;
+    if (++发送时间使用计数 > 时间段数) continue;
+    if (姓名集合.indexOf(姓名) === 姓名集合.length - 1) break;
+
+    const 时间分区 = document.createElement("h6");
+    时间分区.className = "时间区";
+    当前日期 = new Date(
+      当前日期.getTime() +
+        Math.floor(Math.random() * (1800 - 180) + 180) * 1000,
+    );
+    const 新小时 = 当前日期.getHours();
+    const 新分钟 = 当前日期.getMinutes();
+    const 新小时文本 = 新小时 < 10 ? `0${新小时}` : 新小时.toString();
+    const 新分钟文本 = 新分钟 < 10 ? `0${新分钟}` : 新分钟.toString();
+    时间分区.textContent = `${新小时文本}:${新分钟文本}`;
+    截图生成区.appendChild(时间分区);
   }
 
   截图生成区.querySelectorAll(".个人区").item(0).classList.add("班主任区");

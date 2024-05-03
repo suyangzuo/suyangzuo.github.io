@@ -19,8 +19,9 @@ label {
   height: 700px;
   width: 100%;
   color: white;
-  outline: solid 2px #30353a;
+  border: solid 2px #30353a;
   padding: 25px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,6 +32,17 @@ label {
   padding: 5px 0 30px 0;
   color: lightskyblue;
   font-size: 2.5rem;
+}
+
+.信息输入区 {
+  width: 950px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 25px;
+  padding: 50px 25px;
+  outline: solid 2px #345;
 }
 
 .标签区 {
@@ -108,7 +120,7 @@ select:-webkit-autofill:focus {
   padding: 0 5px;
 }
 
-#随机生成回复 {
+.选项复选框 {
   appearance: none;
   width: 20px;
   height: 20px;
@@ -118,15 +130,15 @@ select:-webkit-autofill:focus {
   font-size: 16px;
 }
 
-#随机生成回复:hover {
+.选项复选框:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
-.选项标签:hover #随机生成回复 {
+.选项标签:hover .选项复选框 {
   outline: solid 1px lightcyan;
 }
 
-#随机生成回复:checked::before {
+.选项复选框:checked::before {
   position: absolute;
   content: "\2713";
   color: lightgreen;

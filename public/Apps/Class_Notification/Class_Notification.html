@@ -42,66 +42,71 @@
 
     <section id="信息提供区">
       <h1 class="标题">回复模拟器</h1>
-      <label for="班级名称" class="标签区">
-        <span class="标签">群名称</span>
-        <input
-          type="text"
-          id="班级名称"
-          class="输入框"
-          placeholder="输入群名称"
-        />
-      </label>
-      <label for="班级人数" class="标签区">
-        <span class="标签">群人数</span>
-        <input
-          type="text"
-          id="班级人数"
-          class="输入框"
-          placeholder="输入群人数"
-        />
-      </label>
-      <label for="班主任姓名" class="标签区">
-        <span class="标签">发送者姓名</span>
-        <input
-          type="text"
-          id="班主任姓名"
-          class="输入框"
-          placeholder="输入发送者姓名"
-        />
-      </label>
-      <label for="通知信息" class="标签区">
-        <span class="标签">通知信息</span>
-        <input
-          type="text"
-          id="通知信息"
-          class="输入框"
-          placeholder="输入通知信息"
-        />
-      </label>
-      <label for="学生姓名" class="标签区">
-        <span class="标签">回复者姓名</span>
-        <input
-          type="text"
-          id="学生姓名"
-          class="输入框"
-          placeholder="多个姓名之间用中文逗号隔开"
-        />
-      </label>
-      <label for="回复者姓名后缀" class="标签区">
-        <span class="标签">回复者后缀</span>
-        <input
-          type="text"
-          id="回复者姓名后缀"
-          class="输入框"
-          placeholder="多个后缀之间用中文逗号隔开"
-        />
-      </label>
+      <div class="信息输入区">
+        <label for="班级名称" class="标签区">
+          <span class="标签">群名称</span>
+          <input
+            type="text"
+            id="班级名称"
+            class="输入框"
+            placeholder="输入群名称"
+          />
+        </label>
+        <label for="班级人数" class="标签区">
+          <span class="标签">群人数</span>
+          <input
+            type="text"
+            id="班级人数"
+            class="输入框"
+            placeholder="输入群人数"
+          />
+        </label>
+        <label for="班主任姓名" class="标签区">
+          <span class="标签">发送者姓名</span>
+          <input
+            type="text"
+            id="班主任姓名"
+            class="输入框"
+            placeholder="输入发送者姓名"
+          />
+        </label>
+        <label for="通知信息" class="标签区">
+          <span class="标签">通知信息</span>
+          <input
+            type="text"
+            id="通知信息"
+            class="输入框"
+            placeholder="输入通知信息"
+          />
+        </label>
+        <label for="学生姓名" class="标签区">
+          <span class="标签">回复者姓名</span>
+          <input
+            type="text"
+            id="学生姓名"
+            class="输入框"
+            placeholder="多个姓名之间用中文逗号隔开"
+          />
+        </label>
+        <label for="回复者姓名后缀" class="标签区">
+          <span class="标签">回复者后缀</span>
+          <input
+            type="text"
+            id="回复者姓名后缀"
+            class="输入框"
+            placeholder="多个后缀之间用中文逗号隔开"
+          />
+        </label>
+      </div>
       <div id="选项区">
         <label for="随机生成回复" class="选项标签"
           ><span class="选项文本">随机生成回复</span
           ><input type="checkbox" id="随机生成回复" class="选项复选框"
         /></label>
-
+        <label for="分割回复时间" class="选项标签"
+          ><span class="选项文本">分割回复时间</span
+          ><input type="checkbox" id="分割回复时间" class="选项复选框" checked
+        /></label>
         <label for="颜色模式" class="选项标签">
           <input type="checkbox" id="颜色模式" class="选项复选框" />
         </label>
