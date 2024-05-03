@@ -70,13 +70,17 @@ select:-webkit-autofill:focus {
   transition: 150ms;
 }
 
+.标签区:hover .输入框 {
+  outline: solid 2px #d8e6ff70;
+}
+
 .输入框::placeholder {
   font-size: 1rem;
   color: #aaa;
   transition: 150ms;
 }
 
-.输入框:focus {
+.标签区 .输入框:focus {
   outline: solid 2px lightblue;
 }
 
@@ -111,12 +115,15 @@ select:-webkit-autofill:focus {
   border-radius: 2px;
   background-color: #777;
   position: relative;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
 }
 
 #随机生成回复:hover {
-  outline: solid 1px lightcyan;
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.选项标签:hover #随机生成回复 {
+  outline: solid 1px lightcyan;
 }
 
 #随机生成回复:checked::before {
@@ -170,6 +177,7 @@ select:-webkit-autofill:focus {
 }
 
 #生成截图 {
+  position: relative;
   flex-shrink: 0;
   width: 150px;
   height: 50px;
@@ -177,17 +185,65 @@ select:-webkit-autofill:focus {
   font-size: 1.25rem;
   background-color: seagreen;
   color: white;
-  border: solid 2px transparent;
+  box-shadow: inset 0 0 4px 2px transparent;
   transition: 250ms;
 }
 
 #生成截图:hover {
-  border: solid 2px rgb(72, 180, 119);
+  box-shadow: inset 0 0 4px 2px rgb(109, 219, 157);
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 #生成截图:active {
   background-color: lightseagreen;
+  box-shadow: inset 0 0 4px 2px transparent;
+}
+
+.生成截图后置动画区 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: calc(100% + 5px);
+  height: calc(100% + 5px);
+  content: "";
+  z-index: -1;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.生成截图后置动画区::before {
+  position: absolute;
+  width: 300%;
+  height: 300%;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  background: conic-gradient(
+    transparent 0deg,
+    white 5deg,
+    white 65deg,
+    transparent 66deg
+  );
+  content: "";
+  opacity: 0;
+  animation: 截图按钮后置背景动画 2s ease-out infinite;
+  animation-play-state: paused;
+  transition: 250ms;
+}
+
+#生成截图:hover .生成截图后置动画区::before {
+  animation-play-state: running;
+  opacity: 1;
+}
+
+@keyframes 截图按钮后置背景动画 {
+  from {
+    rotate: z 0deg;
+  }
+  to {
+    rotate: z 360deg;
+  }
 }
 
 #截图生成区 {
