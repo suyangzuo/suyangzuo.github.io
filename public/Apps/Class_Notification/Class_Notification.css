@@ -183,7 +183,6 @@ select:-webkit-autofill:focus {
 #颜色模式:checked::before {
   color: gold;
   left: calc(100% - 35px);
-  top: 0;
   font-family: "Font Awesome 6 Free", ui-rounded;
   content: "\f185";
 }
