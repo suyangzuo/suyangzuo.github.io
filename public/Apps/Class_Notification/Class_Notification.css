@@ -20,7 +20,7 @@ label {
   width: 100%;
   color: white;
   outline: solid 2px #30353a;
-  padding: 50px;
+  padding: 25px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -115,7 +115,7 @@ select:-webkit-autofill:focus {
   border-radius: 2px;
   background-color: #777;
   position: relative;
-  font-size: 1.15rem;
+  font-size: 16px;
 }
 
 #随机生成回复:hover {
@@ -204,8 +204,8 @@ select:-webkit-autofill:focus {
   top: 50%;
   left: 50%;
   translate: -50% -50%;
-  width: calc(100% + 5px);
-  height: calc(100% + 5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
   content: "";
   z-index: -1;
   border-radius: 5px;
@@ -221,8 +221,8 @@ select:-webkit-autofill:focus {
   translate: -50% -50%;
   background: conic-gradient(
     transparent 0deg,
-    white 5deg,
-    white 65deg,
+    cyan 5deg,
+    cyan 65deg,
     transparent 66deg
   );
   content: "";
@@ -240,9 +240,11 @@ select:-webkit-autofill:focus {
 @keyframes 截图按钮后置背景动画 {
   from {
     rotate: z 0deg;
+    filter: hue-rotate(0deg);
   }
   to {
     rotate: z 360deg;
+    filter: hue-rotate(360deg);
   }
 }
 

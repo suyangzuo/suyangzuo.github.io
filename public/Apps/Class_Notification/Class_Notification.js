@@ -57,7 +57,10 @@ function 生成截图() {
   for (const 标签区 of 标签区集合) {
     const 输入框 = 标签区.querySelector(".输入框");
     const 标签 = 标签区.querySelector(".标签");
-    if (输入框.value === null || 输入框.value === "") {
+    if (
+      (输入框.value === null || 输入框.value === "") &&
+      输入框.id !== "回复者姓名后缀"
+    ) {
       return;
     }
   }
@@ -95,13 +98,20 @@ function 生成截图() {
 
   const 学生姓名输入框 = document.getElementById("学生姓名");
   const 学生姓名 = 学生姓名输入框.value;
-
   const 姓名集合 = 学生姓名.split("，");
+
+  const 后缀输入框 = document.getElementById("回复者姓名后缀");
+  const 后缀字符串 = 后缀输入框.value;
+  const 后缀集合 = 后缀字符串.split("，");
 
   for (const 姓名 of 姓名集合) {
     const 回复索引 = Math.floor(Math.random() * 回复词集合.length);
     const 回复信息 = 随机回复复选框.checked ? 回复词集合[回复索引] : "已收到";
-    生成个人信息(姓名, 回复信息);
+
+    const 后缀索引 = Math.floor(Math.random() * 后缀集合.length);
+    const 后缀 = 后缀集合[后缀索引];
+
+    生成个人信息(`${姓名}${后缀}`, 回复信息);
   }
 
   截图生成区.querySelectorAll(".个人区").item(0).classList.add("班主任区");
@@ -126,6 +136,7 @@ function 生成个人信息(name, info) {
 
   const 姓名区 = document.createElement("span");
   姓名区.className = "姓名区";
+
   姓名区.textContent = name;
   const 内容区 = document.createElement("内容区");
   内容区.className = "内容区";
