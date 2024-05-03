@@ -212,15 +212,20 @@ select:-webkit-autofill:focus {
 
 .班级名称区 {
   padding: 15px;
-  border-bottom: solid 1px #333;
+  border-bottom: solid 1px #222;
   font-size: 1.2rem;
   width: 100%;
+}
+
+#截图生成区[浅色模式] .班级名称区 {
+  border-bottom: solid 1px #ddd;
 }
 
 .个人区 {
   display: flex;
   align-items: flex-start;
   gap: 8px;
+  width: 100%;
 }
 
 .个人区.班主任区 {
