@@ -333,7 +333,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
 }
 
 .收藏条目:hover {
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   background-color: #fff1;
   outline: solid 1px #acb5;
 }

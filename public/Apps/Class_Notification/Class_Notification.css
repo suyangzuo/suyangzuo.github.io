@@ -11,8 +11,12 @@ body {
   min-height: 100vh;
 }
 
+label {
+  user-select: none;
+}
+
 #信息提供区 {
-  height: 600px;
+  height: 700px;
   width: 100%;
   color: white;
   outline: solid 2px #30353a;
@@ -21,6 +25,12 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 25px;
+}
+
+.标题 {
+  padding: 5px 0 30px 0;
+  color: lightskyblue;
+  font-size: 2.5rem;
 }
 
 .标签区 {
@@ -55,15 +65,23 @@ select:-webkit-autofill:focus {
   padding: 5px;
   width: 300px;
   height: 40px;
+  border-radius: 5px;
+  outline: solid 2px transparent;
+  transition: 150ms;
 }
 
 .输入框::placeholder {
   font-size: 1rem;
   color: #aaa;
+  transition: 150ms;
 }
 
 .输入框:focus {
   outline: solid 2px lightblue;
+}
+
+.输入框:focus::placeholder {
+  color: transparent;
 }
 
 #选项区 {
@@ -78,6 +96,10 @@ select:-webkit-autofill:focus {
   align-items: center;
 }
 
+.选项标签:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
 .选项文本 {
   padding: 0 5px;
 }
@@ -86,12 +108,15 @@ select:-webkit-autofill:focus {
   appearance: none;
   width: 20px;
   height: 20px;
+  border-radius: 2px;
   background-color: #777;
   position: relative;
+  font-size: 1.1rem;
 }
 
 #随机生成回复:hover {
   outline: solid 1px lightcyan;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 #随机生成回复:checked::before {
@@ -106,18 +131,24 @@ select:-webkit-autofill:focus {
 
 #颜色模式 {
   appearance: none;
-  width: 100px;
+  width: 60px;
   height: 35px;
   border-radius: 500px;
   position: relative;
   background-color: #4a4a4a;
+  transition: 250ms;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+#颜色模式:hover {
+  box-shadow: inset 0 0 2px 1px #fff5;
 }
 
 #颜色模式::before {
   position: absolute;
   top: 0;
   left: 0;
-  width: 60%;
+  aspect-ratio: 1;
   height: 100%;
   border-radius: 500px;
   background-color: darkolivegreen;
@@ -127,19 +158,22 @@ select:-webkit-autofill:focus {
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: 1px 1px 2px 0 #0005;
 }
 
 #颜色模式:checked::before {
-  left: 40%;
+  color: gold;
+  left: calc(100% - 35px);
   top: 0;
-  content: "\263c";
-  color: white;
+  font-family: "Font Awesome 6 Free", ui-rounded;
+  content: "\f185";
 }
 
 #生成截图 {
   flex-shrink: 0;
   width: 150px;
   height: 50px;
+  border-radius: 5px;
   font-size: 1.25rem;
   background-color: seagreen;
   color: white;
@@ -149,7 +183,7 @@ select:-webkit-autofill:focus {
 
 #生成截图:hover {
   border: solid 2px rgb(72, 180, 119);
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 #生成截图:active {
