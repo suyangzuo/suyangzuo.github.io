@@ -405,6 +405,11 @@
     aspect-ratio: 1;
     object-fit: cover;
   }
+
+  #logo-text-永, #logo-text-恒 {
+    width: 25px;
+    height: 45%;
+  }
 }
 
 @media only screen and (max-width: 750px) {

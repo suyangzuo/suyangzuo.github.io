@@ -16,11 +16,10 @@ label {
 }
 
 #信息提供区 {
-  height: 700px;
   width: 100%;
   color: white;
   border: solid 2px #30353a;
-  padding: 25px;
+  padding: 50px 25px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -35,7 +34,7 @@ label {
 }
 
 .信息输入区 {
-  width: 950px;
+  width: min(100%, 950px);
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
@@ -101,10 +100,10 @@ select:-webkit-autofill:focus {
 }
 
 #选项区 {
-  height: 120px;
   display: flex;
   align-items: center;
   gap: 35px;
+  padding: 20px 0;
 }
 
 .选项标签 {
@@ -262,7 +261,7 @@ select:-webkit-autofill:focus {
 #截图生成区 {
   background-color: #1a1a1a;
   margin: 50px auto 0;
-  width: 500px;
+  width: min(100%, 500px);
   padding: 25px 20px;
   display: flex;
   flex-direction: column;
@@ -369,4 +368,36 @@ select:-webkit-autofill:focus {
 #截图生成区[浅色模式] .内容区 {
   background-color: #fff;
   color: black;
+}
+
+@media screen and (width < 950px) {
+  #信息提供区 {
+    padding: 25px 0;
+  }
+
+  .信息输入区 {
+    justify-content: center;
+    padding: 25px 10px;
+  }
+
+  .标签区 {
+    width: 100%;
+    gap: 8px;
+  }
+
+  .标签 {
+    width: 75px;
+    font-size: 0.9em;
+  }
+
+  .输入框 {
+    width: auto;
+    flex-grow: 1;
+  }
+
+  #选项区 {
+    font-size: 0.9em;
+    flex-direction: column;
+    gap: 25px;
+  }
 }
