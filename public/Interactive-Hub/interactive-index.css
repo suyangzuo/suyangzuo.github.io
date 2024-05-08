@@ -59,18 +59,23 @@ body {
 .中心标题 > span:nth-child(2) {
   animation-delay: var(--中心标题动画持续时间);
 }
+
 .中心标题 > span:nth-child(3) {
   animation-delay: calc(var(--中心标题动画持续时间) * 2);
 }
+
 .中心标题 > span:nth-child(4) {
   animation-delay: calc(var(--中心标题动画持续时间) * 3);
 }
+
 .中心标题 > span:nth-child(5) {
   animation-delay: calc(var(--中心标题动画持续时间) * 4);
 }
+
 .中心标题 > span:nth-child(6) {
   animation-delay: calc(var(--中心标题动画持续时间) * 5);
 }
+
 .中心标题 > span:nth-child(7) {
   animation-delay: calc(var(--中心标题动画持续时间) * 6);
 }
@@ -95,11 +100,12 @@ body {
 
 .交互技术栈 {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   height: 100%;
 }
 
-.Web前端交互页 {
+.交互页 {
   width: 1500px;
   height: fit-content;
   /* outline: solid 1px brown; */
@@ -110,7 +116,7 @@ body {
   gap: 20px;
 }
 
-.Web前端交互页 > h1 {
+.交互页 > h1 {
   padding: 0 10px;
   color: gold;
 }
@@ -122,7 +128,7 @@ body {
   margin: 0 auto;
 }
 
-.Web前端交互列表 {
+.交互列表 {
   max-width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(18%, 1fr));
@@ -257,11 +263,11 @@ body {
     width: 100%;
   }
 
-  .Web前端交互页 {
+  .交互页 {
     width: 97.5%;
   }
 
-  .Web前端交互列表 {
+  .交互列表 {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
   }

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>对象匹配</title>
+    <link
+      rel="icon"
+      href="/Images/Interactive-Hub/HQ/冒泡排序法.png"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="/Styles/common.css" />
+    <link rel="stylesheet" href="/Styles/top-banner-common.css" />
+    <link rel="stylesheet" href="../control.css" />
+    <link rel="stylesheet" href="../interactive-common.css" />
+    <link rel="stylesheet" href="./Bubble-Sort.css" />
+    <script src="/Scripts/top-banner.js" defer></script>
+    <script
+      src="https://kit.fontawesome.com/d0483e3bd3.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./Bubble-Sort.js" defer></script>
+  </head>
+  <body>
+    <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
+    <script
+      src="../../Scripts/html-include.js"
+      target="../../top-banner.html"
+      position="afterbegin"
+    ></script>
+    <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
+
+    <section class="对象匹配总区 总区">
+      <script
+        src="../../Scripts/html-include.js"
+        target="../control.html"
+        position="afterbegin"
+      ></script>
+      <p class="交互标题">冒泡排序法</p>
+      <section id="冒泡排序区">
+        <div class="数字区"></div>
+        <div class="控制区">
+          <div class="设置区">
+            <label class="动画速率标签" for="动画速率">
+              <span class="标签文本">动画速率</span>
+              <input type="range" min="1" max="4" value="1" id="动画速率" />
+              <span id="动画速率数值">1</span>
+            </label>
+            <button id="开始运行">开始运行</button>
+          </div>
+          <div class="代码演示区">
+            <p class="外循环区">
+              <span class="循环文本">外循环</span>
+              <span class="外循环索引">i</span>
+              <span class="等号">=</span>
+              <span class="外循环索引数字"></span>
+              <span class="外循环轮"
+                >第<span class="外循环轮数字"></span>轮</span
+              >
+            </p>
+          </div>
+        </div>
+      </section>
+    </section>
+  </body>
+</html>

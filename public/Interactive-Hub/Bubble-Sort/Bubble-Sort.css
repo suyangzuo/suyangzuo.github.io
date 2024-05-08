@@ -1,0 +1,257 @@
+:root {
+  --进度条颜色-已填充: rgb(41, 126, 78);
+  --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
+  --拇指宽度: 16px;
+  --进度-X轴: 50%;
+  --进度-Y轴: 50%;
+  --数字宽度: 50px;
+  --数字高度: 50px;
+  --数字间隙: 20px;
+  --数字过渡时长: 500ms;
+}
+
+.总区 {
+  gap: 150px;
+}
+
+#冒泡排序区 {
+  height: 500px;
+  width: 900px;
+}
+
+.数字区 {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: var(--数字间隙);
+  height: 150px;
+  width: calc(var(--数字宽度) * 10 + var(--数字间隙) * 9);
+  position: relative;
+  margin: 0 auto;
+}
+
+.数字 {
+  width: var(--数字宽度);
+  height: var(--数字高度);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: solid 2px #888;
+  position: absolute;
+  transition: var(--数字过渡时长);
+}
+
+.数字.操作中数字 {
+  border: solid 2px lightgreen;
+  background-color: rgb(79, 90, 101);
+}
+
+.数字.已确定数字 {
+  background-color: brown;
+  color: white;
+  border: gold;
+}
+
+.数字索引 {
+  position: absolute;
+  bottom: calc(var(--数字高度) + 5px);
+  font-family: consolas, monospace;
+  color: #888;
+  font-size: 0.9em;
+}
+
+.左数字索引,
+.右数字索引 {
+  position: absolute;
+  bottom: calc(var(--数字高度) + 30px);
+  font-family: consolas, monospace;
+  color: lightskyblue;
+  opacity: 0;
+  transition: 250ms;
+}
+
+.左数字索引 {
+  left: 0;
+  translate: calc(var(--数字宽度) * 0.5 - 50%);
+}
+
+.右数字索引 {
+  left: 0;
+  translate: calc(var(--数字宽度) * 1.5 + var(--数字间隙) - 50%);
+}
+
+.控制区 {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 50px;
+}
+
+.设置区 {
+  width: 50%;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+}
+
+.动画速率标签 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.标签文本 {
+  padding: 5px;
+}
+
+#动画速率数值 {
+  width: 30px;
+  height: fit-content;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#开始运行 {
+  width: 100px;
+  height: 35px;
+  border-radius: 500px;
+  background-color: rgb(83, 95, 107);
+  color: white;
+  border: none;
+  transition: 250ms;
+}
+
+#开始运行:hover {
+  background-color: rgb(104, 122, 139);
+  cursor: pointer;
+}
+
+#开始运行:active {
+  background-color: rgb(124, 141, 159);
+}
+
+.代码演示区 {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.外循环区,
+.内循环区 {
+  display: flex;
+  align-items: center;
+}
+
+.外循环区 {
+  background-color: rgb(62, 137, 102);
+  padding: 10px 20px;
+  border-radius: 10px;
+}
+
+.内循环区 {
+  font-size: 0.9rem;
+}
+
+.循环文本 {
+  width: 75px;
+  padding: 5px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #545454;
+  border-radius: 500px;
+  margin-right: 10px;
+}
+
+.内循环区 .循环文本 {
+  color: #bbb;
+}
+
+.等号 {
+  width: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: lightblue;
+}
+
+.外循环索引,
+.外循环索引数字,
+.内循环索引,
+.内循环索引数字 {
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(117, 94, 61);
+  border-radius: 5px;
+  font-family: consolas, monospace;
+}
+
+.外循环索引,
+.内循环索引 {
+  color: #bbb;
+}
+
+.内循环索引,
+.内循环索引数字 {
+  background-color: #465d21;
+}
+
+.外循环区.外循环数字动画 {
+  animation: 外循环数字动画 0.75s ease-out;
+}
+
+@keyframes 外循环数字动画 {
+  0% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.5;
+  }
+  100% {
+    scale: 1;
+  }
+}
+
+.外循环轮,
+.内循环轮 {
+  width: 75px;
+  height: 30px;
+  border-radius: 5px;
+  margin-left: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: consolas, monospace, "微软雅黑", sans-serif;
+}
+
+.内循环轮 {
+  color: #bbb;
+}
+
+.外循环轮数字,
+.内循环轮数字 {
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(118, 202, 105);
+  background-color: rgb(44, 78, 141);
+  margin: 0 5px;
+}
+
+.内循环轮数字 {
+  color: gold;
+  background-color: rgb(57, 94, 162);
+}
