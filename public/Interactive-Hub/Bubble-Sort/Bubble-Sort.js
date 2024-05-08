@@ -81,8 +81,10 @@ if (localStorage.getItem("动画速率") === null) {
       await sleep(交换前等待时长);
 
       if (前一数字 > 后一数字) {
+        if (!排序过程正在运行) return; //修复重置后仍然交换元素位置与索引
         生成动画_交换(数字组[j], 数字组[j + 1]);
         await sleep(交换动画时长);
+        if (!排序过程正在运行) return; //修复重置后仍然交换元素位置与索引
         数字组[j].before(数字组[j + 1]);
       }
       await sleep(交换后等待时长);
