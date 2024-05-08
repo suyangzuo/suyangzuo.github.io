@@ -107,6 +107,10 @@
   padding: 5px;
 }
 
+#动画速率:hover {
+  cursor: url("/Images/Common/鼠标-横向缩放.png"), ew-resize;
+}
+
 #动画速率数值 {
   width: 30px;
   height: fit-content;
