@@ -53,14 +53,16 @@ if (localStorage.getItem("动画速率") === null) {
   排序过程正在运行 = true;
   const 左数字索引 = 数字区.querySelector(".左数字索引");
   const 右数字索引 = 数字区.querySelector(".右数字索引");
-  左数字索引.style.opacity = "1";
-  右数字索引.style.opacity = "1";
   for (let i = 0; i < 数字组.length - 1; i++) {
     if (!排序过程正在运行) return;
     设置外循环轮数字(i);
     左数字索引.style.translate = `calc(${数字宽度} * 0.5 - 50%)`;
     右数字索引.style.translate = `calc(${数字宽度} * 1.5 + ${数字间隙} - 50%)`;
     await sleep(大循环间隔时长);
+    if (排序过程正在运行) {
+      左数字索引.style.opacity = "1";
+      右数字索引.style.opacity = "1";
+    }
 
     for (let j = 0; j < 数字组.length - 1 - i; j++) {
       if (!排序过程正在运行) return;
@@ -117,24 +119,10 @@ function 设置动画速率(速率) {
   本次数字恢复到下次数字变色时长 = 原始本次数字恢复到下次数字变色时长 / 速率;
   两轮之间等待时长 = 原始两轮之间等待时长 / 速率;
   动画速率数值.textContent = `×${速率}`;
-  switch (速率) {
-    case 1:
-      交换动画时长 = 500;
-      大循环间隔时长 = 2000;
-      break;
-    case 2:
-      交换动画时长 = 400;
-      大循环间隔时长 = 1666;
-      break;
-    case 3:
-      交换动画时长 = 300;
-      大循环间隔时长 = 1333;
-      break;
-    case 4:
-      交换动画时长 = 250;
-      大循环间隔时长 = 1000;
-      break;
-  }
+
+  交换动画时长 = 500 - 80 * (速率 - 1);
+  大循环间隔时长 = 2000 - 333 * (速率 - 1);
+
   数字过渡时长 = 交换动画时长;
   root.style.setProperty("--数字过渡时长", `${数字过渡时长}ms`);
 }
