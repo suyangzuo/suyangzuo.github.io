@@ -89,15 +89,12 @@
 
 .设置区 {
   width: 50%;
+  height: 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 15px;
-}
-
-label {
-  user-select: none;
+  gap: 25px;
 }
 
 .动画速率标签 {
@@ -122,58 +119,19 @@ label {
   align-items: center;
 }
 
-.排列顺序标签 {
-  display: flex;
-  align-items: center;
-}
-
-.排列顺序标签:hover {
-  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
-}
-
-input[type="checkbox"] {
-  position: relative;
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  border: solid 1px #888;
-  background-color: #32435a;
-  transition: 250ms;
-}
-
-label:hover > input[type="checkbox"] {
-  background-color: #475b78;
-  border: solid 1px #bbb;
-}
-
-input[type="checkbox"]:hover {
-  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
-}
-
-input[type="checkbox"]:checked::before {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  translate: -50% -50%;
-  content: "\2713";
-  font-weight: bolder;
-  color: lightgreen;
-}
-
 #开始运行 {
-  width: 110px;
-  height: 40px;
+  width: 100px;
+  height: 35px;
   border-radius: 500px;
   background-color: rgb(83, 95, 107);
   color: white;
-  font-size: 0.95rem;
   border: none;
   transition: 250ms;
 }
 
 #开始运行:hover {
   background-color: rgb(104, 122, 139);
-  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  cursor: pointer;
 }
 
 #开始运行:active {
@@ -217,7 +175,7 @@ input[type="checkbox"]:checked::before {
 }
 
 .内循环区 .循环文本 {
-  color: #ccc;
+  color: #bbb;
 }
 
 .等号 {

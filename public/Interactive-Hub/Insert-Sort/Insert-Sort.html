@@ -4,23 +4,23 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>冒泡排序法</title>
+    <title>插入排序法</title>
     <link
       rel="icon"
-      href="/Images/Interactive-Hub/HQ/冒泡排序法.png"
+      href="/Images/Interactive-Hub/HQ/插入排序法.png"
       type="image/x-icon"
     />
     <link rel="stylesheet" href="/Styles/common.css" />
     <link rel="stylesheet" href="/Styles/top-banner-common.css" />
     <link rel="stylesheet" href="../control.css" />
     <link rel="stylesheet" href="../interactive-common.css" />
-    <link rel="stylesheet" href="./Bubble-Sort.css" />
+    <link rel="stylesheet" href="./Insert-Sort.css" />
     <script src="/Scripts/top-banner.js" defer></script>
     <script
       src="https://kit.fontawesome.com/d0483e3bd3.js"
       crossorigin="anonymous"
     ></script>
-    <script src="./Bubble-Sort.js" defer></script>
+    <script src="./Insert-Sort.js" defer></script>
   </head>
   <body>
     <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
@@ -37,7 +37,7 @@
         target="../control.html"
         position="afterbegin"
       ></script>
-      <p class="交互标题">冒泡排序法</p>
+      <p class="交互标题">插入排序法</p>
       <section id="冒泡排序区">
         <div class="数字区"></div>
         <div class="控制区">
@@ -46,10 +46,6 @@
               <span class="标签文本">动画速率</span>
               <input type="range" min="1" max="4" value="1" id="动画速率" />
               <span id="动画速率数值">×1</span>
-            </label>
-            <label class="排列顺序标签" for="排列顺序">
-              <span class="标签文本">升序</span>
-              <input type="checkbox" checked id="排列顺序" />
             </label>
             <button id="开始运行">开始运行</button>
           </div>

@@ -59,6 +59,8 @@ if (localStorage.getItem("动画速率") === null) {
 排列顺序.addEventListener("input", (event) => {
   localStorage.setItem("升序排列", 排列顺序.checked);
   升序排列 = 排列顺序.checked;
+  const 索引记录者类型 = 数字区.querySelector(".索引记录者类型");
+  索引记录者类型.textContent = 升序排列 ? "最小数索引" : "最大数索引";
 });
 
 动画速率.addEventListener("input", () => {
@@ -177,6 +179,13 @@ function 初始化数字() {
   左数字索引.className = "左数字索引";
   右数字索引.className = "右数字索引";
   数字区.append(左数字索引, 右数字索引);
+
+  const 索引记录者 = document.createElement("span");
+  索引记录者.className = "索引记录者";
+  const 索引记录者类型 = document.createElement("span");
+  索引记录者类型.className = "索引记录者类型";
+  索引记录者类型.textContent = 升序排列 ? "最小数索引" : "最大数索引";
+  数字区.append(索引记录者, 索引记录者类型);
 }
 
 function 生成动画_交换(左数字, 右数字) {

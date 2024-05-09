@@ -22,9 +22,9 @@
 .数字区 {
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
   gap: var(--数字间隙);
-  height: 150px;
+  height: 250px;
   width: calc(var(--数字宽度) * 10 + var(--数字间隙) * 9);
   position: relative;
   margin: 0 auto;
@@ -38,6 +38,7 @@
   align-items: center;
   border: solid 2px #888;
   position: absolute;
+  top: 25px;
   transition: var(--数字过渡时长);
 }
 
@@ -54,7 +55,7 @@
 
 .数字索引 {
   position: absolute;
-  bottom: calc(var(--数字高度) + 5px);
+  top: calc(25px + 60px);
   font-family: consolas, monospace;
   color: #888;
   font-size: 0.9em;
@@ -78,6 +79,22 @@
 .右数字索引 {
   left: 0;
   translate: calc(var(--数字宽度) * 1.5 + var(--数字间隙) - 50%);
+}
+
+.索引记录者 {
+  width: 45px;
+  height: 45px;
+  border: solid 1px lightcoral;
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  translate: -50% 0;
+}
+
+.索引记录者类型 {
+  position: absolute;
+  bottom: 0;
+  color: #abc;
 }
 
 .控制区 {
