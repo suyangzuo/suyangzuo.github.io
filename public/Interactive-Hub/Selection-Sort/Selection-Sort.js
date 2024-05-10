@@ -4,6 +4,7 @@ const 代码演示区 = document.querySelector(".代码演示区");
 const 动画速率 = document.getElementById("动画速率");
 const 动画速率数值 = document.getElementById("动画速率数值");
 const 排列顺序 = document.getElementById("排列顺序");
+const 播放音效复选框 = document.getElementById("播放音效");
 const 开始按钮 = document.getElementById("开始运行");
 const root = document.querySelector(":root");
 const rootStyle = window.getComputedStyle(root);
@@ -14,12 +15,23 @@ const 延时函数池 = [];
 const 重置按钮 = document.querySelector(".重置按钮");
 const 数字数量 = 10;
 
+const checkedAudio = new Audio("/Audios/Checked.mp3");
+const uncheckedAudio = new Audio("/Audios/Unchecked.mp3");
+
 if (localStorage.getItem("升序排列") === null) {
   localStorage.setItem("升序排列", 排列顺序.checked);
 } else {
   排列顺序.checked = JSON.parse(localStorage.getItem("升序排列"));
 }
+
+if (localStorage.getItem("播放音效") === null) {
+  localStorage.setItem("播放音效", 播放音效复选框.checked);
+} else {
+  播放音效复选框.checked = JSON.parse(localStorage.getItem("播放音效"));
+}
+
 let 升序排列 = 排列顺序.checked;
+let 播放音效 = 播放音效复选框.checked;
 
 let 排序过程正在运行 = false;
 
@@ -42,6 +54,10 @@ const 数字组 = 数字区.getElementsByClassName("数字");
 
 初始化数字();
 
+const 数字索引组 = document.getElementsByClassName("数字索引");
+const 索引记录者 = 数字区.querySelector(".索引记录者");
+const 索引记录者样式 = window.getComputedStyle(索引记录者);
+
 if (localStorage.getItem("动画速率") === null) {
   localStorage.setItem("动画速率", 动画速率.value);
 } else {
@@ -63,6 +79,11 @@ if (localStorage.getItem("动画速率") === null) {
   索引记录者类型.textContent = 升序排列 ? "最小数索引" : "最大数索引";
 });
 
+播放音效复选框.addEventListener("input", (event) => {
+  localStorage.setItem("播放音效", 播放音效复选框.checked);
+  播放音效 = 播放音效复选框.checked;
+});
+
 动画速率.addEventListener("input", () => {
   设置动画速率(parseInt(动画速率.value, 10));
   localStorage.setItem("动画速率", 动画速率.value);
@@ -71,31 +92,52 @@ if (localStorage.getItem("动画速率") === null) {
 开始按钮.addEventListener("click", async () => {
   if (排序过程正在运行) return;
   排序过程正在运行 = true;
-  const 左数字索引 = 数字区.querySelector(".左数字索引");
-  const 右数字索引 = 数字区.querySelector(".右数字索引");
+  const i索引 = 数字区.querySelector(".i索引");
+  const j索引 = 数字区.querySelector(".j索引");
   for (let i = 0; i < 数字组.length - 1; i++) {
     if (!排序过程正在运行) return;
     设置外循环轮数字(i);
-    左数字索引.style.translate = `calc(${数字宽度} * 0.5 - 50%)`;
-    右数字索引.style.translate = `calc(${数字宽度} * 1.5 + ${数字间隙} - 50%)`;
+    i索引.style.translate = `calc(${数字宽度} * 0.5 - 50%)`;
+    j索引.style.translate = `calc(${数字宽度} * 1.5 + ${数字间隙} - 50%)`;
+
+    const i索引副本 = document.createElement("p");
+    i索引副本.className = "数字索引";
+    i索引副本.style.left = 数字索引组[i].style.left;
+    i索引副本.style.translate = 数字索引组[i].style.translate;
+    i索引副本.style.color = "gold";
+    i索引副本.textContent = `${i}`;
+    数字区.appendChild(i索引副本);
+
     await sleep(大循环间隔时长);
     if (排序过程正在运行) {
-      左数字索引.style.opacity = "1";
-      右数字索引.style.opacity = "1";
+      i索引.style.opacity = "1";
+      j索引.style.opacity = "1";
     }
+
+    i索引副本.style.scale = "2.5";
+
+    await sleep(交换前等待时长);
+
+    i索引副本.style.top = 索引记录者样式.top;
+    console.log(索引记录者样式.top);
+    i索引副本.style.left = 索引记录者样式.left;
+    i索引副本.style.translate = "-50% 75%";
+    await sleep(数字过渡时长);
+    i索引副本.remove();
+    索引记录者.textContent = `${i}`;
 
     for (let j = 0; j < 数字组.length - 1 - i; j++) {
       if (!排序过程正在运行) return;
-      左数字索引.style.translate = `calc(${数字宽度} * ${
+      i索引.style.translate = `calc(${数字宽度} * ${
         0.5 + j
       } + ${数字间隙} * ${j} - 50%)`;
-      右数字索引.style.translate = `calc(${数字宽度} * ${
-        1.5 + j
-      } + ${数字间隙} * ${j + 1} - 50%)`;
+      j索引.style.translate = `calc(${数字宽度} * ${1.5 + j} + ${数字间隙} * ${
+        j + 1
+      } - 50%)`;
 
       生成内循环区(j);
 
-      数字组[j].classList.add("操作中数字");
+      // 数字组[j].classList.add("操作中数字");
       数字组[j + 1].classList.add("操作中数字");
 
       const 前一数字 = parseInt(数字组[j].textContent, 10);
@@ -107,10 +149,13 @@ if (localStorage.getItem("动画速率") === null) {
         (!升序排列 && 前一数字 < 后一数字)
       ) {
         if (!排序过程正在运行) return; //修复重置后仍然交换元素位置与索引
-        生成动画_交换(数字组[j], 数字组[j + 1]);
+        if (播放音效) await checkedAudio.play();
+        // 生成动画_交换(数字组[j], 数字组[j + 1]);
         await sleep(交换动画时长);
         if (!排序过程正在运行) return; //修复重置后仍然交换元素位置与索引
         数字组[j].before(数字组[j + 1]);
+      } else {
+        if (播放音效) await uncheckedAudio.play();
       }
       await sleep(交换后等待时长);
 
@@ -172,13 +217,13 @@ function 初始化数字() {
       0.5 + i
     } + ${数字间隙} * ${i}) - 50%) 0`;
   }
-  const 左数字索引 = document.createElement("p");
-  const 右数字索引 = document.createElement("p");
-  左数字索引.textContent = "j";
-  右数字索引.textContent = "j+1";
-  左数字索引.className = "左数字索引";
-  右数字索引.className = "右数字索引";
-  数字区.append(左数字索引, 右数字索引);
+  const i索引 = document.createElement("p");
+  const j索引 = document.createElement("p");
+  i索引.textContent = "i";
+  j索引.textContent = "j";
+  i索引.className = "i索引";
+  j索引.className = "j索引";
+  数字区.append(i索引, j索引);
 
   const 索引记录者 = document.createElement("span");
   索引记录者.className = "索引记录者";

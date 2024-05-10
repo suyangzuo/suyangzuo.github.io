@@ -4,6 +4,7 @@ const 代码演示区 = document.querySelector(".代码演示区");
 const 动画速率 = document.getElementById("动画速率");
 const 动画速率数值 = document.getElementById("动画速率数值");
 const 排列顺序 = document.getElementById("排列顺序");
+const 播放音效复选框 = document.getElementById("播放音效");
 const 开始按钮 = document.getElementById("开始运行");
 const root = document.querySelector(":root");
 const rootStyle = window.getComputedStyle(root);
@@ -14,12 +15,23 @@ const 延时函数池 = [];
 const 重置按钮 = document.querySelector(".重置按钮");
 const 数字数量 = 10;
 
+const checkedAudio = new Audio("/Audios/Checked.mp3");
+const uncheckedAudio = new Audio("/Audios/Unchecked.mp3");
+
 if (localStorage.getItem("升序排列") === null) {
   localStorage.setItem("升序排列", 排列顺序.checked);
 } else {
   排列顺序.checked = JSON.parse(localStorage.getItem("升序排列"));
 }
+
+if (localStorage.getItem("播放音效") === null) {
+  localStorage.setItem("播放音效", 播放音效复选框.checked);
+} else {
+  播放音效复选框.checked = JSON.parse(localStorage.getItem("播放音效"));
+}
+
 let 升序排列 = 排列顺序.checked;
+let 播放音效 = 播放音效复选框.checked;
 
 let 排序过程正在运行 = false;
 
@@ -61,6 +73,11 @@ if (localStorage.getItem("动画速率") === null) {
   升序排列 = 排列顺序.checked;
 });
 
+播放音效复选框.addEventListener("input", (event) => {
+  localStorage.setItem("播放音效", 播放音效复选框.checked);
+  播放音效 = 播放音效复选框.checked;
+});
+
 动画速率.addEventListener("input", () => {
   设置动画速率(parseInt(动画速率.value, 10));
   localStorage.setItem("动画速率", 动画速率.value);
@@ -98,17 +115,20 @@ if (localStorage.getItem("动画速率") === null) {
 
       const 前一数字 = parseInt(数字组[j].textContent, 10);
       const 后一数字 = parseInt(数字组[j + 1].textContent, 10);
-      await sleep(交换前等待时长);
 
+      await sleep(交换前等待时长);
       if (
         (升序排列 && 前一数字 > 后一数字) ||
         (!升序排列 && 前一数字 < 后一数字)
       ) {
         if (!排序过程正在运行) return; //修复重置后仍然交换元素位置与索引
+        if (播放音效) await checkedAudio.play();
         生成动画_交换(数字组[j], 数字组[j + 1]);
         await sleep(交换动画时长);
         if (!排序过程正在运行) return; //修复重置后仍然交换元素位置与索引
         数字组[j].before(数字组[j + 1]);
+      } else {
+        if (播放音效) await uncheckedAudio.play();
       }
       await sleep(交换后等待时长);
 

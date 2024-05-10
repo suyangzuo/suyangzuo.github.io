@@ -122,12 +122,19 @@ label {
   align-items: center;
 }
 
-.排列顺序标签 {
+.复选区 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.复选区 > label {
   display: flex;
   align-items: center;
 }
 
-.排列顺序标签:hover {
+.复选区 > label:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
