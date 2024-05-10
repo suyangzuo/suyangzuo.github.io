@@ -38,8 +38,14 @@
   align-items: center;
   border: solid 2px #888;
   position: absolute;
+  z-index: 1;
   top: 25px;
   transition: var(--数字过渡时长);
+}
+
+.数字.比较对象数字 {
+  border: solid 2px #c23671;
+  background-color: rgb(42, 64, 91);
 }
 
 .数字.操作中数字 {
@@ -53,6 +59,30 @@
   border: gold;
 }
 
+.比较对象外框 {
+  position: absolute;
+  z-index: 2;
+  top: 25px;
+  left: 0;
+  width: var(--数字宽度);
+  height: var(--数字高度);
+  border: solid 2px #c23671;
+  opacity: 0;
+  transition: var(--数字过渡时长);
+}
+
+.比较对象底色 {
+  position: absolute;
+  z-index: 0;
+  top: 25px;
+  left: 0;
+  width: var(--数字宽度);
+  height: var(--数字高度);
+  background-color: rgb(42, 64, 91);
+  opacity: 0;
+  transition: var(--数字过渡时长);
+}
+
 .数字索引 {
   position: absolute;
   top: calc(25px + 60px);
@@ -62,11 +92,21 @@
   transition: var(--数字过渡时长);
 }
 
+.i索引副本 {
+  top: 0;
+  left: 0;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .i索引,
 .j索引 {
   position: absolute;
   font-family: consolas, monospace;
-  opacity: 1;
+  opacity: 0;
   transition: 250ms;
 }
 
@@ -74,11 +114,11 @@
   top: -10px;
   left: 0;
   translate: calc(var(--数字宽度) * 0.5 - 50%);
-  color: #222;
+  color: white;
   width: 25px;
   height: 25px;
   border-radius: 500px;
-  background-color: lightsteelblue;
+  background-color: #456;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -86,10 +126,12 @@
 }
 
 .j索引 {
-  top: calc(var(--数字高度) + 60px);
+  font-size: 1.2rem;
+  font-weight: bold;
   left: 0;
-  translate: calc(var(--数字宽度) * 1.5 + var(--数字间隙) - 50%);
-  color: lightskyblue;
+  bottom: 49%;
+  translate: calc(var(--数字宽度) / 2 - 50%) 0;
+  color: #a6ddff;
 }
 
 .索引记录者 {
@@ -97,9 +139,9 @@
   height: 45px;
   border: solid 1px lightcoral;
   position: absolute;
-  bottom: 30px;
-  left: 50%;
-  translate: -50% 0;
+  left: 0;
+  top: 0;
+  translate: calc(var(--数字宽度) * 5 + var(--数字间隙) * 4.5 - 50%) 175px;
   font-size: calc(0.9em * 2.5);
   display: flex;
   justify-content: center;
