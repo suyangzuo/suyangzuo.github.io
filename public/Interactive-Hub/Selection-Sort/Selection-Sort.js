@@ -102,13 +102,13 @@ if (localStorage.getItem("动画速率") === null) {
     let recorderIndex = i;
     let preRecorderIndex = recorderIndex;
     设置外循环轮数字(i);
-    await sleep(1000);
     i索引.style.translate = `calc(${数字宽度} * ${
       0.5 + i
     } + ${数字间隙} * ${i} - 50%)`;
     j索引.style.translate = `calc(${数字宽度} * ${1.5 + i} + ${数字间隙} * ${
       i + 1
     } - 50%)`;
+    await sleep(1000);
     比较对象外框.style.translate = 数字组[i].style.translate;
     比较对象底色.style.translate = 数字组[i].style.translate;
 
@@ -120,13 +120,15 @@ if (localStorage.getItem("动画速率") === null) {
     await sleep(大循环间隔时长);
 
     i索引副本.style.scale = "2.5";
-    比较对象外框.style.opacity = "1";
-    比较对象底色.style.opacity = "1";
 
     await sleep(交换前等待时长);
 
     i索引副本.style.translate = 索引记录者样式.translate;
+    比较对象外框.style.opacity = "1";
+    比较对象底色.style.opacity = "1";
+
     await sleep(数字过渡时长);
+
     i索引副本.remove();
     索引记录者.textContent = `${i}`;
 
@@ -176,7 +178,7 @@ if (localStorage.getItem("动画速率") === null) {
         await sleep(交换后等待时长);
       }
       数字组[j].classList.remove("操作中数字");
-      await sleep(本次数字恢复到下次数字变色时长 * 2);
+      await sleep(本次数字恢复到下次数字变色时长 * 1.5);
     }
 
     if (recorderIndex !== i) {
