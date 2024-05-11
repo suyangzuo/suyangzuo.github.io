@@ -50,13 +50,18 @@
 
 .数字.操作中数字 {
   border: solid 2px lightgreen;
-  background-color: rgb(79, 90, 101);
+  background-color: rgb(60, 87, 121);
 }
 
 .数字.已确定数字 {
   background-color: brown;
   color: white;
   border: gold;
+}
+
+.数字.交换中数字 {
+  background-color: rgb(42, 64, 91);
+  border: solid 2px deepskyblue;
 }
 
 .比较对象外框 {

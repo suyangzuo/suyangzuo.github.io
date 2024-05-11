@@ -103,8 +103,12 @@ if (localStorage.getItem("动画速率") === null) {
     let preRecorderIndex = recorderIndex;
     设置外循环轮数字(i);
     await sleep(1000);
-    i索引.style.translate = `calc(${数字宽度} * ${0.5 + i} + ${数字间隙} * ${i} - 50%)`;
-    j索引.style.translate = `calc(${数字宽度} * ${1.5 + i} + ${数字间隙} * ${i + 1} - 50%)`;
+    i索引.style.translate = `calc(${数字宽度} * ${
+      0.5 + i
+    } + ${数字间隙} * ${i} - 50%)`;
+    j索引.style.translate = `calc(${数字宽度} * ${1.5 + i} + ${数字间隙} * ${
+      i + 1
+    } - 50%)`;
     比较对象外框.style.translate = 数字组[i].style.translate;
     比较对象底色.style.translate = 数字组[i].style.translate;
 
@@ -134,12 +138,12 @@ if (localStorage.getItem("动画速率") === null) {
     await sleep(两轮之间等待时长);
     for (let j = i + 1; j < 数字组.length; j++) {
       if (!排序过程正在运行) return;
-      j索引.style.translate = `calc(${数字宽度} * ${0.5 + j} + ${数字间隙} * ${j} - 50%)`;
+      j索引.style.translate = `calc(${数字宽度} * ${
+        0.5 + j
+      } + ${数字间隙} * ${j} - 50%)`;
 
       生成内循环区(j);
 
-      比较对象外框.style.translate = 数字组[recorderIndex].style.translate;
-      比较对象底色.style.translate = 数字组[recorderIndex].style.translate;
       await sleep(交换动画时长);
       // 数字组[recorderIndex].classList.add("比较对象数字");
       数字组[j].classList.add("操作中数字");
@@ -158,35 +162,37 @@ if (localStorage.getItem("动画速率") === null) {
         const j索引副本 = 生成索引副本(j);
         j索引副本.style.scale = "2.5";
         if (播放音效) await checkedAudio.play();
-        // 生成动画_交换(数字组[j], 数字组[j + 1]);
         await sleep(交换动画时长);
         if (!排序过程正在运行) return; //修复重置后仍然交换元素位置与索引
         j索引副本.style.translate = 索引记录者样式.translate;
+        比较对象外框.style.translate = 数字组[recorderIndex].style.translate;
+        比较对象底色.style.translate = 数字组[recorderIndex].style.translate;
         await sleep(数字过渡时长);
         j索引副本.remove();
         索引记录者.textContent = `${j}`;
         // 数字组[preRecorderIndex].classList.remove("比较对象数字");
       } else {
         if (播放音效) await uncheckedAudio.play();
+        await sleep(交换后等待时长);
       }
-      await sleep(交换后等待时长);
-
       数字组[j].classList.remove("操作中数字");
-      await sleep(本次数字恢复到下次数字变色时长);
+      await sleep(本次数字恢复到下次数字变色时长 * 2);
     }
 
     if (recorderIndex !== i) {
-      生成动画_交换(数字组[i], 数字组[recorderIndex]);
+      await 生成动画_交换(数字组[i], 数字组[recorderIndex]);
       await sleep(交换动画时长);
       数字组[recorderIndex].after(数字组[i]);
       数字组[i].before(数字组[recorderIndex - 1]);
+      数字组[recorderIndex].classList.remove("交换中数字");
+      数字组[i].classList.remove("交换中数字");
     }
     await sleep(交换后等待时长);
     数字组[i].classList.add("已确定数字");
     索引记录者.textContent = "";
     比较对象外框.style.opacity = "0";
     比较对象底色.style.opacity = "0";
-    await sleep(两轮之间等待时长);
+    await sleep(两轮之间等待时长 < 1000 ? 1000 : 两轮之间等待时长);
     for (const 内循环区 of 内循环池) {
       内循环区.remove();
     }
@@ -273,7 +279,11 @@ function 生成索引副本(索引) {
   return 索引副本;
 }
 
-function 生成动画_交换(左数字, 右数字) {
+async function 生成动画_交换(左数字, 右数字) {
+  左数字.classList.add("交换中数字");
+  右数字.classList.add("交换中数字");
+  await sleep(交换前等待时长);
+
   const 临时索引 = 左数字.getAttribute("索引");
   左数字.setAttribute("索引", 右数字.getAttribute("索引"));
   右数字.setAttribute("索引", 临时索引);
