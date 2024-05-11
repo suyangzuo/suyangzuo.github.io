@@ -97,7 +97,7 @@
   transition: var(--数字过渡时长);
 }
 
-.i索引副本 {
+.索引副本 {
   top: 0;
   left: 0;
   width: 45px;
@@ -105,6 +105,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.数字索引.索引副本 {
+  transition: calc(var(--数字过渡时长) * 1.5);
+  color: gold;
 }
 
 .i索引,
