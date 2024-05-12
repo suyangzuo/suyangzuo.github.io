@@ -108,7 +108,7 @@ if (localStorage.getItem("动画速率") === null) {
     j索引.style.translate = `calc(${数字宽度} * ${1.5 + i} + ${数字间隙} * ${
       i + 1
     } - 50%)`;
-    await sleep(1000);
+    await sleep(大循环间隔时长);
     比较对象外框.style.translate = 数字组[i].style.translate;
     比较对象底色.style.translate = 数字组[i].style.translate;
 
@@ -178,7 +178,7 @@ if (localStorage.getItem("动画速率") === null) {
         await sleep(交换后等待时长);
       }
       数字组[j].classList.remove("操作中数字");
-      await sleep(本次数字恢复到下次数字变色时长 * 1.5);
+      await sleep(本次数字恢复到下次数字变色时长);
     }
 
     if (recorderIndex !== i) {
@@ -194,7 +194,7 @@ if (localStorage.getItem("动画速率") === null) {
     索引记录者.textContent = "";
     比较对象外框.style.opacity = "0";
     比较对象底色.style.opacity = "0";
-    await sleep(两轮之间等待时长 < 1000 ? 1000 : 两轮之间等待时长);
+    await sleep(两轮之间等待时长);
     for (const 内循环区 of 内循环池) {
       内循环区.remove();
     }
@@ -220,6 +220,9 @@ function 设置动画速率(速率) {
   大循环间隔时长 = 2000 - 333 * (速率 - 1);
 
   数字过渡时长 = 交换动画时长;
+
+  const j索引 = 数字区.querySelector(".j索引");
+  j索引.style.transition = `${500 - 100 * (速率 - 1)}ms`;
   root.style.setProperty("--数字过渡时长", `${数字过渡时长}ms`);
 }
 
