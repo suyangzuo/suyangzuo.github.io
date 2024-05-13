@@ -1,5 +1,6 @@
 const 冒泡排序区 = document.getElementById("冒泡排序区");
 const 数字区 = 冒泡排序区.querySelector(".数字区");
+const 控制区 = 冒泡排序区.querySelector(".控制区");
 const 代码演示区 = document.querySelector(".代码演示区");
 const 动画速率 = document.getElementById("动画速率");
 const 动画速率数值 = document.getElementById("动画速率数值");
@@ -30,13 +31,14 @@ if (localStorage.getItem("播放音效") === null) {
   播放音效复选框.checked = JSON.parse(localStorage.getItem("播放音效"));
 }
 
+const 排列顺序标签 = 控制区.querySelector(".排列顺序标签");
 let 升序排列 = 排列顺序.checked;
 let 播放音效 = 播放音效复选框.checked;
 
 let 排序过程正在运行 = false;
 
 const 原始数字过渡时长 = parseInt(rootStyle.getPropertyValue("--数字过渡时长"));
-const 原始交换动画时长 = 500;
+const 原始交换动画时长 = 1000;
 const 原始交换前等待时长 = 2000;
 const 原始交换后等待时长 = 2000;
 const 原始本次数字恢复到下次数字变色时长 = 1000;
@@ -90,6 +92,8 @@ if (localStorage.getItem("动画速率") === null) {
 开始按钮.addEventListener("click", async () => {
   if (排序过程正在运行) return;
   排序过程正在运行 = true;
+  屏蔽元素交互(开始按钮);
+  屏蔽元素交互(排列顺序标签);
   const 比较对象外框 = 数字区.querySelector(".比较对象外框");
   const 比较对象底色 = 数字区.querySelector(".比较对象底色");
   const i索引 = 数字区.querySelector(".i索引");
@@ -187,6 +191,8 @@ if (localStorage.getItem("动画速率") === null) {
     }
     内循环池.length = 0;
   }
+  恢复元素交互(排列顺序标签);
+  恢复元素交互(开始按钮);
 });
 
 function sleep(duration) {
@@ -209,7 +215,10 @@ function 设置动画速率(速率) {
     原始两轮之间等待时长 / 速率 < 500 ? 500 : 原始两轮之间等待时长 / 速率;
   动画速率数值.textContent = `×${速率}`;
 
-  交换动画时长 = 500 - 50 * (速率 - 1) < 250 ? 250 : 500 - 50 * (速率 - 1);
+  交换动画时长 =
+    原始交换动画时长 - 100 * (速率 - 1) < 125
+      ? 125
+      : 原始交换动画时长 - 100 * (速率 - 1);
   大循环间隔时长 =
     2000 - 333 * (速率 - 1) < 250 ? 250 : 2000 - 333 * (速率 - 1);
 
@@ -317,6 +326,16 @@ function 设置外循环轮数字(外循环索引数) {
   }, 1000);
 }
 
+function 屏蔽元素交互(元素) {
+  元素.style.pointerEvents = "none";
+  元素.style.filter = "brightness(50%)";
+}
+
+function 恢复元素交互(元素) {
+  元素.style.pointerEvents = "all";
+  元素.style.filter = "brightness(100%)";
+}
+
 function 重置参数() {
   排序过程正在运行 = false;
   const 数字组 = 数字区.querySelectorAll(".数字");
@@ -368,4 +387,7 @@ function 重置参数() {
     动画速率.value = localStorage.getItem("动画速率");
     设置动画速率(parseInt(动画速率.value, 10));
   }
+
+  恢复元素交互(排列顺序标签);
+  恢复元素交互(开始按钮);
 }

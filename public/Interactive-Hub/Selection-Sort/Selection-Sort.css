@@ -147,7 +147,7 @@
   justify-content: center;
   align-items: center;
   opacity: 0;
-  transition: 375ms;
+  transition: var(--数字过渡时长);
 }
 
 .索引记录框文本 {
@@ -259,6 +259,7 @@ input[type="checkbox"]:checked::before {
   font-size: 0.95rem;
   border: none;
   transition: 250ms;
+  user-select: none;
 }
 
 #开始运行:hover {

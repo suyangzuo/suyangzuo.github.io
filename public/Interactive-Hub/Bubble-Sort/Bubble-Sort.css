@@ -176,6 +176,7 @@ input[type="checkbox"]:checked::before {
   font-size: 0.95rem;
   border: none;
   transition: 250ms;
+  user-select: none;
 }
 
 #开始运行:hover {
