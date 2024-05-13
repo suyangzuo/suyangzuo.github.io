@@ -121,6 +121,7 @@ if (localStorage.getItem("动画速率") === null) {
       const 后一数字 = parseInt(数字组[j + 1].textContent, 10);
 
       await sleep(交换前等待时长);
+      if (!排序过程正在运行) return;
       if (
         (升序排列 && 前一数字 > 后一数字) ||
         (!升序排列 && 前一数字 < 后一数字)
@@ -141,10 +142,12 @@ if (localStorage.getItem("动画速率") === null) {
       数字组[j + 1].classList.remove("操作中数字");
 
       await sleep(本次数字恢复到下次数字变色时长);
+      if (!排序过程正在运行) return;
     }
 
     数字组[数字组.length - 1 - i].classList.add("已确定数字");
     await sleep(两轮之间等待时长);
+    if (!排序过程正在运行) return;
     for (const 内循环区 of 内循环池) {
       内循环区.remove();
     }

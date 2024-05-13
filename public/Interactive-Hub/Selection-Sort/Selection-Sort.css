@@ -93,7 +93,7 @@
 
 .数字索引 {
   position: absolute;
-  top: 70%;
+  top: 65%;
   font-family: consolas, monospace;
   color: #888;
   font-size: 0.9em;
@@ -135,14 +135,12 @@
 .索引记录框 {
   width: var(--数字宽度);
   height: var(--数字高度);
-  border-radius: 999px;
-  scale: 0.6;
-  border: solid 2px gold;
+  /*scale: 0.6;*/
+  border-bottom: solid 2px gold;
   position: absolute;
   left: 0;
-  top: calc(70% - 16px);
-  /*translate: calc(var(--数字宽度) * 5 + var(--数字间隙) * 4.5 - 50%) 175px;*/
-  font-size: calc(0.9em * 2.5);
+  top: calc(65% - 22px);
+  font-size: 1.2em;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -153,7 +151,7 @@
 .索引记录框文本 {
   width: 100%;
   position: absolute;
-  top: calc(100% + 10px);
+  top: calc(100% + 7px);
   left: 0;
   font-size: 0.75em;
   text-wrap: nowrap;

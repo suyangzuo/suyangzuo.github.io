@@ -125,13 +125,15 @@ if (localStorage.getItem("动画速率") === null) {
     比较对象外框.style.opacity = "1";
     比较对象底色.style.opacity = "1";
     数字索引组[i].style.color = "lightgreen";
+    数字索引组[i].style.scale = "1.25";
 
-    await sleep(交换前等待时长);
+    await sleep(两轮之间等待时长);
+    if (!排序过程正在运行) return;
     if (排序过程正在运行) {
       j索引.style.opacity = "1";
     }
 
-    await sleep(交换前等待时长);
+    await sleep(两轮之间等待时长);
     for (let j = i + 1; j < 数字组.length; j++) {
       if (!排序过程正在运行) return;
       j索引.style.translate = `calc(${数字宽度} * ${
@@ -141,17 +143,18 @@ if (localStorage.getItem("动画速率") === null) {
       生成内循环区(j);
 
       await sleep(数字过渡时长);
+      if (!排序过程正在运行) return;
       数字组[j].classList.add("操作中数字");
 
       const 当前记录 = parseInt(数字组[recorderIndex].textContent, 10);
       const 遍历到数字 = parseInt(数字组[j].textContent, 10);
       await sleep(交换前等待时长);
+      if (!排序过程正在运行) return;
 
       if (
         (升序排列 && 当前记录 > 遍历到数字) ||
         (!升序排列 && 当前记录 < 遍历到数字)
       ) {
-        if (!排序过程正在运行) return; //修复重置后仍然交换元素位置与索引
         preRecorderIndex = recorderIndex;
         recorderIndex = j;
         if (播放音效) await checkedAudio.play();
@@ -162,6 +165,7 @@ if (localStorage.getItem("动画速率") === null) {
         比较对象外框.style.translate = 数字组[recorderIndex].style.translate;
         比较对象底色.style.translate = 数字组[recorderIndex].style.translate;
         数字索引组[recorderIndex].style.color = "lightgreen";
+        数字索引组[recorderIndex].style.scale = "1.25";
         await sleep(数字过渡时长);
       } else {
         if (播放音效) await uncheckedAudio.play();
@@ -171,6 +175,7 @@ if (localStorage.getItem("动画速率") === null) {
       await sleep(本次数字恢复到下次数字变色时长);
     }
 
+    if (!排序过程正在运行) return;
     if (recorderIndex !== i) {
       await 生成动画_交换(数字组[i], 数字组[recorderIndex]);
       await sleep(交换动画时长);
@@ -182,6 +187,7 @@ if (localStorage.getItem("动画速率") === null) {
     await sleep(交换后等待时长);
     数字组[i].classList.add("已确定数字");
     数字索引组[recorderIndex].style.color = "#888";
+    数字索引组[recorderIndex].style.scale = "1";
     索引记录框.style.opacity = "0";
     比较对象外框.style.opacity = "0";
     比较对象底色.style.opacity = "0";
