@@ -127,7 +127,6 @@
   font-size: 1.2rem;
   font-weight: bold;
   left: 0;
-  /*bottom: 49%;*/
   translate: calc(var(--数字宽度) / 2 - 50%) 0;
   color: #a6ddff;
 }
@@ -135,11 +134,9 @@
 .索引记录框 {
   width: var(--数字宽度);
   height: var(--数字高度);
-  /*scale: 0.6;*/
-  border-bottom: solid 2px gold;
   position: absolute;
   left: 0;
-  top: calc(65% - 22px);
+  top: calc(65% - 35px);
   font-size: 1.2em;
   display: flex;
   justify-content: center;
@@ -155,7 +152,7 @@
   left: 0;
   font-size: 0.75em;
   text-wrap: nowrap;
-  color: darkgoldenrod;
+  color: goldenrod;
   display: flex;
   justify-content: center;
   align-items: center;
