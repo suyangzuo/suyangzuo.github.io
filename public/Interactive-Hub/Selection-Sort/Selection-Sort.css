@@ -24,7 +24,7 @@
   justify-content: center;
   align-items: center;
   gap: var(--数字间隙);
-  height: 250px;
+  height: 200px;
   width: calc(var(--数字宽度) * 10 + var(--数字间隙) * 9);
   position: relative;
   margin: 0 auto;
@@ -39,7 +39,8 @@
   border: solid 2px #888;
   position: absolute;
   z-index: 1;
-  top: 25px;
+  left: 0;
+  top: 50%;
   transition: var(--数字过渡时长);
 }
 
@@ -67,8 +68,9 @@
 .比较对象外框 {
   position: absolute;
   z-index: 2;
-  top: 25px;
+  top: 50%;
   left: 0;
+  translate: 0 -50%;
   width: var(--数字宽度);
   height: var(--数字高度);
   border: solid 2px #c23671;
@@ -79,7 +81,8 @@
 .比较对象底色 {
   position: absolute;
   z-index: 0;
-  top: 25px;
+  top: 50%;
+  translate: 0 -50%;
   left: 0;
   width: var(--数字宽度);
   height: var(--数字高度);
@@ -90,38 +93,23 @@
 
 .数字索引 {
   position: absolute;
-  top: calc(25px + 60px);
+  top: 70%;
   font-family: consolas, monospace;
   color: #888;
   font-size: 0.9em;
   transition: var(--数字过渡时长);
 }
 
-.索引副本 {
-  top: 0;
-  left: 0;
-  width: 45px;
-  height: 45px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.数字索引.索引副本 {
-  transition: calc(var(--数字过渡时长) * 1.5);
-  color: gold;
-}
-
 .i索引,
 .j索引 {
   position: absolute;
+  top: 20%;
   font-family: consolas, monospace;
   opacity: 0;
-  transition: 375ms;
+  transition: var(--数字过渡时长);
 }
 
 .i索引 {
-  top: -10px;
   left: 0;
   translate: calc(var(--数字宽度) * 0.5 - 50%);
   color: white;
@@ -139,31 +127,40 @@
   font-size: 1.2rem;
   font-weight: bold;
   left: 0;
-  bottom: 49%;
+  /*bottom: 49%;*/
   translate: calc(var(--数字宽度) / 2 - 50%) 0;
   color: #a6ddff;
 }
 
-.索引记录者 {
-  width: 45px;
-  height: 45px;
-  border: solid 1px lightcoral;
+.索引记录框 {
+  width: var(--数字宽度);
+  height: var(--数字高度);
+  border-radius: 999px;
+  scale: 0.6;
+  border: solid 2px gold;
   position: absolute;
   left: 0;
-  top: 0;
-  translate: calc(var(--数字宽度) * 5 + var(--数字间隙) * 4.5 - 50%) 175px;
+  top: calc(70% - 16px);
+  /*translate: calc(var(--数字宽度) * 5 + var(--数字间隙) * 4.5 - 50%) 175px;*/
   font-size: calc(0.9em * 2.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  color: gold;
-  font-family: Consolas, monospace;
+  opacity: 0;
+  transition: 375ms;
 }
 
-.索引记录者类型 {
+.索引记录框文本 {
+  width: 100%;
   position: absolute;
-  bottom: 0;
-  color: #abc;
+  top: calc(100% + 10px);
+  left: 0;
+  font-size: 0.75em;
+  text-wrap: nowrap;
+  color: darkgoldenrod;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .控制区 {

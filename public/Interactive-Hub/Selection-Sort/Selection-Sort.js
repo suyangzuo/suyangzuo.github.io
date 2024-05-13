@@ -54,12 +54,7 @@ const 数字组 = 数字区.getElementsByClassName("数字");
 
 初始化数字();
 
-const 比较对象外框 = 数字区.querySelector(".比较对象外框");
-const 比较对象底色 = 数字区.querySelector(".比较对象底色");
-
 const 数字索引组 = document.getElementsByClassName("数字索引");
-const 索引记录者 = 数字区.querySelector(".索引记录者");
-const 索引记录者样式 = window.getComputedStyle(索引记录者);
 
 if (localStorage.getItem("动画速率") === null) {
   localStorage.setItem("动画速率", 动画速率.value);
@@ -78,8 +73,8 @@ if (localStorage.getItem("动画速率") === null) {
 排列顺序.addEventListener("input", (event) => {
   localStorage.setItem("升序排列", 排列顺序.checked);
   升序排列 = 排列顺序.checked;
-  const 索引记录者类型 = 数字区.querySelector(".索引记录者类型");
-  索引记录者类型.textContent = 升序排列 ? "最小数索引" : "最大数索引";
+  const 索引记录框文本 = 数字区.querySelector(".索引记录框文本");
+  索引记录框文本.textContent = 升序排列 ? "最小数索引" : "最大数索引";
 });
 
 播放音效复选框.addEventListener("input", (event) => {
@@ -95,8 +90,11 @@ if (localStorage.getItem("动画速率") === null) {
 开始按钮.addEventListener("click", async () => {
   if (排序过程正在运行) return;
   排序过程正在运行 = true;
+  const 比较对象外框 = 数字区.querySelector(".比较对象外框");
+  const 比较对象底色 = 数字区.querySelector(".比较对象底色");
   const i索引 = 数字区.querySelector(".i索引");
   const j索引 = 数字区.querySelector(".j索引");
+  const 索引记录框 = 数字区.querySelector(".索引记录框");
   for (let i = 0; i < 数字组.length - 1; i++) {
     if (!排序过程正在运行) return;
     let recorderIndex = i;
@@ -108,6 +106,7 @@ if (localStorage.getItem("动画速率") === null) {
     j索引.style.translate = `calc(${数字宽度} * ${1.5 + i} + ${数字间隙} * ${
       i + 1
     } - 50%)`;
+    索引记录框.style.translate = `calc((${数字宽度} + ${数字间隙}) * ${i}) 0`;
     await sleep(大循环间隔时长);
     比较对象外框.style.translate = 数字组[i].style.translate;
     比较对象底色.style.translate = 数字组[i].style.translate;
@@ -116,28 +115,19 @@ if (localStorage.getItem("动画速率") === null) {
       i索引.style.opacity = "1";
     }
 
-    await sleep(大循环间隔时长);
-
-    const i索引副本 = 生成索引副本(i);
-    i索引副本.style.scale = "2.5";
-
     await sleep(交换前等待时长);
 
-    i索引副本.style.translate = 索引记录者样式.translate;
+    索引记录框.style.opacity = "1";
     比较对象外框.style.opacity = "1";
     比较对象底色.style.opacity = "1";
-
-    await sleep(数字过渡时长 * 1.5);
-
-    i索引副本.remove();
-    索引记录者.textContent = `${i}`;
+    数字索引组[i].style.color = "lightgreen";
 
     await sleep(交换前等待时长);
     if (排序过程正在运行) {
       j索引.style.opacity = "1";
     }
 
-    await sleep(两轮之间等待时长);
+    await sleep(交换前等待时长);
     for (let j = i + 1; j < 数字组.length; j++) {
       if (!排序过程正在运行) return;
       j索引.style.translate = `calc(${数字宽度} * ${
@@ -146,8 +136,7 @@ if (localStorage.getItem("动画速率") === null) {
 
       生成内循环区(j);
 
-      await sleep(交换动画时长);
-      // 数字组[recorderIndex].classList.add("比较对象数字");
+      await sleep(数字过渡时长);
       数字组[j].classList.add("操作中数字");
 
       const 当前记录 = parseInt(数字组[recorderIndex].textContent, 10);
@@ -161,18 +150,15 @@ if (localStorage.getItem("动画速率") === null) {
         if (!排序过程正在运行) return; //修复重置后仍然交换元素位置与索引
         preRecorderIndex = recorderIndex;
         recorderIndex = j;
-        const j索引副本 = 生成索引副本(j);
-        j索引副本.style.scale = "2.5";
         if (播放音效) await checkedAudio.play();
-        await sleep(交换动画时长);
+        await sleep(数字过渡时长);
         if (!排序过程正在运行) return; //修复重置后仍然交换元素位置与索引
-        j索引副本.style.translate = 索引记录者样式.translate;
+        数字索引组[preRecorderIndex].style.color = "#888";
+        索引记录框.style.translate = `calc((${数字宽度} + ${数字间隙}) * ${recorderIndex}) 0`;
         比较对象外框.style.translate = 数字组[recorderIndex].style.translate;
         比较对象底色.style.translate = 数字组[recorderIndex].style.translate;
+        数字索引组[recorderIndex].style.color = "lightgreen";
         await sleep(数字过渡时长);
-        j索引副本.remove();
-        索引记录者.textContent = `${j}`;
-        // 数字组[preRecorderIndex].classList.remove("比较对象数字");
       } else {
         if (播放音效) await uncheckedAudio.play();
         await sleep(交换后等待时长);
@@ -191,7 +177,8 @@ if (localStorage.getItem("动画速率") === null) {
     }
     await sleep(交换后等待时长);
     数字组[i].classList.add("已确定数字");
-    索引记录者.textContent = "";
+    数字索引组[recorderIndex].style.color = "#888";
+    索引记录框.style.opacity = "0";
     比较对象外框.style.opacity = "0";
     比较对象底色.style.opacity = "0";
     await sleep(两轮之间等待时长);
@@ -210,19 +197,26 @@ function sleep(duration) {
 }
 
 function 设置动画速率(速率) {
-  交换前等待时长 = 原始交换前等待时长 / 速率;
-  交换后等待时长 = 原始交换后等待时长 / 速率;
-  本次数字恢复到下次数字变色时长 = 原始本次数字恢复到下次数字变色时长 / 速率;
-  两轮之间等待时长 = 原始两轮之间等待时长 / 速率;
+  交换前等待时长 =
+    原始交换前等待时长 / 速率 < 100 ? 100 : 原始交换前等待时长 / 速率;
+  交换后等待时长 =
+    原始交换后等待时长 / 速率 < 100 ? 100 : 原始交换后等待时长 / 速率;
+  本次数字恢复到下次数字变色时长 =
+    原始本次数字恢复到下次数字变色时长 / 速率 < 100
+      ? 100
+      : 原始本次数字恢复到下次数字变色时长 / 速率;
+  两轮之间等待时长 =
+    原始两轮之间等待时长 / 速率 < 500 ? 500 : 原始两轮之间等待时长 / 速率;
   动画速率数值.textContent = `×${速率}`;
 
-  交换动画时长 = 500 - 50 * (速率 - 1);
-  大循环间隔时长 = 2000 - 333 * (速率 - 1);
+  交换动画时长 = 500 - 50 * (速率 - 1) < 250 ? 250 : 500 - 50 * (速率 - 1);
+  大循环间隔时长 =
+    2000 - 333 * (速率 - 1) < 250 ? 250 : 2000 - 333 * (速率 - 1);
 
   数字过渡时长 = 交换动画时长;
 
   const j索引 = 数字区.querySelector(".j索引");
-  j索引.style.transition = `${500 - 100 * (速率 - 1)}ms`;
+  // j索引.style.transition = `${数字过渡时长}ms`;
   root.style.setProperty("--数字过渡时长", `${数字过渡时长}ms`);
 }
 
@@ -233,8 +227,7 @@ function 初始化数字() {
     数字区.appendChild(数字);
     const number = Math.floor(Math.random() * 101);
     数字.textContent = number.toString();
-    数字.style.left = "0";
-    数字.style.translate = `calc((${数字宽度} + ${数字间隙}) * ${i}) 0`;
+    数字.style.translate = `calc((${数字宽度} + ${数字间隙}) * ${i}) -50%`;
     数字.setAttribute("索引", i);
   }
 
@@ -256,31 +249,19 @@ function 初始化数字() {
   j索引.className = "j索引";
   数字区.append(i索引, j索引);
 
-  const 索引记录者 = document.createElement("span");
-  索引记录者.className = "索引记录者";
-  const 索引记录者类型 = document.createElement("span");
-  索引记录者类型.className = "索引记录者类型";
-  索引记录者类型.textContent = 升序排列 ? "最小数索引" : "最大数索引";
-  数字区.append(索引记录者, 索引记录者类型);
+  const 索引记录框 = document.createElement("div");
+  索引记录框.className = "索引记录框";
+  const 索引记录框文本 = document.createElement("span");
+  索引记录框文本.className = "索引记录框文本";
+  索引记录框文本.textContent = 升序排列 ? "最小数索引" : "最大数索引";
+  索引记录框.appendChild(索引记录框文本);
+  数字区.appendChild(索引记录框);
 
   const 比较对象外框 = document.createElement("span");
   比较对象外框.className = "比较对象外框";
   const 比较对象底色 = document.createElement("span");
   比较对象底色.className = "比较对象底色";
   数字区.append(比较对象外框, 比较对象底色);
-}
-
-function 生成索引副本(索引) {
-  const 索引副本 = document.createElement("p");
-  索引副本.className = "数字索引";
-  索引副本.classList.add("索引副本");
-  索引副本.style.translate = `calc((${数字宽度} * ${
-    0.5 + 索引
-  } + ${数字间隙} * ${索引}) - 50%) 70px`;
-  索引副本.textContent = `${索引}`;
-  数字区.appendChild(索引副本);
-
-  return 索引副本;
 }
 
 async function 生成动画_交换(左数字, 右数字) {
@@ -340,8 +321,10 @@ function 重置参数() {
   排序过程正在运行 = false;
   const 数字组 = 数字区.querySelectorAll(".数字");
   const 数字索引组 = 数字区.querySelectorAll(".数字索引");
-  const 原i索引 = 数字区.querySelector(".i索引");
-  const 原j索引 = 数字区.querySelector(".j索引");
+  const i索引 = 数字区.querySelector(".i索引");
+  const j索引 = 数字区.querySelector(".j索引");
+  i索引?.remove();
+  j索引?.remove();
 
   if (数字组 !== null) {
     for (const 数字 of 数字组) {
@@ -355,17 +338,18 @@ function 重置参数() {
     }
   }
 
-  原i索引?.remove();
-  原j索引?.remove();
-
-  索引记录者.textContent = "";
-  const 索引记录者类型 = 数字区.querySelector(".索引记录者类型");
-  索引记录者类型.textContent = 升序排列 ? "最小数索引" : "最大数索引";
+  const 索引记录框 = 数字区.querySelector(".索引记录框");
+  索引记录框?.remove();
 
   初始化数字();
 
-  比较对象外框.style.opacity = "0";
-  比较对象底色.style.opacity = "0";
+  const 比较对象外框 = 数字区.querySelector(".比较对象外框");
+  const 比较对象底色 = 数字区.querySelector(".比较对象底色");
+  比较对象外框?.remove();
+  比较对象底色?.remove();
+
+  // 比较对象外框.style.opacity = "0";
+  // 比较对象底色.style.opacity = "0";
 
   const 外循环索引数字 = document.querySelector(".外循环索引数字");
   外循环索引数字.textContent = "";
