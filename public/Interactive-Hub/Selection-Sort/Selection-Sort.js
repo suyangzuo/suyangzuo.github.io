@@ -161,7 +161,7 @@ if (localStorage.getItem("动画速率") === null) {
         await sleep(数字过渡时长);
       } else {
         if (播放音效) await uncheckedAudio.play();
-        await sleep(交换后等待时长);
+        await sleep(数字过渡时长 * 2);
       }
       数字组[j].classList.remove("操作中数字");
       await sleep(本次数字恢复到下次数字变色时长);

@@ -129,6 +129,7 @@ if (localStorage.getItem("动画速率") === null) {
         数字组[j].before(数字组[j + 1]);
       } else {
         if (播放音效) await uncheckedAudio.play();
+        await sleep(交换动画时长);
       }
       await sleep(交换后等待时长);
 
