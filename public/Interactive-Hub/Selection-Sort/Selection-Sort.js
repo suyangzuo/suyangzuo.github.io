@@ -1,6 +1,6 @@
-const 冒泡排序区 = document.getElementById("冒泡排序区");
-const 数字区 = 冒泡排序区.querySelector(".数字区");
-const 控制区 = 冒泡排序区.querySelector(".控制区");
+const 排序区 = document.getElementById("排序区");
+const 数字区 = 排序区.querySelector(".数字区");
+const 控制区 = 排序区.querySelector(".控制区");
 const 代码演示区 = document.querySelector(".代码演示区");
 const 动画速率 = document.getElementById("动画速率");
 const 动画速率数值 = document.getElementById("动画速率数值");
@@ -19,16 +19,16 @@ const 数字数量 = 10;
 const checkedAudio = new Audio("/Audios/Checked.mp3");
 const uncheckedAudio = new Audio("/Audios/Unchecked.mp3");
 
-if (localStorage.getItem("升序排列") === null) {
-  localStorage.setItem("升序排列", 排列顺序.checked);
+if (localStorage.getItem("选择排序法-升序排列") === null) {
+  localStorage.setItem("选择排序法-升序排列", 排列顺序.checked);
 } else {
-  排列顺序.checked = JSON.parse(localStorage.getItem("升序排列"));
+  排列顺序.checked = JSON.parse(localStorage.getItem("选择排序法-升序排列"));
 }
 
-if (localStorage.getItem("播放音效") === null) {
-  localStorage.setItem("播放音效", 播放音效复选框.checked);
+if (localStorage.getItem("选择排序法-播放音效") === null) {
+  localStorage.setItem("选择排序法-播放音效", 播放音效复选框.checked);
 } else {
-  播放音效复选框.checked = JSON.parse(localStorage.getItem("播放音效"));
+  播放音效复选框.checked = JSON.parse(localStorage.getItem("选择排序法-播放音效"));
 }
 
 const 排列顺序标签 = 控制区.querySelector(".排列顺序标签");
@@ -58,10 +58,10 @@ const 数字组 = 数字区.getElementsByClassName("数字");
 
 const 数字索引组 = document.getElementsByClassName("数字索引");
 
-if (localStorage.getItem("动画速率") === null) {
-  localStorage.setItem("动画速率", 动画速率.value);
+if (localStorage.getItem("选择排序法-动画速率") === null) {
+  localStorage.setItem("选择排序法-动画速率", 动画速率.value);
 } else {
-  动画速率.value = localStorage.getItem("动画速率");
+  动画速率.value = localStorage.getItem("选择排序法-动画速率");
   设置动画速率(parseInt(动画速率.value, 10));
 }
 
@@ -73,20 +73,20 @@ if (localStorage.getItem("动画速率") === null) {
 });
 
 排列顺序.addEventListener("input", (event) => {
-  localStorage.setItem("升序排列", 排列顺序.checked);
+  localStorage.setItem("选择排序法-升序排列", 排列顺序.checked);
   升序排列 = 排列顺序.checked;
   const 索引记录框文本 = 数字区.querySelector(".索引记录框文本");
   索引记录框文本.textContent = 升序排列 ? "最小数索引" : "最大数索引";
 });
 
 播放音效复选框.addEventListener("input", (event) => {
-  localStorage.setItem("播放音效", 播放音效复选框.checked);
+  localStorage.setItem("选择排序法-播放音效", 播放音效复选框.checked);
   播放音效 = 播放音效复选框.checked;
 });
 
 动画速率.addEventListener("input", () => {
   设置动画速率(parseInt(动画速率.value, 10));
-  localStorage.setItem("动画速率", 动画速率.value);
+  localStorage.setItem("选择排序法-动画速率", 动画速率.value);
 });
 
 开始按钮.addEventListener("click", async () => {
@@ -387,10 +387,10 @@ function 重置参数() {
   }
   内循环池.length = 0;
 
-  if (localStorage.getItem("动画速率") === null) {
-    localStorage.setItem("动画速率", 动画速率.value);
+  if (localStorage.getItem("选择排序法-动画速率") === null) {
+    localStorage.setItem("选择排序法-动画速率", 动画速率.value);
   } else {
-    动画速率.value = localStorage.getItem("动画速率");
+    动画速率.value = localStorage.getItem("选择排序法-动画速率");
     设置动画速率(parseInt(动画速率.value, 10));
   }
 
