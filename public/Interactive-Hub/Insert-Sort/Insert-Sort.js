@@ -77,8 +77,8 @@ if (localStorage.getItem("插入排序法-动画速率") === null) {
 排列顺序.addEventListener("input", (event) => {
   localStorage.setItem("插入排序法-升序排列", 排列顺序.checked);
   升序排列 = 排列顺序.checked;
-  const 索引记录框文本 = 数字区.querySelector(".索引记录框文本");
-  索引记录框文本.textContent = 升序排列 ? "最小数索引" : "最大数索引";
+  const 数字记录框描述 = 数字区.querySelector(".数字记录框描述");
+  数字记录框描述.textContent = 升序排列 ? "最小数索引" : "最大数索引";
 });
 
 播放音效复选框.addEventListener("input", (event) => {
@@ -96,38 +96,53 @@ if (localStorage.getItem("插入排序法-动画速率") === null) {
   排序过程正在运行 = true;
   屏蔽元素交互(开始按钮);
   屏蔽元素交互(排列顺序标签);
-  const 比较对象外框 = 数字区.querySelector(".比较对象外框");
-  const 比较对象底色 = 数字区.querySelector(".比较对象底色");
   const i索引 = 数字区.querySelector(".i索引");
   const j索引 = 数字区.querySelector(".j索引");
-  const 索引记录框 = 数字区.querySelector(".索引记录框");
-  for (let i = 0; i < 数字组.length - 1; i++) {
+  const 数字记录框 = 数字区.querySelector(".数字记录框");
+  for (let i = 1; i < 数字组.length; i++) {
     if (!排序过程正在运行) return;
-    let recorderIndex = i;
-    let preRecorderIndex = recorderIndex;
     设置外循环轮数字(i);
-    i索引.style.translate = `calc(${数字宽度} * ${1.5 + i} + ${数字间隙} * ${
-      i + 1
-    } - 50%)`;
-    j索引.style.translate = `calc(${数字宽度} * ${
+    i索引.style.translate = `calc(${数字宽度} * ${
       0.5 + i
     } + ${数字间隙} * ${i} - 50%)`;
-    索引记录框.style.translate = `calc((${数字宽度} + ${数字间隙}) * ${i}) 0`;
+    j索引.style.translate = `calc(${数字宽度} * ${i - 0.5} + ${数字间隙} * ${
+      i - 1
+    } - 50%)`;
+    数字记录框.style.translate = `calc((${数字宽度} * ${
+      i + 0.5
+    } + ${数字间隙} * ${i}) - 50%) 45px`;
+
     await sleep(大循环间隔时长);
-    比较对象外框.style.translate = 数字组[i].style.translate;
-    比较对象底色.style.translate = 数字组[i].style.translate;
+    if (!排序过程正在运行) return;
+    数字组[i].classList.add("操作中数字");
 
     if (排序过程正在运行) {
       i索引.style.opacity = "1";
     }
 
     await sleep(交换前等待时长);
+    if (!排序过程正在运行) return;
+    数字记录框.style.opacity = "1";
 
-    索引记录框.style.opacity = "1";
-    比较对象外框.style.opacity = "1";
-    比较对象底色.style.opacity = "1";
-    数字索引组[i].style.color = "lightgreen";
-    数字索引组[i].style.scale = "1.25";
+    await sleep(交换前等待时长);
+    if (!排序过程正在运行) return;
+    const 本轮待插入数字 = document.createElement("span");
+    本轮待插入数字.className = "数字";
+    本轮待插入数字.style.border = "none";
+    本轮待插入数字.textContent = 数字组[i].textContent;
+    本轮待插入数字.style.translate = 数字组[i].style.translate;
+    数字区.appendChild(本轮待插入数字);
+
+    await sleep(数字过渡时长);
+    if (!排序过程正在运行) return;
+    本轮待插入数字.style.translate = 数字记录框.style.translate;
+    await sleep(数字过渡时长);
+    if (!排序过程正在运行) return;
+    本轮待插入数字.remove();
+    const 数字框内数字 = document.createElement("span");
+    数字框内数字.className = "数字记录框内数字";
+    数字框内数字.textContent = 数字组[i].textContent;
+    数字记录框.appendChild(数字框内数字);
 
     let 待插入数字 = parseInt(数字组[i].textContent, 10);
 
@@ -136,73 +151,73 @@ if (localStorage.getItem("插入排序法-动画速率") === null) {
     if (排序过程正在运行) {
       j索引.style.opacity = "1";
     }
+    数字组[i].classList.remove("操作中数字");
 
     await sleep(两轮之间等待时长);
+    if (!排序过程正在运行) return;
     let j = i - 1;
     while (j >= 0) {
-      let j数字 = parseInt(数字组[j].textContent, 10);
-      if (j数字 <= 待插入数字) break;
-      let j后数字 = parseInt(数字组[j + 1], 10);
-      j后数字 = j数字;
-      j--;
-
       if (!排序过程正在运行) return;
-      j索引.style.translate = `calc(${数字宽度} * ${
-        0.5 - j
-      } - ${数字间隙} * ${j} - 50%)`;
-
       生成内循环区(j);
 
+      await sleep(交换前等待时长);
+      数字记录框.classList.add("操作中数字");
+      数字组[j].classList.add("操作中数字");
+      let j数字 = parseInt(数字组[j].textContent, 10);
       await sleep(数字过渡时长);
       if (!排序过程正在运行) return;
-      数字组[j].classList.add("操作中数字");
 
-      const 当前记录 = parseInt(数字组[recorderIndex].textContent, 10);
-      const 遍历到数字 = parseInt(数字组[j].textContent, 10);
-      await sleep(交换前等待时长);
-      if (!排序过程正在运行) return;
-
-      if (
-        (升序排列 && 当前记录 > 遍历到数字) ||
-        (!升序排列 && 当前记录 < 遍历到数字)
-      ) {
-        preRecorderIndex = recorderIndex;
-        recorderIndex = j;
-        if (播放音效) await checkedAudio.play();
-        await sleep(数字过渡时长);
-        if (!排序过程正在运行) return; //修复重置后仍然交换元素位置与索引
-        数字索引组[preRecorderIndex].style.color = "#888";
-        索引记录框.style.translate = `calc((${数字宽度} + ${数字间隙}) * ${recorderIndex}) 0`;
-        比较对象外框.style.translate = 数字组[recorderIndex].style.translate;
-        比较对象底色.style.translate = 数字组[recorderIndex].style.translate;
-        数字索引组[recorderIndex].style.color = "lightgreen";
-        数字索引组[recorderIndex].style.scale = "1.25";
-        await sleep(数字过渡时长);
-      } else {
+      if (j数字 <= 待插入数字) {
         if (播放音效) await uncheckedAudio.play();
-        await sleep(数字过渡时长 * 2);
+        await sleep(两轮之间等待时长 > 1000 ? 1000 : 两轮之间等待时长);
+        数字组[j].classList.remove("操作中数字");
+        数字记录框.classList.remove("操作中数字");
+        break;
+      } else {
+        if (播放音效) await checkedAudio.play();
+        const 待移动数字 = document.createElement("span");
+        待移动数字.className = "数字";
+        待移动数字.style.border = "none";
+        待移动数字.textContent = 数字组[j].textContent;
+        待移动数字.style.translate = 数字组[j].style.translate;
+        数字区.appendChild(待移动数字);
+
+        await sleep(交换前等待时长);
+        if (!排序过程正在运行) return;
+        待移动数字.style.translate = 数字组[j + 1].style.translate;
+
+        await sleep(数字过渡时长);
+        if (!排序过程正在运行) return;
+        数字组[j + 1].textContent = 数字组[j].textContent;
+
+        await sleep(数字过渡时长);
+        if (!排序过程正在运行) return;
+        待移动数字.remove();
+        数字组[j].classList.remove("操作中数字");
+        j索引.style.translate = `calc(${数字宽度} * ${
+          j - 0.5
+        } + ${数字间隙} * ${j - 1} - 50%)`;
+        数字记录框.style.translate = `calc((${数字宽度} * ${
+          j + 0.5
+        } + ${数字间隙} * ${j}) - 50%) 45px`;
+        j--;
+        // await sleep(交换后等待时长);
       }
-      数字组[j].classList.remove("操作中数字");
-      await sleep(本次数字恢复到下次数字变色时长);
     }
 
-    if (!排序过程正在运行) return;
-    if (recorderIndex !== i) {
-      await 生成动画_交换(数字组[i], 数字组[recorderIndex]);
-      await sleep(交换动画时长);
-      数字组[recorderIndex].after(数字组[i]);
-      数字组[i].before(数字组[recorderIndex - 1]);
-      数字组[recorderIndex].classList.remove("交换中数字");
-      数字组[i].classList.remove("交换中数字");
-    }
-    await sleep(交换后等待时长);
-    数字组[i].classList.add("已确定数字");
-    数字索引组[recorderIndex].style.color = "#888";
-    数字索引组[recorderIndex].style.scale = "1";
-    索引记录框.style.opacity = "0";
-    比较对象外框.style.opacity = "0";
-    比较对象底色.style.opacity = "0";
     await sleep(两轮之间等待时长);
+    if (!排序过程正在运行) return;
+    数字框内数字.style.translate = "0 -70px";
+
+    await sleep(数字过渡时长);
+    if (!排序过程正在运行) return;
+    数字组[j + 1].textContent = 数字框内数字.textContent;
+    数字记录框.classList.remove("操作中数字");
+    数字组[j + 1].classList.remove("操作中数字");
+    数字记录框.style.opacity = "0";
+    await sleep(两轮之间等待时长);
+    if (!排序过程正在运行) return;
+    数字框内数字.remove();
     for (const 内循环区 of 内循环池) {
       内循环区.remove();
     }
@@ -275,19 +290,13 @@ function 初始化数字() {
   j索引.className = "j索引";
   数字区.append(i索引, j索引);
 
-  const 索引记录框 = document.createElement("div");
-  索引记录框.className = "索引记录框";
-  const 索引记录框文本 = document.createElement("span");
-  索引记录框文本.className = "索引记录框文本";
-  索引记录框文本.textContent = "待插入数字";
-  索引记录框.appendChild(索引记录框文本);
-  数字区.appendChild(索引记录框);
-
-  const 比较对象外框 = document.createElement("span");
-  比较对象外框.className = "比较对象外框";
-  const 比较对象底色 = document.createElement("span");
-  比较对象底色.className = "比较对象底色";
-  数字区.append(比较对象外框, 比较对象底色);
+  const 数字记录框 = document.createElement("div");
+  数字记录框.className = "数字记录框";
+  const 数字记录框描述 = document.createElement("span");
+  数字记录框描述.className = "数字记录框描述";
+  数字记录框描述.textContent = "待插入数字";
+  数字记录框.appendChild(数字记录框描述);
+  数字区.appendChild(数字记录框);
 }
 
 async function 生成动画_交换(左数字, 右数字) {
@@ -374,18 +383,10 @@ function 重置参数() {
     }
   }
 
-  const 索引记录框 = 数字区.querySelector(".索引记录框");
-  索引记录框?.remove();
+  const 数字记录框 = 数字区.querySelector(".数字记录框");
+  数字记录框?.remove();
 
   初始化数字();
-
-  const 比较对象外框 = 数字区.querySelector(".比较对象外框");
-  const 比较对象底色 = 数字区.querySelector(".比较对象底色");
-  比较对象外框?.remove();
-  比较对象底色?.remove();
-
-  // 比较对象外框.style.opacity = "0";
-  // 比较对象底色.style.opacity = "0";
 
   const 外循环索引数字 = document.querySelector(".外循环索引数字");
   外循环索引数字.textContent = "";

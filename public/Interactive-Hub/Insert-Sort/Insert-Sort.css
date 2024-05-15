@@ -17,9 +17,6 @@
 #排序区 {
   height: 500px;
   width: 900px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 }
 
 .数字区 {
@@ -68,32 +65,6 @@
   border: solid 2px deepskyblue;
 }
 
-.比较对象外框 {
-  position: absolute;
-  z-index: 2;
-  top: 50%;
-  left: 0;
-  translate: 0 -50%;
-  width: var(--数字宽度);
-  height: var(--数字高度);
-  border: solid 2px #c23671;
-  opacity: 0;
-  transition: var(--数字过渡时长);
-}
-
-.比较对象底色 {
-  position: absolute;
-  z-index: 0;
-  top: 50%;
-  translate: 0 -50%;
-  left: 0;
-  width: var(--数字宽度);
-  height: var(--数字高度);
-  background-color: rgb(42, 64, 91);
-  opacity: 0;
-  transition: var(--数字过渡时长);
-}
-
 .数字索引 {
   position: absolute;
   top: 25%;
@@ -107,7 +78,7 @@
 .j索引 {
   position: absolute;
   font-family: consolas, monospace;
-  /*opacity: 0;*/
+  opacity: 0;
   transition: var(--数字过渡时长);
 }
 
@@ -129,33 +100,44 @@
 .j索引 {
   font-size: 1.2rem;
   font-weight: bold;
-  top: 65%;
   left: 0;
+  top: 10%;
   translate: calc(var(--数字宽度) * 0.5 - 50%) 0;
   color: #a6ddff;
 }
 
-.索引记录框 {
+.数字记录框 {
   width: var(--数字宽度);
   height: var(--数字高度);
   position: absolute;
   left: 0;
-  top: calc(80%);
-  translate: calc(var(--数字宽度) * 1.5 + var(--数字间隙) - 50%);
-  border: solid 2px gold;
-  font-size: 1.2em;
+  top: 50%;
+  translate: calc(var(--数字宽度) * 1.5 + var(--数字间隙) - 50%) 45px;
+  border: solid 2px transparent;
+  background-color: #abc3;
   display: flex;
   justify-content: center;
   align-items: center;
   transition: var(--数字过渡时长);
 }
 
-.索引记录框文本 {
+.数字记录框内数字 {
+  position: relative;
+  transition: var(--数字过渡时长);
+  z-index: 10;
+}
+
+.数字记录框.操作中数字 {
+  border: solid 2px lightgreen;
+  background-color: rgb(60, 87, 121);
+}
+
+.数字记录框描述 {
   width: 100%;
   position: absolute;
   top: calc(100% + 7px);
   left: 0;
-  font-size: 0.75em;
+  font-size: 0.85em;
   text-wrap: nowrap;
   color: goldenrod;
   display: flex;
@@ -168,6 +150,7 @@
   justify-content: center;
   align-items: flex-start;
   padding: 50px;
+  margin-top: 50px;
 }
 
 .设置区 {
