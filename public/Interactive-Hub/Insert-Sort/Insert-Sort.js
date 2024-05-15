@@ -113,19 +113,13 @@ if (localStorage.getItem("插入排序法-动画速率") === null) {
     } + ${数字间隙} * ${i}) - 50%) 45px`;
 
     await sleep(大循环间隔时长);
-    if (!排序过程正在运行) return;
-    数字组[i].classList.add("操作中数字");
-
     if (排序过程正在运行) {
       i索引.style.opacity = "1";
     }
 
     await sleep(交换前等待时长);
     if (!排序过程正在运行) return;
-    数字记录框.style.opacity = "1";
-
-    await sleep(交换前等待时长);
-    if (!排序过程正在运行) return;
+    数字组[i].classList.add("操作中数字");
     const 本轮待插入数字 = document.createElement("span");
     本轮待插入数字.className = "数字";
     本轮待插入数字.style.border = "none";
@@ -133,7 +127,11 @@ if (localStorage.getItem("插入排序法-动画速率") === null) {
     本轮待插入数字.style.translate = 数字组[i].style.translate;
     数字区.appendChild(本轮待插入数字);
 
-    await sleep(数字过渡时长);
+    await sleep(交换前等待时长);
+    if (!排序过程正在运行) return;
+    数字记录框.style.opacity = "1";
+
+    await sleep(交换前等待时长);
     if (!排序过程正在运行) return;
     本轮待插入数字.style.translate = 数字记录框.style.translate;
     await sleep(数字过渡时长);
@@ -160,7 +158,7 @@ if (localStorage.getItem("插入排序法-动画速率") === null) {
       if (!排序过程正在运行) return;
       生成内循环区(j);
 
-      await sleep(交换前等待时长);
+      await sleep(数字过渡时长);
       数字记录框.classList.add("操作中数字");
       数字组[j].classList.add("操作中数字");
       let j数字 = parseInt(数字组[j].textContent, 10);
@@ -175,6 +173,7 @@ if (localStorage.getItem("插入排序法-动画速率") === null) {
         break;
       } else {
         if (播放音效) await checkedAudio.play();
+        await sleep(250);
         const 待移动数字 = document.createElement("span");
         待移动数字.className = "数字";
         待移动数字.style.border = "none";
@@ -182,7 +181,7 @@ if (localStorage.getItem("插入排序法-动画速率") === null) {
         待移动数字.style.translate = 数字组[j].style.translate;
         数字区.appendChild(待移动数字);
 
-        await sleep(交换前等待时长);
+        await sleep(数字过渡时长);
         if (!排序过程正在运行) return;
         待移动数字.style.translate = 数字组[j + 1].style.translate;
 
@@ -201,7 +200,6 @@ if (localStorage.getItem("插入排序法-动画速率") === null) {
           j + 0.5
         } + ${数字间隙} * ${j}) - 50%) 45px`;
         j--;
-        // await sleep(交换后等待时长);
       }
     }
 
@@ -214,6 +212,8 @@ if (localStorage.getItem("插入排序法-动画速率") === null) {
     数字组[j + 1].textContent = 数字框内数字.textContent;
     数字记录框.classList.remove("操作中数字");
     数字组[j + 1].classList.remove("操作中数字");
+
+    await sleep(数字过渡时长);
     数字记录框.style.opacity = "0";
     await sleep(两轮之间等待时长);
     if (!排序过程正在运行) return;
@@ -235,16 +235,14 @@ function sleep(duration) {
 }
 
 function 设置动画速率(速率) {
-  交换前等待时长 =
-    原始交换前等待时长 / 速率 < 100 ? 100 : 原始交换前等待时长 / 速率;
-  交换后等待时长 =
-    原始交换后等待时长 / 速率 < 100 ? 100 : 原始交换后等待时长 / 速率;
+  交换前等待时长 = 原始交换前等待时长 - 200 * (速率 - 1);
+  交换后等待时长 = 原始交换后等待时长 - 200 * (速率 - 1);
   本次数字恢复到下次数字变色时长 =
-    原始本次数字恢复到下次数字变色时长 / 速率 < 100
-      ? 100
-      : 原始本次数字恢复到下次数字变色时长 / 速率;
+    原始本次数字恢复到下次数字变色时长 - 200 * (速率 - 1);
   两轮之间等待时长 =
-    原始两轮之间等待时长 / 速率 < 500 ? 500 : 原始两轮之间等待时长 / 速率;
+    原始两轮之间等待时长 / 速率 < 500
+      ? 500
+      : 原始两轮之间等待时长 - 200 * (速率 - 1);
   动画速率数值.textContent = `×${速率}`;
 
   交换动画时长 =

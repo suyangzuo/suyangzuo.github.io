@@ -118,6 +118,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  opacity: 0;
   transition: var(--数字过渡时长);
 }
 
