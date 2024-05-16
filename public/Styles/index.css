@@ -42,7 +42,6 @@
 
 .欢迎文本区 {
   position: relative;
-  z-index: 1;
   width: min(500px, 95vw);
   display: flex;
   flex-direction: column;
