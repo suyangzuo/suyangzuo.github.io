@@ -197,8 +197,6 @@ if (localStorage.getItem("选择排序法-动画速率") === null) {
     }
     内循环池.length = 0;
   }
-  恢复元素交互(排列顺序标签);
-  恢复元素交互(开始按钮);
 });
 
 function sleep(duration) {

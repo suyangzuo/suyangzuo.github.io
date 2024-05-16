@@ -165,7 +165,10 @@ if (localStorage.getItem("插入排序法-动画速率") === null) {
       await sleep(数字过渡时长);
       if (!排序过程正在运行) return;
 
-      if (j数字 <= 待插入数字) {
+      if (
+        (升序排列 && j数字 <= 待插入数字) ||
+        (!升序排列 && j数字 >= 待插入数字)
+      ) {
         if (播放音效) await uncheckedAudio.play();
         await sleep(两轮之间等待时长 > 1000 ? 1000 : 两轮之间等待时长);
         数字组[j].classList.remove("操作中数字");
@@ -223,8 +226,6 @@ if (localStorage.getItem("插入排序法-动画速率") === null) {
     }
     内循环池.length = 0;
   }
-  恢复元素交互(排列顺序标签);
-  恢复元素交互(开始按钮);
 });
 
 function sleep(duration) {
