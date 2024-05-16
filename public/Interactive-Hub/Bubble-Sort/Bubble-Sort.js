@@ -28,7 +28,9 @@ if (localStorage.getItem("冒泡排序法-升序排列") === null) {
 if (localStorage.getItem("冒泡排序法-播放音效") === null) {
   localStorage.setItem("冒泡排序法-播放音效", 播放音效复选框.checked);
 } else {
-  播放音效复选框.checked = JSON.parse(localStorage.getItem("冒泡排序法-播放音效"));
+  播放音效复选框.checked = JSON.parse(
+    localStorage.getItem("冒泡排序法-播放音效"),
+  );
 }
 
 const 排列顺序标签 = 控制区.querySelector(".排列顺序标签");
@@ -90,11 +92,16 @@ if (localStorage.getItem("冒泡排序法-动画速率") === null) {
   排序过程正在运行 = true;
   屏蔽元素交互(开始按钮);
   屏蔽元素交互(排列顺序标签);
+  const i索引 = 数字区.querySelector(".i索引");
   const 左数字索引 = 数字区.querySelector(".左数字索引");
   const 右数字索引 = 数字区.querySelector(".右数字索引");
   for (let i = 0; i < 数字组.length - 1; i++) {
     if (!排序过程正在运行) return;
     设置外循环轮数字(i);
+    i索引.style.translate = `calc(${数字宽度} * ${
+      0.5 + i
+    } + ${数字间隙} * ${i} - 50%)`;
+    i索引.style.opacity = "1";
     左数字索引.style.translate = `calc(${数字宽度} * 0.5 - 50%)`;
     右数字索引.style.translate = `calc(${数字宽度} * 1.5 + ${数字间隙} - 50%)`;
     await sleep(大循环间隔时长);
@@ -209,6 +216,12 @@ function 初始化数字() {
       0.5 + i
     } + ${数字间隙} * ${i}) - 50%) 0`;
   }
+
+  const i索引 = document.createElement("p");
+  i索引.textContent = "i";
+  i索引.className = "i索引";
+  数字区.appendChild(i索引);
+
   const 左数字索引 = document.createElement("p");
   const 右数字索引 = document.createElement("p");
   左数字索引.textContent = "j";
@@ -281,8 +294,11 @@ function 重置参数() {
   排序过程正在运行 = false;
   const 数字组 = 数字区.querySelectorAll(".数字");
   const 数字索引组 = 数字区.querySelectorAll(".数字索引");
+  const i索引 = 数字区.querySelector(".i索引");
   const 原左数字索引 = 数字区.querySelector(".左数字索引");
   const 原右数字索引 = 数字区.querySelector(".右数字索引");
+
+  i索引?.remove();
 
   if (数字组 !== null) {
     for (const 数字 of 数字组) {

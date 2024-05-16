@@ -60,6 +60,26 @@
   font-size: 0.9em;
 }
 
+.i索引 {
+  position: absolute;
+  top: 106%;
+  left: 0;
+  translate: calc(var(--数字宽度) * 0.5 - 50%);
+  color: white;
+  width: 25px;
+  height: 25px;
+  border-radius: 500px;
+  background-color: #456;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #b2dfd6;
+  font-weight: bold;
+  font-family: Consolas, monospace;
+  opacity: 0;
+  transition: var(--数字过渡时长);
+}
+
 .左数字索引,
 .右数字索引 {
   position: absolute;
@@ -85,6 +105,7 @@
   justify-content: center;
   align-items: flex-start;
   padding: 50px;
+  margin-top: 50px;
 }
 
 .设置区 {

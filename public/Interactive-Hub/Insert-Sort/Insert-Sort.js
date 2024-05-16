@@ -119,7 +119,7 @@ if (localStorage.getItem("插入排序法-动画速率") === null) {
 
     await sleep(交换前等待时长);
     if (!排序过程正在运行) return;
-    数字组[i].classList.add("操作中数字");
+    数字组[i].classList.add("比较对象数字");
     const 本轮待插入数字 = document.createElement("span");
     本轮待插入数字.className = "数字";
     本轮待插入数字.style.border = "none";
@@ -149,7 +149,7 @@ if (localStorage.getItem("插入排序法-动画速率") === null) {
     if (排序过程正在运行) {
       j索引.style.opacity = "1";
     }
-    数字组[i].classList.remove("操作中数字");
+    数字组[i].classList.remove("比较对象数字");
 
     await sleep(两轮之间等待时长);
     if (!排序过程正在运行) return;
@@ -185,11 +185,11 @@ if (localStorage.getItem("插入排序法-动画速率") === null) {
         if (!排序过程正在运行) return;
         待移动数字.style.translate = 数字组[j + 1].style.translate;
 
-        await sleep(数字过渡时长);
+        await sleep(数字过渡时长 - 100);
         if (!排序过程正在运行) return;
         数字组[j + 1].textContent = 数字组[j].textContent;
 
-        await sleep(数字过渡时长);
+        await sleep(数字过渡时长 + 100);
         if (!排序过程正在运行) return;
         待移动数字.remove();
         数字组[j].classList.remove("操作中数字");
@@ -207,13 +207,13 @@ if (localStorage.getItem("插入排序法-动画速率") === null) {
     if (!排序过程正在运行) return;
     数字框内数字.style.translate = "0 -70px";
 
-    await sleep(数字过渡时长);
+    await sleep(数字过渡时长 - 100);
     if (!排序过程正在运行) return;
     数字组[j + 1].textContent = 数字框内数字.textContent;
     数字记录框.classList.remove("操作中数字");
     数字组[j + 1].classList.remove("操作中数字");
 
-    await sleep(数字过渡时长);
+    await sleep(数字过渡时长 + 100);
     数字记录框.style.opacity = "0";
     await sleep(两轮之间等待时长);
     if (!排序过程正在运行) return;
