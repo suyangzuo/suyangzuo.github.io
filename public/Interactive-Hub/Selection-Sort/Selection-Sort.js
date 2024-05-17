@@ -160,7 +160,7 @@ if (localStorage.getItem("选择排序法-动画速率") === null) {
         preRecorderIndex = recorderIndex;
         recorderIndex = j;
         if (播放音效) await checkedAudio.play();
-        await sleep(数字过渡时长 < 300 ? 300 : 数字过渡时长);
+        await sleep(数字过渡时长);
         if (!排序过程正在运行) return; //修复重置后仍然交换元素位置与索引
         数字索引组[preRecorderIndex].style.color = "#888";
         索引记录框.style.translate = `calc((${数字宽度} + ${数字间隙}) * ${recorderIndex}) 0`;
