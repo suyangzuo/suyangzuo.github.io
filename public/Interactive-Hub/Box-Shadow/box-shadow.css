@@ -148,6 +148,7 @@
   width: 13px;
   height: 13px;
   border-radius: 13px;
+  outline: solid 1px #333;
 }
 
 .阴影序号 {
@@ -308,12 +309,14 @@
 .阴影属性:has(input[type="range"]:hover) .标签内部,
 .阴影属性:has(button:hover) .标签内部,
 .阴影内嵌:hover .标签内部 {
-  box-shadow: inset 0.5px 0.5px 2px 0 white, 0.25px 0.25px 4px 0 #000a;
+  box-shadow:
+    inset 0.5px 0.5px 2px 0 white,
+    0.25px 0.25px 4px 0 #000a;
   background-color: #384c5e;
 }
 
 .阴影属性标签 {
-  width: 120px;
+  width: 110px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -322,7 +325,7 @@
 .标签内部 {
   width: fit-content;
   height: fit-content;
-  padding: 5px 10px;
+  padding: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
