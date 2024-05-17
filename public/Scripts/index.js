@@ -17,7 +17,7 @@ window.addEventListener("click", 获取鼠标坐标);
 图像滑块[2].innerHTML = 图像滑块[1].innerHTML;
 
 const 长廊1区图像容器组 = Array.from(
-  document.getElementsByClassName("图像容器")
+  document.getElementsByClassName("图像容器"),
 );
 
 const 箭头组 = document.getElementsByClassName("箭头");
@@ -56,18 +56,18 @@ function 获取鼠标坐标(event) {
 }
 
 图像序号指示器组[初始图像索引 - 图像数量].getElementsByClassName(
-  "指示器内部"
+  "指示器内部",
 )[0].style.background = 图像序号指示器颜色_当前;
 
 function 初始化图像覆盖透明度() {
   长廊1区图像容器组[初始图像索引 - 1].getElementsByClassName(
-    "img-overlay"
+    "img-overlay",
   )[0].style.opacity = "0.5";
   长廊1区图像容器组[初始图像索引].getElementsByClassName(
-    "img-overlay"
+    "img-overlay",
   )[0].style.opacity = "0";
   长廊1区图像容器组[初始图像索引 + 1].getElementsByClassName(
-    "img-overlay"
+    "img-overlay",
   )[0].style.opacity = "0.5";
 }
 
@@ -104,6 +104,15 @@ function 初始化图像覆盖透明度() {
     }
     图像滑块组.style.left = "0";
   });
+
+  const 图像来源 = document.createElement("p");
+  图像来源.className = "图像来源";
+  图像来源.textContent = "来自";
+  const 来源图示 = document.createElement("span");
+  来源图示.className = "来源图示";
+  来源图示.textContent = "pixiv";
+  图像来源.appendChild(来源图示);
+  图像容器.appendChild(图像来源);
 });
 // ------- ↑ 此处有Bug：当鼠标不动、图片移动时，mouseenter 和 mouseleave 无法触发-------
 
@@ -214,7 +223,7 @@ function 点击左箭头延迟运行() {
   if (图像索引 >= 10 && 图像索引 <= 19) {
     let 之前图像索引 = 图像索引 === 19 ? 0 : 图像索引 - 图像数量 + 1;
     图像序号指示器组[之前图像索引].getElementsByClassName(
-      "指示器内部"
+      "指示器内部",
     )[0].style.background = 图像序号指示器颜色_未选中;
     图像序号指示器组[图像索引 - 图像数量]
       .getElementsByClassName("指示器内部")[0]
@@ -222,7 +231,7 @@ function 点击左箭头延迟运行() {
   } else if (图像索引 <= 9) {
     let 之前图像索引 = 图像索引 === 9 ? 0 : 图像索引 + 1;
     图像序号指示器组[之前图像索引].getElementsByClassName(
-      "指示器内部"
+      "指示器内部",
     )[0].style.background = 图像序号指示器颜色_未选中;
     图像序号指示器组[图像索引]
       .getElementsByClassName("指示器内部")[0]
@@ -230,7 +239,7 @@ function 点击左箭头延迟运行() {
   } else if (图像索引 >= 20) {
     let 之前图像索引 = 图像索引 === 29 ? 0 : 图像索引 - 图像数量 * 2 + 1;
     图像序号指示器组[之前图像索引].getElementsByClassName(
-      "指示器内部"
+      "指示器内部",
     )[0].style.background = 图像序号指示器颜色_未选中;
     图像序号指示器组[图像索引 - 图像数量 * 2]
       .getElementsByClassName("指示器内部")[0]
@@ -332,7 +341,7 @@ function 点击右箭头延迟运行() {
   if (图像索引 >= 10 && 图像索引 <= 19) {
     let 之前图像索引 = 图像索引 === 10 ? 9 : 图像索引 - 图像数量 - 1;
     图像序号指示器组[之前图像索引].getElementsByClassName(
-      "指示器内部"
+      "指示器内部",
     )[0].style.background = 图像序号指示器颜色_未选中;
     图像序号指示器组[图像索引 - 图像数量]
       .getElementsByClassName("指示器内部")[0]
@@ -340,7 +349,7 @@ function 点击右箭头延迟运行() {
   } else if (图像索引 <= 9) {
     let 之前图像索引 = 图像索引 === 0 ? 9 : 图像索引 - 1;
     图像序号指示器组[之前图像索引].getElementsByClassName(
-      "指示器内部"
+      "指示器内部",
     )[0].style.background = 图像序号指示器颜色_未选中;
     图像序号指示器组[图像索引]
       .getElementsByClassName("指示器内部")[0]
@@ -348,7 +357,7 @@ function 点击右箭头延迟运行() {
   } else if (图像索引 >= 20) {
     let 之前图像索引 = 图像索引 === 20 ? 9 : 图像索引 - 图像数量 * 2 - 1;
     图像序号指示器组[之前图像索引].getElementsByClassName(
-      "指示器内部"
+      "指示器内部",
     )[0].style.background = 图像序号指示器颜色_未选中;
     图像序号指示器组[图像索引 - 图像数量 * 2]
       .getElementsByClassName("指示器内部")[0]
@@ -458,7 +467,7 @@ function 点击图像序号指示器(event) {
     图覆盖前1.addEventListener("click", 点击左箭头);
     图覆盖后1.addEventListener("click", 点击右箭头);
     图像序号指示器组[之前图像指示器索引].getElementsByClassName(
-      "指示器内部"
+      "指示器内部",
     )[0].style.background = 图像序号指示器颜色_未选中;
     图像序号指示器组[当前图像指示器索引]
       .getElementsByClassName("指示器内部")[0]
@@ -501,26 +510,27 @@ function 点击图像序号指示器(event) {
     图像受指示器滚动中 = false;
   }, 图像移动时长);
 }
+
 // --------------------- ↑ 点击图像序号指示器 ---------------------
 
 function 初始化左右图像功能() {
   const 图覆盖后1 =
     长廊1区图像容器组[初始图像索引 + 1].getElementsByClassName(
-      "img-overlay"
+      "img-overlay",
     )[0];
   const 图覆盖后2 =
     长廊1区图像容器组[初始图像索引 + 2].getElementsByClassName(
-      "img-overlay"
+      "img-overlay",
     )[0];
   const 图覆盖当前 =
     长廊1区图像容器组[初始图像索引].getElementsByClassName("img-overlay")[0];
   const 图覆盖前1 =
     长廊1区图像容器组[初始图像索引 - 1].getElementsByClassName(
-      "img-overlay"
+      "img-overlay",
     )[0];
   const 图覆盖前2 =
     长廊1区图像容器组[初始图像索引 - 2].getElementsByClassName(
-      "img-overlay"
+      "img-overlay",
     )[0];
 
   图覆盖后1.addEventListener("click", 点击右箭头);

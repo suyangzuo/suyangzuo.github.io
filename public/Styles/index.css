@@ -86,6 +86,11 @@
   background-color: var(--网站风格颜色);
   width: 200px;
   padding: 0 20px;
+  transition: 150ms;
+}
+
+.欢迎按钮:nth-child(1):hover {
+  background-color: #21767a;
 }
 
 .欢迎按钮:nth-child(2) {
@@ -242,7 +247,7 @@
   transform-origin: 0 50%;
   opacity: 0;
   animation: 胶水动画 5s linear 2.5s infinite,
-    胶水摇晃 0.5s linear 2.5s infinite;
+  胶水摇晃 0.5s linear 2.5s infinite;
 }
 
 @keyframes 胶水动画 {
@@ -853,6 +858,29 @@
 
 .图像容器 > .img-overlay:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.图像容器 > .图像来源 {
+  position: absolute;
+  bottom: 15px;
+  right: calc((var(--图像容器宽度) - var(--图像宽度)) / 2 + 15px);
+  width: 100px;
+  height: 35px;
+  border-radius: 5px;
+  background-color: #456;
+  backdrop-filter: blur(10px);
+  color: #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.9em;
+}
+
+.图像容器 > .图像来源 > .来源图示 {
+  font-size: 1.2em;
+  color: lightblue;
+  font-family: "Zilla Slab", serif;
 }
 
 .图像序号指示器组 {

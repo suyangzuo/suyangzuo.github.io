@@ -379,7 +379,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #111b;
+  background-color: #123b;
   backdrop-filter: blur(20px);
   z-index: 9999;
   display: flex;
@@ -454,7 +454,7 @@
   height: min(40%, 500px);
   display: flex;
   justify-content: center;
-  gap: 150px;
+  gap: 5%;
 }
 
 .收款码容器 {
