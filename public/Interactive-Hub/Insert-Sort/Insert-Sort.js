@@ -203,6 +203,10 @@ if (localStorage.getItem("插入排序法-动画速率") === null) {
           j + 0.5
         } + ${数字间隙} * ${j}) - 50%) 45px`;
         j--;
+        if (j < 0) {
+          await sleep(数字过渡时长 * 2);
+          if (播放音效) await uncheckedAudio.play();
+        }
       }
     }
 

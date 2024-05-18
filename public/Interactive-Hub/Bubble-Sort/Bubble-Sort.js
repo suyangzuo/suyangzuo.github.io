@@ -109,6 +109,7 @@ if (localStorage.getItem("冒泡排序法-动画速率") === null) {
       左数字索引.style.opacity = "1";
       右数字索引.style.opacity = "1";
     }
+    await sleep(大循环间隔时长);
 
     for (let j = 0; j < 数字组.length - 1 - i; j++) {
       if (!排序过程正在运行) return;
