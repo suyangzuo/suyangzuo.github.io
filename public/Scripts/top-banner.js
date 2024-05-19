@@ -64,10 +64,14 @@ function 打开捐赠界面() {
   捐赠对话框.className = "捐赠对话框";
   document.body.appendChild(捐赠对话框);
   捐赠对话框.show();
+  捐赠对话框.style.opacity = "1";
 
   捐赠对话框.addEventListener("click", () => {
-    捐赠对话框.close();
-    捐赠对话框.remove();
+    捐赠对话框.style.opacity = "0";
+    setTimeout(() => {
+      捐赠对话框.close();
+      捐赠对话框.remove();
+    }, 250);
   });
 
   const 乞讨图文区 = document.createElement("section");

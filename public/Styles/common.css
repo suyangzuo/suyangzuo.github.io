@@ -22,6 +22,7 @@
 
 body {
   position: relative;
+  width: 100dvw;
   overflow-x: hidden;
   background-color: var(--bg-color);
   color: var(--f-color);

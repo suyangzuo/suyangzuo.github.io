@@ -387,6 +387,8 @@
   justify-content: center;
   align-items: center;
   gap: 100px;
+  opacity: 0;
+  transition: 250ms;
 }
 
 .捐赠对话框关闭按钮 {
