@@ -4,3 +4,8 @@
   --拇指宽度: 16px;
 }
 
+.外部容器 {
+  width: 600px;
+  height: 750px;
+  background-color: #7f93aa;
+}
