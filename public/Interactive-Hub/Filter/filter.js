@@ -40,19 +40,23 @@ for (const 缩略图项 of 缩略图像组) {
 
 切换图像按钮.addEventListener("click", () => {
   缩略图已显示 = !缩略图已显示;
+  if (缩略图已显示) {
+    切换图像按钮.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+    切换图像按钮.style.animation = "none";
+  } else {
+    切换图像按钮.innerHTML = '<i class="fa-regular fa-image"></i>';
+    切换图像按钮.style.removeProperty("animation");
+  }
+
   缩略图像组.forEach((缩略图项, index) => {
     if (缩略图已显示) {
       缩略图项.style.translate = `0 -${(50 + 10) * (index + 1)}px`;
       缩略图项.style.opacity = "1";
       缩略图项.style.pointerEvents = "all";
-      切换图像按钮.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-      切换图像按钮.style.animation = "none";
     } else {
       缩略图项.style.translate = `0 0`;
       缩略图项.style.opacity = "0";
       缩略图项.style.pointerEvents = "none";
-      切换图像按钮.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i>';
-      切换图像按钮.style.removeProperty("animation");
     }
   });
 });
