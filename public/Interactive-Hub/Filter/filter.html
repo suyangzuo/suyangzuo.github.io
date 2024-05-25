@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
@@ -8,7 +8,12 @@
     <link
       rel="icon"
       href="/Images/Interactive-Hub/HQ/滤镜.png"
-      type="image/x-icon" />
+      type="image/x-icon"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Titillium+Web&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Roboto+Mono&family=M+PLUS+Code+Latin&family=Ubuntu+Mono&family=M+PLUS+1+Code:wght@100..700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="/Styles/common.css" />
     <link rel="stylesheet" href="/Styles/top-banner-common.css" />
     <link rel="stylesheet" href="../control.css" />
@@ -17,7 +22,8 @@
     <script src="/Scripts/top-banner.js" defer></script>
     <script
       src="https://kit.fontawesome.com/d0483e3bd3.js"
-      crossorigin="anonymous"></script>
+      crossorigin="anonymous"
+    ></script>
     <script src="./filter.js" defer></script>
   </head>
   <body>
@@ -25,17 +31,333 @@
     <script
       src="../../Scripts/html-include.js"
       target="../../top-banner.html"
-      position="afterbegin"></script>
+      position="afterbegin"
+    ></script>
     <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
 
     <section class="滤镜总区 总区">
       <script
         src="../../Scripts/html-include.js"
         target="../control.html"
-        position="afterbegin"></script>
+        position="afterbegin"
+      ></script>
       <p class="交互标题">滤镜</p>
-      <figure class="展示区"></figure>
-      <div class="控制区"></div>
+      <section class="展示区">
+        <div class="图像区">
+          <figure class="图容器 原图容器">
+            <img class="图像" src="./Images/1.webp" alt="1" />
+          </figure>
+          <figure class="图容器 效果图容器">
+            <img class="图像" src="./Images/1.webp" alt="1" />
+          </figure>
+          <div class="分割线"></div>
+          <input type="range" id="效果图滑块" min="0" max="1000" value="500" />
+        </div>
+        <section class="控制区">
+          <div class="滤镜区">
+            <ol class="滤镜列表">
+              <li class="滤镜项">
+                <label for="棕褐色开关" class="滤镜图标"
+                  ><span class="中文标签">棕褐色</span
+                  ><span class="英文标签">sepia</span></label
+                >
+                <div class="开关容器">
+                  <input type="checkbox" id="棕褐色开关" /><span class="on"
+                    >ON</span
+                  >
+                  <span class="off">OFF</span>
+                  <span class="指示球"></span>
+                </div>
+                <button class="重置" id="重置-棕褐色">
+                  <i class="fa-solid fa-rotate-left"></i>
+                </button>
+                <label for="棕褐色" class="滑块区">
+                  <span class="滑块值"></span>
+                  <span class="最小值"></span>
+                  <span class="最大值"></span>
+                  <input
+                    class="滑块"
+                    id="棕褐色"
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="0"
+                  />
+                </label>
+              </li>
+              <li class="滤镜项">
+                <label for="饱和度开关" class="滤镜图标"
+                  ><span class="中文标签">饱和度</span
+                  ><span class="英文标签">saturate</span></label
+                >
+                <div class="开关容器">
+                  <input type="checkbox" id="饱和度开关" /><span class="on"
+                    >ON</span
+                  >
+                  <span class="off">OFF</span>
+                  <span class="指示球"></span>
+                </div>
+                <button class="重置" id="重置-饱和度">
+                  <i class="fa-solid fa-rotate-left"></i>
+                </button>
+                <label for="饱和度" class="滑块区">
+                  <span class="滑块值"></span>
+                  <span class="最小值"></span>
+                  <span class="最大值"></span>
+                  <input
+                    class="滑块"
+                    id="饱和度"
+                    type="range"
+                    min="0"
+                    max="1000"
+                    value="100"
+                  />
+                </label>
+              </li>
+              <li class="滤镜项">
+                <label for="透明度开关" class="滤镜图标"
+                  ><span class="中文标签">透明度</span
+                  ><span class="英文标签">opacity</span></label
+                >
+                <div class="开关容器">
+                  <input type="checkbox" id="透明度开关" /><span class="on"
+                    >ON</span
+                  >
+                  <span class="off">OFF</span>
+                  <span class="指示球"></span>
+                </div>
+                <button class="重置" id="重置-透明度">
+                  <i class="fa-solid fa-rotate-left"></i>
+                </button>
+                <label for="透明度" class="滑块区">
+                  <span class="滑块值"></span>
+                  <span class="最小值"></span>
+                  <span class="最大值"></span>
+                  <input
+                    class="滑块"
+                    id="透明度"
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="100"
+                  />
+                </label>
+              </li>
+              <li class="滤镜项">
+                <label for="反相开关" class="滤镜图标"
+                  ><span class="中文标签">反相</span
+                  ><span class="英文标签">invert</span></label
+                >
+                <div class="开关容器">
+                  <input type="checkbox" id="反相开关" /><span class="on"
+                    >ON</span
+                  >
+                  <span class="off">OFF</span>
+                  <span class="指示球"></span>
+                </div>
+                <button class="重置" id="重置-反相">
+                  <i class="fa-solid fa-rotate-left"></i>
+                </button>
+                <label for="反相" class="滑块区">
+                  <span class="滑块值"></span>
+                  <span class="最小值"></span>
+                  <span class="最大值"></span>
+                  <input
+                    class="滑块"
+                    id="反相"
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="0"
+                  />
+                </label>
+              </li>
+              <li class="滤镜项">
+                <label for="色相开关" class="滤镜图标"
+                  ><span class="中文标签">色相</span
+                  ><span class="英文标签">hue-rotate</span></label
+                >
+                <div class="开关容器">
+                  <input type="checkbox" id="色相开关" /><span class="on"
+                    >ON</span
+                  >
+                  <span class="off">OFF</span>
+                  <span class="指示球"></span>
+                </div>
+                <button class="重置" id="重置-色相">
+                  <i class="fa-solid fa-rotate-left"></i>
+                </button>
+                <label for="色相" class="滑块区">
+                  <span class="滑块值"></span>
+                  <span class="最小值"></span>
+                  <span class="最大值"></span>
+                  <input
+                    class="滑块"
+                    id="色相"
+                    type="range"
+                    min="0"
+                    max="360"
+                    value="0"
+                  />
+                </label>
+              </li>
+              <li class="滤镜项">
+                <label for="灰度开关" class="滤镜图标"
+                  ><span class="中文标签">灰度</span
+                  ><span class="英文标签">grayscale</span></label
+                >
+                <div class="开关容器">
+                  <input type="checkbox" id="灰度开关" /><span class="on"
+                    >ON</span
+                  >
+                  <span class="off">OFF</span>
+                  <span class="指示球"></span>
+                </div>
+                <button class="重置" id="重置-灰度">
+                  <i class="fa-solid fa-rotate-left"></i>
+                </button>
+                <label for="灰度" class="滑块区">
+                  <span class="滑块值"></span>
+                  <span class="最小值"></span>
+                  <span class="最大值"></span>
+                  <input
+                    class="滑块"
+                    id="灰度"
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="0"
+                  />
+                </label>
+              </li>
+              <li class="滤镜项">
+                <label for="投影开关" class="滤镜图标"
+                  ><span class="中文标签">投影</span
+                  ><span class="英文标签">drop-shadow</span></label
+                >
+                <div class="开关容器">
+                  <input type="checkbox" id="投影开关" /><span class="on"
+                    >ON</span
+                  >
+                  <span class="off">OFF</span>
+                  <span class="指示球"></span>
+                </div>
+                <button class="重置" id="重置-投影">
+                  <i class="fa-solid fa-rotate-left"></i>
+                </button>
+              </li>
+              <li class="滤镜项">
+                <label for="对比度开关" class="滤镜图标"
+                  ><span class="中文标签">对比度</span
+                  ><span class="英文标签">contrast</span></label
+                >
+                <div class="开关容器">
+                  <input type="checkbox" id="对比度开关" /><span class="on"
+                    >ON</span
+                  >
+                  <span class="off">OFF</span>
+                  <span class="指示球"></span>
+                </div>
+                <button class="重置" id="重置-对比度">
+                  <i class="fa-solid fa-rotate-left"></i>
+                </button>
+                <label for="对比度" class="滑块区">
+                  <span class="滑块值"></span>
+                  <span class="最小值"></span>
+                  <span class="最大值"></span>
+                  <input
+                    class="滑块"
+                    id="对比度"
+                    type="range"
+                    min="0"
+                    max="1000"
+                    value="100"
+                  />
+                </label>
+              </li>
+              <li class="滤镜项">
+                <label for="亮度开关" class="滤镜图标"
+                  ><span class="中文标签">亮度</span
+                  ><span class="英文标签">brightness</span></label
+                >
+                <div class="开关容器">
+                  <input type="checkbox" id="亮度开关" /><span class="on"
+                    >ON</span
+                  >
+                  <span class="off">OFF</span>
+                  <span class="指示球"></span>
+                </div>
+                <button class="重置" id="重置-亮度">
+                  <i class="fa-solid fa-rotate-left"></i>
+                </button>
+                <label for="亮度" class="滑块区">
+                  <span class="滑块值"></span>
+                  <span class="最小值"></span>
+                  <span class="最大值"></span>
+                  <input
+                    class="滑块"
+                    id="亮度"
+                    type="range"
+                    min="0"
+                    max="1000"
+                    value="100"
+                  />
+                </label>
+              </li>
+              <li class="滤镜项">
+                <label for="模糊开关" class="滤镜图标"
+                  ><span class="中文标签">模糊</span
+                  ><span class="英文标签">blur</span></label
+                >
+                <div class="开关容器">
+                  <input type="checkbox" id="模糊开关" />
+                  <span class="on">ON</span>
+                  <span class="off">OFF</span>
+                  <span class="指示球"></span>
+                </div>
+                <button class="重置" id="重置-模糊">
+                  <i class="fa-solid fa-rotate-left"></i>
+                </button>
+                <label for="模糊" class="滑块区">
+                  <span class="滑块值"></span>
+                  <span class="最小值"></span>
+                  <span class="最大值"></span>
+                  <input
+                    class="滑块"
+                    id="模糊"
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="0"
+                  />
+                </label>
+              </li>
+            </ol>
+            <button id="滤镜开关" title="滤镜">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+          <div class="图像切换区">
+            <ol class="图像序号列表">
+              <li class="图像序号项">
+                <img class="图像序号缩略图" src="./Images/1.webp" alt="1" />
+              </li>
+              <li class="图像序号项">
+                <img class="图像序号缩略图" src="./Images/2.webp" alt="2" />
+              </li>
+              <li class="图像序号项">
+                <img class="图像序号缩略图" src="./Images/3.webp" alt="3" />
+              </li>
+              <li class="图像序号项">
+                <img class="图像序号缩略图" src="./Images/4.webp" alt="4" />
+              </li>
+            </ol>
+            <button id="切换图像" title="更换图像">
+              <i class="fa-solid fa-arrows-rotate"></i>
+            </button>
+          </div>
+        </section>
+      </section>
     </section>
   </body>
 </html>

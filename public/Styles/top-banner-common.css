@@ -228,7 +228,7 @@
     border-radius: 5px;
     overflow: hidden;
     transition: 350ms ease-out;
-    box-shadow: 5px 5px 10px 0 #0008, inset 0 0 0 1px var(--二级菜单色);
+    box-shadow: 0 5px 30px 5px #0008, inset 0 0 0 1px var(--二级菜单色);
 
     .导航2级链接 {
       width: 150px;

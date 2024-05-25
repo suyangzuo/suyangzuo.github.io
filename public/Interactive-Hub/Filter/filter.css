@@ -2,5 +2,457 @@
   --进度条颜色-已填充: rgb(41, 126, 78);
   --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
   --拇指宽度: 16px;
+  --效果图滑块拇指宽度: 50px;
+  --效果图滑块拇指x修正: 0px;
+  --按钮宽度: 50px;
+  --按钮背景色: #9ab;
+  --滤镜拇指宽度: 20px;
+  --按钮背景色-悬停: #bcd;
+  --按钮背景色-激活: #def;
+  --拇指偏移修正-棕褐色: 0;
+  --拇指偏移修正-饱和度: 0;
+  --拇指偏移修正-透明度: 0;
+  --拇指偏移修正-反相: 0;
+  --拇指偏移修正-色相: 0;
+  --拇指偏移修正-灰度: 0;
+  --拇指偏移修正-投影: 0;
+  --拇指偏移修正-对比度: 0;
+  --拇指偏移修正-亮度: 0;
+  --拇指偏移修正-模糊: 0;
+  --默认值-棕褐色: 0;
+  --默认值-饱和度: 100;
+  --默认值-透明度: 100;
+  --默认值-反相: 0;
+  --默认值-色相: 0;
+  --默认值-灰度: 0;
+  --默认值-对比度: 100;
+  --默认值-亮度: 100;
+  --默认值-模糊: 0;
+  --默认值-投影-x偏移: 0;
+  --默认值-投影-y偏移: 0;
+  --默认值-投影-模糊: 0;
+  --默认值-投影-扩展: 0;
+  --默认值-投影-颜色: transparent;
 }
 
+body {
+  width: 100dvw;
+}
+
+.总区 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.展示区 {
+  flex-shrink: 0;
+  position: relative;
+  height: 850px;
+  aspect-ratio: calc(16 / 10);
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: solid 4px black;
+}
+
+.图像区 {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.图容器 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.效果图容器 {
+  clip-path: inset(0 50% 0 0);
+}
+
+.图像 {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#效果图滑块 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  appearance: none;
+  background-color: transparent;
+  cursor: url("/Images/Common/鼠标-默认.cur"), auto;
+  transition: opacity 500ms;
+}
+
+#效果图滑块::-webkit-slider-thumb {
+  appearance: none;
+  width: var(--效果图滑块拇指宽度);
+  height: var(--效果图滑块拇指宽度);
+  border-radius: 999px;
+  background-color: gray;
+  border: solid 4px white;
+  translate: var(--效果图滑块拇指x修正) 0;
+}
+
+#效果图滑块::-webkit-slider-thumb:hover {
+  cursor: url("/Images/Common/鼠标-横向缩放.png"), ew-resize;
+}
+
+.分割线 {
+  position: absolute;
+  top: 0;
+  left: calc(50% - 2px);
+  height: 100%;
+  width: 4px;
+  background-color: white;
+  transition: opacity 500ms;
+}
+
+.控制区 {
+  position: absolute;
+  bottom: 25px;
+  right: 25px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: 15px;
+}
+
+:where(.滤镜区, .图像切换区) > button {
+  background-color: var(--按钮背景色);
+  transition: background-color 250ms;
+  box-shadow: 2px 2px 4px 0 #111;
+  font-size: 1.25rem;
+  position: relative;
+  z-index: 2;
+}
+
+:where(.滤镜区, .图像切换区) > button:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  background-color: var(--按钮背景色-悬停);
+}
+
+:where(.滤镜区, .图像切换区) > button:active {
+  background-color: var(--按钮背景色-激活);
+}
+
+#切换图像 {
+  width: var(--按钮宽度);
+  aspect-ratio: 1;
+  border-radius: 999px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#切换图像:hover {
+  animation: 切换图像按钮动画 4s ease-out infinite;
+}
+
+@keyframes 切换图像按钮动画 {
+  from {
+    rotate: z 0deg;
+  }
+  to {
+    rotate: z 360deg;
+  }
+}
+
+.图像序号列表 {
+  position: absolute;
+  z-index: 3;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.图像序号项 {
+  position: absolute;
+  bottom: 0;
+  width: var(--按钮宽度);
+  height: var(--按钮宽度);
+  border-radius: 999px;
+  overflow: hidden;
+  background-color: lightslategrey;
+  box-shadow: 2px 2px 4px 0 #111;
+  opacity: 0;
+  pointer-events: none;
+  transition: 500ms;
+}
+
+.图像序号项:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.图像序号缩略图 {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(75%);
+  transition: 250ms;
+}
+
+.图像序号缩略图:hover {
+  filter: brightness(100%);
+}
+
+#滤镜开关 {
+  width: var(--按钮宽度);
+  aspect-ratio: 1;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.滤镜区 {
+  display: flex;
+  align-items: flex-end;
+  gap: 15px;
+}
+
+.滤镜列表 {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  justify-content: flex-end;
+  gap: 25px;
+  clip-path: inset(100% 0 0 100%);
+  pointer-events: none;
+  transition: 500ms;
+}
+
+.滤镜项 {
+  position: relative;
+  width: 500px;
+  height: 100px;
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 1px #aaa;
+  padding: 5px;
+  background-color: #000a;
+}
+
+.中文标签 {
+  font-size: 1.15rem;
+  padding: 0 5px;
+  color: burlywood;
+}
+
+.英文标签 {
+  font-family: "JetBrainsMono NF", monospace;
+  color: #aaa;
+}
+
+.重置 {
+  position: absolute;
+  top: 11px;
+  right: 85px;
+  width: 25px;
+  height: 25px;
+  background-color: darkolivegreen;
+  color: white;
+  border-radius: 999px;
+  border: none;
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 250ms;
+}
+
+.重置:hover {
+  background-color: #465926;
+}
+
+.重置:active {
+  background-color: #5f7736;
+}
+
+.开关容器 {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 28px;
+}
+
+.开关容器 > input[type="checkbox"] {
+  appearance: none;
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  background-color: #9f1e2a;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.开关容器 > input[type="checkbox"]:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  outline: solid 2px #aaa;
+}
+
+.开关容器 > input[type="checkbox"]:checked {
+  background-color: seagreen;
+}
+
+.off,
+.on {
+  pointer-events: none;
+  color: #ddd;
+  position: relative;
+  height: 100%;
+  font-size: 0.9rem;
+  transition: 250ms;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.on {
+  opacity: 0;
+}
+
+.指示球 {
+  position: absolute;
+  height: 20px;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background-color: #ddd;
+  top: 50%;
+  left: 3px;
+  translate: 0 -50%;
+  pointer-events: none;
+  transition: 250ms;
+}
+
+.开关容器:has(input[type="checkbox"]:checked) .on {
+  opacity: 1;
+}
+
+.开关容器:has(input[type="checkbox"]:checked) .off {
+  opacity: 0;
+}
+
+.开关容器:has(input[type="checkbox"]:checked) .指示球 {
+  left: calc(100% - 20px - 3px);
+}
+
+.滑块区 {
+  position: absolute;
+  width: 75%;
+  height: 50px;
+  bottom: 10px;
+  left: 50%;
+  translate: -50% 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: url("/Images/Common/鼠标-默认.cur"), auto;
+}
+
+.滑块 {
+  appearance: none;
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background-color: #444;
+}
+
+.滑块:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.滑块::-webkit-slider-thumb {
+  appearance: none;
+  width: var(--滤镜拇指宽度);
+  height: 25px;
+  background-color: #abc;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 66%, 50% 100%, 0% 66%);
+  box-shadow: 1px 1px 2px 0 #111;
+}
+
+#棕褐色::-webkit-slider-thumb {
+  translate: var(--拇指偏移修正-棕褐色) -8px;
+}
+
+#饱和度::-webkit-slider-thumb {
+  translate: var(--拇指偏移修正-饱和度) -8px;
+}
+
+#透明度::-webkit-slider-thumb {
+  translate: var(--拇指偏移修正-透明度) -8px;
+}
+
+#反相::-webkit-slider-thumb {
+  translate: var(--拇指偏移修正-反相) -8px;
+}
+
+#色相::-webkit-slider-thumb {
+  translate: var(--拇指偏移修正-色相) -8px;
+}
+
+#灰度::-webkit-slider-thumb {
+  translate: var(--拇指偏移修正-灰度) -8px;
+}
+
+#投影::-webkit-slider-thumb {
+  translate: var(--拇指偏移修正-投影) -8px;
+}
+
+#对比度::-webkit-slider-thumb {
+  translate: var(--拇指偏移修正-对比度) -8px;
+}
+
+#亮度::-webkit-slider-thumb {
+  translate: var(--拇指偏移修正-亮度) -8px;
+}
+
+#模糊::-webkit-slider-thumb {
+  translate: var(--拇指偏移修正-模糊) -8px;
+}
+
+.滑块值,
+.最小值,
+.最大值 {
+  font-family: "JetBrainsMono NF", monospace;
+  font-size: 0.9rem;
+}
+
+.滑块值 {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  translate: -50% 5px;
+  color: lightskyblue;
+}
+
+.最小值,
+.最大值 {
+  position: absolute;
+  bottom: -5px;
+  color: #888;
+}
+
+.最小值 {
+  left: 0;
+}
+
+.最大值 {
+  right: 0;
+}
