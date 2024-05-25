@@ -49,7 +49,7 @@ body {
 .展示区 {
   flex-shrink: 0;
   position: relative;
-  height: 850px;
+  height: max(850px, calc(100vh - 250px));
   aspect-ratio: calc(16 / 10);
   margin: 0 auto;
   display: flex;
@@ -209,6 +209,7 @@ body {
 }
 
 .滤镜列表 {
+  width: calc(400px * 2 + 15px * 2);
   position: relative;
   z-index: 3;
   display: flex;
