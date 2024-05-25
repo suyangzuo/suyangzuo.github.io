@@ -13,6 +13,7 @@ const 滤镜项组 = 滤镜列表.querySelectorAll(".滤镜项");
 const 滤镜滑块组 = document.querySelectorAll(".滑块");
 const 滤镜开关容器组 = document.querySelectorAll(".开关容器");
 const 重置按钮组 = document.querySelectorAll(".重置");
+const 全局重置按钮 = document.querySelector(".重置按钮");
 let 缩略图已显示 = false;
 let 滤镜列表已显示 = false;
 let 滤镜效果组 = [];
@@ -173,12 +174,21 @@ for (const 缩略图项 of 缩略图像组) {
   重置按钮.addEventListener("click", () => {
     const 滑块值 = 滤镜项.querySelector(".滑块值");
     const 滤镜滑块 = 滤镜项.querySelector(".滑块");
+    const 开关容器 = 滤镜项.querySelector(".开关容器");
+    const 开关 = 开关容器.querySelector("input[type='checkbox']");
     const 默认值 = parseInt(
       rootStyle.getPropertyValue(`--默认值-${滤镜中文名称}`),
       10,
     );
     滤镜滑块.value = 默认值;
-    滑块值.textContent = 默认值.toString();
+    let 后缀 = "%";
+    if (滤镜滑块.id === "模糊") {
+      后缀 = "px";
+    } else if (滤镜滑块.id === "色相") {
+      后缀 = "deg";
+    }
+    console.log(默认值);
+    滑块值.textContent = `${默认值}${后缀}`;
     滤镜滑块.style.backgroundImage = `linear-gradient(90deg, seagreen ${(滤镜滑块.value / 滤镜滑块.max) * 100}%, transparent ${(滤镜滑块.value / 滤镜滑块.max) * 100}%)`;
     const 滤镜拇指宽度 = parseInt(
       rootStyle.getPropertyValue("--滤镜拇指宽度"),
@@ -188,15 +198,6 @@ for (const 缩略图项 of 缩略图像组) {
       (滤镜拇指宽度 / 滤镜滑块.max) * (滤镜滑块.value - 滤镜滑块.max / 2);
     root.style.setProperty(`--拇指偏移修正-${滤镜滑块.id}`, `${初始偏移}px`);
 
-    let 后缀 = "%";
-    if (滤镜滑块.id === "模糊") {
-      后缀 = "px";
-    } else if (滤镜滑块.id === "色相") {
-      后缀 = "deg";
-    }
-
-    const 开关容器 = 滤镜项.querySelector(".开关容器");
-    const 开关 = 开关容器.querySelector("input[type='checkbox']");
     if (开关.checked) {
       const 当前滤镜对象 = 滤镜效果组.find(
         (滤镜对象) => 滤镜对象.滤镜名称 === 滤镜英文名称,
@@ -213,3 +214,47 @@ for (const 缩略图项 of 缩略图像组) {
     效果图.style.filter = 滤镜代码;
   });
 });
+
+全局重置按钮.addEventListener("click", () => {
+  重置按钮组.forEach((重置按钮) => {
+    const 滤镜项 = 重置按钮.parentElement;
+    const 滤镜中文名称 = 滤镜项.querySelector(".中文标签").textContent;
+    if (滤镜中文名称 === "投影") return;
+    重置滑块区属性();
+    const 开关容器 = 滤镜项.querySelector(".开关容器");
+    const 开关 = 开关容器.querySelector("input[type='checkbox']");
+    开关.checked = false;
+
+    滤镜效果组.length = 0;
+    效果图.style.removeProperty("filter");
+  });
+});
+
+function 重置滑块区属性() {
+  for (const 滤镜项 of 滤镜项组) {
+    const 滑块值 = 滤镜项.querySelector(".滑块值");
+    const 滤镜滑块 = 滤镜项.querySelector(".滑块");
+    const 滤镜中文名称 = 滤镜项.querySelector(".中文标签").textContent;
+    if (滤镜中文名称 === "投影") continue;
+    const 默认值 = parseInt(
+      rootStyle.getPropertyValue(`--默认值-${滤镜中文名称}`),
+      10,
+    );
+    滤镜滑块.value = 默认值;
+    let 后缀 = "%";
+    if (滤镜滑块.id === "模糊") {
+      后缀 = "px";
+    } else if (滤镜滑块.id === "色相") {
+      后缀 = "deg";
+    }
+    滑块值.textContent = `${默认值}${后缀}`;
+    滤镜滑块.style.backgroundImage = `linear-gradient(90deg, seagreen ${(滤镜滑块.value / 滤镜滑块.max) * 100}%, transparent ${(滤镜滑块.value / 滤镜滑块.max) * 100}%)`;
+    const 滤镜拇指宽度 = parseInt(
+      rootStyle.getPropertyValue("--滤镜拇指宽度"),
+      10,
+    );
+    const 初始偏移 =
+      (滤镜拇指宽度 / 滤镜滑块.max) * (滤镜滑块.value - 滤镜滑块.max / 2);
+    root.style.setProperty(`--拇指偏移修正-${滤镜滑块.id}`, `${初始偏移}px`);
+  }
+}
