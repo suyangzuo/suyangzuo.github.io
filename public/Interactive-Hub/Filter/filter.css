@@ -1,5 +1,6 @@
 :root {
-  --进度条颜色-已填充: rgb(41, 126, 78);
+  /*--进度条颜色-已填充: rgb(41, 126, 78);*/
+  --进度条颜色-已填充: rgb(70, 110, 184);
   --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
   --拇指宽度: 16px;
   --效果图滑块拇指宽度: 50px;
@@ -62,6 +63,7 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 
 .图容器 {
@@ -262,6 +264,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: 1px 1px 2px 0 #111;
   transition: 125ms;
 }
 
@@ -383,7 +386,7 @@ body {
   height: 25px;
   background-image: linear-gradient(35deg, #678 20%, #abc 80%);
   clip-path: polygon(0% 0%, 100% 0%, 100% 66%, 50% 100%, 0% 66%);
-  box-shadow: 1px 1px 2px 0 #111;
+  filter: drop-shadow(0 2px 2px #111);
 }
 
 #棕褐色::-webkit-slider-thumb {

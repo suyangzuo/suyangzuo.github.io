@@ -1,5 +1,6 @@
 const root = document.querySelector(":root");
 const rootStyle = window.getComputedStyle(root);
+const 进度条颜色_已填充 = rootStyle.getPropertyValue("--进度条颜色-已填充");
 const 原图容器 = document.querySelector(".原图容器");
 const 效果图容器 = document.querySelector(".效果图容器");
 const 效果图 = 效果图容器.querySelector(".图像");
@@ -82,7 +83,7 @@ for (const 缩略图项 of 缩略图像组) {
 });
 
 滤镜滑块组.forEach((滤镜滑块, index) => {
-  滤镜滑块.style.backgroundImage = `linear-gradient(90deg, seagreen ${(滤镜滑块.value / 滤镜滑块.max) * 100}%, transparent ${(滤镜滑块.value / 滤镜滑块.max) * 100}%)`;
+  滤镜滑块.style.backgroundImage = `linear-gradient(90deg, ${进度条颜色_已填充} ${(滤镜滑块.value / 滤镜滑块.max) * 100}%, transparent ${(滤镜滑块.value / 滤镜滑块.max) * 100}%)`;
   const 滑块值 = 滤镜滑块.parentElement.querySelector(".滑块值");
   const 滤镜拇指宽度 = parseInt(
     rootStyle.getPropertyValue("--滤镜拇指宽度"),
@@ -107,7 +108,7 @@ for (const 缩略图项 of 缩略图像组) {
       (滤镜拇指宽度 / 滤镜滑块.max) * (滤镜滑块.value - 滤镜滑块.max / 2);
     root.style.setProperty(`--拇指偏移修正-${滤镜滑块.id}`, `${偏移}px`);
     const 滑块背景色比例 = 滤镜滑块.value / 滤镜滑块.max;
-    滤镜滑块.style.backgroundImage = `linear-gradient(90deg, seagreen ${(滤镜滑块.value / 滤镜滑块.max) * 100}%, transparent ${(滤镜滑块.value / 滤镜滑块.max) * 100}%)`;
+    滤镜滑块.style.backgroundImage = `linear-gradient(90deg, ${进度条颜色_已填充} ${(滤镜滑块.value / 滤镜滑块.max) * 100}%, transparent ${(滤镜滑块.value / 滤镜滑块.max) * 100}%)`;
     滑块值.textContent = `${滤镜滑块.value}${后缀}`;
 
     const 滤镜项 = 滤镜滑块.parentElement.parentElement;
@@ -189,7 +190,7 @@ for (const 缩略图项 of 缩略图像组) {
     }
     console.log(默认值);
     滑块值.textContent = `${默认值}${后缀}`;
-    滤镜滑块.style.backgroundImage = `linear-gradient(90deg, seagreen ${(滤镜滑块.value / 滤镜滑块.max) * 100}%, transparent ${(滤镜滑块.value / 滤镜滑块.max) * 100}%)`;
+    滤镜滑块.style.backgroundImage = `linear-gradient(90deg, ${进度条颜色_已填充} ${(滤镜滑块.value / 滤镜滑块.max) * 100}%, transparent ${(滤镜滑块.value / 滤镜滑块.max) * 100}%)`;
     const 滤镜拇指宽度 = parseInt(
       rootStyle.getPropertyValue("--滤镜拇指宽度"),
       10,
@@ -248,7 +249,7 @@ function 重置滑块区属性() {
       后缀 = "deg";
     }
     滑块值.textContent = `${默认值}${后缀}`;
-    滤镜滑块.style.backgroundImage = `linear-gradient(90deg, seagreen ${(滤镜滑块.value / 滤镜滑块.max) * 100}%, transparent ${(滤镜滑块.value / 滤镜滑块.max) * 100}%)`;
+    滤镜滑块.style.backgroundImage = `linear-gradient(90deg, ${进度条颜色_已填充} ${(滤镜滑块.value / 滤镜滑块.max) * 100}%, transparent ${(滤镜滑块.value / 滤镜滑块.max) * 100}%)`;
     const 滤镜拇指宽度 = parseInt(
       rootStyle.getPropertyValue("--滤镜拇指宽度"),
       10,
