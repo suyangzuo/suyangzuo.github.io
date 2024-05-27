@@ -96,13 +96,12 @@ for (const 缩略图项 of 缩略图像组) {
   root.style.setProperty(`--拇指偏移修正-${滤镜滑块.id}`, `${初始偏移}px`);
   const 最小值 = 滤镜滑块.parentElement.querySelector(".最小值");
   const 最大值 = 滤镜滑块.parentElement.querySelector(".最大值");
-  const 后缀组 = 生成后缀元素(滤镜滑块.id);
   最小值.textContent = `${滤镜滑块.min}`;
   最大值.textContent = `${滤镜滑块.max}`;
   滑块值.textContent = `${滤镜滑块.value}`;
-  最小值.appendChild(后缀组[0]);
-  最大值.appendChild(后缀组[1]);
-  滑块值.appendChild(后缀组[2]);
+  最小值.appendChild(生成后缀元素(滤镜滑块.id));
+  最大值.appendChild(生成后缀元素(滤镜滑块.id));
+  滑块值.appendChild(生成后缀元素(滤镜滑块.id));
   滤镜滑块.addEventListener("input", () => {
     const 偏移 =
       (滤镜拇指宽度 / 滤镜滑块.max) * (滤镜滑块.value - 滤镜滑块.max / 2);
@@ -112,7 +111,7 @@ for (const 缩略图项 of 缩略图像组) {
       (滤镜滑块.value / 滤镜滑块.max) * 100
     }%, transparent ${(滤镜滑块.value / 滤镜滑块.max) * 100}%)`;
     滑块值.textContent = `${滤镜滑块.value}`;
-    滑块值.appendChild(后缀组[2]);
+    滑块值.appendChild(生成后缀元素(滤镜滑块.id));
 
     const 后缀 = 生成后缀文本(滤镜滑块.id);
     const 滤镜项 = 滤镜滑块.parentElement.parentElement;
@@ -181,9 +180,8 @@ for (const 缩略图项 of 缩略图像组) {
       10,
     );
     滤镜滑块.value = 默认值;
-    const 后缀组 = 生成后缀元素(滤镜滑块.id);
     滑块值.textContent = `${默认值}`;
-    滑块值.appendChild(后缀组[0]);
+    滑块值.appendChild(生成后缀元素(滤镜滑块.id));
     滤镜滑块.style.backgroundImage = `linear-gradient(90deg, ${进度条颜色_已填充} ${
       (滤镜滑块.value / 滤镜滑块.max) * 100
     }%, transparent ${(滤镜滑块.value / 滤镜滑块.max) * 100}%)`;
@@ -239,9 +237,8 @@ function 重置滑块区属性() {
       10,
     );
     滤镜滑块.value = 默认值;
-    const 后缀组 = 生成后缀元素(滤镜滑块.id);
     滑块值.textContent = `${默认值}`;
-    滑块值.appendChild(后缀组[0]);
+    滑块值.appendChild(生成后缀元素(滤镜滑块.id));
     滤镜滑块.style.backgroundImage = `linear-gradient(90deg, ${进度条颜色_已填充} ${
       (滤镜滑块.value / 滤镜滑块.max) * 100
     }%, transparent ${(滤镜滑块.value / 滤镜滑块.max) * 100}%)`;
@@ -256,19 +253,15 @@ function 重置滑块区属性() {
 }
 
 function 生成后缀元素(滑块id) {
-  const 后缀组 = [];
-  for (let i = 1; i <= 3; i++) {
-    const 后缀 = document.createElement("span");
-    后缀.className = "后缀";
-    后缀.innerHTML = "%";
-    if (滑块id === "模糊") {
-      后缀.innerHTML = "px";
-    } else if (滑块id === "色相") {
-      后缀.innerHTML = "deg";
-    }
-    后缀组.push(后缀);
+  const 后缀 = document.createElement("span");
+  后缀.className = "后缀";
+  后缀.innerHTML = "%";
+  if (滑块id === "模糊") {
+    后缀.innerHTML = "px";
+  } else if (滑块id === "色相") {
+    后缀.innerHTML = "deg";
   }
-  return 后缀组;
+  return 后缀;
 }
 
 function 生成后缀文本(滑块id) {
