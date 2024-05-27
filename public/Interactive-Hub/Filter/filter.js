@@ -83,7 +83,9 @@ for (const 缩略图项 of 缩略图像组) {
 });
 
 滤镜滑块组.forEach((滤镜滑块, index) => {
-  滤镜滑块.style.backgroundImage = `linear-gradient(90deg, ${进度条颜色_已填充} ${(滤镜滑块.value / 滤镜滑块.max) * 100}%, transparent ${(滤镜滑块.value / 滤镜滑块.max) * 100}%)`;
+  滤镜滑块.style.backgroundImage = `linear-gradient(90deg, ${进度条颜色_已填充} ${
+    (滤镜滑块.value / 滤镜滑块.max) * 100
+  }%, transparent ${(滤镜滑块.value / 滤镜滑块.max) * 100}%)`;
   const 滑块值 = 滤镜滑块.parentElement.querySelector(".滑块值");
   const 滤镜拇指宽度 = parseInt(
     rootStyle.getPropertyValue("--滤镜拇指宽度"),
@@ -94,22 +96,23 @@ for (const 缩略图项 of 缩略图像组) {
   root.style.setProperty(`--拇指偏移修正-${滤镜滑块.id}`, `${初始偏移}px`);
   const 最小值 = 滤镜滑块.parentElement.querySelector(".最小值");
   const 最大值 = 滤镜滑块.parentElement.querySelector(".最大值");
-  let 后缀 = "%";
-  if (滤镜滑块.id === "模糊") {
-    后缀 = "px";
-  } else if (滤镜滑块.id === "色相") {
-    后缀 = "deg";
-  }
-  最小值.textContent = `${滤镜滑块.min}${后缀}`;
-  最大值.textContent = `${滤镜滑块.max}${后缀}`;
-  滑块值.textContent = `${滤镜滑块.value}${后缀}`;
+  const 后缀组 = 生成后缀(滤镜滑块.id);
+  最小值.textContent = `${滤镜滑块.min}`;
+  最大值.textContent = `${滤镜滑块.max}`;
+  滑块值.textContent = `${滤镜滑块.value}`;
+  最小值.appendChild(后缀组[0]);
+  最大值.appendChild(后缀组[1]);
+  滑块值.appendChild(后缀组[2]);
   滤镜滑块.addEventListener("input", () => {
     const 偏移 =
       (滤镜拇指宽度 / 滤镜滑块.max) * (滤镜滑块.value - 滤镜滑块.max / 2);
     root.style.setProperty(`--拇指偏移修正-${滤镜滑块.id}`, `${偏移}px`);
     const 滑块背景色比例 = 滤镜滑块.value / 滤镜滑块.max;
-    滤镜滑块.style.backgroundImage = `linear-gradient(90deg, ${进度条颜色_已填充} ${(滤镜滑块.value / 滤镜滑块.max) * 100}%, transparent ${(滤镜滑块.value / 滤镜滑块.max) * 100}%)`;
-    滑块值.textContent = `${滤镜滑块.value}${后缀}`;
+    滤镜滑块.style.backgroundImage = `linear-gradient(90deg, ${进度条颜色_已填充} ${
+      (滤镜滑块.value / 滤镜滑块.max) * 100
+    }%, transparent ${(滤镜滑块.value / 滤镜滑块.max) * 100}%)`;
+    滑块值.textContent = `${滤镜滑块.value}`;
+    滑块值.appendChild(后缀组[2]);
 
     const 滤镜项 = 滤镜滑块.parentElement.parentElement;
     const 滤镜名称 = 滤镜项.querySelector(".英文标签").textContent;
@@ -182,15 +185,12 @@ for (const 缩略图项 of 缩略图像组) {
       10,
     );
     滤镜滑块.value = 默认值;
-    let 后缀 = "%";
-    if (滤镜滑块.id === "模糊") {
-      后缀 = "px";
-    } else if (滤镜滑块.id === "色相") {
-      后缀 = "deg";
-    }
-    console.log(默认值);
-    滑块值.textContent = `${默认值}${后缀}`;
-    滤镜滑块.style.backgroundImage = `linear-gradient(90deg, ${进度条颜色_已填充} ${(滤镜滑块.value / 滤镜滑块.max) * 100}%, transparent ${(滤镜滑块.value / 滤镜滑块.max) * 100}%)`;
+    const 后缀组 = 生成后缀(滤镜滑块.id);
+    滑块值.textContent = `${默认值}`;
+    滑块值.appendChild(后缀组[0]);
+    滤镜滑块.style.backgroundImage = `linear-gradient(90deg, ${进度条颜色_已填充} ${
+      (滤镜滑块.value / 滤镜滑块.max) * 100
+    }%, transparent ${(滤镜滑块.value / 滤镜滑块.max) * 100}%)`;
     const 滤镜拇指宽度 = parseInt(
       rootStyle.getPropertyValue("--滤镜拇指宽度"),
       10,
@@ -242,14 +242,12 @@ function 重置滑块区属性() {
       10,
     );
     滤镜滑块.value = 默认值;
-    let 后缀 = "%";
-    if (滤镜滑块.id === "模糊") {
-      后缀 = "px";
-    } else if (滤镜滑块.id === "色相") {
-      后缀 = "deg";
-    }
-    滑块值.textContent = `${默认值}${后缀}`;
-    滤镜滑块.style.backgroundImage = `linear-gradient(90deg, ${进度条颜色_已填充} ${(滤镜滑块.value / 滤镜滑块.max) * 100}%, transparent ${(滤镜滑块.value / 滤镜滑块.max) * 100}%)`;
+    const 后缀组 = 生成后缀(滤镜滑块.id);
+    滑块值.textContent = `${默认值}`;
+    滑块值.appendChild(后缀组[0]);
+    滤镜滑块.style.backgroundImage = `linear-gradient(90deg, ${进度条颜色_已填充} ${
+      (滤镜滑块.value / 滤镜滑块.max) * 100
+    }%, transparent ${(滤镜滑块.value / 滤镜滑块.max) * 100}%)`;
     const 滤镜拇指宽度 = parseInt(
       rootStyle.getPropertyValue("--滤镜拇指宽度"),
       10,
@@ -258,4 +256,20 @@ function 重置滑块区属性() {
       (滤镜拇指宽度 / 滤镜滑块.max) * (滤镜滑块.value - 滤镜滑块.max / 2);
     root.style.setProperty(`--拇指偏移修正-${滤镜滑块.id}`, `${初始偏移}px`);
   }
+}
+
+function 生成后缀(滑块id) {
+  const 后缀组 = [];
+  for (let i = 1; i <= 3; i++) {
+    const 后缀 = document.createElement("span");
+    后缀.className = "后缀";
+    后缀.innerHTML = "%";
+    if (滑块id === "模糊") {
+      后缀.innerHTML = "px";
+    } else if (滑块id === "色相") {
+      后缀.innerHTML = "deg";
+    }
+    后缀组.push(后缀);
+  }
+  return 后缀组;
 }

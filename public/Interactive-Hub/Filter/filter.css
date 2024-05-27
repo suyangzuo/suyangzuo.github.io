@@ -465,3 +465,17 @@ body {
 .最大值 {
   right: 0;
 }
+
+.后缀 {
+  font-family: "JetBrainsMono NF", monospace;
+  padding-left: 2px;
+}
+
+.滑块值 > .后缀 {
+  color: goldenrod;
+}
+
+.最小值 > .后缀,
+.最大值 > .后缀 {
+  color: darkgoldenrod;
+}
