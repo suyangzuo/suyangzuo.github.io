@@ -157,23 +157,23 @@ input[type="checkbox"]::after {
   width: 70%;
   height: 70%;
   content: "";
-  background-color: black;
+  background-color: white;
   clip-path: polygon(12% 50%, 43% 75%, 90% 5%, 100% 12%, 47% 95%, 5% 61%);
-  visibility: hidden;
+  opacity: 0;
   pointer-events: none;
   transform: translate(-5%, 5%);
-  transition: 0.05s;
+  transition: 25ms;
 }
 
 input[type="radio"]:checked,
 input[type="checkbox"]:checked {
   border: none;
-  background-color: #d6d6d6;
+  background-color: #5f885f;
 }
 
 input[type="radio"]:checked::after,
 input[type="checkbox"]:checked::after {
-  visibility: visible;
+  opacity: 1;
 }
 
 .标签:hover,
@@ -234,6 +234,15 @@ input[type="range"]::-webkit-slider-thumb {
   width: 50%;
   height: 100%;
   background: none;
+}
+
+label[for="flex-wrap"] {
+  align-items: flex-end;
+}
+
+.包裹中文 {
+  width: 48px;
+  text-align: right;
 }
 
 .间隙区 {
