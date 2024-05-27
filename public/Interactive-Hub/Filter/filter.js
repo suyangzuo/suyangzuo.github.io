@@ -96,7 +96,7 @@ for (const 缩略图项 of 缩略图像组) {
   root.style.setProperty(`--拇指偏移修正-${滤镜滑块.id}`, `${初始偏移}px`);
   const 最小值 = 滤镜滑块.parentElement.querySelector(".最小值");
   const 最大值 = 滤镜滑块.parentElement.querySelector(".最大值");
-  const 后缀组 = 生成后缀(滤镜滑块.id);
+  const 后缀组 = 生成后缀元素(滤镜滑块.id);
   最小值.textContent = `${滤镜滑块.min}`;
   最大值.textContent = `${滤镜滑块.max}`;
   滑块值.textContent = `${滤镜滑块.value}`;
@@ -114,6 +114,7 @@ for (const 缩略图项 of 缩略图像组) {
     滑块值.textContent = `${滤镜滑块.value}`;
     滑块值.appendChild(后缀组[2]);
 
+    const 后缀 = 生成后缀文本(滤镜滑块.id);
     const 滤镜项 = 滤镜滑块.parentElement.parentElement;
     const 滤镜名称 = 滤镜项.querySelector(".英文标签").textContent;
     const 开关容器 = 滤镜项.querySelector(".开关容器");
@@ -142,12 +143,7 @@ for (const 缩略图项 of 缩略图像组) {
     const 滤镜名称 = 滤镜项.querySelector(".英文标签").textContent;
     const 滤镜滑块 = 滤镜项.querySelector(".滑块");
     if (滤镜滑块 === null) return; //"投影"滑块的问题
-    let 后缀 = "%";
-    if (滤镜滑块.id === "模糊") {
-      后缀 = "px";
-    } else if (滤镜滑块.id === "色相") {
-      后缀 = "deg";
-    }
+    const 后缀 = 生成后缀文本(滤镜滑块.id);
     const 滤镜值 = `${滤镜滑块.value}${后缀}`;
     if (开关.checked) {
       滤镜效果组.push({
@@ -185,7 +181,7 @@ for (const 缩略图项 of 缩略图像组) {
       10,
     );
     滤镜滑块.value = 默认值;
-    const 后缀组 = 生成后缀(滤镜滑块.id);
+    const 后缀组 = 生成后缀元素(滤镜滑块.id);
     滑块值.textContent = `${默认值}`;
     滑块值.appendChild(后缀组[0]);
     滤镜滑块.style.backgroundImage = `linear-gradient(90deg, ${进度条颜色_已填充} ${
@@ -199,6 +195,7 @@ for (const 缩略图项 of 缩略图像组) {
       (滤镜拇指宽度 / 滤镜滑块.max) * (滤镜滑块.value - 滤镜滑块.max / 2);
     root.style.setProperty(`--拇指偏移修正-${滤镜滑块.id}`, `${初始偏移}px`);
 
+    const 后缀 = 生成后缀文本(滤镜滑块.id);
     if (开关.checked) {
       const 当前滤镜对象 = 滤镜效果组.find(
         (滤镜对象) => 滤镜对象.滤镜名称 === 滤镜英文名称,
@@ -242,7 +239,7 @@ function 重置滑块区属性() {
       10,
     );
     滤镜滑块.value = 默认值;
-    const 后缀组 = 生成后缀(滤镜滑块.id);
+    const 后缀组 = 生成后缀元素(滤镜滑块.id);
     滑块值.textContent = `${默认值}`;
     滑块值.appendChild(后缀组[0]);
     滤镜滑块.style.backgroundImage = `linear-gradient(90deg, ${进度条颜色_已填充} ${
@@ -258,7 +255,7 @@ function 重置滑块区属性() {
   }
 }
 
-function 生成后缀(滑块id) {
+function 生成后缀元素(滑块id) {
   const 后缀组 = [];
   for (let i = 1; i <= 3; i++) {
     const 后缀 = document.createElement("span");
@@ -272,4 +269,14 @@ function 生成后缀(滑块id) {
     后缀组.push(后缀);
   }
   return 后缀组;
+}
+
+function 生成后缀文本(滑块id) {
+  let 后缀 = "%";
+  if (滑块id === "模糊") {
+    后缀 = "px";
+  } else if (滑块id === "色相") {
+    后缀 = "deg";
+  }
+  return 后缀;
 }
