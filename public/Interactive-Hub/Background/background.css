@@ -67,13 +67,13 @@
 #bg-size-marks::after {
   position: absolute;
   content: "";
-  width: 24px;
+  width: 20px;
   height: 1px;
-  top: 105%;
+  top: 110%;
   left: calc(
-    (var(--范围滑块长度) + 30px) / 8 * var(--范围滑块数字标记伪元素顺位)
+    (var(--范围滑块长度) + 30px) / 8 * var(--范围滑块数字标记伪元素顺位) + 2px
   ); /* 30px 是每2个option之间的平均空隙；顺位从0开始，6就代表第7个 */
-  background-color: yellow;
+  background-color: goldenrod;
   transform: scaleY(1.25);
   transition: left 0.25s;
 }
@@ -102,7 +102,7 @@ label[for="bg-size"] {
 
 .属性代码 {
   font-size: 1rem;
-  font-family: consolas;
+  font-family: consolas, monospace;
   /* color: rgb(211, 211, 211); */
   color: goldenrod;
 }
@@ -197,7 +197,7 @@ label[for="bg-size"] {
 }
 
 .值代码 {
-  font-family: consolas;
+  font-family: consolas, monospace;
   font-size: 0.9rem;
   color: rgb(190, 107, 39);
 }
@@ -329,7 +329,9 @@ input[type="radio"]:hover,
   );
   width: 50px;
   left: calc(50% - 6.5px);
-  transition: color 0.1s, background-color 0.1s;
+  transition:
+    color 0.1s,
+    background-color 0.1s;
 }
 
 .x轴数字,
