@@ -1,6 +1,7 @@
 const root = document.querySelector(":root");
 const rootStyle = window.getComputedStyle(root);
 const 进度条颜色_已填充 = rootStyle.getPropertyValue("--进度条颜色-已填充");
+const 图像区 = document.querySelector(".图像区");
 const 原图容器 = document.querySelector(".原图容器");
 const 效果图容器 = document.querySelector(".效果图容器");
 const 效果图 = 效果图容器.querySelector(".图像");
@@ -18,6 +19,16 @@ const 全局重置按钮 = document.querySelector(".重置按钮");
 let 缩略图已显示 = false;
 let 滤镜列表已显示 = false;
 let 滤镜效果组 = [];
+
+图像区.addEventListener("click", () => {
+  滤镜开关按钮.innerHTML = '<i class="fa-solid fa-eye"></i>';
+  滤镜列表.style.removeProperty("clip-path");
+  滤镜列表.style.removeProperty("pointer-events");
+  分割线.style.removeProperty("opacity");
+  效果图滑块.style.removeProperty("opacity");
+  效果图滑块.style.removeProperty("pointer-events");
+  滤镜列表已显示 = false;
+});
 
 效果图滑块.addEventListener("input", () => {
   效果图容器.style.clipPath = `inset(0 ${(1000 - 效果图滑块.value) / 10}% 0 0)`;
