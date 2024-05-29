@@ -265,7 +265,7 @@ body {
 }
 
 .中文标签 {
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   padding: 0 5px;
   color: burlywood;
 }
@@ -273,7 +273,8 @@ body {
 .英文标签 {
   padding: 0 5px;
   font-family: "JetBrainsMono NF", monospace;
-  color: #aaa;
+  font-size: 0.95rem;
+  color: #b2a090;
 }
 
 .重置 {
