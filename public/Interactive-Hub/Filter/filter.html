@@ -50,13 +50,16 @@
           <figure class="图容器 效果图容器">
             <img class="图像" src="./Images/1.webp" alt="1" />
           </figure>
+          <figure class="投影图容器">
+            <img class="投影图" src="/Images/Index-Images/XBOX手柄.png" alt="投影图像">
+          </figure>
           <div class="分割线"></div>
           <input type="range" id="效果图滑块" min="0" max="1000" value="500" />
         </div>
         <section class="控制区">
           <div class="滤镜区">
             <ol class="滤镜列表">
-              <li class="滤镜项">
+              <li class="滤镜项 棕褐色项">
                 <label for="棕褐色开关" class="滤镜图标"
                   ><span class="中文标签">棕褐色</span
                   ><span class="英文标签">sepia</span></label
@@ -85,7 +88,7 @@
                   />
                 </label>
               </li>
-              <li class="滤镜项">
+              <li class="滤镜项 透明度项">
                 <label for="透明度开关" class="滤镜图标"
                   ><span class="中文标签">透明度</span
                   ><span class="英文标签">opacity</span></label
@@ -114,7 +117,7 @@
                   />
                 </label>
               </li>
-              <li class="滤镜项">
+              <li class="滤镜项 反相项">
                 <label for="反相开关" class="滤镜图标"
                   ><span class="中文标签">反相</span
                   ><span class="英文标签">invert</span></label
@@ -143,7 +146,7 @@
                   />
                 </label>
               </li>
-              <li class="滤镜项">
+              <li class="滤镜项 色相项">
                 <label for="色相开关" class="滤镜图标"
                   ><span class="中文标签">色相</span
                   ><span class="英文标签">hue-rotate</span></label
@@ -172,7 +175,7 @@
                   />
                 </label>
               </li>
-              <li class="滤镜项">
+              <li class="滤镜项 灰度项">
                 <label for="灰度开关" class="滤镜图标"
                   ><span class="中文标签">灰度</span
                   ><span class="英文标签">grayscale</span></label
@@ -201,7 +204,7 @@
                   />
                 </label>
               </li>
-              <li class="滤镜项">
+              <li class="滤镜项 饱和度项">
                 <label for="饱和度开关" class="滤镜图标"
                   ><span class="中文标签">饱和度</span
                   ><span class="英文标签">saturate</span></label
@@ -230,7 +233,7 @@
                   />
                 </label>
               </li>
-              <li class="滤镜项">
+              <li class="滤镜项 投影项">
                 <label for="投影开关" class="滤镜图标"
                   ><span class="中文标签">投影</span
                   ><span class="英文标签">drop-shadow</span></label
@@ -245,8 +248,70 @@
                 <button class="重置" id="重置-投影">
                   <i class="fa-solid fa-arrows-rotate"></i>
                 </button>
+                <div class="投影按钮区">
+                  <button class="投影按钮 投影x偏移按钮">
+                    <span>x</span>偏移
+                  </button>
+                  <button class="投影按钮 投影y偏移按钮">
+                    <span>y</span>偏移
+                  </button>
+                  <button class="投影按钮 投影模糊按钮">模糊</button>
+                  <button class="投影按钮 投影颜色按钮">颜色</button>
+                </div>
+                <label for="投影-x偏移" class="滑块区">
+                  <span class="滑块值"></span>
+                  <span class="最小值"></span>
+                  <span class="最大值"></span>
+                  <input
+                    class="滑块"
+                    id="投影-x偏移"
+                    type="range"
+                    min="0"
+                    max="500"
+                    value="0"
+                  />
+                </label>
+                <label for="投影-y偏移" class="滑块区">
+                  <span class="滑块值"></span>
+                  <span class="最小值"></span>
+                  <span class="最大值"></span>
+                  <input
+                    class="滑块"
+                    id="投影-y偏移"
+                    type="range"
+                    min="0"
+                    max="500"
+                    value="0"
+                  />
+                </label>
+                <label for="投影-模糊" class="滑块区">
+                  <span class="滑块值"></span>
+                  <span class="最小值"></span>
+                  <span class="最大值"></span>
+                  <input
+                    class="滑块"
+                    id="投影-模糊"
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="0"
+                  />
+                </label>
+                <label for="投影-颜色" class="滑块区">
+                  <span class="滑块值"></span>
+                  <span class="最小值"></span>
+                  <span class="最大值"></span>
+                  <input
+                    class="滑块"
+                    id="投影-颜色"
+                    type="range"
+                    min="0"
+                    max="360"
+                    value="0"
+                  />
+                </label>
               </li>
-              <li class="滤镜项">
+              <li class="滤镜项 对比度项">
                 <label for="对比度开关" class="滤镜图标"
                   ><span class="中文标签">对比度</span
                   ><span class="英文标签">contrast</span></label
@@ -275,7 +340,7 @@
                   />
                 </label>
               </li>
-              <li class="滤镜项">
+              <li class="滤镜项 模糊项">
                 <label for="模糊开关" class="滤镜图标"
                   ><span class="中文标签">模糊</span
                   ><span class="英文标签">blur</span></label
@@ -303,7 +368,7 @@
                   />
                 </label>
               </li>
-              <li class="滤镜项">
+              <li class="滤镜项 亮度项">
                 <label for="亮度开关" class="滤镜图标"
                   ><span class="中文标签">亮度</span
                   ><span class="英文标签">brightness</span></label
