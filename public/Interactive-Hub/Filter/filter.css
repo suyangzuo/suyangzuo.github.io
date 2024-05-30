@@ -1,6 +1,8 @@
 :root {
   --进度条颜色-已填充: #99bfbf;
   --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
+  --投影按钮背景渐变-结束色: rgb(60, 131, 99);
+  --投影颜色彩色背景修剪比例: 100%;
   --拇指宽度: 16px;
   --效果图滑块拇指宽度: 50px;
   --效果图滑块拇指x修正: 0px;
@@ -261,7 +263,7 @@ body {
 }
 
 .滤镜项:hover {
-  background-color: #123a;
+  background-color: #234d;
 }
 
 .中文标签 {
@@ -405,6 +407,35 @@ body {
   transition: outline 125ms;
 }
 
+#投影-颜色 {
+  position: relative;
+  background-color: transparent;
+}
+
+#投影-颜色::-webkit-slider-thumb {
+  position: relative;
+  z-index: 1;
+}
+
+#投影-颜色::after {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  top: 0;
+  left: 0;
+  content: "";
+  background-image: linear-gradient(
+    270deg,
+    brown 0%,
+    darkcyan 25%,
+    gold 50%,
+    hotpink 75%,
+    cornflowerblue 100%
+  ) !important;
+  clip-path: inset(0 var(--投影颜色彩色背景修剪比例) 0 0);
+}
+
 .滤镜项:hover .滑块 {
   box-shadow: inset 0 0 0 1px var(--进度条颜色-已填充);
 }
@@ -494,18 +525,55 @@ body {
 }
 
 .投影按钮 {
+  position: relative;
   border: none;
-  width: 18%;
+  width: 20%;
   height: 33px;
   border-radius: 999px;
-  background-color: #456c;
+  background-color: transparent;
+  background-image: linear-gradient(
+    #345 50%,
+    var(--投影按钮背景渐变-结束色) 50%
+  );
+  background-position: 100% 0;
+  background-size: 100% 200%;
   color: #eee;
   font-family: 微软雅黑, sans-serif;
-  /*transition: 50ms;*/
+  overflow: hidden;
+  user-select: none;
 }
 
-.投影按钮:hover {
-  background-color: #678d;
+.投影项:hover .投影按钮 {
+  background-image: linear-gradient(
+    #456 50%,
+    var(--投影按钮背景渐变-结束色) 50%
+  );
+}
+
+.投影按钮.投影按钮重置 {
+  animation: 投影按钮重置动画 500ms ease-out;
+}
+
+@keyframes 投影按钮重置动画 {
+  from {
+    background-position: 100% 0;
+  }
+  25% {
+    background-position: 100% 100%;
+  }
+  75% {
+    background-position: 100% 100%;
+  }
+  to {
+    background-position: 100% 0;
+  }
+}
+
+.投影项:hover .投影按钮:hover {
+  background-image: linear-gradient(
+    #567 50%,
+    var(--投影按钮背景渐变-结束色) 50%
+  );
   color: white;
 }
 

@@ -101,13 +101,27 @@ for (const 缩略图项 of 缩略图像组) {
 });
 
 滤镜滑块组.forEach((滤镜滑块, index) => {
+  const 上限 = parseInt(滤镜滑块.max, 10);
+  const 下限 = parseInt(滤镜滑块.min, 10);
+  const 初始值 = parseInt(滤镜滑块.value, 10);
+  const 初始背景比例 =
+    (初始值 + (Math.abs(下限) === 上限 ? (上限 - 下限) / 2 : 0)) /
+    (上限 - 下限);
   滤镜滑块.style.backgroundImage = `linear-gradient(90deg, ${进度条颜色_已填充} ${
-    (滤镜滑块.value / 滤镜滑块.max) * 100
-  }%, transparent ${(滤镜滑块.value / 滤镜滑块.max) * 100}%)`;
-  const 滑块值 = 滤镜滑块.parentElement.querySelector(".滑块值");
+    初始背景比例 * 100
+  }%, transparent ${初始背景比例 * 100}%)`;
+  if (滤镜滑块.id === "投影-颜色") {
+    root.style.setProperty(
+      "--投影颜色彩色背景修剪比例",
+      `${100 - 初始背景比例 * 100}%`,
+    );
+  }
   const 初始偏移 =
-    (滤镜拇指宽度 / 滤镜滑块.max) * (滤镜滑块.value - 滤镜滑块.max / 2);
+    (滤镜拇指宽度 / (上限 - 下限)) *
+    (Math.abs(下限) === 上限 ? 初始值 : 初始值 - (上限 - 下限) / 2);
   root.style.setProperty(`--拇指偏移修正-${滤镜滑块.id}`, `${初始偏移}px`);
+
+  const 滑块值 = 滤镜滑块.parentElement.querySelector(".滑块值");
   const 最小值 = 滤镜滑块.parentElement.querySelector(".最小值");
   const 最大值 = 滤镜滑块.parentElement.querySelector(".最大值");
   最小值.textContent = `${滤镜滑块.min}`;
@@ -117,10 +131,20 @@ for (const 缩略图项 of 缩略图像组) {
   最大值.appendChild(生成后缀元素(滤镜滑块.id));
   滑块值.appendChild(生成后缀元素(滤镜滑块.id));
   滤镜滑块.addEventListener("input", () => {
+    const 当前值 = parseInt(滤镜滑块.value, 10);
     const 偏移 =
-      (滤镜拇指宽度 / 滤镜滑块.max) * (滤镜滑块.value - 滤镜滑块.max / 2);
+      (滤镜拇指宽度 / (上限 - 下限)) *
+      (Math.abs(下限) === 上限 ? 当前值 : 当前值 - (上限 - 下限) / 2);
     root.style.setProperty(`--拇指偏移修正-${滤镜滑块.id}`, `${偏移}px`);
-    const 滑块背景色比例 = 滤镜滑块.value / 滤镜滑块.max;
+    const 滑块背景色比例 =
+      (当前值 + (Math.abs(下限) === 上限 ? (上限 - 下限) / 2 : 0)) /
+      (上限 - 下限);
+    if (滤镜滑块.id === "投影-颜色") {
+      root.style.setProperty(
+        "--投影颜色彩色背景修剪比例",
+        `${100 - 滑块背景色比例 * 100}%`,
+      );
+    }
     滤镜滑块.style.backgroundImage = `linear-gradient(90deg, ${进度条颜色_已填充} ${
       滑块背景色比例 * 100
     }%, transparent ${滑块背景色比例 * 100}%)`;
@@ -240,8 +264,17 @@ function 生成投影对象() {
   const 滤镜英文名称 = 滤镜项.querySelector(".英文标签").textContent;
   if (滤镜中文名称 === "投影") {
     重置按钮.addEventListener("click", () => {
+      const 投影按钮组 = 滤镜项.querySelectorAll(".投影按钮");
+      for (const 投影按钮 of 投影按钮组) {
+        投影按钮.classList.add("投影按钮重置");
+        setTimeout(() => {
+          投影按钮.classList.remove("投影按钮重置");
+        }, 500);
+      }
       const 投影滑块组 = 滤镜项.querySelectorAll(".滑块");
       for (const 投影滑块 of 投影滑块组) {
+        const 上限 = parseInt(投影滑块.max, 10);
+        const 下限 = parseInt(投影滑块.min, 10);
         const 默认值 = parseInt(
           rootStyle.getPropertyValue(`--默认值-${投影滑块.id}`),
           10,
@@ -250,11 +283,21 @@ function 生成投影对象() {
         const 滑块值 = 投影滑块.parentElement.querySelector(".滑块值");
         滑块值.textContent = `${默认值}`;
         滑块值.appendChild(生成后缀元素(投影滑块.id));
+        const 初始背景比例 =
+          (默认值 + (Math.abs(下限) === 上限 ? (上限 - 下限) / 2 : 0)) /
+          (上限 - 下限);
+        if (投影滑块.id === "投影-颜色") {
+          root.style.setProperty(
+            "--投影颜色彩色背景修剪比例",
+            `${100 - 初始背景比例 * 100}%`,
+          );
+        }
         投影滑块.style.backgroundImage = `linear-gradient(90deg, ${进度条颜色_已填充} ${
-          (投影滑块.value / 投影滑块.max) * 100
-        }%, transparent ${(投影滑块.value / 投影滑块.max) * 100}%)`;
+          初始背景比例 * 100
+        }%, transparent ${初始背景比例 * 100}%)`;
         const 初始偏移 =
-          (滤镜拇指宽度 / 投影滑块.max) * (投影滑块.value - 投影滑块.max / 2);
+          (滤镜拇指宽度 / (上限 - 下限)) *
+          (Math.abs(下限) === 上限 ? 默认值 : 默认值 - (上限 - 下限) / 2);
         root.style.setProperty(
           `--拇指偏移修正-${投影滑块.id}`,
           `${初始偏移}px`,
@@ -272,6 +315,8 @@ function 生成投影对象() {
     重置按钮.addEventListener("click", () => {
       const 滑块值 = 滤镜项.querySelector(".滑块值");
       const 滤镜滑块 = 滤镜项.querySelector(".滑块");
+      const 上限 = parseInt(滤镜滑块.max, 10);
+      const 下限 = parseInt(滤镜滑块.min, 10);
       const 开关容器 = 滤镜项.querySelector(".开关容器");
       const 开关 = 开关容器.querySelector("input[type='checkbox']");
       const 默认值 = parseInt(
@@ -281,12 +326,16 @@ function 生成投影对象() {
       滤镜滑块.value = 默认值;
       滑块值.textContent = `${默认值}`;
       滑块值.appendChild(生成后缀元素(滤镜滑块.id));
+      const 初始背景比例 =
+        (默认值 + (Math.abs(下限) === 上限 ? (上限 - 下限) / 2 : 0)) /
+        (上限 - 下限);
       滤镜滑块.style.backgroundImage = `linear-gradient(90deg, ${进度条颜色_已填充} ${
-        (滤镜滑块.value / 滤镜滑块.max) * 100
-      }%, transparent ${(滤镜滑块.value / 滤镜滑块.max) * 100}%)`;
+        初始背景比例 * 100
+      }%, transparent ${初始背景比例 * 100}%)`;
 
       const 初始偏移 =
-        (滤镜拇指宽度 / 滤镜滑块.max) * (滤镜滑块.value - 滤镜滑块.max / 2);
+        (滤镜拇指宽度 / (上限 - 下限)) *
+        (Math.abs(下限) === 上限 ? 默认值 : 默认值 - (上限 - 下限) / 2);
       root.style.setProperty(`--拇指偏移修正-${滤镜滑块.id}`, `${初始偏移}px`);
 
       const 后缀 = 生成后缀文本(滤镜滑块.id);
@@ -309,10 +358,9 @@ function 生成投影对象() {
 });
 
 全局重置按钮.addEventListener("click", () => {
+  重置滑块区属性();
   重置按钮组.forEach((重置按钮) => {
     const 滤镜项 = 重置按钮.parentElement;
-    const 滤镜中文名称 = 滤镜项.querySelector(".中文标签").textContent;
-    重置滑块区属性();
     const 开关容器 = 滤镜项.querySelector(".开关容器");
     const 开关 = 开关容器.querySelector("input[type='checkbox']");
     开关.checked = false;
@@ -330,8 +378,17 @@ function 重置滑块区属性() {
     const 滤镜滑块 = 滤镜项.querySelector(".滑块");
     const 滤镜中文名称 = 滤镜项.querySelector(".中文标签").textContent;
     if (滤镜中文名称 === "投影") {
+      const 投影按钮组 = 滤镜项.querySelectorAll(".投影按钮");
+      for (const 投影按钮 of 投影按钮组) {
+        投影按钮.classList.add("投影按钮重置");
+        setTimeout(() => {
+          投影按钮.classList.remove("投影按钮重置");
+        }, 500);
+      }
       for (const 投影滑块区 of 投影滑块区组) {
         const 投影滑块 = 投影滑块区.querySelector(".滑块");
+        const 上限 = parseInt(投影滑块.max, 10);
+        const 下限 = parseInt(投影滑块.min, 10);
         const 默认值 = parseInt(
           rootStyle.getPropertyValue(`--默认值-${投影滑块.id}`),
           10,
@@ -340,17 +397,29 @@ function 重置滑块区属性() {
         const 投影滑块值文本 = 投影滑块区.querySelector(".滑块值");
         投影滑块值文本.textContent = `${默认值}`;
         投影滑块值文本.appendChild(生成后缀元素(投影滑块.id));
+        const 初始背景比例 =
+          (默认值 + (Math.abs(下限) === 上限 ? (上限 - 下限) / 2 : 0)) /
+          (上限 - 下限);
+        if (投影滑块.id === "投影-颜色") {
+          root.style.setProperty(
+            "--投影颜色彩色背景修剪比例",
+            `${100 - 初始背景比例 * 100}%`,
+          );
+        }
         投影滑块.style.backgroundImage = `linear-gradient(90deg, ${进度条颜色_已填充} ${
-          (投影滑块.value / 投影滑块.max) * 100
-        }%, transparent ${(投影滑块.value / 投影滑块.max) * 100}%)`;
+          初始背景比例 * 100
+        }%, transparent ${初始背景比例 * 100}%)`;
         const 初始偏移 =
-          (滤镜拇指宽度 / 投影滑块.max) * (投影滑块.value - 投影滑块.max / 2);
+          (滤镜拇指宽度 / (上限 - 下限)) *
+          (Math.abs(下限) === 上限 ? 默认值 : 默认值 - (上限 - 下限) / 2);
         root.style.setProperty(
           `--拇指偏移修正-${投影滑块.id}`,
           `${初始偏移}px`,
         );
       }
     } else {
+      const 上限 = parseInt(滤镜滑块.max, 10);
+      const 下限 = parseInt(滤镜滑块.min, 10);
       const 默认值 = parseInt(
         rootStyle.getPropertyValue(`--默认值-${滤镜中文名称}`),
         10,
@@ -358,11 +427,15 @@ function 重置滑块区属性() {
       滤镜滑块.value = 默认值;
       滑块值.textContent = `${默认值}`;
       滑块值.appendChild(生成后缀元素(滤镜滑块.id));
+      const 初始背景比例 =
+        (默认值 + (Math.abs(下限) === 上限 ? (上限 - 下限) / 2 : 0)) /
+        (上限 - 下限);
       滤镜滑块.style.backgroundImage = `linear-gradient(90deg, ${进度条颜色_已填充} ${
-        (滤镜滑块.value / 滤镜滑块.max) * 100
-      }%, transparent ${(滤镜滑块.value / 滤镜滑块.max) * 100}%)`;
+        初始背景比例 * 100
+      }%, transparent ${初始背景比例 * 100}%)`;
       const 初始偏移 =
-        (滤镜拇指宽度 / 滤镜滑块.max) * (滤镜滑块.value - 滤镜滑块.max / 2);
+        (滤镜拇指宽度 / (上限 - 下限)) *
+        (Math.abs(下限) === 上限 ? 默认值 : 默认值 - (上限 - 下限) / 2);
       root.style.setProperty(`--拇指偏移修正-${滤镜滑块.id}`, `${初始偏移}px`);
     }
   }
