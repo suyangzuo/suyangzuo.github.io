@@ -34,7 +34,6 @@ body {
 .操作区 {
   width: 15%;
   height: 100%;
-  border: solid 2px darkgoldenrod;
 }
 
 .图像分区 {
@@ -43,10 +42,10 @@ body {
   height: 100%;
   top: 0;
   left: 0;
+  transition: opacity 500ms;
 }
 
-.向内修剪图分区,
-.圆形修剪图分区 {
+.图像分区.未激活图像分区 {
   visibility: hidden;
   opacity: 0;
 }
@@ -55,6 +54,10 @@ body {
   width: 100%;
   height: 100%;
   user-select: none;
+}
+
+.图像容器:has(.多边形修剪指示区) {
+  filter: drop-shadow(0 0 1px white) drop-shadow(0 0 1px white);
 }
 
 .图像容器 > img {
@@ -73,7 +76,7 @@ body {
   height: 40px;
   display: flex;
   border-radius: 5px;
-  background-color: #000a;
+  background-color: #111c;
 }
 
 .修剪指示区关闭按钮 {
@@ -104,6 +107,17 @@ body {
   background-color: #777;
 }
 
+.指示区三角箭头 {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  translate: -50% 0;
+  width: 30px;
+  height: 15px;
+  background-color: #111c;
+  clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+}
+
 .修剪序号 {
   width: 35%;
   height: 100%;
@@ -112,7 +126,8 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 1rem;
-  background-color: #012a;
+  background-color: #111111d5;
+  color: gold;
   font-family: Consolas, monospace;
 }
 
@@ -174,4 +189,61 @@ body {
 .多边形修剪百分比符号 {
   color: lightskyblue;
   padding-left: 2px;
+}
+
+.操作区 {
+  display: flex;
+  flex-direction: column;
+}
+
+.操作分区 {
+  width: 100%;
+  height: 25%;
+  background-image: linear-gradient(#333943 0%, #535963 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.操作分区.未激活操作分区 {
+  filter: brightness(35%);
+}
+
+.操作分区中文标题 {
+  font-size: 25px;
+  color: mediumseagreen;
+}
+
+.操作分区英文标题 {
+  font-size: 16px;
+  font-weight: normal;
+  font-family: Consolas, monospace;
+}
+
+.重置按钮 {
+  margin-top: 10px;
+  width: clamp(75px, 50%, 120px);
+  height: 40px;
+  border-radius: 999px;
+  border: none;
+  background-color: #54616f;
+  color: white;
+  font-size: 1rem;
+  box-shadow: 1px 1px 4px 0 #0006;
+  transition: 75ms;
+  user-select: none;
+}
+
+.未激活操作分区 .重置按钮 {
+  pointer-events: none;
+}
+
+.重置按钮:hover {
+  background-color: #6b7a89;
+}
+
+.重置按钮:active {
+  background-color: #798999;
 }
