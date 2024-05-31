@@ -12,6 +12,11 @@
     />
     <link rel="stylesheet" href="/Styles/common.css" />
     <link rel="stylesheet" href="/Styles/top-banner-common.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Titillium+Web&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Roboto+Mono&family=M+PLUS+Code+Latin&family=Ubuntu+Mono&family=M+PLUS+1+Code:wght@100..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="/Styles/prism.css" />
     <link rel="stylesheet" href="../control.css" />
     <link rel="stylesheet" href="../interactive-common.css" />
     <link rel="stylesheet" href="./clip-path.css" />
@@ -49,48 +54,92 @@
             <figure class="图像容器 多边形图像容器">
               <img class="图像" src="./Images/1.webp" alt="1" />
             </figure>
+            <div class="代码容器 多边形修剪代码容器">
+              <pre class="line-numbers">
+                <code class="language-css">
+                </code>
+              </pre>
+            </div>
           </div>
           <div class="图像分区 向内修剪图分区 未激活图像分区">
             <figure class="图像容器 向内图像容器">
               <img class="图像" src="./Images/1.webp" alt="1" />
             </figure>
+            <div class="代码容器 向内修剪代码容器">
+              <pre class="line-numbers">
+                <code class="language-css">
+                </code>
+              </pre>
+            </div>
           </div>
           <div class="图像分区 圆形修剪图分区 未激活图像分区">
             <figure class="图像容器 圆形图像容器">
               <img class="图像" src="./Images/1.webp" alt="1" />
             </figure>
+            <div class="代码容器 圆形修剪代码容器">
+              <pre class="line-numbers">
+                <code class="language-css">
+                </code>
+              </pre>
+            </div>
           </div>
           <div class="图像分区 椭圆修剪图分区 未激活图像分区">
             <figure class="图像容器 椭圆图像容器">
               <img class="图像" src="./Images/1.webp" alt="1" />
             </figure>
+            <div class="代码容器 椭圆修剪代码容器">
+              <pre class="line-numbers">
+                <code class="language-css">
+                </code>
+              </pre>
+            </div>
           </div>
         </section>
         <section class="操作区">
           <section class="操作分区 多边形操作分区">
             <h1 class="操作分区中文标题">多边形修剪</h1>
-            <h3 class="操作分区英文标题">polygon</h3>
+            <h3 class="操作分区英文标题">
+              polygon
+              <button class="代码按钮 多边形修剪代码按钮">
+                <i class="fa-solid fa-code"></i>
+              </button>
+            </h3>
             <button class="重置按钮" id="多边形修剪重置">
               <i class="fa-solid fa-arrows-rotate"></i>
             </button>
           </section>
           <section class="操作分区 向内操作分区 未激活操作分区">
             <h1 class="操作分区中文标题">向内修剪</h1>
-            <h3 class="操作分区英文标题">inset</h3>
+            <h3 class="操作分区英文标题">
+              inset
+              <button class="代码按钮 向内修剪代码按钮">
+                <i class="fa-solid fa-code"></i>
+              </button>
+            </h3>
             <button class="重置按钮" id="向内修剪重置">
               <i class="fa-solid fa-arrows-rotate"></i>
             </button>
           </section>
           <section class="操作分区 圆形操作分区 未激活操作分区">
             <h1 class="操作分区中文标题">圆形修剪</h1>
-            <h3 class="操作分区英文标题">circle</h3>
+            <h3 class="操作分区英文标题">
+              circle
+              <button class="代码按钮 圆形修剪代码按钮">
+                <i class="fa-solid fa-code"></i>
+              </button>
+            </h3>
             <button class="重置按钮" id="圆形修剪重置">
               <i class="fa-solid fa-arrows-rotate"></i>
             </button>
           </section>
           <section class="操作分区 椭圆操作分区 未激活操作分区">
             <h1 class="操作分区中文标题">椭圆修剪</h1>
-            <h3 class="操作分区英文标题">ellipse</h3>
+            <h3 class="操作分区英文标题">
+              ellipse
+              <button class="代码按钮 椭圆修剪代码按钮">
+                <i class="fa-solid fa-code"></i>
+              </button>
+            </h3>
             <button class="重置按钮" id="椭圆修剪重置">
               <i class="fa-solid fa-arrows-rotate"></i>
             </button>
@@ -98,5 +147,7 @@
         </section>
       </section>
     </section>
+
+    <script src="/Scripts/prism.js" 代码格式化></script>
   </body>
 </html>

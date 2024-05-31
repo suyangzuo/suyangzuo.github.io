@@ -29,6 +29,7 @@ body {
   width: 85%;
   height: 100%;
   border: solid 2px #aaa;
+  box-shadow: 4px 4px 8px 0 #0008;
 }
 
 .操作区 {
@@ -57,7 +58,7 @@ body {
 }
 
 .图像容器:has(.多边形修剪指示区) {
-  filter: drop-shadow(0 0 1px white) drop-shadow(0 0 1px white);
+  filter: drop-shadow(0 0 1px white);
 }
 
 .图像容器 > img {
@@ -87,7 +88,7 @@ body {
   width: 20px;
   height: 20px;
   border-radius: 999px;
-  background-color: #555;
+  background-color: #333;
   opacity: 0;
   outline: solid 2px #fff8;
   font-size: 0.75rem;
@@ -128,7 +129,7 @@ body {
   font-size: 1rem;
   background-color: #111111d5;
   color: gold;
-  font-family: Consolas, monospace;
+  font-family: "Jetbrains Mono", Consolas, monospace;
 }
 
 .修剪序号.修剪序号刷新中 {
@@ -191,6 +192,40 @@ body {
   padding-left: 2px;
 }
 
+.代码容器 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: 250ms;
+}
+
+.代码容器.代码容器可见 {
+  visibility: visible;
+  opacity: 1;
+}
+
+pre[class*="language-"] {
+  background-color: #345d;
+}
+
+code[class*="language-"],
+pre[class*="language-"] {
+  font-family: "Jetbrains Mono", Consolas, monospace;
+}
+
+.token.space,
+.token.cr:before,
+.token.lf:before,
+.token.space:before,
+.token.tab:not(:empty):before {
+  visibility: hidden;
+}
+
 .操作区 {
   display: flex;
   flex-direction: column;
@@ -219,7 +254,37 @@ body {
 .操作分区英文标题 {
   font-size: 16px;
   font-weight: normal;
-  font-family: Consolas, monospace;
+  font-family: "Jetbrains Mono", Consolas, monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.代码按钮 {
+  width: 25px;
+  height: 25px;
+  border-radius: 999px;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #3d6262;
+  color: #73bdf4;
+  outline: solid 2px transparent;
+  font-size: 12px;
+  box-shadow: 1px 1px 2px 0 #0008;
+  transition: 50ms;
+}
+
+.代码按钮:hover {
+  outline: solid 2px #fff6;
+  color: #93c7ef;
+}
+
+.代码按钮:active {
+  outline: solid 2px #fffd;
+  color: #b1d3ef;
 }
 
 .重置按钮 {

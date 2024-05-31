@@ -1,9 +1,11 @@
 const 图像区 = document.querySelector(".图像区");
+const 操作区 = document.querySelector(".操作区");
 const 图像分区组 = 图像区.querySelectorAll(".图像分区");
 const 多边形修剪图分区 = 图像区.querySelector(".多边形修剪图分区");
 const 多边形图像容器 = 多边形修剪图分区.querySelector(".图像容器");
 const 多边形图像 = 多边形图像容器.querySelector(".图像");
-const 操作区 = document.querySelector(".操作区");
+const 多边形修剪代码容器 = 多边形修剪图分区.querySelector(".代码容器");
+const 代码按钮组 = 操作区.querySelectorAll(".代码按钮");
 const 操作分区组 = 操作区.querySelectorAll(".操作分区");
 let 当前激活操作区 = 操作区.querySelector(".多边形操作分区");
 let 当前激活图像分区 = 图像区.querySelector(".多边形修剪图分区");
@@ -133,9 +135,11 @@ let 多边形修剪数据组 = [];
     } else {
       多边形图像.style.removeProperty("clip-path");
     }
+    更新多边形修剪区代码();
   });
 
   多边形图像.style.clipPath = 生成多边形修剪代码();
+  更新多边形修剪区代码();
 });
 
 操作分区组.forEach((操作分区, index) => {
@@ -155,6 +159,45 @@ let 多边形修剪数据组 = [];
 });
 
 多边形修剪重置按钮.addEventListener("click", 重置多边形修剪区);
+
+代码按钮组.forEach((代码按钮, index) => {
+  代码按钮.addEventListener("click", () => {
+    const 代码容器 = 图像分区组[index + 1].querySelector(".代码容器");
+    if (代码容器.classList.contains("多边形修剪代码容器")) {
+      const 代码元素 = 代码容器.querySelector("code");
+      const 代码前缀 = "目标元素 {\n";
+      const 代码后缀 = "\n}";
+      代码元素.innerHTML = `${代码前缀}  clip-path: ${生成多边形修剪代码()};${代码后缀}`;
+    }
+    if (代码容器.classList.contains("代码容器可见")) {
+      代码容器.classList.remove("代码容器可见");
+      代码按钮.innerHTML = "<i class=\"fa-solid fa-code\"></i>";
+    } else {
+      代码容器.classList.add("代码容器可见");
+      代码按钮.innerHTML = "<i class=\"fa-solid fa-xmark\"></i>";
+    }
+    刷新代码格式化脚本();
+  });
+});
+
+function 刷新代码格式化脚本() {
+  const 代码格式化脚本元素 = document.querySelector("script[代码格式化]");
+  代码格式化脚本元素.remove();
+  const 代码格式化新脚本 = document.createElement("script");
+  代码格式化新脚本.src = "/Scripts/prism.js";
+  代码格式化新脚本.type = "text/javascript";
+  代码格式化新脚本.setAttribute("代码格式化", "");
+
+  document.body.appendChild(代码格式化新脚本);
+}
+
+function 更新多边形修剪区代码() {
+  const 代码元素 = 多边形修剪代码容器.querySelector("code");
+  const 代码前缀 = "目标元素 {\n";
+  const 代码后缀 = "\n}";
+  代码元素.innerHTML = `${代码前缀}  clip-path: ${生成多边形修剪代码()};${代码后缀}`;
+  刷新代码格式化脚本();
+}
 
 function 生成多边形修剪代码() {
   const 比例数组 = [];
