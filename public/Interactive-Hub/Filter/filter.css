@@ -54,7 +54,7 @@ body {
 .展示区 {
   flex-shrink: 0;
   position: relative;
-  height: max(850px, calc(100vh - 250px));
+  height: max(650px, calc(100vh - 250px));
   aspect-ratio: calc(16 / 10);
   margin: 0 auto;
   display: flex;
@@ -152,6 +152,7 @@ body {
   align-items: flex-end;
   gap: 15px;
   pointer-events: none;
+  transform-origin: 100% 100%;
 }
 
 :where(.滤镜区, .图像切换区) > button {
@@ -263,7 +264,8 @@ body {
 }
 
 .滤镜项:hover {
-  background-color: #234d;
+  /*background-color: #234d;*/
+  background-color: #202a34dd;
 }
 
 .中文标签 {
@@ -545,7 +547,7 @@ body {
 
 .投影项:hover .投影按钮 {
   background-image: linear-gradient(
-    #456 50%,
+    #357 50%,
     var(--投影按钮背景渐变-结束色) 50%
   );
 }
@@ -571,7 +573,7 @@ body {
 
 .投影项:hover .投影按钮:hover {
   background-image: linear-gradient(
-    #567 50%,
+    #579 50%,
     var(--投影按钮背景渐变-结束色) 50%
   );
   color: white;
@@ -631,4 +633,22 @@ body {
 .最小值 > .后缀,
 .最大值 > .后缀 {
   color: darkgoldenrod;
+}
+
+@media screen and (height < 1150px) {
+  .控制区 {
+    scale: 0.95;
+  }
+}
+
+@media screen and (height < 1050px) {
+  .控制区 {
+    scale: 0.85;
+  }
+}
+
+@media screen and (height < 975px) {
+  .控制区 {
+    scale: 0.75;
+  }
 }

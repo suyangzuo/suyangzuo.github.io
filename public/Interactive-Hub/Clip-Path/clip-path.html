@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
@@ -8,7 +8,8 @@
     <link
       rel="icon"
       href="/Images/Interactive-Hub/HQ/修剪路径.png"
-      type="image/x-icon" />
+      type="image/x-icon"
+    />
     <link rel="stylesheet" href="/Styles/common.css" />
     <link rel="stylesheet" href="/Styles/top-banner-common.css" />
     <link rel="stylesheet" href="../control.css" />
@@ -17,7 +18,8 @@
     <script src="/Scripts/top-banner.js" defer></script>
     <script
       src="https://kit.fontawesome.com/d0483e3bd3.js"
-      crossorigin="anonymous"></script>
+      crossorigin="anonymous"
+    ></script>
     <script src="./clip-path.js" defer></script>
   </head>
   <body>
@@ -25,17 +27,42 @@
     <script
       src="../../Scripts/html-include.js"
       target="../../top-banner.html"
-      position="afterbegin"></script>
+      position="afterbegin"
+    ></script>
     <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
 
     <section class="修剪路径总区 总区">
       <script
         src="../../Scripts/html-include.js"
         target="../control.html"
-        position="afterbegin"></script>
+        position="afterbegin"
+      ></script>
       <p class="交互标题">修剪路径</p>
-      <figure class="展示区"></figure>
-      <div class="控制区"></div>
+      <section class="综合区">
+        <section class="图像区">
+          <div class="图像分区 原图分区">
+            <figure class="图像容器 原图容器">
+              <img class="图像" src="./Images/1.webp" alt="1" />
+            </figure>
+          </div>
+          <div class="图像分区 多边形修剪图分区">
+            <figure class="图像容器 多边形图像容器">
+              <img class="图像" src="./Images/1.webp" alt="1" />
+            </figure>
+          </div>
+          <div class="图像分区 向内修剪图分区">
+            <figure class="图像容器 向内图像容器">
+              <img class="图像" src="./Images/1.webp" alt="1" />
+            </figure>
+          </div>
+          <div class="图像分区 圆形修剪图分区">
+            <figure class="图像容器 圆形图像容器">
+              <img class="图像" src="./Images/1.webp" alt="1" />
+            </figure>
+          </div>
+        </section>
+        <section class="操作区"></section>
+      </section>
     </section>
   </body>
 </html>

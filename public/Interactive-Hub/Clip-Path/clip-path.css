@@ -2,5 +2,176 @@
   --进度条颜色-已填充: rgb(41, 126, 78);
   --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
   --拇指宽度: 16px;
+  --多边形修剪序号刷新背景色: #577bab;
 }
 
+body {
+  width: 100dvw;
+}
+
+.综合区 {
+  position: relative;
+  height: max(650px, calc(100vh - 250px));
+  aspect-ratio: calc(16 / 10);
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /*outline: solid 4px black;*/
+}
+
+.图像区,
+.综合区 {
+  position: relative;
+}
+
+.图像区 {
+  width: 85%;
+  height: 100%;
+  border: solid 2px #aaa;
+}
+
+.操作区 {
+  width: 15%;
+  height: 100%;
+  border: solid 2px darkgoldenrod;
+}
+
+.图像分区 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.向内修剪图分区,
+.圆形修剪图分区 {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.图像容器 {
+  width: 100%;
+  height: 100%;
+  user-select: none;
+}
+
+.图像容器 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.原图分区 .图像 {
+  opacity: 25%;
+}
+
+.多边形修剪指示区 {
+  position: absolute;
+  width: 100px;
+  height: 40px;
+  display: flex;
+  border-radius: 5px;
+  background-color: #000a;
+}
+
+.修剪指示区关闭按钮 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  translate: -40% -60%;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background-color: #555;
+  opacity: 0;
+  outline: solid 2px #fff8;
+  font-size: 0.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: outline 75ms;
+}
+
+.多边形修剪指示区:hover .修剪指示区关闭按钮 {
+  opacity: 1;
+}
+
+.修剪指示区关闭按钮:hover {
+  outline: solid 2px white;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  background-color: #777;
+}
+
+.修剪序号 {
+  width: 35%;
+  height: 100%;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  background-color: #012a;
+  font-family: Consolas, monospace;
+}
+
+.修剪序号.修剪序号刷新中 {
+  animation: 修剪序号刷新动画 0.5s ease-out;
+}
+
+@keyframes 修剪序号刷新动画 {
+  from {
+    box-shadow: inset 0 0 0 0 var(--多边形修剪序号刷新背景色);
+  }
+  35% {
+    box-shadow: inset 0 0 0 20px var(--多边形修剪序号刷新背景色);
+  }
+  65% {
+    box-shadow: inset 0 0 0 20px var(--多边形修剪序号刷新背景色);
+  }
+  to {
+    box-shadow: inset 0 0 0 0 var(--多边形修剪序号刷新背景色);
+  }
+}
+
+.修剪数据区 {
+  width: 75%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.修剪数据分区 {
+  width: 100%;
+  height: 50%;
+  font-size: 0.8rem;
+  display: flex;
+  font-family: Consolas, monospace;
+  color: #aaa;
+}
+
+.修剪数据-坐标类 {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 35%;
+  padding-right: 3px;
+  color: lightgreen;
+}
+
+.修剪数据-坐标数据 {
+  width: 65%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 3px;
+  color: white;
+}
+
+.多边形修剪百分比符号 {
+  color: lightskyblue;
+  padding-left: 2px;
+}
