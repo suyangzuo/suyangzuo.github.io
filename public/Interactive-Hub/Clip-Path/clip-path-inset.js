@@ -100,6 +100,8 @@ function 重置向内修剪参数() {
   root.style.setProperty("--向内修剪比例-左", "0%");
   向内图像.style.removeProperty("clip-path");
   向内修剪代码容器.classList.remove("代码容器可见");
+  const 代码按钮 = 向内操作分区.querySelector(".代码按钮");
+  代码按钮.innerHTML = '<i class="fa-solid fa-code"></i>';
   for (const 向内修剪滑块 of 向内修剪滑块组) {
     向内修剪滑块.value = 0;
     const 向内修剪数值元素 = 向内修剪滑块.nextElementSibling;

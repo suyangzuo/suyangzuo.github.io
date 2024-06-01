@@ -1,4 +1,5 @@
 const 多边形修剪图分区 = 图像区.querySelector(".多边形修剪图分区");
+const 多边形操作分区 = 操作区.querySelector(".多边形操作分区");
 const 多边形图像容器 = 多边形修剪图分区.querySelector(".图像容器");
 const 多边形图像 = 多边形图像容器.querySelector(".图像");
 const 多边形修剪代码容器 = 多边形修剪图分区.querySelector(".代码容器");
@@ -176,4 +177,6 @@ function 重置多边形修剪区() {
   多边形修剪数据组.length = 0;
   多边形图像.style.removeProperty("clip-path");
   多边形修剪代码容器.classList.remove("代码容器可见");
+  const 代码按钮 = 多边形操作分区.querySelector(".代码按钮");
+  代码按钮.innerHTML = '<i class="fa-solid fa-code"></i>';
 }
