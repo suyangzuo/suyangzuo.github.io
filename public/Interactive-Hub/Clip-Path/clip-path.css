@@ -324,7 +324,7 @@ pre[class*="language-"] {
   filter: brightness(50%);
 }
 
-.重置按钮 {
+.操作分区 .重置按钮 {
   margin-top: 10px;
   width: clamp(75px, 50%, 120px);
   height: 40px;
@@ -349,11 +349,11 @@ pre[class*="language-"] {
   pointer-events: none;
 }
 
-.重置按钮:hover {
+.操作分区 .重置按钮:hover {
   background-color: #6b7a89;
 }
 
-.重置按钮:active {
+.操作分区 .重置按钮:active {
   background-color: #798999;
 }
 

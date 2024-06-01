@@ -8,7 +8,6 @@
 
 .后退区 > .后退链接,
 .重置区 > .重置按钮 {
-  display: block;
   width: 100%;
   height: 100%;
   font-size: 5rem;
@@ -23,6 +22,8 @@
   position: relative;
   background: transparent;
   border: none;
+  border-radius: 999px;
+  filter: drop-shadow(1px 1px 3px #0008);
 }
 
 .后退区 {
@@ -37,7 +38,6 @@
 
 .后退区 > .后退链接:hover,
 .重置区 > .重置按钮:hover {
-  border-radius: 10px;
   cursor: url(/Images/Common/鼠标-指向.cur), pointer;
   filter: hue-rotate(150deg);
 }
