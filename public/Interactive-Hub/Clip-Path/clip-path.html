@@ -47,7 +47,7 @@
         <section class="图像区">
           <div class="图像分区 原图分区">
             <figure class="图像容器 原图容器">
-              <img class="图像" src="./Images/1.webp" alt="1" />
+              <img class="图像" src="./Images/1.webp" alt="原图" />
             </figure>
           </div>
           <div class="图像分区 多边形修剪图分区">
@@ -63,7 +63,7 @@
           </div>
           <div class="图像分区 向内修剪图分区 未激活图像分区">
             <figure class="图像容器 向内图像容器">
-              <img class="图像" src="./Images/1.webp" alt="1" />
+              <img class="图像" src="./Images/2.webp" alt="2" />
             </figure>
             <div class="代码容器 向内修剪代码容器">
               <pre class="line-numbers">
@@ -74,7 +74,7 @@
           </div>
           <div class="图像分区 圆形修剪图分区 未激活图像分区">
             <figure class="图像容器 圆形图像容器">
-              <img class="图像" src="./Images/1.webp" alt="1" />
+              <img class="图像" src="./Images/3.webp" alt="3" />
             </figure>
             <div class="代码容器 圆形修剪代码容器">
               <pre class="line-numbers">
@@ -85,7 +85,7 @@
           </div>
           <div class="图像分区 椭圆修剪图分区 未激活图像分区">
             <figure class="图像容器 椭圆图像容器">
-              <img class="图像" src="./Images/1.webp" alt="1" />
+              <img class="图像" src="./Images/4.webp" alt="4" />
             </figure>
             <div class="代码容器 椭圆修剪代码容器">
               <pre class="line-numbers">
@@ -116,6 +116,66 @@
                 <i class="fa-solid fa-code"></i>
               </button>
             </h3>
+            <div class="修剪选项区 向内修剪选项区">
+              <button class="操作选项按钮" id="向内修剪-上-按钮" title="上">
+                <i class="fa-solid fa-arrow-up"></i>
+              </button>
+              <button class="操作选项按钮" id="向内修剪-右-按钮" title="右">
+                <i class="fa-solid fa-arrow-right"></i>
+              </button>
+              <button class="操作选项按钮" id="向内修剪-下-按钮" title="下">
+                <i class="fa-solid fa-arrow-down"></i>
+              </button>
+              <button class="操作选项按钮" id="向内修剪-左-按钮" title="左">
+                <i class="fa-solid fa-arrow-left"></i>
+              </button>
+            </div>
+            <div class="向内修剪滑块区">
+              <label class="向内修剪标签" for="向内修剪滑块-上">
+                <input
+                  type="range"
+                  class="向内修剪滑块"
+                  id="向内修剪滑块-上"
+                  min="0"
+                  max="100"
+                  value="0"
+                />
+                <span class="向内修剪数值">0</span>
+              </label>
+              <label class="向内修剪标签" for="向内修剪滑块-右">
+                <input
+                  type="range"
+                  class="向内修剪滑块"
+                  id="向内修剪滑块-右"
+                  min="0"
+                  max="100"
+                  value="0"
+                />
+                <span class="向内修剪数值"></span>
+              </label>
+              <label class="向内修剪标签" for="向内修剪滑块-下">
+                <input
+                  type="range"
+                  class="向内修剪滑块"
+                  id="向内修剪滑块-下"
+                  min="0"
+                  max="100"
+                  value="0"
+                />
+                <span class="向内修剪数值"></span>
+              </label>
+              <label class="向内修剪标签" for="向内修剪滑块-左">
+                <input
+                  type="range"
+                  class="向内修剪滑块"
+                  id="向内修剪滑块-左"
+                  min="0"
+                  max="100"
+                  value="0"
+                />
+                <span class="向内修剪数值"></span>
+              </label>
+            </div>
             <button class="重置按钮" id="向内修剪重置">
               <i class="fa-solid fa-arrows-rotate"></i>
             </button>

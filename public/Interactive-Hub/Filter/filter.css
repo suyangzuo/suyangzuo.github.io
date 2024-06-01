@@ -276,7 +276,7 @@ body {
 
 .英文标签 {
   padding: 0 5px;
-  font-family: "JetBrainsMono NF", monospace;
+  font-family: "Jetbrains Mono", Consolas, monospace;
   font-size: 0.95rem;
   color: #b2a090;
 }
@@ -587,13 +587,13 @@ body {
   padding-right: 2px;
   color: lightgreen;
   font-size: 1.1em;
-  font-family: Consolas, monospace;
+  font-family: "Jetbrains Mono", Consolas, monospace;
 }
 
 .滑块值,
 .最小值,
 .最大值 {
-  font-family: "JetBrainsMono NF", monospace;
+  font-family: "Jetbrains Mono", Consolas, monospace;
 }
 
 .滑块值 {
@@ -622,7 +622,7 @@ body {
 }
 
 .后缀 {
-  font-family: "JetBrainsMono NF", monospace;
+  font-family: "Jetbrains Mono", Consolas, monospace;
   padding-left: 2px;
 }
 

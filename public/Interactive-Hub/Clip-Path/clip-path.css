@@ -3,6 +3,10 @@
   --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
   --拇指宽度: 16px;
   --多边形修剪序号刷新背景色: #577bab;
+  --向内修剪比例-上: 0%;
+  --向内修剪比例-右: 0%;
+  --向内修剪比例-下: 0%;
+  --向内修剪比例-左: 0%;
 }
 
 body {
@@ -17,7 +21,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  /*outline: solid 4px black;*/
 }
 
 .图像区,
@@ -52,6 +55,7 @@ body {
 }
 
 .图像容器 {
+  position: relative;
   width: 100%;
   height: 100%;
   user-select: none;
@@ -243,16 +247,17 @@ pre[class*="language-"] {
 }
 
 .操作分区.未激活操作分区 {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   filter: brightness(35%);
 }
 
 .操作分区中文标题 {
-  font-size: 25px;
+  font-size: 22px;
   color: mediumseagreen;
 }
 
 .操作分区英文标题 {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: normal;
   font-family: "Jetbrains Mono", Consolas, monospace;
   display: flex;
@@ -270,7 +275,7 @@ pre[class*="language-"] {
   justify-content: center;
   align-items: center;
   background-color: #3d6262;
-  color: #73bdf4;
+  color: #93c7ef;
   outline: solid 2px transparent;
   font-size: 12px;
   box-shadow: 1px 1px 2px 0 #0008;
@@ -279,12 +284,44 @@ pre[class*="language-"] {
 
 .代码按钮:hover {
   outline: solid 2px #fff6;
-  color: #93c7ef;
+  color: #b5d9f6;
 }
 
 .代码按钮:active {
   outline: solid 2px #fffd;
-  color: #b1d3ef;
+  color: #c9e2f6;
+}
+
+.修剪选项区 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 0;
+}
+
+.操作选项按钮 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  border: none;
+  background-color: #aba;
+  transition: 50ms;
+}
+
+.操作选项按钮:hover {
+  background-color: #cdc;
+}
+
+.操作选项按钮:active {
+  background-color: #efe;
+}
+
+.操作选项按钮 {
+  filter: brightness(50%);
 }
 
 .重置按钮 {
@@ -301,7 +338,14 @@ pre[class*="language-"] {
   user-select: none;
 }
 
-.未激活操作分区 .重置按钮 {
+#向内修剪重置 {
+  margin-top: 0;
+}
+
+.未激活操作分区 .重置按钮,
+.未激活操作分区 .代码按钮,
+.未激活操作分区 .操作选项按钮,
+.未激活操作分区 input[type="range"] {
   pointer-events: none;
 }
 
@@ -311,4 +355,97 @@ pre[class*="language-"] {
 
 .重置按钮:active {
   background-color: #798999;
+}
+
+.向内修剪滑块区 {
+  position: relative;
+  width: 100%;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.向内修剪标签 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.向内修剪标签 {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.向内修剪标签 > * {
+  flex-shrink: 0;
+}
+
+.向内修剪滑块 {
+  appearance: none;
+  width: 90%;
+  height: 10px;
+  border-radius: 99px;
+  background-color: #111;
+  user-select: none;
+}
+
+#向内修剪滑块-上 {
+  background-image: linear-gradient(
+    90deg,
+    #aba var(--向内修剪比例-上),
+    transparent var(--向内修剪比例-上)
+  );
+}
+
+#向内修剪滑块-右 {
+  background-image: linear-gradient(
+    90deg,
+    #aba var(--向内修剪比例-右),
+    transparent var(--向内修剪比例-右)
+  );
+}
+
+#向内修剪滑块-下 {
+  background-image: linear-gradient(
+    90deg,
+    #aba var(--向内修剪比例-下),
+    transparent var(--向内修剪比例-下)
+  );
+}
+
+#向内修剪滑块-左 {
+  background-image: linear-gradient(
+    90deg,
+    #aba var(--向内修剪比例-左),
+    transparent var(--向内修剪比例-左)
+  );
+}
+
+.向内修剪滑块:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.向内修剪滑块::-webkit-slider-thumb {
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 99px;
+  background-color: #aba;
+  box-shadow: 1px 1px 2px #555;
+}
+
+.向内修剪数值 {
+  font-family: "Jetbrains Mono", Consolas, monospace;
+  color: lightcyan;
+}
+
+.向内修剪数值-百分比符号 {
+  margin-left: 2px;
+  color: gold;
 }
