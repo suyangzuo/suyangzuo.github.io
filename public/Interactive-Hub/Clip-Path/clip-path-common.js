@@ -33,9 +33,9 @@ let 当前激活图像分区 = 图像区.querySelector(".多边形修剪图分�
     const 代码容器 = 图像分区组[index + 1].querySelector(".代码容器");
 
     if (代码容器.classList.contains("多边形修剪代码容器")) {
-      更新多边形修剪区代码();
+      更新多边形代码区代码();
     } else if (代码容器.classList.contains("向内修剪代码容器")) {
-      更新向内修剪区代码();
+      更新向内修剪代码区代码();
     }
     if (代码容器.classList.contains("代码容器可见")) {
       代码容器.classList.remove("代码容器可见");
@@ -43,18 +43,16 @@ let 当前激活图像分区 = 图像区.querySelector(".多边形修剪图分�
     } else {
       代码容器.classList.add("代码容器可见");
       代码按钮.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+      刷新代码格式化脚本();
     }
-
-    刷新代码格式化脚本();
   });
 });
 
 全局重置按钮.addEventListener("click", () => {
   重置多边形修剪区();
-  更新多边形修剪区代码();
+  更新多边形代码区代码();
   重置向内修剪参数();
-  更新向内修剪区代码();
-  刷新代码格式化脚本();
+  更新向内修剪代码区代码();
 });
 
 function 刷新代码格式化脚本() {

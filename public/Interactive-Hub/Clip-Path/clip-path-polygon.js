@@ -5,7 +5,6 @@ const 多边形修剪代码容器 = 多边形修剪图分区.querySelector(".代
 const 多边形修剪重置按钮 = 操作区.querySelector("#多边形修剪重置");
 let 多边形修剪数据组 = [];
 
-
 多边形图像容器.addEventListener("click", (event) => {
   const 多边形修剪指示区 = document.createElement("div");
   多边形修剪指示区.className = "多边形修剪指示区";
@@ -129,22 +128,28 @@ let 多边形修剪数据组 = [];
     } else {
       多边形图像.style.removeProperty("clip-path");
     }
-    更新多边形修剪区代码();
-    刷新代码格式化脚本();
+    更新多边形代码区代码();
+    if (多边形修剪代码容器.classList.contains("代码容器可见")) {
+      刷新代码格式化脚本();
+    }
   });
 
   多边形图像.style.clipPath = 生成多边形修剪代码();
-  更新多边形修剪区代码();
-  刷新代码格式化脚本();
+  更新多边形代码区代码();
+  if (多边形修剪代码容器.classList.contains("代码容器可见")) {
+    刷新代码格式化脚本();
+  }
 });
 
 多边形修剪重置按钮.addEventListener("click", () => {
   重置多边形修剪区();
-  更新多边形修剪区代码();
-  刷新代码格式化脚本();
+  更新多边形代码区代码();
+  if (多边形修剪代码容器.classList.contains("代码容器可见")) {
+    刷新代码格式化脚本();
+  }
 });
 
-function 更新多边形修剪区代码() {
+function 更新多边形代码区代码() {
   const 代码元素 = 多边形修剪代码容器.querySelector("code");
   const 代码前缀 = "目标元素 {\n";
   const 代码后缀 = "\n}";
@@ -170,4 +175,5 @@ function 重置多边形修剪区() {
   }
   多边形修剪数据组.length = 0;
   多边形图像.style.removeProperty("clip-path");
+  多边形修剪代码容器.classList.remove("代码容器可见");
 }

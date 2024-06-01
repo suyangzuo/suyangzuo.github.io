@@ -49,11 +49,13 @@ for (const 向内修剪滑块 of 向内修剪滑块组) {
     向内修剪数值元素.appendChild(百分比符号);
 
     向内图像.style.clipPath = `${生成向内修剪代码()}`;
-    更新向内修剪区代码();
+    更新向内修剪代码区代码();
   });
 
   向内修剪滑块.addEventListener("mouseup", () => {
-    刷新代码格式化脚本();
+    if (向内修剪代码容器.classList.contains("代码容器可见")) {
+      刷新代码格式化脚本();
+    }
   });
 }
 
@@ -75,7 +77,7 @@ function 生成向内修剪代码() {
   return `inset(${向内修剪比例对象.上} ${向内修剪比例对象.右} ${向内修剪比例对象.下} ${向内修剪比例对象.左})`;
 }
 
-function 更新向内修剪区代码() {
+function 更新向内修剪代码区代码() {
   //范围型触发input事件时，如果运行prism.js，会严重影响性能，因此需要将格式化代码分离出去
   const 代码元素 = 向内修剪代码容器.querySelector("code");
   const 代码前缀 = "目标元素 {\n";
@@ -85,8 +87,10 @@ function 更新向内修剪区代码() {
 
 向内修剪区重置按钮.addEventListener("click", () => {
   重置向内修剪参数();
-  更新向内修剪区代码();
-  刷新代码格式化脚本();
+  更新向内修剪代码区代码();
+  if (向内修剪代码容器.classList.contains("代码容器可见")) {
+    刷新代码格式化脚本();
+  }
 });
 
 function 重置向内修剪参数() {
@@ -95,6 +99,7 @@ function 重置向内修剪参数() {
   root.style.setProperty("--向内修剪比例-下", "0%");
   root.style.setProperty("--向内修剪比例-左", "0%");
   向内图像.style.removeProperty("clip-path");
+  向内修剪代码容器.classList.remove("代码容器可见");
   for (const 向内修剪滑块 of 向内修剪滑块组) {
     向内修剪滑块.value = 0;
     const 向内修剪数值元素 = 向内修剪滑块.nextElementSibling;
