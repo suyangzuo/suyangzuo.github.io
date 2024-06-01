@@ -1,10 +1,23 @@
 const 多边形修剪图分区 = 图像区.querySelector(".多边形修剪图分区");
+const 点击效果图容器 = 多边形修剪图分区.querySelector(".点击效果图容器");
 const 多边形操作分区 = 操作区.querySelector(".多边形操作分区");
 const 多边形图像容器 = 多边形修剪图分区.querySelector(".图像容器");
 const 多边形图像 = 多边形图像容器.querySelector(".图像");
 const 多边形修剪代码容器 = 多边形修剪图分区.querySelector(".代码容器");
 const 多边形修剪重置按钮 = 操作区.querySelector("#多边形修剪重置");
 let 多边形修剪数据组 = [];
+
+生成点击效果();
+
+function 生成点击效果() {
+  点击效果图容器.style.opacity = "1";
+  const 点击效果图 = 点击效果图容器.querySelector(".点击效果图");
+  点击效果图.classList.add("点击效果动画");
+  setTimeout(() => {
+    点击效果图容器.style.removeProperty("opacity");
+    点击效果图.classList.remove("点击效果动画");
+  }, 1000);
+}
 
 多边形图像容器.addEventListener("click", (event) => {
   const 多边形修剪指示区 = document.createElement("div");

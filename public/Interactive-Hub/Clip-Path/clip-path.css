@@ -65,6 +65,10 @@ body {
   filter: drop-shadow(0 0 1px white);
 }
 
+.多边形修剪图分区:not(.未激活图像分区) .图像容器:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
 .图像容器 > img {
   width: 100%;
   height: 100%;
@@ -73,6 +77,39 @@ body {
 
 .原图分区 .图像 {
   opacity: 25%;
+}
+
+.点击效果图容器 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: 25%;
+  aspect-ratio: 1;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.点击效果图 {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.点击效果图.点击效果动画 {
+  animation: 点击效果图动画 500ms ease-out 0ms 2;
+}
+
+@keyframes 点击效果图动画 {
+  from {
+    scale: 1;
+  }
+  50% {
+    scale: 2;
+  }
+  to {
+    scale: 1;
+  }
 }
 
 .多边形修剪指示区 {

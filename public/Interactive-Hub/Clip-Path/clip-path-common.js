@@ -16,6 +16,9 @@ let 当前激活图像分区 = 图像区.querySelector(".多边形修剪图分�
     }
     当前激活操作区.classList.add("未激活操作分区");
     操作分区.classList.remove("未激活操作分区");
+    if (操作分区.classList.contains("多边形操作分区")) {
+      生成点击效果();
+    }
 
     当前激活图像分区.classList.add("未激活图像分区");
     图像分区组[index + 1].classList.remove("未激活图像分区");
