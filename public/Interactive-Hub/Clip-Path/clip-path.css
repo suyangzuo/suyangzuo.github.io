@@ -375,11 +375,9 @@ pre[class*="language-"] {
   justify-content: center;
   align-items: center;
   gap: 8px;
-}
-
-.向内修剪标签 {
   visibility: hidden;
   opacity: 0;
+  cursor: url("/Images/Common/鼠标-默认.cur"), auto;
 }
 
 .向内修剪标签 > * {
