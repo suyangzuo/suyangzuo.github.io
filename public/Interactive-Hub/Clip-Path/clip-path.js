@@ -152,10 +152,12 @@ let 当前可用方向标签 = 向内修剪标签组[0];
       多边形图像.style.removeProperty("clip-path");
     }
     更新多边形修剪区代码();
+    刷新代码格式化脚本();
   });
 
   多边形图像.style.clipPath = 生成多边形修剪代码();
   更新多边形修剪区代码();
+  刷新代码格式化脚本();
 });
 
 操作分区组.forEach((操作分区, index) => {
@@ -180,6 +182,7 @@ let 当前可用方向标签 = 向内修剪标签组[0];
 多边形修剪重置按钮.addEventListener("click", () => {
   重置多边形修剪区();
   更新多边形修剪区代码();
+  刷新代码格式化脚本();
 });
 
 代码按钮组.forEach((代码按钮, index) => {
@@ -188,10 +191,11 @@ let 当前可用方向标签 = 向内修剪标签组[0];
     const 代码元素 = 代码容器.querySelector("code");
     const 代码前缀 = "目标元素 {\n";
     const 代码后缀 = "\n}";
+
     if (代码容器.classList.contains("多边形修剪代码容器")) {
-      代码元素.innerHTML = `${代码前缀}  clip-path: ${生成多边形修剪代码()};${代码后缀}`;
+      更新多边形修剪区代码();
     } else if (代码容器.classList.contains("向内修剪代码容器")) {
-      代码元素.innerHTML = `${代码前缀}  clip-path: ${生成向内修剪代码()};${代码后缀}`;
+      更新向内修剪区代码();
     }
     if (代码容器.classList.contains("代码容器可见")) {
       代码容器.classList.remove("代码容器可见");
@@ -220,7 +224,6 @@ function 更新多边形修剪区代码() {
   const 代码前缀 = "目标元素 {\n";
   const 代码后缀 = "\n}";
   代码元素.innerHTML = `${代码前缀}  clip-path: ${生成多边形修剪代码()};${代码后缀}`;
-  刷新代码格式化脚本();
 }
 
 function 生成多边形修剪代码() {
