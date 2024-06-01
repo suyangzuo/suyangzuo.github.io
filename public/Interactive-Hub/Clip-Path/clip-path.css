@@ -46,7 +46,7 @@ body {
   height: 100%;
   top: 0;
   left: 0;
-  transition: opacity 500ms;
+  transition: 500ms;
 }
 
 .图像分区.未激活图像分区 {
