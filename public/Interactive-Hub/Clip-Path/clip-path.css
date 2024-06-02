@@ -309,13 +309,28 @@ div.code-toolbar > .toolbar > .toolbar-item > button:hover {
 
 .操作分区 {
   width: 100%;
-  height: 25%;
   background-image: linear-gradient(#333943 0%, #535963 100%);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 5px;
+}
+
+.多边形操作分区 {
+  flex-grow: 2.5;
+}
+
+.向内操作分区 {
+  flex-grow: 4;
+}
+
+.圆形操作分区 {
+  flex-grow: 3.5;
+}
+
+.椭圆操作分区 {
+  flex-grow: 4.5;
 }
 
 .操作分区.未激活操作分区 {
@@ -397,7 +412,7 @@ div.code-toolbar > .toolbar > .toolbar-item > button:hover {
 }
 
 .操作分区 .重置按钮 {
-  margin-top: 10px;
+  margin-top: min(2.5%, 3px);
   width: clamp(75px, 45%, 120px);
   height: 35px;
   border-radius: 999px;
@@ -408,11 +423,6 @@ div.code-toolbar > .toolbar > .toolbar-item > button:hover {
   box-shadow: 1px 1px 4px 0 #0006;
   transition: 75ms;
   user-select: none;
-}
-
-#向内修剪重置,
-#椭圆修剪重置 {
-  margin-top: 0;
 }
 
 .未激活操作分区 .重置按钮,
