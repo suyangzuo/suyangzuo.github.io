@@ -37,12 +37,8 @@ function 生成点击效果() {
   );
   const 鼠标点击位置_x = event.clientX - 多边形图像容器边界矩形.left;
   const 鼠标点击位置_y = event.clientY - 多边形图像容器边界矩形.top;
-  const 鼠标点击比例_水平 = `${Math.floor(
-    (鼠标点击位置_x / 多边形图像容器宽度) * 100,
-  )}`;
-  const 鼠标点击比例_垂直 = `${Math.floor(
-    (鼠标点击位置_y / 多边形图像容器高度) * 100,
-  )}`;
+  const 鼠标点击比例_水平 = (鼠标点击位置_x / 多边形图像容器宽度) * 100;
+  const 鼠标点击比例_垂直 = (鼠标点击位置_y / 多边形图像容器高度) * 100;
 
   多边形修剪指示区.style.left = `${鼠标点击比例_水平}%`;
   多边形修剪指示区.style.top = `${鼠标点击比例_垂直}%`;
@@ -76,7 +72,7 @@ function 生成点击效果() {
   修剪数据_x数据.className = "修剪数据-坐标数据";
   const x比例 = document.createElement("span");
   x比例.className = "x比例数据";
-  x比例.textContent = `${鼠标点击比例_水平}`;
+  x比例.textContent = `${鼠标点击比例_水平.toFixed(0)}`;
   const 百分比_x = document.createElement("span");
   百分比_x.className = "多边形修剪百分比符号";
   百分比_x.textContent = "%";
@@ -92,7 +88,7 @@ function 生成点击效果() {
   修剪数据_y数据.className = "修剪数据-坐标数据";
   const y比例 = document.createElement("span");
   y比例.className = "y比例数据";
-  y比例.textContent = `${鼠标点击比例_垂直}`;
+  y比例.textContent = `${鼠标点击比例_垂直.toFixed(0)}`;
   const 百分比_y = document.createElement("span");
   百分比_y.className = "多边形修剪百分比符号";
   百分比_y.textContent = "%";
