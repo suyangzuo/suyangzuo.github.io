@@ -87,6 +87,21 @@
             <figure class="图像容器 圆形图像容器">
               <img class="图像" src="./Images/3.webp" alt="3" />
             </figure>
+            <section class="圆心区 圆形圆心区">
+              <div class="圆心数据区 圆形圆心数据区">
+                <span class="圆心水平数据区"
+                  ><span class="圆心水平标题 圆心标题">X：</span
+                  ><span class="圆心水平数值 圆心数值">100</span
+                  ><span class="圆心数值后缀">%</span></span
+                >
+                <span class="圆心垂直数据区"
+                  ><span class="圆心垂直标题 圆心标题">Y：</span
+                  ><span class="圆心垂直数值 圆心数值">1</span
+                  ><span class="圆心数值后缀">%</span></span
+                >
+              </div>
+              <span class="圆心点"></span>
+            </section>
             <div class="代码容器 圆形修剪代码容器">
               <pre class="line-numbers">
                 <code class="language-css">
@@ -145,46 +160,46 @@
               <label class="向内修剪标签" for="向内修剪滑块-上">
                 <input
                   type="range"
-                  class="向内修剪滑块"
+                  class="滑块 向内修剪滑块"
                   id="向内修剪滑块-上"
                   min="0"
                   max="100"
                   value="0"
                 />
-                <span class="向内修剪数值">0</span>
+                <span class="向内修剪数值 滑块数据">0</span>
               </label>
               <label class="向内修剪标签" for="向内修剪滑块-右">
                 <input
                   type="range"
-                  class="向内修剪滑块"
+                  class="滑块 向内修剪滑块"
                   id="向内修剪滑块-右"
                   min="0"
                   max="100"
                   value="0"
                 />
-                <span class="向内修剪数值"></span>
+                <span class="向内修剪数值 滑块数据"></span>
               </label>
               <label class="向内修剪标签" for="向内修剪滑块-下">
                 <input
                   type="range"
-                  class="向内修剪滑块"
+                  class="滑块 向内修剪滑块"
                   id="向内修剪滑块-下"
                   min="0"
                   max="100"
                   value="0"
                 />
-                <span class="向内修剪数值"></span>
+                <span class="向内修剪数值 滑块数据"></span>
               </label>
               <label class="向内修剪标签" for="向内修剪滑块-左">
                 <input
                   type="range"
-                  class="向内修剪滑块"
+                  class="滑块 向内修剪滑块"
                   id="向内修剪滑块-左"
                   min="0"
                   max="100"
                   value="0"
                 />
-                <span class="向内修剪数值"></span>
+                <span class="向内修剪数值 滑块数据"></span>
               </label>
             </div>
             <button class="重置按钮" id="向内修剪重置">
@@ -199,6 +214,21 @@
                 <i class="fa-solid fa-code"></i>
               </button>
             </h3>
+            <label class="圆形滑块区" for="圆形半径滑块">
+              <input
+                class="滑块 圆形半径滑块"
+                type="range"
+                id="圆形半径滑块"
+                min="0"
+                max="100"
+                value="0"
+              />
+              <span class="滑块文本"
+                ><span class="滑块标题">半径：</span
+                ><span class="滑块数据">0</span
+                ><span class="滑块数据后缀">%</span></span
+              >
+            </label>
             <button class="重置按钮" id="圆形修剪重置">
               <i class="fa-solid fa-arrows-rotate"></i>
             </button>

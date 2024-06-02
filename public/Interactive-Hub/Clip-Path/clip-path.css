@@ -7,6 +7,7 @@
   --向内修剪比例-右: 0%;
   --向内修剪比例-下: 0%;
   --向内修剪比例-左: 0%;
+  --圆形半径: 0%;
 }
 
 body {
@@ -65,7 +66,9 @@ body {
   filter: drop-shadow(0 0 1px white);
 }
 
-.多边形修剪图分区:not(.未激活图像分区) .图像容器:hover {
+.多边形修剪图分区:not(.未激活图像分区) .图像容器:hover,
+.圆形修剪图分区:not(.未激活图像分区) .图像容器:hover,
+.椭圆修剪图分区:not(.未激活图像分区) .图像容器:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
@@ -403,6 +406,10 @@ pre[class*="language-"] {
   align-items: center;
 }
 
+label {
+  cursor: url("/Images/Common/鼠标-默认.cur"), auto;
+}
+
 .向内修剪标签 {
   position: absolute;
   width: 100%;
@@ -414,14 +421,13 @@ pre[class*="language-"] {
   gap: 8px;
   visibility: hidden;
   opacity: 0;
-  cursor: url("/Images/Common/鼠标-默认.cur"), auto;
 }
 
 .向内修剪标签 > * {
   flex-shrink: 0;
 }
 
-.向内修剪滑块 {
+.滑块 {
   appearance: none;
   width: 90%;
   height: 10px;
@@ -462,11 +468,11 @@ pre[class*="language-"] {
   );
 }
 
-.向内修剪滑块:hover {
+.滑块:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
-.向内修剪滑块::-webkit-slider-thumb {
+.滑块::-webkit-slider-thumb {
   appearance: none;
   width: 25px;
   height: 25px;
@@ -475,12 +481,96 @@ pre[class*="language-"] {
   box-shadow: 1px 1px 2px #555;
 }
 
-.向内修剪数值 {
+.向内修剪数值-百分比符号 {
+  margin-left: 2px;
+  color: gold;
+}
+
+/* ------------------------------------------------------------- */
+
+.圆心区 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% calc(-100% + 8px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    top 250ms,
+    left 250ms;
+}
+
+.圆心区.圆心区可见 {
+  visibility: visible;
+  opacity: 1;
+}
+
+.圆心数据区 {
+  width: 95px;
+  height: 45px;
+  padding-left: 15px;
+  border-radius: 5px;
+  background-color: #000c;
+  font-family: "Jetbrains Mono", Consolas, monospace;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.圆心标题 {
+  color: lightgreen;
+}
+
+.圆心数值 {
+  color: lightcyan;
+}
+
+.圆心数值后缀 {
+  margin-left: 2px;
+  color: orange;
+}
+
+.圆心点 {
+  width: 16px;
+  height: 16px;
+  border-radius: 99px;
+  background-color: linen;
+  box-shadow: 0 0 3px 1px black;
+}
+
+.圆形滑块区 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  padding: 10px 0 5px 0;
+}
+
+#圆形半径滑块 {
+  background-image: linear-gradient(
+    90deg,
+    #aba var(--圆形半径),
+    transparent var(--圆形半径)
+  );
+  user-select: none;
+}
+
+.滑块数据 {
   font-family: "Jetbrains Mono", Consolas, monospace;
   color: lightcyan;
 }
 
-.向内修剪数值-百分比符号 {
+.滑块数据后缀 {
+  font-family: "Jetbrains Mono", Consolas, monospace;
   margin-left: 2px;
   color: gold;
 }
