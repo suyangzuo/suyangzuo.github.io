@@ -113,6 +113,21 @@
             <figure class="图像容器 椭圆图像容器">
               <img class="图像" src="./Images/4.webp" alt="4" />
             </figure>
+            <section class="圆心区 椭圆圆心区">
+              <div class="圆心数据区 椭圆圆心数据区">
+                <span class="圆心水平数据区"
+                  ><span class="圆心水平标题 圆心标题">X：</span
+                  ><span class="圆心水平数值 圆心数值">100</span
+                  ><span class="圆心数值后缀">%</span></span
+                >
+                <span class="圆心垂直数据区"
+                  ><span class="圆心垂直标题 圆心标题">Y：</span
+                  ><span class="圆心垂直数值 圆心数值">1</span
+                  ><span class="圆心数值后缀">%</span></span
+                >
+              </div>
+              <span class="圆心点"></span>
+            </section>
             <div class="代码容器 椭圆修剪代码容器">
               <pre class="line-numbers">
                 <code class="language-css">
@@ -241,6 +256,38 @@
                 <i class="fa-solid fa-code"></i>
               </button>
             </h3>
+            <div class="椭圆半径区">
+              <label class="椭圆滑块区" for="椭圆水平半径滑块">
+                <input
+                  class="滑块 椭圆半径滑块"
+                  type="range"
+                  id="椭圆水平半径滑块"
+                  min="0"
+                  max="100"
+                  value="0"
+                />
+                <span class="滑块文本"
+                  ><span class="滑块标题">水平半径：</span
+                  ><span class="滑块数据">0</span
+                  ><span class="滑块数据后缀">%</span></span
+                >
+              </label>
+              <label class="椭圆滑块区" for="椭圆垂直半径滑块">
+                <input
+                  class="滑块 椭圆半径滑块"
+                  type="range"
+                  id="椭圆垂直半径滑块"
+                  min="0"
+                  max="100"
+                  value="0"
+                />
+                <span class="滑块文本"
+                  ><span class="滑块标题">垂直半径：</span
+                  ><span class="滑块数据">0</span
+                  ><span class="滑块数据后缀">%</span></span
+                >
+              </label>
+            </div>
             <button class="重置按钮" id="椭圆修剪重置">
               <i class="fa-solid fa-arrows-rotate"></i>
             </button>

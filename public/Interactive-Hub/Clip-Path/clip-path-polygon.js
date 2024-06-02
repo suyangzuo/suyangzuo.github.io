@@ -8,6 +8,7 @@ const 多边形代码区 = 多边形修剪代码容器.querySelector("code");
 const 多边形修剪重置按钮 = 操作区.querySelector("#多边形修剪重置");
 let 多边形修剪数据组 = [];
 let 多边形浮点数据组 = [];
+let 代码格式化id = null;
 let 已显示代码_多边形;
 
 // 生成点击效果();
@@ -148,20 +149,30 @@ function 生成点击效果() {
           `${数据.修剪序号}`;
       });
 
+      多边形浮点数据组.forEach((数据, index) => {
+        数据.修剪序号 = index + 1;
+      });
+
       多边形图像.style.clipPath = 生成精确修剪值代码();
     } else {
       多边形图像.style.removeProperty("clip-path");
     }
     更新多边形代码区代码();
     if (多边形修剪代码容器.classList.contains("代码容器可见")) {
-      刷新代码格式化脚本();
+      clearTimeout(代码格式化id);
+      代码格式化id = setTimeout(() => {
+        刷新代码格式化脚本();
+      }, 250);
     }
   });
 
   多边形图像.style.clipPath = 生成精确修剪值代码();
   更新多边形代码区代码();
   if (多边形修剪代码容器.classList.contains("代码容器可见")) {
-    刷新代码格式化脚本();
+    clearTimeout(代码格式化id);
+    代码格式化id = setTimeout(() => {
+      刷新代码格式化脚本();
+    }, 250);
   }
 });
 

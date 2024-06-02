@@ -8,6 +8,8 @@
   --向内修剪比例-下: 0%;
   --向内修剪比例-左: 0%;
   --圆形半径: 0%;
+  --椭圆水平半径: 0%;
+  --椭圆垂直半径: 0%;
 }
 
 body {
@@ -76,6 +78,11 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.圆形图像容器 > img,
+.椭圆图像容器 > img {
+  transition: clip-path 250ms;
 }
 
 .原图分区 .图像 {
@@ -391,8 +398,8 @@ div.code-toolbar > .toolbar > .toolbar-item > button:hover {
 
 .操作分区 .重置按钮 {
   margin-top: 10px;
-  width: clamp(75px, 50%, 120px);
-  height: 40px;
+  width: clamp(75px, 45%, 120px);
+  height: 35px;
   border-radius: 999px;
   border: none;
   background-color: #54616f;
@@ -403,7 +410,8 @@ div.code-toolbar > .toolbar > .toolbar-item > button:hover {
   user-select: none;
 }
 
-#向内修剪重置 {
+#向内修剪重置,
+#椭圆修剪重置 {
   margin-top: 0;
 }
 
@@ -570,7 +578,8 @@ label {
   box-shadow: 0 0 3px 1px black;
 }
 
-.圆形滑块区 {
+.圆形滑块区,
+.椭圆滑块区 {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -598,4 +607,26 @@ label {
   font-family: "Jetbrains Mono", Consolas, monospace;
   margin-left: 2px;
   color: gold;
+}
+
+.椭圆半径区 {
+  width: 100%;
+}
+
+#椭圆水平半径滑块 {
+  background-image: linear-gradient(
+    90deg,
+    #aba var(--椭圆水平半径),
+    transparent var(--椭圆水平半径)
+  );
+  user-select: none;
+}
+
+#椭圆垂直半径滑块 {
+  background-image: linear-gradient(
+    90deg,
+    #aba var(--椭圆垂直半径),
+    transparent var(--椭圆垂直半径)
+  );
+  user-select: none;
 }
