@@ -5,6 +5,7 @@ const 向内修剪数值组 = 向内操作分区.querySelectorAll(".向内修剪
 const 向内修剪方向按钮组 = 向内操作分区.querySelectorAll(".操作选项按钮");
 const 向内修剪图分区 = 图像区.querySelector(".向内修剪图分区");
 const 向内修剪代码容器 = 向内修剪图分区.querySelector(".代码容器");
+const 向内代码区 = 向内修剪代码容器.querySelector("code");
 const 向内图像 = 向内修剪图分区.querySelector(".图像");
 const 向内修剪区重置按钮 = 操作区.querySelector("#向内修剪重置");
 let 当前可用方向按钮 = 向内修剪方向按钮组[0];
@@ -79,18 +80,13 @@ function 生成向内修剪代码() {
 
 function 更新向内修剪代码区代码() {
   //范围型触发input事件时，如果运行prism.js，会严重影响性能，因此需要将格式化代码分离出去
-  const 代码元素 = 向内修剪代码容器.querySelector("code");
   const 代码前缀 = "目标元素 {\n";
   const 代码后缀 = "\n}";
-  代码元素.innerHTML = `${代码前缀}  clip-path: ${生成向内修剪代码()};${代码后缀}`;
+  向内代码区.innerHTML = `${代码前缀}  clip-path: ${生成向内修剪代码()};${代码后缀}`;
 }
 
 向内修剪区重置按钮.addEventListener("click", () => {
   重置向内修剪参数();
-  更新向内修剪代码区代码();
-  if (向内修剪代码容器.classList.contains("代码容器可见")) {
-    刷新代码格式化脚本();
-  }
 });
 
 function 重置向内修剪参数() {
@@ -100,6 +96,7 @@ function 重置向内修剪参数() {
   root.style.setProperty("--向内修剪比例-左", "0%");
   向内图像.style.removeProperty("clip-path");
   向内修剪代码容器.classList.remove("代码容器可见");
+  向内代码区.innerHTML = "";
   const 代码按钮 = 向内操作分区.querySelector(".代码按钮");
   代码按钮.innerHTML = '<i class="fa-solid fa-code"></i>';
   for (const 向内修剪滑块 of 向内修剪滑块组) {

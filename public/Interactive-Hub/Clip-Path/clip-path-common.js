@@ -16,9 +16,9 @@ let 当前激活图像分区 = 图像区.querySelector(".多边形修剪图分�
     }
     当前激活操作区.classList.add("未激活操作分区");
     操作分区.classList.remove("未激活操作分区");
-    if (操作分区.classList.contains("多边形操作分区")) {
+    /*if (操作分区.classList.contains("多边形操作分区")) {
       生成点击效果();
-    }
+    }*/
 
     当前激活图像分区.classList.add("未激活图像分区");
     图像分区组[index + 1].classList.remove("未激活图像分区");
@@ -35,11 +35,6 @@ let 当前激活图像分区 = 图像区.querySelector(".多边形修剪图分�
   代码按钮.addEventListener("click", () => {
     const 代码容器 = 图像分区组[index + 1].querySelector(".代码容器");
 
-    if (代码容器.classList.contains("多边形修剪代码容器")) {
-      更新多边形代码区代码();
-    } else if (代码容器.classList.contains("向内修剪代码容器")) {
-      更新向内修剪代码区代码();
-    }
     if (代码容器.classList.contains("代码容器可见")) {
       代码容器.classList.remove("代码容器可见");
       代码按钮.innerHTML = '<i class="fa-solid fa-code"></i>';
@@ -53,11 +48,11 @@ let 当前激活图像分区 = 图像区.querySelector(".多边形修剪图分�
 
 全局重置按钮.addEventListener("click", () => {
   重置多边形修剪区();
-  更新多边形代码区代码();
   重置向内修剪参数();
-  更新向内修剪代码区代码();
   重置圆形修剪参数();
-  更新圆形修剪代码区代码();
+  多边形代码区.innerHTML = "";
+  向内代码区.innerHTML = "";
+  圆形代码区.innerHTML = "";
 });
 
 function 刷新代码格式化脚本() {

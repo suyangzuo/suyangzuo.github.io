@@ -77,14 +77,13 @@ let 已显示代码_圆形 = false;
 
 圆形代码按钮.addEventListener("click", () => {
   已显示代码_圆形 = !已显示代码_圆形;
-  if (已显示代码_圆形) {
+  /*if (已显示代码_圆形) {
     刷新代码格式化脚本();
-  }
+  }*/
 });
 
 圆形重置按钮.addEventListener("click", () => {
   重置圆形修剪参数();
-  更新圆形修剪代码区代码();
 });
 
 function 生成圆形修剪值代码(圆心水平值, 圆心垂直值, 半径值) {
@@ -107,6 +106,7 @@ function 重置圆形修剪参数() {
   圆形图.style.removeProperty("clip-path");
   圆形代码容器.classList.remove("代码容器可见");
   圆形代码按钮.innerHTML = '<i class="fa-solid fa-code"></i>';
+  圆形代码区.innerHTML = "";
   圆形半径滑块.value = 0;
   圆形半径 = 圆形半径滑块.value;
   圆形半径数值.textContent = `${圆形半径}`;

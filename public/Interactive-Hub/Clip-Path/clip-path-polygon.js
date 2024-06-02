@@ -4,10 +4,12 @@ const 多边形操作分区 = 操作区.querySelector(".多边形操作分区");
 const 多边形图像容器 = 多边形修剪图分区.querySelector(".图像容器");
 const 多边形图像 = 多边形图像容器.querySelector(".图像");
 const 多边形修剪代码容器 = 多边形修剪图分区.querySelector(".代码容器");
+const 多边形代码区 = 多边形修剪代码容器.querySelector("code");
 const 多边形修剪重置按钮 = 操作区.querySelector("#多边形修剪重置");
 let 多边形修剪数据组 = [];
+let 已显示代码_多边形;
 
-生成点击效果();
+// 生成点击效果();
 
 function 生成点击效果() {
   点击效果图容器.style.opacity = "1";
@@ -157,17 +159,12 @@ function 生成点击效果() {
 
 多边形修剪重置按钮.addEventListener("click", () => {
   重置多边形修剪区();
-  更新多边形代码区代码();
-  if (多边形修剪代码容器.classList.contains("代码容器可见")) {
-    刷新代码格式化脚本();
-  }
 });
 
 function 更新多边形代码区代码() {
-  const 代码元素 = 多边形修剪代码容器.querySelector("code");
   const 代码前缀 = "目标元素 {\n";
   const 代码后缀 = "\n}";
-  代码元素.innerHTML = `${代码前缀}  clip-path: ${生成多边形修剪代码()};${代码后缀}`;
+  多边形代码区.innerHTML = `${代码前缀}  clip-path: ${生成多边形修剪代码()};${代码后缀}`;
 }
 
 function 生成多边形修剪代码() {
@@ -192,4 +189,5 @@ function 重置多边形修剪区() {
   多边形修剪代码容器.classList.remove("代码容器可见");
   const 代码按钮 = 多边形操作分区.querySelector(".代码按钮");
   代码按钮.innerHTML = '<i class="fa-solid fa-code"></i>';
+  多边形代码区.innerHTML = "";
 }

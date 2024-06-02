@@ -255,11 +255,35 @@ body {
 
 pre[class*="language-"] {
   background-color: #345d;
+  margin: 0;
 }
 
 code[class*="language-"],
 pre[class*="language-"] {
   font-family: "Jetbrains Mono", Consolas, monospace;
+}
+
+div.code-toolbar > .toolbar {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.toolbar-item {
+  margin: 0 2px;
+}
+
+div.code-toolbar > .toolbar > .toolbar-item > button,
+div.code-toolbar > .toolbar > .toolbar-item > span {
+  color: white;
+}
+
+div.code-toolbar > .toolbar > .toolbar-item > button {
+  transition: 125ms;
+}
+
+div.code-toolbar > .toolbar > .toolbar-item > button:hover {
+  background-color: rgb(224, 224, 224, 0.85);
+  color: #223644;
 }
 
 .token.space,
