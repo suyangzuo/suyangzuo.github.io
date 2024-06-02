@@ -7,6 +7,7 @@ const 多边形修剪代码容器 = 多边形修剪图分区.querySelector(".代
 const 多边形代码区 = 多边形修剪代码容器.querySelector("code");
 const 多边形修剪重置按钮 = 操作区.querySelector("#多边形修剪重置");
 let 多边形修剪数据组 = [];
+let 多边形浮点数据组 = [];
 let 已显示代码_多边形;
 
 // 生成点击效果();
@@ -42,7 +43,6 @@ function 生成点击效果() {
 
   多边形修剪指示区.style.left = `${鼠标点击比例_水平}%`;
   多边形修剪指示区.style.top = `${鼠标点击比例_垂直}%`;
-  多边形修剪指示区.style.translate = "-50% -150%";
 
   const 修剪序号 = document.createElement("span");
   修剪序号.className = "修剪序号";
@@ -107,7 +107,16 @@ function 生成点击效果() {
     修剪指示区元素: 多边形修剪指示区,
   };
 
+  const 浮点对象 = {
+    修剪序号: 序号,
+    坐标: {
+      x: 鼠标点击比例_水平,
+      y: 鼠标点击比例_垂直,
+    },
+  };
+
   多边形修剪数据组.push(修剪数据对象);
+  多边形浮点数据组.push(浮点对象);
 
   关闭按钮.addEventListener("click", (event) => {
     event.stopImmediatePropagation();
@@ -116,6 +125,9 @@ function 生成点击效果() {
       10,
     );
     多边形修剪数据组 = 多边形修剪数据组.filter(
+      (数据) => 数据.修剪序号 !== 待关闭修剪区序号,
+    );
+    多边形浮点数据组 = 多边形浮点数据组.filter(
       (数据) => 数据.修剪序号 !== 待关闭修剪区序号,
     );
 
@@ -136,7 +148,7 @@ function 生成点击效果() {
           `${数据.修剪序号}`;
       });
 
-      多边形图像.style.clipPath = 生成多边形修剪代码();
+      多边形图像.style.clipPath = 生成精确修剪值代码();
     } else {
       多边形图像.style.removeProperty("clip-path");
     }
@@ -146,7 +158,7 @@ function 生成点击效果() {
     }
   });
 
-  多边形图像.style.clipPath = 生成多边形修剪代码();
+  多边形图像.style.clipPath = 生成精确修剪值代码();
   更新多边形代码区代码();
   if (多边形修剪代码容器.classList.contains("代码容器可见")) {
     刷新代码格式化脚本();
@@ -161,6 +173,15 @@ function 更新多边形代码区代码() {
   const 代码前缀 = "目标元素 {\n";
   const 代码后缀 = "\n}";
   多边形代码区.innerHTML = `${代码前缀}  clip-path: ${生成多边形修剪代码()};${代码后缀}`;
+}
+
+function 生成精确修剪值代码() {
+  const 坐标数组 = [];
+  for (const 浮点对象 of 多边形浮点数据组) {
+    坐标数组.push(`${浮点对象.坐标.x}% ${浮点对象.坐标.y}%`);
+  }
+  const 精准值代码 = 坐标数组.join(", ");
+  return `polygon(${精准值代码})`;
 }
 
 function 生成多边形修剪代码() {
@@ -181,6 +202,7 @@ function 重置多边形修剪区() {
     修剪对象.修剪指示区元素.remove();
   }
   多边形修剪数据组.length = 0;
+  多边形浮点数据组.length = 0;
   多边形图像.style.removeProperty("clip-path");
   多边形修剪代码容器.classList.remove("代码容器可见");
   const 代码按钮 = 多边形操作分区.querySelector(".代码按钮");

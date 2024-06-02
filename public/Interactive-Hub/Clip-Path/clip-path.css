@@ -117,6 +117,7 @@ body {
 
 .多边形修剪指示区 {
   position: absolute;
+  translate: -50% -150%;
   width: 100px;
   height: 40px;
   display: flex;
