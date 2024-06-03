@@ -81,7 +81,7 @@ input[type="text"]:focus {
 }
 
 .颜色区 {
-  width: 350px;
+  width: 420px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -89,7 +89,7 @@ input[type="text"]:focus {
 }
 
 .颜色标题 {
-  width: 100px;
+  width: 185px;
   font-size: 1rem;
   color: #aaa;
   padding: 2px 0;
@@ -143,4 +143,12 @@ input[type="text"]:focus {
 
 .括号 {
   color: #9e81d8;
+}
+
+.无透明度 {
+  color: #6e869f;
+}
+
+.简写 {
+  color: #5f9b9b;
 }
