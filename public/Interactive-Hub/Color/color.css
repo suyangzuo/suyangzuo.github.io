@@ -4,6 +4,12 @@
   --拇指宽度: 16px;
 }
 
+.展示区 {
+  width: 400px;
+  display: flex;
+  justify-content: center;
+}
+
 .控制区 {
   display: flex;
   flex-direction: column;
@@ -75,38 +81,66 @@ input[type="text"]:focus {
 }
 
 .颜色区 {
+  width: 350px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  font-family: "JetBrains Mono", Monaco, "Andale Mono", "Ubuntu Mono", monospace;
 }
 
 .颜色标题 {
-  width: 125px;
-  font-family: "JetBrains Mono", Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  width: 100px;
   font-size: 1rem;
   color: #aaa;
-  padding: 2px 10px;
+  padding: 2px 0;
   text-align: right;
   font-weight: normal;
 }
 
 .颜色标题模式 {
-  color: white;
+  color: gold;
   margin-right: 3px;
 }
 
+.颜色值 {
+  display: flex;
+}
+
+.hex前缀,
+.rgba前缀 {
+  color: lightcyan;
+}
+
 .hex前缀 {
-  color: darkorange;
+  width: 10px;
+  margin-right: 1px;
+}
+
+.颜色分值 {
+  width: fit-content;
+}
+
+.hex颜色值 > .颜色分值 {
+  margin: 0 1px;
 }
 
 .红值 {
-  color: red;
+  color: #ff5e9d;
 }
 
 .绿值 {
-  color: green;
+  color: lightgreen;
 }
 
 .蓝值 {
-  color: blue;
+  color: #65c0ff;
+}
+
+.逗号 {
+  margin-right: 5px;
+  color: #aaa;
+}
+
+.括号 {
+  color: #9e81d8;
 }
