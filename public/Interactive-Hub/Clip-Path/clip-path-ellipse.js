@@ -25,6 +25,7 @@ let 已定义圆心_椭圆 = false;
 let 已显示代码_椭圆 = false;
 
 椭圆水平半径滑块.addEventListener("input", () => {
+  椭圆图.style.transition = "none";
   椭圆水平半径 = 椭圆水平半径滑块.value;
   root.style.setProperty("--椭圆水平半径", `${椭圆水平半径}%`);
   椭圆水平半径数值.textContent = `${椭圆水平半径}`;
@@ -41,6 +42,7 @@ let 已显示代码_椭圆 = false;
 });
 
 椭圆垂直半径滑块.addEventListener("input", () => {
+  椭圆图.style.transition = "none";
   椭圆垂直半径 = 椭圆垂直半径滑块.value;
   root.style.setProperty("--椭圆垂直半径", `${椭圆垂直半径}%`);
   椭圆垂直半径数值.textContent = `${椭圆垂直半径}`;
@@ -57,18 +59,21 @@ let 已显示代码_椭圆 = false;
 });
 
 椭圆水平半径滑块.addEventListener("mouseup", () => {
+  椭圆图.style.removeProperty("transition");
   if (已显示代码_椭圆) {
     刷新代码格式化脚本();
   }
 });
 
 椭圆垂直半径滑块.addEventListener("mouseup", () => {
+  椭圆图.style.removeProperty("transition");
   if (已显示代码_椭圆) {
     刷新代码格式化脚本();
   }
 });
 
 椭圆图像容器.addEventListener("click", (event) => {
+  已定义圆心_椭圆 = true;
   const 视口_x = event.clientX;
   const 视口_y = event.clientY;
   const 边界矩形 = 椭圆图像容器.getBoundingClientRect();
@@ -90,7 +95,6 @@ let 已显示代码_椭圆 = false;
   }
   椭圆圆心对象.水平 = 水平比例;
   椭圆圆心对象.垂直 = 垂直比例;
-  已定义圆心_椭圆 = true;
 
   椭圆图.style.clipPath = 生成椭圆修剪值代码(
     `${水平比例}%`,

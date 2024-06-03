@@ -16,24 +16,8 @@ input[data-coloris]::placeholder {
   font-size: 0.9rem;
 }
 
-.颜色区 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.颜色区 label:has(+ input[type="text"]) {
-  width: 120px;
-  font-family: "JetBrains Mono", Monaco, "Andale Mono", "Ubuntu Mono", monospace;
-}
-
-label:has(+ input[type="text"]) {
-  padding: 2px 10px;
-  text-align: right;
-}
-
 input[type="text"] {
-  width: 250px;
+  width: calc(100% - 30px);
   background-color: #333;
   color: white;
   font-family: "JetBrains Mono", Monaco, "Andale Mono", "Ubuntu Mono", monospace;
@@ -47,92 +31,82 @@ input[type="text"]:focus {
   outline: solid 2px gray;
 }
 
-.颜色分割区 {
-  height: 25px;
+#颜色选择器 {
+  border: solid 1px gray;
 }
 
-.颜色单区组 {
+.clr-field {
+  width: 350px;
+}
+
+.clr-picker {
+  display: flex !important;
+  width: 350px !important;
+}
+
+.clr-gradient {
+  height: 150px !important;
+}
+
+.clr-alpha,
+.clr-hue {
+  height: 25px !important;
+  margin: 10px 20px !important;
+}
+
+.clr-alpha input[type="range"],
+.clr-hue input[type="range"] {
+  top: 50% !important;
+  translate: 0 -50% !important;
+}
+
+.clr-alpha div,
+.clr-hue div {
+  height: 35px !important;
+  border-radius: 500px !important;
+}
+
+.clr-alpha div:before {
+  border-radius: 500px !important;
+}
+
+.clr-hue div {
+  box-shadow: inset 0 0 2px 1px black !important;
+}
+
+.颜色区 {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  gap: 30px;
 }
 
-.颜色单区 {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-}
-
-.颜色单区 .颜色分区 {
-  width: 250px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 5px;
-}
-
-.颜色单区 label {
-  width: fit-content;
+.颜色标题 {
+  width: 125px;
   font-family: "JetBrains Mono", Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  font-size: 1rem;
+  color: #aaa;
+  padding: 2px 10px;
+  text-align: right;
+  font-weight: normal;
 }
 
-.颜色单区:nth-child(1) label {
-  background-color: rgb(136, 50, 50);
+.颜色标题模式 {
+  color: white;
+  margin-right: 3px;
 }
 
-.颜色单区:nth-child(1) input {
-  background-color: rgba(136, 50, 50, 0.75);
+.hex前缀 {
+  color: darkorange;
 }
 
-.颜色单区:nth-child(2) label {
-  background-color: rgb(40, 110, 70);
+.红值 {
+  color: red;
 }
 
-.颜色单区:nth-child(2) input {
-  background-color: rgba(40, 110, 70, 0.75);
+.绿值 {
+  color: green;
 }
 
-.颜色单区:nth-child(3) label {
-  background-color: rgb(54, 96, 130);
-}
-
-.颜色单区:nth-child(3) input {
-  background-color: rgba(54, 96, 130, 0.75);
-}
-
-.颜色单区:nth-child(4) label {
-  background: no-repeat center/cover url("/Images/Common/Transparent.webp");
-  color: black;
-}
-
-.颜色单区:nth-child(4) input {
-  background-color: rgb(200, 200, 200);
-  color: black;
-}
-
-.颜色单区 input[type="text"] {
-  width: 55px;
-}
-
-.颜色模式标记 {
-  width: 30px;
-  height: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.颜色单区 .颜色分区:nth-child(1) .颜色模式标记 {
-  font-size: 1.6rem;
-  color: burlywood;
-  transform: translateY(-7.5%);
-}
-
-.颜色单区 .颜色分区:nth-child(2) .颜色模式标记 {
-  font-size: 1.35rem;
-  color: rgb(196, 243, 226);
+.蓝值 {
+  color: blue;
 }

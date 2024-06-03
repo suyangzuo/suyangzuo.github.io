@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
@@ -8,12 +8,14 @@
     <link
       rel="icon"
       href="/Images/Interactive-Hub/HQ/颜色.png"
-      type="image/x-icon" />
+      type="image/x-icon"
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC&family=JetBrains+Mono:ital@0;1&display=swap"
-      rel="stylesheet" />
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="/Styles/common.css" />
     <link rel="stylesheet" href="/Styles/top-banner-common.css" />
     <link rel="stylesheet" href="../control.css" />
@@ -21,12 +23,14 @@
     <link rel="stylesheet" href="./color.css" />
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css" />
+      href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css"
+    />
     <script src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"></script>
     <script src="/Scripts/top-banner.js" defer></script>
     <script
       src="https://kit.fontawesome.com/d0483e3bd3.js"
-      crossorigin="anonymous"></script>
+      crossorigin="anonymous"
+    ></script>
     <script src="/Scripts/chroma.min.js"></script>
   </head>
   <body>
@@ -34,80 +38,47 @@
     <script
       src="../../Scripts/html-include.js"
       target="../../top-banner.html"
-      position="afterbegin"></script>
+      position="afterbegin"
+    ></script>
     <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
 
     <section class="颜色总区 总区">
       <script
         src="../../Scripts/html-include.js"
         target="../control.html"
-        position="afterbegin"></script>
+        position="afterbegin"
+      ></script>
       <p class="交互标题">颜色</p>
       <figure class="展示区">
         <input
           type="text"
           data-coloris
           id="颜色选择器"
-          placeholder="点击此处展开" />
+          placeholder="点击此处展开"
+        />
       </figure>
       <div class="控制区">
-        <div class="Hex颜色区 颜色区">
-          <label for="Hex颜色">Hex 模式</label>
-          <input type="text" id="Hex颜色" />
+        <div class="hex颜色区 颜色区">
+          <h2 class="颜色标题 hex颜色标题">
+            <span class="颜色标题模式">Hex</span>模式
+          </h2>
+          <div class="颜色值 hex颜色值">
+            <span class="hex前缀">#</span>
+            <span class="颜色分值 红值"></span>
+            <span class="颜色分值 绿值"></span>
+            <span class="颜色分值 蓝值"></span>
+            <span class="颜色分值 透明值"></span>
+          </div>
         </div>
-        <div class="RGB颜色区 颜色区">
-          <label for="Hex颜色">RGBA 模式</label>
-          <input type="text" id="RGB颜色" />
-        </div>
-        <div class="颜色分割区"></div>
-        <div class="颜色单区组">
-          <div class="颜色单区">
-            <div class="颜色分区">
-              <label for="Hex-红">Hex 红</label>
-              <input type="text" id="Hex-红" />
-              <div class="颜色模式标记">&#9327;</div>
-            </div>
-            <div class="颜色分区">
-              <label for="RGB-红">RGB 红</label>
-              <input type="text" id="RGB-红" />
-              <div class="颜色模式标记">&#9321;</div>
-            </div>
-          </div>
-          <div class="颜色单区">
-            <div class="颜色分区">
-              <label for="Hex-绿">Hex 绿</label>
-              <input type="text" id="Hex-绿" />
-              <div class="颜色模式标记">&#9327;</div>
-            </div>
-            <div class="颜色分区">
-              <label for="RGB-绿">RGB 绿</label>
-              <input type="text" id="RGB-绿" />
-              <div class="颜色模式标记">&#9321;</div>
-            </div>
-          </div>
-          <div class="颜色单区">
-            <div class="颜色分区">
-              <label for="Hex-蓝">Hex 蓝</label>
-              <input type="text" id="Hex-蓝" />
-              <div class="颜色模式标记">&#9327;</div>
-            </div>
-            <div class="颜色分区">
-              <label for="RGB-蓝">RGB 蓝</label>
-              <input type="text" id="RGB-蓝" />
-              <div class="颜色模式标记">&#9321;</div>
-            </div>
-          </div>
-          <div class="颜色单区">
-            <div class="颜色分区">
-              <label for="Hex-透明度">Hex 透明度</label>
-              <input type="text" id="Hex-透明度" />
-              <div class="颜色模式标记">&#9327;</div>
-            </div>
-            <div class="颜色分区">
-              <label for="RGB-透明度">RGB 透明度</label>
-              <input type="text" id="RGB-透明度" />
-              <div class="颜色模式标记">&#9321;</div>
-            </div>
+        <div class="rgba颜色区 颜色区">
+          <h2 class="颜色标题 rgba颜色标题">
+            <span class="颜色标题模式">RGBA</span>模式
+          </h2>
+          <div class="颜色值 rgba颜色值">
+            <span class="颜色分值 红值"></span>
+            <span class="颜色分值 绿值"></span>
+            <span class="颜色分值 蓝值"></span>
+            <span class="颜色分值 透明值"></span>
           </div>
         </div>
       </div>

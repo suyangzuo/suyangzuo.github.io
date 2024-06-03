@@ -20,6 +20,7 @@ let 已定义圆心_圆形 = false;
 let 已显示代码_圆形 = false;
 
 圆形半径滑块.addEventListener("input", () => {
+  圆形图.style.transition = "none";
   圆形半径 = 圆形半径滑块.value;
   root.style.setProperty("--圆形半径", `${圆形半径}%`);
   圆形半径数值.textContent = `${圆形半径}`;
@@ -35,6 +36,7 @@ let 已显示代码_圆形 = false;
 });
 
 圆形半径滑块.addEventListener("mouseup", () => {
+  圆形图.style.removeProperty("transition");
   if (已显示代码_圆形) {
     刷新代码格式化脚本();
   }
