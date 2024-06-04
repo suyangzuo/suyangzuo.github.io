@@ -6,8 +6,8 @@ const 颜色区 = document.getElementsByClassName("颜色区")[0];
 
 const 阴影包围框垂直偏移 =
   rootStyle.getPropertyValue("--当前阴影代码包围框垂直偏移");
-let 阴影包围框透明度 = rootStyle.getPropertyValue("--当前阴影代码包围框透明度");
-let 阴影包围框可见性 = rootStyle.getPropertyValue("--当前阴影代码包围框可见性");
+/*let 阴影包围框透明度 = rootStyle.getPropertyValue("--当前阴影代码包围框透明度");
+let 阴影包围框可见性 = rootStyle.getPropertyValue("--当前阴影代码包围框可见性");*/
 
 const 阴影内嵌复选框 = document.getElementById("shadow-inset");
 const 滑块组 = document.querySelectorAll('input[type="range"]');
@@ -46,7 +46,7 @@ for (let i = 0; i < 阴影属性组.length; i++) {
     绿: 0,
     蓝: 0,
     透明度: 1,
-    颜色: `rgba(${this.红},${this.绿},${this.蓝},${this.透明度})`,
+    颜色: `rgba(${this.红}, ${this.绿}, ${this.蓝}, ${this.透明度})`,
     完整代码: "",
   };
 }
@@ -61,7 +61,7 @@ function 清空阴影属性(阴影属性) {
   阴影属性.绿 = Math.floor(Math.random() * 256);
   阴影属性.蓝 = Math.floor(Math.random() * 256);
   阴影属性.透明度 = 1;
-  阴影属性.颜色 = `rgba(${阴影属性.红},${阴影属性.绿},${阴影属性.蓝},${阴影属性.透明度})`;
+  阴影属性.颜色 = `rgba(${阴影属性.红}, ${阴影属性.绿}, ${阴影属性.蓝}, ${阴影属性.透明度})`;
   阴影属性.完整代码 = "";
 }
 
@@ -120,6 +120,7 @@ function 点击增加阴影数量按钮(event) {
   });
   本体.style.boxShadow = `${有效代码组.join(",")}`;
   打印代码(有效代码组);
+  const 单个阴影代码组 = 代码区.querySelectorAll(".单个阴影代码");
 
   let 代码序号 = 已加入序号池.indexOf(当前阴影序号);
   if (阴影序号池.length === 10 || 代码序号 === -1) {
@@ -129,8 +130,13 @@ function 点击增加阴影数量按钮(event) {
   } else {
     root.style.setProperty(
       "--当前阴影代码包围框垂直偏移",
-      `calc(${阴影包围框垂直偏移} + ${代码行高度} * ${代码序号 + 1})`,
+      `${单个阴影代码组[代码序号].offsetTop + 1}px`,
     );
+
+    /*root.style.setProperty(
+      "--当前阴影代码包围框垂直偏移",
+      `calc(${阴影包围框垂直偏移} + ${代码行高度} * ${代码序号 + 1})`,
+    );*/
   }
 }
 
@@ -163,20 +169,24 @@ function 点击阴影项(event) {
 
   root.style.setProperty("--当前阴影代码包围框可见性", "visible");
   root.style.setProperty("--当前阴影代码包围框透明度", "100%");
-
   let 代码序号 = 已加入序号池.indexOf(当前阴影序号);
+  const 单个阴影代码组 = 代码区.querySelectorAll(".单个阴影代码");
   root.style.setProperty(
     "--当前阴影代码包围框垂直偏移",
-    `calc(${阴影包围框垂直偏移} + ${代码行高度} * ${代码序号 + 1})`,
+    `${单个阴影代码组[代码序号].offsetTop + 1}px`,
   );
+
+  /*root.style.setProperty(
+    "--当前阴影代码包围框垂直偏移",
+    `calc(${阴影包围框垂直偏移} + ${代码行高度} * ${代码序号 + 1})`,
+  );*/
 
   const 有效属性组 = 阴影属性组.filter((阴影属性) => 阴影属性.完整代码 !== "");
   const 有效代码组 = [];
   有效属性组.forEach((属性) => {
     有效代码组.push(属性.完整代码);
   });
-  const 实际代码 = `${有效代码组.join(",")}`;
-  本体.style.boxShadow = 实际代码;
+  本体.style.boxShadow = `${有效代码组.join(",")}`;
   setTimeout(() => {
     阴影属性.模糊半径 -= 20;
     阴影属性.扩散半径 -= 40;
@@ -189,8 +199,7 @@ function 点击阴影项(event) {
     有效属性组.forEach((属性) => {
       有效代码组.push(属性.完整代码);
     });
-    const 实际代码 = `${有效代码组.join(",")}`;
-    本体.style.boxShadow = 实际代码;
+    本体.style.boxShadow = `${有效代码组.join(",")}`;
     // 本体.style.transition = "none";
     所有阴影项.forEach((项) => {
       项.style.pointerEvents = "all";
@@ -221,9 +230,9 @@ function 点击删除阴影按钮(event) {
   有效属性组.forEach((属性) => {
     有效代码组.push(属性.完整代码);
   });
-  const 实际代码 = `${有效代码组.join(",")}`;
-  本体.style.boxShadow = 实际代码;
+  本体.style.boxShadow = `${有效代码组.join(",")}`;
   打印代码(有效代码组);
+  const 单个阴影代码组 = 代码区.querySelectorAll(".单个阴影代码");
 
   let 代码序号 = 已加入序号池.indexOf(当前阴影序号);
   if (阴影序号池.length === 10 || 代码序号 === -1) {
@@ -235,8 +244,13 @@ function 点击删除阴影按钮(event) {
   } else {
     root.style.setProperty(
       "--当前阴影代码包围框垂直偏移",
-      `calc(${阴影包围框垂直偏移} + ${代码行高度} * ${代码序号 + 1})`,
+      `${单个阴影代码组[代码序号].offsetTop + 1}px`,
     );
+
+    /*root.style.setProperty(
+      "--当前阴影代码包围框垂直偏移",
+      `calc(${阴影包围框垂直偏移} + ${代码行高度} * ${代码序号 + 1})`,
+    );*/
   }
 }
 
@@ -256,7 +270,7 @@ y轴偏移.addEventListener("input", 修改滑块比率);
 function 修改滑块比率(event) {
   本体.style.transition = "none";
   let 滑块 = event.currentTarget;
-  let value = parseInt(滑块.value, 10);
+  /*let value = parseInt(滑块.value, 10);
   let max = parseInt(滑块.max, 10);
   let min = parseInt(滑块.min, 10);
   let id = 滑块.id;
@@ -265,7 +279,8 @@ function 修改滑块比率(event) {
   }%`;
   root.style.setProperty(`--${id}比率`, 比率);
 
-  调整滑块位置(滑块);
+  调整滑块位置(滑块);*/
+  非操作性修改滑块比率(滑块);
   根据参数调整对应阴影效果(当前阴影序号);
 
   const 有效属性组 = 阴影属性组.filter((阴影属性) => 阴影属性.完整代码 !== "");
@@ -329,8 +344,7 @@ function 根据参数调整对应阴影效果(序号) {
   有效属性组.forEach((属性) => {
     有效代码组.push(属性.完整代码);
   });
-  const 实际代码 = `${有效代码组.join(",")}`;
-  本体.style.boxShadow = 实际代码;
+  本体.style.boxShadow = `${有效代码组.join(",")}`;
 }
 
 const 加减按钮组 = document.getElementsByClassName("阴影属性按钮");
@@ -369,7 +383,6 @@ function 点击增加或减少按钮(event) {
   打印代码(有效代码组);
 }
 
-// 阴影内嵌复选框.addEventListener("click", 点击阴影内嵌复选框);
 阴影内嵌复选框.addEventListener("click", 点击阴影内嵌复选框);
 
 function 点击阴影内嵌复选框(event) {
@@ -425,7 +438,7 @@ function 修改颜色() {
   阴影属性.红 = red;
   阴影属性.绿 = green;
   阴影属性.蓝 = blue;
-  阴影属性.颜色 = `rgba(${阴影属性.红},${阴影属性.绿},${阴影属性.蓝},${阴影属性.透明度})`;
+  阴影属性.颜色 = `rgba(${阴影属性.红}, ${阴影属性.绿}, ${阴影属性.蓝}, ${阴影属性.透明度})`;
 
   阴影属性.完整代码 = `${阴影属性.内嵌} ${阴影属性.x轴偏移}px ${阴影属性.y轴偏移}px ${阴影属性.模糊半径}px ${阴影属性.扩散半径}px ${阴影属性.颜色}`;
 
@@ -438,8 +451,7 @@ function 修改颜色() {
   有效属性组.forEach((属性) => {
     有效代码组.push(属性.完整代码);
   });
-  const 实际代码 = `${有效代码组.join(",")}`;
-  本体.style.boxShadow = 实际代码;
+  本体.style.boxShadow = `${有效代码组.join(",")}`;
   打印代码(有效代码组);
 }
 
@@ -450,21 +462,31 @@ function 获取16进制颜色(阴影属性) {
   const 红_hex = 红_dec.toString(16).padStart(2, "0");
   const 绿_hex = 绿_dec.toString(16).padStart(2, "0");
   const 蓝_hex = 蓝_dec.toString(16).padStart(2, "0");
-  const 颜色 = `#${红_hex}${绿_hex}${蓝_hex}`;
-  颜色选择器.value = 颜色;
+  颜色选择器.value = `#${红_hex}${绿_hex}${蓝_hex}`;
   红值.textContent = 阴影属性.红;
   绿值.textContent = 阴影属性.绿;
   蓝值.textContent = 阴影属性.蓝;
 }
 
 function 打印代码(有效代码组) {
-  if (阴影序号池.length === 10) {
+  /*if (阴影序号池.length === 10) {
     代码文本元素.textContent = "";
     return;
   }
   let 分行代码 = 有效代码组.join(",\n");
-  const 最终代码 = `box-shadow:\n${分行代码};`;
-  代码文本元素.textContent = 最终代码;
+  代码文本元素.textContent = `box-shadow:\n${分行代码};`;*/
+  if (有效代码组.length === 0) return;
+  代码文本元素.textContent = "";
+  const 代码属性元素 = document.createElement("span");
+  代码属性元素.className = "阴影代码抬头";
+  代码属性元素.textContent = "box-shadow:";
+  代码文本元素.appendChild(代码属性元素);
+  for (const 有效代码 of 有效代码组) {
+    const 代码元素 = document.createElement("span");
+    代码元素.className = "单个阴影代码";
+    代码元素.textContent = 有效代码;
+    代码文本元素.appendChild(代码元素);
+  }
 }
 
 window.addEventListener("load", () => {
@@ -490,7 +512,7 @@ function 重置参数(event) {
       绿: 0,
       蓝: 0,
       透明度: 1,
-      颜色: `rgba(${this.红},${this.绿},${this.蓝},${this.透明度})`,
+      颜色: `rgba(${this.红}, ${this.绿}, ${this.蓝}, ${this.透明度})`,
       完整代码: "",
     };
   }
