@@ -80,6 +80,11 @@ input[type="text"]:focus {
   box-shadow: inset 0 0 2px 1px black !important;
 }
 
+.clr-dark input.clr-color {
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 1rem;
+}
+
 .颜色区 {
   width: 420px;
   display: flex;

@@ -48,6 +48,14 @@ const 逗号组 = 控制区.querySelectorAll(".逗号");
 const hex前缀组 = 控制区.querySelectorAll(".hex前缀");
 const rgba前缀组 = 控制区.querySelectorAll(".rgba前缀");
 const rgb前缀组 = 控制区.querySelectorAll(".rgb前缀");
+const 符号组阵列 = [
+  前括号组,
+  后括号组,
+  逗号组,
+  hex前缀组,
+  rgba前缀组,
+  rgb前缀组,
+];
 
 清空颜色代码符号();
 
@@ -100,7 +108,7 @@ document.addEventListener("coloris:pick", (event) => {
 });
 
 function 更新当前颜色(event) {
-  当前hex颜色 = chroma(event.detail.color).hex();
+  当前hex颜色 = event.detail.color;
   当前rgba颜色 = chroma(当前hex颜色).css();
 }
 
@@ -153,23 +161,10 @@ function hex无透明可简写() {
 }
 
 function 清空颜色代码符号() {
-  for (const 前括号 of 前括号组) {
-    前括号.textContent = "";
-  }
-  for (const 后括号 of 后括号组) {
-    后括号.textContent = "";
-  }
-  for (const 逗号 of 逗号组) {
-    逗号.textContent = "";
-  }
-  for (const hex前缀 of hex前缀组) {
-    hex前缀.textContent = "";
-  }
-  for (const rgba前缀 of rgba前缀组) {
-    rgba前缀.textContent = "";
-  }
-  for (const rgb前缀 of rgb前缀组) {
-    rgb前缀.textContent = "";
+  for (const 符号组 of 符号组阵列) {
+    for (const 符号 of 符号组) {
+      符号.textContent = "";
+    }
   }
 }
 
