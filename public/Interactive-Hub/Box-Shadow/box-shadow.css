@@ -36,7 +36,7 @@
 }
 
 .主区域 {
-  width: 1500px;
+  width: min(1600px, 95%);
   height: 800px;
   display: flex;
   justify-content: center;
@@ -58,7 +58,7 @@
 }
 
 .控制与代码区 {
-  width: 40%;
+  width: 35%;
   height: 100%;
   display: flex;
   flex-direction: column;
