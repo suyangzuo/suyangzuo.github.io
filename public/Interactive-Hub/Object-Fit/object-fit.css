@@ -19,12 +19,14 @@
 }
 
 .对象匹配-图像区 > img {
-  transition: opacity 0.25s;
   opacity: 0.75;
   pointer-events: none;
   position: relative;
   z-index: -1;
-  transition: width 0.5s, height 0.5s;
+  transition:
+    width 0.5s,
+    height 0.5s,
+    opacity 0.25s;
 }
 
 .选项区 {
@@ -46,7 +48,7 @@
 }
 
 .图像选项 {
-  height: 330px;
+  height: 350px;
 }
 
 .图像-控件组 {
@@ -54,7 +56,6 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  /* gap: 10px; */
 }
 
 .图像-控件组 > div {
@@ -103,7 +104,7 @@
 
 .属性代码 {
   font-size: 0.8rem;
-  font-family: consolas;
+  font-family: "JetBrains Mono", Consolas, monospace;
 }
 
 .控件类型操作区 {
@@ -120,7 +121,7 @@
 }
 
 .代码 {
-  font-family: consolas;
+  font-family: "JetBrains Mono", Consolas, monospace;
 }
 
 .控件子组 label:hover,
@@ -250,7 +251,9 @@ input[type="range"]::-moz-range-thumb {
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
-  cursor: url(/Images/Common/鼠标-横向缩放.png) 16 6, ew-resize;
+  cursor:
+    url(/Images/Common/鼠标-横向缩放.png) 16 6,
+    ew-resize;
 }
 
 input[type="range"]::after {

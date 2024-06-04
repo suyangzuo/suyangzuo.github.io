@@ -102,8 +102,7 @@ label[for="bg-size"] {
 
 .属性代码 {
   font-size: 1rem;
-  font-family: consolas, monospace;
-  /* color: rgb(211, 211, 211); */
+  font-family: "JetBrains Mono", Consolas, monospace;
   color: goldenrod;
 }
 
@@ -197,7 +196,7 @@ label[for="bg-size"] {
 }
 
 .值代码 {
-  font-family: consolas, monospace;
+  font-family: "JetBrains Mono", Consolas, monospace;
   font-size: 0.9rem;
   color: rgb(190, 107, 39);
 }

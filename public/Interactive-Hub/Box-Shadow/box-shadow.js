@@ -4,7 +4,7 @@ const rootStyle = window.getComputedStyle(root);
 const 控制区 = document.getElementsByClassName("控制区")[0];
 const 颜色区 = document.getElementsByClassName("颜色区")[0];
 
-let 阴影包围框垂直偏移 =
+const 阴影包围框垂直偏移 =
   rootStyle.getPropertyValue("--当前阴影代码包围框垂直偏移");
 let 阴影包围框透明度 = rootStyle.getPropertyValue("--当前阴影代码包围框透明度");
 let 阴影包围框可见性 = rootStyle.getPropertyValue("--当前阴影代码包围框可见性");
@@ -32,7 +32,7 @@ const 蓝值 = document.getElementsByClassName("蓝值")[0];
 
 const 代码区 = document.getElementsByClassName("代码区")[0];
 const 代码文本元素 = 代码区.getElementsByClassName("代码文本")[0];
-const 代码行高度 = "18.7333333px";
+const 代码行高度 = `${227 / 11}px`;
 
 const 阴影属性组 = new Array(阴影序号池.length);
 for (let i = 0; i < 阴影属性组.length; i++) {
@@ -118,8 +118,7 @@ function 点击增加阴影数量按钮(event) {
   有效属性组.forEach((属性) => {
     有效代码组.push(属性.完整代码);
   });
-  const 实际代码 = `${有效代码组.join(",")}`;
-  本体.style.boxShadow = 实际代码;
+  本体.style.boxShadow = `${有效代码组.join(",")}`;
   打印代码(有效代码组);
 
   let 代码序号 = 已加入序号池.indexOf(当前阴影序号);
@@ -130,7 +129,7 @@ function 点击增加阴影数量按钮(event) {
   } else {
     root.style.setProperty(
       "--当前阴影代码包围框垂直偏移",
-      `calc(${阴影包围框垂直偏移} + ${代码行高度} * ${代码序号 + 1})`
+      `calc(${阴影包围框垂直偏移} + ${代码行高度} * ${代码序号 + 1})`,
     );
   }
 }
@@ -168,7 +167,7 @@ function 点击阴影项(event) {
   let 代码序号 = 已加入序号池.indexOf(当前阴影序号);
   root.style.setProperty(
     "--当前阴影代码包围框垂直偏移",
-    `calc(${阴影包围框垂直偏移} + ${代码行高度} * ${代码序号 + 1})`
+    `calc(${阴影包围框垂直偏移} + ${代码行高度} * ${代码序号 + 1})`,
   );
 
   const 有效属性组 = 阴影属性组.filter((阴影属性) => 阴影属性.完整代码 !== "");
@@ -184,7 +183,7 @@ function 点击阴影项(event) {
     阴影属性.完整代码 = `${阴影属性.内嵌} ${阴影属性.x轴偏移}px ${阴影属性.y轴偏移}px ${阴影属性.模糊半径}px ${阴影属性.扩散半径}px ${阴影属性.颜色}`;
 
     const 有效属性组 = 阴影属性组.filter(
-      (阴影属性) => 阴影属性.完整代码 !== ""
+      (阴影属性) => 阴影属性.完整代码 !== "",
     );
     const 有效代码组 = [];
     有效属性组.forEach((属性) => {
@@ -236,7 +235,7 @@ function 点击删除阴影按钮(event) {
   } else {
     root.style.setProperty(
       "--当前阴影代码包围框垂直偏移",
-      `calc(${阴影包围框垂直偏移} + ${代码行高度} * ${代码序号 + 1})`
+      `calc(${阴影包围框垂直偏移} + ${代码行高度} * ${代码序号 + 1})`,
     );
   }
 }
@@ -299,7 +298,7 @@ function 调整滑块位置(滑块) {
   const 修正值 = Number(((当前值 - 修正min) * 100) / (修正max - 修正min));
   root.style.setProperty(
     `--${id}${补充名称}`,
-    `calc(${修正值}% + (${8 - 修正值 * 0.15}px))`
+    `calc(${修正值}% + (${8 - 修正值 * 0.15}px))`,
   );
   滑块.setAttribute(`${id}值`, 当前值);
 
@@ -536,7 +535,7 @@ function 重置参数(event) {
     const 修正值 = Number(((当前值 - 修正min) * 100) / (修正max - 修正min));
     root.style.setProperty(
       `--${id}${补充名称}`,
-      `calc(${修正值}% + (${8 - 修正值 * 0.15}px))`
+      `calc(${修正值}% + (${8 - 修正值 * 0.15}px))`,
     );
     滑块.setAttribute(`${id}值`, 当前值);
   });

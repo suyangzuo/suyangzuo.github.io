@@ -41,7 +41,7 @@
 .弹性-操作区 {
   position: relative;
   z-index: 1;
-  width: 500px;
+  width: 520px;
   /* height: 800px; */
   outline: solid 1px gray;
 }
@@ -66,10 +66,13 @@
   font-size: 1.25rem;
 }
 
+[class*="代码"] {
+  font-family: "JetBrains Mono", Consolas, monospace;
+}
+
 .标题代码 {
   color: rgb(207, 128, 97);
   font-size: 1rem;
-  font-family: consolas;
 }
 
 .布局区 {
@@ -131,7 +134,6 @@
 .代码 {
   font-size: 0.85rem;
   color: goldenrod;
-  font-family: consolas;
 }
 
 label:hover,
