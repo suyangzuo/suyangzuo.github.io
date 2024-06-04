@@ -81,21 +81,21 @@ document.addEventListener("coloris:pick", (event) => {
     蓝_rgb.textContent = 蓝对象.rgba;
   }
 
-  if (hex可以简写) {
+  if (hex可以简写 || hex无透明可以简写) {
     红_hex简写.textContent = 红对象.hex[0];
     绿_hex简写.textContent = 绿对象.hex[0];
     蓝_hex简写.textContent = 蓝对象.hex[0];
     透明度_hex简写.textContent = 透明度对象.hex[0];
-
-    if (hex无透明可以简写) {
-      红_hex简写无透明.textContent = 红对象.hex[0];
-      绿_hex简写无透明.textContent = 绿对象.hex[0];
-      蓝_hex简写无透明.textContent = 蓝对象.hex[0];
-    } else {
-      清空hex简写无透明代码符号();
-    }
   } else {
     清空hex简写代码符号();
+  }
+
+  if (hex无透明可以简写) {
+    红_hex简写无透明.textContent = 红对象.hex[0];
+    绿_hex简写无透明.textContent = 绿对象.hex[0];
+    蓝_hex简写无透明.textContent = 蓝对象.hex[0];
+  } else {
+    清空hex简写无透明代码符号();
   }
 });
 
@@ -137,12 +137,10 @@ function hex可简写() {
     当前hex颜色[1] === 当前hex颜色[2] &&
     当前hex颜色[3] === 当前hex颜色[4] &&
     当前hex颜色[5] === 当前hex颜色[6];
-  if (当前hex颜色.length !== 7) {
-    return 红绿蓝可简写;
-  } else {
-    const 透明度可简写 = 当前hex颜色[7] === 当前hex颜色[8];
-    return 红绿蓝可简写 && 透明度可简写;
-  }
+
+  const 透明度可简写 =
+    当前hex颜色.length === 7 || 当前hex颜色[7] === 当前hex颜色[8];
+  return 红绿蓝可简写 && 透明度可简写;
 }
 
 function hex无透明可简写() {
@@ -150,7 +148,7 @@ function hex无透明可简写() {
     当前hex颜色[1] === 当前hex颜色[2] &&
     当前hex颜色[3] === 当前hex颜色[4] &&
     当前hex颜色[5] === 当前hex颜色[6] &&
-    获取透明度().hex === "ff"
+    当前hex颜色.length === 7
   );
 }
 
