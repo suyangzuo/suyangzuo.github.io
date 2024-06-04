@@ -120,7 +120,8 @@ input[type="text"]:focus {
   width: fit-content;
 }
 
-.hex颜色值 > .颜色分值 {
+:where(.hex颜色值, .hex无透明颜色值, .hex简写颜色值, .hex简写无透明颜色值)
+  .颜色分值 {
   margin: 0 1px;
 }
 
@@ -146,9 +147,9 @@ input[type="text"]:focus {
 }
 
 .无透明度 {
-  color: #6e869f;
+  color: #a0bfdf;
 }
 
 .简写 {
-  color: #5f9b9b;
+  color: #7dc9c9;
 }
