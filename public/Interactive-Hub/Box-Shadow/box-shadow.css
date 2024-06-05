@@ -7,7 +7,7 @@
     #ffc600 100%
   );
   --拇指渐变背景: linear-gradient(to right, #eaeaea, #dbdbdb, #c4c0ac);
-  --拇指宽度: 16px;
+  --拇指宽度: 18px;
   --范围滑块宽度: 250px;
   --x轴偏移比率: 50%;
   --y轴偏移比率: 50%;
@@ -448,11 +448,12 @@
   border-radius: 50px;
   color: black;
   content: "";
-  top: -110%;
+  top: -135%;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 0.75rem;
+  font-family: "JetBrains Mono", Consolas, monospace;
 }
 
 #x轴偏移::after {

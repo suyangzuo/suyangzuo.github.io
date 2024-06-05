@@ -36,6 +36,11 @@
   height: 600px;
   position: relative;
   outline: solid 2px white;
+  transition: 500ms;
+}
+
+.弹性元素 {
+  transition: 500ms;
 }
 
 .弹性-操作区 {
@@ -274,6 +279,10 @@ label[for="flex-wrap"] {
 .列间隙按钮区 datalist {
   transform: translateY(80%);
   width: 100%;
+}
+
+option {
+  font-family: "JetBrains Mono", Consolas, monospace;
 }
 
 .行间隙按钮区 datalist option,

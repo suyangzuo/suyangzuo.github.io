@@ -370,6 +370,7 @@ input[type="range"] {
   align-items: center;
   gap: 3px;
   font-size: 0.85rem;
+  font-family: "JetBrains Mono", Consolas, monospace;
 }
 
 .值-数字 {
