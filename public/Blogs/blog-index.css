@@ -630,7 +630,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   left: 50%;
   translate: -50% -50%;
   border-radius: 10px;
-  background-color: #fff1;
+  background-color: #111a2060;
   box-shadow: 10px 10px 30px 0 #000a;
   backdrop-filter: blur(20px);
   border: none;
@@ -639,7 +639,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
 }
 
 .技术栈对话框::backdrop {
-  backdrop-filter: brightness(35%);
+  backdrop-filter: brightness(25%);
 }
 
 .关闭技术栈对话框 {
