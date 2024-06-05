@@ -641,3 +641,41 @@ label {
   );
   user-select: none;
 }
+
+@media screen and (height < 1000px) {
+  .操作分区中文标题 {
+    font-size: 18px;
+  }
+
+  .操作分区英文标题 {
+    font-size: 13px;
+  }
+
+  .代码按钮 {
+    width: 22px;
+    height: 22px;
+  }
+
+  .滑块 {
+    height: 6px;
+  }
+
+  .滑块::-webkit-slider-thumb {
+    width: 18px;
+    height: 18px;
+  }
+
+  .滑块标题,
+  .滑块数据 {
+    font-size: 0.75rem;
+  }
+
+  .操作选项按钮 {
+    width: 25px;
+    height: 25px;
+  }
+
+  .操作分区 .重置按钮 {
+    height: 30px;
+  }
+}
