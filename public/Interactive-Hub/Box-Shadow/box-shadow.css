@@ -37,7 +37,7 @@
 
 .主区域 {
   width: min(1600px, 95%);
-  height: 800px;
+  height: clamp(725px, 95%, 900px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -58,7 +58,7 @@
 }
 
 .控制与代码区 {
-  width: 35%;
+  width: 512px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -81,9 +81,9 @@
 
 .增加阴影数量按钮 {
   font-size: 0.9rem;
-  padding: 5px 10px;
+  padding: 8px 10px;
   border-radius: 100px;
-  background-color: rgb(93, 192, 119);
+  background-color: silver;
   color: black;
   border: none;
   transition: 50ms;
@@ -92,7 +92,7 @@
 }
 
 .增加阴影数量按钮[已屏蔽] {
-  filter: brightness(50%);
+  filter: brightness(33%);
   pointer-events: none;
 }
 
@@ -103,7 +103,7 @@
 }
 
 .增加阴影数量按钮:active {
-  filter: brightness(85%);
+  filter: brightness(125%);
 }
 
 .阴影列表 {
@@ -119,11 +119,15 @@
 .阴影项 {
   position: relative;
   width: 90%;
-  height: 30px;
+  height: 40px;
   border-radius: 3px;
   font-size: 0.9rem;
-  background: linear-gradient(to right, #7f93aa, #9ab5d2);
-  color: black;
+  background-color: #ffffff30;
+  /*background: linear-gradient(to right, #7f93aa, #9ab5d2);*/
+  color: white;
+  box-shadow:
+    1px 1px 2px 0 #0007,
+    inset 0 0 5px 1px #fff7;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -131,17 +135,24 @@
   padding-left: 10%;
   -webkit-user-select: none;
   user-select: none;
+  transition: 125ms;
 }
 
 .阴影项[已选中] {
-  background: linear-gradient(315deg, #4369bd 0%, #3375cb 74%) !important;
+  /*background: linear-gradient(315deg, #4369bd 0%, #3375cb 74%) !important;*/
+  background-color: #1f578f !important;
   color: white !important;
+  box-shadow:
+    1px 1px 2px 0 #0007,
+    inset 0 0 1px 1px #fffc;
 }
 
 .阴影项:hover {
-  background: linear-gradient(to right, #36424e, #4f5d6c);
-
-  color: white;
+  background-color: #0005;
+  box-shadow:
+    1px 1px 2px 0 #0007,
+    inset 0 0 1px 1px #fffc;
+  /*background: linear-gradient(to right, #36424e, #4f5d6c);*/
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
@@ -149,7 +160,7 @@
   width: 13px;
   height: 13px;
   border-radius: 13px;
-  outline: solid 1px #333;
+  box-shadow: 1px 1px 1px 0 #0006;
 }
 
 .阴影序号 {
@@ -170,10 +181,11 @@
   right: 5%;
   height: 100%;
   font-size: 1.5rem;
-  line-height: 1.125;
+  /*line-height: 1.125;*/
   vertical-align: middle;
   color: rgb(168, 168, 168);
-  transform: scale(0);
+  pointer-events: none;
+  opacity: 0;
   transition: transform 125ms;
 }
 
@@ -183,7 +195,8 @@
 }
 
 .阴影项:hover .删除阴影按钮 {
-  transform: scale(1);
+  pointer-events: all;
+  opacity: 1;
 }
 
 .展示区 {
@@ -532,11 +545,11 @@
 .代码区 {
   position: relative;
   width: 100%;
-  height: 290px;
+  height: 268px;
   z-index: 1;
   font-family: "JetBrains Mono", Consolas, monospace;
   padding: 20px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   white-space: pre-line;
   display: flex;
   justify-content: center;
@@ -566,4 +579,20 @@
 .单个阴影代码 {
   padding: 1px 0;
   text-wrap: nowrap;
+}
+
+.红代码 {
+  color: rosybrown;
+}
+
+.绿代码 {
+  color: darkseagreen;
+}
+
+.蓝代码 {
+  color: lightskyblue;
+}
+
+.透明度代码 {
+  color: silver;
 }

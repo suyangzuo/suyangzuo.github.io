@@ -6,8 +6,6 @@ const 颜色区 = document.getElementsByClassName("颜色区")[0];
 
 const 阴影包围框垂直偏移 =
   rootStyle.getPropertyValue("--当前阴影代码包围框垂直偏移");
-/*let 阴影包围框透明度 = rootStyle.getPropertyValue("--当前阴影代码包围框透明度");
-let 阴影包围框可见性 = rootStyle.getPropertyValue("--当前阴影代码包围框可见性");*/
 
 const 阴影内嵌复选框 = document.getElementById("shadow-inset");
 const 滑块组 = document.querySelectorAll('input[type="range"]');
@@ -32,7 +30,6 @@ const 蓝值 = document.getElementsByClassName("蓝值")[0];
 
 const 代码区 = document.getElementsByClassName("代码区")[0];
 const 代码文本元素 = 代码区.getElementsByClassName("代码文本")[0];
-const 代码行高度 = `${227 / 11}px`;
 
 const 阴影属性组 = new Array(阴影序号池.length);
 for (let i = 0; i < 阴影属性组.length; i++) {
@@ -113,13 +110,7 @@ function 点击增加阴影数量按钮(event) {
 
   初始化阴影属性(阴影属性组[序号 - 1]);
   阴影颜色标记.style.backgroundColor = 阴影属性组[序号 - 1].颜色;
-  const 有效属性组 = 阴影属性组.filter((阴影属性) => 阴影属性.完整代码 !== "");
-  const 有效代码组 = [];
-  有效属性组.forEach((属性) => {
-    有效代码组.push(属性.完整代码);
-  });
-  本体.style.boxShadow = `${有效代码组.join(",")}`;
-  打印代码(有效代码组);
+  更新阴影和代码();
   const 单个阴影代码组 = 代码区.querySelectorAll(".单个阴影代码");
 
   let 代码序号 = 已加入序号池.indexOf(当前阴影序号);
@@ -138,6 +129,16 @@ function 点击增加阴影数量按钮(event) {
       `calc(${阴影包围框垂直偏移} + ${代码行高度} * ${代码序号 + 1})`,
     );*/
   }
+}
+
+function 更新阴影和代码() {
+  const 有效属性组 = 阴影属性组.filter((阴影属性) => 阴影属性.完整代码 !== "");
+  const 有效代码组 = [];
+  有效属性组.forEach((属性) => {
+    有效代码组.push(属性.完整代码);
+  });
+  本体.style.boxShadow = `${有效代码组.join(",")}`;
+  打印代码(有效代码组);
 }
 
 let 之前选中阴影项 = null;
@@ -225,13 +226,7 @@ function 点击删除阴影按钮(event) {
   }
   阴影项.remove();
   清空阴影属性(阴影属性组[序号 - 1]);
-  const 有效属性组 = 阴影属性组.filter((阴影属性) => 阴影属性.完整代码 !== "");
-  const 有效代码组 = [];
-  有效属性组.forEach((属性) => {
-    有效代码组.push(属性.完整代码);
-  });
-  本体.style.boxShadow = `${有效代码组.join(",")}`;
-  打印代码(有效代码组);
+  更新阴影和代码();
   const 单个阴影代码组 = 代码区.querySelectorAll(".单个阴影代码");
 
   let 代码序号 = 已加入序号池.indexOf(当前阴影序号);
@@ -240,7 +235,7 @@ function 点击删除阴影按钮(event) {
     颜色区.setAttribute("已屏蔽", "");
     root.style.setProperty("--当前阴影代码包围框可见性", "hidden");
     root.style.setProperty("--当前阴影代码包围框透明度", "0%");
-    root.style.setProperty("--当前阴影代码包围框垂直偏移", 阴影包围框垂直偏移);
+    // root.style.setProperty("--当前阴影代码包围框垂直偏移", 阴影包围框垂直偏移);
   } else {
     root.style.setProperty(
       "--当前阴影代码包围框垂直偏移",
@@ -475,7 +470,10 @@ function 打印代码(有效代码组) {
   }
   let 分行代码 = 有效代码组.join(",\n");
   代码文本元素.textContent = `box-shadow:\n${分行代码};`;*/
-  if (有效代码组.length === 0) return;
+  if (有效代码组.length === 0) {
+    代码文本元素.innerHTML = "";
+    return;
+  }
   代码文本元素.textContent = "";
   const 代码属性元素 = document.createElement("span");
   代码属性元素.className = "阴影代码抬头";

@@ -112,7 +112,6 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 1;
   appearance: none;
   background-color: transparent;
   cursor: url("/Images/Common/鼠标-默认.cur"), auto;
