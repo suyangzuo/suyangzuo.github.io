@@ -703,6 +703,11 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   border-radius: 5px;
 }
 
+.技术栈内容 .空技术栈 {
+  filter: brightness(25%);
+  pointer-events: none;
+}
+
 .经验之谈 {
   grid-area: 1 / 1 / 3 / 3;
 }
