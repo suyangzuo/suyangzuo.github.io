@@ -102,15 +102,14 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  gap: 100px;
   height: 100%;
 }
 
 .交互页 {
   width: 1500px;
   height: fit-content;
-  /* outline: solid 1px brown; */
   padding: 30px;
-  margin-bottom: 100px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
