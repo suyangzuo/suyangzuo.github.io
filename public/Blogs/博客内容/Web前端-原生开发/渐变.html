@@ -85,4 +85,219 @@
     </li>
   </ul>
 </article>
-<div class="专题正文区"></div>
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">渐变的类型</h2>
+
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p>
+        如果你熟悉<span class="专业名词">Photoshop</span
+        >，完全可以把渐变的代码想象成<span class="行内专业名词">Photoshop</span
+        >渐变编辑器中的滑块，代码与滑块的本质是完全一样的，这可以更加方便地帮助你理解渐变。
+      </p>
+      <p>
+        从<span class="行内专业名词">Photoshop 2023</span>开始，<span
+          class="行内专业名词"
+          >Adobe</span
+        >提供了全新的渐变工具，能够实现更加直观、实时的渐变编辑。而原来的渐变编辑器变成了<span
+          class="行内专业名词"
+          >经典渐变</span
+        >。
+      </p>
+      <figure class="截图容器">
+        <img
+          src="/Images/Blogs/Web前端-原生开发/渐变/Photoshop-渐变类型.png"
+          alt="Photoshop 渐变类型"
+        />
+      </figure>
+      <p class="分区普通文本">
+        本博客后续的内容中，绝大多数情况下我会使用<span class="行内专业名词"
+          >经典渐变</span
+        >编辑器的截图，毕竟大家最熟悉这个。
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">线性渐变</h3>
+    <p class="分区普通文本">
+      线性渐变是最常用的渐变，所谓<span class="行内专业名词">线性</span
+      >，代表颜色变化的方向是<span class="行内专业名词">一条直线</span>。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      径向渐变<span class="附加说明">放射渐变</span>
+    </h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词">径向</span>代表颜色变化的方向是<span
+        class="行内专业名词"
+        >从中心点向四周扩散</span
+      >。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      角度渐变<span class="附加说明">圆锥渐变</span>
+    </h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词">角度</span>代表颜色变化的方向是<span
+        class="行内专业名词"
+        >环绕着中心点旋转</span
+      >。
+    </p>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">线性渐变</h2>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">Photoshop</span>线性渐变
+    </h3>
+    <p class="分区普通文本">
+      让我们以一个<span class="分区普通文本">由黑到白</span>的渐变作为案例：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/渐变/Photoshop-线性渐变.png"
+        alt="Photoshop 黑白线性渐变"
+      />
+    </figure>
+    <p class="分区普通文本">
+      这是从<span class="行内专业名词">Photoshop</span>开始提供的新渐变工具。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/渐变/Photoshop-线性渐变-经典.png"
+        alt="Photoshop 黑白线性渐变-经典"
+      />
+    </figure>
+    <p class="分区普通文本">这是我们熟悉的经典渐变编辑器。</p>
+    <p class="分区普通文本">
+      无论是哪种渐变工具，它的本质都是一样的。如同我们在两张图中所见，滑块的两侧分别提供了一个色标，但很多人对这个色标代表着什么解释得不准确。
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="强调">错误理解</span>：<span class="行内专业名词"
+          >左侧</span
+        >的色标代表<span class="行内专业名词">黑色</span>的位置，<span
+          class="行内专业名词"
+          >右侧</span
+        >的色标代表<span class="行内专业名词">白色</span>的位置
+      </li>
+      <li class="分区列表项">
+        <span class="强调">正确理解</span>：<span class="行内专业名词"
+          >左侧</span
+        >的色标代表<span class="行内专业名词"
+          >从黑到白<span class="专业名词">变化的起点</span></span
+        >，<span class="行内专业名词">右侧</span>的色标代表<span
+          class="行内专业名词"
+          >从黑到白<span class="专业名词">变化的终点</span></span
+        >
+      </li>
+    </ul>
+    <p class="分区普通文本">让我们用一个稍微复杂一点的渐变再解释一遍：</p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/渐变/Photoshop-三色线性渐变-经典.png"
+        alt="Photoshop 三色线性渐变-经典"
+      />
+    </figure>
+    <p class="分区普通文本">
+      这次的渐变拥有三个色标，而且左右两侧的色标并不在最顶端。
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="强调">错误理解</span>：<span class="行内专业名词"
+          >绿色</span
+        >色标代表<span class="行内专业名词">绿色</span>的位置，<span
+          class="行内专业名词"
+          >蓝色</span
+        >色标代表<span class="行内专业名词">蓝色</span>的位置，<span
+          class="行内专业名词"
+          >紫色</span
+        >色标代表<span class="行内专业名词">紫色</span>的位置
+      </li>
+      <li class="分区列表项">
+        <span class="强调">正确理解</span>：
+        <ul class="分区列表">
+          <li class="分区列表项">
+            <span class="行内专业名词">绿色</span>色标代表<span
+              class="行内专业名词"
+              >从绿到蓝<span class="专业名词">变化的起点</span></span
+            >；
+          </li>
+          <li class="分区列表项">
+            <span class="行内专业名词">蓝色</span>色标代表<span
+              class="行内专业名词"
+              >从绿到蓝<span class="专业名词">变化的终点</span></span
+            >，同时也是<span class="行内专业名词"
+              >从蓝到紫<span class="专业名词">变化的起点</span></span
+            >
+          </li>
+          <li class="分区列表项">
+            <span class="行内专业名词">紫色</span>色标代表<span
+              class="行内专业名词"
+              >从蓝到紫<span class="专业名词">变化的终点</span></span
+            >；
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <section class="提醒">
+      <h3 class="提醒标题">渐变色标的核心本质</h3>
+      <p class="分区普通文本">
+        色标<span class="强调">是</span
+        ><span class="行内专业名词"
+          >颜色<span class="强调">变化</span>的起点或终点</span
+        >，<span class="强调">不是</span
+        ><span class="行内专业名词">颜色的起点或终点</span>。
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">
+      线性渐变<span class="行内代码">CSS</span>代码
+    </h3>
+    <p class="分区普通文本">让我们用一个简单的黑上白下的渐变作为案例：</p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/渐变/Photoshop-黑白垂直-经典渐变.png"
+        alt="PPhotoshop-黑白垂直-经典渐变"
+      />
+    </figure>
+    <p class="分区普通文本">
+      黑色标的起点几乎位于最顶端，可以将其位置设置为<span class="行内代码"
+        >0%</span
+      >；白色标的位置几乎位于最底端，可以设置其位置为<span class="行内代码"
+        >100%</span
+      >，于是背景渐变的<span class="行内代码">CSS</span>代码是：
+    </p>
+    <pre>
+      <code class="lang-css">
+        /* 渐变不能设置在 background-color 中，必须使用 background-image */
+        /* background-image: linear-gradient(颜色 色标位置, 颜色 色标位置); */
+        background-image: linear-gradient(black 0%, white 100%);
+      </code>
+    </pre>
+    <p class="分区普通文本">代码得到的效果如下：</p>
+    <div
+      class="渐变测试容器"
+      style="
+        width: 100%;
+        height: 316px;
+        background-image: linear-gradient(black 0%, white 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #18386a;
+        font-size: 2rem;
+      "
+    >
+      我是代码，不是图片
+    </div>
+    <p class="分区普通文本">
+      看一看，代码得到的效果是不是和<span class="行内专业名词">Photoshop</span
+      >的效果一致呢？因此，写线性渐变的代码，最佳的理解方式就是想象成<span
+        class="行内专业名词"
+        >Photoshop</span
+      >中的渐变编辑器。
+    </p>
+  </article>
+</div>

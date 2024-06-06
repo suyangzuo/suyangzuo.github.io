@@ -704,7 +704,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
 }
 
 .技术栈内容 .空技术栈 {
-  filter: brightness(25%);
+  filter: brightness(33.33%);
   pointer-events: none;
 }
 
@@ -727,13 +727,13 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
 
 @keyframes 技术栈背景动画 {
   0% {
-    background-position: 0% 50%;
+    background-position: 0 50%;
   }
   50% {
     background-position: 100% 50%;
   }
   100% {
-    background-position: 0% 50%;
+    background-position: 0 50%;
   }
 }
 
