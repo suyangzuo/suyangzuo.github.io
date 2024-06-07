@@ -1590,7 +1590,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   border-radius: 3px;
   padding: 2px 5px;
   margin: 0 0.25em;
-  font-size: 0.9em;
+  font-size: 0.925em;
 }
 
 .专业名词.亮 {

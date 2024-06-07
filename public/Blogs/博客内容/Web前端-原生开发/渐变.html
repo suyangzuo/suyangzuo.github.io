@@ -245,28 +245,28 @@
     <section class="提醒">
       <h3 class="提醒标题">渐变色标的核心本质</h3>
       <p class="分区普通文本">
-        色标<span class="强调">是</span
+        色标的位置<span class="强调">是</span
         ><span class="行内专业名词"
           >颜色<span class="强调">变化</span>的起点或终点</span
         >，<span class="强调">不是</span
-        ><span class="行内专业名词">颜色的起点或终点</span>。
+        ><span class="行内专业名词">颜色的位置</span>。
       </p>
     </section>
 
     <h3 class="分区标题 分区3级标题">
-      线性渐变<span class="行内代码">CSS</span>代码
+      线性渐变<span class="行内专业名词">CSS</span>代码
     </h3>
     <p class="分区普通文本">让我们用一个简单的黑上白下的渐变作为案例：</p>
     <figure class="截图容器">
       <img
         src="/Images/Blogs/Web前端-原生开发/渐变/Photoshop-黑白垂直-经典渐变.png"
-        alt="PPhotoshop-黑白垂直-经典渐变"
+        alt="Photoshop-黑白垂直-经典渐变"
       />
     </figure>
     <p class="分区普通文本">
-      黑色标的起点几乎位于最顶端，可以将其位置设置为<span class="行内代码"
+      黑到白变化的起点位于最顶端，可以将其位置设置为<span class="行内代码"
         >0%</span
-      >；白色标的位置几乎位于最底端，可以设置其位置为<span class="行内代码"
+      >；黑到白变化的终点位于最底端，可以设置其位置为<span class="行内代码"
         >100%</span
       >，于是背景渐变的<span class="行内代码">CSS</span>代码是：
     </p>
@@ -300,5 +300,185 @@
         >Photoshop</span
       >中的渐变编辑器。
     </p>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">CSS</span>线性渐变方向之坑
+    </h3>
+    <p class="分区普通文本">如果我们希望渐变的方向是水平的，应该怎么做？</p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/渐变/Photoshop-修改线性渐变方向.webp"
+        alt="Photoshop-修改线性渐变方向"
+      />
+    </figure>
+    <p class="分区普通文本">
+      在<span class="行内专业名词">Photoshop</span>中，将渐变的方向顺时针旋转
+      90° 即可。在<span class="行内专业名词">CSS</span>代码中，可以通过添加<span
+        class="行内专业名词"
+        >旋转角度</span
+      >达到同样的效果。
+    </p>
+    <pre>
+      <code class="lang-css">
+        /* background-image: linear-gradient(顺时针旋转角度, 颜色 色标位置, 颜色 色标位置); */
+        background-image: linear-gradient(90deg, black 0%, white 100%);
+      </code>
+    </pre>
+    <div
+      class="渐变测试容器"
+      style="
+        width: 100%;
+        height: 316px;
+        background-image: linear-gradient(90deg, black 0%, white 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #18386a;
+        font-size: 2rem;
+      "
+    >
+      我是代码，不是图片
+    </div>
+    <p class="分区普通文本">
+      奇怪，怎么<span class="强调">反过来</span>了呢？不熟悉<span
+        class="行内专业名词"
+        >CSS线性渐变</span
+      >的人可能会摸不着头脑，怎么调整都得不到想要的结果。让我们来看看<a
+        class="超链接"
+        target="_blank"
+        href=""
+        >MDN 官方线性渐变页面</a
+      >的解释：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/渐变/MDN-线性渐变页面.png"
+        alt="MDN-线性渐变页面"
+      />
+    </figure>
+    <p class="分区普通文本">
+      <span class="行内专业名词">CSS线性渐变</span>的默认方向是<span
+        class="行内代码"
+        >to bottom</span
+      >，而<span class="行内代码">to bottom</span>又等价于<span class="行内代码"
+        >180deg</span
+      >！简而言之，<span class="行内专业名词">CSS线性渐变</span>会默认旋转<span
+        class="行内代码"
+        >180°</span
+      >！而我们在代码中又添加了<span class="行内代码">90°</span
+      >，因此实际上旋转了<span class="行内代码">270°</span>！
+    </p>
+    <p class="分区普通文本">
+      知道了这一点后，修改代码就变得简单了。既可以将黑白的顺序互换，也可以逆时针旋转
+      90°。
+    </p>
+    <pre>
+      <code class="lang-css">
+        /* background-image: linear-gradient(顺时针旋转角度, 颜色 色标位置, 颜色 色标位置); */
+        background-image: linear-gradient(-90deg, black 0%, white 100%);
+        
+        /* 或者 */
+        background-image: linear-gradient(90deg, white 0%, black 100%);
+      </code>
+    </pre>
+    <div
+      class="渐变测试容器"
+      style="
+        width: 100%;
+        height: 316px;
+        background-image: linear-gradient(-90deg, black 0%, white 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #18386a;
+        font-size: 2rem;
+      "
+    >
+      我是代码，不是图片
+    </div>
+    <p class="分区普通文本">
+      这回就得到了正确的效果。<span class="强调">记住</span>：当完全不旋转<span
+        class="附加说明"
+        >设置旋转角度为<span class="行内代码">0deg</span></span
+      >时，后面的颜色会在上方。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">某个区间显示相同的颜色</h3>
+    <p class="分区普通文本">
+      色标意味着颜色开始变化，或者变化结束。如果希望渐变有一段区间的颜色保持不变，该怎么做呢？比如，我希望从渐变的<span
+        class="行内代码"
+        >1/3</span
+      >到<span class="行内代码">2/3</span>都是绿色：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/渐变/Photoshop-线性渐变-区间内颜色相同.webp"
+        alt="Photoshop-线性渐变-区间内颜色相同"
+      />
+    </figure>
+    <p class="分区普通文本">
+      答案很简单：在<span class="行内代码">1/3</span>处和<span class="行内代码"
+        >2/3</span
+      >处各放置一个绿色色标即可。对应的代码如下：
+    </p>
+    <pre>
+      <code class="lang-css">
+        /* ------------------------
+        background-image: linear-gradient(
+          顺时针旋转角度, 
+          颜色 色标位置, 
+          颜色 色标位置,
+          颜色 色标位置,
+          颜色 色标位置
+        );
+        --------------------------- */
+        background-image: linear-gradient(
+          90deg,
+          yellow 0%,
+          green 33.33%,
+          green 66.67%,
+          purple 100%
+        );
+      </code>
+    </pre>
+    <div
+      class="渐变测试容器"
+      style="
+        width: 100%;
+        height: 316px;
+        background-image: linear-gradient(
+          90deg,
+          yellow 0%,
+          green 33.33%,
+          green 66.67%,
+          purple 100%
+        );
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #18386a;
+        font-size: 2rem;
+      "
+    >
+      我是代码，不是图片
+    </div>
+    <p class="分区普通文本">
+      如上所示，这个渐变从<span class="行内代码">1/3</span>处到<span
+        class="行内代码"
+        >2/3</span
+      >处都保持绿色不变。
+    </p>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">
+      径向渐变<span class="附加说明">放射渐变</span>
+    </h2>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">
+      角度渐变<span class="附加说明">圆锥渐变</span>
+    </h2>
   </article>
 </div>
