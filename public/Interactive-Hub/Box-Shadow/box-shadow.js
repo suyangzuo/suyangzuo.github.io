@@ -107,6 +107,7 @@ function 点击增加阴影数量按钮(event) {
   阴影项.appendChild(删除阴影按钮);
   阴影项.addEventListener("click", 点击阴影项);
   删除阴影按钮.addEventListener("click", 点击删除阴影按钮);
+  阴影列表.children[序号 - 1].before(阴影项);
 
   初始化阴影属性(阴影属性组[序号 - 1]);
   阴影颜色标记.style.backgroundColor = 阴影属性组[序号 - 1].颜色;
