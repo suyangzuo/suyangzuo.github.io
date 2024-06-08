@@ -470,12 +470,255 @@
     </p>
 
     <h3 class="分区标题 分区3级标题">控制颜色的过渡距离</h3>
+    <p class="分区普通文本">
+      色标之间的距离越远，颜色过渡就越平滑；反之离得越近，过渡就越急促。当两个色标的位置相同时，颜色会<span
+        class="行内专业名词"
+        >瞬间</span
+      >完成过渡，变成一条线，仿佛颜色之间<span class="行内专业名词"
+        >发生了碰撞</span
+      >，形成独特的<span class="行内专业名词">撞色</span>效果。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/渐变/Photoshop-线性渐变-色标距离为零.webp"
+        alt="Photoshop-线性渐变-色标距离为零"
+      />
+    </figure>
+    <p class="分区普通文本">两个颜色快彼此紧邻，能够营造出撞色效果。</p>
+    <pre>
+      <code class="lang-css">
+        /* ------------------------
+        background-image: linear-gradient(颜色1 色标位置, 颜色2 同样的色标位置);
+        --------------------------- */
+        background-image: linear-gradient(90deg, black 50%, white 50%);
+      </code>
+    </pre>
+    <div
+      class="渐变测试容器"
+      style="
+        width: 100%;
+        height: 316px;
+        background-image: linear-gradient(90deg, black 50%, white 50%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #18386a;
+        font-size: 2rem;
+      "
+    >
+      我是代码，不是图片
+    </div>
   </article>
 
   <article class="正文分区">
     <h2 class="分区标题 分区2级标题">
       径向渐变<span class="附加说明">放射渐变</span>
     </h2>
+
+    <h3 class="分区标题 分区3级标题">径向渐变的本质</h3>
+    <p class="分区普通文本">径向渐变的本质就是三个属性：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        圆心位置
+        <ul class="分区列表" style="margin-bottom: 0">
+          <li class="分区列表项">
+            水平<span class="附加说明"
+              >默认<span class="行内代码">50%</span></span
+            >
+          </li>
+          <li class="分区列表项">
+            垂直<span class="附加说明"
+              >默认<span class="行内代码">50%</span></span
+            >
+          </li>
+        </ul>
+      </li>
+      <li class="分区列表项">
+        渐变结束时的形状
+        <ul class="分区列表" style="margin-bottom: 0">
+          <li class="分区列表项">
+            <span class="行内代码">ellipse</span
+            ><span class="附加说明">椭圆</span
+            ><span class="附加说明">默认</span>
+          </li>
+          <li class="分区列表项">
+            <span class="行内代码">circle</span
+            ><span class="附加说明">正圆</span>
+          </li>
+        </ul>
+      </li>
+      <li class="分区列表项">
+        结束形状的尺寸
+        <ul class="分区列表" style="margin-bottom: 0">
+          <li class="分区列表项">
+            <span class="代码">px</span>、<span class="代码">%</span
+            >等各种长度单位
+          </li>
+          <li class="分区列表项">
+            <span class="行内代码">closest-side</span
+            ><span class="附加说明">最近边</span>
+          </li>
+          <li class="分区列表项">
+            <span class="行内代码"
+              >closest-corner<span class="附加说明">最近角</span></span
+            >
+          </li>
+          <li class="分区列表项">
+            <span class="行内代码"
+              >farthest-side<span class="附加说明">最远边</span></span
+            >
+          </li>
+          <li class="分区列表项">
+            <span class="行内代码"
+              >farthest-corner<span class="附加说明">最远角</span
+              ><span class="附加说明">默认</span></span
+            >
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3 class="分区标题 分区3级标题">径向渐变默认属性</h3>
+    <p class="分区普通文本">让我们先用默认的属性以及黑白色创建一个径向渐变：</p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/渐变/Photoshop-径向渐变-默认属性.png"
+        alt="Photoshop-径向渐变-默认属性"
+      />
+    </figure>
+    <p class="分区普通文本">默认属性如下：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        圆心位置：<span class="行内代码">center</span
+        ><span class="附加说明">正中间</span>
+      </li>
+      <li class="分区列表项">
+        渐变结束时的形状：<span class="行内代码">ellipse</span
+        ><span class="附加说明">椭圆</span>
+      </li>
+      <li class="分区列表项">
+        结束形状的尺寸：<span class="行内代码">farthest-corner</span
+        ><span class="附加说明">最远角</span>，结束形状与离圆心最远的角相交
+      </li>
+    </ul>
+    <p class="分区普通文本">
+      将这些属性写成<span class="行内专业名词">CSS</span>径向渐变代码：
+    </p>
+    <pre>
+      <code class="lang-css">
+        /* --------- 省略型写法：--------- */
+        background-image: radial-gradient(黑色 黑色标位置, 白色 白色标位置);
+
+        /* --------- 完整型写法：--------- */
+        background-image: radial-gradient(
+          形状 尺寸 at 圆心位置, 
+          黑色 黑色标位置, 
+          白色 白色标位置
+        );
+        
+        /* --------- 完整型写法实际代码如下：--------- */
+        background-image: radial-gradient(
+          ellipse farthest-corner at center, 
+          black 0%, 
+          white 100%
+        );
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      这会创建一个由黑到白的椭圆渐变，圆心在正中间，椭圆的尺寸正好与离圆心最远的角相交；渐变的起点在圆心，终点在椭圆的边缘。
+    </p>
+    <div
+      class="渐变测试容器"
+      style="
+        width: 100%;
+        height: 450px;
+        background-image: radial-gradient(black 0%, white 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #18386a;
+        font-size: 2rem;
+      "
+    >
+      我是代码，不是图片
+    </div>
+
+    <h3 class="分区标题 分区3级标题">径向渐变自定义属性</h3>
+    <p class="分区普通文本">
+      让我们来试试修改圆心位置、形状、尺寸，并且从内到外形成三个不同颜色的环状。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/渐变/Photoshop-径向渐变-自定义属性.png"
+        alt="Photoshop-径向渐变-默认属性"
+      />
+    </figure>
+    <p class="分区普通文本">目测一下关键属性：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        圆心位置：水平大约位于<span class="行内代码">90%</span
+        >，垂直大约位于不到<span class="行内代码">30%</span>
+      </li>
+      <li class="分区列表项">
+        渐变结束时的形状：<span class="行内代码">circle</span
+        ><span class="附加说明">正圆</span>
+      </li>
+      <li class="分区列表项">
+        结束形状的尺寸：<span class="行内代码">farthest-side</span
+        ><span class="附加说明">最远角</span>，结束形状与离圆心最远的边相交
+      </li>
+      <li class="分区列表项">
+        色标位置：每两种颜色之间的过渡，大约占半径的<span class="行内代码"
+          >1/3</span
+        >
+      </li>
+    </ul>
+    <pre>
+      <code class="lang-css">
+        /* --------- 语法：--------- */
+        background-image: radial-gradient(
+          正圆 最远的边 at 圆心水平位置 圆心垂直位置, 
+          绿色色标 1/3,
+          红色色标 1/3,
+          红色色标 2/3,
+          黄色色标 2/3
+        );
+        
+        /* --------- 完整型写法实际代码如下：--------- */
+        background-image: radial-gradient(
+          circle farthest-side at 90% 27%,
+          seagreen 33.33%,
+          indianred 33.33%,
+          indianred 66.67%,
+          darkgoldenrod 66.67%
+        );
+      </code>
+    </pre>
+    <div
+      class="渐变测试容器"
+      style="
+        width: 800px;
+        height: 800px;
+        background-image: radial-gradient(
+          circle farthest-side at 90% 27%,
+          seagreen 33.33%,
+          indianred 33.33%,
+          indianred 66.67%,
+          darkgoldenrod 66.67%
+        );
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #18386a;
+        font-size: 2rem;
+      "
+    >
+      我是代码，不是图片
+    </div>
+    <p class="分区普通文本">
+      <span class="强调">注意</span
+      >：只有两个色标的位置非常接近，甚至相同，才会出现撞色的效果。
+    </p>
   </article>
 
   <article class="正文分区">

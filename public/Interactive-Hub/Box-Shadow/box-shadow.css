@@ -449,10 +449,12 @@
   color: black;
   content: "";
   top: -135%;
+  translate: -2.5% 0;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 0.75rem;
+  font-weight: bold;
   font-family: "JetBrains Mono", Consolas, monospace;
 }
 

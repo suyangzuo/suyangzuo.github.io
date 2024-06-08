@@ -124,11 +124,6 @@ function 点击增加阴影数量按钮(event) {
       "--当前阴影代码包围框垂直偏移",
       `${单个阴影代码组[代码序号].offsetTop + 1}px`,
     );
-
-    /*root.style.setProperty(
-      "--当前阴影代码包围框垂直偏移",
-      `calc(${阴影包围框垂直偏移} + ${代码行高度} * ${代码序号 + 1})`,
-    );*/
   }
 }
 
@@ -177,11 +172,6 @@ function 点击阴影项(event) {
     "--当前阴影代码包围框垂直偏移",
     `${单个阴影代码组[代码序号].offsetTop + 1}px`,
   );
-
-  /*root.style.setProperty(
-    "--当前阴影代码包围框垂直偏移",
-    `calc(${阴影包围框垂直偏移} + ${代码行高度} * ${代码序号 + 1})`,
-  );*/
 
   const 有效属性组 = 阴影属性组.filter((阴影属性) => 阴影属性.完整代码 !== "");
   const 有效代码组 = [];
@@ -242,11 +232,6 @@ function 点击删除阴影按钮(event) {
       "--当前阴影代码包围框垂直偏移",
       `${单个阴影代码组[代码序号].offsetTop + 1}px`,
     );
-
-    /*root.style.setProperty(
-      "--当前阴影代码包围框垂直偏移",
-      `calc(${阴影包围框垂直偏移} + ${代码行高度} * ${代码序号 + 1})`,
-    );*/
   }
 }
 
@@ -266,16 +251,6 @@ y轴偏移.addEventListener("input", 修改滑块比率);
 function 修改滑块比率(event) {
   本体.style.transition = "none";
   let 滑块 = event.currentTarget;
-  /*let value = parseInt(滑块.value, 10);
-  let max = parseInt(滑块.max, 10);
-  let min = parseInt(滑块.min, 10);
-  let id = 滑块.id;
-  let 比率 = `${
-    ((id === "模糊半径" ? value : value + max) / (max - min)) * 100
-  }%`;
-  root.style.setProperty(`--${id}比率`, 比率);
-
-  调整滑块位置(滑块);*/
   非操作性修改滑块比率(滑块);
   根据参数调整对应阴影效果(当前阴影序号);
 
@@ -465,12 +440,6 @@ function 获取16进制颜色(阴影属性) {
 }
 
 function 打印代码(有效代码组) {
-  /*if (阴影序号池.length === 10) {
-    代码文本元素.textContent = "";
-    return;
-  }
-  let 分行代码 = 有效代码组.join(",\n");
-  代码文本元素.textContent = `box-shadow:\n${分行代码};`;*/
   if (有效代码组.length === 0) {
     代码文本元素.innerHTML = "";
     return;
