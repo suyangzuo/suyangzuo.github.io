@@ -974,6 +974,10 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   color: var(--专题标记-转载);
 }
 
+.专题[未完成] {
+  filter: brightness(35%);
+}
+
 .专题-内容 {
   font-family: "IBM Plex Sans", "Noto Sans SC", sans-serif, "Noto Sans Mono", monospace;
   /*height: 30px;*/
