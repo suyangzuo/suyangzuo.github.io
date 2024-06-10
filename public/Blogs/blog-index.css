@@ -2258,3 +2258,126 @@ div.code-toolbar > .toolbar {
 }
 
 /* ------------------------------ ↑ 响应式设计 ------------------------------ */
+
+/* ------------------ ↓ 个别单独 -------------------- */
+#盒子阴影范例容器 {
+  width: 800px;
+  height: 500px;
+  border: solid 2px #fff4;
+  padding: 20px;
+}
+
+#盒子阴影范例区 {
+  --盒子阴影偏移-x: 300px;
+  --盒子阴影偏移-y: 100px;
+  width: 250px;
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #6b7a89;
+  font-size: 2rem;
+  transform-origin: 0 0;
+  animation: 盒子阴影范例动画 10s ease-out 1s infinite;
+}
+
+@keyframes 盒子阴影范例动画 {
+  from {
+    scale: 1;
+    box-shadow: 0 0 0 0 transparent;
+    border-radius: 0;
+  }
+  7% {
+    scale: 1;
+    box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
+    border-radius: 0;
+  }
+  10.5% {
+    scale: 1;
+    box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
+    border-radius: 0;
+  }
+  17.5% {
+    scale: 1;
+    box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
+    border-radius: 300px;
+  }
+  21% {
+    scale: 1;
+    box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
+    border-radius: 300px;
+  }
+  28% {
+    scale: 1.25;
+    box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
+    border-radius: 300px;
+  }
+  31.5% {
+    scale: 1.25;
+    box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
+    border-radius: 300px;
+  }
+  38.5% {
+    background-color: #6b7a89;
+    scale: 1.25;
+    border-radius: 300px;
+  }
+  45.5% {
+    background-color: #6b7a8900;
+    scale: 1.25;
+    border-radius: 300px;
+  }
+  52.5% {
+    background-color: #6b7a8900;
+    scale: 1.25;
+    border-radius: 300px;
+  }
+  59.5% {
+    background-color: #6b7a89;
+    scale: 1;
+    box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
+    border-radius: 300px;
+  }
+  63% {
+    scale: 1;
+    box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
+    border-radius: 0;
+  }
+  70% {
+    scale: 1;
+    box-shadow: var(--盒子阴影偏移-x) 100px 50px 0 black;
+    border-radius: 0;
+  }
+  73.5% {
+    scale: 1;
+    box-shadow: var(--盒子阴影偏移-x) 100px 50px 0 black;
+    border-radius: 0;
+  }
+  80.5% {
+    scale: 1;
+    box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
+    border-radius: 0;
+  }
+  87.5% {
+    scale: 1;
+    box-shadow: var(--盒子阴影偏移-x) 100px 0 100px black;
+    border-radius: 0;
+  }
+  91% {
+    scale: 1;
+    box-shadow: var(--盒子阴影偏移-x) 100px 0 100px black;
+    border-radius: 0;
+  }
+  97% {
+    scale: 1;
+    box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
+    border-radius: 0;
+  }
+  to {
+    scale: 1;
+    box-shadow: 0 0 0 0 transparent;
+    border-radius: 0;
+  }
+}
+
+/* ------------------ ↑ 个别单独 -------------------- */
