@@ -1892,10 +1892,11 @@ br + :is(.代码, .专业名词, .附加说明) {
 
 .表格标题 {
   padding: 20px 0;
-  background-color: lightslategray;
+  background-color: #678;
   color: white;
   font-size: 2rem;
   font-weight: bolder;
+  filter: drop-shadow(0 2px 2px #0006);
 }
 
 .表头区 {
