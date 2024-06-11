@@ -2260,7 +2260,7 @@ div.code-toolbar > .toolbar {
 /* ------------------------------ ↑ 响应式设计 ------------------------------ */
 
 /* ------------------ ↓ 个别单独 -------------------- */
-#盒子阴影范例容器 {
+#盒子阴影范例容器, #投影范例容器, #文本阴影范例容器 {
   width: 800px;
   height: 500px;
   border: solid 2px #fff4;
@@ -2287,96 +2287,186 @@ div.code-toolbar > .toolbar {
     box-shadow: 0 0 0 0 transparent;
     border-radius: 0;
   }
-  7% {
+  4.167% { /*修改位移和颜色*/
     scale: 1;
     box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
     border-radius: 0;
   }
-  10.5% {
+  8.333% { /*维持位移和颜色*/
     scale: 1;
     box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
     border-radius: 0;
   }
-  17.5% {
+  12.5% { /*修改圆角*/
     scale: 1;
-    box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
     border-radius: 300px;
   }
-  21% {
+  16.667% { /*维持圆角*/
     scale: 1;
-    box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
     border-radius: 300px;
   }
-  28% {
+  20.833% { /*修改缩放*/
     scale: 1.25;
-    box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
     border-radius: 300px;
   }
-  31.5% {
-    scale: 1.25;
-    box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
-    border-radius: 300px;
-  }
-  38.5% {
+  25% { /*维持缩放*/
     background-color: #6b7a89;
     scale: 1.25;
     border-radius: 300px;
   }
-  45.5% {
+  29.167% { /*修改背景色*/
     background-color: #6b7a8900;
-    scale: 1.25;
     border-radius: 300px;
   }
-  52.5% {
+  37.5% { /*维持背景色*/
     background-color: #6b7a8900;
-    scale: 1.25;
     border-radius: 300px;
   }
-  59.5% {
+  41.667% { /*还原背景色*/
     background-color: #6b7a89;
-    scale: 1;
-    box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
+    scale: 1.25;
     border-radius: 300px;
   }
-  63% {
+  45.833% { /*还原缩放*/
     scale: 1;
-    box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
+    border-radius: 300px;
+  }
+  50% { /*维持缩放*/
+    scale: 1;
+    border-radius: 300px;
+  }
+  54.167% { /*还原圆角*/
     border-radius: 0;
   }
-  70% {
-    scale: 1;
+  58.333% { /*维持圆角*/
+    box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
+  }
+  62.5% { /*修改模糊*/
     box-shadow: var(--盒子阴影偏移-x) 100px 50px 0 black;
-    border-radius: 0;
   }
-  73.5% {
-    scale: 1;
+  66.667% { /*维持模糊*/
     box-shadow: var(--盒子阴影偏移-x) 100px 50px 0 black;
-    border-radius: 0;
   }
-  80.5% {
-    scale: 1;
+  70.833% { /*还原模糊*/
     box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
-    border-radius: 0;
   }
-  87.5% {
-    scale: 1;
-    box-shadow: var(--盒子阴影偏移-x) 100px 0 100px black;
-    border-radius: 0;
-  }
-  91% {
-    scale: 1;
-    box-shadow: var(--盒子阴影偏移-x) 100px 0 100px black;
-    border-radius: 0;
-  }
-  97% {
-    scale: 1;
+  75% { /*维持模糊*/
     box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
-    border-radius: 0;
+  }
+  79.167% { /*修改扩展*/
+    box-shadow: var(--盒子阴影偏移-x) 100px 0 100px black;
+  }
+  87.5% { /*维持扩展*/
+    box-shadow: var(--盒子阴影偏移-x) 100px 0 100px black;
+  }
+  91.667% { /*还原扩展*/
+    box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
+  }
+  95.833% { /*维持扩展*/
+    box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
+  }
+  to { /*还原位移*/
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+#投影范例区 {
+  --投影范例区背景色: lightcyan;
+  background-color: var(--投影范例区背景色);
+  width: 250px;
+  height: 250px;
+  transform-style: preserve-3d;
+  filter: drop-shadow(125px 125px 4px black);
+  animation: 投影范例动画 5s ease-out infinite;
+}
+
+#投影范例区 > figure {
+  width: 100%;
+  height: 100%;
+}
+
+#投影范例区 > figure > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@keyframes 投影范例动画 {
+  from {
+    background-color: var(--投影范例区背景色);
+  }
+  5% {
+    background-color: var(--投影范例区背景色);
+  }
+  15% {
+    background-color: transparent;
+  }
+  25% {
+    rotate: y 0deg;
+  }
+  45% {
+    rotate: y 300deg;
+  }
+  55% {
+    rotate: y 300deg;
+  }
+  75% {
+    rotate: y 0deg;
+  }
+  85% {
+    rotate: y 0deg;
+    background-color: transparent;
+  }
+  95% {
+    background-color: var(--投影范例区背景色);
   }
   to {
-    scale: 1;
-    box-shadow: 0 0 0 0 transparent;
-    border-radius: 0;
+    background-color: var(--投影范例区背景色);
+  }
+}
+
+#文本阴影范例区 {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 4.5rem;
+  text-shadow: 0 0 0 black;
+  animation: 文本阴影范例动画 8s ease-out infinite;
+  --文本阴影范例位移: 80px;
+}
+
+@keyframes 文本阴影范例动画 {
+  from {
+    text-shadow: 0 0 0 black;
+  }
+  5% {
+    text-shadow: 0 0 0 black;
+  }
+  18% {
+    text-shadow: var(--文本阴影范例位移) var(--文本阴影范例位移) 0 black;
+  }
+  31% {
+    text-shadow: var(--文本阴影范例位移) var(--文本阴影范例位移) 0 black;
+  }
+  44% {
+    text-shadow: var(--文本阴影范例位移) var(--文本阴影范例位移) 20px black;
+  }
+  57% {
+    text-shadow: var(--文本阴影范例位移) var(--文本阴影范例位移) 20px black;
+  }
+  70% {
+    text-shadow: var(--文本阴影范例位移) var(--文本阴影范例位移) 0 black;
+  }
+  83% {
+    text-shadow: var(--文本阴影范例位移) var(--文本阴影范例位移) 0 black;
+  }
+  95% {
+    text-shadow: 0 0 0 black;
+  }
+  to {
+    text-shadow: 0 0 0 black;
   }
 }
 
