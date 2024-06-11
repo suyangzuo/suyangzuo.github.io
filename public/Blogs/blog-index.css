@@ -2260,7 +2260,7 @@ div.code-toolbar > .toolbar {
 /* ------------------------------ ↑ 响应式设计 ------------------------------ */
 
 /* ------------------ ↓ 个别单独 -------------------- */
-#盒子阴影范例容器, #投影范例容器, #文本阴影范例容器 {
+#盒子阴影范例容器, #投影范例容器, #文本阴影范例容器, #阴影叠加范例容器 {
   width: 800px;
   height: 500px;
   border: solid 2px #fff4;
@@ -2467,6 +2467,49 @@ div.code-toolbar > .toolbar {
   }
   to {
     text-shadow: 0 0 0 black;
+  }
+}
+
+#阴影叠加范例容器 {
+  animation: 文本阴影叠加动画 8s ease-out infinite;
+}
+
+@keyframes 文本阴影叠加动画 {
+  from {
+    text-shadow: 0 0 0 transparent, 0 0 0 transparent, 0 0 0 transparent,
+    0 0 0 transparent;
+  }
+  5% {
+    text-shadow: 15px 15px 0 black, 0 0 0 transparent, 0 0 0 transparent,
+    0 0 0 transparent;
+  }
+  10% {
+    text-shadow: 15px 15px 0 black, -15px 15px 0 gold, 0 0 0 transparent,
+    0 0 0 transparent;
+  }
+  15% {
+    text-shadow: 15px 15px 0 black, -15px 15px 0 gold, -15px -15px 0 seagreen,
+    0 0 0 transparent;
+  }
+  20% {
+    text-shadow: 15px 15px 0 black, -15px 15px 0 gold, -15px -15px 0 seagreen,
+    15px -15px 0 lightskyblue;
+  }
+  40% {
+    text-shadow: 200px 100px 0 black, -200px 100px 0 gold,
+    -200px -100px 0 seagreen, 200px -100px 0 lightskyblue;
+  }
+  60% {
+    text-shadow: 200px 100px 20px black, -200px 100px 20px gold,
+    -200px -100px 20px seagreen, 200px -100px 20px lightskyblue;
+  }
+  80% {
+    text-shadow: 200px 100px 0 black, -200px 100px 0 gold,
+    -200px -100px 0 seagreen, 200px -100px 0 lightskyblue;
+  }
+  to {
+    text-shadow: 0 0 0 transparent, 0 0 0 transparent, 0 0 0 transparent,
+    0 0 0 transparent;
   }
 }
 

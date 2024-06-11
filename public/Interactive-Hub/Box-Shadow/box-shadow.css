@@ -445,7 +445,7 @@
   z-index: 1;
   width: calc(var(--拇指宽度) * 2);
   aspect-ratio: 1;
-  color: #00468b;
+  color: black;
   content: "";
   top: -141%;
   display: flex;
