@@ -282,9 +282,14 @@ function 调整滑块位置(滑块) {
   const 修正min = 滑块.min ? 滑块.min : 0;
   const 修正max = 滑块.max ? 滑块.max : 100;
   const 修正值 = Number(((当前值 - 修正min) * 100) / (修正max - 修正min));
-  root.style.setProperty(
+  /*root.style.setProperty(
     `--${id}${补充名称}`,
     `calc(${修正值}% + (${8 - 修正值 * 0.15}px))`,
+  );*/
+  console.log(修正值);
+  root.style.setProperty(
+    `--${id}${补充名称}`,
+    `calc(${修正值}% + ${(50 - 修正值) * 0.18}px)`,
   );
   滑块.setAttribute(`${id}值`, 当前值);
 
