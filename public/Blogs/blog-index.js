@@ -844,7 +844,7 @@ function 双击图像生成图像对话框() {
   const 截图容器组 = document.getElementsByClassName("截图容器");
   for (const 截图容器 of 截图容器组) {
     const 图像 = 截图容器.querySelector("img");
-    if (图像 === null) return;
+    if (图像 === null) continue;
     const 图像源 = 图像.src;
     const 图像替换文本 = 图像.alt;
     图像.title = "单击以放大";
