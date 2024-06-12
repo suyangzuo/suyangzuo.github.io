@@ -78,10 +78,259 @@
       <a
         class="联系方式链接"
         href="https://codesandbox.io/u/suyangzuo"
-        target="_blank">
+        target="_blank"
+      >
         <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
       /></a>
     </li>
   </ul>
 </article>
-<div class="专题正文区"></div>
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">交叉观察器简介</h2>
+
+    <h3 class="分区标题 分区3级标题">设计的初衷</h3>
+    <p class="分区普通文本">现代网站上经常有下列需求：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">某个元素滚动到视口内，运行一段动画</li>
+      <li class="分区列表项">页面无限滚动，一边滚动一边加载新的内容</li>
+      <li class="分区列表项">页面滚动时加载资源</li>
+    </ul>
+    <p class="分区普通文本">
+      早前都是使用事件循环来实现这样的需求，比如：在滚动时不断计算元素的<span
+        class="行内专业名词"
+        >边界矩形<span class="附加说明"
+          ><span class="行内代码">getBoundingClientRect()</span></span
+        ></span
+      >。但是，<span class="行内专业名词">JavaScript</span>是一门<span
+        class="行内专业名词"
+        >单线程</span
+      >语言，这意味着每次滚动所触发的代码程序，都会运行在<span
+        class="行内专业名词"
+        >主线程</span
+      >上，这会严重影响网站的性能，用户的浏览体验变得很糟糕。
+    </p>
+    <p class="分区普通文本">
+      为了解决这个问题，在 2017年9月，<span class="行内专业名词">Google</span
+      >提出了<a
+        class="超链接"
+        target="_blank"
+        href="https://www.w3.org/TR/2017/WD-intersection-observer-20170914/"
+        >第一份交叉观察器的公开工作草案</a
+      >。经过多年的发展，现代浏览器已经能够很好地支持交叉观察器。
+    </p>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">使用交叉观察器</h2>
+
+    <h3 class="分区标题 分区3级标题">观察器选项</h3>
+    <p class="分区普通文本">要使用交叉观察器，首先需要定义几个选项：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="专业名词">视口元素</span>：用作<span class="行内专业名词"
+          >观察器的视口</span
+        >，必须是观察目标的祖先；如果不指定，则<span class="行内专业名词"
+          >默认为浏览器视口</span
+        >。
+      </li>
+      <li class="分区列表项">
+        <span class="专业名词">视口元素边距</span
+        >：用来扩大或缩小观察器视口。如果不指定，则<span class="行内专业名词"
+          >默认为<span class="行内代码">0</span></span
+        >。
+      </li>
+      <li class="分区列表项">
+        <span class="专业名词">阈值</span
+        >：一个数字或一组数字，指定了目标在根元素内出现多少才算<span
+          class="行内专业名词"
+          >交叉</span
+        ><span class="附加说明">即执行回调</span>。如<span class="行内代码"
+          >0.5</span
+        >，意味着目标在根元素内达到<span class="行内专业名词">50%可见</span
+        >时，就执行回调。如果不指定，则<span class="行内专业名词"
+          >默认为<span class="行内代码">0</span></span
+        >，意味着目标只要在根元素内出现<span class="行内代码">1</span
+        >像素，就执行回调。
+      </li>
+    </ul>
+
+    <h3 class="分区标题 分区3级标题">观察器回调</h3>
+    <p class="分区普通文本">
+      当目标元素与视口元素<span class="行内专业名词">交叉</span>时，执行的函数。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">观察器条目</h3>
+      <p class="分区普通文本">
+        观察器可以同时观察多个目标，一个目标就会产生一个条目，因此在回调中，会自动接收一个参数叫<span
+          class="行内专业名词"
+          >条目集合<span class="附加说明"
+            ><span class="行内代码">entries</span></span
+          ></span
+        >，这是一个可迭代对象。
+      </p>
+      <p class="分区普通文本">
+        <span class="强调">注意：</span>即使只观察<span class="行内专业名词"
+          >1</span
+        >个元素，传入的参数依然是<span class="行内代码"
+          >entries<span class="附加说明">复数</span></span
+        >，尽管这个集合中只有<span class="行内专业名词">1</span>个条目。
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">交叉观察器代码范例</h3>
+    <p class="分区普通文本">假设我们有这样的元素：</p>
+    <figure class="截图容器" style="height: 450px">
+      <img
+        style="height: calc(100% - 41px)"
+        src="/Images/Blogs/Web前端-原生开发/交叉观察器/交叉观察器-初始状态.png"
+        alt="交叉观察器-初始状态"
+      />
+    </figure>
+    <p class="分区普通文本">
+      现在，我们需要观察<span class="行内专业名词">被观察元素</span>是否与<span
+        class="行内专业名词"
+        >视口元素</span
+      >交叉。大多数情况下，<span class="行内专业名词">视口元素</span
+      >都会设置为<span class="行内专业名词">浏览器视口</span
+      >，因此我们用一个黄色边框模拟浏览器视口。
+    </p>
+    <p class="分区普通文本">
+      大多数情况下，<span class="行内专业名词">4</span
+      >步即可写出一个完整的交叉观察器。
+    </p>
+    <ol class="分区列表 有序列表">
+      <li class="分区列表项">编写选项</li>
+      <li class="分区列表项">编写回调函数</li>
+      <li class="分区列表项">生成观察器</li>
+      <li class="分区列表项">设置观察对象</li>
+    </ol>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        const 被观察元素 = document.querySelector(".被观察元素");
+        
+        const 选项 = {
+          root: null, //视口元素：必须是被观察元素的祖先；不写或设置为"null"，root就是浏览器视口
+          rootMargin: "0px", //视口元素外边距：不写相当于设置为0，表示视口保持原本的大小
+          threshold: 1, //阈值：1代表100%，意味着被观察元素必须越过"100%可见"的阈值，才会触发回调
+        };
+        
+        function 回调(条目集合) {
+          //每个条目代表一个被观察元素，即使只有一个，传入的参数也是集合
+          条目集合.forEach(() => {
+            显示回调动画();
+          });
+        }
+
+        //生成交叉观察器，参数就是回调和选项
+        const 观察器 = new IntersectionObserver(回调, 选项);
+
+        //设置观察哪些元素，可以一次性传入多个被观察元素
+        观察器.observe(被观察元素);
+      </code>
+    </pre>
+
+    <h3 class="分区标题 分区3级标题">触发回调的时机</h3>
+    <p class="分区普通文本">
+      让我们来滚动页面，看看<span class="行内专业名词"
+        ><span class="行内代码">100%</span>才算交叉</span
+      >到底是什么意思：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/交叉观察器/交叉观察器-百分之百-触发回调.webp"
+        alt="交叉观察器-100%-触发回调"
+      />
+    </figure>
+    <p class="分区普通文本">
+      被观察元素必须<span class="行内代码">100%</span
+      ><span class="强调">跨过</span>视口，才算做<span class="行内专业名词"
+        >交叉</span
+      >，此时就会<span class="行内专业名词">触发回调</span>；这个<span
+        class="行内代码"
+        >100%</span
+      >是在<span class="行内专业名词">选项</span>的<span class="行内代码"
+        >threshold</span
+      >属性中设置的。当被观察元素<span class="行内代码">100%</span
+      >处于视口元素内部时，其状态为<span class="行内专业名词">交叉中</span>。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">
+        <span class="强调">进</span><span class="次要">与</span
+        ><span class="强调">出</span>都算跨过<span class="行内专业名词"
+          >阈值</span
+        >
+      </h3>
+      <p class="分区普通文本">
+        相信你已注意到，不是只有<span class="行内专业名词"
+          >从外到内<span class="附加说明">未交叉 &#10145; 交叉中</span></span
+        >才会触发回调，<span class="行内专业名词"
+          >从内到外<span class="附加说明">交叉中 &#10145; 未交叉</span></span
+        >同样会触发。你可以把阈值想象成一条<span class="强调">警戒线</span
+        >，只要越过警戒线，不论从内到外，还是从外到内，都会触发警戒。
+      </p>
+      <figure class="截图容器">
+        <video
+          class="video-js"
+          loop
+          muted
+          autoplay
+          preload="auto"
+          poster="/Images/Blogs/Web前端-原生开发/交叉观察器/九品芝麻官-poster.png"
+          data-setup='{
+          "fluid": true
+        }'
+        >
+          <source
+            src="/Images/Blogs/Web前端-原生开发/交叉观察器/九品芝麻官-反复横跳.mp4"
+            type="video/mp4"
+          />
+        </video>
+      </figure>
+      <p class="分区普通文本">
+        黄线就是视口边界，反复横跳的结果，怎一个惨字了得。
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">
+      只需要<span class="行内专业名词">交叉中</span>
+    </h3>
+    <p class="分区普通文本">
+      有时，我们只想在<span class="行内专业名词">未交叉 &#10145; 交叉中</span
+      >状态运行一些任务，反之则什么都不做。怎么实现呢？交叉观察器有一个非常实用的属性：<span
+        class="行内专业名词"
+        >交叉中<span class="附加说明"
+          ><span class="行内代码">isIntersecting</span></span
+        ></span
+      >，此属性为<span class="行内专业名词">布尔类型</span
+      >，可用来判断被观察元素与视口元素当前是否处于交叉状态。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        //其它代码相同
+
+        function 回调(条目集合) {
+          条目集合.forEach((条目) => {
+            //仅当处于交叉状态时，才显示回调动画
+            if (条目.isIntersecting) {
+              显示回调动画();
+            }
+          });
+        }
+
+        //其它代码相同
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        loading="lazy"
+        src="/Images/Blogs/Web前端-原生开发/交叉观察器/交叉观察器-交叉中-触发回调.webp"
+        alt="交叉观察器-交叉中-触发回调"
+      />
+    </figure>
+    <p class="分区普通文本">
+      每次越过<span class="行内代码">100%</span
+      >临界线时，触发回调，回调内部判断两个元素是否处于交叉状态，具体到本程序而言，会判断被观察元素是否<span>100%</span>处于视口元素内部；满足条件则显示动画。
+    </p>
+  </article>
+</div>
