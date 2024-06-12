@@ -232,8 +232,10 @@
 
     <h3 class="分区标题 分区3级标题">触发回调的时机</h3>
     <p class="分区普通文本">
-      让我们来滚动页面，看看<span class="行内专业名词"
-        ><span class="行内代码">100%</span>才算交叉</span
+      只要跨过<span class="行内代码">threshold</span
+      >这条分界线，就会触发回调。让我们来滚动页面，看看<span
+        class="行内专业名词"
+        >阈值为<span class="行内代码">100%</span></span
       >到底是什么意思：
     </p>
     <figure class="截图容器">
@@ -243,16 +245,16 @@
       />
     </figure>
     <p class="分区普通文本">
-      被观察元素必须<span class="行内代码">100%</span
-      ><span class="强调">跨过</span>视口，才算做<span class="行内专业名词"
-        >交叉</span
-      >，此时就会<span class="行内专业名词">触发回调</span>；这个<span
-        class="行内代码"
-        >100%</span
-      >是在<span class="行内专业名词">选项</span>的<span class="行内代码"
-        >threshold</span
-      >属性中设置的。当被观察元素<span class="行内代码">100%</span
-      >处于视口元素内部时，其状态为<span class="行内专业名词">交叉中</span>。
+      被观察元素只要<span class="行内代码">100%</span
+      ><span class="强调">跨过</span>视口，就会<span class="行内专业名词"
+        >触发回调</span
+      >；这个<span class="行内代码">100%</span>是在<span class="行内专业名词"
+        >选项</span
+      >的<span class="行内代码">threshold</span
+      >属性中设置的。当被观察元素自身的<span class="行内代码">100%</span
+      >处于视口元素内部时，其状态为<span class="行内专业名词">交叉中</span
+      >；被观察元素位于视口元素内的部分不足<span class="行内代码">100%</span
+      >，状态为<span class="行内专业名词">未交叉</span>。
     </p>
     <section class="提醒">
       <h3 class="提醒标题">
@@ -266,8 +268,8 @@
           >从外到内<span class="附加说明">未交叉 &#10145; 交叉中</span></span
         >才会触发回调，<span class="行内专业名词"
           >从内到外<span class="附加说明">交叉中 &#10145; 未交叉</span></span
-        >同样会触发。你可以把阈值想象成一条<span class="强调">警戒线</span
-        >，只要越过警戒线，不论从内到外，还是从外到内，都会触发警戒。
+        >同样会触发。你可以把阈值想象成一条<span class="强调">分界线</span
+        >，只要越过分界线，不论从内到外，还是从外到内，都会触发回调函数。
       </p>
       <figure class="截图容器">
         <video
@@ -333,7 +335,7 @@
       >临界线时，触发回调，回调内部判断两个元素是否处于交叉状态，具体到本程序而言，会判断被观察元素是否<span
         class="行内代码"
         >100%</span
-      >处于视口元素内部；满足条件则显示动画。
+      >处于视口元素内部，是则显示动画。
     </p>
   </article>
 </div>
