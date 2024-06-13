@@ -128,29 +128,30 @@
     <p class="分区普通文本">要使用交叉观察器，首先需要定义几个选项：</p>
     <ul class="分区列表">
       <li class="分区列表项">
-        <span class="专业名词">视口元素</span>：用作<span class="行内专业名词"
-          >观察器的视口</span
+        <span class="专业名词">视口元素<span class="行内代码">root</span></span
+        >：用作<span class="行内专业名词">观察器的视口</span
         >，必须是观察目标的祖先；如果不指定，则<span class="行内专业名词"
           >默认为浏览器视口</span
         >。
       </li>
       <li class="分区列表项">
-        <span class="专业名词">视口元素边距</span
+        <span class="专业名词"
+          >视口元素边距<span class="行内代码">rootMargin</span></span
         >：用来扩大或缩小观察器视口。如果不指定，则<span class="行内专业名词"
           >默认为<span class="行内代码">0</span></span
         >。
       </li>
       <li class="分区列表项">
-        <span class="专业名词">阈值</span
-        >：一个数字或一组数字，指定了目标在根元素内出现多少才算<span
+        <span class="专业名词">阈值<span class="行内代码">threshold</span></span
+        >：一个数字或一组数字，指定了目标在视口元素内出现多少才算<span
           class="行内专业名词"
           >交叉</span
         ><span class="附加说明">即执行回调</span>。如<span class="行内代码"
           >0.5</span
-        >，意味着目标在根元素内达到<span class="行内专业名词">50%可见</span
+        >，意味着目标在视口元素内达到<span class="行内专业名词">50%可见</span
         >时，就执行回调。如果不指定，则<span class="行内专业名词"
           >默认为<span class="行内代码">0</span></span
-        >，意味着目标只要在根元素内出现<span class="行内代码">1</span
+        >，意味着目标只要在视口元素内出现<span class="行内代码">1</span
         >像素，就执行回调。
       </li>
     </ul>
@@ -208,13 +209,13 @@
     <pre class="line-numbers">
       <code class="lang-js">
         const 被观察元素 = document.querySelector(".被观察元素");
-        
+
         const 选项 = {
           root: null, //视口元素：必须是被观察元素的祖先；不写或设置为"null"，root就是浏览器视口
           rootMargin: "0px", //视口元素外边距：不写相当于设置为0，表示视口保持原本的大小
           threshold: 1, //阈值：1代表100%，意味着被观察元素必须越过"100%可见"的阈值，才会触发回调
         };
-        
+
         function 回调(条目集合) {
           //每个条目代表一个被观察元素，即使只有一个，传入的参数也是集合
           条目集合.forEach(() => {
@@ -293,6 +294,48 @@
         黄线就是视口边界，反复横跳的结果，怎一个惨字了得。
       </p>
     </section>
+    <p class="分区普通文本">
+      让我们再观察一个<span class="行内专业名词">阈值</span>为<span
+        class="行内代码"
+        >50%</span
+      >的案例。为了让视觉效果更加直观，我在<span class="行内代码">50%</span
+      >的位置加了一条横线：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/交叉观察器/被观察元素-百分之五十-示意图.png"
+        alt="被观察元素-50%-示意图"
+      />
+    </figure>
+    <p class="分区普通文本">
+      横线代表<span class="行内代码">50%</span>的位置。为了设置<span
+        class="行内代码"
+        >50%</span
+      >的阈值，我们需要修改代码：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        const 选项 = {
+          root: null,
+          rootMargin: "0px",
+          threshold: 0.5, //阈值：0.5代表50%，意味着被观察元素必须越过"50%可见"的阈值，才会触发回调
+        };
+      </code>
+    </pre>
+    <p class="分区普通文本">现在，让我们来观察效果：</p>
+    <figure class="截图容器">
+      <img
+        style="height: clamp(600px, 80vh, 1500px)"
+        src="/Images/Blogs/Web前端-原生开发/交叉观察器/交叉观察器-阈值-百分之五十.webp"
+        alt="交叉观察器-阈值-百分之五十"
+      />
+    </figure>
+    <p class="分区普通文本">
+      看懂了吗？<span class="行内专业名词">阈值</span>控制着被观察元素的<span
+        class="行内专业名词"
+        >百分之多少</span
+      >越过视口边界时，会触发回调。
+    </p>
 
     <h3 class="分区标题 分区3级标题">
       只需要<span class="行内专业名词">交叉中</span>
@@ -335,7 +378,66 @@
       >临界线时，触发回调，回调内部判断两个元素是否处于交叉状态，具体到本程序而言，会判断被观察元素是否<span
         class="行内代码"
         >100%</span
-      >处于视口元素内部，是则显示动画。
+      >处于视口元素内部，<span class="行内专业名词">是</span>则显示动画。
     </p>
+
+    <h3 class="分区标题 分区3级标题">视口元素外边距</h3>
+    <p class="分区普通文本">
+      视口元素外边距的作用很简单：将实际的视口向外扩展，或者向内收缩。假设我们要将实际视口向内收缩：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        const 选项 = {
+          root: null,
+          
+          //语法和"CSS"的"margin"类似，注意：这里不能用"0"，必须用"0px"
+          rootMargin: "-125px -50px", //负值表示向内收缩，上下各125像素，左右各50像素
+          threshold: 0.5, //阈值：0意味着被观察元素只要有1个像素约过视口边界，就会触发回调
+        };
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      负值代表向内收缩，因此实际视口比视口元素要小。二者关系如下图：
+    </p>
+    <figure class="截图容器">
+      <img
+        loading="lazy"
+        src="/Images/Blogs/Web前端-原生开发/交叉观察器/视口元素-实际视口.png"
+        alt="视口元素-实际视口"
+      />
+    </figure>
+    <p class="分区普通文本">
+      <span class="强调">注意：</span>实际视口在网页上是看不见的，图中的<span
+        style="color: lightcyan"
+        >亮青色</span
+      >方框是我特意制作以方便观察用的。 因为水平和垂直都是<span
+        class="行内专业名词"
+        >负值</span
+      >，因此实际视口要<span class="行内专业名词">小于</span
+      >视口元素。反之，<span class="行内专业名词">正值</span>会使实际视口<span
+        class="行内专业名词"
+        >大于</span
+      >视口元素。让我们来看看效果：
+    </p>
+    <figure class="截图容器">
+      <img
+        style="height: clamp(600px, 80vh, 1500px)"
+        loading="lazy"
+        src="/Images/Blogs/Web前端-原生开发/交叉观察器/交叉观察器-视口元素外边距.webp"
+        alt="交叉观察器-rootMargin"
+      />
+    </figure>
+    <p class="分区普通文本">
+      当被观察元素的<span class="行内代码">50%</span
+      >越过视口元素边界时，没有触发回调，因为此时真正的视口是内部的<span
+        class="行内专业名词"
+        >实际视口</span
+      >。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">多个阈值</h3>
+    <p class="分区普通文本"></p>
+
+    <h3 class="分区标题 分区3级标题">交叉比例</h3>
   </article>
 </div>
