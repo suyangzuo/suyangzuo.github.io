@@ -294,6 +294,8 @@
         黄线就是视口边界，反复横跳的结果，怎一个惨字了得。
       </p>
     </section>
+
+    <h3 class="分区标题 分区3级标题">阈值</h3>
     <p class="分区普通文本">
       让我们再观察一个<span class="行内专业名词">阈值</span>为<span
         class="行内代码"
@@ -325,7 +327,7 @@
     <p class="分区普通文本">现在，让我们来观察效果：</p>
     <figure class="截图容器">
       <img
-        style="height: clamp(500px, 80vh, 950px)"
+        style="height: clamp(500px, 75vh, 950px)"
         src="/Images/Blogs/Web前端-原生开发/交叉观察器/交叉观察器-阈值-百分之五十.webp"
         alt="交叉观察器-阈值-百分之五十"
       />
@@ -337,48 +339,45 @@
       >越过视口边界时，会触发回调。
     </p>
 
-    <h3 class="分区标题 分区3级标题">
-      只需要<span class="行内专业名词">交叉中</span>
-    </h3>
+    <h3 class="分区标题 分区3级标题">多个阈值</h3>
     <p class="分区普通文本">
-      有时，我们只想在<span class="行内专业名词">未交叉 &#10145; 交叉中</span
-      >状态运行一些任务，反之则什么都不做。怎么实现呢？交叉观察器有一个非常实用的属性：<span
-        class="行内专业名词"
-        >交叉中<span class="附加说明"
-          ><span class="行内代码">isIntersecting</span></span
-        ></span
-      >，此属性为<span class="行内专业名词">布尔类型</span
-      >，可用来判断被观察元素与视口元素当前是否处于交叉状态。
+      <span class="行内专业名词">阈值</span
+      >可以不止一个，多个阈值可以写成数组形式，<span class="行内专业名词"
+        >被观察元素</span
+      >在<span class="行内专业名词">视口元素</span
+      >内的可见性只要跨过任何一个阈值，都会触发回调。
     </p>
     <pre class="line-numbers">
       <code class="lang-js">
-        //其它代码相同
-
-        function 回调(条目集合) {
-          条目集合.forEach((条目) => {
-            //仅当处于交叉状态时，才显示回调动画
-            if (条目.isIntersecting) {
-              显示回调动画();
-            }
-          });
-        }
-
-        //其它代码相同
+        const 选项 = {
+          threshold: [
+            0,    //0代表1像素，意味着被观察元素只要越过"1像素可见"的阈值，就会触发回调
+            0.25, //25%
+            0.5,  //50%
+            0.75, //75%
+            1     //100%
+          ], 
+        };
       </code>
     </pre>
+    <p class="分区普通文本">
+      5个阈值，意味着从<span class="行内专业名词">完全不可见</span>到<span
+        class="行内专业名词"
+        >完全可见</span
+      >的过程中<span class="附加说明">或者反过来</span>，会触发 5 次回调。
+    </p>
     <figure class="截图容器">
       <img
-        loading="lazy"
-        src="/Images/Blogs/Web前端-原生开发/交叉观察器/交叉观察器-交叉中-触发回调.webp"
-        alt="交叉观察器-交叉中-触发回调"
+        style="height: clamp(500px, 75vh, 950px)"
+        src="/Images/Blogs/Web前端-原生开发/交叉观察器/交叉观察器-5个阈值.webp"
+        alt="交叉观察器-5个阈值"
       />
     </figure>
     <p class="分区普通文本">
-      每次越过<span class="行内代码">100%</span
-      >临界线时，触发回调，回调内部判断两个元素是否处于交叉状态，具体到本程序而言，会判断被观察元素是否<span
-        class="行内代码"
-        >100%</span
-      >处于视口元素内部，<span class="行内专业名词">是</span>则显示动画。
+      5 个<span class="行内专业名词">阈值</span>，意味着 5 条<span
+        class="行内专业名词"
+        >分界线</span
+      >。
     </p>
 
     <h3 class="分区标题 分区3级标题">视口元素外边距</h3>
@@ -421,7 +420,7 @@
     </p>
     <figure class="截图容器">
       <img
-        style="height: clamp(500px, 80vh, 950px)"
+        style="height: clamp(500px, 75vh, 950px)"
         loading="lazy"
         src="/Images/Blogs/Web前端-原生开发/交叉观察器/交叉观察器-视口元素外边距.webp"
         alt="交叉观察器-rootMargin"
@@ -434,10 +433,186 @@
         >实际视口</span
       >。
     </p>
+  </article>
 
-    <h3 class="分区标题 分区3级标题">多个阈值</h3>
-    <p class="分区普通文本"></p>
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">
+      交叉观察器<span class="行内代码">API</span>
+    </h2>
+
+    <h3 class="分区标题 分区3级标题">交叉中</h3>
+    <p class="分区普通文本">
+      有时，我们只想在<span class="行内专业名词">未交叉 &#10145; 交叉中</span
+      >状态运行一些任务，反之则什么都不做。怎么实现呢？交叉观察器有一个非常实用的属性：<span
+        class="行内专业名词"
+        >交叉中<span class="附加说明"
+          ><span class="行内代码">isIntersecting</span></span
+        ></span
+      >，此属性为<span class="行内专业名词">布尔类型</span
+      >，可用来判断被观察元素与视口元素当前是否处于交叉状态。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        //其它代码相同
+
+        function 回调(条目集合) {
+          条目集合.forEach((条目) => {
+            //仅当处于交叉状态时，才显示回调动画
+            if (条目.isIntersecting) {
+              显示回调动画();
+            }
+          });
+        }
+
+        //其它代码相同
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        loading="lazy"
+        src="/Images/Blogs/Web前端-原生开发/交叉观察器/交叉观察器-交叉中-触发回调.webp"
+        alt="交叉观察器-交叉中-触发回调"
+      />
+    </figure>
+    <p class="分区普通文本">
+      每次越过<span class="行内代码">100%</span
+      >临界线时，触发回调，回调内部判断两个元素是否处于交叉状态，具体到本程序而言，会判断被观察元素是否<span
+        class="行内代码"
+        >100%</span
+      >处于视口元素内部，<span class="行内专业名词">是</span>则显示动画。
+    </p>
 
     <h3 class="分区标题 分区3级标题">交叉比例</h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词">交叉比例</span>表示<span class="行内专业名词"
+        >被观察元素</span
+      >在<span class="行内专业名词">视口元素</span>内的部分占<span
+        class="行内专业名词"
+        >被观察元素</span
+      >本身的比例。是不是感觉很像<span class="行内专业名词">阈值</span
+      >？按道理，当越过<span class="行内代码">50%</span
+      ><span class="行内专业名词">阈值</span>时，<span class="行内专业名词"
+        >交叉比</span
+      >也应该恰好是<span class="行内代码">50%</span>，让我们将<span
+        class="行内专业名词"
+        >交叉比</span
+      >打印到控制台，看看结果：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        //其它代码相同
+        
+        //访问条目的 intersectionRatio，即交叉比例
+        function 回调(条目集合) {
+          条目集合.forEach((条目) => {
+            console.log(条目.intersectionRatio);
+          });
+        }
+
+        //其它代码相同
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        loading="lazy"
+        src="/Images/Blogs/Web前端-原生开发/交叉观察器/交叉观察器-交叉比例.webp"
+        alt="交叉观察器-打印交叉比例"
+      />
+    </figure>
+    <p class="分区普通文本">
+      奇怪，数值并不准确！这是因为从<span class="行内专业名词">跨越阈值线</span
+      >到<span class="行内专业名词">计算交叉比并打印到控制台</span
+      >，需要一段时间，这段时间内页面可能依然在滚动，这个时间差对人来说非常之小，但对程序来说足以造成误差。页面滚动越快，误差越大。
+    </p>
+    <p class="分区普通文本">
+      我们可以用<span class="行内专业名词">交叉比</span
+      >来做什么呢？举个例子：可以把<span class="行内专业名词">交叉比</span
+      >当做元素背景渐变的色标位置：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        //其它代码相同
+        const 选项 = {
+          threshold: [0, 0.25, 0.5, 0.75, 1],
+        };
+
+        //访问条目的 intersectionRatio，即交叉比例
+        function 回调(条目集合) {
+          条目集合.forEach((条目) => {
+            被观察元素.style.backgroundImage = `linear-gradient(
+              90deg, 
+              transparent ${100 - 条目.intersectionRatio * 100}%, 
+              rgb(68,96,68) ${100 - 条目.intersectionRatio * 100}%)`;
+            
+            //为了跟阈值对比，我们把计算后得到的交叉比打印到控制台
+            console.log(被观察元素.style.backgroundImage);
+          });
+        }
+
+        //其它代码相同
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        loading="lazy"
+        src="/Images/Blogs/Web前端-原生开发/交叉观察器/阈值-四等份-背景渐变.webp"
+        alt="阈值-四等份-背景渐变"
+      />
+    </figure>
+    <p class="分区普通文本">
+      从控制台可以看出，大多数情况下<span class="行内专业名词">交叉比</span
+      >和<span class="行内专业名词">阈值</span
+      >之间都会有误差。不过，我们可以通过<span class="行内专业名词"
+        >视觉误导</span
+      >的手段，让用户<span class="行内专业名词">不那么容易觉察到</span
+      >误差。比较常见的方式就是<span class="行内专业名词">细分</span>阈值。
+    </p>
+    <p class="分区普通文本">
+      刚刚我们只是把阈值分成了<span class="代码">[0, 0.25, 0.5, 0.75, 1]</span
+      >共<span class="行内代码">5</span>段。如果分成<span class="行内代码"
+        >100</span
+      >段呢？
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        //其它代码相同
+        const 长度 = 101;
+        const 跨度 = 0.01;
+        const 起点 = 0;
+        
+        const 选项 = {
+          //从0到100，每0.01分一段，长度是101；如果长度为100，只会得到 0 ~ 0.99
+          threshold: Array.from({ length: 长度 }, (_, i) => 起点 + i * 跨度),
+          //第4行写法等同于：
+          threshold: [0, 0.01, 0.02, 0.03, ·····, 0.98, 0.99, 1],
+        };
+
+        //访问条目的 intersectionRatio，即交叉比例
+        function 回调(条目集合) {
+          条目集合.forEach((条目) => {
+            被观察元素.style.backgroundImage = `linear-gradient(
+              90deg,
+              transparent ${100 - 条目.intersectionRatio * 100}%,
+              rgb(68,96,68) ${100 - 条目.intersectionRatio * 100}%)`;
+          });
+        }
+
+        //其它代码相同
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        loading="lazy"
+        src="/Images/Blogs/Web前端-原生开发/交叉观察器/阈值-100等份-背景渐变.webp"
+        alt="阈值-100等份-背景渐变"
+      />
+    </figure>
+    <p class="分区普通文本">
+      是不是感觉丝滑多了？肉眼很难看出<span class="行内专业名词">误差</span>。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">目标</h3>
+
+    <h3 class="分区标题 分区3级标题">边界矩形</h3>
   </article>
 </div>
