@@ -612,7 +612,55 @@
     </p>
 
     <h3 class="分区标题 分区3级标题">目标</h3>
+    <p class="分区普通文本">
+      有时我们需要同时监控多个元素，如何在回调内部识别<span class="行内专业名词"
+        >当前触发回调的元素</span
+      >呢？答案是：<span class="行内代码">target</span>属性。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        //获取多个被观察元素
+        const 被观察元素组 = document.querySelectorAll(".被观察元素");
 
-    <h3 class="分区标题 分区3级标题">边界矩形</h3>
+        const 长度 = 201;
+        const 步长 = 0.005;
+        const 起点 = 0;
+        
+        const 选项 = {
+          threshold: Array.from({ length: 长度 }, (_, i) => 起点 + i * 步长),
+        };
+        
+        function 回调(条目集合) {
+          条目集合.forEach((条目) => {
+            //条目.target 就是当前触发回调的元素
+            const 边框色 = window.getComputedStyle(条目.target).borderColor;
+            条目.target.style.backgroundImage = `linear-gradient(
+              90deg, 
+              transparent ${100 - 条目.intersectionRatio * 100}%, 
+              ${边框色} ${100 - 条目.intersectionRatio * 100}%)`;
+          });
+        }
+        
+        const 观察者 = new IntersectionObserver(回调, 选项);
+        
+        //循环迭代，观察组内的所有元素
+        for (const 被观察元素 of 被观察元素组) {
+          观察者.observe(被观察元素);
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        loading="lazy"
+        src="/Images/Blogs/Web前端-原生开发/交叉观察器/交叉观察器-条目目标-观察多个元素.webp"
+        alt="交叉观察器-条目目标-观察多个元素"
+      />
+    </figure>
+    <p class="分区普通文本">
+      <span class="行内代码">target</span>属性能自动获取<span
+        class="行内专业名词"
+        >当前触发回调的元素</span
+      >，降低了程序的复杂性和重复性。
+    </p>
   </article>
 </div>
