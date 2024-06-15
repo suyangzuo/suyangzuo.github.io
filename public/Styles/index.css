@@ -507,39 +507,86 @@
   position: relative;
   width: 100%;
   aspect-ratio: 1;
-  background-color: #123a;
   border-radius: 999px;
   flex-shrink: 0;
-  /*overflow: hidden;*/
   display: flex;
   flex-direction: column;
-  outline: solid 2px transparent;
+  justify-content: center;
+  align-items: center;
   transition: 150ms;
 }
 
-.关于图像 {
+@property --渐变旋转角度-前 {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@property --渐变旋转角度-后 {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.关于图像容器::before {
+  position: absolute;
   width: 100%;
   height: 100%;
+  border-radius: 999px;
+  top: 0;
+  left: 0;
+  background-image: conic-gradient(transparent var(--渐变旋转角度-前), lightskyblue var(--渐变旋转角度-前), lightcyan var(--渐变旋转角度-后), transparent var(--渐变旋转角度-后));
+  content: "";
+  opacity: 0;
+  animation: 角度渐变旋转 2.5s linear infinite;
+  animation-play-state: paused;
+  transition: 500ms;
+}
+
+.关于图像容器:hover::before {
+  opacity: 1;
+  animation-play-state: running;
+}
+
+@keyframes 角度渐变旋转 {
+  from {
+    --渐变旋转角度-前: 0deg;
+    --渐变旋转角度-后: 0deg;
+  }
+  50% {
+    --渐变旋转角度-前: 60deg;
+    --渐变旋转角度-后: 240deg;
+  }
+  to {
+    --渐变旋转角度-前: 360deg;
+    --渐变旋转角度-后: 360deg;
+  }
+}
+
+.关于图像 {
+  width: 95%;
+  height: 95%;
   border-radius: 999px;
   object-fit: cover;
   filter: drop-shadow(5px 5px 5px #0007);
 }
 
 .关于图像容器:hover .关于图像容器标题 {
-  background-color: #000a;
+  background-color: lightcyan;
+  color: #000a;
 }
 
 .关于图像容器标题 {
   position: absolute;
   left: 50%;
   translate: -50% 0;
-  font-size: 1.5em;
+  font-size: 1.25em;
   padding: 10px 25px;
   border-radius: 5px;
   width: fit-content;
   text-wrap: nowrap;
-  background-color: #000a;
-  transition: 1000ms;
+  background-color: #012d;
+  transition: 125ms;
 }
 
 .贡献者图像容器 .关于图像容器标题 {
@@ -555,14 +602,6 @@
   height: 0;
   flex-grow: 1;
   background-color: #123a;
-}
-
-.贡献者区:has(.贡献者标题:hover) .贡献者图像容器, .贡献者图像容器:hover {
-  outline: solid 2px white;
-}
-
-.宗旨区:has(.宗旨标题:hover) .宗旨图像容器, .宗旨图像容器:hover {
-  outline: solid 2px white;
 }
 
 /* <!-- ------------------ ↑ 贡献者和宗旨 ------------------- --> */
