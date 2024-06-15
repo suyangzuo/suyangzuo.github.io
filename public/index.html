@@ -32,7 +32,6 @@
     <script src="https://cdn.lordicon.com/bhenfmcm.js"></script>
     <script src="/Scripts/index.js" defer></script>
     <script src="/Scripts/top-banner.js" defer></script>
-    <script src="./Scripts/index-games.js" defer></script>
     <script src="./Scripts/footer.js" defer></script>
   </head>
 
@@ -49,287 +48,312 @@
     <div class="main-content">
       <!-- ---------------------- ↓ 欢迎内容 ----------------------- -->
       <div class="welcome-main">
-        <section class="欢迎文本区">
-          <h1>
-            优雅、易用、高效<br />的<span>自学习服务平台</span
-            ><br />专为初学者精心打造
-          </h1>
-          <p>
-            我们的目标是为用户提供多种途径的自学服务，例如：教程、心得、应用等等；永恒致力于提供易读、易操控、可交互的方式，为初学者打造最舒适的自学体验。
-          </p>
-          <div class="欢迎按钮区">
-            <a class="欢迎按钮" href="./Interactive-Hub/interactive-index.html"
-              ><span>交互式学习中心</span
-              ><span class="交互式学习中心箭头 欢迎箭头"
-                ><i class="fa-solid fa-arrow-right"></i></span
-            ></a>
-            <a class="欢迎按钮" href="./Tutorials/tutorials-index.html"
-              ><span>第三方在线教程</span
-              ><span class="第三方教程箭头 欢迎箭头"
-                ><i class="fa-solid fa-arrow-right"></i></span
-            ></a>
-          </div>
-        </section>
-        <section class="欢迎图像区">
-          <div class="欢迎图像容器">
-            <img
-              src="./Images/Index-Images/Hacker-Programming.png"
-              alt="程序员"
-            />
-          </div>
-        </section>
-        <div class="欢迎动画区">
-          <div class="破折线"></div>
-          <img
-            class="破折线动画工具 剪刀"
-            src="./Images/Index-Images/剪刀动画.gif"
-            alt="剪刀"
-          />
-          <img
-            class="破折线动画工具 胶水"
-            src="./Images/Index-Images/胶水.png"
-            alt="胶水"
-          />
+        <div class="渐变覆盖层 欢迎区覆盖层">
+          <section class="欢迎文本区">
+            <div class="欢迎标题 中文欢迎标题">
+              <p class="欢迎标题-第1行">
+                <span class="标题-强调">下一代 </span
+                ><span class="标题-普通">自学服务平台</span>
+              </p>
+              <p class="欢迎标题-第2行">
+                <span class="标题-普通">为</span
+                ><span class="标题-强调"> 学生 </span
+                ><span class="标题-普通">量身打造</span>
+              </p>
+            </div>
+            <div class="欢迎标题 英文欢迎标题">
+              <p class="欢迎标题-第1行">
+                <span class="标题-普通">A </span
+                ><span class="标题-强调">next-generation </span
+                ><span class="标题-普通">self-learning service platform</span>
+              </p>
+              <p class="欢迎标题-第2行">
+                <span class="标题-强调">tailored for </span
+                ><span class="标题-普通">students</span>
+              </p>
+            </div>
+          </section>
+          <section class="欢迎特色区">
+            <ul class="特色列表">
+              <li class="特色项">
+                <span class="特色图标" style="background-color: darkorange"
+                  ><i class="fa-solid fa-fire"></i></span
+                ><span class="特色文本">简洁易用</span>
+              </li>
+              <li class="特色项">
+                <span class="特色图标" style="background-color: #256f44"
+                  ><i class="fa-solid fa-mug-hot"></i></span
+                ><span class="特色文本">免注册</span>
+              </li>
+              <li class="特色项">
+                <span class="特色图标" style="background-color: brown"
+                  ><i class="fa-regular fa-handshake"></i></span
+                ><span class="特色文本">可靠的第一方内容</span>
+              </li>
+              <li class="特色项">
+                <span class="特色图标" style="background-color: royalblue"
+                  ><i class="fa-solid fa-layer-group"></i></span
+                ><span class="特色文本">免费开源</span>
+              </li>
+            </ul>
+          </section>
+          <section class="欢迎推荐区">
+            <a
+              class="推荐卡片 推荐卡片-交互式学习中心"
+              href="./Interactive-Hub/interactive-index.html"
+              target="_self"
+            >
+              <figure class="推荐卡片Logo容器">
+                <img
+                  class="推荐卡片Logo"
+                  src="/Images/Index-Images/用户交互.png"
+                  alt="交互式学习中心Logo"
+                />
+              </figure>
+              <h1 class="推荐卡片标题">交互式学习中心</h1>
+            </a>
+            <a
+              class="推荐卡片 推荐卡片-经验之谈"
+              href="./Blogs/blog-index.html"
+              target="_self"
+            >
+              <figure class="推荐卡片Logo容器">
+                <img
+                  class="推荐卡片Logo"
+                  src="/Images/Index-Images/博客-Logo.png"
+                  alt="经验之谈Logo"
+                />
+              </figure>
+              <h1 class="推荐卡片标题">经验之谈</h1>
+            </a>
+          </section>
         </div>
       </div>
       <!-- ---------------------- ↑ 欢迎内容 ----------------------- -->
 
       <!-- ---------------------- ↓ 学习内容 ----------------------- -->
-      <div class="learn-page">
-        <div class="learn-profile">
-          <section class="profile-title">
-            <figure class="profile-github-banner-container">
-              <img src="./Images/Background-Images/bg-01.jpg" alt="横幅" />
-            </figure>
-            <figure class="profile-avatar-container">
-              <img src="./Images/Index-Images/球.png" alt="avatar" />
-            </figure>
-          </section>
-          <section class="profile-brief">
-            <div class="profile-brief-cell">
-              <h4>优雅</h4>
-              <p>精致简约</p>
-            </div>
-            <div class="profile-brief-cell">
-              <h4>易用</h4>
-              <p>无需注册</p>
-            </div>
-            <div class="profile-brief-cell">
-              <h4>高效</h4>
-              <p>实时更新</p>
-            </div>
-          </section>
-          <section class="profile-github">
-            <h3>永恒需要您</h3>
-            <p>共同参与永恒项目，展示自己的才华，将永恒打造得更加优秀！</p>
-            <a
-              class="profile-link"
-              href="https://github.com/suyangzuo/suyangzuo.github.io"
-              target="_blank"
-            >
-              <img src="./Images/Index-Images/Fork.gif" alt="Fork" />
-              <span>Fork</span></a
-            >
-          </section>
+      <div class="非主推区域">
+        <div class="渐变覆盖层 非主推区域覆盖层">
+          <ul class="非主推列表">
+            <li class="非主推项">
+              <a
+                class="非主推链接 游戏链接"
+                href="./Games/game-index.html"
+                target="_self"
+              >
+                <div class="非主推链接-内容">
+                  <i class="fa-solid fa-gamepad"></i>
+                </div>
+                <div class="非主推链接-标题">休闲游戏</div>
+              </a>
+            </li>
+            <li class="非主推项">
+              <a
+                class="非主推链接 Web应用链接"
+                href="./Apps/apps-index.html"
+                target="_self"
+              >
+                <div class="非主推链接-内容">
+                  <i class="fa-solid fa-flask"></i>
+                </div>
+                <div class="非主推链接-标题">Web应用实验室</div>
+              </a>
+            </li>
+            <li class="非主推项">
+              <a
+                class="非主推链接 第三方教程链接"
+                href="./Tutorials/tutorials-index.html"
+                target="_self"
+              >
+                <div class="非主推链接-内容">
+                  <i class="fa-solid fa-yin-yang"></i>
+                </div>
+                <div class="非主推链接-标题">第三方教程</div>
+              </a>
+            </li>
+            <li class="非主推项">
+              <a
+                class="非主推链接 软件下载链接"
+                href="./Software/software-index.html"
+                target="_self"
+              >
+                <div class="非主推链接-内容">
+                  <i class="fa-brands fa-windows"></i>
+                </div>
+                <div class="非主推链接-标题">软件下载</div>
+              </a>
+            </li>
+          </ul>
         </div>
-        <ul class="learn-list">
-          <li class="learn-item">
-            <a class="learn-link" href="./Blogs/blog-index.html">
-              <img
-                class="learn-img"
-                src="./Images/Index-Images/经验之谈.png"
-                alt="经验之谈"
-              />
-              <section class="learn-text">
-                <h3>经验之谈<i class="fa-solid fa-blog"></i></h3>
-                <p>对初学者非常友好的专题型博客<br />沉浸式阅读体验</p>
-              </section>
-            </a>
-          </li>
-          <li class="learn-item">
-            <a class="learn-link" href="./Software/software-index.html">
-              <img
-                class="learn-img"
-                src="./Images/Index-Images/软件下载.png"
-                alt="经验之谈"
-              />
-              <section class="learn-text">
-                <h3>软件下载<i class="fa-solid fa-download"></i></h3>
-                <p>免费、开源软件的聚合页面<br />快速定位下载链接</p>
-              </section>
-            </a>
-          </li>
-          <li class="learn-item">
-            <a class="learn-link" href="./Apps/apps-index.html">
-              <img
-                class="learn-img"
-                src="./Images/Index-Images/Web应用实验室.svg"
-                alt="经验之谈"
-              />
-              <section class="learn-text">
-                <h3>Web应用实验室<i class="fa-solid fa-flask"></i></h3>
-                <p>凝聚你的想象力和创造力<br />让灵感与创意爆发</p>
-              </section>
-            </a>
-          </li>
-          <li class="learn-item">
-            <a class="learn-link" href="./Video-Course/video-course-index.html">
-              <img
-                class="learn-img"
-                src="./Images/Index-Images/视频教程.webp"
-                alt="经验之谈"
-              />
-              <section class="learn-text">
-                <h3>视频教程<i class="fa-solid fa-video"></i></h3>
-                <p>趣味生动的讲解，精致的视觉效果<br />每一分钟都是享受</p>
-              </section>
-            </a>
-          </li>
-          <li class="learn-item">
-            <a class="learn-link" href="./Introduction/contributors.html">
-              <img
-                class="learn-img"
-                src="./Images/Index-Images/贡献者.png"
-                alt="经验之谈"
-              />
-              <section class="learn-text">
-                <h3>贡献者<i class="fa-solid fa-people-group"></i></h3>
-                <p>为本站发展做出卓越贡献的成员<br />期待你的加入</p>
-              </section>
-            </a>
-          </li>
-          <li class="learn-item">
-            <a class="learn-link" href="./Introduction/purpose.html">
-              <img
-                class="learn-img"
-                src="./Images/Index-Images/网站宗旨.png"
-                alt="经验之谈"
-              />
-              <section class="learn-text">
-                <h3>网站宗旨<i class="fa-solid fa-heart-pulse"></i></h3>
-                <p>
-                  了解本站目标，探索背后的故事<br />对本站建设提出建议和意见
-                </p>
-              </section>
-            </a>
-          </li>
-        </ul>
       </div>
       <!-- ---------------------- ↑ 学习内容 ----------------------- -->
 
       <!-- ---------------------- ↓ 游戏与应用 ----------------------- -->
-      <div class="games">
-        <!-- <div class="section-bg-img">
-          <img src="/Images/Background-Images/bg-14.jpg" alt="主页背景" />
-        </div> -->
-        <a class="games-entrance" href="./Games/game-index.html">
-          <p class="游戏入口提示">访问游戏大厅</p>
-          <div class="游戏入口">
-            <img src="./Images/Index-Images/Gamer-02.png" alt="玩家" /><img
-              src="./Images/Index-Images/Gamer-01.png"
-              alt="玩家"
-            />
-          </div>
-        </a>
-      </div>
-      <!-- ---------------------- ↑ 游戏与应用 ----------------------- -->
-
-      <!-- ---------------------- ↓ 图片长廊 ----------------------- -->
-      <div class="图像长廊区">
-        <section class="图像长廊标题">
-          <p>自然之美</p>
-          <p>无可循迹</p>
-        </section>
-        <div class="图像长廊分区 图像长廊-1区">
-          <figure class="箭头 左箭头">
-            <img src="/Images/Common/箭头02-左.png" alt="左箭头" />
-          </figure>
-          <figure class="箭头 右箭头">
-            <img src="/Images/Common/箭头02-右.png" alt="右箭头" />
-          </figure>
-          <div class="图像滑块组">
-            <ul class="图像滑块"></ul>
-            <ul class="图像滑块">
-              <li class="图像容器">
-                <img src="./Images/Background-Images/轮播图-01.jpg" alt="图1" />
-                <div class="img-overlay"></div>
-              </li>
-              <li class="图像容器">
-                <img src="./Images/Background-Images/轮播图-02.jpg" alt="图2" />
-                <div class="img-overlay"></div>
-              </li>
-              <li class="图像容器">
-                <img src="./Images/Background-Images/轮播图-03.jpg" alt="图3" />
-                <div class="img-overlay"></div>
-              </li>
-              <li class="图像容器">
-                <img src="./Images/Background-Images/轮播图-04.jpg" alt="图4" />
-                <div class="img-overlay"></div>
-              </li>
-              <li class="图像容器">
-                <img src="./Images/Background-Images/轮播图-05.jpg" alt="图5" />
-                <div class="img-overlay"></div>
-              </li>
-              <li class="图像容器">
-                <img src="./Images/Background-Images/轮播图-06.jpg" alt="图6" />
-                <div class="img-overlay"></div>
-              </li>
-              <li class="图像容器">
-                <img src="./Images/Background-Images/轮播图-07.jpg" alt="图7" />
-                <div class="img-overlay"></div>
-              </li>
-              <li class="图像容器">
-                <img src="./Images/Background-Images/轮播图-08.jpg" alt="图8" />
-                <div class="img-overlay"></div>
-              </li>
-              <li class="图像容器">
-                <img src="./Images/Background-Images/轮播图-09.jpg" alt="图9" />
-                <div class="img-overlay"></div>
-              </li>
-              <li class="图像容器">
+      <div class="about">
+        <div class="渐变覆盖层 关于覆盖层">
+          <div class="关于内容区">
+            <div class="贡献者区">
+              <a
+                class="关于图像容器 贡献者图像容器"
+                href="./Introduction/contributors.html"
+                target="_self"
+              >
                 <img
-                  src="./Images/Background-Images/轮播图-10.jpg"
-                  alt="图10"
+                  class="关于图像"
+                  src="./Images/Index-Images/Motto-Gif-01.gif"
+                  alt="贡献者图像"
                 />
-                <div class="img-overlay"></div>
-              </li>
-            </ul>
-            <ul class="图像滑块"></ul>
-          </div>
-          <div class="图像序号指示器组 长廊1区序号指示器组">
-            <div class="图像序号指示器">
-              <div class="指示器内部"></div>
+                <h3 class="关于图像容器标题 贡献者标题">贡献者</h3>
+              </a>
+              <div class="关于分区支撑线 贡献者支撑线"></div>
             </div>
-            <div class="图像序号指示器">
-              <div class="指示器内部"></div>
-            </div>
-            <div class="图像序号指示器">
-              <div class="指示器内部"></div>
-            </div>
-            <div class="图像序号指示器">
-              <div class="指示器内部"></div>
-            </div>
-            <div class="图像序号指示器">
-              <div class="指示器内部"></div>
-            </div>
-            <div class="图像序号指示器">
-              <div class="指示器内部"></div>
-            </div>
-            <div class="图像序号指示器">
-              <div class="指示器内部"></div>
-            </div>
-            <div class="图像序号指示器">
-              <div class="指示器内部"></div>
-            </div>
-            <div class="图像序号指示器">
-              <div class="指示器内部"></div>
-            </div>
-            <div class="图像序号指示器">
-              <div class="指示器内部"></div>
+            <div class="关于内容中间线"></div>
+            <div class="宗旨区">
+              <div class="关于分区支撑线 宗旨支撑线"></div>
+              <a
+                class="关于图像容器 宗旨图像容器"
+                href="./Introduction/purpose.html"
+                target="_self"
+              >
+                <h3 class="关于图像容器标题 宗旨标题">网站宗旨</h3>
+                <img
+                  class="关于图像"
+                  src="./Images/Index-Images/Motto-Gif-02.gif"
+                  alt="宗旨图像"
+                />
+              </a>
             </div>
           </div>
         </div>
       </div>
+      <!-- ---------------------- ↑ 游戏与应用 ----------------------- -->
+
+      <!-- ---------------------- ↓ 图片长廊 ----------------------- -->
+      <div class="艺术展示区">
+        <div class="图像长廊区">
+          <section class="图像长廊标题">
+            <p>自然之美</p>
+            <p>无可循迹</p>
+          </section>
+          <div class="图像长廊分区 图像长廊-1区">
+            <figure class="箭头 左箭头">
+              <img src="/Images/Common/箭头02-左.png" alt="左箭头" />
+            </figure>
+            <figure class="箭头 右箭头">
+              <img src="/Images/Common/箭头02-右.png" alt="右箭头" />
+            </figure>
+            <div class="图像滑块组">
+              <ul class="图像滑块"></ul>
+              <ul class="图像滑块">
+                <li class="图像容器">
+                  <img
+                    src="./Images/Background-Images/轮播图-01.jpg"
+                    alt="图1"
+                  />
+                  <div class="img-overlay"></div>
+                </li>
+                <li class="图像容器">
+                  <img
+                    src="./Images/Background-Images/轮播图-02.jpg"
+                    alt="图2"
+                  />
+                  <div class="img-overlay"></div>
+                </li>
+                <li class="图像容器">
+                  <img
+                    src="./Images/Background-Images/轮播图-03.jpg"
+                    alt="图3"
+                  />
+                  <div class="img-overlay"></div>
+                </li>
+                <li class="图像容器">
+                  <img
+                    src="./Images/Background-Images/轮播图-04.jpg"
+                    alt="图4"
+                  />
+                  <div class="img-overlay"></div>
+                </li>
+                <li class="图像容器">
+                  <img
+                    src="./Images/Background-Images/轮播图-05.jpg"
+                    alt="图5"
+                  />
+                  <div class="img-overlay"></div>
+                </li>
+                <li class="图像容器">
+                  <img
+                    src="./Images/Background-Images/轮播图-06.jpg"
+                    alt="图6"
+                  />
+                  <div class="img-overlay"></div>
+                </li>
+                <li class="图像容器">
+                  <img
+                    src="./Images/Background-Images/轮播图-07.jpg"
+                    alt="图7"
+                  />
+                  <div class="img-overlay"></div>
+                </li>
+                <li class="图像容器">
+                  <img
+                    src="./Images/Background-Images/轮播图-08.jpg"
+                    alt="图8"
+                  />
+                  <div class="img-overlay"></div>
+                </li>
+                <li class="图像容器">
+                  <img
+                    src="./Images/Background-Images/轮播图-09.jpg"
+                    alt="图9"
+                  />
+                  <div class="img-overlay"></div>
+                </li>
+                <li class="图像容器">
+                  <img
+                    src="./Images/Background-Images/轮播图-10.jpg"
+                    alt="图10"
+                  />
+                  <div class="img-overlay"></div>
+                </li>
+              </ul>
+              <ul class="图像滑块"></ul>
+            </div>
+            <div class="图像序号指示器组 长廊1区序号指示器组">
+              <div class="图像序号指示器">
+                <div class="指示器内部"></div>
+              </div>
+              <div class="图像序号指示器">
+                <div class="指示器内部"></div>
+              </div>
+              <div class="图像序号指示器">
+                <div class="指示器内部"></div>
+              </div>
+              <div class="图像序号指示器">
+                <div class="指示器内部"></div>
+              </div>
+              <div class="图像序号指示器">
+                <div class="指示器内部"></div>
+              </div>
+              <div class="图像序号指示器">
+                <div class="指示器内部"></div>
+              </div>
+              <div class="图像序号指示器">
+                <div class="指示器内部"></div>
+              </div>
+              <div class="图像序号指示器">
+                <div class="指示器内部"></div>
+              </div>
+              <div class="图像序号指示器">
+                <div class="指示器内部"></div>
+              </div>
+              <div class="图像序号指示器">
+                <div class="指示器内部"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- ---------------------- ↑ 图片长廊 ----------------------- -->
     </div>
     <!-- ---------------------------- ↑ 主内容 --------------------------------- -->

@@ -6,6 +6,8 @@
   --图像长廊分区高度: calc(var(--图像容器高度) + 150px);
   --图像移动时长: 350ms;
   --网站风格颜色: rgb(42, 151, 140);
+  --分页渐变黑色标位置: 0.25%;
+  --分页渐变透明色标位置: 0.25%;
 }
 
 /* body {
@@ -25,515 +27,423 @@
 
 /* <!-- ------------------ ↓ 欢迎内容 ------------------- --> */
 .welcome-main {
-  /* background-image: linear-gradient(to right, #22323e 0%, #35556f 100%); */
+  background-image: url("/Images/Index-Images/沙漠夜空.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   width: 100%;
   height: calc(100dvh - 50px);
   margin: 0 auto;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 5%;
+  gap: max(50px, 15dvh);
   position: relative;
-  /* gap: 50px; */
-  /* padding: 0 0 calc(5% + 65px) 0; */
-  padding: 0 0 17.5dvh 0;
   overflow: hidden;
+}
+
+.渐变覆盖层 {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.欢迎区覆盖层 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: max(50px, 5dvh);
+  background-image: linear-gradient(transparent calc(100% - var(--分页渐变透明色标位置)), black calc(100% - var(--分页渐变黑色标位置)));
+}
+
+.欢迎区覆盖层 > * {
+  flex-shrink: 0;
 }
 
 .欢迎文本区 {
   position: relative;
-  width: min(500px, 95vw);
+  /*width: 100%;*/
+  font-weight: bold;
+}
+
+.中文欢迎标题 {
+  /*font-size: calc(4.25dvw + 10px);*/
+  font-size: calc(3.25dvw + 10px);
+  line-height: 1.4em;
+  filter: drop-shadow(2px 2px 2px #000d);
+}
+
+.欢迎标题-第1行, .欢迎标题-第2行 {
+  margin: 0 auto;
+  width: fit-content;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.中文欢迎标题 .欢迎标题-第1行 {
+  background-image: linear-gradient(125deg, #3b4557 40%, #414d4d 60%);
+  animation: 中文第1行动画 1s ease-out forwards;
+}
+
+@keyframes 中文第1行动画 {
+  from {
+    opacity: 0;
+    translate: -100px 0;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+.中文欢迎标题 .欢迎标题-第2行 {
+  background-image: linear-gradient(125deg, #525e74 40%, #5a6969 60%);
+  animation: 中文第2行动画 1s ease-out forwards;
+}
+
+@keyframes 中文第2行动画 {
+  from {
+    opacity: 0;
+    translate: 100px 0;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+.中文欢迎标题 .标题-强调 {
+  font-size: 1.35em;
+  background-image: linear-gradient(125deg, #b2c6cd 40%, #b7d6d6 60%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.英文欢迎标题 {
+  font-size: calc(1.25dvw + 8px);
+  background-color: #bcd;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-family: Cambria, serif;
+  opacity: 0;
+  animation: 英文欢迎标题动画 1s ease-out 750ms forwards;
+  mix-blend-mode: difference;
+}
+
+@keyframes 英文欢迎标题动画 {
+  from {
+    opacity: 0;
+    translate: 0 50px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+.欢迎特色区 {
+  margin-bottom: 10vh;
+}
+
+.特色列表 {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 25px;
 }
 
-.欢迎文本区 > h1 {
-  font-size: 2.5rem;
-  font-weight: 450;
-}
-
-.欢迎文本区 > h1 > span {
-  font-size: 3rem;
-  font-weight: 600;
-  color: goldenrod;
-}
-
-.欢迎文本区 > p {
-  font-size: 1.125rem;
-  color: gray;
-  line-height: 2rem;
-}
-
-.欢迎按钮区 {
-  margin: 100px 0 0 0;
-  display: flex;
-  gap: 40px;
-}
-
-.欢迎按钮 {
-  border-radius: 200px;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.05rem;
-  position: relative;
+.特色项 {
+  border-radius: 5px;
   overflow: hidden;
-}
-
-.欢迎按钮:nth-child(1) {
-  background-color: var(--网站风格颜色);
-  width: 200px;
-  padding: 0 20px;
-  transition: 150ms;
-}
-
-.欢迎按钮:nth-child(1):hover {
-  background-color: #21767a;
-}
-
-.欢迎按钮:nth-child(2) {
-  width: fit-content;
-  justify-content: center;
-  gap: 5px;
-}
-
-.欢迎按钮:nth-child(1) > span:nth-child(1) {
-  translate: -15% 0;
-}
-
-.欢迎箭头 {
-  font-size: 0.8rem;
-  color: var(--网站风格颜色);
+  background-color: #6b7a8980;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: 150ms;
+  gap: 15px;
+  font-size: calc(0.65vw + 2px);
+  opacity: 0;
+  box-shadow: 2px 2px 4px 0 #0005;
 }
 
-.交互式学习中心箭头 {
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 5rem;
-  background-color: #fff;
-  position: absolute;
-  top: 50%;
-  right: 2.5%;
-  translate: 0 -50%;
+.特色项:nth-child(1) {
+  animation: 特色项动画_左上 1s ease-out forwards;
 }
 
-.欢迎按钮:nth-child(1):hover .交互式学习中心箭头 {
-  width: 3rem;
-  height: 3.5rem;
-  right: 0;
-  border-radius: 0;
-  font-size: 1rem;
+.特色项:nth-child(2) {
+  animation: 特色项动画_右上 1s ease-out forwards;
 }
 
-.第三方教程箭头 {
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 3rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.特色项:nth-child(3) {
+  animation: 特色项动画_左下 1s ease-out forwards;
 }
 
-.欢迎按钮:nth-child(2):hover span:nth-child(1) {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-color: var(--网站风格颜色);
+.特色项:nth-child(4) {
+  animation: 特色项动画_右下 1s ease-out forwards;
 }
 
-.欢迎按钮:nth-child(2):hover .第三方教程箭头 {
-  scale: 1.25;
-}
-
-.欢迎图像容器 {
-  width: min(700px, 50vw);
-  height: 100%;
-}
-
-.欢迎图像容器 > img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  animation: 欢迎图像动画 5s ease-out infinite alternate;
-}
-
-@keyframes 欢迎图像动画 {
+@keyframes 特色项动画_右上 {
   from {
-    filter: drop-shadow(0 0 15px #fff0);
+    translate: 50px -50px;
+    opacity: 0;
   }
   to {
-    filter: drop-shadow(0 0 15px #fff);
+    translate: 0 0;
+    opacity: 1;
   }
 }
 
-.欢迎动画区 {
-  position: absolute;
-  bottom: 12.5%;
-  left: 50%;
-  translate: -50% 0;
-  width: min(750px, 90vw);
-  height: 25px;
-  border-radius: 100px;
+@keyframes 特色项动画_右下 {
+  from {
+    translate: 50px 50px;
+    opacity: 0;
+  }
+  to {
+    translate: 0 0;
+    opacity: 1;
+  }
+}
+
+@keyframes 特色项动画_左下 {
+  from {
+    translate: -50px 50px;
+    opacity: 0;
+  }
+  to {
+    translate: 0 0;
+    opacity: 1;
+  }
+}
+
+@keyframes 特色项动画_左上 {
+  from {
+    translate: -50px -50px;
+    opacity: 0;
+  }
+  to {
+    translate: 0 0;
+    opacity: 1;
+  }
+}
+
+.特色图标 {
+  height: 100%;
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.特色文本 {
+  padding-right: 15px;
+}
+
+.欢迎推荐区 {
+  display: flex;
+  gap: 100px;
+  justify-content: space-between;
+}
+
+.推荐卡片 {
+  position: relative;
+  width: calc(10dvw + 50px);
+  aspect-ratio: 3;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: 250ms;
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 5%;
+  padding-right: max(3px, 2%);
+  box-shadow: 5px 5px 10px 0 #0005;
 }
 
-.破折线 {
+.推荐卡片:hover {
+  scale: 1.15 !important;
+  z-index: 1;
+}
+
+.推荐卡片-交互式学习中心 {
+  background-color: #b7d6d6dd;
+  color: #2d3542;
+  clip-path: inset(0 0 100% 0);
+  animation: 交互式学习中心推荐卡片动画 1s ease-out 750ms forwards;
+}
+
+@keyframes 交互式学习中心推荐卡片动画 {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  99.99% {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: none;
+  }
+}
+
+.推荐卡片-交互式学习中心:hover {
+  background-color: #b7d6d6cc;
+}
+
+.推荐卡片-交互式学习中心:visited {
+  color: #2d3542;
+}
+
+.推荐卡片-经验之谈 {
+  background-color: #3b4557dd;
+  color: #b7d6d6;
+  clip-path: inset(100% 0 0 0);
+  animation: 经验之谈推荐卡片动画 1s ease-out 750ms forwards;
+}
+
+@keyframes 经验之谈推荐卡片动画 {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  99.99% {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: none;
+  }
+}
+
+.推荐卡片-经验之谈:visited {
+  color: #b7d6d6;
+}
+
+.推荐卡片-经验之谈:hover {
+  background-color: #3b4557cc;
+}
+
+.推荐卡片Logo容器 {
+  width: 20%;
+  aspect-ratio: 1;
+}
+
+.推荐卡片Logo {
   width: 100%;
-  height: 5px;
-  background: radial-gradient(8px 15px, #999 80%, transparent 87%) 0 0/25px 100%;
-  animation: 破折线动画 5s linear infinite;
-}
-
-@keyframes 破折线动画 {
-  0% {
-    clip-path: inset(0 0 0 0);
-  }
-  47.5% {
-    clip-path: inset(0 0 0 100%);
-  }
-  50% {
-    clip-path: inset(0 0 0 100%);
-  }
-  97.5% {
-    clip-path: inset(0 0 0 0);
-  }
-  100% {
-    clip-path: inset(0 0 0 0);
-  }
-}
-
-.破折线动画工具 {
-  position: absolute;
-  top: 50%;
-  width: 75px;
-  height: 100px;
+  height: 100%;
   object-fit: contain;
 }
 
-.剪刀 {
-  left: 0;
-  translate: -100% -53%;
-  rotate: y 180deg;
-  animation: 剪刀动画 5s linear infinite;
-}
-
-@keyframes 剪刀动画 {
-  0% {
-    left: 0;
-  }
-  45% {
-    opacity: 1;
-  }
-  50% {
-    left: calc(100% + 75px);
-    opacity: 0;
-  }
-  100% {
-    left: 100%;
-    opacity: 0;
-  }
-}
-
-.胶水 {
-  right: 0;
-  translate: 100% -50%;
-  transform-origin: 0 50%;
-  opacity: 0;
-  animation: 胶水动画 5s linear 2.5s infinite,
-  胶水摇晃 0.5s linear 2.5s infinite;
-}
-
-@keyframes 胶水动画 {
-  0% {
-    opacity: 1;
-    right: 0;
-  }
-  45% {
-    opacity: 1;
-  }
-  50% {
-    right: calc(100% + 75px);
-    opacity: 0;
-  }
-  100% {
-    right: 100%;
-    opacity: 0;
-  }
-}
-
-@keyframes 胶水摇晃 {
-  from {
-    rotate: 0;
-  }
-  25% {
-    rotate: z 15deg;
-  }
-  75% {
-    rotate: z -15deg;
-  }
-  100% {
-    rotate: 0;
-  }
+.推荐卡片标题 {
+  font-size: calc(0.5dvw + 8px);
 }
 
 /* <!-- ------------------ ↑ 欢迎内容 ------------------- --> */
 
-/* <!-- ------------------ ↓ 学习内容 ------------------- --> */
-.learn-page {
+/* <!-- ------------------ ↓ 非主推内容 ------------------- --> */
+.非主推区域 {
+  height: 100vh;
   min-height: 100vh;
   width: 100%;
+  background-image: url("/Images/Background-Images/盘山公路.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.非主推区域覆盖层 {
+  background-image: linear-gradient(black var(--分页渐变黑色标位置), transparent var(--分页渐变透明色标位置), transparent calc(100% - var(--分页渐变透明色标位置)), black calc(100% - var(--分页渐变黑色标位置)));
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: clamp(100px, 7.5vh, 300px);
 }
 
-.learn-profile {
-  position: relative;
-  height: max(400px, 30vh);
-  aspect-ratio: 0.8;
-  background-image: radial-gradient(
-    circle at 30% 30%,
-    rgba(40, 40, 40, 0.85) 25%,
-    rgba(20, 20, 20, 0.45) 90%
-  );
-  box-shadow: 5px 5px 10px 0 #0005;
-  border-radius: 10px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  /* gap: 50px; */
-  outline: solid 2px gray;
-}
-
-.profile-title {
-  position: relative;
-  isolation: isolate;
+.非主推列表 {
   width: 100%;
-  height: fit-content;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-
-.profile-github-banner-container {
-  width: 100%;
-  height: 100px;
-}
-
-.profile-github-banner-container > img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.profile-avatar-container {
-  position: absolute;
-  width: 70px;
-  height: 70px;
-  border-radius: 50px;
-  top: 50%;
-  left: 50%;
-  translate: -50% -50%;
-  overflow: hidden;
-}
-
-.profile-avatar-container > img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.profile-brief {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  width: 100%;
-}
-
-.profile-brief-cell {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-}
-
-.profile-brief-cell > h4 {
-  font-weight: bolder;
-}
-
-.profile-brief-cell > p {
-  font-size: 0.85rem;
-  color: gray;
-}
-
-.profile-github {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  width: 80%;
-  padding: 0 0 15px 0;
-}
-
-.profile-github > h3 {
-  font-weight: normal;
-  color: gold;
-  text-align: center;
-  justify-content: center;
-}
-
-.profile-github > p {
-  color: #fff;
-  text-align: center;
-  font-size: 0.95rem;
-}
-
-.profile-link {
-  margin-top: 10px;
-  padding: 10px 30px;
-  border-radius: 5px;
-  background-color: rgb(32, 102, 95);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  outline: solid 3px #fff0;
-  transition: 150ms;
-}
-
-.profile-link > img {
-  width: 30px;
-  height: 30px;
-  object-fit: contain;
-  filter: contrast(500%) invert(100%);
-  transition: 250ms;
-}
-
-.profile-link > span {
+  padding: 0 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
-  transition: 250ms;
-}
-
-.profile-link:hover {
-  box-shadow: 1px 1px 5px 0 #000a, inset 0 0 3px 0 #fff;
-}
-
-.profile-link:hover > span {
-  color: yellowgreen;
-}
-
-.learn-list {
-  position: relative;
-  padding: 100px 50px;
-  border-radius: 10px;
-  z-index: 100;
-  width: min(95%, 1100px);
-  display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  align-content: center;
-  gap: max(50px, 5vh) 10vw;
-  --gradient-x: "0px";
-  --gradient-y: "0px";
+  gap: 15px;
+  perspective: 600px;
 }
 
-.learn-list::before {
-  position: absolute;
-  content: "";
-  left: 0;
-  top: 0;
+.非主推项 {
+  width: 200px;
+  height: 250px;
+  transform-style: preserve-3d;
+  rotate: y 180deg;
+  backface-visibility: hidden;
+  transition: 1000ms;
+}
+
+.非主推链接 {
+  position: relative;
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
   border-radius: 10px;
-  background-image: radial-gradient(
-    circle at var(--gradient-x) var(--gradient-y),
-    rgba(255, 255, 255, 0.1) 0%,
-    transparent 90%
-  );
-  opacity: 0;
-  transition: 250ms;
+  overflow: hidden;
+  background-color: #345a;
 }
 
-.learn-list:hover::before {
-  opacity: 1;
-}
-
-.learn-link {
+.非主推链接-内容 {
   position: relative;
+  width: 100%;
+  height: 75%;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  gap: 15px;
-  mix-blend-mode: exclusion;
-}
-
-.learn-img {
-  width: 100px;
-  height: 100px;
-  object-fit: contain;
-}
-
-.learn-text {
-  width: 250px;
-  height: fit-content;
-}
-
-.learn-text > h3 {
-  margin-bottom: 0.25ch;
-  display: flex;
-  justify-content: flex-start;
   align-items: center;
-  gap: 15px;
+  font-size: 5em;
+}
+
+.非主推链接-标题 {
+  position: relative;
+  width: 100%;
+  height: 25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.05em;
+}
+
+.非主推链接::before {
+  position: absolute;
+  width: 100%;
+  height: 25%;
+  content: "";
+  top: 75%;
   transition: 250ms;
 }
 
-.learn-item:hover .learn-text > h3 {
-  color: lightskyblue;
+.游戏链接::before {
+  background-color: #ff8c00aa;
 }
 
-.learn-text > h3 > i {
-  color: gold;
-  font-size: 1rem;
-  visibility: hidden;
-  opacity: 0;
-  transition: 250ms;
+.Web应用链接::before {
+  background-color: #256f44aa;
 }
 
-.learn-item:hover .learn-text > h3 > i {
-  visibility: visible;
-  opacity: 1;
+.第三方教程链接::before {
+  background-color: #a52a2aaa;
 }
 
-.learn-text > p {
-  color: gray;
-  transition: 250ms;
+.软件下载链接::before {
+  background-color: #4169e1aa;
 }
 
-.learn-item:hover .learn-text > p {
-  color: lightblue;
+.非主推链接:hover::before {
+  top: 0;
+  height: 75%;
 }
 
-/* <!-- ------------------ ↑ 学习内容 ------------------- --> */
+/* <!-- ------------------ ↑ 非主推内容 ------------------- --> */
 
-/* <!-- ------------------ ↓ 游戏 ------------------- --> */
-.games {
+/* <!-- ------------------ ↓ 贡献者和宗旨 ------------------- --> */
+.about {
   position: relative;
   width: 100dvw;
   height: 100dvh;
@@ -541,132 +451,146 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  /* background: no-repeat center/55% url("../Images/Index-Images/监视器.png"); */
-  /* background-color: #29323c; */
+  background-image: url("/Images/Background-Images/背景-08.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
-.灯光 {
-  position: absolute;
-  z-index: 0;
-  border-radius: 500px;
-}
-
-/* .games > :not(.section-bg-img) {
-  z-index: 0;
-} */
-
-.games-entrance {
-  display: block;
-  width: 200px;
-  height: 200px;
-}
-
-.游戏入口提示 {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  translate: -50% -50%;
-  scale: 0;
-  font-size: 1.75rem;
-  color: var(--网站风格颜色);
-  text-shadow: 2px 2px 4px #000;
-  opacity: 0;
-  transition: 0.25s;
-}
-
-.游戏入口提示::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background-color: #fffa;
-  scale: 0;
-  box-shadow: 2px 2px 5px 0 #444;
-}
-
-.游戏入口 {
-  position: absolute;
-  z-index: 1;
-  width: 165px;
-  height: 165px;
-  border-radius: 200px;
-  top: 50%;
-  left: 50%;
-  translate: -50% -50%;
+.关于覆盖层 {
+  background-image: linear-gradient(black var(--分页渐变黑色标位置), transparent var(--分页渐变透明色标位置), transparent calc(100% - var(--分页渐变透明色标位置)), black calc(100% - var(--分页渐变黑色标位置)));
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.5rem;
-  background-color: #000a;
-  backdrop-filter: blur(5px);
-  /* box-shadow: 5px 5px 10px 0 #333; */
-  transition: 0.25s;
 }
 
-.games-entrance:hover > .游戏入口 {
-  background-color: #fff4;
-  scale: 1.25;
-  translate: -50% -75%;
+.关于内容区 {
+  position: relative;
+  width: 66.667%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
 }
 
-.games-entrance:hover > .游戏入口提示 {
-  translate: -50% 225%;
-  scale: 1;
-  opacity: 1;
+.关于内容中间线 {
+  width: 100%;
+  height: 4px;
+  background-color: #123a;
+  transition: 1000ms;
+  clip-path: inset(0 0 0 0);
 }
 
-.games-entrance:hover > .游戏入口提示:hover {
-  filter: hue-rotate(200deg);
-}
-
-.games-entrance:hover > .游戏入口提示::after {
-  animation: 下划线动画 0.25s linear 250ms forwards;
-}
-
-@keyframes 下划线动画 {
-  from {
-    scale: 0;
-  }
-  to {
-    scale: 1;
-  }
-}
-
-.游戏入口 > img {
+.贡献者区, .宗旨区 {
   position: absolute;
-  width: 80%;
-  height: 80%;
-  object-fit: contain;
-  transition: 250ms;
+  width: 250px;
+  height: 300px;
+  top: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.游戏入口 > img:nth-child(2) {
-  opacity: 0;
+.贡献者区 {
+  left: 20%;
+  translate: -50% calc(-100% - 1px);
+  transition: 1000ms;
 }
 
-.games-entrance:hover > .游戏入口 > img:nth-child(1) {
-  opacity: 0;
+.宗旨区 {
+  right: 20%;
+  translate: 50% 1px;
+  transition: 1000ms;
 }
 
-.games-entrance:hover > .游戏入口 > img:nth-child(2) {
-  opacity: 1;
+.关于图像容器 {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  background-color: #123a;
+  border-radius: 999px;
+  flex-shrink: 0;
+  /*overflow: hidden;*/
+  display: flex;
+  flex-direction: column;
+  outline: solid 2px transparent;
+  transition: 150ms;
 }
 
-/* <!-- ------------------ ↑ 游戏 ------------------- --> */
+.关于图像 {
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  object-fit: cover;
+  filter: drop-shadow(5px 5px 5px #0007);
+}
+
+.关于图像容器:hover .关于图像容器标题 {
+  background-color: #000a;
+}
+
+.关于图像容器标题 {
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  font-size: 1.5em;
+  padding: 10px 25px;
+  border-radius: 5px;
+  width: fit-content;
+  text-wrap: nowrap;
+  background-color: #000a;
+  transition: 1000ms;
+}
+
+.贡献者图像容器 .关于图像容器标题 {
+  top: 125%;
+}
+
+.宗旨图像容器 .关于图像容器标题 {
+  top: -47%;
+}
+
+.关于分区支撑线 {
+  width: 2px;
+  height: 0;
+  flex-grow: 1;
+  background-color: #123a;
+}
+
+.贡献者区:has(.贡献者标题:hover) .贡献者图像容器, .贡献者图像容器:hover {
+  outline: solid 2px white;
+}
+
+.宗旨区:has(.宗旨标题:hover) .宗旨图像容器, .宗旨图像容器:hover {
+  outline: solid 2px white;
+}
+
+/* <!-- ------------------ ↑ 贡献者和宗旨 ------------------- --> */
 
 /* <!-- ------------------ ↓ 美图欣赏 ------------------- --> */
-.图像长廊区 {
+.艺术展示区 {
   width: 100%;
   height: 100vh;
-  /* background-image: linear-gradient(60deg, #151618 0%, #171a1f 100%); */
+  background-image: url("/Images/Background-Images/背景-06.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.图像长廊区 {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
   position: relative;
   overflow: hidden;
+  background-image: linear-gradient(black var(--分页渐变黑色标位置),
+  transparent var(--分页渐变透明色标位置),
+  transparent calc(100% - var(--分页渐变透明色标位置) * 2),
+  black calc(100% - var(--分页渐变黑色标位置) * 2));
 }
 
 .图像长廊标题 {
@@ -926,32 +850,6 @@
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
 @media screen and (width <= 1500px) {
-  .welcome-main {
-    gap: 5%;
-    padding: 0 0 10dvh 0;
-  }
-
-  .欢迎文本区 {
-    width: min(500px, 95vw);
-  }
-
-  .欢迎动画区 {
-    width: min(500px, 90vw);
-    height: 25px;
-  }
-
-  .破折线 {
-    height: 2.5px;
-  }
-
-  .破折线动画工具 {
-    position: absolute;
-    top: 50%;
-    width: 60px;
-    height: 75px;
-    object-fit: contain;
-  }
-
   .learn-list {
     width: min(95%, 1000px);
     padding: 50px 25px;

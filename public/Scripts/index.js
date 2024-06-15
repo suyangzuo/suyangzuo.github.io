@@ -1,6 +1,66 @@
 const root = document.querySelector(":root");
 const rootStyle = window.getComputedStyle(root);
 
+//-------------------- ↓ 非主推卡片翻转 -----------------------
+const 非主推区 = document.querySelector(".非主推区域");
+const 非主推选项 = {
+  threshold: Array.from({ length: 181 }, (_, i) => (1 / 180) * i),
+};
+
+function 非主推回调(entries) {
+  const 非主推项集合 = document.querySelectorAll(".非主推项");
+  for (const entry of entries) {
+    if (entry.intersectionRatio > 0.525) {
+      for (const 非主推项 of 非主推项集合) {
+        非主推项.style.rotate = "y 0deg";
+      }
+    } else {
+      for (const 非主推项 of 非主推项集合) {
+        非主推项.style.rotate = "y 180deg";
+      }
+    }
+  }
+}
+
+const 非主推观察者 = new IntersectionObserver(非主推回调, 非主推选项);
+非主推观察者.observe(非主推区);
+//-------------------- ↑ 非主推卡片翻转 -----------------------
+
+//-------------------- ↓ 关于区移动 -----------------------
+const 关于区 = document.querySelector(".about");
+const 贡献者区 = 关于区.querySelector(".贡献者区");
+const 宗旨区 = 关于区.querySelector(".宗旨区");
+const 关于内容中间线 = 关于区.querySelector(".关于内容中间线 ");
+const 贡献者标题 = 关于区.querySelector(".贡献者标题");
+const 宗旨标题 = 关于区.querySelector(".宗旨标题");
+
+const 关于区选项 = {
+  threshold: 0.6,
+};
+
+function 关于区回调(entries) {
+  for (const entry of entries) {
+    if (entry.isIntersecting) {
+      贡献者标题.style.opacity = "1";
+      宗旨标题.style.opacity = "1";
+      关于内容中间线.style.clipPath = "inset(0 0 0 0)";
+      贡献者区.style.left = "20%";
+      宗旨区.style.right = "20%";
+    } else {
+      贡献者标题.style.opacity = "0";
+      宗旨标题.style.opacity = "0";
+      关于内容中间线.style.clipPath = "inset(0 50% 0 50%)";
+      贡献者区.style.left = "50%";
+      宗旨区.style.right = "50%";
+    }
+  }
+}
+
+const 关于区观察器 = new IntersectionObserver(关于区回调, 关于区选项);
+关于区观察器.observe(关于区);
+
+//-------------------- ↑ 关于区移动 -----------------------
+
 const 图像滑块组 = document.getElementsByClassName("图像滑块组")[0];
 const 图像滑块 = 图像滑块组.getElementsByClassName("图像滑块");
 const 图像序号指示器组 = document.getElementsByClassName("图像序号指示器");
@@ -570,3 +630,4 @@ let options = {
 let 观察者 = new IntersectionObserver(观察者回调, options);
 观察者.observe(图像长廊区);
 //-------------------- ↑ 图像长廊标题显隐观察 -----------------------
+
