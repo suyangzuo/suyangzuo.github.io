@@ -71,7 +71,7 @@
 
 .中文欢迎标题 {
   /*font-size: calc(4.25dvw + 10px);*/
-  font-size: calc(3.25dvw + 10px);
+  font-size: max(45px, calc(3.25dvw + 10px));
   line-height: 1.4em;
   filter: drop-shadow(2px 2px 2px #000d);
 }
@@ -167,7 +167,7 @@
   justify-content: center;
   align-items: center;
   gap: 15px;
-  font-size: calc(0.65vw + 2px);
+  font-size: max(14px, calc(0.65vw + 2px));
   opacity: 0;
   box-shadow: 2px 2px 4px 0 #0005;
 }
@@ -245,13 +245,13 @@
 
 .欢迎推荐区 {
   display: flex;
-  gap: 100px;
+  gap: 5vw;
   justify-content: space-between;
 }
 
 .推荐卡片 {
   position: relative;
-  width: calc(10dvw + 50px);
+  width: max(175px, calc(10dvw + 50px));
   aspect-ratio: 3;
   border-radius: 10px;
   overflow: hidden;
@@ -335,7 +335,7 @@
 }
 
 .推荐卡片标题 {
-  font-size: calc(0.5dvw + 8px);
+  font-size: max(14px, calc(0.5dvw + 8px));
 }
 
 /* <!-- ------------------ ↑ 欢迎内容 ------------------- --> */
