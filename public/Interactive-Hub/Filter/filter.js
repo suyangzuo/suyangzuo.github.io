@@ -248,8 +248,8 @@ for (const 缩略图项 of 缩略图像组) {
 });
 
 function 生成投影对象() {
-  const 投影滑块_x偏移 = 投影项.querySelector("#投影-x偏移");
-  const 投影滑块_y偏移 = 投影项.querySelector("#投影-y偏移");
+  const 投影滑块_x偏移 = 投影项.querySelector("#投影-水平偏移");
+  const 投影滑块_y偏移 = 投影项.querySelector("#投影-垂直偏移");
   const 投影滑块_模糊 = 投影项.querySelector("#投影-模糊");
   const 投影代码 = `${投影滑块_x偏移.value}px ${投影滑块_y偏移.value}px ${投影滑块_模糊.value}px black`;
   return {
