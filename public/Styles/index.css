@@ -124,16 +124,88 @@
   color: transparent;
 }
 
+@property --英文色标1 {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: silver;
+}
+
+@property --英文色标2 {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: lightcyan;
+}
+
+@property --英文色标3 {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: silver;
+}
+
+@property --英文色标4 {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: lightcyan;
+}
+
+@property --英文背景位置 {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
 .英文欢迎标题 {
   font-size: calc(1.25dvw + 8px);
-  background-color: #bcd;
+  background-image: linear-gradient(90deg, var(--英文色标4) 0, var(--英文色标1) 25%, var(--英文色标2) 50%, var(--英文色标3) 75%, var(--英文色标4) 100%);
+  background-position: var(--英文背景位置) 0;
+  background-size: 200%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  font-family: Cambria, serif;
+  font-family: "Molengo", sans-serif;
   opacity: 0;
-  animation: 英文欢迎标题动画 1s ease-out 750ms forwards;
-  mix-blend-mode: difference;
+  animation: 英文欢迎标题动画 1s ease-out 750ms forwards, 英文标题颜色变化 12s ease-out 3s infinite;
+  /*mix-blend-mode: difference;*/
+}
+
+@keyframes 英文标题颜色变化 {
+  from {
+    --英文背景位置: 0%;
+    --英文色标1: silver;
+    --英文色标2: lightcyan;
+    --英文色标3: silver;
+    --英文色标4: lightcyan;
+  }
+  15% {
+    --英文背景位置: 100%;
+    --英文色标1: darkorange;
+    --英文色标2: #256f44;
+    --英文色标3: brown;
+    --英文色标4: royalblue;
+  }
+  40% {
+    --英文背景位置: 200%;
+  }
+  50% {
+    --英文背景位置: 200%;
+  }
+  60% {
+    --英文背景位置: 200%;
+  }
+  85% {
+    --英文背景位置: 100%;
+    --英文色标1: darkorange;
+    --英文色标2: #256f44;
+    --英文色标3: brown;
+    --英文色标4: royalblue;
+  }
+  100% {
+    --英文背景位置: 0%;
+    --英文色标1: silver;
+    --英文色标2: lightcyan;
+    --英文色标3: silver;
+    --英文色标4: lightcyan;
+  }
 }
 
 @keyframes 英文欢迎标题动画 {
@@ -241,6 +313,7 @@
 
 .特色文本 {
   padding-right: 15px;
+  text-shadow: 1px 1px 1px #0007;
 }
 
 .欢迎推荐区 {
@@ -385,7 +458,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  border-radius: 10px;
+  border-radius: 0 10px 10px 10px;
   overflow: hidden;
   background-color: #345a;
 }
