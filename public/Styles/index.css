@@ -55,7 +55,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: max(50px, 5dvh);
+  gap: max(50px, 10dvh);
   background-image: linear-gradient(transparent calc(100% - var(--分页渐变透明色标位置)), black calc(100% - var(--分页渐变黑色标位置)));
 }
 
