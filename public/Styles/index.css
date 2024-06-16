@@ -400,6 +400,7 @@
 .推荐卡片Logo容器 {
   width: 20%;
   aspect-ratio: 1;
+  display: flex;
 }
 
 .推荐卡片Logo {
