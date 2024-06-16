@@ -155,6 +155,7 @@
 }
 
 .英文欢迎标题 {
+  padding-top: 15px;
   font-size: calc(1.25dvw + 8px);
   background-image: linear-gradient(90deg, var(--英文色标4) 0, var(--英文色标1) 25%, var(--英文色标2) 50%, var(--英文色标3) 75%, var(--英文色标4) 100%);
   background-position: var(--英文背景位置) 0;
@@ -220,7 +221,7 @@
 }
 
 .欢迎特色区 {
-  margin-bottom: 10vh;
+  margin-bottom: 5vh;
 }
 
 .特色列表 {
