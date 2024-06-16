@@ -562,7 +562,7 @@
     <pre>
       <code class="lang-js">
         // 思路：
-        如果(读取的数据是 null)
+        如果 (读取的数据是 null)
           数据设置为默认值;
           保存数据;
         否则
@@ -571,7 +571,7 @@
         // 代码：
         let 显卡价格 = sessionStorage.getItem("显卡价格");
         
-        if(显卡价格 === null) {
+        if (显卡价格 === null) {
           显卡价格 = 5000;
           sessionStorage.setItem("显卡价格", 显卡价格);
         } else {
