@@ -43,6 +43,10 @@
   align-items: center;
 }
 
+label {
+  user-select: none;
+}
+
 .数量与展示区,
 .控制与代码区 {
   height: 100%;
