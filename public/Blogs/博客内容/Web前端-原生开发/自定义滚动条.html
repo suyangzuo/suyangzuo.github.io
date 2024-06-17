@@ -85,4 +85,121 @@
     </li>
   </ul>
 </article>
-<div class="专题正文区"></div>
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">滚动条元素</h2>
+
+    <h3 class="分区标题 分区3级标题">为什么要自定义？</h3>
+    <p class="分区普通文本">
+      网站的整体色调一致，用户的感官就会比较舒适，反之则会感觉很突兀。有的网站的滚动条和整体的色调对比太强烈，比如：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/自定义滚动条/pixiv-滚动栏.png"
+        alt="pixiv-滚动栏"
+      />
+    </figure>
+    <p class="分区普通文本">
+      网站整体色调接近黑色，滚动栏却是白色，显得非常刺眼；因此，我们经常需要定制滚动条的样式，以符合网站的整体风格。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">滚动条元素</h3>
+    <p class="分区普通文本">
+      滚动条在<span class="行内专业名词">DOM树</span>中实际上是<span
+        class="行内专业名词"
+        >伪元素</span
+      >，分为几个部分：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="行内代码">::-webkit-scrollbar</span
+        >：滚动条本身。如忽略，则其它部分设置无效
+      </li>
+      <li class="分区列表项">
+        <span class="行内代码">::-webkit-scrollbar-track</span>：滚动条轨道
+      </li>
+      <li class="分区列表项">
+        <span class="行内代码">::-webkit-scrollbar-thumb</span>：滚动条滑块
+      </li>
+      <li class="分区列表项">
+        <span class="行内代码">::-webkit-scrollbar-button</span
+        >：滚动条两端的箭头
+      </li>
+    </ul>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        <span class="行内代码">webkit</span>代表的是源于<span
+          class="行内专业名词"
+          >webkit</span
+        >核心打造的浏览器，主要代表有<span class="行内专业名词">Chrome</span
+        >、<span class="行内专业名词">Edge</span>、<span class="行内专业名词"
+          >Safari</span
+        >，因此这些伪元素对于<span class="行内专业名词">FireFox</span
+        >浏览器是<span class="强调">无效</span>的。
+      </p>
+      <p class="分区普通文本">
+        其次，这些伪元素是<span class="强调">非标准</span>的，<a
+          class="超链接"
+          target="_blank"
+          href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/::-webkit-scrollbar"
+          >MDN Web Docs 相关页面</a
+        >明确提出<span class="强调">尽量不要在生产环境中使用</span
+        >。简单地说就是公司的正规项目里不要用这些伪元素。
+      </p>
+      <figure class="截图容器">
+        <img
+          src="/Images/Blogs/Web前端-原生开发/自定义滚动条/滚动条伪元素非标准提示.png"
+          alt="滚动条伪元素非标准提示"
+        />
+      </figure>
+      <p class="分区普通文本">尽量不要在正式项目里使用这些伪元素。</p>
+    </section>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">自定义滚动条样式</h2>
+
+    <h3 class="分区标题 分区3级标题">滚动条</h3>
+    <p class="分区普通文本">滚动条可以修改宽度和背景：</p>
+    <pre class="line-numbers">
+      <code class="lang-css">
+        body::-webkit-scrollbar {
+          width: 35px;
+          background-color: darkgoldenrod;
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/自定义滚动条/自定义滚动条.png"
+        alt="自定义滚动条"
+      />
+    </figure>
+    <p class="分区普通文本">滚动条的宽度和背景已改变。</p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        <span class="行内代码">::-webkit-scrollbar</span
+        >的宽度和背景色至少要写一个，其它的伪元素才能起作用。
+      </p>
+    </section>
+    <p class="分区普通文本">滚动条的背景不仅能用颜色，也能用渐变：</p>
+    <pre class="line-numbers">
+      <code class="lang-css">
+        body::-webkit-scrollbar {
+          width: 25px;
+          background-image: linear-gradient(seagreen 10%, lightskyblue 90%);
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/自定义滚动条/自定义滚动条背景-渐变.png"
+        alt="自定义滚动条背景-渐变"
+      />
+    </figure>
+
+    <h3 class="分区标题 分区3级标题">滚动条轨道</h3>
+  </article>
+</div>

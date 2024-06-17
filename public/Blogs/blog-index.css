@@ -4,7 +4,7 @@
   --侧边栏颜色-已选中: rgb(106, 50, 83);
   --侧边栏背景: linear-gradient(60deg, #141518 0%, #171c21 100%);
   --专题内容区背景: linear-gradient(90deg, #181c20 0%, #262d35 100%);
-  --超链接颜色-正文: skyblue;
+  --超链接颜色-正文: yellowgreen;
   --超链接-悬停颜色: rgb(173, 104, 238);
   --超链接-下划线颜色: #ffa500a0;
   --超链接-下划线悬停颜色: orange;
@@ -1051,12 +1051,16 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
 }
 
 .超链接 {
-  color: yellowgreen !important;
+  color: var(--超链接颜色-正文);
   margin: 0 3px;
   text-decoration: underline;
   text-decoration-color: #ffa500a0;
   text-underline-offset: 3px;
   transition: 125ms;
+}
+
+.超链接:link {
+  color: var(--超链接颜色-正文);
 }
 
 .原文链接 > .超链接 {
@@ -1087,7 +1091,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
 }
 
 .超链接:visited {
-  color: yellowgreen;
+  color: var(--超链接颜色-正文);
 }
 
 .超链接:hover {
