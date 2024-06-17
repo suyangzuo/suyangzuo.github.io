@@ -1,6 +1,6 @@
 :root {
   --进度条预填充颜色: #fd6e6a;
-  --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
+  --进度条颜色-未填充: rgba(160, 160, 160);
   --进度条渐变-已填充: linear-gradient(
     135deg,
     var(--进度条预填充颜色) 10%,
@@ -284,7 +284,7 @@ label {
   width: 50px;
   height: 10px;
   border-radius: 10px;
-  background-color: gray;
+  background-color: #a0a0a0;
   position: relative;
 }
 
