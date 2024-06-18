@@ -516,6 +516,16 @@ label {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
+.滑块::-moz-range-thumb {
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 99px;
+  background-color: #aba;
+  box-shadow: 1px 1px 2px #555;
+  border: none;
+}
+
 .滑块::-webkit-slider-thumb {
   appearance: none;
   width: 25px;

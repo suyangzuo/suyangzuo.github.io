@@ -118,6 +118,16 @@ body {
   transition: opacity 500ms;
 }
 
+#效果图滑块::-moz-range-thumb {
+  appearance: none;
+  width: var(--效果图滑块拇指宽度);
+  height: var(--效果图滑块拇指宽度);
+  border-radius: 999px;
+  background-color: gray;
+  border: solid 4px white;
+  translate: var(--效果图滑块拇指x修正) 0;
+}
+
 #效果图滑块::-webkit-slider-thumb {
   appearance: none;
   width: var(--效果图滑块拇指宽度);
@@ -126,6 +136,10 @@ body {
   background-color: gray;
   border: solid 4px white;
   translate: var(--效果图滑块拇指x修正) 0;
+}
+
+#效果图滑块::-moz-range-thumb:hover {
+  cursor: url("/Images/Common/鼠标-横向缩放.png"), ew-resize;
 }
 
 #效果图滑块::-webkit-slider-thumb:hover {
@@ -445,6 +459,16 @@ body {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
+.滑块::-moz-range-thumb {
+  appearance: none;
+  width: var(--滤镜拇指宽度);
+  height: 25px;
+  background-image: linear-gradient(35deg, #678 20%, #abc 80%);
+  clip-path: polygon(0% 0%, 100% 0%, 100% 66%, 50% 100%, 0% 66%);
+  filter: drop-shadow(0 2px 2px #111);
+  border: none;
+}
+
 .滑块::-webkit-slider-thumb {
   appearance: none;
   width: var(--滤镜拇指宽度);
@@ -454,56 +478,112 @@ body {
   filter: drop-shadow(0 2px 2px #111);
 }
 
+#棕褐色::-moz-range-thumb {
+  translate: var(--拇指偏移修正-棕褐色) -8px;
+}
+
 #棕褐色::-webkit-slider-thumb {
   translate: var(--拇指偏移修正-棕褐色) -8px;
+}
+
+#饱和度::-moz-range-thumb {
+  translate: var(--拇指偏移修正-饱和度) -8px;
 }
 
 #饱和度::-webkit-slider-thumb {
   translate: var(--拇指偏移修正-饱和度) -8px;
 }
 
+#透明度::-moz-range-thumb {
+  translate: var(--拇指偏移修正-透明度) -8px;
+}
+
 #透明度::-webkit-slider-thumb {
   translate: var(--拇指偏移修正-透明度) -8px;
+}
+
+#反相::-moz-range-thumb {
+  translate: var(--拇指偏移修正-反相) -8px;
 }
 
 #反相::-webkit-slider-thumb {
   translate: var(--拇指偏移修正-反相) -8px;
 }
 
+#色相::-moz-range-thumb {
+  translate: var(--拇指偏移修正-色相) -8px;
+}
+
 #色相::-webkit-slider-thumb {
   translate: var(--拇指偏移修正-色相) -8px;
+}
+
+#灰度::-moz-range-thumb {
+  translate: var(--拇指偏移修正-灰度) -8px;
 }
 
 #灰度::-webkit-slider-thumb {
   translate: var(--拇指偏移修正-灰度) -8px;
 }
 
+#投影::-moz-range-thumb {
+  translate: var(--拇指偏移修正-投影) -8px;
+}
+
 #投影::-webkit-slider-thumb {
   translate: var(--拇指偏移修正-投影) -8px;
+}
+
+#对比度::-moz-range-thumb {
+  translate: var(--拇指偏移修正-对比度) -8px;
 }
 
 #对比度::-webkit-slider-thumb {
   translate: var(--拇指偏移修正-对比度) -8px;
 }
 
+#亮度::-moz-range-thumb {
+  translate: var(--拇指偏移修正-亮度) -8px;
+}
+
 #亮度::-webkit-slider-thumb {
   translate: var(--拇指偏移修正-亮度) -8px;
+}
+
+#模糊::-moz-range-thumb {
+  translate: var(--拇指偏移修正-模糊) -8px;
 }
 
 #模糊::-webkit-slider-thumb {
   translate: var(--拇指偏移修正-模糊) -8px;
 }
 
+#投影-水平偏移::-moz-range-thumb {
+  translate: var(--拇指偏移修正-投影-水平偏移) -8px;
+}
+
 #投影-水平偏移::-webkit-slider-thumb {
   translate: var(--拇指偏移修正-投影-水平偏移) -8px;
+}
+
+#投影-垂直偏移::-moz-range-thumb {
+  translate: var(--拇指偏移修正-投影-垂直偏移) -8px;
 }
 
 #投影-垂直偏移::-webkit-slider-thumb {
   translate: var(--拇指偏移修正-投影-垂直偏移) -8px;
 }
 
+#投影-模糊::-moz-range-thumb {
+  translate: var(--拇指偏移修正-投影-模糊) -8px;
+}
+
 #投影-模糊::-webkit-slider-thumb {
   translate: var(--拇指偏移修正-投影-模糊) -8px;
+}
+
+#投影-颜色::-moz-range-thumb {
+  translate: var(--拇指偏移修正-投影-颜色) -8px;
 }
 
 #投影-颜色::-webkit-slider-thumb {
