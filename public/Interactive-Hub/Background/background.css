@@ -6,7 +6,6 @@
   --背景宽: 100%;
   --背景高: 100%;
   --范围滑块长度: 400px;
-  --范围滑块数字标记伪元素顺位: 3;
   --背景位置-X轴: 0%;
   --背景位置-Y轴: 0%;
   --位置轴宽度: 350px;
@@ -14,6 +13,7 @@
   --填充比例-Y轴: 50%;
   --x轴数字位移: 0px;
   --y轴数字位移: 0px;
+  --背景尺寸标记偏移: 165px;
 }
 
 .背景总区 {
@@ -38,18 +38,9 @@
   transition: background-size 0.5s;
 }
 
-/* .背景-参考层 {
-  position: absolute;
-  width: var(--背景宽);
-  height: var(--背景高);
-  top: 50%;
-  left: 0;
-  background: seagreen;
-  background: url(./背景.jpg);
-  opacity: 50%;
-} */
-
 #bg-size-marks {
+  width: calc(100% + 8px);
+  translate: -4px 0;
   position: relative;
   margin-top: 7px;
   display: flex;
@@ -70,9 +61,7 @@
   width: 20px;
   height: 1px;
   top: 110%;
-  left: calc(
-    (var(--范围滑块长度) + 30px) / 8 * var(--范围滑块数字标记伪元素顺位) + 2px
-  ); /* 30px 是每2个option之间的平均空隙；顺位从0开始，6就代表第7个 */
+  left: calc(var(--背景尺寸标记偏移) + 2px);
   background-color: goldenrod;
   transform: scaleY(1.25);
   transition: left 0.25s;
@@ -115,16 +104,19 @@ label[for="bg-size"] {
   width: var(--范围滑块长度);
   height: 10px;
   border-radius: 10px;
-  background: linear-gradient(
-    90deg,
-    var(--填充颜色) 3.5%,
-    var(--未填充颜色) 3.5%
-  );
 }
 
 #bg-size,
 #bg-size-marks {
   filter: opacity(50%);
+}
+
+#bg-size {
+  background-image: linear-gradient(
+    90deg,
+    var(--填充颜色) var(--比例-背景尺寸),
+    var(--未填充颜色) var(--比例-背景尺寸)
+  );
 }
 
 .范围滑块:hover {
@@ -133,6 +125,21 @@ label[for="bg-size"] {
 
 .范围滑块:focus {
   outline: none;
+}
+
+.范围滑块::-moz-range-thumb {
+  position: relative;
+  z-index: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--拇指宽度);
+  aspect-ratio: 1;
+  border-radius: 50px;
+  background: no-repeat center/contain
+    url(/Images/Interactive-Hub/进度条拇指/闪电球.png);
+  transform: translateY(-5%) scale(1.75);
+  filter: drop-shadow(0 0 2px black);
+  border: none;
 }
 
 .范围滑块::-webkit-slider-thumb {
@@ -163,10 +170,6 @@ label[for="bg-size"] {
   background-color: seagreen;
   content: "";
   transition: clip-path 0.25s;
-}
-
-.尺寸区 .范围滑块::after {
-  clip-path: inset(-5% calc(100% - var(--比例-背景尺寸)) -5% 0);
 }
 
 .属性区 {
@@ -297,14 +300,20 @@ input[type="radio"]:hover,
   width: var(--位置轴宽度);
 }
 
-#x-axis::after {
-  transition: none;
-  clip-path: inset(-5% calc(100% - var(--填充比例-X轴)) -5% 0);
+#x-axis {
+  background-image: linear-gradient(
+    90deg,
+    var(--填充颜色) var(--填充比例-X轴),
+    var(--未填充颜色) var(--填充比例-X轴)
+  );
 }
 
-#y-axis::after {
-  transition: none;
-  clip-path: inset(-5% calc(100% - var(--填充比例-Y轴)) -5% 0);
+#y-axis {
+  background-image: linear-gradient(
+    90deg,
+    var(--填充颜色) var(--填充比例-Y轴),
+    var(--未填充颜色) var(--填充比例-Y轴)
+  );
 }
 
 .位置 input[type="range"]:hover + .轴数字 {

@@ -42,13 +42,10 @@ function 修改背景尺寸(event) {
   let value = 背景尺寸滑块.value;
   root.style.setProperty(
     "--比例-背景尺寸",
-    `calc(100% * (${value} - ${背景尺寸滑块.min}) / (${背景尺寸滑块.max} - ${背景尺寸滑块.min}))`
+    `calc(100% * (${value} - ${背景尺寸滑块.min}) / (${背景尺寸滑块.max} - ${背景尺寸滑块.min}))`,
   );
   当前标记 = 背景尺寸标记.querySelector(`[label="${value}"]`);
-  let 当前标记顺位 = Array.from(
-    背景尺寸标记.getElementsByTagName("option")
-  ).indexOf(当前标记);
-  root.style.setProperty("--范围滑块数字标记伪元素顺位", `${当前标记顺位}`);
+  root.style.setProperty("--背景尺寸标记偏移", `${当前标记.offsetLeft}px`);
   之前标记.style.color = "white";
   之前标记.style.fontWeight = "normal";
   之前标记.style.transform = "scale(100%)";
@@ -83,7 +80,7 @@ function 重置参数() {
   let value = 背景尺寸滑块.value;
   root.style.setProperty(
     "--比例-背景尺寸",
-    `calc(100% * (${value} - ${背景尺寸滑块.min}) / (${背景尺寸滑块.max} - ${背景尺寸滑块.min}))`
+    `calc(100% * (${value} - ${背景尺寸滑块.min}) / (${背景尺寸滑块.max} - ${背景尺寸滑块.min}))`,
   );
   背景尺寸滑块.style.filter = "opacity(50%)";
   背景尺寸标记.style.filter = "opacity(50%)";
@@ -109,6 +106,7 @@ function 重置参数() {
   x轴数字.textContent = `${x轴滑块.value}%`;
   y轴数字.textContent = `${y轴滑块.value}%`;
 }
+
 // ---------------------- ↑ 重置 ----------------------
 
 等比覆盖单选框.addEventListener("input", 选择等比覆盖);
