@@ -14,10 +14,13 @@
 
 *,
 *::before,
-*::after,
-input[type="range"]::-moz-range-thumb {
+*::after {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+input[type="range"]::-moz-range-thumb {
   box-sizing: border-box;
 }
 
