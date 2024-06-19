@@ -160,18 +160,6 @@ label[for="bg-size"] {
   cursor: url("/Images/Common/鼠标-横向缩放.png"), ew-resize;
 }
 
-.范围滑块::after {
-  position: absolute;
-  width: calc(100% - var(--拇指宽度));
-  height: 100%;
-  border-radius: 50px;
-  top: 0;
-  left: calc(var(--拇指宽度) / 2);
-  background-color: seagreen;
-  content: "";
-  transition: clip-path 0.25s;
-}
-
 .属性区 {
   position: relative;
   width: 450px;
@@ -338,7 +326,7 @@ input[type="radio"]:hover,
     0% 100%
   );
   width: 50px;
-  left: calc(50% - 6.5px);
+  left: calc(50% - 4px);
   transition:
     color 0.1s,
     background-color 0.1s;
