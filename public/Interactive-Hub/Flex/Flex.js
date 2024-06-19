@@ -20,10 +20,10 @@ function 创建块元素(数量) {
     element.className = i % 2 === 0 ? "弹性元素 偶元素" : "弹性元素 奇元素";
     element.style.backgroundColor = i % 2 === 0 ? "brown" : "steelblue";
     let 宽度百分比 = Math.floor(
-      Math.random() * (最高尺寸百分比 - 最低尺寸百分比 + 1) + 最低尺寸百分比
+      Math.random() * (最高尺寸百分比 - 最低尺寸百分比 + 1) + 最低尺寸百分比,
     );
     let 高度百分比 = Math.floor(
-      Math.random() * (最高尺寸百分比 - 最低尺寸百分比 + 1) + 最低尺寸百分比
+      Math.random() * (最高尺寸百分比 - 最低尺寸百分比 + 1) + 最低尺寸百分比,
     );
     element.style.width = `${宽度百分比}%`;
     element.style.height = `${高度百分比}%`;
@@ -45,7 +45,7 @@ const 盒子数量滑块 = document.getElementById("box-count");
 盒子数量滑块.addEventListener("input", 修改盒子数量);
 
 function 修改盒子数量() {
-  盒子数量滑块.setAttribute("盒子数量", 盒子数量滑块.value);
+  盒子数量滑块.nextElementSibling.textContent = 盒子数量滑块.value;
   调整盒子数量数字位置();
   弹性展示区.innerHTML = "";
   创建块元素(盒子数量滑块.value);
@@ -67,7 +67,7 @@ function 调整盒子数量数字位置() {
   const 修正值 = Number(((当前值 - min) * 100) / (max - min));
   root.style.setProperty(
     "--盒子数量值左偏移",
-    `calc(${修正值}% + (${8 - 修正值 * 0.15}px))`
+    `calc(${修正值}% + (${8 - 修正值 * 0.15}px))`,
   );
 }
 
@@ -195,7 +195,7 @@ const 间隙区 = document.getElementsByClassName("间隙区")[0];
 间隙区.style.pointerEvents = "none";
 
 function 修改行间隙值() {
-  行间隙.setAttribute("行间隙值", `${行间隙.value}`);
+  行间隙.nextElementSibling.textContent = 行间隙.value;
   调整行间隙位置();
   弹性展示区.style.rowGap = `${行间隙.value}px`;
   let 行间隙比率 = (行间隙.value * 100) / 行间隙.max;
@@ -203,7 +203,7 @@ function 修改行间隙值() {
 }
 
 function 修改列间隙值() {
-  列间隙.setAttribute("列间隙值", `${列间隙.value}`);
+  列间隙.nextElementSibling.textContent = 列间隙.value;
   调整列间隙位置();
   弹性展示区.style.columnGap = `${列间隙.value}px`;
   let 列间隙比率 = (列间隙.value * 100) / 列间隙.max;
@@ -217,7 +217,7 @@ function 调整行间隙位置() {
   const 修正值 = Number(((当前值 - min) * 100) / (max - min));
   root.style.setProperty(
     "--行间隙值左偏移",
-    `calc(${修正值}% + (${8 - 修正值 * 0.15}px))`
+    `calc(${修正值}% + (${8 - 修正值 * 0.15}px))`,
   );
 }
 
@@ -228,7 +228,7 @@ function 调整列间隙位置() {
   const 修正值 = Number(((当前值 - min) * 100) / (max - min));
   root.style.setProperty(
     "--列间隙值左偏移",
-    `calc(${修正值}% + (${8 - 修正值 * 0.15}px))`
+    `calc(${修正值}% + (${8 - 修正值 * 0.15}px))`,
   );
 }
 
@@ -301,13 +301,13 @@ const 轴分布类型 = document.getElementsByClassName("轴分布类型")[0];
 });
 
 const 主轴分布全部选项 = document.querySelectorAll(
-  '.主轴分布区 input[type="radio"]'
+  '.主轴分布区 input[type="radio"]',
 );
 const 交叉轴单行分布全部选项 = document.querySelectorAll(
-  '.交叉轴单行分布区 input[type="radio"]'
+  '.交叉轴单行分布区 input[type="radio"]',
 );
 const 交叉轴多行分布全部选项 = document.querySelectorAll(
-  '.交叉轴多行分布区 input[type="radio"]'
+  '.交叉轴多行分布区 input[type="radio"]',
 );
 
 主轴分布全部选项.forEach((element) => {
@@ -359,7 +359,7 @@ const 尺寸区 = document.getElementsByClassName("尺寸区")[0];
 尺寸区.style.pointerEvents = "none";
 
 function 修改弹性收缩() {
-  收缩滑块.setAttribute("收缩值", 收缩滑块.value);
+  收缩滑块.nextElementSibling.textContent = 收缩滑块.value;
   调整收缩数字位置();
   let 收缩比率 = (收缩滑块.value * 100) / 收缩滑块.max;
   root.style.setProperty("--收缩比率", `${收缩比率}%`);
@@ -369,7 +369,7 @@ function 修改弹性收缩() {
 }
 
 function 修改弹性扩张() {
-  扩张滑块.setAttribute("扩张值", 扩张滑块.value);
+  扩张滑块.nextElementSibling.textContent = 扩张滑块.value;
   调整扩张数字位置();
   let 扩张比率 = (扩张滑块.value * 100) / 扩张滑块.max;
   root.style.setProperty("--扩张比率", `${扩张比率}%`);
@@ -385,7 +385,7 @@ function 调整收缩数字位置() {
   const 修正值 = Number(((当前值 - min) * 100) / (max - min));
   root.style.setProperty(
     "--收缩值左偏移",
-    `calc(${修正值}% + (${8 - 修正值 * 0.15}px))`
+    `calc(${修正值}% + (${8 - 修正值 * 0.15}px))`,
   );
 }
 
@@ -396,13 +396,13 @@ function 调整扩张数字位置() {
   const 修正值 = Number(((当前值 - min) * 100) / (max - min));
   root.style.setProperty(
     "--扩张值左偏移",
-    `calc(${修正值}% + (${8 - 修正值 * 0.15}px))`
+    `calc(${修正值}% + (${8 - 修正值 * 0.15}px))`,
   );
 }
 
 function 重置参数() {
   盒子数量滑块.value = 初始块元素数量;
-  盒子数量滑块.setAttribute("盒子数量", 盒子数量滑块.value);
+  盒子数量滑块.nextElementSibling.textContent = 盒子数量滑块.value;
   调整盒子数量数字位置();
   弹性展示区.innerHTML = "";
   弹性展示区.style.display = "block";
@@ -420,12 +420,11 @@ function 重置参数() {
   弹性展示区.style.flexWrap = 包裹代码.textContent;
 
   行间隙.value = 0;
-  行间隙.setAttribute("行间隙值", `${行间隙.value}`);
+  行间隙.nextElementSibling.textContent = 行间隙.value;
   调整行间隙位置();
   列间隙.value = 0;
-  列间隙.setAttribute("列间隙值", `${列间隙.value}`);
+  列间隙.nextElementSibling.textContent = 列间隙.value;
   调整列间隙位置();
-  console.log(行间隙.value);
 
   主轴按钮.style.background =
     "linear-gradient(90deg, rgb(29, 29, 29) 0%, rgb(45, 45, 45) 100%)";
@@ -478,10 +477,10 @@ function 重置参数() {
   尺寸区.style.pointerEvents = "none";
 
   收缩滑块.value = 1;
-  收缩滑块.setAttribute("收缩值", 收缩滑块.value);
+  收缩滑块.nextElementSibling.textContent = 收缩滑块.value;
   调整收缩数字位置();
   扩张滑块.value = 0;
-  扩张滑块.setAttribute("扩张值", 扩张滑块.value);
+  扩张滑块.nextElementSibling.textContent = 扩张滑块.value;
   调整扩张数字位置();
 
   let 盒子比率 = (盒子数量滑块.value * 100) / 盒子数量滑块.max;

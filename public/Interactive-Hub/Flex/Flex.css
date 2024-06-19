@@ -188,11 +188,6 @@ input:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
-#box-count::after {
-  left: var(--盒子数量值左偏移);
-  content: attr(盒子数量);
-}
-
 .主轴方向选项 {
   display: flex;
   justify-content: center;
@@ -207,11 +202,65 @@ input[type="range"] {
   appearance: none;
   height: 10px;
   border-radius: 10px;
-  background: linear-gradient(
+}
+
+#box-count {
+  background-image: linear-gradient(
     90deg,
-    rgba(255, 94, 247, 1) 6%,
-    var(--未填充颜色) 3.5%
+    rgba(255, 94, 247, 1) 0%,
+    rgba(2, 245, 255, 1) var(--盒子数量比率),
+    var(--未填充颜色) var(--盒子数量比率)
   );
+}
+
+#x-gap {
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 94, 247, 1) 0%,
+    rgba(2, 245, 255, 1) var(--行间隙比率),
+    var(--未填充颜色) var(--行间隙比率)
+  );
+}
+
+#y-gap {
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 94, 247, 1) 0%,
+    rgba(2, 245, 255, 1) var(--列间隙比率),
+    var(--未填充颜色) var(--列间隙比率)
+  );
+}
+
+#flex-shrink {
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 94, 247, 1) 0%,
+    rgba(2, 245, 255, 1) var(--收缩比率),
+    var(--未填充颜色) var(--收缩比率)
+  );
+}
+
+#flex-grow {
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 94, 247, 1) 0%,
+    rgba(2, 245, 255, 1) var(--扩张比率),
+    var(--未填充颜色) var(--扩张比率)
+  );
+}
+
+input[type="range"]::-moz-range-thumb {
+  position: relative;
+  z-index: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50px;
+  background: linear-gradient(145deg, #146864 0%, #0f935c 100%);
+  transform: translateY(-10%) scale(2);
+  filter: drop-shadow(0 0 2px rgb(39, 39, 39));
+  border: none;
 }
 
 input[type="range"]::-webkit-slider-thumb {
@@ -222,10 +271,46 @@ input[type="range"]::-webkit-slider-thumb {
   width: var(--拇指宽度);
   aspect-ratio: 1;
   border-radius: 50px;
-  /* background: linear-gradient(145deg, #bbb 0%, #eee 100%); */
   background: linear-gradient(145deg, #146864 0%, #0f935c 100%);
   transform: translateY(-40%) scale(2);
   filter: drop-shadow(0 0 2px rgb(39, 39, 39));
+}
+
+input[type="range"] + .滑块数据文本 {
+  position: absolute;
+  z-index: 2;
+  width: calc(var(--拇指宽度) * 2);
+  aspect-ratio: 1;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  color: rgb(201, 241, 255);
+  translate: -50% -35%;
+  pointer-events: none;
+  font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  font-size: 0.75em;
+}
+
+#box-count + .滑块数据文本 {
+  left: var(--盒子数量值左偏移);
+}
+
+#x-gap + .滑块数据文本 {
+  left: var(--行间隙值左偏移);
+}
+
+#y-gap + .滑块数据文本 {
+  left: var(--列间隙值左偏移);
+}
+
+#flex-shrink + .滑块数据文本 {
+  left: var(--收缩值左偏移);
+}
+
+#flex-grow + .滑块数据文本 {
+  left: var(--扩张值左偏移);
 }
 
 .包裹与间隙区 {
@@ -297,33 +382,12 @@ option {
   margin-top: 5px;
 }
 
-#x-gap::after {
-  left: var(--行间隙值左偏移);
-  content: attr(行间隙值);
-}
-
-#y-gap::after {
-  left: var(--列间隙值左偏移);
-  content: attr(列间隙值);
-}
-
 .尺寸区 {
   padding: 10px 0 0 0;
 }
 
 .尺寸分区 {
   padding: 10px 0 0 0;
-}
-
-input[type="range"]::before {
-  position: absolute;
-  width: calc(100% - var(--拇指宽度));
-  height: 100%;
-  border-radius: 50px;
-  content: "";
-  left: calc(var(--拇指宽度) / 2);
-  top: 0;
-  background: var(--进度条渐变-已填充);
 }
 
 input[type="range"]::after {
@@ -341,16 +405,6 @@ input[type="range"]::after {
   pointer-events: none;
 }
 
-#flex-shrink::after {
-  left: var(--收缩值左偏移);
-  content: attr(收缩值);
-}
-
-#flex-grow::after {
-  left: var(--扩张值左偏移);
-  content: attr(扩张值);
-}
-
 input[type="range"]::-webkit-slider-thumb:hover {
   cursor: url("/Images/Common/鼠标-横向缩放.png"), ew-resize;
 }
@@ -364,6 +418,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .滑块区 {
+  position: relative;
   height: fit-content;
   display: flex;
   flex-direction: column;
@@ -485,26 +540,6 @@ option {
   to {
     transform: translateX(0);
   }
-}
-
-#box-count::before {
-  clip-path: inset(-5% calc(100% - var(--盒子数量比率)) -5% 0);
-}
-
-#x-gap::before {
-  clip-path: inset(-5% calc(100% - var(--行间隙比率)) -5% 0);
-}
-
-#y-gap::before {
-  clip-path: inset(-5% calc(100% - var(--列间隙比率)) -5% 0);
-}
-
-#flex-shrink::before {
-  clip-path: inset(-5% calc(100% - var(--收缩比率)) -5% 0);
-}
-
-#flex-grow::before {
-  clip-path: inset(-5% calc(100% - var(--扩张比率)) -5% 0);
 }
 
 @media screen and (height <= 1080px) {

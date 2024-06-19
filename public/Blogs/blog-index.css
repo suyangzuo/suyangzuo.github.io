@@ -1306,7 +1306,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   flex-direction: column;
   align-items: flex-start;
   gap: 35px;
-  font-family: var(--正文字体);
+  font-family: var(--正文字体), sans-serif;
 }
 
 .正文分区 {
@@ -1339,7 +1339,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   top: 50%;
   right: 0;
   translate: 150% -50%;
-  font-family: var(--font-awesome-字体集);
+  font-family: var(--font-awesome-字体集), emoji;
   content: "\f1dc";
   font-weight: 900;
   color: lightskyblue;
@@ -1404,7 +1404,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   top: 50%;
   right: 0;
   translate: 150% -50%;
-  font-family: var(--font-awesome-字体集);
+  font-family: var(--font-awesome-字体集), emoji;
   font-weight: 900;
   color: orange;
 }
@@ -1771,7 +1771,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   translate: -150% -50%;
   content: "\f05a";
   color: yellow;
-  font-family: var(--font-awesome-字体集);
+  font-family: var(--font-awesome-字体集), emoji;
 }
 
 .提醒标题 > i {
