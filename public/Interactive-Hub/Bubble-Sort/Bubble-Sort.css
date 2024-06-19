@@ -55,7 +55,7 @@
 .数字索引 {
   position: absolute;
   bottom: calc(var(--数字高度) + 5px);
-  font-family: consolas, monospace;
+  font-family: Consolas, monospace;
   color: #888;
   font-size: 0.9em;
 }
@@ -83,7 +83,7 @@
 .右数字索引 {
   position: absolute;
   bottom: calc(var(--数字高度) + 30px);
-  font-family: consolas, monospace;
+  font-family: Consolas, monospace;
   color: lightskyblue;
   opacity: 0;
   transition: 250ms;
@@ -135,11 +135,22 @@ label {
 }
 
 #动画速率数值 {
+  margin-left: 5px;
   width: 30px;
   height: fit-content;
   display: inline-flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  font-family: "Jetbrains Mono", Consolas, monospace;
+}
+
+.乘号 {
+  color: #aaa;
+  margin-right: 1px;
+}
+
+.动画速率数值文本 {
+  color: lightcyan;
 }
 
 .复选区 {
@@ -267,7 +278,7 @@ input[type="checkbox"]:checked::before {
   align-items: center;
   background-color: rgb(117, 94, 61);
   border-radius: 5px;
-  font-family: consolas, monospace;
+  font-family: Consolas, monospace;
 }
 
 .外循环索引,
@@ -305,7 +316,7 @@ input[type="checkbox"]:checked::before {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: consolas, monospace, "微软雅黑", sans-serif;
+  font-family: Consolas, monospace, "微软雅黑", sans-serif;
 }
 
 .内循环轮 {

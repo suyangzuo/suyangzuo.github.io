@@ -193,11 +193,22 @@ label {
 }
 
 #动画速率数值 {
+  margin-left: 5px;
   width: 30px;
   height: fit-content;
   display: inline-flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  font-family: "Jetbrains Mono", Consolas, monospace;
+}
+
+.乘号 {
+  color: #aaa;
+  margin-right: 1px;
+}
+
+.动画速率数值文本 {
+  color: lightcyan;
 }
 
 .复选区 {

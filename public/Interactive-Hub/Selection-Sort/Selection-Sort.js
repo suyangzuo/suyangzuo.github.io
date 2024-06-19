@@ -219,7 +219,14 @@ function 设置动画速率(速率) {
       : 原始本次数字恢复到下次数字变色时长 / 速率;
   两轮之间等待时长 =
     原始两轮之间等待时长 / 速率 < 500 ? 500 : 原始两轮之间等待时长 / 速率;
-  动画速率数值.textContent = `×${速率}`;
+  动画速率数值.innerHTML = "";
+  const 乘号 = document.createElement("span");
+  乘号.className = "乘号";
+  乘号.textContent = "×";
+  const 数值 = document.createElement("span");
+  数值.className = "动画速率数值文本";
+  数值.textContent = `${速率}`;
+  动画速率数值.append(乘号, 数值);
 
   交换动画时长 =
     原始交换动画时长 - 100 * (速率 - 1) < 125
