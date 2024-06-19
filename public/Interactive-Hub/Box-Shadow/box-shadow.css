@@ -185,7 +185,6 @@ label {
   right: 5%;
   height: 100%;
   font-size: 1.5rem;
-  /*line-height: 1.125;*/
   vertical-align: middle;
   color: rgb(168, 168, 168);
   pointer-events: none;
@@ -210,7 +209,6 @@ label {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* outline: solid 1px gray; */
 }
 
 .本体 {
@@ -314,7 +312,6 @@ label {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* row-gap: 10px; */
 }
 
 .阴影属性 {
@@ -366,6 +363,7 @@ label {
   border: none;
   border-radius: 2px;
   box-shadow: 0 0 3px 0 #000a;
+  user-select: none;
 }
 
 .阴影属性按钮:hover {
@@ -385,6 +383,10 @@ label {
   pointer-events: none;
 }
 
+.滑块区 {
+  position: relative;
+}
+
 .阴影属性滑块 {
   position: relative;
   width: var(--范围滑块宽度);
@@ -393,10 +395,41 @@ label {
   appearance: none;
   height: 10px;
   border-radius: 10px;
-  background: linear-gradient(
+}
+
+#x轴偏移 {
+  background-image: linear-gradient(
     90deg,
-    var(--进度条预填充颜色) 6%,
-    var(--进度条颜色-未填充) 3.5%
+    var(--进度条预填充颜色) 0%,
+    #ffc600 var(--x轴偏移比率),
+    var(--进度条颜色-未填充) var(--x轴偏移比率)
+  );
+}
+
+#y轴偏移 {
+  background-image: linear-gradient(
+    90deg,
+    var(--进度条预填充颜色) 0%,
+    #ffc600 var(--y轴偏移比率),
+    var(--进度条颜色-未填充) var(--y轴偏移比率)
+  );
+}
+
+#模糊半径 {
+  background-image: linear-gradient(
+    90deg,
+    var(--进度条预填充颜色) 0%,
+    #ffc600 var(--模糊半径比率),
+    var(--进度条颜色-未填充) var(--模糊半径比率)
+  );
+}
+
+#扩散半径 {
+  background-image: linear-gradient(
+    90deg,
+    var(--进度条预填充颜色) 0%,
+    #ffc600 var(--扩散半径比率),
+    var(--进度条颜色-未填充) var(--扩散半径比率)
   );
 }
 
@@ -409,13 +442,13 @@ label {
   z-index: 1;
   -moz-appearance: none;
   appearance: none;
-  width: var(--拇指宽度);
-  aspect-ratio: 1;
+  width: 18px;
+  height: 18px;
   border-radius: 50px;
   border: none;
   background: #ada996; /* fallback for old browsers */
   background: var(--拇指渐变背景);
-  transform: translateY(-40%) scale(2);
+  transform: translateY(-1px) scale(2);
   filter: drop-shadow(0 0 2px rgba(39, 39, 39, 0.5));
 }
 
@@ -437,72 +470,45 @@ label {
   cursor: url("/Images/Common/鼠标-横向缩放.png"), ew-resize;
 }
 
-.阴影属性滑块::before {
-  position: absolute;
-  width: calc(100% - var(--拇指宽度));
-  height: 100%;
-  border-radius: 50px;
-  content: "";
-  left: calc(var(--拇指宽度) / 2);
-  top: 0;
-  background: var(--进度条渐变-已填充);
-}
-
-#x轴偏移::before {
-  clip-path: inset(-5% calc(100% - var(--x轴偏移比率)) -5% 0%);
-}
-
-#y轴偏移::before {
-  clip-path: inset(-5% calc(100% - var(--y轴偏移比率)) -5% 0);
-}
-
-#模糊半径::before {
-  clip-path: inset(-5% calc(100% - var(--模糊半径比率)) -5% 0);
-}
-
-#扩散半径::before {
-  clip-path: inset(-5% calc(100% - var(--扩散半径比率)) -5% 0);
-}
-
-.阴影属性滑块::after {
+.滑块数据文本 {
   position: absolute;
   z-index: 1;
   width: calc(var(--拇指宽度) * 2);
   aspect-ratio: 1;
   color: black;
   content: "";
-  top: -141%;
+  top: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 0.75rem;
   font-weight: bold;
   font-family: "JetBrains Mono", Consolas, monospace;
+  pointer-events: none;
 }
 
-#x轴偏移::after {
+#x轴偏移 + .滑块数据文本 {
   left: var(--x轴偏移);
   content: attr(x轴偏移值);
 }
 
-#y轴偏移::after {
+#y轴偏移 + .滑块数据文本 {
   left: var(--y轴偏移);
   content: attr(y轴偏移值);
 }
 
-#模糊半径::after {
+#模糊半径 + .滑块数据文本 {
   left: var(--模糊半径偏移);
-  transform: translateX(-50%);
   content: attr(模糊半径值);
 }
 
-#扩散半径::after {
+#扩散半径 + .滑块数据文本 {
   left: var(--扩散半径偏移);
   content: attr(扩散半径值);
 }
 
-:where(#x轴偏移, #y轴偏移, #扩散半径)::after {
-  transform: translateX(-50%);
+:where(#x轴偏移, #y轴偏移, #模糊半径, #扩散半径) + .滑块数据文本 {
+  translate: -50% -15%;
 }
 
 .颜色区 {

@@ -271,6 +271,7 @@ function 非操作性修改滑块比率(滑块) {
     ((id === "模糊半径" ? value : value + max) / (max - min)) * 100
   }%`;
   root.style.setProperty(`--${id}比率`, 比率);
+  滑块.nextElementSibling.textContent = `${value}`;
 
   调整滑块位置(滑块);
 }
@@ -347,6 +348,7 @@ function 点击增加或减少按钮(event) {
     ((id === "模糊半径" ? value : value + max) / (max - min)) * 100
   }%`;
   root.style.setProperty(`--${id}比率`, 比率);
+  滑块.nextElementSibling.textContent = `${value}`;
 
   调整滑块位置(滑块);
   根据参数调整对应阴影效果(当前阴影序号);
