@@ -10,14 +10,6 @@
   --分页渐变透明色标位置: 0.25%;
 }
 
-/* body {
-  background: radial-gradient(
-    farthest-corner at 40px 40px,
-    rgb(86, 116, 137) 35%,
-    rgb(89, 126, 156) 100%
-  );
-} */
-
 .main-content {
   background-image: linear-gradient(60deg, #0d0f11 0%, #22272b 100%);
   position: relative;
@@ -65,12 +57,10 @@
 
 .欢迎文本区 {
   position: relative;
-  /*width: 100%;*/
   font-weight: bold;
 }
 
 .中文欢迎标题 {
-  /*font-size: calc(4.25dvw + 10px);*/
   font-size: max(45px, calc(3.25dvw + 10px));
   line-height: 1.4em;
   filter: drop-shadow(2px 2px 2px #000d);
@@ -177,6 +167,13 @@
     --英文色标3: silver;
     --英文色标4: lightcyan;
   }
+  5% {
+    --英文背景位置: 0%;
+    --英文色标1: silver;
+    --英文色标2: lightcyan;
+    --英文色标3: silver;
+    --英文色标4: lightcyan;
+  }
   15% {
     --英文背景位置: 100%;
     --英文色标1: darkorange;
@@ -199,6 +196,13 @@
     --英文色标2: #256f44;
     --英文色标3: brown;
     --英文色标4: royalblue;
+  }
+  95% {
+    --英文背景位置: 0%;
+    --英文色标1: silver;
+    --英文色标2: lightcyan;
+    --英文色标3: silver;
+    --英文色标4: lightcyan;
   }
   100% {
     --英文背景位置: 0%;
@@ -366,6 +370,10 @@
   background-color: #b7d6d6cc;
 }
 
+.推荐卡片-交互式学习中心:link {
+  color: #2d3542;
+}
+
 .推荐卡片-交互式学习中心:visited {
   color: #2d3542;
 }
@@ -387,6 +395,10 @@
   to {
     clip-path: none;
   }
+}
+
+.推荐卡片-经验之谈:link {
+  color: #b7d6d6;
 }
 
 .推荐卡片-经验之谈:visited {
@@ -722,7 +734,6 @@
 .图像长廊标题 > p {
   font-size: 5rem;
   font-family: "Ma Shan Zheng", cursive;
-  /* position: absolute; */
   opacity: 0;
   transition: 1.25s;
   text-shadow: 5px 5px 5px #000a;
@@ -745,24 +756,6 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  /* -webkit-mask-image: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0) 0.5%,
-    rgba(0, 0, 0, 1) 15%,
-    rgba(0, 0, 0, 1) 85%,
-    rgba(0, 0, 0, 0) 99.5%
-  );
-  mask-image: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0) 0.5%,
-    rgba(0, 0, 0, 1) 15%,
-    rgba(0, 0, 0, 1) 85%,
-    rgba(0, 0, 0, 0) 99.5%
-  );
-  -webkit-mask-size: 100%;
-  mask-size: 100%;
-  -webkit-mask-position: center;
-  mask-position: center; */
 }
 
 .图像长廊分区::after {
@@ -792,7 +785,6 @@
   border-radius: 50px;
   background: linear-gradient(135deg, #ddd, #999);
   box-shadow: 0 0 5px 0 black;
-  /* outline: solid 2px black; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -803,20 +795,11 @@
 .图像长廊分区 > .箭头:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   box-shadow: 0 0 5px 0 black, inset 0 1px 0 0 white;
-  /* box-shadow: inset 0 1px 0 0 white; */
 }
 
 .图像长廊分区 > .箭头:hover > img {
   filter: saturate(2.5);
 }
-
-/* .图像长廊分区 > .左箭头:hover ~ .图像滑块组 {
-  left: 0.5%;
-}
-
-.图像长廊分区 > .右箭头:hover ~ .图像滑块组 {
-  left: -0.5%;
-} */
 
 .图像长廊分区 > .箭头 > img {
   width: 50%;
@@ -844,7 +827,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* gap: 50px; */
   position: relative;
   transform: translateX(calc(var(--图像容器宽度) / 2));
   left: 0;
@@ -863,7 +845,6 @@
 .图像容器 {
   height: 100%;
   width: var(--图像容器宽度);
-  /* overflow: hidden; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -878,7 +859,6 @@
   box-shadow: 5px 5px 20px 0 black;
   -webkit-user-select: none;
   user-select: none;
-  /* outline: solid 2px gray; */
 }
 
 .图像容器 > .img-overlay {

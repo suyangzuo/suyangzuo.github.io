@@ -328,15 +328,15 @@ div.code-toolbar > .toolbar > .toolbar-item > button:hover {
 }
 
 .向内操作分区 {
-  flex-grow: 4;
-}
-
-.圆形操作分区 {
   flex-grow: 3.5;
 }
 
+.圆形操作分区 {
+  flex-grow: 3;
+}
+
 .椭圆操作分区 {
-  flex-grow: 4.5;
+  flex-grow: 3.5;
 }
 
 .操作分区.未激活操作分区 {
