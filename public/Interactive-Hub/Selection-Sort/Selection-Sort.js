@@ -289,7 +289,7 @@ function 初始化数字() {
 async function 生成动画_交换(左数字, 右数字) {
   左数字.classList.add("交换中数字");
   右数字.classList.add("交换中数字");
-  await sleep(交换前等待时长);
+  await sleep(交换前等待时长 < 750 ? 750 : 交换前等待时长);
 
   const 临时索引 = 左数字.getAttribute("索引");
   左数字.setAttribute("索引", 右数字.getAttribute("索引"));
