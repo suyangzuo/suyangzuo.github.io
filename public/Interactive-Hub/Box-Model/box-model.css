@@ -168,18 +168,6 @@
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
-.范围选择器::after {
-  position: absolute;
-  height: 100%;
-  width: calc(100% - var(--拇指宽度));
-  border-radius: 50px;
-  top: 0;
-  left: 0;
-  transform: translateX(calc(var(--拇指宽度) / 2));
-  content: "";
-  z-index: 0;
-}
-
 input[type="range"]:focus {
   outline: none;
 }
@@ -214,124 +202,126 @@ input[type="range"]:focus {
   border-radius: var(--拇指宽度);
   background: no-repeat center/contain
     url(/Images/Interactive-Hub/进度条拇指/闪电球.png);
-  transform: translateY(-50%) scale(1.25);
+  transform: translateY(-5%) scale(1.25);
   filter: brightness(150%) drop-shadow(0 0 2px black);
+  border: none;
 }
 
 input[type="range"] {
-  background-color: var(--进度条颜色-未填充);
-}
-
-.单项-外边距 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
-  background: linear-gradient(
+}
+
+#外边距上 {
+  background-image: linear-gradient(
     90deg,
-    var(--进度条颜色-外边距) 6%,
-    var(--进度条颜色-未填充) 6%
+    var(--颜色-外边距) var(--比率-外边距-上),
+    var(--进度条颜色-未填充) var(--比率-外边距-上)
   );
 }
 
-.单项-边框 input[type="range"] {
-  -webkit-appearance: none;
-  appearance: none;
-  background: linear-gradient(
+#外边距右 {
+  background-image: linear-gradient(
     90deg,
-    var(--进度条颜色-边框) 6%,
-    var(--进度条颜色-未填充) 6%
+    var(--颜色-外边距) var(--比率-外边距-右),
+    var(--进度条颜色-未填充) var(--比率-外边距-右)
   );
 }
 
-.单项-内边距 input[type="range"] {
-  -webkit-appearance: none;
-  appearance: none;
-  background: linear-gradient(
+#外边距下 {
+  background-image: linear-gradient(
     90deg,
-    var(--进度条颜色-内边距) 6%,
-    var(--进度条颜色-未填充) 6%
+    var(--颜色-外边距) var(--比率-外边距-下),
+    var(--进度条颜色-未填充) var(--比率-外边距-下)
   );
 }
 
-.单项-内容 input[type="range"] {
-  -webkit-appearance: none;
-  appearance: none;
-  background: linear-gradient(
+#外边距左 {
+  background-image: linear-gradient(
     90deg,
-    var(--进度条颜色-内容) 6%,
-    var(--进度条颜色-未填充) 6%
+    var(--颜色-外边距) var(--比率-外边距-左),
+    var(--进度条颜色-未填充) var(--比率-外边距-左)
   );
 }
 
-.单项-外边距 input[type="range"]::after {
-  background-color: var(--进度条颜色-外边距);
+#边框上 {
+  background-image: linear-gradient(
+    90deg,
+    var(--颜色-边框) var(--比率-边框-上),
+    var(--进度条颜色-未填充) var(--比率-边框-上)
+  );
 }
 
-.单项-边框 input[type="range"]::after {
-  background-color: var(--进度条颜色-边框);
+#边框右 {
+  background-image: linear-gradient(
+    90deg,
+    var(--颜色-边框) var(--比率-边框-右),
+    var(--进度条颜色-未填充) var(--比率-边框-右)
+  );
 }
 
-.单项-内边距 input[type="range"]::after {
-  background-color: var(--进度条颜色-内边距);
+#边框下 {
+  background-image: linear-gradient(
+    90deg,
+    var(--颜色-边框) var(--比率-边框-下),
+    var(--进度条颜色-未填充) var(--比率-边框-下)
+  );
 }
 
-.单项-内容 input[type="range"]::after {
-  background-color: var(--进度条颜色-内容);
+#边框左 {
+  background-image: linear-gradient(
+    90deg,
+    var(--颜色-边框) var(--比率-边框-左),
+    var(--进度条颜色-未填充) var(--比率-边框-左)
+  );
 }
 
-#外边距上::after {
-  clip-path: inset(-5% calc(100% - var(--比率-外边距-上)) -5% 0);
+#内边距上 {
+  background-image: linear-gradient(
+    90deg,
+    var(--颜色-内边距) var(--比率-内边距-上),
+    var(--进度条颜色-未填充) var(--比率-内边距-上)
+  );
 }
 
-#外边距下::after {
-  clip-path: inset(-5% calc(100% - var(--比率-外边距-下)) -5% 0);
+#内边距右 {
+  background-image: linear-gradient(
+    90deg,
+    var(--颜色-内边距) var(--比率-内边距-右),
+    var(--进度条颜色-未填充) var(--比率-内边距-右)
+  );
 }
 
-#外边距左::after {
-  clip-path: inset(-5% calc(100% - var(--比率-外边距-左)) -5% 0);
+#内边距下 {
+  background-image: linear-gradient(
+    90deg,
+    var(--颜色-内边距) var(--比率-内边距-下),
+    var(--进度条颜色-未填充) var(--比率-内边距-下)
+  );
 }
 
-#外边距右::after {
-  clip-path: inset(-5% calc(100% - var(--比率-外边距-右)) -5% 0);
+#内边距左 {
+  background-image: linear-gradient(
+    90deg,
+    var(--颜色-内边距) var(--比率-内边距-左),
+    var(--进度条颜色-未填充) var(--比率-内边距-左)
+  );
 }
 
-#内边距上::after {
-  clip-path: inset(-5% calc(100% - var(--比率-内边距-上)) -5% 0);
+#内容宽 {
+  background-image: linear-gradient(
+    90deg,
+    var(--颜色-内容) var(--比率-盒子-内容-宽),
+    var(--进度条颜色-未填充) var(--比率-盒子-内容-宽)
+  );
 }
 
-#内边距下::after {
-  clip-path: inset(-5% calc(100% - var(--比率-内边距-下)) -5% 0);
-}
-
-#内边距左::after {
-  clip-path: inset(-5% calc(100% - var(--比率-内边距-左)) -5% 0);
-}
-
-#内边距右::after {
-  clip-path: inset(-5% calc(100% - var(--比率-内边距-右)) -5% 0);
-}
-
-#边框上::after {
-  clip-path: inset(-5% calc(100% - var(--比率-边框-上)) -5% 0);
-}
-
-#边框下::after {
-  clip-path: inset(-5% calc(100% - var(--比率-边框-下)) -5% 0);
-}
-
-#边框左::after {
-  clip-path: inset(-5% calc(100% - var(--比率-边框-左)) -5% 0);
-}
-
-#边框右::after {
-  clip-path: inset(-5% calc(100% - var(--比率-边框-右)) -5% 0);
-}
-
-#内容宽::after {
-  clip-path: inset(-5% calc(100% - var(--比率-盒子-内容-宽)) -5% 0);
-}
-
-#内容高::after {
-  clip-path: inset(-5% calc(100% - var(--比率-盒子-内容-高)) -5% 0);
+#内容高 {
+  background-image: linear-gradient(
+    90deg,
+    var(--颜色-内容) var(--比率-盒子-内容-高),
+    var(--进度条颜色-未填充) var(--比率-盒子-内容-高)
+  );
 }
 
 .单项属性-方向 {

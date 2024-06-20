@@ -65,7 +65,7 @@ function 修改X轴百分比() {
   const 最小值 = x轴.min ? x轴.min : 0;
   const 最大值 = x轴.max ? x轴.max : 100;
   const 新值 = Number(((值 - 最小值) * 100) / (最大值 - 最小值));
-  x轴数字区.style.left = `calc(${新值}% + ${8 - 新值 * 0.15}px)`;
+  x轴数字区.style.left = `calc(${新值}% + ${8 - 新值 * 0.155}px)`;
   图像.style.objectPosition = `${x轴百分比}% ${y轴百分比}%`;
 }
 

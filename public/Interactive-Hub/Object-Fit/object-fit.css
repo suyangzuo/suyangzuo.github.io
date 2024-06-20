@@ -141,6 +141,8 @@ label > .代码 {
 .控件-图像尺寸 .控件子组 > label,
 .控件-对象匹配 .控件子组 > label {
   padding: 0 8px 0 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .label-x轴,
@@ -206,18 +208,10 @@ input {
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
-  background: linear-gradient(
-    90deg,
-    var(--进度条颜色-已填充) 6%,
-    var(--进度条颜色-未填充) 6%
-  );
   width: 300px;
   height: 5px;
   position: relative;
   border-radius: 5px;
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
 }
 
 input[type="range"]:focus {
@@ -238,16 +232,16 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 input[type="range"]::-moz-range-thumb {
-  -webkit-appearance: none;
   appearance: none;
   width: var(--拇指宽度);
   aspect-ratio: 1;
   background: no-repeat center/contain
     url(/Images/Interactive-Hub/进度条拇指/闪电球.png);
   filter: drop-shadow(0 0 2px black);
-  transform: translateY(-50%) scale(1.25);
+  transform: translateY(-5%) scale(1.25);
   position: relative;
   z-index: 1;
+  border: none;
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
@@ -256,51 +250,21 @@ input[type="range"]::-webkit-slider-thumb:hover {
     ew-resize;
 }
 
-input[type="range"]::after {
-  position: absolute;
-  width: calc(100% - var(--拇指宽度));
-  height: 100%;
-  border-radius: 50px;
-  top: 0;
-  left: calc(var(--拇指宽度) / 2);
-  content: "";
-  background-color: var(--进度条颜色-已填充);
-}
-
-#对象位置-X轴::after {
-  clip-path: inset(-5% calc(100% - var(--进度-X轴)) -5% 0);
-}
-
-#对象位置-Y轴::after {
-  clip-path: inset(-5% calc(100% - var(--进度-Y轴)) -5% 0);
-}
-
-/* input[type="range"]::after {
-  position: absolute;
-  top: 90%;
-  left: 0%;
-  content: "50%";
-  width: 45px;
-  height: 30px;
-  border-radius: 2px;
-  background: rgb(41, 126, 78);
-  clip-path: polygon(
-    0% 15%,
-    40% 15%,
-    50% 0%,
-    60% 15%,
-    100% 15%,
-    100% 100%,
-    0% 100%
+#对象位置-X轴 {
+  background-image: linear-gradient(
+    90deg,
+    var(--进度条颜色-已填充) var(--进度-X轴),
+    var(--进度条颜色-未填充) var(--进度-X轴)
   );
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  color: white;
-  font-size: 0.8rem;
-  padding: 0 0 4px;
-  transition: background-color 0.1s;
-} */
+}
+
+#对象位置-Y轴 {
+  background-image: linear-gradient(
+    90deg,
+    var(--进度条颜色-已填充) var(--进度-Y轴),
+    var(--进度条颜色-未填充) var(--进度-Y轴)
+  );
+}
 
 .范围条数字区 {
   position: absolute;
@@ -309,7 +273,6 @@ input[type="range"]::after {
   border-radius: 3px;
   background: rgb(41, 126, 78);
   top: 300%;
-  /* left: calc(35px + 150px - 45px / 2); */
   left: 50%;
   transform: translateX(-50%);
   clip-path: polygon(
@@ -351,7 +314,6 @@ input[type="range"]::after {
 
 .控件子组:hover .范围条数字区,
 input[type="range"]:focus-visible ~ .范围条数字区 {
-  /* background-color: rgb(54, 97, 171); */
   background-color: rgb(177, 58, 58);
   color: white;
 }

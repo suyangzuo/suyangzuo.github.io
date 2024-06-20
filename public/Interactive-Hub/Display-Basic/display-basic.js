@@ -22,7 +22,7 @@ function 修改数字区位置(范围滑块, 数字区) {
   const 最小值 = 范围滑块.min ? 范围滑块.min : 0;
   const 最大值 = 范围滑块.max ? 范围滑块.max : 100;
   const 新值 = Number(((值 - 最小值) * 100) / (最大值 - 最小值));
-  数字区.style.left = `calc(${新值}% + ${8 - 新值 * 0.15}px)`;
+  数字区.style.left = `calc(${新值}% + ${8 - 新值 * 0.1555}px)`;
 }
 
 for (let input of 全部input) {
@@ -96,6 +96,7 @@ window.addEventListener("load", () => {
       const input组 = 控制区.querySelectorAll("input[type='range']");
       const 滑块数字组 = 控制区.querySelectorAll(".滑块数字");
       for (let input of input组) {
+        let 真实比例 = 0;
         switch (input.id) {
           case "块-宽度":
             input.value = 600;

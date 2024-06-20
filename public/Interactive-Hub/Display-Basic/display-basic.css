@@ -138,11 +138,6 @@ input[type="range"] {
   height: 5px;
   width: 200px;
   border-radius: 50px;
-  background: linear-gradient(
-    90deg,
-    var(--进度条颜色-已填充) 6%,
-    var(--进度条颜色-未填充) 6%
-  );
 }
 
 input[type="range"]::-webkit-slider-thumb {
@@ -161,63 +156,91 @@ input[type="range"]::-moz-range-thumb {
   position: relative;
   z-index: 1;
   appearance: none;
-  width: var(--拇指宽度);
-  aspect-ratio: 1;
+  width: 16px;
+  height: 16px;
   background: no-repeat center/100%
     url(/Images/Interactive-Hub/进度条拇指/闪电球.png);
-  transform: translateY(-50%) scale(1.25);
+  transform: translateY(-5%) scale(1.25);
   filter: drop-shadow(0 0 2px black);
+  border: none;
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
-  cursor: url(/Images/Common/鼠标-横向缩放.png) 16 6, ew-resize;
+  cursor:
+    url(/Images/Common/鼠标-横向缩放.png) 16 6,
+    ew-resize;
 }
 
-input[type="range"]::after {
-  position: absolute;
-  width: calc(100% - var(--拇指宽度));
-  height: 100%;
-  border-radius: 50px;
-  content: "";
-  left: calc(var(--拇指宽度) / 2);
-  top: 0;
-  background-color: var(--进度条颜色-已填充);
+#块-宽度 {
+  background-image: linear-gradient(
+    90deg,
+    var(--进度条颜色-已填充) var(--块-宽度比例),
+    var(--进度条颜色-未填充) var(--块-宽度比例)
+  );
 }
 
-#块-宽度::after {
-  clip-path: inset(-5% calc(100% - var(--块-宽度比例)) -5% 0);
+#块-高度 {
+  background-image: linear-gradient(
+    90deg,
+    var(--进度条颜色-已填充) var(--块-高度比例),
+    var(--进度条颜色-未填充) var(--块-高度比例)
+  );
 }
 
-#块-高度::after {
-  clip-path: inset(-5% calc(100% - var(--块-高度比例)) -5% 0);
+#行内-宽度 {
+  background-image: linear-gradient(
+    90deg,
+    var(--进度条颜色-已填充) var(--行内-宽度比例),
+    var(--进度条颜色-未填充) var(--行内-宽度比例)
+  );
 }
 
-#行内-宽度::after {
-  clip-path: inset(-5% calc(100% - var(--行内-宽度比例)) -5% 0);
+#行内-高度 {
+  background-image: linear-gradient(
+    90deg,
+    var(--进度条颜色-已填充) var(--行内-高度比例),
+    var(--进度条颜色-未填充) var(--行内-高度比例)
+  );
 }
 
-#行内-高度::after {
-  clip-path: inset(-5% calc(100% - var(--行内-高度比例)) -5% 0);
+#行内-字体尺寸 {
+  background-image: linear-gradient(
+    90deg,
+    var(--进度条颜色-已填充) var(--行内-字体尺寸比例),
+    var(--进度条颜色-未填充) var(--行内-字体尺寸比例)
+  );
 }
 
-#行内-字体尺寸::after {
-  clip-path: inset(-5% calc(100% - var(--行内-字体尺寸比例)) -5% 0);
+#行内块-宽度 {
+  background-image: linear-gradient(
+    90deg,
+    var(--进度条颜色-已填充) var(--行内块-宽度比例),
+    var(--进度条颜色-未填充) var(--行内块-宽度比例)
+  );
 }
 
-#行内块-宽度::after {
-  clip-path: inset(-5% calc(100% - var(--行内块-宽度比例)) -5% 0);
+#行内块-高度 {
+  background-image: linear-gradient(
+    90deg,
+    var(--进度条颜色-已填充) var(--行内块-高度比例),
+    var(--进度条颜色-未填充) var(--行内块-高度比例)
+  );
 }
 
-#行内块-高度::after {
-  clip-path: inset(-5% calc(100% - var(--行内块-高度比例)) -5% 0);
+#弹性-宽度 {
+  background-image: linear-gradient(
+    90deg,
+    var(--进度条颜色-已填充) var(--弹性-宽度比例),
+    var(--进度条颜色-未填充) var(--弹性-宽度比例)
+  );
 }
 
-#弹性-宽度::after {
-  clip-path: inset(-5% calc(100% - var(--弹性-宽度比例)) -5% 0);
-}
-
-#弹性-高度::after {
-  clip-path: inset(-5% calc(100% - var(--弹性-高度比例)) -5% 0);
+#弹性-高度 {
+  background-image: linear-gradient(
+    90deg,
+    var(--进度条颜色-已填充) var(--弹性-高度比例),
+    var(--进度条颜色-未填充) var(--弹性-高度比例)
+  );
 }
 
 .滑块数字 {
