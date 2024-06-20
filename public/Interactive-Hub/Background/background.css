@@ -13,7 +13,8 @@
   --填充比例-Y轴: 50%;
   --x轴数字位移: 0px;
   --y轴数字位移: 0px;
-  --背景尺寸标记偏移: 165px;
+  --背景尺寸标记偏移: calc(165px - 2.4px);
+  --背景尺寸下划线宽度: calc(24px * 1.2);
 }
 
 .背景总区 {
@@ -45,7 +46,7 @@
   margin-top: 7px;
   display: flex;
   justify-content: space-between;
-  font-size: 0.5rem;
+  font-size: 12px;
 }
 
 #bg-size-marks > option {
@@ -58,10 +59,10 @@
 #bg-size-marks::after {
   position: absolute;
   content: "";
-  width: 20px;
+  width: var(--背景尺寸下划线宽度);
   height: 1px;
   top: 110%;
-  left: calc(var(--背景尺寸标记偏移) + 2px);
+  left: var(--背景尺寸标记偏移);
   background-color: goldenrod;
   transform: scaleY(1.25);
   transition: left 0.25s;
