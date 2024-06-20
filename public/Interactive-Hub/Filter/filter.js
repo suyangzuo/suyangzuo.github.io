@@ -107,15 +107,22 @@ for (const 缩略图项 of 缩略图像组) {
   const 初始背景比例 =
     (初始值 + (Math.abs(下限) === 上限 ? (上限 - 下限) / 2 : 0)) /
     (上限 - 下限);
-  滤镜滑块.style.backgroundImage = `linear-gradient(90deg, ${进度条颜色_已填充} ${
-    初始背景比例 * 100
-  }%, transparent ${初始背景比例 * 100}%)`;
-  if (滤镜滑块.id === "投影-颜色") {
+  if (滤镜滑块.id !== "投影-颜色") {
+    滤镜滑块.style.backgroundImage = `linear-gradient(90deg, ${进度条颜色_已填充} ${
+      初始背景比例 * 100
+    }%, transparent ${初始背景比例 * 100}%)`;
+  } else {
     root.style.setProperty(
       "--投影颜色彩色背景修剪比例",
       `${100 - 初始背景比例 * 100}%`,
     );
   }
+  /*if (滤镜滑块.id === "投影-颜色") {
+    root.style.setProperty(
+      "--投影颜色彩色背景修剪比例",
+      `${100 - 初始背景比例 * 100}%`,
+    );
+  }*/
   const 初始偏移 =
     (滤镜拇指宽度 / (上限 - 下限)) *
     (Math.abs(下限) === 上限 ? 初始值 : 初始值 - (上限 - 下限) / 2);
@@ -139,15 +146,22 @@ for (const 缩略图项 of 缩略图像组) {
     const 滑块背景色比例 =
       (当前值 + (Math.abs(下限) === 上限 ? (上限 - 下限) / 2 : 0)) /
       (上限 - 下限);
-    if (滤镜滑块.id === "投影-颜色") {
+    /*if (滤镜滑块.id === "投影-颜色") {
+      root.style.setProperty(
+        "--投影颜色彩色背景修剪比例",
+        `${100 - 滑块背景色比例 * 100}%`,
+      );
+    }*/
+    if (滤镜滑块.id !== "投影-颜色") {
+      滤镜滑块.style.backgroundImage = `linear-gradient(90deg, ${进度条颜色_已填充} ${
+        滑块背景色比例 * 100
+      }%, transparent ${滑块背景色比例 * 100}%)`;
+    } else {
       root.style.setProperty(
         "--投影颜色彩色背景修剪比例",
         `${100 - 滑块背景色比例 * 100}%`,
       );
     }
-    滤镜滑块.style.backgroundImage = `linear-gradient(90deg, ${进度条颜色_已填充} ${
-      滑块背景色比例 * 100
-    }%, transparent ${滑块背景色比例 * 100}%)`;
     滑块值.textContent = `${滤镜滑块.value}`;
     滑块值.appendChild(生成后缀元素(滤镜滑块.id));
 
