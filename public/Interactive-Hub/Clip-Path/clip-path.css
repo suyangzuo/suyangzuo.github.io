@@ -269,7 +269,7 @@ pre[class*="language-"] {
 
 code[class*="language-"],
 pre[class*="language-"] {
-  font-family: "Jetbrains Mono", Consolas, monospace;
+  font-family: "Jetbrains Mono", Consolas, "Noto Sans SC", monospace;
 }
 
 div.code-toolbar > .toolbar {
