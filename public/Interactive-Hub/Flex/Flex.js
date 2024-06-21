@@ -238,6 +238,7 @@ const 交叉轴多行分布区 = document.getElementsByClassName("交叉轴多�
 const 主轴按钮 = document.getElementsByClassName("主轴按钮")[0];
 const 交叉轴单行按钮 = document.getElementsByClassName("交叉轴单行按钮")[0];
 const 交叉轴多行按钮 = document.getElementsByClassName("交叉轴多行按钮")[0];
+let 当前按钮 = 主轴按钮;
 
 const 轴分布类型 = document.getElementsByClassName("轴分布类型")[0];
 轴分布类型.style.filter = "brightness(50%)";
@@ -245,6 +246,9 @@ const 轴分布类型 = document.getElementsByClassName("轴分布类型")[0];
 
 主轴按钮.addEventListener("click", (event) => {
   if (块布局.checked) return;
+  当前按钮.classList.remove("当前按钮");
+  主轴按钮.classList.add("当前按钮");
+  当前按钮 = 主轴按钮;
   event.target.style.background =
     "linear-gradient(90deg, rgb(159, 159, 159) 0%, rgb(205, 205, 205) 100%)";
   event.target.style.color = "black";
@@ -264,6 +268,9 @@ const 轴分布类型 = document.getElementsByClassName("轴分布类型")[0];
 
 交叉轴单行按钮.addEventListener("click", (event) => {
   if (块布局.checked) return;
+  当前按钮.classList.remove("当前按钮");
+  交叉轴单行按钮.classList.add("当前按钮");
+  当前按钮 = 交叉轴单行按钮;
   event.target.style.background =
     "linear-gradient(90deg, rgb(159, 159, 159) 0%, rgb(205, 205, 205) 100%)";
   event.target.style.color = "black";
@@ -283,6 +290,9 @@ const 轴分布类型 = document.getElementsByClassName("轴分布类型")[0];
 
 交叉轴多行按钮.addEventListener("click", (event) => {
   if (块布局.checked) return;
+  当前按钮.classList.remove("当前按钮");
+  交叉轴多行按钮.classList.add("当前按钮");
+  当前按钮 = 交叉轴多行按钮;
   event.target.style.background =
     "linear-gradient(90deg, rgb(159, 159, 159) 0%, rgb(205, 205, 205) 100%)";
   event.target.style.color = "black";

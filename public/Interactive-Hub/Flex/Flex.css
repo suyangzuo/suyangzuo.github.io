@@ -133,12 +133,12 @@
 
 .中文 {
   font-size: 1rem;
-  color: gold;
+  color: darkkhaki;
 }
 
 .代码 {
   font-size: 0.85rem;
-  color: goldenrod;
+  color: olivedrab;
 }
 
 label:hover,
@@ -153,10 +153,28 @@ input[type="checkbox"] {
   appearance: none;
   width: 14px;
   height: 14px;
-  border: solid 1px rgb(223, 223, 223);
+  border: solid 1px #888;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.布局按钮区:hover .中文 {
+  color: gold;
+}
+
+.布局按钮区:hover .代码 {
+  color: lightgreen;
+}
+
+.布局按钮区:hover input[type="radio"]:checked,
+.布局按钮区:hover input[type="checkbox"]:checked {
+  background-color: #395a43;
+  outline: solid 1px #aaa;
+}
+
+.布局按钮区:hover :where(input[type="radio"], input[type="checkbox"]) {
+  border-color: white;
 }
 
 input[type="radio"]::after,
@@ -175,7 +193,7 @@ input[type="checkbox"]::after {
 input[type="radio"]:checked,
 input[type="checkbox"]:checked {
   border: none;
-  background-color: #5f885f;
+  background-color: #527752;
 }
 
 input[type="radio"]:checked::after,
@@ -478,6 +496,12 @@ option {
   /* border: none; */
   background: linear-gradient(90deg, rgb(29, 29, 29) 0%, rgb(45, 45, 45) 100%);
   color: white;
+  border-bottom: solid 1px transparent;
+  transition: border-bottom-color 100ms;
+}
+
+.轴分布类型按钮:not(.当前按钮):hover {
+  border-bottom: solid 1px palevioletred;
 }
 
 .轴分布选项 {
