@@ -51,7 +51,7 @@
     filter: opacity(1);
   }
   to {
-    filter: opacity(0.1);
+    filter: opacity(0);
   }
 }
 
@@ -100,9 +100,6 @@
   left: 0;
   top: 0;
   content: "";
-  border-top: solid 2px gray;
-  border-left: solid 2px gray;
-  border-bottom: solid 2px gray;
   pointer-events: none;
 }
 
@@ -111,9 +108,21 @@
   border-right: solid 5px var(--颜色-外边距);
 }
 
+.单项-外边距:hover::after {
+  border-top: solid 2px var(--颜色-外边距);
+  border-left: solid 2px var(--颜色-外边距);
+  border-bottom: solid 2px var(--颜色-外边距);
+}
+
 .单项-边框 {
   background-color: #0c172460;
   border-right: solid 5px var(--颜色-边框);
+}
+
+.单项-边框:hover::after {
+  border-top: solid 2px var(--颜色-边框);
+  border-left: solid 2px var(--颜色-边框);
+  border-bottom: solid 2px var(--颜色-边框);
 }
 
 .单项-内边距 {
@@ -121,9 +130,21 @@
   border-right: solid 5px var(--颜色-内边距);
 }
 
+.单项-内边距:hover::after {
+  border-top: solid 2px var(--颜色-内边距);
+  border-left: solid 2px var(--颜色-内边距);
+  border-bottom: solid 2px var(--颜色-内边距);
+}
+
 .单项-内容 {
   background-color: #0c1724c0;
   border-right: solid 5px var(--颜色-内容);
+}
+
+.单项-内容:hover::after {
+  border-top: solid 2px var(--颜色-内容);
+  border-left: solid 2px var(--颜色-内容);
+  border-bottom: solid 2px var(--颜色-内容);
 }
 
 .单项属性-名称 {
@@ -422,6 +443,8 @@ input[type="range"] {
 
 .关联方向:hover input {
   scale: 1.1;
+  outline-color: white;
+  outline-width: 1px;
 }
 
 .关联方向 > label:hover,
@@ -435,6 +458,7 @@ input[type="radio"]:hover {
   position: relative;
   height: 12px;
   width: 12px;
+  translate: 0 1px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -444,11 +468,15 @@ input[type="radio"]:hover {
   appearance: none;
   width: 100%;
   height: 100%;
-  outline: solid 1px #bbb;
+  outline: solid 1px #aaa;
 }
 
 .checkbox-封装器 > input:checked {
-  outline: solid 1px gray;
+  outline-color: transparent;
+}
+
+.关联方向:hover input:checked + span {
+  background-image: linear-gradient(90deg, lightskyblue 25%, lightgreen 75%);
 }
 
 .checkbox-封装器:hover > input {
@@ -461,10 +489,11 @@ input[type="radio"]:hover {
   height: 100%;
   left: 0;
   top: 0;
-  background-color: rgb(124, 255, 216);
+  /*background-color: rgb(124, 255, 216);*/
+  background-color: white;
   visibility: hidden;
   opacity: 0;
-  transition: 0.15s;
+  transition: 100ms;
   pointer-events: none;
   clip-path: polygon(43% 78%, 86% 8%, 96% 16%, 46% 97%, 5% 56%, 13% 47%);
 }
