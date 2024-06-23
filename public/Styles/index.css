@@ -156,6 +156,7 @@
   font-family: "Molengo", sans-serif;
   opacity: 0;
   animation: 英文欢迎标题动画 1s ease-out 750ms forwards, 英文标题颜色变化 12s ease-out 3s infinite;
+  filter: drop-shadow(2px 2px 2px #0008);
   /*mix-blend-mode: difference;*/
 }
 

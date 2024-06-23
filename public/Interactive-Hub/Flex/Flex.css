@@ -32,15 +32,39 @@
 }
 
 .弹性-展示区 {
-  width: 600px;
-  height: 600px;
+  width: 800px;
+  height: 800px;
   position: relative;
   outline: solid 2px white;
   transition: 500ms;
 }
 
 .弹性元素 {
+  position: relative;
   transition: 500ms;
+  font-family: "JetBrains Mono", Consolas, monospace;
+}
+
+.弹性元素::before {
+  position: absolute;
+  content: attr(data-number);
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 1.125rem;
+}
+
+.弹性元素:nth-child(odd)::before {
+  color: white;
+}
+
+.弹性元素:nth-child(even)::before {
+  color: black;
 }
 
 .弹性-操作区 {

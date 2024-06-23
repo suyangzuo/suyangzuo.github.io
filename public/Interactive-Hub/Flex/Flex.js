@@ -10,7 +10,7 @@ const 轴区切换时长 = 100;
 const 弹性展示区 = document.getElementsByClassName("弹性-展示区")[0];
 
 const 初始块元素数量 = rootStyle.getPropertyValue("--初始盒子数量");
-const 最低尺寸百分比 = 2;
+const 最低尺寸百分比 = 3;
 const 最高尺寸百分比 = 20;
 创建块元素(初始块元素数量);
 
@@ -18,7 +18,11 @@ function 创建块元素(数量) {
   for (let i = 1; i <= 数量; i++) {
     const element = document.createElement("div");
     element.className = i % 2 === 0 ? "弹性元素 偶元素" : "弹性元素 奇元素";
-    element.style.backgroundColor = i % 2 === 0 ? "brown" : "steelblue";
+    /*const red = Math.floor(Math.random() * 256);
+    const green = Math.floor(Math.random() * 256);
+    const blue = Math.floor(Math.random() * 256);*/
+    element.style.backgroundColor = i % 2 === 0 ? "lightgreen" : "steelblue";
+    // element.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
     let 宽度百分比 = Math.floor(
       Math.random() * (最高尺寸百分比 - 最低尺寸百分比 + 1) + 最低尺寸百分比,
     );
@@ -27,11 +31,7 @@ function 创建块元素(数量) {
     );
     element.style.width = `${宽度百分比}%`;
     element.style.height = `${高度百分比}%`;
-    element.textContent = i;
-    element.style.display = "flex";
-    element.style.justifyContent = "center";
-    element.style.alignItems = "center";
-    element.style.fontSize = "clamp(0.5rem, 1rem, 1.5rem)";
+    element.setAttribute("data-number", `${i}`);
     弹性展示区.appendChild(element);
   }
 }
