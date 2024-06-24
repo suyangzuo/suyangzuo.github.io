@@ -18,11 +18,7 @@ function 创建块元素(数量) {
   for (let i = 1; i <= 数量; i++) {
     const element = document.createElement("div");
     element.className = i % 2 === 0 ? "弹性元素 偶元素" : "弹性元素 奇元素";
-    /*const red = Math.floor(Math.random() * 256);
-    const green = Math.floor(Math.random() * 256);
-    const blue = Math.floor(Math.random() * 256);*/
-    element.style.backgroundColor = i % 2 === 0 ? "lightgreen" : "steelblue";
-    // element.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
+    element.style.backgroundColor = i % 2 === 0 ? "#4a7" : "#468";
     let 宽度百分比 = Math.floor(
       Math.random() * (最高尺寸百分比 - 最低尺寸百分比 + 1) + 最低尺寸百分比,
     );
@@ -86,18 +82,7 @@ function 修改布局() {
     主轴按钮.style.background =
       "linear-gradient(90deg, rgb(29, 29, 29) 0%, rgb(45, 45, 45) 100%)";
     主轴按钮.style.color = "white";
-    轴分布三区.style.filter = "brightness(50%)";
-    轴分布三区.style.pointerEvents = "none";
-    轴方向区.style.filter = "brightness(50%)";
-    轴方向区.style.pointerEvents = "none";
-    包裹区.style.filter = "brightness(50%)";
-    包裹区.style.pointerEvents = "none";
-    间隙区.style.filter = "brightness(50%)";
-    间隙区.style.pointerEvents = "none";
-    轴分布类型.style.filter = "brightness(50%)";
-    轴分布类型.style.pointerEvents = "none";
-    尺寸区.style.filter = "brightness(50%)";
-    尺寸区.style.pointerEvents = "none";
+    屏蔽弹性布局操作区();
   } else {
     弹性展示区.style.display = "flex";
     修改主轴方向();
@@ -127,18 +112,7 @@ function 修改布局() {
     尺寸区.style.filter = "brightness(100%)";
     尺寸区.style.pointerEvents = "auto";
   }
-  主轴分布区.style.visibility = "visible";
-  主轴分布区.style.opacity = "1";
-  交叉轴单行分布区.style.visibility = "hidden";
-  交叉轴单行分布区.style.opacity = "0";
-  交叉轴单行按钮.style.background =
-    "linear-gradient(90deg, rgb(29, 29, 29) 0%, rgb(45, 45, 45) 100%)";
-  交叉轴单行按钮.style.color = "white";
-  交叉轴多行分布区.style.visibility = "hidden";
-  交叉轴多行分布区.style.visibility = "0";
-  交叉轴多行按钮.style.background =
-    "linear-gradient(90deg, rgb(29, 29, 29) 0%, rgb(45, 45, 45) 100%)";
-  交叉轴多行按钮.style.color = "white";
+  弹性轴区样式初始化();
 }
 
 const 主轴行 = document.getElementById("flex-direction-row");
@@ -156,6 +130,21 @@ function 修改主轴方向() {
   } else {
     弹性展示区.style.flexDirection = "column";
   }
+}
+
+function 弹性轴区样式初始化() {
+  主轴分布区.style.visibility = "visible";
+  主轴分布区.style.opacity = "1";
+  交叉轴单行分布区.style.visibility = "hidden";
+  交叉轴单行分布区.style.opacity = "0";
+  交叉轴单行按钮.style.background =
+    "linear-gradient(90deg, rgb(29, 29, 29) 0%, rgb(45, 45, 45) 100%)";
+  交叉轴单行按钮.style.color = "white";
+  交叉轴多行分布区.style.visibility = "hidden";
+  交叉轴多行分布区.style.visibility = "0";
+  交叉轴多行按钮.style.background =
+    "linear-gradient(90deg, rgb(29, 29, 29) 0%, rgb(45, 45, 45) 100%)";
+  交叉轴多行按钮.style.color = "white";
 }
 
 const 弹性包裹 = document.getElementById("flex-wrap");
@@ -252,18 +241,7 @@ const 轴分布类型 = document.getElementsByClassName("轴分布类型")[0];
   event.target.style.background =
     "linear-gradient(90deg, rgb(159, 159, 159) 0%, rgb(205, 205, 205) 100%)";
   event.target.style.color = "black";
-  主轴分布区.style.visibility = "visible";
-  主轴分布区.style.opacity = "1";
-  交叉轴单行分布区.style.visibility = "hidden";
-  交叉轴单行分布区.style.opacity = "0";
-  交叉轴单行按钮.style.background =
-    "linear-gradient(90deg, rgb(29, 29, 29) 0%, rgb(45, 45, 45) 100%)";
-  交叉轴单行按钮.style.color = "white";
-  交叉轴多行分布区.style.visibility = "hidden";
-  交叉轴多行分布区.style.visibility = "0";
-  交叉轴多行按钮.style.background =
-    "linear-gradient(90deg, rgb(29, 29, 29) 0%, rgb(45, 45, 45) 100%)";
-  交叉轴多行按钮.style.color = "white";
+  弹性轴区样式初始化();
 });
 
 交叉轴单行按钮.addEventListener("click", (event) => {
@@ -410,6 +388,21 @@ function 调整扩张数字位置() {
   );
 }
 
+function 屏蔽弹性布局操作区() {
+  轴分布三区.style.filter = "brightness(50%)";
+  轴分布三区.style.pointerEvents = "none";
+  轴方向区.style.filter = "brightness(50%)";
+  轴方向区.style.pointerEvents = "none";
+  包裹区.style.filter = "brightness(50%)";
+  包裹区.style.pointerEvents = "none";
+  间隙区.style.filter = "brightness(50%)";
+  间隙区.style.pointerEvents = "none";
+  轴分布类型.style.filter = "brightness(50%)";
+  轴分布类型.style.pointerEvents = "none";
+  尺寸区.style.filter = "brightness(50%)";
+  尺寸区.style.pointerEvents = "none";
+}
+
 function 重置参数() {
   盒子数量滑块.value = 初始块元素数量;
   盒子数量滑块.nextElementSibling.textContent = 盒子数量滑块.value;
@@ -439,52 +432,18 @@ function 重置参数() {
   主轴按钮.style.background =
     "linear-gradient(90deg, rgb(29, 29, 29) 0%, rgb(45, 45, 45) 100%)";
   主轴按钮.style.color = "white";
-  主轴分布区.style.visibility = "visible";
-  主轴分布区.style.opacity = "1";
-  交叉轴单行分布区.style.visibility = "hidden";
-  交叉轴单行分布区.style.opacity = "0";
-  交叉轴单行按钮.style.background =
-    "linear-gradient(90deg, rgb(29, 29, 29) 0%, rgb(45, 45, 45) 100%)";
-  交叉轴单行按钮.style.color = "white";
-  交叉轴多行分布区.style.visibility = "hidden";
-  交叉轴多行分布区.style.visibility = "0";
-  交叉轴多行按钮.style.background =
-    "linear-gradient(90deg, rgb(29, 29, 29) 0%, rgb(45, 45, 45) 100%)";
-  交叉轴多行按钮.style.color = "white";
+  弹性轴区样式初始化();
   主轴分布全部选项.forEach((element) => {
-    if (element.id.includes("正常")) {
-      element.checked = true;
-    } else {
-      element.checked = false;
-    }
+    element.checked = element.id.includes("正常");
   });
   交叉轴单行分布全部选项.forEach((element) => {
-    if (element.id.includes("正常")) {
-      element.checked = true;
-    } else {
-      element.checked = false;
-    }
+    element.checked = element.id.includes("正常");
   });
   交叉轴多行分布全部选项.forEach((element) => {
-    if (element.id.includes("正常")) {
-      element.checked = true;
-    } else {
-      element.checked = false;
-    }
+    element.checked = element.id.includes("正常");
   });
 
-  轴分布三区.style.filter = "brightness(50%)";
-  轴分布三区.style.pointerEvents = "none";
-  轴方向区.style.filter = "brightness(50%)";
-  轴方向区.style.pointerEvents = "none";
-  包裹区.style.filter = "brightness(50%)";
-  包裹区.style.pointerEvents = "none";
-  间隙区.style.filter = "brightness(50%)";
-  间隙区.style.pointerEvents = "none";
-  轴分布类型.style.filter = "brightness(50%)";
-  轴分布类型.style.pointerEvents = "none";
-  尺寸区.style.filter = "brightness(50%)";
-  尺寸区.style.pointerEvents = "none";
+  屏蔽弹性布局操作区();
 
   收缩滑块.value = 1;
   收缩滑块.nextElementSibling.textContent = 收缩滑块.value;

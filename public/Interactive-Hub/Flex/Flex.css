@@ -59,19 +59,14 @@
   font-size: 1.125rem;
 }
 
-.弹性元素:nth-child(odd)::before {
+.弹性元素::before {
   color: white;
-}
-
-.弹性元素:nth-child(even)::before {
-  color: black;
 }
 
 .弹性-操作区 {
   position: relative;
   z-index: 1;
   width: 520px;
-  /* height: 800px; */
   outline: solid 1px gray;
 }
 
@@ -517,7 +512,6 @@ option {
   height: 100%;
   font-size: 1rem;
   outline: none;
-  /* border: none; */
   background: linear-gradient(90deg, rgb(29, 29, 29) 0%, rgb(45, 45, 45) 100%);
   color: white;
   border-bottom: solid 1px transparent;
