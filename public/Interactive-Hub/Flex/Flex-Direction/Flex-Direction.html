@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>弹性布局-弹性方向</title>
+    <link
+      rel="icon"
+      href="/Images/Interactive-Hub/HQ/弹性布局.webp"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="/Styles/common.css" />
+    <link rel="stylesheet" href="/Styles/top-banner-common.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Titillium+Web&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Roboto+Mono&family=M+PLUS+Code+Latin&family=Ubuntu+Mono&family=M+PLUS+1+Code:wght@100..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../control.css" />
+    <link rel="stylesheet" href="../../interactive-common.css" />
+    <link rel="stylesheet" href="./Flex-Direction.css" />
+    <script src="/Scripts/top-banner.js" defer></script>
+    <script
+      src="https://kit.fontawesome.com/d0483e3bd3.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
+    <script
+      src="/Scripts/html-include.js"
+      target="/top-banner.html"
+      position="afterbegin"
+    ></script>
+    <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
+
+    <section class="弹性总区 总区">
+      <script
+        src="/Scripts/html-include.js"
+        target="../../control.html"
+        position="afterbegin"
+      ></script>
+      <p class="交互标题">弹性方向</p>
+      <div class="弹性盒子">
+        <div class="方向线">
+          <span class="方向线箭头 方向线箭头-上">&#9650;</span
+          ><span class="方向线箭头 方向线箭头-下">&#9660;</span>
+        </div>
+        <div class="弹性方向文本">
+          弹性方向<span class="弹性方向文本-方向">行</span>
+        </div>
+
+        <div class="轴方向辅助线 行辅助线">
+          <span class="轴方向标题 行标题">行</span>
+        </div>
+        <div class="轴方向辅助线 列辅助线">
+          <span class="轴方向标题 列标题">列</span>
+        </div>
+
+        <div class="direction-container main-container">
+          <h3 class="axis-title main-axis-title">主轴</h3>
+        </div>
+        <div class="direction-container cross-container">
+          <h3 class="axis-title cross-axis-title">交叉轴</h3>
+        </div>
+
+        <div class="弹性方向">
+          <h3 class="flex-direction-title">
+            <span class="title-chinese">弹性方向</span
+            ><span class="title-english">flex-direction</span>
+          </h3>
+          <label for="row-radio" class="label">
+            <span class="flex-direction-row-title"
+              ><span class="title-chinese">行</span
+              ><span class="title-english">row</span></span
+            >
+            <input
+              type="radio"
+              id="row-radio"
+              class="radio"
+              name="flex-direction"
+              checked
+            />
+          </label>
+          <label for="column-radio" class="label">
+            <span class="flex-direction-row-title"
+              ><span class="title-chinese">列</span
+              ><span class="title-english">column</span></span
+            >
+            <input
+              type="radio"
+              id="column-radio"
+              class="radio"
+              name="flex-direction"
+            />
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <script src="./Flex-Direction.js"></script>
+  </body>
+</html>

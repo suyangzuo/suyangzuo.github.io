@@ -142,7 +142,7 @@ body {
   border-radius: 100px;
   list-style-type: none;
   filter: drop-shadow(2px 2px 2px #000a);
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 
 .交互单项链接 {
@@ -256,6 +256,82 @@ body {
 
 :where(.字体尺寸, .宽度与高度, .盒子阴影):hover img {
   filter: invert(80%);
+}
+
+.交互子项 {
+  height: 100%;
+  border-radius: 999px;
+  /*background-image: linear-gradient(315deg, #687175 0%, #8f979f 74%);*/
+  position: relative;
+  overflow: hidden;
+  background-color: #2b4162;
+  background-image: linear-gradient(315deg, #2b4162 0%, #242830 74%);
+  box-shadow: inset 0 1px 0 gray;
+  cursor: url(/Images/Common/鼠标-指向.cur), pointer;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  translate: 0 -100%;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  rotate: x -180deg;
+  transition: rotate 500ms;
+}
+
+.交互子项链接 {
+  flex-grow: 1;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.交互子项链接:link,
+.交互子项链接:visited {
+  color: white;
+}
+
+.交互子项链接:hover {
+  background-color: #cdea;
+  color: #012;
+}
+
+.弹性布局子项链接:nth-child(2) {
+  border-left: solid 1px #fff5;
+  border-right: solid 1px #fff5;
+}
+
+.弹性布局子项链接:nth-child(2):hover {
+  border-color: transparent;
+}
+
+.弹性布局子项:has(.弹性布局-综合链接:hover) .弹性布局-弹性方向链接 {
+  border-left: solid 1px transparent;
+}
+
+.弹性布局子项:has(.弹性布局-交叉轴对齐链接:hover) .弹性布局-弹性方向链接 {
+  border-right: solid 1px transparent;
+}
+
+.弹性布局 {
+  perspective: 400px;
+}
+
+.弹性布局链接 {
+  transform-style: preserve-3d;
+  position: relative;
+  z-index: 1;
+  backface-visibility: hidden;
+  transition: rotate 500ms;
+}
+
+.弹性布局:hover .弹性布局链接 {
+  rotate: x 180deg;
+}
+
+.弹性布局:hover .交互子项 {
+  rotate: x 0deg;
 }
 
 @media screen and (width < 1450px) {

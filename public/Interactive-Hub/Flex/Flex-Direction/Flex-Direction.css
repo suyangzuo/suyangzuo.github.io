@@ -1,0 +1,309 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --过渡时长: 500ms;
+  --行辅助线-垂直缩放: 2;
+  --列辅助线-水平缩放: 1;
+  --行辅助线-背景色: white;
+  --列辅助线-背景色: #999;
+}
+
+body {
+  min-height: 100vh;
+  background-color: #25303a;
+}
+
+.弹性盒子 {
+  position: relative;
+  width: 500px;
+  height: 500px;
+  background-color: #fff2;
+  margin: 100px auto;
+  font-family: "JetBrains Mono", Consolas, monospace, 微软雅黑, sans-serif;
+}
+
+.direction-container {
+  position: absolute;
+  transition: var(--过渡时长);
+}
+
+.main-container {
+  background-color: gold;
+  width: 100%;
+  height: 2px;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+}
+
+.main-container::before {
+  position: absolute;
+  content: "\1438";
+  top: 0;
+  left: 0;
+  translate: 0 -50%;
+  color: white;
+  filter: drop-shadow(1px 1px 1px black);
+  scale: 1.25;
+}
+
+.main-container::after {
+  position: absolute;
+  content: "\1438";
+  top: 0%;
+  right: 0;
+  translate: 0 -50%;
+  color: white;
+  rotate: y 180deg;
+  scale: 1.25;
+  filter: drop-shadow(1px 1px 1px black);
+}
+
+.cross-container {
+  background-color: lightcoral;
+  width: 2px;
+  height: 100%;
+  transform-origin: 0 0;
+}
+
+.cross-container::before {
+  position: absolute;
+  content: "\1431";
+  top: 0;
+  left: 0.5px;
+  translate: -50% -4px;
+  color: white;
+  filter: drop-shadow(1px 1px 1px black);
+  scale: 1.25;
+}
+
+.cross-container::after {
+  position: absolute;
+  content: "\142F";
+  bottom: 0;
+  left: 0.5px;
+  translate: -50% 4px;
+  color: white;
+  rotate: y 180deg;
+  scale: 1.25;
+  filter: drop-shadow(1px 1px 1px black);
+}
+
+.direction-container .axis-title {
+  position: absolute;
+}
+
+.axis-title {
+  transition: var(--过渡时长);
+}
+
+.main-axis-title {
+  translate: -50% 10px;
+  top: -3px;
+  left: 35%;
+  color: gold;
+}
+
+.cross-axis-title {
+  translate: 10px -50%;
+  width: 80px;
+  top: 35%;
+  left: 0;
+  color: lightcoral;
+}
+
+.弹性方向 {
+  width: 245px;
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  translate: 30px -50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-direction-title,
+.label,
+.flex-direction-row-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.flex-direction-title {
+  padding: 5px 0;
+}
+
+.label {
+  position: relative;
+  width: fit-content;
+  justify-content: flex-start;
+  padding: 5px 0;
+}
+
+.title-chinese {
+  color: lightskyblue;
+}
+
+.flex-direction-title .title-chinese {
+  color: darkgoldenrod;
+}
+
+.flex-direction-title .title-english {
+  color: rgb(144, 108, 16);
+}
+
+.title-english {
+  color: #aaa;
+}
+
+label:hover {
+  cursor: pointer;
+}
+
+input:hover {
+  cursor: pointer;
+}
+
+input[type="radio"] {
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border: solid 1px #888;
+}
+
+input[type="radio"]:checked {
+  background-color: lightgreen;
+  border: none;
+  clip-path: polygon(43% 76%, 88% 10%, 95% 17%, 45% 92%, 7% 52%, 14% 46%);
+}
+
+label .title-english {
+  width: 58px;
+}
+
+label:hover::before {
+  position: absolute;
+  content: "";
+  width: 120%;
+  height: 100%;
+  background-color: #0006;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  z-index: -1;
+}
+
+.轴方向辅助线 {
+  position: absolute;
+}
+
+.行辅助线 {
+  width: 100%;
+  height: 1px;
+  top: 50%;
+  left: 0;
+  translate: 0 -50%;
+}
+
+.行辅助线::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  /* background-color: var(--行辅助线-背景色); */
+  scale: 1 var(--行辅助线-垂直缩放);
+  transition: 250ms;
+}
+
+.列辅助线 {
+  width: 1px;
+  height: 100%;
+  top: 0;
+  left: 50%;
+  translate: -50% 0;
+}
+
+.列辅助线::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  /* background-color: var(--列辅助线-背景色); */
+  scale: var(--列辅助线-水平缩放) 1;
+  transition: 250ms;
+}
+
+.轴方向标题 {
+  position: absolute;
+  color: #cde;
+  padding: 5px 7px;
+  border-radius: 5px;
+  background-color: #000a;
+  opacity: 0;
+}
+
+.行标题 {
+  right: 5px;
+  top: 8px;
+}
+
+.列标题 {
+  bottom: 5px;
+  left: 8px;
+}
+
+.弹性方向文本 {
+  position: absolute;
+  color: darkseagreen;
+  top: 52%;
+  left: 78%;
+  font-size: 1.05rem;
+  /* transition: left 500ms, top 500ms; */
+  transition: 500ms;
+}
+
+.弹性方向文本-方向 {
+  padding: 5px 7px;
+  background-color: #000a;
+  border-radius: 5px;
+  margin-left: 5px;
+  color: #cde;
+}
+
+.方向线 {
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  top: 50%;
+  left: 0;
+  translate: 0 -50%;
+  background-color: #aaa;
+  transition: 500ms;
+}
+
+.方向线箭头 {
+  position: absolute;
+  color: #abc;
+  top: 50%;
+  font-size: 1.25em;
+}
+
+.方向线箭头-上 {
+  left: 47%;
+  rotate: z -90deg;
+  translate: -50% -50%;
+}
+
+.方向线箭头-下 {
+  left: 53%;
+  rotate: z -90deg;
+  translate: -50% -50%;
+}

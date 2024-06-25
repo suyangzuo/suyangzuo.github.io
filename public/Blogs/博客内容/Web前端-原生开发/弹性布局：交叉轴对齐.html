@@ -96,6 +96,19 @@
         >的含义有所不同；本专题讨论的是<span class="专业名词">弹性布局</span
         >中的<span class="行内专业名词">交叉轴</span>。
       </p>
+      <p>
+        欢迎访问本站<a
+          class="超链接"
+          target="_blank"
+          href="/Interactive-Hub/interactive-index.html"
+          >交互式学习中心</a
+        >的<a
+          class="超链接"
+          target="_blank"
+          href="/Interactive-Hub/Flex/Flex-Align/Flex-Align.html"
+          >弹性布局：交叉轴对齐</a
+        >以获得更好的交互式体验。
+      </p>
     </section>
 
     <h2 class="分区标题 分区2级标题">
@@ -127,6 +140,119 @@
     <h3 class="分区标题 分区3级标题">
       为什么要单独讨论<span class="行内专业名词">交叉轴</span>？
     </h3>
+    <p class="分区普通文本">
+      在<span class="行内专业名词">交叉轴</span>方向，会有<span class="专业名词"
+        >行</span
+      >的概念；多个行如何布局、行内部的元素如何布局，分别对应<span
+        class="行内代码"
+        >align-content</span
+      >和<span class="行内代码">align-items</span
+      >，这是很多人初学弹性布局最困惑的地方。因此，本专题将专门讨论<span
+        class="行内专业名词"
+        >交叉轴</span
+      >的对齐方式。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        本专题将以<span class="行内专业名词">默认</span
+        >的弹性方向为基础，即<span class="行内专业名词">主轴</span>为<span
+          class="强调"
+          >行</span
+        >，<span class="行内专业名词">交叉轴</span>为<span class="强调">列</span
+        >。
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">弹性</span>如何体现？
+    </h3>
+    <p class="分区普通文本">
+      一个元素如果使用了<span class="行内专业名词">弹性布局</span
+      >，其内部的<span class="行内专业名词">直接子元素</span>会成为一个<span
+        class="行内专业名词"
+        >弹簧</span
+      >，意味着可以<span class="行内专业名词">收缩</span>和<span
+        class="行内专业名词"
+        >膨胀</span
+      >；区别在于：默认状态下<span class="强调">会收缩</span>而<span
+        class="强调"
+        >不会膨胀</span
+      >。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/弹性布局-nowrap-增加盒子.webp"
+        alt="flex-wrap: nowrap - 增加盒子"
+      />
+    </figure>
+    <p class="分区普通文本">
+      不管增加多少元素，它们都会尽可能地收缩在弹性容器内部，就像很多弹簧被压缩着挤在一个盒子里，这就是默认状态下<span
+        class="强调"
+        >会收缩</span
+      >的特性。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      维持<span class="行内专业名词">弹簧</span>原本的尺寸
+    </h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词">弹性布局</span
+      >内部的直接子元素默认会收缩。如果希望维持它们原本的尺寸，该怎么做呢？方法有两种：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span
+          >设置<span class="行内专业名词">弹性收缩</span>为<span
+            class="行内代码"
+            >0</span
+          ></span
+        >
+        <pre>
+          <code class="lang-css">
+            弹性容器的直接子元素 {
+              /* flex-shrink 默认为 1 */
+              flex-shrink: 0;
+            }
+          </code>
+        </pre>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/弹性布局-弹性收缩-0-增加盒子.webp"
+            alt="flex-shrink: 0 - 增加盒子"
+          />
+        </figure>
+        <p class="分区普通文本">
+          设置了<span class="行内代码">flex-shrink: 0</span
+          >后，弹性容器的直接子元素不会再收缩，而是维持原本的大小。不过，这种方式有时会导致子元素溢出容器。
+        </p>
+      </li>
+      <li class="分区列表项">
+        <span>允许换行，一行放不下就放到下一行</span>
+        <pre>
+          <code class="lang-css">
+            弹性容器 {
+              /* flex-wrap 默认为 nowrap */
+              flex-wrap: wrap;
+            }
+          </code>
+        </pre>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/弹性布局-flex-wrap-wrap-增加盒子.webp"
+            alt="flex-wrap: wrap - 增加盒子"
+          />
+        </figure>
+        <p class="分区普通文本">
+          设置了<span class="行内代码">flex-wrap: wrap</span
+          >后，一行放不下的元素，会自动放到下一行，这就是<span
+            class="行内专业名词"
+            >多行</span
+          >的由来。可以看出，这几行是<span class="行内专业名词">从上往下</span
+          >生成的，意味着<span class="强调">多行生成于交叉轴</span>。
+        </p>
+      </li>
+    </ul>
   </article>
 
   <article class="正文分区">
@@ -134,6 +260,6 @@
       <span class="行内专业名词">交叉轴</span>对齐
     </h2>
 
-    <h3 class="分区标题 分区3级标题">交叉轴行高</h3>
+    <h3 class="分区标题 分区3级标题">一行有多高？</h3>
   </article>
 </div>

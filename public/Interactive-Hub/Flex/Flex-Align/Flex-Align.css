@@ -1,0 +1,417 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --弹性行边界色: lightgreen;
+  --弹性行渐变起始色: #fff3;
+  --弹性行渐变结束色: #fff1;
+  transition: 250ms;
+}
+
+:root:has(#行透明复选框:checked) {
+  --弹性行边界色: transparent;
+  --弹性行渐变起始色: transparent;
+  --弹性行渐变结束色: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+}
+
+body::-webkit-scrollbar {
+  width: 15px;
+}
+
+body::-webkit-scrollbar-track {
+  background-color: #456;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #89a;
+  border-radius: 999px;
+}
+
+.code {
+  font-family: "JetBrains Mono", Consolas, 微软雅黑, monospace;
+}
+
+input:hover {
+  cursor: pointer;
+}
+
+input[type="range"]:focus {
+  outline: none;
+}
+
+label:hover input[type="checkbox"],
+label:hover input[type="radio"] {
+  border: solid 1px #ccc;
+}
+
+input[type="radio"] {
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border: solid 1px #666;
+}
+
+input[type="radio"]:hover {
+  cursor: pointer;
+}
+
+label:has(input[type="radio"]:checked) span {
+  color: lightskyblue;
+}
+
+input[type="radio"]:checked {
+  background-color: lightgreen;
+  clip-path: polygon(43% 76%, 88% 10%, 95% 17%, 45% 92%, 7% 52%, 14% 46%);
+}
+
+.总区 {
+  /*background: #151821 none;*/
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 130px;
+  gap: 50px;
+}
+
+.总区:has(#盒子透明复选框:checked) .弹性项 {
+  opacity: 0;
+}
+
+.弹性容器,
+.操纵区 {
+  flex-shrink: 0;
+}
+
+.弹性容器 {
+  position: relative;
+  width: 800px;
+  height: 800px;
+  margin-right: 220px;
+  outline: solid 1px #fff5;
+  display: flex;
+  align-items: normal;
+  transition: 250ms;
+}
+
+.弹性行指示区 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  transition: 250ms;
+}
+
+.弹性行 {
+  position: relative;
+  isolation: isolate;
+  width: 135%;
+  pointer-events: none;
+  background-image: linear-gradient(
+    var(--弹性行渐变起始色) 0%,
+    var(--弹性行渐变结束色) 100%
+  );
+}
+
+.弹性行::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 1px;
+  background-color: var(--弹性行边界色);
+  top: 0;
+  left: 0;
+  transition: 250ms;
+}
+
+.弹性行::after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 1px;
+  background-color: var(--弹性行边界色);
+  bottom: 0;
+  left: 0;
+  transition: 250ms;
+}
+
+.弹性行数据 {
+  position: absolute;
+  width: 250px;
+  top: 50%;
+  right: 0;
+  translate: 250px -50%;
+  text-align: left;
+  height: 100%;
+  padding: 0 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.弹性行数据::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 1px;
+  background-color: lightgreen;
+  top: 0;
+  left: 0;
+}
+
+.弹性行数据::after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 1px;
+  background-color: lightgreen;
+  bottom: 0;
+  left: 0;
+}
+
+.弹性数据标题 {
+  color: lightblue;
+  text-shadow: none;
+  font-size: 20px;
+}
+
+.标题前缀,
+.标题后缀 {
+  color: #678;
+}
+
+.标题行号 {
+  margin: 0 5px;
+  color: cornflowerblue;
+}
+
+.弹性数据 {
+  text-shadow: none;
+  font-size: 20px;
+}
+
+.弹性数据数值 {
+  color: lightseagreen;
+  margin-right: 2px;
+}
+
+.弹性数据单位 {
+  color: #aaa;
+}
+
+.弹性项 {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  pointer-events: none;
+  transition: 250ms;
+  min-height: 30px;
+}
+
+.弹性项高度 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  background-color: #123a;
+  border-radius: 5px;
+  padding: 4px 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  font-family: "JetBrains Mono", Consolas, 微软雅黑, monospace;
+}
+
+.弹性项高度数值 {
+  color: lightblue;
+  font-size: 14px;
+}
+
+.弹性项高度单位 {
+  color: lightgreen;
+  font-size: 14px;
+}
+
+label span {
+  font-family: "JetBrains Mono", Consolas, 微软雅黑, monospace;
+}
+
+.操纵区 {
+  width: fit-content;
+  user-select: none;
+}
+
+.弹性基础选项操纵区 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 60px;
+  margin-bottom: 10px;
+}
+
+#盒子数量,
+#盒子透明,
+#行透明 {
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+#盒子数量 {
+  gap: 10px;
+  padding: 10px 15px;
+}
+
+#盒子透明,
+#行透明 {
+  color: palevioletred;
+  gap: 6px;
+  padding: 10px 15px;
+}
+
+#盒子透明:hover,
+#行透明:hover {
+  cursor: pointer;
+}
+
+#盒子数量滑块 {
+  --盒子数量比例: 50%;
+  appearance: none;
+  width: 200px;
+  height: 10px;
+  background-image: linear-gradient(
+    90deg,
+    seagreen var(--盒子数量比例),
+    rgb(100, 100, 100) var(--盒子数量比例)
+  );
+  border-radius: 999px;
+}
+
+#盒子数量滑块:hover {
+  cursor: pointer;
+}
+
+#盒子数量滑块::-webkit-slider-thumb {
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 999px;
+  background-color: rgb(140, 179, 255);
+}
+
+#盒子数量滑块::-webkit-slider-thumb:hover {
+  cursor: pointer;
+}
+
+#盒子数量文本 {
+  width: 25px;
+  text-align: left;
+  font-family: "JetBrains Mono", Consolas, 微软雅黑, monospace;
+}
+
+#盒子透明复选框,
+#行透明复选框 {
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border: solid 1px #666;
+}
+
+label:hover :is(#盒子透明复选框, #行透明复选框) {
+  border: solid 1px #ccc;
+}
+
+#盒子透明复选框:checked,
+#行透明复选框:checked {
+  border: none;
+  background-color: lightgreen;
+  clip-path: polygon(43% 76%, 88% 10%, 95% 17%, 45% 92%, 7% 52%, 14% 46%);
+}
+
+#弹性环绕操纵区 {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 15px;
+}
+
+#弹性环绕操纵区 span {
+  color: #999;
+}
+
+#弹性环绕操纵区 label:hover span {
+  color: white;
+}
+
+#弹性环绕操纵区 .操纵区标题 {
+  color: rgb(223, 115, 53);
+}
+
+.交叉轴操纵区 {
+  width: fit-content;
+  color: #999;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 15px;
+}
+
+#盒子数量,
+#盒子透明,
+#行透明,
+.弹性设置操纵区,
+.交叉轴操纵区 {
+  border-radius: 5px;
+}
+
+#盒子数量:hover,
+#盒子透明:hover,
+#行透明:hover,
+.弹性设置操纵区:hover,
+.交叉轴操纵区:hover {
+  background-color: #123;
+}
+
+.操纵区标题 {
+  font-family: "JetBrains Mono", Consolas, 微软雅黑, monospace;
+  color: gold;
+  width: 158px;
+  user-select: none;
+  font-weight: normal;
+  text-align: right;
+}
+
+.交叉轴操纵区 label,
+#弹性环绕操纵区 label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  user-select: none;
+}
+
+label:not(#盒子数量, #盒子透明, #行透明):hover {
+  cursor: pointer;
+  color: white;
+}
+
+.交叉轴操纵区 label:hover input[type="radio"] {
+  border: solid 1px #ccc;
+}

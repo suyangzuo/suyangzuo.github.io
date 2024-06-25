@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>弹性布局：交叉轴对齐</title>
+    <link
+      rel="icon"
+      href="/Images/Interactive-Hub/HQ/弹性布局.webp"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="/Styles/common.css" />
+    <link rel="stylesheet" href="/Styles/top-banner-common.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Titillium+Web&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Roboto+Mono&family=M+PLUS+Code+Latin&family=Ubuntu+Mono&family=M+PLUS+1+Code:wght@100..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../control.css" />
+    <link rel="stylesheet" href="../../interactive-common.css" />
+    <link rel="stylesheet" href="./Flex-Align.css" />
+    <script src="/Scripts/top-banner.js" defer></script>
+    <script
+      src="https://kit.fontawesome.com/d0483e3bd3.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
+    <script
+      src="/Scripts/html-include.js"
+      target="/top-banner.html"
+      position="afterbegin"
+    ></script>
+    <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
+
+    <section class="弹性总区 总区">
+      <script
+        src="/Scripts/html-include.js"
+        target="../../control.html"
+        position="afterbegin"
+      ></script>
+      <p class="交互标题">弹性布局：交叉轴对齐</p>
+      <div class="弹性容器"></div>
+      <div class="操纵区">
+        <div class="弹性基础选项操纵区">
+          <label for="盒子数量滑块" id="盒子数量" style="width: fit-content">
+            <span id="盒子数量标题">盒子数量</span>
+            <input type="range" id="盒子数量滑块" min="1" max="20" value="10" />
+            <span id="盒子数量文本">10</span>
+          </label>
+          <label for="盒子透明复选框" id="盒子透明" style="width: fit-content">
+            <span id="盒子透明标题"
+              >隐藏<span
+                class="内部代码"
+                style="margin-left: 3px; color: lightblue"
+                >items</span
+              ></span
+            >
+            <input type="checkbox" id="盒子透明复选框" />
+          </label>
+          <label for="行透明复选框" id="行透明" style="width: fit-content">
+            <span id="行透明标题"
+              >隐藏<span
+                class="内部代码"
+                style="margin-left: 3px; color: lightblue"
+                >content</span
+              ></span
+            >
+            <input type="checkbox" id="行透明复选框" />
+          </label>
+          <div id="弹性环绕操纵区" class="弹性设置操纵区">
+            <h3 class="操纵区标题" style="width: fit-content">
+              flex-wrap<span style="color: gray">:</span>
+            </h3>
+            <label for="nowrap-slider" id="nowrap">
+              <span id="nowrap-标题">nowrap</span>
+              <input type="radio" id="nowrap-slider" name="flex-wrap" checked />
+            </label>
+            <label for="wrap-slider" id="wrap" style="margin-left: 10px">
+              <span id="wrap-标题">wrap</span>
+              <input type="radio" id="wrap-slider" name="flex-wrap" />
+            </label>
+          </div>
+        </div>
+        <div id="交叉轴内容操纵区" class="交叉轴操纵区">
+          <h3 class="操纵区标题">
+            align-content<span style="color: gray">:</span>
+          </h3>
+          <label for="content-正常-滑块" id="content-正常">
+            <span id="content-正常-标题">normal</span>
+            <input
+              type="radio"
+              id="content-正常-滑块"
+              name="align-content"
+              checked
+            />
+          </label>
+          <label for="content-拉伸-滑块" id="content-拉伸">
+            <span id="content-拉伸-标题">stretch</span>
+            <input type="radio" id="content-拉伸-滑块" name="align-content" />
+          </label>
+          <label for="content-起始-滑块" id="content-起始">
+            <span id="content-起始-标题">start</span>
+            <input type="radio" id="content-起始-滑块" name="align-content" />
+          </label>
+          <label for="content-结束-滑块" id="content-结束">
+            <span id="content-结束-标题">end</span>
+            <input type="radio" id="content-结束-滑块" name="align-content" />
+          </label>
+          <label for="content-居中-滑块" id="content-居中">
+            <span id="content-居中-标题">center</span>
+            <input type="radio" id="content-居中-滑块" name="align-content" />
+          </label>
+          <label for="content-两端-滑块" id="content-两端">
+            <span id="content-两端-标题">space-between</span>
+            <input type="radio" id="content-两端-滑块" name="align-content" />
+          </label>
+          <label for="content-均匀-滑块" id="content-均匀">
+            <span id="content-均匀-标题">space-evenly</span>
+            <input type="radio" id="content-均匀-滑块" name="align-content" />
+          </label>
+          <label for="content-环绕-滑块" id="content-环绕">
+            <span id="content-环绕-标题">space-around</span>
+            <input type="radio" id="content-环绕-滑块" name="align-content" />
+          </label>
+        </div>
+        <div id="交叉轴项目操纵区" class="交叉轴操纵区">
+          <h3 class="操纵区标题">
+            align-items<span style="color: gray">:</span>
+          </h3>
+          <label for="items-正常-滑块" id="items-正常">
+            <span id="items-正常-标题">normal</span>
+            <input
+              type="radio"
+              id="items-正常-滑块"
+              name="align-items"
+              checked
+            />
+          </label>
+          <label for="items-拉伸-滑块" id="items-拉伸">
+            <span id="items-拉伸-标题">stretch</span>
+            <input type="radio" id="items-拉伸-滑块" name="align-items" />
+          </label>
+          <label for="items-起始-滑块" id="items-起始">
+            <span id="items-起始-标题">start</span>
+            <input type="radio" id="items-起始-滑块" name="align-items" />
+          </label>
+          <label for="items-结束-滑块" id="items-结束">
+            <span id="items-结束-标题">end</span>
+            <input type="radio" id="items-结束-滑块" name="align-items" />
+          </label>
+          <label for="items-居中-滑块" id="items-居中">
+            <span id="items-居中-标题">center</span>
+            <input type="radio" id="items-居中-滑块" name="align-items" />
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <script src="./Flex-Align.js"></script>
+  </body>
+</html>
