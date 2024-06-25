@@ -78,7 +78,7 @@ input[type="radio"]:checked {
 }
 
 .总区 {
-  /*background: #151821 none;*/
+  background: linear-gradient(to left, #1c2334, #102a33, #0f1027);
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
@@ -387,7 +387,7 @@ label:hover :is(#盒子透明复选框, #行透明复选框) {
 #行透明:hover,
 .弹性设置操纵区:hover,
 .交叉轴操纵区:hover {
-  background-color: #123;
+  background-color: #2a3a4aaa;
 }
 
 .操纵区标题 {
