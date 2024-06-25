@@ -136,22 +136,6 @@
         >主轴</span
       >与<span class="行内专业名词">交叉轴</span>的方向。
     </p>
-
-    <h3 class="分区标题 分区3级标题">
-      为什么要单独讨论<span class="行内专业名词">交叉轴</span>？
-    </h3>
-    <p class="分区普通文本">
-      在<span class="行内专业名词">交叉轴</span>方向，会有<span class="专业名词"
-        >行</span
-      >的概念；多个行如何布局、行内部的元素如何布局，分别对应<span
-        class="行内代码"
-        >align-content</span
-      >和<span class="行内代码">align-items</span
-      >，这是很多人初学弹性布局最困惑的地方。因此，本专题将专门讨论<span
-        class="行内专业名词"
-        >交叉轴</span
-      >的对齐方式。
-    </p>
     <section class="提醒">
       <h3 class="提醒标题">提醒</h3>
       <p class="分区普通文本">
@@ -163,6 +147,22 @@
         >。
       </p>
     </section>
+
+    <h3 class="分区标题 分区3级标题">
+      为什么要单独讨论<span class="行内专业名词">交叉轴</span>？
+    </h3>
+    <p class="分区普通文本">
+      在<span class="行内专业名词">交叉轴</span>方向，有时会出现多个<span
+        class="专业名词"
+        >行</span
+      >；行本身、行内部的元素如何布局，分别对应<span class="行内代码"
+        >align-content</span
+      >和<span class="行内代码">align-items</span
+      >，这是很多人初学弹性布局最困惑的地方。因此，本专题将专门讨论<span
+        class="行内专业名词"
+        >交叉轴</span
+      >的对齐方式。
+    </p>
 
     <h3 class="分区标题 分区3级标题">
       <span class="行内专业名词">弹性</span>如何体现？
@@ -253,6 +253,12 @@
         </p>
       </li>
     </ul>
+    <p class="分区普通文本">
+      从以上方法可以看出，只有设置<span class="行内代码">flex-wrap: wrap</span
+      >，交叉轴才会出现多行的情况。省略<span class="行内代码">flex-wrap</span
+      >或者设置为<span class="行内代码">flex-wrap: nowrap</span
+      >，交叉轴就只有一行。
+    </p>
   </article>
 
   <article class="正文分区">
@@ -260,6 +266,16 @@
       <span class="行内专业名词">交叉轴</span>对齐
     </h2>
 
-    <h3 class="分区标题 分区3级标题">一行有多高？</h3>
+    <h3 class="分区标题 分区3级标题">默认行高</h3>
+    <p class="分区普通文本">
+      我们为一个正方形设置了<span class="行内代码">800 × 800</span
+      >的尺寸，并且设置其为<span class="行内专业名词">弹性布局</span>：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/单行默认行高.png"
+        alt="单行默认行高"
+      />
+    </figure>
   </article>
 </div>

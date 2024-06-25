@@ -415,3 +415,8 @@ label:not(#盒子数量, #盒子透明, #行透明):hover {
 .交叉轴操纵区 label:hover input[type="radio"] {
   border: solid 1px #ccc;
 }
+
+#交叉轴内容操纵区 {
+  filter: brightness(50%);
+  pointer-events: none;
+}

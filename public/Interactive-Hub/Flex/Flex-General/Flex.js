@@ -25,10 +25,8 @@ function 创建块元素(数量) {
     let 高度百分比 = Math.floor(
       Math.random() * (最高尺寸百分比 - 最低尺寸百分比 + 1) + 最低尺寸百分比,
     );
-    element.style.width = `15%`;
-    // element.style.width = `${宽度百分比}%`;
-    element.style.height = `15%`;
-    // element.style.height = `${高度百分比}%`;
+    element.style.width = `${宽度百分比}%`;
+    element.style.height = `${高度百分比}%`;
     element.setAttribute("data-number", `${i}`);
     弹性展示区.appendChild(element);
   }
