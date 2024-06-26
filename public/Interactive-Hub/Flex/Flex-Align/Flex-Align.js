@@ -19,6 +19,8 @@ const 交叉轴项目单选组 = 交叉轴项目操纵区.querySelectorAll(
 
 const 弹性行首元素索引组 = [0];
 const 最高元素高度组 = [];
+let 前一次交叉轴内容对齐标签 =
+  document.getElementById("content-正常-滑块").parentElement;
 
 const 视口高度低于1180 = window.matchMedia("(height < 1180px)");
 const 视口宽度低于1130 = window.matchMedia("(width < 1130px)");
@@ -63,11 +65,16 @@ function 媒体查询时刷新指示器样式() {
 
 for (const 弹性环绕按钮 of 弹性包裹按钮组) {
   弹性环绕按钮.addEventListener("input", () => {
+    const 交叉轴内容对齐选中指示器 =
+      document.getElementById("交叉轴内容选中指示器");
     if (弹性环绕按钮.id === "nowrap-slider") {
       弹性容器.style.flexWrap = "nowrap";
       const alignContentNormal = document.getElementById("content-正常-滑块");
       alignContentNormal.checked = true;
       弹性容器.style.alignContent = "normal";
+      交叉轴内容对齐选中指示器.style.width = `${alignContentNormal.parentElement.offsetWidth}px`;
+      交叉轴内容对齐选中指示器.style.height = `${alignContentNormal.parentElement.offsetHeight}px`;
+      交叉轴内容对齐选中指示器.style.left = `${alignContentNormal.parentElement.offsetLeft}px`;
       弹性行首元素索引组.length = 0;
       弹性行首元素索引组.push(0);
       最高元素高度组.length = 0;
@@ -79,6 +86,13 @@ for (const 弹性环绕按钮 of 弹性包裹按钮组) {
       交叉轴内容操纵区.style.pointerEvents = "none";
     } else {
       弹性容器.style.flexWrap = "wrap";
+      前一次交叉轴内容对齐标签.querySelector("input[type='radio']").checked =
+        true;
+      弹性容器.style.alignContent =
+        前一次交叉轴内容对齐标签.querySelector("span").innerText;
+      交叉轴内容对齐选中指示器.style.width = `${前一次交叉轴内容对齐标签.offsetWidth}px`;
+      交叉轴内容对齐选中指示器.style.height = `${前一次交叉轴内容对齐标签.offsetHeight}px`;
+      交叉轴内容对齐选中指示器.style.left = `${前一次交叉轴内容对齐标签.offsetLeft}px`;
       弹性行首元素索引组.length = 0;
       弹性行首元素索引组.push(0);
       最高元素高度组.length = 0;
@@ -97,6 +111,7 @@ for (const 单选按钮 of 交叉轴内容单选组) {
     const 弹性不环绕按钮 = document.getElementById("nowrap-slider");
     if (弹性不环绕按钮.checked) return;
     弹性容器.style.alignContent = 单选按钮.previousElementSibling.innerText;
+    前一次交叉轴内容对齐标签 = 单选按钮.parentElement;
     弹性行首元素索引组.length = 0;
     弹性行首元素索引组.push(0);
     最高元素高度组.length = 0;
