@@ -58,11 +58,6 @@ label:has(input) {
   border-radius: 5px;
 }
 
-label:has(input[type="radio"]:checked) {
-  background: no-repeat center/contain
-    linear-gradient(125deg, #886508 0%, #465826 100%);
-}
-
 input[type="radio"] {
   appearance: none;
   position: absolute;
@@ -89,6 +84,14 @@ label span {
 h3,
 label span {
   text-wrap: nowrap;
+}
+
+.选中指示器 {
+  background: no-repeat center/contain
+    linear-gradient(125deg, #886508 0%, #465826 100%);
+  position: absolute;
+  border-radius: 5px;
+  transition: 250ms;
 }
 
 .总区 {
@@ -248,7 +251,7 @@ label span {
   translate: -50% -50%;
   background-color: #123a;
   border-radius: 5px;
-  padding: 4px 8px;
+  padding: 4px 5px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -363,6 +366,7 @@ label:hover :is(#盒子透明复选框, #行透明复选框) {
 }
 
 #弹性环绕操纵区 {
+  position: relative;
   display: flex;
   gap: 5px;
   align-items: center;
@@ -382,6 +386,7 @@ label:hover :is(#盒子透明复选框, #行透明复选框) {
 }
 
 .交叉轴操纵区 {
+  position: relative;
   width: fit-content;
   color: #999;
   display: flex;

@@ -8,6 +8,8 @@ const 交叉轴内容操纵区 = document.querySelector("#交叉轴内容操纵�
 const 交叉轴项目操纵区 = document.querySelector("#交叉轴项目操纵区");
 const 弹性包裹操纵区 = document.getElementById("弹性环绕操纵区");
 const 弹性包裹按钮组 = 弹性包裹操纵区.querySelectorAll("input[type='radio']");
+const 单选框组 = document.querySelectorAll("input[type='radio']");
+const 选中指示器组 = document.querySelectorAll(".选中指示器");
 const 交叉轴内容单选组 = 交叉轴内容操纵区.querySelectorAll(
   "input[type='radio']",
 );
@@ -18,9 +20,16 @@ const 交叉轴项目单选组 = 交叉轴项目操纵区.querySelectorAll(
 const 弹性行首元素索引组 = [0];
 const 最高元素高度组 = [];
 
-const 视口宽度低于800px = window.matchMedia("(height < 1180px)");
+const 视口高度低于1180 = window.matchMedia("(height < 1180px)");
+const 视口宽度低于1130 = window.matchMedia("(width < 1130px)");
 
-视口宽度低于800px.addEventListener("change", () => {
+视口宽度低于1130.addEventListener("change", () => {
+  媒体查询时刷新指示器样式();
+});
+
+视口高度低于1180.addEventListener("change", () => {
+  媒体查询时刷新指示器样式();
+
   弹性行首元素索引组.length = 0;
   弹性行首元素索引组.push(0);
   最高元素高度组.length = 0;
@@ -32,6 +41,17 @@ const 视口宽度低于800px = window.matchMedia("(height < 1180px)");
     更新弹性项高度();
   }, 弹性项过渡时长 + 100);
 });
+
+function 媒体查询时刷新指示器样式() {
+  for (const 选中指示器 of 选中指示器组) {
+    const 操纵区 = 选中指示器.parentElement;
+    const 操纵区按钮组 = Array.from(操纵区.querySelectorAll("input"));
+    const 当前标签 = 操纵区按钮组.find((按钮) => 按钮.checked).parentElement;
+    选中指示器.style.width = `${当前标签.offsetWidth}px`;
+    选中指示器.style.height = `${当前标签.offsetHeight}px`;
+    选中指示器.style.left = `${当前标签.offsetLeft}px`;
+  }
+}
 
 生成弹性项(盒子数量滑块.value);
 记录行数与每行首元素索引();
@@ -97,6 +117,23 @@ for (const 单选按钮 of 交叉轴项目单选组) {
     弹性行首元素索引组.length = 0;
     弹性行首元素索引组.push(0);
     最高元素高度组.length = 0;
+  });
+}
+
+for (const 选中指示器 of 选中指示器组) {
+  const 第一标签 = 选中指示器.nextElementSibling;
+  选中指示器.style.width = `${第一标签.offsetWidth}px`;
+  选中指示器.style.height = `${第一标签.offsetHeight}px`;
+  选中指示器.style.left = `${第一标签.offsetLeft}px`;
+}
+
+for (const 单选框 of 单选框组) {
+  单选框.addEventListener("input", () => {
+    const 标签 = 单选框.parentElement;
+    const 选中指示器 = 标签.parentElement.querySelector(".选中指示器");
+    选中指示器.style.width = `${标签.offsetWidth}px`;
+    选中指示器.style.height = `${标签.offsetHeight}px`;
+    选中指示器.style.left = `${标签.offsetLeft}px`;
   });
 }
 
