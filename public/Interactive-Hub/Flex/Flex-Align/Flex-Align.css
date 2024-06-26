@@ -79,7 +79,7 @@ input[type="radio"]:hover {
 
 label:has(input[type="radio"]:checked) span,
 #弹性环绕操纵区 label:has(input[type="radio"]:checked) span {
-  color: lightskyblue;
+  color: lightcyan;
 }
 
 label span {
