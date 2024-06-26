@@ -45,36 +45,50 @@ body::-webkit-scrollbar-thumb {
 }
 
 input:hover {
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 input[type="range"]:focus {
   outline: none;
 }
 
-label:hover input[type="checkbox"],
-label:hover input[type="radio"] {
-  border: solid 1px #ccc;
+label:has(input) {
+  position: relative;
+  padding: 5px 8px;
+  border-radius: 5px;
+}
+
+label:has(input[type="radio"]:checked) {
+  background: no-repeat center/contain
+    linear-gradient(125deg, #886508 0%, #465826 100%);
 }
 
 input[type="radio"] {
   appearance: none;
-  width: 15px;
-  height: 15px;
-  border: solid 1px #666;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
 }
 
 input[type="radio"]:hover {
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
-label:has(input[type="radio"]:checked) span {
+label:has(input[type="radio"]:checked) span,
+#弹性环绕操纵区 label:has(input[type="radio"]:checked) span {
   color: lightskyblue;
 }
 
-input[type="radio"]:checked {
-  background-color: lightgreen;
-  clip-path: polygon(43% 76%, 88% 10%, 95% 17%, 45% 92%, 7% 52%, 14% 46%);
+label span {
+  position: relative;
+}
+
+h3,
+label span {
+  text-wrap: nowrap;
 }
 
 .总区 {
@@ -198,6 +212,7 @@ input[type="radio"]:checked {
 .标题行号 {
   margin: 0 5px;
   color: cornflowerblue;
+  font-family: "JetBrains Mono", Consolas, 微软雅黑, monospace;
 }
 
 .弹性数据 {
@@ -208,6 +223,7 @@ input[type="radio"]:checked {
 .弹性数据数值 {
   color: lightseagreen;
   margin-right: 2px;
+  font-family: "JetBrains Mono", Consolas, 微软雅黑, monospace;
 }
 
 .弹性数据单位 {
@@ -263,7 +279,7 @@ label span {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 60px;
+  gap: 45px;
   margin-bottom: 10px;
 }
 
@@ -289,7 +305,7 @@ label span {
 
 #盒子透明:hover,
 #行透明:hover {
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 #盒子数量滑块 {
@@ -306,7 +322,7 @@ label span {
 }
 
 #盒子数量滑块:hover {
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 #盒子数量滑块::-webkit-slider-thumb {
@@ -318,7 +334,7 @@ label span {
 }
 
 #盒子数量滑块::-webkit-slider-thumb:hover {
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 #盒子数量文本 {
@@ -348,7 +364,7 @@ label:hover :is(#盒子透明复选框, #行透明复选框) {
 
 #弹性环绕操纵区 {
   display: flex;
-  gap: 10px;
+  gap: 5px;
   align-items: center;
   padding: 10px 15px;
 }
@@ -370,7 +386,7 @@ label:hover :is(#盒子透明复选框, #行透明复选框) {
   color: #999;
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
   padding: 10px 15px;
 }
 
@@ -387,7 +403,7 @@ label:hover :is(#盒子透明复选框, #行透明复选框) {
 #行透明:hover,
 .弹性设置操纵区:hover,
 .交叉轴操纵区:hover {
-  background-color: #2a3a4aaa;
+  background-color: #2f3f52cc;
 }
 
 .操纵区标题 {
@@ -408,15 +424,39 @@ label:hover :is(#盒子透明复选框, #行透明复选框) {
 }
 
 label:not(#盒子数量, #盒子透明, #行透明):hover {
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   color: white;
-}
-
-.交叉轴操纵区 label:hover input[type="radio"] {
-  border: solid 1px #ccc;
 }
 
 #交叉轴内容操纵区 {
   filter: brightness(50%);
   pointer-events: none;
+}
+
+@media screen and (width < 1130px) {
+  .操纵区 {
+    font-size: 14px;
+  }
+
+  .弹性基础选项操纵区 {
+    justify-content: center;
+    gap: 25px;
+  }
+
+  .交叉轴操纵区 {
+    gap: 10px;
+  }
+
+  #盒子透明复选框,
+  #行透明复选框 {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+@media screen and (height < 1180px) {
+  .弹性容器 {
+    width: 600px;
+    height: 600px;
+  }
 }

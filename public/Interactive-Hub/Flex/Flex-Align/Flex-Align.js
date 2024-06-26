@@ -1,5 +1,6 @@
 const root = document.querySelector(":root");
 const 弹性容器 = document.querySelector(".弹性容器");
+const 弹性项过渡时长 = 250;
 let 交叉轴单行布局 = window.getComputedStyle(弹性容器).alignItems;
 const 盒子数量滑块 = document.getElementById("盒子数量滑块");
 const 盒子数量文本 = document.getElementById("盒子数量文本");
@@ -16,6 +17,21 @@ const 交叉轴项目单选组 = 交叉轴项目操纵区.querySelectorAll(
 
 const 弹性行首元素索引组 = [0];
 const 最高元素高度组 = [];
+
+const 视口宽度低于800px = window.matchMedia("(height < 1180px)");
+
+视口宽度低于800px.addEventListener("change", () => {
+  弹性行首元素索引组.length = 0;
+  弹性行首元素索引组.push(0);
+  最高元素高度组.length = 0;
+  setTimeout(() => {
+    记录行数与每行首元素索引();
+    生成弹性行();
+    拉伸弹性行();
+    生成弹性行高度();
+    更新弹性项高度();
+  }, 弹性项过渡时长 + 100);
+});
 
 生成弹性项(盒子数量滑块.value);
 记录行数与每行首元素索引();
@@ -125,7 +141,7 @@ function 生成弹性项(数量) {
     const 渐变扣除比例 = 100 / (8 * 高度);
     弹性项.style.backgroundImage = `linear-gradient(transparent ${渐变扣除比例}%, ${背景色} ${渐变扣除比例}%, ${背景色} ${
       100 - 渐变扣除比例
-    }%, transparent ${100 - 渐变扣除比例}%)`;// 弹性项.style.opacity = 盒子透明复选框.checked ? "0" : "1";
+    }%, transparent ${100 - 渐变扣除比例}%)`; // 弹性项.style.opacity = 盒子透明复选框.checked ? "0" : "1";
     弹性容器.appendChild(弹性项);
 
     const 弹性项高度 = document.createElement("span");
@@ -139,6 +155,14 @@ function 生成弹性项(数量) {
     弹性项高度.append(弹性项高度数值, 弹性项高度单位);
 
     弹性项.appendChild(弹性项高度);
+  }
+}
+
+function 更新弹性项高度() {
+  const 弹性项组 = document.querySelectorAll(".弹性项");
+  for (const 弹性项 of 弹性项组) {
+    const 弹性项高度数值 = 弹性项.querySelector(".弹性项高度数值");
+    弹性项高度数值.textContent = 弹性项.offsetHeight;
   }
 }
 

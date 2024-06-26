@@ -127,11 +127,11 @@
             >：
             <pre class="line-numbers">
               <code class="lang-c">
-                array == &array[0]  //数组的名称可以当作第一个元素的指针
-                array == &array     //数组的地址也是数组第一个元素的地址
-                *array == array[0]  //解开第一个元素的地址，得到第一个元素的值
-                int* ptr = array    //可以将第一个元素的地址传递给其它指针变量
-                sizeof(ptr_array) == sizeof(int) * 5  //数组名称是数组类型变量，代表数组本身
+                array == &array[0]    <span style="color:lightgreen">✓</span> //数组的名称可以当作第一个元素的指针
+                array == &array       <span style="color:lightgreen">✓</span> //数组的地址也是数组第一个元素的地址
+                *array == array[0]    <span style="color:lightgreen">✓</span> //解开第一个元素的地址，得到第一个元素的值
+                int* ptr = array      <span style="color:lightgreen">✓</span> //可以将第一个元素的地址传递给其它指针变量
+                sizeof(array) == sizeof(int) * 5    <span style="color:lightgreen">✓</span> //数组名称是数组类型变量，代表数组本身
               </code>
             </pre>
           </li>
@@ -142,7 +142,8 @@
             >：
             <pre class="line-numbers">
               <code class="lang-c">
-                array++ <span style="color:tomato">✖</span>  //array是数组，不是指针，不能修改自己的值
+                array++   <span style="color:tomato">✖</span> //array是数组，不是指针，不能修改自己的值
+                array = {9, 8, 7, 6, 5}   <span style="color:tomato">✖</span> //数组不能重新赋值
               </code>
             </pre>
           </li>
@@ -213,10 +214,11 @@
             >：
             <pre class="line-numbers">
               <code class="lang-c">
-                array == &array[0]  //指针保存着第一个元素的地址
-                *array == array[0]  //解开第一个元素的地址，得到第一个元素的值
-                int* ptr = array    //可以将第一个元素的地址传递给其它指针变量
-                array++  //array是指针，可以修改自己的值
+                ptr_array == &ptr_array[0]    <span style="color:lightgreen">✓</span> //指针保存着第一个元素的地址
+                *ptr_array == ptr_array[0]    <span style="color:lightgreen">✓</span> //解开第一个元素的地址，得到第一个元素的值
+                int* ptr = ptr_array          <span style="color:lightgreen">✓</span> //可以将第一个元素的地址传递给其它指针变量
+                ptr_array++                   <span style="color:lightgreen">✓</span> //array是指针，可以修改自己的值
+                ptr_array = {0}               <span style="color:lightgreen">✓</span> //指针可以重新赋值
               </code>
             </pre>
           </li>
@@ -227,8 +229,8 @@
             >：
             <pre class="line-numbers">
               <code class="lang-c">
-                &array != array  //指针自身和指针所指数组，位于内存的不同区域
-                sizeof(ptr_array) != sizeof(int) * 5  //指针和数组是独立的，占用不同的内存空间
+                &ptr_array != ptr_array    <span style="color:tomato">✖</span> //指针自身和指针所指数组，位于内存的不同区域
+                sizeof(ptr_array) != sizeof(int) * 5    <span style="color:tomato">✖</span> //指针和数组是独立的，占用不同的内存空间
               </code>
             </pre>
           </li>
