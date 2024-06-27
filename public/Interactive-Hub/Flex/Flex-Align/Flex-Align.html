@@ -46,7 +46,14 @@
         <div class="弹性基础选项操纵区">
           <label for="盒子数量滑块" id="盒子数量" style="width: fit-content">
             <span id="盒子数量标题">盒子数量</span>
-            <input type="range" id="盒子数量滑块" min="1" max="20" value="10" />
+            <input
+              type="range"
+              id="盒子数量滑块"
+              min="1"
+              max="20"
+              value="10"
+              autocomplete="off"
+            />
             <span id="盒子数量文本">10</span>
           </label>
           <label for="盒子透明复选框" id="盒子透明" style="width: fit-content">
@@ -57,7 +64,7 @@
                 >items</span
               ></span
             >
-            <input type="checkbox" id="盒子透明复选框" />
+            <input type="checkbox" id="盒子透明复选框" autocomplete="off" />
           </label>
           <label for="行透明复选框" id="行透明" style="width: fit-content">
             <span id="行透明标题"
@@ -67,7 +74,7 @@
                 >content</span
               ></span
             >
-            <input type="checkbox" id="行透明复选框" />
+            <input type="checkbox" id="行透明复选框" autocomplete="off" />
           </label>
           <div id="弹性环绕操纵区" class="弹性设置操纵区">
             <h3 class="操纵区标题" style="width: fit-content">
@@ -76,11 +83,22 @@
             <div class="选中指示器" id="弹性环绕选中指示器"></div>
             <label for="nowrap-slider" id="nowrap">
               <span id="nowrap-标题">nowrap</span>
-              <input type="radio" id="nowrap-slider" name="flex-wrap" checked />
+              <input
+                type="radio"
+                id="nowrap-slider"
+                name="flex-wrap"
+                checked
+                autocomplete="off"
+              />
             </label>
             <label for="wrap-slider" id="wrap">
               <span id="wrap-标题">wrap</span>
-              <input type="radio" id="wrap-slider" name="flex-wrap" />
+              <input
+                type="radio"
+                id="wrap-slider"
+                name="flex-wrap"
+                autocomplete="off"
+              />
             </label>
           </div>
         </div>
@@ -95,36 +113,72 @@
               type="radio"
               id="content-正常-滑块"
               name="align-content"
+              autocomplete="off"
               checked
             />
           </label>
           <label for="content-拉伸-滑块" id="content-拉伸">
             <span id="content-拉伸-标题">stretch</span>
-            <input type="radio" id="content-拉伸-滑块" name="align-content" />
+            <input
+              type="radio"
+              id="content-拉伸-滑块"
+              name="align-content"
+              autocomplete="off"
+            />
           </label>
           <label for="content-起始-滑块" id="content-起始">
             <span id="content-起始-标题">start</span>
-            <input type="radio" id="content-起始-滑块" name="align-content" />
+            <input
+              type="radio"
+              id="content-起始-滑块"
+              name="align-content"
+              autocomplete="off"
+            />
           </label>
           <label for="content-结束-滑块" id="content-结束">
             <span id="content-结束-标题">end</span>
-            <input type="radio" id="content-结束-滑块" name="align-content" />
+            <input
+              type="radio"
+              id="content-结束-滑块"
+              name="align-content"
+              autocomplete="off"
+            />
           </label>
           <label for="content-居中-滑块" id="content-居中">
             <span id="content-居中-标题">center</span>
-            <input type="radio" id="content-居中-滑块" name="align-content" />
+            <input
+              type="radio"
+              id="content-居中-滑块"
+              name="align-content"
+              autocomplete="off"
+            />
           </label>
           <label for="content-两端-滑块" id="content-两端">
             <span id="content-两端-标题">space-between</span>
-            <input type="radio" id="content-两端-滑块" name="align-content" />
+            <input
+              type="radio"
+              id="content-两端-滑块"
+              name="align-content"
+              autocomplete="off"
+            />
           </label>
           <label for="content-均匀-滑块" id="content-均匀">
             <span id="content-均匀-标题">space-evenly</span>
-            <input type="radio" id="content-均匀-滑块" name="align-content" />
+            <input
+              type="radio"
+              id="content-均匀-滑块"
+              name="align-content"
+              autocomplete="off"
+            />
           </label>
           <label for="content-环绕-滑块" id="content-环绕">
             <span id="content-环绕-标题">space-around</span>
-            <input type="radio" id="content-环绕-滑块" name="align-content" />
+            <input
+              type="radio"
+              id="content-环绕-滑块"
+              name="align-content"
+              autocomplete="off"
+            />
           </label>
         </div>
         <div id="交叉轴项目操纵区" class="交叉轴操纵区">
@@ -138,24 +192,45 @@
               type="radio"
               id="items-正常-滑块"
               name="align-items"
+              autocomplete="off"
               checked
             />
           </label>
           <label for="items-拉伸-滑块" id="items-拉伸">
             <span id="items-拉伸-标题">stretch</span>
-            <input type="radio" id="items-拉伸-滑块" name="align-items" />
+            <input
+              type="radio"
+              id="items-拉伸-滑块"
+              name="align-items"
+              autocomplete="off"
+            />
           </label>
           <label for="items-起始-滑块" id="items-起始">
             <span id="items-起始-标题">start</span>
-            <input type="radio" id="items-起始-滑块" name="align-items" />
+            <input
+              type="radio"
+              id="items-起始-滑块"
+              name="align-items"
+              autocomplete="off"
+            />
           </label>
           <label for="items-结束-滑块" id="items-结束">
             <span id="items-结束-标题">end</span>
-            <input type="radio" id="items-结束-滑块" name="align-items" />
+            <input
+              type="radio"
+              id="items-结束-滑块"
+              name="align-items"
+              autocomplete="off"
+            />
           </label>
           <label for="items-居中-滑块" id="items-居中">
             <span id="items-居中-标题">center</span>
-            <input type="radio" id="items-居中-滑块" name="align-items" />
+            <input
+              type="radio"
+              id="items-居中-滑块"
+              name="align-items"
+              autocomplete="off"
+            />
           </label>
         </div>
       </div>

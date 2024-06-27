@@ -25,6 +25,7 @@ html {
 
 body {
   min-height: 100vh;
+  width: 100dvw;
 }
 
 body::-webkit-scrollbar {
@@ -328,6 +329,15 @@ label span {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
+#盒子数量滑块::-moz-range-thumb {
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 999px;
+  background-color: rgb(140, 179, 255);
+  border: none;
+}
+
 #盒子数量滑块::-webkit-slider-thumb {
   appearance: none;
   width: 25px;
@@ -461,7 +471,7 @@ label:not(#盒子数量, #盒子透明, #行透明):hover {
 
 @media screen and (height < 1180px) {
   .弹性容器 {
-    width: 600px;
-    height: 600px;
+    width: calc(100vh - 425px);
+    height: calc(100vh - 425px);
   }
 }
