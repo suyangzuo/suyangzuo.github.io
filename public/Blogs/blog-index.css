@@ -143,23 +143,27 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   isolation: isolate;
 }
 
-#章节区 .已激活 {
-  color: var(--已激活章节标题-字体颜色);
-}
-
-/*#章节区 .已激活::after {
+#章节区 .已激活::before {
   position: absolute;
-  width: 2px;
+  width: calc(100% + 20px);
   height: 100%;
-  top: 0;
-  left: -25px;
+  border-radius: 5px;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
   content: "";
-  background-color: rgb(106, 192, 106);
-}*/
+  background-color: #9b65ff50;
+  /*background-color: rgba(177, 80, 106, 0.5);*/
+  z-index: -1;
+}
 
 #章节区 .已激活 > span:nth-child(1) {
   border: solid 2px var(--已激活章节标题-字体颜色);
   color: var(--已激活章节标题-字体颜色);
+}
+
+#章节区 .已激活 .行内专业名词 {
+  mix-blend-mode: color-dodge;
 }
 
 .锚链接-2级标题 {
