@@ -155,6 +155,22 @@ for (const 单选框 of 单选框组) {
 const 总区尺寸观察器 = new ResizeObserver(总区尺寸观察回调);
 总区尺寸观察器.observe(document.querySelector(".弹性总区"));
 
+/*const 弹性项尺寸观察器 = new ResizeObserver(弹性项尺寸观察回调);
+弹性项尺寸观察器.observe(弹性容器.querySelector(".弹性项"));
+
+function 弹性项尺寸观察回调(entries) {
+  for (const entry of entries) {
+    弹性行首元素索引组.length = 0;
+    弹性行首元素索引组.push(0);
+    最高元素高度组.length = 0;
+    记录行数与每行首元素索引();
+    生成弹性行();
+    拉伸弹性行();
+    生成弹性行高度();
+    更新弹性项高度();
+  }
+}*/
+
 function 拖动盒子数量滑块() {
   const 数量 = parseInt(盒子数量滑块.value, 10);
   const 比例 = 数量 / 盒子数量滑块.max;
@@ -194,9 +210,10 @@ function 生成弹性项(数量) {
     弹性项.style.width = `${宽度}%`;
     弹性项.style.height = `${高度}%`;
     const 渐变扣除比例 = 100 / (8 * 高度);
-    弹性项.style.backgroundImage = `linear-gradient(transparent ${渐变扣除比例}%, ${背景色} ${渐变扣除比例}%, ${背景色} ${
+    /*弹性项.style.backgroundImage = `linear-gradient(transparent ${渐变扣除比例}%, ${背景色} ${渐变扣除比例}%, ${背景色} ${
       100 - 渐变扣除比例
-    }%, transparent ${100 - 渐变扣除比例}%)`; // 弹性项.style.opacity = 盒子透明复选框.checked ? "0" : "1";
+    }%, transparent ${100 - 渐变扣除比例}%)`;*/
+    弹性项.style.backgroundImage = `linear-gradient(transparent 2px, ${背景色} 2px, ${背景色} calc(100% - 2px), transparent calc(100% - 2px))`;
     弹性容器.appendChild(弹性项);
 
     const 弹性项高度 = document.createElement("span");

@@ -261,14 +261,14 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
-  --贡献区文本颜色: #6e97e6;
+  --贡献区文本颜色: lightblue;
   color: var(--贡献区文本颜色);
   flex-grow: 1;
   font-size: 18px;
 }
 
 .贡献分区:hover {
-  --贡献区文本颜色: lightblue;
+  --贡献区文本颜色: lightcyan;
 }
 
 .贡献分区:visited {
