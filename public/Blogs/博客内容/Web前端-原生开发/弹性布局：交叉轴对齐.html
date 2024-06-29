@@ -442,7 +442,7 @@
     </p>
     <figure class="截图容器">
       <img
-        src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/多行固有行高.png"
+        src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/多行固有行高.webp"
         alt="MDN-Web-Docs-stretch"
       />
     </figure>
@@ -476,7 +476,7 @@
     </p>
     <figure class="截图容器">
       <img
-        src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/交叉轴剩余空间分配.jpg"
+        src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/交叉轴剩余空间分配.png"
         alt="交叉轴剩余空间分配"
       />
     </figure>
@@ -490,10 +490,12 @@
     <p class="分区普通文本">
       <span class="行内代码">align-content</span>和<span class="行内代码"
         >align-items</span
-      >的区别，是很多初学弹性布局的人最困惑的地方。如果你仔细阅读了前面的内容，那么<span
+      >的区别，是很多人初学弹性布局时最困惑的地方。如果你仔细阅读了前面的内容，<span
         class="行内代码"
         >align-content</span
-      >的含义其实很简单：它控制了每一行在弹性容器内如何对齐，对于行内部的元素不起作用。
+      >的作用其实很简单：它控制所有的行<span class="附加说明"
+        >而非行内的元素</span
+      >在弹性容器内如何对齐：
     </p>
     <figure class="截图容器">
       <img
@@ -516,14 +518,14 @@
     </figure>
     <p class="分区普通文本">
       <span class="行内代码">align-content</span
-      >影响的是每一行，而不是行内的元素。
+      >影响的是行，而不是行内的元素。
     </p>
 
     <h3 class="分区标题 分区3级标题">
       <span class="行内代码">align-items</span>
     </h3>
     <p>
-      <span class="行内代码">align-content</span>影响的行内的元素，而不是行。
+      <span class="行内代码">align-items</span>控制行内的元素在该行内如何对齐。
     </p>
     <figure class="截图容器">
       <img
@@ -532,8 +534,8 @@
       />
     </figure>
     <p class="分区普通文本">
-      更改<span class="行内代码">align-content</span
-      >，行本身不受任何影响，影响的是行内的元素。
+      更改<span class="行内代码">align-items</span
+      >，影响的是行内的元素，对行本身无效。
     </p>
 
     <h3 class="分区标题 分区3级标题">行内拉伸</h3>
