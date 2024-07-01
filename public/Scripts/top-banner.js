@@ -1,5 +1,40 @@
 let 导航2级列表已显示 = false;
 
+const 学校地图区 = document.getElementById("学校地图区");
+
+学校地图区.addEventListener("click", 生成学校平面图区域);
+
+function 生成学校平面图区域() {
+  const 原对话框 = 学校地图区.querySelector(".平面图对话框");
+  if (原对话框 !== null) return;
+  const 对话框 = document.createElement("dialog");
+  对话框.className = "平面图对话框";
+  /*对话框.style.width = `${window.innerWidth}px`;
+  对话框.style.height = `${window.innerHeight}px`;*/
+  document.body.appendChild(对话框);
+  const 平面图链接 = document.createElement("a");
+  平面图链接.href = "/Images/Purpose/学校平面图.webp";
+  平面图链接.target = "_blank";
+  平面图链接.className = "平面图链接";
+  const 平面图 = document.createElement("img");
+  平面图.src = "/Images/Purpose/学校平面图.webp";
+  平面图.className = "学校平面图";
+  平面图链接.appendChild(平面图);
+  const 关闭按钮 = document.createElement("button");
+  关闭按钮.className = "关闭平面图";
+  关闭按钮.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+  关闭按钮.addEventListener("click", () => {
+    对话框.remove();
+  });
+  const 版权信息 = document.createElement("div");
+  版权信息.className = "平面图版权信息";
+  对话框.append(平面图链接, 关闭按钮, 版权信息);
+  对话框.addEventListener("click", () => {
+    对话框.remove();
+  });
+  对话框.showModal();
+}
+
 const 导航1级文本组 = document.querySelectorAll(".导航1级文本");
 导航1级文本组.forEach((文本) => {
   const 导航2级列表 = 文本.nextElementSibling;
