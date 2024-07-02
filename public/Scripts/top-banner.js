@@ -19,6 +19,7 @@ function 生成学校平面图区域() {
   const 平面图 = document.createElement("img");
   平面图.src = "/Images/Purpose/学校平面图.webp";
   平面图.className = "学校平面图";
+  平面图.title = "在新标签页打开图片";
   平面图链接.appendChild(平面图);
   const 关闭按钮 = document.createElement("button");
   关闭按钮.className = "关闭平面图";
@@ -26,9 +27,19 @@ function 生成学校平面图区域() {
   关闭按钮.addEventListener("click", () => {
     对话框.remove();
   });
-  const 版权信息 = document.createElement("div");
-  版权信息.className = "平面图版权信息";
-  对话框.append(平面图链接, 关闭按钮, 版权信息);
+  const 版权链接 = document.createElement("a");
+  版权链接.className = "平面图版权超链接";
+  版权链接.href = "/Introduction/contributors.html";
+  版权链接.target = "_blank";
+  const 版权前缀 = document.createElement("span");
+  版权前缀.className = "平面图版权前缀";
+  版权前缀.innerHTML = '<i class="fa-solid fa-copyright"></i>';
+  const 作者 = document.createElement("span");
+  作者.className = "平面图作者";
+  作者.textContent = "陈鹏";
+  版权链接.append(版权前缀, 作者);
+
+  对话框.append(平面图链接, 关闭按钮, 版权链接);
   对话框.addEventListener("click", () => {
     对话框.remove();
   });

@@ -356,6 +356,8 @@
 .贡献分区:hover {
   --贡献区文本颜色: lightcyan;
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  filter: drop-shadow(0 0 10px white) drop-shadow(0 0 10px white) drop-shadow(0 0 10px white);
+  /*box-shadow: 0 0 10px 0 white;*/
 }
 
 .贡献分区:visited {
@@ -366,16 +368,8 @@
   color: var(--贡献区文本颜色);
 }
 
-.贡献分区:hover {
-  /*background-color: #4565;*/
-}
-
 .贡献分区 > :where(.fa-brands, .fa-solid) {
   transition: scale 125ms;
-}
-
-.贡献分区:hover > :where(.fa-brands, .fa-solid) {
-  scale: 1.25;
 }
 
 .捐赠对话框 {
@@ -480,29 +474,33 @@
   position: fixed;
   width: 100%;
   height: 100vh;
-  top: 0;
-  left: 0;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  margin: 0 !important;
   background-color: transparent;
-  background-image: linear-gradient(#4565 0%, #abc5 100%);
-  backdrop-filter: blur(15px) brightness(50%);
+  /*background-image: linear-gradient(#4565 0%, #abc5 100%);
+  backdrop-filter: blur(15px) brightness(50%);*/
   border: none;
   outline: none;
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 9999;
+}
+
+.平面图对话框::backdrop {
+  backdrop-filter: blur(20px) brightness(50%);
 }
 
 .平面图链接 {
-  width: 100%;
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .学校平面图 {
-  width: 100%;
-  height: 99%;
+  height: 95vh;
   object-fit: contain;
   transition: 125ms;
 }
@@ -515,7 +513,7 @@
   position: absolute;
   top: 20px;
   right: 30px;
-  border: solid 2px #bcd2;
+  border: solid 2px #bcd4;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -530,10 +528,21 @@
   color: white;
 }
 
-.平面图版权信息 {
+.平面图版权超链接 {
   position: absolute;
   bottom: 50px;
   right: 50px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #345;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.平面图作者 {
+  color: lightskyblue;
 }
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */

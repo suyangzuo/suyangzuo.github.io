@@ -41,6 +41,10 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   overflow: hidden;
 }
 
+/*body:has(dialog[open]) > *:not(dialog[open]) {
+  filter: brightness(35%);
+}*/
+
 #公共页脚 {
   padding-left: var(--侧边栏宽度);
   gap: 5vw;
