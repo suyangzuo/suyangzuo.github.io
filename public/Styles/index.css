@@ -75,7 +75,8 @@
 }
 
 .中文欢迎标题 .欢迎标题-第1行 {
-  background-image: linear-gradient(125deg, #3b4557 40%, #414d4d 60%);
+  /*background-image: linear-gradient(125deg, #3b4557 40%, #414d4d 60%);*/
+  background-image: linear-gradient(125deg, darkolivegreen 30%, seagreen 100%);
   animation: 中文第1行动画 1s ease-out forwards;
 }
 
@@ -91,7 +92,8 @@
 }
 
 .中文欢迎标题 .欢迎标题-第2行 {
-  background-image: linear-gradient(125deg, #525e74 40%, #5a6969 60%);
+  /*background-image: linear-gradient(125deg, #525e74 40%, #5a6969 60%);*/
+  background-image: linear-gradient(125deg, darkseagreen 0%, olivedrab 100%);
   animation: 中文第2行动画 1s ease-out forwards;
 }
 
