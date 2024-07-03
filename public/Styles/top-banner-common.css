@@ -196,12 +196,12 @@
 #搜索框 {
   width: 100%;
   height: 35px;
-  background-color: #7982;
+  background-color: #345;
   border: none;
   border-radius: 5px;
   padding: 0 10px;
   font-size: 16px;
-  color: #bbb;
+  color: #ddd;
   font-family: "JetBrains Mono", "Noto Sans SC", monospace, sans-serif;
   outline: solid 2px transparent;
   transition: 125ms;
@@ -215,13 +215,15 @@
   outline: solid 2px hotpink;
 }
 
-#搜索框::-moz-placeholder {
+#搜索框::placeholder {
   font-family: "JetBrains Mono", "Noto Sans SC", monospace, sans-serif;
+  color: #aaa;
 }
 
-/*#搜索区:has(#搜索框:focus) .搜索框背景扫描 {
-  animation: none;
-}*/
+#搜索框::-moz-placeholder {
+  font-family: "JetBrains Mono", "Noto Sans SC", monospace, sans-serif;
+  color: #aaa;
+}
 
 #搜索框::-webkit-search-cancel-button {
   appearance: none;
