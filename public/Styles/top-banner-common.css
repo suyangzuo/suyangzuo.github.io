@@ -170,15 +170,26 @@
   overflow: hidden;
 }
 
-.搜索框背景扫描 {
+.搜索按钮 {
   position: absolute;
-  width: 45%;
   height: 35px;
-  top: 50%;
-  left: 0;
-  translate: -100% -50%;
-  background-image: linear-gradient(90deg, transparent 0%, #fff2 50%, transparent 100%);
-  /*animation: 搜索框背景扫描动画 6s ease-out infinite;*/
+  width: 35px;
+  background-color: #fff2;
+  color: white;
+  border-radius: 5px 0 0 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 125ms;
+}
+
+.搜索按钮:hover {
+  background-color: #567;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.搜索按钮:active {
+  color: lightskyblue;
 }
 
 @keyframes 搜索框背景扫描动画 {
@@ -196,10 +207,10 @@
 #搜索框 {
   width: 100%;
   height: 35px;
-  background-color: #345;
+  background-color: #fff2;
   border: none;
   border-radius: 5px;
-  padding: 0 10px;
+  padding: 0 10px 0 45px;
   font-size: 16px;
   color: #ddd;
   font-family: "JetBrains Mono", "Noto Sans SC", monospace, sans-serif;
@@ -207,17 +218,22 @@
   transition: 125ms;
 }
 
-#搜索框:hover {
+#搜索框:hover, #搜索框:has(+ .搜索按钮:hover) {
   outline: solid 2px #ff69b477;
 }
 
-#搜索框:focus {
+#搜索框:focus, #搜索框:has(+ .搜索按钮:hover):focus {
   outline: solid 2px hotpink;
 }
 
 #搜索框::placeholder {
   font-family: "JetBrains Mono", "Noto Sans SC", monospace, sans-serif;
   color: #aaa;
+  transition: 125ms;
+}
+
+#搜索框:focus::placeholder, #搜索框:has(+ .搜索按钮:hover):focus::placeholder {
+  color: #777;
 }
 
 #搜索框::-moz-placeholder {
