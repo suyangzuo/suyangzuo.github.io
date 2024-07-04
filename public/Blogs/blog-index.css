@@ -167,10 +167,6 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   color: var(--已激活章节标题-字体颜色);
 }
 
-#章节区 .已激活 .行内专业名词 {
-  color: yellowgreen;
-}
-
 .锚链接-2级标题 {
   position: relative;
   padding: 10px 0;
