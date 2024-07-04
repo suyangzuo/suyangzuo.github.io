@@ -268,14 +268,14 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   top: 50px;
   left: 50%;
   translate: -50% 0;
-  background-color: #8af1;
+  background-color: #22282d;
   box-shadow: 0 15px 45px 0 #0005;
   z-index: 9998;
   width: 100%;
   height: fit-content;
   max-height: 65vh;
   overflow-x: hidden;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(20px);
   border: none;
 }
 
@@ -288,7 +288,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
     backdrop-filter: brightness(100%);
   }
   to {
-    backdrop-filter: brightness(35%);
+    backdrop-filter: brightness(25%);
   }
 }
 
@@ -343,7 +343,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
 
 .收藏条目:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
-  background-color: #fff1;
+  background-color: #fff2;
   outline: solid 1px #acb5;
 }
 
@@ -501,10 +501,9 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   width: 65px;
   height: 150px;
   border-radius: 200px;
-  /* outline: solid 1px gray; */
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   gap: 15px;
 }
@@ -520,7 +519,11 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   position: relative;
 }
 
-.收藏区 button:hover::after {
+.收藏区 button:hover {
+  filter: drop-shadow(0 0 10px #fffc);
+}
+
+/*.收藏区 button:hover::after {
   position: absolute;
   top: 50%;
   right: 115%;
@@ -533,14 +536,30 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   font-family: var(--font-awesome-字体集);
   font-size: 0.5em;
   content: "\f30b";
-}
+}*/
 
 #收藏按钮:focus {
   outline: none;
 }
 
 .收藏区 .已收藏状态按钮 {
-  color: seagreen;
+  color: yellow;
+}
+
+.收藏区 .已收藏状态按钮::after {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  content: "\f00c";
+  font-family: var(--font-awesome-字体集), ui-rounded;
+  font-size: 0.8em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  filter: drop-shadow(1px 1px 5px #000a);
 }
 
 .收藏区 .未收藏状态按钮 {
