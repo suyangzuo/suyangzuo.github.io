@@ -184,24 +184,13 @@
 }
 
 .搜索按钮:hover {
-  background-color: #567;
+  background-color: #abc;
+  color: black;
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 .搜索按钮:active {
   color: lightskyblue;
-}
-
-@keyframes 搜索框背景扫描动画 {
-  from {
-    translate: -100% -50%;
-  }
-  30% {
-    translate: 1000px -50%;
-  }
-  100% {
-    translate: 1000px -50%;
-  }
 }
 
 #搜索框 {
@@ -222,7 +211,7 @@
   outline: solid 2px #ff69b477;
 }
 
-#搜索框:focus, #搜索框:has(+ .搜索按钮:hover):focus {
+#搜索框:focus, #搜索框:has(+ .搜索按钮:hover):focus, #搜索框:has(+ .搜索按钮:active) {
   outline: solid 2px hotpink;
 }
 
