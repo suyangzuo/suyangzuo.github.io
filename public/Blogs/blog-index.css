@@ -54,10 +54,6 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   gap: 2.5vw;
 }
 
-.官网对齐 {
-  padding-right: 1.25em;
-}
-
 /* ------------------- ↓ 章节区 ------------------- */
 #章节区容器 {
   position: absolute;
