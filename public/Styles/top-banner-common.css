@@ -507,6 +507,7 @@
 }
 
 .学校平面图 {
+  width: 100%;
   height: 95vh;
   object-fit: contain;
   transition: 125ms;

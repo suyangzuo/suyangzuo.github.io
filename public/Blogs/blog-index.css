@@ -21,11 +21,12 @@
   --标题字体集: "Titillium Web", "Segoe UI Emoji", "Noto Sans SC", sans-serif;
   --代码字体集: "JetBrains Mono", "Segoe UI Emoji", "Noto Sans SC", monospace;
   --font-awesome-字体集: "Font Awesome 6 Free", ui-rounded;
-  --代码块字体集: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono", "Segoe UI Emoji",
-  "Noto Sans SC", monospace !important;
+  --代码块字体集: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
+    "Segoe UI Emoji", "Noto Sans SC", monospace !important;
   --分区列表项-字体颜色: #84a7a0;
   --已激活章节标题-字体颜色: rgb(129, 206, 129) !important;
-  --正文字体: "IBM Plex Sans", "Noto Sans SC", sans-serif, "Noto Sans Mono", "Segoe UI Emoji", monospace;
+  --正文字体: "IBM Plex Sans", "Noto Sans SC", sans-serif, "Noto Sans Mono",
+    "Segoe UI Emoji", monospace;
 }
 
 html {
@@ -535,7 +536,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
 }
 
 .收藏区 .已收藏状态按钮 {
-  color: yellow;
+  color: gold;
 }
 
 .收藏区 .已收藏状态按钮::after {
@@ -545,9 +546,9 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   top: 50%;
   left: 50%;
   translate: -50% -50%;
-  content: "\f00c";
-  font-family: var(--font-awesome-字体集), ui-rounded;
-  font-size: 0.8em;
+  content: "\f164";
+  font-family: var(--font-awesome-字体集);
+  font-size: 0.7em;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -619,8 +620,9 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   width: 65px;
   height: 65px;
   border-radius: 50px;
-  background: no-repeat center/contain url("./选择器修饰.png"),
-  radial-gradient(circle at center, #80d0c744 0%, #13547a11 50%);
+  background:
+    no-repeat center/contain url("./选择器修饰.png"),
+    radial-gradient(circle at center, #80d0c744 0%, #13547a11 50%);
   bottom: 40px;
   right: 50px;
   pointer-events: all;
@@ -873,7 +875,9 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   align-items: center;
   border-radius: 200px;
   pointer-events: none;
-  transition: left 250ms, border 250ms;
+  transition:
+    left 250ms,
+    border 250ms;
 }
 
 #侧边栏布局:hover::before {
@@ -896,7 +900,9 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   align-items: center;
   border-radius: 200px;
   pointer-events: none;
-  transition: left 250ms, scale 250ms;
+  transition:
+    left 250ms,
+    scale 250ms;
 }
 
 #侧边栏布局[layout="紧凑"]::after {
@@ -999,7 +1005,8 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
 }
 
 .专题-内容 {
-  font-family: "IBM Plex Sans", "Noto Sans SC", sans-serif, "Noto Sans Mono", monospace;
+  font-family: "IBM Plex Sans", "Noto Sans SC", sans-serif, "Noto Sans Mono",
+    monospace;
   /*height: 30px;*/
   display: flex;
   align-items: center;
@@ -1458,7 +1465,11 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   margin-top: 25px;
 }
 
-.分区列表项:has(.截图容器 + .分区普通文本:last-child, .截图容器 ~ .提醒:last-child) + .分区列表项 {
+.分区列表项:has(
+    .截图容器 + .分区普通文本:last-child,
+    .截图容器 ~ .提醒:last-child
+  )
+  + .分区列表项 {
   margin-top: 50px;
 }
 
@@ -1564,7 +1575,9 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(#555 0%, #555 100%) content-box, linear-gradient(#aaa 0%, #555 95%) border-box;
+  background:
+    linear-gradient(#555 0%, #555 100%) content-box,
+    linear-gradient(#678 0%, #555 95%) border-box;
   /*background-color: #fff1;*/
   border: solid 2px transparent;
   border-radius: 10px;
@@ -1682,7 +1695,9 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   letter-spacing: 0.05ch;
 }
 
-.专题.当前专题 .行内代码, .代码 .行内代码, .附加说明 .行内代码 {
+.专题.当前专题 .行内代码,
+.代码 .行内代码,
+.附加说明 .行内代码 {
   color: #76d276;
 }
 
@@ -1706,7 +1721,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
 
 .侧边栏 .行内代码 {
   font-size: 1.075em;
-  font-family: 'M PLUS 1 Code', monospace;
+  font-family: "M PLUS 1 Code", monospace;
 }
 
 .附加说明 {
@@ -1816,7 +1831,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   mix-blend-mode: color-dodge;
 }
 
-.强调:has(+ .专业名词, + .代码,  + .行内专业名词, + .行内代码) {
+.强调:has(+ .专业名词, + .代码, + .行内专业名词, + .行内代码) {
   margin-right: 0;
 }
 
@@ -2032,7 +2047,7 @@ pre[class*="language-"] {
 code[class*="language-"],
 pre[class*="language-"] {
   font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
-  "Noto Sans SC", monospace !important;
+    "Noto Sans SC", monospace !important;
   font-size: 0.9rem !important; /*修改字号会导致行号高度无法匹配*/
 }
 
@@ -2073,7 +2088,7 @@ div.code-toolbar > .toolbar {
   code[class*="language-"],
   pre[class*="language-"] {
     font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
-    "Noto Sans SC", monospace !important;
+      "Noto Sans SC", monospace !important;
     /*font-size: 0.925rem !important;*/
   }
 }
@@ -2116,7 +2131,6 @@ div.code-toolbar > .toolbar {
     width: min(600px, 85%);
     translate: calc(-50% + var(--侧边栏宽度) / 2) 0;
   }
-
 }
 
 @media screen and (width < 1300px) {
@@ -2284,7 +2298,10 @@ div.code-toolbar > .toolbar {
 /* ------------------------------ ↑ 响应式设计 ------------------------------ */
 
 /* ------------------ ↓ 个别单独 -------------------- */
-#盒子阴影范例容器, #投影范例容器, #文本阴影范例容器, #阴影叠加范例容器 {
+#盒子阴影范例容器,
+#投影范例容器,
+#文本阴影范例容器,
+#阴影叠加范例容器 {
   width: 800px;
   height: 500px;
   border: solid 2px #fff4;
@@ -2311,85 +2328,107 @@ div.code-toolbar > .toolbar {
     box-shadow: 0 0 0 0 transparent;
     border-radius: 0;
   }
-  4.167% { /*修改位移和颜色*/
+  4.167% {
+    /*修改位移和颜色*/
     scale: 1;
     box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
     border-radius: 0;
   }
-  8.333% { /*维持位移和颜色*/
+  8.333% {
+    /*维持位移和颜色*/
     scale: 1;
     box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
     border-radius: 0;
   }
-  12.5% { /*修改圆角*/
+  12.5% {
+    /*修改圆角*/
     scale: 1;
     border-radius: 300px;
   }
-  16.667% { /*维持圆角*/
+  16.667% {
+    /*维持圆角*/
     scale: 1;
     border-radius: 300px;
   }
-  20.833% { /*修改缩放*/
+  20.833% {
+    /*修改缩放*/
     scale: 1.25;
     border-radius: 300px;
   }
-  25% { /*维持缩放*/
+  25% {
+    /*维持缩放*/
     background-color: #6b7a89;
     scale: 1.25;
     border-radius: 300px;
   }
-  29.167% { /*修改背景色*/
+  29.167% {
+    /*修改背景色*/
     background-color: #6b7a8900;
     border-radius: 300px;
   }
-  37.5% { /*维持背景色*/
+  37.5% {
+    /*维持背景色*/
     background-color: #6b7a8900;
     border-radius: 300px;
   }
-  41.667% { /*还原背景色*/
+  41.667% {
+    /*还原背景色*/
     background-color: #6b7a89;
     scale: 1.25;
     border-radius: 300px;
   }
-  45.833% { /*还原缩放*/
+  45.833% {
+    /*还原缩放*/
     scale: 1;
     border-radius: 300px;
   }
-  50% { /*维持缩放*/
+  50% {
+    /*维持缩放*/
     scale: 1;
     border-radius: 300px;
   }
-  54.167% { /*还原圆角*/
+  54.167% {
+    /*还原圆角*/
     border-radius: 0;
   }
-  58.333% { /*维持圆角*/
+  58.333% {
+    /*维持圆角*/
     box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
   }
-  62.5% { /*修改模糊*/
+  62.5% {
+    /*修改模糊*/
     box-shadow: var(--盒子阴影偏移-x) 100px 50px 0 black;
   }
-  66.667% { /*维持模糊*/
+  66.667% {
+    /*维持模糊*/
     box-shadow: var(--盒子阴影偏移-x) 100px 50px 0 black;
   }
-  70.833% { /*还原模糊*/
+  70.833% {
+    /*还原模糊*/
     box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
   }
-  75% { /*维持模糊*/
+  75% {
+    /*维持模糊*/
     box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
   }
-  79.167% { /*修改扩展*/
+  79.167% {
+    /*修改扩展*/
     box-shadow: var(--盒子阴影偏移-x) 100px 0 100px black;
   }
-  87.5% { /*维持扩展*/
+  87.5% {
+    /*维持扩展*/
     box-shadow: var(--盒子阴影偏移-x) 100px 0 100px black;
   }
-  91.667% { /*还原扩展*/
+  91.667% {
+    /*还原扩展*/
     box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
   }
-  95.833% { /*维持扩展*/
+  95.833% {
+    /*维持扩展*/
     box-shadow: var(--盒子阴影偏移-x) 100px 0 0 black;
   }
-  to { /*还原位移*/
+  to {
+    /*还原位移*/
     box-shadow: 0 0 0 0 transparent;
   }
 }
@@ -2500,41 +2539,110 @@ div.code-toolbar > .toolbar {
 
 @keyframes 文本阴影叠加动画 {
   from {
-    text-shadow: 0 0 0 transparent, 0 0 0 transparent, 0 0 0 transparent,
-    0 0 0 transparent;
+    text-shadow:
+      0 0 0 transparent,
+      0 0 0 transparent,
+      0 0 0 transparent,
+      0 0 0 transparent;
   }
   5% {
-    text-shadow: 15px 15px 0 black, 0 0 0 transparent, 0 0 0 transparent,
-    0 0 0 transparent;
+    text-shadow:
+      15px 15px 0 black,
+      0 0 0 transparent,
+      0 0 0 transparent,
+      0 0 0 transparent;
   }
   10% {
-    text-shadow: 15px 15px 0 black, -15px 15px 0 gold, 0 0 0 transparent,
-    0 0 0 transparent;
+    text-shadow:
+      15px 15px 0 black,
+      -15px 15px 0 gold,
+      0 0 0 transparent,
+      0 0 0 transparent;
   }
   15% {
-    text-shadow: 15px 15px 0 black, -15px 15px 0 gold, -15px -15px 0 seagreen,
-    0 0 0 transparent;
+    text-shadow:
+      15px 15px 0 black,
+      -15px 15px 0 gold,
+      -15px -15px 0 seagreen,
+      0 0 0 transparent;
   }
   20% {
-    text-shadow: 15px 15px 0 black, -15px 15px 0 gold, -15px -15px 0 seagreen,
-    15px -15px 0 lightskyblue;
+    text-shadow:
+      15px 15px 0 black,
+      -15px 15px 0 gold,
+      -15px -15px 0 seagreen,
+      15px -15px 0 lightskyblue;
   }
   40% {
-    text-shadow: 200px 100px 0 black, -200px 100px 0 gold,
-    -200px -100px 0 seagreen, 200px -100px 0 lightskyblue;
+    text-shadow:
+      200px 100px 0 black,
+      -200px 100px 0 gold,
+      -200px -100px 0 seagreen,
+      200px -100px 0 lightskyblue;
   }
   60% {
-    text-shadow: 200px 100px 20px black, -200px 100px 20px gold,
-    -200px -100px 20px seagreen, 200px -100px 20px lightskyblue;
+    text-shadow:
+      200px 100px 20px black,
+      -200px 100px 20px gold,
+      -200px -100px 20px seagreen,
+      200px -100px 20px lightskyblue;
   }
   80% {
-    text-shadow: 200px 100px 0 black, -200px 100px 0 gold,
-    -200px -100px 0 seagreen, 200px -100px 0 lightskyblue;
+    text-shadow:
+      200px 100px 0 black,
+      -200px 100px 0 gold,
+      -200px -100px 0 seagreen,
+      200px -100px 0 lightskyblue;
   }
   to {
-    text-shadow: 0 0 0 transparent, 0 0 0 transparent, 0 0 0 transparent,
-    0 0 0 transparent;
+    text-shadow:
+      0 0 0 transparent,
+      0 0 0 transparent,
+      0 0 0 transparent,
+      0 0 0 transparent;
   }
 }
 
 /* ------------------ ↑ 个别单独 -------------------- */
+
+@keyframes 反复旋转-Y {
+  from {
+    rotate: y 0deg;
+  }
+  15% {
+    rotate: y 0deg;
+  }
+  40% {
+    rotate: y 180deg;
+  }
+  60% {
+    rotate: y 180deg;
+  }
+  85% {
+    rotate: y 360deg;
+  }
+  to {
+    rotate: y 360deg;
+  }
+}
+
+@keyframes 反复旋转-Y-相反 {
+  from {
+    rotate: y -180deg;
+  }
+  15% {
+    rotate: y -180deg;
+  }
+  40% {
+    rotate: y 0deg;
+  }
+  60% {
+    rotate: y 0deg;
+  }
+  85% {
+    rotate: y 180deg;
+  }
+  to {
+    rotate: y 180deg;
+  }
+}
