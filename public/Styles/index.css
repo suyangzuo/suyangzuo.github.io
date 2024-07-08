@@ -371,6 +371,7 @@
 
 .推荐卡片-交互式学习中心:hover {
   background-color: #b7d6d6cc;
+  box-shadow: 5px 5px 10px 0 #0005, inset 0 0 15px 0 white;
 }
 
 .推荐卡片-交互式学习中心:link {
@@ -410,6 +411,7 @@
 
 .推荐卡片-经验之谈:hover {
   background-color: #3b4557cc;
+  box-shadow: 5px 5px 10px 0 #0005, inset 0 0 15px 0 #b7d6d6dd;
 }
 
 .推荐卡片Logo容器 {
