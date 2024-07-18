@@ -382,7 +382,7 @@ function 点击阴影内嵌复选框(event) {
 }
 
 function 根据阴影参数修改控件(阴影属性) {
-  阴影内嵌复选框.checked = 阴影属性.内嵌 === "inset" ? true : false;
+  阴影内嵌复选框.checked = 阴影属性.内嵌 === "inset";
   if (阴影内嵌复选框.checked) {
     root.style.setProperty("--阴影内嵌浮动层左偏移", "55%");
     root.style.setProperty("--阴影内嵌浮动层背景色", "rgb(0,210,136)");
@@ -455,10 +455,11 @@ function 打印代码(有效代码组) {
   代码属性元素.className = "阴影代码抬头";
   代码属性元素.textContent = "box-shadow:";
   代码文本元素.appendChild(代码属性元素);
-  for (const 有效代码 of 有效代码组) {
+  for (const [索引, 有效代码] of 有效代码组.entries()) {
     const 代码元素 = document.createElement("span");
     代码元素.className = "单个阴影代码";
-    代码元素.textContent = 有效代码;
+    const 后置符号 = 索引 === 有效代码组.length - 1 ? ";" : ",";
+    代码元素.textContent = `${有效代码}${后置符号}`;
     代码文本元素.appendChild(代码元素);
   }
 }
