@@ -1,0 +1,55 @@
+.信息区 {
+  width: 1000px;
+  margin: 0 auto;
+}
+
+.快捷键列表 {
+  width: 100%;
+  height: 600px;
+  padding: 25px 0;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: center;
+}
+
+.快捷键列表项 {
+  width: 30%;
+  height: 50px;
+  border: solid 1px #fff3;
+}
+
+.快捷键列表项内部 {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.按键集合 {
+  font-size: 14px;
+  font-family: "JetBrains Mono", Consolas, monospace;
+  width: 70%;
+  height: 50px;
+  padding: 5px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.按键结果 {
+  font-family: "JetBrains Mono", Consolas, monospace;
+  width: 30%;
+  height: 50px;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.按键集合 > .单个按键元素:nth-last-of-type(1) {
+  color: orange;
+}
+
+.加号元素 {
+  color: #89b;
+}
