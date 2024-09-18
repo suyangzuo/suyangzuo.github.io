@@ -25,7 +25,7 @@ body {
   height: 500px;
   background-color: #fff2;
   margin: 100px auto;
-  font-family: "JetBrains Mono", Consolas, monospace, 微软雅黑, sans-serif;
+  font-family: "JetBrains Mono", Consolas, 微软雅黑, monospace, sans-serif;
 }
 
 .direction-container {

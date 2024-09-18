@@ -584,8 +584,48 @@ option {
   }
 }
 
-@media screen and (height <= 1080px) {
+@media screen and (height < 1080px) {
   .弹性总区 {
     align-items: flex-start;
+  }
+}
+
+@media screen and (height < 1000px) {
+  .弹性-操作区 {
+    /*height: 850px;*/
+  }
+
+  .操作分区 {
+    padding: 5px 0;
+  }
+
+  .间隙区 {
+    padding: 0;
+  }
+
+  .盒子数量按钮区,
+  .收缩按钮区,
+  .扩张按钮区 {
+    height: 65px;
+  }
+
+  .尺寸分区 {
+    padding: 5px 0 0 0;
+  }
+
+  .标题中文 {
+    font-size: 1rem;
+  }
+
+  .标题代码 {
+    font-size: 0.9rem;
+  }
+
+  .中文 {
+    font-size: 0.85rem;
+  }
+
+  .代码 {
+    font-size: 0.75rem;
   }
 }

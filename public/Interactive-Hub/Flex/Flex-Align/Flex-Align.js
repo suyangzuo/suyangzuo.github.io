@@ -187,6 +187,7 @@ function 拖动盒子数量滑块() {
   弹性行指示区.style.alignContent = 弹性容器.style.alignContent;
   拉伸弹性行();
   生成弹性行高度();
+  更新弹性项高度();
 }
 
 function 生成弹性项(数量) {
