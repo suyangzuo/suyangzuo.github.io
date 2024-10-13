@@ -23,9 +23,30 @@ function 生成点击效果() {
   }, 1000);
 }
 
+let 修剪指示区偏移_x = 0;
+let 修剪指示区偏移_y = 0;
+let 当前拖拽对象 = null;
+
+多边形图像容器.addEventListener("dragover", (event) => {
+  event.preventDefault();
+  多边形图像.style.clipPath = 生成精确修剪值代码();
+});
+
+多边形图像容器.addEventListener("drop", (event) => {
+  event.preventDefault();
+  当前拖拽对象.style.opacity = "1";
+  const 多边形图像容器边界矩形 = 多边形图像容器.getBoundingClientRect();
+  const 放置光标位置_x = event.clientX - 多边形图像容器边界矩形.left;
+  const 放置光标位置_y = event.clientY - 多边形图像容器边界矩形.top;
+  当前拖拽对象.style.left = `${放置光标位置_x - 修剪指示区偏移_x}px`;
+  当前拖拽对象.style.top = `${放置光标位置_y - 修剪指示区偏移_y}px`;
+  多边形图像.style.clipPath = 生成精确修剪值代码();
+});
+
 多边形图像容器.addEventListener("click", (event) => {
   const 多边形修剪指示区 = document.createElement("div");
   多边形修剪指示区.className = "多边形修剪指示区";
+  多边形修剪指示区.draggable = true;
   多边形图像容器.appendChild(多边形修剪指示区);
 
   const 多边形图像容器边界矩形 = 多边形图像容器.getBoundingClientRect();
@@ -63,6 +84,17 @@ function 生成点击效果() {
   const 指示区三角箭头 = document.createElement("span");
   指示区三角箭头.className = "指示区三角箭头";
   多边形修剪指示区.appendChild(指示区三角箭头);
+
+  多边形修剪指示区.addEventListener("dragstart", (e) => {
+    当前拖拽对象 = e.target;
+    setTimeout(() => {
+      e.target.style.opacity = "0";
+    }, 0);
+    const 拖拽时点击位置_x = e.clientX - 多边形图像容器边界矩形.left;
+    const 拖拽时点击位置_y = e.clientY - 多边形图像容器边界矩形.top;
+    修剪指示区偏移_x = 拖拽时点击位置_x - 多边形修剪指示区.offsetLeft;
+    修剪指示区偏移_y = 拖拽时点击位置_y - 多边形修剪指示区.offsetTop;
+  });
 
   const 修剪数据分区_x = document.createElement("修剪数据分区");
   修剪数据分区_x.className = "修剪数据分区";
