@@ -679,7 +679,8 @@ function 特殊元素样式补充() {
       前一元素 !== null &&
       前一元素.tagName === "BR" &&
       前一节点 !== null &&
-      前一节点.nodeType === Node.TEXT_NODE
+      前一节点.nodeType === Node.TEXT_NODE &&
+      前一节点.textContent.trim() === ""
     ) {
       代码.style.marginLeft = "0.25em";
     }
