@@ -64,15 +64,15 @@ body {
   content: "";
   /* background-color: rgb(68, 130, 5); */
   background: conic-gradient(
-      rgba(4, 176, 238, 0) 20deg,
-      rgba(4, 176, 238, 1) 20deg,
-      transparent 120deg
-    ),
-    conic-gradient(
-      rgba(238, 176, 4, 0) 200deg,
-      rgba(238, 176, 4, 1) 200deg,
-      transparent 300deg
-    );
+    rgba(4, 176, 238, 0) 20deg,
+    rgba(4, 176, 238, 1) 20deg,
+    transparent 120deg
+  ),
+  conic-gradient(
+    rgba(238, 176, 4, 0) 200deg,
+    rgba(238, 176, 4, 1) 200deg,
+    transparent 300deg
+  );
   width: 135%;
   height: 175%;
   position: absolute;
@@ -151,6 +151,11 @@ body {
   font-size: 0.9rem;
 }
 
+.detail i {
+  font-size: 0.85em;
+  color: silver;
+}
+
 .返回 {
   position: fixed;
   width: 100px;
@@ -201,4 +206,5 @@ body {
     font-size: 1.35rem;
   }
 }
+
 /* -------------------------------- ↑ 响应式设计 ----------------------------------- */

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>InkScape</title>
+    <link
+      rel="icon"
+      href="/Images/Page-Logos/平面/InkScape.png"
+      type="image/x-icon"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&family=Noto+Sans+SC&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/Styles/top-banner-common.css"
+    />
+    <link rel="stylesheet" type="text/css" href="/Styles/people.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/Styles/tutorial_navigation.css"
+    />
+    <script src="https://cdn.lordicon.com/bhenfmcm.js"></script>
+    <script
+      src="https://kit.fontawesome.com/d0483e3bd3.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="/Scripts/top-banner.js" defer></script>
+  </head>
+  <body>
+    <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
+    <script
+      src="../../Scripts/html-include.js"
+      target="../../top-banner.html"
+      position="afterbegin"
+    ></script>
+    <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
+
+    <!-- --------------------------- ↓ 人物 -------------------------------- -->
+    <div class="people-hall">
+      <div class="people-hall-banner">
+        <img src="/Images/People/Banner.jpg" alt="人物背景横幅" />
+      </div>
+      <div class="people">
+        <div class="people-img">
+          <img src="/Images/People/Inkscape.jpg" alt="Inkscape 团队" />
+        </div>
+        <article class="people-brief">
+          <section class="people-name">
+            Inkscape 团队<br />Inkscape Team
+            <p class="detail">
+              <a href="https://zh.wikipedia.org/wiki/Inkscape" target="_blank"
+                >维基百科 <i class="fa-brands fa-wikipedia-w"></i>
+              </a>
+            </p>
+          </section>
+          <section class="people-life"></section>
+        </article>
+      </div>
+    </div>
+    <!-- --------------------------- ↑ 人物 -------------------------------- -->
+
+    <!-- --------------------------- ↓ 教程资源卡片组 -------------------------------- -->
+    <div class="tutorials">
+      <!-- ----------------- ↓ 卡片01 ---------------------- -->
+      <article class="tutorial-card">
+        <section class="intro">
+          <a
+            href="https://inkscape.org/zh-hans/learn/tutorials/"
+            target="_blank"
+            ><img
+              class="card-img"
+              src="/Images/Tutorials-Screenshots/Inkscape/Inkscape-Tutorials.png"
+              alt="官方教程"
+          /></a>
+          <a
+            href="https://inkscape.org/zh-hans/learn/tutorials/"
+            target="_blank"
+          >
+            <section class="card-text">
+              <div class="card-text-title">Inkscape 官方教程</div>
+              <p>官方指南手册，对软件的使用进行了详细的介绍。</p>
+            </section>
+          </a>
+        </section>
+      </article>
+      <!-- ----------------- ↑ 卡片01 ---------------------- -->
+    </div>
+    <!-- --------------------------- ↑ 教程资源卡片组 -------------------------------- -->
+
+    <script
+      src="../../Scripts/html-include.js"
+      target="../back.html"
+      position="afterbegin"
+    ></script>
+    <script src="/Scripts/tutorial-card-show.js"></script>
+  </body>
+</html>
