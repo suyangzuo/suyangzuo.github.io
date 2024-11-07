@@ -229,8 +229,8 @@
             >：
             <pre class="line-numbers">
               <code class="lang-c">
-                &ptr_array != ptr_array    <span style="color:tomato">✖</span> //指针自身和指针所指数组，位于内存的不同区域
-                sizeof(ptr_array) != sizeof(int) * 5    <span style="color:tomato">✖</span> //指针和数组是独立的，占用不同的内存空间
+                &ptr_array != ptr_array    <span style="color:lightgreen">✓</span> //指针自身和指针所指数组，位于内存的不同区域
+                sizeof(ptr_array) != sizeof(int) * 5    <span style="color:lightgreen">✓</span> //指针和数组是独立的，占用不同的内存空间
               </code>
             </pre>
           </li>
