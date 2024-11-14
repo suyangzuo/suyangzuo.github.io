@@ -36,6 +36,21 @@
   overflow: hidden;
 }
 
+.欢迎区背景视频容器 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.欢迎区背景视频 {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(50%);
+}
+
 .渐变覆盖层 {
   width: 100%;
   height: 100%;
@@ -250,6 +265,7 @@
   font-size: max(14px, calc(0.65vw + 2px));
   opacity: 0;
   box-shadow: 2px 2px 4px 0 #0005;
+  backdrop-filter: blur(3px);
 }
 
 .特色项:nth-child(1) {
