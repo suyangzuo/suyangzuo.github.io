@@ -286,9 +286,10 @@
       }
 
       .导航1级文本 > i {
-        font-size: 0.8em;
+        font-size: 11px;
         rotate: z 180deg;
         transition: 250ms;
+        color: gray;
       }
 
       .导航1级文本:hover {

@@ -204,11 +204,11 @@ li > a > i {
 .页脚信息分区链接 {
   width: fit-content;
   height: 100%;
-  padding: 7.5px;
+  padding: 7px 10px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 12.5px;
+  gap: 12px;
 }
 
 .页脚信息分区链接图容器 {
@@ -228,11 +228,16 @@ li > a > i {
 
 .页脚信息分区链接 > span {
   color: gray;
-  transition: 200ms;
+}
+
+.页脚信息分区链接:hover {
+  background-color: #252a2e;
+  box-shadow: 0 0 0 1px #444;
+  border-radius: 5px;
 }
 
 .页脚信息分区链接:hover > span {
-  color: var(--网站风格颜色);
+  color: silver;
 }
 
 #页脚版权提示区 {
