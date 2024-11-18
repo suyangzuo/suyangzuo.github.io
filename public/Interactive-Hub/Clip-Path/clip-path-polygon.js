@@ -96,6 +96,44 @@ let 当前拖拽对象 = null;
     修剪指示区偏移_y = 拖拽时点击位置_y - 多边形修剪指示区.offsetTop;
   });
 
+  多边形修剪指示区.addEventListener("drag", (e) => {
+    const 拖拽时位置_x =
+      e.clientX - 多边形图像容器边界矩形.left - 修剪指示区偏移_x;
+    const 拖拽时位置_y =
+      e.clientY - 多边形图像容器边界矩形.top - 修剪指示区偏移_y;
+    const 拖拽时鼠标水平比例 = (拖拽时位置_x / 多边形图像容器宽度) * 100;
+    const 拖拽时鼠标垂直比例 = (拖拽时位置_y / 多边形图像容器高度) * 100;
+    const 拖拽修剪区序号 = parseInt(
+      多边形修剪指示区.querySelector(".修剪序号").innerText,
+      10,
+    );
+
+    多边形浮点数据组.find((数据) => 数据.修剪序号 === 拖拽修剪区序号).坐标.x =
+      拖拽时鼠标水平比例;
+    多边形浮点数据组.find((数据) => 数据.修剪序号 === 拖拽修剪区序号).坐标.y =
+      拖拽时鼠标垂直比例;
+    多边形图像.style.clipPath = 生成精确修剪值代码();
+
+    const x比例 = 多边形修剪指示区.querySelector(".x比例数据");
+    const y比例 = 多边形修剪指示区.querySelector(".y比例数据");
+    x比例.textContent = `${拖拽时鼠标水平比例.toFixed(0)}`;
+    y比例.textContent = `${拖拽时鼠标垂直比例.toFixed(0)}`;
+
+    /*当前拖拽对象.style.opacity = "1";
+    const 放置光标位置_x = e.clientX - 多边形图像容器边界矩形.left;
+    const 放置光标位置_y = e.clientY - 多边形图像容器边界矩形.top;
+    当前拖拽对象.style.left = `${放置光标位置_x - 修剪指示区偏移_x}px`;
+    当前拖拽对象.style.top = `${放置光标位置_y - 修剪指示区偏移_y}px`;*/
+
+    更新多边形代码区代码();
+    if (多边形修剪代码容器.classList.contains("代码容器可见")) {
+      clearTimeout(代码格式化id);
+      代码格式化id = setTimeout(() => {
+        刷新代码格式化脚本();
+      }, 250);
+    }
+  });
+
   const 修剪数据分区_x = document.createElement("修剪数据分区");
   修剪数据分区_x.className = "修剪数据分区";
   const 修剪数据_x文本 = document.createElement("span");
