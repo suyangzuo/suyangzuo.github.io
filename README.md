@@ -8,9 +8,7 @@
 
 （ 该Logo以及 `永恒` 艺术字，均由本人同事 `氯化银` 原创设计 ）
 
-<img src="/public/Images/Page-Logos/Eternal-Logo.png" style="width:25%; margin-right: 20px" alt="永恒Logo">
-<img src="/public/Images/Index-Images/永.png" style="width:25%; filter: invert(75%); margin-right: 20px" alt="永">
-<img src="/public/Images/Index-Images/恒.png" style="width:25%; filter: invert(75%)" alt="恒">
+<img src="/public/Images/Page-Logos/Eternal-Logo.png" style="width:25%; margin-right: 20px" alt="永恒Logo"><img src="/public/Images/Index-Images/永.png" style="width:25%; filter: invert(75%); margin-right: 20px" alt="永"><img src="/public/Images/Index-Images/恒.png" style="width:25%; filter: invert(75%)" alt="恒">
 
 ## 3. 主要目标：
 
@@ -60,5 +58,5 @@
   <p style="padding:5px 10px; margin-bottom: 10px; border:solid 1px #666; background-color:#111; width:fit-content; border-radius: 5px;">闲暇时刻不妨放松一下！</p>
   <img src="/public/Images/Others/截图-休闲游戏.png" style="width:75%" alt="休闲游戏"><br/><br/>
 - ### 视频教程
-  筹划中（`事实上只存在于脑海里`），我理想中的视频是学生为主持人，对知识进行讲解的视频，非常类似于`YouTube`
-  上的个人主页上的视频。然而理想与现实有着巨大差距，这个设想只能先暂时搁置了。
+  筹划中（`事实上只存在于脑海里`），我理想中的视频是学生为主持人，对知识进行讲解，非常类似于`YouTube`
+  上的各种教程视频。然而理想与现实有着巨大差距，这个设想只能先暂时搁置了。
