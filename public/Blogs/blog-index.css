@@ -644,6 +644,44 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   }
 }
 
+.技术栈选择器::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: "";
+  width: 100%;
+  height: 100%;
+  border-radius: 9999px;
+  opacity: 0;
+  box-shadow: 0 0 5px 2px #fff1;
+  animation: 技术栈选择器伪元素盒子阴影动画 2.5s linear infinite;
+  animation-play-state: paused;
+  transition: 250ms;
+}
+
+.技术栈选择器:hover::before {
+  opacity: 1;
+  animation-play-state: running;
+}
+
+@keyframes 技术栈选择器伪元素盒子阴影动画 {
+  from {
+    box-shadow: 5px 5px 5px 2px #fff1;
+  }
+  25% {
+    box-shadow: -5px 5px 20px 2px #fff4;
+  }
+  50% {
+    box-shadow: -5px -5px 35px 2px #fff8;
+  }
+  75% {
+    box-shadow: 5px -5px 20px 2px #fff4;
+  }
+  to {
+    box-shadow: 5px 5px 5px 2px #fff1;
+  }
+}
+
 .技术栈对话框 {
   position: fixed;
   width: min(1100px, 90%);
