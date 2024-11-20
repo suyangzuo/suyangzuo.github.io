@@ -260,7 +260,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   position: fixed;
   top: 50px;
   left: 50%;
-  translate: -50% 0;
+  translate: -50% -100%;
   background-color: #22282d;
   box-shadow: 0 15px 45px 0 #0005;
   z-index: 9998;
@@ -270,6 +270,16 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   overflow-x: hidden;
   backdrop-filter: blur(20px);
   border: none;
+  transition:
+    translate 0.25s,
+    display 0.25s allow-discrete;
+}
+
+#收藏栏[open] {
+  translate: -50% 0;
+  @starting-style {
+    translate: -50% -100%;
+  }
 }
 
 #收藏栏::backdrop {
@@ -501,6 +511,10 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   gap: 15px;
 }
 
+body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .收藏区 {
+  right: calc(50px + var(--scrollbar-width));
+}
+
 .收藏区 button {
   width: 50px;
   height: 50px;
@@ -627,7 +641,11 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   right: 50px;
   pointer-events: all;
   animation: 旋转技术栈选择器 5s linear infinite;
-  transition: 0.25s;
+  transition: scale 0.25s;
+}
+
+body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .技术栈选择器 {
+  right: calc(50px + var(--scrollbar-width));
 }
 
 .技术栈选择器:hover {
@@ -695,11 +713,31 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   backdrop-filter: blur(20px);
   border: none;
   outline: solid 2px #3a3a3a;
+  clip-path: inset(50% 50% 50% 50%);
+  transition:
+    clip-path 250ms,
+    display 250ms allow-discrete;
   overflow: hidden;
 }
 
+.技术栈对话框[open] {
+  width: min(calc(1100px + 14px), calc(90% + 14px));
+  clip-path: inset(-2px -2px -2px -2px);
+  @starting-style {
+    clip-path: inset(50% 50% 50% 50%);
+  }
+}
+
 .技术栈对话框::backdrop {
+  backdrop-filter: brightness(100%);
+  transition: backdrop-filter 250ms;
+}
+
+.技术栈对话框[open]::backdrop {
   backdrop-filter: brightness(25%);
+  @starting-style {
+    backdrop-filter: brightness(100%);
+  }
 }
 
 .关闭技术栈对话框 {
