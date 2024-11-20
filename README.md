@@ -44,19 +44,19 @@
       <br/><br/>
 - ### 交互式学习中心
   <p style="padding:5px 10px; margin-bottom: 10px; border:solid 1px #666; background-color:#111; width:fit-content; border-radius: 5px;">将代码转换为可视化选项，通过鼠标点击即可实时观察结果。</p>
-  <img src="/public/Images/Others/截图-交互式学习中心.png" style="width:75%" alt="交互式学习中心"><br/><br/>
+  <img src="/public/Images/Others/截图-交互式学习中心.png" style="width:100%" alt="交互式学习中心"><br/><br/>
 - ### 经验之谈
   <p style="padding:5px 10px; margin-bottom: 10px; border:solid 1px #666; background-color:#111; width:fit-content; border-radius: 5px;">经典的博客类教程，图文并茂，伴有丰富的代码实例、效果演示。</p>
-  <img src="/public/Images/Others/截图-经验之谈.png" style="width:75%" alt="经验之谈"><br/><br/>
+  <img src="/public/Images/Others/截图-经验之谈.png" style="width:100%" alt="经验之谈"><br/><br/>
 - ### 第三方在线教程
   <p style="padding:5px 10px; margin-bottom: 10px; border:solid 1px #666; background-color:#111; width:fit-content; border-radius: 5px;">搜集了全网最优秀的在线教程，分门别类进行了归纳、总结，方便读者进行访问。</p>
-  <img src="/public/Images/Others/截图-第三方在线教程.png" style="width:75%" alt="第三方在线教程"><br/><br/>
+  <img src="/public/Images/Others/截图-第三方在线教程.png" style="width:100%" alt="第三方在线教程"><br/><br/>
 - ### Web应用实验室
   <p style="padding:5px 10px; margin-bottom: 10px; border:solid 1px #666; background-color:#111; width:fit-content; border-radius: 5px;">将各种稀奇古怪的想法付诸实践，不求完美，有创意即可！</p>
-  <img src="/public/Images/Others/截图-Web应用实验室.png" style="width:75%" alt="Web应用实验室"><br/><br/>
+  <img src="/public/Images/Others/截图-Web应用实验室.png" style="width:100%" alt="Web应用实验室"><br/><br/>
 - ### 休闲游戏
   <p style="padding:5px 10px; margin-bottom: 10px; border:solid 1px #666; background-color:#111; width:fit-content; border-radius: 5px;">闲暇时刻不妨放松一下！</p>
-  <img src="/public/Images/Others/截图-休闲游戏.png" style="width:75%" alt="休闲游戏"><br/><br/>
+  <img src="/public/Images/Others/截图-休闲游戏.png" style="width:100%" alt="休闲游戏"><br/><br/>
 - ### 视频教程
   筹划中（`事实上只存在于脑海里`），我理想中的视频是学生为主持人，对知识进行讲解，非常类似于`YouTube`
   上的各种教程视频。然而理想与现实有着巨大差距，这个设想只能先暂时搁置了。
