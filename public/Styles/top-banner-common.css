@@ -18,6 +18,14 @@
   box-shadow: inset 0 -1px 0 0 #2f353a;
 }
 
+.导航左区 {
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+}
+
 .nav-to-index {
   /* background-color: #00a060; */
   display: flex;
@@ -150,6 +158,31 @@
     background-position: -95% 0;
     filter: grayscale(1) brightness(1);
   }
+}
+
+.repository-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.repository-link {
+  height: 100%;
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.repository-link:hover .repository-img {
+  box-shadow: 0 0 15px 7px #fff5;
+}
+
+.repository-img {
+  height: 50%;
+  object-fit: contain;
+  border-radius: 999px;
 }
 
 /*#搜索区 {
