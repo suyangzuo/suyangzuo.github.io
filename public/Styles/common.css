@@ -228,6 +228,7 @@ li > a > i {
 
 .页脚信息分区链接 > span {
   color: gray;
+  font-size: 14px;
 }
 
 .页脚信息分区链接:hover {

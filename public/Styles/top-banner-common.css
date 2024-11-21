@@ -152,7 +152,7 @@
   }
 }
 
-#搜索区 {
+/*#搜索区 {
   height: 100%;
   flex-grow: 1;
   max-width: 800px;
@@ -243,7 +243,7 @@
 #搜索框::-webkit-search-cancel-button:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   filter: hue-rotate(20deg);
-}
+}*/
 
 .导航功能区 {
   height: 100%;

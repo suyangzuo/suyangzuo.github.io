@@ -2,6 +2,27 @@ body {
   min-height: 100vh;
 }
 
+.总区::-webkit-scrollbar {
+  width: 14px;
+}
+
+.总区::-webkit-scrollbar:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.总区::-webkit-scrollbar-track {
+  background-color: #222;
+}
+
+.总区::-webkit-scrollbar-thumb {
+  background-color: #5193ad;
+  border-radius: 999px;
+}
+
+.总区::-webkit-scrollbar-thumb:hover {
+  background-color: skyblue;
+}
+
 .总区 {
   background: #0f2027; /* fallback for old browsers */
   background: -webkit-linear-gradient(

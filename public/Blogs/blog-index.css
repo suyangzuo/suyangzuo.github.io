@@ -561,7 +561,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   left: 50%;
   translate: -50% -50%;
   content: "\f164";
-  font-family: var(--font-awesome-字体集);
+  font-family: var(--font-awesome-字体集), emoji;
   font-size: 0.7em;
   display: flex;
   justify-content: center;
@@ -711,8 +711,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   background-color: #111a2060;
   box-shadow: 10px 10px 30px 0 #000a;
   backdrop-filter: blur(20px);
-  border: none;
-  outline: solid 2px #3a3a3a;
+  border: solid 2px #3a3a3a;
   clip-path: inset(50% 50% 50% 50%);
   transition:
     clip-path 250ms,
@@ -721,8 +720,8 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .技术栈对话框[open] {
-  width: min(calc(1100px + 14px), calc(90% + 14px));
-  clip-path: inset(-2px -2px -2px -2px);
+  translate: calc(-50% - var(--scrollbar-width) / 2) -50%;
+  clip-path: inset(0 0 0 0);
   @starting-style {
     clip-path: inset(50% 50% 50% 50%);
   }
