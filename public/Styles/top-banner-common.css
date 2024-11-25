@@ -169,7 +169,7 @@
 
 .repository-link {
   height: 100%;
-  aspect-ratio: 1;
+  aspect-ratio: 0.8;
   display: flex;
   justify-content: center;
   align-items: center;
