@@ -316,7 +316,7 @@ input[type="checkbox"]:checked::before {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: Consolas, monospace, "微软雅黑", sans-serif;
+  font-family: Consolas, monospace, 微软雅黑, sans-serif;
 }
 
 .内循环轮 {

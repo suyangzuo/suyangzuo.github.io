@@ -158,11 +158,7 @@ function 生成侧边栏标签() {
   侧边栏布局复选框.checked = 侧边栏布局 === "紧凑";
   侧边栏标签.appendChild(侧边栏布局复选框);
   侧边栏布局复选框.addEventListener("input", () => {
-    if (侧边栏布局复选框.checked) {
-      侧边栏布局 = "紧凑";
-    } else {
-      侧边栏布局 = "宽松";
-    }
+    侧边栏布局 = 侧边栏布局复选框.checked ? "紧凑" : "宽松";
     侧边栏布局复选框.setAttribute("layout", 侧边栏布局);
     localStorage.setItem("侧边栏布局", 侧边栏布局);
   });

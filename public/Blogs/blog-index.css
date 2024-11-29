@@ -1038,7 +1038,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 
 .专题 {
   width: 100%;
-  padding: 4px 8px;
+  padding: 2px 8px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -1048,7 +1048,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .侧边栏:has(#侧边栏布局:not(:checked)) .专题 {
-  padding: 8px;
+  padding: 6px;
 }
 
 .专题:hover {
@@ -1785,12 +1785,12 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 :where(.分区2级标题, .分区3级标题) > .行内代码 {
-  font-size: 0.75em;
+  font-size: 0.85em;
   translate: 0 0.1em;
 }
 
 .章节区内容 .行内代码 {
-  font-size: 0.85em;
+  /*font-size: 0.85em;*/
   translate: 0 0.1em;
 }
 
