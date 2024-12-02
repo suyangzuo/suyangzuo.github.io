@@ -2,13 +2,15 @@
 
 ## 1. 网站直达：
 
-[GitHub](https://suyangzuo.github.io/)、[腾讯云](https://suyangzuo.com/)
+[Vercel](https://suyang.vercel.app/)、[Render](https://suyang.onrender.com/)、[腾讯云](https://suyangzuo.com/)
 
-## 2. 网站Logo：
+## 2. 网站Logo、图片资产：
 
-（ 该Logo以及 `永恒` 艺术字，均由本人同事 `氯化银` 原创设计 ）
+- 永恒Logo以及 `永恒` 艺术字，均由本人同事 `氯化银` 原创设计
 
 <img src="/public/Images/Page-Logos/Eternal-Logo.png" style="width:25%; margin-right: 20px" alt="永恒Logo"><img src="/public/Images/Index-Images/永.png" style="width:25%; filter: invert(75%); margin-right: 20px" alt="永"><img src="/public/Images/Index-Images/恒.png" style="width:25%; filter: invert(75%)" alt="恒">
+
+- 其它图片资产：本站几乎所有图片资产均来自于互联网，版权均归其作者或版权方所有。
 
 ## 3. 主要目标：
 

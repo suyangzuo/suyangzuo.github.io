@@ -156,7 +156,7 @@ if (localStorage.getItem("插入排序法-动画速率") === null) {
     let j = i - 1;
     while (j >= 0) {
       if (!排序过程正在运行) return;
-      生成内循环区(j);
+      生成内循环区(i, j);
 
       await sleep(数字过渡时长);
       数字记录框.classList.add("操作中数字");
@@ -323,7 +323,7 @@ async function 生成动画_交换(左数字, 右数字) {
   右数字.style.translate = 临时偏移;
 }
 
-function 生成内循环区(内循环索引数) {
+function 生成内循环区(外循环索引数, 内循环索引数) {
   const 内循环区 = document.createElement("p");
   内循环区.className = "内循环区";
   const 循环文本 = document.createElement("span");
@@ -342,7 +342,7 @@ function 生成内循环区(内循环索引数) {
   内循环轮.className = "内循环轮";
   const 内循环轮数字 = document.createElement("span");
   内循环轮数字.className = "内循环轮数字";
-  内循环轮数字.textContent = `${内循环索引数}`;
+  内循环轮数字.textContent = `${外循环索引数 - 内循环索引数}`;
   内循环轮.innerHTML = `第${内循环轮数字.outerHTML}次`;
 
   内循环区.append(循环文本, 内循环索引, 等号, 内循环索引数字, 内循环轮);
@@ -354,7 +354,7 @@ function 设置外循环轮数字(外循环索引数) {
   const 外循环索引数字 = document.querySelector(".外循环索引数字");
   外循环索引数字.textContent = 外循环索引数.toString();
   const 外循环轮数字 = document.querySelector(".外循环轮数字");
-  外循环轮数字.textContent = `${外循环索引数 + 1}`;
+  外循环轮数字.textContent = `${外循环索引数}`;
   const 外循环区 = document.querySelector(".外循环区");
   外循环区.classList.add("外循环数字动画");
   setTimeout(() => {

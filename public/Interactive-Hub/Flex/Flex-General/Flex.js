@@ -8,6 +8,8 @@ const rootStyle = window.getComputedStyle(root);
 const 轴区切换时长 = 100;
 
 const 弹性展示区 = document.getElementsByClassName("弹性-展示区")[0];
+const 水平轴指示区 = document.querySelector(".水平轴指示区");
+const 垂直轴指示区 = document.querySelector(".垂直轴指示区");
 
 const 初始块元素数量 = rootStyle.getPropertyValue("--初始盒子数量");
 const 最低尺寸百分比 = 3;
@@ -43,7 +45,11 @@ const 盒子数量滑块 = document.getElementById("box-count");
 function 修改盒子数量() {
   盒子数量滑块.nextElementSibling.textContent = 盒子数量滑块.value;
   调整盒子数量数字位置();
-  弹性展示区.innerHTML = "";
+  const 弹性元素组 = 弹性展示区.querySelectorAll(".弹性元素");
+  for (const 弹性元素 of 弹性元素组) {
+    弹性元素.remove();
+  }
+  // 弹性展示区.innerHTML = "";
   创建块元素(盒子数量滑块.value);
   let 盒子比率 = (盒子数量滑块.value * 100) / 盒子数量滑块.max;
   root.style.setProperty("--盒子数量比率", `${盒子比率}%`);
@@ -79,12 +85,16 @@ const 轴分布三区 = document.getElementsByClassName("轴分布三区")[0];
 function 修改布局() {
   if (块布局.checked) {
     弹性展示区.style.display = "block";
+    水平轴指示区.style.opacity = "";
+    垂直轴指示区.style.opacity = "";
     主轴按钮.style.background =
       "linear-gradient(90deg, rgb(29, 29, 29) 0%, rgb(45, 45, 45) 100%)";
     主轴按钮.style.color = "white";
     屏蔽弹性布局操作区();
   } else {
     弹性展示区.style.display = "flex";
+    水平轴指示区.style.opacity = "1";
+    垂直轴指示区.style.opacity = "1";
     修改主轴方向();
     修改行间隙值();
     修改列间隙值();
@@ -127,8 +137,16 @@ const 轴方向区 = document.getElementsByClassName("轴方向区")[0];
 function 修改主轴方向() {
   if (主轴行.checked) {
     弹性展示区.style.flexDirection = "row";
+    const 水平轴指示文本 = 水平轴指示区.querySelector(".轴指示文本");
+    const 垂直轴指示文本 = 垂直轴指示区.querySelector(".轴指示文本");
+    水平轴指示文本.textContent = "主轴";
+    垂直轴指示文本.textContent = "交叉轴";
   } else {
     弹性展示区.style.flexDirection = "column";
+    const 水平轴指示文本 = 水平轴指示区.querySelector(".轴指示文本");
+    const 垂直轴指示文本 = 垂直轴指示区.querySelector(".轴指示文本");
+    水平轴指示文本.textContent = "交叉轴";
+    垂直轴指示文本.textContent = "主轴";
   }
 }
 

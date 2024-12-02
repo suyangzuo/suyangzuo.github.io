@@ -39,6 +39,122 @@
   transition: 500ms;
 }
 
+.轴指示区 {
+  position: absolute;
+  --轴指示线-背景色: gray;
+  opacity: 0;
+  transition: 125ms;
+}
+
+.水平轴指示区 {
+  width: 100%;
+  bottom: 105%;
+}
+
+.垂直轴指示区 {
+  height: 100%;
+  right: 106%;
+}
+
+.轴指示线,
+.轴指示文本 {
+  position: absolute;
+}
+
+.轴指示线 {
+  --边缘箭头颜色: lightblue;
+}
+
+.水平轴指示线 {
+  background-image: linear-gradient(
+    90deg,
+    var(--轴指示线-背景色) 0%,
+    var(--轴指示线-背景色) 42.5%,
+    transparent 42.5%,
+    transparent 57.5%,
+    var(--轴指示线-背景色) 57.5%,
+    var(--轴指示线-背景色) 100%
+  );
+  width: 100%;
+  height: 1px;
+  top: 50%;
+  left: 0;
+  translate: 0 -50%;
+}
+
+.水平轴指示线::before,
+.水平轴指示线::after,
+.垂直轴指示线::before,
+.垂直轴指示线::after {
+  color: var(--边缘箭头颜色);
+}
+
+.水平轴指示线::before {
+  position: absolute;
+  content: "\1438";
+  top: 50%;
+  left: 0;
+  translate: 0 calc(-50% - 1px);
+}
+
+.水平轴指示线::after {
+  position: absolute;
+  content: "\1433";
+  top: 50%;
+  right: 0;
+  translate: 0 calc(-50% - 1px);
+}
+
+.垂直轴指示线 {
+  background-image: linear-gradient(
+    var(--轴指示线-背景色) 0%,
+    var(--轴指示线-背景色) 42.5%,
+    transparent 42.5%,
+    transparent 57.5%,
+    var(--轴指示线-背景色) 57.5%,
+    var(--轴指示线-背景色) 100%
+  );
+  width: 1px;
+  height: 100%;
+  top: 0;
+  left: 50%;
+  translate: -50% 0;
+}
+
+.垂直轴指示线::before {
+  position: absolute;
+  content: "\1431";
+  top: 0;
+  left: 50%;
+  translate: -50% -8px;
+}
+
+.垂直轴指示线::after {
+  position: absolute;
+  content: "\142f";
+  bottom: 0;
+  left: 50%;
+  translate: -50% 8px;
+}
+
+.轴指示文本 {
+  font-size: calc(0.5vw + 10px);
+  letter-spacing: 3px;
+}
+
+.水平轴指示文本 {
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+}
+
+.垂直轴指示文本 {
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  writing-mode: vertical-lr;
+}
+
 .弹性元素 {
   position: relative;
   transition: 500ms;
