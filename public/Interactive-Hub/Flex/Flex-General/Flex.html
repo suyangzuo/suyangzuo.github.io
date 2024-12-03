@@ -155,20 +155,38 @@
             </div>
           </div>
         </div>
-        <div class="操作分区 包裹与间隙区">
+        <div class="操作分区 换行与间隙区">
           <div class="分割线"></div>
-          <div class="操作分区 包裹区">
-            <p class="标题 包裹标题">
-              <span class="标题中文">弹性包裹</span
+          <div class="操作分区 换行区">
+            <p class="标题 换行标题">
+              <span class="标题中文">弹性换行</span
               ><span class="标题代码">flex-wrap</span>
             </p>
-            <div class="包裹选项">
-              <div class="布局按钮区 包裹按钮区">
-                <label for="flex-wrap" class="标签"
-                  ><span class="中文 包裹中文">不包裹</span
-                  ><span class="代码 包裹代码">nowrap</span></label
+            <div class="换行选项">
+              <div class="布局按钮区 换行按钮区">
+                <label for="nowrap" class="标签"
+                  ><span class="中文 换行中文">不换行</span
+                  ><span class="代码 换行代码">nowrap</span></label
                 >
-                <input type="checkbox" id="flex-wrap" autocomplete="off" />
+                <input
+                  type="radio"
+                  id="nowrap"
+                  autocomplete="off"
+                  name="flex-wrap"
+                  checked
+                />
+              </div>
+              <div class="布局按钮区 换行按钮区">
+                <label for="wrap" class="标签"
+                  ><span class="中文 换行中文">换行</span
+                  ><span class="代码 换行代码">wrap</span></label
+                >
+                <input
+                  type="radio"
+                  id="wrap"
+                  autocomplete="off"
+                  name="flex-wrap"
+                />
               </div>
             </div>
           </div>
@@ -230,13 +248,13 @@
         <div class="操作分区 轴分布区">
           <div class="轴分布类型">
             <button type="button" class="轴分布类型按钮 主轴按钮 当前按钮">
-              主轴
+              主轴分布
             </button>
             <button type="button" class="轴分布类型按钮 交叉轴单行按钮">
-              交叉轴-单行
+              交叉轴 - 行内项分布
             </button>
             <button type="button" class="轴分布类型按钮 交叉轴多行按钮">
-              交叉轴-多行
+              交叉轴 - 行分布
             </button>
           </div>
           <div class="轴分布三区">
@@ -347,7 +365,7 @@
             </div>
             <div class="轴分布分区 交叉轴单行分布区">
               <p class="标题 轴分布标题">
-                <span class="标题中文">交叉轴分布 - 单行</span
+                <span class="标题中文">交叉轴分布 - 行内项分布</span
                 ><span class="标题代码">align-items</span>
               </p>
               <div class="轴分布选项">
@@ -440,7 +458,7 @@
             </div>
             <div class="轴分布分区 交叉轴多行分布区">
               <p class="标题 轴分布标题">
-                <span class="标题中文">交叉轴分布 - 多行</span
+                <span class="标题中文">交叉轴分布 - 行分布</span
                 ><span class="标题代码">align-Content</span>
               </p>
               <div class="轴分布选项">

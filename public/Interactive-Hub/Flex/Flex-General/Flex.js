@@ -105,20 +105,20 @@ function 修改布局() {
     轴分布三区.style.pointerEvents = "auto";
     轴方向区.style.filter = "brightness(100%)";
     轴方向区.style.pointerEvents = "auto";
-    包裹区.style.filter = "brightness(100%)";
-    包裹区.style.pointerEvents = "auto";
+    换行区.style.filter = "brightness(100%)";
+    换行区.style.pointerEvents = "auto";
     间隙区.style.filter = "brightness(100%)";
     间隙区.style.pointerEvents = "auto";
     轴分布类型.style.filter = "brightness(100%)";
     轴分布类型.style.pointerEvents = "auto";
-    交叉轴多行按钮.style.filter = 弹性包裹.checked
+    交叉轴多行按钮.style.filter = 弹性换行.checked
       ? "brightness(100%)"
       : "brightness(50%)";
-    交叉轴多行按钮.style.pointerEvents = 弹性包裹.checked ? "auto" : "none";
-    交叉轴多行分布区.style.filter = 弹性包裹.checked
+    交叉轴多行按钮.style.pointerEvents = 弹性换行.checked ? "auto" : "none";
+    交叉轴多行分布区.style.filter = 弹性换行.checked
       ? "brightness(100%)"
       : "brightness(50%)";
-    交叉轴多行分布区.style.pointerEvents = 弹性包裹.checked ? "auto" : "none";
+    交叉轴多行分布区.style.pointerEvents = 弹性换行.checked ? "auto" : "none";
     尺寸区.style.filter = "brightness(100%)";
     尺寸区.style.pointerEvents = "auto";
   }
@@ -165,26 +165,24 @@ function 弹性轴区样式初始化() {
   交叉轴多行按钮.style.color = "white";
 }
 
-const 弹性包裹 = document.getElementById("flex-wrap");
-弹性包裹.addEventListener("input", 修改弹性包裹);
-const 包裹区 = document.getElementsByClassName("包裹区")[0];
-包裹区.style.filter = "brightness(50%)";
-包裹区.style.pointerEvents = "none";
-const 包裹中文 = 包裹区.getElementsByClassName("包裹中文")[0];
-const 包裹代码 = 包裹区.getElementsByClassName("包裹代码")[0];
+const 弹性换行 = document.getElementById("wrap");
+const 弹性不换行 = document.getElementById("nowrap");
+弹性换行.addEventListener("input", 修改弹性换行);
+弹性不换行.addEventListener("input", 修改弹性换行);
+const 换行区 = document.getElementsByClassName("换行区")[0];
+换行区.style.filter = "brightness(50%)";
+换行区.style.pointerEvents = "none";
 
-function 修改弹性包裹() {
-  包裹中文.textContent = 弹性包裹.checked ? "包裹" : "不包裹";
-  包裹代码.textContent = 弹性包裹.checked ? "wrap" : "nowrap";
-  弹性展示区.style.flexWrap = 包裹代码.textContent;
-  交叉轴多行按钮.style.filter = 弹性包裹.checked
+function 修改弹性换行() {
+  弹性展示区.style.flexWrap = 弹性换行.checked ? "wrap" : "nowrap";
+  交叉轴多行按钮.style.filter = 弹性换行.checked
     ? "brightness(100%)"
     : "brightness(50%)";
-  交叉轴多行按钮.style.pointerEvents = 弹性包裹.checked ? "auto" : "none";
-  交叉轴多行分布区.style.filter = 弹性包裹.checked
+  交叉轴多行按钮.style.pointerEvents = 弹性换行.checked ? "auto" : "none";
+  交叉轴多行分布区.style.filter = 弹性换行.checked
     ? "brightness(100%)"
     : "brightness(50%)";
-  交叉轴多行分布区.style.pointerEvents = 弹性包裹.checked ? "auto" : "none";
+  交叉轴多行分布区.style.pointerEvents = 弹性换行.checked ? "auto" : "none";
 }
 
 const 行间隙 = document.getElementById("x-gap");
@@ -411,8 +409,8 @@ function 屏蔽弹性布局操作区() {
   轴分布三区.style.pointerEvents = "none";
   轴方向区.style.filter = "brightness(50%)";
   轴方向区.style.pointerEvents = "none";
-  包裹区.style.filter = "brightness(50%)";
-  包裹区.style.pointerEvents = "none";
+  换行区.style.filter = "brightness(50%)";
+  换行区.style.pointerEvents = "none";
   间隙区.style.filter = "brightness(50%)";
   间隙区.style.pointerEvents = "none";
   轴分布类型.style.filter = "brightness(50%)";
@@ -435,10 +433,8 @@ function 重置参数() {
   主轴行.checked = true;
   主轴列.checked = false;
 
-  弹性包裹.checked = false;
-  包裹中文.textContent = "不包裹";
-  包裹代码.textContent = "nowrap";
-  弹性展示区.style.flexWrap = 包裹代码.textContent;
+  弹性不换行.checked = true;
+  弹性展示区.style.flexWrap = 弹性换行.checked ? "wrap" : "nowrap";
 
   行间隙.value = 0;
   行间隙.nextElementSibling.textContent = 行间隙.value;
