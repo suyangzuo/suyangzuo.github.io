@@ -2,5 +2,547 @@
   --进度条颜色-已填充: rgb(41, 126, 78);
   --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
   --拇指宽度: 16px;
+  --顶渐变位置: 50%;
+  --底渐变位置: 50%;
+  --左渐变位置: 50%;
+  --右渐变位置: 50%;
+  --水平平移渐变位置: 50%;
+  --垂直平移渐变位置: 50%;
+  --渐变填充色: lightseagreen;
 }
 
+/*.总区 {
+  overflow-x: hidden;
+}*/
+
+.展示区 {
+  width: 50%;
+  height: max(600px, calc(100% - 50px));
+  position: relative;
+  --向内偏移: 22.5vh;
+}
+
+.展示分区 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.覆盖容器 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.覆盖容器::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 1px;
+  background-color: darkgray;
+  top: 50%;
+  left: 0;
+  translate: 0 -50%;
+}
+
+.覆盖容器::after {
+  position: absolute;
+  content: "";
+  width: 1px;
+  height: 100%;
+  background-color: darkgray;
+  top: 0;
+  left: 50%;
+  translate: -50% 0;
+}
+
+.绝对定位-外部容器,
+.绝对定位-中间容器 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: solid 3px #fff0;
+  transition: 125ms;
+}
+
+.绝对定位-外部容器 {
+  width: 100%;
+  height: 100%;
+  background-color: #3e542a;
+}
+
+.绝对定位-中间容器 {
+  width: calc(100% - var(--向内偏移));
+  height: calc(100% - var(--向内偏移));
+  background-color: #7e6738;
+}
+
+.绝对定位-内部容器 {
+  width: calc(100% - var(--向内偏移));
+  height: calc(100% - var(--向内偏移));
+  background-color: #364f78;
+  justify-content: normal;
+  outline: solid 3px #fff0;
+  transition: 125ms;
+}
+
+.绝对定位-内部容器 > * {
+  flex-shrink: 0;
+}
+
+.占位元素 {
+  width: 100%;
+  height: 100%;
+  background: center/cover url("/Images/Background-Images/bg-11.png");
+}
+
+.绝对定位-元素 {
+  height: clamp(50px, 12.5vh, 200px);
+  aspect-ratio: 1;
+  border: solid 3px transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: white;
+  background-color: #fff2;
+  text-shadow: 1px 1px 1px #000a;
+  backdrop-filter: blur(10px);
+  z-index: 10;
+  transition:
+    background-color 125ms,
+    border 125ms;
+}
+
+.定位描述 {
+  font-size: max(12px, 0.7vw);
+}
+
+.定位描述辅助 {
+  font-size: 0.9em;
+  background-color: #123;
+  padding: 3px 6px;
+  border-radius: 5px;
+  margin: 0 3px;
+}
+
+.定位描述辅助.屏蔽描述辅助 {
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.定位代码 {
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: max(10px, 0.6vw);
+}
+
+span[class$="属性"] {
+  color: #f7d9ff;
+}
+
+span[class$="值"] {
+  color: lightcyan;
+}
+
+.绝对定位-元素 div[class$="辅助线"] {
+  position: absolute;
+}
+
+.顶辅助线,
+.底辅助线,
+.左辅助线,
+.右辅助线 {
+  pointer-events: none;
+  opacity: 0;
+  background-color: #cde;
+}
+
+.顶辅助线,
+.底辅助线 {
+  width: 2px;
+}
+
+.左辅助线,
+.右辅助线 {
+  height: 2px;
+}
+
+.顶辅助线 {
+  bottom: 100%;
+}
+
+.顶辅助线::before {
+  position: absolute;
+  content: "\1431";
+  top: 0;
+  left: 50%;
+  translate: -50% -8px;
+}
+
+.顶辅助线::after {
+  position: absolute;
+  content: "\142F";
+  bottom: 0;
+  left: 50%;
+  translate: -50% 6px;
+}
+
+.底辅助线 {
+  top: 100%;
+}
+
+.底辅助线::before {
+  position: absolute;
+  content: "\1431";
+  top: 0;
+  left: 50%;
+  translate: -50% -8px;
+}
+
+.底辅助线::after {
+  position: absolute;
+  content: "\142F";
+  bottom: 0;
+  left: 50%;
+  translate: -50% 6px;
+}
+
+.左辅助线 {
+  right: 100%;
+  height: 1px;
+}
+
+.左辅助线::before {
+  position: absolute;
+  content: "\1438";
+  top: 50%;
+  left: 0;
+  translate: 0 calc(-50% - 1px);
+}
+
+.左辅助线::after {
+  position: absolute;
+  content: "\1433";
+  top: 50%;
+  right: 0;
+  translate: 0 calc(-50% - 1px);
+}
+
+.右辅助线 {
+  left: 100%;
+  height: 1px;
+}
+
+.右辅助线::before {
+  position: absolute;
+  content: "\1438";
+  top: 50%;
+  left: 0;
+  translate: 0 calc(-50% - 1px);
+}
+
+.右辅助线::after {
+  position: absolute;
+  content: "\1433";
+  top: 50%;
+  right: 0;
+  translate: 0 calc(-50% - 1px);
+}
+
+.水平辅助线说明,
+.垂直辅助线说明 {
+  position: absolute;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: #000a;
+  backdrop-filter: blur(10px);
+}
+
+.水平辅助线说明 {
+  top: 20px;
+  left: 50%;
+  translate: -50% 0;
+}
+
+.垂直辅助线说明 {
+  top: 50%;
+  left: 20px;
+  translate: 0 -50%;
+}
+
+.垂直辅助线说明,
+.辅助线标题,
+.辅助线数据 {
+  display: flex;
+  justify-content: center;
+}
+
+.辅助线标题,
+.辅助线数据 {
+  align-items: center;
+}
+
+.辅助线标题代码,
+.辅助线数据 {
+  font-family: "JetBrains Mono", Consolas, monospace;
+}
+
+.辅助线标题中文 {
+  color: lightskyblue;
+  margin-right: 5px;
+}
+
+.辅助线标题代码 {
+  color: lightsteelblue;
+}
+
+span[class$="值"].辅助线数据值 {
+  color: goldenrod;
+  margin-right: 3px;
+}
+
+.辅助线数据单位 {
+  color: darkgoldenrod;
+}
+
+.控制区 {
+  width: fit-content;
+  height: calc(100% - 50px);
+}
+
+.控制分区 {
+  display: flex;
+  flex-direction: column;
+}
+
+.控制分区 > div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  border: solid 1px gray;
+}
+
+.定位总区:has(.自身定位区:hover) .绝对定位-元素,
+.定位总区:has(.平移区:hover) .绝对定位-元素 {
+  border: solid 3px lightcyan;
+}
+
+.定位总区:has(label[for="外部容器"]:hover) .绝对定位-外部容器,
+.定位总区:has(label[for="中间容器"]:hover) .绝对定位-中间容器,
+.定位总区:has(label[for="内部容器"]:hover) .绝对定位-内部容器 {
+  animation: 容器外框线闪烁 1s ease-out infinite;
+}
+
+@keyframes 容器外框线闪烁 {
+  from {
+    outline: solid 3px #fff1;
+  }
+  50% {
+    outline: solid 3px white;
+  }
+  to {
+    outline: solid 3px #fff1;
+  }
+}
+
+.参照对象标题 {
+  text-align: center;
+  color: gold;
+}
+
+.标签区 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+}
+
+.标签 {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  padding: 7px 10px;
+  border-radius: 5px;
+}
+
+.标签:hover {
+  background-color: #000a;
+}
+
+.定位距离区 .标签标题 {
+  width: 90px;
+  user-select: none;
+}
+
+.平移距离区 .标签标题 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.平移距离区 .标签标题 .标签代码 {
+  font-size: 0.9em;
+}
+
+.标签:hover,
+input[type="checkbox"]:hover,
+input[type="radio"]:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  position: relative;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  outline: solid 1px #fff4;
+}
+
+input[type="checkbox"]::before,
+input[type="radio"]::before {
+  position: absolute;
+  width: 75%;
+  height: 75%;
+  content: "";
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  background-color: lightgreen;
+  clip-path: polygon(12% 60%, 44% 95%, 91% 21%, 84% 13%, 43% 77%, 18% 50%);
+  pointer-events: none;
+  opacity: 0;
+}
+
+input[type="checkbox"]:checked::before,
+input[type="radio"]:checked::before {
+  opacity: 1;
+}
+
+.标签代码 {
+  font-family: "JetBrains Mono", Consolas, monospace;
+  padding: 3px 6px;
+  color: #bdf;
+}
+
+.定位距离区 {
+  transition: 125ms;
+  position: relative;
+}
+
+.定位距离区.已屏蔽 {
+  filter: brightness(50%);
+  pointer-events: none;
+}
+
+.定位距离区 .标签 {
+  position: relative;
+}
+
+input[type="range"] {
+  appearance: none;
+  width: 50%;
+  height: 5px;
+  border-radius: 999px;
+}
+
+input[type="range"]:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+input[id="顶"] {
+  background-image: linear-gradient(
+    90deg,
+    var(--渐变填充色) var(--顶渐变位置),
+    gray var(--顶渐变位置)
+  );
+}
+
+input[id="底"] {
+  background-image: linear-gradient(
+    90deg,
+    var(--渐变填充色) var(--底渐变位置),
+    gray var(--底渐变位置)
+  );
+}
+
+input[id="左"] {
+  background-image: linear-gradient(
+    90deg,
+    var(--渐变填充色) var(--左渐变位置),
+    gray var(--左渐变位置)
+  );
+}
+
+input[id="右"] {
+  background-image: linear-gradient(
+    90deg,
+    var(--渐变填充色) var(--右渐变位置),
+    gray var(--右渐变位置)
+  );
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background-color: var(--渐变填充色);
+  translate: 0 -8px;
+}
+
+input[type="range"]::-moz-range-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background-color: var(--渐变填充色);
+  /*translate: 0 -8px;*/
+  border: none;
+}
+
+.滑块值 {
+  font-family: "JetBrains Mono", Consolas, monospace;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.滑块值数字 {
+  width: 36px;
+  text-align: right;
+  margin-right: 3px;
+  color: #ace;
+}
+
+.数据列表 {
+  position: absolute;
+}
+
+#水平平移 {
+  background-image: linear-gradient(
+    90deg,
+    var(--渐变填充色) var(--水平平移渐变位置),
+    gray var(--水平平移渐变位置)
+  );
+}
+
+#垂直平移 {
+  background-image: linear-gradient(
+    90deg,
+    var(--渐变填充色) var(--垂直平移渐变位置),
+    gray var(--垂直平移渐变位置)
+  );
+}

@@ -12,6 +12,10 @@
     />
     <link rel="stylesheet" href="/Styles/common.css" />
     <link rel="stylesheet" href="/Styles/top-banner-common.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Titillium+Web&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Roboto+Mono&family=M+PLUS+Code+Latin&family=Ubuntu+Mono&family=M+PLUS+1+Code:wght@100..700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="../control.css" />
     <link rel="stylesheet" href="../interactive-common.css" />
     <link rel="stylesheet" href="./position.css" />
@@ -38,9 +42,252 @@
         target="../control.html"
         position="afterbegin"
       ></script>
-      <p class="交互标题">定位</p>
-      <figure class="展示区"></figure>
-      <div class="控制区"></div>
+      <p class="交互标题">绝对定位</p>
+      <figure class="展示区">
+        <div id="绝对定位展示区" class="展示分区">
+          <div class="绝对定位-外部容器">
+            <div class="绝对定位-中间容器">
+              <div class="绝对定位-内部容器">
+                <div class="占位元素"></div>
+                <div class="绝对定位-元素">
+                  <div class="顶辅助线">
+                    <div class="垂直辅助线说明">
+                      <span class="辅助线标题"
+                        ><span class="辅助线标题中文">顶</span
+                        ><span class="辅助线标题代码">top</span></span
+                      >
+                      <span class="辅助线数据"
+                        ><span class="辅助线数据值"></span
+                        ><span class="辅助线数据单位">%</span></span
+                      >
+                    </div>
+                  </div>
+                  <div class="底辅助线">
+                    <div class="垂直辅助线说明">
+                      <span class="辅助线标题"
+                        ><span class="辅助线标题中文">底</span
+                        ><span class="辅助线标题代码">bottom</span></span
+                      >
+                      <span class="辅助线数据"
+                        ><span class="辅助线数据值"></span
+                        ><span class="辅助线数据单位">%</span></span
+                      >
+                    </div>
+                  </div>
+                  <div class="左辅助线">
+                    <div class="水平辅助线说明">
+                      <span class="辅助线标题"
+                        ><span class="辅助线标题中文">左</span
+                        ><span class="辅助线标题代码">left</span></span
+                      >
+                      <span class="辅助线数据"
+                        ><span class="辅助线数据值"></span
+                        ><span class="辅助线数据单位">%</span></span
+                      >
+                    </div>
+                  </div>
+                  <div class="右辅助线">
+                    <div class="水平辅助线说明">
+                      <span class="辅助线标题"
+                        ><span class="辅助线标题中文">右</span
+                        ><span class="辅助线标题代码">right</span></span
+                      >
+                      <span class="辅助线数据"
+                        ><span class="辅助线数据值"></span
+                        ><span class="辅助线数据单位">%</span></span
+                      >
+                    </div>
+                  </div>
+                  <span class="定位描述"
+                    ><span class="描述属性">定位: </span
+                    ><span class="描述值"
+                      ><span class="描述值文本">静态</span
+                      ><span class="定位描述辅助">默认</span></span
+                    ></span
+                  ><span class="定位代码"
+                    ><span class="代码属性">position: </span
+                    ><span class="代码值">static</span></span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="覆盖容器"></div>
+        </div>
+      </figure>
+      <div class="控制区">
+        <div id="绝对定位控制区" class="控制分区">
+          <div class="自身定位区">
+            <h2 class="参照对象标题">自身定位</h2>
+            <div class="标签区">
+              <label for="静态定位" class="标签">
+                <span class="标签标题"
+                  >静态<span class="定位描述辅助">默认</span>定位</span
+                >
+                <input type="radio" id="静态定位" name="自身定位" checked />
+              </label>
+              <label for="绝对定位" class="标签">
+                <span class="标签标题">绝对定位</span>
+                <input type="radio" id="绝对定位" name="自身定位" />
+              </label>
+            </div>
+            <div class="滑块区 定位距离区 已屏蔽">
+              <label for="顶-启用" class="标签">
+                <input type="checkbox" id="顶-启用" />
+                <span class="标签标题"
+                  >顶<span class="标签代码">top</span></span
+                >
+                <input
+                  type="range"
+                  id="顶"
+                  min="-100"
+                  max="100"
+                  value="0"
+                  list="顶数据列表"
+                />
+                <span class="滑块值 顶值"
+                  ><span class="滑块值数字">0</span>%</span
+                >
+                <datalist class="数据列表" id="顶数据列表">
+                  <option value="-50" label="-50"></option>
+                  <option value="0" label="0"></option>
+                  <option value="50" label="50"></option>
+                </datalist>
+              </label>
+              <label for="底-启用" class="标签">
+                <input type="checkbox" id="底-启用" />
+                <span class="标签标题"
+                  >底<span class="标签代码">bottom</span></span
+                >
+                <input
+                  type="range"
+                  id="底"
+                  min="-100"
+                  max="100"
+                  value="0"
+                  list="底数据列表"
+                />
+                <span class="滑块值 底值"
+                  ><span class="滑块值数字">0</span>%</span
+                >
+                <datalist class="数据列表" id="底数据列表">
+                  <option value="-50" label="-50"></option>
+                  <option value="0" label="0"></option>
+                  <option value="50" label="50"></option>
+                </datalist>
+              </label>
+              <label for="左-启用" class="标签">
+                <input type="checkbox" id="左-启用" />
+                <span class="标签标题"
+                  >左<span class="标签代码">left</span></span
+                >
+                <input
+                  type="range"
+                  id="左"
+                  min="-100"
+                  max="100"
+                  value="0"
+                  list="左数据列表"
+                />
+                <span class="滑块值 左值"
+                  ><span class="滑块值数字">0</span>%</span
+                >
+                <datalist class="数据列表" id="左数据列表">
+                  <option value="-50" label="-50"></option>
+                  <option value="0" label="0"></option>
+                  <option value="50" label="50"></option>
+                </datalist>
+              </label>
+              <label for="右-启用" class="标签">
+                <input type="checkbox" id="右-启用" />
+                <span class="标签标题"
+                  >右<span class="标签代码">right</span></span
+                >
+                <input
+                  type="range"
+                  id="右"
+                  min="-100"
+                  max="100"
+                  value="0"
+                  list="右数据列表"
+                />
+                <span class="滑块值 右值"
+                  ><span class="滑块值数字">0</span>%</span
+                >
+                <datalist class="数据列表" id="右数据列表">
+                  <option value="-50" label="-50"></option>
+                  <option value="0" label="0"></option>
+                  <option value="50" label="50"></option>
+                </datalist>
+              </label>
+            </div>
+          </div>
+          <div class="平移区">
+            <h2 class="参照对象标题">平移</h2>
+            <div class="滑块区 平移距离区">
+              <label for="水平平移" class="标签">
+                <span class="标签标题"
+                  >水平平移<span class="标签代码">translateX</span></span
+                >
+                <input
+                  type="range"
+                  id="水平平移"
+                  min="-100"
+                  max="100"
+                  value="0"
+                  list="水平平移数据列表"
+                />
+                <span class="滑块值 水平平移值"
+                  ><span class="滑块值数字">0</span>%</span
+                >
+                <datalist class="数据列表" id="水平平移数据列表">
+                  <option value="-50" label="-50"></option>
+                  <option value="0" label="0"></option>
+                  <option value="50" label="50"></option>
+                </datalist>
+              </label>
+              <label for="垂直平移" class="标签">
+                <span class="标签标题"
+                  >垂直平移<span class="标签代码">translateY</span></span
+                >
+                <input
+                  type="range"
+                  id="垂直平移"
+                  min="-100"
+                  max="100"
+                  value="0"
+                  list="垂直平移数据列表"
+                />
+                <span class="滑块值 垂直平移值"
+                  ><span class="滑块值数字">0</span>%</span
+                >
+                <datalist class="数据列表" id="垂直平移数据列表">
+                  <option value="-50" label="-50"></option>
+                  <option value="0" label="0"></option>
+                  <option value="50" label="50"></option>
+                </datalist>
+              </label>
+            </div>
+          </div>
+          <div class="参照对象区">
+            <h2 class="参照对象标题">参照对象</h2>
+            <div class="标签区">
+              <label for="外部容器" class="标签">
+                <span class="标签标题">外部容器</span>
+                <input type="checkbox" id="外部容器" />
+              </label>
+              <label for="中间容器" class="标签">
+                <span class="标签标题">中间容器</span>
+                <input type="checkbox" id="中间容器" />
+              </label>
+              <label for="内部容器" class="标签">
+                <span class="标签标题">内部容器</span>
+                <input type="checkbox" id="内部容器" />
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   </body>
 </html>
