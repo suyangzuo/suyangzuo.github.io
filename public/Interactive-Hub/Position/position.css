@@ -19,7 +19,7 @@
   width: 50%;
   height: max(600px, calc(100% - 50px));
   position: relative;
-  --向内偏移: 22.5vh;
+  --向内偏移: max(20vh, 200px);
 }
 
 .展示分区 {
@@ -59,6 +59,19 @@
   top: 0;
   left: 50%;
   translate: -50% 0;
+}
+
+.相对定位描述 {
+  position: absolute;
+  top: 15px;
+  left: 0;
+  translate: 25px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
+  opacity: 0;
 }
 
 .绝对定位-外部容器,
@@ -102,7 +115,7 @@
 }
 
 .绝对定位-元素 {
-  height: clamp(50px, 12.5vh, 200px);
+  height: clamp(146px, 12.5vh, 200px);
   aspect-ratio: 1;
   border: solid 3px transparent;
   display: flex;
@@ -122,6 +135,7 @@
 
 .定位描述 {
   font-size: max(12px, 0.7vw);
+  font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
 }
 
 .定位描述辅助 {
@@ -140,8 +154,8 @@
 }
 
 .定位代码 {
-  font-family: "JetBrains Mono", Consolas, monospace;
   font-size: max(10px, 0.6vw);
+  font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
 }
 
 span[class$="属性"] {
@@ -349,7 +363,7 @@ span[class$="值"].辅助线数据值 {
     outline: solid 3px #fff1;
   }
   50% {
-    outline: solid 3px white;
+    outline: solid 3px aliceblue;
   }
   to {
     outline: solid 3px #fff1;

@@ -35,10 +35,24 @@ const 内部容器复选框 = 参照对象区.querySelector("#内部容器");
 const 外部容器 = document.querySelector(".绝对定位-外部容器");
 const 中间容器 = document.querySelector(".绝对定位-中间容器");
 const 内部容器 = document.querySelector(".绝对定位-内部容器");
+const 参考对象容器组 = [];
+参考对象容器组.push(外部容器);
+参考对象容器组.push(中间容器);
+参考对象容器组.push(内部容器);
+const 辅助线组 = 自身.querySelectorAll("div[class$='辅助线']");
 const 顶辅助线 = 自身.querySelector(".顶辅助线");
 const 右辅助线 = 自身.querySelector(".右辅助线");
 const 底辅助线 = 自身.querySelector(".底辅助线");
 const 左辅助线 = 自身.querySelector(".左辅助线");
+
+const 十字线 = document.getElementById("十字线");
+十字线.addEventListener("input", () => {
+  const 覆盖容器 = document.querySelector(".覆盖容器");
+  覆盖容器.style.opacity = 十字线.checked ? "1" : "0";
+});
+
+const 重置按钮 = document.querySelector(".重置按钮");
+重置按钮.addEventListener("click", 重置参数);
 
 for (const 定位距离滑块 of 绝对定位距离滑块组) {
   定位距离滑块.addEventListener("input", () => {
@@ -189,6 +203,16 @@ function 更新参照对象() {
   } else if (外部容器复选框.checked) {
     当前参照对象 = 外部容器;
   }
+
+  内部容器.querySelector(".相对定位描述").style.opacity = 内部容器复选框.checked
+    ? "1"
+    : "0";
+  中间容器.querySelector(".相对定位描述").style.opacity = 中间容器复选框.checked
+    ? "1"
+    : "0";
+  外部容器.querySelector(".相对定位描述").style.opacity = 外部容器复选框.checked
+    ? "1"
+    : "0";
 }
 
 function 更新辅助线() {
@@ -239,4 +263,78 @@ function 更新辅助线() {
     左辅助线.style.opacity = "0";
     右辅助线.style.opacity = "0";
   }
+}
+
+function 重置参数() {
+  当前参照对象 = null;
+  for (const 辅助线 of 辅助线组) {
+    辅助线.style.opacity = "0";
+  }
+
+  for (const 位置滑块 of 绝对定位距离滑块组) {
+    位置滑块.value = "0";
+    位置滑块.parentElement.querySelector(".滑块值数字").textContent =
+      位置滑块.value;
+  }
+
+  for (const 平移滑块 of 平移滑块组) {
+    平移滑块.value = "0";
+    平移滑块.parentElement.querySelector(".滑块值数字").textContent =
+      平移滑块.value;
+  }
+
+  const 静态定位复选框 = document.getElementById("静态定位");
+  静态定位复选框.checked = true;
+
+  for (const 参照对象复选框 of 参照对象复选框组) {
+    参照对象复选框.checked = false;
+  }
+
+  root.style.setProperty("--顶渐变位置", "50%");
+  root.style.setProperty("--底渐变位置", "50%");
+  root.style.setProperty("--左渐变位置", "50%");
+  root.style.setProperty("--右渐变位置", "50%");
+  root.style.setProperty("--水平平移渐变位置", "50%");
+  root.style.setProperty("--垂直平移渐变位置", "50%");
+
+  自身.style.top = "";
+  自身.style.bottom = "";
+  自身.style.left = "";
+  自身.style.right = "";
+  自身.style.translate = "";
+  自身.style.position = "";
+
+  for (const 定位启用复选框 of 绝对定位距离启用组) {
+    定位启用复选框.checked = false;
+  }
+
+  顶_已确认 = false;
+  底_已确认 = false;
+  左_已确认 = false;
+  右_已确认 = false;
+
+  for (const 参考对象容器 of 参考对象容器组) {
+    参考对象容器.style.position = "";
+  }
+
+  定位距离区.classList.add("已屏蔽");
+
+  const 覆盖容器 = document.querySelector(".覆盖容器");
+  覆盖容器.style.opacity = "1";
+
+  十字线.checked = true;
+
+  const 相对定位描述组 = 展示区.querySelectorAll(".相对定位描述");
+  for (const 相对定位描述 of 相对定位描述组) {
+    相对定位描述.style.opacity = "0";
+  }
+
+  const 定位值 = 自身.querySelector(".描述值");
+  const 描述值文本 = 定位值.querySelector(".描述值文本");
+  const 代码值 = 自身.querySelector(".代码值");
+  const 定位描述辅助 = 自身.querySelector(".定位描述辅助");
+  描述值文本.textContent = "静态";
+  代码值.textContent = "static";
+  定位描述辅助.classList.remove("屏蔽描述辅助");
+  定位描述辅助.textContent = "默认";
 }
