@@ -722,9 +722,11 @@ function 特殊元素样式补充() {
         远距标点组.some((标点) => 标点 === 修剪文本.at(-1)) ||
         前一节点.textContent.at(-1) === " "
       ) {
-        行内代码.style.marginLeft = "0";
+        // 行内代码.style.marginLeft = "0";
+        行内代码.classList.add("左外边距-无");
       } else {
-        行内代码.style.marginLeft = "0.25em";
+        // 行内代码.style.marginLeft = "0.25em";
+        行内代码.classList.add("左外边距-四分之一");
       }
     }
 

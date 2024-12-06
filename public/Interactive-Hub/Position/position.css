@@ -190,7 +190,7 @@ span[class$="值"] {
 }
 
 .顶辅助线 {
-  bottom: 100%;
+  bottom: 102%;
 }
 
 .顶辅助线::before {
@@ -210,7 +210,7 @@ span[class$="值"] {
 }
 
 .底辅助线 {
-  top: 100%;
+  top: 102%;
 }
 
 .底辅助线::before {
@@ -230,7 +230,7 @@ span[class$="值"] {
 }
 
 .左辅助线 {
-  right: 100%;
+  right: 102%;
   height: 1px;
 }
 
@@ -239,7 +239,7 @@ span[class$="值"] {
   content: "\1438";
   top: 50%;
   left: 0;
-  translate: 0 calc(-50% - 1px);
+  translate: 0 calc(-50% - 1.5px);
 }
 
 .左辅助线::after {
@@ -247,11 +247,11 @@ span[class$="值"] {
   content: "\1433";
   top: 50%;
   right: 0;
-  translate: 0 calc(-50% - 1px);
+  translate: 0 calc(-50% - 1.5px);
 }
 
 .右辅助线 {
-  left: 100%;
+  left: 102%;
   height: 1px;
 }
 
@@ -260,7 +260,7 @@ span[class$="值"] {
   content: "\1438";
   top: 50%;
   left: 0;
-  translate: 0 calc(-50% - 1px);
+  translate: 0 calc(-50% - 1.5px);
 }
 
 .右辅助线::after {
@@ -268,7 +268,7 @@ span[class$="值"] {
   content: "\1433";
   top: 50%;
   right: 0;
-  translate: 0 calc(-50% - 1px);
+  translate: 0 calc(-50% - 1.5px);
 }
 
 .水平辅助线说明,

@@ -186,7 +186,9 @@
   </article>
 
   <article class="正文分区">
-    <h2 class="分区标题 分区2级标题"><span class="行内代码">for</span>语句</h2>
+    <h2 class="分区标题 分区2级标题">
+      <span class="行内代码" style="margin-left: 0">for</span>语句
+    </h2>
 
     <h3 class="分区标题 分区3级标题">语法</h3>
     <p class="分区普通文本">
@@ -210,7 +212,7 @@
       <code class="lang-js">
         const 执行循环按钮 = document.getElementById("执行循环");
         const 可迭代元素序列 = document.querySelectorAll(".元素");
-        
+
         执行循环按钮.addEventListener("click", () => {
           for (let 索引 = 0; 索引 < 可迭代元素序列.length; 索引++) {
             /* 循环内部逻辑 */
@@ -290,7 +292,7 @@
       <code class="lang-js">
         const 执行循环按钮 = document.getElementById("执行循环");
         const 可迭代元素序列 = document.querySelectorAll(".元素");
-        
+
         执行循环按钮.addEventListener("click", () => {
           for (const 元素 of 可迭代元素序列) { /* "元素"这个名称可以自己随便起 */
             /* 循环内部逻辑 */
@@ -407,7 +409,7 @@
       <code class="lang-js">
         const 执行循环按钮 = document.getElementById("执行循环");
         const 可迭代元素序列 = document.querySelectorAll(".元素");
-        
+
         执行循环按钮.addEventListener("click", () => {
           可迭代元素序列.forEach((元素) => {
             /* 本次迭代内部逻辑 */
@@ -455,7 +457,7 @@
           const 执行循环按钮 = document.getElementById("执行循环");
           /* const 可迭代元素序列 = document.querySelectorAll(".元素"); 这句代码改成第3行 */
           const 可迭代元素序列 = document.getElementsByClassName("元素");
-          
+
           执行循环按钮.addEventListener("click", () => {
             可迭代元素序列.forEach((元素, 索引) => {
               /* 本次迭代内部逻辑 */

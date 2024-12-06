@@ -219,6 +219,7 @@ body {
 .交互单项:has(.未完成)::after {
   width: 100%;
   height: 100%;
+  border-radius: 999px;
   position: absolute;
   left: 0;
   top: 0;
@@ -239,22 +240,14 @@ body {
   visibility: visible;
   opacity: 1;
   transform: scale(1);
-  backdrop-filter: blur(2.5px);
+  backdrop-filter: blur(2px);
 }
 
 .未完成 {
-  filter: brightness(25%);
+  filter: brightness(40%);
 }
 
-/* :where(.盒子模型, .背景, .对象匹配) img {
-  filter: invert(80%);
-}
-
-:where(.盒子模型, .背景, .对象匹配):hover img {
-  filter: none;
-} */
-
-:where(.字体尺寸, .宽度与高度, .盒子阴影):hover img {
+:where(.字体, .长度, .宽度与高度, .盒子阴影, .链表):hover img {
   filter: invert(80%);
 }
 
