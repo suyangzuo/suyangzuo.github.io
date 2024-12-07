@@ -22,6 +22,7 @@ let 右_已确认 = 右距离启用复选框.checked;
 let 底_已确认 = 底距离启用复选框.checked;
 let 左_已确认 = 左距离启用复选框.checked;
 const 自身 = document.querySelector(".绝对定位-元素");
+const 自身平移 = 自身.querySelector(".平移效果元素");
 
 const 平移区 = document.querySelector(".平移区");
 const 平移滑块组 = 平移区.querySelectorAll("input[type='range']");
@@ -165,7 +166,27 @@ for (const 平移滑块 of 平移滑块组) {
     root.style.setProperty(`--${平移滑块.id}渐变位置`, 渐变位置百分比);
     const 滑块值数字 = 平移滑块.parentElement.querySelector(".滑块值数字");
     滑块值数字.textContent = 平移滑块.value;
-    自身.style.translate = `${水平平移滑块.value}% ${垂直平移滑块.value}%`;
+    // 自身.style.translate = `${水平平移滑块.value}% ${垂直平移滑块.value}%`;
+    自身平移.style.translate = `${水平平移滑块.value}% ${垂直平移滑块.value}%`;
+    if (水平平移滑块.value === "0" && 垂直平移滑块.value === "0") {
+      root.style.setProperty("--自身遮罩透明度", "0%");
+      自身平移.style.opacity = "0";
+    } else {
+      root.style.setProperty("--自身遮罩透明度", "100%");
+      自身平移.style.opacity = "1";
+      const 水平平移值_描述 = 自身平移
+        .querySelector(".水平平移描述")
+        .querySelector(".平移值");
+      const 垂直平移值_描述 = 自身平移
+        .querySelector(".垂直平移描述")
+        .querySelector(".平移值");
+      const 水平平移值_代码 = 自身平移.querySelector(".水平平移值");
+      const 垂直平移值_代码 = 自身平移.querySelector(".垂直平移值");
+      水平平移值_描述.textContent = 水平平移滑块.value;
+      水平平移值_代码.textContent = 水平平移滑块.value;
+      垂直平移值_描述.textContent = 垂直平移滑块.value;
+      垂直平移值_代码.textContent = 垂直平移滑块.value;
+    }
   });
 }
 
@@ -337,4 +358,8 @@ function 重置参数() {
   代码值.textContent = "static";
   定位描述辅助.classList.remove("屏蔽描述辅助");
   定位描述辅助.textContent = "默认";
+
+  自身平移.style.translate = "0 0";
+  自身平移.style.opacity = "0";
+  root.style.setProperty("--自身遮罩透明度", "0%");
 }
