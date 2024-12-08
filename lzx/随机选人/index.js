@@ -24,26 +24,26 @@ const 候选人物 = [
         }
 
         function startRandomizing() {
-            if (!intervalId) { // 检查是否已经在运行
+            if (!intervalId) { 
                 intervalId = setInterval(选人, 100);
-                document.getElementById("stop-button").textContent = "停止抽人"; // 更新按钮文本
+                document.getElementById("stop-button").textContent = "停止抽人"; 
             }
         }
 
         function stopRandomizing() {
             clearInterval(intervalId);
-            intervalId = null; // 重置 intervalId
-            document.getElementById("stop-button").textContent = "开始抽人"; // 更新按钮文本
+            intervalId = null; 
+            document.getElementById("stop-button").textContent = "开始抽人"; 
         }
 
-        // 添加按钮点击事件
+        
         document.getElementById("stop-button").addEventListener("click", function() {
             if (intervalId) {
-                stopRandomizing(); // 如果正在运行，则停止
+                stopRandomizing(); 
             } else {
-                startRandomizing(); // 如果没有运行，则开始
+                startRandomizing(); 
             }
         });
 
-        // 启动随机抽人
+    
         startRandomizing();
