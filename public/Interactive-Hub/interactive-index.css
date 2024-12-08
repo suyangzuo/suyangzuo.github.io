@@ -247,7 +247,7 @@ body {
   filter: brightness(40%);
 }
 
-:where(.字体, .长度, .宽度与高度, .盒子阴影, .链表):hover img {
+:where(.字体, .长度, .宽度与高度, .盒子阴影, .队列, .链表, .二叉树):hover img {
   filter: invert(80%);
 }
 
