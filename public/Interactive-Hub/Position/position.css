@@ -9,6 +9,7 @@
   --水平平移渐变位置: 50%;
   --垂直平移渐变位置: 50%;
   --渐变填充色: lightseagreen;
+  --自身遮罩透明度: 0%;
 }
 
 /*.总区 {
@@ -111,13 +112,13 @@
 .占位元素 {
   width: 100%;
   height: 100%;
-  background: center/cover url("/Images/Background-Images/bg-11.png");
+  background: center/cover url("/Images/Background-Images/夜色下的天空.jpg");
 }
 
 .绝对定位-元素 {
-  height: clamp(146px, 12.5vh, 200px);
+  height: clamp(182px, 13.5vh, 250px);
   aspect-ratio: 1;
-  border: solid 3px transparent;
+  box-shadow: inset 0 0 0 3px transparent;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -131,6 +132,63 @@
   transition:
     background-color 125ms,
     border 125ms;
+}
+
+.绝对定位-元素::after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: #0008;
+  opacity: var(--自身遮罩透明度);
+  pointer-events: none;
+  transition: 250ms;
+}
+
+.平移效果元素 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  translate: 0 0;
+  border: solid 3px lightseagreen;
+  background-color: #d8e6ff30;
+  pointer-events: none;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  z-index: 1;
+  font-size: max(12px, 0.7vw);
+}
+
+.平移值,
+.平移单位,
+.平移属性,
+.水平平移值,
+.垂直平移值 {
+  font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
+}
+
+.平移描述 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.平移值与单位 {
+  width: 51px;
+}
+
+.平移代码 {
+  font-size: 0.8em;
+}
+
+.平移单位 {
+  color: lightskyblue;
 }
 
 .定位描述 {
@@ -349,7 +407,7 @@ span[class$="值"].辅助线数据值 {
 
 .定位总区:has(.自身定位区:hover) .绝对定位-元素,
 .定位总区:has(.平移区:hover) .绝对定位-元素 {
-  border: solid 3px lightcyan;
+  box-shadow: inset 0 0 0 3px lightcyan;
 }
 
 .定位总区:has(label[for="外部容器"]:hover) .绝对定位-外部容器,
@@ -379,7 +437,7 @@ span[class$="值"].辅助线数据值 {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 50px;
+  gap: 25px;
 }
 
 .标签 {
