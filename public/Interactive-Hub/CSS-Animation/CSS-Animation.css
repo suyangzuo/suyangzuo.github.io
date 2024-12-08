@@ -1,6 +1,248 @@
 :root {
-  --进度条颜色-已填充: rgb(41, 126, 78);
-  --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
+  --输入元素宽度: 250px;
   --拇指宽度: 16px;
+  --球直径: 20px;
+  --动画延迟: 0;
+  --动画方向: alternate;
+  --动画持续时间: 5s;
+  --动画填充模式: none;
+  --动画迭代计数: infinite;
+  --动画名称: 球动画;
+  --动画播放状态: running;
+  --动画时间函数: linear;
+  --动画持续时间渐变位置: 25%;
+  --动画延迟渐变位置: 0%;
 }
 
+.CSS动画总区 {
+  min-height: 600px;
+  padding: 130px 5vh 1.5vh;
+  display: grid;
+  grid-template-columns: repeat(20, minmax(50px, 1fr));
+  grid-template-rows: repeat(20, minmax(3vh, 1fr));
+  gap: 10px;
+  background: #111;
+}
+
+.分区 {
+  width: 100%;
+  height: 100%;
+}
+
+.动画区 {
+  position: relative;
+  display: flex;
+  grid-area: 1 / 1 / 12 / 11;
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.调用区 {
+  grid-area: 1 / 11 / 15 / -1;
+  box-shadow: inset 0 0 0 2px #fff2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2vh;
+  padding: 20px 10px;
+}
+
+.定义区 {
+  grid-area: 12 / 1 / -1 / 11;
+  box-shadow: inset 0 0 0 2px #dfe1;
+}
+
+.代码区 {
+  grid-area: 15 / 11 / -1 / -1;
+  box-shadow: inset 0 0 0 2px #def2;
+}
+
+.球 {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background-color: #aaa;
+  top: 0;
+  left: 0;
+  animation: var(--动画名称) var(--动画持续时间) var(--动画时间函数)
+    var(--动画迭代计数) var(--动画方向);
+}
+
+@keyframes 球动画 {
+  from {
+    top: 0;
+    left: 0;
+  }
+  20% {
+    top: calc(100% - var(--球直径));
+    left: calc((100% - var(--球直径)) / 5);
+  }
+  40% {
+    top: 0;
+    left: calc((100% - var(--球直径)) / 5 * 2);
+  }
+  60% {
+    top: calc(100% - var(--球直径));
+    left: calc((100% - var(--球直径)) / 5 * 3);
+  }
+  80% {
+    top: 0;
+    left: calc((100% - var(--球直径)) / 5 * 4);
+  }
+  to {
+    top: calc(100% - var(--球直径));
+    left: calc(100% - var(--球直径));
+  }
+}
+
+.区标题 {
+  text-align: center;
+  width: fit-content;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-image: linear-gradient(silver 40%, gray 100%);
+  color: black;
+  box-shadow: inset 0 0 2px 1px #fffa;
+}
+
+.参数区 {
+  width: max(510px, 90%);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.参数标签 {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.参数标题 {
+  width: 225px;
+  color: #cde;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
+}
+
+.参数代码 {
+  color: #89a;
+}
+
+input[type="text"] {
+  width: calc(var(--输入元素宽度) + 45px);
+  height: 40px;
+  padding: 0 8px;
+  border-radius: 5px;
+  background-color: #444;
+  font-size: 1.075em;
+  color: white;
+  border: none;
+  transition: 125ms;
+}
+
+input[type="text"]::placeholder {
+  color: #def3;
+}
+
+input[type="text"]:hover {
+  outline: solid 2px #def5;
+  background-color: #333;
+}
+
+input[type="text"]:focus {
+  outline: solid 2px #defa;
+  background-color: #222;
+}
+
+#动画持续时间 {
+  appearance: none;
+  width: var(--输入元素宽度);
+  height: 10px;
+  border-radius: 999px;
+  background-image: linear-gradient(
+    90deg,
+    #999 var(--动画持续时间渐变位置),
+    #2a2a2a var(--动画持续时间渐变位置)
+  );
+}
+
+#动画延迟 {
+  appearance: none;
+  width: var(--输入元素宽度);
+  height: 10px;
+  border-radius: 999px;
+  background-image: linear-gradient(
+    90deg,
+    #999 var(--动画延迟渐变位置),
+    #2a2a2a var(--动画延迟渐变位置)
+  );
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background-color: #999;
+}
+
+input[type="radio"] {
+  appearance: none;
+}
+
+.参数值 {
+  display: flex;
+  align-items: center;
+}
+
+.参数值数字 {
+  font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
+  color: goldenrod;
+}
+
+.参数值单位 {
+  margin-left: 5px;
+  color: lightskyblue;
+}
+
+.单选容器 {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.单选容器 > input[type="radio"] {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+input[type="radio"]:hover,
+input[type="range"]:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.单选容器:has(input[type="radio"]:hover) .参数标签 {
+  background-color: #4a4a4a;
+}
+
+.单选容器:has(input[type="radio"]:checked) > .参数标签 {
+  background: linear-gradient(silver 40%, gray 100%);
+  color: black;
+}
+
+.单选容器 .参数标签 {
+  text-align: center;
+  pointer-events: none;
+  padding: 7px 15px;
+  background-color: #222;
+}
+
+.单选容器组 {
+  display: flex;
+}

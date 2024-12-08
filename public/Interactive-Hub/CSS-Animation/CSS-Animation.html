@@ -4,10 +4,10 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>网格布局</title>
+    <title>CSS 动画</title>
     <link
       rel="icon"
-      href="/Images/Interactive-Hub/HQ/网格布局.png"
+      href="/Images/Interactive-Hub/HQ/CSS动画.png"
       type="image/x-icon"
     />
     <link rel="stylesheet" href="/Styles/common.css" />
@@ -32,15 +32,120 @@
     ></script>
     <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
 
-    <section class="网格布局总区 总区">
+    <section class="CSS动画总区 总区">
       <script
         src="../../Scripts/html-include.js"
         target="../control.html"
         position="afterbegin"
       ></script>
       <p class="交互标题">CSS 动画</p>
-      <figure class="展示区"></figure>
-      <div class="控制区"></div>
+      <div class="动画区 分区">
+        <div class="球"></div>
+      </div>
+      <div class="调用区 分区">
+        <h3 class="调用标题 区标题">设置动画属性</h3>
+        <div class="参数区">
+          <label class="参数标签" for="动画名称">
+            <span class="参数标题">
+              <span class="参数中文">动画名称</span>
+              <span class="参数代码">animation-name</span>
+            </span>
+            <input type="text" id="动画名称" placeholder="输入动画名称" />
+          </label>
+        </div>
+        <div class="参数区">
+          <label class="参数标签" for="动画持续时间">
+            <span class="参数标题"
+              ><span class="参数中文">动画持续时间</span>
+              <span class="参数代码">animation-duration</span></span
+            >
+            <input type="range" id="动画持续时间" min="1" max="20" value="5" />
+            <span class="参数值">
+              <span class="参数值数字">5</span>
+              <span class="参数值单位">秒</span>
+            </span>
+          </label>
+        </div>
+        <div class="参数区">
+          <span class="参数标题"
+            ><span class="参数中文">动画时间函数</span>
+            <span class="参数代码">animation-timing-function</span></span
+          >
+          <div class="单选容器组">
+            <span class="单选容器">
+              <input
+                type="radio"
+                id="动画时间函数-缓动"
+                name="动画时间函数"
+                parameter="ease"
+                checked
+              />
+              <label class="参数标签 时间函数标签" for="动画时间函数-缓动">
+                缓动
+              </label>
+            </span>
+            <span class="单选容器">
+              <input
+                type="radio"
+                id="动画时间函数-线性"
+                name="动画时间函数"
+                parameter="linear"
+              />
+              <label class="参数标签 时间函数标签" for="动画时间函数-线性">
+                线性
+              </label>
+            </span>
+            <span class="单选容器">
+              <input
+                type="radio"
+                id="动画时间函数-缓进缓出"
+                name="动画时间函数"
+                parameter="ease-in-out"
+              />
+              <label class="参数标签 时间函数标签" for="动画时间函数-缓进缓出">
+                缓进缓出
+              </label>
+            </span>
+            <span class="单选容器">
+              <input
+                type="radio"
+                id="动画时间函数-缓进"
+                name="动画时间函数"
+                parameter="ease-in"
+              />
+              <label class="参数标签 时间函数标签" for="动画时间函数-缓进">
+                缓进
+              </label>
+            </span>
+            <span class="单选容器">
+              <input
+                type="radio"
+                id="动画时间函数-缓出"
+                name="动画时间函数"
+                parameter="ease-out"
+              />
+              <label class="参数标签 时间函数标签" for="动画时间函数-缓出">
+                缓出
+              </label>
+            </span>
+          </div>
+        </div>
+        <div class="参数区">
+          <label class="参数标签" for="动画延迟">
+            <span class="参数标题"
+              ><span class="参数中文">动画延迟</span>
+              <span class="参数代码">animation-delay</span></span
+            >
+            <input type="range" id="动画延迟" min="0" max="5" value="0" />
+            <span class="参数值">
+              <span class="参数值数字">0</span>
+              <span class="参数值单位">秒</span>
+            </span>
+          </label>
+        </div>
+      </div>
+      <div class="定义区 分区"></div>
+      <div class="代码区 分区"></div>
     </section>
   </body>
 </html>
