@@ -1,6 +1,400 @@
 :root {
-  --进度条颜色-已填充: rgb(41, 126, 78);
-  --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
+  --输入元素宽度: 250px;
   --拇指宽度: 16px;
+  --球直径: 20px;
+  --动画延迟: 0s;
+  --动画方向: normal;
+  --动画持续时间: 5s;
+  --动画填充模式: none;
+  --动画迭代计数: 1;
+  --动画名称: 小球动画;
+  --动画播放状态: running;
+  --动画时间函数: ease;
+  --动画持续时间渐变位置: 25%;
+  --动画延迟渐变位置: 0%;
+  --动画迭代计数渐变位置: 0%;
+  --动画迭代计数渐变色: #999;
 }
 
+.CSS动画总区 {
+  min-height: 600px;
+  padding: 120px 5vh 1.5vh;
+  display: grid;
+  grid-template-columns: repeat(20, minmax(50px, 1fr));
+  grid-template-rows: repeat(20, minmax(3vh, 1fr));
+  gap: 10px;
+  background: #111;
+}
+
+.分区 {
+  width: 100%;
+  height: 100%;
+}
+
+.动画区 {
+  position: relative;
+  display: flex;
+  grid-area: 1 / 1 / 12 / 12;
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.调用区 {
+  grid-area: 1 / 12 / 15 / -1;
+  box-shadow: inset 0 0 0 2px #fff2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2vh;
+  padding: 20px 10px;
+  min-width: 720px;
+}
+
+.定义区 {
+  grid-area: 12 / 1 / -1 / 12;
+  box-shadow: inset 0 0 0 2px #dfe1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 10px;
+}
+
+.代码区 {
+  grid-area: 15 / 12 / -1 / -1;
+  box-shadow: inset 0 0 0 2px #def2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2vh;
+  padding: 20px 10px;
+}
+
+.球 {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background-color: #aaa;
+  top: 0;
+  left: 0;
+}
+
+.球.球动画 {
+  animation: var(--动画名称) var(--动画持续时间) var(--动画时间函数)
+    var(--动画延迟) var(--动画迭代计数) var(--动画方向) var(--动画填充模式);
+  animation-play-state: var(--动画播放状态);
+}
+
+@keyframes 小球动画 {
+  from {
+    top: 0;
+    left: 0;
+  }
+  20% {
+    top: calc(100% - var(--球直径));
+    left: calc((100% - var(--球直径)) / 5);
+  }
+  40% {
+    top: 0;
+    left: calc((100% - var(--球直径)) / 5 * 2);
+  }
+  60% {
+    top: calc(100% - var(--球直径));
+    left: calc((100% - var(--球直径)) / 5 * 3);
+  }
+  80% {
+    top: 0;
+    left: calc((100% - var(--球直径)) / 5 * 4);
+  }
+  to {
+    top: calc(100% - var(--球直径));
+    left: calc(100% - var(--球直径));
+  }
+}
+
+#刷新动画 {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  background-color: #fff2;
+  color: #ccc;
+  transition: 75ms;
+}
+
+#刷新动画:hover {
+  background-color: #ffffff2a;
+}
+
+#刷新动画:active {
+  background-color: #fff3;
+}
+
+.区标题 {
+  text-align: center;
+  width: fit-content;
+  padding: 0.75vh 1vh;
+  border-radius: 5px;
+  background-image: linear-gradient(silver 40%, gray 100%);
+  color: black;
+  box-shadow: inset 0 0 2px 1px #fffa;
+  font-weight: 550;
+  font-size: max(12px, 1.35vh);
+}
+
+.参数区 {
+  width: min(700px, 100%);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-radius: 10px;
+  font-size: max(10px, 1.2vh);
+}
+
+.参数区:hover .参数标题 {
+  color: #def;
+}
+
+.参数标签 {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
+}
+
+.参数标题 {
+  width: 225px;
+  color: #cde;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
+}
+
+.参数代码 {
+  color: #678;
+}
+
+input[type="text"] {
+  width: calc(var(--输入元素宽度) + 45px);
+  height: 40px;
+  padding: 0 8px;
+  border-radius: 5px;
+  background-color: #444;
+  font-size: 1.075em;
+  color: white;
+  border: none;
+  transition: 125ms;
+}
+
+input[type="text"]::placeholder {
+  color: #def3;
+}
+
+input[type="text"]:hover {
+  outline: solid 2px #def5;
+  background-color: #333;
+}
+
+input[type="text"]:focus {
+  outline: solid 2px #defa;
+  background-color: #222;
+}
+
+#动画持续时间 {
+  background-image: linear-gradient(
+    90deg,
+    #999 var(--动画持续时间渐变位置),
+    #2a2a2a var(--动画持续时间渐变位置)
+  );
+}
+
+#动画延迟 {
+  background-image: linear-gradient(
+    90deg,
+    #999 var(--动画延迟渐变位置),
+    #2a2a2a var(--动画延迟渐变位置)
+  );
+}
+
+#动画迭代计数 {
+  background-image: linear-gradient(
+    90deg,
+    var(--动画迭代计数渐变色) var(--动画迭代计数渐变位置),
+    #2a2a2a var(--动画迭代计数渐变位置)
+  );
+}
+
+input[type="range"] {
+  appearance: none;
+  width: var(--输入元素宽度);
+  height: 10px;
+  border-radius: 999px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background-color: #999;
+}
+
+input[type="range"]::-moz-range-thumb {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background-color: #999;
+}
+
+input[type="radio"] {
+  appearance: none;
+}
+
+input[type="radio"]:focus {
+  outline: none;
+}
+
+#动画迭代计数-无限 + .参数标签 {
+  border-radius: 5px;
+}
+
+.参数值 {
+  width: 50px;
+  display: flex;
+  align-items: center;
+}
+
+.参数值数字 {
+  font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
+  color: goldenrod;
+}
+
+.参数值单位 {
+  margin-left: 5px;
+  color: lightskyblue;
+  translate: 0 -0.1em;
+}
+
+.单选容器组 {
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.单选容器 {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.单选容器 > input[type="radio"] {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+input[type="radio"]:hover,
+input[type="range"]:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.单选容器:has(input[type="radio"]:hover) .参数标签 {
+  background-color: #4a4a4a;
+}
+
+.单选容器:has(input[type="radio"]:checked) > .参数标签 {
+  background: linear-gradient(silver 40%, gray 100%);
+  color: black;
+}
+
+.单选容器 .参数标签 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  text-align: center;
+  pointer-events: none;
+  padding: 5px 15px;
+  background-color: #222;
+}
+
+.属性值中文 {
+  width: 100%;
+  height: 50%;
+}
+
+.单选容器组 {
+  display: flex;
+}
+
+.无效 {
+  opacity: 25%;
+}
+
+*[class*="代码"] {
+  font-size: 0.85em;
+}
+
+.单选容器 *[class*="代码"] {
+  color: #9ba;
+}
+
+.单选容器:has(input[type="radio"]:checked) *[class*="代码"] {
+  color: #021;
+}
+
+.速写代码区 {
+  font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
+  display: flex;
+  flex-wrap: wrap;
+  width: min(750px, 95%);
+  font-size: max(10px, 1.15vh);
+}
+
+.速写代码区 > span:not(.速写动画填充模式) {
+  margin-right: 1em;
+}
+
+.速写标题 {
+  color: goldenrod;
+}
+
+.速写动画名称 {
+  translate: 0 -0.1em;
+}
+
+.速写动画持续时间 {
+  color: lightsteelblue;
+}
+
+.速写动画时间函数 {
+  color: lightsalmon;
+}
+
+.速写动画延迟 {
+  color: #90c6f8;
+}
+
+.速写动画迭代计数 {
+  color: lightpink;
+}
+
+.速写动画方向 {
+  color: lightgreen;
+}
+
+.速写动画填充模式 {
+  color: lightseagreen;
+}
+
+.速写动画填充模式 .速写结尾分号 {
+  color: gray;
+}
+
+.速写动画填充模式 span[class*="代码"] {
+  font-size: 1em;
+}
