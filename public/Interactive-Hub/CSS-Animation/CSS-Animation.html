@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CSS 动画</title>
     <link
+      href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Titillium+Web&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Roboto+Mono&family=M+PLUS+Code+Latin&family=Ubuntu+Mono&family=M+PLUS+1+Code:wght@100..700&display=swap"
+      rel="stylesheet"
+    />
+    <link
       rel="icon"
       href="/Images/Interactive-Hub/HQ/CSS动画.png"
       type="image/x-icon"
@@ -40,7 +44,8 @@
       ></script>
       <p class="交互标题">CSS 动画</p>
       <div class="动画区 分区">
-        <div class="球"></div>
+        <div class="球 球动画"></div>
+        <button id="刷新动画" type="button">刷新动画</button>
       </div>
       <div class="调用区 分区">
         <h3 class="调用标题 区标题">设置动画属性</h3>
@@ -50,7 +55,12 @@
               <span class="参数中文">动画名称</span>
               <span class="参数代码">animation-name</span>
             </span>
-            <input type="text" id="动画名称" placeholder="输入动画名称" />
+            <input
+              type="text"
+              id="动画名称"
+              placeholder="输入动画名称"
+              value="小球动画"
+            />
           </label>
         </div>
         <div class="参数区">
@@ -81,7 +91,8 @@
                 checked
               />
               <label class="参数标签 时间函数标签" for="动画时间函数-缓动">
-                缓动
+                <span class="属性值中文">缓动</span>
+                <span class="属性值代码">ease</span>
               </label>
             </span>
             <span class="单选容器">
@@ -92,7 +103,8 @@
                 parameter="linear"
               />
               <label class="参数标签 时间函数标签" for="动画时间函数-线性">
-                线性
+                <span class="属性值中文">线性</span>
+                <span class="属性值代码">linear</span>
               </label>
             </span>
             <span class="单选容器">
@@ -103,7 +115,8 @@
                 parameter="ease-in-out"
               />
               <label class="参数标签 时间函数标签" for="动画时间函数-缓进缓出">
-                缓进缓出
+                <span class="属性值中文">缓进缓出</span>
+                <span class="属性值代码">ease-in-out</span>
               </label>
             </span>
             <span class="单选容器">
@@ -114,7 +127,8 @@
                 parameter="ease-in"
               />
               <label class="参数标签 时间函数标签" for="动画时间函数-缓进">
-                缓进
+                <span class="属性值中文">缓进</span>
+                <span class="属性值代码">ease-in</span>
               </label>
             </span>
             <span class="单选容器">
@@ -125,7 +139,8 @@
                 parameter="ease-out"
               />
               <label class="参数标签 时间函数标签" for="动画时间函数-缓出">
-                缓出
+                <span class="属性值中文">缓出</span>
+                <span class="属性值代码">ease-out</span>
               </label>
             </span>
           </div>
@@ -143,9 +158,205 @@
             </span>
           </label>
         </div>
+        <div class="参数区">
+          <label class="参数标签" for="动画迭代计数">
+            <span class="参数标题"
+              ><span class="参数中文">动画迭代计数</span>
+              <span class="参数代码">animation-iteration-count</span></span
+            >
+            <input
+              type="range"
+              id="动画迭代计数"
+              min="1"
+              max="10"
+              value="1"
+              name="动画迭代计数"
+            />
+            <span class="参数值">
+              <span class="参数值数字">1</span>
+              <span class="参数值单位">次</span>
+            </span>
+          </label>
+          <span class="单选容器">
+            <input
+              type="radio"
+              id="动画迭代计数-无限"
+              name="动画迭代计数"
+              parameter="infinite"
+            />
+            <label class="参数标签 时间函数标签" for="动画迭代计数-无限">
+              <span class="属性值中文">无限</span>
+              <span class="属性值代码">infinite</span>
+            </label>
+          </span>
+        </div>
+        <div class="参数区">
+          <span class="参数标题"
+            ><span class="参数中文">动画方向</span>
+            <span class="参数代码">animation-direction</span></span
+          >
+          <div class="单选容器组">
+            <span class="单选容器">
+              <input
+                type="radio"
+                id="动画方向-正常"
+                name="动画方向"
+                parameter="normal"
+                checked
+              />
+              <label class="参数标签 时间函数标签" for="动画方向-正常">
+                <span class="属性值中文">正常</span>
+                <span class="属性值代码">normal</span>
+              </label>
+            </span>
+            <span class="单选容器">
+              <input
+                type="radio"
+                id="动画方向-反向"
+                name="动画方向"
+                parameter="reverse"
+              />
+              <label class="参数标签 时间函数标签" for="动画方向-反向">
+                <span class="属性值中文">反向</span>
+                <span class="属性值代码">reverse</span>
+              </label>
+            </span>
+            <span class="单选容器">
+              <input
+                type="radio"
+                id="动画方向-交替"
+                name="动画方向"
+                parameter="alternate"
+              />
+              <label class="参数标签 时间函数标签" for="动画方向-交替">
+                <span class="属性值中文">交替</span>
+                <span class="属性值代码">alternate</span>
+              </label>
+            </span>
+            <span class="单选容器">
+              <input
+                type="radio"
+                id="动画方向-反向交替"
+                name="动画方向"
+                parameter="alternate-reverse"
+              />
+              <label class="参数标签 时间函数标签" for="动画方向-反向交替">
+                <span class="属性值中文">反向交替</span>
+                <span class="属性值代码">alternate-reverse</span>
+              </label>
+            </span>
+          </div>
+        </div>
+        <div class="参数区">
+          <span class="参数标题"
+            ><span class="参数中文">动画填充模式</span>
+            <span class="参数代码">animation-fill-mode</span></span
+          >
+          <div class="单选容器组">
+            <span class="单选容器">
+              <input
+                type="radio"
+                id="动画填充模式-无"
+                name="动画填充模式"
+                parameter="none"
+                checked
+              />
+              <label class="参数标签 时间函数标签" for="动画填充模式-无">
+                <span class="属性值中文">无</span>
+                <span class="属性值代码">none</span>
+              </label>
+            </span>
+            <span class="单选容器">
+              <input
+                type="radio"
+                id="动画填充模式-向前"
+                name="动画填充模式"
+                parameter="forwards"
+              />
+              <label class="参数标签 时间函数标签" for="动画填充模式-向前">
+                <span class="属性值中文">向前</span>
+                <span class="属性值代码">forwards</span>
+              </label>
+            </span>
+            <span class="单选容器">
+              <input
+                type="radio"
+                id="动画填充模式-向后"
+                name="动画填充模式"
+                parameter="backwards"
+              />
+              <label class="参数标签 时间函数标签" for="动画填充模式-向后">
+                <span class="属性值中文">向后</span>
+                <span class="属性值代码">backwards</span>
+              </label>
+            </span>
+            <span class="单选容器">
+              <input
+                type="radio"
+                id="动画填充模式-双向"
+                name="动画填充模式"
+                parameter="both"
+              />
+              <label class="参数标签 时间函数标签" for="动画填充模式-双向">
+                <span class="属性值中文">双向</span>
+                <span class="属性值代码">both</span>
+              </label>
+            </span>
+          </div>
+        </div>
+        <div class="参数区">
+          <span class="参数标题"
+            ><span class="参数中文">动画播放状态</span>
+            <span class="参数代码">animation-play-state</span></span
+          >
+          <div class="单选容器组">
+            <span class="单选容器">
+              <input
+                type="radio"
+                id="动画播放状态-运行中"
+                name="动画播放状态"
+                parameter="running"
+                checked
+              />
+              <label class="参数标签 时间函数标签" for="动画播放状态-运行中">
+                <span class="属性值中文">运行中</span>
+                <span class="属性值代码">running</span>
+              </label>
+            </span>
+            <span class="单选容器">
+              <input
+                type="radio"
+                id="动画播放状态-已暂停"
+                name="动画播放状态"
+                parameter="paused"
+              />
+              <label class="参数标签 时间函数标签" for="动画播放状态-已暂停">
+                <span class="属性值中文">已暂停</span>
+                <span class="属性值代码">paused</span>
+              </label>
+            </span>
+          </div>
+        </div>
       </div>
-      <div class="定义区 分区"></div>
-      <div class="代码区 分区"></div>
+      <div class="定义区 分区">
+        <h3 class="调用标题 区标题">定义关键帧</h3>
+      </div>
+      <div class="代码区 分区">
+        <h3 class="调用标题 区标题">速写法</h3>
+        <div class="速写代码区">
+          <span class="速写标题">animation: </span>
+          <span class="速写动画名称">小球动画</span>
+          <span class="速写动画持续时间">5s</span>
+          <span class="速写动画时间函数">ease</span>
+          <span class="速写动画延迟">0s</span>
+          <span class="速写动画迭代计数">1</span>
+          <span class="速写动画方向">normal</span>
+          <span class="速写动画填充模式"
+            ><span class="填充模式代码">none</span
+            ><span class="速写结尾分号">;</span></span
+          >
+        </div>
+      </div>
     </section>
   </body>
 </html>

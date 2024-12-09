@@ -1,17 +1,30 @@
 const root = document.querySelector(":root");
-const 动画持续时间滑块 = document.querySelector("#动画持续时间");
-const 动画延迟滑块 = document.querySelector("#动画延迟");
+const rootStyle = window.getComputedStyle(root);
+const 动画名称初始值 = rootStyle.getPropertyValue("--动画名称");
+const 动画区 = document.querySelector(".动画区");
 const 调用区 = document.querySelector(".调用区");
 const 调用区滑块组 = 调用区.querySelectorAll("input[type='range']");
+const 动画名称文本框 = 调用区.querySelector("#动画名称");
+const 动画持续时间滑块 = 调用区.querySelector("#动画持续时间");
+const 动画时间函数单选框组 = 调用区.querySelectorAll(
+  "input[name='动画时间函数']",
+);
+const 动画延迟滑块 = 调用区.querySelector("#动画延迟");
+const 无限动画迭代单选框 = 调用区.querySelector("#动画迭代计数-无限");
+const 动画迭代计数滑块 = 调用区.querySelector("#动画迭代计数");
+const 动画方向单选框组 = 调用区.querySelectorAll("input[name='动画方向']");
+const 动画填充模式单选框组 = 调用区.querySelectorAll(
+  "input[name='动画填充模式']",
+);
+const 动画播放状态单选框组 = 调用区.querySelectorAll(
+  "input[name='动画播放状态']",
+);
 
-const 动画属性组 = {
-  "animation-duration": "5s",
-  "animation-delay": "0",
-};
+const 代码区 = document.querySelector(".代码区");
+const 速写代码区 = 代码区.querySelector(".速写代码区");
 
 for (const 调用区滑块 of 调用区滑块组) {
   调用区滑块.addEventListener("input", () => {
-    动画属性组[调用区滑块.getAttribute("parameter")] = `${调用区滑块}s`;
     const 滑块值 = parseInt(调用区滑块.value, 10);
     const 滑块百分比 =
       ((调用区滑块.value - 调用区滑块.min) /
@@ -22,4 +35,104 @@ for (const 调用区滑块 of 调用区滑块组) {
       调用区滑块.nextElementSibling.querySelector(".参数值数字");
     参数值数字.textContent = 调用区滑块.value;
   });
+}
+
+动画名称文本框.addEventListener("input", () => {
+  root.style.setProperty(
+    "--动画名称",
+    动画名称文本框.value.trim() === ""
+      ? 动画名称初始值
+      : 动画名称文本框.value.trim(),
+  );
+
+  const 速写动画名称 = 速写代码区.querySelector(".速写动画名称");
+  速写动画名称.textContent = 动画名称文本框.value.trim();
+});
+
+动画持续时间滑块.addEventListener("input", () => {
+  root.style.setProperty("--动画持续时间", `${动画持续时间滑块.value}s`);
+
+  const 速写动画持续时间 = 速写代码区.querySelector(".速写动画持续时间");
+  速写动画持续时间.textContent = `${动画持续时间滑块.value}s`;
+});
+
+动画时间函数单选框组.forEach((单选框) => {
+  单选框.addEventListener("change", () => {
+    root.style.setProperty(`--动画时间函数`, 单选框.getAttribute("parameter"));
+    const 速写动画时间函数 = 速写代码区.querySelector(".速写动画时间函数");
+    速写动画时间函数.textContent = 单选框.getAttribute("parameter");
+  });
+});
+
+动画迭代计数滑块.addEventListener("input", () => {
+  无限动画迭代单选框.checked = false;
+  动画迭代计数滑块.classList.remove("无效");
+  const 参数值 = 动画迭代计数滑块.nextElementSibling;
+  参数值.classList.remove("无效");
+  root.style.setProperty("--动画迭代计数", 动画迭代计数滑块.value);
+
+  const 速写动画迭代计数 = 速写代码区.querySelector(".速写动画迭代计数");
+  速写动画迭代计数.textContent = 无限动画迭代单选框.checked
+    ? "infinite"
+    : 动画迭代计数滑块.value;
+});
+
+无限动画迭代单选框.addEventListener("change", () => {
+  root.style.setProperty(
+    "--动画迭代计数",
+    无限动画迭代单选框.checked ? "infinite" : 动画迭代计数滑块.value,
+  );
+
+  const 速写动画迭代计数 = 速写代码区.querySelector(".速写动画迭代计数");
+  速写动画迭代计数.textContent = 无限动画迭代单选框.checked
+    ? "infinite"
+    : 动画迭代计数滑块.value;
+
+  if (无限动画迭代单选框.checked) {
+    动画迭代计数滑块.classList.add("无效");
+    const 参数值 = 动画迭代计数滑块.nextElementSibling;
+    参数值.classList.add("无效");
+  }
+});
+
+动画延迟滑块.addEventListener("input", () => {
+  root.style.setProperty("--动画延迟", `${动画延迟滑块.value}s`);
+
+  const 速写动画延迟 = 速写代码区.querySelector(".速写动画延迟");
+  速写动画延迟.textContent = `${动画延迟滑块.value}s`;
+});
+
+动画方向单选框组.forEach((单选框) => {
+  单选框.addEventListener("change", () => {
+    root.style.setProperty("--动画方向", 单选框.getAttribute("parameter"));
+
+    const 速写动画方向 = 速写代码区.querySelector(".速写动画方向");
+    速写动画方向.textContent = 单选框.getAttribute("parameter");
+  });
+});
+
+动画填充模式单选框组.forEach((单选框) => {
+  单选框.addEventListener("change", () => {
+    root.style.setProperty("--动画填充模式", 单选框.getAttribute("parameter"));
+
+    const 速写动画填充模式 = 速写代码区.querySelector(".速写动画填充模式");
+    const 填充模式代码 = 速写动画填充模式.querySelector(".填充模式代码");
+    填充模式代码.textContent = 单选框.getAttribute("parameter");
+  });
+});
+
+动画播放状态单选框组.forEach((单选框) => {
+  单选框.addEventListener("change", () => {
+    root.style.setProperty("--动画播放状态", 单选框.getAttribute("parameter"));
+  });
+});
+
+const 刷新动画按钮 = 动画区.querySelector("#刷新动画");
+刷新动画按钮.addEventListener("click", 刷新动画);
+
+function 刷新动画() {
+  const 球 = 动画区.querySelector(".球");
+  球.classList.remove("球动画");
+  void 球.offsetTop;
+  球.classList.add("球动画");
 }
