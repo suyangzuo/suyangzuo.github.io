@@ -69,9 +69,9 @@
               ><span class="参数中文">动画持续时间</span>
               <span class="参数代码">animation-duration</span></span
             >
-            <input type="range" id="动画持续时间" min="1" max="20" value="5" />
+            <input type="range" id="动画持续时间" min="0" max="20" value="0" />
             <span class="参数值">
-              <span class="参数值数字">5</span>
+              <span class="参数值数字">0</span>
               <span class="参数值单位">秒</span>
             </span>
           </label>
@@ -340,21 +340,481 @@
       </div>
       <div class="定义区 分区">
         <h3 class="调用标题 区标题">定义关键帧</h3>
+        <div class="定义区-内部">
+          <div class="关键帧区">
+            <div class="关键帧分区">
+              <input
+                type="checkbox"
+                id="关键帧-1"
+                class="关键帧复选框"
+                checked
+              />
+              <label class="关键帧标签" for="关键帧-1"
+                >关键帧<span class="箭头"> → </span
+                ><span class="关键帧计数">1</span></label
+              >
+              <input
+                type="number"
+                id="关键帧时间点-1"
+                class="关键帧时间点"
+                min="0"
+                max="100"
+                value="0"
+              />
+              <span class="关键帧百分号">%</span>
+            </div>
+            <div class="关键帧分区">
+              <input
+                type="checkbox"
+                id="关键帧-2"
+                class="关键帧复选框"
+                checked
+              />
+              <label class="关键帧标签" for="关键帧-2"
+                >关键帧<span class="箭头"> → </span
+                ><span class="关键帧计数">2</span></label
+              >
+              <input
+                type="number"
+                id="关键帧时间点-2"
+                class="关键帧时间点"
+                min="0"
+                max="100"
+                value="20"
+              />
+              <span class="关键帧百分号">%</span>
+            </div>
+            <div class="关键帧分区">
+              <input
+                type="checkbox"
+                id="关键帧-3"
+                class="关键帧复选框"
+                checked
+              />
+              <label class="关键帧标签" for="关键帧-3"
+                >关键帧<span class="箭头"> → </span
+                ><span class="关键帧计数">3</span></label
+              >
+              <input
+                type="number"
+                id="关键帧时间点-3"
+                class="关键帧时间点"
+                min="0"
+                max="100"
+                value="40"
+              />
+              <span class="关键帧百分号">%</span>
+            </div>
+            <div class="关键帧分区">
+              <input
+                type="checkbox"
+                id="关键帧-4"
+                class="关键帧复选框"
+                checked
+              />
+              <label class="关键帧标签" for="关键帧-4"
+                >关键帧<span class="箭头"> → </span
+                ><span class="关键帧计数">4</span></label
+              >
+              <input
+                type="number"
+                id="关键帧时间点-4"
+                class="关键帧时间点"
+                min="0"
+                max="100"
+                value="60"
+              />
+              <span class="关键帧百分号">%</span>
+            </div>
+            <div class="关键帧分区">
+              <input
+                type="checkbox"
+                id="关键帧-5"
+                class="关键帧复选框"
+                checked
+              />
+              <label class="关键帧标签" for="关键帧-5"
+                >关键帧<span class="箭头"> → </span
+                ><span class="关键帧计数">5</span></label
+              >
+              <input
+                type="number"
+                id="关键帧时间点-5"
+                class="关键帧时间点"
+                min="0"
+                max="100"
+                value="80"
+              />
+              <span class="关键帧百分号">%</span>
+            </div>
+            <div class="关键帧分区">
+              <input
+                type="checkbox"
+                id="关键帧-6"
+                class="关键帧复选框"
+                checked
+              />
+              <label class="关键帧标签" for="关键帧-6"
+                >关键帧<span class="箭头"> → </span
+                ><span class="关键帧计数">6</span></label
+              >
+              <input
+                type="number"
+                id="关键帧时间点-6"
+                class="关键帧时间点"
+                min="0"
+                max="100"
+                value="100"
+              />
+              <span class="关键帧百分号">%</span>
+            </div>
+          </div>
+          <div class="关键帧属性区">
+            <div class="关键帧属性分区">
+              <h3 class="关键帧属性标题">
+                <span class="关键帧标题文本">关键帧</span
+                ><span class="百分比数字">0</span
+                ><span class="百分比符号">%</span>
+              </h3>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-位置-关键帧1"
+                  >位置</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-位置-关键帧1"
+                  class="关键帧属性复选框"
+                  checked
+                />
+              </div>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-缩放-关键帧1"
+                  >缩放</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-缩放-关键帧1"
+                  class="关键帧属性复选框"
+                />
+              </div>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-色相-关键帧1"
+                  >色相</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-色相-关键帧1"
+                  class="关键帧属性复选框"
+                />
+              </div>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-透明度-关键帧1"
+                  >透明度</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-透明度-关键帧1"
+                  class="关键帧属性复选框"
+                />
+              </div>
+            </div>
+            <div class="关键帧属性分区">
+              <h3 class="关键帧属性标题">
+                <span class="关键帧标题文本">关键帧</span
+                ><span class="百分比数字">20</span
+                ><span class="百分比符号">%</span>
+              </h3>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-位置-关键帧2"
+                  >位置</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-位置-关键帧2"
+                  class="关键帧属性复选框"
+                  checked
+                />
+              </div>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-缩放-关键帧2"
+                  >缩放</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-缩放-关键帧2"
+                  class="关键帧属性复选框"
+                />
+              </div>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-色相-关键帧2"
+                  >色相</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-色相-关键帧2"
+                  class="关键帧属性复选框"
+                />
+              </div>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-透明度-关键帧2"
+                  >透明度</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-透明度-关键帧2"
+                  class="关键帧属性复选框"
+                />
+              </div>
+            </div>
+            <div class="关键帧属性分区">
+              <h3 class="关键帧属性标题">
+                <span class="关键帧标题文本">关键帧</span
+                ><span class="百分比数字">40</span
+                ><span class="百分比符号">%</span>
+              </h3>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-位置-关键帧3"
+                  >位置</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-位置-关键帧3"
+                  class="关键帧属性复选框"
+                  checked
+                />
+              </div>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-缩放-关键帧3"
+                  >缩放</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-缩放-关键帧3"
+                  class="关键帧属性复选框"
+                />
+              </div>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-色相-关键帧3"
+                  >色相</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-色相-关键帧3"
+                  class="关键帧属性复选框"
+                />
+              </div>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-透明度-关键帧3"
+                  >透明度</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-透明度-关键帧3"
+                  class="关键帧属性复选框"
+                />
+              </div>
+            </div>
+            <div class="关键帧属性分区">
+              <h3 class="关键帧属性标题">
+                <span class="关键帧标题文本">关键帧</span
+                ><span class="百分比数字">60</span
+                ><span class="百分比符号">%</span>
+              </h3>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-位置-关键帧4"
+                  >位置</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-位置-关键帧4"
+                  class="关键帧属性复选框"
+                  checked
+                />
+              </div>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-缩放-关键帧4"
+                  >缩放</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-缩放-关键帧4"
+                  class="关键帧属性复选框"
+                />
+              </div>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-色相-关键帧4"
+                  >色相</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-色相-关键帧4"
+                  class="关键帧属性复选框"
+                />
+              </div>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-透明度-关键帧4"
+                  >透明度</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-透明度-关键帧4"
+                  class="关键帧属性复选框"
+                />
+              </div>
+            </div>
+            <div class="关键帧属性分区">
+              <h3 class="关键帧属性标题">
+                <span class="关键帧标题文本">关键帧</span
+                ><span class="百分比数字">80</span
+                ><span class="百分比符号">%</span>
+              </h3>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-位置-关键帧5"
+                  >位置</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-位置-关键帧5"
+                  class="关键帧属性复选框"
+                  checked
+                />
+              </div>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-缩放-关键帧5"
+                  >缩放</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-缩放-关键帧5"
+                  class="关键帧属性复选框"
+                />
+              </div>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-色相-关键帧5"
+                  >色相</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-色相-关键帧5"
+                  class="关键帧属性复选框"
+                />
+              </div>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-透明度-关键帧5"
+                  >透明度</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-透明度-关键帧5"
+                  class="关键帧属性复选框"
+                />
+              </div>
+            </div>
+            <div class="关键帧属性分区">
+              <h3 class="关键帧属性标题">
+                <span class="关键帧标题文本">关键帧</span
+                ><span class="百分比数字">100</span
+                ><span class="百分比符号">%</span>
+              </h3>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-位置-关键帧6"
+                  >位置</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-位置-关键帧6"
+                  class="关键帧属性复选框"
+                  checked
+                />
+              </div>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-缩放-关键帧6"
+                  >缩放</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-缩放-关键帧6"
+                  class="关键帧属性复选框"
+                />
+              </div>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-色相-关键帧6"
+                  >色相</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-色相-关键帧6"
+                  class="关键帧属性复选框"
+                />
+              </div>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-透明度-关键帧6"
+                  >透明度</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-透明度-关键帧6"
+                  class="关键帧属性复选框"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="代码区 分区">
         <h3 class="调用标题 区标题">速写法</h3>
         <div class="速写代码区">
-          <span class="速写标题">animation: </span>
-          <span class="速写动画名称">小球动画</span>
-          <span class="速写动画持续时间">5s</span>
-          <span class="速写动画时间函数">ease</span>
-          <span class="速写动画延迟">0s</span>
-          <span class="速写动画迭代计数">1</span>
-          <span class="速写动画方向">normal</span>
+          <span class="速写标题">animation:</span>
+          <span class="速写动画名称"
+            ><span class="名称代码">小球动画</span
+            ><span class="代码提示"
+              ><span class="提示中文">动画名称</span>
+              <span class="提示代码">animation-name</span
+              ><span class="提示装饰"></span></span
+          ></span>
+          <span class="速写动画持续时间"
+            ><span class="持续时间代码">5s</span
+            ><span class="代码提示"
+              ><span class="提示中文">动画持续时间</span>
+              <span class="提示代码">animation-duration</span
+              ><span class="提示装饰"></span></span
+          ></span>
+          <span class="速写动画时间函数"
+            ><span class="时间函数代码">ease</span
+            ><span class="代码提示"
+              ><span class="提示中文">动画时间函数</span>
+              <span class="提示代码">animation-timing-function</span
+              ><span class="提示装饰"></span></span
+          ></span>
+          <span class="速写动画延迟"
+            ><span class="延迟代码">0s</span
+            ><span class="代码提示"
+              ><span class="提示中文">动画延迟</span>
+              <span class="提示代码">animation-delay</span
+              ><span class="提示装饰"></span></span
+          ></span>
+          <span class="速写动画迭代计数"
+            ><span class="迭代计数代码">1</span
+            ><span class="代码提示"
+              ><span class="提示中文">动画迭代计数</span>
+              <span class="提示代码">animation-iteration-count</span
+              ><span class="提示装饰"></span></span
+          ></span>
+          <span class="速写动画方向"
+            ><span class="方向代码">normal</span
+            ><span class="代码提示"
+              ><span class="提示中文">动画方向</span>
+              <span class="提示代码">animation-direction</span
+              ><span class="提示装饰"></span></span
+          ></span>
           <span class="速写动画填充模式"
             ><span class="填充模式代码">none</span
-            ><span class="速写结尾分号">;</span></span
-          >
+            ><span class="速写结尾分号">;</span
+            ><span class="代码提示"
+              ><span class="提示中文">动画填充模式</span>
+              <span class="提示代码">animation-fill-mode</span
+              ><span class="提示装饰"></span></span
+          ></span>
         </div>
       </div>
     </section>

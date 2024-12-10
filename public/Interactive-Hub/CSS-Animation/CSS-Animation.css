@@ -4,16 +4,20 @@
   --球直径: 20px;
   --动画延迟: 0s;
   --动画方向: normal;
-  --动画持续时间: 5s;
+  --动画持续时间: 0s;
   --动画填充模式: none;
   --动画迭代计数: 1;
   --动画名称: 小球动画;
   --动画播放状态: running;
   --动画时间函数: ease;
-  --动画持续时间渐变位置: 25%;
+  --动画持续时间渐变位置: 0%;
   --动画延迟渐变位置: 0%;
   --动画迭代计数渐变位置: 0%;
   --动画迭代计数渐变色: #999;
+}
+
+span {
+  text-wrap: nowrap;
 }
 
 .CSS动画总区 {
@@ -40,18 +44,18 @@
 
 .调用区 {
   grid-area: 1 / 12 / 15 / -1;
-  box-shadow: inset 0 0 0 2px #fff2;
+  box-shadow: inset 0 0 0 1px #fff2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2vh;
-  padding: 20px 10px;
-  min-width: 720px;
+  justify-content: space-evenly;
+  padding: 1.25vh 10px;
+  min-width: 625px;
 }
 
 .定义区 {
   grid-area: 12 / 1 / -1 / 12;
-  box-shadow: inset 0 0 0 2px #dfe1;
+  box-shadow: inset 0 0 0 1px #fed2;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -60,12 +64,12 @@
 
 .代码区 {
   grid-area: 15 / 12 / -1 / -1;
-  box-shadow: inset 0 0 0 2px #def2;
+  box-shadow: inset 0 0 0 1px #def2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2vh;
-  padding: 20px 10px;
+  gap: 7vh;
+  padding: 15px 10px;
 }
 
 .球 {
@@ -79,8 +83,7 @@
 }
 
 .球.球动画 {
-  animation: var(--动画名称) var(--动画持续时间) var(--动画时间函数)
-    var(--动画延迟) var(--动画迭代计数) var(--动画方向) var(--动画填充模式);
+  animation: var(--动画名称) var(--动画持续时间) var(--动画时间函数) var(--动画延迟) var(--动画迭代计数) var(--动画方向) var(--动画填充模式);
   animation-play-state: var(--动画播放状态);
 }
 
@@ -148,7 +151,7 @@
   align-items: center;
   gap: 15px;
   border-radius: 10px;
-  font-size: max(10px, 1.2vh);
+  font-size: max(12px, 1.2vh);
 }
 
 .参数区:hover .参数标题 {
@@ -163,7 +166,7 @@
 }
 
 .参数标题 {
-  width: 225px;
+  width: calc(24ch);
   color: #cde;
   display: flex;
   flex-direction: column;
@@ -177,13 +180,14 @@
 
 input[type="text"] {
   width: calc(var(--输入元素宽度) + 45px);
-  height: 40px;
+  height: 4ch;
   padding: 0 8px;
   border-radius: 5px;
   background-color: #444;
-  font-size: 1.075em;
+  font-size: 1.0125em;
   color: white;
   border: none;
+  outline: solid 2px transparent;
   transition: 125ms;
 }
 
@@ -308,6 +312,11 @@ input[type="range"]:hover {
 .单选容器:has(input[type="radio"]:checked) > .参数标签 {
   background: linear-gradient(silver 40%, gray 100%);
   color: black;
+  font-weight: 550;
+}
+
+.单选容器:has(input[type="radio"]:checked) *[class*="代码"] {
+  color: #021;
 }
 
 .单选容器 .参数标签 {
@@ -343,10 +352,6 @@ input[type="range"]:hover {
   color: #9ba;
 }
 
-.单选容器:has(input[type="radio"]:checked) *[class*="代码"] {
-  color: #021;
-}
-
 .速写代码区 {
   font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
   display: flex;
@@ -355,8 +360,15 @@ input[type="range"]:hover {
   font-size: max(10px, 1.15vh);
 }
 
-.速写代码区 > span:not(.速写动画填充模式) {
-  margin-right: 1em;
+.速写代码区 > span {
+  position: relative;
+  border-radius: 5px;
+  padding: 0.75ch 1ch;
+}
+
+.速写代码区 > span:not(:first-of-type):hover {
+  background-color: #fff2;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 .速写标题 {
@@ -395,6 +407,220 @@ input[type="range"]:hover {
   color: gray;
 }
 
-.速写动画填充模式 span[class*="代码"] {
+.速写代码区 span[class*="代码"]:not(.代码提示) {
   font-size: 1em;
 }
+
+.代码提示 {
+  position: absolute;
+  bottom: calc(100% + 16px);
+  left: 50%;
+  translate: -50% 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  opacity: 0;
+  pointer-events: none;
+  border: solid 1px #fff5;
+  padding: 5px 8px;
+  border-radius: 5px;
+}
+
+.提示中文 {
+  color: #a0cdea;
+  font-size: 1.15em;
+}
+
+.提示代码 {
+  color: #c0ddea;
+  width: fit-content;
+  text-wrap: nowrap;
+}
+
+.速写代码区 > span:not(:first-of-type):hover .代码提示 {
+  opacity: 1;
+}
+
+.提示装饰 {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  translate: -50% -51%;
+  width: 15px;
+  height: 15px;
+  background-color: #111;
+  border: solid 1px #fff7;
+  rotate: z 45deg;
+  clip-path: polygon(0% 100%, 100% 0%, 100% 100%);
+}
+
+/* --------------------- ⬇️ 定义区 --------------------- */
+.定义区-内部 {
+  width: 100%;
+  display: flex;
+  height: 100%;
+  padding: 15px;
+  font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
+}
+
+.关键帧区, .关键帧属性区 {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.关键帧区 {
+  align-items: center;
+}
+
+.关键帧属性区 {
+  align-items: flex-start;
+}
+
+.关键帧分区 {
+  display: flex;
+  align-items: center;
+  padding: 5px 15px;
+  border-radius: 5px;
+  font-size: max(12px, 1.2vh);
+}
+
+.关键帧分区:hover {
+  background-color: #abc2;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.关键帧复选框, .关键帧属性复选框 {
+  appearance: none;
+  width: max(12px, 1.25vh);
+  height: max(12px, 1.25vh);
+  border-radius: 2px;
+  outline: solid 1px #b0c4de88;
+  border: solid 3px transparent;
+}
+
+.关键帧复选框:hover, .关键帧属性复选框:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  outline: solid 1px #b0c4de;
+}
+
+.关键帧复选框:checked, .关键帧属性复选框:checked {
+  outline: solid 1px #b0c4de;
+  background: linear-gradient(lightsteelblue 0%, lightsteelblue 100%) padding-box, linear-gradient(transparent 0%, transparent 100%) border-box;
+}
+
+.关键帧标签 {
+  padding-left: 15px;
+  user-select: none;
+}
+
+.关键帧标签:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.关键帧计数 {
+  color: palegoldenrod;
+}
+
+.箭头 {
+  color: gray;
+}
+
+.关键帧时间点 {
+  background-color: #222;
+  color: papayawhip;
+  border: none;
+  outline: solid 1px #fff5;
+  width: 4.5ch;
+  margin-left: 3ch;
+  padding: 2px 5px;
+  font-size: 1em;
+  font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
+  text-align: right;
+}
+
+.关键帧分区:has(.关键帧复选框:not(:checked)) .关键帧标签 {
+  filter: brightness(50%);
+}
+
+.关键帧分区:has(.关键帧复选框:not(:checked)) .关键帧时间点 {
+  pointer-events: none;
+  filter: brightness(25%);
+}
+
+.关键帧分区:has(.关键帧复选框:not(:checked)) ~ .关键帧分区 {
+  pointer-events: none;
+  filter: brightness(50%);
+}
+
+.关键帧百分号 {
+  margin-left: 8px;
+  color: navajowhite;
+}
+
+.关键帧属性标签 {
+  padding-right: 15px;
+  user-select: none;
+  width: 63px;
+  text-align: right;
+}
+
+.关键帧属性标签:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.关键帧属性分区 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+}
+
+.关键帧属性分区:not(:first-of-type) {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.关键帧属性标题 {
+  padding: 0 0 20px 0;
+  font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
+}
+
+.关键帧标题文本 {
+  color: lightslategray;
+  margin-right: 15px;
+}
+
+.百分比数字 {
+  color: lightsteelblue;
+}
+
+.百分比符号 {
+  color: darkkhaki;
+  margin-left: 5px;
+}
+
+.关键帧属性容器 {
+  padding: 5px 15px;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.关键帧属性容器:hover {
+  background-color: #abc2;
+}
+
+/* --------------------- ⬆️ 定义区 --------------------- */
