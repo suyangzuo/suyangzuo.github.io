@@ -55,17 +55,19 @@ for (const 调用区滑块 of 调用区滑块组) {
 const 关键帧1 = {
   top: 0,
   left: 0,
-  scale: 1,
+  width: "var(--球直径)",
+  height: "var(--球直径)",
   rotate: "z 0deg",
   opacity: 1,
   offset: 0,
 };
 
 const 关键帧2 = {
-  top: "calc(100% - var(--球直径))",
+  top: "calc(100% - calc(var(--球直径) * 3))",
   left: "calc((100% - var(--球直径)) / 5)",
-  scale: 1,
-  rotate: "z 0deg",
+  width: "calc(var(--球直径) * 3)",
+  height: "calc(var(--球直径) * 3)",
+  rotate: "z 360deg",
   opacity: 1,
   offset: 0.2,
 };
@@ -73,17 +75,19 @@ const 关键帧2 = {
 const 关键帧3 = {
   top: 0,
   left: "calc((100% - var(--球直径)) / 5 * 2)",
-  scale: 1,
+  width: "var(--球直径)",
+  height: "var(--球直径)",
   rotate: "z 0deg",
   opacity: 1,
   offset: 0.4,
 };
 
 const 关键帧4 = {
-  top: "calc(100% - var(--球直径))",
+  top: "calc(100% - calc(var(--球直径) * 3))",
   left: "calc((100% - var(--球直径)) / 5 * 3)",
-  scale: 1,
-  rotate: "z 0deg",
+  width: "calc(var(--球直径) * 3)",
+  height: "calc(var(--球直径) * 3)",
+  rotate: "z 360deg",
   opacity: 1,
   offset: 0.6,
 };
@@ -91,17 +95,19 @@ const 关键帧4 = {
 const 关键帧5 = {
   top: 0,
   left: "calc((100% - var(--球直径)) / 5 * 4)",
-  scale: 1,
+  width: "var(--球直径)",
+  height: "var(--球直径)",
   rotate: "z 0deg",
   opacity: 1,
   offset: 0.8,
 };
 
 const 关键帧6 = {
-  top: "calc(100% - var(--球直径))",
-  left: "calc(100% - var(--球直径))",
-  scale: 1,
-  rotate: "z 0deg",
+  top: "calc(100% - calc(var(--球直径) * 3))",
+  left: "calc(100% - calc(var(--球直径) * 3))",
+  width: "calc(var(--球直径) * 3)",
+  height: "calc(var(--球直径) * 3)",
+  rotate: "z 360deg",
   opacity: 1,
   offset: 1,
 };
@@ -117,7 +123,7 @@ const 动画选项 = {
 
 let 动画 = null;
 const 关键帧池 = [关键帧1, 关键帧2, 关键帧3, 关键帧4, 关键帧5, 关键帧6];
-const 关键帧组 = [关键帧1, 关键帧2, 关键帧3, 关键帧4, 关键帧5, 关键帧6];
+const 关键帧序列 = [关键帧1, 关键帧2, 关键帧3, 关键帧4, 关键帧5, 关键帧6];
 
 function 生成关键帧及动画选项() {
   const 已确认关键帧复选框组 =
@@ -127,22 +133,51 @@ function 生成关键帧及动画选项() {
 const 刷新动画按钮 = 动画区.querySelector("#刷新动画");
 刷新动画按钮.addEventListener("click", 刷新动画);
 
+const 警告色 = "brown";
+const 名称不符关键帧序列 = [
+  { outline: `solid 2px ${警告色}`, backgroundColor: 警告色 },
+  { outline: "solid 2px transparent", backgroundColor: "#222" },
+  { outline: `solid 2px ${警告色}`, backgroundColor: 警告色 },
+  { outline: "solid 2px transparent", backgroundColor: "#222" },
+  { outline: `solid 2px ${警告色}`, backgroundColor: 警告色 },
+  { outline: "solid 2px #def3", backgroundColor: "#222" },
+];
+
+const 名称不符动画选项 = {
+  duration: 1250,
+};
+
+let 关键帧标识符文本框动画 = null;
+let 动画名称动画 = null;
+
 function 刷新动画() {
   const 球 = 动画区.querySelector(".球");
-  // 动画?.cancel();
-  动画 = 球.animate(关键帧组, 动画选项);
+  动画?.cancel();
+  动画 = 球.animate(关键帧序列, 动画选项);
 
-  if (动画播放状态单选框组[0].checked) {
+  const 关键帧序列标识符文本框 = document.querySelector("#关键帧序列标识符");
+  const 动画名称文本框 = document.querySelector("#动画名称");
+  const 关键帧序列标识符 = 关键帧序列标识符文本框.value.trim();
+  const 动画名称 = 动画名称文本框.value.trim();
+
+  if (动画播放状态单选框组[0].checked && 关键帧序列标识符 === 动画名称) {
     动画.play();
   } else {
     动画.pause();
+    关键帧标识符文本框动画?.cancel();
+    动画名称动画?.cancel();
+    关键帧标识符文本框动画 = 关键帧序列标识符文本框.animate(
+      名称不符关键帧序列,
+      名称不符动画选项,
+    );
+    动画名称动画 = 动画名称文本框.animate(名称不符关键帧序列, 名称不符动画选项);
   }
   // 球.classList.remove("球动画");
   // void 球.offsetTop;
   // 球.classList.add("球动画");
 }
 
-let 最后确认索引 = 关键帧组.length - 1;
+let 最后确认索引 = 关键帧序列.length - 1;
 const 关键帧区 = 定义区.querySelector(".关键帧区");
 const 关键帧属性区 = 定义区.querySelector(".关键帧属性区");
 const 动画属性分区组 = 关键帧属性区.querySelectorAll(".关键帧属性分区");
@@ -170,12 +205,12 @@ for (const [索引, 关键帧复选框] of 关键帧复选框组.entries()) {
   关键帧复选框.addEventListener("input", () => {
     if (关键帧复选框.checked) {
       if (索引 > 1) {
-        关键帧组.push(关键帧池[索引]);
+        关键帧序列.push(关键帧池[索引]);
         最后确认索引++;
       }
     } else {
       while (索引 <= 最后确认索引) {
-        关键帧组.pop();
+        关键帧序列.pop();
         最后确认索引--;
       }
     }
@@ -189,7 +224,7 @@ for (const [索引, 关键帧时间点文本框] of 关键帧时间点文本框�
     }
 
     const 百分比数字 = parseInt(关键帧时间点文本框.value.trim(), 10);
-    关键帧组[索引].offset = 百分比数字 / 100;
+    关键帧序列[索引].offset = 百分比数字 / 100;
   });
 }
 
