@@ -154,6 +154,7 @@
   translate: 0 0;
   border: solid 3px lightseagreen;
   background-color: #d8e6ff30;
+  backdrop-filter: blur(10px);
   pointer-events: none;
   opacity: 0;
   display: flex;
@@ -181,6 +182,7 @@
 
 .平移值与单位 {
   width: 51px;
+  text-wrap: nowrap;
 }
 
 .平移代码 {

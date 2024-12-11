@@ -221,7 +221,7 @@ body {
 .nav-cell:hover > .cell-img-container::after {
   background-color: rgb(38, 82, 152, 0.75);
   filter: opacity(1);
-  transition: 0.1s;
+  /*transition: 0.1s;*/
 }
 
 .cell-text-container {
