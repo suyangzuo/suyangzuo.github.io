@@ -44,14 +44,14 @@
       ></script>
       <p class="交互标题">CSS 动画</p>
       <div class="动画区 分区">
-        <div class="球">
+        <div class="球 球动画">
           <img src="/Images/Index-Images/金色闪耀.png" alt="动画图" />
         </div>
         <button id="刷新动画" type="button">刷新动画</button>
       </div>
       <div class="调用区 分区">
         <h3 class="调用标题 区标题">设置动画属性</h3>
-        <div class="参数区">
+        <div class="参数区 名称参数区">
           <label class="参数标签" for="动画名称">
             <span class="参数标题">
               <span class="参数中文">动画名称</span>
@@ -61,11 +61,11 @@
               type="text"
               id="动画名称"
               placeholder="输入动画名称"
-              value="小球动画"
+              value="模拟动画"
             />
           </label>
         </div>
-        <div class="参数区">
+        <div class="参数区 持续时间参数区">
           <label class="参数标签" for="动画持续时间">
             <span class="参数标题"
               ><span class="参数中文">动画持续时间</span>
@@ -78,7 +78,7 @@
             </span>
           </label>
         </div>
-        <div class="参数区">
+        <div class="参数区 时间函数参数区">
           <span class="参数标题"
             ><span class="参数中文">动画时间函数</span>
             <span class="参数代码">animation-timing-function</span></span
@@ -147,7 +147,7 @@
             </span>
           </div>
         </div>
-        <div class="参数区">
+        <div class="参数区 延迟参数区">
           <label class="参数标签" for="动画延迟">
             <span class="参数标题"
               ><span class="参数中文">动画延迟</span>
@@ -160,7 +160,7 @@
             </span>
           </label>
         </div>
-        <div class="参数区">
+        <div class="参数区 迭代计数参数区">
           <label class="参数标签" for="动画迭代计数">
             <span class="参数标题"
               ><span class="参数中文">动画迭代计数</span>
@@ -192,7 +192,7 @@
             </label>
           </span>
         </div>
-        <div class="参数区">
+        <div class="参数区 方向参数区">
           <span class="参数标题"
             ><span class="参数中文">动画方向</span>
             <span class="参数代码">animation-direction</span></span
@@ -249,7 +249,7 @@
             </span>
           </div>
         </div>
-        <div class="参数区">
+        <div class="参数区 填充模式参数区">
           <span class="参数标题"
             ><span class="参数中文">动画填充模式</span>
             <span class="参数代码">animation-fill-mode</span></span
@@ -306,7 +306,7 @@
             </span>
           </div>
         </div>
-        <div class="参数区">
+        <div class="参数区 播放状态参数区">
           <span class="参数标题"
             ><span class="参数中文">动画播放状态</span>
             <span class="参数代码">animation-play-state</span></span
@@ -341,7 +341,14 @@
         </div>
       </div>
       <div class="定义区 分区">
-        <h3 class="调用标题 区标题">定义关键帧</h3>
+        <h3 class="调用标题 区标题">定义关键帧序列</h3>
+        <div class="关键帧序列标识符区">
+          <label for="关键帧序列标识符" class="关键帧序列标识符标签"
+            ><span class="关键帧序列标识符标签中文">关键帧序列标识符</span
+            ><span class="关键帧序列标识符标签代码">@keyframes</span></label
+          >
+          <input type="text" id="关键帧序列标识符" value="模拟动画" />
+        </div>
         <div class="定义区-内部">
           <div class="关键帧区">
             <div class="关键帧分区">
@@ -352,8 +359,7 @@
                 checked
               />
               <label class="关键帧标签" for="关键帧-1"
-                >关键帧<span class="箭头"> → </span
-                ><span class="关键帧计数">1</span></label
+                >第<span class="关键帧计数">1</span>关键帧</label
               >
               <input
                 type="number"
@@ -373,8 +379,7 @@
                 checked
               />
               <label class="关键帧标签" for="关键帧-2"
-                >关键帧<span class="箭头"> → </span
-                ><span class="关键帧计数">2</span></label
+                >第<span class="关键帧计数">2</span>关键帧</label
               >
               <input
                 type="number"
@@ -394,8 +399,7 @@
                 checked
               />
               <label class="关键帧标签" for="关键帧-3"
-                >关键帧<span class="箭头"> → </span
-                ><span class="关键帧计数">3</span></label
+                >第<span class="关键帧计数">3</span>关键帧</label
               >
               <input
                 type="number"
@@ -415,8 +419,7 @@
                 checked
               />
               <label class="关键帧标签" for="关键帧-4"
-                >关键帧<span class="箭头"> → </span
-                ><span class="关键帧计数">4</span></label
+                >第<span class="关键帧计数">4</span>关键帧</label
               >
               <input
                 type="number"
@@ -436,8 +439,7 @@
                 checked
               />
               <label class="关键帧标签" for="关键帧-5"
-                >关键帧<span class="箭头"> → </span
-                ><span class="关键帧计数">5</span></label
+                >第<span class="关键帧计数">5</span>关键帧</label
               >
               <input
                 type="number"
@@ -457,8 +459,7 @@
                 checked
               />
               <label class="关键帧标签" for="关键帧-6"
-                >关键帧<span class="箭头"> → </span
-                ><span class="关键帧计数">6</span></label
+                >第<span class="关键帧计数">6</span>关键帧</label
               >
               <input
                 type="number"
@@ -519,6 +520,16 @@
                   class="关键帧属性复选框"
                 />
               </div>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-投影-关键帧1"
+                  >投影</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-投影-关键帧1"
+                  class="关键帧属性复选框"
+                />
+              </div>
             </div>
             <div class="关键帧属性分区">
               <h3 class="关键帧属性标题">
@@ -564,6 +575,16 @@
                 <input
                   type="checkbox"
                   id="关键帧-透明度-关键帧2"
+                  class="关键帧属性复选框"
+                />
+              </div>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-投影-关键帧2"
+                  >投影</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-投影-关键帧2"
                   class="关键帧属性复选框"
                 />
               </div>
@@ -615,6 +636,16 @@
                   class="关键帧属性复选框"
                 />
               </div>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-投影-关键帧3"
+                  >投影</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-投影-关键帧3"
+                  class="关键帧属性复选框"
+                />
+              </div>
             </div>
             <div class="关键帧属性分区">
               <h3 class="关键帧属性标题">
@@ -660,6 +691,16 @@
                 <input
                   type="checkbox"
                   id="关键帧-透明度-关键帧4"
+                  class="关键帧属性复选框"
+                />
+              </div>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-投影-关键帧4"
+                  >投影</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-投影-关键帧4"
                   class="关键帧属性复选框"
                 />
               </div>
@@ -711,6 +752,16 @@
                   class="关键帧属性复选框"
                 />
               </div>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-投影-关键帧5"
+                  >投影</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-投影-关键帧5"
+                  class="关键帧属性复选框"
+                />
+              </div>
             </div>
             <div class="关键帧属性分区">
               <h3 class="关键帧属性标题">
@@ -759,6 +810,16 @@
                   class="关键帧属性复选框"
                 />
               </div>
+              <div class="关键帧属性容器">
+                <label class="关键帧属性标签" for="关键帧-投影-关键帧6"
+                  >投影</label
+                >
+                <input
+                  type="checkbox"
+                  id="关键帧-投影-关键帧6"
+                  class="关键帧属性复选框"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -768,7 +829,7 @@
         <div class="速写代码区">
           <span class="速写标题">animation:</span>
           <span class="速写动画名称"
-            ><span class="名称代码">小球动画</span
+            ><span class="名称代码">模拟动画</span
             ><span class="代码提示"
               ><span class="提示中文">动画名称</span>
               <span class="提示代码">animation-name</span

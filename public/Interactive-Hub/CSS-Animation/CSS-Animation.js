@@ -67,7 +67,7 @@ const 关键帧2 = {
   scale: 1,
   rotate: "z 0deg",
   opacity: 1,
-  offset: 0,
+  offset: 0.2,
 };
 
 const 关键帧3 = {
@@ -76,7 +76,7 @@ const 关键帧3 = {
   scale: 1,
   rotate: "z 0deg",
   opacity: 1,
-  offset: 0,
+  offset: 0.4,
 };
 
 const 关键帧4 = {
@@ -85,7 +85,7 @@ const 关键帧4 = {
   scale: 1,
   rotate: "z 0deg",
   opacity: 1,
-  offset: 0,
+  offset: 0.6,
 };
 
 const 关键帧5 = {
@@ -94,7 +94,7 @@ const 关键帧5 = {
   scale: 1,
   rotate: "z 0deg",
   opacity: 1,
-  offset: 0,
+  offset: 0.8,
 };
 
 const 关键帧6 = {
@@ -103,7 +103,7 @@ const 关键帧6 = {
   scale: 1,
   rotate: "z 0deg",
   opacity: 1,
-  offset: 0,
+  offset: 1,
 };
 
 const 动画选项 = {
@@ -129,7 +129,14 @@ const 刷新动画按钮 = 动画区.querySelector("#刷新动画");
 
 function 刷新动画() {
   const 球 = 动画区.querySelector(".球");
+  // 动画?.cancel();
   动画 = 球.animate(关键帧组, 动画选项);
+
+  if (动画播放状态单选框组[0].checked) {
+    动画.play();
+  } else {
+    动画.pause();
+  }
   // 球.classList.remove("球动画");
   // void 球.offsetTop;
   // 球.classList.add("球动画");
@@ -140,6 +147,7 @@ const 关键帧区 = 定义区.querySelector(".关键帧区");
 const 关键帧属性区 = 定义区.querySelector(".关键帧属性区");
 const 动画属性分区组 = 关键帧属性区.querySelectorAll(".关键帧属性分区");
 const 关键帧复选框组 = 关键帧区.querySelectorAll(".关键帧复选框");
+const 关键帧时间点文本框组 = 关键帧区.querySelectorAll(".关键帧时间点");
 for (const [索引, 关键帧复选框] of 关键帧复选框组.entries()) {
   if (索引 < 2) {
     关键帧复选框.addEventListener("input", (e) => {
@@ -171,6 +179,17 @@ for (const [索引, 关键帧复选框] of 关键帧复选框组.entries()) {
         最后确认索引--;
       }
     }
+  });
+}
+
+for (const [索引, 关键帧时间点文本框] of 关键帧时间点文本框组.entries()) {
+  关键帧时间点文本框.addEventListener("input", () => {
+    if (!关键帧时间点文本框.value.trim()) {
+      return;
+    }
+
+    const 百分比数字 = parseInt(关键帧时间点文本框.value.trim(), 10);
+    关键帧组[索引].offset = 百分比数字 / 100;
   });
 }
 
@@ -266,3 +285,12 @@ for (const [索引, 关键帧复选框] of 关键帧复选框组.entries()) {
     // root.style.setProperty("--动画播放状态", 单选框.getAttribute("parameter"));
   });
 });
+
+const 文本框组 = document.querySelectorAll("input[type='text']");
+for (const 文本框 of 文本框组) {
+  文本框.addEventListener("dblclick", () => {
+    if (文本框.value.trim()) {
+      文本框.select();
+    }
+  });
+}

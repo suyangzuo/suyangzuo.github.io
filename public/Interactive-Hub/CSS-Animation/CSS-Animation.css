@@ -7,7 +7,7 @@
   --动画持续时间: 0s;
   --动画填充模式: none;
   --动画迭代计数: 1;
-  --动画名称: 小球动画;
+  --动画名称: 模拟动画;
   --动画播放状态: running;
   --动画时间函数: ease;
   --动画持续时间渐变位置: 0%;
@@ -58,8 +58,9 @@ span {
   box-shadow: inset 0 0 0 1px #fed2;
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
   align-items: center;
-  padding: 20px 10px;
+  padding: 0 10px;
 }
 
 .代码区 {
@@ -67,8 +68,8 @@ span {
   box-shadow: inset 0 0 0 1px #def2;
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
   align-items: center;
-  gap: 7vh;
   padding: 15px 10px;
 }
 
@@ -92,7 +93,7 @@ span {
   animation-play-state: var(--动画播放状态);
 }
 
-@keyframes 小球动画 {
+@keyframes 模拟动画 {
   from {
     top: 0;
     left: 0;
@@ -184,15 +185,16 @@ span {
 }
 
 input[type="text"] {
+  font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
   width: calc(var(--输入元素宽度) + 45px);
   height: 4ch;
   padding: 0 8px;
   border-radius: 5px;
-  background-color: #444;
+  background-color: #222;
   font-size: 1.0125em;
   color: white;
   border: none;
-  outline: solid 2px transparent;
+  outline: solid 2px #def3;
   transition: 125ms;
 }
 
@@ -202,12 +204,11 @@ input[type="text"]::placeholder {
 
 input[type="text"]:hover {
   outline: solid 2px #def5;
-  background-color: #333;
 }
 
 input[type="text"]:focus {
-  outline: solid 2px #defa;
-  background-color: #222;
+  outline: solid 2px #def8;
+  background-color: #1a1a1a;
 }
 
 #动画持续时间 {
@@ -428,7 +429,8 @@ input[type="range"]:hover {
   gap: 5px;
   opacity: 0;
   pointer-events: none;
-  border: solid 1px #fff5;
+  outline: solid 2px #345;
+  backdrop-filter: blur(10px);
   padding: 5px 8px;
   border-radius: 5px;
 }
@@ -448,6 +450,26 @@ input[type="range"]:hover {
   opacity: 1;
 }
 
+.总区:has(.名称参数区:hover) .速写动画名称 .代码提示,
+.总区:has(.持续时间参数区:hover) .速写动画持续时间 .代码提示,
+.总区:has(.时间函数参数区:hover) .速写动画时间函数 .代码提示,
+.总区:has(.延迟参数区:hover) .速写动画延迟 .代码提示,
+.总区:has(.迭代计数参数区:hover) .速写动画迭代计数 .代码提示,
+.总区:has(.方向参数区:hover) .速写动画方向 .代码提示,
+.总区:has(.填充模式参数区:hover) .速写动画填充模式 .代码提示 {
+  opacity: 1;
+}
+
+.总区:has(.名称参数区:hover) .速写动画名称,
+.总区:has(.持续时间参数区:hover) .速写动画持续时间,
+.总区:has(.时间函数参数区:hover) .速写动画时间函数,
+.总区:has(.延迟参数区:hover) .速写动画延迟,
+.总区:has(.迭代计数参数区:hover) .速写动画迭代计数,
+.总区:has(.方向参数区:hover) .速写动画方向,
+.总区:has(.填充模式参数区:hover) .速写动画填充模式 {
+  background-color: #fff2;
+}
+
 .提示装饰 {
   position: absolute;
   top: 100%;
@@ -455,8 +477,7 @@ input[type="range"]:hover {
   translate: -50% -51%;
   width: 15px;
   height: 15px;
-  background-color: #111;
-  border: solid 1px #fff7;
+  background-color: #345;
   rotate: z 45deg;
   clip-path: polygon(0% 100%, 100% 0%, 100% 100%);
 }
@@ -465,9 +486,31 @@ input[type="range"]:hover {
 .定义区-内部 {
   width: 100%;
   display: flex;
-  height: 100%;
-  padding: 15px;
   font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
+}
+
+.关键帧序列标识符区 {
+  font-size: max(12px, 1.2vh);
+  display: flex;
+  align-items: center;
+}
+
+.关键帧序列标识符标签 {
+  font-size: max(14px, 1.25vh);
+  color: lightskyblue;
+  padding-right: 10px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.关键帧序列标识符标签代码 {
+  font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
+  color: #5c8eac;
+}
+
+#关键帧序列标识符 {
+  font-size: 1.0125em;
 }
 
 .关键帧区, .关键帧属性区 {
@@ -494,7 +537,8 @@ input[type="range"]:hover {
 }
 
 .关键帧分区:hover {
-  background-color: #abc2;
+  background-color: #13181d;
+  box-shadow: inset 0 0 0 1px #345;
 }
 
 input[type="number"]::-webkit-outer-spin-button,
@@ -529,6 +573,9 @@ input[type="number"] {
 .关键帧标签 {
   padding-left: 15px;
   user-select: none;
+  display: flex;
+  align-items: center;
+  color: lightslategray;
 }
 
 .关键帧标签:hover {
@@ -537,6 +584,9 @@ input[type="number"] {
 
 .关键帧计数 {
   color: palegoldenrod;
+  width: 25px;
+  text-align: center;
+  translate: 0 2.5%;
 }
 
 .箭头 {
