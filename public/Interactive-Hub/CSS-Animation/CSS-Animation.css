@@ -361,6 +361,7 @@ input[type="range"]:hover {
 .速写代码区 {
   font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
   width: max(250px, 97.5%);
   font-size: max(10px, 1.15vh);
