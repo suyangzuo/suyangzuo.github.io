@@ -318,10 +318,14 @@ for (const [索引, 关键帧时间点文本框] of 关键帧时间点文本框�
 动画播放状态单选框组.forEach((单选框) => {
   单选框.addEventListener("change", () => {
     if (单选框.getAttribute("parameter") === "running") {
-      动画.play();
+      动画?.play();
     } else {
-      动画.pause();
+      动画?.pause();
     }
+
+    const 速写动画播放状态 = 速写代码区.querySelector(".速写动画播放状态");
+    const 播放状态代码 = 速写动画播放状态.querySelector(".播放状态代码");
+    播放状态代码.textContent = 单选框.getAttribute("parameter");
     // root.style.setProperty("--动画播放状态", 单选框.getAttribute("parameter"));
   });
 });

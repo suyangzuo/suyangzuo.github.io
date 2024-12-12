@@ -1,6 +1,8 @@
 const root = document.querySelector(":root");
 const rootStyle = window.getComputedStyle(root);
 const 展示区 = document.querySelector(".展示区");
+const 占位元素组 = 展示区.querySelectorAll(".占位元素");
+const 占位元素尺寸滑块 = document.querySelector("#占位元素尺寸");
 const 定位距离区 = document.querySelector(".定位距离区");
 const 绝对定位距离滑块组 = 定位距离区.querySelectorAll("input[type='range']");
 const 顶距离滑块 = 定位距离区.querySelector("input[id='顶']");
@@ -284,6 +286,37 @@ function 更新辅助线() {
     左辅助线.style.opacity = "0";
     右辅助线.style.opacity = "0";
   }
+}
+
+占位元素尺寸滑块.addEventListener("input", () => {
+  const 滑块值 = parseInt(占位元素尺寸滑块.value, 10);
+  const 百分比 =
+    ((滑块值 - 占位元素尺寸滑块.min) /
+      (占位元素尺寸滑块.max - 占位元素尺寸滑块.min + 1)) *
+    100;
+  root.style.setProperty("--占位元素尺寸渐变位置", `${百分比}%`);
+  const 滑块值数字 =
+    占位元素尺寸滑块.nextElementSibling.querySelector(".滑块值数字");
+  滑块值数字.textContent = 占位元素尺寸滑块.value;
+  for (const 占位元素 of 占位元素组) {
+    占位元素.style.width = `${占位元素尺寸滑块.value}%`;
+    占位元素.style.height = `${占位元素尺寸滑块.value}%`;
+  }
+});
+
+const 尺寸变化观察器 = new ResizeObserver(尺寸变化回调);
+尺寸变化观察器.observe(展示区);
+
+function 尺寸变化回调(entries) {
+  entries.forEach((entry) => {
+    const 顶 = 顶距离滑块.value;
+    const 右 = 右距离滑块.value;
+    const 底 = 底距离滑块.value;
+    const 左 = 左距离滑块.value;
+    刷新绝对定位位置(顶, 右, 底, 左);
+    更新参照对象();
+    更新辅助线();
+  });
 }
 
 function 重置参数() {

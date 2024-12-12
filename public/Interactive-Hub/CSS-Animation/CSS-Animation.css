@@ -362,7 +362,7 @@ input[type="range"]:hover {
   font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
   display: flex;
   flex-wrap: wrap;
-  width: min(750px, 95%);
+  width: max(250px, 97.5%);
   font-size: max(10px, 1.15vh);
 }
 
@@ -373,7 +373,8 @@ input[type="range"]:hover {
 }
 
 .速写代码区 > span:not(:first-of-type):hover {
-  background-color: #fff2;
+  background-color: #bdf2;
+  box-shadow: inset 0 0 0 1px #555;
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
@@ -409,7 +410,11 @@ input[type="range"]:hover {
   color: lightseagreen;
 }
 
-.速写动画填充模式 .速写结尾分号 {
+.速写动画播放状态 {
+  color: #ad8def;
+}
+
+.速写结尾分号 {
   color: gray;
 }
 
@@ -456,7 +461,8 @@ input[type="range"]:hover {
 .总区:has(.延迟参数区:hover) .速写动画延迟 .代码提示,
 .总区:has(.迭代计数参数区:hover) .速写动画迭代计数 .代码提示,
 .总区:has(.方向参数区:hover) .速写动画方向 .代码提示,
-.总区:has(.填充模式参数区:hover) .速写动画填充模式 .代码提示 {
+.总区:has(.填充模式参数区:hover) .速写动画填充模式 .代码提示,
+.总区:has(.播放状态参数区:hover) .速写动画播放状态 .代码提示 {
   opacity: 1;
 }
 
@@ -466,8 +472,10 @@ input[type="range"]:hover {
 .总区:has(.延迟参数区:hover) .速写动画延迟,
 .总区:has(.迭代计数参数区:hover) .速写动画迭代计数,
 .总区:has(.方向参数区:hover) .速写动画方向,
-.总区:has(.填充模式参数区:hover) .速写动画填充模式 {
-  background-color: #fff2;
+.总区:has(.填充模式参数区:hover) .速写动画填充模式,
+.总区:has(.播放状态参数区:hover) .速写动画播放状态 {
+  background-color: #bdf2;
+  box-shadow: inset 0 0 0 1px #555;
 }
 
 .提示装饰 {
@@ -531,6 +539,8 @@ input[type="range"]:hover {
 
 .关键帧属性区 {
   align-items: flex-start;
+  pointer-events: none;
+  filter: brightness(25%);
 }
 
 .关键帧分区 {
