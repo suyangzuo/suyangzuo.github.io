@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>猜拳</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&family=Noto+Sans+SC&display=swap"
+      rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="../game-common.css" />
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/Styles/top-banner-common.css" />
+    <script
+      src="https://kit.fontawesome.com/d0483e3bd3.js"
+      crossorigin="anonymous"></script>
+    <script src="/Scripts/top-banner.js" defer></script>
+    <script src="https://cdn.lordicon.com/bhenfmcm.js"></script>
+  </head>
+  <body>
+    <script
+      src="/Scripts/html-include.js"
+      target="/top-banner.html"
+      position="afterbegin"></script>
+    <div class="control-area">
+      <div class="back-to-navigator">
+        <a href="../game-index.html" title="返回游戏大厅">
+          <img src="../后退.png" alt="后退" />
+        </a>
+      </div>
+      <div class="reset-game">
+        <img src="../重置.png" alt="重置游戏" title="重置" />
+      </div>
+    </div>
+    
+    <section class="container">
+      <!-- ------------------结果动画------------------------ -->
+
+      <div class="result_field">
+        <div class="wenzi">
+          <span class="user">User</span>
+          <span class="cpu">CPU</span>
+        </div>
+
+        <div class="result_images">
+          <span class="user_result">
+            <img src="./images/rock.png" />
+          </span>
+          <span class="cpu_result">
+            <img src="./images/rock.png" />
+          </span>
+        </div>
+        <div class="result">让我们开始吧</div>
+      </div>
+      <!-- ------------------结果动画------------------------ -->
+
+      <!-- ----------------提示信息------------------------ -->
+      <div class="option_images">
+        <span class="option_image">
+          <img src="./images/rock.png" alt="rock" />
+          <p>石头</p>
+        </span>
+        <span class="option_image">
+          <img src="./images/paper.png" alt="paper" />
+          <p>布</p>
+        </span>
+        <span class="option_image">
+          <img src="./images/scissor.png" alt="scissor" />
+          <p>剪刀</p>
+        </span>
+      </div>
+      <!-- ----------------提示信息------------------------ -->
+    </section>
+    <!-- -----------比较--------------------- -->
+    <script src="./js/script.js" defer></script>
+    <!-- -----------比较--------------------- -->
+  </body>
+</html>
