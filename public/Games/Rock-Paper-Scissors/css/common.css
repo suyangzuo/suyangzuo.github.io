@@ -1,0 +1,310 @@
+:root {
+  --网站风格颜色: rgb(42, 151, 140);
+  --bg-color: rgb(23, 28, 33);
+  --f-color: #eeeeee;
+  --top-banner-color: #9e2a2b;
+  --contributers-bg-color: #183656;
+  --name: #c97719;
+  --hover-link: #222f33;
+  --shadow-color: #101010;
+  --scrollbar-track-color: #222426;
+  --scrollbar-thumb-color: #426556;
+  --scrollbar-width: 14px;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+input[type="range"]::-moz-range-thumb {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  position: relative;
+  width: 100dvw;
+  overflow-x: hidden;
+  background-color: var(--bg-color);
+  color: var(--f-color);
+  z-index: 0;
+  cursor: url("/Images/Common/鼠标-默认.cur"), auto;
+  font-family: "Noto Sans SC", sans-serif, "Noto Sans Mono", monospace;
+}
+
+body::-webkit-scrollbar {
+  width: var(--scrollbar-width);
+}
+
+body::-webkit-scrollbar:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--scrollbar-track-color);
+}
+
+body::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-color);
+  border-radius: 30px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background-color: #577e6d;
+}
+
+body:has(dialog[open]) {
+  overflow: hidden;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:link {
+  color: aliceblue;
+}
+
+button:hover,
+a:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+a:visited {
+  color: aliceblue;
+}
+
+button {
+  border: none;
+}
+
+button:focus {
+  outline: none;
+}
+
+li {
+  list-style: none;
+}
+
+li > a > i {
+  transition: 0.25s;
+}
+
+/* ------------------------- ↓ 页脚 ------------------------- */
+#公共页脚 {
+  background-color: #171c21;
+  position: relative;
+  bottom: 0;
+  z-index: 9990;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10vw;
+  width: 100vw;
+  padding: 100px 5vw 150px;
+}
+
+#页脚Logo区 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+#页脚Logo图像区 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+}
+
+#页脚Logo容器 {
+  width: 100px;
+  height: 100px;
+  border-radius: 300px;
+  overflow: hidden;
+}
+
+#页脚Logo容器 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+#永恒Logo文字区 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7.5px;
+}
+
+.永恒Logo文字背景 {
+  width: 75px;
+  height: 75px;
+  background: center/cover url(../Images/Index-Images/黄金质感-01.jpg);
+}
+
+.永恒Logo文字背景-永 {
+  outline: solid 5px white;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-image: url(../Images/Index-Images/永.png);
+  -webkit-mask-image: url(../Images/Index-Images/永.png);
+}
+
+.永恒Logo文字背景-恒 {
+  outline: solid 5px white;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-image: url(../Images/Index-Images/恒.png);
+  -webkit-mask-image: url(../Images/Index-Images/恒.png);
+}
+
+.永恒Logo文字背景 > img {
+  height: 100%;
+  width: 45%;
+  object-fit: contain;
+}
+
+#页脚文本容器 {
+  max-width: 450px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+#页脚文本容器 > p {
+  color: #ccc;
+}
+
+#页脚信息区 {
+  display: flex;
+  align-items: flex-start;
+  gap: 5vw;
+}
+
+.页脚信息分区标题 {
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.页脚信息分区链接 {
+  width: 100%;
+  height: 100%;
+  padding: 7px 10px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+}
+
+.页脚信息分区链接图容器 {
+  height: 60%;
+  width: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.页脚信息分区链接图容器 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.页脚信息分区链接 > span {
+  color: gray;
+  font-size: 14px;
+}
+
+.页脚信息分区链接:hover {
+  background-color: #252a2e;
+  box-shadow: 0 0 0 1px #888;
+  border-radius: 5px;
+}
+
+.页脚信息分区链接:hover > span {
+  color: silver;
+}
+
+#页脚版权提示区 {
+  width: min(735px, 85%);
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  translate: -50% 0;
+}
+
+#第三方版权声明 {
+  font-size: 0.9rem;
+  color: gray;
+}
+
+#第一方版权声明 {
+  font-size: 0.9rem;
+  color: gray;
+}
+
+/* ------------------------- ↑ 页脚 ------------------------- */
+
+/* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
+@media screen and (width < 1300px) {
+  #公共页脚 {
+    flex-direction: column;
+    gap: 50px;
+  }
+
+  #页脚Logo区 {
+    height: 250px !important;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  #公共页脚 {
+    padding: 50px 0 150px 0;
+  }
+
+  #页脚Logo区 {
+    padding: 0 20px;
+  }
+
+  #页脚信息区 {
+    gap: 10px;
+  }
+
+  .页脚信息分区标题 {
+    font-size: 1rem;
+    padding: 10px 2.5px;
+  }
+
+  .页脚信息分区链接 {
+    padding: 7.5px 2.5px;
+    gap: 7.5px;
+  }
+
+  .页脚信息分区链接 > span {
+    font-size: 0.75rem;
+  }
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  body {
+    scrollbar-color: var(--scrollbar-thumb-color) var(--scrollbar-track-color);
+  }
+}
+
+/* <!-- ------------------ ↑ 响应式设计 ------------------- --> */

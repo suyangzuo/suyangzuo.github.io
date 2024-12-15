@@ -5,7 +5,7 @@
 }
 
 body {
-  display: flex;
+  /* display: flex; */
   justify-content: center;
   align-items: center;
   height: 100vh;
@@ -21,6 +21,11 @@ body {
   padding: 2rem 7rem; /*上下增加2个单位边距 左右增加7个单位边距 */
   border-radius: 14px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  width: 510px;
+  background-size: contain;
+  margin: 0;
+  margin-top: 20vh;
+  margin-left: 75vh;
 }
 .result_images {
   display: flex;
@@ -86,11 +91,10 @@ body {
 .user {
   color: #6b2629;
   font-size: 1.9rem;
-  margin-left: 19px;
 }
 
 .cpu {
   color: #6b2629;
   font-size: 1.9rem;
-  margin-left: 148px;
+  margin-left: 154px;
 }
