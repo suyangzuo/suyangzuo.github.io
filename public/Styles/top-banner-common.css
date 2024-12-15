@@ -68,7 +68,6 @@
 #logo-text {
   width: 80px;
   height: 100%;
-  /* background-color: #ff4da6; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -87,7 +86,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* filter: invert(80%); */
   -webkit-mask-size: contain;
   mask-size: contain;
   -webkit-mask-repeat: no-repeat;
@@ -159,124 +157,6 @@
     filter: grayscale(1) brightness(1);
   }
 }
-
-.repository-section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
-
-.repository-link {
-  height: 100%;
-  aspect-ratio: 0.8;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.repository-link:hover .repository-img {
-  box-shadow: 0 0 15px 7px #fff5;
-}
-
-.repository-img {
-  height: 50%;
-  object-fit: contain;
-  border-radius: 999px;
-}
-
-/*#搜索区 {
-  height: 100%;
-  flex-grow: 1;
-  max-width: 800px;
-  display: flex;
-}
-
-.搜索标签 {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  border-radius: 5px;
-  padding: 0 2px;
-  overflow: hidden;
-}
-
-.搜索按钮 {
-  position: absolute;
-  height: 35px;
-  width: 35px;
-  background-color: #fff2;
-  color: white;
-  border-radius: 5px 0 0 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: 125ms;
-}
-
-.搜索按钮:hover {
-  background-color: #abc;
-  color: black;
-  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
-}
-
-.搜索按钮:active {
-  color: lightskyblue;
-}
-
-#搜索框 {
-  width: 100%;
-  height: 35px;
-  background-color: #fff2;
-  border: none;
-  border-radius: 5px;
-  padding: 0 10px 0 45px;
-  font-size: 16px;
-  color: #ddd;
-  font-family: "JetBrains Mono", "Noto Sans SC", monospace, sans-serif;
-  outline: solid 2px transparent;
-  transition: 125ms;
-}
-
-#搜索框:hover, #搜索框:has(+ .搜索按钮:hover) {
-  outline: solid 2px #ff69b477;
-}
-
-#搜索框:focus, #搜索框:has(+ .搜索按钮:hover):focus, #搜索框:has(+ .搜索按钮:active) {
-  outline: solid 2px hotpink;
-}
-
-#搜索框::placeholder {
-  font-family: "JetBrains Mono", "Noto Sans SC", monospace, sans-serif;
-  color: #aaa;
-  transition: 125ms;
-}
-
-#搜索框:focus::placeholder, #搜索框:has(+ .搜索按钮:hover):focus::placeholder {
-  color: #777;
-}
-
-#搜索框::-moz-placeholder {
-  font-family: "JetBrains Mono", "Noto Sans SC", monospace, sans-serif;
-  color: #aaa;
-}
-
-#搜索框::-webkit-search-cancel-button {
-  appearance: none;
-  width: 25px;
-  height: 25px;
-  background: no-repeat center/contain url("/Images/Common/Cross-Mark.png");
-  filter: hue-rotate(100deg);
-  transition: 75ms;
-  margin-right: 0;
-}
-
-#搜索框::-webkit-search-cancel-button:hover {
-  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
-  filter: hue-rotate(20deg);
-}*/
 
 .导航功能区 {
   height: 100%;

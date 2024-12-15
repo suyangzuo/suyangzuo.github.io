@@ -1,592 +1,276 @@
 :root {
-  --比率-外边距-上: 50%;
-  --比率-外边距-下: 50%;
-  --比率-外边距-左: 50%;
-  --比率-外边距-右: 50%;
-  --比率-内边距-上: 50%;
-  --比率-内边距-下: 50%;
-  --比率-内边距-左: 50%;
-  --比率-内边距-右: 50%;
-  --比率-边框-上: 50%;
-  --比率-边框-下: 50%;
-  --比率-边框-左: 50%;
-  --比率-边框-右: 50%;
-  --比率-盒子-内容-宽: 50%;
-  --比率-盒子-内容-高: 50%;
-  --拇指宽度: 16px;
-  --颜色-外边距: rgb(189, 94, 194);
-  --颜色-边框: rgb(72, 173, 116);
-  --颜色-内边距: goldenrod;
-  --颜色-内容: rgb(107, 159, 219);
-  --进度条颜色-外边距: rgb(149, 55, 154);
-  --进度条颜色-边框: rgb(36, 109, 68);
-  --进度条颜色-内边距: rgb(146, 72, 12);
-  --进度条颜色-内容: rgb(44, 85, 133);
-  --进度条颜色-未填充: rgb(120, 120, 120);
+  --边框尺寸: 75px;
+  --内边距尺寸: 75px;
+  --外边距尺寸: 75px;
+  --内容尺寸: 300px;
+  --内容盒子宽度: 300px;
+  --内容盒子高度: 300px;
+  --宽度修剪比例: 25%;
+  --高度修剪比例: 25%;
+  --内容修剪比例: 25%;
+  --内边距修剪比例: 25%;
+  --边框修剪比例: 25%;
+  --外边距修剪比例: 25%;
+  --拇指尺寸: 26px;
+  --滑块前缀文本宽度: 64px;
 }
 
-.盒子 {
-  width: 800px;
-  height: 800px;
+body {
+  font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
+}
+
+.总区 span[class$="中文"] {
+  color: lightskyblue;
+}
+
+.总区 span[class$="代码"] {
+  color: lightcyan;
+  font-size: 0.95em;
+}
+
+.总区 span[class$="文本"] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.盒子模型总区 {
   display: flex;
   justify-content: center;
-  align-items: center;
-  position: relative;
+  align-items: flex-start;
+}
+
+.展示区 {
+  width: 1000px;
+  display: flex;
+  justify-content: center;
   flex-shrink: 0;
 }
 
-.盒子 div {
-  position: absolute;
-}
-
-.第4盒 {
-  background-color: var(--颜色-外边距);
-  width: 350px;
-  height: 350px;
-  animation: 第4盒动画 1s ease-in-out infinite alternate;
-}
-
-@keyframes 第4盒动画 {
-  from {
-    filter: opacity(1);
-  }
-  to {
-    filter: opacity(0);
-  }
-}
-
-.第3盒 {
-  background-color: var(--颜色-边框);
-  width: 250px;
-  height: 250px;
-  outline: solid 3px white;
-}
-
-.第2盒 {
-  background-color: var(--颜色-内边距);
-  width: 150px;
-  height: 150px;
-}
-
-.第1盒 {
-  background-color: var(--颜色-内容);
-  width: 50px;
-  height: 50px;
-}
-
-.选项 {
-  width: 650px;
-  height: 800px;
+.外边距盒子 {
+  background-color: #b08354;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 20px;
-}
-
-.单项 {
-  position: relative;
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 20px;
-}
-
-.单项:hover::after {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-  content: "";
-  pointer-events: none;
-}
-
-.单项-外边距 {
-  background-color: #0c172430;
-  border-right: solid 5px var(--颜色-外边距);
-}
-
-.单项-外边距:hover::after {
-  border-top: solid 2px var(--颜色-外边距);
-  border-left: solid 2px var(--颜色-外边距);
-  border-bottom: solid 2px var(--颜色-外边距);
-}
-
-.单项-边框 {
-  background-color: #0c172460;
-  border-right: solid 5px var(--颜色-边框);
-}
-
-.单项-边框:hover::after {
-  border-top: solid 2px var(--颜色-边框);
-  border-left: solid 2px var(--颜色-边框);
-  border-bottom: solid 2px var(--颜色-边框);
-}
-
-.单项-内边距 {
-  background-color: #0c172490;
-  border-right: solid 5px var(--颜色-内边距);
-}
-
-.单项-内边距:hover::after {
-  border-top: solid 2px var(--颜色-内边距);
-  border-left: solid 2px var(--颜色-内边距);
-  border-bottom: solid 2px var(--颜色-内边距);
-}
-
-.单项-内容 {
-  background-color: #0c1724c0;
-  border-right: solid 5px var(--颜色-内容);
-}
-
-.单项-内容:hover::after {
-  border-top: solid 2px var(--颜色-内容);
-  border-left: solid 2px var(--颜色-内容);
-  border-bottom: solid 2px var(--颜色-内容);
-}
-
-.单项属性-名称 {
-  width: 100px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(-30deg, #0003 0%, #0007 100%);
 }
 
-.名称中文 {
-  font-size: 1.25rem;
+.边框盒子 {
+  border: solid var(--边框尺寸) #e4c482;
+  background-color: #788053;
+  padding: var(--内边距尺寸);
 }
 
-.范围选择 {
+.内容盒子 {
+  width: var(--内容盒子宽度);
+  height: var(--内容盒子高度);
+  background-color: lightsteelblue;
+}
+
+.操作区 {
+  min-width: 450px;
+}
+
+.盒子模型区 {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 5px 0;
+  gap: 1vh;
+  padding: 15px 20px;
+  border: solid 1px #789;
 }
 
-.范围单项 {
+.盒子模型标题 {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 15px;
-  padding: 5px 0;
 }
 
-.范围选择器 {
-  appearance: none;
-  width: 200px;
-  height: 7px;
-  border-radius: 10px;
+.总区 :where(.盒子模型标题, .盒子尺寸标题) > span[class$="中文"] {
+  color: lightseagreen;
+}
+
+.盒子模型标题 > span[class$="代码"] {
+  color: lightgreen;
+}
+
+.单选区 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.标签容器 {
+  height: 55px;
+  border-radius: 8px;
+}
+
+.标签容器:hover {
+  background-color: #123;
+}
+
+label .标签文本 {
+  pointer-events: none;
+}
+
+label:has(input[type="radio"]) {
   position: relative;
+  padding: 5px 10px;
+  border-radius: 5px;
+  overflow: hidden;
 }
 
-.范围选择器:hover {
+label:has(input[type="radio"]):hover,
+label > input[type="radio"]:hover,
+input[type="range"]:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
-input[type="range"]:focus {
-  outline: none;
+label:has(input[type="radio"]:checked) {
+  background-color: #bcd;
+  box-shadow: 1px 1px 2px 0 #000a;
 }
 
-.范围选择器::-webkit-slider-thumb {
-  position: relative;
-  z-index: 1;
-  -webkit-appearance: none;
-  appearance: none;
-  cursor:
-    url(/Images/Common/鼠标-横向缩放.png) 16 6,
-    ew-resize;
-  width: var(--拇指宽度);
-  aspect-ratio: 1;
-  border-radius: var(--拇指宽度);
-  background: no-repeat center/contain
-    url(/Images/Interactive-Hub/进度条拇指/闪电球.png);
-  transform: translateY(-50%) scale(1.25);
-  filter: brightness(150%) drop-shadow(0 0 2px black);
+label:has(input[type="radio"]:not(:checked)):hover {
+  background-color: #202a32;
 }
 
-.范围选择器::-moz-range-thumb {
-  position: relative;
-  z-index: 1;
-  -webkit-appearance: none;
+label:has(input[type="radio"]:checked) .标签文本 {
+  filter: invert(100%);
+}
+
+label > input[type="radio"] {
   appearance: none;
-  cursor:
-    url(/Images/Common/鼠标-横向缩放.png) 16 6,
-    ew-resize;
-  width: 16px;
-  height: 16px;
-  border-radius: var(--拇指宽度);
-  background: no-repeat center/contain
-    url(/Images/Interactive-Hub/进度条拇指/闪电球.png);
-  transform: translateY(-5%) scale(1.25);
-  filter: brightness(150%) drop-shadow(0 0 2px black);
-  border: none;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.盒子宽高区 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1vh;
+  padding: 15px 20px;
+  border: solid 1px #789;
+}
+
+.滑块区 {
+  display: flex;
+  flex-direction: column;
+  /*gap: 15px;*/
+  width: 100%;
+}
+
+.滑块区 > label:has(input[type="range"]) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.滑块区 .标签文本 {
+  width: var(--滑块前缀文本宽度);
 }
 
 input[type="range"] {
-  -webkit-appearance: none;
+  width: 50%;
+  height: 12px;
+}
+
+input[type="range"] {
+  position: relative;
   appearance: none;
+  border-radius: 999px;
+  background-color: #777;
 }
 
-#外边距上 {
-  background-image: linear-gradient(
-    90deg,
-    var(--颜色-外边距) var(--比率-外边距-上),
-    var(--进度条颜色-未填充) var(--比率-外边距-上)
-  );
+input[type="range"]::before {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  top: 0;
+  left: 0;
+  background-image: linear-gradient(90deg, lightgreen 0%, gold 100%);
+  content: "";
+  pointer-events: none;
 }
 
-#外边距右 {
-  background-image: linear-gradient(
-    90deg,
-    var(--颜色-外边距) var(--比率-外边距-右),
-    var(--进度条颜色-未填充) var(--比率-外边距-右)
-  );
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: var(--拇指尺寸);
+  height: var(--拇指尺寸);
+  border-radius: 999px;
+  background-color: lightcyan;
+  box-shadow: 2px 2px 2px 0 #0007;
+  position: relative;
 }
 
-#外边距下 {
-  background-image: linear-gradient(
-    90deg,
-    var(--颜色-外边距) var(--比率-外边距-下),
-    var(--进度条颜色-未填充) var(--比率-外边距-下)
-  );
-}
-
-#外边距左 {
-  background-image: linear-gradient(
-    90deg,
-    var(--颜色-外边距) var(--比率-外边距-左),
-    var(--进度条颜色-未填充) var(--比率-外边距-左)
-  );
-}
-
-#边框上 {
-  background-image: linear-gradient(
-    90deg,
-    var(--颜色-边框) var(--比率-边框-上),
-    var(--进度条颜色-未填充) var(--比率-边框-上)
-  );
-}
-
-#边框右 {
-  background-image: linear-gradient(
-    90deg,
-    var(--颜色-边框) var(--比率-边框-右),
-    var(--进度条颜色-未填充) var(--比率-边框-右)
-  );
-}
-
-#边框下 {
-  background-image: linear-gradient(
-    90deg,
-    var(--颜色-边框) var(--比率-边框-下),
-    var(--进度条颜色-未填充) var(--比率-边框-下)
-  );
-}
-
-#边框左 {
-  background-image: linear-gradient(
-    90deg,
-    var(--颜色-边框) var(--比率-边框-左),
-    var(--进度条颜色-未填充) var(--比率-边框-左)
-  );
-}
-
-#内边距上 {
-  background-image: linear-gradient(
-    90deg,
-    var(--颜色-内边距) var(--比率-内边距-上),
-    var(--进度条颜色-未填充) var(--比率-内边距-上)
-  );
-}
-
-#内边距右 {
-  background-image: linear-gradient(
-    90deg,
-    var(--颜色-内边距) var(--比率-内边距-右),
-    var(--进度条颜色-未填充) var(--比率-内边距-右)
-  );
-}
-
-#内边距下 {
-  background-image: linear-gradient(
-    90deg,
-    var(--颜色-内边距) var(--比率-内边距-下),
-    var(--进度条颜色-未填充) var(--比率-内边距-下)
-  );
-}
-
-#内边距左 {
-  background-image: linear-gradient(
-    90deg,
-    var(--颜色-内边距) var(--比率-内边距-左),
-    var(--进度条颜色-未填充) var(--比率-内边距-左)
-  );
-}
-
-#内容宽 {
-  background-image: linear-gradient(
-    90deg,
-    var(--颜色-内容) var(--比率-盒子-内容-宽),
-    var(--进度条颜色-未填充) var(--比率-盒子-内容-宽)
-  );
-}
-
-#内容高 {
-  background-image: linear-gradient(
-    90deg,
-    var(--颜色-内容) var(--比率-盒子-内容-高),
-    var(--进度条颜色-未填充) var(--比率-盒子-内容-高)
-  );
-}
-
-.单项属性-方向 {
-  width: 70px;
+.模型设置区 {
   display: flex;
-  justify-content: flex-start;
+  flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 1vh;
+  padding: 15px 20px;
+  border: solid 1px #789;
 }
 
-.中文 {
-  color: lightcyan;
+#宽度::before {
+  clip-path: inset(0 var(--宽度修剪比例) 0 0);
 }
 
-.代码 {
-  color: tomato;
+#高度::before {
+  clip-path: inset(0 var(--高度修剪比例) 0 0);
 }
 
-.方向代码 {
-  font-size: 0.85rem;
+#内容::before {
+  clip-path: inset(0 var(--内容修剪比例) 0 0);
 }
 
-[class*="代码"] {
-  font-family: "JetBrains Mono", Consolas, monospace;
+#内边距::before {
+  clip-path: inset(0 var(--内边距修剪比例) 0 0);
 }
 
-.值 {
-  width: 65px;
-  color: darkgrey;
-  background-color: rgba(129, 44, 44, 0);
-  padding: 5px 2px;
-  clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 20% 100%, 0% 50%);
-  border-radius: 3px;
+#边框::before {
+  clip-path: inset(0 var(--边框修剪比例) 0 0);
+}
+
+#外边距::before {
+  clip-path: inset(0 var(--外边距修剪比例) 0 0);
+}
+
+.模型设置分区 {
+  flex-shrink: 0;
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 10px;
+  height: 55px;
+  border-radius: 8px;
+}
+
+.模型设置分区:hover {
+  background-color: #123;
+}
+
+.标签 {
+  width: var(--滑块前缀文本宽度);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.滑块值 {
+  width: 52px;
+  display: flex;
   align-items: center;
   gap: 3px;
-  font-size: 0.85rem;
-  font-family: "JetBrains Mono", Consolas, monospace;
 }
 
-.值-数字 {
-  display: inline-block;
-  color: white;
-  font-weight: bolder;
-  width: 30px;
-  text-align: right;
-}
-
-.范围单项:has(.范围选择器:hover) > .值,
-.范围单项:has(.范围选择器:focus-visible) > .值 {
-  background-color: rgba(129, 44, 44, 1);
-}
-
-.选项关联区 {
-  padding: 0 0 0 15px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  -webkit-user-select: none;
-  user-select: none;
-  -webkit-user-drag: none;
-}
-
-.关联方向 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.单项-外边距 .关联方向 > label {
-  color: var(--颜色-外边距);
-  padding: 0 5px;
-}
-
-.单项-边框 .关联方向 > label {
-  color: var(--颜色-边框);
-  padding: 0 5px;
-}
-
-.单项-内边距 .关联方向 > label {
-  color: var(--颜色-内边距);
-  padding: 0 5px;
-}
-
-.单项-内容 .关联方向 > label {
-  color: var(--颜色-内容);
-  padding: 0 5px;
-}
-
-.关联方向:hover > label {
-  /*color: rgb(212, 72, 72);*/
-  filter: brightness(150%);
-}
-
-.关联方向:hover input {
-  scale: 1.1;
-  outline-color: white;
-  outline-width: 1px;
-}
-
-.关联方向 > label:hover,
-.关联方向 > .checkbox-封装器 > label:hover,
-.关联方向 > .checkbox-封装器 > input:hover,
-input[type="radio"]:hover {
-  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
-}
-
-.checkbox-封装器 {
-  position: relative;
-  height: 12px;
-  width: 12px;
-  translate: 0 1px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.checkbox-封装器 > input {
-  appearance: none;
-  width: 100%;
-  height: 100%;
-  outline: solid 1px #aaa;
-}
-
-.checkbox-封装器 > input:checked {
-  outline-color: transparent;
-}
-
-.关联方向:hover input:checked + span {
-  background-image: linear-gradient(90deg, lightskyblue 25%, lightgreen 75%);
-}
-
-.checkbox-封装器:hover > input {
-  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
-}
-
-.checkbox-封装器 > span {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-  /*background-color: rgb(124, 255, 216);*/
-  background-color: white;
-  visibility: hidden;
-  opacity: 0;
-  transition: 100ms;
-  pointer-events: none;
-  clip-path: polygon(43% 78%, 86% 8%, 96% 16%, 46% 97%, 5% 56%, 13% 47%);
-}
-
-.checkbox-封装器 > input:checked + span {
-  visibility: visible;
-  opacity: 1;
-}
-
-.盒子尺寸 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  padding: 15px 0;
-}
-
-.盒子尺寸代码 {
-  font-size: 0.85rem;
-}
-
-.盒子尺寸类型 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  -webkit-user-select: none;
-  user-select: none;
-  -webkit-user-drag: none;
-}
-
-.盒子尺寸类型-label {
-  color: lightseagreen;
-  padding: 0 10px 0 5px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  transition: 0.2s;
-}
-
-.盒子尺寸类型-label > span {
-  color: rgb(155, 246, 241);
-  font-size: 0.85rem;
-  font-family: "JetBrains Mono", Consolas, monospace;
-}
-
-.盒子尺寸 input {
-  appearance: none;
-  border: solid 1px gray;
-  width: 15px;
-  height: 15px;
-  transition: 0.2s;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.radio封装器 {
-  height: fit-content;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
-
-.radio封装器 > span {
-  position: absolute;
-  top: 20%;
-  left: 15%;
-  transform: scale(1.5);
-  /* color: rgb(52, 184, 118); */
-  color: rgb(255, 107, 84);
-  visibility: hidden;
-  opacity: 0;
-}
-
-.盒子尺寸 input:checked:after {
-  width: 60%;
-  height: 60%;
-  content: "";
-  background-color: white;
-}
-
-.盒子尺寸类型:hover > .盒子尺寸类型-label {
-  filter: brightness(120%);
-  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
-}
-
-.盒子尺寸类型:hover > .radio封装器 {
-  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
-}
-
-.盒子尺寸类型:hover input {
-  scale: 1.1;
+.数字,
+.滑块数字 {
+  color: lightskyblue;
 }

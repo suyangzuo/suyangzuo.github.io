@@ -42,491 +42,158 @@
         position="afterbegin"
       ></script>
       <p class="交互标题">盒子模型</p>
-      <div class="盒子">
-        <div class="第4盒"></div>
-        <div class="第3盒"></div>
-        <div class="第2盒"></div>
-        <div class="第1盒"></div>
+      <div class="展示区">
+        <div class="外边距盒子">
+          <div class="边框盒子">
+            <div class="内容盒子"></div>
+          </div>
+        </div>
       </div>
-      <div class="选项">
-        <datalist id="范围节点">
-          <option value="50"></option>
-        </datalist>
-        <div class="单项 单项-外边距">
-          <div class="单项属性-名称">
-            <span class="中文 名称中文">外边距</span
-            ><span class="代码 名称代码">margin</span>
-          </div>
-          <div class="范围选择">
-            <div class="范围单项 外边距上">
-              <p class="单项属性-方向">
-                <span class="中文 方向中文">上</span
-                ><span class="代码 方向代码">top</span>
-              </p>
-              <input
-                id="外边距上"
-                type="range"
-                min="0"
-                max="100"
-                step="1"
-                value="50"
-                class="范围选择器"
-                title="margin-top"
-                autocomplete="off"
-              />
-              <p class="值 外边距上值"><span class="值-数字">50</span> px</p>
-            </div>
-            <div class="范围单项 外边距右">
-              <p class="单项属性-方向">
-                <span class="中文 方向中文">右</span
-                ><span class="代码 方向代码">right</span>
-              </p>
-              <input
-                id="外边距右"
-                type="range"
-                min="0"
-                max="100"
-                step="1"
-                value="50"
-                class="范围选择器"
-                title="margin-right"
-                autocomplete="off"
-              />
-              <p class="值 外边距右值"><span class="值-数字">50</span> px</p>
-            </div>
-            <div class="范围单项 外边距下">
-              <p class="单项属性-方向">
-                <span class="中文 方向中文">下</span
-                ><span class="代码 方向代码">bottom</span>
-              </p>
-              <input
-                id="外边距下"
-                type="range"
-                min="0"
-                max="100"
-                step="1"
-                value="50"
-                class="范围选择器"
-                title="margin-bottom"
-                autocomplete="off"
-              />
-              <p class="值 外边距下值"><span class="值-数字">50</span> px</p>
-            </div>
-            <div class="范围单项 外边距左">
-              <p class="单项属性-方向">
-                <span class="中文 方向中文">左</span
-                ><span class="代码 方向代码">left</span>
-              </p>
-              <input
-                id="外边距左"
-                type="range"
-                min="0"
-                max="100"
-                step="1"
-                value="50"
-                class="范围选择器"
-                title="margin-left"
-                autocomplete="off"
-              />
-              <p class="值 外边距左值"><span class="值-数字">50</span> px</p>
+      <div class="操作区">
+        <div class="盒子属性区">
+          <div class="盒子模型区">
+            <h3 class="盒子模型标题">
+              <span class="盒子模型中文">盒子尺寸模型</span>
+              <span class="盒子模型代码">box-sizing</span>
+            </h3>
+            <div class="单选区">
+              <label for="内容盒子" class="标签容器"
+                ><span class="标签文本"
+                  ><span class="标签中文">内容盒子</span
+                  ><span class="标签代码">content-box</span></span
+                ><input
+                  type="radio"
+                  id="内容盒子"
+                  name="盒子模型"
+                  class="单选框"
+                  checked
+              /></label>
+              <label for="内容盒子" class="标签容器"
+                ><span class="标签文本"
+                  ><span class="标签中文">边框盒子</span
+                  ><span class="标签代码">border-box</span></span
+                ><input
+                  type="radio"
+                  id="边框盒子"
+                  name="盒子模型"
+                  class="单选框"
+              /></label>
             </div>
           </div>
-          <div class="选项关联区">
-            <div class="关联方向 上下关联">
-              <label class="上下关联-label" for="外边距-上下关联-checkbox"
-                >上下关联</label
-              >
-              <div class="checkbox-封装器">
-                <input
-                  type="checkbox"
-                  class="上下关联-checkbox"
-                  id="外边距-上下关联-checkbox"
-                  name="外边距方向-checkbox"
-                  autocomplete="off"
-                />
-                <span></span>
-              </div>
-            </div>
-            <div class="关联方向 左右关联">
-              <label class="左右关联-label" for="外边距-左右关联-checkbox"
-                >左右关联</label
-              >
-              <div class="checkbox-封装器">
-                <input
-                  type="checkbox"
-                  class="左右关联-checkbox"
-                  id="外边距-左右关联-checkbox"
-                  name="外边距方向-checkbox"
-                  autocomplete="off"
-                />
-                <span></span>
-              </div>
-            </div>
-            <div class="关联方向 四向关联">
-              <label class="四向关联-label" for="外边距-四向关联-checkbox"
-                >四向关联</label
-              >
-              <div class="checkbox-封装器">
-                <input
-                  type="checkbox"
-                  class="四向关联-checkbox"
-                  id="外边距-四向关联-checkbox"
-                  name="外边距方向-checkbox"
-                  autocomplete="off"
-                />
-                <span></span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="单项 单项-边框">
-          <div class="单项属性-名称">
-            <span class="中文 名称中文">边框</span
-            ><span class="代码 名称代码">border</span>
-          </div>
-          <div class="范围选择">
-            <div class="范围单项 边框上">
-              <p class="单项属性-方向">
-                <span class="中文 方向中文">上</span
-                ><span class="代码 方向代码">top</span>
-              </p>
-              <input
-                id="边框上"
-                type="range"
-                min="0"
-                max="100"
-                step="1"
-                value="50"
-                class="范围选择器"
-                title="border-top"
-                autocomplete="off"
-              />
-              <p class="值 边框上值"><span class="值-数字">50</span> px</p>
-            </div>
-            <div class="范围单项 边框右">
-              <p class="单项属性-方向">
-                <span class="中文 方向中文">右</span
-                ><span class="代码 方向代码">right</span>
-              </p>
-              <input
-                id="边框右"
-                type="range"
-                min="0"
-                max="100"
-                step="1"
-                value="50"
-                class="范围选择器"
-                title="border-right"
-                autocomplete="off"
-              />
-              <p class="值 边框右值"><span class="值-数字">50</span> px</p>
-            </div>
-            <div class="范围单项 边框下">
-              <p class="单项属性-方向">
-                <span class="中文 方向中文">下</span
-                ><span class="代码 方向代码">bottom</span>
-              </p>
-              <input
-                id="边框下"
-                type="range"
-                min="0"
-                max="100"
-                step="1"
-                value="50"
-                class="范围选择器"
-                title="border-bottom"
-                autocomplete="off"
-              />
-              <p class="值 边框下值"><span class="值-数字">50</span> px</p>
-            </div>
-            <div class="范围单项 边框左">
-              <p class="单项属性-方向">
-                <span class="中文 方向中文">左</span
-                ><span class="代码 方向代码">left</span>
-              </p>
-              <input
-                id="边框左"
-                type="range"
-                min="0"
-                max="100"
-                step="1"
-                value="50"
-                class="范围选择器"
-                title="border-left"
-                autocomplete="off"
-              />
-              <p class="值 边框左值"><span class="值-数字">50</span> px</p>
-            </div>
-          </div>
-          <div class="选项关联区">
-            <div class="关联方向 上下关联">
-              <label class="上下关联-label" for="边框-上下关联-checkbox"
-                >上下关联</label
-              >
-              <div class="checkbox-封装器">
-                <input
-                  type="checkbox"
-                  class="上下关联-checkbox"
-                  id="边框-上下关联-checkbox"
-                  name="边框方向-checkbox"
-                  autocomplete="off"
-                />
-                <span></span>
-              </div>
-            </div>
-            <div class="关联方向 左右关联">
-              <label class="左右关联-label" for="边框-左右关联-checkbox"
-                >左右关联</label
-              >
-              <div class="checkbox-封装器">
-                <input
-                  type="checkbox"
-                  class="左右关联-checkbox"
-                  id="边框-左右关联-checkbox"
-                  name="边框方向-checkbox"
-                  autocomplete="off"
-                />
-                <span></span>
-              </div>
-            </div>
-            <div class="关联方向 四向关联">
-              <label class="四向关联-label" for="边框-四向关联-checkbox"
-                >四向关联</label
-              >
-              <div class="checkbox-封装器">
-                <input
-                  type="checkbox"
-                  class="四向关联-checkbox"
-                  id="边框-四向关联-checkbox"
-                  name="边框方向-checkbox"
-                  autocomplete="off"
-                />
-                <span></span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="单项 单项-内边距">
-          <div class="单项属性-名称">
-            <span class="中文 名称中文">内边距</span
-            ><span class="代码 名称代码">padding</span>
-          </div>
-          <div class="范围选择">
-            <div class="范围单项 内边距上">
-              <p class="单项属性-方向">
-                <span class="中文 方向中文">上</span
-                ><span class="代码 方向代码">top</span>
-              </p>
-              <input
-                id="内边距上"
-                type="range"
-                min="0"
-                max="100"
-                step="1"
-                value="50"
-                class="范围选择器"
-                title="padding-top"
-                autocomplete="off"
-              />
-              <p class="值 内边距上值"><span class="值-数字">50</span> px</p>
-            </div>
-            <div class="范围单项 内边距右">
-              <p class="单项属性-方向">
-                <span class="中文 方向中文">右</span
-                ><span class="代码 方向代码">right</span>
-              </p>
-              <input
-                id="内边距右"
-                type="range"
-                min="0"
-                max="100"
-                step="1"
-                value="50"
-                class="范围选择器"
-                title="padding-right"
-                autocomplete="off"
-              />
-              <p class="值 内边距右值"><span class="值-数字">50</span> px</p>
-            </div>
-            <div class="范围单项 内边距下">
-              <p class="单项属性-方向">
-                <span class="中文 方向中文">下</span
-                ><span class="代码 方向代码">bottom</span>
-              </p>
-              <input
-                id="内边距下"
-                type="range"
-                min="0"
-                max="100"
-                step="1"
-                value="50"
-                class="范围选择器"
-                title="padding-bottom"
-                autocomplete="off"
-              />
-              <p class="值 内边距下值"><span class="值-数字">50</span> px</p>
-            </div>
-            <div class="范围单项 内边距左">
-              <p class="单项属性-方向">
-                <span class="中文 方向中文">左</span
-                ><span class="代码 方向代码">left</span>
-              </p>
-              <input
-                id="内边距左"
-                type="range"
-                min="0"
-                max="100"
-                step="1"
-                value="50"
-                class="范围选择器"
-                title="padding-left"
-                autocomplete="off"
-              />
-              <p class="值 内边距左值"><span class="值-数字">50</span> px</p>
-            </div>
-          </div>
-          <div class="选项关联区">
-            <div class="关联方向 上下关联">
-              <label class="上下关联-label" for="内边距-上下关联-checkbox"
-                >上下关联</label
-              >
-              <div class="checkbox-封装器">
-                <input
-                  type="checkbox"
-                  class="上下关联-checkbox"
-                  id="内边距-上下关联-checkbox"
-                  name="内边距方向-checkbox"
-                  autocomplete="off"
-                />
-                <span></span>
-              </div>
-            </div>
-            <div class="关联方向 左右关联">
-              <label class="左右关联-label" for="内边距-左右关联-checkbox"
-                >左右关联</label
-              >
-              <div class="checkbox-封装器">
-                <input
-                  type="checkbox"
-                  class="左右关联-checkbox"
-                  id="内边距-左右关联-checkbox"
-                  name="内边距方向-checkbox"
-                  autocomplete="off"
-                />
-                <span></span>
-              </div>
-            </div>
-            <div class="关联方向 四向关联">
-              <label class="四向关联-label" for="内边距-四向关联-checkbox"
-                >四向关联</label
-              >
-              <div class="checkbox-封装器">
-                <input
-                  type="checkbox"
-                  class="四向关联-checkbox"
-                  id="内边距-四向关联-checkbox"
-                  name="内边距方向-checkbox"
-                  autocomplete="off"
-                />
-                <span></span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="单项 单项-内容">
-          <div class="单项属性-名称">
-            <span class="中文 名称中文">盒子</span
-            ><span class="代码 名称代码">box</span>
-          </div>
-          <div class="范围选择">
-            <div class="范围单项 内容宽">
-              <p class="单项属性-方向">
-                <span class="中文 方向中文">宽</span
-                ><span class="代码 方向代码">width</span>
-              </p>
-              <input
-                id="内容宽"
-                type="range"
-                min="0"
-                max="100"
-                step="1"
-                value="50"
-                class="范围选择器"
-                title="width"
-                autocomplete="off"
-              />
-              <p class="值 内容宽值"><span class="值-数字">50</span> px</p>
-            </div>
-            <div class="范围单项 内容高">
-              <p class="单项属性-方向">
-                <span class="中文 方向中文">高</span
-                ><span class="代码 方向代码">height</span>
-              </p>
-              <input
-                id="内容高"
-                type="range"
-                min="0"
-                max="100"
-                step="1"
-                value="50"
-                class="范围选择器"
-                title="height"
-                autocomplete="off"
-              />
-              <p class="值 内容高值"><span class="值-数字">50</span> px</p>
-            </div>
-            <div class="盒子尺寸">
-              <div class="盒子尺寸描述">
-                <p class="中文 盒子尺寸中文">盒子尺寸</p>
-                <p class="代码 盒子尺寸代码">box-sizing</p>
-              </div>
-              <div class="盒子尺寸类型 边框盒子">
-                <label class="盒子尺寸类型-label" for="边框盒子"
-                  >边框盒子<br /><span>border-box</span></label
+          <div class="盒子宽高区">
+            <h3 class="盒子尺寸标题">
+              <span class="盒子尺寸中文">内容尺寸</span>
+            </h3>
+            <div class="滑块区">
+              <label for="宽度" class="标签容器">
+                <span class="标签文本"
+                  ><span class="标签中文">宽度</span
+                  ><span class="标签代码">width</span></span
+                ><input
+                  type="range"
+                  id="宽度"
+                  class="数字滑块"
+                  min="150"
+                  max="350"
+                  value="300"
+                /><span class="滑块值"
+                  ><span class="数字">300</span
+                  ><span class="单位">px</span></span
                 >
-                <div class="radio封装器">
-                  <input
-                    class="盒子尺寸类型-radio"
-                    type="radio"
-                    id="边框盒子"
-                    name="盒子尺寸类型"
-                    checked
-                    autocomplete="off"
-                  />
-                  <span>&#128504;</span>
-                </div>
-              </div>
-              <div class="盒子尺寸类型 内容盒子">
-                <label class="盒子尺寸类型-label" for="内容盒子"
-                  >内容盒子<br /><span>content-box</span></label
+              </label>
+              <label for="高度" class="标签容器">
+                <span class="标签文本"
+                  ><span class="标签中文">高度</span
+                  ><span class="标签代码">height</span></span
+                ><input
+                  type="range"
+                  id="高度"
+                  class="数字滑块"
+                  min="150"
+                  max="350"
+                  value="300"
+                /><span class="滑块值"
+                  ><span class="数字">300</span
+                  ><span class="单位">px</span></span
                 >
-                <div class="radio封装器">
-                  <input
-                    class="盒子尺寸类型-radio"
-                    type="radio"
-                    id="内容盒子"
-                    name="盒子尺寸类型"
-                    autocomplete="off"
-                  />
-                  <span>&#128504;</span>
-                </div>
-              </div>
+              </label>
             </div>
           </div>
-          <div class="选项关联区">
-            <div class="关联方向 宽高关联">
-              <label class="宽高关联-label" for="内容-宽高关联-checkbox"
-                >宽高关联</label
-              >
-              <div class="checkbox-封装器">
+          <div class="模型设置区">
+            <h3 class="盒子尺寸标题">
+              <span class="盒子尺寸中文">盒子属性</span>
+            </h3>
+            <div class="滑块区">
+              <div class="内容设置区 模型设置分区">
+                <label for="内容" class="标签"
+                  ><span class="标签中文">内容</span></label
+                >
                 <input
-                  type="checkbox"
-                  class="宽高关联-checkbox"
-                  id="内容-宽高关联-checkbox"
-                  name="内容宽高关联-checkbox"
-                  autocomplete="off"
+                  type="range"
+                  id="内容"
+                  class="范围滑块"
+                  min="150"
+                  max="350"
+                  value="300"
                 />
-                <span></span>
+                <span class="滑块值"
+                  ><span class="数字">300</span>
+                  <span class="单位">px</span></span
+                >
+              </div>
+              <div class="内边距设置区 模型设置分区">
+                <label for="内边距" class="标签">
+                  <span class="标签中文">内边距</span>
+                  <span class="标签代码">padding</span>
+                </label>
+                <input
+                  type="range"
+                  id="内边距"
+                  class="范围滑块"
+                  min="0"
+                  max="100"
+                  value="75"
+                />
+                <span class="滑块值"
+                  ><span class="数字">75</span>
+                  <span class="单位">px</span></span
+                >
+              </div>
+              <div class="边框设置区 模型设置分区">
+                <label for="边框" class="标签"
+                  ><span class="标签中文">边框</span>
+                  <span class="标签代码">border</span></label
+                >
+                <input
+                  type="range"
+                  id="边框"
+                  class="范围滑块"
+                  min="0"
+                  max="100"
+                  value="75"
+                />
+                <span class="滑块值"
+                  ><span class="数字">75</span>
+                  <span class="单位">px</span></span
+                >
+              </div>
+              <div class="外边距设置区 模型设置分区">
+                <label for="外边距" class="标签"
+                  ><span class="标签中文">外边距</span>
+                  <span class="标签代码">margin</span></label
+                >
+                <input
+                  type="range"
+                  id="外边距"
+                  class="范围滑块"
+                  min="0"
+                  max="100"
+                  value="75"
+                />
+                <span class="滑块值"
+                  ><span class="数字">75</span>
+                  <span class="单位">px</span></span
+                >
               </div>
             </div>
           </div>

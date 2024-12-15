@@ -1,5 +1,6 @@
 const root = document.querySelector(":root");
 const rootStyle = window.getComputedStyle(root);
+const 重置按钮 = document.querySelector(".重置按钮");
 // const 球直径 = rootStyle.getPropertyValue("--球直径");
 // const 动画名称初始值 = rootStyle.getPropertyValue("--动画名称");
 const 动画区 = document.querySelector(".动画区");
@@ -335,6 +336,66 @@ for (const 文本框 of 文本框组) {
   文本框.addEventListener("dblclick", () => {
     if (文本框.value.trim()) {
       文本框.select();
+    }
+  });
+}
+
+重置按钮.addEventListener("click", 重置参数);
+
+function 重置参数() {
+  动画?.cancel();
+  动画 = null;
+  const 关键帧序列标识符文本框 = document.querySelector("#关键帧序列标识符");
+  const 动画名称文本框 = document.querySelector("#动画名称");
+  关键帧序列标识符文本框.value = "模拟动画";
+  动画名称文本框.value = "模拟动画";
+  for (const [索引, 复选框] of 关键帧复选框组.entries()) {
+    const 时间节点文本框 = 复选框.parentElement.querySelector(".关键帧时间点");
+    时间节点文本框.value = `${20 * 索引}`;
+  }
+
+  动画持续时间滑块.value = "0";
+  动画持续时间滑块.parentElement.querySelector(".参数值数字").textContent = "0";
+
+  动画时间函数单选框组[0].checked = true;
+
+  动画延迟滑块.value = "0";
+  动画延迟滑块.parentElement.querySelector(".参数值数字").textContent = "0";
+
+  动画迭代计数滑块.value = "1";
+  动画迭代计数滑块.parentElement.querySelector(".参数值数字").textContent = "1";
+  无限动画迭代单选框.checked = false;
+
+  动画方向单选框组[0].checked = true;
+
+  动画填充模式单选框组[0].checked = true;
+
+  动画播放状态单选框组[0].checked = true;
+
+  const 速写动画名称 = 速写代码区.querySelector(".名称代码");
+  速写动画名称.textContent = "模拟动画";
+  const 速写动画持续时间 = 速写代码区.querySelector(".持续时间代码");
+  速写动画持续时间.textContent = "0s";
+  const 速写动画时间函数 = 速写代码区.querySelector(".时间函数代码");
+  速写动画时间函数.textContent = "ease";
+  const 速写动画迭代计数 = 速写代码区.querySelector(".迭代计数代码");
+  速写动画迭代计数.textContent = "1";
+  const 速写动画延迟 = 速写代码区.querySelector(".延迟代码");
+  速写动画延迟.textContent = "0s";
+  const 速写动画方向 = 速写代码区.querySelector(".方向代码");
+  速写动画方向.textContent = "normal";
+  const 填充模式代码 = 速写代码区.querySelector(".填充模式代码");
+  填充模式代码.textContent = "none";
+  const 播放状态代码 = 速写代码区.querySelector(".播放状态代码");
+  播放状态代码.textContent = "running;";
+
+  root.style.setProperty("--动画持续时间渐变位置", "0%");
+  root.style.setProperty("--动画延迟渐变位置", "0%");
+  root.style.setProperty("--动画迭代计数渐变位置", "0%");
+
+  关键帧复选框组.forEach((复选框, 索引) => {
+    if (索引 > 1) {
+      复选框.checked = true;
     }
   });
 }
