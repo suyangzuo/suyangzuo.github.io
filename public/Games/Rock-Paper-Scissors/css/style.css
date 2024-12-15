@@ -1,0 +1,96 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: url(../images/back.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.container {
+  background-color: #fff;
+  padding: 2rem 7rem; /*上下增加2个单位边距 左右增加7个单位边距 */
+  border-radius: 14px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+.result_images {
+  display: flex;
+  column-gap: 7rem; /*定义了相邻列之间的间距为7个单位 */
+}
+
+.result_images img {
+  width: 100px;
+}
+
+.user_result img {
+  transform: rotate(90deg); /*顺时针旋转90° */
+}
+
+.cpu_result img {
+  transform: rotate(-90deg) rotateY(180deg);
+} /* 将元素逆时针旋转 90 度，然后再围绕 Y 轴旋转 180 度，*/
+
+.result {
+  text-align: center;
+  font-size: 2rem;
+  color: #6b2629;
+  margin-top: 1.5rem;
+}
+
+.option_images {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2.5rem;
+}
+
+.container.start .option_images {
+  pointer-events: none;
+}
+
+.option_image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+  cursor: pointer;
+}
+.option_image.active,
+.option_image:hover {
+  opacity: 1;
+}
+
+.option_image img {
+  pointer-events: none;
+  width: 50px;
+}
+
+.option_image p {
+  color: #6b2629;
+  font-size: 1.235rem;
+  margin-top: 1rem;
+  pointer-events: none;
+}
+
+.user {
+  color: #6b2629;
+  font-size: 1.9rem;
+  margin-left: 19px;
+}
+
+.cpu {
+  color: #6b2629;
+  font-size: 1.9rem;
+  margin-left: 148px;
+}
