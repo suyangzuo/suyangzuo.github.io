@@ -55,6 +55,15 @@ for (const 滑块 of 滑块组) {
   });
 }
 
+宽高关联复选框.addEventListener("change", () => {
+  const 宽高关联图像 = 宽高关联复选框.parentElement.querySelector("img");
+  if (宽高关联复选框.checked) {
+    宽高关联图像.src = "/Images/Common/绑定.png";
+  } else {
+    宽高关联图像.src = "/Images/Common/X-标记.png";
+  }
+});
+
 function 更新滑块背景修剪百分比(滑块) {
   const 滑块值 = parseInt(滑块.value, 10);
   const 最小值 = parseInt(滑块.min, 10);

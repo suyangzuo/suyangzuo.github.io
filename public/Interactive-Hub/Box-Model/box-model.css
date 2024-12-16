@@ -233,24 +233,22 @@ input[type="range"]::-webkit-slider-thumb {
   content: "";
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 20%;
   top: 0;
   left: 0;
-  border: solid 1px white;
-  clip-path: polygon(
-    0 0,
-    100% 0,
-    100% 1px,
-    1px 1px,
-    1px 15%,
-    0 15%,
-    0 85%,
-    1px 85%,
-    1px calc(100% - 1px),
-    100% calc(100% - 1px),
-    100% 100%,
-    0 100%
-  );
+  border-top: solid 1px white;
+  border-left: solid 1px white;
+}
+
+.关联区::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 20%;
+  bottom: 0;
+  left: 0;
+  border-bottom: solid 1px white;
+  border-left: solid 1px white;
 }
 
 .关联区 > .关联标签,
@@ -277,15 +275,14 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .关联区:has(.关联复选框:checked) .关联标签 > img {
-  filter: brightness(150%);
+  height: 80%;
 }
 
 .关联标签 > img {
   width: 100%;
-  height: 80%;
+  height: 60%;
   object-fit: contain;
-  filter: brightness(65%);
-  transition: 100ms;
+  filter: invert(100%) brightness(150%);
 }
 
 .关联区 > .关联复选框 {

@@ -233,28 +233,28 @@
       </pre>
 
       <h3 class="分区标题 分区3级标题">
-        添加<span class="行内专业名词">变形风格</span>
+        添加<span class="行内专业名词">变换风格</span>
       </h3>
       <p class="分区普通文本">
         透视元素不能旋转，那需要旋转的元素，就要作为透视元素的子元素。旋转是<span
           class="行内专业名词"
-          >变形<span class="代码">transform</span></span
-        >的一种，而<span class="行内专业名词">变形风格</span>默认是<span
+          >变换<span class="代码">transform</span></span
+        >的一种，而<span class="行内专业名词">变换风格</span>默认是<span
           class="行内专业名词"
           >平面</span
         >，我们需要将其改成<span class="行内专业名词">3D</span>。
       </p>
       <pre>
         <code class="lang-html">
-          //透视元素在外，变形元素在内
+          //透视元素在外，变换元素在内
           &lt;div class="透视元素"&gt;
-            &lt;div class="变形元素"&gt;&lt;/div&gt;
+            &lt;div class="变换元素"&gt;&lt;/div&gt;
           &lt;/div&gt;
         </code>
       </pre>
       <pre>
         <code class="lang-css">
-          变形元素 {
+          变换元素 {
             transform-style: preserve-3d; /* 此属性默认值为 flat */
           }
         </code>
@@ -264,18 +264,18 @@
         添加<span class="行内专业名词">旋转</span>属性
       </h3>
       <p class="分区普通文本">
-        现在，只要为变形元素添加旋转属性，即可看到<span class="行内专业名词"
+        现在，只要为变换元素添加旋转属性，即可看到<span class="行内专业名词"
           >3D</span
         >旋转效果：
       </p>
       <pre>
         <code class="lang-css">
-          变形元素 {
+          变换元素 {
             transform-style: preserve-3d; /* 此属性默认值为 flat */
             transition: 1s; /* 过渡，否则旋转会一瞬间完成，看不出效果 */
           }
           
-          变形元素:hover {
+          变换元素:hover {
             //以下两种写法效果一致
             rotate: y 180deg; /* 较新的写法 */
             transform: rotateY(180deg); /* 传统写法 */
@@ -446,9 +446,9 @@
       </p>
       <pre>
         <code class="lang-html">
-          //透视元素在外，变形元素在内
+          //透视元素在外，变换元素在内
           &lt;div class="透视元素"&gt;
-            &lt;div class="变形元素"&gt;
+            &lt;div class="变换元素"&gt;
               &lt;div class="正面元素"&gt;
               &lt;div class="反面元素"&gt;
             &lt;/div&gt;
@@ -456,7 +456,7 @@
         </code>
       </pre>
       <p class="分区普通文本">
-        为了能更好地观察正面和反面元素，我先将它们分开，并且隐藏了透视元素和变形元素。
+        为了能更好地观察正面和反面元素，我先将它们分开，并且隐藏了透视元素和变换元素。
       </p>
       <figure class="截图容器" style="width: 100%">
         <div
