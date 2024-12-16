@@ -1,18 +1,21 @@
 :root {
-  --边框尺寸: 75px;
-  --内边距尺寸: 75px;
-  --外边距尺寸: 75px;
-  --内容尺寸: 300px;
+  --边框尺寸: 50px;
+  --内边距尺寸: 50px;
+  --外边距尺寸: 50px;
+  /*--内容尺寸: 300px;
   --内容盒子宽度: 300px;
-  --内容盒子高度: 300px;
+  --内容盒子高度: 300px;*/
+  --盒子宽度: 300px;
+  --盒子高度: 300px;
   --宽度修剪比例: 25%;
   --高度修剪比例: 25%;
   --内容修剪比例: 25%;
-  --内边距修剪比例: 25%;
-  --边框修剪比例: 25%;
-  --外边距修剪比例: 25%;
-  --拇指尺寸: 26px;
+  --内边距修剪比例: 50%;
+  --边框修剪比例: 50%;
+  --外边距修剪比例: 50%;
+  --拇指尺寸: 24px;
   --滑块前缀文本宽度: 64px;
+  --滑块区鼠标悬停背景色: #fff2;
 }
 
 body {
@@ -42,6 +45,7 @@ body {
 
 .展示区 {
   width: 1000px;
+  height: calc(100vh - 200px);
   display: flex;
   justify-content: center;
   flex-shrink: 0;
@@ -52,17 +56,23 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: fit-content;
+  height: fit-content;
 }
 
 .边框盒子 {
+  width: var(--盒子宽度);
+  height: var(--盒子高度);
   border: solid var(--边框尺寸) #e4c482;
-  background-color: #788053;
   padding: var(--内边距尺寸);
+  box-sizing: content-box;
+  background-color: #788053;
+  margin: var(--外边距尺寸);
 }
 
 .内容盒子 {
-  width: var(--内容盒子宽度);
-  height: var(--内容盒子高度);
+  width: 100%;
+  height: 100%;
   background-color: lightsteelblue;
 }
 
@@ -106,7 +116,8 @@ body {
 }
 
 .标签容器:hover {
-  background-color: #123;
+  background-color: var(--滑块区鼠标悬停背景色);
+  cursor: url("/Images/Common/鼠标-默认.cur"), auto;
 }
 
 label .标签文本 {
@@ -177,7 +188,7 @@ label > input[type="radio"] {
 
 input[type="range"] {
   width: 50%;
-  height: 12px;
+  height: 8px;
 }
 
 input[type="range"] {
@@ -207,6 +218,88 @@ input[type="range"]::-webkit-slider-thumb {
   background-color: lightcyan;
   box-shadow: 2px 2px 2px 0 #0007;
   position: relative;
+}
+
+.关联区 {
+  position: absolute;
+  width: 20px;
+  height: 60%;
+  top: 50%;
+  left: 10px;
+  translate: 0 -50%;
+}
+
+.关联区::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border: solid 1px white;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 1px,
+    1px 1px,
+    1px 15%,
+    0 15%,
+    0 85%,
+    1px 85%,
+    1px calc(100% - 1px),
+    100% calc(100% - 1px),
+    100% 100%,
+    0 100%
+  );
+}
+
+.关联区 > .关联标签,
+.关联区 > .关联复选框 {
+  object-fit: contain;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  translate: -50% -50%;
+}
+
+.关联标签 {
+  width: calc(100% + 5px);
+  height: calc(40% + 5px);
+  border-radius: 2px;
+  padding: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.关联标签:hover {
+  cursor: url("/Images/Common/鼠标-默认.cur"), auto;
+}
+
+.关联区:has(.关联复选框:checked) .关联标签 > img {
+  filter: brightness(150%);
+}
+
+.关联标签 > img {
+  width: 100%;
+  height: 80%;
+  object-fit: contain;
+  filter: brightness(65%);
+  transition: 100ms;
+}
+
+.关联区 > .关联复选框 {
+  height: 40%;
+  appearance: none;
+  width: 100%;
+}
+
+.关联区 > .关联复选框:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.关联区:has(.关联复选框:hover) .关联标签 {
+  background-color: #1d232a;
 }
 
 .模型设置区 {
@@ -253,7 +346,7 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .模型设置分区:hover {
-  background-color: #123;
+  background-color: var(--滑块区鼠标悬停背景色);
 }
 
 .标签 {

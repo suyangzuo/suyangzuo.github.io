@@ -84,7 +84,7 @@
             <h3 class="盒子尺寸标题">
               <span class="盒子尺寸中文">内容尺寸</span>
             </h3>
-            <div class="滑块区">
+            <div class="滑块区" style="position: relative">
               <label for="宽度" class="标签容器">
                 <span class="标签文本"
                   ><span class="标签中文">宽度</span
@@ -117,6 +117,12 @@
                   ><span class="单位">px</span></span
                 >
               </label>
+              <div class="关联区">
+                <label for="宽高关联" class="关联标签"
+                  ><img src="/Images/Common/回形针.png" alt="回形针"
+                /></label>
+                <input type="checkbox" id="宽高关联" class="关联复选框" checked/>
+              </div>
             </div>
           </div>
           <div class="模型设置区">
@@ -124,7 +130,7 @@
               <span class="盒子尺寸中文">盒子属性</span>
             </h3>
             <div class="滑块区">
-              <div class="内容设置区 模型设置分区">
+              <!--<div class="内容设置区 模型设置分区">
                 <label for="内容" class="标签"
                   ><span class="标签中文">内容</span></label
                 >
@@ -140,7 +146,7 @@
                   ><span class="数字">300</span>
                   <span class="单位">px</span></span
                 >
-              </div>
+              </div>-->
               <div class="内边距设置区 模型设置分区">
                 <label for="内边距" class="标签">
                   <span class="标签中文">内边距</span>
@@ -152,7 +158,7 @@
                   class="范围滑块"
                   min="0"
                   max="100"
-                  value="75"
+                  value="50"
                 />
                 <span class="滑块值"
                   ><span class="数字">75</span>
@@ -170,7 +176,7 @@
                   class="范围滑块"
                   min="0"
                   max="100"
-                  value="75"
+                  value="50"
                 />
                 <span class="滑块值"
                   ><span class="数字">75</span>
@@ -188,7 +194,7 @@
                   class="范围滑块"
                   min="0"
                   max="100"
-                  value="75"
+                  value="50"
                 />
                 <span class="滑块值"
                   ><span class="数字">75</span>
