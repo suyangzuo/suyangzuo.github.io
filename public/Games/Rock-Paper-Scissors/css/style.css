@@ -21,14 +21,38 @@ body {
   padding: 2rem 7rem; /*上下增加2个单位边距 左右增加7个单位边距 */
   border-radius: 14px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-  width: 510px;
+  width: 530px;
   background-size: contain;
-  margin: min(20vh,200px) auto;
+  margin: min(20vh, 200px) auto;
 }
 .result_images {
   display: flex;
   column-gap: 7rem; /*定义了相邻列之间的间距为7个单位 */
 }
+
+/* -------------------------摇晃动画----------------------------- */
+.container.start .user_result {
+  transform-origin: left; /*设置变换的原点在元素的左侧 */
+  animation: userShake 0.7s ease infinite; /*应用名为 userShake 的动画效果，持续时间为 0.7 秒，使用 ease 缓动函数，且动画无限循环播放。 */
+}
+
+@keyframes /* 样式变化*/ userShake {
+  50% {
+    transform: rotate(10deg); /*在动画进行到50%的时候，元素顺时针旋转10° */
+  }
+}
+
+.container.start .cpu_result {
+  transform-origin: right; /*设置变换的原点在元素的右侧 */
+  animation: cpuShake 0.7s ease infinite; /*应用名为 cpushake 的动画效果，持续时间为 0.7 秒，使用 ease 缓动函数，且动画无限循环播放。 */
+}
+
+@keyframes cpuShake {
+  50% {
+    transform: rotate(-10deg); /*在动画进行到50%的时候，元素顺时针旋转10° */
+  }
+}
+/* -------------------------摇晃动画----------------------------- */
 
 .result_images img {
   width: 100px;
@@ -89,10 +113,11 @@ body {
 .user {
   color: #6b2629;
   font-size: 1.9rem;
+  margin-left: 17px;
 }
 
 .cpu {
   color: #6b2629;
   font-size: 1.9rem;
-  margin-left: 154px;
+  margin-left: 145px;
 }
