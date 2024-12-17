@@ -44,8 +44,101 @@
       <p class="交互标题">盒子模型</p>
       <div class="展示区">
         <div class="外边距盒子">
+          <span class="盒子内部文本 盒子内部文本-绝对定位 盒子外边距文本">
+            <span class="盒子内部文本-中文">外边距</span
+            ><span class="盒子内部文本-代码">margin</span>
+          </span>
           <div class="边框盒子">
-            <div class="内容盒子"></div>
+            <span class="盒子内部文本 盒子内部文本-绝对定位 盒子边框文本">
+              <span class="盒子内部文本-中文">边框</span
+              ><span class="盒子内部文本-代码">border</span>
+            </span>
+            <span class="盒子内部文本 盒子内部文本-绝对定位 盒子内边距文本">
+              <span class="盒子内部文本-中文">内边距</span
+              ><span class="盒子内部文本-代码">padding</span>
+            </span>
+            <div class="内容盒子">
+              <span class="盒子内部文本 盒子内容文本">
+                <span class="盒子内部文本-中文">内容</span
+                ><span class="盒子内部文本-代码">content</span>
+              </span>
+              <div class="盒子宽度描述区">
+                <div class="盒子宽度中线"></div>
+                <div class="盒子尺寸区 内容盒子尺寸区">
+                  <div class="宽度尺寸区">
+                    <div class="宽度属性">
+                      <span class="宽度中文">内容宽度</span>
+                      <span class="宽度代码">width</span>
+                    </div>
+                    <div class="宽度值">
+                      <span class="宽度数字">300</span>
+                      <span class="宽度单位">px</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="盒子高度描述区"></div>
+            </div>
+          </div>
+          <div class="盒子宽度描述区">
+            <div class="盒子宽度中线"></div>
+            <div class="盒子尺寸区 边框盒子尺寸区">
+              <div class="宽度尺寸区">
+                <div class="实际宽度区">
+                  <div class="宽度属性">
+                    <span class="宽度中文">盒子宽度</span>
+                    <!--<span class="宽度代码">width</span>-->
+                  </div>
+                  <div class="宽度值">
+                    <span class="宽度数字">500</span>
+                    <span class="宽度单位">px</span>
+                  </div>
+                </div>
+                <div class="等号区">=</div>
+                <div class="内边距与边框区">
+                  <div class="内容区">
+                    <div class="内容属性">
+                      <span class="内容中文">内容</span>
+                      <span class="内容代码">content</span>
+                    </div>
+                    <div class="内容值">
+                      <span class="内容数字">300</span>
+                      <span class="内容单位">px</span>
+                    </div>
+                  </div>
+                  <div class="加号区">+</div>
+                  <div class="内边距区">
+                    <div class="内边距属性">
+                      <span class="内边距中文">内边距</span>
+                      <span class="内边距代码">padding</span>
+                    </div>
+                    <div class="内边距值">
+                      <span class="内边距数字">50</span>
+                      <span class="内边距单位">px</span>
+                    </div>
+                    <div class="乘法值">
+                      <span class="乘法符号">×</span>
+                      <span class="乘法数字">2</span>
+                    </div>
+                  </div>
+                  <div class="加号区">+</div>
+                  <div class="边框区">
+                    <div class="边框属性">
+                      <span class="边框中文">边框</span>
+                      <span class="边框代码">border</span>
+                    </div>
+                    <div class="边框值">
+                      <span class="边框数字">50</span>
+                      <span class="边框单位">px</span>
+                    </div>
+                    <div class="乘法值">
+                      <span class="乘法符号">×</span>
+                      <span class="乘法数字">2</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -121,7 +214,12 @@
                 <label for="宽高关联" class="关联标签"
                   ><img src="/Images/Common/绑定.png" alt="宽高关联"
                 /></label>
-                <input type="checkbox" id="宽高关联" class="关联复选框" checked/>
+                <input
+                  type="checkbox"
+                  id="宽高关联"
+                  class="关联复选框"
+                  checked
+                />
               </div>
             </div>
           </div>
@@ -161,7 +259,7 @@
                   value="50"
                 />
                 <span class="滑块值"
-                  ><span class="数字">75</span>
+                  ><span class="数字">50</span>
                   <span class="单位">px</span></span
                 >
               </div>
@@ -179,7 +277,7 @@
                   value="50"
                 />
                 <span class="滑块值"
-                  ><span class="数字">75</span>
+                  ><span class="数字">50</span>
                   <span class="单位">px</span></span
                 >
               </div>
@@ -197,11 +295,165 @@
                   value="50"
                 />
                 <span class="滑块值"
-                  ><span class="数字">75</span>
+                  ><span class="数字">50</span>
                   <span class="单位">px</span></span
                 >
               </div>
             </div>
+          </div>
+        </div>
+        <div class="辅助设置区">
+          <div class="盒子模型属性信息区">
+            <h3 class="盒子模型属性标题">
+              <span class="盒子模型属性标题中文">属性提示</span>
+            </h3>
+            <div class="复选区">
+              <label for="高度" class="标签容器">
+                <span class="标签文本"
+                  ><span class="标签中文">外边距</span
+                  ><span class="标签代码">margin</span></span
+                ><input
+                  type="checkbox"
+                  id="外边距-辅助"
+                  class="复选框"
+                  checked
+                />
+                <span class="确认提示"><i class="fa-solid fa-check"></i></span>
+              </label>
+              <label for="高度" class="标签容器">
+                <span class="标签文本"
+                  ><span class="标签中文">边框</span
+                  ><span class="标签代码">border</span></span
+                ><input type="checkbox" id="边框-辅助" class="复选框" checked />
+                <span class="确认提示"><i class="fa-solid fa-check"></i></span>
+              </label>
+              <label for="高度" class="标签容器">
+                <span class="标签文本"
+                  ><span class="标签中文">内边距</span
+                  ><span class="标签代码">padding</span></span
+                ><input
+                  type="checkbox"
+                  id="内边距-辅助"
+                  class="复选框"
+                  checked
+                />
+                <span class="确认提示"><i class="fa-solid fa-check"></i></span>
+              </label>
+              <label for="高度" class="标签容器">
+                <span class="标签文本"
+                  ><span class="标签中文">内容</span
+                  ><span class="标签代码">content</span></span
+                ><input type="checkbox" id="内容-辅助" class="复选框" checked />
+                <span class="确认提示"><i class="fa-solid fa-check"></i></span>
+              </label>
+            </div>
+          </div>
+          <div class="盒子模型属性信息区">
+            <h3 class="盒子模型属性标题">
+              <span class="盒子模型属性标题中文">外边距效果</span>
+            </h3>
+            <div class="效果单选区 外边距效果单选区">
+              <span class="效果标题"
+                ><span class="效果标题中文">外边距</span>
+                <span class="效果标题代码">margin</span></span
+              >
+              <label for="外边距-显示" class="标签容器">
+                <span class="标签文本">显示</span
+                ><input
+                  type="radio"
+                  id="外边距-显示"
+                  name="外边距效果"
+                  class="单选框"
+                  checked
+                />
+              </label>
+              <label for="外边距-隐藏" class="标签容器">
+                <span class="标签文本">隐藏</span
+                ><input
+                  type="radio"
+                  id="外边距-隐藏"
+                  name="外边距效果"
+                  class="单选框"
+                />
+              </label>
+              <label for="外边距-闪烁" class="标签容器">
+                <span class="标签文本">闪烁</span
+                ><input
+                  type="radio"
+                  id="外边距-闪烁"
+                  name="外边距效果"
+                  class="单选框"
+                />
+              </label>
+            </div>
+            <!--<div class="效果单选区 边框效果单选区">
+              <span class="效果标题"
+                ><span class="效果标题中文">边框</span>
+                <span class="效果标题代码">border</span></span
+              >
+              <label for="边框-显示" class="标签容器">
+                <span class="标签文本">显示</span
+                ><input
+                  type="radio"
+                  id="边框-显示"
+                  name="边框效果"
+                  class="单选框"
+                  checked
+                />
+              </label>
+              <label for="边框-隐藏" class="标签容器">
+                <span class="标签文本">隐藏</span
+                ><input
+                  type="radio"
+                  id="边框-隐藏"
+                  name="边框效果"
+                  class="单选框"
+                />
+              </label>
+              <label for="边框-闪烁" class="标签容器">
+                <span class="标签文本">闪烁</span
+                ><input
+                  type="radio"
+                  id="边框-闪烁"
+                  name="边框效果"
+                  class="单选框"
+                />
+              </label>
+            </div>
+            <div class="效果单选区 内边距效果单选区">
+              <span class="效果标题"
+                ><span class="效果标题中文">内边距</span>
+                <span class="效果标题代码">padding</span></span
+              >
+              <label for="内边距-显示" class="标签容器">
+                <span class="标签文本">显示</span
+                ><input
+                  type="radio"
+                  id="内边距-显示"
+                  name="内边距效果"
+                  class="单选框"
+                  checked
+                />
+              </label>
+              <label for="内边距-隐藏" class="标签容器">
+                <span class="标签文本">隐藏</span
+                ><input
+                  type="radio"
+                  id="内边距-隐藏"
+                  name="内边距效果"
+                  class="单选框"
+                />
+              </label>
+              <label for="内边距-闪烁" class="标签容器">
+                <span class="标签文本">闪烁</span
+                ><input
+                  type="radio"
+                  id="内边距-闪烁"
+                  name="内边距效果"
+                  class="单选框"
+                />
+              </label>
+            </div>-->
           </div>
         </div>
       </div>

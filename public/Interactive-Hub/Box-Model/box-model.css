@@ -15,7 +15,7 @@
   --外边距修剪比例: 50%;
   --拇指尺寸: 24px;
   --滑块前缀文本宽度: 64px;
-  --滑块区鼠标悬停背景色: #fff2;
+  --滑块区鼠标悬停背景色: #0005;
 }
 
 body {
@@ -52,6 +52,7 @@ body {
 }
 
 .外边距盒子 {
+  position: relative;
   background-color: #b08354;
   display: flex;
   justify-content: center;
@@ -60,7 +61,14 @@ body {
   height: fit-content;
 }
 
+.盒子外边距文本 {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+
 .边框盒子 {
+  position: relative;
   width: var(--盒子宽度);
   height: var(--盒子高度);
   border: solid var(--边框尺寸) #e4c482;
@@ -70,10 +78,250 @@ body {
   margin: var(--外边距尺寸);
 }
 
+.盒子边框文本 {
+  position: absolute;
+  top: calc(0px - var(--边框尺寸) + 5px);
+  left: calc(0px - var(--边框尺寸) + 5px);
+}
+
+.盒子内边距文本 {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+
 .内容盒子 {
+  position: relative;
   width: 100%;
   height: 100%;
   background-color: lightsteelblue;
+  text-align: center;
+  align-content: center;
+}
+
+.盒子内部文本-中文 {
+  color: #012 !important;
+  font-size: 13px;
+}
+
+.盒子内部文本-代码 {
+  color: #111 !important;
+  font-size: 12px !important;
+}
+
+:where(.外边距盒子, .内容盒子) span[class$="中文"] {
+  text-wrap: nowrap;
+}
+
+:where(.外边距盒子, .内容盒子) span[class$="代码"] {
+  text-wrap: nowrap;
+}
+
+:where(.外边距盒子, .内容盒子) div[class$="值"] {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  text-wrap: nowrap;
+}
+
+:where(.内容盒子, .外边距盒子) span[class$="数字"]:not(.乘法数字) {
+  color: gold;
+}
+
+.盒子宽度描述区,
+.盒子高度描述区 {
+  position: absolute;
+}
+
+.盒子宽度描述区 {
+  width: 100%;
+  height: calc(var(--外边距尺寸) + var(--内边距尺寸) + var(--边框尺寸) + 100px);
+  top: 100%;
+  left: 0;
+}
+
+.外边距盒子 > .盒子宽度描述区 {
+  width: calc(100% - var(--外边距尺寸) * 2);
+  height: calc(var(--外边距尺寸) * 2 + 175px);
+  /*height: calc(50px + var(--内边距尺寸) + var(--边框尺寸) + 100px);*/
+  top: calc(100% - var(--外边距尺寸));
+  left: 50%;
+  translate: -50% 0;
+}
+
+.外边距盒子 > .盒子宽度描述区.边框盒子宽度描述区 {
+  height: calc(var(--外边距尺寸) + 75px);
+}
+
+.外边距盒子 > .盒子宽度描述区.边框盒子宽度描述区::before,
+.外边距盒子 > .盒子宽度描述区.边框盒子宽度描述区::after {
+  height: 100%;
+}
+
+.盒子宽度描述区::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: calc(var(--外边距尺寸) + var(--内边距尺寸) + var(--边框尺寸) + 50px);
+  background-color: white;
+}
+
+.外边距盒子 > .盒子宽度描述区::before {
+  height: min(
+    250px,
+    calc(var(--外边距尺寸) + var(--内边距尺寸) + var(--边框尺寸) + 50px)
+  );
+}
+
+.盒子宽度描述区::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1px;
+  height: calc(var(--外边距尺寸) + var(--内边距尺寸) + var(--边框尺寸) + 50px);
+  background-color: white;
+}
+
+.外边距盒子 > .盒子宽度描述区::after {
+  height: min(
+    250px,
+    calc(var(--外边距尺寸) + var(--内边距尺寸) + var(--边框尺寸) + 50px)
+  );
+}
+
+.盒子宽度中线 {
+  position: absolute;
+  top: calc(var(--外边距尺寸) + var(--内边距尺寸) + var(--边框尺寸) + 50px);
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: white;
+}
+
+.外边距盒子 > .盒子宽度描述区 .盒子宽度中线 {
+  top: min(
+    250px,
+    calc(var(--外边距尺寸) + var(--内边距尺寸) + var(--边框尺寸) + 50px)
+  );
+}
+
+.外边距盒子 > .盒子宽度描述区.边框盒子宽度描述区 .盒子宽度中线 {
+  top: 100%;
+}
+
+.宽度尺寸区 {
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  overflow: hidden;
+  background-color: #456;
+  position: absolute;
+  top: calc(var(--外边距尺寸) + var(--内边距尺寸) + var(--边框尺寸) + 25px);
+  left: 50%;
+  translate: -50% 0;
+  font-size: 14px;
+  z-index: 1;
+}
+
+.外边距盒子 > .盒子宽度描述区 .宽度尺寸区 {
+  top: clamp(
+    75px,
+    50%,
+    calc(var(--外边距尺寸) + var(--内边距尺寸) + var(--边框尺寸) + 25px)
+  );
+}
+
+.外边距盒子 > .盒子宽度描述区.边框盒子宽度描述区 .宽度尺寸区 {
+  top: 100%;
+  translate: -50% -50%;
+}
+
+.实际宽度区,
+.内容区,
+.内边距区,
+.边框区 {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background-color: #345;
+}
+
+.内容区,
+.内边距区,
+.边框区 {
+  /*width: 133px;*/
+}
+
+.实际宽度区 {
+  height: 100%;
+}
+
+.盒子宽度描述区 div[class$="属性"] {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px 8px;
+  background-color: #567;
+  width: 71px;
+}
+
+.宽度值 {
+  padding: 5px 8px;
+}
+
+.内边距与边框区 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /*align-items: center;*/
+  background-color: #0008;
+}
+
+.内边距与边框区 div[class*="值"]:not(.乘法值) {
+  height: 100%;
+  padding: 0 8px;
+  width: 61px;
+  display: flex;
+  justify-content: flex-end;
+  align-content: center;
+}
+
+.等号区 {
+  width: 24px;
+  height: 24px;
+  margin: 0 5px;
+  text-align: center;
+  align-content: center;
+  border-radius: 999px;
+  /*color: #bea5fa;*/
+  color: black;
+  font-weight: bold;
+  font-size: 16px;
+  background-color: #fff;
+}
+
+.加号区 {
+  width: 100%;
+  text-align: center;
+  padding: 3px 0;
+  color: #bea5fa;
+  font-size: 16px;
+}
+
+.乘法值 {
+  padding-right: 5px;
+}
+
+.乘法符号 {
+  color: lightskyblue;
+}
+
+.乘法数字 {
+  color: lightsteelblue;
 }
 
 .操作区 {
@@ -95,8 +343,14 @@ body {
   gap: 15px;
 }
 
-.总区 :where(.盒子模型标题, .盒子尺寸标题) > span[class$="中文"] {
+.总区
+  :where(.盒子模型标题, .盒子尺寸标题, .盒子模型属性标题)
+  > span[class$="中文"] {
   color: lightseagreen;
+}
+
+.盒子属性区 {
+  font-size: 0.9em;
 }
 
 .盒子模型标题 > span[class$="代码"] {
@@ -113,6 +367,7 @@ body {
 .标签容器 {
   height: 55px;
   border-radius: 8px;
+  align-content: center;
 }
 
 .标签容器:hover {
@@ -215,7 +470,7 @@ input[type="range"]::-webkit-slider-thumb {
   width: var(--拇指尺寸);
   height: var(--拇指尺寸);
   border-radius: 999px;
-  background-color: lightcyan;
+  background-color: lightgoldenrodyellow;
   box-shadow: 2px 2px 2px 0 #0007;
   position: relative;
 }
@@ -296,7 +551,7 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .关联区:has(.关联复选框:hover) .关联标签 {
-  background-color: #1d232a;
+  background-color: #fff3;
 }
 
 .模型设置区 {
@@ -363,4 +618,90 @@ input[type="range"]::-webkit-slider-thumb {
 .数字,
 .滑块数字 {
   color: lightskyblue;
+}
+
+.盒子模型属性信息区 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1vh;
+  padding: 15px 20px;
+  border: solid 1px #789;
+  font-size: 0.9em;
+}
+
+.复选区 {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  gap: 15px;
+}
+
+.辅助设置区 .标签容器 {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  height: fit-content;
+  width: 84px;
+  padding: 7px 0;
+  border-radius: 5px;
+}
+
+.辅助设置区 .标签容器 .复选框 {
+  appearance: none;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #fff2;
+  border-radius: 5px;
+}
+
+.辅助设置区 .标签容器 .复选框:hover {
+  box-shadow: inset 0 0 0 1px #999;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.确认提示 {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  text-align: center;
+  align-content: center;
+  background-color: lightgoldenrodyellow;
+  color: black;
+  top: -7px;
+  right: -7px;
+  font-size: 12px;
+  font-weight: bold;
+  scale: 0.9;
+}
+
+.辅助设置区 .标签容器 .复选框:not(:checked) + .确认提示 {
+  opacity: 0;
+}
+
+.效果单选区 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.效果标题 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 5px;
+  width: 58px;
+}
+
+.效果单选区 .标签容器 {
+  background-color: #0005;
+}
+
+.效果单选区 .标签容器:has(.单选框:not(:checked):hover) {
+  background-color: #0005;
+  box-shadow: inset 0 0 0 1px #789;
 }
