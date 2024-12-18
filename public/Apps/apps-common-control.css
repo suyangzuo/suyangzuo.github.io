@@ -24,6 +24,7 @@
   align-items: center;
   padding-bottom: 5px;
   font-size: 2rem;
+  transition: 125ms;
 }
 
 .返回 > span {
@@ -31,6 +32,11 @@
   transition: 0.2s;
 }
 
-.返回:hover > span {
+/*.返回:hover > span {
   filter: contrast(1.75) hue-rotate(50deg);
+}*/
+
+.返回:hover {
+  filter: invert(1);
+  box-shadow: inset 0 0 0 1px #0005;
 }

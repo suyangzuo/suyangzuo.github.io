@@ -653,7 +653,9 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   right: 50px;
   pointer-events: all;
   animation: 旋转技术栈选择器 5s linear infinite;
-  transition: scale 0.25s;
+  transition:
+    scale 0.25s,
+    filter 250ms;
 }
 
 body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .技术栈选择器 {
@@ -663,6 +665,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 .技术栈选择器:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   animation-play-state: paused !important;
+  filter: invert(1);
 }
 
 @keyframes 旋转技术栈选择器 {
@@ -674,7 +677,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   }
 }
 
-.技术栈选择器::before {
+/*.技术栈选择器::before {
   position: absolute;
   top: 0;
   left: 0;
@@ -710,7 +713,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   to {
     box-shadow: 5px 5px 5px 2px #fff1;
   }
-}
+}*/
 
 .技术栈对话框 {
   position: fixed;

@@ -452,8 +452,8 @@
 
 .平面图版权超链接 {
   position: absolute;
-  bottom: 50px;
-  right: 50px;
+  bottom: 12px;
+  right: 12px;
   padding: 10px 20px;
   border-radius: 5px;
   background-color: #345;
@@ -461,6 +461,7 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
+  outline: solid 1px #fff5;
 }
 
 .平面图作者 {

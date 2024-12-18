@@ -125,6 +125,17 @@ body {
   font-weight: bold;
 }
 
+.app-access {
+  position: relative;
+  height: 50px;
+  width: 95%;
+  background-color: #345;
+  display: flex;
+  align-content: center;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
 .app-链接 {
   position: relative;
   border: none;
@@ -132,11 +143,12 @@ body {
   color: white;
   font-size: 18px;
   padding: 10px 30px;
-  border-radius: 5px;
+  width: 65%;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
+  flex-grow: 1;
 }
 
 .app-链接:hover {
@@ -154,6 +166,25 @@ body {
 
 .app-链接:active {
   background-color: #567;
+}
+
+.app-作者 {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  aspect-ratio: 1;
+  padding: 4px;
+}
+
+.app-作者 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.app-作者:hover > img {
+  filter: brightness(112.5%) saturate(125%);
 }
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */

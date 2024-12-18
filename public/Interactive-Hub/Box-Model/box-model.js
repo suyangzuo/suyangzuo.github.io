@@ -163,9 +163,9 @@ function 刷新宽度数值显示() {
 }
 
 const 外边距闪烁关键帧序列 = [
-  { backgroundColor: "#b08354" },
+  { backgroundColor: "#b0835460" },
   { backgroundColor: "transparent" },
-  { backgroundColor: "#b08354" },
+  { backgroundColor: "#b0835460" },
 ];
 
 const 透明度关键帧序列 = [{ opacity: "1" }, { opacity: "0" }, { opacity: "1" }];
@@ -210,6 +210,7 @@ for (const 效果单选 of 外边距效果单选组) {
       if (外边距辅助复选框.checked) {
         外边距文本动画 = 盒子外边距文本.animate(透明度关键帧序列, 闪烁选项);
       }
+      外边距盒子.classList.remove("已隐藏");
     } else if (效果单选.id === "外边距-显示") {
       外边距动画?.cancel();
       外边距文本动画?.cancel();
@@ -217,11 +218,13 @@ for (const 效果单选 of 外边距效果单选组) {
       if (外边距辅助复选框.checked) {
         盒子外边距文本.style.opacity = "1";
       }
+      外边距盒子.classList.remove("已隐藏");
     } else {
       外边距动画?.cancel();
       外边距文本动画?.cancel();
       外边距盒子.style.backgroundColor = "transparent";
       盒子外边距文本.style.opacity = "0";
+      外边距盒子.classList.add("已隐藏");
     }
   });
 }

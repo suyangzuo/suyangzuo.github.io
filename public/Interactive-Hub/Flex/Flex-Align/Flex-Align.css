@@ -391,8 +391,16 @@ label:hover :is(#盒子透明复选框, #行透明复选框) {
   color: white;
 }
 
-#弹性环绕操纵区 .操纵区标题 {
+#弹性环绕操纵区 .操纵区标题 .标题代码 {
   color: rgb(223, 115, 53);
+}
+
+.标题中文 {
+  color: lightseagreen !important;
+}
+
+.标题代码 {
+  font-size: 0.85em;
 }
 
 .交叉轴操纵区 {
@@ -423,11 +431,17 @@ label:hover :is(#盒子透明复选框, #行透明复选框) {
 
 .操纵区标题 {
   font-family: "JetBrains Mono", Consolas, 微软雅黑, monospace;
-  color: gold;
-  width: 158px;
+  color: rgb(223, 115, 53);
+  width: 125px;
   user-select: none;
+  font-size: 16px;
   font-weight: normal;
   text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  margin-right: 5px;
 }
 
 .交叉轴操纵区 label,
