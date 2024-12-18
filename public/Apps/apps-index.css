@@ -91,13 +91,12 @@ body {
   box-shadow: 2px 2px 2px 0 #111;
   border-radius: 10px;
   padding: 20px 10px;
-  outline: solid 1px #fff3;
+  outline: solid 2px #ffffff16;
   transition: 150ms;
 }
 
 .app:hover {
-  background-color: #123;
-  outline: solid 1px #fff8;
+  outline: solid 2px #fff8;
 }
 
 .图片区 {
@@ -129,17 +128,21 @@ body {
   position: relative;
   height: 50px;
   width: 95%;
-  background-color: #345;
+  background-color: #3455;
   display: flex;
   align-content: center;
   border-radius: 5px;
   overflow: hidden;
+  transition: 125ms;
+}
+
+.app-access:hover {
+  background-color: #345;
 }
 
 .app-链接 {
   position: relative;
   border: none;
-  background-color: #345;
   color: white;
   font-size: 18px;
   padding: 10px 30px;
@@ -153,7 +156,6 @@ body {
 
 .app-链接:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
-  background-color: #456;
 }
 
 .app-链接 .fa-solid {
