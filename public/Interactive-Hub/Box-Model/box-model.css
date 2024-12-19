@@ -18,10 +18,6 @@
   --滑块区鼠标悬停背景色: #0005;
 }
 
-body {
-  font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
-}
-
 .总区 span[class$="中文"] {
   color: lightskyblue;
 }
@@ -259,8 +255,11 @@ body {
   left: 50%;
   translate: -50% 0;
   font-size: 14px;
-  z-index: 1;
   transition: top 500ms;
+}
+
+.外边距盒子 > .盒子宽度描述区 .宽度尺寸区 {
+  z-index: 1;
 }
 
 .外边距盒子.已隐藏 .内容盒子 .宽度尺寸区 {
@@ -380,6 +379,8 @@ body {
 
 .操作区 {
   min-width: 450px;
+  border-radius: 10px;
+  outline: solid 1px #cde6;
 }
 
 .盒子模型区 {
@@ -387,7 +388,7 @@ body {
   flex-direction: column;
   gap: 1vh;
   padding: 15px 20px;
-  border: solid 1px #789;
+  /*border: solid 1px #789;*/
 }
 
 .盒子模型标题 {
@@ -401,6 +402,10 @@ body {
   :where(.盒子模型标题, .盒子尺寸标题, .盒子模型属性标题)
   > span[class$="中文"] {
   color: lightseagreen;
+}
+
+:where(.盒子属性区, .辅助设置区) > div:not(:last-child) {
+  border-bottom: solid 1px #cde6;
 }
 
 .盒子属性区 {
@@ -474,7 +479,7 @@ label > input[type="radio"] {
   align-items: center;
   gap: 1vh;
   padding: 15px 20px;
-  border: solid 1px #789;
+  /*border: solid 1px #789;*/
 }
 
 .滑块区 {
@@ -614,7 +619,7 @@ input[type="range"]::-webkit-slider-thumb {
   align-items: center;
   gap: 1vh;
   padding: 15px 20px;
-  border: solid 1px #789;
+  /*border: solid 1px #789;*/
 }
 
 #宽度::before {
@@ -680,7 +685,7 @@ input[type="range"]::-webkit-slider-thumb {
   align-items: center;
   gap: 1vh;
   padding: 15px 20px;
-  border: solid 1px #789;
+  /*border: solid 1px #789;*/
   font-size: 0.9em;
 }
 

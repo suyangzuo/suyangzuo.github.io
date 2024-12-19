@@ -1,6 +1,7 @@
 const root = document.querySelector(":root");
 const rootStyle = window.getComputedStyle(root);
 const 展示区 = document.querySelector(".展示区");
+const 展示分区 = 展示区.querySelector(".展示分区");
 const 占位元素组 = 展示区.querySelectorAll(".占位元素");
 const 占位元素尺寸滑块 = document.querySelector("#占位元素尺寸");
 const 定位距离区 = document.querySelector(".定位距离区");
@@ -216,7 +217,7 @@ function 更新参照对象() {
     !中间容器复选框.checked &&
     !内部容器复选框.checked
   ) {
-    当前参照对象 = 展示区;
+    当前参照对象 = 展示分区;
   }
 
   if (内部容器复选框.checked) {

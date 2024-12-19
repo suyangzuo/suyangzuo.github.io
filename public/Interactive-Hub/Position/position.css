@@ -1,7 +1,7 @@
 :root {
   --进度条颜色-已填充: rgb(41, 126, 78);
   --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
-  --拇指宽度: 16px;
+  --拇指宽度: 20px;
   --顶渐变位置: 50%;
   --底渐变位置: 50%;
   --左渐变位置: 50%;
@@ -27,7 +27,8 @@
 .展示分区 {
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 160px);
+  /*height: 100%;*/
   top: 0;
   left: 0;
 }
@@ -400,6 +401,8 @@ span[class$="值"].辅助线数据值 {
 .控制分区 {
   display: flex;
   flex-direction: column;
+  border-radius: 10px;
+  outline: solid 1px #cde6;
 }
 
 .控制分区 > div {
@@ -407,7 +410,11 @@ span[class$="值"].辅助线数据值 {
   flex-direction: column;
   gap: 10px;
   padding: 20px;
-  border: solid 1px gray;
+  /*border: solid 1px gray;*/
+}
+
+.控制分区 > div:not(:last-child) {
+  border-bottom: solid 1px #cde6;
 }
 
 .定位总区:has(.自身定位区:hover) .绝对定位-元素,

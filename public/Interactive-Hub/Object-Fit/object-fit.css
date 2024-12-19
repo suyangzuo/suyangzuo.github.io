@@ -33,6 +33,8 @@
   width: 500px;
   position: relative;
   z-index: 0;
+  border-radius: 10px;
+  outline: solid 1px #cde6;
 }
 
 .选项分隔区 {
@@ -40,11 +42,15 @@
 }
 
 .选项类型 {
-  outline: 1px solid rgb(177, 177, 177);
+  /*outline: 1px solid rgb(177, 177, 177);*/
   padding: 15px;
   display: flex;
   flex-direction: column;
   gap: 15px;
+}
+
+.盒子选项 {
+  border-bottom: solid 1px #cde6;
 }
 
 .图像选项 {
@@ -63,8 +69,9 @@
 }
 
 .图像-控件组 > div:nth-child(2) {
-  border-top: solid 1px gray;
-  border-bottom: solid 1px gray;
+  border-top: solid 1px #cde6;
+  border-bottom: solid 1px #cde6;
+  width: 100%;
 }
 
 .选项标题 {
@@ -72,11 +79,16 @@
   font-size: 1.2rem;
   color: rgb(77, 196, 128);
   padding: 5px 0;
+  text-align: center;
 }
 
 .控件子组 {
   display: flex;
   align-items: center;
+}
+
+.盒子选项 .控件子组 {
+  justify-content: center;
 }
 
 .控件类型区 {
@@ -85,11 +97,12 @@
 }
 
 .控件类型区 > p {
-  width: 100px;
+  width: 120px;
 }
 
 .属性中文 {
   color: orange;
+  text-align: center;
 }
 
 .值中文 {
@@ -105,13 +118,17 @@
 .属性代码 {
   font-size: 0.8rem;
   font-family: "JetBrains Mono", Consolas, monospace;
+  text-align: center;
 }
 
 .控件类型操作区 {
-  display: grid;
+  /*display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px 25px;
-  place-content: center start;
+  place-content: center start;*/
+  display: flex;
+  align-content: center;
+  gap: 25px;
 }
 
 .对象位置操作区 {

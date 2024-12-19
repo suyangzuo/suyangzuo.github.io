@@ -1,5 +1,8 @@
 body {
   min-height: 100vh;
+  font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
+  background: center/cover no-repeat
+    url("/Images/Background-Images/交互式学习中心-主页背景.jpg");
 }
 
 .总区::-webkit-scrollbar {
@@ -24,19 +27,12 @@ body {
 }
 
 .总区 {
-  background: #0f2027; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
+  /*background: linear-gradient(
     to left,
     #2c5364,
     #203a43,
     #0f2027
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to left,
-    #2c5364,
-    #203a43,
-    #0f2027
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  );*/
   height: calc(100vh - 50px);
   position: relative;
   overflow: auto;
