@@ -259,3 +259,65 @@ for (const 效果单选 of 内边距效果单选组) {
     }
   });
 }*/
+
+const 重置按钮 = document.querySelector(".重置按钮");
+重置按钮.addEventListener("click", 重置参数);
+
+function 重置参数() {
+  内容盒子单选框.checked = true;
+  更新盒子模型();
+  更新盒子模型时刷新所有属性();
+
+  /*宽度滑块.max = "350";
+  高度滑块.max = "350";*/
+
+  宽高关联复选框.checked = true;
+  const 宽高关联图像 = 宽高关联复选框.parentElement.querySelector("img");
+  宽高关联图像.src = "/Images/Common/绑定.png";
+
+  宽度滑块.value = "300";
+  高度滑块.value = "300";
+  内边距滑块.value = "50";
+  边框滑块.value = "50";
+  外边距滑块.value = "50";
+
+  for (const 滑块 of 滑块组) {
+    拖动滑块时修改数字(滑块);
+  }
+
+  root.style.setProperty("--边框尺寸", "50px");
+  root.style.setProperty("--内边距尺寸", "50px");
+  root.style.setProperty("--外边距尺寸", "50px");
+  root.style.setProperty("--盒子宽度", "300px");
+  root.style.setProperty("--盒子高度", "300px");
+  root.style.setProperty("--宽度修剪比例", "25%");
+  root.style.setProperty("--高度修剪比例", "25%");
+  root.style.setProperty("--内容修剪比例", "25%");
+  root.style.setProperty("--内边距修剪比例", "50%");
+  root.style.setProperty("--边框修剪比例", "50%");
+  root.style.setProperty("--外边距修剪比例", "50%");
+
+  // 盒子.style.boxSizing = "";
+
+  /*外边距辅助复选框.checked = true;
+  边框辅助复选框.checked = true;
+  内边距辅助复选框.checked = true;
+  内容辅助复选框.checked = true;*/
+
+  for (const 复选框 of 盒子属性辅助复选框组) {
+    复选框.checked = true;
+    const 文本 = document.querySelector(`.盒子${复选框.id.slice(0, -3)}文本`);
+    文本.style.opacity = 复选框.checked ? "1" : "0";
+  }
+
+  // 外边距效果单选组[0].checked = true;
+  外边距动画?.cancel();
+  外边距文本动画?.cancel();
+  外边距盒子.style.backgroundColor = "#b08354";
+  if (外边距辅助复选框.checked) {
+    document.querySelector(".盒子外边距文本").style.opacity = "1";
+  }
+  外边距盒子.classList.remove("已隐藏");
+
+  刷新宽度数值显示();
+}

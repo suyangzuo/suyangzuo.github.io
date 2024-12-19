@@ -189,8 +189,7 @@ label {
 .删除阴影按钮 {
   position: absolute;
   right: 5%;
-  height: 100%;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   vertical-align: middle;
   color: rgb(168, 168, 168);
   pointer-events: none;
@@ -464,11 +463,12 @@ label {
   -webkit-appearance: none;
   appearance: none;
   width: var(--拇指宽度);
+  top: calc((var(--拇指宽度) - 5px) * -0.5);
   aspect-ratio: 1;
   border-radius: 50px;
   background: #ada996; /* fallback for old browsers */
   background: var(--拇指渐变背景);
-  transform: translateY(-40%) scale(2);
+  transform: scale(2);
   filter: drop-shadow(0 0 2px rgba(39, 39, 39, 0.5));
 }
 
@@ -514,7 +514,7 @@ label {
 }
 
 :where(#x轴偏移, #y轴偏移, #模糊半径, #扩散半径) + .滑块数据文本 {
-  translate: -50% -15%;
+  translate: -50% -7.5px;
 }
 
 .颜色区 {
