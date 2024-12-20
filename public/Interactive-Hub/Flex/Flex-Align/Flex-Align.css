@@ -96,7 +96,7 @@ label span {
 }
 
 .总区 {
-  background: linear-gradient(to left, #1c2334, #102a33, #0f1027);
+  /*background: linear-gradient(to left, #1c2334, #102a33, #0f1027);*/
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
@@ -205,7 +205,8 @@ label span {
 .弹性数据标题 {
   color: lightblue;
   text-shadow: none;
-  font-size: 20px;
+  font-size: 18px;
+  text-wrap: nowrap;
 }
 
 .标题前缀,
@@ -221,7 +222,8 @@ label span {
 
 .弹性数据 {
   text-shadow: none;
-  font-size: 20px;
+  font-size: 18px;
+  text-wrap: nowrap;
 }
 
 .弹性数据数值 {
@@ -432,14 +434,14 @@ label:hover :is(#盒子透明复选框, #行透明复选框) {
 .操纵区标题 {
   font-family: "JetBrains Mono", Consolas, 微软雅黑, monospace;
   color: rgb(223, 115, 53);
-  width: 125px;
+  width: 140px;
   user-select: none;
   font-size: 16px;
   font-weight: normal;
   text-align: right;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
   gap: 3px;
   margin-right: 5px;
 }

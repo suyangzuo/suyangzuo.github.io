@@ -1,5 +1,15 @@
 :root {
   --中心标题动画持续时间: 0.4s;
+  --四角线框高度: 15px;
+  --四角线框宽度: 20px;
+  --四角线框间隙: -2px;
+  --四角线框厚度: 1px;
+  --交互单项宽度: 272px;
+  --交互单项高度: 60px;
+  --Web前端-水平偏移: 0px;
+  --Web前端-垂直偏移: 0px;
+  --数据结构与算法-水平偏移: 0px;
+  --数据结构与算法-垂直偏移: 0px;
 }
 
 body {
@@ -128,15 +138,54 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(18%, 1fr));
   place-content: center;
-  gap: 20px;
+  /*gap: 20px;*/
+  position: relative;
+}
+
+.四角线框 {
+  position: absolute;
+  width: calc(var(--交互单项宽度) + var(--四角线框间隙) * 2);
+  height: calc(var(--交互单项高度) + var(--四角线框间隙) * 2);
+  border: solid var(--四角线框厚度) lightcyan;
+  pointer-events: none;
+  mask: conic-gradient(
+      at var(--四角线框宽度) var(--四角线框高度),
+      transparent 75%,
+      white 75%
+    )
+    0 0 / calc(100% - var(--四角线框宽度)) calc(100% - var(--四角线框高度))
+    repeat;
+  transition:
+    top 250ms,
+    left 250ms,
+    opacity 250ms,
+    scale 250ms;
+  opacity: 0;
+  scale: 0;
+}
+
+.交互列表:has(.交互单项:hover) .四角线框 {
+  opacity: 1;
+  scale: 1;
+}
+
+.Web前端交互列表 .四角线框 {
+  left: calc(var(--Web前端-水平偏移) - var(--四角线框间隙));
+  top: calc(var(--Web前端-垂直偏移) - var(--四角线框间隙));
+}
+
+.数据结构与算法交互列表 .四角线框 {
+  left: calc(var(--数据结构与算法-水平偏移) - var(--四角线框间隙));
+  top: calc(var(--数据结构与算法-垂直偏移) - var(--四角线框间隙));
 }
 
 .交互单项 {
   position: relative;
-  height: 60px;
-  border-radius: 100px;
+  height: 80px;
+  /*border-radius: 100px;*/
   list-style-type: none;
   filter: drop-shadow(2px 2px 2px #000a);
+  padding: 10px;
   /*overflow: hidden;*/
 }
 
@@ -155,8 +204,8 @@ body {
 }
 
 .交互单项链接:hover {
-  background-color: #2b4162;
-  background-image: linear-gradient(315deg, #2b4162 0%, #242830 74%);
+  /*background-color: #2b4162;
+  background-image: linear-gradient(315deg, #2b4162 0%, #242830 74%);*/
   box-shadow: inset 0 1px 0 gray;
   cursor: url(/Images/Common/鼠标-指向.cur), pointer;
 }
@@ -202,14 +251,14 @@ body {
   font-weight: normal;
 }
 
-.交互单项:hover .序号,
+/*.交互单项:hover .序号,
 .交互单项:hover .链接-字 {
   color: rgb(210, 210, 210);
 }
 
 .交互单项:hover .链接-字-英文 {
   color: rgb(170, 170, 170);
-}
+}*/
 
 .交互单项:has(.未完成)::after {
   width: 100%;
@@ -242,9 +291,9 @@ body {
   filter: brightness(40%);
 }
 
-:where(.字体, .长度, .宽度与高度, .盒子阴影, .队列, .链表, .二叉树):hover img {
+/*:where(.字体, .长度, .宽度与高度, .盒子阴影, .队列, .链表, .二叉树):hover img {
   filter: invert(80%);
-}
+}*/
 
 .交互子项 {
   height: 100%;
@@ -333,7 +382,7 @@ body {
 
   .交互列表 {
     grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-    gap: 20px;
+    /*gap: 20px;*/
   }
 
   .交互单项链接 {

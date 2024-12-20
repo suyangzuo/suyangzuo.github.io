@@ -10,6 +10,16 @@
   --数字过渡时长: 500ms;
 }
 
+input[type="range"] {
+  height: 8px;
+  border-radius: 999px;
+  accent-color: greenyellow;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  scale: 1.25;
+}
+
 .总区 {
   gap: 150px;
 }
@@ -185,7 +195,7 @@ label {
 }
 
 .标签文本 {
-  padding: 5px;
+  padding: 5px 10px;
 }
 
 #动画速率:hover {
@@ -193,7 +203,7 @@ label {
 }
 
 #动画速率数值 {
-  margin-left: 5px;
+  margin-left: 10px;
   width: 30px;
   height: fit-content;
   display: inline-flex;
