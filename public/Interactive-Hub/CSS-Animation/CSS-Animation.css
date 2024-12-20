@@ -27,7 +27,7 @@ span, label {
   grid-template-columns: repeat(20, minmax(50px, 1fr));
   grid-template-rows: repeat(20, minmax(3vh, 1fr));
   gap: 10px;
-  background: #111;
+  /*background: #111;*/
 }
 
 .分区 {
@@ -39,7 +39,7 @@ span, label {
   position: relative;
   display: flex;
   grid-area: 1 / 1 / 12 / 12;
-  background-color: rgba(255, 255, 255, 0.02);
+  background-color: rgba(255, 255, 255, 0.03);
 }
 
 .调用区 {
@@ -126,17 +126,17 @@ span, label {
   right: 15px;
   padding: 10px 20px;
   border-radius: 999px;
-  background-color: #fff2;
-  color: #ccc;
+  background-color: #fff9;
+  color: black;
   transition: 75ms;
 }
 
 #刷新动画:hover {
-  background-color: #ffffff2a;
+  background-color: #fffb;
 }
 
 #刷新动画:active {
-  background-color: #fff3;
+  background-color: #fffd;
 }
 
 .区标题 {
