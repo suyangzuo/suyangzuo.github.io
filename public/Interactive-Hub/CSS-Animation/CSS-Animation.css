@@ -148,7 +148,7 @@ span, label {
   color: black;
   box-shadow: inset 0 0 2px 1px #fffa;
   font-weight: 550;
-  font-size: max(12px, 1.35vh);
+  font-size: max(14px, 1.25vh);
 }
 
 .参数区 {

@@ -21,13 +21,13 @@
   width: 50%;
   height: max(600px, calc(100% - 50px));
   position: relative;
-  --向内偏移: max(20vh, 200px);
+  --向内偏移: max(15vh, 200px);
 }
 
 .展示分区 {
   position: absolute;
   width: 100%;
-  height: calc(100% - 160px);
+  height: max(800px, calc(100% - 160px));
   /*height: 100%;*/
   top: 0;
   left: 0;

@@ -103,8 +103,9 @@
 }
 
 .盒子内部文本-代码 {
-  color: #111 !important;
+  color: #b31 !important;
   font-size: 12px !important;
+  mix-blend-mode: color-burn;
 }
 
 :where(.外边距盒子, .内容盒子) span[class$="中文"] {
@@ -619,6 +620,7 @@ input[type="range"]::-webkit-slider-thumb {
   align-items: center;
   gap: 1vh;
   padding: 15px 20px;
+  border-bottom: solid 1px #cde6;
   /*border: solid 1px #789;*/
 }
 
@@ -729,7 +731,7 @@ input[type="range"]::-webkit-slider-thumb {
   border-radius: 20px;
   text-align: center;
   align-content: center;
-  background-color: lightgoldenrodyellow;
+  background-color: lightgreen;
   color: black;
   top: -7px;
   right: -7px;
