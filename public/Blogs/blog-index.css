@@ -2,7 +2,8 @@
   --侧边栏宽度: 250px;
   --侧边栏颜色-鼠标悬停: #2a303a;
   --侧边栏颜色-已选中: rgb(106, 50, 83);
-  --侧边栏背景: linear-gradient(60deg, #141518 0%, #171c21 100%);
+  /*--侧边栏背景: linear-gradient(60deg, #141518 0%, #171c21 100%);*/
+  --侧边栏背景: #ffffff05;
   --专题内容区背景: linear-gradient(90deg, #181c20 0%, #262d35 100%);
   --超链接颜色-正文: yellowgreen;
   --超链接-悬停颜色: rgb(173, 104, 238);
@@ -36,6 +37,18 @@ html {
 
 body {
   width: 100dvw;
+}
+
+body::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: 0 0 / cover no-repeat fixed
+    url("/Images/Background-Images/宇宙.jpg");
+  filter: brightness(35%);
 }
 
 body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
@@ -913,7 +926,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   left: 0;
   top: 0;
   background: var(--侧边栏背景);
-  /*border-right: solid 1px black;*/
+  /*border-right: solid 1px #ced2;*/
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -1157,7 +1170,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 .专题内容区 {
   width: 100%;
   min-height: calc(100vh - 50px);
-  background-image: var(--专题内容区背景);
+  /*background-image: var(--专题内容区背景);*/
   padding: 50px 50px 250px calc(var(--侧边栏宽度) + 15vw);
   color: white;
   display: flex;

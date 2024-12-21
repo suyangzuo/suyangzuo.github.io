@@ -33,8 +33,7 @@ body {
   content: "";
   top: 0;
   left: 0;
-  background-size: cover;
-  background: url(/Images/Contributers/contributor-bg-11.webp) no-repeat center;
+  background: center/cover no-repeat url("/Images/Contributors/contributor-bg-11.webp");
   filter: grayscale(0.6) brightness(0.35);
   z-index: -1;
   box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.55);
@@ -254,7 +253,6 @@ body {
 }
 
 .cell-intro {
-  align-items: center;
   color: #aaa;
   font-size: 0.9rem;
   align-items: flex-start;
@@ -284,7 +282,7 @@ body {
   filter: opacity(0.25);
   position: absolute;
   z-index: -1;
-  background: no-repeat center/cover url(/Images/Contributers/contributor-bg-01.jpg);
+  background: no-repeat center/100vw 213vw url("/Images/Contributors/contributor-bg-01.jpg");
 }
 
 .contributor {

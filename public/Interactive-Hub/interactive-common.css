@@ -1,7 +1,7 @@
 body {
   min-height: 100vh;
   font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
-  background: center/cover no-repeat
+  background: 0 0/100vw 100vh no-repeat fixed
     url("/Images/Background-Images/交互式学习中心-主页背景.jpg");
 }
 
