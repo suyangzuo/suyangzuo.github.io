@@ -1,0 +1,102 @@
+*,
+::after,
+::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.top {
+  display: flex;
+  justify-content: center;
+  font-size: 2vw;
+  margin-bottom: 10px;
+  /* border: solid red; */
+}
+
+@media (max-width: 1200px) {
+  .top {
+    font-size: 30px;
+  }
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+}
+
+.左侧区 {
+  margin-right: 30px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+  /* border: solid red; */
+}
+
+
+
+.汉堡菜单区 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border: solid green; */
+}
+
+.菜单 {
+  display: none;
+  top: 60px;
+  left: 20px;
+  background-color: #fff;
+}
+
+.菜单.展示{
+  display: block;
+}
+
+.汉堡按钮 {
+  width: 120px;
+  height: 60px;
+  border-radius: 15px;
+  background-color: brown;
+  font-size: 18px;
+  border: none;
+}
+
+.菜单 > ul {
+  color: black;
+  list-style: none;
+}
+
+.提示 {
+  margin-top: 20vh;
+  text-align: center;
+}
+
+.名字区 {
+  display: grid;
+  grid-gap: 5px;
+  grid-template-columns: repeat(3, 8vh);
+  grid-template-rows: repeat(5, 2vw);
+  /* border: solid red; */
+}
+
+.名字区 > button {
+  border-radius: 20px;
+  border: none;
+  background-color: antiquewhite;
+}
+
+.人物肖像区 {
+  /* border: solid red; */
+  display: grid;
+  grid-gap: 5px;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+}
+
+.人物肖像> img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+}

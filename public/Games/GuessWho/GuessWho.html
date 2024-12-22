@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GuessWho</title>
+    <link rel="stylesheet" href="./GuessWho.css" />
+    <script src="./GuessWho.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&family=Noto+Sans+SC&display=swap"
+      rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="../game-common.css" />
+    <link rel="stylesheet" type="text/css" href="./card-match.css" />
+    <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/Styles/top-banner-common.css" />
+
+    <script
+      src="https://kit.fontawesome.com/d0483e3bd3.js"
+      crossorigin="anonymous"></script>
+    <script src="/Scripts/top-banner.js" defer></script>
+    <script src="https://cdn.lordicon.com/bhenfmcm.js"></script>
+  </head>
+  <body>
+    <script
+      src="/Scripts/html-include.js"
+      target="/top-banner.html"
+      position="afterbegin"></script>
+    <!-- <div class="background-image">
+  <img src="../Images-Common/Game-Background-02.webp" alt="游戏背景墙" />
+</div> -->
+    <div class="control-area">
+      <div class="back-to-navigator">
+        <a href="../game-index.html" title="返回游戏大厅">
+          <img src="../后退.png" alt="后退" />
+        </a>
+      </div>
+      <div class="reset-game">
+        <img src="../重置.png" alt="重置游戏" title="重置" />
+      </div>
+    </div>
+    <div class="top">
+      <p>你是？</p>
+    </div>
+
+    <div class="main">
+      <div class="左侧区">
+        <div class="汉堡菜单区">
+          <div class="汉堡" id="汉堡">
+            <button class="汉堡按钮">换一组人物？</button>
+          </div>
+
+          <div class="菜单" id="菜单">
+            <ul>
+              <li>科幻电影</li>
+              <li>卡通人物</li>
+              <li>三国群英</li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="提示">拖动名字到对应的人物上</p>
+        <div class="名字区">
+          
+          <button class="人物名字" draggable="true">人物1</button>
+          <button class="人物名字" draggable="true">人物2</button>
+          <button class="人物名字" draggable="true">人物3</button>
+          <button class="人物名字" draggable="true">人物4</button>
+          <button class="人物名字" draggable="true">人物5</button>
+          <button class="人物名字" draggable="true">人物6</button>
+          <button class="人物名字" draggable="true">人物7</button>
+          <button class="人物名字" draggable="true">人物8</button>
+          <button class="人物名字" draggable="true">人物9</button>
+          <button class="人物名字" draggable="true">人物10</button>
+          <button class="人物名字" draggable="true">人物11</button>
+          <button class="人物名字" draggable="true">人物12</button>
+          <button class="人物名字" draggable="true">人物13</button>
+          <button class="人物名字" draggable="true">人物14</button>
+          <button class="人物名字" draggable="true">人物15</button>
+        </div>
+      </div>
+
+      <div class="人物肖像区">
+        <div class="人物肖像" data-name="人物1">
+          <img src="/Images/Contributors/lzx.jpg" alt="人物1" />
+        </div>
+        <div class="人物肖像" data-name="人物1">
+          <img src="/Images/Contributors/lzx.jpg" alt="人物2" />
+        </div>
+        <div class="人物肖像" data-name="人物1">
+          <img src="/Images/Contributors/lzx.jpg" alt="人物3" />
+        </div>
+        <div class="人物肖像" data-name="人物1">
+          <img src="/Images/Contributors/lzx.jpg" alt="人物4" />
+        </div>
+        <div class="人物肖像" data-name="人物1">
+          <img src="/Images/Contributors/lzx.jpg" alt="人物5" />
+        </div>
+        <div class="人物肖像" data-name="人物1">
+          <img src="/Images/Contributors/lzx.jpg" alt="人物6" />
+        </div>
+        <div class="人物肖像" data-name="人物1">
+          <img src="/Images/Contributors/lzx.jpg" alt="人物7" />
+        </div>
+        <div class="人物肖像" data-name="人物1">
+          <img src="/Images/Contributors/lzx.jpg" alt="人物8" />
+        </div>
+        <div class="人物肖像" data-name="人物1">
+          <img src="/Images/Contributors/lzx.jpg" alt="人物9" />
+        </div>
+        <div class="人物肖像" data-name="人物1">
+          <img src="/Images/Contributors/lzx.jpg" alt="人物10" />
+        </div>
+        <div class="人物肖像" data-name="人物1">
+          <img src="/Images/Contributors/lzx.jpg" alt="人物11" />
+        </div>
+        <div class="人物肖像" data-name="人物1">
+          <img src="/Images/Contributors/lzx.jpg" alt="人物12" />
+        </div>
+        <div class="人物肖像" data-name="人物1">
+          <img src="/Images/Contributors/lzx.jpg" alt="人物13" />
+        </div>
+        <div class="人物肖像" data-name="人物1">
+          <img src="/Images/Contributors/lzx.jpg" alt="人物14" />
+        </div>
+        <div class="人物肖像" data-name="人物1">
+          <img src="/Images/Contributors/lzx.jpg" alt="人物15" />
+        </div>
+      </div>
+    </div>
+    <script src="./gameLogic.js"></script>
+  </body>
+</html>
