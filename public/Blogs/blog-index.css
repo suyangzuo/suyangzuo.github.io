@@ -1066,7 +1066,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 
 .专题 {
   width: 100%;
-  padding: 2px 8px;
+  padding: 3px 8px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
