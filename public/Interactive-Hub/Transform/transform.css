@@ -1,6 +1,344 @@
 :root {
-  --进度条颜色-已填充: rgb(41, 126, 78);
-  --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
-  --拇指宽度: 16px;
+  --拇指宽度: 20px;
+  --滑块填充色: rgb(140, 140, 140);
+  --滑块未填充色: #444;
+  --变换风格: flat;
+  --透视填充: 0%;
+  --透视: none;
+  --变换原点-水平偏移: 50%;
+  --变换原点-垂直偏移: 50%;
+  --变换原点-水平填充: 50%;
+  --变换原点-垂直填充: 50%;
+  --平移-水平: 0%;
+  --平移-垂直: 0%;
+  --平移-水平填充: 50%;
+  --平移-垂直填充: 50%;
+  --缩放-水平: 100%;
+  --缩放-垂直: 100%;
+  --缩放-水平填充: 50%;
+  --缩放-垂直填充: 50%;
+  --旋转-x: 0deg;
+  --旋转-y: 0deg;
+  --旋转-z: 0deg;
+  --旋转-x填充: 50%;
+  --旋转-y填充: 50%;
+  --旋转-z填充: 50%;
 }
 
+input[type="range"] {
+  appearance: none;
+  height: 6px;
+  width: 200px;
+  border-radius: 999px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: var(--拇指宽度);
+  height: var(--拇指宽度);
+  border-radius: 999px;
+  background-color: var(--滑块填充色);
+  translate: 0 -8px;
+}
+
+input[type="range"]:hover,
+input[type="range"]::-webkit-slider-thumb:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.数据列表 {
+  position: absolute;
+}
+
+.展示区 {
+  width: 45%;
+  height: max(600px, calc(100vh - 200px));
+  border: solid 1px darkolivegreen;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.盒子容器 {
+  width: 200px;
+  height: 200px;
+  position: relative;
+  perspective: var(--透视);
+}
+
+#原始盒子,
+#变换盒子 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#原点盒子 {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background-color: gold;
+  top: calc(var(--变换原点-垂直偏移) - 5px);
+  left: calc(var(--变换原点-水平偏移) - 5px);
+}
+
+#原始盒子 {
+  text-align: center;
+  align-content: center;
+  background-color: #cde1;
+  border: solid 1px #cde3;
+  color: #cde7;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#原始盒子.显示原始盒子 {
+  opacity: 1;
+}
+
+#变换盒子 {
+  background-color: #ced4;
+  transform-origin: var(--变换原点-水平偏移) var(--变换原点-垂直偏移);
+  translate: var(--平移-水平) var(--平移-垂直);
+  scale: var(--缩放-水平) var(--缩放-垂直);
+  transform: rotateX(var(--旋转-x)) rotateY(var(--旋转-y))
+    rotateZ(var(--旋转-z));
+  transform-style: var(--透视);
+}
+
+/* --------------------------- ⬇️ 控制区------------------------------ */
+.控制区 {
+  outline: solid 2px #cde3;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.控制分区 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.控制分区:not(:last-child) {
+  border-bottom: solid 2px #cde5;
+}
+
+.控制分区标题 {
+  color: goldenrod;
+  margin: 15px 0 10px 0;
+}
+
+.控件区 {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  background-image: linear-gradient(transparent 0%, #ffffff10 100%);
+}
+
+.控件区:hover {
+  background-image: linear-gradient(#ffffff00 0%, #55c0ff50 100%);
+}
+
+.标题中文 {
+  color: darkseagreen;
+  font-size: 1.05em;
+}
+
+.标题代码 {
+  color: darkkhaki;
+  font-size: 0.95em;
+}
+
+span[class$="中文"]:not(.标题中文) {
+  color: lightskyblue;
+  font-size: 1.1em;
+  width: 4ch;
+  text-align: center;
+}
+
+span[class$="代码"]:not(.标题代码) {
+  color: silver;
+  font-size: 0.95em;
+}
+
+.控件区标题 {
+  width: 155px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-right: 15px;
+}
+
+.控件标签 {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+}
+
+.控件标签:hover {
+  cursor: url("/Images/Common/鼠标-默认.cur"), auto;
+}
+
+.控件文本 {
+  width: fit-content;
+  height: fit-content;
+  padding: 10px 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.控件标签:has(#none) {
+  padding: 5px 20px 5px 0;
+}
+
+.控件标签:has(#none) .控件文本 {
+  padding: 5px;
+}
+
+.单选框 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  flex-shrink: 0;
+}
+
+.单选框 {
+  appearance: none;
+  width: 100%;
+  height: 100%;
+}
+
+.单选框:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.控件标签:has(.单选框):hover .控件文本 {
+  background-color: #ced2;
+}
+
+.控件标签:has(.单选框:checked) .控件文本 {
+  background-color: #465c;
+}
+
+.控件值 {
+  width: 70px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: 10px;
+}
+
+.控件数字 {
+  color: lightblue;
+}
+
+.控件单位 {
+  color: #9e81d8;
+}
+
+.选择器 {
+  outline: none;
+  border: solid 1px #cde4;
+  padding: 2px 0;
+  background-color: #123;
+}
+
+.选项 {
+  background-color: #234;
+}
+
+.选项:hover {
+  background-color: red;
+}
+
+.滑块.无效滑块 {
+  filter: brightness(50%);
+}
+
+#透视 {
+  background-image: linear-gradient(
+    90deg,
+    var(--滑块填充色) var(--透视填充),
+    var(--滑块未填充色) var(--透视填充)
+  );
+}
+
+#变换原点-水平 {
+  background-image: linear-gradient(
+    90deg,
+    var(--滑块填充色) var(--变换原点-水平填充),
+    var(--滑块未填充色) var(--变换原点-水平填充)
+  );
+}
+
+#变换原点-垂直 {
+  background-image: linear-gradient(
+    90deg,
+    var(--滑块填充色) var(--变换原点-垂直填充),
+    var(--滑块未填充色) var(--变换原点-垂直填充)
+  );
+}
+
+#平移-水平 {
+  background-image: linear-gradient(
+    90deg,
+    var(--滑块填充色) var(--平移-水平填充),
+    var(--滑块未填充色) var(--平移-水平填充)
+  );
+}
+
+#平移-垂直 {
+  background-image: linear-gradient(
+    90deg,
+    var(--滑块填充色) var(--平移-垂直填充),
+    var(--滑块未填充色) var(--平移-垂直填充)
+  );
+}
+
+#缩放-水平 {
+  background-image: linear-gradient(
+    90deg,
+    var(--滑块填充色) var(--缩放-水平填充),
+    var(--滑块未填充色) var(--缩放-水平填充)
+  );
+}
+
+#缩放-垂直 {
+  background-image: linear-gradient(
+    90deg,
+    var(--滑块填充色) var(--缩放-垂直填充),
+    var(--滑块未填充色) var(--缩放-垂直填充)
+  );
+}
+
+#旋转-x {
+  background-image: linear-gradient(
+    90deg,
+    var(--滑块填充色) var(--旋转-x填充),
+    var(--滑块未填充色) var(--旋转-x填充)
+  );
+}
+
+#旋转-y {
+  background-image: linear-gradient(
+    90deg,
+    var(--滑块填充色) var(--旋转-y填充),
+    var(--滑块未填充色) var(--旋转-y填充)
+  );
+}
+
+#旋转-z {
+  background-image: linear-gradient(
+    90deg,
+    var(--滑块填充色) var(--旋转-z填充),
+    var(--滑块未填充色) var(--旋转-z填充)
+  );
+}

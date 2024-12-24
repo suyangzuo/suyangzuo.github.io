@@ -10,6 +10,10 @@
       href="/Images/Interactive-Hub/HQ/变换.png"
       type="image/x-icon"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Titillium+Web&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Roboto+Mono&family=M+PLUS+Code+Latin&family=Ubuntu+Mono&family=M+PLUS+1+Code:wght@100..700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="/Styles/common.css" />
     <link rel="stylesheet" href="/Styles/top-banner-common.css" />
     <link rel="stylesheet" href="../control.css" />
@@ -39,8 +43,312 @@
         position="afterbegin"
       ></script>
       <p class="交互标题">变换</p>
-      <figure class="展示区"></figure>
-      <div class="控制区"></div>
+      <figure class="展示区">
+        <div class="盒子容器">
+          <div id="原始盒子"><span class="">原始盒子</span></div>
+          <div id="变换盒子">
+            <div id="原点盒子"></div>
+          </div>
+        </div>
+      </figure>
+      <div class="控制区">
+        <div class="控制分区 容器设置分区">
+          <h3 class="控制分区标题">容器</h3>
+          <div class="滑块区 控件区 变换原点区">
+            <span class="滑块区标题 控件区标题"
+              ><span class="标题中文">透视</span
+              ><span class="标题代码">perspective</span></span
+            >
+            <label for="none" class="控件标签">
+              <span class="控件文本"
+                ><span class="控件中文">无</span
+                ><span class="控件代码">none</span></span
+              >
+              <input type="radio" id="none" class="单选框" checked />
+            </label>
+            <label for="透视" class="控件标签">
+              <input
+                type="range"
+                id="透视"
+                class="滑块 无效滑块"
+                min="0"
+                max="2000"
+                value="0"
+                list="变换原点列表"
+              />
+              <span class="控件值">
+                <span class="控件数字">0</span>
+                <span class="控件单位">px</span>
+              </span>
+            </label>
+          </div>
+        </div>
+        <div class="控制分区 容器设置分区">
+          <h3 class="控制分区标题">自身</h3>
+          <div class="单选区 控件区 变换风格区">
+            <span class="单选区标题 控件区标题"
+              ><span class="标题中文">变换风格</span
+              ><span class="标题代码">transform-style</span></span
+            >
+            <label for="flat" class="控件标签" style="margin-right: 5px">
+              <span class="控件文本"
+                ><span class="控件中文">平面</span
+                ><span class="控件代码">flat</span></span
+              >
+              <input
+                type="radio"
+                id="flat"
+                name="变换风格"
+                class="单选框"
+                checked
+              />
+            </label>
+            <label for="preserve-3d" class="控件标签">
+              <span class="控件文本"
+                ><span class="控件中文">三维</span
+                ><span class="控件代码">preserve-3d</span></span
+              >
+              <input
+                type="radio"
+                id="preserve-3d"
+                name="变换风格"
+                class="单选框"
+              />
+            </label>
+          </div>
+          <div class="滑块区 控件区 变换原点区">
+            <span class="滑块区标题 控件区标题"
+              ><span class="标题中文">变换原点</span
+              ><span class="标题代码">transform-origin</span></span
+            >
+            <div class="多滑块容器 多控件容器">
+              <label for="变换原点-水平" class="控件标签">
+                <span class="控件文本"><span class="控件中文">水平</span></span>
+                <input
+                  type="range"
+                  id="变换原点-水平"
+                  class="滑块"
+                  min="0"
+                  max="100"
+                  value="50"
+                  list="变换原点列表"
+                />
+                <span class="控件值">
+                  <span class="控件数字">50</span>
+                  <span class="控件单位">%</span>
+                </span>
+              </label>
+              <label for="变换原点-垂直" class="控件标签">
+                <span class="控件文本"><span class="控件中文">垂直</span></span>
+                <input
+                  type="range"
+                  id="变换原点-垂直"
+                  class="滑块"
+                  min="0"
+                  max="100"
+                  value="50"
+                  list="变换原点列表"
+                />
+                <span class="控件值">
+                  <span class="控件数字">50</span>
+                  <span class="控件单位">%</span>
+                </span>
+              </label>
+              <datalist class="数据列表" id="变换原点列表">
+                <option value="50" label="50"></option>
+              </datalist>
+            </div>
+          </div>
+          <div class="滑块区 控件区 平移区">
+            <span class="滑块区标题 控件区标题"
+              ><span class="标题中文">平移</span
+              ><span class="标题代码">translate</span></span
+            >
+            <div class="多滑块容器 多控件容器">
+              <label for="平移-水平" class="控件标签">
+                <span class="控件文本"><span class="控件中文">水平</span></span>
+                <input
+                  type="range"
+                  id="平移-水平"
+                  class="滑块"
+                  min="-200"
+                  max="200"
+                  value="0"
+                  list="平移列表"
+                />
+                <span class="控件值">
+                  <span class="控件数字">0</span>
+                  <select class="控件单位 选择器" id="水平平移选择器">
+                    <option class="选项" value="%" selected>%</option>
+                    <option class="选项" value="px">px</option>
+                  </select>
+                </span>
+              </label>
+              <label for="平移-垂直" class="控件标签">
+                <span class="控件文本"><span class="控件中文">垂直</span></span>
+                <input
+                  type="range"
+                  id="平移-垂直"
+                  class="滑块"
+                  min="-200"
+                  max="200"
+                  value="0"
+                  list="平移列表"
+                />
+                <span class="控件值">
+                  <span class="控件数字">0</span>
+                  <select class="控件单位 选择器" id="垂直平移选择器">
+                    <option class="选项" value="%" selected>%</option>
+                    <option class="选项" value="px">px</option>
+                  </select>
+                </span>
+              </label>
+              <datalist class="数据列表" id="平移列表">
+                <option value="-150" label="-150"></option>
+                <option value="-100" label="-100"></option>
+                <option value="-50" label="-50"></option>
+                <option value="0" label="0"></option>
+                <option value="50" label="50"></option>
+                <option value="100" label="100"></option>
+                <option value="150" label="150"></option>
+              </datalist>
+            </div>
+          </div>
+          <div class="滑块区 控件区 缩放区">
+            <span class="滑块区标题 控件区标题"
+              ><span class="标题中文">缩放</span
+              ><span class="标题代码">scale</span></span
+            >
+            <div class="多滑块容器 多控件容器">
+              <label for="缩放-水平" class="控件标签">
+                <span class="控件文本"><span class="控件中文">水平</span></span>
+                <input
+                  type="range"
+                  id="缩放-水平"
+                  class="滑块"
+                  min="0"
+                  max="200"
+                  value="100"
+                  list="缩放列表"
+                />
+                <span class="控件值">
+                  <span class="控件数字">100</span>
+                  <span class="控件单位">%</span>
+                </span>
+              </label>
+              <label for="缩放-垂直" class="控件标签">
+                <span class="控件文本"><span class="控件中文">垂直</span></span>
+                <input
+                  type="range"
+                  id="缩放-垂直"
+                  class="滑块"
+                  min="0"
+                  max="200"
+                  value="100"
+                  list="缩放列表"
+                />
+                <span class="控件值">
+                  <span class="控件数字">100</span>
+                  <span class="控件单位">%</span>
+                </span>
+              </label>
+              <datalist class="数据列表" id="缩放列表">
+                <option value="50" label="50"></option>
+                <option value="100" label="100"></option>
+                <option value="150" label="150"></option>
+              </datalist>
+            </div>
+          </div>
+          <div class="滑块区 控件区 旋转区">
+            <span class="滑块区标题 控件区标题"
+              ><span class="标题中文">旋转</span
+              ><span class="标题代码">rotate</span></span
+            >
+            <div class="多滑块容器 多控件容器">
+              <label for="旋转-x" class="控件标签">
+                <span class="控件文本"
+                  ><span class="控件中文"
+                    ><span class="轴维度">X</span
+                    ><span class="轴文本">轴</span></span
+                  ></span
+                >
+                <input
+                  type="range"
+                  id="旋转-x"
+                  class="滑块"
+                  min="-360"
+                  max="360"
+                  value="0"
+                  list="旋转列表"
+                />
+                <span class="控件值">
+                  <span class="控件数字">0</span>
+                  <span class="控件单位">deg</span>
+                </span>
+              </label>
+              <label for="旋转-y" class="控件标签">
+                <span class="控件文本"
+                  ><span class="控件中文"
+                    ><span class="轴维度">Y</span
+                    ><span class="轴文本">轴</span></span
+                  ></span
+                >
+                <input
+                  type="range"
+                  id="旋转-y"
+                  class="滑块"
+                  min="-360"
+                  max="360"
+                  value="0"
+                  list="旋转列表"
+                />
+                <span class="控件值">
+                  <span class="控件数字">0</span>
+                  <span class="控件单位">deg</span>
+                </span>
+              </label>
+              <label for="旋转-z" class="控件标签">
+                <span class="控件文本"
+                  ><span class="控件中文"
+                    ><span class="轴维度">Z</span
+                    ><span class="轴文本">轴</span></span
+                  ></span
+                >
+                <input
+                  type="range"
+                  id="旋转-z"
+                  class="滑块"
+                  min="-360"
+                  max="360"
+                  value="0"
+                  list="旋转列表"
+                />
+                <span class="控件值">
+                  <span class="控件数字">0</span>
+                  <span class="控件单位">deg</span>
+                </span>
+              </label>
+              <datalist class="数据列表" id="旋转列表">
+                <option value="-315" label="-315"></option>
+                <option value="-270" label="-270"></option>
+                <option value="-225" label="-225"></option>
+                <option value="-180" label="-180"></option>
+                <option value="-135" label="-135"></option>
+                <option value="-90" label="-90"></option>
+                <option value="-45" label="-45"></option>
+                <option value="0" label="0"></option>
+                <option value="45" label="45"></option>
+                <option value="90" label="90"></option>
+                <option value="135" label="135"></option>
+                <option value="180" label="180"></option>
+                <option value="225" label="225"></option>
+                <option value="270" label="270"></option>
+                <option value="315" label="315"></option>
+              </datalist>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   </body>
 </html>
