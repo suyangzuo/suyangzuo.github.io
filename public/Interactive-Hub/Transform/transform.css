@@ -166,7 +166,7 @@ span[class$="代码"]:not(.标题代码) {
 }
 
 .控件区标题 {
-  width: 155px;
+  width: 174px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;

@@ -6,6 +6,7 @@ const 原点盒子 = document.querySelector("#原点盒子");
 
 const 滑块组 = document.querySelectorAll(".滑块");
 const 变换风格单选组 = document.querySelectorAll(".变换风格区 .单选框");
+const 背面可见性单选组 = document.querySelectorAll(".背面可见性区 .单选框");
 const 无透视单选框 = document.querySelector("#none");
 const 透视滑块 = document.querySelector("#透视");
 const 原点滑块组 = document.querySelectorAll(".变换原点区 .滑块");
@@ -51,6 +52,12 @@ function 设置滑块填充与数值(滑块) {
 for (const 单选框 of 变换风格单选组) {
   单选框.addEventListener("change", () => {
     root.style.setProperty("--变换风格", 单选框.id);
+  });
+}
+
+for (const 单选框 of 背面可见性单选组) {
+  单选框.addEventListener("change", () => {
+    变换盒子.style.backfaceVisibility = 单选框.id;
   });
 }
 
@@ -219,6 +226,10 @@ function 重置参数() {
   原始盒子.classList.remove("显示原始盒子");
 
   水平垂直关联复选框.checked = true;
+
+  const 背面可见单选框 = document.querySelector("#visible");
+  背面可见单选框.checked = true;
+  变换盒子.style.backfaceVisibility = "";
 }
 
 function 获取滑块填充百分比(滑块) {
