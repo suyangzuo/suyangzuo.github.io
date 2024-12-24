@@ -217,6 +217,8 @@ function 重置参数() {
 
   原点盒子.style.scale = "";
   原始盒子.classList.remove("显示原始盒子");
+
+  水平垂直关联复选框.checked = true;
 }
 
 function 获取滑块填充百分比(滑块) {
