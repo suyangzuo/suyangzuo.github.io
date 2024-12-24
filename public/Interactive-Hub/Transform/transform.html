@@ -70,17 +70,22 @@
               <input
                 type="range"
                 id="透视"
-                class="滑块 无效滑块"
+                class="滑块 无效"
                 min="0"
                 max="2000"
                 value="0"
-                list="变换原点列表"
+                list="透视列表"
               />
-              <span class="控件值">
+              <span class="控件值 无效">
                 <span class="控件数字">0</span>
                 <span class="控件单位">px</span>
               </span>
             </label>
+            <datalist class="数据列表" id="透视列表">
+              <option value="500" label="500"></option>
+              <option value="1000" label="1000"></option>
+              <option value="1500" label="1500"></option>
+            </datalist>
           </div>
         </div>
         <div class="控制分区 容器设置分区">

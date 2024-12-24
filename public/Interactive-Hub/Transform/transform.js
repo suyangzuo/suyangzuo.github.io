@@ -12,6 +12,7 @@ const 原点滑块组 = document.querySelectorAll(".变换原点区 .滑块");
 const 平移滑块组 = document.querySelectorAll(".平移区 .滑块");
 const 缩放滑块组 = document.querySelectorAll(".缩放区 .滑块");
 const 旋转滑块组 = document.querySelectorAll(".旋转区 .滑块");
+const 变换滑块组 = [...平移滑块组, ...缩放滑块组, ...旋转滑块组];
 const 选择器组 = document.querySelectorAll(".选择器");
 
 let 水平平移单位 = "%";
@@ -33,10 +34,7 @@ for (const 选择器 of 选择器组) {
 
 for (const 滑块 of 滑块组) {
   滑块.addEventListener("input", () => {
-    const min = parseInt(滑块.min, 10);
-    const max = parseInt(滑块.max, 10);
-    const value = parseInt(滑块.value, 10);
-    const percentValue = ((value - min) / (max - min)) * 100;
+    const percentValue = 获取滑块填充百分比(滑块);
     root.style.setProperty(`--${滑块.id}填充`, `${percentValue}%`);
     const 控件数字 = 滑块.nextElementSibling.querySelector(".控件数字");
     控件数字.textContent = 滑块.value;
@@ -50,18 +48,21 @@ for (const 单选框 of 变换风格单选组) {
 }
 
 无透视单选框.addEventListener("change", () => {
-  透视滑块.classList.add("无效滑块");
+  透视滑块.classList.add("无效");
+  透视滑块.nextElementSibling.classList.add("无效");
   root.style.setProperty("--透视", "none");
 });
 
 透视滑块.addEventListener("input", () => {
-  透视滑块.classList.remove("无效滑块");
+  透视滑块.classList.remove("无效");
+  透视滑块.nextElementSibling.classList.remove("无效");
   无透视单选框.checked = false;
   root.style.setProperty("--透视", `${透视滑块.value}px`);
 });
 
 透视滑块.addEventListener("click", () => {
-  透视滑块.classList.remove("无效滑块");
+  透视滑块.classList.remove("无效");
+  透视滑块.nextElementSibling.classList.remove("无效");
   无透视单选框.checked = false;
   root.style.setProperty("--透视", `${透视滑块.value}px`);
 });
@@ -76,14 +77,14 @@ for (const 滑块 of 平移滑块组) {
   滑块.addEventListener("input", () => {
     const 单位 = 滑块.nextElementSibling.querySelector(".选择器").value;
     root.style.setProperty(`--${滑块.id}`, `${滑块.value}${单位}`);
-    显示或隐藏原始盒子(平移滑块组);
+    显示或隐藏原始盒子();
   });
 }
 
 for (const 滑块 of 缩放滑块组) {
   滑块.addEventListener("input", () => {
     root.style.setProperty(`--${滑块.id}`, `${滑块.value}%`);
-    显示或隐藏原始盒子(缩放滑块组);
+    显示或隐藏原始盒子();
     const 水平缩放 = parseInt(rootStyle.getPropertyValue("--缩放-水平"), 10);
     const 垂直缩放 = parseInt(rootStyle.getPropertyValue("--缩放-垂直"), 10);
     const 原点水平缩放 = `${10000 / 水平缩放}%`;
@@ -95,12 +96,12 @@ for (const 滑块 of 缩放滑块组) {
 for (const 滑块 of 旋转滑块组) {
   滑块.addEventListener("input", () => {
     root.style.setProperty(`--${滑块.id}`, `${滑块.value}deg`);
-    显示或隐藏原始盒子(旋转滑块组);
+    显示或隐藏原始盒子();
   });
 }
 
-function 显示或隐藏原始盒子(滑块集合) {
-  const 已修改滑块 = Array.from(滑块集合).some((滑块) => {
+function 显示或隐藏原始盒子() {
+  const 已修改滑块 = 变换滑块组.some((滑块) => {
     const min = parseInt(滑块.min, 10);
     const max = parseInt(滑块.max, 10);
     const value = parseInt(滑块.value, 10);
@@ -155,13 +156,17 @@ function 重置参数() {
   }
 
   for (const 滑块 of 滑块组) {
-    const min = parseInt(滑块.min, 10);
-    const max = parseInt(滑块.max, 10);
-    const value = parseInt(滑块.value, 10);
-    const percentValue = ((value - min) / (max - min)) * 100;
+    const percentValue = 获取滑块填充百分比(滑块);
     root.style.setProperty(`--${滑块.id}填充`, `${percentValue}%`);
   }
 
   原点盒子.style.scale = "";
   原始盒子.classList.remove("显示原始盒子");
+}
+
+function 获取滑块填充百分比(滑块) {
+  const min = parseInt(滑块.min, 10);
+  const max = parseInt(滑块.max, 10);
+  const value = parseInt(滑块.value, 10);
+  return ((value - min) / (max - min)) * 100;
 }

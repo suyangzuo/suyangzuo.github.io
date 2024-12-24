@@ -249,17 +249,19 @@ span[class$="代码"]:not(.标题代码) {
   border: solid 1px #cde4;
   padding: 2px 0;
   background-color: #123;
+  font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
 }
 
 .选项 {
   background-color: #234;
+  font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
 }
 
 .选项:hover {
   background-color: red;
 }
 
-.滑块.无效滑块 {
+.无效 {
   filter: brightness(50%);
 }
 
@@ -341,4 +343,10 @@ span[class$="代码"]:not(.标题代码) {
     var(--滑块填充色) var(--旋转-z填充),
     var(--滑块未填充色) var(--旋转-z填充)
   );
+}
+
+.轴维度 {
+  margin-right: 3px;
+  color: darkgoldenrod;
+  font-size: 0.9em;
 }
