@@ -41,6 +41,7 @@ body {
   align-items: flex-start;
   padding-top: 115px;
   gap: 50px;
+  scrollbar-gutter: stable both-edges;
 }
 
 .交互标题 {
