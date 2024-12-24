@@ -225,7 +225,7 @@ span[class$="代码"]:not(.标题代码) {
 }
 
 .控件标签:has(.单选框:checked) .控件文本 {
-  background-color: #465c;
+  background-color: #465d;
 }
 
 .控件值 {
@@ -250,15 +250,6 @@ span[class$="代码"]:not(.标题代码) {
   padding: 2px 0;
   background-color: #123;
   font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
-}
-
-.选项 {
-  background-color: #234;
-  font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
-}
-
-.选项:hover {
-  background-color: red;
 }
 
 .无效 {
@@ -349,4 +340,73 @@ span[class$="代码"]:not(.标题代码) {
   margin-right: 3px;
   color: darkgoldenrod;
   font-size: 0.9em;
+}
+
+.按钮区 {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.按钮 {
+  width: 25px;
+  height: 25px;
+  border-radius: 999px;
+  background-color: #cdea;
+}
+
+.按钮:hover {
+  background-color: #cded;
+}
+
+.按钮:active {
+  background-color: #cde;
+}
+
+.控件标签:has(#水平垂直关联) {
+  width: 25px;
+  height: 25px;
+  border-radius: 999px;
+  background-color: #adff2f22;
+  transition: 100ms;
+}
+
+.控件标签:has(#水平垂直关联):hover {
+  background-color: #adff2f33;
+}
+
+.控件标签:has(#水平垂直关联):hover,
+#水平垂直关联:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.控件标签:has(#水平垂直关联:checked) {
+  background-color: greenyellow;
+}
+
+.控件标签:has(#水平垂直关联) .控件文本 {
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  font-size: 12px;
+  color: gray;
+}
+
+.控件标签:has(#水平垂直关联):hover .控件文本 {
+  color: rgb(210, 210, 210);
+}
+
+.控件标签:has(#水平垂直关联:checked) .控件文本 {
+  color: black;
+}
+
+.复选框 {
+  position: absolute;
+  appearance: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
 }

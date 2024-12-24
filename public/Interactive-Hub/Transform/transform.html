@@ -54,7 +54,7 @@
       <div class="控制区">
         <div class="控制分区 容器设置分区">
           <h3 class="控制分区标题">容器</h3>
-          <div class="滑块区 控件区 变换原点区">
+          <div class="滑块区 控件区 透视区">
             <span class="滑块区标题 控件区标题"
               ><span class="标题中文">透视</span
               ><span class="标题代码">perspective</span></span
@@ -124,8 +124,11 @@
           <div class="滑块区 控件区 变换原点区">
             <span class="滑块区标题 控件区标题"
               ><span class="标题中文">变换原点</span
-              ><span class="标题代码">transform-origin</span></span
-            >
+              ><span class="标题代码">transform-origin</span
+              ><span class="按钮区"
+                ><button id="重置变换原点" class="按钮">
+                  <i class="fa-solid fa-arrows-rotate"></i></button></span
+            ></span>
             <div class="多滑块容器 多控件容器">
               <label for="变换原点-水平" class="控件标签">
                 <span class="控件文本"><span class="控件中文">水平</span></span>
@@ -167,8 +170,11 @@
           <div class="滑块区 控件区 平移区">
             <span class="滑块区标题 控件区标题"
               ><span class="标题中文">平移</span
-              ><span class="标题代码">translate</span></span
-            >
+              ><span class="标题代码">translate</span
+              ><span class="按钮区"
+                ><button id="重置平移" class="按钮">
+                  <i class="fa-solid fa-arrows-rotate"></i></button></span
+            ></span>
             <div class="多滑块容器 多控件容器">
               <label for="平移-水平" class="控件标签">
                 <span class="控件文本"><span class="控件中文">水平</span></span>
@@ -222,8 +228,18 @@
           <div class="滑块区 控件区 缩放区">
             <span class="滑块区标题 控件区标题"
               ><span class="标题中文">缩放</span
-              ><span class="标题代码">scale</span></span
-            >
+              ><span class="标题代码">scale</span
+              ><span class="按钮区"
+                ><label for="水平垂直关联" class="控件标签">
+                  <span class="控件文本"><i class="fa-solid fa-link"></i></span
+                  ><input
+                    type="checkbox"
+                    class="复选框"
+                    id="水平垂直关联"
+                    checked /></label
+                ><button id="重置缩放" class="按钮">
+                  <i class="fa-solid fa-arrows-rotate"></i></button></span
+            ></span>
             <div class="多滑块容器 多控件容器">
               <label for="缩放-水平" class="控件标签">
                 <span class="控件文本"><span class="控件中文">水平</span></span>
@@ -267,8 +283,11 @@
           <div class="滑块区 控件区 旋转区">
             <span class="滑块区标题 控件区标题"
               ><span class="标题中文">旋转</span
-              ><span class="标题代码">rotate</span></span
-            >
+              ><span class="标题代码">rotate</span
+              ><span class="按钮区"
+                ><button id="重置旋转" class="按钮">
+                  <i class="fa-solid fa-arrows-rotate"></i></button></span
+            ></span>
             <div class="多滑块容器 多控件容器">
               <label for="旋转-x" class="控件标签">
                 <span class="控件文本"
