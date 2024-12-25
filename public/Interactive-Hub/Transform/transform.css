@@ -41,8 +41,20 @@ input[type="range"]::-webkit-slider-thumb {
   translate: 0 -8px;
 }
 
+input[type="range"]::-moz-range-thumb {
+  appearance: none;
+  width: var(--拇指宽度);
+  height: var(--拇指宽度);
+  border-radius: 999px;
+  background-color: var(--滑块填充色);
+}
+
 input[type="range"]:hover,
 input[type="range"]::-webkit-slider-thumb:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+input[type="range"]::-moz-range-thumb:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 

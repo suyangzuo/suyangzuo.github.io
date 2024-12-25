@@ -7,15 +7,18 @@
   --内容盒子高度: 300px;*/
   --盒子宽度: 300px;
   --盒子高度: 300px;
-  --宽度修剪比例: 25%;
-  --高度修剪比例: 25%;
-  --内容修剪比例: 25%;
+  --宽度修剪比例: 75%;
+  --高度修剪比例: 75%;
+  /*--内容修剪比例: 25%;*/
   --内边距修剪比例: 50%;
   --边框修剪比例: 50%;
   --外边距修剪比例: 50%;
-  --拇指尺寸: 24px;
+  --拇指尺寸: 20px;
+  --拇指背景色: darkgoldenrod;
   --滑块前缀文本宽度: 64px;
-  --滑块区鼠标悬停背景色: #0005;
+  --滑块区鼠标悬停背景色: #fff2;
+  --滑块填充色: darkgoldenrod;
+  --滑块未填充色: #555;
 }
 
 .总区 span[class$="中文"] {
@@ -503,7 +506,7 @@ label > input[type="radio"] {
 
 input[type="range"] {
   width: 50%;
-  height: 8px;
+  height: 4px;
 }
 
 input[type="range"] {
@@ -513,25 +516,24 @@ input[type="range"] {
   background-color: #777;
 }
 
-input[type="range"]::before {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 999px;
-  top: 0;
-  left: 0;
-  background-image: linear-gradient(90deg, lightgreen 0%, gold 100%);
-  content: "";
-  pointer-events: none;
-}
-
 input[type="range"]::-webkit-slider-thumb {
   appearance: none;
   width: var(--拇指尺寸);
   height: var(--拇指尺寸);
   border-radius: 999px;
-  background-color: lightgoldenrodyellow;
+  background-color: var(--拇指背景色);
   box-shadow: 2px 2px 2px 0 #0007;
+  position: relative;
+}
+
+input[type="range"]::-moz-range-thumb {
+  appearance: none;
+  width: var(--拇指尺寸);
+  height: var(--拇指尺寸);
+  border-radius: 999px;
+  background-color: var(--拇指背景色);
+  box-shadow: 2px 2px 2px 0 #0007;
+  border: none;
   position: relative;
 }
 
@@ -624,28 +626,56 @@ input[type="range"]::-webkit-slider-thumb {
   /*border: solid 1px #789;*/
 }
 
-#宽度::before {
-  clip-path: inset(0 var(--宽度修剪比例) 0 0);
+#宽度 {
+  background-image: linear-gradient(
+    90deg,
+    var(--滑块填充色) var(--宽度修剪比例),
+    var(--滑块未填充色) var(--宽度修剪比例)
+  );
 }
 
-#高度::before {
-  clip-path: inset(0 var(--高度修剪比例) 0 0);
+#高度 {
+  background-image: linear-gradient(
+    90deg,
+    var(--滑块填充色) var(--高度修剪比例),
+    var(--滑块未填充色) var(--高度修剪比例)
+  );
 }
 
-#内容::before {
-  clip-path: inset(0 var(--内容修剪比例) 0 0);
+#内容 {
+  background-image: linear-gradient(
+    90deg,
+    var(--滑块填充色) var(--内容修剪比例),
+    var(--滑块未填充色) var(--内容修剪比例)
+  );
 }
 
-#内边距::before {
-  clip-path: inset(0 var(--内边距修剪比例) 0 0);
+#内边距 {
+  background-image: linear-gradient(
+    90deg,
+    var(--滑块填充色) var(--内边距修剪比例),
+    var(--滑块未填充色) var(--内边距修剪比例)
+  );
 }
 
 #边框::before {
   clip-path: inset(0 var(--边框修剪比例) 0 0);
 }
 
-#外边距::before {
-  clip-path: inset(0 var(--外边距修剪比例) 0 0);
+#边框 {
+  background-image: linear-gradient(
+    90deg,
+    var(--滑块填充色) var(--边框修剪比例),
+    var(--滑块未填充色) var(--边框修剪比例)
+  );
+}
+
+#外边距 {
+  background-image: linear-gradient(
+    90deg,
+    var(--滑块填充色) var(--外边距修剪比例),
+    var(--滑块未填充色) var(--外边距修剪比例)
+  );
 }
 
 .模型设置分区 {

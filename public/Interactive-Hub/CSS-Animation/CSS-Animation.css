@@ -157,7 +157,7 @@ span, label {
   align-items: center;
   gap: 15px;
   border-radius: 10px;
-  font-size: max(12px, 1.2vh);
+  font-size: max(14px, 1.2vh);
 }
 
 .参数区:hover .参数标题 {
@@ -364,7 +364,7 @@ input[type="range"]:hover {
   justify-content: center;
   flex-wrap: wrap;
   width: max(250px, 97.5%);
-  font-size: max(10px, 1.15vh);
+  font-size: max(14px, 1.15vh);
 }
 
 .速写代码区 > span {
@@ -549,7 +549,7 @@ input[type="range"]:hover {
   align-items: center;
   padding: 5px 15px;
   border-radius: 5px;
-  font-size: max(12px, 1.2vh);
+  font-size: max(14px, 1.2vh);
 }
 
 .关键帧分区:hover {

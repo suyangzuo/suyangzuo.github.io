@@ -82,7 +82,8 @@ function 更新滑块背景修剪百分比(滑块) {
   const 最小值 = parseInt(滑块.min, 10);
   const 最大值 = parseInt(滑块.max, 10);
   const 滑块比例 = (滑块值 - 最小值) / (最大值 - 最小值);
-  root.style.setProperty(`--${滑块.id}修剪比例`, `${100 - 滑块比例 * 100}%`);
+  // root.style.setProperty(`--${滑块.id}修剪比例`, `${100 - 滑块比例 * 100}%`);
+  root.style.setProperty(`--${滑块.id}修剪比例`, `${滑块比例 * 100}%`);
 }
 
 function 拖动滑块时修改数字(滑块) {
