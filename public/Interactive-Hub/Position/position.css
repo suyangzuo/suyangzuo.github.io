@@ -40,6 +40,7 @@
   top: 0;
   left: 0;
   pointer-events: none;
+  z-index: 100;
 }
 
 .覆盖容器::before {
@@ -131,11 +132,12 @@
   color: white;
   background-color: #fff2;
   text-shadow: 1px 1px 1px #000a;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(2px);
   z-index: 10;
   transition:
     background-color 125ms,
     border 125ms;
+  pointer-events: none;
 }
 
 .绝对定位-元素::after {
@@ -185,11 +187,18 @@
 }
 
 .平移值与单位 {
-  /*width: 51px;*/
   text-wrap: nowrap;
   display: flex;
   align-items: center;
   gap: 3px;
+}
+
+.平移描述 .平移值与单位 {
+  width: 51px;
+}
+
+.平移中文 {
+  text-wrap: nowrap;
 }
 
 .平移代码 {
@@ -225,7 +234,7 @@
 }
 
 .定位代码 {
-  font-size: max(12px, 0.6vw);
+  font-size: max(14px, 0.6vw);
   font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
 }
 
