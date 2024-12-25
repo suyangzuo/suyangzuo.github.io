@@ -23,6 +23,8 @@
   --旋转-x填充: 50%;
   --旋转-y填充: 50%;
   --旋转-z填充: 50%;
+  --背景图: center/cover no-repeat
+    url("/Images/Background-Images/Busy-Code-Man.gif");
 }
 
 input[type="range"] {
@@ -63,12 +65,55 @@ input[type="range"]::-moz-range-thumb:hover {
 }
 
 .展示区 {
+  position: relative;
   width: 45%;
   height: max(600px, calc(100vh - 200px));
   border: solid 1px darkolivegreen;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.背景类型 {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  display: flex;
+  align-items: center;
+}
+
+.背景类型 .控件标签 {
+  width: 60px;
+  height: 60px;
+}
+
+.控件标签:has(#图像) {
+  outline: solid 1px transparent;
+  transition: 125ms;
+}
+
+.控件标签:has(#图像):hover {
+  outline: solid 1px #cde6;
+}
+
+.控件标签:has(#图像) .控件文本 {
+  background: var(--背景图);
+  filter: brightness(35%);
+}
+
+.控件标签:has(#图像:checked) .控件文本 {
+  background: var(--背景图);
+  filter: brightness(100%);
+}
+
+.背景类型 .控件文本 {
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+}
+
+.复选框:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 .盒子容器 {
@@ -121,6 +166,38 @@ input[type="range"]::-moz-range-thumb:hover {
   transform-style: var(--透视);
 }
 
+#原始盒子::before {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  content: "";
+  top: 0;
+  left: 0;
+  background: var(--背景图);
+  pointer-events: none;
+  opacity: 0;
+}
+
+#原始盒子.背景图盒子::before {
+  opacity: 0.15;
+}
+
+#变换盒子::before {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  content: "";
+  top: 0;
+  left: 0;
+  background: var(--背景图);
+  pointer-events: none;
+  opacity: 0;
+}
+
+#变换盒子.背景图盒子::before {
+  opacity: 0.5;
+}
+
 /* --------------------------- ⬇️ 控制区------------------------------ */
 .控制区 {
   outline: solid 2px #cde3;
@@ -141,6 +218,7 @@ input[type="range"]::-moz-range-thumb:hover {
 .控制分区标题 {
   color: goldenrod;
   margin: 15px 0 10px 0;
+  user-select: none;
 }
 
 .控件区 {

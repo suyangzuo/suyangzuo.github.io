@@ -3,6 +3,7 @@ const rootStyle = window.getComputedStyle(root);
 const 原始盒子 = document.querySelector("#原始盒子");
 const 变换盒子 = document.querySelector("#变换盒子");
 const 原点盒子 = document.querySelector("#原点盒子");
+const 背景图确认框 = document.querySelector("#图像");
 
 const 滑块组 = document.querySelectorAll(".滑块");
 const 变换风格单选组 = document.querySelectorAll(".变换风格区 .单选框");
@@ -21,6 +22,16 @@ const 水平垂直关联复选框 = document.querySelector("#水平垂直关联"
 
 let 水平平移单位 = "%";
 let 垂直平移单位 = "%";
+
+背景图确认框.addEventListener("change", () => {
+  if (背景图确认框.checked) {
+    原始盒子.classList.add("背景图盒子");
+    变换盒子.classList.add("背景图盒子");
+  } else {
+    原始盒子.classList.remove("背景图盒子");
+    变换盒子.classList.remove("背景图盒子");
+  }
+});
 
 for (const 选择器 of 选择器组) {
   选择器.addEventListener("change", () => {
@@ -230,6 +241,10 @@ function 重置参数() {
   const 背面可见单选框 = document.querySelector("#visible");
   背面可见单选框.checked = true;
   变换盒子.style.backfaceVisibility = "";
+
+  背景图确认框.checked = false;
+  原始盒子.classList.remove("背景图盒子");
+  变换盒子.classList.remove("背景图盒子");
 }
 
 function 获取滑块填充百分比(滑块) {

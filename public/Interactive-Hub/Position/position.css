@@ -167,7 +167,7 @@
   align-items: center;
   gap: 5px;
   z-index: 1;
-  font-size: max(12px, 0.7vw);
+  font-size: clamp(14px, 1.15vh, 18px);
 }
 
 .平移值,
@@ -185,12 +185,19 @@
 }
 
 .平移值与单位 {
-  width: 51px;
+  /*width: 51px;*/
   text-wrap: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 3px;
 }
 
 .平移代码 {
   font-size: 0.8em;
+  text-wrap: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .平移单位 {
