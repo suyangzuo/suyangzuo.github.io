@@ -8,7 +8,7 @@
   --右渐变位置: 50%;
   --水平平移渐变位置: 50%;
   --垂直平移渐变位置: 50%;
-  --占位元素尺寸渐变位置: 45.6521739%;
+  --占位元素尺寸渐变位置: 50%;
   --渐变填充色: lightseagreen;
   --自身遮罩透明度: 0%;
 }
@@ -461,11 +461,20 @@ span[class$="值"].辅助线数据值 {
   color: goldenrod;
 }
 
+.辅助说明 {
+  font-size: 0.9em;
+  color: darkkhaki;
+}
+
+.辅助说明括号 {
+  color: darkseagreen;
+}
+
 .标签区 {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 25px;
+  gap: 10px;
 }
 
 .标签 {
@@ -478,7 +487,11 @@ span[class$="值"].辅助线数据值 {
 }
 
 .标签:hover {
-  background-color: #000a;
+  background-color: #fff2;
+}
+
+.标签标题 {
+  text-wrap: nowrap;
 }
 
 .定位距离区 .标签标题 {
@@ -486,10 +499,16 @@ span[class$="值"].辅助线数据值 {
   user-select: none;
 }
 
-.平移距离区 .标签标题 {
+.平移距离区 .标签标题,
+.辅助区 .标签标题 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 115px;
+}
+
+.辅助区 label[for="十字线"] .标签标题 {
+  width: fit-content;
 }
 
 .平移距离区 .标签标题 .标签代码 {
@@ -553,7 +572,7 @@ input[type="radio"]:checked::before {
 
 input[type="range"] {
   appearance: none;
-  width: 50%;
+  width: 200px;
   height: 5px;
   border-radius: 999px;
 }
