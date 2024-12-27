@@ -642,13 +642,13 @@ input[type="range"]::-moz-range-thumb {
   );
 }
 
-#内容 {
+/*#内容 {
   background-image: linear-gradient(
     90deg,
     var(--滑块填充色) var(--内容修剪比例),
     var(--滑块未填充色) var(--内容修剪比例)
   );
-}
+}*/
 
 #内边距 {
   background-image: linear-gradient(

@@ -926,6 +926,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   left: 0;
   top: 0;
   background: var(--侧边栏背景);
+  backdrop-filter: blur(10px);
   /*border-right: solid 1px #ced2;*/
   display: flex;
   flex-direction: column;

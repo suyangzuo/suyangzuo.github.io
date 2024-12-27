@@ -291,8 +291,8 @@ function 重置参数() {
   root.style.setProperty("--外边距尺寸", "50px");
   root.style.setProperty("--盒子宽度", "300px");
   root.style.setProperty("--盒子高度", "300px");
-  root.style.setProperty("--宽度修剪比例", "25%");
-  root.style.setProperty("--高度修剪比例", "25%");
+  root.style.setProperty("--宽度修剪比例", "75%");
+  root.style.setProperty("--高度修剪比例", "75%");
   root.style.setProperty("--内容修剪比例", "25%");
   root.style.setProperty("--内边距修剪比例", "50%");
   root.style.setProperty("--边框修剪比例", "50%");
