@@ -46,6 +46,7 @@ const 盒子属性辅助复选框组 = document.querySelectorAll(
     更新滑块背景修剪百分比(宽度滑块);
     拖动滑块时修改数字(宽度滑块);
   }
+  刷新宽度数值显示();
 });
 
 内边距滑块.addEventListener("input", () => {

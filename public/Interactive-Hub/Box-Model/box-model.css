@@ -19,6 +19,7 @@
   --滑块区鼠标悬停背景色: #fff2;
   --滑块填充色: darkgoldenrod;
   --滑块未填充色: #555;
+  --框线颜色: #defd;
 }
 
 .总区 span[class$="中文"] {
@@ -140,9 +141,9 @@
   height: calc(var(--外边距尺寸) + var(--内边距尺寸) + var(--边框尺寸) + 50px);
   top: 100%;
   left: 0;
-  border-bottom: solid 1px white;
-  border-left: solid 1px white;
-  border-right: solid 1px white;
+  border-bottom: solid 1px var(--框线颜色);
+  border-left: solid 1px var(--框线颜色);
+  border-right: solid 1px var(--框线颜色);
   transition: height 500ms;
 }
 
@@ -571,8 +572,8 @@ input[type="range"]::-moz-range-thumb {
   height: 20%;
   top: 0;
   left: 0;
-  border-top: solid 1px white;
-  border-left: solid 1px white;
+  border-top: solid 1px var(--框线颜色);
+  border-left: solid 1px var(--框线颜色);
 }
 
 .关联区::after {
@@ -582,8 +583,8 @@ input[type="range"]::-moz-range-thumb {
   height: 20%;
   bottom: 0;
   left: 0;
-  border-bottom: solid 1px white;
-  border-left: solid 1px white;
+  border-bottom: solid 1px var(--框线颜色);
+  border-left: solid 1px var(--框线颜色);
 }
 
 .关联区 > .关联标签,
@@ -610,12 +611,12 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .关联区:has(.关联复选框:checked) .关联标签 > img {
-  height: 80%;
+  height: 65%;
 }
 
 .关联标签 > img {
   width: 100%;
-  height: 60%;
+  height: 45%;
   object-fit: contain;
   filter: invert(100%) brightness(150%);
 }
