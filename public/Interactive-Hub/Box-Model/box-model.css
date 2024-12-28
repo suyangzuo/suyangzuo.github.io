@@ -137,14 +137,19 @@
 
 .盒子宽度描述区 {
   width: 100%;
-  height: calc(var(--外边距尺寸) + var(--内边距尺寸) + var(--边框尺寸) + 100px);
+  height: calc(var(--外边距尺寸) + var(--内边距尺寸) + var(--边框尺寸) + 50px);
   top: 100%;
   left: 0;
+  border-bottom: solid 1px white;
+  border-left: solid 1px white;
+  border-right: solid 1px white;
+  transition: height 500ms;
 }
 
 .外边距盒子 > .盒子宽度描述区 {
   width: calc(100% - var(--外边距尺寸) * 2);
-  height: calc(var(--外边距尺寸) * 2 + 175px);
+  /*height: calc(var(--外边距尺寸) * 2 + 175px);*/
+  height: calc(var(--外边距尺寸) + 200px);
   /*height: calc(50px + var(--内边距尺寸) + var(--边框尺寸) + 100px);*/
   top: calc(100% - var(--外边距尺寸));
   left: 50%;
@@ -155,7 +160,11 @@
   height: calc(var(--外边距尺寸) + 75px);
 }
 
-.外边距盒子 > .盒子宽度描述区.边框盒子宽度描述区::before,
+.外边距盒子.已隐藏 > .盒子宽度描述区.边框盒子宽度描述区 {
+  height: 75px;
+}
+
+/*.外边距盒子 > .盒子宽度描述区.边框盒子宽度描述区::before,
 .外边距盒子 > .盒子宽度描述区.边框盒子宽度描述区::after {
   height: 100%;
 }
@@ -174,6 +183,7 @@
   height: calc(var(--外边距尺寸) + var(--内边距尺寸) + var(--边框尺寸) + 50px);
   background-color: white;
   transition: height 500ms;
+  opacity: 0;
 }
 
 .外边距盒子.已隐藏 .内容盒子 .盒子宽度描述区::before {
@@ -187,6 +197,7 @@
     calc(var(--外边距尺寸) + var(--内边距尺寸) + var(--边框尺寸) + 50px)
   );
   transition: height 500ms;
+  opacity: 0;
 }
 
 .外边距盒子.已隐藏 > .盒子宽度描述区::before,
@@ -206,6 +217,7 @@
   height: calc(var(--外边距尺寸) + var(--内边距尺寸) + var(--边框尺寸) + 50px);
   background-color: white;
   transition: 500ms;
+  opacity: 0;
 }
 
 .外边距盒子.已隐藏 .内容盒子 .盒子宽度描述区::after {
@@ -220,6 +232,7 @@
   height: 1px;
   background-color: white;
   transition: top 500ms;
+  opacity: 0;
 }
 
 .外边距盒子.已隐藏 .内容盒子 .盒子宽度中线 {
@@ -227,10 +240,11 @@
 }
 
 .外边距盒子 > .盒子宽度描述区 .盒子宽度中线 {
-  top: min(
+  !*top: min(
     250px,
     calc(var(--外边距尺寸) + var(--内边距尺寸) + var(--边框尺寸) + 50px)
-  );
+  );*!
+  top: calc(var(--外边距尺寸) + 200px);
 }
 
 .外边距盒子.已隐藏 > .盒子宽度描述区 .盒子宽度中线 {
@@ -246,7 +260,7 @@
 
 .外边距盒子.已隐藏 > .盒子宽度描述区.边框盒子宽度描述区 .盒子宽度中线 {
   top: calc(100% - var(--外边距尺寸));
-}
+}*/
 
 .宽度尺寸区 {
   display: flex;
@@ -270,20 +284,30 @@
   top: calc(var(--内边距尺寸) + var(--边框尺寸) + 25px);
 }
 
+.外边距盒子.已隐藏 .盒子宽度描述区 {
+  height: calc(var(--内边距尺寸) + var(--边框尺寸) + 50px);
+}
+
+.外边距盒子.已隐藏 > .盒子宽度描述区 {
+  height: 200px;
+}
+
 .外边距盒子 > .盒子宽度描述区 .宽度尺寸区 {
-  top: clamp(
+  top: calc(var(--外边距尺寸) + 100px);
+  /*top: clamp(
     75px,
     50%,
     calc(var(--外边距尺寸) + var(--内边距尺寸) + var(--边框尺寸) + 25px)
-  );
+  );*/
 }
 
 .外边距盒子.已隐藏 > .盒子宽度描述区 .宽度尺寸区 {
-  top: clamp(
+  /*top: clamp(
     calc(75px - var(--外边距尺寸)),
     calc(50% - var(--外边距尺寸)),
     calc(var(--内边距尺寸) + var(--边框尺寸) + 25px)
-  );
+  );*/
+  top: 100px;
 }
 
 .外边距盒子 > .盒子宽度描述区.边框盒子宽度描述区 .宽度尺寸区 {
@@ -292,7 +316,7 @@
 }
 
 .外边距盒子.已隐藏 > .盒子宽度描述区.边框盒子宽度描述区 .宽度尺寸区 {
-  top: calc(100% - var(--外边距尺寸));
+  /*top: calc(100% - var(--外边距尺寸));*/
   translate: -50% -50%;
 }
 
@@ -304,12 +328,6 @@
   align-items: center;
   overflow: hidden;
   background-color: #345;
-}
-
-.内容区,
-.内边距区,
-.边框区 {
-  /*width: 133px;*/
 }
 
 .实际宽度区 {

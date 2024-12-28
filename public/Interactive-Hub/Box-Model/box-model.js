@@ -3,6 +3,7 @@ const 滑块组 = document.querySelectorAll("input[type='range']");
 const 内容盒子单选框 = document.querySelector("#内容盒子");
 const 边框盒子单选框 = document.querySelector("#边框盒子");
 const 盒子 = document.querySelector(".边框盒子");
+const 盒子计算样式 = window.getComputedStyle(盒子);
 const 内容盒子 = document.querySelector(".内容盒子");
 const 外边距盒子 = document.querySelector(".外边距盒子");
 
@@ -152,7 +153,7 @@ function 刷新宽度数值显示() {
     内容宽度数字.textContent = 宽度滑块.value;
     内容中文.textContent = "宽度";
     内容代码.textContent = "width";
-    盒子宽度数字.textContent = 宽度滑块.value;
+    盒子宽度数字.textContent = parseInt(盒子计算样式.width, 10).toString();
     for (const 加号区 of 加号区组) {
       加号区.style.display = "none";
     }
@@ -164,9 +165,9 @@ function 刷新宽度数值显示() {
 }
 
 const 外边距闪烁关键帧序列 = [
-  { backgroundColor: "#b0835460" },
   { backgroundColor: "transparent" },
   { backgroundColor: "#b0835460" },
+  { backgroundColor: "transparent" },
 ];
 
 const 透明度关键帧序列 = [{ opacity: "1" }, { opacity: "0" }, { opacity: "1" }];
