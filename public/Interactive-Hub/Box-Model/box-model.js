@@ -71,11 +71,14 @@ for (const 滑块 of 滑块组) {
 }
 
 宽高关联复选框.addEventListener("change", () => {
-  const 宽高关联图像 = 宽高关联复选框.parentElement.querySelector("img");
+  // const 宽高关联图像 = 宽高关联复选框.parentElement.querySelector("img");
+  const 宽高关联标签 = 宽高关联复选框.previousElementSibling;
   if (宽高关联复选框.checked) {
-    宽高关联图像.src = "/Images/Common/绑定.png";
+    // 宽高关联图像.src = "/Images/Common/绑定.png";
+    宽高关联标签.innerHTML = "<i class=\"fa-solid fa-link\"></i>";
   } else {
-    宽高关联图像.src = "/Images/Common/X-标记.png";
+    // 宽高关联图像.src = "/Images/Common/X-标记.png";
+    宽高关联标签.innerHTML = "<i class=\"fa-solid fa-link-slash\"></i>";
   }
 });
 
