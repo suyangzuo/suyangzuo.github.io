@@ -472,7 +472,7 @@ span[class$="代码"]:not(.标题代码) {
 }
 
 .控件标签:has(#水平垂直关联:checked) {
-  background-color: greenyellow;
+  background-color: darkseagreen;
 }
 
 .控件标签:has(#水平垂直关联) .控件文本 {
