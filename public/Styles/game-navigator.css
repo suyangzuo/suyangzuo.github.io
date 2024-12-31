@@ -88,6 +88,7 @@ body {
 
 .game-grid > a > p:hover {
   background-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 1px 1px 2px 0 rgba(20, 20, 20, 0.75), inset 0 1px 2px 0 #fffd;
   color: black;
 }
 
@@ -129,8 +130,8 @@ body {
   align-content: center;
   border-radius: 999px;
   color: lightgoldenrodyellow;
-  background-color: #fff4;
-  font-size: 14px;
+  background-color: #fff3;
+  font-size: 12px;
   font-family: Consolas, monospace;
   box-shadow: inset 0 1px 2px 0 #fff8;
   transition: 125ms;
@@ -138,7 +139,8 @@ body {
 
 .game-grid > a > p:hover .游戏序号 {
   background-color: #fff0;
-  color: #681818;
+  box-shadow: inset 0 1px 2px 0 #fffd;
+  color: #202e3d;
 }
 
 .game-1 {
