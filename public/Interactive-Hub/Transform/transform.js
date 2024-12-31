@@ -122,6 +122,15 @@ for (const 滑块 of 缩放滑块组) {
   });
 }
 
+水平垂直关联复选框.addEventListener("change", () => {
+  const 关联符号 = 水平垂直关联复选框.previousElementSibling;
+  if (水平垂直关联复选框.checked) {
+    关联符号.innerHTML = '<i class="fa-solid fa-link"></i>';
+  } else {
+    关联符号.innerHTML = '<i class="fa-solid fa-link-slash"></i>';
+  }
+});
+
 function 刷新原点缩放() {
   const 水平缩放 = parseInt(rootStyle.getPropertyValue("--缩放-水平"), 10);
   const 垂直缩放 = parseInt(rootStyle.getPropertyValue("--缩放-垂直"), 10);
@@ -237,6 +246,8 @@ function 重置参数() {
   原始盒子.classList.remove("显示原始盒子");
 
   水平垂直关联复选框.checked = true;
+  水平垂直关联复选框.previousElementSibling.innerHTML =
+    '<i class="fa-solid fa-link"></i>';
 
   const 背面可见单选框 = document.querySelector("#visible");
   背面可见单选框.checked = true;
