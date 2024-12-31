@@ -75,10 +75,10 @@ for (const 滑块 of 滑块组) {
   const 宽高关联标签 = 宽高关联复选框.previousElementSibling;
   if (宽高关联复选框.checked) {
     // 宽高关联图像.src = "/Images/Common/绑定.png";
-    宽高关联标签.innerHTML = "<i class=\"fa-solid fa-link\"></i>";
+    宽高关联标签.innerHTML = '<i class="fa-solid fa-link"></i>';
   } else {
     // 宽高关联图像.src = "/Images/Common/X-标记.png";
-    宽高关联标签.innerHTML = "<i class=\"fa-solid fa-link-slash\"></i>";
+    宽高关联标签.innerHTML = '<i class="fa-solid fa-link-slash"></i>';
   }
 });
 
@@ -278,8 +278,10 @@ function 重置参数() {
   高度滑块.max = "350";*/
 
   宽高关联复选框.checked = true;
-  const 宽高关联图像 = 宽高关联复选框.parentElement.querySelector("img");
-  宽高关联图像.src = "/Images/Common/绑定.png";
+  const 宽高关联标签 = 宽高关联复选框.previousElementSibling;
+  宽高关联标签.innerHTML = '<i class="fa-solid fa-link"></i>';
+  /*const 宽高关联图像 = 宽高关联复选框.parentElement.querySelector("img");
+  宽高关联图像.src = "/Images/Common/绑定.png";*/
 
   宽度滑块.value = "300";
   高度滑块.value = "300";
