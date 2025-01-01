@@ -1,10 +1,12 @@
 <!doctype html>
 <html lang="zh-CN">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>快捷键测试器</title>
     <link rel="icon" href="/Images/Apps/快捷键测试器.png" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -22,10 +24,7 @@
     <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
     <link rel="stylesheet" href="../apps-common-control.css" />
     <link rel="stylesheet" href="./ShortcutTester.css" />
-    <script
-      src="/Scripts/d0483e3bd3.js"
-      crossorigin="anonymous"
-    ></script>
+    <script src="/Scripts/d0483e3bd3.js" crossorigin="anonymous"></script>
     <script src="/Scripts/top-banner.js" defer></script>
     <script src="./ShortcutTester.js" defer></script>
     <script src="/Scripts/lordicon.js"></script>
@@ -43,9 +42,703 @@
       position="afterbegin"
     ></script>
 
-    <section class="设置区"></section>
-    <section class="信息区">
-      <ol class="快捷键列表"></ol>
+    <section class="快捷键池">
+      <h1 class="标题">选择快捷键</h1>
+      <div class="快捷键种类区">
+        <span class="快捷键种类 当前种类">通用</span>
+        <span class="快捷键种类">Windows Terminal</span>
+        <span class="快捷键种类">Visual Studio Code</span>
+        <span class="快捷键种类">JetBrains</span>
+        <span class="快捷键种类">Photoshop</span>
+        <span class="快捷键种类">Premiere Pro</span>
+        <span class="快捷键种类">3ds Max</span>
+        <span class="快捷键种类">Blender</span>
+        <span class="快捷键种类">AutoCAD</span>
+      </div>
+      <div class="快捷键列表区">
+        <ol class="快捷键列表 当前列表">
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">Z</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">X</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">C</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">V</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">S</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">D</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">F</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">H</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Alt</span>
+                <span class="连接符">+</span>
+                <span class="按键">Tab</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">Tab</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Shift</span>
+                <span class="连接符">+</span>
+                <span class="功能键">Win</span>
+                <span class="连接符">+</span>
+                <span class="按键">S</span>
+              </div>
+            </div>
+          </li>
+        </ol>
+        <ol class="快捷键列表">
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="功能键">Alt</span>
+                <span class="连接符">+</span>
+                <span class="按键">Z</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">X</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">C</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">V</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">S</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="功能键">Shift</span>
+                <span class="连接符">+</span>
+                <span class="按键">P</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="功能键">Alt</span>
+                <span class="连接符">+</span>
+                <span class="按键">Z</span>
+              </div>
+            </div>
+          </li>
+        </ol>
+        <ol class="快捷键列表">
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">Z</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">X</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">C</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">V</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">S</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="功能键">Shift</span>
+                <span class="连接符">+</span>
+                <span class="按键">P</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="功能键">Alt</span>
+                <span class="连接符">+</span>
+                <span class="按键">Z</span>
+              </div>
+            </div>
+          </li>
+        </ol>
+        <ol class="快捷键列表">
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">Z</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">X</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">C</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">V</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">S</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="功能键">Shift</span>
+                <span class="连接符">+</span>
+                <span class="按键">P</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="功能键">Alt</span>
+                <span class="连接符">+</span>
+                <span class="按键">Z</span>
+              </div>
+            </div>
+          </li>
+        </ol>
+        <ol class="快捷键列表">
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">Z</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">X</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">C</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">V</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">S</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="功能键">Shift</span>
+                <span class="连接符">+</span>
+                <span class="按键">P</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="功能键">Alt</span>
+                <span class="连接符">+</span>
+                <span class="按键">Z</span>
+              </div>
+            </div>
+          </li>
+        </ol>
+        <ol class="快捷键列表">
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">Z</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">X</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">C</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">V</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">S</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="功能键">Shift</span>
+                <span class="连接符">+</span>
+                <span class="按键">P</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="功能键">Alt</span>
+                <span class="连接符">+</span>
+                <span class="按键">Z</span>
+              </div>
+            </div>
+          </li>
+        </ol>
+        <ol class="快捷键列表">
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">Z</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">X</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">C</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">V</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">S</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="功能键">Shift</span>
+                <span class="连接符">+</span>
+                <span class="按键">P</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="功能键">Alt</span>
+                <span class="连接符">+</span>
+                <span class="按键">Z</span>
+              </div>
+            </div>
+          </li>
+        </ol>
+        <ol class="快捷键列表">
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">Z</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">X</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">C</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">V</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">S</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="功能键">Shift</span>
+                <span class="连接符">+</span>
+                <span class="按键">P</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="功能键">Alt</span>
+                <span class="连接符">+</span>
+                <span class="按键">Z</span>
+              </div>
+            </div>
+          </li>
+        </ol>
+        <ol class="快捷键列表">
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">Z</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">X</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">C</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">V</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">S</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="功能键">Shift</span>
+                <span class="连接符">+</span>
+                <span class="按键">P</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="功能键">Alt</span>
+                <span class="连接符">+</span>
+                <span class="按键">Z</span>
+              </div>
+            </div>
+          </li>
+        </ol>
+      </div>
+      <div class="测试选项区">
+        <label for="姓名" class="标签">
+          <span class="标签文本">姓名</span>
+          <input type="text" class="文本框" id="姓名" placeholder="输入姓名" />
+        </label>
+        <label for="测试次数" class="标签">
+          <span class="标签文本">测试次数</span>
+          <input
+            type="number"
+            class="数字框"
+            id="测试次数"
+            min="1"
+            max="100"
+            value="10"
+          />
+        </label>
+      </div>
+    </section>
+    <section class="测试区">
+      <div class="测试容器-透视">
+        <div class="测试容器-旋转">
+          <div class="测试-正面"></div>
+          <div class="测试-反面"></div>
+        </div>
+      </div>
     </section>
   </body>
 </html>
