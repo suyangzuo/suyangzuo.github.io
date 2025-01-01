@@ -1,55 +1,214 @@
-.信息区 {
-  width: 1000px;
-  margin: 0 auto;
+:root {
+  --测试间隔: 500ms;
 }
 
-.快捷键列表 {
-  width: 100%;
-  height: 600px;
-  padding: 25px 0;
+.快捷键池 {
+  width: fit-content;
+  margin: 0 auto;
+  font-family: "JetBrains Mono", Consolas, monospace;
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
-  align-content: center;
-}
-
-.快捷键列表项 {
-  width: 30%;
-  height: 50px;
-  border: solid 1px #fff3;
-}
-
-.快捷键列表项内部 {
-  width: 100%;
-  height: 100%;
-  display: flex;
-}
-
-.按键集合 {
-  font-size: 14px;
-  font-family: "JetBrains Mono", Consolas, monospace;
-  width: 70%;
-  height: 50px;
-  padding: 5px;
-  display: flex;
-  justify-content: flex-end;
   align-items: center;
 }
 
-.按键结果 {
-  font-family: "JetBrains Mono", Consolas, monospace;
-  width: 30%;
-  height: 50px;
-  padding: 5px;
+.标题 {
+  padding: 20px 0;
+  color: lightsalmon;
+}
+
+.快捷键种类区 {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.按键集合 > .单个按键元素:nth-last-of-type(1) {
-  color: orange;
+.快捷键种类 {
+  padding: 10px;
+  box-shadow: inset 0 1px 0 1px #fff1;
+  color: gray;
+  -webkit-user-select: none;
+  user-select: none;
+  font-size: 14px;
+  font-family: "Noto Sans SC", sans-serif;
 }
 
-.加号元素 {
-  color: #89b;
+.快捷键种类:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  background-color: #cde1;
+}
+
+.快捷键种类.当前种类 {
+  background-color: #cde2;
+  color: lightcyan;
+}
+
+.快捷键列表区 {
+  width: 100%;
+  position: relative;
+  height: 280px;
+  box-shadow: inset 0 -1px 0 1px #fff1;
+}
+
+.快捷键列表 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #cde2;
+  width: 100%;
+  height: 100%;
+  padding: 15px 0;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: center;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.快捷键列表.当前列表 {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.快捷键列表项 {
+}
+
+.快捷键列表项:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.列表项容器 {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 15px;
+  border: solid 1px #def2;
+}
+
+.列表项容器:hover {
+  background-color: #ffffff0a;
+  border: solid 1px #def4;
+}
+
+.列表项容器.已确认容器 {
+  background-color: #def2;
+}
+
+.序号 {
+  font-size: 12px;
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  text-align: center;
+  align-content: center;
+  background-color: #fff8;
+  color: black;
+  font-weight: bold;
+  box-shadow: 1px 1px 2px 1px #0005;
+}
+
+.快捷键内容 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+}
+
+.序号,
+.功能键,
+.连接符,
+.按键,
+.标签文本 {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.功能键 {
+  color: lightskyblue;
+}
+
+.按键 {
+  color: #589658;
+}
+
+.连接符 {
+  color: gray;
+}
+
+.列表项容器.已确认容器 .连接符 {
+  color: #aaa;
+}
+
+.测试选项区 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  margin-top: 40px;
+}
+
+.标签 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.标签文本 {
+  color: gray;
+}
+
+.文本框,
+.数字框 {
+  font-family: "JetBrains Mono", Consolas, monospace;
+  background-color: #234;
+  border: none;
+  font-size: 16px;
+  padding: 5px;
+  color: antiquewhite;
+  border-radius: 5px;
+  outline: solid 2px #345;
+  transition: 125ms;
+}
+
+.文本框:hover,
+.数字框:hover {
+  outline: solid 2px #456;
+  background-color: #202a32;
+}
+
+.文本框:focus,
+.数字框:focus {
+  outline: solid 2px #678;
+  background-color: #202a32;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.测试容器-透视 {
+  perspective: 750px;
+}
+
+.测试容器-旋转 {
+  transform-style: preserve-3d;
+  width: 100%;
+  height: 100%;
+  transition: var(--测试间隔);
+}
+
+.测试-正面,
+.测试-反面 {
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.测试-反面 {
+  rotate: y 180deg;
 }
