@@ -117,7 +117,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 2rem;
+  font-size: 1.75rem;
   width: fit-content;
   border-radius: 8px;
   color: #9ab;
@@ -160,10 +160,12 @@ body {
 
 .app-链接 .fa-solid {
   transition: 250ms;
+  color: #aaa;
 }
 
 .app-链接:hover .fa-solid {
   scale: 120%;
+  color: white;
 }
 
 .app-链接:active {

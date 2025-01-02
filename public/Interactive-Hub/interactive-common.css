@@ -6,7 +6,7 @@ body {
 }
 
 .总区::-webkit-scrollbar {
-  width: 14px;
+  width: 10px;
 }
 
 .总区::-webkit-scrollbar:hover {
@@ -18,12 +18,13 @@ body {
 }
 
 .总区::-webkit-scrollbar-thumb {
-  background-color: #5193ad;
+  /*background-color: #5193ad;*/
+  background-color: lightslategrey;
   border-radius: 999px;
 }
 
 .总区::-webkit-scrollbar-thumb:hover {
-  background-color: skyblue;
+  background-color: #93a8bd;
 }
 
 .总区 {
