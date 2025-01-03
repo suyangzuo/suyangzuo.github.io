@@ -50,6 +50,24 @@
   box-shadow: inset 0 -1px 0 1px #fff1;
 }
 
+#取消选择 {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 35px;
+  height: 35px;
+  font-size: 14px;
+  background-color: #755a16;
+}
+
+#取消选择:hover {
+  background-color: #957520;
+}
+
+#取消选择:active {
+  background-color: darkgoldenrod;
+}
+
 .快捷键列表 {
   position: absolute;
   top: 0;
@@ -64,6 +82,11 @@
   align-content: center;
   opacity: 0;
   pointer-events: none;
+}
+
+.快捷键列表.禁用 .快捷键列表项 {
+  pointer-events: none;
+  filter: brightness(50%);
 }
 
 .快捷键列表.当前列表 {
@@ -93,7 +116,7 @@
 
 .列表项容器.已确认容器 {
   background-color: #def2;
-  filter: brightness(2);
+  /*filter: brightness(2);*/
 }
 
 .序号 {
@@ -109,12 +132,21 @@
   box-shadow: 1px 1px 2px 1px #0005;
 }
 
+.列表项容器.已确认容器 .序号 {
+  box-shadow: 1px 1px 2px 1px transparent;
+  background-color: #fffc;
+}
+
 .快捷键内容 {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 5px;
   font-size: 14px;
+}
+
+.列表项容器.已确认容器 .快捷键内容 {
+  filter: brightness(2);
 }
 
 .序号,
@@ -191,20 +223,50 @@ input[type="number"]::-webkit-inner-spin-button {
   margin: 0;
 }
 
+.选项区-按钮区 {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.按钮 {
+  color: white;
+  border-radius: 999px;
+  transition: 50ms;
+}
+
 #run {
   width: 100px;
-  height: 40px;
-  border-radius: 999px;
+  height: 100%;
   font-size: 16px;
-  background-color: #aaa;
+  background-color: #456;
 }
 
 #run:hover {
-  background-color: #ccc;
+  background-color: #567;
 }
 
 #run:active {
-  background-color: #eee;
+  background-color: #789;
+}
+
+#cancel {
+  width: 50px;
+  height: 100%;
+}
+
+#cancel {
+  background-color: #852121;
+  font-size: 16px;
+}
+
+#cancel:hover {
+  background-color: brown;
+}
+
+#cancel:active {
+  background-color: #bb3434;
 }
 
 .测试区 {

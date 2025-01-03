@@ -455,7 +455,7 @@ div.code-toolbar > .toolbar > .toolbar-item > button:hover {
   align-items: center;
 }
 
-label {
+label:hover {
   cursor: url("/Images/Common/鼠标-默认.cur"), auto;
 }
 

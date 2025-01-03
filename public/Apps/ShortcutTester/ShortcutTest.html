@@ -24,10 +24,13 @@
     <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
     <link rel="stylesheet" href="../apps-common-control.css" />
     <link rel="stylesheet" href="./ShortcutTester.css" />
-    <script src="/Scripts/d0483e3bd3.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/d0483e3bd3.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
     <script src="/Scripts/top-banner.js" defer></script>
     <script src="./ShortcutTester.js" defer></script>
-    <script src="/Scripts/lordicon.js"></script>
   </head>
   <body>
     <script
@@ -168,7 +171,7 @@
             </div>
           </li>
         </ol>
-        <ol class="快捷键列表 Windows-Terminal-列表">
+        <ol class="快捷键列表 Windows-Terminal-列表 禁用">
           <li class="快捷键列表项">
             <div class="列表项容器">
               <div class="快捷键内容">
@@ -228,7 +231,7 @@
             </div>
           </li>
         </ol>
-        <ol class="快捷键列表 Visual-Studio-Code-列表">
+        <ol class="快捷键列表 Visual-Studio-Code-列表 禁用">
           <li class="快捷键列表项">
             <div class="列表项容器">
               <div class="快捷键内容">
@@ -299,7 +302,7 @@
             </div>
           </li>
         </ol>
-        <ol class="快捷键列表 JetBrains-列表">
+        <ol class="快捷键列表 JetBrains-列表 禁用">
           <li class="快捷键列表项">
             <div class="列表项容器">
               <div class="快捷键内容">
@@ -368,7 +371,7 @@
             </div>
           </li>
         </ol>
-        <ol class="快捷键列表 Photoshop-列表">
+        <ol class="快捷键列表 Photoshop-列表 禁用">
           <li class="快捷键列表项">
             <div class="列表项容器">
               <div class="快捷键内容">
@@ -437,7 +440,7 @@
             </div>
           </li>
         </ol>
-        <ol class="快捷键列表 Premiere-Pro-列表">
+        <ol class="快捷键列表 Premiere-Pro-列表 禁用">
           <li class="快捷键列表项">
             <div class="列表项容器">
               <div class="快捷键内容">
@@ -506,7 +509,7 @@
             </div>
           </li>
         </ol>
-        <ol class="快捷键列表 3ds-max-列表">
+        <ol class="快捷键列表 3ds-max-列表 禁用">
           <li class="快捷键列表项">
             <div class="列表项容器">
               <div class="快捷键内容">
@@ -575,7 +578,7 @@
             </div>
           </li>
         </ol>
-        <ol class="快捷键列表 Blender-列表">
+        <ol class="快捷键列表 Blender-列表 禁用">
           <li class="快捷键列表项">
             <div class="列表项容器">
               <div class="快捷键内容">
@@ -644,7 +647,7 @@
             </div>
           </li>
         </ol>
-        <ol class="快捷键列表 AutoCAD-列表">
+        <ol class="快捷键列表 AutoCAD-列表 禁用">
           <li class="快捷键列表项">
             <div class="列表项容器">
               <div class="快捷键内容">
@@ -713,6 +716,9 @@
             </div>
           </li>
         </ol>
+        <button id="取消选择" class="按钮" type="button" title="全部取消选择">
+          <i class="fa-solid fa-rotate"></i>
+        </button>
       </div>
       <div class="测试选项区">
         <label for="姓名" class="标签">
@@ -730,7 +736,12 @@
             value="10"
           />
         </label>
-        <button id="run" class="按钮">开始测试</button>
+        <div class="选项区-按钮区">
+          <button id="run" class="按钮" type="button">开始测试</button>
+          <button id="cancel" class="按钮" type="button" title="取消测试">
+            <i class="fa-solid fa-ban"></i>
+          </button>
+        </div>
       </div>
     </section>
     <section class="测试区">

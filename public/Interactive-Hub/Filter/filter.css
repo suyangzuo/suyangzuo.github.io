@@ -114,8 +114,11 @@ body {
   left: 0;
   appearance: none;
   background-color: transparent;
-  cursor: url("/Images/Common/鼠标-默认.cur"), auto;
   transition: opacity 500ms;
+}
+
+#效果图滑块:hover {
+  cursor: url("/Images/Common/鼠标-默认.cur"), auto;
 }
 
 #效果图滑块::-moz-range-thumb {
@@ -409,6 +412,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.滑块区:hover {
   cursor: url("/Images/Common/鼠标-默认.cur"), auto;
 }
 
