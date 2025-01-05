@@ -21,8 +21,6 @@ const 关闭结果按钮 = document.getElementById("关闭结果");
 关闭结果按钮.addEventListener("click", () => {
   结果对话框.close();
 });
-// 结果对话框.showModal();
-// 生成测试结果();
 
 const 测试计数元素 = document.querySelector(".测试计数");
 const 计次元素 = 测试计数元素.querySelector(".计次");
@@ -309,11 +307,31 @@ function 按下快捷键(event) {
     }
   }
 
-  if (key >= "a" && key <= "z") {
+  if (
+    (key >= "a" && key <= "z") ||
+    key === "," ||
+    key === "<" ||
+    (((key >= "A" && key <= "Z") || key === "," || key === "<") &&
+      key !== "Shift" &&
+      key !== "Alt" &&
+      key !== "Control" &&
+      key !== "Meta")
+  ) {
     const keyElement = document.createElement("span");
     keyElement.className = "按键";
     keyElement.usage = key.toUpperCase();
-    keyElement.textContent = key.toUpperCase();
+    switch (key) {
+      case "ArrowUp":
+        keyElement.textContent = "↑";
+        break;
+      case "ArrowDown":
+        keyElement.textContent = "↓";
+        break;
+      default:
+        keyElement.textContent = key.toUpperCase();
+        break;
+    }
+    // keyElement.textContent = key.toUpperCase();
     用户快捷键内容.appendChild(keyElement);
     const 功能键组 = 用户快捷键内容.querySelectorAll(".功能键");
     if (功能键组.length > 0) {
@@ -520,7 +538,17 @@ function 生成测试目标(总次数, 剩余次数) {
 
     const key = document.createElement("span");
     key.className = "按键";
-    key.textContent = 测试对象.key.toUpperCase();
+    switch (测试对象.key) {
+      case "ArrowUp":
+        key.textContent = "↑";
+        break;
+      case "ArrowDown":
+        key.textContent = "↓";
+        break;
+      default:
+        key.textContent = 测试对象.key.toUpperCase();
+        break;
+    }
     快捷键内容.appendChild(key);
   } else {
     const 用途 = document.createElement("span");
@@ -729,7 +757,6 @@ function 获取正确用时() {
     平均用时分 < 1
       ? (average / 1000).toFixed(2)
       : ((average % 60000) / 1000).toFixed(2);
-  console.log(total, average);
 
   return {
     分: 总用时分,
