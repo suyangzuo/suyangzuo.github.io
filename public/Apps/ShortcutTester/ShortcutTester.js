@@ -36,6 +36,9 @@ const 测试结果出现延时 = 1500;
 let 旋转延时id = null;
 const 旋转容器 = document.querySelector(".测试容器-旋转");
 
+const 修饰键组 = ["Control", "Alt", "Shift", "Meta"];
+const 大写符号键组 = ["<", ">", "?", "_", ":", "{", "}", "|", '"'];
+const 方向键组 = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
 const 测试对象组 = [];
 const 测试对象池 = [];
 const 列表项容器组 = document.querySelectorAll(".列表项容器");
@@ -235,7 +238,7 @@ function 按下快捷键(event) {
   let alt = null;
   let shift = null;
   let meta = null;
-  const key = event.key;
+  let key = event.key;
   if (event.ctrlKey) {
     ctrl = document.createElement("span");
     ctrl.className = "功能键";
@@ -307,31 +310,63 @@ function 按下快捷键(event) {
     }
   }
 
-  if (
-    (key >= "a" && key <= "z") ||
-    key === "," ||
-    key === "<" ||
-    (((key >= "A" && key <= "Z") || key === "," || key === "<") &&
-      key !== "Shift" &&
-      key !== "Alt" &&
-      key !== "Control" &&
-      key !== "Meta")
-  ) {
+  if (!修饰键组.some((修饰键) => 修饰键 === key)) {
     const keyElement = document.createElement("span");
     keyElement.className = "按键";
-    keyElement.usage = key.toUpperCase();
-    switch (key) {
-      case "ArrowUp":
-        keyElement.textContent = "↑";
-        break;
-      case "ArrowDown":
-        keyElement.textContent = "↓";
-        break;
-      default:
-        keyElement.textContent = key.toUpperCase();
-        break;
+
+    if (大写符号键组.some((键) => 键 === key)) {
+      switch (key) {
+        case "<":
+          key = ",";
+          break;
+        case ">":
+          key = ".";
+          break;
+        case ":":
+          key = ";";
+          break;
+        case '"':
+          key = "'";
+          break;
+        case "{":
+          key = "[";
+          break;
+        case "}":
+          key = "]";
+          break;
+        case "|":
+          key = "\\";
+          break;
+        case "_":
+          key = "-";
+          break;
+        case "?":
+          key = "/";
+          break;
+      }
+      keyElement.textContent = key;
+    } else if (key === "=") {
+      key = "+";
+      keyElement.textContent = key;
+    } else if (方向键组.some((键) => 键 === key)) {
+      switch (key) {
+        case "ArrowUp":
+          keyElement.textContent = "↑";
+          break;
+        case "ArrowDown":
+          keyElement.textContent = "↓";
+          break;
+        case "ArrowLeft":
+          keyElement.textContent = "←";
+          break;
+        case "ArrowRight":
+          keyElement.textContent = "→";
+          break;
+      }
+    } else {
+      keyElement.textContent = key.toUpperCase();
     }
-    // keyElement.textContent = key.toUpperCase();
+
     用户快捷键内容.appendChild(keyElement);
     const 功能键组 = 用户快捷键内容.querySelectorAll(".功能键");
     if (功能键组.length > 0) {
