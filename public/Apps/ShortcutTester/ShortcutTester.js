@@ -9,7 +9,7 @@ const 次数框 = document.getElementById("测试次数");
 次数框.addEventListener("input", 更新次数);
 let 测试起始时间 = 0;
 let 姓名 = 姓名框.value;
-let 次数 = 10;
+let 次数 = parseInt(次数框.value, 10);
 let 剩余次数 = 次数;
 let 奇偶次数 = 剩余次数 % 2 ? 剩余次数 + 1 : 剩余次数;
 let 测试运行中 = false;
@@ -558,8 +558,6 @@ function 生成连接符() {
 }
 
 function 生成错误信息() {
-  /*const 错误文字层 = document.querySelector(".错误文字层");
-  const 错误动画层 = document.querySelector(".错误动画层");*/
   错误动画?.cancel();
   if (测试对象池.length === 0) {
     const 快捷键列表区 = document.querySelector(".快捷键列表区");
@@ -596,79 +594,152 @@ function 生成错误信息() {
 function 生成测试结果() {
   对话框布局层.innerHTML = "";
   const 姓名区 = document.createElement("div");
-  姓名区.className = "结果姓名区";
-  const 姓名前缀 = document.createElement("span");
-  姓名前缀.className = "姓名前缀";
-  姓名前缀.textContent = "姓名：";
+  姓名区.className = "结果分区";
+  const 姓名标题 = document.createElement("span");
+  姓名标题.className = "分区标题";
+  姓名标题.textContent = "姓名";
   const 姓名元素 = document.createElement("span");
-  姓名元素.className = "结果姓名";
+  姓名元素.className = "姓名";
   姓名元素.textContent = 姓名;
-  姓名区.append(姓名前缀, 姓名元素);
+  姓名区.append(姓名标题, 姓名元素);
 
   const 时间区 = document.createElement("div");
-  时间区.className = "时间区";
-  const 时间区前缀 = document.createElement("span");
-  时间区前缀.className = "时间区前缀";
-  时间区前缀.textContent = "测试完成时间：";
-  const 时间内容 = 获取当前时间();
-  时间区.append(时间区前缀, 时间内容);
+  时间区.className = "结果分区";
+  const 时间区标题 = document.createElement("span");
+  时间区标题.className = "分区标题";
+  时间区标题.textContent = "测试完成时间";
+  const 时间日期 = 获取当前时间();
+  时间区.append(时间区标题, 时间日期.日期, 时间日期.时间);
 
-  const 总体数据 = 生成总体测试数据();
+  const 正确数据 = 生成正确数据();
+  const 总体正确率 = 生成总体正确率();
 
-  const 用时 = 获取总用时();
-  const 总用时区 = document.createElement("div");
-  总用时区.className = "总用时区";
-  const 总用时前缀 = document.createElement("span");
-  总用时前缀.className = "总用时前缀";
-  总用时前缀.textContent = "总用时：";
-  const 总用时分值 = document.createElement("span");
-  总用时分值.className = "总用时值";
-  总用时分值.textContent = `${用时.分}`;
-  const 总用时分符号 = document.createElement("span");
-  总用时分符号.className = "符号";
-  总用时分符号.textContent = "分";
-  const 总用时秒值 = document.createElement("span");
-  总用时秒值.className = "总用时值";
-  总用时秒值.textContent = `${用时.秒}`;
-  const 总用时秒符号 = document.createElement("span");
-  总用时秒符号.className = "符号";
-  总用时秒符号.textContent = "秒";
-  if (用时.分 >= 1) {
-    总用时区.append(
-      总用时前缀,
-      总用时分值,
-      总用时分符号,
-      总用时秒值,
-      总用时秒符号,
-    );
-  } else {
-    总用时区.append(总用时前缀, 总用时秒值, 总用时秒符号);
-  }
-
-  对话框布局层.append(姓名区, 时间区, 总体数据, 总用时区, 关闭结果按钮);
+  对话框布局层.append(姓名区, 时间区, 总体正确率, 正确数据, 关闭结果按钮);
   /*const 测试数据分组 = Object.groupBy(测试对象组, (测试对象) => 测试对象.usage);
   for (const 属性 in 测试数据分组) {
   }*/
 }
 
-function 获取总用时() {
-  let total = 0;
+function 生成正确数据() {
+  let passed = 0;
   for (const 对象 of 测试对象组) {
-    total += 对象.duration;
+    if (对象.passed) {
+      passed++;
+    }
+  }
+  const 正确用时 = 获取正确用时();
+  const 总体数据 = document.createElement("div");
+  总体数据.className = "结果分区";
+
+  const 总体数据标题 = document.createElement("span");
+  总体数据标题.className = "分区标题";
+  总体数据标题.textContent = "正确数据";
+
+  const 正确次数容器 = document.createElement("span");
+  正确次数容器.className = "子容器";
+  const 正确次数前缀 = document.createElement("span");
+  正确次数前缀.className = "前缀";
+  正确次数前缀.textContent = "正确次数";
+  const 正确次数值 = document.createElement("span");
+  正确次数值.className = "值";
+  正确次数值.textContent = passed.toString();
+  正确次数容器.append(正确次数前缀, 正确次数值);
+
+  const 总用时子容器 = document.createElement("span");
+  总用时子容器.className = "父容器";
+  const 总用时前缀 = document.createElement("span");
+  总用时前缀.className = "前缀";
+  总用时前缀.textContent = "总用时";
+  const 总用时分值 = document.createElement("span");
+  总用时分值.className = "值";
+  总用时分值.textContent = `${正确用时.分}`;
+  const 总用时分符号 = document.createElement("span");
+  总用时分符号.className = "单位";
+  总用时分符号.textContent = "分";
+  const 分容器 = document.createElement("div");
+  分容器.className = "子容器";
+  分容器.append(总用时分值, 总用时分符号);
+  const 总用时秒值 = document.createElement("span");
+  总用时秒值.className = "值";
+  总用时秒值.textContent = `${正确用时.秒}`;
+  const 总用时秒符号 = document.createElement("span");
+  总用时秒符号.className = "单位";
+  总用时秒符号.textContent = "秒";
+  const 秒容器 = document.createElement("div");
+  秒容器.className = "子容器";
+  秒容器.append(总用时秒值, 总用时秒符号);
+  if (正确用时.分 >= 1) {
+    总用时子容器.append(总用时前缀, 分容器, 秒容器);
+  } else {
+    总用时子容器.append(总用时前缀, 秒容器);
   }
 
-  const 单次用时分 = Math.floor(total / 60000);
-  const 单次用时秒 =
-    单次用时分 < 1
+  const 平均用时容器 = document.createElement("span");
+  平均用时容器.className = "父容器";
+  const 平均用时前缀 = document.createElement("span");
+  平均用时前缀.className = "前缀";
+  平均用时前缀.textContent = "平均用时";
+  const 平均用时分值 = document.createElement("span");
+  平均用时分值.className = "值";
+  平均用时分值.textContent = `${正确用时.平均分}`;
+  const 平均用时分符号 = document.createElement("span");
+  平均用时分符号.className = "单位";
+  平均用时分符号.textContent = "分";
+  const 平均分容器 = document.createElement("div");
+  平均分容器.className = "子容器";
+  平均分容器.append(平均用时分值, 平均用时分符号);
+  const 平均用时秒值 = document.createElement("span");
+  平均用时秒值.className = "值";
+  平均用时秒值.textContent = `${正确用时.平均秒}`;
+  const 平均用时秒符号 = document.createElement("span");
+  平均用时秒符号.className = "单位";
+  平均用时秒符号.textContent = "秒";
+  const 平均秒容器 = document.createElement("div");
+  平均秒容器.className = "子容器";
+  平均秒容器.append(平均用时秒值, 平均用时秒符号);
+  if (正确用时.平均分 >= 1) {
+    平均用时容器.append(平均用时前缀, 平均分容器, 平均秒容器);
+  } else {
+    平均用时容器.append(平均用时前缀, 平均秒容器);
+  }
+
+  总体数据.append(总体数据标题, 正确次数容器, 总用时子容器, 平均用时容器);
+  return 总体数据;
+}
+
+function 获取正确用时() {
+  let total = 0;
+  let 正确次数 = 0;
+  for (const 对象 of 测试对象组) {
+    if (对象.passed) {
+      total += 对象.duration;
+      正确次数++;
+    }
+  }
+  let average = total / 正确次数;
+
+  const 总用时分 = Math.floor(total / 60000);
+  const 总用时秒 =
+    总用时分 < 1
       ? (total / 1000).toFixed(2)
       : ((total % 60000) / 1000).toFixed(2);
+
+  const 平均用时分 = Math.floor(average / 60000);
+  const 平均用时秒 =
+    平均用时分 < 1
+      ? (average / 1000).toFixed(2)
+      : ((average % 60000) / 1000).toFixed(2);
+  console.log(total, average);
+
   return {
-    分: 单次用时分,
-    秒: 单次用时秒,
+    分: 总用时分,
+    秒: 总用时秒,
+    平均分: 平均用时分,
+    平均秒: 平均用时秒,
   };
 }
 
-function 生成总体测试数据() {
+function 生成总体正确率() {
   let passed = 0;
   for (const 对象 of 测试对象组) {
     if (对象.passed) {
@@ -682,70 +753,77 @@ function 生成总体测试数据() {
   const failedPercent = (failedRate * 100).toFixed(1);
 
   const 总体数据区 = document.createElement("div");
-  总体数据区.className = "总体数据区";
+  总体数据区.className = "结果分区";
   对话框布局层.appendChild(总体数据区);
 
   const 总前缀 = document.createElement("span");
-  总前缀.className = "总体数据前缀";
-  总前缀.textContent = "总体数据统计：";
+  总前缀.className = "分区标题";
+  总前缀.textContent = "总体正确率";
 
   const 总次数容器 = document.createElement("span");
-  总次数容器.className = "总次数容器";
+  总次数容器.className = "子容器";
   const 总次数前缀 = document.createElement("span");
-  总次数前缀.className = "总次数前缀";
-  总次数前缀.textContent = "测试次数";
+  总次数前缀.className = "前缀";
+  总次数前缀.textContent = "总次数";
   const 总次数值 = document.createElement("span");
-  总次数值.className = "总次数值";
+  总次数值.className = "值";
   总次数值.textContent = 次数.toString();
   总次数容器.append(总次数前缀, 总次数值);
 
   const 正确次数容器 = document.createElement("span");
-  正确次数容器.className = "正确次数容器";
+  正确次数容器.className = "子容器";
   const 正确次数前缀 = document.createElement("span");
-  正确次数前缀.className = "正确次数前缀";
+  正确次数前缀.className = "前缀";
   正确次数前缀.textContent = "正确";
   const 正确次数值 = document.createElement("span");
-  正确次数值.className = "正确次数值";
+  正确次数值.className = "值";
   正确次数值.textContent = passed.toString();
   正确次数容器.append(正确次数前缀, 正确次数值);
 
   const 错误次数容器 = document.createElement("span");
-  错误次数容器.className = "错误次数容器";
+  错误次数容器.className = "子容器";
   const 错误次数前缀 = document.createElement("span");
-  错误次数前缀.className = "错误次数前缀";
+  错误次数前缀.className = "前缀";
   错误次数前缀.textContent = "错误";
   const 错误次数值 = document.createElement("span");
-  错误次数值.className = "错误次数值";
+  错误次数值.className = "值";
   错误次数值.textContent = failed.toString();
   错误次数容器.append(错误次数前缀, 错误次数值);
 
   const 正确率容器 = document.createElement("span");
-  正确率容器.className = "正确率容器";
+  正确率容器.className = "子容器";
   const 正确率前缀 = document.createElement("span");
-  正确率前缀.className = "正确率前缀";
+  正确率前缀.className = "前缀";
   正确率前缀.textContent = "正确率";
   const 正确率值 = document.createElement("span");
-  正确率值.className = "正确率值";
+  正确率值.className = "值";
   正确率值.textContent = passedPercent.toString();
   const 正确百分比符号 = document.createElement("span");
-  正确百分比符号.className = "符号";
+  正确百分比符号.className = "单位";
   正确百分比符号.textContent = "%";
   正确率容器.append(正确率前缀, 正确率值, 正确百分比符号);
 
   const 错误率容器 = document.createElement("span");
-  错误率容器.className = "错误率容器";
+  错误率容器.className = "子容器";
   const 错误率前缀 = document.createElement("span");
-  错误率前缀.className = "错误率前缀";
+  错误率前缀.className = "前缀";
   错误率前缀.textContent = "错误率";
   const 错误率值 = document.createElement("span");
-  错误率值.className = "错误率值";
+  错误率值.className = "值";
   错误率值.textContent = failedPercent.toString();
   const 错误百分比符号 = document.createElement("span");
-  错误百分比符号.className = "符号";
+  错误百分比符号.className = "单位";
   错误百分比符号.textContent = "%";
   错误率容器.append(错误率前缀, 错误率值, 错误百分比符号);
 
-  总体数据区.append(总前缀, 正确次数容器, 错误次数容器, 正确率容器, 错误率容器);
+  总体数据区.append(
+    总前缀,
+    总次数容器,
+    正确次数容器,
+    错误次数容器,
+    正确率容器,
+    错误率容器,
+  );
   return 总体数据区;
 }
 
@@ -753,68 +831,74 @@ function 获取当前时间() {
   const dateTime = new Date();
 
   const 年 = document.createElement("span");
-  年.className = "时间容器";
+  年.className = "子容器";
   const 年值 = document.createElement("span");
-  年值.className = "时间值";
+  年值.className = "值";
   年值.textContent = dateTime.getFullYear().toString();
   const 年后缀 = document.createElement("span");
-  年后缀.className = "时间后缀";
+  年后缀.className = "单位";
   年后缀.textContent = "年";
   年.append(年值, 年后缀);
 
   const 月 = document.createElement("span");
-  月.className = "时间容器";
+  月.className = "子容器";
   const 月值 = document.createElement("span");
-  月值.className = "时间值";
+  月值.className = "值";
   月值.textContent = (dateTime.getMonth() + 1).toString();
   const 月后缀 = document.createElement("span");
-  月后缀.className = "时间后缀";
+  月后缀.className = "单位";
   月后缀.textContent = "月";
   月.append(月值, 月后缀);
 
   const 日 = document.createElement("span");
-  日.className = "时间容器";
+  日.className = "子容器";
   const 日值 = document.createElement("span");
-  日值.className = "时间值";
+  日值.className = "值";
   日值.textContent = dateTime.getDate().toString();
   const 日后缀 = document.createElement("span");
-  日后缀.className = "时间后缀";
+  日后缀.className = "单位";
   日后缀.textContent = "日";
   日.append(日值, 日后缀);
 
   const 时 = document.createElement("span");
-  时.className = "时间容器";
+  时.className = "子容器";
   const 时值 = document.createElement("span");
-  时值.className = "时间值";
+  时值.className = "值";
   时值.textContent = dateTime.getHours().toString();
   const 时后缀 = document.createElement("span");
-  时后缀.className = "时间后缀";
+  时后缀.className = "单位";
   时后缀.textContent = "时";
   时.append(时值, 时后缀);
 
   const 分 = document.createElement("span");
-  分.className = "时间容器";
+  分.className = "子容器";
   const 分值 = document.createElement("span");
-  分值.className = "时间值";
+  分值.className = "值";
   分值.textContent = dateTime.getMinutes().toString();
   const 分后缀 = document.createElement("span");
-  分后缀.className = "时间后缀";
+  分后缀.className = "单位";
   分后缀.textContent = "分";
   分.append(分值, 分后缀);
 
   const 秒 = document.createElement("span");
-  秒.className = "时间容器";
+  秒.className = "子容器";
   const 秒值 = document.createElement("span");
-  秒值.className = "时间值";
+  秒值.className = "值";
   秒值.textContent = dateTime.getSeconds().toString();
   const 秒后缀 = document.createElement("span");
-  秒后缀.className = "时间后缀";
+  秒后缀.className = "单位";
   秒后缀.textContent = "秒";
   秒.append(秒值, 秒后缀);
 
-  const 时间内容 = document.createElement("span");
-  时间内容.className = "时间内容";
-  时间内容.append(年, 月, 日, 时, 分, 秒);
+  const 日期 = document.createElement("span");
+  日期.className = "父容器";
+  日期.append(年, 月, 日);
+  const 时间 = document.createElement("span");
+  时间.className = "父容器";
+  时间.append(时, 分, 秒);
 
-  return 时间内容;
+  return {
+    日期: 日期,
+    时间: 时间,
+  };
 }

@@ -528,17 +528,17 @@ input[type="number"]::-webkit-inner-spin-button {
   align-items: center;
   translate: -50% -50%;
   @starting-style {
-    translate: -50% -200%;
+    translate: -50% -150%;
   }
   transition:
-    translate 1s,
-    display 1s allow-discrete;
+    translate 750ms,
+    display 750ms allow-discrete;
 }
 
 #结果对话框[open]::backdrop {
   background-color: #000b;
   backdrop-filter: blur(5px);
-  transition: 1s;
+  transition: 750ms;
   @starting-style {
     background-color: transparent;
   }
@@ -547,7 +547,6 @@ input[type="number"]::-webkit-inner-spin-button {
 .对话框布局层 {
   display: flex;
   flex-direction: column;
-  gap: 10px;
   padding: 20px;
   border-radius: 10px;
   background-color: #def1;
@@ -572,48 +571,46 @@ input[type="number"]::-webkit-inner-spin-button {
   background-color: #456;
 }
 
-#结果对话框 span[class$="前缀"] {
-  color: lightskyblue;
+.结果分区 {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 0 10px;
+}
+
+.结果分区:nth-of-type(even) {
+  background-color: #0003;
+}
+
+.结果分区:nth-of-type(odd) {
+  background-color: #ffffff10;
+}
+
+.分区标题 {
+  width: 120px;
+  height: 43px;
   text-align: right;
-  width: 130px;
+  align-content: center;
+  color: grey;
+  border-right: solid 1px #fff1;
+  padding-right: 15px;
   text-wrap: nowrap;
 }
 
-#结果对话框 div[class$="区"] {
+.父容器 {
   display: flex;
   align-items: center;
-  font-size: 18px;
 }
 
-.时间内容 {
-  display: flex;
-  gap: 1px;
-}
-
-#结果对话框 span[class$="值"] {
+.对话框布局层 .值 {
   color: lightseagreen;
-  font-size: 1.05em;
 }
 
-.时间后缀,
-#结果对话框 .总体数据区 span[class$="容器"] span[class$="前缀"] {
-  color: lightslategrey;
+.对话框布局层 .前缀 {
+  margin-right: 3px;
 }
 
-.时间容器:nth-of-type(3) {
-  margin-right: 10px;
-}
-
-#结果对话框 .总体数据区 span[class$="容器"]:not(:last-child) {
-  margin-right: 15px;
-}
-
-#结果对话框 .总体数据区 span[class$="容器"] span[class$="值"] {
-  margin: 0 0 0 3px;
-}
-
-.对话框布局层 .符号 {
-  font-size: 0.9em;
+.对话框布局层 .单位 {
   margin-left: 2px;
-  color: darkgoldenrod;
+  color: darkkhaki;
 }
