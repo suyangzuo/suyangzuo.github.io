@@ -39,14 +39,14 @@
 }
 
 .快捷键种类.当前种类 {
-  background-color: #cde2;
+  background-color: #cde1;
   color: lightcyan;
 }
 
 .快捷键列表区 {
   width: 100%;
   position: relative;
-  height: 280px;
+  height: 285px;
   box-shadow: inset 0 -1px 0 1px #fff1;
 }
 
@@ -72,7 +72,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  background-color: #cde2;
+  background-color: #cde1;
   width: 100%;
   height: 100%;
   padding: 15px 0;
@@ -106,7 +106,7 @@
   gap: 10px;
   padding: 10px 15px;
   border: solid 1px #def2;
-  font-family: "Noto Sans SC", sans-serif;
+  font-family: Consolas, monospace;
 }
 
 .列表项容器:hover {
@@ -145,8 +145,16 @@
   font-size: 14px;
 }
 
-.列表项容器.已确认容器 .快捷键内容 {
-  filter: brightness(2);
+.列表项容器.已确认容器 .功能键 {
+  color: #50ebe3;
+}
+
+.列表项容器.已确认容器 .连接符 {
+  color: silver;
+}
+
+.列表项容器.已确认容器 .按键 {
+  color: lightgreen;
 }
 
 .序号,
@@ -159,7 +167,7 @@
 }
 
 .功能键 {
-  color: lightskyblue;
+  color: lightseagreen;
 }
 
 .按键 {
@@ -172,6 +180,29 @@
 
 .列表项容器.已确认容器 .连接符 {
   color: #aaa;
+}
+
+.用途 {
+  color: #6cb2dd;
+  font-size: 12px;
+  background-color: #fff2;
+  padding: 3px 6px;
+  margin-left: 3px;
+  border-radius: 4px;
+  box-shadow:
+    inset 0 1px 1px 0 #fff8,
+    1px 1px 2px 0 #0008;
+}
+
+.测试面 .用途 {
+  font-size: 18px;
+  background-color: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+.列表项容器.已确认容器 .用途 {
+  color: lightblue;
 }
 
 .测试选项区 {
@@ -195,11 +226,11 @@
 .文本框,
 .数字框 {
   font-family: "JetBrains Mono", Consolas, monospace;
-  background-color: #234;
+  background-color: transparent;
   border: none;
   font-size: 16px;
   padding: 5px;
-  color: antiquewhite;
+  color: silver;
   border-radius: 5px;
   outline: solid 2px #345;
   transition: 125ms;
@@ -208,7 +239,7 @@
 .文本框:hover,
 .数字框:hover {
   outline: solid 2px #456;
-  background-color: #202a32;
+  background-color: #151b20;
 }
 
 .文本框:focus,
@@ -231,7 +262,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .按钮 {
-  color: white;
+  color: silver;
   border-radius: 999px;
   transition: 50ms;
 }
@@ -240,15 +271,16 @@ input[type="number"]::-webkit-inner-spin-button {
   width: 100px;
   height: 100%;
   font-size: 16px;
-  background-color: #456;
+  background-color: #345;
 }
 
 #run:hover {
-  background-color: #567;
+  background-color: #456;
+  color: white;
 }
 
 #run:active {
-  background-color: #789;
+  background-color: #678;
 }
 
 #cancel {
@@ -277,7 +309,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .测试容器-透视 {
-  perspective: 750px;
+  perspective: 1000px;
   width: 600px;
 }
 
@@ -295,7 +327,7 @@ input[type="number"]::-webkit-inner-spin-button {
   justify-content: center;
   align-items: center;
   gap: 10px;
-  background-color: #fff1;
+  background-color: #cde1;
 }
 
 .测试面 :where(.功能键, .按键, .连接符) {
@@ -303,7 +335,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .测试面 .快捷键内容 {
-  width: 350px;
+  width: 400px;
   justify-content: flex-start;
 }
 
@@ -321,26 +353,267 @@ input[type="number"]::-webkit-inner-spin-button {
   rotate: y 180deg;
 }
 
-.错误提示区 {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  translate: -50% 0;
+.单次测试结果区 {
+  margin-top: 2vh;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
 }
 
-.错误文字层 {
-  text-align: center;
-  align-content: center;
+.单次测试用时 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+}
+
+.单次测试用时描述 {
+  color: gray;
+}
+
+.单次测试用时容器 {
+  font-family: Consolas, "Noto Sans SC", monospace, sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.单次测试用时值 {
+  color: lightskyblue;
+}
+
+.单次测试用时后缀 {
+  color: lightsteelblue;
+}
+
+.单次测试结果 {
+  width: 100px;
+  height: 100px;
+}
+
+.单次测试结果 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.快捷键内容 {
+  font-family: "consolas", monospace;
 }
 
 .测试描述 {
+  font-family: "Noto Sans SC", sans-serif;
   font-size: 16px;
   padding: 5px 10px;
   background-color: #fff2;
   box-shadow:
-    inset 0 1px 2px 0 #fff5,
+    inset 0 1px 2px 0 #fff8,
     0 1px 2px 0 #0005;
   color: #aaa;
   border-radius: 5px;
   margin-right: 20px;
+}
+
+.测试计数 {
+  pointer-events: none;
+  position: absolute;
+  top: 15px;
+  left: 10px;
+  font-family: "consolas", monospace;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.计次 {
+  width: 27px;
+  text-align: right;
+  color: yellowgreen;
+}
+
+.斜杠 {
+  color: gray;
+}
+
+.总数 {
+  color: silver;
+}
+
+.提示类型区 {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.提示类型标题 {
+  margin-right: 8px;
+  color: #aaa;
+}
+
+.单选标签 {
+  position: relative;
+  padding: 4px 8px;
+  background-color: #3b3b3b;
+}
+
+.单选标签:nth-of-type(1) {
+  border-radius: 5px 0 0 5px;
+}
+
+.单选标签:nth-of-type(2) {
+  border-radius: 0 5px 5px 0;
+}
+
+.单选标签:has(.单选:checked) {
+  background-color: lightgreen;
+}
+
+.单选标签:not(:has(.单选:checked)):hover {
+  background-color: #4b4b4b;
+}
+
+.单选标签:hover,
+.单选:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.单选 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  appearance: none;
+}
+
+.标签文本 {
+  color: #888;
+  transition: 100ms;
+}
+
+.单选标签:has(.单选:checked) .标签文本 {
+  color: black;
+}
+
+.单选标签:not(:has(.单选:checked)):hover .标签文本 {
+  color: #9ab;
+}
+
+#结果对话框 {
+  width: 100%;
+  height: 100vh;
+  background-color: transparent;
+  border: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  color: silver;
+  overflow: hidden;
+  font-family: Consolas, "Noto Sans SC", monospace, sans-serif;
+}
+
+#结果对话框[open] {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  translate: -50% -50%;
+  @starting-style {
+    translate: -50% -200%;
+  }
+  transition:
+    translate 1s,
+    display 1s allow-discrete;
+}
+
+#结果对话框[open]::backdrop {
+  background-color: #000b;
+  backdrop-filter: blur(5px);
+  transition: 1s;
+  @starting-style {
+    background-color: transparent;
+  }
+}
+
+.对话框布局层 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #def1;
+}
+
+#关闭结果 {
+  width: 125px;
+  height: 60px;
+  border-radius: 5px;
+  background-color: #234;
+  color: white;
+  font-size: 18px;
+  margin: 20px auto 0;
+  transition: 100ms;
+}
+
+#关闭结果:hover {
+  background-color: #345;
+}
+
+#关闭结果:active {
+  background-color: #456;
+}
+
+#结果对话框 span[class$="前缀"] {
+  color: lightskyblue;
+  text-align: right;
+  width: 130px;
+  text-wrap: nowrap;
+}
+
+#结果对话框 div[class$="区"] {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+}
+
+.时间内容 {
+  display: flex;
+  gap: 1px;
+}
+
+#结果对话框 span[class$="值"] {
+  color: lightseagreen;
+  font-size: 1.05em;
+}
+
+.时间后缀,
+#结果对话框 .总体数据区 span[class$="容器"] span[class$="前缀"] {
+  color: lightslategrey;
+}
+
+.时间容器:nth-of-type(3) {
+  margin-right: 10px;
+}
+
+#结果对话框 .总体数据区 span[class$="容器"]:not(:last-child) {
+  margin-right: 15px;
+}
+
+#结果对话框 .总体数据区 span[class$="容器"] span[class$="值"] {
+  margin: 0 0 0 3px;
+}
+
+.对话框布局层 .符号 {
+  font-size: 0.9em;
+  margin-left: 2px;
+  color: darkgoldenrod;
 }
