@@ -36,6 +36,7 @@
 .快捷键种类:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   background-color: #cde1;
+  color: #89a;
 }
 
 .快捷键种类.当前种类 {
@@ -46,7 +47,7 @@
 .快捷键列表区 {
   width: 100%;
   position: relative;
-  height: 285px;
+  height: 270px;
   box-shadow: inset 0 -1px 0 1px #fff1;
 }
 
@@ -104,7 +105,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 15px;
+  padding: 8px 15px;
   border: solid 1px #def2;
   font-family: Consolas, monospace;
 }
@@ -311,6 +312,7 @@ input[type="number"]::-webkit-inner-spin-button {
 .测试容器-透视 {
   perspective: 1000px;
   width: 600px;
+  overflow: hidden;
 }
 
 .测试容器-旋转 {
@@ -354,7 +356,6 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .单次测试结果区 {
-  margin-top: 2vh;
   height: 200px;
   display: flex;
   flex-direction: column;
@@ -508,6 +509,30 @@ input[type="number"]::-webkit-inner-spin-button {
   color: #9ab;
 }
 
+.加油区 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  translate: 0 -200%;
+  pointer-events: none;
+}
+
+.加油容器 {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.加油容器 > img {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+}
+
 #结果对话框 {
   width: 100%;
   height: 100vh;
@@ -550,6 +575,7 @@ input[type="number"]::-webkit-inner-spin-button {
   padding: 20px;
   border-radius: 10px;
   background-color: #def1;
+  outline: solid 1px #fff4;
 }
 
 #关闭结果 {
@@ -591,7 +617,7 @@ input[type="number"]::-webkit-inner-spin-button {
   height: 43px;
   text-align: right;
   align-content: center;
-  color: grey;
+  color: lightskyblue;
   border-right: solid 1px #fff1;
   padding-right: 15px;
   text-wrap: nowrap;
@@ -607,10 +633,13 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .对话框布局层 .前缀 {
+  font-size: 0.9em;
   margin-right: 3px;
+  color: lightslategrey;
 }
 
 .对话框布局层 .单位 {
+  font-size: 0.9em;
   margin-left: 2px;
-  color: darkkhaki;
+  color: #9ab;
 }

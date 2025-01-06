@@ -26,6 +26,24 @@ const 测试计数元素 = document.querySelector(".测试计数");
 const 计次元素 = 测试计数元素.querySelector(".计次");
 const 斜杠元素 = 测试计数元素.querySelector(".斜杠");
 const 总数元素 = 测试计数元素.querySelector(".总数");
+const 加油区 = document.querySelector(".加油区");
+const 加油动画时长 = 2500;
+let 加油动画 = null;
+let 测试开始延时函数 = null;
+
+const 加油动画帧序列 = [
+  { translate: "0 -200%" },
+  { translate: "0 -100%", offset: 0.1 },
+  { translate: "0 -100%", offset: 0.45 },
+  { translate: "0 0", offset: 0.55 },
+  { translate: "0 0", offset: 0.9 },
+  { translate: "0 100%" },
+];
+
+const 加油动画设置 = {
+  easing: "ease-out",
+  duration: 加油动画时长,
+};
 
 const 旋转用时 = parseInt(
   window.getComputedStyle(root).getPropertyValue("--旋转用时"),
@@ -180,6 +198,9 @@ function 删除测试对象(列表项容器) {
     return;
   }
 
+  clearTimeout(测试开始延时函数);
+  加油动画 = 加油区.animate(加油动画帧序列, 加油动画设置);
+
   剩余次数 = 次数;
   计次元素.textContent = (次数 - 剩余次数 + 1).toString();
   斜杠元素.textContent = "/";
@@ -199,17 +220,19 @@ function 删除测试对象(列表项容器) {
 
   const 当前面 = 测试面组[奇偶次数 % 2];
   当前面.innerHTML = "";
-  当前面.append(
-    生成测试目标(次数, 剩余次数),
-    生成用户按键信息前缀(),
-    生成单次测试结果区容器(),
-  );
+  测试开始延时函数 = setTimeout(() => {
+    当前面.append(
+      生成测试目标(次数, 剩余次数),
+      生成用户按键信息前缀(),
+      生成单次测试结果区容器(),
+    );
 
-  window.addEventListener("keydown", 屏蔽按下快捷键默认行为);
-  window.addEventListener("keydown", 按下快捷键封装器);
-  window.addEventListener("keyup", 松开快捷键封装器);
+    window.addEventListener("keydown", 屏蔽按下快捷键默认行为);
+    window.addEventListener("keydown", 按下快捷键封装器);
+    window.addEventListener("keyup", 松开快捷键封装器);
 
-  测试起始时间 = performance.now();
+    测试起始时间 = performance.now();
+  }, 加油动画时长);
 });
 
 const 按下快捷键封装器 = function (event) {
@@ -676,11 +699,128 @@ function 生成测试结果() {
 
   const 正确数据 = 生成正确数据();
   const 总体正确率 = 生成总体正确率();
+  const 平均用时 = 生成平均正确数据();
 
-  对话框布局层.append(姓名区, 时间区, 总体正确率, 正确数据, 关闭结果按钮);
-  /*const 测试数据分组 = Object.groupBy(测试对象组, (测试对象) => 测试对象.usage);
-  for (const 属性 in 测试数据分组) {
-  }*/
+  对话框布局层.append(
+    姓名区,
+    时间区,
+    总体正确率,
+    正确数据,
+    平均用时,
+    关闭结果按钮,
+  );
+}
+
+function 生成平均正确数据() {
+  const 测试数据分组对象 = Object.groupBy(
+    测试对象组,
+    (测试对象) => 测试对象.usage,
+  );
+  const 正确对象组 = 测试对象组.filter((item) => item.passed);
+  const 正确数据分组对象 = Object.groupBy(
+    正确对象组,
+    (测试对象) => 测试对象.usage,
+  );
+  const 正确统计组 = [];
+  for (const 属性 in 正确数据分组对象) {
+    正确统计组.push({
+      用途: 属性,
+      总用时: 正确数据分组对象[属性].reduce(
+        (累积, 当前) => 累积 + 当前.duration,
+        0,
+      ),
+      平均:
+        正确数据分组对象[属性].reduce((累积, 当前) => 累积 + 当前.duration, 0) /
+        正确数据分组对象[属性].length,
+      最快: Math.min(...正确数据分组对象[属性].map((item) => item.duration)),
+      最慢: Math.max(...正确数据分组对象[属性].map((item) => item.duration)),
+    });
+  }
+
+  const 平均最快对象 = 正确统计组.find(
+    (item) => item.平均 === Math.min(...正确统计组.map((item) => item.平均)),
+  );
+  const 平均最慢对象 = 正确统计组.find(
+    (item) => item.平均 === Math.max(...正确统计组.map((item) => item.平均)),
+  );
+  const 平均最快用时 = 以毫秒算时间(平均最快对象.最快);
+  const 平均最慢用时 = 以毫秒算时间(平均最慢对象.最慢);
+
+  const 平均用时 = document.createElement("div");
+  平均用时.className = "结果分区";
+
+  const 平均用时标题 = document.createElement("span");
+  平均用时标题.className = "分区标题";
+  平均用时标题.textContent = "平均用时";
+
+  const 平均最快 = document.createElement("span");
+  平均最快.className = "父容器";
+  const 平均最快前缀 = document.createElement("span");
+  平均最快前缀.className = "前缀";
+  平均最快前缀.textContent = "最快";
+  const 平均最快分子容器 = document.createElement("span");
+  平均最快分子容器.className = "子容器";
+  const 平均最快分值 = document.createElement("span");
+  平均最快分值.className = "值";
+  平均最快分值.textContent = 平均最快用时.分.toString();
+  const 平均最快分单位 = document.createElement("span");
+  平均最快分单位.className = "单位";
+  平均最快分单位.textContent = "分";
+  平均最快分子容器.append(平均最快分值, 平均最快分单位);
+  const 平均最快秒子容器 = document.createElement("span");
+  平均最快秒子容器.className = "子容器";
+  const 平均最快秒值 = document.createElement("span");
+  平均最快秒值.className = "值";
+  平均最快秒值.textContent = 平均最快用时.秒.toString();
+  const 平均最快秒单位 = document.createElement("span");
+  平均最快秒单位.className = "单位";
+  平均最快秒单位.textContent = "秒";
+  const 平均最快用途 = document.createElement("span");
+  平均最快用途.className = "用途";
+  平均最快用途.textContent = 平均最快对象.用途;
+  平均最快秒子容器.append(平均最快秒值, 平均最快秒单位, 平均最快用途);
+
+  if (平均最快用时.分 >= 1) {
+    平均最快.append(平均最快前缀, 平均最快分子容器, 平均最快秒子容器);
+  } else {
+    平均最快.append(平均最快前缀, 平均最快秒子容器);
+  }
+
+  const 平均最慢 = document.createElement("span");
+  平均最慢.className = "父容器";
+  const 平均最慢前缀 = document.createElement("span");
+  平均最慢前缀.className = "前缀";
+  平均最慢前缀.textContent = "最慢";
+  const 平均最慢分子容器 = document.createElement("span");
+  平均最慢分子容器.className = "子容器";
+  const 平均最慢分值 = document.createElement("span");
+  平均最慢分值.className = "值";
+  平均最慢分值.textContent = 平均最慢用时.分.toString();
+  const 平均最慢分单位 = document.createElement("span");
+  平均最慢分单位.className = "单位";
+  平均最慢分单位.textContent = "分";
+  平均最慢分子容器.append(平均最慢分值, 平均最慢分单位);
+  const 平均最慢秒子容器 = document.createElement("span");
+  平均最慢秒子容器.className = "子容器";
+  const 平均最慢秒值 = document.createElement("span");
+  平均最慢秒值.className = "值";
+  平均最慢秒值.textContent = 平均最慢用时.秒.toString();
+  const 平均最慢秒单位 = document.createElement("span");
+  平均最慢秒单位.className = "单位";
+  平均最慢秒单位.textContent = "秒";
+  const 平均最慢用途 = document.createElement("span");
+  平均最慢用途.className = "用途";
+  平均最慢用途.textContent = 平均最慢对象.用途;
+  平均最慢秒子容器.append(平均最慢秒值, 平均最慢秒单位, 平均最慢用途);
+
+  if (平均最慢用时.分 >= 1) {
+    平均最慢.append(平均最慢前缀, 平均最慢分子容器, 平均最慢秒子容器);
+  } else {
+    平均最慢.append(平均最慢前缀, 平均最慢秒子容器);
+  }
+
+  平均用时.append(平均用时标题, 平均最快, 平均最慢);
+  return 平均用时;
 }
 
 function 生成正确数据() {
@@ -696,7 +836,7 @@ function 生成正确数据() {
 
   const 总体数据标题 = document.createElement("span");
   总体数据标题.className = "分区标题";
-  总体数据标题.textContent = "正确数据";
+  总体数据标题.textContent = "总正确数据";
 
   const 正确次数容器 = document.createElement("span");
   正确次数容器.className = "子容器";
@@ -712,7 +852,7 @@ function 生成正确数据() {
   总用时子容器.className = "父容器";
   const 总用时前缀 = document.createElement("span");
   总用时前缀.className = "前缀";
-  总用时前缀.textContent = "总用时";
+  总用时前缀.textContent = "总正确用时";
   const 总用时分值 = document.createElement("span");
   总用时分值.className = "值";
   总用时分值.textContent = `${正确用时.分}`;
@@ -741,7 +881,7 @@ function 生成正确数据() {
   平均用时容器.className = "父容器";
   const 平均用时前缀 = document.createElement("span");
   平均用时前缀.className = "前缀";
-  平均用时前缀.textContent = "平均用时";
+  平均用时前缀.textContent = "平均正确用时";
   const 平均用时分值 = document.createElement("span");
   平均用时分值.className = "值";
   平均用时分值.textContent = `${正确用时.平均分}`;
@@ -781,23 +921,44 @@ function 获取正确用时() {
   }
   let average = total / 正确次数;
 
-  const 总用时分 = Math.floor(total / 60000);
+  const 总用时 = 以毫秒算时间(total);
+  const 平均用时 = 以毫秒算时间(average);
+  /*const 总用时分 = Math.floor(total / 60000);
   const 总用时秒 =
     总用时分 < 1
       ? (total / 1000).toFixed(2)
-      : ((total % 60000) / 1000).toFixed(2);
+      : ((total % 60000) / 1000).toFixed(2);*/
 
-  const 平均用时分 = Math.floor(average / 60000);
+  /*const 平均用时分 = Math.floor(average / 60000);
   const 平均用时秒 =
     平均用时分 < 1
       ? (average / 1000).toFixed(2)
-      : ((average % 60000) / 1000).toFixed(2);
+      : ((average % 60000) / 1000).toFixed(2);*/
 
+  if (正确次数 === 0) {
+    return {
+      分: 0,
+      秒: 0,
+      平均分: 0,
+      平均秒: 0,
+    };
+  } else {
+    return {
+      分: 总用时.分,
+      秒: 总用时.秒,
+      平均分: 平均用时.分,
+      平均秒: 平均用时.秒,
+    };
+  }
+}
+
+function 以毫秒算时间(毫秒) {
+  const 分 = Math.floor(毫秒 / 60000);
+  const 秒 =
+    分 < 1 ? (毫秒 / 1000).toFixed(2) : ((毫秒 % 60000) / 1000).toFixed(2);
   return {
-    分: 总用时分,
-    秒: 总用时秒,
-    平均分: 平均用时分,
-    平均秒: 平均用时秒,
+    分: 分,
+    秒: 秒,
   };
 }
 

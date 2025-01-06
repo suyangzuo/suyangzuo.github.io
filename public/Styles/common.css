@@ -40,7 +40,7 @@ body {
   color: var(--f-color);
   z-index: 0;
   cursor: url("/Images/Common/鼠标-默认.cur"), auto;
-  font-family: "Noto Sans SC", sans-serif, "Noto Sans Mono", monospace;
+  font-family: "Noto Sans SC", 微软雅黑, sans-serif, Consolas, monospace;
 }
 
 body::-webkit-scrollbar {
