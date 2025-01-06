@@ -97,6 +97,7 @@ body {
 
 .app:hover {
   outline: solid 2px #fff8;
+  background-color: #1a2026;
 }
 
 .图片区 {
@@ -134,6 +135,10 @@ body {
   border-radius: 5px;
   overflow: hidden;
   transition: 125ms;
+}
+
+.app:hover .app-access {
+  background-color: #345d;
 }
 
 .app-access:hover {
