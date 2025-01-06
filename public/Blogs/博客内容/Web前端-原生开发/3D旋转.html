@@ -226,7 +226,7 @@
       </ul>
       <pre>
         <code class="lang-css">
-          透视元素 {
+          .透视元素 {
             perspective: 500px; /* 此距离不能太近，也不能太远。具体数值需要自行测试 */
           }
         </code>
@@ -254,7 +254,7 @@
       </pre>
       <pre>
         <code class="lang-css">
-          变换元素 {
+          .变换元素 {
             transform-style: preserve-3d; /* 此属性默认值为 flat */
           }
         </code>
@@ -270,12 +270,12 @@
       </p>
       <pre>
         <code class="lang-css">
-          变换元素 {
+          .变换元素 {
             transform-style: preserve-3d; /* 此属性默认值为 flat */
             transition: 1s; /* 过渡，否则旋转会一瞬间完成，看不出效果 */
           }
           
-          变换元素:hover {
+          .变换元素:hover {
             //以下两种写法效果一致
             rotate: y 180deg; /* 较新的写法 */
             transform: rotateY(180deg); /* 传统写法 */
@@ -539,8 +539,8 @@
       </p>
       <pre>
         <code class="lang-css">
-          正面元素,
-          反面元素 {
+          .正面元素,
+          .反面元素 {
             backface-visibility: hidden; /* 反面-可见性：隐藏 */
           }
         </code>
@@ -624,12 +624,12 @@
       </p>
       <pre>
         <code class="lang-css">
-          反面元素 {
+          .反面元素 {
             rotate: y 180deg;
           }
           
-          正面元素,
-          反面元素 {
+          .正面元素,
+          .反面元素 {
             backface-visibility: hidden; /* 反面-可见性：隐藏 */
           }
         </code>

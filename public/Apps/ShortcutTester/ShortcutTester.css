@@ -57,16 +57,17 @@
   bottom: 10px;
   width: 35px;
   height: 35px;
+  border-radius: 999px;
   font-size: 14px;
-  background-color: #755a16;
+  background-color: #fff2;
 }
 
 #取消选择:hover {
-  background-color: #957520;
+  background-color: #fff3;
 }
 
 #取消选择:active {
-  background-color: darkgoldenrod;
+  background-color: #fff4;
 }
 
 .快捷键列表 {
@@ -259,17 +260,22 @@ input[type="number"]::-webkit-inner-spin-button {
   height: 40px;
   display: flex;
   align-items: center;
-  gap: 15px;
+  border-radius: 999px;
+  overflow: hidden;
+  outline: solid 2px #cde5;
+}
+
+.选项区-按钮区:hover {
+  outline: solid 2px #cdea;
 }
 
 .按钮 {
   color: silver;
-  border-radius: 999px;
   transition: 50ms;
 }
 
 #run {
-  width: 100px;
+  width: 70px;
   height: 100%;
   font-size: 16px;
   background-color: #345;
@@ -285,7 +291,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 #cancel {
-  width: 50px;
+  width: 40px;
   height: 100%;
 }
 

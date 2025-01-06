@@ -41,7 +41,7 @@ const 加油动画帧序列 = [
 ];
 
 const 加油动画设置 = {
-  easing: "ease-out",
+  easing: "linear",
   duration: 加油动画时长,
 };
 
@@ -666,6 +666,8 @@ function 生成错误信息() {
   }, 旋转用时);
   旋转角度 = 0;
 
+  加油动画?.cancel();
+  clearTimeout(测试开始延时函数);
   计次元素.textContent = "";
   斜杠元素.textContent = "";
   总数元素.textContent = "";
