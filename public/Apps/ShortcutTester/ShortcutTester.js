@@ -164,10 +164,10 @@ function 添加测试对象(列表项容器) {
 
     const 按键内容 = 按键.textContent.trim();
     switch (按键内容) {
-      case "↑":
+      case "⬆":
         测试对象.key = "ArrowUp";
         break;
-      case "↓":
+      case "⬇":
         测试对象.key = "ArrowDown";
         break;
       default:
@@ -374,16 +374,16 @@ function 按下快捷键(event) {
     } else if (方向键组.some((键) => 键 === key)) {
       switch (key) {
         case "ArrowUp":
-          keyElement.textContent = "↑";
+          keyElement.textContent = "⬆";
           break;
         case "ArrowDown":
-          keyElement.textContent = "↓";
+          keyElement.textContent = "⬇";
           break;
         case "ArrowLeft":
-          keyElement.textContent = "←";
+          keyElement.textContent = "⬅";
           break;
         case "ArrowRight":
-          keyElement.textContent = "→";
+          keyElement.textContent = "➡";
           break;
       }
     } else {
@@ -598,10 +598,10 @@ function 生成测试目标(总次数, 剩余次数) {
     key.className = "按键";
     switch (测试对象.key) {
       case "ArrowUp":
-        key.textContent = "↑";
+        key.textContent = "⬆";
         break;
       case "ArrowDown":
-        key.textContent = "↓";
+        key.textContent = "⬇";
         break;
       default:
         key.textContent = 测试对象.key.toUpperCase();

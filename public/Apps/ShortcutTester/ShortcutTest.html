@@ -190,11 +190,53 @@
           <li class="快捷键列表项">
             <div class="列表项容器">
               <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">`</span>
+                <span class="用途">切换控制台</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">L</span>
+                <span class="用途">选中当前行</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">Enter</span>
+                <span class="用途">向下插入空行</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="功能键">Shift</span>
+                <span class="连接符">+</span>
+                <span class="按键">Enter</span>
+                <span class="用途">向上插入空行</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
                 <span class="功能键">Alt</span>
                 <span class="连接符">+</span>
                 <span class="功能键">Shift</span>
                 <span class="连接符">+</span>
-                <span class="按键">↑</span>
+                <span class="按键">⬆</span>
                 <span class="用途">向上复制</span>
               </div>
             </div>
@@ -206,8 +248,97 @@
                 <span class="连接符">+</span>
                 <span class="功能键">Shift</span>
                 <span class="连接符">+</span>
-                <span class="按键">↓</span>
+                <span class="按键">⬇</span>
                 <span class="用途">向下复制</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="功能键">Alt</span>
+                <span class="连接符">+</span>
+                <span class="按键">⬆</span>
+                <span class="用途">向上插入光标</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="功能键">Alt</span>
+                <span class="连接符">+</span>
+                <span class="按键">⬇</span>
+                <span class="用途">向下插入光标</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">⬆</span>
+                <span class="用途">向上滚动一行</span>
+              </div>
+            </div>
+          </li>
+
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Ctrl</span>
+                <span class="连接符">+</span>
+                <span class="按键">⬇</span>
+                <span class="用途">向下滚动一行</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Alt</span>
+                <span class="连接符">+</span>
+                <span class="按键">⬆</span>
+                <span class="用途">向上交换行</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Alt</span>
+                <span class="连接符">+</span>
+                <span class="按键">⬇</span>
+                <span class="用途">向下交换行</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Alt</span>
+                <span class="连接符">+</span>
+                <span class="功能键">Shift</span>
+                <span class="连接符">+</span>
+                <span class="按键">➡</span>
+                <span class="用途">扩展选择范围</span>
+              </div>
+            </div>
+          </li>
+          <li class="快捷键列表项">
+            <div class="列表项容器">
+              <div class="快捷键内容">
+                <span class="功能键">Alt</span>
+                <span class="连接符">+</span>
+                <span class="功能键">Shift</span>
+                <span class="连接符">+</span>
+                <span class="按键">⬅</span>
+                <span class="用途">收缩选择范围</span>
               </div>
             </div>
           </li>
@@ -773,7 +904,10 @@
           />
         </label>
         <div class="选项区-按钮区">
-          <button id="run" class="按钮" type="button">开始<button></button></button>
+          <button id="run" class="按钮" type="button">
+            开始
+            <button></button>
+          </button>
           <button id="cancel" class="按钮" type="button" title="取消测试">
             <i class="fa-solid fa-ban"></i>
           </button>
