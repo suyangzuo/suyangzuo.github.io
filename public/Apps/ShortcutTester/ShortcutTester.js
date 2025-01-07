@@ -670,37 +670,10 @@ function 生成错误信息() {
   }
 }
 
-取消测试按钮.addEventListener("click", () => {
-  测试运行中 = false;
-  测试面组[0].innerHTML = "";
-  测试面组[1].innerHTML = "";
-  旋转容器.style.transition = "none";
-  旋转容器.style.rotate = "";
-  setTimeout(() => {
-    旋转容器.style.transition = "";
-  }, 旋转用时);
-  旋转角度 = 0;
-
-  加油动画?.cancel();
-  clearTimeout(测试开始延时函数);
-  计次元素.textContent = "";
-  斜杠元素.textContent = "";
-  总数元素.textContent = "";
-
-  测试起始时间 = 0;
-
-  摘要层.classList.remove("隐藏摘要");
-  详情层.classList.remove("显示详情");
-
-  window.removeEventListener("keydown", 屏蔽按下快捷键默认行为);
-  window.removeEventListener("keydown", 按下快捷键封装器);
-  window.removeEventListener("keyup", 松开快捷键封装器);
-});
-
 function 生成摘要() {
   摘要层.innerHTML = "";
   摘要层.classList.remove("隐藏摘要");
-  const 结果标题 = document.createElement("h3");
+  const 结果标题 = document.createElement("h2");
   结果标题.className = "结果标题";
   结果标题.textContent = "摘要";
 
@@ -718,13 +691,13 @@ function 生成摘要() {
   时间区.className = "结果分区";
   const 时间区标题 = document.createElement("span");
   时间区标题.className = "分区标题";
-  时间区标题.textContent = "测试完成时间";
+  时间区标题.textContent = "测试时间";
   const 时间日期 = 获取当前时间();
   时间区.append(时间区标题, 时间日期.日期, 时间日期.时间);
 
   const 正确数据 = 生成正确数据();
-  const 总体正确率 = 生成总体正确率();
-  const 平均用时 = 生成平均正确数据();
+  const 错误数据 = 生成错误数据();
+  const 总体正确率 = 生成总体数据();
 
   摘要层.append(
     结果标题,
@@ -732,18 +705,21 @@ function 生成摘要() {
     时间区,
     总体正确率,
     正确数据,
-    平均用时,
+    错误数据,
     显示详情按钮,
     关闭对话框_摘要层,
   );
 }
 
 function 生成平均正确数据() {
-  const 测试数据分组对象 = Object.groupBy(
+  /*const 测试数据分组对象 = Object.groupBy(
     测试对象组,
     (测试对象) => 测试对象.usage,
-  );
+  );*/
   const 正确对象组 = 测试对象组.filter((item) => item.passed);
+  if (正确对象组.length <= 0) {
+    return;
+  }
   const 正确数据分组对象 = Object.groupBy(
     正确对象组,
     (测试对象) => 测试对象.usage,
@@ -773,18 +749,11 @@ function 生成平均正确数据() {
   const 平均最快用时 = 以毫秒算时间(平均最快对象.最快);
   const 平均最慢用时 = 以毫秒算时间(平均最慢对象.最慢);
 
-  const 平均用时 = document.createElement("div");
-  平均用时.className = "结果分区";
-
-  const 平均用时标题 = document.createElement("span");
-  平均用时标题.className = "分区标题";
-  平均用时标题.textContent = "平均用时";
-
   const 平均最快 = document.createElement("span");
   平均最快.className = "父容器";
   const 平均最快前缀 = document.createElement("span");
   平均最快前缀.className = "前缀";
-  平均最快前缀.textContent = "最快";
+  平均最快前缀.textContent = "平均最快";
   const 平均最快分子容器 = document.createElement("span");
   平均最快分子容器.className = "子容器";
   const 平均最快分值 = document.createElement("span");
@@ -817,7 +786,7 @@ function 生成平均正确数据() {
   平均最慢.className = "父容器";
   const 平均最慢前缀 = document.createElement("span");
   平均最慢前缀.className = "前缀";
-  平均最慢前缀.textContent = "最慢";
+  平均最慢前缀.textContent = "平均最慢";
   const 平均最慢分子容器 = document.createElement("span");
   平均最慢分子容器.className = "子容器";
   const 平均最慢分值 = document.createElement("span");
@@ -846,8 +815,10 @@ function 生成平均正确数据() {
     平均最慢.append(平均最慢前缀, 平均最慢秒子容器);
   }
 
-  平均用时.append(平均用时标题, 平均最快, 平均最慢);
-  return 平均用时;
+  return {
+    最快: 平均最快,
+    最慢: 平均最慢,
+  };
 }
 
 function 生成正确数据() {
@@ -863,13 +834,13 @@ function 生成正确数据() {
 
   const 总体数据标题 = document.createElement("span");
   总体数据标题.className = "分区标题";
-  总体数据标题.textContent = "总正确数据";
+  总体数据标题.textContent = "正确数据";
 
   const 正确次数容器 = document.createElement("span");
   正确次数容器.className = "子容器";
   const 正确次数前缀 = document.createElement("span");
   正确次数前缀.className = "前缀";
-  正确次数前缀.textContent = "正确次数";
+  正确次数前缀.textContent = "次数";
   const 正确次数值 = document.createElement("span");
   正确次数值.className = "值";
   正确次数值.textContent = passed.toString();
@@ -879,7 +850,7 @@ function 生成正确数据() {
   总用时子容器.className = "父容器";
   const 总用时前缀 = document.createElement("span");
   总用时前缀.className = "前缀";
-  总用时前缀.textContent = "总正确用时";
+  总用时前缀.textContent = "总用时";
   const 总用时分值 = document.createElement("span");
   总用时分值.className = "值";
   总用时分值.textContent = `${正确用时.分}`;
@@ -908,7 +879,7 @@ function 生成正确数据() {
   平均用时容器.className = "父容器";
   const 平均用时前缀 = document.createElement("span");
   平均用时前缀.className = "前缀";
-  平均用时前缀.textContent = "平均正确用时";
+  平均用时前缀.textContent = "平均用时";
   const 平均用时分值 = document.createElement("span");
   平均用时分值.className = "值";
   平均用时分值.textContent = `${正确用时.平均分}`;
@@ -933,7 +904,20 @@ function 生成正确数据() {
     平均用时容器.append(平均用时前缀, 平均秒容器);
   }
 
-  总体数据.append(总体数据标题, 正确次数容器, 总用时子容器, 平均用时容器);
+  const 平均用时 = 生成平均正确数据();
+
+  if (passed <= 0) {
+    总体数据.appendChild(总体数据标题);
+  } else {
+    总体数据.append(
+      总体数据标题,
+      正确次数容器,
+      总用时子容器,
+      平均用时容器,
+      平均用时.最快,
+      平均用时.最慢,
+    );
+  }
   return 总体数据;
 }
 
@@ -950,17 +934,6 @@ function 获取正确用时() {
 
   const 总用时 = 以毫秒算时间(total);
   const 平均用时 = 以毫秒算时间(average);
-  /*const 总用时分 = Math.floor(total / 60000);
-  const 总用时秒 =
-    总用时分 < 1
-      ? (total / 1000).toFixed(2)
-      : ((total % 60000) / 1000).toFixed(2);*/
-
-  /*const 平均用时分 = Math.floor(average / 60000);
-  const 平均用时秒 =
-    平均用时分 < 1
-      ? (average / 1000).toFixed(2)
-      : ((average % 60000) / 1000).toFixed(2);*/
 
   if (正确次数 === 0) {
     return {
@@ -979,6 +952,98 @@ function 获取正确用时() {
   }
 }
 
+function 生成错误数据() {
+  let failed = 0;
+  for (const 对象 of 测试对象组) {
+    if (!对象.passed) {
+      failed++;
+    }
+  }
+
+  const 错误数据 = document.createElement("div");
+  错误数据.className = "结果分区";
+
+  const 错误数据标题 = document.createElement("span");
+  错误数据标题.className = "分区标题";
+  错误数据标题.textContent = "错误数据";
+
+  const 错误次数容器 = document.createElement("span");
+  错误次数容器.className = "子容器";
+  const 错误次数前缀 = document.createElement("span");
+  错误次数前缀.className = "前缀";
+  错误次数前缀.textContent = "次数";
+  const 错误次数值 = document.createElement("span");
+  错误次数值.className = "值";
+  错误次数值.textContent = failed.toString();
+  错误次数容器.append(错误次数前缀, 错误次数值);
+
+  const 错误对象组 = 测试对象组.filter((item) => !item.passed);
+  const 错误分组对象 = Object.groupBy(错误对象组, (测试对象) => 测试对象.usage);
+  console.log(错误分组对象);
+  const 错误最多对象 = {
+    用途: "",
+    数量: 0,
+  };
+  const 错误最少对象 = {
+    用途: "",
+    数量: 测试对象组.length,
+  };
+  for (const 属性 in 错误分组对象) {
+    if (错误分组对象[属性].length > 错误最多对象.数量) {
+      错误最多对象.用途 = 属性;
+      错误最多对象.数量 = 错误分组对象[属性].length;
+    }
+
+    if (错误分组对象[属性].length < 错误最少对象.数量) {
+      错误最少对象.用途 = 属性;
+      错误最少对象.数量 = 错误分组对象[属性].length;
+    }
+  }
+
+  const 错误最多 = document.createElement("span");
+  错误最多.className = "父容器";
+  const 错误最多前缀 = document.createElement("span");
+  错误最多前缀.className = "前缀";
+  错误最多前缀.textContent = "错误最多";
+  const 错误最多子容器 = document.createElement("span");
+  错误最多子容器.className = "子容器";
+  const 错误最多值 = document.createElement("span");
+  错误最多值.className = "值";
+  错误最多值.textContent = 错误最多对象.数量.toString();
+  const 错误最多用途 = document.createElement("span");
+  错误最多用途.className = "用途";
+  错误最多用途.textContent = 错误最多对象.用途;
+  错误最多子容器.append(错误最多值, 错误最多用途);
+  const 错误最少 = document.createElement("span");
+  错误最少.className = "父容器";
+  const 错误最少前缀 = document.createElement("span");
+  错误最少前缀.className = "前缀";
+  错误最少前缀.textContent = "错误最少";
+  const 错误最少子容器 = document.createElement("span");
+  错误最少子容器.className = "子容器";
+  const 错误最少值 = document.createElement("span");
+  错误最少值.className = "值";
+  错误最少值.textContent = 错误最少对象.数量.toString();
+  const 错误最少用途 = document.createElement("span");
+  错误最少用途.className = "用途";
+  错误最少用途.textContent = 错误最少对象.用途;
+  错误最少子容器.append(错误最少值, 错误最少用途);
+
+  错误最多.append(错误最多前缀, 错误最多子容器);
+  错误最少.append(错误最少前缀, 错误最少子容器);
+
+  if (failed <= 0) {
+    错误数据.appendChild(错误数据标题);
+  } else {
+    if (Object.keys(错误分组对象).length <= 1) {
+      错误数据.append(错误数据标题, 错误次数容器, 错误最多);
+    } else {
+      错误数据.append(错误数据标题, 错误次数容器, 错误最多, 错误最少);
+    }
+  }
+  return 错误数据;
+}
+
 function 以毫秒算时间(毫秒) {
   const 分 = Math.floor(毫秒 / 60000);
   const 秒 =
@@ -989,7 +1054,7 @@ function 以毫秒算时间(毫秒) {
   };
 }
 
-function 生成总体正确率() {
+function 生成总体数据() {
   let passed = 0;
   for (const 对象 of 测试对象组) {
     if (对象.passed) {
@@ -1008,7 +1073,7 @@ function 生成总体正确率() {
 
   const 总前缀 = document.createElement("span");
   总前缀.className = "分区标题";
-  总前缀.textContent = "总体正确率";
+  总前缀.textContent = "总体数据";
 
   const 总次数容器 = document.createElement("span");
   总次数容器.className = "子容器";
@@ -1156,9 +1221,36 @@ function 获取当前时间() {
 function 生成详情() {
   详情层.innerHTML = "";
   详情层.classList.remove("显示详情");
-  const 结果标题 = document.createElement("h3");
+  const 结果标题 = document.createElement("h2");
   结果标题.className = "结果标题";
   结果标题.textContent = "详情";
 
   详情层.append(结果标题, 显示摘要按钮, 关闭对话框_详情层);
 }
+
+取消测试按钮.addEventListener("click", () => {
+  测试运行中 = false;
+  测试面组[0].innerHTML = "";
+  测试面组[1].innerHTML = "";
+  旋转容器.style.transition = "none";
+  旋转容器.style.rotate = "";
+  setTimeout(() => {
+    旋转容器.style.transition = "";
+  }, 旋转用时);
+  旋转角度 = 0;
+
+  加油动画?.cancel();
+  clearTimeout(测试开始延时函数);
+  计次元素.textContent = "";
+  斜杠元素.textContent = "";
+  总数元素.textContent = "";
+
+  测试起始时间 = 0;
+
+  摘要层.classList.remove("隐藏摘要");
+  详情层.classList.remove("显示详情");
+
+  window.removeEventListener("keydown", 屏蔽按下快捷键默认行为);
+  window.removeEventListener("keydown", 按下快捷键封装器);
+  window.removeEventListener("keyup", 松开快捷键封装器);
+});
