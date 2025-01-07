@@ -304,7 +304,7 @@
                 <span class="功能键">Alt</span>
                 <span class="连接符">+</span>
                 <span class="按键">⬆</span>
-                <span class="用途">向上交换行</span>
+                <span class="用途">向上移动行</span>
               </div>
             </div>
           </li>
@@ -314,7 +314,7 @@
                 <span class="功能键">Alt</span>
                 <span class="连接符">+</span>
                 <span class="按键">⬇</span>
-                <span class="用途">向下交换行</span>
+                <span class="用途">向下移动行</span>
               </div>
             </div>
           </li>
@@ -958,8 +958,12 @@
       </div>
     </section>
     <dialog id="结果对话框" class="对话框">
-      <button id="关闭结果" class="按钮">关闭</button>
-      <div class="对话框布局层"></div>
+      <button id="关闭对话框-摘要层" class="按钮">关闭</button>
+      <button id="关闭对话框-详情层" class="按钮">关闭</button>
+      <button id="显示详情" class="按钮">详情</button>
+      <button id="显示摘要" class="按钮">摘要</button>
+      <div class="详情层"></div>
+      <div class="摘要层"></div>
     </dialog>
   </body>
 </html>

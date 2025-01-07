@@ -5,7 +5,12 @@
 .快捷键池 {
   width: fit-content;
   margin: 0 auto;
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family:
+    "JetBrains Mono",
+    Consolas,
+    "Noto Sans SC",
+    微软雅黑， monospace,
+    sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -47,7 +52,7 @@
 .快捷键列表区 {
   width: 100%;
   position: relative;
-  height: 270px;
+  height: calc(41px * 6 + 30px);
   box-shadow: inset 0 -1px 0 1px #fff1;
 }
 
@@ -112,7 +117,11 @@
   gap: 10px;
   padding: 8px 15px;
   border: solid 1px #def2;
-  font-family: Consolas, monospace;
+  font-family:
+    Consolas,
+    "Noto Sans SC",
+    微软雅黑， monospace,
+    sans-serif;
 }
 
 .列表项容器:hover {
@@ -232,7 +241,12 @@
 
 .文本框,
 .数字框 {
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family:
+    "JetBrains Mono",
+    Consolas,
+    "Noto Sans SC",
+    微软雅黑， monospace,
+    sans-serif;
   background-color: transparent;
   border: none;
   font-size: 16px;
@@ -367,7 +381,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .单次测试结果区 {
-  height: 200px;
+  height: 180px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -414,7 +428,11 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .快捷键内容 {
-  font-family: "consolas", monospace;
+  font-family:
+    Consolas,
+    "Noto Sans SC",
+    微软雅黑， monospace,
+    sans-serif;
 }
 
 .测试描述 {
@@ -435,7 +453,11 @@ input[type="number"]::-webkit-inner-spin-button {
   position: absolute;
   top: 15px;
   left: 10px;
-  font-family: "consolas", monospace;
+  font-family:
+    Consolas,
+    "Noto Sans SC",
+    微软雅黑， monospace,
+    sans-serif;
   font-size: 16px;
   display: flex;
   justify-content: center;
@@ -580,16 +602,25 @@ input[type="number"]::-webkit-inner-spin-button {
   }
 }
 
-.对话框布局层 {
+.摘要层 {
+  position: relative;
   display: flex;
   flex-direction: column;
   padding: 20px;
   border-radius: 10px;
   background-color: #def1;
   outline: solid 1px #fff4;
+  transition: 500ms;
 }
 
-#关闭结果 {
+.摘要层.隐藏摘要 {
+  opacity: 0;
+  translate: 0 -100%;
+  pointer-events: none;
+}
+
+#关闭对话框-摘要层,
+#关闭对话框-详情层 {
   width: 125px;
   height: 60px;
   border-radius: 5px;
@@ -600,12 +631,34 @@ input[type="number"]::-webkit-inner-spin-button {
   transition: 100ms;
 }
 
-#关闭结果:hover {
+#关闭对话框-摘要层:hover,
+#关闭对话框-详情层:hover {
   background-color: #345;
 }
 
-#关闭结果:active {
+#关闭对话框-摘要层:active,
+#关闭对话框-详情层:active {
   background-color: #456;
+}
+
+#显示详情,
+#显示摘要 {
+  position: absolute;
+  top: 20px;
+  right: 10px;
+  width: 50px;
+  height: 30px;
+  border-radius: 999px;
+  font-size: 14px;
+  color: black;
+  background-color: silver;
+}
+
+.结果标题 {
+  text-align: center;
+  align-content: center;
+  color: darkgoldenrod;
+  margin-bottom: 25px;
 }
 
 .结果分区 {
@@ -639,18 +692,42 @@ input[type="number"]::-webkit-inner-spin-button {
   align-items: center;
 }
 
-.对话框布局层 .值 {
+.摘要层 .值 {
   color: lightseagreen;
 }
 
-.对话框布局层 .前缀 {
+.摘要层 .前缀 {
   font-size: 0.9em;
   margin-right: 3px;
   color: lightslategrey;
 }
 
-.对话框布局层 .单位 {
+.摘要层 .单位 {
   font-size: 0.9em;
   margin-left: 2px;
   color: #9ab;
+}
+
+.详情层 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% 50%;
+  background-color: #def1;
+  outline: solid 1px #fff4;
+  border-radius: 10px;
+  min-width: 800px;
+  min-height: 500px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: 500ms;
+}
+
+.详情层.显示详情 {
+  opacity: 1;
+  pointer-events: auto;
+  translate: -50% -50%;
 }
