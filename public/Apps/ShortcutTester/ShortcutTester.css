@@ -643,7 +643,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
 :is(#显示详情, #显示摘要) {
   position: absolute;
-  top: 20px;
+  top: 24px;
   right: 10px;
   width: 50px;
   height: 30px;
@@ -705,7 +705,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .摘要层 .值 {
-  color: lightseagreen;
+  color: mediumseagreen;
 }
 
 .摘要层 .前缀 {
