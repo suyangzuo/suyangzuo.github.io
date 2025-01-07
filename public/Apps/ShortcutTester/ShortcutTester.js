@@ -16,8 +16,9 @@ let 测试运行中 = false;
 let 旋转角度 = 0;
 const 提示按键单选框 = document.getElementById("提示类型-按键");
 const 结果对话框 = document.getElementById("结果对话框");
-const 摘要层 = 结果对话框.querySelector(".摘要层");
-const 关闭对话框_摘要层 = document.getElementById("关闭对话框-摘要层");
+无结果时生成关闭按钮();
+// const 摘要层 = 结果对话框.querySelector(".摘要层");
+/*const 关闭对话框_摘要层 = document.getElementById("关闭对话框-摘要层");
 关闭对话框_摘要层.addEventListener("click", () => {
   结果对话框.close();
 });
@@ -25,9 +26,9 @@ const 显示详情按钮 = document.getElementById("显示详情");
 显示详情按钮.addEventListener("click", () => {
   详情层.classList.add("显示详情");
   摘要层.classList.add("隐藏摘要");
-});
-const 详情层 = 结果对话框.querySelector(".详情层");
-const 显示摘要按钮 = document.getElementById("显示摘要");
+});*/
+// const 详情层 = 结果对话框.querySelector(".详情层");
+/*const 显示摘要按钮 = document.getElementById("显示摘要");
 显示摘要按钮.addEventListener("click", () => {
   详情层.classList.remove("显示详情");
   摘要层.classList.remove("隐藏摘要");
@@ -35,6 +36,10 @@ const 显示摘要按钮 = document.getElementById("显示摘要");
 const 关闭对话框_详情层 = document.getElementById("关闭对话框-详情层");
 关闭对话框_详情层.addEventListener("click", () => {
   结果对话框.close();
+});*/
+const 查看结果按钮 = document.getElementById("result");
+查看结果按钮.addEventListener("click", () => {
+  结果对话框.showModal();
 });
 
 const 测试计数元素 = document.querySelector(".测试计数");
@@ -212,6 +217,9 @@ function 删除测试对象(列表项容器) {
     生成错误信息();
     return;
   }
+
+  结果对话框.innerHTML = "";
+  查看结果按钮.disabled = true;
 
   clearTimeout(测试开始延时函数);
   加油动画 = 加油区.animate(加油动画帧序列, 加油动画设置);
@@ -440,9 +448,13 @@ function 按下快捷键(event) {
     } else {
       window.removeEventListener("keydown", 屏蔽按下快捷键默认行为);
       setTimeout(() => {
-        结果对话框.showModal();
+        生成结果时删除关闭按钮();
+        生成摘要层与详情层();
+        生成对话框按钮();
         生成摘要();
         生成详情();
+        结果对话框.showModal();
+        查看结果按钮.disabled = false;
       }, 测试结果出现延时);
     }
 
@@ -671,6 +683,7 @@ function 生成错误信息() {
 }
 
 function 生成摘要() {
+  const 摘要层 = 结果对话框.querySelector(".摘要层");
   摘要层.innerHTML = "";
   摘要层.classList.remove("隐藏摘要");
   const 结果标题 = document.createElement("h2");
@@ -699,6 +712,9 @@ function 生成摘要() {
   const 错误数据 = 生成错误数据();
   const 总体正确率 = 生成总体数据();
 
+  const 显示详情按钮 = document.getElementById("显示详情");
+  const 关闭对话框按钮_摘要层 = document.getElementById("关闭对话框-摘要层");
+
   摘要层.append(
     结果标题,
     姓名区,
@@ -707,15 +723,11 @@ function 生成摘要() {
     正确数据,
     错误数据,
     显示详情按钮,
-    关闭对话框_摘要层,
+    关闭对话框按钮_摘要层,
   );
 }
 
 function 生成平均正确数据() {
-  /*const 测试数据分组对象 = Object.groupBy(
-    测试对象组,
-    (测试对象) => 测试对象.usage,
-  );*/
   const 正确对象组 = 测试对象组.filter((item) => item.passed);
   if (正确对象组.length <= 0) {
     return;
@@ -1061,6 +1073,8 @@ function 生成总体数据() {
       passed++;
     }
   }
+  const 摘要层 = 结果对话框.querySelector(".摘要层");
+
   const failed = 测试对象组.length - passed;
   const passedRate = passed / 测试对象组.length;
   const passedPercent = (passedRate * 100).toFixed(1);
@@ -1219,13 +1233,63 @@ function 获取当前时间() {
 }
 
 function 生成详情() {
+  const 详情层 = 结果对话框.querySelector(".详情层");
   详情层.innerHTML = "";
   详情层.classList.remove("显示详情");
   const 结果标题 = document.createElement("h2");
   结果标题.className = "结果标题";
   结果标题.textContent = "详情";
 
-  详情层.append(结果标题, 显示摘要按钮, 关闭对话框_详情层);
+  const 显示摘要按钮 = document.getElementById("显示摘要");
+  const 关闭对话框按钮_详情层 = document.getElementById("关闭对话框-详情层");
+
+  详情层.append(结果标题, 显示摘要按钮, 关闭对话框按钮_详情层);
+}
+
+function 生成对话框按钮() {
+  const 详情层 = 结果对话框.querySelector(".详情层");
+  const 摘要层 = 结果对话框.querySelector(".摘要层");
+
+  const 关闭摘要层按钮 = document.createElement("button");
+  关闭摘要层按钮.id = "关闭对话框-摘要层";
+  关闭摘要层按钮.className = "按钮";
+  关闭摘要层按钮.textContent = "关闭";
+  关闭摘要层按钮.addEventListener("click", () => {
+    结果对话框.close();
+  });
+
+  const 关闭详情层按钮 = document.createElement("button");
+  关闭详情层按钮.id = "关闭对话框-详情层";
+  关闭详情层按钮.className = "按钮";
+  关闭详情层按钮.textContent = "关闭";
+  关闭详情层按钮.addEventListener("click", () => {
+    结果对话框.close();
+  });
+
+  const 显示详情按钮 = document.createElement("button");
+  显示详情按钮.id = "显示详情";
+  显示详情按钮.className = "按钮";
+  显示详情按钮.textContent = "详情";
+  显示详情按钮.addEventListener("click", () => {
+    详情层.classList.add("显示详情");
+    摘要层.classList.add("隐藏摘要");
+  });
+
+  const 显示摘要按钮 = document.createElement("button");
+  显示摘要按钮.id = "显示摘要";
+  显示摘要按钮.className = "按钮";
+  显示摘要按钮.textContent = "摘要";
+  显示摘要按钮.addEventListener("click", () => {
+    详情层.classList.remove("显示详情");
+    摘要层.classList.remove("隐藏摘要");
+  });
+
+  结果对话框.prepend(
+    关闭摘要层按钮,
+    关闭详情层按钮,
+    显示详情按钮,
+    显示摘要按钮,
+  );
 }
 
 取消测试按钮.addEventListener("click", () => {
@@ -1247,10 +1311,35 @@ function 生成详情() {
 
   测试起始时间 = 0;
 
-  摘要层.classList.remove("隐藏摘要");
-  详情层.classList.remove("显示详情");
+  结果对话框.innerHTML = "";
+  无结果时生成关闭按钮();
+  查看结果按钮.disabled = false;
 
   window.removeEventListener("keydown", 屏蔽按下快捷键默认行为);
   window.removeEventListener("keydown", 按下快捷键封装器);
   window.removeEventListener("keyup", 松开快捷键封装器);
 });
+
+function 无结果时生成关闭按钮() {
+  const 关闭对话框按钮 = document.createElement("button");
+  关闭对话框按钮.id = "关闭对话框";
+  关闭对话框按钮.className = "按钮";
+  关闭对话框按钮.textContent = "关闭";
+  结果对话框.appendChild(关闭对话框按钮);
+  关闭对话框按钮.addEventListener("click", () => {
+    结果对话框.close();
+  });
+}
+
+function 生成结果时删除关闭按钮() {
+  const 关闭对话框按钮 = document.getElementById("关闭对话框");
+  关闭对话框按钮?.remove();
+}
+
+function 生成摘要层与详情层() {
+  const 详情层 = document.createElement("div");
+  详情层.className = "详情层";
+  const 摘要层 = document.createElement("div");
+  摘要层.className = "摘要层";
+  结果对话框.append(详情层, 摘要层);
+}

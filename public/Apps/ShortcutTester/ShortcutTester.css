@@ -4,6 +4,7 @@
 
 .快捷键池 {
   width: fit-content;
+  min-width: 1000px;
   margin: 0 auto;
   font-family:
     "JetBrains Mono",
@@ -23,6 +24,7 @@
 }
 
 .快捷键种类区 {
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,6 +38,8 @@
   user-select: none;
   font-size: 14px;
   font-family: "Noto Sans SC", sans-serif;
+  flex-grow: 1;
+  text-align: center;
 }
 
 .快捷键种类:hover {
@@ -327,6 +331,32 @@ input[type="number"]::-webkit-inner-spin-button {
   background-color: #bb3434;
 }
 
+#result {
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  font-size: 20px;
+  background-color: #465;
+  color: silver;
+}
+
+#result[disabled] {
+  filter: brightness(35%);
+}
+
+#result[disabled]:hover {
+  cursor: url("/Images/Common/鼠标-默认.cur"), auto;
+}
+
+#result:not[disabled]:hover {
+  background-color: #576;
+  color: white;
+}
+
+#result:not[disabled]:active {
+  background-color: #687;
+}
+
 .测试区 {
   position: relative;
   height: max(300px, calc(100vh - 580px));
@@ -602,6 +632,17 @@ input[type="number"]::-webkit-inner-spin-button {
   }
 }
 
+#关闭对话框 {
+  width: 125px;
+  height: 60px;
+  border-radius: 5px;
+  background-color: #234;
+  color: white;
+  font-size: 18px;
+  margin: 20px auto 0;
+  transition: 100ms;
+}
+
 .摘要层 {
   position: relative;
   display: flex;
@@ -627,7 +668,7 @@ input[type="number"]::-webkit-inner-spin-button {
   background-color: #234;
   color: white;
   font-size: 18px;
-  margin: 20px auto 0;
+  margin: 30px auto 0;
   transition: 100ms;
 }
 

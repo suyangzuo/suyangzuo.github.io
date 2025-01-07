@@ -4,7 +4,7 @@ body {
 
 .app-banner {
   position: relative;
-  height: 800px;
+  height: 500px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -20,13 +20,13 @@ body {
   height: 175px;
   background-color: slateblue;
   left: 0;
-  top: 24%;
+  top: 12%;
   z-index: -1;
 }
 
 .顶栏图片 {
-  height: 750px;
-  width: 750px;
+  height: 100%;
+  aspect-ratio: 1;
 }
 
 .顶栏图片 > img {
@@ -73,6 +73,7 @@ body {
 }
 
 .app-center {
+  min-height: calc(100vh - 550px);
   padding: 100px 10% 300px;
   display: flex;
   flex-wrap: wrap;
