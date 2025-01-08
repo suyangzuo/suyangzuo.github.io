@@ -31,6 +31,7 @@
 }
 
 .快捷键种类 {
+  position: relative;
   padding: 10px;
   box-shadow: inset 0 1px 0 1px #fff1;
   color: gray;
@@ -51,6 +52,29 @@
 .快捷键种类.当前种类 {
   background-color: #cde1;
   color: lightcyan;
+}
+
+.当前种类选中计数 {
+  width: 25px;
+  height: 20px;
+  border-radius: 2px 2px 0 0;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  translate: -50% -100%;
+  text-align: center;
+  align-content: center;
+  border-top: solid 1px #fff6;
+  border-left: solid 1px #fff6;
+  border-right: solid 1px #fff6;
+  background-color: #222;
+  opacity: 0;
+  font-size: 12px;
+  font-family: Consolas, monospace;
+}
+
+.当前种类选中计数.已有选中数 {
+  opacity: 1;
 }
 
 .快捷键列表区 {

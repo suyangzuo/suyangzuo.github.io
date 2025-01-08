@@ -118,6 +118,15 @@ const 快捷键列表组 = 快捷键列表区.querySelectorAll(".快捷键列表
       已确认容器.classList.remove("已确认容器");
     }
   }
+
+  const 种类计数组 = 快捷键种类区.querySelectorAll(".当前种类选中计数");
+  if (种类计数组.length > 0) {
+    for (const 种类计数 of 种类计数组) {
+      种类计数.textContent = "0";
+      种类计数.classList.remove("已有选中数");
+    }
+  }
+
   测试对象池.length = 0;
 });
 
@@ -133,6 +142,10 @@ for (const [索引, 种类] of 快捷键种类组.entries()) {
     当前快捷键列表.classList.remove("当前列表");
     当前快捷键列表 = 快捷键列表组[索引];
   });
+
+  const 当前种类选中计数 = document.createElement("span");
+  当前种类选中计数.className = "当前种类选中计数";
+  种类.appendChild(当前种类选中计数);
 }
 
 for (const 列表 of 快捷键列表组) {
@@ -150,6 +163,19 @@ for (const 列表 of 快捷键列表组) {
       } else {
         容器.classList.add("已确认容器");
         添加测试对象(容器);
+      }
+
+      /*const 列表 = 容器.parentElement.parentElement;
+      const 索引 = 快捷键列表区.indexOf(列表);*/
+      const 当前种类选中计数 =
+        当前快捷键种类.querySelector(".当前种类选中计数");
+      const 已确认容器组 = 当前快捷键列表.querySelectorAll(".已确认容器");
+      if (已确认容器组.length <= 0) {
+        当前种类选中计数.textContent = "0";
+        当前种类选中计数.classList.remove("已有选中数");
+      } else {
+        当前种类选中计数.textContent = `${已确认容器组.length}`;
+        当前种类选中计数.classList.add("已有选中数");
       }
     });
   }
