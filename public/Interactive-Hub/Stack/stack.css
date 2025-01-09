@@ -2,5 +2,134 @@
   --进度条颜色-已填充: rgb(41, 126, 78);
   --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
   --拇指宽度: 16px;
+  --边框色: #fff5;
 }
 
+.总区 {
+  align-items: center;
+}
+
+.交互容器 {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: max(100px, 2vw);
+}
+
+.方法区 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+.按钮 {
+  font-family: "JetBrains Mono", Consolas, "Noto Sans SC", monospace, sans-serif;
+  width: 100px;
+  height: 45px;
+  border-radius: 999px;
+  background-color: #345;
+  outline: solid 2px transparent;
+  color: silver;
+}
+
+.按钮:hover {
+  outline: solid 2px #fff6;
+}
+
+.按钮:active {
+  background-color: #456;
+  outline: solid 2px #fffc;
+  color: white;
+}
+
+.标题 {
+  color: gold;
+  padding: 10px 15px;
+  background-color: #354;
+  border-radius: 5px;
+  box-shadow: 1px 1px 5px 0 #000a;
+  text-align: center;
+}
+
+.栈区 {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.栈容器 {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.栈 {
+  width: 75px;
+  height: 500px;
+  border-left: solid 2px var(--边框色);
+  border-bottom: solid 2px var(--边框色);
+  border-right: solid 2px var(--边框色);
+  border-radius: 0 0 10px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-bottom: 10px;
+}
+
+.栈内容 {
+  width: 50px;
+  height: 50px;
+}
+
+.栈内容 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.资源池区 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 25px;
+}
+
+.资源池 {
+  width: 150px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+}
+
+.资源 {
+  width: 75px;
+  height: 75px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.资源.当前资源 {
+  background-color: #fff4;
+}
+
+.资源:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.资源:not(.当前资源):hover {
+  background-color: #fff2;
+}
+
+.资源 > img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}

@@ -261,7 +261,8 @@ input[type="checkbox"]:checked::before {
   top: 50%;
   left: 50%;
   translate: -50% -50%;
-  content: "\2713";
+  content: "\f00c";
+  font-family: "Font Awesome 6 Free", ui-rounded;
   font-weight: bolder;
   color: lightgreen;
 }
