@@ -123,6 +123,15 @@
   background-color: #fff4;
 }
 
+.快捷键列表区错误层 {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .快捷键列表 {
   position: absolute;
   top: 0;
@@ -549,6 +558,35 @@ input[type="number"]::-webkit-inner-spin-button {
   color: silver;
 }
 
+.音效区 {
+  position: absolute;
+  top: 12px;
+  right: 200px;
+}
+
+#音效 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  appearance: none;
+  width: 100%;
+  height: 100%;
+}
+
+.复选标签:hover,
+.复选框:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.复选标签:hover .音效文本 {
+  color: gold;
+}
+
+.复选标签 .音效文本 {
+  color: darkkhaki;
+  transition: 125ms;
+}
+
 .提示类型区 {
   position: absolute;
   top: 10px;
@@ -556,6 +594,10 @@ input[type="number"]::-webkit-inner-spin-button {
   font-size: 14px;
   display: flex;
   align-items: center;
+}
+
+.提示类型区.禁用 {
+  pointer-events: none;
 }
 
 .提示类型标题 {
@@ -746,7 +788,7 @@ input[type="number"]::-webkit-inner-spin-button {
 .结果标题 {
   text-align: center;
   align-content: center;
-  color: darkgoldenrod;
+  color: goldenrod;
   margin-bottom: 25px;
 }
 
@@ -766,7 +808,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .姓名 {
-  color: gold;
+  color: darkgoldenrod;
 }
 
 .分区标题 {

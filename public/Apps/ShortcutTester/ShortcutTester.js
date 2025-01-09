@@ -14,6 +14,7 @@ let 剩余次数 = 次数;
 let 奇偶次数 = 剩余次数 % 2 ? 剩余次数 + 1 : 剩余次数;
 let 测试运行中 = false;
 let 旋转角度 = 0;
+const 提示类型区 = document.querySelector(".提示类型区");
 const 提示按键单选框 = document.getElementById("提示类型-按键");
 const 结果对话框 = document.getElementById("结果对话框");
 无结果时生成关闭按钮();
@@ -41,6 +42,17 @@ const 查看结果按钮 = document.getElementById("result");
 查看结果按钮.addEventListener("click", () => {
   结果对话框.showModal();
 });
+
+const 音效复选框 = document.getElementById("音效");
+音效复选框.addEventListener("change", () => {
+  const 音效文本 = 音效复选框.previousElementSibling;
+  音效文本.innerHTML = 音效复选框.checked
+    ? '<i class="fa-solid fa-volume-high">'
+    : '<i class="fa-solid fa-volume-xmark"></i>';
+});
+
+const 正确音效 = new Audio("./Audios/正确.mp3");
+const 错误音效 = new Audio("./Audios/错误.mp3");
 
 const 测试计数元素 = document.querySelector(".测试计数");
 const 计次元素 = 测试计数元素.querySelector(".计次");
@@ -246,6 +258,7 @@ function 删除测试对象(列表项容器) {
 
   结果对话框.innerHTML = "";
   查看结果按钮.disabled = true;
+  提示类型区.classList.add("禁用");
 
   clearTimeout(测试开始延时函数);
   加油动画 = 加油区.animate(加油动画帧序列, 加油动画设置);
@@ -451,6 +464,30 @@ function 按下快捷键(event) {
     window.removeEventListener("keydown", 按下快捷键封装器);
     window.removeEventListener("keyup", 松开快捷键封装器);
 
+    测试对象.passed =
+      event.ctrlKey === 测试对象.ctrl &&
+      event.altKey === 测试对象.alt &&
+      event.shiftKey === 测试对象.shift &&
+      event.metaKey === 测试对象.meta &&
+      (key.toUpperCase() === 测试对象.key || key === 测试对象.key);
+
+    测试对象.duration = performance.now() - 测试起始时间;
+    const 单次用时分 = Math.floor(测试对象.duration / 60000);
+    const 单次用时秒 =
+      单次用时分 < 1
+        ? (测试对象.duration / 1000).toFixed(2)
+        : ((测试对象.duration % 60000) / 1000).toFixed(2);
+
+    生成单次测试结果(当前面, 单次用时分, 单次用时秒, 测试对象.passed);
+
+    if (音效复选框.checked) {
+      if (测试对象.passed) {
+        正确音效.play();
+      } else {
+        错误音效.play();
+      }
+    }
+
     if (剩余次数 > 0) {
       const 下一面 = 测试面组[奇偶次数 % 2];
       下一面.innerHTML = "";
@@ -481,25 +518,9 @@ function 按下快捷键(event) {
         生成详情();
         结果对话框.showModal();
         查看结果按钮.disabled = false;
+        提示类型区.classList.remove("禁用");
       }, 测试结果出现延时);
     }
-
-    测试对象.duration = performance.now() - 测试起始时间;
-
-    测试对象.passed =
-      event.ctrlKey === 测试对象.ctrl &&
-      event.altKey === 测试对象.alt &&
-      event.shiftKey === 测试对象.shift &&
-      event.metaKey === 测试对象.meta &&
-      (key.toUpperCase() === 测试对象.key || key === 测试对象.key);
-
-    const 单次用时分 = Math.floor(测试对象.duration / 60000);
-    const 单次用时秒 =
-      单次用时分 < 1
-        ? (测试对象.duration / 1000).toFixed(2)
-        : ((测试对象.duration % 60000) / 1000).toFixed(2);
-
-    生成单次测试结果(当前面, 单次用时分, 单次用时秒, 测试对象.passed);
   }
 }
 
@@ -699,8 +720,8 @@ function 生成连接符() {
 function 生成错误信息() {
   错误动画?.cancel();
   if (测试对象池.length === 0) {
-    const 快捷键列表区 = document.querySelector(".快捷键列表区");
-    错误动画 = 快捷键列表区.animate(错误动画关键帧序列, 错误动画设置);
+    const 快捷键列表区错误层 = document.querySelector(".快捷键列表区错误层");
+    错误动画 = 快捷键列表区错误层.animate(错误动画关键帧序列, 错误动画设置);
   } else if (姓名 === "") {
     错误动画 = 姓名框.animate(错误动画关键帧序列, 错误动画设置);
   } else if (次数 <= 0) {
@@ -726,6 +747,17 @@ function 生成摘要() {
   姓名元素.textContent = 姓名;
   姓名区.append(姓名标题, 姓名元素);
 
+  const 提示类型 = document.createElement("div");
+  提示类型.className = "结果分区";
+  const 提示类型区标题 = document.createElement("span");
+  提示类型区标题.className = "分区标题";
+  提示类型区标题.textContent = "提示类型";
+  const 提示类型区元素 = document.createElement("span");
+  提示类型区元素.className = "姓名";
+  提示类型区元素.style.color = "darkgoldenrod";
+  提示类型区元素.textContent = 提示按键单选框.checked ? "按键" : "用途";
+  提示类型.append(提示类型区标题, 提示类型区元素);
+
   const 时间区 = document.createElement("div");
   时间区.className = "结果分区";
   const 时间区标题 = document.createElement("span");
@@ -744,6 +776,7 @@ function 生成摘要() {
   摘要层.append(
     结果标题,
     姓名区,
+    提示类型,
     时间区,
     总体正确率,
     正确数据,
@@ -1340,6 +1373,7 @@ function 生成对话框按钮() {
   结果对话框.innerHTML = "";
   无结果时生成关闭按钮();
   查看结果按钮.disabled = false;
+  提示类型区.classList.remove("禁用");
 
   window.removeEventListener("keydown", 屏蔽按下快捷键默认行为);
   window.removeEventListener("keydown", 按下快捷键封装器);
