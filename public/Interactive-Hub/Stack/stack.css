@@ -31,10 +31,13 @@
   background-color: #345;
   outline: solid 2px transparent;
   color: silver;
+  transition: 125ms;
 }
 
 .按钮:hover {
   outline: solid 2px #fff6;
+  background-color: #123;
+  font-size: 15px;
 }
 
 .按钮:active {
@@ -66,7 +69,7 @@
 
 .栈 {
   width: 75px;
-  height: 500px;
+  height: 480px;
   border-left: solid 2px var(--边框色);
   border-bottom: solid 2px var(--边框色);
   border-right: solid 2px var(--边框色);
@@ -99,12 +102,13 @@
 }
 
 .资源池 {
-  width: 150px;
+  width: 160px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   align-content: center;
   justify-content: center;
+  gap: 5px;
 }
 
 .资源 {
