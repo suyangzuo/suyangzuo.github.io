@@ -3,6 +3,9 @@
   --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
   --拇指宽度: 16px;
   --边框色: #fff5;
+  --栈内容高度: 50px;
+  --栈内容间距: 10px;
+  --指针垂直偏移: calc(var(--栈内容高度) + var(--栈内容间距));
 }
 
 .总区 {
@@ -24,6 +27,7 @@
 }
 
 .按钮 {
+  position: relative;
   font-family: "JetBrains Mono", Consolas, "Noto Sans SC", monospace, sans-serif;
   width: 100px;
   height: 45px;
@@ -31,6 +35,7 @@
   background-color: #345;
   outline: solid 2px transparent;
   color: silver;
+  box-shadow: 2px 2px 5px #0007;
   transition: 125ms;
 }
 
@@ -46,6 +51,23 @@
   color: white;
 }
 
+.真假 {
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  top: 50%;
+  right: 0;
+  translate: 50px -50%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.真假 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .标题 {
   color: gold;
   padding: 10px 15px;
@@ -57,34 +79,35 @@
 
 .栈区 {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
+  gap: 25px;
 }
 
 .栈容器 {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
+  position: relative;
 }
 
 .栈 {
   width: 75px;
-  height: 480px;
+  height: 490px;
   border-left: solid 2px var(--边框色);
   border-bottom: solid 2px var(--边框色);
   border-right: solid 2px var(--边框色);
   border-radius: 0 0 10px 10px;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 10px;
-  padding-bottom: 10px;
+  padding: 10px 0;
 }
 
 .栈内容 {
-  width: 50px;
-  height: 50px;
+  width: var(--栈内容高度);
+  height: var(--栈内容高度);
+  flex-shrink: 0;
 }
 
 .栈内容 > img {
@@ -133,7 +156,60 @@
 }
 
 .资源 > img {
-  width: 50px;
-  height: 50px;
+  width: var(--栈内容高度);
+  height: var(--栈内容高度);
   object-fit: contain;
+}
+
+.索引区 {
+  position: absolute;
+  width: 25px;
+  height: 100%;
+  top: 0;
+  left: -50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--栈内容间距);
+  padding-bottom: var(--栈内容间距);
+}
+
+.索引容器 {
+  height: var(--栈内容高度);
+  width: var(--栈内容高度);
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.索引 {
+  width: 45%;
+  height: 45%;
+  border-radius: 999px;
+  outline: solid 2px #fff3;
+  text-align: center;
+  align-content: center;
+  font-size: 12px;
+  font-family: Consolas, "Noto Sans SC", monospace, sans-serif;
+}
+
+.指针区 {
+  position: absolute;
+  height: 100%;
+  top: 0;
+  left: -60px;
+  padding-bottom: var(--栈内容间距);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.指针 {
+  color: darkgoldenrod;
+  height: var(--栈内容高度);
+  text-align: center;
+  align-content: center;
+  translate: 0 var(--指针垂直偏移);
+  transition: 250ms;
 }
