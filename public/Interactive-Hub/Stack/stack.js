@@ -7,8 +7,33 @@ let 栈指针 = -1;
 let 当前图源 = document.querySelector(".当前资源").querySelector("img").src;
 const 资源组 = document.querySelectorAll(".资源");
 const 栈 = document.querySelector(".栈");
+const 极效模式 = document.getElementById("极效模式");
+const 传统模式 = document.getElementById("传统模式");
+
+for (let i = 0; i < 栈容量; i++) {
+  const 栈内容 = document.createElement("figure");
+  栈内容.className = "栈内容 已删除";
+  const img = document.createElement("img");
+  img.src = "";
+  img.alt = "栈内容图像";
+  栈内容.appendChild(img);
+  栈.appendChild(栈内容);
+}
+
 const 栈内容组 = document.getElementsByClassName("栈内容");
+const 索引组 = document.getElementsByClassName("索引");
 const 索引区 = document.querySelector(".索引区");
+
+for (let i = 0; i < 栈容量; i++) {
+  const 索引容器 = document.createElement("div");
+  索引容器.className = "索引容器";
+  索引区.appendChild(索引容器);
+  const 索引元素 = document.createElement("span");
+  索引元素.className = "索引";
+  索引元素.textContent = i.toString();
+  索引容器.appendChild(索引元素);
+}
+
 const btn_IsEmpty = document.getElementById("IsEmpty");
 const btn_IsFull = document.getElementById("IsFull");
 const btn_Peek = document.getElementById("Peek");
@@ -26,24 +51,6 @@ for (const 资源 of 资源组) {
     当前资源 = 资源;
     当前图源 = 当前资源.querySelector("img").src;
   });
-}
-
-刷新索引();
-
-function 刷新索引() {
-  索引区.innerHTML = "";
-  const 栈内容组 = document.querySelectorAll(".栈内容");
-  if (栈内容组.length > 0) {
-    for (const [索引, 资源] of 栈内容组.entries()) {
-      const 索引容器 = document.createElement("div");
-      索引容器.className = "索引容器";
-      索引区.appendChild(索引容器);
-      const 索引元素 = document.createElement("span");
-      索引元素.className = "索引";
-      索引元素.textContent = (栈内容组.length - 索引 - 1).toString();
-      索引容器.appendChild(索引元素);
-    }
-  }
 }
 
 const 栈操作动画关键帧 = [
@@ -100,13 +107,19 @@ btn_Pop.addEventListener("click", () => {
   Pop();
 });
 
+传统模式.addEventListener("change", () => {
+  for (let i = 栈指针 + 1; i < 栈容量; i++) {
+    栈内容组[i].classList.add("已删除");
+    索引组[i].classList.remove("已添加");
+  }
+});
+
 function IsEmpty() {
   return 栈指针 < 0;
 }
 
 function IsFull() {
-  const 栈内容数量 = 栈.querySelectorAll(".栈内容").length;
-  return 栈内容数量 === 栈容量;
+  return 栈指针 === 栈容量 - 1;
 }
 
 function Peek() {
@@ -114,7 +127,7 @@ function Peek() {
     return;
   }
 
-  return 栈[栈指针];
+  return 栈内容组[栈指针];
 }
 
 function Push() {
@@ -122,14 +135,15 @@ function Push() {
     栈.animate(栈操作动画关键帧, 栈操作动画设置);
     return;
   }
-  const 栈内容 = document.createElement("figure");
-  栈内容.className = "栈内容";
-  const img = document.createElement("img");
-  img.src = 当前图源;
-  栈内容.appendChild(img);
-  栈.appendChild(栈内容);
-  刷新索引();
+  if (栈指针 >= 0) {
+    索引组[栈指针].classList.remove("当前索引");
+  }
   栈指针++;
+  索引组[栈指针].classList.add("已添加");
+  索引组[栈指针].classList.add("当前索引");
+  const 当前栈内容 = 栈内容组[栈指针];
+  当前栈内容.querySelector("img").src = 当前图源;
+  当前栈内容.classList.remove("已删除");
   刷新栈指针位置();
 }
 
@@ -138,10 +152,16 @@ function Pop() {
     栈.animate(栈操作动画关键帧, 栈操作动画设置);
     return;
   }
-  const 最后栈内容 = 栈.querySelector(".栈内容:last-of-type");
-  最后栈内容.remove();
-  刷新索引();
+  const 最后栈内容 = 栈内容组[栈指针];
+  if (!极效模式.checked) {
+    最后栈内容.classList.add("已删除");
+    索引组[栈指针].classList.remove("已添加");
+  }
+  索引组[栈指针].classList.remove("当前索引");
   栈指针--;
+  if (栈指针 >= 0) {
+    索引组[栈指针].classList.add("当前索引");
+  }
   刷新栈指针位置();
 }
 

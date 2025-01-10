@@ -23,7 +23,51 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   gap: 20px;
+}
+
+.模式区 {
+  display: flex;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.单选标签:hover,
+.单选:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.单选标签 {
+  position: relative;
+  background-color: #222;
+  color: gray;
+}
+
+.单选文本 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 15px;
+}
+
+.单选 {
+  position: absolute;
+  appearance: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.单选标签:not(:has(.单选:checked)):hover {
+  background-color: #2a2a2a;
+}
+
+.单选标签:has(.单选:checked) {
+  background-color: #fffb;
+  color: black;
 }
 
 .按钮 {
@@ -36,13 +80,13 @@
   outline: solid 2px transparent;
   color: silver;
   box-shadow: 2px 2px 5px #0007;
-  transition: 125ms;
 }
 
 .按钮:hover {
   outline: solid 2px #fff6;
   background-color: #123;
   font-size: 15px;
+  color: #d5d5d5;
 }
 
 .按钮:active {
@@ -110,6 +154,10 @@
   flex-shrink: 0;
 }
 
+.栈内容.已删除 {
+  opacity: 0;
+}
+
 .栈内容 > img {
   width: 100%;
   height: 100%;
@@ -168,8 +216,8 @@
   top: 0;
   left: -50px;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+  flex-direction: column-reverse;
+  justify-content: flex-start;
   gap: var(--栈内容间距);
   padding-bottom: var(--栈内容间距);
 }
@@ -192,6 +240,17 @@
   align-content: center;
   font-size: 12px;
   font-family: Consolas, "Noto Sans SC", monospace, sans-serif;
+  opacity: 0;
+}
+
+.索引.已添加 {
+  opacity: 1;
+}
+
+.索引.当前索引 {
+  outline: solid 2px green;
+  color: greenyellow;
+  scale: 1.1;
 }
 
 .指针区 {
