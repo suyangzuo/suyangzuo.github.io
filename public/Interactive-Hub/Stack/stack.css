@@ -134,6 +134,7 @@
 }
 
 .栈 {
+  position: relative;
   width: 75px;
   height: 490px;
   border-left: solid 2px var(--边框色);
@@ -146,6 +147,26 @@
   justify-content: flex-start;
   gap: 10px;
   padding: 10px 0;
+}
+
+.栈动画元素 {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.push动画元素 {
+  top: 0;
+  left: 50%;
+  translate: -50% -150px;
+  transition: 500ms;
+}
+
+.pop动画元素 {
+  top: 0;
+  left: 50%;
+  translate: -50% 0;
 }
 
 .栈内容 {

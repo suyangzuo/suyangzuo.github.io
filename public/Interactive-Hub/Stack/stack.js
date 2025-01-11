@@ -34,6 +34,9 @@ for (let i = 0; i < 栈容量; i++) {
   索引容器.appendChild(索引元素);
 }
 
+const btn_reset = document.querySelector(".重置按钮");
+btn_reset.addEventListener("click", 重置参数);
+
 const btn_IsEmpty = document.getElementById("IsEmpty");
 const btn_IsFull = document.getElementById("IsFull");
 const btn_Peek = document.getElementById("Peek");
@@ -72,10 +75,13 @@ const 空满判断动画关键帧 = [
   { opacity: 1, offset: 0.99 },
   { opacity: 0 },
 ];
+
 const 空满判断动画设置 = {
   easing: "linear",
   duration: 1000,
 };
+
+const 栈动画时长 = 500;
 
 btn_IsEmpty.addEventListener("click", () => {
   const 真假 = btn_IsEmpty.querySelector(".真假");
@@ -99,13 +105,11 @@ btn_IsFull.addEventListener("click", () => {
   真假.animate(空满判断动画关键帧, 空满判断动画设置);
 });
 
-btn_Push.addEventListener("click", () => {
-  Push();
-});
+btn_Push.addEventListener("click", Push);
 
-btn_Pop.addEventListener("click", () => {
-  Pop();
-});
+btn_Pop.addEventListener("click", Pop);
+
+btn_Peek.addEventListener("click", Peek);
 
 传统模式.addEventListener("change", () => {
   for (let i = 栈指针 + 1; i < 栈容量; i++) {
@@ -124,10 +128,25 @@ function IsFull() {
 
 function Peek() {
   if (IsEmpty()) {
+    栈.animate(栈操作动画关键帧, 栈操作动画设置);
     return;
   }
 
-  return 栈内容组[栈指针];
+  const 当前栈内容 = 栈内容组[栈指针];
+  const peek动画关键帧 = [
+    { scale: 1 },
+    { scale: 1.5 },
+    { scale: 1 },
+    { scale: 1.5 },
+    { scale: 1 },
+  ];
+
+  const peek动画设置 = {
+    easing: "linear",
+    duration: 500,
+  };
+
+  当前栈内容.animate(peek动画关键帧, peek动画设置);
 }
 
 function Push() {
@@ -142,9 +161,17 @@ function Push() {
   索引组[栈指针].classList.add("已添加");
   索引组[栈指针].classList.add("当前索引");
   const 当前栈内容 = 栈内容组[栈指针];
-  当前栈内容.querySelector("img").src = 当前图源;
-  当前栈内容.classList.remove("已删除");
+  setTimeout(
+    () => {
+      当前栈内容.querySelector("img").src = 当前图源;
+    },
+    极效模式.checked ? 栈动画时长 : 0,
+  );
+  setTimeout(() => {
+    当前栈内容.classList.remove("已删除");
+  }, 栈动画时长);
   刷新栈指针位置();
+  生成push动画();
 }
 
 function Pop() {
@@ -156,6 +183,7 @@ function Pop() {
   if (!极效模式.checked) {
     最后栈内容.classList.add("已删除");
     索引组[栈指针].classList.remove("已添加");
+    生成pop动画(最后栈内容);
   }
   索引组[栈指针].classList.remove("当前索引");
   栈指针--;
@@ -168,4 +196,53 @@ function Pop() {
 function 刷新栈指针位置() {
   const 垂直偏移 = -(栈内容高度 + 栈内容间距) * 栈指针;
   root.style.setProperty("--指针垂直偏移", `${垂直偏移}px`);
+}
+
+function 生成push动画() {
+  const push动画 = document.createElement("img");
+  push动画.className = "栈动画元素 push动画元素";
+  push动画.src = 当前图源;
+  push动画.alt = "push动画";
+  栈.appendChild(push动画);
+  const 垂直偏移 = `${栈内容组[栈指针].offsetTop}px`;
+  push动画.style.translate = `-50% ${垂直偏移}`;
+  setTimeout(() => {
+    push动画?.remove();
+  }, 栈动画时长);
+}
+
+function 生成pop动画(弹出栈内容) {
+  const pop动画 = document.createElement("img");
+  pop动画.className = "栈动画元素 pop动画元素";
+  pop动画.src = 弹出栈内容.querySelector("img").src;
+  pop动画.alt = "pop动画";
+  栈.appendChild(pop动画);
+  const 垂直偏移 = `${弹出栈内容.offsetTop}px`;
+  const pop动画关键帧 = [
+    { translate: `-50% ${垂直偏移}` },
+    { translate: "-50% -150px" },
+  ];
+  const pop动画设置 = {
+    easing: "ease-out",
+    duration: 栈动画时长,
+    fill: "forwards",
+  };
+  pop动画.animate(pop动画关键帧, pop动画设置);
+  setTimeout(() => {
+    pop动画?.remove();
+  }, 栈动画时长);
+}
+
+function 重置参数() {
+  for (const 栈内容 of 栈内容组) {
+    栈内容.classList.add("已删除");
+  }
+
+  for (const 索引 of 索引组) {
+    索引.classList.remove("已添加");
+  }
+
+  传统模式.checked = true;
+  栈指针 = -1;
+  刷新栈指针位置();
 }
