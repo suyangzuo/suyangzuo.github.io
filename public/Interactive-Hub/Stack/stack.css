@@ -66,8 +66,8 @@
 }
 
 .单选标签:has(.单选:checked) {
-  background-color: #fffb;
-  color: black;
+  background-color: #264;
+  color: white;
 }
 
 .按钮 {
@@ -119,6 +119,7 @@
   border-radius: 5px;
   box-shadow: 1px 1px 5px 0 #000a;
   text-align: center;
+  font-weight: normal;
 }
 
 .栈区 {
@@ -221,7 +222,7 @@
 }
 
 .资源:not(.当前资源):hover {
-  background-color: #fff2;
+  background-color: #ffffff1a;
 }
 
 .资源 > img {
@@ -286,10 +287,10 @@
 }
 
 .指针 {
-  color: darkgoldenrod;
+  color: yellowgreen;
   height: var(--栈内容高度);
   text-align: center;
   align-content: center;
   translate: 0 var(--指针垂直偏移);
-  transition: 250ms;
+  transition: 500ms;
 }
