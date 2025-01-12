@@ -214,7 +214,8 @@
 }
 
 .资源.当前资源 {
-  background-color: #fff4;
+  background-color: #fff3;
+  border: solid 2px #afda;
 }
 
 .资源:hover {
