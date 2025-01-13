@@ -264,6 +264,7 @@
   font-size: 12px;
   font-family: Consolas, "Noto Sans SC", monospace, sans-serif;
   opacity: 0;
+  transition: 250ms;
 }
 
 .索引.已添加 {
