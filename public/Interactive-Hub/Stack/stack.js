@@ -149,6 +149,9 @@ function Peek() {
   当前栈内容.animate(peek动画关键帧, peek动画设置);
 }
 
+let 显示当前栈内容延时函数 = null;
+let push动画对象 = null;
+
 function Push() {
   if (IsFull()) {
     栈.animate(栈操作动画关键帧, 栈操作动画设置);
@@ -167,7 +170,7 @@ function Push() {
     },
     极效模式.checked ? 栈动画时长 : 0,
   );
-  setTimeout(() => {
+  显示当前栈内容延时函数 = setTimeout(() => {
     当前栈内容.classList.remove("已删除");
   }, 栈动画时长);
   刷新栈指针位置();
@@ -179,6 +182,8 @@ function Pop() {
     栈.animate(栈操作动画关键帧, 栈操作动画设置);
     return;
   }
+  clearTimeout(显示当前栈内容延时函数);
+  push动画对象?.remove();
   const 最后栈内容 = 栈内容组[栈指针];
   if (!极效模式.checked) {
     最后栈内容.classList.add("已删除");
@@ -209,6 +214,7 @@ function 生成push动画() {
   setTimeout(() => {
     push动画?.remove();
   }, 栈动画时长);
+  push动画对象 = push动画;
 }
 
 function 生成pop动画(弹出栈内容) {
