@@ -2,5 +2,313 @@
   --进度条颜色-已填充: rgb(41, 126, 78);
   --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
   --拇指宽度: 16px;
+  --透视距离: 600px;
+  --序号容器偏移: -40px;
+  --数组容器尺寸: 400px;
+  --Z轴间距: 50px;
 }
 
+body {
+  font-family: Consolas, "Noto Sans SC", monospace, sans-serif;
+}
+
+.总区 {
+  gap: 0;
+  flex-direction: column;
+}
+
+.透视容器 {
+  width: 100%;
+  height: 500px;
+  perspective: var(--透视距离);
+}
+
+.旋转容器 {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.数组容器 {
+  display: flex;
+  flex-wrap: wrap;
+  position: absolute;
+  width: var(--数组容器尺寸);
+  height: var(--数组容器尺寸);
+  transition: 500ms;
+}
+
+.数组容器 :where(.数组行, .序号容器, .二维数组索引容器) {
+  transition:
+    opacity 500ms,
+    filter 125ms;
+}
+
+.数组容器.三维展示.已屏蔽 {
+  pointer-events: none;
+}
+
+.数组容器.三维展示.已屏蔽 .数组行,
+.数组容器.三维展示.已屏蔽 .序号容器 {
+  opacity: 0.25;
+  filter: brightness(50%);
+}
+
+.数组容器.三维展示.已屏蔽 .二维数组索引容器 {
+  filter: brightness(50%);
+}
+
+.数组容器.三维展示 {
+  left: calc(50% - var(--数组容器尺寸) / 2 + var(--序号容器偏移) / -2);
+}
+
+.数组容器:nth-of-type(1) {
+  z-index: 3;
+}
+
+.数组容器:nth-of-type(2) {
+  z-index: 2;
+}
+
+.数组容器:nth-of-type(3) {
+  z-index: 1;
+}
+
+.数组容器:not(.三维展示):nth-of-type(1) {
+  left: calc(50% - var(--数组容器尺寸) * 2 + var(--序号容器偏移) * -2);
+}
+
+.数组容器:not(.三维展示):nth-of-type(2) {
+  left: calc(50% - var(--数组容器尺寸) / 2 + var(--序号容器偏移) / -2);
+}
+
+.数组容器:not(.三维展示):nth-of-type(3) {
+  left: calc(50% + var(--数组容器尺寸) - var(--序号容器偏移) * -1);
+}
+
+.数组容器.三维展示:nth-of-type(1) {
+  transform: rotateX(30deg) rotateY(-12deg) rotateZ(11deg) translateX(-90px)
+    translateY(-100px) translateZ(150px);
+}
+
+.数组容器.三维展示:nth-of-type(2) {
+  translate: 0 0 -50px;
+  transform: rotateX(30deg) rotateY(-11deg) rotateZ(10deg) translateY(-50px)
+    translateZ(50px);
+}
+
+.数组容器.三维展示:nth-of-type(3) {
+  translate: 0 0 -100px;
+  transform: rotateX(30deg) rotateY(-9deg) rotateZ(8deg) translateX(120px)
+    translateZ(-50px);
+}
+
+.数组容器.三维展示 .二维数组索引容器 {
+  pointer-events: auto;
+}
+
+.数组容器.三维展示 .二维数组索引容器:hover {
+  background-color: firebrick;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.数组容器.三维展示 .数组格 {
+  border: solid 1px #567;
+}
+
+.数组行 {
+  width: 100%;
+  height: 10%;
+  display: flex;
+}
+
+.数组行.当前数组行 {
+  background-color: lightslategrey;
+}
+
+.数组容器.三维展示 .数组行.当前数组行 {
+  background-color: yellowgreen;
+}
+
+.数组格 {
+  width: 10%;
+  height: 100%;
+  border: solid 1px #456;
+}
+
+.数组格.有过渡 {
+  transition: 500ms;
+}
+
+.数组格:hover {
+  background-color: lightskyblue;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.序号容器 {
+  position: absolute;
+  font-size: 14px;
+}
+
+.列号容器 {
+  width: 100%;
+  top: var(--序号容器偏移);
+  left: 0;
+  display: flex;
+}
+
+.行号容器 {
+  height: 100%;
+  left: var(--序号容器偏移);
+  top: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.序号 {
+  position: relative;
+  text-align: center;
+  align-content: center;
+  transition:
+    color 75ms,
+    filter 75ms,
+    font-size 75ms;
+}
+
+.序号:hover {
+  background: center/75% 75%
+    radial-gradient(circle farthest-side at center, #fff2 0%, #fff2 100%)
+    no-repeat;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.列号 {
+  width: 10%;
+  aspect-ratio: 1;
+  color: darkgoldenrod;
+}
+
+.行号 {
+  height: 10%;
+  aspect-ratio: 1;
+  color: mediumseagreen;
+}
+
+.当前序号 {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.列号.当前序号 {
+  color: white;
+}
+
+.行号.当前序号 {
+  color: white;
+}
+
+.数组格.同列单元格 {
+  border-left: solid 2px lightskyblue;
+  border-right: solid 2px lightskyblue;
+}
+
+.数组格.同行单元格 {
+  border-top: solid 2px lightskyblue;
+  border-bottom: solid 2px lightskyblue;
+}
+
+.数组容器.三维展示 .数组格 {
+  background-color: #012a;
+}
+
+.数组容器.三维展示 .数组格:hover {
+  background-color: lightgreen;
+}
+
+.数组容器.三维展示 .数组格.同列单元格 {
+  border-left: solid 2px lightgreen;
+  border-right: solid 2px lightgreen;
+}
+
+.数组容器.三维展示 .数组格.同行单元格 {
+  border-top: solid 2px lightgreen;
+  border-bottom: solid 2px lightgreen;
+}
+
+.二维数组索引容器 {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  translate: -50% 15px;
+  font-size: 20px;
+  width: 45px;
+  aspect-ratio: 1;
+  text-align: center;
+  align-content: center;
+  background: #353a40;
+  border-radius: 999px;
+  box-shadow: 2px 2px 4px 0 #0008;
+  transition: background-color 75ms;
+}
+
+.二维数组索引容器:hover {
+  background: silver;
+  color: black;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.控制区 {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.控件区 {
+  display: flex;
+  align-items: center;
+}
+
+.控件区标题 {
+  margin-right: 15px;
+  color: slategray;
+}
+
+.单选标签 {
+  position: relative;
+  display: flex;
+  width: fit-content;
+  height: fit-content;
+  background-color: #222;
+  color: silver;
+}
+
+.单选文本 {
+  padding: 10px 15px;
+}
+
+.单选标签:has(.单选:checked) {
+  background: darkolivegreen;
+  color: white;
+}
+
+.单选标签:hover {
+  background-color: #232d13;
+}
+
+.单选 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  appearance: none;
+}
+
+.单选标签:hover,
+.单选:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}

@@ -10,6 +10,10 @@
       href="/Images/Interactive-Hub/HQ/三维数组.png"
       type="image/x-icon"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Titillium+Web&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Roboto+Mono&family=M+PLUS+Code+Latin&family=Ubuntu+Mono&family=M+PLUS+1+Code:wght@100..700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="/Styles/common.css" />
     <link rel="stylesheet" href="/Styles/top-banner-common.css" />
     <link rel="stylesheet" href="../control.css" />
@@ -18,7 +22,7 @@
     <script src="/Scripts/top-banner.js" defer></script>
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
     <script
-      src="/Scripts/d0483e3bd3.js"
+      src="https://kit.fontawesome.com/d0483e3bd3.js"
       crossorigin="anonymous"
     ></script>
     <script src="three-dimensional-array.js" defer></script>
@@ -39,8 +43,32 @@
         position="afterbegin"
       ></script>
       <p class="交互标题">三维数组</p>
-      <figure class="展示区"></figure>
-      <div class="控制区"></div>
+      <div class="透视容器">
+        <div class="旋转容器">
+          <div class="数组容器 数组容器-1"></div>
+          <div class="数组容器 数组容器-2"></div>
+          <div class="数组容器 数组容器-3"></div>
+        </div>
+      </div>
+      <div class="控制区">
+        <div class="控件区">
+          <h3 class="控件区标题">展示风格</h3>
+          <label for="平面" class="单选标签">
+            <span class="单选文本">平面</span>
+            <input
+              type="radio"
+              class="单选"
+              name="变换风格"
+              id="平面"
+              checked
+            />
+          </label>
+          <label for="三维" class="单选标签">
+            <span class="单选文本">三维</span>
+            <input type="radio" class="单选" name="变换风格" id="三维" />
+          </label>
+        </div>
+      </div>
     </section>
   </body>
 </html>
