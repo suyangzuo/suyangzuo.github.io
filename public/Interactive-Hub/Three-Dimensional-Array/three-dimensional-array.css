@@ -104,19 +104,6 @@ body {
     translateZ(-50px);
 }
 
-.数组容器.三维展示 .二维数组索引容器 {
-  pointer-events: auto;
-}
-
-.数组容器.三维展示 .二维数组索引容器:hover {
-  background-color: firebrick;
-  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
-}
-
-.数组容器.三维展示 .数组格 {
-  border: solid 1px #567;
-}
-
 .数组行 {
   width: 100%;
   height: 10%;
@@ -167,6 +154,7 @@ body {
 }
 
 .序号 {
+  user-select: none;
   position: relative;
   text-align: center;
   align-content: center;
@@ -253,12 +241,38 @@ body {
   border-radius: 999px;
   box-shadow: 2px 2px 4px 0 #0008;
   transition: background-color 75ms;
+  user-select: none;
 }
 
 .二维数组索引容器:hover {
-  background: silver;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.数组容器.三维展示 .二维数组索引容器 {
+  pointer-events: auto;
+}
+
+.数组容器.三维展示:not(.已屏蔽) .二维数组索引容器 {
+  background-color: #808080;
+  color: black;
+}
+
+.数组容器.三维展示 .二维数组索引容器:hover {
+  background-color: silver;
   color: black;
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.数组容器.三维展示 .数组格 {
+  border: solid 1px #567;
+}
+
+.数组容器:not(.三维展示) .二维数组索引容器:hover,
+.数组容器:not(.三维展示):has(:where(.序号容器, .数组格):hover)
+  .二维数组索引容器 {
+  outline: solid 2px #5ac;
+  background-color: transparent;
+  color: lightcyan;
 }
 
 .控制区 {
