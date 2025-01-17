@@ -1,6 +1,7 @@
 :root {
   --旋转用时: 250ms;
   --快捷键区边框色: #fff3;
+  --快捷键列表项高度: 41px;
 }
 
 .快捷键池 {
@@ -93,7 +94,7 @@
 .快捷键列表区 {
   width: 100%;
   position: relative;
-  height: calc(43px * 6 + 30px);
+  height: calc(var(--快捷键列表项高度) * 6 + 30px);
   background-color: #252a2f;
   /*box-shadow: inset 0 -1px 0 1px #fff1;*/
   border-bottom: solid 1px var(--快捷键区边框色);
@@ -140,7 +141,7 @@
   translate: 0 -50%;
   width: 100%;
   max-height: 100%;
-  padding: 15px 0;
+  /*padding: 15px 0;*/
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;

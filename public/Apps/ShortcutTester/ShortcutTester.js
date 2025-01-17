@@ -1,4 +1,6 @@
 const root = document.querySelector(":root");
+const 快捷键列表项高度 = document.querySelector(".快捷键列表项").offsetHeight;
+root.style.setProperty("--快捷键列表项高度", `${快捷键列表项高度}px`);
 const 测试透视容器 = document.querySelector(".测试容器-透视");
 const 快捷键池区 = document.querySelector(".快捷键池");
 测试透视容器.style.width = `${快捷键池区.offsetWidth}px`;
