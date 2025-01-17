@@ -11,6 +11,9 @@ const 弹性展示区 = document.getElementsByClassName("弹性-展示区")[0];
 const 水平轴指示区 = document.querySelector(".水平轴指示区");
 const 垂直轴指示区 = document.querySelector(".垂直轴指示区");
 
+const 固定尺寸单选 = document.getElementById("固定");
+const 随机尺寸单选 = document.getElementById("随机");
+
 const 初始块元素数量 = rootStyle.getPropertyValue("--初始盒子数量");
 const 最低尺寸百分比 = 3;
 const 最高尺寸百分比 = 20;
@@ -27,10 +30,27 @@ function 创建块元素(数量) {
     let 高度百分比 = Math.floor(
       Math.random() * (最高尺寸百分比 - 最低尺寸百分比 + 1) + 最低尺寸百分比,
     );
-    element.style.width = `${宽度百分比}%`;
-    element.style.height = `${高度百分比}%`;
+    element.style.width = 固定尺寸单选.checked ? "12.5%" : `${宽度百分比}%`;
+    element.style.height = 固定尺寸单选.checked ? "125px" : `${高度百分比}%`;
     element.setAttribute("data-number", `${i}`);
     弹性展示区.appendChild(element);
+  }
+}
+
+固定尺寸单选.addEventListener("change", 修改盒子尺寸);
+随机尺寸单选.addEventListener("change", 修改盒子尺寸);
+
+function 修改盒子尺寸() {
+  const 盒子组 = 弹性展示区.querySelectorAll(".弹性元素");
+  for (const 盒子 of 盒子组) {
+    let 宽度百分比 = Math.floor(
+      Math.random() * (最高尺寸百分比 - 最低尺寸百分比 + 1) + 最低尺寸百分比,
+    );
+    let 高度百分比 = Math.floor(
+      Math.random() * (最高尺寸百分比 - 最低尺寸百分比 + 1) + 最低尺寸百分比,
+    );
+    盒子.style.width = 固定尺寸单选.checked ? "12.5%" : `${宽度百分比}%`;
+    盒子.style.height = 固定尺寸单选.checked ? "125px" : `${高度百分比}%`;
   }
 }
 
@@ -476,4 +496,6 @@ function 重置参数() {
   root.style.setProperty("--收缩比率", `${收缩比率}%`);
   let 扩张比率 = (扩张滑块.value * 100) / 扩张滑块.max;
   root.style.setProperty("--扩张比率", `${扩张比率}%`);
+
+  固定尺寸单选.checked = true;
 }

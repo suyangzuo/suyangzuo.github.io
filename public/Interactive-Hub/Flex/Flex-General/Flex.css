@@ -215,6 +215,34 @@
   font-size: 1rem;
 }
 
+.数量与尺寸区 {
+  position: relative;
+  display: flex;
+}
+
+.数量与尺寸区 > .分割线 {
+  left: 65%;
+}
+
+.盒子数量区 {
+  width: 65%;
+  background: none;
+}
+
+.盒子尺寸区 {
+  width: 35%;
+  background: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.盒子尺寸区 .布局选项 {
+  gap: 20px;
+}
+
 .布局区 {
   display: flex;
   flex-direction: column;

@@ -285,7 +285,7 @@ label span {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 45px;
+  gap: 30px;
   margin-bottom: 10px;
 }
 
@@ -356,6 +356,14 @@ label span {
   width: 25px;
   text-align: left;
   font-family: "JetBrains Mono", Consolas, 微软雅黑, monospace;
+}
+
+#盒子尺寸操纵区 .操纵区标题 {
+  width: fit-content;
+}
+
+#盒子尺寸操纵区 {
+  gap: 5px;
 }
 
 #盒子透明复选框,

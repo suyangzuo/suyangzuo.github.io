@@ -21,7 +21,10 @@
     <link rel="stylesheet" href="./Flex-Align.css" />
     <script src="/Scripts/top-banner.js" defer></script>
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
-    <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/d0483e3bd3.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
@@ -54,6 +57,26 @@
             />
             <span id="盒子数量文本">10</span>
           </label>
+          <div id="盒子尺寸操纵区" class="交叉轴操纵区">
+            <h3 class="操纵区标题">
+              <span class="标题中文">盒子尺寸</span>
+            </h3>
+            <div class="选中指示器" id="盒子尺寸选中指示器"></div>
+            <label for="固定" id="固定标签">
+              <span id="固定-标题">固定</span>
+              <input
+                type="radio"
+                id="固定"
+                name="size"
+                autocomplete="off"
+                checked
+              />
+            </label>
+            <label for="随机" id="随机标签">
+              <span id="随机-标题">随机</span>
+              <input type="radio" id="随机" name="size" autocomplete="off" />
+            </label>
+          </div>
           <div id="弹性环绕操纵区" class="弹性设置操纵区">
             <h3 class="操纵区标题" style="width: fit-content">
               <span class="标题中文">弹性换行</span

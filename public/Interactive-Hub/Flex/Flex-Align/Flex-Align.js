@@ -4,6 +4,8 @@ const 弹性项过渡时长 = 250;
 let 交叉轴单行布局 = window.getComputedStyle(弹性容器).alignItems;
 const 盒子数量滑块 = document.getElementById("盒子数量滑块");
 const 盒子数量文本 = document.getElementById("盒子数量文本");
+const 固定尺寸单选 = document.getElementById("固定");
+const 随机尺寸单选 = document.getElementById("随机");
 const 交叉轴内容操纵区 = document.querySelector("#交叉轴内容操纵区");
 const 交叉轴项目操纵区 = document.querySelector("#交叉轴项目操纵区");
 const 弹性包裹操纵区 = document.getElementById("弹性环绕操纵区");
@@ -62,6 +64,8 @@ function 媒体查询时刷新指示器样式() {
 生成弹性行高度();
 
 盒子数量滑块.addEventListener("input", 拖动盒子数量滑块);
+固定尺寸单选.addEventListener("change", 修改弹性项尺寸类型);
+随机尺寸单选.addEventListener("change", 修改弹性项尺寸类型);
 
 for (const 弹性环绕按钮 of 弹性包裹按钮组) {
   弹性环绕按钮.addEventListener("input", () => {
@@ -208,8 +212,8 @@ function 生成弹性项(数量) {
     const 绿 = Math.floor(Math.random() * 256);
     const 蓝 = Math.floor(Math.random() * 256);
     const 背景色 = `rgb(${红}, ${绿}, ${蓝})`;
-    弹性项.style.width = `${宽度}%`;
-    弹性项.style.height = `${高度}%`;
+    弹性项.style.width = 固定尺寸单选.checked ? "12.5%" : `${宽度}%`;
+    弹性项.style.height = 固定尺寸单选.checked ? "125px" : `${高度}%`;
     const 渐变扣除比例 = 100 / (8 * 高度);
     /*弹性项.style.backgroundImage = `linear-gradient(transparent ${渐变扣除比例}%, ${背景色} ${渐变扣除比例}%, ${背景色} ${
       100 - 渐变扣除比例
@@ -229,6 +233,35 @@ function 生成弹性项(数量) {
 
     弹性项.appendChild(弹性项高度);
   }
+}
+
+function 修改弹性项尺寸类型() {
+  const 弹性项组 = document.querySelectorAll(".弹性项");
+  const 宽度上限 = 25;
+  const 宽度下限 = 8.25;
+  const 高度上限 = 25;
+  const 高度下限 = 3;
+  for (const 弹性项 of 弹性项组) {
+    const 宽度 = Math.floor(
+      Math.random() * (宽度上限 - 宽度下限 + 1) + 宽度下限,
+    );
+    const 高度 = Math.floor(
+      Math.random() * (高度上限 - 高度下限 + 1) + 高度下限,
+    );
+    弹性项.style.width = 固定尺寸单选.checked ? "12.5%" : `${宽度}%`;
+    弹性项.style.height = 固定尺寸单选.checked ? "125px" : `${高度}%`;
+  }
+
+  setTimeout(() => {
+    弹性行首元素索引组.length = 0;
+    弹性行首元素索引组.push(0);
+    最高元素高度组.length = 0;
+    记录行数与每行首元素索引();
+    生成弹性行();
+    拉伸弹性行();
+    生成弹性行高度();
+    更新弹性项高度();
+  }, 弹性项过渡时长 + 25);
 }
 
 function 更新弹性项高度() {
