@@ -212,12 +212,13 @@
 
 .标题代码 {
   color: rgb(207, 128, 97);
-  font-size: 1rem;
+  font-size: 14px;
 }
 
 .数量与尺寸区 {
   position: relative;
   display: flex;
+  padding-top: 0;
 }
 
 .数量与尺寸区 > .分割线 {
@@ -569,7 +570,7 @@ option {
 }
 
 .尺寸区 {
-  padding: 10px 0 0 0;
+  padding: 10px 0;
 }
 
 .尺寸分区 {
@@ -599,7 +600,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .收缩按钮区,
 .扩张按钮区 {
   flex-direction: column;
-  height: 75px;
+  /*height: 75px;*/
+  margin-top: 10px;
   align-items: center;
 }
 
