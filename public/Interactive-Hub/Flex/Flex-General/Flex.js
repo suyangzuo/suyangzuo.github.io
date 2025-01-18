@@ -445,6 +445,7 @@ function 重置参数() {
   调整盒子数量数字位置();
   弹性展示区.innerHTML = "";
   弹性展示区.style.display = "block";
+  固定尺寸单选.checked = true;
   创建块元素(初始块元素数量);
 
   块布局.checked = true;
@@ -496,6 +497,4 @@ function 重置参数() {
   root.style.setProperty("--收缩比率", `${收缩比率}%`);
   let 扩张比率 = (扩张滑块.value * 100) / 扩张滑块.max;
   root.style.setProperty("--扩张比率", `${扩张比率}%`);
-
-  固定尺寸单选.checked = true;
 }

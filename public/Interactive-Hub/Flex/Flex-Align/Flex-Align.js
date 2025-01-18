@@ -6,6 +6,8 @@ const 盒子数量滑块 = document.getElementById("盒子数量滑块");
 const 盒子数量文本 = document.getElementById("盒子数量文本");
 const 固定尺寸单选 = document.getElementById("固定");
 const 随机尺寸单选 = document.getElementById("随机");
+const 弹性不换行单选 = document.getElementById("nowrap-slider");
+const 弹性换行单选 = document.getElementById("wrap-slider");
 const 交叉轴内容操纵区 = document.querySelector("#交叉轴内容操纵区");
 const 交叉轴项目操纵区 = document.querySelector("#交叉轴项目操纵区");
 const 弹性包裹操纵区 = document.getElementById("弹性环绕操纵区");
@@ -255,6 +257,10 @@ function 修改弹性项尺寸类型() {
   }
 
   刷新数据与效果定时任务 = setInterval(() => {
+    更新弹性项高度();
+    if (弹性不换行单选.checked) {
+      return;
+    }
     弹性行首元素索引组.length = 0;
     弹性行首元素索引组.push(0);
     最高元素高度组.length = 0;
@@ -262,7 +268,6 @@ function 修改弹性项尺寸类型() {
     生成弹性行();
     拉伸弹性行();
     生成弹性行高度();
-    更新弹性项高度();
   }, 10);
 
   setTimeout(() => {
@@ -435,4 +440,48 @@ function 总区尺寸观察回调(entries) {
       更新弹性项高度();
     }, 弹性项过渡时长 + 25);
   }
+}
+
+const 重置按钮 = document.querySelector(".重置按钮");
+重置按钮.addEventListener("click", 重置参数);
+
+function 重置参数() {
+  clearInterval(刷新数据与效果定时任务);
+  盒子数量滑块.value = 10;
+  盒子数量文本.textContent = "10";
+  盒子数量滑块.style.setProperty("--盒子数量比例", "50%");
+  固定尺寸单选.checked = true;
+  弹性包裹按钮组[0].checked = true;
+  交叉轴内容单选组[0].checked = true;
+  交叉轴项目单选组[0].checked = true;
+  前一次交叉轴内容对齐标签 =
+    document.getElementById("content-正常-滑块").parentElement;
+  媒体查询时刷新指示器样式();
+  弹性容器.style.flexWrap = "";
+  弹性容器.style.alignContent = "";
+  弹性容器.style.alignItems = "";
+  交叉轴单行布局 = window.getComputedStyle(弹性容器).alignItems;
+
+  const 盒子透明 = document.getElementById("盒子透明复选框");
+  const 行透明 = document.getElementById("行透明复选框");
+  盒子透明.checked = false;
+  行透明.checked = false;
+
+  弹性容器.innerHTML = "";
+  生成弹性项(盒子数量滑块.value);
+  弹性行首元素索引组.length = 0;
+  弹性行首元素索引组.push(0);
+  最高元素高度组.length = 0;
+  记录行数与每行首元素索引();
+  生成弹性行();
+  拉伸弹性行();
+  生成弹性行高度();
+
+  /*setTimeout(() => {
+    记录行数与每行首元素索引();
+    生成弹性行();
+    拉伸弹性行();
+    生成弹性行高度();
+    更新弹性项高度();
+  }, 弹性项过渡时长 + 25);*/
 }
