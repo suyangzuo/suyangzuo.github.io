@@ -21,7 +21,10 @@
     <link rel="stylesheet" href="./object-fit.css" />
     <script src="/Scripts/top-banner.js" defer></script>
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
-    <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/d0483e3bd3.js"
+      crossorigin="anonymous"
+    ></script>
     <script src="./object-fit.js" defer></script>
   </head>
   <body>
@@ -69,7 +72,7 @@
               <p class="中文 属性中文">图像尺寸</p>
               <div class="控件子组">
                 <label for="图像尺寸-原始大小">
-                  <span class="中文 值中文">默认</span>
+                  <span class="中文 值中文">原始</span>
                 </label>
                 <input
                   type="radio"
@@ -101,6 +104,19 @@
                 <input
                   type="radio"
                   id="图像尺寸-放大"
+                  name="图像尺寸项"
+                  class="复选框"
+                  autocomplete="off"
+                />
+              </div>
+              <section class="选项分隔区"></section>
+              <div class="控件子组">
+                <label for="图像尺寸-双倍">
+                  <span class="中文 值中文">200%</span>
+                </label>
+                <input
+                  type="radio"
+                  id="图像尺寸-双倍"
                   name="图像尺寸项"
                   class="复选框"
                   autocomplete="off"
@@ -150,6 +166,20 @@
                     name="对象匹配项"
                     class="单选框"
                     autocomplete="off"
+                    checked
+                  />
+                </div>
+                <div class="控件子组">
+                  <label for="对象匹配-无">
+                    <span class="中文 值中文">无</span>
+                    <span class="代码 值代码">none</span>
+                  </label>
+                  <input
+                    type="radio"
+                    id="对象匹配-无"
+                    name="对象匹配项"
+                    class="单选框"
+                    autocomplete="off"
                   />
                 </div>
               </div>
@@ -162,7 +192,7 @@
               <div class="控件类型操作区 对象位置操作区">
                 <div class="控件子组">
                   <label class="label-x轴" for="对象位置-X轴">
-                    <span class="中文 值中文">X轴</span>
+                    <span class="中文 值中文">水平</span>
                   </label>
                   <div class="滑块区">
                     <input
@@ -182,7 +212,7 @@
                 </div>
                 <div class="控件子组">
                   <label class="label-y轴" for="对象位置-Y轴">
-                    <span class="中文 值中文">Y轴</span>
+                    <span class="中文 值中文">垂直</span>
                   </label>
                   <div class="滑块区">
                     <input

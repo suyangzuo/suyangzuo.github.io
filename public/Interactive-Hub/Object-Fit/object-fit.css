@@ -30,7 +30,7 @@
 }
 
 .选项区 {
-  width: 500px;
+  width: 510px;
   position: relative;
   z-index: 0;
   border-radius: 10px;
@@ -107,6 +107,7 @@
 
 .值中文 {
   color: tomato;
+  text-align: center;
 }
 
 .属性名称 {
@@ -174,7 +175,7 @@ input[type="checkbox"] {
   width: 15px;
   height: 15px;
   position: relative;
-  border: solid 1px gray;
+  outline: solid 1px gray;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -220,6 +221,7 @@ input {
   position: relative;
   display: flex;
   align-items: center;
+  margin-left: 5px;
 }
 
 input[type="range"] {
@@ -313,19 +315,21 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .控件子组:hover input[type="radio"],
 .控件子组:hover input[type="checkbox"] {
-  animation: 控件子组鼠标悬挂时动画 0.5s ease-in-out infinite alternate;
+  animation: 控件子组鼠标悬挂时动画 1s ease-in-out infinite alternate;
 }
 
 @keyframes 控件子组鼠标悬挂时动画 {
   from {
-    border-color: gray;
-    border-width: 1px;
-    transform: scale(1);
+    outline-color: gray;
+    outline-width: 1px;
+  }
+  50% {
+    outline-color: white;
+    outline-width: 2px;
   }
   to {
-    border-color: white;
-    border-width: 2px;
-    transform: scale(1.15);
+    outline-color: gray;
+    outline-width: 1px;
   }
 }
 

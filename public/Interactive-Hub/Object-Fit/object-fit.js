@@ -7,6 +7,7 @@ const 溢出隐藏checkbox = document.querySelector("#溢出隐藏");
 const 图像尺寸原始checkbox = document.querySelector("#图像尺寸-原始大小");
 const 图像尺寸百分百checkbox = document.querySelector("#图像尺寸-百分之百");
 const 图像尺寸放大checkbox = document.querySelector("#图像尺寸-放大");
+const 图像尺寸双倍checkbox = document.querySelector("#图像尺寸-双倍");
 
 function 溢出隐藏被修改() {
   图像区.style.overflow = 溢出隐藏checkbox.checked ? "hidden" : "visible";
@@ -27,12 +28,17 @@ function 修改图像尺寸() {
     图像.style.width = "150%";
     图像.style.height = "150%";
     图像.style.opacity = "0.25";
+  } else if (图像尺寸双倍checkbox.checked) {
+    图像.style.width = "200%";
+    图像.style.height = "200%";
+    图像.style.opacity = "0.25";
   }
 }
 
 图像尺寸原始checkbox.onchange = 修改图像尺寸;
 图像尺寸百分百checkbox.onchange = 修改图像尺寸;
 图像尺寸放大checkbox.onchange = 修改图像尺寸;
+图像尺寸双倍checkbox.onchange = 修改图像尺寸;
 
 const 对象匹配控件类型操作区 = document.querySelector(".控件类型操作区");
 const 对象匹配组 = 对象匹配控件类型操作区.querySelectorAll(".控件子组");
