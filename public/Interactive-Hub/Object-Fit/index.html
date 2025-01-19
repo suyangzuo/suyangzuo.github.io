@@ -44,30 +44,133 @@
       ></script>
       <p class="交互标题">对象匹配</p>
       <figure class="对象匹配-图像区">
-        <img src="./示例图-已缩放.jpg" alt="示例图" />
+        <img src="./01.jpg" alt="示例图" />
       </figure>
       <section class="选项区">
         <section class="盒子选项 选项类型">
-          <p class="选项标题">盒子选项</p>
+          <p class="选项标题">容器</p>
           <div class="控件组 盒子控件组">
-            <div class="控件子组">
-              <label for="溢出隐藏">
-                <span class="中文 属性中文">溢出隐藏</span>
-                <span class="代码 属性代码">overflow: hidden</span>
-              </label>
-              <input
-                type="checkbox"
-                id="溢出隐藏"
-                name="溢出隐藏项"
-                class="复选框"
-                autocomplete="off"
-              />
+            <div class="控件类型区 控件-溢出">
+              <p class="属性名称">
+                <span class="中文 属性中文">溢出</span
+                ><span class="代码 属性代码">overflow</span>
+              </p>
+              <div class="控件类型操作区 溢出操作区">
+                <div class="控件子组">
+                  <label for="溢出-可见">
+                    <span class="中文 值中文">可见</span>
+                    <span class="代码 值代码">visible</span>
+                  </label>
+                  <input
+                    type="radio"
+                    id="溢出-可见"
+                    name="溢出"
+                    class="单选框"
+                    autocomplete="off"
+                    checked
+                  />
+                </div>
+                <div class="控件子组">
+                  <label for="溢出-隐藏">
+                    <span class="中文 值中文">隐藏</span>
+                    <span class="代码 值代码">hidden</span>
+                  </label>
+                  <input
+                    type="radio"
+                    id="溢出-隐藏"
+                    name="溢出"
+                    class="单选框"
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="控件子组">
+                  <label for="溢出-修剪">
+                    <span class="中文 值中文">修剪</span>
+                    <span class="代码 值代码">clip</span>
+                  </label>
+                  <input
+                    type="radio"
+                    id="溢出-修剪"
+                    name="溢出"
+                    class="单选框"
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="控件子组">
+                  <label for="溢出-滚动">
+                    <span class="中文 值中文">滚动</span>
+                    <span class="代码 值代码">scroll</span>
+                  </label>
+                  <input
+                    type="radio"
+                    id="溢出-滚动"
+                    name="溢出"
+                    class="单选框"
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="控件子组">
+                  <label for="溢出-自动">
+                    <span class="中文 值中文">自动</span>
+                    <span class="代码 值代码">auto</span>
+                  </label>
+                  <input
+                    type="radio"
+                    id="溢出-自动"
+                    name="溢出"
+                    class="单选框"
+                    autocomplete="off"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </section>
         <section class="图像选项 选项类型">
-          <p class="选项标题">图像选项</p>
+          <p class="选项标题">图像</p>
           <section class="控件组 图像-控件组">
+            <div class="控件类型区 控件-图像源">
+              <p class="中文 属性中文">图像源</p>
+              <div class="控件子组">
+                <label for="01" class="标签">
+                  <img src="./01.jpg" alt="01" />
+                </label>
+                <input
+                  type="radio"
+                  id="01"
+                  name="图像源"
+                  class="单选框"
+                  checked
+                  autocomplete="off"
+                />
+              </div>
+              <section class="选项分隔区"></section>
+              <div class="控件子组">
+                <label for="02" class="标签">
+                  <img src="./02.webp" alt="02" />
+                </label>
+                <input
+                  type="radio"
+                  id="02"
+                  name="图像源"
+                  class="单选框"
+                  autocomplete="off"
+                />
+              </div>
+              <section class="选项分隔区"></section>
+              <div class="控件子组">
+                <label for="03" class="标签">
+                  <img src="./03.jpg" alt="03" />
+                </label>
+                <input
+                  type="radio"
+                  id="03"
+                  name="图像源"
+                  class="单选框"
+                  autocomplete="off"
+                />
+              </div>
+            </div>
             <div class="控件类型区 控件-图像尺寸">
               <p class="中文 属性中文">图像尺寸</p>
               <div class="控件子组">
@@ -78,7 +181,7 @@
                   type="radio"
                   id="图像尺寸-原始大小"
                   name="图像尺寸项"
-                  class="复选框"
+                  class="单选框"
                   checked
                   autocomplete="off"
                 />
@@ -92,7 +195,7 @@
                   type="radio"
                   id="图像尺寸-百分之百"
                   name="图像尺寸项"
-                  class="复选框"
+                  class="单选框"
                   autocomplete="off"
                 />
               </div>
@@ -105,7 +208,7 @@
                   type="radio"
                   id="图像尺寸-放大"
                   name="图像尺寸项"
-                  class="复选框"
+                  class="单选框"
                   autocomplete="off"
                 />
               </div>
@@ -118,7 +221,7 @@
                   type="radio"
                   id="图像尺寸-双倍"
                   name="图像尺寸项"
-                  class="复选框"
+                  class="单选框"
                   autocomplete="off"
                 />
               </div>
@@ -128,7 +231,7 @@
                 <span class="中文 属性中文">对象匹配</span
                 ><span class="代码 属性代码">object-fit</span>
               </p>
-              <div class="控件类型操作区">
+              <div class="控件类型操作区 对象匹配操作区">
                 <div class="控件子组">
                   <label for="对象匹配-覆盖">
                     <span class="中文 值中文">覆盖</span>

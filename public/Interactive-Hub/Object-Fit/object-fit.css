@@ -7,7 +7,7 @@
 }
 
 .总区 {
-  gap: 150px;
+  gap: 6.5vw;
 }
 
 .对象匹配-图像区 {
@@ -30,11 +30,12 @@
 }
 
 .选项区 {
-  width: 510px;
   position: relative;
   z-index: 0;
   border-radius: 10px;
   outline: solid 1px #cde6;
+  backdrop-filter: blur(10px);
+  background-color: #182a38c0;
 }
 
 .选项分隔区 {
@@ -50,11 +51,47 @@
 }
 
 .盒子选项 {
-  border-bottom: solid 1px #cde6;
+  border-bottom: solid 2px #cde6;
 }
 
 .图像选项 {
-  height: 350px;
+  padding-bottom: 30px;
+}
+
+.控件-图像源 .控件子组 {
+  position: relative;
+}
+
+.控件-图像源 .标签 {
+  width: 100px;
+  height: 100px;
+  padding: 0;
+}
+
+.控件-图像源 .标签 img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(25%);
+  transition: 75ms;
+}
+
+.控件-图像源 .控件子组:has(.单选框:checked) .标签 img {
+  filter: brightness(100%);
+}
+
+.控件-图像源 .单选框 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  appearance: none;
+  top: 0;
+  left: 0;
+  outline: none;
+}
+
+.控件-图像源 .单选框::after {
+  display: none;
 }
 
 .图像-控件组 {
@@ -69,9 +106,13 @@
 }
 
 .图像-控件组 > div:nth-child(2) {
-  border-top: solid 1px #cde6;
-  border-bottom: solid 1px #cde6;
+  border-top: solid 1px #cde3;
   width: 100%;
+}
+
+.图像-控件组 > div:nth-child(2),
+.图像-控件组 > div:nth-child(3) {
+  border-bottom: solid 1px #cde3;
 }
 
 .选项标题 {
@@ -87,11 +128,28 @@
   align-items: center;
 }
 
+.控件子组:hover .中文 {
+  color: #75b0e2;
+}
+
+.控件子组:hover .代码 {
+  color: silver;
+}
+
+.控件子组:has(.单选框:checked) .中文 {
+  color: lightblue;
+}
+
+.控件子组:has(.单选框:checked) .代码 {
+  color: white;
+}
+
 .盒子选项 .控件子组 {
   justify-content: center;
 }
 
 .控件类型区 {
+  width: 100%;
   display: flex;
   gap: 10px;
 }
@@ -102,24 +160,44 @@
 
 .属性中文 {
   color: orange;
-  text-align: center;
+  text-align: right;
+  align-content: center;
+}
+
+.属性中文:not(:has(+ .属性代码)) {
+  position: relative;
+  margin-right: 20px;
 }
 
 .值中文 {
-  color: tomato;
+  color: steelblue;
   text-align: center;
 }
 
 .属性名称 {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-right: 20px;
+}
+
+.属性名称::before,
+.属性中文:not(:has(+ .属性代码))::before {
+  position: absolute;
+  content: "";
+  width: 1px;
+  height: 100%;
+  right: -15px;
+  top: 0;
+  background-color: #fff2;
 }
 
 .属性代码 {
   font-size: 0.8rem;
   font-family: "JetBrains Mono", Consolas, monospace;
-  text-align: center;
+  text-align: right;
+  color: tomato;
 }
 
 .控件类型操作区 {
@@ -149,6 +227,7 @@
 
 label > .代码 {
   font-size: 0.8rem;
+  color: gray;
 }
 
 .对象位置操作区 > .控件子组 {
@@ -168,8 +247,8 @@ label > .代码 {
   width: 35px;
 }
 
-input[type="radio"],
-input[type="checkbox"] {
+input[type="radio"] /*,
+input[type="checkbox"] */ {
   /* background-color: rgb(111, 182, 142); */
   appearance: none;
   width: 15px;
@@ -181,7 +260,7 @@ input[type="checkbox"] {
   align-items: center;
 }
 
-input[type="checkbox"]::after {
+/*input[type="checkbox"]::after {
   width: 15px;
   height: 15px;
   content: "";
@@ -193,7 +272,7 @@ input[type="checkbox"]::after {
 
 input[type="checkbox"]:checked::after {
   transform: scale(0.8);
-}
+}*/
 
 input[type="radio"]::after {
   width: 60%;
@@ -221,7 +300,7 @@ input {
   position: relative;
   display: flex;
   align-items: center;
-  margin-left: 5px;
+  margin-left: 10px;
 }
 
 input[type="range"] {
@@ -313,8 +392,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
   transition: background-color 0.1s;
 }
 
-.控件子组:hover input[type="radio"],
-.控件子组:hover input[type="checkbox"] {
+.控件子组:hover input[type="radio"] /*,
+.控件子组:hover input[type="checkbox"]*/ {
   animation: 控件子组鼠标悬挂时动画 1s ease-in-out infinite alternate;
 }
 

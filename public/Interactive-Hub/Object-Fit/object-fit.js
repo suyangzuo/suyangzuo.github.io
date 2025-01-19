@@ -3,35 +3,49 @@ const rootStyle = window.getComputedStyle(root);
 
 const 图像区 = document.querySelector(".对象匹配-图像区");
 const 图像 = 图像区.querySelector("img");
-const 溢出隐藏checkbox = document.querySelector("#溢出隐藏");
 const 图像尺寸原始checkbox = document.querySelector("#图像尺寸-原始大小");
 const 图像尺寸百分百checkbox = document.querySelector("#图像尺寸-百分之百");
 const 图像尺寸放大checkbox = document.querySelector("#图像尺寸-放大");
 const 图像尺寸双倍checkbox = document.querySelector("#图像尺寸-双倍");
 
-function 溢出隐藏被修改() {
-  图像区.style.overflow = 溢出隐藏checkbox.checked ? "hidden" : "visible";
+const 溢出控件操作区 = document.querySelector(".溢出操作区");
+const 溢出单选组 = 溢出控件操作区.querySelectorAll(".单选框");
+for (const 溢出单选 of 溢出单选组) {
+  溢出单选.addEventListener("change", (event) => {
+    溢出设置已修改(event);
+  });
 }
 
-溢出隐藏checkbox.onchange = 溢出隐藏被修改;
+const 图像源单选组 = document.querySelectorAll("input[name='图像源']");
+for (const 图像源单选 of 图像源单选组) {
+  图像源单选.addEventListener("change", () => {
+    图像.src = 图像源单选.previousElementSibling.querySelector("img").src;
+  });
+}
+
+function 溢出设置已修改(event) {
+  图像区.style.overflow = event.target.parentElement
+    .querySelector(".值代码")
+    .textContent.trim();
+}
 
 function 修改图像尺寸() {
   if (图像尺寸原始checkbox.checked) {
     图像.style.width = "auto";
     图像.style.height = "auto";
-    图像.style.opacity = "0.75";
+    // 图像.style.opacity = "0.75";
   } else if (图像尺寸百分百checkbox.checked) {
     图像.style.width = "100%";
     图像.style.height = "100%";
-    图像.style.opacity = "0.75";
+    // 图像.style.opacity = "0.75";
   } else if (图像尺寸放大checkbox.checked) {
     图像.style.width = "150%";
     图像.style.height = "150%";
-    图像.style.opacity = "0.25";
+    // 图像.style.opacity = "0.25";
   } else if (图像尺寸双倍checkbox.checked) {
     图像.style.width = "200%";
     图像.style.height = "200%";
-    图像.style.opacity = "0.25";
+    // 图像.style.opacity = "0.25";
   }
 }
 
@@ -40,7 +54,7 @@ function 修改图像尺寸() {
 图像尺寸放大checkbox.onchange = 修改图像尺寸;
 图像尺寸双倍checkbox.onchange = 修改图像尺寸;
 
-const 对象匹配控件类型操作区 = document.querySelector(".控件类型操作区");
+const 对象匹配控件类型操作区 = document.querySelector(".对象匹配操作区");
 const 对象匹配组 = 对象匹配控件类型操作区.querySelectorAll(".控件子组");
 
 Array.from(对象匹配组).forEach((控件子组, index) => {
@@ -94,14 +108,14 @@ window.addEventListener("load", () => {
 });
 
 function 重置参数() {
-  溢出隐藏checkbox.checked = false;
+  const 溢出可见 = document.getElementById("溢出-可见");
+  溢出可见.checked = true;
   图像尺寸原始checkbox.checked = true;
-  const 对象匹配控件 = document.querySelector(".控件-对象匹配");
-  const 对象匹配控件子组 = 对象匹配控件.querySelectorAll(".控件子组");
-  对象匹配控件子组.forEach((控件) => {
-    const 单选框 = 控件.querySelector("input[type='radio']");
-    单选框.checked = false;
-  });
+  const 填充 = document.getElementById("对象匹配-填充");
+  填充.checked = true;
+  const 图像01 = document.getElementById("01");
+  图像01.checked = true;
+  图像.src = "./01.jpg";
   x轴.value = 50;
   y轴.value = 50;
   修改X轴百分比();

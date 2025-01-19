@@ -37,6 +37,7 @@ body {
   height: calc(100vh - 50px);
   position: relative;
   overflow: auto;
+  overflow-x: hidden;
   display: flex;
   justify-content: center;
   align-items: flex-start;
