@@ -4,6 +4,9 @@
   --拇指宽度: 16px;
   --进度-X轴: 50%;
   --进度-Y轴: 50%;
+  --进度-容器比例: 83.3333333%;
+  --容器宽度: 90%;
+  --容器比例: 1.75;
 }
 
 .总区 {
@@ -11,14 +14,21 @@
 }
 
 .对象匹配-图像区 {
-  width: 500px;
-  height: 350px;
-  outline: solid 5px rgb(183, 49, 49);
+  width: 600px;
+  height: 600px;
   position: relative;
   z-index: 0;
 }
 
-.对象匹配-图像区 > img {
+.图像容器 {
+  width: var(--容器宽度);
+  height: calc(var(--容器宽度) / var(--容器比例));
+  /*height: var(--容器高度);*/
+  /*aspect-ratio: var(--容器比例);*/
+  outline: solid 5px rgb(183, 49, 49);
+}
+
+.图像容器 > img {
   opacity: 0.75;
   pointer-events: none;
   position: relative;
@@ -51,11 +61,38 @@
 }
 
 .盒子选项 {
-  border-bottom: solid 2px #cde6;
+  border-bottom: solid 5px #cde6;
 }
 
 .图像选项 {
   padding-bottom: 30px;
+}
+
+.盒子控件组 {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+#容器比例 {
+  background-image: linear-gradient(
+    90deg,
+    var(--进度条颜色-已填充) var(--进度-容器比例),
+    transparent var(--进度-容器比例)
+  );
+}
+
+.范围条数字区.容器比例数字区 {
+  left: calc(var(--进度-容器比例) - 5px);
+}
+
+.控件-溢出 {
+  padding: 15px 0 0 0;
+  border-top: solid 1px #cde3;
+}
+
+.图像-控件组 .控件-图像源 {
+  padding-top: 0;
 }
 
 .控件-图像源 .控件子组 {
@@ -73,7 +110,11 @@
   height: 100%;
   object-fit: contain;
   filter: brightness(25%) drop-shadow(2px 2px 2px #0005);
-  transition: 75ms;
+  transition: 125ms;
+}
+
+.控件-图像源 .控件子组:hover .标签 img {
+  filter: brightness(40%) drop-shadow(2px 2px 2px #0005);
 }
 
 .控件-图像源 .控件子组:has(.单选框:checked) .标签 img {
@@ -117,8 +158,9 @@
 
 .选项标题 {
   font-weight: bolder;
-  font-size: 1.2rem;
-  color: rgb(77, 196, 128);
+  font-size: 1.25rem;
+  /*color: rgb(77, 196, 128);*/
+  color: yellowgreen;
   padding: 5px 0;
   text-align: center;
 }
@@ -172,6 +214,7 @@
 .值中文 {
   color: steelblue;
   text-align: center;
+  text-wrap: nowrap;
 }
 
 .属性名称 {
@@ -183,6 +226,7 @@
 }
 
 .属性名称::before,
+  /*.属性名称:not(:has(.属性代码)) .属性中文::before,*/
 .属性中文:not(:has(+ .属性代码))::before {
   position: absolute;
   content: "";
@@ -191,6 +235,14 @@
   right: -15px;
   top: 0;
   background-color: #fff1;
+}
+
+.属性名称:not(:has(.属性代码)) .属性中文 {
+  margin-right: 0;
+}
+
+.属性名称:not(:has(.属性代码)) .属性中文::before {
+  display: none;
 }
 
 .属性代码 {
@@ -210,10 +262,21 @@
   gap: 25px;
 }
 
+.容器尺寸操作区,
 .对象位置操作区 {
   display: flex;
   flex-direction: column;
   gap: 45px;
+}
+
+.范围条数字区 {
+  display: flex;
+  justify-content: center;
+  gap: 1px;
+}
+
+.范围条数字区 .单位 {
+  color: lightskyblue;
 }
 
 .代码 {
@@ -242,9 +305,15 @@ label > .代码 {
   flex-direction: column;
 }
 
+.控件子组 > label.label-x轴 {
+  padding: 0;
+}
+
 .label-x轴,
 .label-y轴 {
-  width: 35px;
+  /*width: 50px;*/
+  margin-right: 5px;
+  text-align: right;
 }
 
 input[type="radio"] /*,
@@ -366,7 +435,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .范围条数字区 {
   position: absolute;
-  width: 45px;
+  width: 50px;
   height: 30px;
   border-radius: 3px;
   background: rgb(41, 126, 78);

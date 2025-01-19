@@ -1,7 +1,7 @@
 const root = document.querySelector(":root");
 const rootStyle = window.getComputedStyle(root);
 
-const 图像区 = document.querySelector(".对象匹配-图像区");
+const 图像区 = document.querySelector(".图像容器");
 const 图像 = 图像区.querySelector("img");
 const 图像尺寸原始checkbox = document.querySelector("#图像尺寸-原始大小");
 const 图像尺寸百分百checkbox = document.querySelector("#图像尺寸-百分之百");
@@ -65,6 +65,30 @@ Array.from(对象匹配组).forEach((控件子组, index) => {
   };
 });
 
+const 容器比例滑块 = document.getElementById("容器比例");
+const 容器比例数字 = document
+  .querySelector(".容器比例数字区")
+  .querySelector(".数字");
+容器比例滑块.addEventListener("input", () => {
+  const 值 = parseFloat(容器比例滑块.value);
+  const 百分比 = 获取滑块百分比(容器比例滑块);
+  容器比例数字.textContent = 值.toString();
+  root.style.setProperty("--进度-容器比例", 百分比);
+  root.style.setProperty("--容器比例", `${值}`);
+  const 最小值 = 容器比例滑块.min ? 容器比例滑块.min : 0;
+  const 最大值 = 容器比例滑块.max ? 容器比例滑块.max : 100;
+  const 新值 = Number(((值 - 最小值) * 100) / (最大值 - 最小值));
+  const 容器比例数字区 = document.querySelector(".容器比例数字区");
+  容器比例数字区.style.left = `calc(${新值}% + ${8 - 新值 * 0.155}px)`;
+});
+
+function 获取滑块百分比(滑块) {
+  const 值 = parseFloat(滑块.value);
+  const max = parseFloat(滑块.max);
+  const min = parseFloat(滑块.min);
+  return `${((值 - min) / (max - min)) * 100}%`;
+}
+
 const x轴数字区 = document.querySelector(".X轴数字区");
 const y轴数字区 = document.querySelector(".Y轴数字区");
 const x轴 = document.querySelector("#对象位置-X轴");
@@ -78,7 +102,7 @@ y轴.oninput = 修改Y轴百分比;
 
 function 修改X轴百分比() {
   x轴百分比 = x轴.value;
-  x轴数字区.innerText = `${x轴百分比}%`;
+  x轴数字区.querySelector(".数字").innerText = `${x轴百分比}`;
   let 真实百分比 = (Number(x轴百分比) + 100) / 3;
   root.style.setProperty("--进度-X轴", `${真实百分比}%`);
   const 值 = x轴.value;
@@ -91,7 +115,7 @@ function 修改X轴百分比() {
 
 function 修改Y轴百分比() {
   y轴百分比 = y轴.value;
-  y轴数字区.innerText = `${y轴百分比}%`;
+  y轴数字区.querySelector(".数字").innerText = `${y轴百分比}`;
   let 真实百分比 = (Number(y轴百分比) + 100) / 3;
   root.style.setProperty("--进度-Y轴", `${真实百分比}%`);
   const 值 = y轴.value;
@@ -108,6 +132,13 @@ window.addEventListener("load", () => {
 });
 
 function 重置参数() {
+  // root.style.setProperty("--容器宽度", "500px");
+  root.style.removeProperty("--容器比例");
+  root.style.removeProperty("--进度-容器比例");
+  容器比例滑块.value = "1.75";
+  容器比例数字.textContent = 容器比例滑块.value;
+  const 容器比例数字区 = document.querySelector(".容器比例数字区");
+  容器比例数字区.style.left = "";
   const 溢出可见 = document.getElementById("溢出-可见");
   溢出可见.checked = true;
   图像尺寸原始checkbox.checked = true;

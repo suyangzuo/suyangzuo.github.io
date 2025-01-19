@@ -43,13 +43,71 @@
         position="afterbegin"
       ></script>
       <p class="交互标题">对象匹配</p>
-      <figure class="对象匹配-图像区">
-        <img src="./01.jpg" alt="示例图" />
-      </figure>
+      <div class="对象匹配-图像区">
+        <figure class="图像容器"><img src="./01.jpg" alt="示例图" /></figure>
+      </div>
       <section class="选项区">
         <section class="盒子选项 选项类型">
           <p class="选项标题">容器</p>
           <div class="控件组 盒子控件组">
+            <div class="控件类型区 控件-容器尺寸">
+              <p class="属性名称">
+                <span class="中文 属性中文">宽高比</span>
+              </p>
+              <div class="控件类型操作区 容器比例操作区">
+                <div class="控件子组">
+                  <label class="label-x轴" for="容器比例">
+                    <span class="中文 值中文">比例</span>
+                  </label>
+                  <div class="滑块区">
+                    <input
+                      type="range"
+                      id="容器比例"
+                      name="容器比例"
+                      min="0.5"
+                      max="2.0"
+                      step="0.01"
+                      value="1.75"
+                      list="容器尺寸节点"
+                      class="范围条"
+                      autocomplete="off"
+                    />
+                    <div class="范围条数字区 容器比例数字区">
+                      <span class="数字">1.75</span>
+                    </div>
+                  </div>
+                </div>
+                <!--<div class="控件子组">
+                  <label class="label-y轴" for="容器尺寸-高度">
+                    <span class="中文 值中文">高度</span>
+                  </label>
+                  <div class="滑块区">
+                    <input
+                      type="range"
+                      id="容器尺寸-高度"
+                      name="容器尺寸"
+                      min="300"
+                      max="600"
+                      step="1"
+                      value="350"
+                      list="容器尺寸节点"
+                      class="范围条"
+                      autocomplete="off"
+                    />
+                    <div class="范围条数字区 尺寸高度数字区">
+                      <span class="数字">350</span><span class="单位">px</span>
+                    </div>
+                  </div>
+                </div>-->
+                <datalist id="容器尺寸节点">
+                  <option value="0.75"></option>
+                  <option value="1"></option>
+                  <option value="1.25"></option>
+                  <option value="1.5"></option>
+                  <option value="1.75"></option>
+                </datalist>
+              </div>
+            </div>
             <div class="控件类型区 控件-溢出">
               <p class="属性名称">
                 <span class="中文 属性中文">溢出</span
@@ -310,7 +368,9 @@
                       class="范围条"
                       autocomplete="off"
                     />
-                    <div class="范围条数字区 X轴数字区">50%</div>
+                    <div class="范围条数字区 X轴数字区">
+                      <span class="数字">50</span><span class="单位">%</span>
+                    </div>
                   </div>
                 </div>
                 <div class="控件子组">
@@ -330,7 +390,9 @@
                       class="范围条"
                       autocomplete="off"
                     />
-                    <div class="范围条数字区 Y轴数字区">50%</div>
+                    <div class="范围条数字区 Y轴数字区">
+                      <span class="数字">50</span><span class="单位">%</span>
+                    </div>
                   </div>
                 </div>
                 <datalist id="位置节点">
