@@ -72,12 +72,12 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: brightness(25%);
+  filter: brightness(25%) drop-shadow(2px 2px 2px #0005);
   transition: 75ms;
 }
 
 .控件-图像源 .控件子组:has(.单选框:checked) .标签 img {
-  filter: brightness(100%);
+  filter: brightness(100%) drop-shadow(2px 2px 2px #0005);
 }
 
 .控件-图像源 .单选框 {
@@ -190,7 +190,7 @@
   height: 100%;
   right: -15px;
   top: 0;
-  background-color: #fff2;
+  background-color: #fff1;
 }
 
 .属性代码 {
