@@ -1,9 +1,19 @@
 const root = document.querySelector(":root");
+const 滚动条宽度 = 10;
+const 顶栏高度 = 50;
 
-const 背景容器 = document.getElementsByClassName("背景-容器")[0];
+const 背景总区 = document.querySelector(".背景总区");
+const 背景总区计算样式 = window.getComputedStyle(背景总区);
+const 操作区 = document.querySelector(".背景-操作区");
+// const 背景容器 = document.getElementsByClassName("背景-容器")[0];
 const 内容容器 = document.querySelector(".内容容器");
 const 背景尺寸滑块 = document.getElementById("bg-size");
 const 背景尺寸标记 = document.getElementById("bg-size-marks");
+const 拖拽区 = document.querySelector(".拖拽区");
+let 拖拽偏移 = {
+  水平: 0,
+  垂直: 0,
+};
 
 const 自动单选框 = document.getElementById("bg-size-auto");
 const 等比覆盖单选框 = document.getElementById("bg-size-cover");
@@ -35,7 +45,45 @@ let 之前标记 = 背景尺寸标记.getElementsByTagName("option")[初始标�
 之前标记.style.transform = "scale(1.2)";
 let 当前标记 = 之前标记;
 
-宽度滑块.addEventListener("input", () => {
+拖拽区.addEventListener("dragstart", (event) => {
+  // event.preventDefault();
+  const 鼠标位置_水平 = event.clientX;
+  const 鼠标位置_垂直 = event.clientY;
+  const 拖拽区边界矩形 = 拖拽区.getBoundingClientRect();
+  拖拽偏移.水平 = 拖拽区边界矩形.left - 鼠标位置_水平;
+  拖拽偏移.垂直 = 拖拽区边界矩形.top - 鼠标位置_垂直;
+  操作区.style.transition = "none";
+});
+
+拖拽区.addEventListener("drag", (event) => {
+  const 鼠标位置_水平 = event.clientX;
+  const 鼠标位置_垂直 = event.clientY;
+  操作区.style.left = `${鼠标位置_水平 + 拖拽偏移.水平 - 滚动条宽度}px`;
+  操作区.style.top = `${鼠标位置_垂直 + 拖拽偏移.垂直 - 顶栏高度}px`;
+  拖拽区.classList.add("拖拽中");
+});
+
+背景总区.addEventListener("dragover", (event) => {
+  event.preventDefault();
+});
+
+背景总区.addEventListener("drop", (event) => {
+  const 鼠标位置_水平 = event.clientX;
+  const 鼠标位置_垂直 = event.clientY;
+  const left = 鼠标位置_水平 + 拖拽偏移.水平 - 滚动条宽度;
+  const top = 鼠标位置_垂直 + 拖拽偏移.垂直 - 顶栏高度;
+  const width = 背景总区.offsetWidth;
+  const height = 背景总区.offsetHeight;
+  const 水平比例 = left / width;
+  const 垂直比例 = top / height;
+  const 水平补偿 = (滚动条宽度 * 2 * 水平比例) / width;
+  操作区.style.left = `${(水平比例 + 水平补偿) * 100}%`;
+  操作区.style.top = `${垂直比例 * 100}%`;
+  拖拽区.classList.remove("拖拽中");
+  操作区.style.transition = "";
+});
+
+宽度滑块.addEventListener("input", (event) => {
   const 百分比 = 获取滑块百分比(宽度滑块);
   root.style.setProperty("--宽度滑块位置", 百分比);
   root.style.setProperty("--内容容器宽度", `${宽度滑块.value}%`);
@@ -45,6 +93,7 @@ let 当前标记 = 之前标记;
   宽度数字.parentElement.style.transform = `translateY(100%) translateX(${
     位移 - 尺寸轴宽度 / 2 + 拇指宽度 / 2
   }px)`;
+  event.stopPropagation();
 });
 
 高度滑块.addEventListener("input", () => {
@@ -168,6 +217,9 @@ function 重置参数() {
   const 背景滚动 = document.getElementById("scroll");
   背景滚动.checked = true;
   内容容器.style.backgroundAttachment = "";
+
+  操作区.style.left = "";
+  操作区.style.top = "";
 }
 
 // ---------------------- ↑ 重置 ----------------------

@@ -22,6 +22,7 @@
 }
 
 .背景总区 {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -68,9 +69,31 @@
 }
 
 .背景-操作区 {
+  position: absolute;
+  left: 60%;
+  top: calc(50% - 847.33px / 2);
   backdrop-filter: blur(5px) brightness(50%);
   box-shadow: 0 0 5px 2px #000a;
   border-radius: 10px;
+  transition: 500ms;
+}
+
+.拖拽区 {
+  background: linear-gradient(to top, #222c, #444c);
+  height: 25px;
+  text-align: center;
+  align-content: center;
+  outline: none;
+}
+
+.拖拽区:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  outline: none;
+  filter: invert(1);
+}
+
+.拖拽区.拖拽中 {
+  filter: invert(1);
 }
 
 .属性区:first-child {
