@@ -135,7 +135,7 @@ function 重置参数() {
   // root.style.setProperty("--容器宽度", "500px");
   root.style.removeProperty("--容器比例");
   root.style.removeProperty("--进度-容器比例");
-  容器比例滑块.value = "1.75";
+  容器比例滑块.value = "1";
   容器比例数字.textContent = 容器比例滑块.value;
   const 容器比例数字区 = document.querySelector(".容器比例数字区");
   容器比例数字区.style.left = "";

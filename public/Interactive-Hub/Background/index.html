@@ -19,9 +19,12 @@
     <link rel="stylesheet" href="../control.css" />
     <link rel="stylesheet" href="../interactive-common.css" />
     <link rel="stylesheet" href="./background.css" />
-<!--    <script src="/Scripts/html-include.js"></script>-->
+    <!--    <script src="/Scripts/html-include.js"></script>-->
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
-    <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/d0483e3bd3.js"
+      crossorigin="anonymous"
+    ></script>
     <script src="/Scripts/top-banner.js" defer></script>
   </head>
   <body>
@@ -42,9 +45,72 @@
       <p class="交互标题">背景</p>
       <div class="背景-展示区">
         <div class="背景-参考层"></div>
-        <div class="背景-容器"></div>
+        <div class="背景-容器">
+          <div class="内容容器"></div>
+        </div>
       </div>
       <div class="背景-操作区">
+        <div class="属性区 内容尺寸区">
+          <p class="属性标题 位置标题">
+            <span class="中文 属性中文">内容尺寸</span>
+          </p>
+          <div class="尺寸 尺寸-宽度">
+            <label for="宽度" class="标签 属性标签">宽度</label>
+            <input
+              type="range"
+              min="25"
+              max="200"
+              value="100"
+              id="宽度"
+              class="范围滑块"
+              list="width-marks"
+              autocomplete="off"
+            />
+            <p class="轴数字 宽度数字">
+              <span class="数字">100</span><span class="单位">%</span>
+            </p>
+          </div>
+          <div class="尺寸 尺寸-高度">
+            <label for="高度" class="标签 属性标签">高度</label>
+            <input
+              type="range"
+              min="25"
+              max="400"
+              value="100"
+              id="高度"
+              class="范围滑块"
+              list="height-marks"
+              autocomplete="off"
+            />
+            <p class="轴数字 高度数字">
+              <span class="数字">100</span><span class="单位">%</span>
+            </p>
+          </div>
+          <datalist id="width-marks">
+            <option value="50" label="50"></option>
+            <option value="75" label="75"></option>
+            <option value="100" label="100"></option>
+            <option value="125" label="125"></option>
+            <option value="150" label="150"></option>
+            <option value="175" label="175"></option>
+          </datalist>
+          <datalist id="height-marks">
+            <option value="50" label="50"></option>
+            <option value="75" label="75"></option>
+            <option value="100" label="100"></option>
+            <option value="125" label="125"></option>
+            <option value="150" label="150"></option>
+            <option value="175" label="175"></option>
+            <option value="200" label="200"></option>
+            <option value="225" label="225"></option>
+            <option value="250" label="250"></option>
+            <option value="275" label="275"></option>
+            <option value="300" label="300"></option>
+            <option value="325" label="325"></option>
+            <option value="350" label="350"></option>
+            <option value="375" label="375"></option>
+          </datalist>
+        </div>
         <div class="属性区 尺寸区">
           <div class="尺寸-百分比">
             <label for="bg-size" class="标签 属性标签"
@@ -119,36 +185,42 @@
             <label for="x-axis" class="标签 属性标签">水平</label>
             <input
               type="range"
-              min="-100"
-              max="100"
+              min="-200"
+              max="200"
               value="0"
               id="x-axis"
               class="范围滑块"
               list="axis-marks"
               autocomplete="off"
             />
-            <p class="轴数字 x轴数字">0%</p>
+            <p class="轴数字 x轴数字">
+              <span class="数字">0</span><span class="单位">%</span>
+            </p>
           </div>
           <div class="位置 位置-Y轴">
             <label for="y-axis" class="标签 属性标签">垂直</label>
             <input
               type="range"
-              min="-100"
-              max="100"
+              min="-200"
+              max="200"
               value="0"
               id="y-axis"
               class="范围滑块"
               list="axis-marks"
               autocomplete="off"
             />
-            <p class="轴数字 y轴数字">0%</p>
+            <p class="轴数字 y轴数字">
+              <span class="数字">0</span><span class="单位">%</span>
+            </p>
           </div>
           <datalist id="axis-marks">
+            <option value="-150" label="-150"></option>
             <option value="-100" label="-100"></option>
             <option value="-50" label="-50"></option>
             <option value="0" label="0"></option>
             <option value="50" label="50"></option>
             <option value="100" label="100"></option>
+            <option value="150" label="150"></option>
           </datalist>
         </div>
         <div class="属性区 重复区">
@@ -157,6 +229,47 @@
             ><span class="代码 属性代码">background-repeat</span></label
           >
           <input type="checkbox" id="bg-repeat" checked />
+        </div>
+        <div class="属性区 附着区">
+          <label for="" class="附着标题"
+            ><span class="中文 属性中文">背景附着</span
+            ><span class="代码 属性代码">background-attachment</span></label
+          >
+          <div class="背景附着选项区">
+            <label for="scroll" class="标签 值标签"
+              ><span class="中文 值中文">滚动</span
+              ><span class="代码 值代码">scroll</span></label
+            >
+            <input
+              type="radio"
+              id="scroll"
+              name="bg-attachment"
+              value="bg-size-auto"
+              checked
+            />
+
+            <label for="fixed" class="标签 值标签"
+              ><span class="中文 值中文">固定</span
+              ><span class="代码 值代码">fixed</span></label
+            >
+            <input
+              type="radio"
+              id="fixed"
+              name="bg-attachment"
+              value="bg-size-cover"
+            />
+
+            <label for="local" class="标签 值标签"
+              ><span class="中文 值中文">内容</span
+              ><span class="代码 值代码">local</span></label
+            >
+            <input
+              type="radio"
+              id="local"
+              name="bg-attachment"
+              value="bg-size-contain"
+            />
+          </div>
         </div>
       </div>
     </section>

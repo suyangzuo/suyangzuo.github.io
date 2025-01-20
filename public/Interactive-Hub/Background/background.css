@@ -3,6 +3,10 @@
   --比例-背景尺寸: calc(100% * 3 / 7);
   --填充颜色: seagreen;
   --未填充颜色: rgb(224, 224, 224);
+  --内容容器宽度: 100%;
+  --内容容器高度: 100%;
+  --宽度滑块位置: 42.857%;
+  --高度滑块位置: 20%;
   --背景宽: 100%;
   --背景高: 100%;
   --范围滑块长度: 400px;
@@ -34,9 +38,65 @@
   position: relative;
   width: 100%;
   height: 100%;
-  background: url("./背景.jpg") var(--背景位置-X轴) var(--背景位置-Y轴);
-  outline: solid 5px white;
+  /*background: url("./背景.jpg") var(--背景位置-X轴) var(--背景位置-Y轴);*/
+  outline: solid 5px #fff2;
   transition: background-size 0.5s;
+  overflow: auto;
+}
+
+.背景-容器::-webkit-scrollbar {
+  width: 10px;
+}
+
+.背景-容器::-webkit-scrollbar-thumb {
+  background: darkolivegreen;
+  border-radius: 30px;
+}
+
+.背景-容器::-webkit-scrollbar-thumb:hover {
+  background: darkseagreen;
+}
+
+.内容容器 {
+  width: var(--内容容器宽度);
+  height: var(--内容容器高度);
+  background: url("./背景.jpg") var(--背景位置-X轴) var(--背景位置-Y轴);
+}
+
+#宽度 {
+  background-image: linear-gradient(
+    90deg,
+    var(--填充颜色) var(--宽度滑块位置),
+    var(--未填充颜色) var(--宽度滑块位置)
+  );
+}
+
+#高度 {
+  background-image: linear-gradient(
+    90deg,
+    var(--填充颜色) var(--高度滑块位置),
+    var(--未填充颜色) var(--高度滑块位置)
+  );
+}
+
+.尺寸-宽度 .轴数字 {
+  transform: translateY(100%)
+    translateX(
+      calc(
+        ((var(--位置轴宽度) - var(--拇指宽度)) * 0.42857) - var(--位置轴宽度) /
+          2 + var(--拇指宽度) / 2
+      )
+    );
+}
+
+.尺寸-高度 .轴数字 {
+  transform: translateY(100%)
+    translateX(
+      calc(
+        ((var(--位置轴宽度) - var(--拇指宽度)) * 0.2) - var(--位置轴宽度) / 2 +
+          var(--拇指宽度) / 2
+      )
+    );
 }
 
 #bg-size-marks {
@@ -77,25 +137,28 @@
   padding: 0 10px 0 0;
   font-family: "JetBrains Mono", Consolas, "Noto Sans SC", sans-serif,
     "Noto Sans Mono", monospace;
+  text-wrap: nowrap;
 }
 
 label[for="bg-size"] {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  padding: 0;
 }
 
 .属性中文 {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   color: gold;
+  user-select: none;
 }
 
 .属性代码 {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-family: "JetBrains Mono", Consolas, monospace;
   color: goldenrod;
+  user-select: none;
 }
 
 .范围滑块 {
@@ -103,7 +166,7 @@ label[for="bg-size"] {
   -webkit-appearance: none;
   appearance: none;
   width: var(--范围滑块长度);
-  height: 10px;
+  height: 5px;
   border-radius: 10px;
 }
 
@@ -153,7 +216,7 @@ label[for="bg-size"] {
   border-radius: 50px;
   background: no-repeat center/contain
     url(/Images/Interactive-Hub/进度条拇指/闪电球.png);
-  transform: translateY(-40%) scale(1.5);
+  transform: translateY(-50%) scale(1.5);
   filter: drop-shadow(0 0 2px black);
 }
 
@@ -167,18 +230,22 @@ label[for="bg-size"] {
   padding: 0 25px;
   display: flex;
   flex-direction: column;
+  outline: solid 2px transparent;
   background: linear-gradient(to top, #222c, #444c);
+  transition: 125ms;
 }
 
 .属性区:hover {
   z-index: 1;
   outline: solid 2px rgb(219, 219, 219);
+  background: linear-gradient(to top, #181818cc, #282828cc);
 }
 
 .尺寸区 {
   height: 200px;
 }
 
+.背景附着选项区,
 .尺寸-等比缩放 {
   display: flex;
   justify-content: center;
@@ -187,26 +254,28 @@ label[for="bg-size"] {
 
 .值中文 {
   color: rgb(230, 131, 64);
+  user-select: none;
 }
 
 .值代码 {
   font-family: "JetBrains Mono", Consolas, monospace;
   font-size: 0.9rem;
   color: rgb(190, 107, 39);
+  user-select: none;
 }
 
-.尺寸-等比缩放 input[type="radio"] {
+:where(.背景附着选项区, .尺寸-等比缩放) input[type="radio"] {
   margin-right: 15px;
 }
 
-.尺寸-等比缩放 .标签 {
+:where(.背景附着选项区, .尺寸-等比缩放) .标签 {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-left: 15px;
 }
 
-.尺寸-等比缩放 .标签:hover,
+:where(.背景附着选项区, .尺寸-等比缩放) .标签:hover,
 label[for="bg-repeat"]:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
@@ -223,6 +292,11 @@ input[type="radio"],
   justify-content: center;
   align-items: center;
   transition: outline-color 0.15s;
+}
+
+#bg-repeat {
+  position: absolute;
+  translate: 90px 0;
 }
 
 input[type="radio"]::after,
@@ -267,25 +341,28 @@ input[type="radio"]:hover,
   }
 }
 
+.内容尺寸区,
 .位置区 {
   height: 200px;
 }
 
+.尺寸,
 .位置 {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+.附着标题,
 .位置标题 {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 20px;
-  padding: 20px 0 0 0;
+  padding: 15px 0 0 0;
 }
 
-.位置 .范围滑块 {
+:where(.尺寸, .位置) .范围滑块 {
   width: var(--位置轴宽度);
 }
 
@@ -305,7 +382,7 @@ input[type="radio"]:hover,
   );
 }
 
-.位置 input[type="range"]:hover + .轴数字 {
+:where(.尺寸, .位置) input[type="range"]:hover + .轴数字 {
   background-color: #3d6464;
   /*color: black;*/
 }
@@ -333,10 +410,20 @@ input[type="radio"]:hover,
     background-color 0.1s;
 }
 
+.宽度数字,
+.高度数字,
 .x轴数字,
 .y轴数字 {
   transform: translateY(100%);
   font-family: "JetBrains Mono", Consolas, monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1px;
+}
+
+.单位 {
+  color: silver;
 }
 
 .重复区 {
@@ -351,7 +438,6 @@ label[for="bg-repeat"] {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-right: 10px;
 }
 
 @media screen and (height <= 1080px) {

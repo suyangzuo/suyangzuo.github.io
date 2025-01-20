@@ -9,7 +9,7 @@
   --shadow-color: #101010;
   --scrollbar-track-color: #222426;
   --scrollbar-thumb-color: #426556;
-  --scrollbar-width: 14px;
+  --scrollbar-width: 12px;
 }
 
 *,
@@ -43,24 +43,24 @@ body {
   font-family: "Noto Sans SC", 微软雅黑, sans-serif, Consolas, monospace;
 }
 
-body::-webkit-scrollbar {
+*::-webkit-scrollbar {
   width: var(--scrollbar-width);
 }
 
-body::-webkit-scrollbar:hover {
+*::-webkit-scrollbar:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
-body::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
   background: var(--scrollbar-track-color);
 }
 
-body::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb-color);
   border-radius: 30px;
 }
 
-body::-webkit-scrollbar-thumb:hover {
+*::-webkit-scrollbar-thumb:hover {
   background-color: #577e6d;
 }
 
