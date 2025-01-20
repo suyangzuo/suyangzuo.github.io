@@ -158,6 +158,18 @@
   text-wrap: nowrap;
 }
 
+.标签:has(+ input[type="radio"]) {
+  filter: brightness(50%);
+}
+
+.标签:has(+ input[type="radio"]):hover {
+  filter: brightness(75%);
+}
+
+.标签:has(+ input[type="radio"]:checked) {
+  filter: brightness(100%);
+}
+
 label[for="bg-size"] {
   display: flex;
   flex-direction: column;
