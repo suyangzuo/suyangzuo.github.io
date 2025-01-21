@@ -86,14 +86,15 @@
   outline: none;
 }
 
-.拖拽区:hover {
-  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+.属性区.拖拽区:hover {
+  cursor: url("/Images/Common/鼠标-横向缩放.png"), ew-resize;
   outline: none;
-  filter: invert(1);
+  background: linear-gradient(to top, #ddd, #b2b2b2);
+  color: black;
 }
 
 .拖拽区.拖拽中 {
-  filter: invert(1);
+  background: linear-gradient(to top, #eee, silver);
 }
 
 .属性区:first-child {
@@ -185,7 +186,8 @@
   filter: brightness(50%);
 }
 
-.标签:has(+ input[type="radio"]):hover {
+.背景-操作区:not(:has(.拖拽区.拖拽中)) .标签:has(+ input[type="radio"]):hover,
+.背景-操作区:not(:has(.拖拽区.拖拽中)) .标签:has(+ input[type="radio"]:hover) {
   filter: brightness(75%);
 }
 
@@ -288,7 +290,7 @@ label[for="bg-size"] {
   transition: 125ms;
 }
 
-.属性区:hover {
+.背景-操作区:not(:has(.拖拽区.拖拽中)) .属性区:not(.拖拽区):hover {
   z-index: 1;
   outline: solid 2px lightsteelblue;
   background: linear-gradient(to top, #181818cc, #282828cc);
@@ -375,13 +377,16 @@ input[type="radio"]:checked::after,
   visibility: visible;
 }
 
-input[type="radio"]:hover,
-#bg-repeat:hover {
+.背景-操作区:not(:has(.拖拽区.拖拽中)) input[type="radio"]:hover,
+.背景-操作区:not(:has(.拖拽区.拖拽中)) #bg-repeat:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   animation: 单选框呼吸 0.5s ease-in-out infinite alternate;
 }
 
-.尺寸-等比缩放 .标签:hover input[type="radio"] {
+.背景-操作区:not(:has(.拖拽区.拖拽中))
+  .尺寸-等比缩放
+  .标签:hover
+  input[type="radio"] {
   animation: 单选框呼吸 0.5s ease-in-out infinite;
 }
 
@@ -435,7 +440,10 @@ input[type="radio"]:hover,
   );
 }
 
-:where(.尺寸, .位置) input[type="range"]:hover + .轴数字 {
+.背景-操作区:not(:has(.拖拽区.拖拽中))
+  :where(.尺寸, .位置)
+  input[type="range"]:hover
+  + .轴数字 {
   background-color: #3d6464;
   /*color: black;*/
 }

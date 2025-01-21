@@ -53,6 +53,7 @@ let 当前标记 = 之前标记;
   拖拽偏移.水平 = 拖拽区边界矩形.left - 鼠标位置_水平;
   拖拽偏移.垂直 = 拖拽区边界矩形.top - 鼠标位置_垂直;
   操作区.style.transition = "none";
+  event.dataTransfer.effectAllowed = "move";
 });
 
 拖拽区.addEventListener("drag", (event) => {
@@ -68,6 +69,7 @@ let 当前标记 = 之前标记;
 });
 
 背景总区.addEventListener("drop", (event) => {
+  event.dataTransfer.dropEffect = "move";
   const 鼠标位置_水平 = event.clientX;
   const 鼠标位置_垂直 = event.clientY;
   const left = 鼠标位置_水平 + 拖拽偏移.水平 - 滚动条宽度;
