@@ -75,14 +75,25 @@
   backdrop-filter: blur(5px) brightness(50%);
   box-shadow: 0 0 5px 2px #000a;
   border-radius: 10px;
+  /*clip-path: inset(-10px -10px -10px -10px);*/
   transition: 500ms;
 }
 
+.背景-操作区.已折叠 .属性区:not(.拖拽区) {
+  /*clip-path: inset(-10px -10px calc(100% - 25px) -10px);*/
+  height: 0;
+  opacity: 0;
+  visibility: hidden;
+  background: none;
+}
+
 .拖拽区 {
+  position: relative;
   background: linear-gradient(to top, #222c, #444c);
   height: 25px;
-  text-align: center;
-  align-content: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   outline: none;
 }
 
@@ -95,6 +106,65 @@
 
 .拖拽区.拖拽中 {
   background: linear-gradient(to top, #eee, silver);
+}
+
+.拖拽图标 {
+  width: 25px;
+  height: 65%;
+  filter: invert(1);
+}
+
+.拖拽图标 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.属性区.拖拽区:not(.拖拽中):hover .拖拽图标 {
+  filter: invert(0);
+}
+
+.折叠标签 {
+  position: absolute;
+  display: flex;
+  height: 100%;
+  width: 25px;
+  top: 50%;
+  right: 5px;
+  translate: 0 -50%;
+}
+
+.折叠标签 .复选框 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  appearance: none;
+}
+
+.折叠图标 {
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  align-content: center;
+}
+
+.属性区.拖拽区:not(.拖拽中) :where(.折叠标签:hover, #folding:hover) .折叠图标 {
+  font-weight: bold;
+}
+
+.折叠标签:has(#folding:checked) .折叠图标 {
+  scale: 1 0.25;
+}
+
+.属性区.拖拽区.拖拽中 .折叠图标 {
+  color: black;
+}
+
+.拖拽区:not(.拖拽中) :where(.折叠标签, .折叠标签 .复选框):hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 .属性区:first-child {

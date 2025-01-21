@@ -15,6 +15,15 @@ let 拖拽偏移 = {
   垂直: 0,
 };
 
+const 折叠复选框 = document.getElementById("folding");
+折叠复选框.addEventListener("change", () => {
+  if (折叠复选框.checked) {
+    操作区.classList.add("已折叠");
+  } else {
+    操作区.classList.remove("已折叠");
+  }
+});
+
 const 自动单选框 = document.getElementById("bg-size-auto");
 const 等比覆盖单选框 = document.getElementById("bg-size-cover");
 const 等比包含单选框 = document.getElementById("bg-size-contain");
@@ -222,6 +231,9 @@ function 重置参数() {
 
   操作区.style.left = "";
   操作区.style.top = "";
+  操作区.classList.remove("已折叠");
+
+  折叠复选框.checked = false;
 }
 
 // ---------------------- ↑ 重置 ----------------------
