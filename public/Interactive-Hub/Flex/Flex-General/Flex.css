@@ -206,6 +206,10 @@
   font-size: 1.25rem;
 }
 
+.横杠 {
+  margin: 0 2px;
+}
+
 [class*="代码"] {
   font-family: "JetBrains Mono", Consolas, monospace;
 }
@@ -292,7 +296,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-right: 10px;
+  padding-right: 7px;
 }
 
 .中文 {
@@ -302,7 +306,23 @@
 
 .代码 {
   font-size: 0.85rem;
-  color: olivedrab;
+  color: #6a863b;
+}
+
+.布局按钮区:hover .中文 {
+  color: goldenrod;
+}
+
+.布局按钮区:has(input[type="radio"]:checked) .中文 {
+  color: gold;
+}
+
+.布局按钮区:hover .代码 {
+  color: yellowgreen;
+}
+
+.布局按钮区:has(input[type="radio"]:checked) .代码 {
+  color: lightgreen;
 }
 
 label:hover,
@@ -321,14 +341,6 @@ input[type="checkbox"] {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.布局按钮区:hover .中文 {
-  color: gold;
-}
-
-.布局按钮区:hover .代码 {
-  color: lightgreen;
 }
 
 .布局按钮区:hover input[type="radio"]:checked,
@@ -356,8 +368,9 @@ input[type="checkbox"]::after {
 
 input[type="radio"]:checked,
 input[type="checkbox"]:checked {
-  border: none;
-  background-color: #527752;
+  border: solid 1px #fff3;
+  /*background-color: #527752;*/
+  background-color: #3d6666;
 }
 
 input[type="radio"]:checked::after,
@@ -645,6 +658,8 @@ option {
 
 .轴分布分区 {
   padding: 10px 0 20px 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .轴分布类型 {
@@ -679,6 +694,7 @@ option {
   justify-content: center;
   align-items: center;
   gap: 5px;
+  flex-grow: 1;
 }
 
 .轴分布选项 .布局按钮区 {
