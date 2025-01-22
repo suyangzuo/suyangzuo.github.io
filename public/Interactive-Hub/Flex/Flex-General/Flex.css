@@ -309,19 +309,32 @@
   color: #6a863b;
 }
 
+.弹性-操作区:has(#display-flex:checked) .布局按钮区:has(input[type="radio"]) {
+  filter: brightness(66%);
+}
+
 .布局按钮区:hover .中文 {
   color: goldenrod;
 }
 
-.布局按钮区:has(input[type="radio"]:checked) .中文 {
-  color: gold;
+.弹性-操作区:has(#display-flex:checked)
+  .布局按钮区:has(input[type="radio"]:checked) {
+  filter: brightness(100%);
+}
+
+.弹性-操作区:has(#display-flex:checked)
+  .布局按钮区:has(input[type="radio"]:checked)
+  .中文 {
+  color: #dace5c;
 }
 
 .布局按钮区:hover .代码 {
   color: yellowgreen;
 }
 
-.布局按钮区:has(input[type="radio"]:checked) .代码 {
+.弹性-操作区:has(#display-flex:checked)
+  .布局按钮区:has(input[type="radio"]:checked)
+  .代码 {
   color: lightgreen;
 }
 

@@ -3,6 +3,7 @@ window.addEventListener("load", () => {
   重置按钮.addEventListener("click", 重置参数);
 });
 
+const 已屏蔽亮度 = "35%";
 const root = document.querySelector(":root");
 const rootStyle = window.getComputedStyle(root);
 const 轴区切换时长 = 100;
@@ -96,7 +97,7 @@ function 调整盒子数量数字位置() {
 const 块布局 = document.getElementById("display-block");
 const 弹性布局 = document.getElementById("display-flex");
 const 轴分布三区 = document.getElementsByClassName("轴分布三区")[0];
-轴分布三区.style.filter = "brightness(50%)";
+轴分布三区.style.filter = `brightness(${已屏蔽亮度})`;
 轴分布三区.style.pointerEvents = "none";
 
 块布局.addEventListener("change", 修改布局);
@@ -133,11 +134,11 @@ function 修改布局() {
     轴分布类型.style.pointerEvents = "auto";
     交叉轴多行按钮.style.filter = 弹性换行.checked
       ? "brightness(100%)"
-      : "brightness(50%)";
+      : `brightness(${已屏蔽亮度})`;
     交叉轴多行按钮.style.pointerEvents = 弹性换行.checked ? "auto" : "none";
     交叉轴多行分布区.style.filter = 弹性换行.checked
       ? "brightness(100%)"
-      : "brightness(50%)";
+      : `brightness(${已屏蔽亮度})`;
     交叉轴多行分布区.style.pointerEvents = 弹性换行.checked ? "auto" : "none";
     尺寸区.style.filter = "brightness(100%)";
     尺寸区.style.pointerEvents = "auto";
@@ -148,7 +149,7 @@ function 修改布局() {
 const 主轴行 = document.getElementById("flex-direction-row");
 const 主轴列 = document.getElementById("flex-direction-column");
 const 轴方向区 = document.getElementsByClassName("轴方向区")[0];
-轴方向区.style.filter = "brightness(50%)";
+轴方向区.style.filter = `brightness(${已屏蔽亮度})`;
 轴方向区.style.pointerEvents = "none";
 
 主轴行.addEventListener("change", 修改主轴方向);
@@ -190,18 +191,18 @@ const 弹性不换行 = document.getElementById("nowrap");
 弹性换行.addEventListener("input", 修改弹性换行);
 弹性不换行.addEventListener("input", 修改弹性换行);
 const 换行区 = document.getElementsByClassName("换行区")[0];
-换行区.style.filter = "brightness(50%)";
+换行区.style.filter = `brightness(${已屏蔽亮度})`;
 换行区.style.pointerEvents = "none";
 
 function 修改弹性换行() {
   弹性展示区.style.flexWrap = 弹性换行.checked ? "wrap" : "nowrap";
   交叉轴多行按钮.style.filter = 弹性换行.checked
     ? "brightness(100%)"
-    : "brightness(50%)";
+    : `brightness(${已屏蔽亮度})`;
   交叉轴多行按钮.style.pointerEvents = 弹性换行.checked ? "auto" : "none";
   交叉轴多行分布区.style.filter = 弹性换行.checked
     ? "brightness(100%)"
-    : "brightness(50%)";
+    : `brightness(${已屏蔽亮度})`;
   交叉轴多行分布区.style.pointerEvents = 弹性换行.checked ? "auto" : "none";
 }
 
@@ -216,7 +217,7 @@ const 列间隙 = document.getElementById("y-gap");
 列间隙.addEventListener("input", 修改列间隙值);
 
 const 间隙区 = document.getElementsByClassName("间隙区")[0];
-间隙区.style.filter = "brightness(50%)";
+间隙区.style.filter = `brightness(${已屏蔽亮度})`;
 间隙区.style.pointerEvents = "none";
 
 function 修改行间隙值() {
@@ -266,7 +267,7 @@ const 交叉轴多行按钮 = document.getElementsByClassName("交叉轴多行�
 let 当前按钮 = 主轴按钮;
 
 const 轴分布类型 = document.getElementsByClassName("轴分布类型")[0];
-轴分布类型.style.filter = "brightness(50%)";
+轴分布类型.style.filter = `brightness(${已屏蔽亮度})`;
 轴分布类型.style.pointerEvents = "none";
 
 主轴按钮.addEventListener("click", (event) => {
@@ -379,7 +380,7 @@ const 扩张滑块 = document.getElementById("flex-grow");
 扩张滑块.addEventListener("input", 修改弹性扩张);
 
 const 尺寸区 = document.getElementsByClassName("尺寸区")[0];
-尺寸区.style.filter = "brightness(50%)";
+尺寸区.style.filter = `brightness(${已屏蔽亮度})`;
 尺寸区.style.pointerEvents = "none";
 
 function 修改弹性收缩() {
@@ -425,17 +426,17 @@ function 调整扩张数字位置() {
 }
 
 function 屏蔽弹性布局操作区() {
-  轴分布三区.style.filter = "brightness(50%)";
+  轴分布三区.style.filter = `brightness(${已屏蔽亮度})`;
   轴分布三区.style.pointerEvents = "none";
-  轴方向区.style.filter = "brightness(50%)";
+  轴方向区.style.filter = `brightness(${已屏蔽亮度})`;
   轴方向区.style.pointerEvents = "none";
-  换行区.style.filter = "brightness(50%)";
+  换行区.style.filter = `brightness(${已屏蔽亮度})`;
   换行区.style.pointerEvents = "none";
-  间隙区.style.filter = "brightness(50%)";
+  间隙区.style.filter = `brightness(${已屏蔽亮度})`;
   间隙区.style.pointerEvents = "none";
-  轴分布类型.style.filter = "brightness(50%)";
+  轴分布类型.style.filter = `brightness(${已屏蔽亮度})`;
   轴分布类型.style.pointerEvents = "none";
-  尺寸区.style.filter = "brightness(50%)";
+  尺寸区.style.filter = `brightness(${已屏蔽亮度})`;
   尺寸区.style.pointerEvents = "none";
 }
 
