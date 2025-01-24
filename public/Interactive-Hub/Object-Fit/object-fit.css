@@ -54,7 +54,7 @@
 
 .选项类型 {
   /*outline: 1px solid rgb(177, 177, 177);*/
-  padding: 15px;
+  /*padding: 15px;*/
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -62,16 +62,18 @@
 
 .盒子选项 {
   border-bottom: solid 5px #cde6;
+  padding: 15px 15px 0 15px;
 }
 
 .图像选项 {
-  padding-bottom: 30px;
+  /*padding-bottom: 30px;*/
+  padding: 15px 15px 0 15px;
 }
 
 .盒子控件组 {
   display: flex;
   flex-direction: column;
-  gap: 50px;
+  /*gap: 50px;*/
 }
 
 #容器比例 {
@@ -87,13 +89,13 @@
 }
 
 .控件-溢出 {
-  padding: 15px 0 0 0;
+  padding: 15px 0;
   border-top: solid 1px #cde3;
 }
 
-.图像-控件组 .控件-图像源 {
+/*.图像-控件组 .控件-图像源 {
   padding-top: 0;
-}
+}*/
 
 .控件-图像源 .控件子组 {
   position: relative;
@@ -140,10 +142,6 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-}
-
-.图像-控件组 > div {
-  padding: 15px 0;
 }
 
 .图像-控件组 > div:nth-child(2) {
@@ -194,6 +192,25 @@
   width: 100%;
   display: flex;
   gap: 10px;
+  padding: 15px 0;
+}
+
+.控件类型区:hover {
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #fff1 25%,
+    #fff1 75%,
+    transparent 100%
+  );
+}
+
+.控件-容器尺寸 {
+  padding: 15px 0 45px 0;
+}
+
+.控件-对象位置 {
+  padding: 15px 0 45px;
 }
 
 .控件类型区 > p {
