@@ -1,0 +1,5 @@
+.game-area {
+  position: relative;
+  height: calc(100vh - 210px);
+  font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
+}
