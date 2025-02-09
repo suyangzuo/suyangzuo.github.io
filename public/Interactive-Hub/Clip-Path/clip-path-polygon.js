@@ -33,8 +33,8 @@ let 当前拖拽对象 = null;
 });
 
 多边形图像容器.addEventListener("drop", (event) => {
-  event.preventDefault();
-  当前拖拽对象.style.opacity = "1";
+  // event.preventDefault();
+  // 当前拖拽对象.style.opacity = "1";
   const 多边形图像容器边界矩形 = 多边形图像容器.getBoundingClientRect();
   const 放置光标位置_x = event.clientX - 多边形图像容器边界矩形.left;
   const 放置光标位置_y = event.clientY - 多边形图像容器边界矩形.top;
@@ -86,14 +86,22 @@ let 当前拖拽对象 = null;
   多边形修剪指示区.appendChild(指示区三角箭头);
 
   多边形修剪指示区.addEventListener("dragstart", (e) => {
+    const dragImage = new Image();
+    dragImage.src = "/Images/Common/透明.png";
+    e.dataTransfer.setDragImage(dragImage, 0, 0);
     当前拖拽对象 = e.target;
-    setTimeout(() => {
+    多边形修剪指示区.classList.add("拖拽中");
+    /*setTimeout(() => {
       e.target.style.opacity = "0";
-    }, 0);
+    }, 0);*/
     const 拖拽时点击位置_x = e.clientX - 多边形图像容器边界矩形.left;
     const 拖拽时点击位置_y = e.clientY - 多边形图像容器边界矩形.top;
     修剪指示区偏移_x = 拖拽时点击位置_x - 多边形修剪指示区.offsetLeft;
     修剪指示区偏移_y = 拖拽时点击位置_y - 多边形修剪指示区.offsetTop;
+  });
+
+  多边形修剪指示区.addEventListener("dragend", (event) => {
+    多边形修剪指示区.classList.remove("拖拽中");
   });
 
   多边形修剪指示区.addEventListener("drag", (e) => {
@@ -119,11 +127,11 @@ let 当前拖拽对象 = null;
     x比例.textContent = `${拖拽时鼠标水平比例.toFixed(0)}`;
     y比例.textContent = `${拖拽时鼠标垂直比例.toFixed(0)}`;
 
-    /*当前拖拽对象.style.opacity = "1";
+    // 当前拖拽对象.style.opacity = "1";
     const 放置光标位置_x = e.clientX - 多边形图像容器边界矩形.left;
     const 放置光标位置_y = e.clientY - 多边形图像容器边界矩形.top;
     当前拖拽对象.style.left = `${放置光标位置_x - 修剪指示区偏移_x}px`;
-    当前拖拽对象.style.top = `${放置光标位置_y - 修剪指示区偏移_y}px`;*/
+    当前拖拽对象.style.top = `${放置光标位置_y - 修剪指示区偏移_y}px`;
 
     更新多边形代码区代码();
     if (多边形修剪代码容器.classList.contains("代码容器可见")) {
@@ -138,7 +146,7 @@ let 当前拖拽对象 = null;
   修剪数据分区_x.className = "修剪数据分区";
   const 修剪数据_x文本 = document.createElement("span");
   修剪数据_x文本.className = "修剪数据-坐标类";
-  修剪数据_x文本.textContent = "X";
+  修剪数据_x文本.textContent = "水平";
   const 修剪数据_x数据 = document.createElement("span");
   修剪数据_x数据.className = "修剪数据-坐标数据";
   const x比例 = document.createElement("span");
@@ -154,7 +162,7 @@ let 当前拖拽对象 = null;
   修剪数据分区_y.className = "修剪数据分区";
   const 修剪数据_y文本 = document.createElement("span");
   修剪数据_y文本.className = "修剪数据-坐标类";
-  修剪数据_y文本.textContent = "Y";
+  修剪数据_y文本.textContent = "垂直";
   const 修剪数据_y数据 = document.createElement("span");
   修剪数据_y数据.className = "修剪数据-坐标数据";
   const y比例 = document.createElement("span");

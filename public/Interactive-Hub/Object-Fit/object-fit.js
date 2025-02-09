@@ -33,19 +33,15 @@ function 修改图像尺寸() {
   if (图像尺寸原始checkbox.checked) {
     图像.style.width = "auto";
     图像.style.height = "auto";
-    // 图像.style.opacity = "0.75";
   } else if (图像尺寸百分百checkbox.checked) {
     图像.style.width = "100%";
     图像.style.height = "100%";
-    // 图像.style.opacity = "0.75";
   } else if (图像尺寸放大checkbox.checked) {
     图像.style.width = "150%";
     图像.style.height = "150%";
-    // 图像.style.opacity = "0.25";
   } else if (图像尺寸双倍checkbox.checked) {
     图像.style.width = "200%";
     图像.style.height = "200%";
-    // 图像.style.opacity = "0.25";
   }
 }
 

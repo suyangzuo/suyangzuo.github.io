@@ -125,7 +125,7 @@ body {
 .多边形修剪指示区 {
   position: absolute;
   translate: -50% -150%;
-  width: 90px;
+  width: 103px;
   height: 40px;
   display: flex;
   border-radius: 5px;
@@ -149,10 +149,12 @@ body {
   justify-content: center;
   align-items: center;
   transition: outline 75ms;
+  pointer-events: none;
 }
 
-.多边形修剪指示区:hover .修剪指示区关闭按钮 {
+.多边形修剪指示区:not(.拖拽中):hover .修剪指示区关闭按钮 {
   opacity: 1;
+  pointer-events: auto;
 }
 
 .修剪指示区关闭按钮:hover {
@@ -173,13 +175,13 @@ body {
 }
 
 .修剪序号 {
-  width: 30%;
+  width: 25%;
   height: 100%;
   border-radius: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1rem;
+  font-size: 14px;
   /*background-color: #111111d5;*/
   color: gold;
   font-family: "Jetbrains Mono", Consolas, monospace;
@@ -226,13 +228,13 @@ body {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  width: 25%;
+  width: 45%;
   padding-right: 3px;
   color: lightgreen;
 }
 
 .修剪数据-坐标数据 {
-  width: 75%;
+  width: 55%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
