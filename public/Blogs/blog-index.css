@@ -1170,7 +1170,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 
 .专题内容区 {
   width: 100%;
-  min-height: calc(100vh - 50px);
+  min-height: 100vh;
   /*background-image: var(--专题内容区背景);*/
   padding: 50px 50px 250px calc(var(--侧边栏宽度) + 15vw);
   color: white;

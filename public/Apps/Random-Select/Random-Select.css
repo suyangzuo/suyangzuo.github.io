@@ -9,7 +9,7 @@
   background-image: linear-gradient(60deg, #0d0f11 0%, #22272b 100%);
   position: relative;
   margin: 0 auto;
-  height: calc(100vh - 50px);
+  height: 100vh;
 }
 
 .图片区 {

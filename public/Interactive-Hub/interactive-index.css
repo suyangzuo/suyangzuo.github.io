@@ -27,7 +27,7 @@ body {
   background: center/cover no-repeat fixed
     url("/Images/Background-Images/交互式学习中心-主页背景.jpg");
   width: 100%;
-  min-height: calc(100vh - 50px);
+  min-height: 100vh;
   overflow: auto;
   display: flex;
   flex-direction: column;

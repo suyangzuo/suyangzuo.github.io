@@ -19,7 +19,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: start;
-  padding: 3% 0 0 0;
+  padding: 100px 0 0 0;
 }
 
 .software-category-list > .software-category {
@@ -56,14 +56,14 @@ body {
   );
   width: calc(100vw - var(--software-category-width));
   /* min-height: 100vh; */
-  height: calc(100vh - 50px);
+  height: 100vh;
   margin-left: var(--software-category-width);
   display: grid;
   align-content: flex-start;
   gap: 5vh 50px;
   grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
   grid-auto-rows: fit-content;
-  padding: 2% 4%;
+  padding: 100px 4%;
   /* overflow: hidden; */
 }
 

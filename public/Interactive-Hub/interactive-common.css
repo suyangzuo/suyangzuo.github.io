@@ -33,7 +33,7 @@ body {
     #203a43,
     #0f2027
   );*/
-  height: calc(100vh - 50px);
+  height: 100vh;
   position: relative;
   overflow: auto;
   overflow-x: hidden;
