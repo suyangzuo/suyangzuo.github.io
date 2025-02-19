@@ -1,7 +1,7 @@
 .后退区,
 .重置区 {
-  position: absolute;
-  top: 0.5%;
+  position: fixed;
+  top: calc(50px + 1.5%);
   width: 50px;
   height: 50px;
   z-index: 9999;
@@ -29,12 +29,10 @@
 
 .后退区 {
   left: 2%;
-  top: 2%;
 }
 
 .重置区 {
   right: 2%;
-  top: 2%;
 }
 
 .后退区 > .后退链接:hover,

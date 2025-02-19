@@ -1,6 +1,427 @@
 :root {
+  --边框色: #cde3;
   --进度条颜色-已填充: rgb(41, 126, 78);
   --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
-  --拇指宽度: 16px;
+  --拇指宽度: 14px;
+  --根元素外边距-上: 0px;
+  --根元素外边距-右: 0px;
+  --根元素外边距-下: 0px;
+  --根元素外边距-左: 0px;
+  --视口宽度调整: 0px;
+  --视口高度调整: 0px;
 }
 
+.总区 {
+  min-height: 200vh;
+  display: block;
+  align-items: normal;
+  overflow: visible;
+  /* z-index: 9999; */
+}
+
+.视口容器 {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  padding: var(--根元素外边距-上) var(--根元素外边距-右) var(--根元素外边距-下) var(--根元素外边距-左);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.视口 {
+  width: calc(100% + var(--视口宽度调整));
+  height: calc(100% + var(--视口高度调整));
+  border: solid 1px hotpink;
+}
+
+.交叉比容器 {
+  position: fixed;
+  top: 50%;
+  left: 50px;
+  translate: 0 -50%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  outline: solid 2px #fff2;
+}
+
+.交叉比容器.隐藏 {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.交叉比文本 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.交叉比值 {
+  padding: 5px 10px;
+  flex-grow: 1;
+  font-size: 18px;
+  background-color: #cde3;
+}
+
+.设置区 {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+}
+
+.关闭标签 {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  overflow: hidden;
+  display: flex;
+}
+
+.关闭标签 .标签文本 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.关闭标签 .标签文本::before {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  text-align: center;
+  align-content: center;
+  content: "\f0c9";
+  background-color: #56636f;
+}
+
+.关闭标签:has(#关闭设置区:checked) .标签文本::before {
+  content: "\f00d";
+}
+
+.关闭标签:has(#关闭设置区:hover) .标签文本::before {
+  background-color: #677785;
+}
+
+#关闭设置区 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  appearance: none;
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+}
+
+#关闭设置区:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.选项区 {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 0 20px 20px 0;
+}
+
+.选项分区 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  padding: 15px 20px;
+  border-left: solid 2px var(--边框色);
+  border-right: solid 2px var(--边框色);
+}
+
+.选项分区:first-child {
+  border-radius: 10px 10px 0 0;
+  border-top: solid 2px var(--边框色);
+  border-bottom: solid 2px var(--边框色);
+}
+
+.选项分区:last-child {
+  border-radius: 0 0 10px 10px;
+  border-bottom: solid 2px var(--边框色);
+}
+
+.选项分区:not(:first-child, :last-child) {
+  border-bottom: solid 2px var(--边框色);
+}
+
+.选项标题 {
+  text-align: center;
+  align-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.中文 {
+  color: darkseagreen;
+}
+
+.代码 {
+  font-size: 0.9em;
+  color: rgb(112, 141, 63);
+}
+
+.根元素外边距控件区 {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.根元素控件区 {
+  display: flex;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.滑块标签 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.单选标签 {
+  position: relative;
+  width: fit-content;
+}
+
+.单选标签:hover,
+.单选:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.单选标签 > .单选 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.单选标签 > .标签文本 {
+  width: fit-content;
+  height: fit-content;
+  padding: 7px 10px;
+  text-wrap: nowrap;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(218, 165, 32, 0.25);
+}
+
+.单选标签:hover > .标签文本 {
+  background-color: rgba(218, 165, 32, 0.5);
+}
+
+.单选 {
+  appearance: none;
+}
+
+.单选标签:has(.单选:checked) .标签文本 {
+  background-color: goldenrod;
+  color: black;
+}
+
+.范围滑块 {
+  width: 200px;
+  height: 6px;
+  accent-color: lightseagreen;
+}
+
+.范围滑块:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.范围滑块::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+}
+
+.滑块数据 {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.数值 {
+  color: lightskyblue;
+  width: 29px;
+  text-align: right;
+}
+
+.单位 {
+  color: lightslategrey;
+}
+
+.阈值控件区 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.阈值控件区 .标签文本 {
+  width: 64px;
+  text-align: right;
+}
+
+.数字标签 {
+  height: fit-content;
+  display: flex;
+  align-items: center;
+}
+
+.数字标签 > .标签文本 {
+  margin-right: 10px;
+  color: silver;
+}
+
+.数字按钮 {
+  width: 19px;
+  height: 19px;
+  background-color: rgb(70, 77, 88);
+  color: white;
+  user-select: none;
+}
+
+.数字按钮:hover {
+  background-color: rgb(99, 109, 124);
+}
+
+.数字按钮:active {
+  background-color: rgb(126, 138, 157);
+}
+
+.数字框 {
+  width: 42px;
+  height: 19px;
+  border: solid 1px #fff8;
+  padding: 0 5px;
+  font-family: "Consolas", monospace;
+  font-size: 14px;
+  background-color: rgb(36, 50, 78);
+  color: white;
+}
+
+.数字框:hover {
+  background-color: rgb(51, 71, 109);
+}
+
+.数字框:focus {
+  outline: none;
+  background-color: rgb(69, 95, 147);
+}
+
+.数字框::-webkit-outer-spin-button,
+.数字框::-webkit-inner-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+.数字框 {
+  -moz-appearance: textfield;
+}
+
+.触发条件控件区 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.辅助选项控件区 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.复选标签 {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.复选标签 > .标签文本 {
+  color: silver;
+}
+
+.复选标签:hover,
+.复选:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.复选标签:hover .复选,
+.复选:hover {
+  outline: solid 1px white;
+}
+
+.复选标签:hover .标签文本 {
+  color: white;
+}
+
+.复选 {
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  background-color: #3a444c;
+  border-radius: 2px;
+}
+
+.复选:checked {
+  outline: solid 1px silver;
+  border: solid 3px rgb(60, 60, 60);
+  background-color: rgb(135, 170, 76);
+}
+
+.间隔 {
+  height: 150vh;
+  pointer-events: none;
+}
+
+.被观察者容器 {
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
+}
+
+.被观察者 {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(75, 86, 97, 0.25);
+  border: solid 1px rgb(75, 86, 97, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.被观察者填色层 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.被观察者名称 {
+  font-size: 2rem;
+}
