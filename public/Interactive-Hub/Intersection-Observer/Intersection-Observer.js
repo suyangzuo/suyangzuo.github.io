@@ -23,10 +23,15 @@ const 根元素外边距右滑块 = document.getElementById("右");
 const 根元素外边距下滑块 = document.getElementById("下");
 const 根元素外边距左滑块 = document.getElementById("左");
 
+const 触发计数容器 = document.querySelector(".触发计数容器");
+const 触发计数器组 = document.getElementsByClassName("触发计数");
+
 const 被观察者容器 = document.querySelector(".被观察者容器");
 const 被观察者 = document.querySelector(".被观察者");
 const 被观察者容器边界矩形 = 被观察者容器.getBoundingClientRect();
-交叉比容器.style.left = `${被观察者容器边界矩形.left - 交叉比容器边界矩形.width - 100}px`;
+交叉比容器.style.left = `${
+  被观察者容器边界矩形.left - 交叉比容器边界矩形.width - 100
+}px`;
 
 for (const 按钮 of 数字按钮组) {
   let 数值快速变化延时函数 = null;
@@ -112,7 +117,10 @@ function 交叉观察器回调(entries) {
   entries.forEach((entry) => {
     const 观察对象 = entry.target;
     交叉比值元素.textContent = Math.round(entry.intersectionRatio * 100) / 100;
-    if ((已交叉复选框.checked && entry.isIntersecting) || (未交叉复选框.checked && !entry.isIntersecting)) {
+    if (
+      (已交叉复选框.checked && entry.isIntersecting) ||
+      (未交叉复选框.checked && !entry.isIntersecting)
+    ) {
       if (回调特效复选框.checked) {
         视口.animate(关键帧序列, 动画选项);
       }
@@ -120,9 +128,21 @@ function 交叉观察器回调(entries) {
   });
 }
 
-起始阈值数字框.addEventListener("input", 更新阈值);
-阈值数量数字框.addEventListener("input", 更新阈值);
-阈值步长数字框.addEventListener("input", 更新阈值);
+起始阈值数字框.addEventListener("input", () => {
+  更新阈值();
+  重置首次触发回调();
+  更新交叉观察器();
+});
+阈值数量数字框.addEventListener("input", () => {
+  更新阈值();
+  重置首次触发回调();
+  更新交叉观察器();
+});
+阈值步长数字框.addEventListener("input", () => {
+  更新阈值();
+  重置首次触发回调();
+  更新交叉观察器();
+});
 
 for (const 按钮 of 数字按钮组) {
   按钮.addEventListener("click", 更新阈值);
@@ -151,8 +171,13 @@ let 交叉观察器 = new IntersectionObserver(交叉观察器回调, 交叉观�
 
 for (const 滑块 of 根元素外边距滑块组) {
   滑块.addEventListener("input", () => {
-    滑块.nextElementSibling.querySelector(".数值").textContent = `${滑块.value}`;
-    root.style.setProperty(`--根元素外边距-${滑块.id}`, `${Math.abs(滑块.value)}px`);
+    滑块.nextElementSibling.querySelector(
+      ".数值"
+    ).textContent = `${滑块.value}`;
+    root.style.setProperty(
+      `--根元素外边距-${滑块.id}`,
+      `${Math.abs(滑块.value)}px`
+    );
     交叉观察器选项.rootMargin = `${根元素外边距上滑块.value}px ${根元素外边距右滑块.value}px ${根元素外边距下滑块.value}px ${根元素外边距左滑块.value}px`;
   });
 
@@ -170,4 +195,15 @@ function 更新交叉观察器() {
     交叉观察器 = new IntersectionObserver(交叉观察器回调, 交叉观察器选项);
     交叉观察器.observe(被观察者);
   }
+}
+
+function 生成触发计数器() {
+  const 计数器 = document.createElement("span");
+  计数器.className = "触发计数";
+  触发计数容器.appendChild(计数器);
+  计数器.textContent = 触发计数器组.length;
+}
+
+function 删除触发计数器() {
+  触发计数容器.lastElementChild?.remove();
 }

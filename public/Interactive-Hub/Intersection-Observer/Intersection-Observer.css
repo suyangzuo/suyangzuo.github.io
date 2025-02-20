@@ -69,6 +69,37 @@
   background-color: #cde3;
 }
 
+.触发计数容器 {
+  position: fixed;
+  top: 50%;
+  left: 100px;
+  translate: 0 -50%;
+  pointer-events: none;
+  width: 350px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+
+.触发计数 {
+  width: 10%;
+  aspect-ratio: 1;
+  text-align: center;
+  align-content: center;
+  font-size: 12px;
+}
+
+.触发计数:nth-child(odd) {
+  border: solid 1px #cde4;
+}
+
+.触发计数:nth-child(even) {
+  background-color: #ced2;
+  border: solid 1px #ecd4;
+}
+
 .设置区 {
   position: fixed;
   bottom: 50px;
