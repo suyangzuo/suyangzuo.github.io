@@ -59,8 +59,8 @@
                   type="range"
                   id="上"
                   class="范围滑块"
-                  min="0"
-                  max="300"
+                  min="-300"
+                  max="0"
                   value="0"
                   list="根元素外边距列表"
                   autocomplete="off" />
@@ -75,8 +75,8 @@
                   type="range"
                   id="右"
                   class="范围滑块"
-                  min="0"
-                  max="300"
+                  min="-300"
+                  max="0"
                   value="0"
                   list="根元素外边距列表"
                   autocomplete="off" />
@@ -91,8 +91,8 @@
                   type="range"
                   id="下"
                   class="范围滑块"
-                  min="0"
-                  max="300"
+                  min="-300"
+                  max="0"
                   value="0"
                   list="根元素外边距列表"
                   autocomplete="off" />
@@ -107,8 +107,8 @@
                   type="range"
                   id="左"
                   class="范围滑块"
-                  min="0"
-                  max="300"
+                  min="-300"
+                  max="0"
                   value="0"
                   list="根元素外边距列表"
                   autocomplete="off" />
@@ -146,25 +146,21 @@
               </label>
             </div>
           </div>
-          <div class="选项分区">
-            <h4 class="选项标题"><span class="中文">辅助选项</span></h4>
+          <div class="选项分区" style="border-bottom: none">
+            <h4 class="选项标题"><span class="中文">回调效果</span></h4>
             <div class="控件区 辅助选项控件区">
               <label for="显示回调特效" class="标签 选项标签 复选标签">
-                <span class="标签文本">回调触发特效</span>
+                <span class="标签文本">闪烁特效</span>
                 <input type="checkbox" id="显示回调特效" class="复选" checked />
               </label>
-              <label for="显示交叉比" class="标签 选项标签 复选标签">
-                <span class="标签文本">显示交叉比</span>
-                <input type="checkbox" id="显示交叉比" class="复选" checked />
-              </label>
               <label for="填充背景" class="标签 选项标签 复选标签">
-                <span class="标签文本">按交叉比填充背景</span>
+                <span class="标签文本">填充背景</span>
                 <input type="checkbox" id="填充背景" class="复选" checked />
               </label>
             </div>
           </div>
           <div class="选项分区">
-            <h4 class="选项标题"><span class="中文">辅助选项触发条件</span></h4>
+            <h4 class="选项标题"><span class="中文">触发条件</span></h4>
             <div class="控件区 触发条件控件区">
               <label for="已交叉" class="标签 选项标签 复选标签">
                 <span class="标签文本">已交叉</span>
@@ -173,6 +169,15 @@
               <label for="未交叉" class="标签 选项标签 复选标签">
                 <span class="标签文本">未交叉</span>
                 <input type="checkbox" id="未交叉" class="复选" checked />
+              </label>
+            </div>
+          </div>
+          <div class="选项分区">
+            <h4 class="选项标题"><span class="中文">辅助选项</span></h4>
+            <div class="控件区 辅助选项控件区">
+              <label for="显示交叉比" class="标签 选项标签 复选标签">
+                <span class="标签文本">显示交叉比</span>
+                <input type="checkbox" id="显示交叉比" class="复选" checked />
               </label>
             </div>
           </div>

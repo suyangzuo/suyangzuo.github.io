@@ -41,9 +41,7 @@
 
 .交叉比容器 {
   position: fixed;
-  top: 50%;
-  left: 50px;
-  translate: 0 -50%;
+  bottom: 50px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -84,6 +82,10 @@
   border-radius: 999px;
   overflow: hidden;
   display: flex;
+}
+
+.标签文本 {
+  user-select: none;
 }
 
 .关闭标签 .标签文本 {
@@ -144,6 +146,7 @@
   padding: 15px 20px;
   border-left: solid 2px var(--边框色);
   border-right: solid 2px var(--边框色);
+  font-size: 14px;
 }
 
 .选项分区:first-child {
@@ -166,6 +169,7 @@
   align-content: center;
   display: flex;
   flex-direction: column;
+  font-size: 16px;
 }
 
 .中文 {
@@ -261,7 +265,7 @@
 
 .数值 {
   color: lightskyblue;
-  width: 29px;
+  width: 34px;
   text-align: right;
 }
 
@@ -348,10 +352,9 @@
 
 .辅助选项控件区 {
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  align-items: flex-end;
-  gap: 5px;
+  align-items: center;
+  gap: 20px;
 }
 
 .复选标签 {

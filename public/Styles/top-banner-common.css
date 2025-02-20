@@ -115,12 +115,7 @@
   top: 0;
   left: 0;
   content: "";
-  background: linear-gradient(
-    90deg,
-    rgba(169, 228, 178, 0) 10%,
-    rgb(255, 255, 255) 50%,
-    rgba(209, 253, 215, 0) 50%
-  );
+  background: linear-gradient(90deg, rgba(169, 228, 178, 0) 10%, rgb(255, 255, 255) 50%, rgba(209, 253, 215, 0) 50%);
   background-size: 210% 100%;
   background-position: 105% 0;
   transition: 250ms;
@@ -188,7 +183,11 @@
         flex-shrink: 0;
         height: 100%;
         width: 100%;
-        /* padding: 0 15px; */
+        border-top: solid 8px transparent;
+        border-bottom: solid 8px transparent;
+        border-left: solid 12px transparent;
+        border-right: solid 12px transparent;
+        border-radius: 5px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -206,12 +205,16 @@
       }
 
       .导航1级文本:hover {
-        background-color: rgb(43, 50, 57);
+        /* background-color: rgb(43, 50, 57); */
+        background: linear-gradient(transparent 0%, transparent 100%) border-box,
+          linear-gradient(rgb(66, 77, 88) 0%, rgb(66, 77, 88) 100%) padding-box;
         cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
       }
 
       .导航1级文本:has(+ .导航2级菜单列表:hover) {
-        background-color: rgb(43, 50, 57);
+        /* background-color: rgb(43, 50, 57); */
+        background: linear-gradient(transparent 0%, transparent 100%) border-box,
+          linear-gradient(rgb(66, 77, 88) 0%, rgb(66, 77, 88) 100%) padding-box;
       }
     }
   }
@@ -495,7 +498,8 @@
     object-fit: cover;
   }
 
-  #logo-text-永, #logo-text-恒 {
+  #logo-text-永,
+  #logo-text-恒 {
     width: 25px;
     height: 45%;
   }
