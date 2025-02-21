@@ -15,6 +15,7 @@ body {
 .总区 {
   gap: 0;
   flex-direction: column;
+  padding-top: 150px;
 }
 
 .透视容器 {
@@ -88,20 +89,17 @@ body {
 }
 
 .数组容器.三维展示:nth-of-type(1) {
-  transform: rotateX(30deg) rotateY(-12deg) rotateZ(11deg) translateX(-90px)
-    translateY(-100px) translateZ(150px);
+  transform: rotateX(30deg) rotateY(-12deg) rotateZ(11deg) translateX(-90px) translateY(-100px) translateZ(150px);
 }
 
 .数组容器.三维展示:nth-of-type(2) {
   translate: 0 0 -50px;
-  transform: rotateX(30deg) rotateY(-11deg) rotateZ(10deg) translateY(-50px)
-    translateZ(50px);
+  transform: rotateX(30deg) rotateY(-11deg) rotateZ(10deg) translateY(-50px) translateZ(50px);
 }
 
 .数组容器.三维展示:nth-of-type(3) {
   translate: 0 0 -100px;
-  transform: rotateX(30deg) rotateY(-9deg) rotateZ(8deg) translateX(120px)
-    translateZ(-50px);
+  transform: rotateX(30deg) rotateY(-9deg) rotateZ(8deg) translateX(120px) translateZ(-50px);
 }
 
 .数组行 {
@@ -165,9 +163,7 @@ body {
 }
 
 .序号:hover {
-  background: center/75% 75%
-    radial-gradient(circle farthest-side at center, #fff2 0%, #fff2 100%)
-    no-repeat;
+  background: center/75% 75% radial-gradient(circle farthest-side at center, #fff2 0%, #fff2 100%) no-repeat;
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   color: white;
   font-weight: bold;
@@ -268,8 +264,7 @@ body {
 }
 
 .数组容器:not(.三维展示) .二维数组索引容器:hover,
-.数组容器:not(.三维展示):has(:where(.序号容器, .数组格):hover)
-  .二维数组索引容器 {
+.数组容器:not(.三维展示):has(:where(.序号容器, .数组格):hover) .二维数组索引容器 {
   outline: solid 2px #5ac;
   background-color: transparent;
   color: lightcyan;

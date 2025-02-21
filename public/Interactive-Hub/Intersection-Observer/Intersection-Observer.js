@@ -1,4 +1,5 @@
 const root = document.querySelector(":root");
+const rootStyle = window.getComputedStyle(root);
 const 关闭设置区 = document.getElementById("关闭设置区");
 const 视口 = document.querySelector(".视口");
 const 根元素外边距控件区 = document.querySelector(".根元素外边距控件区");
@@ -12,7 +13,7 @@ const 阈值控件区 = document.querySelector(".阈值控件区");
 
 const 已交叉复选框 = document.getElementById("已交叉");
 const 未交叉复选框 = document.getElementById("未交叉");
-const 回调特效复选框 = document.getElementById("显示回调特效");
+const 触发计数复选框 = document.getElementById("触发计数");
 const 交叉比复选框 = document.getElementById("显示交叉比");
 const 交叉比容器 = document.querySelector(".交叉比容器");
 const 交叉比容器边界矩形 = 交叉比容器.getBoundingClientRect();
@@ -23,15 +24,25 @@ const 根元素外边距右滑块 = document.getElementById("右");
 const 根元素外边距下滑块 = document.getElementById("下");
 const 根元素外边距左滑块 = document.getElementById("左");
 
-const 触发计数容器 = document.querySelector(".触发计数容器");
-const 触发计数器组 = document.getElementsByClassName("触发计数");
+const 填充背景复选框 = document.getElementById("填充背景");
 
 const 被观察者容器 = document.querySelector(".被观察者容器");
 const 被观察者 = document.querySelector(".被观察者");
 const 被观察者容器边界矩形 = 被观察者容器.getBoundingClientRect();
-交叉比容器.style.left = `${
-  被观察者容器边界矩形.left - 交叉比容器边界矩形.width - 100
-}px`;
+交叉比容器.style.left = `${被观察者容器边界矩形.left - 交叉比容器边界矩形.width - 100}px`;
+
+const 触发计数容器 = document.querySelector(".触发计数容器");
+const 触发计数容器边界矩形 = 触发计数容器.getBoundingClientRect();
+触发计数容器.style.left = `${被观察者容器边界矩形.left - 触发计数容器边界矩形.width - 100}px`;
+const 触发计数器组 = document.getElementsByClassName("触发计数");
+
+填充背景复选框.addEventListener("change", () => {
+  if (填充背景复选框.checked) {
+    root.style.setProperty("--视口背景填充色", "#ccddee10");
+  } else {
+    root.style.setProperty("--视口背景填充色", "transparent");
+  }
+})
 
 for (const 按钮 of 数字按钮组) {
   let 数值快速变化延时函数 = null;
@@ -87,18 +98,13 @@ for (const 按钮 of 数字按钮组) {
   }
 });
 
-const 关键帧序列 = [
-  { backgroundColor: "transparent" },
-  { backgroundColor: "#ced5" },
-  { backgroundColor: "transparent" },
-  { backgroundColor: "#ced5" },
-  { backgroundColor: "transparent" },
-];
-
-const 动画选项 = {
-  easing: "linear",
-  duration: 500,
-};
+触发计数复选框.addEventListener("change", () => {
+  if (触发计数复选框.checked) {
+    触发计数容器.classList.remove("隐藏");
+  } else {
+    触发计数容器.classList.add("隐藏");
+  }
+})
 
 const 交叉观察器选项 = {
   root: null,
@@ -107,6 +113,7 @@ const 交叉观察器选项 = {
 };
 
 let 首次触发交叉观察器回调 = true;
+let 交叉比 = 0;
 
 function 交叉观察器回调(entries) {
   if (首次触发交叉观察器回调) {
@@ -115,16 +122,21 @@ function 交叉观察器回调(entries) {
   }
 
   entries.forEach((entry) => {
-    const 观察对象 = entry.target;
     交叉比值元素.textContent = Math.round(entry.intersectionRatio * 100) / 100;
     if (
       (已交叉复选框.checked && entry.isIntersecting) ||
       (未交叉复选框.checked && !entry.isIntersecting)
     ) {
-      if (回调特效复选框.checked) {
-        视口.animate(关键帧序列, 动画选项);
+      const 背景填充百分比 = `${entry.intersectionRatio * 100}%`;
+      root.style.setProperty("--视口背景填充百分比", 背景填充百分比);
+
+      if (entry.intersectionRatio > 交叉比) {
+        生成触发计数器();
+      } else {
+        删除触发计数器();
       }
     }
+    交叉比 = entry.intersectionRatio;
   });
 }
 
