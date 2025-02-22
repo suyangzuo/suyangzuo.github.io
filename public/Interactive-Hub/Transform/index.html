@@ -1,15 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>变换</title>
-    <link
-      rel="icon"
-      href="/Images/Interactive-Hub/HQ/变换.png"
-      type="image/x-icon"
-    />
+    <link rel="icon" href="/Images/Interactive-Hub/HQ/变换.png" type="image/x-icon" />
     <link
       href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Titillium+Web&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Roboto+Mono&family=M+PLUS+Code+Latin&family=Ubuntu+Mono&family=M+PLUS+1+Code:wght@100..700&display=swap"
       rel="stylesheet"
@@ -26,19 +22,11 @@
   </head>
   <body>
     <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
-    <script
-      src="../../Scripts/html-include.js"
-      target="../../top-banner.html"
-      position="afterbegin"
-    ></script>
+    <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
     <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
 
     <section class="变换总区 总区">
-      <script
-        src="../../Scripts/html-include.js"
-        target="../control.html"
-        position="afterbegin"
-      ></script>
+      <script src="../../Scripts/html-include.js" target="../control.html" position="afterbegin"></script>
       <p class="交互标题">变换</p>
       <figure class="展示区">
         <div class="盒子容器">
@@ -50,12 +38,7 @@
         <div class="背景类型">
           <label for="图像" class="控件标签"
             ><span class="控件文本"><span class="控件中文"></span></span>
-            <input
-              type="checkbox"
-              id="图像"
-              name="背景类型"
-              class="复选框"
-              autocomplete="off"
+            <input type="checkbox" id="图像" name="背景类型" class="复选框" autocomplete="off"
           /></label>
         </div>
       </figure>
@@ -64,14 +47,10 @@
           <h3 class="控制分区标题">容器</h3>
           <div class="滑块区 控件区 透视区">
             <span class="滑块区标题 控件区标题"
-              ><span class="标题中文">透视</span
-              ><span class="标题代码">perspective</span></span
+              ><span class="标题中文">透视</span><span class="标题代码">perspective</span></span
             >
             <label for="none" class="控件标签">
-              <span class="控件文本"
-                ><span class="控件中文">无</span
-                ><span class="控件代码">none</span></span
-              >
+              <span class="控件文本"><span class="控件中文">无</span><span class="控件代码">none</span></span>
               <input type="radio" id="none" class="单选框" checked />
             </label>
             <label for="透视" class="控件标签">
@@ -101,39 +80,20 @@
           <h3 class="控制分区标题">自身</h3>
           <div class="单选区 控件区 变换风格区">
             <span class="单选区标题 控件区标题"
-              ><span class="标题中文">变换风格</span
-              ><span class="标题代码">transform-style</span></span
+              ><span class="标题中文">变换风格</span><span class="标题代码">transform-style</span></span
             >
             <label for="flat" class="控件标签" style="margin-right: 5px">
-              <span class="控件文本"
-                ><span class="控件中文">平面</span
-                ><span class="控件代码">flat</span></span
-              >
-              <input
-                type="radio"
-                id="flat"
-                name="变换风格"
-                class="单选框"
-                checked
-              />
+              <span class="控件文本"><span class="控件中文">平面</span><span class="控件代码">flat</span></span>
+              <input type="radio" id="flat" name="变换风格" class="单选框" checked />
             </label>
             <label for="preserve-3d" class="控件标签">
-              <span class="控件文本"
-                ><span class="控件中文">三维</span
-                ><span class="控件代码">preserve-3d</span></span
-              >
-              <input
-                type="radio"
-                id="preserve-3d"
-                name="变换风格"
-                class="单选框"
-              />
+              <span class="控件文本"><span class="控件中文">三维</span><span class="控件代码">preserve-3d</span></span>
+              <input type="radio" id="preserve-3d" name="变换风格" class="单选框" />
             </label>
           </div>
           <div class="滑块区 控件区 变换原点区">
             <span class="滑块区标题 控件区标题"
-              ><span class="标题中文">变换原点</span
-              ><span class="标题代码">transform-origin</span
+              ><span class="标题中文">变换原点</span><span class="标题代码">transform-origin</span
               ><span class="按钮区"
                 ><button id="重置变换原点" class="按钮">
                   <i class="fa-solid fa-arrows-rotate"></i></button></span
@@ -180,49 +140,34 @@
           </div>
           <div class="单选区 控件区 背面可见性区">
             <span class="单选区标题 控件区标题"
-              ><span class="标题中文">背面可见性</span
-              ><span class="标题代码">backface-visibility</span></span
+              ><span class="标题中文">背面可见性</span><span class="标题代码">backface-visibility</span></span
             >
             <label for="flat" class="控件标签" style="margin-right: 5px">
-              <span class="控件文本"
-                ><span class="控件中文">可见</span
-                ><span class="控件代码">visible</span></span
-              >
-              <input
-                type="radio"
-                id="visible"
-                name="背面可见性"
-                class="单选框"
-                checked
-              />
+              <span class="控件文本"><span class="控件中文">可见</span><span class="控件代码">visible</span></span>
+              <input type="radio" id="visible" name="背面可见性" class="单选框" checked />
             </label>
             <label for="preserve-3d" class="控件标签">
-              <span class="控件文本"
-                ><span class="控件中文">隐藏</span
-                ><span class="控件代码">hidden</span></span
-              >
-              <input
-                type="radio"
-                id="hidden"
-                name="背面可见性"
-                class="单选框"
-              />
+              <span class="控件文本"><span class="控件中文">隐藏</span><span class="控件代码">hidden</span></span>
+              <input type="radio" id="hidden" name="背面可见性" class="单选框" />
             </label>
           </div>
           <div class="滑块区 控件区 平移区">
             <span class="滑块区标题 控件区标题"
-              ><span class="标题中文">平移</span
-              ><span class="标题代码">translate</span
+              ><span class="标题中文">平移</span><span class="标题代码">translate</span
               ><span class="按钮区"
                 ><button id="重置平移" class="按钮">
                   <i class="fa-solid fa-arrows-rotate"></i></button></span
             ></span>
             <div class="多滑块容器 多控件容器">
-              <label for="平移-水平" class="控件标签">
-                <span class="控件文本"><span class="控件中文">水平</span></span>
+              <label for="平移-X轴" class="控件标签">
+                <span class="控件文本"
+                  ><span class="控件中文"
+                    ><span class="控件中文"><span class="轴维度">X</span><span class="轴文本">轴</span></span></span
+                  ></span
+                >
                 <input
                   type="range"
-                  id="平移-水平"
+                  id="平移-X轴"
                   class="滑块"
                   min="-200"
                   max="200"
@@ -232,17 +177,21 @@
                 />
                 <span class="控件值">
                   <span class="控件数字">0</span>
-                  <select class="控件单位 选择器" id="水平平移选择器">
+                  <select class="控件单位 选择器" id="X轴平移选择器">
                     <option class="选项" value="%" selected>%</option>
                     <option class="选项" value="px">px</option>
                   </select>
                 </span>
               </label>
-              <label for="平移-垂直" class="控件标签">
-                <span class="控件文本"><span class="控件中文">垂直</span></span>
+              <label for="平移-Y轴" class="控件标签">
+                <span class="控件文本"
+                  ><span class="控件中文"
+                    ><span class="控件中文"><span class="轴维度">Y</span><span class="轴文本">轴</span></span></span
+                  ></span
+                >
                 <input
                   type="range"
-                  id="平移-垂直"
+                  id="平移-Y轴"
                   class="滑块"
                   min="-200"
                   max="200"
@@ -252,9 +201,33 @@
                 />
                 <span class="控件值">
                   <span class="控件数字">0</span>
-                  <select class="控件单位 选择器" id="垂直平移选择器">
+                  <select class="控件单位 选择器" id="Y轴平移选择器">
                     <option class="选项" value="%" selected>%</option>
                     <option class="选项" value="px">px</option>
+                  </select>
+                </span>
+              </label>
+              <label for="平移-Z轴" class="控件标签">
+                <span class="控件文本"
+                  ><span class="控件中文"
+                    ><span class="控件中文"><span class="轴维度">Z</span><span class="轴文本">轴</span></span></span
+                  ></span
+                >
+                <input
+                  type="range"
+                  id="平移-Z轴"
+                  class="滑块"
+                  min="-200"
+                  max="200"
+                  value="0"
+                  list="平移列表"
+                  autocomplete="off"
+                />
+                <span class="控件值">
+                  <span class="控件数字">0</span>
+                  <select class="控件单位 选择器" id="Z轴平移选择器">
+                    <option class="选项" value="%">%</option>
+                    <option class="选项" value="px" selected>px</option>
                   </select>
                 </span>
               </label>
@@ -271,16 +244,11 @@
           </div>
           <div class="滑块区 控件区 缩放区">
             <span class="滑块区标题 控件区标题"
-              ><span class="标题中文">缩放</span
-              ><span class="标题代码">scale</span
+              ><span class="标题中文">缩放</span><span class="标题代码">scale</span
               ><span class="按钮区"
                 ><label for="水平垂直关联" class="控件标签">
                   <span class="控件文本"><i class="fa-solid fa-link"></i></span
-                  ><input
-                    type="checkbox"
-                    class="复选框"
-                    id="水平垂直关联"
-                    checked /></label
+                  ><input type="checkbox" class="复选框" id="水平垂直关联" checked /></label
                 ><button id="重置缩放" class="按钮">
                   <i class="fa-solid fa-arrows-rotate"></i></button></span
             ></span>
@@ -328,8 +296,7 @@
           </div>
           <div class="滑块区 控件区 旋转区">
             <span class="滑块区标题 控件区标题"
-              ><span class="标题中文">旋转</span
-              ><span class="标题代码">rotate</span
+              ><span class="标题中文">旋转</span><span class="标题代码">rotate</span
               ><span class="按钮区"
                 ><button id="重置旋转" class="按钮">
                   <i class="fa-solid fa-arrows-rotate"></i></button></span
@@ -337,10 +304,7 @@
             <div class="多滑块容器 多控件容器">
               <label for="旋转-x" class="控件标签">
                 <span class="控件文本"
-                  ><span class="控件中文"
-                    ><span class="轴维度">X</span
-                    ><span class="轴文本">轴</span></span
-                  ></span
+                  ><span class="控件中文"><span class="轴维度">X</span><span class="轴文本">轴</span></span></span
                 >
                 <input
                   type="range"
@@ -359,10 +323,7 @@
               </label>
               <label for="旋转-y" class="控件标签">
                 <span class="控件文本"
-                  ><span class="控件中文"
-                    ><span class="轴维度">Y</span
-                    ><span class="轴文本">轴</span></span
-                  ></span
+                  ><span class="控件中文"><span class="轴维度">Y</span><span class="轴文本">轴</span></span></span
                 >
                 <input
                   type="range"
@@ -381,10 +342,7 @@
               </label>
               <label for="旋转-z" class="控件标签">
                 <span class="控件文本"
-                  ><span class="控件中文"
-                    ><span class="轴维度">Z</span
-                    ><span class="轴文本">轴</span></span
-                  ></span
+                  ><span class="控件中文"><span class="轴维度">Z</span><span class="轴文本">轴</span></span></span
                 >
                 <input
                   type="range"

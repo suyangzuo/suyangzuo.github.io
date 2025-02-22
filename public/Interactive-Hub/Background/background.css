@@ -27,7 +27,8 @@
   justify-content: center;
   align-items: center;
   gap: 200px;
-  padding: 0;
+  height: calc(100vh - 50px);
+  top: 50px;
 }
 
 .背景-展示区 {
@@ -176,39 +177,21 @@
 }
 
 #宽度 {
-  background-image: linear-gradient(
-    90deg,
-    var(--填充颜色) var(--宽度滑块位置),
-    var(--未填充颜色) var(--宽度滑块位置)
-  );
+  background-image: linear-gradient(90deg, var(--填充颜色) var(--宽度滑块位置), var(--未填充颜色) var(--宽度滑块位置));
 }
 
 #高度 {
-  background-image: linear-gradient(
-    90deg,
-    var(--填充颜色) var(--高度滑块位置),
-    var(--未填充颜色) var(--高度滑块位置)
-  );
+  background-image: linear-gradient(90deg, var(--填充颜色) var(--高度滑块位置), var(--未填充颜色) var(--高度滑块位置));
 }
 
 .尺寸-宽度 .轴数字 {
   transform: translateY(100%)
-    translateX(
-      calc(
-        ((var(--位置轴宽度) - var(--拇指宽度)) * 0.42857) - var(--位置轴宽度) /
-          2 + var(--拇指宽度) / 2
-      )
-    );
+    translateX(calc(((var(--位置轴宽度) - var(--拇指宽度)) * 0.42857) - var(--位置轴宽度) / 2 + var(--拇指宽度) / 2));
 }
 
 .尺寸-高度 .轴数字 {
   transform: translateY(100%)
-    translateX(
-      calc(
-        ((var(--位置轴宽度) - var(--拇指宽度)) * 0.2) - var(--位置轴宽度) / 2 +
-          var(--拇指宽度) / 2
-      )
-    );
+    translateX(calc(((var(--位置轴宽度) - var(--拇指宽度)) * 0.2) - var(--位置轴宽度) / 2 + var(--拇指宽度) / 2));
 }
 
 #bg-size-marks {
@@ -247,8 +230,7 @@
   align-items: flex-start;
   margin: 20px 0;
   padding: 0 10px 0 0;
-  font-family: "JetBrains Mono", Consolas, "Noto Sans SC", sans-serif,
-    "Noto Sans Mono", monospace;
+  font-family: "JetBrains Mono", Consolas, "Noto Sans SC", sans-serif, "Noto Sans Mono", monospace;
   text-wrap: nowrap;
 }
 
@@ -324,8 +306,7 @@ label[for="bg-size"] {
   width: var(--拇指宽度);
   height: var(--拇指宽度);
   border-radius: 50px;
-  background: no-repeat center/contain
-    url(/Images/Interactive-Hub/进度条拇指/闪电球.png);
+  background: no-repeat center/contain url(/Images/Interactive-Hub/进度条拇指/闪电球.png);
   transform: translateY(-5%) scale(1.5);
   filter: drop-shadow(0 0 2px black);
   border: none;
@@ -339,8 +320,7 @@ label[for="bg-size"] {
   width: var(--拇指宽度);
   aspect-ratio: 1;
   border-radius: 50px;
-  background: no-repeat center/contain
-    url(/Images/Interactive-Hub/进度条拇指/闪电球.png);
+  background: no-repeat center/contain url(/Images/Interactive-Hub/进度条拇指/闪电球.png);
   transform: translateY(-50%) scale(1.5);
   filter: drop-shadow(0 0 2px black);
 }
@@ -453,10 +433,7 @@ input[type="radio"]:checked::after,
   animation: 单选框呼吸 0.5s ease-in-out infinite alternate;
 }
 
-.背景-操作区:not(:has(.拖拽区.拖拽中))
-  .尺寸-等比缩放
-  .标签:hover
-  input[type="radio"] {
+.背景-操作区:not(:has(.拖拽区.拖拽中)) .尺寸-等比缩放 .标签:hover input[type="radio"] {
   animation: 单选框呼吸 0.5s ease-in-out infinite;
 }
 
@@ -495,25 +472,14 @@ input[type="radio"]:checked::after,
 }
 
 #x-axis {
-  background-image: linear-gradient(
-    90deg,
-    var(--填充颜色) var(--填充比例-X轴),
-    var(--未填充颜色) var(--填充比例-X轴)
-  );
+  background-image: linear-gradient(90deg, var(--填充颜色) var(--填充比例-X轴), var(--未填充颜色) var(--填充比例-X轴));
 }
 
 #y-axis {
-  background-image: linear-gradient(
-    90deg,
-    var(--填充颜色) var(--填充比例-Y轴),
-    var(--未填充颜色) var(--填充比例-Y轴)
-  );
+  background-image: linear-gradient(90deg, var(--填充颜色) var(--填充比例-Y轴), var(--未填充颜色) var(--填充比例-Y轴));
 }
 
-.背景-操作区:not(:has(.拖拽区.拖拽中))
-  :where(.尺寸, .位置)
-  input[type="range"]:hover
-  + .轴数字 {
+.背景-操作区:not(:has(.拖拽区.拖拽中)) :where(.尺寸, .位置) input[type="range"]:hover + .轴数字 {
   background-color: #3d6464;
   /*color: black;*/
 }
@@ -525,20 +491,10 @@ input[type="radio"]:checked::after,
   text-align: center;
   position: absolute;
   padding: 4px 5px 1px 5px;
-  clip-path: polygon(
-    0% 15%,
-    44% 15%,
-    50% 0%,
-    55% 15%,
-    100% 15%,
-    100% 100%,
-    0% 100%
-  );
+  clip-path: polygon(0% 15%, 44% 15%, 50% 0%, 55% 15%, 100% 15%, 100% 100%, 0% 100%);
   width: 50px;
   left: calc(50% - 4px);
-  transition:
-    color 0.1s,
-    background-color 0.1s;
+  transition: color 0.1s, background-color 0.1s;
 }
 
 .宽度数字,

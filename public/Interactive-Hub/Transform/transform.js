@@ -20,8 +20,9 @@ const 选择器组 = document.querySelectorAll(".选择器");
 const 重置变换属性按钮组 = document.querySelectorAll(".控件区 .按钮");
 const 水平垂直关联复选框 = document.querySelector("#水平垂直关联");
 
-let 水平平移单位 = "%";
-let 垂直平移单位 = "%";
+let X轴平移单位 = "%";
+let Y轴平移单位 = "%";
+let Z轴平移单位 = "%";
 
 背景图确认框.addEventListener("change", () => {
   if (背景图确认框.checked) {
@@ -35,14 +36,18 @@ let 垂直平移单位 = "%";
 
 for (const 选择器 of 选择器组) {
   选择器.addEventListener("change", () => {
-    if (选择器.id === "水平平移选择器") {
-      水平平移单位 = 选择器.value;
-      const 水平平移 = 选择器.parentElement.previousElementSibling.value;
-      root.style.setProperty(`--平移-水平`, `${水平平移}${水平平移单位}`);
+    if (选择器.id === "X轴平移选择器") {
+      X轴平移单位 = 选择器.value;
+      const X轴平移 = 选择器.parentElement.previousElementSibling.value;
+      root.style.setProperty(`--平移-X轴`, `${X轴平移}${X轴平移单位}`);
+    } else if (选择器.id === "Y轴平移选择器") {
+      Y轴平移单位 = 选择器.value;
+      const Y轴平移 = 选择器.parentElement.previousElementSibling.value;
+      root.style.setProperty(`--平移-Y轴`, `${Y轴平移}${Y轴平移单位}`);
     } else {
-      垂直平移单位 = 选择器.value;
-      const 垂直平移 = 选择器.parentElement.previousElementSibling.value;
-      root.style.setProperty(`--平移-垂直`, `${垂直平移}${垂直平移单位}`);
+      Z轴平移单位 = 选择器.value;
+      const Z轴平移 = 选择器.parentElement.previousElementSibling.value;
+      root.style.setProperty(`--平移-Z轴`, `${Z轴平移}${Z轴平移单位}`);
     }
   });
 }
@@ -110,9 +115,7 @@ for (const 滑块 of 缩放滑块组) {
   滑块.addEventListener("input", () => {
     root.style.setProperty(`--${滑块.id}`, `${滑块.value}%`);
     if (水平垂直关联复选框.checked) {
-      const 另一滑块 = Array.from(缩放滑块组).find(
-        (checkbox) => checkbox.id !== 滑块.id,
-      );
+      const 另一滑块 = Array.from(缩放滑块组).find((checkbox) => checkbox.id !== 滑块.id);
       另一滑块.value = 滑块.value;
       root.style.setProperty(`--${另一滑块.id}`, `${另一滑块.value}%`);
       设置滑块填充与数值(另一滑块);
@@ -163,8 +166,7 @@ function 显示或隐藏原始盒子() {
 
 for (const 按钮 of 重置变换属性按钮组) {
   按钮.addEventListener("click", () => {
-    const 本区滑块组 =
-      按钮.parentElement.parentElement.parentElement.querySelectorAll(".滑块");
+    const 本区滑块组 = 按钮.parentElement.parentElement.parentElement.querySelectorAll(".滑块");
 
     for (const 滑块 of 本区滑块组) {
       const min = parseInt(滑块.min, 10);
@@ -246,8 +248,7 @@ function 重置参数() {
   原始盒子.classList.remove("显示原始盒子");
 
   水平垂直关联复选框.checked = true;
-  水平垂直关联复选框.previousElementSibling.innerHTML =
-    '<i class="fa-solid fa-link"></i>';
+  水平垂直关联复选框.previousElementSibling.innerHTML = '<i class="fa-solid fa-link"></i>';
 
   const 背面可见单选框 = document.querySelector("#visible");
   背面可见单选框.checked = true;

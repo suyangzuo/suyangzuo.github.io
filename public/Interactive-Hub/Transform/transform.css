@@ -9,10 +9,12 @@
   --变换原点-垂直偏移: 50%;
   --变换原点-水平填充: 50%;
   --变换原点-垂直填充: 50%;
-  --平移-水平: 0%;
-  --平移-垂直: 0%;
-  --平移-水平填充: 50%;
-  --平移-垂直填充: 50%;
+  --平移-X轴: 0%;
+  --平移-Y轴: 0%;
+  --平移-Z轴: 0%;
+  --平移-X轴填充: 50%;
+  --平移-Y轴填充: 50%;
+  --平移-Z轴填充: 50%;
   --缩放-水平: 100%;
   --缩放-垂直: 100%;
   --缩放-水平填充: 50%;
@@ -23,8 +25,7 @@
   --旋转-x填充: 50%;
   --旋转-y填充: 50%;
   --旋转-z填充: 50%;
-  --背景图: center/cover no-repeat
-    url("/Images/Background-Images/Busy-Code-Man.gif");
+  --背景图: center/cover no-repeat url("/Images/Background-Images/Busy-Code-Man.gif");
 }
 
 input[type="range"] {
@@ -159,10 +160,9 @@ input[type="range"]::-moz-range-thumb:hover {
 #变换盒子 {
   background-color: #ced4;
   transform-origin: var(--变换原点-水平偏移) var(--变换原点-垂直偏移);
-  translate: var(--平移-水平) var(--平移-垂直);
+  translate: var(--平移-X轴) var(--平移-Y轴) var(--平移-Z轴);
   scale: var(--缩放-水平) var(--缩放-垂直);
-  transform: rotateX(var(--旋转-x)) rotateY(var(--旋转-y))
-    rotateZ(var(--旋转-z));
+  transform: rotateX(var(--旋转-x)) rotateY(var(--旋转-y)) rotateZ(var(--旋转-z));
   transform-style: var(--透视);
 }
 
@@ -278,7 +278,7 @@ span[class$="代码"]:not(.标题代码) {
 .控件文本 {
   width: fit-content;
   height: fit-content;
-  padding: 10px 15px;
+  padding: 8px 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -347,11 +347,7 @@ span[class$="代码"]:not(.标题代码) {
 }
 
 #透视 {
-  background-image: linear-gradient(
-    90deg,
-    var(--滑块填充色) var(--透视填充),
-    var(--滑块未填充色) var(--透视填充)
-  );
+  background-image: linear-gradient(90deg, var(--滑块填充色) var(--透视填充), var(--滑块未填充色) var(--透视填充));
 }
 
 #变换原点-水平 {
@@ -370,19 +366,27 @@ span[class$="代码"]:not(.标题代码) {
   );
 }
 
-#平移-水平 {
+#平移-X轴 {
   background-image: linear-gradient(
     90deg,
-    var(--滑块填充色) var(--平移-水平填充),
-    var(--滑块未填充色) var(--平移-水平填充)
+    var(--滑块填充色) var(--平移-X轴填充),
+    var(--滑块未填充色) var(--平移-X轴填充)
   );
 }
 
-#平移-垂直 {
+#平移-Y轴 {
   background-image: linear-gradient(
     90deg,
-    var(--滑块填充色) var(--平移-垂直填充),
-    var(--滑块未填充色) var(--平移-垂直填充)
+    var(--滑块填充色) var(--平移-Y轴填充),
+    var(--滑块未填充色) var(--平移-Y轴填充)
+  );
+}
+
+#平移-Z轴 {
+  background-image: linear-gradient(
+    90deg,
+    var(--滑块填充色) var(--平移-Z轴填充),
+    var(--滑块未填充色) var(--平移-Z轴填充)
   );
 }
 
@@ -403,27 +407,15 @@ span[class$="代码"]:not(.标题代码) {
 }
 
 #旋转-x {
-  background-image: linear-gradient(
-    90deg,
-    var(--滑块填充色) var(--旋转-x填充),
-    var(--滑块未填充色) var(--旋转-x填充)
-  );
+  background-image: linear-gradient(90deg, var(--滑块填充色) var(--旋转-x填充), var(--滑块未填充色) var(--旋转-x填充));
 }
 
 #旋转-y {
-  background-image: linear-gradient(
-    90deg,
-    var(--滑块填充色) var(--旋转-y填充),
-    var(--滑块未填充色) var(--旋转-y填充)
-  );
+  background-image: linear-gradient(90deg, var(--滑块填充色) var(--旋转-y填充), var(--滑块未填充色) var(--旋转-y填充));
 }
 
 #旋转-z {
-  background-image: linear-gradient(
-    90deg,
-    var(--滑块填充色) var(--旋转-z填充),
-    var(--滑块未填充色) var(--旋转-z填充)
-  );
+  background-image: linear-gradient(90deg, var(--滑块填充色) var(--旋转-z填充), var(--滑块未填充色) var(--旋转-z填充));
 }
 
 .轴维度 {

@@ -40,7 +40,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 115px;
+  padding-top: 150px;
   gap: 50px;
   scrollbar-gutter: stable;
 }
