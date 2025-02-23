@@ -1,0 +1,77 @@
+.规则介绍页 {
+  margin: 0 auto;
+  margin-top: 120px;
+  background-image: url(./img/规则背景.png);
+  background-position: center;
+  background-size: cover;
+  width: 80vw;
+  height: 80vh;
+  animation: 淡入 1s ease;
+  border: none;
+  outline: none;
+  border-radius: 20px;
+}
+
+.规则遮罩层 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  z-index: 1;
+}
+
+@keyframes 淡入 {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.规则内容{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.规则内容 p:nth-of-type(1){
+  background: linear-gradient(to right, #FFA500, #800080); /* 橙色到紫色 */
+  background-clip: text;
+  color: transparent;
+  font-size: 6rem;
+  margin-bottom: 20px;
+}
+
+.规则内容 p:nth-of-type(2){
+  margin-top: 30px;
+  /* background: linear-gradient(to right, #FFD700, #FFA500); */
+  background: linear-gradient(to right, #DA70D6, #8A2BE2); /* 兰花紫到蓝紫色 */
+  background-clip: text;
+  color: transparent;
+  animation: 关闭文字 1.3s infinite;
+}
+
+@keyframes 关闭文字{
+  0%, 100% {
+    opacity: 1; /* 完全可见 */
+}
+50% {
+    opacity: 0; /* 完全透明 */
+}
+}
+
+.内容{
+  width: 80%;
+  height: 70%;
+  border: solid red;
+}
+

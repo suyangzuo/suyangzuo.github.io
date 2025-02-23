@@ -6,97 +6,180 @@
   box-sizing: border-box;
 }
 
-.top {
-  display: flex;
-  justify-content: center;
-  font-size: 2vw;
-  margin-bottom: 10px;
-  /* border: solid red; */
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url(./img/背景图片.png);
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+  opacity: 0.7;
 }
 
-@media (max-width: 1200px) {
-  .top {
-    font-size: 30px;
+.time {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+}
+
+.time > span {
+  font-size: 50px;
+  /* background: linear-gradient(45deg, #ff6b6b, #f7d94c); */
+  /* background: linear-gradient(45deg, #3e2a47, #d3cce3); */
+  background: linear-gradient(45deg, #4b3d6f, #a45d8d);
+  background-clip: text;
+  color: transparent;
+}
+
+#时间 {
+  font-size: 45px;
+  /* background: linear-gradient(45deg, #4a4e69, #22223b, #f5f0ef); */
+  /* background: linear-gradient(45deg, #6a0572, #a45d8d, #d6d6d6); */
+  /* background: linear-gradient(45deg, #2b2d42, #8d99ae, #edf2f4); */
+  /* background: linear-gradient(45deg, #1d1f21, #4b4e54, #c5c6c7); */
+  background: linear-gradient(45deg, #4b3d6f, #6c5b7f, #c06c84);
+  background-size: 400%;
+  background-clip: text;
+  color: transparent;
+  animation: 用时时间 5s linear infinite;
+}
+
+@keyframes 用时时间 {
+  0% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 100% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  75% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
 
+.how {
+  display: flex;
+  justify-content: end;
+}
+
+.how > img {
+  margin-right: 40px;
+  width: 80px;
+  height: 80px;
+  transition: 0.3s ease;
+  opacity: 0.8;
+}
+
+
+
+.how > img:hover {
+  transform: scale(1.4);
+}
+
 .main {
+  width: 100vw;
+  height: 70vh;
   display: flex;
-  justify-content: center;
-}
-
-.左侧区 {
-  margin-right: 30px;
-  display: flex;
-  justify-content: center;
   flex-direction: column;
-  flex-wrap: wrap;
-  /* border: solid red; */
-}
-
-
-
-.汉堡菜单区 {
-  display: flex;
-  justify-content: center;
   align-items: center;
-  /* border: solid green; */
-}
-
-.菜单 {
-  display: none;
-  top: 60px;
-  left: 20px;
-  background-color: #fff;
-}
-
-.菜单.展示{
-  display: block;
-}
-
-.汉堡按钮 {
-  width: 120px;
-  height: 60px;
-  border-radius: 15px;
-  background-color: brown;
-  font-size: 18px;
-  border: none;
-}
-
-.菜单 > ul {
-  color: black;
-  list-style: none;
-}
-
-.提示 {
-  margin-top: 20vh;
-  text-align: center;
-}
-
-.名字区 {
-  display: grid;
-  grid-gap: 5px;
-  grid-template-columns: repeat(3, 8vh);
-  grid-template-rows: repeat(5, 2vw);
+  justify-content: space-around;
   /* border: solid red; */
 }
 
-.名字区 > button {
-  border-radius: 20px;
-  border: none;
-  background-color: antiquewhite;
+.人物按钮区 {
+  width: 80vw;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.人物按钮 {
+  background-color: rgba(136, 103, 151, 0.8);
+  font-size: 20px;
+  color: #f8d3e0;
+  width: 5vw;
+  height: 3.8vh;
+  border-radius: 5px;
+  border: 2px solid transparent; 
+  box-shadow: 0 0 20px rgba(164, 79, 243, 0.7), 
+              0 0 30px rgba(110, 28, 158, 0.5); 
+  transition: box-shadow 0.3s ease; 
+  transition: 0.3s ease;
+}
+
+.人物按钮:hover {
+  transform: scale(1.3);
+  box-shadow: 0 0 30pxrgba(164, 79, 243, 1), 
+  0 0 40pxrgba(110, 28, 158, 0.8); 
 }
 
 .人物肖像区 {
-  /* border: solid red; */
-  display: grid;
-  grid-gap: 5px;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(3, 1fr);
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
-.人物肖像> img {
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
+.人物肖像 {
+  display: flex;
+  justify-content: center;
+  perspective: 1000px;
+}
+
+.人物肖像图片 {
+  width:230px;
+  height: 460px;
+  border-radius: 5px;
+  object-fit: contain;
+  opacity: 0.8;
+  border: 2px solid transparent; 
+  transition: 0.3s ease;
+}
+
+.人物肖像图片:hover{
+  transform: scale(1.1);
+}
+
+
+/* 响应式布局 */
+@media (max-width: 1920px) {
+  .人物按钮 {
+    width: 4vw;
+    height: 3vh;
+    min-width: 90px;
+    min-height: 40px;
+    border-radius: 5px;
+  }
+
+  .人物肖像区 {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .人物肖像 {
+    flex: 0 0 calc(20% - 20px);
+    display: flex;
+    justify-content: center;
+  }
+
+  .人物肖像图片 {
+    width: 180px;
+    height: 180px;
+    border-radius: 5px;
+    object-fit: contain;
+  }
 }
