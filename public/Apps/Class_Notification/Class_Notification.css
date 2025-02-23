@@ -19,7 +19,7 @@ label {
   width: 100%;
   color: white;
   border: solid 2px #30353a;
-  padding: 25px;
+  padding: 75px 25px 25px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -230,12 +230,7 @@ select:-webkit-autofill:focus {
   top: 50%;
   left: 50%;
   translate: -50% -50%;
-  background: conic-gradient(
-    transparent 0deg,
-    cyan 5deg,
-    cyan 65deg,
-    transparent 66deg
-  );
+  background: conic-gradient(transparent 0deg, cyan 5deg, cyan 65deg, transparent 66deg);
   content: "";
   opacity: 0;
   animation: 截图按钮后置背景动画 2s ease-out infinite;
