@@ -1,15 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>颜色</title>
-    <link
-      rel="icon"
-      href="/Images/Interactive-Hub/HQ/颜色.png"
-      type="image/x-icon"
-    />
+    <link rel="icon" href="/Images/Interactive-Hub/HQ/颜色.png" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -21,11 +17,8 @@
     <link rel="stylesheet" href="../control.css" />
     <link rel="stylesheet" href="../interactive-common.css" />
     <link rel="stylesheet" href="./color.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css"
-    />
-    <script src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"></script>
+    <link rel="stylesheet" href="./coloris.min.css" />
+    <script src="./coloris.min.js"></script>
     <script src="/Scripts/top-banner.js" defer></script>
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
     <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
@@ -33,33 +26,18 @@
   </head>
   <body>
     <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
-    <script
-      src="../../Scripts/html-include.js"
-      target="../../top-banner.html"
-      position="afterbegin"
-    ></script>
+    <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
     <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
 
     <section class="颜色总区 总区">
-      <script
-        src="../../Scripts/html-include.js"
-        target="../control.html"
-        position="afterbegin"
-      ></script>
+      <script src="../../Scripts/html-include.js" target="../control.html" position="afterbegin"></script>
       <p class="交互标题">颜色</p>
       <figure class="展示区">
-        <input
-          type="text"
-          data-coloris
-          id="颜色选择器"
-          placeholder="点击此处展开"
-        />
+        <input type="text" data-coloris id="颜色选择器" placeholder="点击此处展开" />
       </figure>
       <div class="控制区">
         <div class="hex颜色区 颜色区">
-          <h2 class="颜色标题 hex颜色标题">
-            <span class="颜色标题模式">Hex</span>模式：
-          </h2>
+          <h2 class="颜色标题 hex颜色标题"><span class="颜色标题模式">Hex</span>模式：</h2>
           <div class="颜色值 hex颜色值">
             <span class="hex前缀">#</span>
             <span class="颜色分值 红值"></span>
@@ -70,8 +48,7 @@
         </div>
         <div class="hex无透明颜色区 颜色区">
           <h2 class="颜色标题 hex无透明颜色标题">
-            <span class="颜色标题模式">Hex</span
-            ><span class="无透明度">无透明度</span>模式：
+            <span class="颜色标题模式">Hex</span><span class="无透明度">无透明度</span>模式：
           </h2>
           <div class="颜色值 hex无透明颜色值">
             <span class="hex前缀">#</span>
@@ -82,8 +59,7 @@
         </div>
         <div class="hex简写颜色区 颜色区">
           <h2 class="颜色标题 hex简写颜色标题">
-            <span class="颜色标题模式">Hex</span
-            ><span class="简写">简写</span>模式：
+            <span class="颜色标题模式">Hex</span><span class="简写">简写</span>模式：
           </h2>
           <div class="颜色值 hex简写颜色值">
             <span class="hex前缀">#</span>
@@ -106,9 +82,7 @@
           </div>
         </div>
         <div class="rgba颜色区 颜色区">
-          <h2 class="颜色标题 rgba颜色标题">
-            <span class="颜色标题模式">RGBA</span>模式：
-          </h2>
+          <h2 class="颜色标题 rgba颜色标题"><span class="颜色标题模式">RGBA</span>模式：</h2>
           <div class="颜色值 rgba颜色值">
             <span class="rgba前缀">rgba</span>
             <span class="括号 前括号">(</span>
@@ -125,8 +99,7 @@
 
         <div class="rgb颜色区 颜色区">
           <h2 class="颜色标题 rgb颜色标题">
-            <span class="颜色标题模式">RGB</span
-            ><span class="无透明度">无透明度</span>模式：
+            <span class="颜色标题模式">RGB</span><span class="无透明度">无透明度</span>模式：
           </h2>
           <div class="颜色值 rgb颜色值">
             <span class="rgb前缀">rgb</span>

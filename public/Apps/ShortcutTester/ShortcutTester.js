@@ -221,19 +221,19 @@ function 添加测试对象(列表项容器) {
     } else if (功能键.textContent.trim() === "Win") {
       测试对象.meta = true;
     }
+  }
 
-    const 按键内容 = 按键.textContent.trim();
-    switch (按键内容) {
-      case "⬆":
-        测试对象.key = "ArrowUp";
-        break;
-      case "⬇":
-        测试对象.key = "ArrowDown";
-        break;
-      default:
-        测试对象.key = 按键内容;
-        break;
-    }
+  const 按键内容 = 按键.textContent.trim();
+  switch (按键内容) {
+    case "⬆":
+      测试对象.key = "ArrowUp";
+      break;
+    case "⬇":
+      测试对象.key = "ArrowDown";
+      break;
+    default:
+      测试对象.key = 按键内容;
+      break;
   }
 
   测试对象池.push(测试对象);

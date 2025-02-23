@@ -24,8 +24,7 @@ body {
     #0f2027
   );*/
 
-  background: center/cover no-repeat fixed
-    url("/Images/Background-Images/交互式学习中心-主页背景.jpg");
+  background: center/cover no-repeat fixed url("/Images/Background-Images/交互式学习中心-主页背景.jpg");
   width: 100%;
   min-height: 100vh;
   overflow: auto;
@@ -148,18 +147,9 @@ body {
   height: calc(var(--交互单项高度) + var(--四角线框间隙) * 2);
   border: solid var(--四角线框厚度) lightcyan;
   pointer-events: none;
-  mask: conic-gradient(
-      at var(--四角线框宽度) var(--四角线框高度),
-      transparent 75%,
-      white 75%
-    )
-    0 0 / calc(100% - var(--四角线框宽度)) calc(100% - var(--四角线框高度))
-    repeat;
-  transition:
-    top 250ms,
-    left 250ms,
-    opacity 250ms,
-    scale 250ms;
+  mask: conic-gradient(at var(--四角线框宽度) var(--四角线框高度), transparent 75%, white 75%) 0 0 /
+    calc(100% - var(--四角线框宽度)) calc(100% - var(--四角线框高度)) repeat;
+  transition: top 250ms, left 250ms, opacity 250ms, scale 250ms;
   opacity: 0;
   scale: 0;
 }
@@ -214,13 +204,13 @@ body {
   color: #345;
   font-weight: bolder;
   aspect-ratio: 1;
-  height: 60%;
+  height: 50%;
   display: flex;
   justify-content: flex-end;
   align-items: center;
   font-family: Consolas, monospace;
   font-size: 1rem;
-  padding: 0 5px 0 0;
+  text-wrap: nowrap;
 }
 
 .链接-图 {
