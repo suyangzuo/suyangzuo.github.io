@@ -1,175 +1,210 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>交叉观察器</title>
+    <link rel="icon" href="/Images/Interactive-Hub/HQ/交叉观察器.png" type="image/x-icon" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Titillium+Web&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Roboto+Mono&family=M+PLUS+Code+Latin&family=Ubuntu+Mono&family=M+PLUS+1+Code:wght@100..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/Styles/common.css" />
+    <link rel="stylesheet" href="/Styles/top-banner-common.css" />
+    <link rel="stylesheet" href="../control.css" />
+    <link rel="stylesheet" href="../interactive-common.css" />
+    <link rel="stylesheet" href="Intersection-Observer.css" />
+    <script src="/Scripts/top-banner.js" defer></script>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <script src="Intersection-Observer.js" defer></script>
+    <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>交叉观察器</title>
-  <link rel="icon" href="/Images/Interactive-Hub/HQ/交叉观察器.png" type="image/x-icon" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Titillium+Web&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Roboto+Mono&family=M+PLUS+Code+Latin&family=Ubuntu+Mono&family=M+PLUS+1+Code:wght@100..700&display=swap"
-    rel="stylesheet" />
-  <link rel="stylesheet" href="/Styles/common.css" />
-  <link rel="stylesheet" href="/Styles/top-banner-common.css" />
-  <link rel="stylesheet" href="../control.css" />
-  <link rel="stylesheet" href="../interactive-common.css" />
-  <link rel="stylesheet" href="Intersection-Observer.css" />
-  <script src="/Scripts/top-banner.js" defer></script>
-  <script src="https://cdn.lordicon.com/lordicon.js"></script>
-  <script src="Intersection-Observer.js" defer></script>
-  <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
-</head>
+  <body>
+    <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
+    <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
+    <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
 
-<body>
-  <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
-  <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
-  <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
-
-  <section class="字体总区 总区">
-    <script src="../../Scripts/html-include.js" target="../control.html" position="afterbegin"></script>
-    <p class="交互标题">交叉观察器</p>
-    <div class="交叉比容器">
-      <p class="交叉比文本">
-        <span class="中文">交叉比</span>
-        <span class="代码">intersectionRatio</span>
-      </p>
-      <span class="交叉比值">0</span>
-    </div>
-    <div class="触发计数容器"></div>
-    <div class="设置区">
-      <div class="选项区">
-        <div class="选项分区">
-          <h4 class="选项标题"><span class="中文">根元素</span><span class="代码">root</span></h4>
-          <div class="控件区 根元素控件区">
-            <label for="视口" class="选项标签 单选标签">
-              <span class="标签文本">视口</span>
-              <input type="radio" id="视口" name="根元素" class="单选" checked />
-            </label>
-            <label for="父元素" class="选项标签 单选标签">
-              <span class="标签文本">父元素</span>
-              <input type="radio" id="父元素" name="根元素" class="单选" />
-            </label>
+    <section class="字体总区 总区">
+      <script src="../../Scripts/html-include.js" target="../control.html" position="afterbegin"></script>
+      <p class="交互标题">交叉观察器</p>
+      <div class="交叉比容器">
+        <p class="交叉比文本">
+          <span class="中文">交叉比</span>
+          <span class="代码">intersectionRatio</span>
+        </p>
+        <span class="交叉比值">0</span>
+      </div>
+      <div class="触发计数容器"></div>
+      <div class="设置区">
+        <div class="选项区">
+          <div class="选项分区">
+            <h4 class="选项标题"><span class="中文">根元素</span><span class="代码">root</span></h4>
+            <div class="控件区 根元素控件区">
+              <label for="视口" class="选项标签 单选标签">
+                <span class="标签文本">视口</span>
+                <input type="radio" id="视口" name="根元素" class="单选" checked />
+              </label>
+              <label for="父元素" class="选项标签 单选标签">
+                <span class="标签文本">父元素</span>
+                <input type="radio" id="父元素" name="根元素" class="单选" />
+              </label>
+            </div>
+          </div>
+          <div class="选项分区">
+            <h4 class="选项标题"><span class="中文">根元素外边距</span><span class="代码">rootMargin</span></h4>
+            <div class="控件区 根元素外边距控件区">
+              <label for="上" class="标签 选项标签 滑块标签">
+                <span class="标签文本">上</span>
+                <input
+                  type="range"
+                  id="上"
+                  class="范围滑块"
+                  min="-300"
+                  max="0"
+                  value="0"
+                  list="根元素外边距列表"
+                  autocomplete="off"
+                />
+                <p class="滑块数据">
+                  <span class="数值">0</span>
+                  <span class="单位">px</span>
+                </p>
+              </label>
+              <label for="右" class="标签 选项标签 滑块标签">
+                <span class="标签文本">右</span>
+                <input
+                  type="range"
+                  id="右"
+                  class="范围滑块"
+                  min="-300"
+                  max="0"
+                  value="0"
+                  list="根元素外边距列表"
+                  autocomplete="off"
+                />
+                <p class="滑块数据">
+                  <span class="数值">0</span>
+                  <span class="单位">px</span>
+                </p>
+              </label>
+              <label for="下" class="标签 选项标签 滑块标签">
+                <span class="标签文本">下</span>
+                <input
+                  type="range"
+                  id="下"
+                  class="范围滑块"
+                  min="-300"
+                  max="0"
+                  value="0"
+                  list="根元素外边距列表"
+                  autocomplete="off"
+                />
+                <p class="滑块数据">
+                  <span class="数值">0</span>
+                  <span class="单位">px</span>
+                </p>
+              </label>
+              <label for="左" class="标签 选项标签 滑块标签">
+                <span class="标签文本">左</span>
+                <input
+                  type="range"
+                  id="左"
+                  class="范围滑块"
+                  min="-300"
+                  max="0"
+                  value="0"
+                  list="根元素外边距列表"
+                  autocomplete="off"
+                />
+                <p class="滑块数据">
+                  <span class="数值">0</span>
+                  <span class="单位">px</span>
+                </p>
+              </label>
+              <datalist class="数据列表" id="根元素外边距列表">
+                <option value="100" label="100"></option>
+                <option value="200" label="200"></option>
+              </datalist>
+            </div>
+          </div>
+          <div class="选项分区">
+            <h4 class="选项标题"><span class="中文">阈值</span><span class="代码">threshold</span></h4>
+            <div class="控件区 阈值控件区">
+              <label for="起始阈值" class="标签 选项标签 数字标签">
+                <span class="标签文本">起始阈值</span>
+                <button id="降低起始阈值" class="数字按钮" 变化="减少">-</button>
+                <input type="number" min="0" max="1" value="0" step="0.01" id="起始阈值" class="数字框" />
+                <button id="提升起始阈值" class="数字按钮" 变化="增加">+</button>
+              </label>
+              <label for="数量" class="标签 选项标签 数字标签">
+                <span class="标签文本">阈值数量</span>
+                <button id="减少数量" class="数字按钮" 变化="减少">-</button>
+                <input type="number" min="1" max="100" value="1" step="1" id="数量" class="数字框" />
+                <button id="增加数量" class="数字按钮" 变化="增加">+</button>
+              </label>
+              <label for="步长" class="标签 选项标签 数字标签">
+                <span class="标签文本">阈值步长</span>
+                <button id="减少步长" class="数字按钮" 变化="减少">-</button>
+                <input type="number" min="0.01" max="1" value="0.01" step="0.01" id="步长" class="数字框" />
+                <button id="增加步长" class="数字按钮" 变化="增加">+</button>
+              </label>
+            </div>
+          </div>
+          <div class="选项分区" style="border-bottom: none">
+            <h4 class="选项标题"><span class="中文">回调效果</span></h4>
+            <div class="控件区 辅助选项控件区">
+              <label for="触发计数" class="标签 选项标签 复选标签">
+                <span class="标签文本">触发计数</span>
+                <input type="checkbox" id="触发计数" class="复选" checked />
+              </label>
+              <label for="填充背景" class="标签 选项标签 复选标签">
+                <span class="标签文本">填充背景</span>
+                <input type="checkbox" id="填充背景" class="复选" checked />
+              </label>
+            </div>
+          </div>
+          <div class="选项分区">
+            <h4 class="选项标题"><span class="中文">触发条件</span></h4>
+            <div class="控件区 触发条件控件区">
+              <label for="已交叉" class="标签 选项标签 复选标签">
+                <span class="标签文本">已交叉</span>
+                <input type="checkbox" id="已交叉" class="复选" checked />
+              </label>
+              <label for="未交叉" class="标签 选项标签 复选标签">
+                <span class="标签文本">未交叉</span>
+                <input type="checkbox" id="未交叉" class="复选" checked />
+              </label>
+            </div>
+          </div>
+          <div class="选项分区">
+            <h4 class="选项标题"><span class="中文">辅助选项</span></h4>
+            <div class="控件区 辅助选项控件区">
+              <label for="显示交叉比" class="标签 选项标签 复选标签">
+                <span class="标签文本">显示交叉比</span>
+                <input type="checkbox" id="显示交叉比" class="复选" checked />
+              </label>
+            </div>
           </div>
         </div>
-        <div class="选项分区">
-          <h4 class="选项标题"><span class="中文">根元素外边距</span><span class="代码">rootMargin</span></h4>
-          <div class="控件区 根元素外边距控件区">
-            <label for="上" class="标签 选项标签 滑块标签">
-              <span class="标签文本">上</span>
-              <input type="range" id="上" class="范围滑块" min="-300" max="0" value="0" list="根元素外边距列表" autocomplete="off" />
-              <p class="滑块数据">
-                <span class="数值">0</span>
-                <span class="单位">px</span>
-              </p>
-            </label>
-            <label for="右" class="标签 选项标签 滑块标签">
-              <span class="标签文本">右</span>
-              <input type="range" id="右" class="范围滑块" min="-300" max="0" value="0" list="根元素外边距列表" autocomplete="off" />
-              <p class="滑块数据">
-                <span class="数值">0</span>
-                <span class="单位">px</span>
-              </p>
-            </label>
-            <label for="下" class="标签 选项标签 滑块标签">
-              <span class="标签文本">下</span>
-              <input type="range" id="下" class="范围滑块" min="-300" max="0" value="0" list="根元素外边距列表" autocomplete="off" />
-              <p class="滑块数据">
-                <span class="数值">0</span>
-                <span class="单位">px</span>
-              </p>
-            </label>
-            <label for="左" class="标签 选项标签 滑块标签">
-              <span class="标签文本">左</span>
-              <input type="range" id="左" class="范围滑块" min="-300" max="0" value="0" list="根元素外边距列表" autocomplete="off" />
-              <p class="滑块数据">
-                <span class="数值">0</span>
-                <span class="单位">px</span>
-              </p>
-            </label>
-            <datalist class="数据列表" id="根元素外边距列表">
-              <option value="100" label="100"></option>
-              <option value="200" label="200"></option>
-            </datalist>
-          </div>
-        </div>
-        <div class="选项分区">
-          <h4 class="选项标题"><span class="中文">阈值</span><span class="代码">threshold</span></h4>
-          <div class="控件区 阈值控件区">
-            <label for="起始阈值" class="标签 选项标签 数字标签">
-              <span class="标签文本">起始阈值</span>
-              <button id="降低起始阈值" class="数字按钮" 变化="减少">-</button>
-              <input type="number" min="0" max="1" value="0" step="0.01" id="起始阈值" class="数字框" />
-              <button id="提升起始阈值" class="数字按钮" 变化="增加">+</button>
-            </label>
-            <label for="数量" class="标签 选项标签 数字标签">
-              <span class="标签文本">阈值数量</span>
-              <button id="减少数量" class="数字按钮" 变化="减少">-</button>
-              <input type="number" min="1" max="100" value="1" step="1" id="数量" class="数字框" />
-              <button id="增加数量" class="数字按钮" 变化="增加">+</button>
-            </label>
-            <label for="步长" class="标签 选项标签 数字标签">
-              <span class="标签文本">阈值步长</span>
-              <button id="减少步长" class="数字按钮" 变化="减少">-</button>
-              <input type="number" min="0.01" max="1" value="0.01" step="0.01" id="步长" class="数字框" />
-              <button id="增加步长" class="数字按钮" 变化="增加">+</button>
-            </label>
-          </div>
-        </div>
-        <div class="选项分区" style="border-bottom: none">
-          <h4 class="选项标题"><span class="中文">回调效果</span></h4>
-          <div class="控件区 辅助选项控件区">
-            <label for="触发计数" class="标签 选项标签 复选标签">
-              <span class="标签文本">触发计数</span>
-              <input type="checkbox" id="触发计数" class="复选" checked/>
-            </label>
-            <label for="填充背景" class="标签 选项标签 复选标签">
-              <span class="标签文本">填充背景</span>
-              <input type="checkbox" id="填充背景" class="复选" checked />
-            </label>
-          </div>
-        </div>
-        <div class="选项分区">
-          <h4 class="选项标题"><span class="中文">触发条件</span></h4>
-          <div class="控件区 触发条件控件区">
-            <label for="已交叉" class="标签 选项标签 复选标签">
-              <span class="标签文本">已交叉</span>
-              <input type="checkbox" id="已交叉" class="复选" checked />
-            </label>
-            <label for="未交叉" class="标签 选项标签 复选标签">
-              <span class="标签文本">未交叉</span>
-              <input type="checkbox" id="未交叉" class="复选" checked />
-            </label>
-          </div>
-        </div>
-        <div class="选项分区">
-          <h4 class="选项标题"><span class="中文">辅助选项</span></h4>
-          <div class="控件区 辅助选项控件区">
-            <label for="显示交叉比" class="标签 选项标签 复选标签">
-              <span class="标签文本">显示交叉比</span>
-              <input type="checkbox" id="显示交叉比" class="复选" checked />
-            </label>
-          </div>
+        <label for="关闭设置区" class="标签 关闭标签">
+          <span class="标签文本"></span>
+          <input type="checkbox" class="单选" id="关闭设置区" />
+        </label>
+      </div>
+      <div class="间隔"></div>
+      <div class="被观察者容器">
+        <div class="被观察者">
+          <div class="被观察者填色层"></div>
+          <span class="被观察者名称">被观察者</span>
         </div>
       </div>
-      <label for="关闭设置区" class="标签 关闭标签">
-        <span class="标签文本"></span>
-        <input type="checkbox" class="单选" id="关闭设置区" checked/>
-      </label>
-    </div>
-    <div class="间隔"></div>
-    <div class="被观察者容器">
-      <div class="被观察者">
-        <div class="被观察者填色层"></div>
-        <span class="被观察者名称">被观察者</span>
-      </div>
-    </div>
-    <div class="间隔"></div>
-  </section>
+      <div class="间隔"></div>
+    </section>
 
-  <div class="视口容器">
-    <div class="视口"></div>
-  </div>
-</body>
-
+    <div class="视口容器">
+      <div class="视口"></div>
+    </div>
+  </body>
 </html>

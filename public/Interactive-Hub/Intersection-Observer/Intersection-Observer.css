@@ -142,12 +142,12 @@
   left: 0;
   text-align: center;
   align-content: center;
-  content: "\f0c9";
+  content: "\f00d";
   background-color: #56636f;
 }
 
 .关闭标签:has(#关闭设置区:checked) .标签文本::before {
-  content: "\f00d";
+  content: "\f0c9";
 }
 
 .关闭标签:has(#关闭设置区:hover) .标签文本::before {
@@ -177,7 +177,7 @@
   transform-origin: 100% 100%;
 }
 
-.设置区:has(#关闭设置区:not(:checked)) .选项区 {
+.设置区:has(#关闭设置区:checked) .选项区 {
   scale: 0;
 }
 

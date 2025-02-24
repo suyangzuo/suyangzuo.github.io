@@ -42,7 +42,7 @@ const 触发计数器组 = document.getElementsByClassName("触发计数");
   } else {
     root.style.setProperty("--视口背景填充色", "transparent");
   }
-})
+});
 
 for (const 按钮 of 数字按钮组) {
   let 数值快速变化延时函数 = null;
@@ -104,7 +104,7 @@ for (const 按钮 of 数字按钮组) {
   } else {
     触发计数容器.classList.add("隐藏");
   }
-})
+});
 
 const 交叉观察器选项 = {
   root: null,
@@ -123,10 +123,7 @@ function 交叉观察器回调(entries) {
 
   entries.forEach((entry) => {
     交叉比值元素.textContent = Math.round(entry.intersectionRatio * 100) / 100;
-    if (
-      (已交叉复选框.checked && entry.isIntersecting) ||
-      (未交叉复选框.checked && !entry.isIntersecting)
-    ) {
+    if ((已交叉复选框.checked && entry.isIntersecting) || (未交叉复选框.checked && !entry.isIntersecting)) {
       const 背景填充百分比 = `${entry.intersectionRatio * 100}%`;
       root.style.setProperty("--视口背景填充百分比", 背景填充百分比);
 
@@ -183,13 +180,8 @@ let 交叉观察器 = new IntersectionObserver(交叉观察器回调, 交叉观�
 
 for (const 滑块 of 根元素外边距滑块组) {
   滑块.addEventListener("input", () => {
-    滑块.nextElementSibling.querySelector(
-      ".数值"
-    ).textContent = `${滑块.value}`;
-    root.style.setProperty(
-      `--根元素外边距-${滑块.id}`,
-      `${Math.abs(滑块.value)}px`
-    );
+    滑块.nextElementSibling.querySelector(".数值").textContent = `${滑块.value}`;
+    root.style.setProperty(`--根元素外边距-${滑块.id}`, `${Math.abs(滑块.value)}px`);
     交叉观察器选项.rootMargin = `${根元素外边距上滑块.value}px ${根元素外边距右滑块.value}px ${根元素外边距下滑块.value}px ${根元素外边距左滑块.value}px`;
   });
 
@@ -218,4 +210,34 @@ function 生成触发计数器() {
 
 function 删除触发计数器() {
   触发计数容器.lastElementChild?.remove();
+}
+
+const 重置按钮 = document.querySelector(".重置按钮");
+重置按钮.addEventListener("click", 重置参数);
+function 重置参数() {
+  视口.checked = true;
+
+  for (const 滑块 of 根元素外边距滑块组) {
+    滑块.nextElementSibling.querySelector(".数值").textContent = "0";
+    root.style.setProperty(`--根元素外边距-${滑块.id}`, "0px");
+    起始阈值数字框.value = "0";
+    阈值数量数字框.value = "1";
+    阈值步长数字框.value = "0.01";
+    交叉观察器选项.root = null;
+    交叉观察器选项.rootMargin = `0px 0px 0px 0px`;
+    交叉观察器选项.threshold = [0];
+    重置首次触发回调();
+    更新交叉观察器();
+    触发计数复选框.checked = true;
+    填充背景复选框.checked = true;
+    已交叉复选框.checked = true;
+    未交叉复选框.checked = true;
+    交叉比复选框.checked = true;
+    交叉比容器.classList.remove("隐藏");
+    触发计数容器.classList.remove("隐藏");
+    触发计数容器.innerHTML = "";
+    root.style.setProperty("--视口背景填充色", "#ccddee10");
+    root.style.setProperty("--视口背景填充百分比", "0%");
+    关闭设置区.checked = false;
+  }
 }
