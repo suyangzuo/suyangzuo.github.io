@@ -4,8 +4,9 @@ body {
 
 .app-banner {
   position: relative;
-  height: 500px;
+  height: 550px;
   width: 100%;
+  padding-top: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -20,7 +21,7 @@ body {
   height: 175px;
   background-color: slateblue;
   left: 0;
-  top: 12%;
+  top: 22.5%;
   z-index: -1;
 }
 
@@ -47,11 +48,7 @@ body {
 
 .顶栏标题 {
   background: #c9d6ff; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    #e2e2e2,
-    #c9d6ff
-  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(to right, #e2e2e2, #c9d6ff); /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(
     to right,
     #e2e2e2,
@@ -69,7 +66,7 @@ body {
 
 .创意 {
   font-size: 9rem;
-  color: goldenrod
+  color: goldenrod;
 }
 
 .app-center {
@@ -99,6 +96,32 @@ body {
 .app:hover {
   outline: solid 2px #fff8;
   background-color: #1a2026;
+}
+
+.app.开发中:hover :where(.app-名称, .图片区, .app-access) {
+  filter: brightness(35%);
+}
+
+.app.开发中::before {
+  position: absolute;
+  padding: 10px 20px;
+  border-radius: 5px;
+  outline: solid 2px #555;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  content: "开发中";
+  text-align: center;
+  align-content: center;
+  color: white;
+  background-color: #000;
+  font-size: 20px;
+  opacity: 0;
+  z-index: 1;
+}
+
+.app.开发中:hover::before {
+  opacity: 1;
 }
 
 .图片区 {

@@ -35,7 +35,7 @@
   position: relative;
   padding: 10px;
   /*box-shadow: inset 0 1px 0 1px #fff1;*/
-  color: gray;
+  color: rgb(160, 160, 160);
   -webkit-user-select: none;
   user-select: none;
   font-size: 14px;
@@ -44,9 +44,22 @@
   text-align: center;
 }
 
-.快捷键种类:not(:first-child, :last-child) {
-  border-left: solid 1px #fff1;
+.快捷键种类.禁用 {
+  filter: brightness(50%);
+  pointer-events: none;
+}
+
+.快捷键种类:first-child {
   border-right: solid 1px #fff1;
+}
+
+.快捷键种类:last-child {
+  border-left: solid 1px #fff1;
+}
+
+.快捷键种类:not(:first-child, :last-child) {
+  border-left: solid 1px #fff2;
+  border-right: solid 1px #fff2;
 }
 
 .快捷键种类:hover {
