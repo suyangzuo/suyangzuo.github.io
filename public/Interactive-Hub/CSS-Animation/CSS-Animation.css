@@ -22,7 +22,7 @@ span, label {
 
 .CSS动画总区 {
   min-height: 600px;
-  padding: 150px 5vh 1.5vh;
+  padding: 165px 5vh 1.5vh;
   display: grid;
   grid-template-columns: repeat(20, minmax(50px, 1fr));
   grid-template-rows: repeat(20, minmax(3vh, 1fr));

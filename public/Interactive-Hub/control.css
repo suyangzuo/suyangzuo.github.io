@@ -1,7 +1,7 @@
 .后退区,
 .重置区 {
   position: fixed;
-  top: calc(50px + 1.5%);
+  top: calc(50px + 2%);
   width: 50px;
   height: 50px;
   z-index: 9999;

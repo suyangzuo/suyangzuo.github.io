@@ -15,14 +15,13 @@ const 边框滑块 = document.querySelector("#边框");
 const 外边距滑块 = document.querySelector("#外边距");
 
 const 盒子尺寸中文 = document.querySelector(".盒子尺寸中文");
+const 盒子内容文本 = document.querySelector(".盒子内容文本");
 
 const 外边距辅助复选框 = document.querySelector("#外边距-辅助");
 const 边框辅助复选框 = document.querySelector("#边框-辅助");
 const 内边距辅助复选框 = document.querySelector("#内边距-辅助");
 const 内容辅助复选框 = document.querySelector("#内容-辅助");
-const 盒子属性辅助复选框组 = document.querySelectorAll(
-  ".盒子模型属性信息区 input[type='checkbox']",
-);
+const 盒子属性辅助复选框组 = document.querySelectorAll(".盒子模型属性信息区 input[type='checkbox']");
 
 内容盒子单选框.addEventListener("change", 更新盒子模型时刷新所有属性);
 边框盒子单选框.addEventListener("change", 更新盒子模型时刷新所有属性);
@@ -119,8 +118,7 @@ function 更新盒子模型时刷新所有属性() {
 }
 
 function 刷新宽度数值显示() {
-  const 边框盒子宽度描述区 =
-    document.querySelector(".外边距盒子 > .盒子宽度描述区");
+  const 边框盒子宽度描述区 = document.querySelector(".外边距盒子 > .盒子宽度描述区");
   const 内容宽度数字 = 内容盒子.querySelector(".宽度数字");
   const 盒子宽度数字 = 外边距盒子.querySelector(".边框盒子尺寸区 .宽度数字");
   const 内容数字 = 外边距盒子.querySelector(".边框盒子尺寸区 .内容数字");
@@ -130,9 +128,17 @@ function 刷新宽度数值显示() {
   const 边框数字 = 外边距盒子.querySelector(".边框盒子尺寸区 .边框数字");
 
   const 内容盒子宽度描述区 = 内容盒子.querySelector(".盒子宽度描述区");
+  const 内容区 = document.querySelector(".内容区");
   const 加号区组 = document.querySelectorAll(".加号区");
   const 内边距区 = document.querySelector(".内边距区");
   const 边框区 = document.querySelector(".边框区");
+
+  const 内边距 = parseInt(内边距滑块.value, 10);
+  const 边框 = parseInt(边框滑块.value, 10);
+  const 宽度 = parseInt(宽度滑块.value, 10);
+  内边距数字.textContent = 内边距滑块.value;
+  边框数字.textContent = 边框滑块.value;
+
   if (内容盒子单选框.checked) {
     内容宽度数字.textContent = 宽度滑块.value;
     盒子宽度数字.textContent = (
@@ -143,27 +149,39 @@ function 刷新宽度数值显示() {
     内容数字.textContent = 宽度滑块.value;
     内容中文.textContent = "内容";
     内容代码.textContent = "content";
-    内边距数字.textContent = 内边距滑块.value;
-    边框数字.textContent = 边框滑块.value;
     for (const 加号区 of 加号区组) {
       加号区.style.display = "";
     }
+    盒子内容文本.style.display = "";
+    内容区.style.display = "";
     内边距区.style.display = "";
     边框区.style.display = "";
     内容盒子宽度描述区.style.display = "";
     边框盒子宽度描述区.classList.remove("边框盒子宽度描述区");
   } else {
-    内容数字.textContent = 宽度滑块.value;
+    if (内边距 * 2 + 边框 * 2 < 宽度) {
+      for (const 加号区 of 加号区组) {
+        加号区.style.display = "none";
+      }
+      盒子内容文本.style.display = "";
+      内容区.style.display = "";
+      内边距区.style.display = "none";
+      边框区.style.display = "none";
+      内容数字.textContent = 宽度滑块.value;
+    } else {
+      加号区组[0].style.display = "none";
+      加号区组[加号区组.length - 1].style.display = "";
+      盒子内容文本.style.display = "none";
+      内容区.style.display = "none";
+      内边距区.style.display = "";
+      边框区.style.display = "";
+      内容数字.textContent = (内边距 + 边框).toString();
+    }
+    内容盒子宽度描述区.style.display = "none";
     内容宽度数字.textContent = 宽度滑块.value;
     内容中文.textContent = "宽度";
     内容代码.textContent = "width";
     盒子宽度数字.textContent = parseInt(盒子计算样式.width, 10).toString();
-    for (const 加号区 of 加号区组) {
-      加号区.style.display = "none";
-    }
-    内边距区.style.display = "none";
-    边框区.style.display = "none";
-    内容盒子宽度描述区.style.display = "none";
     边框盒子宽度描述区.classList.add("边框盒子宽度描述区");
   }
 }

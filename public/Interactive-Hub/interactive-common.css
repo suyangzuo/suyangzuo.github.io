@@ -40,7 +40,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 150px;
+  padding-top: 165px;
   gap: 50px;
   scrollbar-gutter: stable;
 }
@@ -48,7 +48,7 @@ body {
 .交互标题 {
   position: fixed;
   width: fit-content;
-  top: calc(50px + 1%);
+  top: calc(50px + 1.5%);
   left: 50%;
   transform: translateX(-50%);
   font-size: 2.5rem;

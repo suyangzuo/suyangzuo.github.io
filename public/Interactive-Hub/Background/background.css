@@ -28,6 +28,7 @@
   align-items: center;
   gap: 200px;
   height: calc(100vh - 50px);
+  padding: 0;
   top: 50px;
 }
 

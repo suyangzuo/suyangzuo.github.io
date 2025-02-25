@@ -100,7 +100,6 @@ label span {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding-top: 150px;
   gap: 50px;
 }
 
