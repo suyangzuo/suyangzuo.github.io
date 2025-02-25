@@ -53,3 +53,13 @@ document.querySelector(".规则按钮").addEventListener('click', () => {
   规则介绍页.close();
   遮罩层.style.display='none'
 })
+
+const card = document.querySelector('.人物肖像');
+
+const cards = document.querySelectorAll('.人物肖像');
+
+cards.forEach(card => {
+    card.addEventListener('click', function() {
+        card.classList.toggle('翻转'); 
+    });
+});

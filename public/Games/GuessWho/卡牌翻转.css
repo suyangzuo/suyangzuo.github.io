@@ -1,0 +1,32 @@
+
+.背面 {
+  position: relative;
+  transform: rotateY(180deg);
+}
+
+.正面 {
+  position: absolute;
+}
+
+.正面,
+.背面 {
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  transition: 0.6s
+}
+
+.翻转 .正面 {
+  transform: rotateY(180deg);
+}
+
+.翻转 .背面 {
+  transform: rotateY(0deg);
+}
+
+.人物肖像 {
+    transition: transform 0.3s;
+}
+
+.人物肖像:hover {
+    transform: scale(1.1);
+}

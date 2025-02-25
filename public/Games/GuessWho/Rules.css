@@ -62,10 +62,10 @@
 
 @keyframes 关闭文字{
   0%, 100% {
-    opacity: 1; /* 完全可见 */
+    opacity: 1;
 }
 50% {
-    opacity: 0; /* 完全透明 */
+    opacity: 0; 
 }
 }
 
