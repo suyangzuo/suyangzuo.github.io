@@ -93,11 +93,11 @@
 }
 
 .人物按钮区 {
-  width: 80vw;
+  width: 85vw;
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 30px;
 }
 
 .人物按钮 {
@@ -126,16 +126,18 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 20px;
+  /* border: solid red; */
 }
 
 .人物肖像 {
   display: flex;
+  /* border: solid red; */
   justify-content: center;
-  perspective: 1000px;
 }
 
-.人物肖像图片 {
-  width: 230px;
+.人物肖像 img {
+  width: 200px;
+  height: 100%;
   border-radius: 5px;
   object-fit: contain;
   opacity: 0.8;
@@ -143,8 +145,23 @@
   transition: 0.3s ease;
 }
 
-.人物肖像图片:hover {
-  transform: scale(1.1);
+
+.背面{
+  width: 200px;
+  height: 300px;
+  background-image: url(./img/背景图片.png);
+  background-size: cover;
+  background-position: center;
+  transition: 0.3s ease;
+}
+
+.正面{
+  width: 200px;
+  height: 300px;
+  background-image: url(./img/背面.png);
+  background-size: cover;
+  background-position: center;
+  transition: 0.3s ease;
 }
 
 /* 响应式布局 */
@@ -173,6 +190,15 @@
 
   .人物肖像图片 {
     width: 180px;
+    height: 180px;
+    border-radius: 5px;
+    object-fit: contain;
+  }
+}
+
+@media (max-width: 720px) {
+  .人物肖像图片 {
+    width: 100px;
     height: 180px;
     border-radius: 5px;
     object-fit: contain;
