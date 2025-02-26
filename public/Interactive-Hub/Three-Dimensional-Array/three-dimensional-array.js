@@ -2,6 +2,8 @@ let 行数 = 10;
 let 列数 = 10;
 const root = document.querySelector(":root");
 const rootStyle = window.getComputedStyle(root);
+const 数据区 = document.querySelector(".数据区");
+const 索引数据容器组 = document.querySelectorAll(".索引数据容器");
 
 const 平面 = document.getElementById("平面");
 const 三维 = document.getElementById("三维");
@@ -14,6 +16,9 @@ const 数组容器组 = document.getElementsByClassName("数组容器");
 const 索引容器组 = document.getElementsByClassName("二维数组索引容器");
 const 行号容器组 = document.getElementsByClassName("行号容器");
 const 数组行二维集合 = [];
+
+root.style.setProperty("--数据区坐标-top", `${数组容器组[0].getBoundingClientRect().top}px`);
+root.style.setProperty("--数据区坐标-left", `${数组容器组[0].getBoundingClientRect().left}px`);
 
 Array.from(数组容器组, (数组容器, index) => {
   for (let i = 0; i < 行数; i++) {
@@ -28,6 +33,8 @@ Array.from(数组容器组, (数组容器, index) => {
 
       数组格.addEventListener("mouseenter", () => {
         高亮当前行号列号(数组格);
+        更新数据区(数组格, [index, i, j]);
+        root.style.setProperty("--数据区坐标-left", `${数组容器.getBoundingClientRect().left}px`);
       });
       数组格.addEventListener("mouseleave", () => {
         复原当前行号列号(数组格);
@@ -40,6 +47,19 @@ Array.from(数组容器组, (数组容器, index) => {
   二维数组索引容器.className = "二维数组索引容器";
   二维数组索引容器.textContent = index.toString();
   数组容器.append(序号容器组.行号容器, 序号容器组.列号容器, 二维数组索引容器);
+  const 行号组 = 序号容器组.行号容器.querySelectorAll(".行号");
+  for (let i = 0; i < 行号组.length; i++) {
+    const 行号 = 行号组[i];
+    行号.addEventListener("mouseenter", () => {
+      更新数据区(行号, [index, i]);
+      root.style.setProperty("--数据区坐标-left", `${数组容器.getBoundingClientRect().left}px`);
+    });
+  }
+
+  二维数组索引容器.addEventListener("mouseenter", () => {
+    更新数据区(二维数组索引容器, [index]);
+    root.style.setProperty("--数据区坐标-left", `${数组容器.getBoundingClientRect().left}px`);
+  });
 });
 
 for (const 数组容器 of 数组容器组) {
@@ -116,10 +136,8 @@ function 获取当前行号列号元素(数组格) {
   const 行列组 = 数组格.id.split("-");
   const 行号 = 行列组[1];
   const 列号 = 行列组[2];
-  const 行号容器 =
-    数组格.parentElement.parentElement.querySelector(".行号容器");
-  const 列号容器 =
-    数组格.parentElement.parentElement.querySelector(".列号容器");
+  const 行号容器 = 数组格.parentElement.parentElement.querySelector(".行号容器");
+  const 列号容器 = 数组格.parentElement.parentElement.querySelector(".列号容器");
   const 当前行号 = 行号容器.children[行号];
   const 当前列号 = 列号容器.children[列号];
 
@@ -220,3 +238,24 @@ Array.from(行号容器组, (行号容器, 一维索引) => {
     });
   }
 });
+
+function 更新数据区(元素, 索引组) {
+  if (元素.className === "二维数组索引容器") {
+    索引数据容器组[0].classList.remove("隐藏");
+    索引数据容器组[1].classList.add("隐藏");
+    索引数据容器组[2].classList.add("隐藏");
+  } else if (元素.className.includes("行号")) {
+    索引数据容器组[0].classList.remove("隐藏");
+    索引数据容器组[1].classList.remove("隐藏");
+    索引数据容器组[2].classList.add("隐藏");
+  } else if (元素.className.includes("数组格")) {
+    索引数据容器组[0].classList.remove("隐藏");
+    索引数据容器组[1].classList.remove("隐藏");
+    索引数据容器组[2].classList.remove("隐藏");
+  }
+
+  for (let i = 0; i < 索引组.length; i++) {
+    const 索引数据 = 索引数据容器组[i].querySelector(".索引数据");
+    索引数据.textContent = 索引组[i];
+  }
+}
