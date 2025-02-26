@@ -21,6 +21,10 @@ body {
   padding-top: 150px;
 }
 
+.总区:has(.数组容器.三维展示) .数据区 {
+  opacity: 0;
+}
+
 .数据区 {
   width: 400px;
   display: flex;
@@ -33,6 +37,10 @@ body {
   transition: 125ms;
 }
 
+.数据区.隐藏 {
+  opacity: 0;
+}
+
 .数据区标题 {
   color: rgb(180, 204, 204);
 }
@@ -42,10 +50,13 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 4ch;
+  transition: width 125ms;
 }
 
 .索引数据容器.隐藏 {
   opacity: 0;
+  width: 0;
 }
 
 .索引数据 {

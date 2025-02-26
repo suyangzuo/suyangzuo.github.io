@@ -33,10 +33,12 @@ Array.from(数组容器组, (数组容器, index) => {
 
       数组格.addEventListener("mouseenter", () => {
         高亮当前行号列号(数组格);
+        数据区.classList.remove("隐藏");
         更新数据区(数组格, [index, i, j]);
         root.style.setProperty("--数据区坐标-left", `${数组容器.getBoundingClientRect().left}px`);
       });
       数组格.addEventListener("mouseleave", () => {
+        数据区.classList.add("隐藏");
         复原当前行号列号(数组格);
       });
     }
@@ -51,14 +53,24 @@ Array.from(数组容器组, (数组容器, index) => {
   for (let i = 0; i < 行号组.length; i++) {
     const 行号 = 行号组[i];
     行号.addEventListener("mouseenter", () => {
+      数据区.classList.remove("隐藏");
       更新数据区(行号, [index, i]);
       root.style.setProperty("--数据区坐标-left", `${数组容器.getBoundingClientRect().left}px`);
+    });
+
+    行号.addEventListener("mouseleave", () => {
+      数据区.classList.add("隐藏");
     });
   }
 
   二维数组索引容器.addEventListener("mouseenter", () => {
+    数据区.classList.remove("隐藏");
     更新数据区(二维数组索引容器, [index]);
     root.style.setProperty("--数据区坐标-left", `${数组容器.getBoundingClientRect().left}px`);
+  });
+
+  二维数组索引容器.addEventListener("mouseleave", () => {
+    数据区.classList.add("隐藏");
   });
 });
 
@@ -259,3 +271,9 @@ function 更新数据区(元素, 索引组) {
     索引数据.textContent = 索引组[i];
   }
 }
+
+const resizeObserver = new ResizeObserver(() => {
+  root.style.setProperty("--数据区坐标-top", `${数组容器组[0].getBoundingClientRect().top}px`);
+});
+
+resizeObserver.observe(document.body);
