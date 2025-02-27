@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
@@ -16,33 +16,110 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="/Styles/top-banner-common.css"
-    />
+    <link rel="stylesheet" type="text/css" href="/Styles/top-banner-common.css" />
     <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
     <link rel="stylesheet" href="../apps-common-control.css" />
     <link rel="stylesheet" href="./WheelOfFortune.css" />
-    <script
-      src="https://kit.fontawesome.com/d0483e3bd3.js"
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
     <script src="/Scripts/top-banner.js" defer></script>
     <script src="WheelOfFortune.js" defer></script>
   </head>
   <body>
-    <script
-      src="../../Scripts/html-include.js"
-      target="../../top-banner.html"
-      position="afterbegin"
-    ></script>
+    <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
 
-    <script
-      src="/Scripts/html-include.js"
-      target="../apps-common-control.html"
-      position="afterbegin"
-    ></script>
+    <script src="/Scripts/html-include.js" target="../apps-common-control.html" position="afterbegin"></script>
+
+    <div class="设置区">
+      <div class="奖品设置区">
+        <h3 class="奖品设置区标题">奖品设置</h3>
+      </div>
+      <div class="开奖设置">
+        <div class="旋转对象设置区">
+          <h3 class="旋转对象标题">旋转对象</h3>
+          <div class="旋转对象控件区">
+            <label for="旋转对象-转盘" class="单选标签">
+              <span class="单选标签文本">转盘</span>
+              <input type="radio" id="旋转对象-转盘" class="单选框" name="旋转对象" checked />
+            </label>
+            <label for="旋转对象-指针" class="单选标签">
+              <span class="单选标签文本">指针</span>
+              <input type="radio" id="旋转对象-指针" class="单选框" name="旋转对象" />
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="转盘区">
+      <div class="转盘容器">
+        <div class="奖品容器">
+          <div class="奖品内容">
+            <span class="转盘奖品序号"></span>
+            <p class="奖品文本">罗技 GPW4 鼠标</p>
+          </div>
+        </div>
+        <div class="奖品容器">
+          <div class="奖品内容">
+            <span class="转盘奖品序号"></span>
+            <p class="奖品文本">MacBook Pro 16寸</p>
+          </div>
+        </div>
+        <div class="奖品容器">
+          <div class="奖品内容">
+            <span class="转盘奖品序号"></span>
+            <p class="奖品文本">自行车1辆</p>
+          </div>
+        </div>
+        <div class="奖品容器">
+          <div class="奖品内容">
+            <span class="转盘奖品序号"></span>
+            <p class="奖品文本">坦克1座</p>
+          </div>
+        </div>
+        <div class="奖品容器">
+          <div class="奖品内容">
+            <span class="转盘奖品序号"></span>
+            <p class="奖品文本">歼36</p>
+          </div>
+        </div>
+        <div class="奖品容器">
+          <div class="奖品内容">
+            <span class="转盘奖品序号"></span>
+            <p class="奖品文本">NVIDIA RTX 5090</p>
+          </div>
+        </div>
+        <div class="奖品容器">
+          <div class="奖品内容">
+            <span class="转盘奖品序号"></span>
+            <p class="奖品文本">华为 Mate 70</p>
+          </div>
+        </div>
+        <div class="奖品容器">
+          <div class="奖品内容">
+            <span class="转盘奖品序号"></span>
+            <p class="奖品文本">火锅店1年3折消费券</p>
+          </div>
+        </div>
+        <div class="奖品容器">
+          <div class="奖品内容">
+            <span class="转盘奖品序号"></span>
+            <p class="奖品文本">橡皮100个</p>
+          </div>
+        </div>
+        <div class="奖品容器">
+          <div class="奖品内容">
+            <span class="转盘奖品序号"></span>
+            <p class="奖品文本">再次参加教学比赛</p>
+          </div>
+        </div>
+        <div class="转盘中心圆">
+          <figure class="指针容器">
+            <img class="指针" src="./指针.png" alt="指针" />
+          </figure>
+          <button id="开奖按钮" class="按钮" title="开奖"><i class="fa-solid fa-play"></i></button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
