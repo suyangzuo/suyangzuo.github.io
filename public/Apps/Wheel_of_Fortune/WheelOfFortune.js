@@ -33,6 +33,8 @@ for (const [index, 奖品内容] of 奖品内容组.entries()) {
 }
 
 const 奖品设置区 = document.querySelector(".奖品设置区");
+const 奖品设置项组 = document.getElementsByClassName("奖品设置项");
+const 奖品名称文本框组 = document.getElementsByClassName("奖品名称 文本框");
 for (let i = 0; i < 奖品数量; i++) {
   const 转盘奖品文本 = 奖品内容组[i].querySelector(".奖品文本");
 
@@ -50,23 +52,44 @@ for (let i = 0; i < 奖品数量; i++) {
   设置奖品序号.setAttribute("for", 奖品名称输入框.id);
   奖品名称输入框.className = "奖品名称 文本框";
   奖品名称输入框.value = 转盘奖品文本.innerText;
-
   奖品设置项.append(设置奖品序号, 奖品名称输入框);
 
   奖品名称输入框.addEventListener("input", () => {
     转盘奖品文本.textContent = 奖品名称输入框.value;
   });
 
-  奖品设置项.addEventListener("mouseenter", () => {
-    转盘指示器.classList.remove("隐藏");
-    转盘指示器.style.setProperty("--指示器起始角度", `${角度间隔 * i}deg`);
-    转盘指示器.style.setProperty("--指示器结束角度", `${角度间隔 * (i + 1)}deg`);
-    转盘指示器.style.setProperty("--转盘指示器背景色", rootStyle.getPropertyValue(`--奖品-${i}-背景色`));
-  });
+  奖品设置项.addEventListener("mouseenter", 显示转盘指示器);
+  奖品设置项.addEventListener("mouseleave", 隐藏转盘指示器);
+}
 
-  奖品设置项.addEventListener("mouseleave", () => {
-    转盘指示器.classList.add("隐藏");
+for (const [索引, 文本框] of Array.from(奖品名称文本框组).entries()) {
+  文本框.addEventListener("focus", () => {
+    for (const 奖品设置项 of 奖品设置项组) {
+      奖品设置项.removeEventListener("mouseenter", 显示转盘指示器);
+      奖品设置项.removeEventListener("mouseleave", 隐藏转盘指示器);
+    }
   });
+  文本框.addEventListener("focus", 显示转盘指示器);
+
+  文本框.addEventListener("blur", () => {
+    for (const 奖品设置项 of 奖品设置项组) {
+      奖品设置项.addEventListener("mouseenter", 显示转盘指示器);
+      奖品设置项.addEventListener("mouseleave", 隐藏转盘指示器);
+    }
+  });
+  文本框.addEventListener("blur", 隐藏转盘指示器);
+}
+
+function 显示转盘指示器(event) {
+  const 索引 = Array.from(document.querySelectorAll(`.${event.target.classList[0]}`)).indexOf(event.target);
+  转盘指示器.classList.remove("隐藏");
+  转盘指示器.style.setProperty("--指示器起始角度", `${角度间隔 * 索引}deg`);
+  转盘指示器.style.setProperty("--指示器结束角度", `${角度间隔 * (索引 + 1)}deg`);
+  转盘指示器.style.setProperty("--转盘指示器背景色", rootStyle.getPropertyValue(`--奖品-${索引}-背景色`));
+}
+
+function 隐藏转盘指示器() {
+  转盘指示器.classList.add("隐藏");
 }
 
 function 修正转盘奖品序号角度() {
