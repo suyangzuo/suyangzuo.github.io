@@ -1,24 +1,25 @@
 :root {
-  --奖品-0-起点: calc(360deg / 10 * 9.5);
-  --奖品-0-终点: calc(360deg / 10 * 0.5);
-  --奖品-1-起点: calc(360deg / 10 * 0.5);
-  --奖品-1-终点: calc(360deg / 10 * 1.5);
-  --奖品-2-起点: calc(360deg / 10 * 1.5);
-  --奖品-2-终点: calc(360deg / 10 * 2.5);
-  --奖品-3-起点: calc(360deg / 10 * 2.5);
-  --奖品-3-终点: calc(360deg / 10 * 3.5);
-  --奖品-4-起点: calc(360deg / 10 * 3.5);
-  --奖品-4-终点: calc(360deg / 10 * 4.5);
-  --奖品-5-起点: calc(360deg / 10 * 4.5);
-  --奖品-5-终点: calc(360deg / 10 * 5.5);
-  --奖品-6-起点: calc(360deg / 10 * 5.5);
-  --奖品-7-终点: calc(360deg / 10 * 6.5);
-  --奖品-7-起点: calc(360deg / 10 * 6.5);
-  --奖品-7-终点: calc(360deg / 10 * 7.5);
-  --奖品-8-起点: calc(360deg / 10 * 7.5);
-  --奖品-8-终点: calc(360deg / 10 * 8.5);
-  --奖品-9-起点: calc(360deg / 10 * 8.5);
-  --奖品-9-终点: calc(360deg / 10 * 9.5);
+  --角度间隔: 36deg;
+  --奖品-0-起点: 0deg;
+  --奖品-0-终点: calc(var(--角度间隔) * 1);
+  --奖品-1-起点: calc(var(--角度间隔) * 1);
+  --奖品-1-终点: calc(var(--角度间隔) * 2);
+  --奖品-2-起点: calc(var(--角度间隔) * 2);
+  --奖品-2-终点: calc(var(--角度间隔) * 3);
+  --奖品-3-起点: calc(var(--角度间隔) * 3);
+  --奖品-3-终点: calc(var(--角度间隔) * 4);
+  --奖品-4-起点: calc(var(--角度间隔) * 4);
+  --奖品-4-终点: calc(var(--角度间隔) * 5);
+  --奖品-5-起点: calc(var(--角度间隔) * 5);
+  --奖品-5-终点: calc(var(--角度间隔) * 6);
+  --奖品-6-起点: calc(var(--角度间隔) * 6);
+  --奖品-6-终点: calc(var(--角度间隔) * 7);
+  --奖品-7-起点: calc(var(--角度间隔) * 7);
+  --奖品-7-终点: calc(var(--角度间隔) * 8);
+  --奖品-8-起点: calc(var(--角度间隔) * 8);
+  --奖品-8-终点: calc(var(--角度间隔) * 9);
+  --奖品-9-起点: calc(var(--角度间隔) * 9);
+  --奖品-9-终点: calc(var(--角度间隔) * 10);
   --奖品-0-背景色: #234;
   --奖品-1-背景色: rgb(78, 155, 202);
   --奖品-2-背景色: rgb(159, 110, 118);
@@ -29,6 +30,13 @@
   --奖品-7-背景色: rgb(174, 155, 93);
   --奖品-8-背景色: rgb(114, 131, 152);
   --奖品-9-背景色: rgb(73, 115, 66);
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .设置区 {
@@ -48,7 +56,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10px;
 }
 
 .奖品设置区标题,
@@ -57,7 +64,7 @@
   color: goldenrod;
 }
 
-.奖品,
+.奖品设置项,
 .奖品名称 {
   display: flex;
   justify-content: flex-start;
@@ -65,11 +72,15 @@
   font-family: Consolas, monospace, "Noto Sans SC", sans-serif;
 }
 
-.奖品:has(.奖品名称:hover) .设置奖品序号 {
+.奖品设置项 {
+  padding: 5px 0;
+}
+
+.奖品设置项:has(.奖品名称:hover) .设置奖品序号 {
   color: lightgreen;
 }
 
-.奖品:has(.奖品名称:focus) .设置奖品序号 {
+.奖品设置项:has(.奖品名称:focus) .设置奖品序号 {
   color: lightcyan;
 }
 
@@ -106,7 +117,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
 }
 
 .旋转对象标题 {
@@ -123,6 +134,7 @@
   position: relative;
   display: flex;
   background-color: #222;
+  overflow: hidden;
 }
 
 .单选标签:hover {
@@ -143,6 +155,14 @@
   appearance: none;
 }
 
+.单选标签:has(#旋转对象-转盘) {
+  border-radius: 5px 0 0 5px;
+}
+
+.单选标签:has(#旋转对象-指针) {
+  border-radius: 0 5px 5px 0;
+}
+
 .单选标签:has(.单选框:checked) {
   background-color: #abc;
 }
@@ -156,8 +176,9 @@
 }
 
 .转盘区 {
-  height: 100vh;
-  margin: 0 auto;
+  position: relative;
+  height: fit-content;
+  width: fit-content;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -169,6 +190,41 @@
   height: 750px;
   border-radius: 9999px;
   background-color: #123;
+}
+
+@property --指示器起始角度 {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@property --指示器结束角度 {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 36deg;
+}
+
+.转盘指示器 {
+  --转盘指示器背景色: gold;
+  position: absolute;
+  width: calc(100% + 15px);
+  height: calc(100% + 15px);
+  border-radius: 9999px;
+  background-image: conic-gradient(
+    from -18deg,
+    transparent var(--指示器起始角度),
+    var(--转盘指示器背景色) var(--指示器起始角度) var(--指示器结束角度),
+    transparent var(--指示器结束角度)
+  );
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  filter: invert(1) brightness(2.5);
+  transition: --指示器起始角度 250ms, --指示器结束角度 250ms, filter 250ms;
+}
+
+.转盘指示器.隐藏 {
+  opacity: 0;
 }
 
 .转盘中心圆 {
@@ -195,6 +251,7 @@
   height: 100%;
   object-fit: contain;
   filter: drop-shadow(2px 2px 2px #000a);
+  transform-origin: 50% 100%;
 }
 
 #开奖按钮,

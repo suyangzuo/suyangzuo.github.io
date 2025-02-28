@@ -63,7 +63,10 @@
   justify-content: center;
   align-items: center;
   gap: max(50px, 10dvh);
-  background-image: linear-gradient(transparent calc(100% - var(--分页渐变透明色标位置)), black calc(100% - var(--分页渐变黑色标位置)));
+  background-image: linear-gradient(
+    transparent calc(100% - var(--分页渐变透明色标位置)),
+    black calc(100% - var(--分页渐变黑色标位置))
+  );
 }
 
 .欢迎区覆盖层 > * {
@@ -81,7 +84,8 @@
   filter: drop-shadow(2px 2px 2px #000d);
 }
 
-.欢迎标题-第1行, .欢迎标题-第2行 {
+.欢迎标题-第1行,
+.欢迎标题-第2行 {
   margin: 0 auto;
   width: fit-content;
   -webkit-background-clip: text;
@@ -164,7 +168,14 @@
 .英文欢迎标题 {
   margin-top: 15px;
   font-size: calc(1.25dvw + 8px);
-  background-image: linear-gradient(90deg, var(--英文色标4) 0, var(--英文色标1) 25%, var(--英文色标2) 50%, var(--英文色标3) 75%, var(--英文色标4) 100%);
+  background-image: linear-gradient(
+    90deg,
+    var(--英文色标4) 0,
+    var(--英文色标1) 25%,
+    var(--英文色标2) 50%,
+    var(--英文色标3) 75%,
+    var(--英文色标4) 100%
+  );
   background-position: var(--英文背景位置) 0;
   background-size: 200%;
   -webkit-background-clip: text;
@@ -461,7 +472,12 @@
 }
 
 .非主推区域覆盖层 {
-  background-image: linear-gradient(black var(--分页渐变黑色标位置), transparent var(--分页渐变透明色标位置), transparent calc(100% - var(--分页渐变透明色标位置)), black calc(100% - var(--分页渐变黑色标位置)));
+  background-image: linear-gradient(
+    black var(--分页渐变黑色标位置),
+    transparent var(--分页渐变透明色标位置),
+    transparent calc(100% - var(--分页渐变透明色标位置)),
+    black calc(100% - var(--分页渐变黑色标位置))
+  );
   display: flex;
   justify-content: center;
   align-items: center;
@@ -567,7 +583,12 @@
 }
 
 .关于覆盖层 {
-  background-image: linear-gradient(black var(--分页渐变黑色标位置), transparent var(--分页渐变透明色标位置), transparent calc(100% - var(--分页渐变透明色标位置)), black calc(100% - var(--分页渐变黑色标位置)));
+  background-image: linear-gradient(
+    black var(--分页渐变黑色标位置),
+    transparent var(--分页渐变透明色标位置),
+    transparent calc(100% - var(--分页渐变透明色标位置)),
+    black calc(100% - var(--分页渐变黑色标位置))
+  );
   display: flex;
   justify-content: center;
   align-items: center;
@@ -589,7 +610,8 @@
   clip-path: inset(0 0 0 0);
 }
 
-.贡献者区, .宗旨区 {
+.贡献者区,
+.宗旨区 {
   position: absolute;
   width: 250px;
   height: 300px;
@@ -625,13 +647,13 @@
 }
 
 @property --渐变旋转角度-前 {
-  syntax: '<angle>';
+  syntax: "<angle>";
   inherits: false;
   initial-value: 0deg;
 }
 
 @property --渐变旋转角度-后 {
-  syntax: '<angle>';
+  syntax: "<angle>";
   inherits: false;
   initial-value: 0deg;
 }
@@ -643,7 +665,12 @@
   border-radius: 999px;
   top: 0;
   left: 0;
-  background-image: conic-gradient(transparent var(--渐变旋转角度-前), lightskyblue var(--渐变旋转角度-前), lightcyan var(--渐变旋转角度-后), transparent var(--渐变旋转角度-后));
+  background-image: conic-gradient(
+    transparent var(--渐变旋转角度-前),
+    lightskyblue var(--渐变旋转角度-前),
+    lightcyan var(--渐变旋转角度-后),
+    transparent var(--渐变旋转角度-后)
+  );
   content: "";
   opacity: 0;
   animation: 角度渐变旋转 2.5s linear infinite;
@@ -734,10 +761,12 @@
   align-items: center;
   position: relative;
   overflow: hidden;
-  background-image: linear-gradient(black var(--分页渐变黑色标位置),
-  transparent var(--分页渐变透明色标位置),
-  transparent calc(100% - var(--分页渐变透明色标位置) * 2),
-  black calc(100% - var(--分页渐变黑色标位置) * 2));
+  background-image: linear-gradient(
+    black var(--分页渐变黑色标位置),
+    transparent var(--分页渐变透明色标位置),
+    transparent calc(100% - var(--分页渐变透明色标位置) * 2),
+    black calc(100% - var(--分页渐变黑色标位置) * 2)
+  );
 }
 
 .图像长廊标题 {

@@ -4,8 +4,7 @@
     <meta charset="UTF-8" />
     <meta
       name="viewport"
-      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
-    />
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>快乐大转盘</title>
     <link rel="icon" href="/Images/Apps/快乐大转盘.png" type="image/x-icon" />
@@ -13,8 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Titillium+Web&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Roboto+Mono&family=M+PLUS+Code+Latin&family=Ubuntu+Mono&family=M+PLUS+1+Code:wght@100..700&display=swap"
-      rel="stylesheet"
-    />
+      rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
     <link rel="stylesheet" type="text/css" href="/Styles/top-banner-common.css" />
     <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
@@ -53,6 +51,7 @@
 
     <div class="转盘区">
       <div class="转盘容器">
+        <div class="转盘指示器 隐藏"></div>
         <div class="奖品容器">
           <div class="奖品内容">
             <span class="转盘奖品序号"></span>
@@ -113,12 +112,12 @@
             <p class="奖品文本">再次参加教学比赛</p>
           </div>
         </div>
-        <div class="转盘中心圆">
-          <figure class="指针容器">
-            <img class="指针" src="./指针.png" alt="指针" />
-          </figure>
-          <button id="开奖按钮" class="按钮" title="开奖"><i class="fa-solid fa-play"></i></button>
-        </div>
+      </div>
+      <div class="转盘中心圆">
+        <figure class="指针容器">
+          <img class="指针" src="./指针.png" alt="指针" />
+        </figure>
+        <button id="开奖按钮" class="按钮" title="开奖"><i class="fa-solid fa-play"></i></button>
       </div>
     </div>
   </body>
