@@ -149,11 +149,15 @@ body {
 
 .范围滑块 {
   width: 200px;
-  accent-color: olivedrab;
+  accent-color: rgb(180, 221, 99);
 }
 
 .范围滑块::-webkit-slider-thumb {
   scale: 1.5;
+}
+
+.范围滑块:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 .数据 {
