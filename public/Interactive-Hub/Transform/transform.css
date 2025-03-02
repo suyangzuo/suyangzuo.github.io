@@ -11,7 +11,7 @@
   --变换原点-垂直填充: 50%;
   --平移-X轴: 0%;
   --平移-Y轴: 0%;
-  --平移-Z轴: 0%;
+  --平移-Z轴: 0px;
   --平移-X轴填充: 50%;
   --平移-Y轴填充: 50%;
   --平移-Z轴填充: 50%;
@@ -86,6 +86,10 @@ input[type="range"]::-moz-range-thumb:hover {
 .背景类型 .控件标签 {
   width: 60px;
   height: 60px;
+}
+
+.控件标签:has(.滑块):hover {
+  background-color: #0005;
 }
 
 .控件标签:has(#图像) {
@@ -269,6 +273,15 @@ span[class$="代码"]:not(.标题代码) {
   position: relative;
   width: fit-content;
   height: fit-content;
+  border-radius: 5px;
+}
+
+.控件标签:has(.滑块) {
+  padding-right: 15px;
+}
+
+.控件标签:not(:has(.控件文本)):has(.滑块):hover {
+  background-color: transparent;
 }
 
 .控件标签:hover {
@@ -285,12 +298,9 @@ span[class$="代码"]:not(.标题代码) {
   border-radius: 5px;
 }
 
-.控件标签:has(#none) {
-  padding: 5px 20px 5px 0;
-}
-
 .控件标签:has(#none) .控件文本 {
-  padding: 5px;
+  padding: 5px 10px;
+  margin-right: 10px;
 }
 
 .单选框 {

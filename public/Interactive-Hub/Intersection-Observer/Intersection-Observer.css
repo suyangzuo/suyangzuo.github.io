@@ -302,7 +302,7 @@
 .范围滑块 {
   width: 200px;
   height: 6px;
-  accent-color: rgb(159, 195, 86);
+  accent-color: rgb(101, 155, 187);
 }
 
 .范围滑块:hover {
@@ -320,7 +320,7 @@
 }
 
 .数值 {
-  color: lightskyblue;
+  color: rgb(215, 180, 133);
   width: 34px;
   text-align: right;
 }
