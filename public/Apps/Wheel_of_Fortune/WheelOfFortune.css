@@ -51,6 +51,7 @@ body {
   padding: 25px;
   border-radius: 10px;
   background-color: #ffffff09;
+  box-shadow: inset 0 0 0 1px #ffffff15;
 }
 
 .设置区标题 {
@@ -193,7 +194,7 @@ body {
 }
 
 .设置奖品序号 {
-  width: 4ch;
+  width: 3.5ch;
   padding-right: 1.5ch;
   text-align: right;
   color: olivedrab;
