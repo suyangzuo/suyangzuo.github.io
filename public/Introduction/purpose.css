@@ -132,10 +132,16 @@ body {
   text-underline-offset: 3px;
 }
 
-.pp-01 li > span {
+.pp-01 li > span:not(.技术, .正斜杠) {
   font-size: 1.2em;
   font-weight: bolder;
   color: tomato;
+}
+
+.技术 {
+  font-family: Consolas, monospace;
+  font-size: 1.1em;
+  color: rgb(76, 131, 193);
 }
 
 .pp-01 li > em {
@@ -234,8 +240,7 @@ body {
   font-size: 1rem !important;
   color: white !important;
   background: linear-gradient(#111, #252525);
-  transition: opacity 0.5s ease-out, top 0.5s ease-out,
-  box-shadow 0.25s ease-out;
+  transition: opacity 0.5s ease-out, top 0.5s ease-out, box-shadow 0.25s ease-out;
 }
 
 .pop-up:hover {

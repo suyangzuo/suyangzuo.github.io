@@ -263,7 +263,7 @@ body {
   align-items: center;
   font-size: 1.25rem;
   text-shadow: 2px 2px 2px black;
-  content: "未完成";
+  content: "开发中";
   visibility: hidden;
   transform: scale(0.75);
   opacity: 0;
