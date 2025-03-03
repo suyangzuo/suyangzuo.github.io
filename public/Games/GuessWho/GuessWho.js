@@ -1,65 +1,41 @@
-// const 汉堡按钮 = document.getElementById("汉堡");
-// const 菜单 = document.getElementById("菜单");
+for (let i = 0; i < 10; i++) {
+  const 人物按钮 = document.createElement("button");
+  人物按钮.className = "人物按钮";
+  document.querySelector(".人物按钮区").appendChild(人物按钮);
+}
 
-// 汉堡按钮.addEventListener("click", () => {
-//   菜单.classList.toggle("展示");
-// });
+for (let i = 0; i < 10; i++) {
+  const 人物肖像 = document.createElement("div");
+  人物肖像.className = "人物肖像";
+  document.querySelector(".人物肖像区").appendChild(人物肖像);
+  const 正面 = document.createElement("div");
+  正面.className = "正面";
+  const 背面 = document.createElement("div")
+  背面.className = "背面"
+  人物肖像.appendChild(正面);
+  人物肖像.appendChild(背面);
+}
 
-// const 人物名字按钮 = document.querySelectorAll(".人物名字");
-// const 人物肖像区 = document.querySelectorAll(".人物肖像");
-
-// 人物名字按钮.forEach((button) => {
-//   button.addEventListener("dragstart", (event) => {
-//     event.dataTransfer.setData("text/plain", button.textContent);
-//   });
-// });
-
-// 人物肖像区.forEach((肖像) => {
-//   肖像.addEventListener("dragover", (event) => {
-//     event.preventDefault();
-//   });
-
-//   肖像.addEventListener("drop", (event) => {
-//     const draggedName = event.dataTransfer.getData("text/plain");
-//     const img = 肖像.querySelector("img");
-
-//     if (img && img.alt === draggedName) {
-//       img.style.display = "none";
-//       肖像.innerHTML += "<p>成功</p>";
-
-//       人物名字按钮.forEach((button) => {
-//         if (button.textContent === draggedName) {
-//           button.style.display = "none";
-//         }
-//       });
-//     }
-//   });
-// });
-
-const 人物按钮姓名组 = document.querySelectorAll(".人物按钮")
+const 人物按钮姓名组 = document.querySelectorAll(".人物按钮");
 人物按钮姓名组.forEach((人物按钮姓名组, index) => {
-  人物按钮姓名组.textContent=`姓名 ${index+1}`
-})
+  人物按钮姓名组.textContent = `姓名 ${index + 1}`;
+});
 
-const 规则介绍页 = document.querySelector(".规则介绍页")
-const 遮罩层 = document.querySelector(".规则遮罩层")
+const card = document.querySelector(".人物肖像");
+const cards = document.querySelectorAll(".人物肖像");
+cards.forEach((card) => {
+  card.addEventListener("click", function () {
+    card.classList.toggle("翻转");
+  });
+});
 
-document.querySelector(".规则按钮").addEventListener('click', () => {
+const 规则介绍页 = document.querySelector(".规则介绍页");
+const 遮罩层 = document.querySelector(".规则遮罩层");
+document.querySelector(".规则按钮").addEventListener("click", () => {
   规则介绍页.showModal();
-  遮罩层.style.display='block'
-})
-
+  遮罩层.style.display = "block";
+});
 规则介绍页.addEventListener("click", () => {
   规则介绍页.close();
-  遮罩层.style.display='none'
-})
-
-const card = document.querySelector('.人物肖像');
-
-const cards = document.querySelectorAll('.人物肖像');
-
-cards.forEach(card => {
-    card.addEventListener('click', function() {
-        card.classList.toggle('翻转'); 
-    });
+  遮罩层.style.display = "none";
 });
