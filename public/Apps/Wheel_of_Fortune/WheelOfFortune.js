@@ -3,7 +3,7 @@ const rootStyle = window.getComputedStyle(root);
 const 奖品数量 = 10;
 let 最大圈数 = 25 + Math.random();
 let 最小圈数 = 5 + Math.random();
-let 总旋转角度 = 生成总旋转角度();
+let 总旋转角度 = 0;
 
 function 生成总旋转角度() {
   return 360 * (Math.random() * (最大圈数 - 最小圈数 + 1) + 最小圈数);
@@ -131,12 +131,13 @@ const 动画选项 = {
 };
 
 开奖按钮.addEventListener("click", () => {
+  总旋转角度 = 生成总旋转角度();
+  转盘关键帧序列[1].rotate = `z ${总旋转角度}deg`;
   if (旋转转盘单选框.checked) {
     for (const 转盘奖品序号 of 转盘奖品序号组) {
       const 当前旋转角度 = parseInt(转盘奖品序号.style.rotate, 10);
       转盘奖品序号.style.rotate = `z ${当前旋转角度 - 总旋转角度}deg`;
     }
-
     转盘容器.animate(转盘关键帧序列, 动画选项);
   } else {
     指针.animate(转盘关键帧序列, 动画选项);
@@ -191,8 +192,6 @@ for (const 数字框 of 数字框组) {
     } else {
       最大圈数 = 值 + Math.random();
     }
-    总旋转角度 = 生成总旋转角度();
-    转盘关键帧序列[1].rotate = `z ${总旋转角度}deg`;
   });
 
   数字框.addEventListener("blur", () => {
@@ -239,8 +238,6 @@ function 点击数字框加减按钮(event) {
   } else {
     最大圈数 = 值 + Math.random();
   }
-  总旋转角度 = 生成总旋转角度();
-  转盘关键帧序列[1].rotate = `z ${总旋转角度}deg`;
 }
 
 function 快速更新数值(event) {
@@ -266,8 +263,6 @@ function 快速更新数值(event) {
     } else {
       最大圈数 = 值 + Math.random();
     }
-    总旋转角度 = 生成总旋转角度();
-    转盘关键帧序列[1].rotate = `z ${总旋转角度}deg`;
   }, 50);
 }
 
