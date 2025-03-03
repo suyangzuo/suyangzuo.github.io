@@ -176,7 +176,12 @@ for (const 按钮 of 重置变换属性按钮组) {
       if (滑块.id.includes("旋转")) {
         单位 = "deg";
       } else if (滑块.id.includes("平移")) {
-        滑块.nextElementSibling.querySelector(".选择器").value = "%";
+        if (滑块.id.includes("Z")) {
+          单位 = "px";
+          滑块.nextElementSibling.querySelector(".选择器").value = "px";
+        } else {
+          滑块.nextElementSibling.querySelector(".选择器").value = "%";
+        }
       }
       root.style.setProperty(`--${滑块.id}`, `${滑块.value}${单位}`);
       设置滑块填充与数值(滑块);

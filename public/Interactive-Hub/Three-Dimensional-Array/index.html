@@ -1,15 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>三维数组</title>
-    <link
-      rel="icon"
-      href="/Images/Interactive-Hub/HQ/三维数组.png"
-      type="image/x-icon"
-    />
+    <link rel="icon" href="/Images/Interactive-Hub/HQ/三维数组.png" type="image/x-icon" />
     <link
       href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Titillium+Web&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Roboto+Mono&family=M+PLUS+Code+Latin&family=Ubuntu+Mono&family=M+PLUS+1+Code:wght@100..700&display=swap"
       rel="stylesheet"
@@ -21,28 +17,35 @@
     <link rel="stylesheet" href="three-dimensional-array.css" />
     <script src="/Scripts/top-banner.js" defer></script>
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
-    <script
-      src="https://kit.fontawesome.com/d0483e3bd3.js"
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
     <script src="three-dimensional-array.js" defer></script>
   </head>
   <body>
     <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
-    <script
-      src="../../Scripts/html-include.js"
-      target="../../top-banner.html"
-      position="afterbegin"
-    ></script>
+    <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
     <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
 
     <section class="三维数组总区 总区">
-      <script
-        src="../../Scripts/html-include.js"
-        target="../control.html"
-        position="afterbegin"
-      ></script>
+      <script src="../../Scripts/html-include.js" target="../control.html" position="afterbegin"></script>
       <p class="交互标题">三维数组</p>
+      <div class="数据区 隐藏">
+        <h3 class="数据区标题">三维数组</h3>
+        <p class="索引数据容器 第3维度索引数据">
+          <span class="方括号">[</span>
+          <span class="索引数据"></span>
+          <span class="方括号">]</span>
+        </p>
+        <p class="索引数据容器 第2维度索引数据">
+          <span class="方括号">[</span>
+          <span class="索引数据"></span>
+          <span class="方括号">]</span>
+        </p>
+        <p class="索引数据容器 第1维度索引数据">
+          <span class="方括号">[</span>
+          <span class="索引数据"></span>
+          <span class="方括号">]</span>
+        </p>
+      </div>
       <div class="透视容器">
         <div class="旋转容器">
           <div class="数组容器 数组容器-1"></div>
@@ -55,13 +58,7 @@
           <h3 class="控件区标题">展示风格</h3>
           <label for="平面" class="单选标签">
             <span class="单选文本">平面</span>
-            <input
-              type="radio"
-              class="单选"
-              name="变换风格"
-              id="平面"
-              checked
-            />
+            <input type="radio" class="单选" name="变换风格" id="平面" checked />
           </label>
           <label for="三维" class="单选标签">
             <span class="单选文本">三维</span>

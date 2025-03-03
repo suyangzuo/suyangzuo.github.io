@@ -1,0 +1,468 @@
+:root {
+  --角度间隔: 36deg;
+  --奖品-0-起点: 0deg;
+  --奖品-0-终点: calc(var(--角度间隔) * 1);
+  --奖品-1-起点: calc(var(--角度间隔) * 1);
+  --奖品-1-终点: calc(var(--角度间隔) * 2);
+  --奖品-2-起点: calc(var(--角度间隔) * 2);
+  --奖品-2-终点: calc(var(--角度间隔) * 3);
+  --奖品-3-起点: calc(var(--角度间隔) * 3);
+  --奖品-3-终点: calc(var(--角度间隔) * 4);
+  --奖品-4-起点: calc(var(--角度间隔) * 4);
+  --奖品-4-终点: calc(var(--角度间隔) * 5);
+  --奖品-5-起点: calc(var(--角度间隔) * 5);
+  --奖品-5-终点: calc(var(--角度间隔) * 6);
+  --奖品-6-起点: calc(var(--角度间隔) * 6);
+  --奖品-6-终点: calc(var(--角度间隔) * 7);
+  --奖品-7-起点: calc(var(--角度间隔) * 7);
+  --奖品-7-终点: calc(var(--角度间隔) * 8);
+  --奖品-8-起点: calc(var(--角度间隔) * 8);
+  --奖品-8-终点: calc(var(--角度间隔) * 9);
+  --奖品-9-起点: calc(var(--角度间隔) * 9);
+  --奖品-9-终点: calc(var(--角度间隔) * 10);
+  --奖品-0-背景色: #234;
+  --奖品-1-背景色: rgb(78, 155, 202);
+  --奖品-2-背景色: rgb(159, 110, 118);
+  --奖品-3-背景色: rgb(53, 176, 141);
+  --奖品-4-背景色: darkgoldenrod;
+  --奖品-5-背景色: rgb(152, 63, 130);
+  --奖品-6-背景色: rgb(67, 132, 145);
+  --奖品-7-背景色: rgb(174, 155, 93);
+  --奖品-8-背景色: rgb(114, 131, 152);
+  --奖品-9-背景色: rgb(73, 115, 66);
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.设置区 {
+  position: fixed;
+  top: 45%;
+  translate: 0 -50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  padding: 25px;
+  border-radius: 10px;
+  background-color: #ffffff09;
+  box-shadow: inset 0 0 0 1px #ffffff15;
+}
+
+.设置区标题 {
+  margin-bottom: 10px;
+  color: goldenrod;
+}
+
+.左侧设置区 {
+  left: 50px;
+}
+
+.右侧设置区 {
+  right: 50px;
+}
+
+.设置子区 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.水平排列控件区 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.圈数设置区 .控件区 {
+  padding: 5px 15px;
+  border-radius: 5px;
+}
+
+.圈数设置区 .控件区:hover {
+  background-color: #203040;
+}
+
+.控件区标签 {
+  padding-right: 10px;
+  color: silver;
+}
+
+.按钮 {
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(71, 95, 83);
+  color: white;
+}
+
+.按钮:hover {
+  background-color: rgb(89, 120, 104);
+}
+
+.按钮:active {
+  background-color: rgb(107, 145, 125);
+}
+
+.数字框::-webkit-inner-spin-button,
+.数字框::-webkit-outer-spin-button {
+  appearance: none;
+}
+
+.数字框 {
+  -moz-appearance: textfield;
+  width: 50px;
+  height: 22px;
+  padding: 2px 5px;
+  background-color: rgb(69, 80, 92);
+  border: none;
+  border-radius: 2px;
+  color: white;
+  font-family: Consolas, monospace;
+  font-size: 16px;
+}
+
+.数字框:hover {
+  background-color: rgb(103, 119, 137);
+}
+
+.数字框:focus {
+  outline: none;
+}
+
+.用时设置区 .范围标签 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.范围滑块 {
+  width: 200px;
+  accent-color: rgb(180, 221, 99);
+}
+
+.范围滑块::-webkit-slider-thumb {
+  scale: 1.5;
+}
+
+.范围滑块:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.数据 {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.值 {
+  width: 18px;
+  text-align: right;
+  font-family: Consolas, monospace;
+  color: lightskyblue;
+}
+
+.单位 {
+  color: lightsteelblue;
+}
+
+.奖品设置项,
+.奖品名称 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-family: Consolas, monospace, "Noto Sans SC", sans-serif;
+}
+
+.奖品设置项 {
+  padding: 5px 0;
+}
+
+.奖品设置项:has(.奖品名称:hover) .设置奖品序号 {
+  color: lightgreen;
+}
+
+.奖品设置项:has(.奖品名称:focus) .设置奖品序号 {
+  color: lightcyan;
+}
+
+.设置奖品序号 {
+  width: 3.5ch;
+  padding-right: 1.5ch;
+  text-align: right;
+  color: olivedrab;
+  user-select: none;
+}
+
+.奖品名称 {
+  padding: 5px;
+  width: 30ch;
+  background-color: #345;
+  border: solid 2px #cde0;
+  color: white;
+  border-radius: 5px;
+  outline: none;
+}
+
+.奖品名称:hover {
+  background-color: #456;
+  border: solid 2px #cde4;
+}
+
+.奖品名称:focus {
+  background-color: #123;
+  border: solid 2px #cde8;
+}
+
+.旋转对象设置区 {
+  gap: 5px;
+}
+
+.旋转对象标题 {
+  margin-bottom: 10px;
+}
+
+.旋转对象控件区 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.单选标签 {
+  position: relative;
+  display: flex;
+  background-color: #222;
+  overflow: hidden;
+}
+
+.单选标签:hover {
+  background-color: #333;
+}
+
+.单选标签:hover,
+.单选框:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.单选框 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  appearance: none;
+}
+
+.单选标签:has(#旋转对象-转盘) {
+  border-radius: 5px 0 0 5px;
+}
+
+.单选标签:has(#旋转对象-指针) {
+  border-radius: 0 5px 5px 0;
+}
+
+.单选标签:has(.单选框:checked) {
+  background-color: #abc;
+}
+
+.单选标签:has(.单选框:checked) .单选标签文本 {
+  color: black;
+}
+
+.单选标签文本 {
+  padding: 10px 15px;
+}
+
+.转盘区 {
+  position: relative;
+  height: fit-content;
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.转盘容器 {
+  position: relative;
+  width: 750px;
+  height: 750px;
+  border-radius: 9999px;
+  background-color: #123;
+}
+
+@property --指示器起始角度 {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@property --指示器结束角度 {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 36deg;
+}
+
+.转盘指示器 {
+  --转盘指示器背景色: gold;
+  position: absolute;
+  width: calc(100% + 15px);
+  height: calc(100% + 15px);
+  border-radius: 9999px;
+  background-image: conic-gradient(
+    from -18deg,
+    transparent var(--指示器起始角度),
+    white var(--指示器起始角度) var(--指示器结束角度),
+    transparent var(--指示器结束角度)
+  );
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  transition: --指示器起始角度 250ms, --指示器结束角度 250ms, opacity 250ms;
+  pointer-events: none;
+}
+
+.转盘指示器.隐藏 {
+  opacity: 0;
+}
+
+.指示器线 {
+  width: 3px;
+  height: calc(50% + 15px / 2);
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  translate: -50% 0;
+  background-color: white;
+  z-index: 1;
+  transform-origin: 50% 100%;
+  pointer-events: none;
+  transition: --指示器起始角度 250ms, opacity 250ms;
+}
+
+.指示器线.隐藏 {
+  opacity: 0;
+}
+
+.指示器后端线 {
+  box-shadow: -3px 0 6px 0 #0006;
+  rotate: z calc(var(--指示器起始角度) - var(--角度间隔) / 2);
+}
+
+.指示器前端线 {
+  box-shadow: 3px 0 6px 0 #0006;
+  rotate: z calc(var(--指示器起始角度) + var(--角度间隔) / 2);
+}
+
+.转盘中心圆 {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  background-color: #345;
+  border-radius: 9999px;
+  border: solid 2px #fff8;
+  z-index: 10;
+}
+
+.指针容器 {
+  height: 150%;
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  translate: -50% 0;
+}
+
+.指针 {
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(2px 2px 2px #000a);
+  transform-origin: 50% 100%;
+}
+
+#开奖按钮,
+.中奖指示针 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+}
+
+#开奖按钮 {
+  width: 35%;
+  height: 35%;
+  border-radius: 999px;
+  background-color: silver;
+  box-shadow: 3px 3px 6px 0 #000a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  color: black;
+  transition: font-size 125ms;
+}
+
+#开奖按钮:hover {
+  background-color: rgb(225, 225, 225);
+}
+
+#开奖按钮:active {
+  background-color: white;
+  font-size: 24px;
+}
+
+.奖品容器 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 9999px;
+  top: 0;
+  left: 0;
+}
+
+.奖品内容 {
+  position: absolute;
+  width: 10%;
+  height: 50%;
+  padding: 25px 0 100px;
+  top: 0;
+  left: 50%;
+  translate: -50% 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  transform-origin: 50% 100%;
+}
+
+.转盘奖品序号 {
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  align-content: center;
+  border-radius: 999px;
+  background-color: #151821;
+  font-size: 12px;
+  font-family: Consolas, monospace, "Noto Sans SC", sans-serif;
+}
+
+.奖品文本 {
+  font-size: clamp(14px, 1.5vh, 18px);
+  writing-mode: vertical-lr;
+  text-align: center;
+  align-content: center;
+  font-family: Consolas, monospace, "Noto Sans SC", sans-serif;
+}

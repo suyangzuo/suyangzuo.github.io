@@ -33,7 +33,7 @@ body {
   justify-content: flex-start;
   align-items: center;
   gap: 50px;
-  padding: 75px 0 0 0;
+  padding: 75px 0;
 }
 
 .中心标题 {
@@ -263,7 +263,7 @@ body {
   align-items: center;
   font-size: 1.25rem;
   text-shadow: 2px 2px 2px black;
-  content: "未完成";
+  content: "开发中";
   visibility: hidden;
   transform: scale(0.75);
   opacity: 0;

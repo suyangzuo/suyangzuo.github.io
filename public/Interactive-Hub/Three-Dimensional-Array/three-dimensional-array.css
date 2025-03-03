@@ -6,6 +6,8 @@
   --序号容器偏移: -40px;
   --数组容器尺寸: 400px;
   --Z轴间距: 50px;
+  --数据区坐标-top: 0;
+  --数据区坐标-left: 0;
 }
 
 body {
@@ -13,9 +15,78 @@ body {
 }
 
 .总区 {
+  position: relative;
   gap: 0;
   flex-direction: column;
   padding-top: 150px;
+}
+
+.总区:has(.数组容器.三维展示) .数据区 {
+  opacity: 0;
+}
+
+.数据区 {
+  width: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  position: absolute;
+  top: calc(var(--数据区坐标-top) - 100px);
+  left: var(--数据区坐标-left);
+  transition: 125ms;
+}
+
+.数据区.隐藏 {
+  opacity: 0;
+}
+
+.数据区标题 {
+  color: rgb(180, 204, 204);
+}
+
+.索引数据容器 {
+  font-family: Consolas, monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 4ch;
+  transition: width 125ms;
+}
+
+.索引数据容器.隐藏 {
+  opacity: 0;
+  width: 0;
+}
+
+.索引数据 {
+  width: 2ch;
+  text-align: center;
+  align-content: center;
+}
+
+.第3维度索引数据 .方括号 {
+  color: rgb(174, 92, 120);
+}
+
+.第3维度索引数据 .索引数据 {
+  color: palevioletred;
+}
+
+.第2维度索引数据 .方括号 {
+  color: rgb(116, 194, 116);
+}
+
+.第2维度索引数据 .索引数据 {
+  color: lightgreen;
+}
+
+.第1维度索引数据 .方括号 {
+  color: rgb(110, 168, 204);
+}
+
+.第1维度索引数据 .索引数据 {
+  color: lightskyblue;
 }
 
 .透视容器 {
@@ -41,9 +112,7 @@ body {
 }
 
 .数组容器 :where(.数组行, .序号容器, .二维数组索引容器) {
-  transition:
-    opacity 500ms,
-    filter 125ms;
+  transition: opacity 500ms, filter 125ms;
 }
 
 .数组容器.三维展示.已屏蔽 {
@@ -156,10 +225,7 @@ body {
   position: relative;
   text-align: center;
   align-content: center;
-  transition:
-    color 75ms,
-    filter 75ms,
-    font-size 75ms;
+  transition: color 75ms, filter 75ms, font-size 75ms;
 }
 
 .序号:hover {

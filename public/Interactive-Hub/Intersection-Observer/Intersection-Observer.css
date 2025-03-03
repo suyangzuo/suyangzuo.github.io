@@ -39,7 +39,11 @@
   width: calc(100% + var(--视口宽度调整));
   height: calc(100% + var(--视口高度调整));
   border: solid 1px hotpink;
-  background-Image: linear-gradient(90deg, var(--视口背景填充色) var(--视口背景填充百分比), transparent var(--视口背景填充百分比));
+  background-image: linear-gradient(
+    90deg,
+    var(--视口背景填充色) var(--视口背景填充百分比),
+    transparent var(--视口背景填充百分比)
+  );
 }
 
 .交叉比容器 {
@@ -123,6 +127,7 @@
 
 .标签文本 {
   user-select: none;
+  color: silver;
 }
 
 .关闭标签 .标签文本 {
@@ -240,6 +245,11 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  padding: 2px 0;
+}
+
+.滑块标签:has(.范围滑块:hover) .标签文本 {
+  color: white;
 }
 
 .单选标签 {
@@ -252,7 +262,7 @@
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
-.单选标签>.单选 {
+.单选标签 > .单选 {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -260,7 +270,7 @@
   left: 0;
 }
 
-.单选标签>.标签文本 {
+.单选标签 > .标签文本 {
   width: fit-content;
   height: fit-content;
   padding: 7px 10px;
@@ -269,9 +279,14 @@
   justify-content: center;
   align-items: center;
   background-color: rgba(218, 165, 32, 0.25);
+  transition: 125ms;
 }
 
-.单选标签:hover>.标签文本 {
+.单选标签:has(.单选:hover) .标签文本 {
+  color: white;
+}
+
+.单选标签:hover > .标签文本 {
   background-color: rgba(218, 165, 32, 0.4);
 }
 
@@ -287,7 +302,7 @@
 .范围滑块 {
   width: 200px;
   height: 6px;
-  accent-color: lightseagreen;
+  accent-color: rgb(101, 155, 187);
 }
 
 .范围滑块:hover {
@@ -295,9 +310,7 @@
 }
 
 .范围滑块::-webkit-slider-thumb {
-  appearance: none;
-  width: 18px;
-  height: 18px;
+  scale: 1.25;
 }
 
 .滑块数据 {
@@ -307,7 +320,7 @@
 }
 
 .数值 {
-  color: lightskyblue;
+  color: rgb(215, 180, 133);
   width: 34px;
   text-align: right;
 }
@@ -335,7 +348,7 @@
   align-items: center;
 }
 
-.数字标签>.标签文本 {
+.数字标签 > .标签文本 {
   margin-right: 10px;
   color: silver;
 }
@@ -406,7 +419,7 @@
   gap: 4px;
 }
 
-.复选标签>.标签文本 {
+.复选标签 > .标签文本 {
   color: silver;
 }
 

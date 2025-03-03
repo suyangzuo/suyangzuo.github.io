@@ -4,6 +4,11 @@
   --快捷键列表项高度: 41px;
 }
 
+.正斜杠 {
+  color: rgb(164, 189, 189);
+  margin: 0 2px;
+}
+
 .快捷键池 {
   width: fit-content;
   min-width: 1000px;
@@ -26,9 +31,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border-top: solid 1px var(--快捷键区边框色);
+  /* border-top: solid 1px var(--快捷键区边框色);
   border-left: solid 1px var(--快捷键区边框色);
-  border-right: solid 1px var(--快捷键区边框色);
+  border-right: solid 1px var(--快捷键区边框色); */
 }
 
 .快捷键种类 {
@@ -103,12 +108,22 @@
 .快捷键列表区 {
   width: 100%;
   position: relative;
-  height: calc(var(--快捷键列表项高度) * 6 + 30px);
+  height: calc(var(--快捷键列表项高度) * 7 + 30px);
   background-color: #252a2f;
   /*box-shadow: inset 0 -1px 0 1px #fff1;*/
-  border-bottom: solid 1px var(--快捷键区边框色);
+  /* border-bottom: solid 1px var(--快捷键区边框色);
   border-left: solid 1px var(--快捷键区边框色);
-  border-right: solid 1px var(--快捷键区边框色);
+  border-right: solid 1px var(--快捷键区边框色); */
+}
+
+.快捷键列表区::before {
+  position: absolute;
+  width: 100%;
+  height: calc(100% + 40px);
+  bottom: 0;
+  content: "";
+  pointer-events: none;
+  border: solid 1px var(--快捷键区边框色);
 }
 
 #取消选择 {
@@ -406,7 +421,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .测试区 {
   position: relative;
-  height: max(300px, calc(100vh - 580px));
+  height: max(350px, calc(100vh - 621px));
   display: flex;
   justify-content: center;
 }

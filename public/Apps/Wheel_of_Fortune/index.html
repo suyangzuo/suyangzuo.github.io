@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>快乐大转盘</title>
+    <link rel="icon" href="/Images/Apps/快乐大转盘.png" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Titillium+Web&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Roboto+Mono&family=M+PLUS+Code+Latin&family=Ubuntu+Mono&family=M+PLUS+1+Code:wght@100..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
+    <link rel="stylesheet" type="text/css" href="/Styles/top-banner-common.css" />
+    <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
+    <link rel="stylesheet" href="../apps-common-control.css" />
+    <link rel="stylesheet" href="./WheelOfFortune.css" />
+    <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <script src="/Scripts/top-banner.js" defer></script>
+    <script src="WheelOfFortune.js" defer></script>
+  </head>
+  <body>
+    <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
+
+    <script src="/Scripts/html-include.js" target="../apps-common-control.html" position="afterbegin"></script>
+
+    <div class="设置区 左侧设置区">
+      <div class="设置子区 圈数设置区">
+        <h3 class="设置区标题 圈数设置区标题">圈数</h3>
+        <div class="控件区 水平排列控件区">
+          <label for="最低圈数" class="控件区标签">最低</label>
+          <button id="减少最低圈数" class="按钮">-</button>
+          <input type="number" id="最低圈数" class="数字框" min="5" max="10" value="5" />
+          <button id="增加最低圈数" class="按钮">+</button>
+        </div>
+        <div class="控件区 水平排列控件区">
+          <label for="最高圈数" class="控件区标签">最高</label>
+          <button id="减少最高圈数" class="按钮">-</button>
+          <input type="number" id="最高圈数" class="数字框" min="10" max="40" value="25" />
+          <button id="增加最高圈数" class="按钮">+</button>
+        </div>
+      </div>
+      <div class="设置子区 用时设置区">
+        <h3 class="设置区标题 用时设置区标题">用时</h3>
+        <div class="控件区 水平排列控件区">
+          <label for="" class="范围标签">
+            <input type="range" id="用时" class="范围滑块" min="5" max="30" value="15" />
+            <p class="数据">
+              <span class="值">15</span>
+              <span class="单位">秒</span>
+            </p>
+          </label>
+        </div>
+      </div>
+      <div class="设置子区 旋转对象设置区">
+        <h3 class="设置区标题 旋转对象标题">旋转对象</h3>
+        <div class="旋转对象控件区">
+          <label for="旋转对象-转盘" class="单选标签">
+            <span class="单选标签文本">转盘</span>
+            <input type="radio" id="旋转对象-转盘" class="单选框" name="旋转对象" checked />
+          </label>
+          <label for="旋转对象-指针" class="单选标签">
+            <span class="单选标签文本">指针</span>
+            <input type="radio" id="旋转对象-指针" class="单选框" name="旋转对象" />
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="设置区 右侧设置区">
+      <div class="设置子区 奖品设置区">
+        <h3 class="设置区标题 奖品设置区标题">奖品设置</h3>
+      </div>
+    </div>
+
+    <div class="转盘区">
+      <div class="转盘容器">
+        <div class="转盘指示器 隐藏"></div>
+        <div class="指示器前端线 指示器线 隐藏"></div>
+        <div class="指示器后端线 指示器线 隐藏"></div>
+        <div class="奖品容器">
+          <div class="奖品内容">
+            <span class="转盘奖品序号"></span>
+            <p class="奖品文本">罗技 GPW4 鼠标</p>
+          </div>
+        </div>
+        <div class="奖品容器">
+          <div class="奖品内容">
+            <span class="转盘奖品序号"></span>
+            <p class="奖品文本">MacBook Pro 16寸</p>
+          </div>
+        </div>
+        <div class="奖品容器">
+          <div class="奖品内容">
+            <span class="转盘奖品序号"></span>
+            <p class="奖品文本">自行车1辆</p>
+          </div>
+        </div>
+        <div class="奖品容器">
+          <div class="奖品内容">
+            <span class="转盘奖品序号"></span>
+            <p class="奖品文本">坦克1座</p>
+          </div>
+        </div>
+        <div class="奖品容器">
+          <div class="奖品内容">
+            <span class="转盘奖品序号"></span>
+            <p class="奖品文本">歼36</p>
+          </div>
+        </div>
+        <div class="奖品容器">
+          <div class="奖品内容">
+            <span class="转盘奖品序号"></span>
+            <p class="奖品文本">NVIDIA RTX 5090</p>
+          </div>
+        </div>
+        <div class="奖品容器">
+          <div class="奖品内容">
+            <span class="转盘奖品序号"></span>
+            <p class="奖品文本">华为 Mate 70</p>
+          </div>
+        </div>
+        <div class="奖品容器">
+          <div class="奖品内容">
+            <span class="转盘奖品序号"></span>
+            <p class="奖品文本">火锅店1年3折消费券</p>
+          </div>
+        </div>
+        <div class="奖品容器">
+          <div class="奖品内容">
+            <span class="转盘奖品序号"></span>
+            <p class="奖品文本">橡皮100个</p>
+          </div>
+        </div>
+        <div class="奖品容器">
+          <div class="奖品内容">
+            <span class="转盘奖品序号"></span>
+            <p class="奖品文本">再次参加教学比赛</p>
+          </div>
+        </div>
+      </div>
+      <div class="转盘中心圆">
+        <figure class="指针容器">
+          <img class="指针" src="./指针.png" alt="指针" />
+        </figure>
+        <button id="开奖按钮" class="按钮" title="开奖"><i class="fa-solid fa-play"></i></button>
+      </div>
+    </div>
+  </body>
+</html>
