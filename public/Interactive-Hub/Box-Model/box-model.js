@@ -163,7 +163,7 @@ function 刷新宽度数值显示() {
     内容盒子宽度描述区.style.display = "";
     边框盒子宽度描述区.classList.remove("边框盒子宽度描述区");
   } else {
-    if (内边距 * 2 + 边框 * 2 < 宽度) {
+    if (内边距 * 2 + 边框 * 2 <= 宽度) {
       for (const 加号区 of 加号区组) {
         加号区.style.display = "none";
       }
