@@ -14,6 +14,7 @@ body {
 
 .game-grid {
   border-radius: 10px;
+  background-color: #567;
   /* border: solid 2px rgb(15, 15, 15); */
   margin: 3px;
   position: relative;
@@ -21,8 +22,13 @@ body {
   transition: transform 0.3s;
 }
 
+/* ea → early access：早期开发中 */
 .game-grid.ea {
   background-color: #567;
+}
+
+.game-grid.ea img {
+  filter: brightness(25%);
 }
 
 .game-grid.ea::after {
@@ -32,7 +38,6 @@ body {
   height: 100%;
   top: 0;
   left: 0;
-  background-color: #000a;
   text-align: center;
   align-content: center;
   pointer-events: none;
