@@ -4,10 +4,11 @@ span {
 
 .result-area {
   position: fixed;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
+  width: 500px;
+  height: 100px;
+  top: 75px;
+  left: 50%;
+  translate: -50% 0;
 }
 
 .game-area {
@@ -64,7 +65,7 @@ span {
   font-size: 18px;
   background-color: #345;
   color: white;
-  box-shadow: inset 0 2px 2px #fff3;
+  box-shadow: inset 0 2px 2px 0 #fff3, 2px 2px 2px 0 #0007;
 }
 
 .滑块标签 {

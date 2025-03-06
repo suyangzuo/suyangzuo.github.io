@@ -55,12 +55,18 @@ function 生成提示元素() {
     提示序号.classList.add("提示序号");
     提示序号.textContent = i + 1;
     提示元素.appendChild(提示序号);
-    提示序列.push({ 元素: 提示元素, x: 水平坐标, y: 垂直坐标, 点击次数: 0, 成功用时: 0 });
+    提示序列.push({
+      元素: 提示元素,
+      x: 水平坐标,
+      y: 垂直坐标,
+      点击次数: 0,
+      成功用时: 0,
+    });
   }
 }
 
 function 生成提示动画() {
-  const 关键帧序列 = [{ opacity: 0 }, { opacity: 1, offset: 0.15 }, { opacity: 1, offset: 0.85 }, { opacity: 0 }];
+  const 关键帧序列 = [{ opacity: 0 }, { opacity: 1, offset: 0.1 }, { opacity: 1, offset: 0.9 }, { opacity: 0 }];
   for (const [index, 提示] of 提示序列.entries()) {
     const 动画设置 = {
       duration: 提示时长,
@@ -124,6 +130,4 @@ function 生成成功效果() {
   提示序列[当前目标索引].元素.style.opacity = "1";
 }
 
-function 生成结果(){
-  
-}
+function 生成结果() {}
