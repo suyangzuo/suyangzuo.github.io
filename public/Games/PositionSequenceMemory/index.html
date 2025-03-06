@@ -37,7 +37,28 @@
       </div>
     </div>
     <div class="game-area"></div>
-    <div class="setup-area"></div>
+    <div class="setup-area">
+      <label for="提示时长" class="标签 滑块标签">
+        <span class="标签标题">提示时长</span>
+        <input type="range" id="提示时长" class="滑块" min="250" max="1000" value="500" />
+        <span class="标签数据">
+          <span class="数据值">0.5</span>
+          <span class="数据单位">秒</span>
+        </span>
+      </label>
+      <button id="start" class="button">开始</button>
+      <label for="坐标数量" class="标签 滑块标签">
+        <span class="标签标题">坐标数量</span>
+        <input type="range" id="坐标数量" class="滑块" min="3" max="10" value="5" />
+        <span class="标签数据">
+          <span class="数据值">5</span>
+        </span>
+      </label>
+    </div>
+    <div class="rule-area">
+      <div class="规则分区 规则描述区"></div>
+    </div>
+    <div class="result-area"></div>
     <script src="PositionSequenceMemory.js"></script>
   </body>
 </html>
