@@ -6,16 +6,17 @@ const 提示宽度 = 100;
 const 提示高度 = 100;
 
 const 提示时长滑块 = document.getElementById("提示时长");
-const 坐标数量滑块 = document.getElementById("坐标数量");
+const 炸弹数量滑块 = document.getElementById("炸弹数量");
 let 提示时长 = parseInt(提示时长滑块.value, 10);
-let 坐标数量 = parseInt(坐标数量滑块.value, 10);
-let 提示间隔 = 500;
+let 炸弹数量 = parseInt(炸弹数量滑块.value, 10);
+let 提示间隔 = 250;
 let 当前目标索引 = 0;
 let 点击次数 = 0;
 
 const 提示序列 = [];
 let 起始时间 = null;
 let 恢复点击提示Id = null;
+let 生成结果Id = null;
 
 const 滑块组 = document.querySelectorAll(".滑块");
 for (const 滑块 of 滑块组) {
@@ -27,7 +28,7 @@ for (const 滑块 of 滑块组) {
       提示时长 = parseInt(提示时长滑块.value, 10);
     } else {
       数据值.textContent = 滑块.value;
-      坐标数量 = parseInt(坐标数量滑块.value, 10);
+      炸弹数量 = parseInt(炸弹数量滑块.value, 10);
     }
   });
 }
@@ -45,7 +46,7 @@ const 开始按钮 = document.getElementById("start");
 function 生成提示元素() {
   const 游戏区宽度 = parseInt(游戏区计算样式.width);
   const 游戏区高度 = parseInt(游戏区计算样式.height);
-  for (let i = 0; i < 坐标数量; i++) {
+  for (let i = 0; i < 炸弹数量; i++) {
     const 水平坐标 = Math.floor(Math.random() * (游戏区宽度 - 提示宽度 - 100 - (提示宽度 + 100) + 1) + 提示宽度 + 100);
     const 垂直坐标 = Math.floor(Math.random() * (游戏区高度 - 提示高度 - 150));
     const 提示元素 = document.createElement("div");
@@ -92,14 +93,15 @@ function 记录玩家数据(event) {
   const 提示元素索引 = parseInt(event.target.getAttribute("data-index"), 10);
   if (提示元素索引 !== 当前目标索引) return;
   const 结束时间 = performance.now();
-  提示序列[提示元素索引].成功用时 = 结束时间 - 起始时间;
-  提示序列[提示元素索引].点击次数 = 点击次数;
+  提示序列[当前目标索引].成功用时 = 结束时间 - 起始时间;
+  提示序列[当前目标索引].点击次数 = 点击次数;
   生成成功效果();
   起始时间 = 结束时间;
   点击次数 = 0;
   当前目标索引++;
   if (当前目标索引 > 提示序列.length - 1) {
     禁止点击提示();
+    生成结果Id = setTimeout(生成结果, 1000);
   }
 }
 
@@ -122,12 +124,12 @@ function 初始化() {
   当前目标索引 = 0;
   提示序列.length = 0;
   游戏区.innerHTML = "";
+  结果区.innerHTML = "";
 }
 
-function 生成生活用时(起始时间, 结束时间) {
-  const 用时 = 结束时间 - 起始时间;
-  const 分 = Math.floor(用时 / 60000);
-  const 秒 = (用时 - 分 * 60000) / 1000;
+function 生成生活用时(时间段) {
+  const 分 = Math.floor(时间段 / 60000);
+  const 秒 = Math.round(((时间段 - 分 * 60000) / 1000) * 100) / 100;
   return {
     分: 分,
     秒: 秒,
@@ -140,4 +142,69 @@ function 生成成功效果() {
   已确认元素.classList.remove("隐藏");
 }
 
-function 生成结果() {}
+function 生成结果() {
+  const 总数据区 = document.createElement("div");
+  总数据区.classList.add("总数据区");
+  const 总用时区 = document.createElement("div");
+  总用时区.classList.add("总用时区");
+  const 总点击次数区 = document.createElement("div");
+  总点击次数区.classList.add("总点击次数区");
+  总数据区.append(总用时区, 总点击次数区);
+
+  const 总用时标题 = document.createElement("h4");
+  总用时标题.className = "标题 总用时标题";
+  总用时标题.textContent = "总用时";
+  const 总用时数据 = document.createElement("span");
+  总用时数据.className = "数据容器 总用时数据容器";
+  总用时区.append(总用时标题, 总用时数据);
+
+  const 分数据容器 = document.createElement("span");
+  分数据容器.className = "子数据容器 分数据容器";
+  const 分值 = document.createElement("span");
+  分值.className = "数值 分值";
+  const 分单位 = document.createElement("span");
+  分单位.className = "单位 分单位";
+  分数据容器.append(分值, 分单位);
+
+  const 秒数据容器 = document.createElement("span");
+  秒数据容器.className = "子数据容器 秒数据容器";
+  const 秒值 = document.createElement("span");
+  秒值.className = "数值 秒值";
+  const 秒单位 = document.createElement("span");
+  秒单位.className = "单位 秒单位";
+  秒数据容器.append(秒值, 秒单位);
+
+  总用时数据.append(分数据容器, 秒数据容器);
+
+  const 总点击次数标题 = document.createElement("h4");
+  总点击次数标题.className = "标题 总点击次数标题";
+  总点击次数标题.textContent = "总点击次数";
+  const 总点击次数数据 = document.createElement("span");
+  总点击次数数据.className = "数据容器 总点击次数数据容器";
+  总点击次数区.append(总点击次数标题, 总点击次数数据);
+
+  const 点击次数容器 = document.createElement("span");
+  点击次数容器.className = "子数据容器 点击次数容器";
+  const 点击次数值 = document.createElement("span");
+  点击次数值.className = "数值 点击次数值";
+  点击次数容器.appendChild(点击次数值);
+
+  总点击次数数据.appendChild(点击次数容器);
+
+  let 总用时 = 0;
+  let 总点击次数 = 0;
+  for (const 提示 of 提示序列) {
+    总用时 += 提示.成功用时;
+    总点击次数 += 提示.点击次数;
+  }
+
+  const 总生活用时 = 生成生活用时(总用时);
+
+  分值.textContent = 总生活用时.分;
+  分单位.textContent = "分";
+  秒值.textContent = 总生活用时.秒;
+  秒单位.textContent = "秒";
+  点击次数值.textContent = 总点击次数;
+
+  结果区.append(总数据区);
+}

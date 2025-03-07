@@ -5,10 +5,73 @@ span {
 .result-area {
   position: fixed;
   width: 500px;
-  height: 100px;
   top: 75px;
   left: 50%;
   translate: -50% 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.result-area.隐藏 {
+  opacity: 0;
+}
+
+.总数据区 {
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  font-family: Consolas, "Noto Sans SC", 微软雅黑， monospace, sans-serif;
+}
+
+.标题 {
+  padding: 10px 15px;
+  background-color: rgb(57, 80, 135, 0.75);
+  color: lightcyan;
+}
+
+.数据容器 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 0 10px;
+  background-color: rgba(101, 126, 209, 0.75);
+}
+
+.子数据容器 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.数值 {
+  height: 100%;
+  padding: 0 2px;
+  align-content: center;
+  color: greenyellow;
+}
+
+.单位 {
+  height: 100%;
+  padding: 0 2px;
+  align-content: center;
+  color: lightgoldenrodyellow;
+}
+
+.总用时区,
+.总点击次数区 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  border-radius: 8px;
+  outline: solid 2px #fffa;
+  overflow: hidden;
 }
 
 .game-area {
@@ -34,7 +97,6 @@ span {
   bottom: 25px;
   left: 50%;
   translate: -50% 0;
-  /* width: 100%; */
   padding: 15px 25px;
   display: flex;
   justify-content: center;
@@ -98,7 +160,7 @@ label[for="提示时长"] .标签数据 {
   width: 58px;
 }
 
-label[for="坐标数量"] .标签数据 {
+label[for="炸弹数量"] .标签数据 {
   width: 20px;
 }
 
