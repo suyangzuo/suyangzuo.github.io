@@ -32,6 +32,10 @@ for (const 滑块 of 滑块组) {
   });
 }
 
+游戏区.addEventListener("click", () => {
+  点击次数++;
+});
+
 const 开始按钮 = document.getElementById("start");
 开始按钮.addEventListener("click", 初始化);
 开始按钮.addEventListener("click", 生成提示元素);
@@ -42,7 +46,7 @@ function 生成提示元素() {
   const 游戏区宽度 = parseInt(游戏区计算样式.width);
   const 游戏区高度 = parseInt(游戏区计算样式.height);
   for (let i = 0; i < 坐标数量; i++) {
-    const 水平坐标 = Math.floor(Math.random() * (游戏区宽度 - 提示宽度 - 200 - (提示宽度 + 200) + 1) + 提示宽度 + 200);
+    const 水平坐标 = Math.floor(Math.random() * (游戏区宽度 - 提示宽度 - 100 - (提示宽度 + 100) + 1) + 提示宽度 + 100);
     const 垂直坐标 = Math.floor(Math.random() * (游戏区高度 - 提示高度 - 150));
     const 提示元素 = document.createElement("div");
     提示元素.classList.add("提示");
@@ -51,10 +55,13 @@ function 生成提示元素() {
     提示元素.setAttribute("data-index", i);
     提示元素.addEventListener("click", 记录玩家数据);
     游戏区.appendChild(提示元素);
-    const 提示序号 = document.createElement("span");
+    /* const 提示序号 = document.createElement("span");
     提示序号.classList.add("提示序号");
     提示序号.textContent = i + 1;
-    提示元素.appendChild(提示序号);
+    提示元素.appendChild(提示序号); */
+    const 已确认元素 = document.createElement("figure");
+    已确认元素.className = "已确认 隐藏";
+    提示元素.appendChild(已确认元素);
     提示序列.push({
       元素: 提示元素,
       x: 水平坐标,
@@ -80,8 +87,9 @@ function 生成提示动画() {
 }
 
 function 记录玩家数据(event) {
-  const 提示元素索引 = parseInt(event.target.getAttribute("data-index"), 10);
+  event.stopPropagation();
   点击次数++;
+  const 提示元素索引 = parseInt(event.target.getAttribute("data-index"), 10);
   if (提示元素索引 !== 当前目标索引) return;
   const 结束时间 = performance.now();
   提示序列[提示元素索引].成功用时 = 结束时间 - 起始时间;
@@ -128,6 +136,8 @@ function 生成生活用时(起始时间, 结束时间) {
 
 function 生成成功效果() {
   提示序列[当前目标索引].元素.style.opacity = "1";
+  const 已确认元素 = 提示序列[当前目标索引].元素.querySelector(".已确认");
+  已确认元素.classList.remove("隐藏");
 }
 
 function 生成结果() {}

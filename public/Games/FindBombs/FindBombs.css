@@ -41,9 +41,9 @@ span {
   align-items: center;
   gap: 50px;
   border-radius: 999px;
-  background-color: #0005;
+  background: center/cover no-repeat url("./Images/设置区背景.jpg");
   backdrop-filter: blur(5px);
-  box-shadow: inset 0 1px 1px 0 #fffa, 3px 3px 6px 0 #0007;
+  box-shadow: inset 0 2px 2px 0 #fff8, 3px 3px 6px 0 #0007;
 }
 
 .button {
@@ -52,18 +52,18 @@ span {
 }
 
 .button:hover {
-  filter: brightness(1.25);
+  filter: brightness(1.15);
 }
 
 .button:active {
-  filter: brightness(1.5);
+  filter: brightness(1.3);
 }
 
 #start {
   width: 75px;
   height: 75px;
   font-size: 18px;
-  background-color: #345;
+  background: center/contain no-repeat url("./Images/play.png");
   color: white;
   box-shadow: inset 0 2px 2px 0 #fff3, 2px 2px 2px 0 #0007;
 }
@@ -80,7 +80,7 @@ span {
 }
 
 .滑块 {
-  accent-color: #cde;
+  accent-color: #969caa;
   width: 150px;
 }
 
@@ -121,10 +121,8 @@ label[for="坐标数量"] .标签数据 {
   position: absolute;
   width: 100px;
   height: 100px;
-  border-radius: 999px;
   opacity: 0;
-  background-color: #fffa;
-  color: black;
+  background: center/contain no-repeat url("./Images/炸弹.png");
   backdrop-filter: blur(5px);
   display: flex;
   justify-content: center;
@@ -132,9 +130,27 @@ label[for="坐标数量"] .标签数据 {
 }
 
 .提示序号 {
+  color: white;
   font-size: 30px;
   font-weight: bold;
   font-family: Consolas, monospace;
   pointer-events: none;
   user-select: none;
+  opacity: 0;
+}
+
+.已确认 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: 66%;
+  height: 66%;
+  background: center/contain no-repeat url("./Images/已确认.png");
+  pointer-events: none;
+  filter: drop-shadow(2px 2px 4px #000a);
+}
+
+.已确认.隐藏 {
+  opacity: 0;
 }

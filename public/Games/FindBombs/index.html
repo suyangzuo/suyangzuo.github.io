@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>坐标记忆</title>
+    <title>找炸弹</title>
     <link rel="icon" href="/Games/Mario-Run.gif" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,7 +13,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" type="text/css" href="../game-common.css" />
-    <link rel="stylesheet" type="text/css" href="PositionSequenceMemory.css" />
+    <link rel="stylesheet" type="text/css" href="FindBombs.css" />
     <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
     <link rel="stylesheet" type="text/css" href="/Styles/top-banner-common.css" />
     <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
@@ -24,7 +24,7 @@
     <script src="/Scripts/html-include.js" target="/top-banner.html" position="afterbegin"></script>
 
     <div class="background-image">
-      <img src="../Images-Common/坐标记忆.jpg" alt="游戏背景墙" />
+      <img src="../Images-Common/找炸弹.jpg" alt="游戏背景墙" />
     </div>
     <div class="control-area">
       <div class="back-to-navigator">
@@ -46,7 +46,7 @@
           <span class="数据单位">秒</span>
         </span>
       </label>
-      <button id="start" class="button">开始</button>
+      <button id="start" class="button"></button>
       <label for="坐标数量" class="标签 滑块标签">
         <span class="标签标题">坐标数量</span>
         <input type="range" id="坐标数量" class="滑块" min="3" max="10" value="5" />
@@ -59,6 +59,6 @@
       <div class="规则分区 规则描述区"></div>
     </div>
     <div class="result-area"></div>
-    <script src="PositionSequenceMemory.js"></script>
+    <script src="FindBombs.js"></script>
   </body>
 </html>

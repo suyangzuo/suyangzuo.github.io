@@ -22,12 +22,10 @@
   --标题字体集: "Titillium Web", "Segoe UI Emoji", "Noto Sans SC", sans-serif;
   --代码字体集: "JetBrains Mono", "Segoe UI Emoji", "Noto Sans SC", monospace;
   --font-awesome-字体集: "Font Awesome 6 Free", ui-rounded;
-  --代码块字体集: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
-    "Segoe UI Emoji", "Noto Sans SC", monospace !important;
+  --代码块字体集: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono", "Segoe UI Emoji", "Noto Sans SC", monospace !important;
   --分区列表项-字体颜色: #9ab;
   --已激活章节标题-字体颜色: rgb(129, 206, 129) !important;
-  --正文字体: "IBM Plex Sans", "Noto Sans SC", sans-serif, "Noto Sans Mono",
-    "Segoe UI Emoji", monospace;
+  --正文字体: "IBM Plex Sans", "Noto Sans SC", sans-serif, "Noto Sans Mono", "Segoe UI Emoji", monospace;
 }
 
 html {
@@ -46,8 +44,7 @@ body::before {
   height: 100%;
   top: 0;
   left: 0;
-  background: 0 0 / cover no-repeat fixed
-    url("/Images/Background-Images/宇宙.jpg");
+  background: 0 0 / cover no-repeat fixed url("/Images/Background-Images/宇宙.jpg");
   filter: brightness(35%);
 }
 
@@ -202,21 +199,22 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
 
 .锚链接-2级标题::before {
   position: absolute;
-  width: calc(100% + 40px);
+  width: calc(100% + 30px);
   height: 100%;
   top: 50%;
-  left: -15px;
+  left: -11px;
   translate: 0 -50%;
   z-index: -1;
   background-color: rgb(58, 67, 72);
   content: "";
-  mask-image: linear-gradient(
+  border-radius: 5px;
+  /* mask-image: linear-gradient(
     90deg,
     transparent 0%,
     black 5%,
     black 95%,
     transparent 100%
-  );
+  ); */
 }
 
 .锚链接-2级标题:hover::before {
@@ -295,9 +293,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   overflow-x: hidden;
   backdrop-filter: blur(20px);
   border: none;
-  transition:
-    translate 0.25s,
-    display 0.25s allow-discrete;
+  transition: translate 0.25s, display 0.25s allow-discrete;
 }
 
 #收藏栏[open] {
@@ -659,16 +655,13 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   width: 65px;
   height: 65px;
   border-radius: 50px;
-  background:
-    no-repeat center/contain url("./选择器修饰.png"),
+  background: no-repeat center/contain url("./选择器修饰.png"),
     radial-gradient(circle at center, #80d0c744 0%, #13547a11 50%);
   bottom: 40px;
   right: 50px;
   pointer-events: all;
   animation: 旋转技术栈选择器 5s linear infinite;
-  transition:
-    scale 0.25s,
-    filter 250ms;
+  transition: scale 0.25s, filter 250ms;
 }
 
 body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .技术栈选择器 {
@@ -741,9 +734,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   backdrop-filter: blur(20px);
   border: solid 2px #3a3a3a;
   clip-path: inset(50% 50% 50% 50%);
-  transition:
-    clip-path 250ms,
-    display 250ms allow-discrete;
+  transition: clip-path 250ms, display 250ms allow-discrete;
   overflow: hidden;
 }
 
@@ -979,9 +970,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   align-items: center;
   border-radius: 200px;
   pointer-events: none;
-  transition:
-    left 250ms,
-    border 250ms;
+  transition: left 250ms, border 250ms;
 }
 
 #侧边栏布局:hover::before {
@@ -1004,9 +993,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   align-items: center;
   border-radius: 200px;
   pointer-events: none;
-  transition:
-    left 250ms,
-    scale 250ms;
+  transition: left 250ms, scale 250ms;
 }
 
 #侧边栏布局[layout="紧凑"]::after {
@@ -1109,8 +1096,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .专题-内容 {
-  font-family: "IBM Plex Sans", "Noto Sans SC", sans-serif, "Noto Sans Mono",
-    monospace;
+  font-family: "IBM Plex Sans", "Noto Sans SC", sans-serif, "Noto Sans Mono", monospace;
   /*height: 30px;*/
   display: flex;
   align-items: center;
@@ -1486,11 +1472,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   height: 1.5em;
   margin-right: 20px;
   border-radius: 10em;
-  background-image: linear-gradient(
-    150deg,
-    rgba(96, 104, 107, 0.667) 0%,
-    rgba(137, 149, 152, 0.667) 100%
-  );
+  background-image: linear-gradient(150deg, rgba(96, 104, 107, 0.667) 0%, rgba(137, 149, 152, 0.667) 100%);
   color: #eee;
   box-shadow: 2px 2px 3px 0 #0005;
 }
@@ -1569,11 +1551,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   margin-top: 25px;
 }
 
-.分区列表项:has(
-    .截图容器 + .分区普通文本:last-child,
-    .截图容器 ~ .提醒:last-child
-  )
-  + .分区列表项 {
+.分区列表项:has(.截图容器 + .分区普通文本:last-child, .截图容器 ~ .提醒:last-child) + .分区列表项 {
   margin-top: 50px;
 }
 
@@ -1679,9 +1657,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   display: flex;
   flex-direction: column;
   align-items: center;
-  background:
-    linear-gradient(#555 0%, #555 100%) content-box,
-    linear-gradient(#678 0%, #555 95%) border-box;
+  background: linear-gradient(#555 0%, #555 100%) content-box, linear-gradient(#678 0%, #555 95%) border-box;
   /*background-color: #fff1;*/
   border: solid 2px transparent;
   border-radius: 10px;
@@ -2150,8 +2126,7 @@ pre[class*="language-"] {
 
 code[class*="language-"],
 pre[class*="language-"] {
-  font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
-    "Noto Sans SC", monospace !important;
+  font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono", "Noto Sans SC", monospace !important;
   font-size: 0.9rem !important; /*修改字号会导致行号高度无法匹配*/
 }
 
@@ -2191,8 +2166,7 @@ div.code-toolbar > .toolbar {
 
   code[class*="language-"],
   pre[class*="language-"] {
-    font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono",
-      "Noto Sans SC", monospace !important;
+    font-family: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono", "Noto Sans SC", monospace !important;
     /*font-size: 0.925rem !important;*/
   }
 }
@@ -2643,67 +2617,32 @@ div.code-toolbar > .toolbar {
 
 @keyframes 文本阴影叠加动画 {
   from {
-    text-shadow:
-      0 0 0 transparent,
-      0 0 0 transparent,
-      0 0 0 transparent,
-      0 0 0 transparent;
+    text-shadow: 0 0 0 transparent, 0 0 0 transparent, 0 0 0 transparent, 0 0 0 transparent;
   }
   5% {
-    text-shadow:
-      15px 15px 0 black,
-      0 0 0 transparent,
-      0 0 0 transparent,
-      0 0 0 transparent;
+    text-shadow: 15px 15px 0 black, 0 0 0 transparent, 0 0 0 transparent, 0 0 0 transparent;
   }
   10% {
-    text-shadow:
-      15px 15px 0 black,
-      -15px 15px 0 gold,
-      0 0 0 transparent,
-      0 0 0 transparent;
+    text-shadow: 15px 15px 0 black, -15px 15px 0 gold, 0 0 0 transparent, 0 0 0 transparent;
   }
   15% {
-    text-shadow:
-      15px 15px 0 black,
-      -15px 15px 0 gold,
-      -15px -15px 0 seagreen,
-      0 0 0 transparent;
+    text-shadow: 15px 15px 0 black, -15px 15px 0 gold, -15px -15px 0 seagreen, 0 0 0 transparent;
   }
   20% {
-    text-shadow:
-      15px 15px 0 black,
-      -15px 15px 0 gold,
-      -15px -15px 0 seagreen,
-      15px -15px 0 lightskyblue;
+    text-shadow: 15px 15px 0 black, -15px 15px 0 gold, -15px -15px 0 seagreen, 15px -15px 0 lightskyblue;
   }
   40% {
-    text-shadow:
-      200px 100px 0 black,
-      -200px 100px 0 gold,
-      -200px -100px 0 seagreen,
-      200px -100px 0 lightskyblue;
+    text-shadow: 200px 100px 0 black, -200px 100px 0 gold, -200px -100px 0 seagreen, 200px -100px 0 lightskyblue;
   }
   60% {
-    text-shadow:
-      200px 100px 20px black,
-      -200px 100px 20px gold,
-      -200px -100px 20px seagreen,
+    text-shadow: 200px 100px 20px black, -200px 100px 20px gold, -200px -100px 20px seagreen,
       200px -100px 20px lightskyblue;
   }
   80% {
-    text-shadow:
-      200px 100px 0 black,
-      -200px 100px 0 gold,
-      -200px -100px 0 seagreen,
-      200px -100px 0 lightskyblue;
+    text-shadow: 200px 100px 0 black, -200px 100px 0 gold, -200px -100px 0 seagreen, 200px -100px 0 lightskyblue;
   }
   to {
-    text-shadow:
-      0 0 0 transparent,
-      0 0 0 transparent,
-      0 0 0 transparent,
-      0 0 0 transparent;
+    text-shadow: 0 0 0 transparent, 0 0 0 transparent, 0 0 0 transparent, 0 0 0 transparent;
   }
 }
 
