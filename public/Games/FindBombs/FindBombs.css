@@ -12,10 +12,13 @@ span {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 40px;
+  clip-path: inset(-10% 0 0 0);
+  transition: 500ms;
 }
 
 .result-area.隐藏 {
-  opacity: 0;
+  clip-path: inset(0 0 100% 0);
 }
 
 .总数据区 {
@@ -29,7 +32,7 @@ span {
 
 .标题 {
   padding: 10px 15px;
-  background-color: rgb(57, 80, 135, 0.75);
+  background-color: rgb(27, 50, 105, 0.75);
   color: lightcyan;
 }
 
@@ -39,7 +42,7 @@ span {
   align-items: center;
   height: 100%;
   padding: 0 10px;
-  background-color: rgba(101, 126, 209, 0.75);
+  background-color: rgba(71, 96, 179, 0.75);
 }
 
 .子数据容器 {
@@ -74,6 +77,93 @@ span {
   overflow: hidden;
 }
 
+.独立数据区域组 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-family: Consolas, "Noto Sans SC", 微软雅黑， monospace, sans-serif;
+}
+
+.独立数据容器 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.独立数据容器 > * {
+  flex-shrink: 0;
+}
+
+.独立数据区,
+.独立用时区,
+.独立点击次数区 {
+  display: flex;
+  align-items: center;
+  height: 40px;
+}
+
+.独立数据区 {
+  border-radius: 999px;
+  overflow: hidden;
+  border: solid 2px #fff5;
+  backdrop-filter: blur(10px);
+  font-size: 0.9em;
+}
+
+.独立数据区 :where(.标题, .数据容器) {
+  height: 100%;
+}
+
+.独立数据区 .标题 {
+  text-align: center;
+  align-content: center;
+  background-color: #def3;
+  text-shadow: 1px 1px 1px #0003;
+  padding: 0 15px;
+}
+
+.独立数据区 .数据容器 {
+  background-color: #0121;
+}
+
+.独立数据区 .独立用时数据容器 {
+  width: 120px;
+  justify-content: flex-start;
+}
+
+.独立数据区 .独立点击次数容器 {
+  width: 15px;
+}
+
+.独立序号 {
+  text-align: center;
+  align-content: center;
+  border-radius: 999px;
+  background-color: #fff2;
+  border: solid 2px #fff2;
+  width: 25px;
+  height: 25px;
+  font-size: 14px;
+  color: lightgoldenrodyellow;
+}
+
+.横线 {
+  width: 50px;
+  height: 1px;
+  background-color: lightcyan;
+}
+
+.炸弹图容器 {
+  width: 40px;
+  height: 40px;
+}
+
+.炸弹图 {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .game-area {
   position: relative;
   height: calc(100vh - 150px);
@@ -103,7 +193,7 @@ span {
   align-items: center;
   gap: 50px;
   border-radius: 999px;
-  background: center/cover no-repeat url("./Images/设置区背景.jpg");
+  background-color: #fff1;
   backdrop-filter: blur(5px);
   box-shadow: inset 0 2px 2px 0 #fff8, 3px 3px 6px 0 #0007;
 }
@@ -185,7 +275,6 @@ label[for="炸弹数量"] .标签数据 {
   height: 100px;
   opacity: 0;
   background: center/contain no-repeat url("./Images/炸弹.png");
-  backdrop-filter: blur(5px);
   display: flex;
   justify-content: center;
   align-items: center;

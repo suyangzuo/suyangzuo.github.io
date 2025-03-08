@@ -1,9 +1,13 @@
 const 结果区 = document.querySelector(".result-area");
+const 结果区计算样式 = window.getComputedStyle(结果区);
 const 游戏区 = document.querySelector(".game-area");
 const 游戏区计算样式 = window.getComputedStyle(游戏区);
 
 const 提示宽度 = 100;
 const 提示高度 = 100;
+const 设置区高度 = 105 + 25;
+const 控制区高度 = 150;
+const 结果区过渡时长 = parseFloat(结果区计算样式.transition) * 1000;
 
 const 提示时长滑块 = document.getElementById("提示时长");
 const 炸弹数量滑块 = document.getElementById("炸弹数量");
@@ -37,22 +41,34 @@ for (const 滑块 of 滑块组) {
   点击次数++;
 });
 
+let 点击开始按钮延时Id = null;
 const 开始按钮 = document.getElementById("start");
-开始按钮.addEventListener("click", 初始化);
-开始按钮.addEventListener("click", 生成提示元素);
-开始按钮.addEventListener("click", 禁止点击提示);
-开始按钮.addEventListener("click", 生成提示动画);
+开始按钮.addEventListener("click", () => {
+  clearTimeout(点击开始按钮延时Id);
+  点击开始按钮延时Id = setTimeout(() => {
+    初始化();
+    生成提示元素();
+    禁止点击提示();
+    生成提示动画();
+  }, 500 + (结果区.classList.contains("隐藏") ? 0 : 结果区过渡时长));
+  结果区.classList.add("隐藏");
+});
 
 function 生成提示元素() {
-  const 游戏区宽度 = parseInt(游戏区计算样式.width);
-  const 游戏区高度 = parseInt(游戏区计算样式.height);
+  const 游戏区宽度 = parseFloat(游戏区计算样式.width);
+  const 游戏区高度 = parseFloat(游戏区计算样式.height);
+  const 提示元素宽度占比 = (提示宽度 / 游戏区宽度) * 100;
+  const 设置区高度占比 = (设置区高度 / 游戏区高度) * 100;
+  const 控制区高度占比 = (控制区高度 / 游戏区高度) * 100;
   for (let i = 0; i < 炸弹数量; i++) {
-    const 水平坐标 = Math.floor(Math.random() * (游戏区宽度 - 提示宽度 - 100 - (提示宽度 + 100) + 1) + 提示宽度 + 100);
-    const 垂直坐标 = Math.floor(Math.random() * (游戏区高度 - 提示高度 - 150));
+    const 水平坐标 = `${Math.floor(Math.random() * (90 - 提示元素宽度占比 - 10 + 1) + 10)}%`;
+    const 垂直坐标 = `${Math.floor(
+      Math.random() * (100 - 控制区高度占比 - 设置区高度占比 - 设置区高度占比 + 1) + 设置区高度占比
+    )}%`;
     const 提示元素 = document.createElement("div");
     提示元素.classList.add("提示");
-    提示元素.style.left = `${水平坐标}px`;
-    提示元素.style.top = `${垂直坐标}px`;
+    提示元素.style.left = 水平坐标;
+    提示元素.style.top = 垂直坐标;
     提示元素.setAttribute("data-index", i);
     提示元素.addEventListener("click", 记录玩家数据);
     游戏区.appendChild(提示元素);
@@ -65,8 +81,10 @@ function 生成提示元素() {
     提示元素.appendChild(已确认元素);
     提示序列.push({
       元素: 提示元素,
-      x: 水平坐标,
-      y: 垂直坐标,
+      坐标: {
+        水平: 水平坐标,
+        垂直: 垂直坐标,
+      },
       点击次数: 0,
       成功用时: 0,
     });
@@ -206,5 +224,90 @@ function 生成结果() {
   秒单位.textContent = "秒";
   点击次数值.textContent = 总点击次数;
 
-  结果区.append(总数据区);
+  /* -----------------------  每个炸弹独立数据区  ----------------------- */
+
+  const 独立数据区域组 = document.createElement("div");
+  独立数据区域组.classList.add("独立数据区域组");
+  for (let i = 0; i < 提示序列.length; i++) {
+    const 独立数据容器 = document.createElement("div");
+    独立数据容器.classList.add("独立数据容器");
+    独立数据区域组.appendChild(独立数据容器);
+
+    const 独立序号 = document.createElement("span");
+    独立序号.classList.add("独立序号");
+    独立序号.textContent = i + 1;
+
+    const 横线 = document.createElement("div");
+    横线.className = "横线";
+
+    const 炸弹图容器 = document.createElement("figure");
+    炸弹图容器.classList.add("炸弹图容器");
+    const 炸弹图 = document.createElement("img");
+    炸弹图.classList.add("炸弹图");
+    炸弹图.src = "./Images/炸弹.png";
+    炸弹图.alt = "炸弹";
+    炸弹图容器.appendChild(炸弹图);
+
+    const 独立数据区 = document.createElement("div");
+    独立数据区.classList.add("独立数据区");
+
+    独立数据容器.append(独立序号, 横线, 炸弹图容器, 独立数据区);
+
+    const 独立用时区 = document.createElement("div");
+    独立用时区.classList.add("独立用时区");
+    const 独立点击次数区 = document.createElement("div");
+    独立点击次数区.classList.add("独立点击次数区");
+
+    独立数据区.append(独立用时区, 独立点击次数区);
+
+    const 独立用时标题 = document.createElement("h4");
+    独立用时标题.className = "标题 独立用时标题";
+    独立用时标题.textContent = "用时";
+    const 独立用时数据 = document.createElement("span");
+    独立用时数据.className = "数据容器 独立用时数据容器";
+    独立用时区.append(独立用时标题, 独立用时数据);
+
+    const 独立分数据容器 = document.createElement("span");
+    独立分数据容器.className = "子数据容器 独立分数据容器";
+    const 独立分值 = document.createElement("span");
+    独立分值.className = "数值 独立分值";
+    const 独立分单位 = document.createElement("span");
+    独立分单位.className = "单位 独立分单位";
+    独立分数据容器.append(独立分值, 独立分单位);
+
+    const 独立秒数据容器 = document.createElement("span");
+    独立秒数据容器.className = "子数据容器 独立秒数据容器";
+    const 独立秒值 = document.createElement("span");
+    独立秒值.className = "数值 独立秒值";
+    const 独立秒单位 = document.createElement("span");
+    独立秒单位.className = "单位 独立秒单位";
+    独立秒数据容器.append(独立秒值, 独立秒单位);
+
+    独立用时数据.append(独立分数据容器, 独立秒数据容器);
+
+    const 独立点击次数标题 = document.createElement("h4");
+    独立点击次数标题.className = "标题 独立点击次数标题";
+    独立点击次数标题.textContent = "点击次数";
+    const 独立点击次数数据 = document.createElement("span");
+    独立点击次数数据.className = "数据容器 独立点击次数数据容器";
+    独立点击次数区.append(独立点击次数标题, 独立点击次数数据);
+
+    const 独立点击次数容器 = document.createElement("span");
+    独立点击次数容器.className = "子数据容器 独立点击次数容器";
+    const 独立点击次数值 = document.createElement("span");
+    独立点击次数值.className = "数值 独立点击次数值";
+    独立点击次数容器.appendChild(独立点击次数值);
+
+    独立点击次数数据.appendChild(独立点击次数容器);
+
+    const 独立生活用时 = 生成生活用时(提示序列[i].成功用时);
+    独立分值.textContent = 独立生活用时.分;
+    独立分单位.textContent = "分";
+    独立秒值.textContent = 独立生活用时.秒;
+    独立秒单位.textContent = "秒";
+    独立点击次数值.textContent = 提示序列[i].点击次数;
+  }
+
+  结果区.append(总数据区, 独立数据区域组);
+  结果区.classList.remove("隐藏");
 }
