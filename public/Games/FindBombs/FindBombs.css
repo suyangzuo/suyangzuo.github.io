@@ -82,12 +82,17 @@ span {
   flex-direction: column;
   gap: 10px;
   font-family: Consolas, "Noto Sans SC", 微软雅黑， monospace, sans-serif;
+  padding: 25px;
+  border-radius: 10px;
+  background-color: #0003;
+  backdrop-filter: blur(10px);
 }
 
 .独立数据容器 {
   display: flex;
   align-items: center;
   gap: 10px;
+  text-shadow: 1px 1px 1px #0007;
 }
 
 .独立数据容器 > * {
@@ -118,7 +123,6 @@ span {
   text-align: center;
   align-content: center;
   background-color: #def3;
-  text-shadow: 1px 1px 1px #0003;
   padding: 0 15px;
 }
 
@@ -140,11 +144,12 @@ span {
   align-content: center;
   border-radius: 999px;
   background-color: #fff2;
-  border: solid 2px #fff2;
+  border: solid 2px #fff3;
   width: 25px;
   height: 25px;
   font-size: 14px;
   color: lightgoldenrodyellow;
+  box-shadow: 1px 1px 1px 0 #0007;
 }
 
 .横线 {
