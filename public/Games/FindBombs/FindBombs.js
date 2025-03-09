@@ -19,6 +19,7 @@ let 点击次数 = 0;
 
 const 提示序列 = [];
 let 起始时间 = null;
+let 隐藏全部提示Id = null;
 let 恢复点击提示Id = null;
 let 生成结果Id = null;
 
@@ -45,6 +46,7 @@ let 点击开始按钮延时Id = null;
 const 开始按钮 = document.getElementById("start");
 开始按钮.addEventListener("click", () => {
   clearTimeout(点击开始按钮延时Id);
+  clearTimeout(隐藏全部提示Id);
   点击开始按钮延时Id = setTimeout(() => {
     初始化();
     生成提示元素();
@@ -66,16 +68,16 @@ function 生成提示元素() {
       Math.random() * (100 - 控制区高度占比 - 设置区高度占比 - 设置区高度占比 + 1) + 设置区高度占比
     )}%`;
     const 提示元素 = document.createElement("div");
-    提示元素.classList.add("提示");
+    提示元素.className = "提示 半隐";
     提示元素.style.left = 水平坐标;
     提示元素.style.top = 垂直坐标;
     提示元素.setAttribute("data-index", i);
     提示元素.addEventListener("click", 记录玩家数据);
     游戏区.appendChild(提示元素);
-    /* const 提示序号 = document.createElement("span");
+    const 提示序号 = document.createElement("span");
     提示序号.classList.add("提示序号");
     提示序号.textContent = i + 1;
-    提示元素.appendChild(提示序号); */
+    提示元素.appendChild(提示序号);
     const 已确认元素 = document.createElement("figure");
     已确认元素.className = "已确认 隐藏";
     提示元素.appendChild(已确认元素);
@@ -92,17 +94,23 @@ function 生成提示元素() {
 }
 
 function 生成提示动画() {
-  const 关键帧序列 = [{ opacity: 0 }, { opacity: 1, offset: 0.1 }, { opacity: 1, offset: 0.9 }, { opacity: 0 }];
+  const 关键帧序列 = [{ opacity: 0.25 }, { opacity: 1, offset: 0.1 }, { opacity: 1, offset: 0.9 }, { opacity: 0.25 }];
   for (const [index, 提示] of 提示序列.entries()) {
     const 动画设置 = {
       duration: 提示时长,
-      delay: (提示时长 + 提示间隔) * index,
+      delay: (提示时长 + 提示间隔) * (index + 1),
     };
 
     提示.元素.animate(关键帧序列, 动画设置);
   }
 
-  恢复点击提示Id = setTimeout(恢复点击提示, (提示间隔 + 提示时长) * 提示序列.length);
+  隐藏全部提示Id = setTimeout(() => {
+    for (const 提示 of 提示序列) {
+      提示.元素.classList.add("隐藏");
+    }
+  }, (提示间隔 + 提示时长) * (提示序列.length + 1));
+
+  恢复点击提示Id = setTimeout(恢复点击提示, (提示间隔 + 提示时长) * (提示序列.length + 1) + 250);
 }
 
 function 记录玩家数据(event) {

@@ -13,7 +13,7 @@ span {
   justify-content: center;
   align-items: center;
   gap: 40px;
-  clip-path: inset(-10% 0 0 0);
+  clip-path: inset(-10% -10% -10% -10%);
   transition: 500ms;
 }
 
@@ -80,12 +80,13 @@ span {
 .独立数据区域组 {
   display: flex;
   flex-direction: column;
-  gap: 10px;
   font-family: Consolas, "Noto Sans SC", 微软雅黑， monospace, sans-serif;
-  padding: 25px;
+  /* padding: 15px 0; */
   border-radius: 10px;
   background-color: #0003;
   backdrop-filter: blur(10px);
+  box-shadow: 2px 2px 2px 0 #0007;
+  overflow: hidden;
 }
 
 .独立数据容器 {
@@ -93,6 +94,11 @@ span {
   align-items: center;
   gap: 10px;
   text-shadow: 1px 1px 1px #0007;
+  padding: 10px 25px;
+}
+
+.独立数据容器:nth-child(odd) {
+  background-color: #45505a;
 }
 
 .独立数据容器 > * {
@@ -153,7 +159,7 @@ span {
 }
 
 .横线 {
-  width: 50px;
+  width: 20px;
   height: 1px;
   background-color: lightcyan;
 }
@@ -278,21 +284,39 @@ label[for="炸弹数量"] .标签数据 {
   position: absolute;
   width: 100px;
   height: 100px;
-  opacity: 0;
   background: center/contain no-repeat url("./Images/炸弹.png");
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: 250ms;
+}
+
+.提示.半隐 {
+  opacity: 0.25;
+}
+
+.提示.隐藏,
+.提示.半隐.隐藏 {
+  opacity: 0;
 }
 
 .提示序号 {
   color: white;
-  font-size: 30px;
+  font-size: 25px;
   font-weight: bold;
   font-family: Consolas, monospace;
   pointer-events: none;
   user-select: none;
-  opacity: 0;
+  position: absolute;
+  top: -35px;
+  left: 50%;
+  translate: -50% 0;
+  width: 35px;
+  height: 35px;
+  border-radius: 5px;
+  background-color: #111;
+  text-align: center;
+  align-content: center;
 }
 
 .已确认 {
