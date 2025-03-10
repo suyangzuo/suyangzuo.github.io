@@ -19,9 +19,11 @@ let 点击次数 = 0;
 
 const 提示序列 = [];
 let 起始时间 = null;
+let 初始化渐显Id = null;
 let 隐藏全部提示Id = null;
 let 恢复点击提示Id = null;
 let 生成结果Id = null;
+const 提示动画组 = [];
 
 const 滑块组 = document.querySelectorAll(".滑块");
 for (const 滑块 of 滑块组) {
@@ -47,6 +49,13 @@ const 开始按钮 = document.getElementById("start");
 开始按钮.addEventListener("click", () => {
   clearTimeout(点击开始按钮延时Id);
   clearTimeout(隐藏全部提示Id);
+  for (const 提示动画 of 提示动画组) {
+    提示动画?.cancel();
+  }
+  提示动画组.length = 0;
+  for (const 提示 of 提示序列) {
+    提示.元素.style.opacity = "0";
+  }
   点击开始按钮延时Id = setTimeout(() => {
     初始化();
     生成提示元素();
@@ -68,7 +77,7 @@ function 生成提示元素() {
       Math.random() * (100 - 控制区高度占比 - 设置区高度占比 - 设置区高度占比 + 1) + 设置区高度占比
     )}%`;
     const 提示元素 = document.createElement("div");
-    提示元素.className = "提示 半隐";
+    提示元素.className = "提示";
     提示元素.style.left = 水平坐标;
     提示元素.style.top = 垂直坐标;
     提示元素.setAttribute("data-index", i);
@@ -91,6 +100,12 @@ function 生成提示元素() {
       成功用时: 0,
     });
   }
+
+  初始化渐显Id = setTimeout(() => {
+    for (const 提示 of 提示序列) {
+      提示.元素.classList.add("半隐");
+    }
+  }, 10);
 }
 
 function 生成提示动画() {
@@ -101,12 +116,12 @@ function 生成提示动画() {
       delay: (提示时长 + 提示间隔) * (index + 1),
     };
 
-    提示.元素.animate(关键帧序列, 动画设置);
+    提示动画组.push(提示.元素.animate(关键帧序列, 动画设置));
   }
 
   隐藏全部提示Id = setTimeout(() => {
     for (const 提示 of 提示序列) {
-      提示.元素.classList.add("隐藏");
+      提示.元素.classList.remove("半隐");
     }
   }, (提示间隔 + 提示时长) * (提示序列.length + 1));
 

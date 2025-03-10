@@ -80,8 +80,9 @@ span {
 .独立数据区域组 {
   display: flex;
   flex-direction: column;
+  gap: 10px;
   font-family: Consolas, "Noto Sans SC", 微软雅黑， monospace, sans-serif;
-  /* padding: 15px 0; */
+  padding: 15px 25px;
   border-radius: 10px;
   background-color: #0003;
   backdrop-filter: blur(10px);
@@ -94,11 +95,6 @@ span {
   align-items: center;
   gap: 10px;
   text-shadow: 1px 1px 1px #0007;
-  padding: 10px 25px;
-}
-
-.独立数据容器:nth-child(odd) {
-  background-color: #45505a;
 }
 
 .独立数据容器 > * {
@@ -148,18 +144,16 @@ span {
 .独立序号 {
   text-align: center;
   align-content: center;
-  border-radius: 999px;
-  background-color: #fff2;
-  border: solid 2px #fff3;
+  border-radius: 5px;
+  background-color: #222;
   width: 25px;
   height: 25px;
   font-size: 14px;
   color: lightgoldenrodyellow;
-  box-shadow: 1px 1px 1px 0 #0007;
 }
 
 .横线 {
-  width: 20px;
+  width: 10px;
   height: 1px;
   background-color: lightcyan;
 }
@@ -289,15 +283,11 @@ label[for="炸弹数量"] .标签数据 {
   justify-content: center;
   align-items: center;
   transition: 250ms;
+  opacity: 0;
 }
 
 .提示.半隐 {
   opacity: 0.25;
-}
-
-.提示.隐藏,
-.提示.半隐.隐藏 {
-  opacity: 0;
 }
 
 .提示序号 {
