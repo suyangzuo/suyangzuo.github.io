@@ -17,6 +17,7 @@ const 角度间隔 = parseInt(rootStyle.getPropertyValue("--角度间隔"), 10);
 
 const 奖品容器组 = document.querySelectorAll(".奖品容器");
 const 奖品内容组 = document.querySelectorAll(".奖品内容");
+const 序号初始角度组 = [];
 
 for (const [index, 奖品容器] of 奖品容器组.entries()) {
   const 背景色 = rootStyle.getPropertyValue(`--奖品-${index}-背景色`);
@@ -31,8 +32,11 @@ for (const [index, 奖品容器] of 奖品容器组.entries()) {
 
 for (const [index, 奖品内容] of 奖品内容组.entries()) {
   奖品内容.style.rotate = `z ${(index * 360) / 奖品数量}deg`;
-  修正转盘奖品序号角度();
+  const 转盘奖品序号 = 奖品内容.querySelector(".转盘奖品序号");
+  转盘奖品序号.textContent = index + 1;
 }
+
+修正转盘奖品序号角度();
 
 const 奖品设置区 = document.querySelector(".奖品设置区");
 const 奖品设置项组 = document.getElementsByClassName("奖品设置项");
@@ -101,11 +105,11 @@ function 隐藏转盘指示器() {
 }
 
 function 修正转盘奖品序号角度() {
-  for (const [index, 奖品内容] of 奖品内容组.entries()) {
+  for (const 奖品内容 of 奖品内容组) {
     const 转盘奖品序号 = 奖品内容.querySelector(".转盘奖品序号");
-    转盘奖品序号.textContent = index + 1;
     const 旋转角度 = parseInt(window.getComputedStyle(奖品内容).rotate, 10);
     转盘奖品序号.style.rotate = `z -${旋转角度}deg`;
+    序号初始角度组.push(-旋转角度);
   }
 }
 
@@ -114,6 +118,12 @@ const 旋转转盘单选框 = document.getElementById("旋转对象-转盘");
 const 旋转指针单选框 = document.getElementById("旋转对象-指针");
 const 指针 = document.querySelector(".指针");
 const 转盘奖品序号组 = document.querySelectorAll(".转盘奖品序号");
+
+const 动画对象 = {
+  转盘动画: null,
+  指针动画: null,
+  序号动画组: new Array(奖品数量).fill(null),
+};
 
 const 转盘关键帧序列 = [
   {
@@ -131,16 +141,29 @@ const 动画选项 = {
 };
 
 开奖按钮.addEventListener("click", () => {
+  动画对象.转盘动画?.cancel();
+  动画对象.指针动画?.cancel();
+  for (const 序号动画 of 动画对象.序号动画组) {
+    序号动画?.cancel();
+  }
   总旋转角度 = 生成总旋转角度();
   转盘关键帧序列[1].rotate = `z ${总旋转角度}deg`;
   if (旋转转盘单选框.checked) {
-    for (const 转盘奖品序号 of 转盘奖品序号组) {
-      const 当前旋转角度 = parseInt(转盘奖品序号.style.rotate, 10);
-      转盘奖品序号.style.rotate = `z ${当前旋转角度 - 总旋转角度}deg`;
+    for (const [index, 转盘奖品序号] of 转盘奖品序号组.entries()) {
+      const 序号动画关键帧序列 = [
+        {
+          rotate: `z ${序号初始角度组[index]}deg`,
+        },
+        {
+          rotate: `z ${序号初始角度组[index] - 总旋转角度}deg`,
+        },
+      ];
+      // 转盘奖品序号.style.rotate = `z ${序号初始角度组[index] - 总旋转角度}deg`;
+      动画对象.序号动画组[index] = 转盘奖品序号.animate(序号动画关键帧序列, 动画选项);
     }
-    转盘容器.animate(转盘关键帧序列, 动画选项);
+    动画对象.转盘动画 = 转盘容器.animate(转盘关键帧序列, 动画选项);
   } else {
-    指针.animate(转盘关键帧序列, 动画选项);
+    动画对象.指针动画 = 指针.animate(转盘关键帧序列, 动画选项);
   }
 });
 
