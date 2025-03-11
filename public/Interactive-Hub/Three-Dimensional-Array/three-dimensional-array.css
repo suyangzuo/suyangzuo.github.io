@@ -51,7 +51,7 @@ body {
   justify-content: center;
   align-items: center;
   width: 4ch;
-  transition: width 125ms;
+  transition: width 250ms;
 }
 
 .索引数据容器.隐藏 {

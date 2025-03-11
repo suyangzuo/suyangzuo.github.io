@@ -141,14 +141,13 @@ const 动画选项 = {
 };
 
 开奖按钮.addEventListener("click", () => {
-  动画对象.转盘动画?.cancel();
-  动画对象.指针动画?.cancel();
-  for (const 序号动画 of 动画对象.序号动画组) {
-    序号动画?.cancel();
-  }
   总旋转角度 = 生成总旋转角度();
   转盘关键帧序列[1].rotate = `z ${总旋转角度}deg`;
   if (旋转转盘单选框.checked) {
+    动画对象.转盘动画?.cancel();
+    for (const 序号动画 of 动画对象.序号动画组) {
+      序号动画?.cancel();
+    }
     for (const [index, 转盘奖品序号] of 转盘奖品序号组.entries()) {
       const 序号动画关键帧序列 = [
         {
@@ -163,6 +162,7 @@ const 动画选项 = {
     }
     动画对象.转盘动画 = 转盘容器.animate(转盘关键帧序列, 动画选项);
   } else {
+    动画对象.指针动画?.cancel();
     动画对象.指针动画 = 指针.animate(转盘关键帧序列, 动画选项);
   }
 });

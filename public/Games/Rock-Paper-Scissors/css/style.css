@@ -9,7 +9,7 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-image: url(../images/back.png);
+  background-image: url(../../Images-Common/Rock-Paper-Scissors.png);
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
