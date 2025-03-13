@@ -1,18 +1,15 @@
 .game-area {
-  /* background-color: brown; */
   width: 100%;
-  /* height: calc(100vh - 110px); */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  gap: 10px;
   position: relative;
-  /* overflow: hidden; */
 }
 
 #game-info {
-  width: 1000px;
-  /* background-color: blueviolet; */
+  width: 1200px;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -43,18 +40,48 @@
 
 #card-count-text {
   color: cornflowerblue;
+  font-family: "JetBrains Mono", Consolas, monospace;
 }
 
-#game-info > p {
-  position: relative;
-  font-size: 3em;
+.数据统计区 {
+  font-size: 2.25em;
   color: rgb(223, 207, 71);
-  font-weight: bolder;
+  display: flex;
+  flex-direction: column;
+}
+
+.数据统计 {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.统计标题 {
+  font-weight: bold;
 }
 
 #time-passed,
 #click-count {
   color: rgb(252, 252, 252);
+  width: 5ch;
+  font-family: "JetBrains Mono", Consolas, monospace;
+}
+
+.得分区 {
+  font-size: 2.25em;
+  font-family: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑， monospace, sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.得分标题 {
+  font-weight: bold;
+  color: rgb(106, 223, 71);
+}
+
+#score {
+  width: 7ch;
 }
 
 #card-grid {

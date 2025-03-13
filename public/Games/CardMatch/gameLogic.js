@@ -82,9 +82,9 @@ const cardsPool = [
   },
 ];
 
-const cardIndexPool = [
-  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-];
+let countTimeResult = null; //定时作用：计时、记次数、记分
+
+const cardIndexPool = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
 let cardCount = 24; //卡片数量
 
 const cardsForGame = []; //实际用于游戏的卡片池
@@ -100,6 +100,8 @@ let clickCount = 0;
 
 let cardsPairName = []; //配对组，保存两次点击的图片名称
 let cardsPairIndex = []; //配对组，保存两次点击的图片Id
+
+const 得分元素 = document.getElementById("score");
 
 let matchCount = 0; //匹配次数
 let timePassed = 0;
@@ -252,7 +254,7 @@ function checkMatch(names, indexs) {
 }
 
 function timerIntervalStart() {
-  let countTimeResult = setInterval(() => {
+  countTimeResult = setInterval(() => {
     if (matchCount === cardsForGame.length / 2 || !timerIsRunning) {
       clearInterval(countTimeResult);
     } else {
@@ -263,13 +265,16 @@ function timerIntervalStart() {
         timePassedString.length - 1
       )}.${timePassedString.charAt(timePassedString.length - 1)}`;
     }
+    得分元素.textContent = `${(1000000 / (timePassed + clickCount)).toFixed(1)}`;
   }, 100);
 }
 
 function resetGame() {
+  clearInterval(countTimeResult);
   timerIsRunning = false;
   clickCount = 0;
   timePassed = 0;
+  得分元素.textContent = "0";
   matchCount = 0;
   index01 = -1;
   index02 = -1;

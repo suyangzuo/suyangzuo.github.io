@@ -1,3 +1,5 @@
+const 重置游戏按钮 = document.querySelector(".reset-game");
+
 const 结果区 = document.querySelector(".result-area");
 const 结果区计算样式 = window.getComputedStyle(结果区);
 const 游戏区 = document.querySelector(".game-area");
@@ -190,7 +192,9 @@ function 生成结果() {
   总用时区.classList.add("总用时区");
   const 总点击次数区 = document.createElement("div");
   总点击次数区.classList.add("总点击次数区");
-  总数据区.append(总用时区, 总点击次数区);
+  const 得分区 = document.createElement("div");
+  得分区.className = "得分区";
+  总数据区.append(总用时区, 总点击次数区, 得分区);
 
   const 总用时标题 = document.createElement("h4");
   总用时标题.className = "标题 总用时标题";
@@ -231,6 +235,21 @@ function 生成结果() {
   点击次数容器.appendChild(点击次数值);
 
   总点击次数数据.appendChild(点击次数容器);
+
+  const 得分标题 = document.createElement("h4");
+  得分标题.className = "标题 得分标题";
+  得分标题.textContent = "得分";
+  const 得分数据 = document.createElement("span");
+  得分数据.className = "数据容器 得分数据容器";
+  得分区.append(得分标题, 得分数据);
+
+  const 得分容器 = document.createElement("span");
+  得分容器.className = "子数据容器 得分容器";
+  const 得分值 = document.createElement("span");
+  得分值.className = "数值 得分值";
+  得分容器.appendChild(得分值);
+
+  得分数据.appendChild(得分容器);
 
   let 总用时 = 0;
   let 总点击次数 = 0;
@@ -329,8 +348,42 @@ function 生成结果() {
     独立秒值.textContent = 独立生活用时.秒;
     独立秒单位.textContent = "秒";
     独立点击次数值.textContent = 提示序列[i].点击次数;
+
+    得分值.textContent = `${(1000000 / (总用时 + 总点击次数)).toFixed(1)}`;
   }
 
   结果区.append(总数据区, 独立数据区域组);
   结果区.classList.remove("隐藏");
+}
+
+重置游戏按钮.addEventListener("click", 重置游戏);
+
+function 重置游戏() {
+  提示时长滑块.value = 500;
+  const 提示时长数据值 = 提示时长滑块.parentElement.querySelector(".数据值");
+  提示时长数据值.textContent = 0.5;
+  炸弹数量滑块.value = 5;
+  const 炸弹数量数据值 = 炸弹数量滑块.parentElement.querySelector(".数据值");
+  炸弹数量数据值.textContent = 5;
+  提示时长 = parseInt(提示时长滑块.value, 10);
+
+  炸弹数量 = parseInt(炸弹数量滑块.value, 10);
+  提示间隔 = 250;
+  当前目标索引 = 0;
+  点击次数 = 0;
+
+  for (const 提示 of 提示序列) {
+    提示.元素?.remove();
+  }
+  提示序列.length = 0;
+  
+  起始时间 = null;
+  clearTimeout(初始化渐显Id);
+  clearTimeout(隐藏全部提示Id);
+  clearTimeout(恢复点击提示Id);
+  clearTimeout(生成结果Id);
+  for (const 提示动画 of 提示动画组) {
+    提示动画?.cancel();
+  }
+  提示动画组.length = 0;
 }

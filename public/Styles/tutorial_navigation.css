@@ -1,10 +1,6 @@
 body {
   /* background-color: rgb(23, 26, 33); */
-  background-image: radial-gradient(
-    farthest-corner at 60% 500px,
-    rgb(63, 69, 91) 0%,
-    rgb(23, 26, 33) 45%
-  );
+  background-image: radial-gradient(farthest-corner at 60% 500px, rgb(63, 69, 91) 0%, rgb(23, 26, 33) 45%);
 }
 
 .tutorials {
@@ -63,16 +59,8 @@ body {
 .intro > a:nth-child(1)::before {
   content: "";
   /* background-color: rgb(68, 130, 5); */
-  background: conic-gradient(
-    rgba(4, 176, 238, 0) 20deg,
-    rgba(4, 176, 238, 1) 20deg,
-    transparent 120deg
-  ),
-  conic-gradient(
-    rgba(238, 176, 4, 0) 200deg,
-    rgba(238, 176, 4, 1) 200deg,
-    transparent 300deg
-  );
+  background: conic-gradient(rgba(4, 176, 238, 0) 20deg, rgba(4, 176, 238, 1) 20deg, transparent 120deg),
+    conic-gradient(rgba(238, 176, 4, 0) 200deg, rgba(238, 176, 4, 1) 200deg, transparent 300deg);
   width: 135%;
   height: 175%;
   position: absolute;
@@ -149,6 +137,7 @@ body {
   height: 25px;
   border-radius: 25px;
   font-size: 0.9rem;
+  font-family: Consolas, monospace;
 }
 
 .detail i {

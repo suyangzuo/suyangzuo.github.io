@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
@@ -15,21 +15,13 @@
     <link rel="stylesheet" type="text/css" href="../game-common.css" />
     <link rel="stylesheet" type="text/css" href="./card-match.css" />
     <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="/Styles/top-banner-common.css"
-    />
+    <link rel="stylesheet" type="text/css" href="/Styles/top-banner-common.css" />
     <script src="/Scripts/d0483e3bd3.js" crossorigin="anonymous"></script>
     <script src="/Scripts/top-banner.js" defer></script>
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
   </head>
   <body>
-    <script
-      src="/Scripts/html-include.js"
-      target="/top-banner.html"
-      position="afterbegin"
-    ></script>
+    <script src="/Scripts/html-include.js" target="/top-banner.html" position="afterbegin"></script>
 
     <div class="background-image">
       <img src="../Images-Common/Game-Background-02.webp" alt="游戏背景墙" />
@@ -47,21 +39,21 @@
     <div class="game-area">
       <div id="game-info">
         <div id="card-count">
-          <input
-            type="range"
-            min="16"
-            max="40"
-            value="24"
-            step="4"
-            class="slider"
-          />
+          <input type="range" min="16" max="40" value="24" step="4" class="slider" />
           <p>卡片数量：<span id="card-count-text">24</span></p>
         </div>
-        <p>
-          游戏用时：<span id="time-passed"></span><br />点击次数：<span
-            id="click-count"
+        <p class="数据统计区">
+          <span class="数据统计 用时统计"
+            ><span class="统计标题 用时标题">游戏用时</span><span id="time-passed"></span
+          ></span>
+          <span class="数据统计 点击次数统计"
+            ><span class="统计标题 点击次数标题">点击次数</span><span id="click-count"></span
           ></span>
         </p>
+        <div class="得分区">
+          <span class="得分标题">得分</span>
+          <span class="得分" id="score">0</span>
+        </div>
       </div>
       <div id="card-grid"></div>
     </div>

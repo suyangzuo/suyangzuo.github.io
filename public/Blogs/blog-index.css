@@ -1270,6 +1270,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   background-color: #ffffff15;
   padding: 5px 30px;
   border-radius: 5px;
+  border: solid 2px #fff1;
 }
 
 .原创 {
