@@ -79,10 +79,7 @@ const 加油动画设置 = {
   duration: 加油动画时长,
 };
 
-const 旋转用时 = parseInt(
-  window.getComputedStyle(root).getPropertyValue("--旋转用时"),
-  10,
-);
+const 旋转用时 = parseInt(window.getComputedStyle(root).getPropertyValue("--旋转用时"), 10);
 const 测试间隔 = 1000;
 const 测试结果出现延时 = 1500;
 let 旋转延时id = null;
@@ -115,8 +112,8 @@ const 错误动画关键帧序列 = [
 ];
 
 const 错误动画设置 = {
-  easing: "ease-out",
-  duration: 1000,
+  easing: "linear",
+  duration: 500,
 };
 
 const 快捷键种类区 = document.querySelector(".快捷键种类区");
@@ -181,8 +178,7 @@ for (const 列表 of 快捷键列表组) {
 
       /*const 列表 = 容器.parentElement.parentElement;
       const 索引 = 快捷键列表区.indexOf(列表);*/
-      const 当前种类选中计数 =
-        当前快捷键种类.querySelector(".当前种类选中计数");
+      const 当前种类选中计数 = 当前快捷键种类.querySelector(".当前种类选中计数");
       const 已确认容器组 = 当前快捷键列表.querySelectorAll(".已确认容器");
       if (已确认容器组.length <= 0) {
         当前种类选中计数.textContent = "0";
@@ -240,9 +236,7 @@ function 添加测试对象(列表项容器) {
 }
 
 function 删除测试对象(列表项容器) {
-  const 删除对象索引 = 测试对象池.findIndex(
-    (item) => item.id === 列表项容器.id,
-  );
+  const 删除对象索引 = 测试对象池.findIndex((item) => item.id === 列表项容器.id);
   测试对象池.splice(删除对象索引, 1);
 }
 
@@ -284,11 +278,7 @@ function 删除测试对象(列表项容器) {
   const 当前面 = 测试面组[奇偶次数 % 2];
   当前面.innerHTML = "";
   测试开始延时函数 = setTimeout(() => {
-    当前面.append(
-      生成测试目标(次数, 剩余次数),
-      生成用户按键信息前缀(),
-      生成单次测试结果区容器(),
-    );
+    当前面.append(生成测试目标(次数, 剩余次数), 生成用户按键信息前缀(), 生成单次测试结果区容器());
 
     window.addEventListener("keydown", 屏蔽按下快捷键默认行为);
     window.addEventListener("keydown", 按下快捷键封装器);
@@ -476,9 +466,7 @@ function 按下快捷键(event) {
     测试对象.duration = performance.now() - 测试起始时间;
     const 单次用时分 = Math.floor(测试对象.duration / 60000);
     const 单次用时秒 =
-      单次用时分 < 1
-        ? (测试对象.duration / 1000).toFixed(2)
-        : ((测试对象.duration % 60000) / 1000).toFixed(2);
+      单次用时分 < 1 ? (测试对象.duration / 1000).toFixed(2) : ((测试对象.duration % 60000) / 1000).toFixed(2);
 
     生成单次测试结果(当前面, 单次用时分, 单次用时秒, 测试对象.passed);
 
@@ -493,11 +481,7 @@ function 按下快捷键(event) {
     if (剩余次数 > 0) {
       const 下一面 = 测试面组[奇偶次数 % 2];
       下一面.innerHTML = "";
-      下一面.append(
-        生成测试目标(次数, 剩余次数),
-        生成用户按键信息前缀(),
-        生成单次测试结果区容器(),
-      );
+      下一面.append(生成测试目标(次数, 剩余次数), 生成用户按键信息前缀(), 生成单次测试结果区容器());
 
       旋转角度 += 180;
       旋转延时id = setTimeout(() => {
@@ -784,7 +768,7 @@ function 生成摘要() {
     正确数据,
     错误数据,
     显示详情按钮,
-    关闭对话框按钮_摘要层,
+    关闭对话框按钮_摘要层
   );
 }
 
@@ -793,32 +777,20 @@ function 生成平均正确数据() {
   if (正确对象组.length <= 0) {
     return;
   }
-  const 正确数据分组对象 = Object.groupBy(
-    正确对象组,
-    (测试对象) => 测试对象.usage,
-  );
+  const 正确数据分组对象 = Object.groupBy(正确对象组, (测试对象) => 测试对象.usage);
   const 正确统计组 = [];
   for (const 属性 in 正确数据分组对象) {
     正确统计组.push({
       用途: 属性,
-      总用时: 正确数据分组对象[属性].reduce(
-        (累积, 当前) => 累积 + 当前.duration,
-        0,
-      ),
-      平均:
-        正确数据分组对象[属性].reduce((累积, 当前) => 累积 + 当前.duration, 0) /
-        正确数据分组对象[属性].length,
+      总用时: 正确数据分组对象[属性].reduce((累积, 当前) => 累积 + 当前.duration, 0),
+      平均: 正确数据分组对象[属性].reduce((累积, 当前) => 累积 + 当前.duration, 0) / 正确数据分组对象[属性].length,
       最快: Math.min(...正确数据分组对象[属性].map((item) => item.duration)),
       最慢: Math.max(...正确数据分组对象[属性].map((item) => item.duration)),
     });
   }
 
-  const 平均最快对象 = 正确统计组.find(
-    (item) => item.平均 === Math.min(...正确统计组.map((item) => item.平均)),
-  );
-  const 平均最慢对象 = 正确统计组.find(
-    (item) => item.平均 === Math.max(...正确统计组.map((item) => item.平均)),
-  );
+  const 平均最快对象 = 正确统计组.find((item) => item.平均 === Math.min(...正确统计组.map((item) => item.平均)));
+  const 平均最慢对象 = 正确统计组.find((item) => item.平均 === Math.max(...正确统计组.map((item) => item.平均)));
   const 平均最快用时 = 以毫秒算时间(平均最快对象.最快);
   const 平均最慢用时 = 以毫秒算时间(平均最慢对象.最慢);
 
@@ -982,14 +954,7 @@ function 生成正确数据() {
   if (passed <= 0) {
     总体数据.appendChild(总体数据标题);
   } else {
-    总体数据.append(
-      总体数据标题,
-      正确次数容器,
-      总用时子容器,
-      平均用时容器,
-      平均用时.最快,
-      平均用时.最慢,
-    );
+    总体数据.append(总体数据标题, 正确次数容器, 总用时子容器, 平均用时容器, 平均用时.最快, 平均用时.最慢);
   }
   return 总体数据;
 }
@@ -1119,8 +1084,7 @@ function 生成错误数据() {
 
 function 以毫秒算时间(毫秒) {
   const 分 = Math.floor(毫秒 / 60000);
-  const 秒 =
-    分 < 1 ? (毫秒 / 1000).toFixed(2) : ((毫秒 % 60000) / 1000).toFixed(2);
+  const 秒 = 分 < 1 ? (毫秒 / 1000).toFixed(2) : ((毫秒 % 60000) / 1000).toFixed(2);
   return {
     分: 分,
     秒: 秒,
@@ -1206,14 +1170,7 @@ function 生成总体数据() {
   错误百分比符号.textContent = "%";
   错误率容器.append(错误率前缀, 错误率值, 错误百分比符号);
 
-  总体数据区.append(
-    总前缀,
-    总次数容器,
-    正确次数容器,
-    错误次数容器,
-    正确率容器,
-    错误率容器,
-  );
+  总体数据区.append(总前缀, 总次数容器, 正确次数容器, 错误次数容器, 正确率容器, 错误率容器);
   return 总体数据区;
 }
 
@@ -1345,12 +1302,7 @@ function 生成对话框按钮() {
     摘要层.classList.remove("隐藏摘要");
   });
 
-  结果对话框.prepend(
-    关闭摘要层按钮,
-    关闭详情层按钮,
-    显示详情按钮,
-    显示摘要按钮,
-  );
+  结果对话框.prepend(关闭摘要层按钮, 关闭详情层按钮, 显示详情按钮, 显示摘要按钮);
 }
 
 取消测试按钮.addEventListener("click", () => {

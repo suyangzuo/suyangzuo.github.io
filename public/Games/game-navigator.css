@@ -245,13 +245,144 @@ body {
 }
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1400px) {
   .games-navigator {
     width: 98%;
-    min-height: 500vh;
+    min-height: 200vh;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(50, 1fr);
+    grid-template-rows: repeat(24, 1fr);
+    column-gap: 0;
+    row-gap: 0;
+  }
+
+  .game-1 {
+    grid-area: 1 / 1 / span 2 / span 1;
+  }
+
+  .game-2 {
+    background-color: cadetblue;
+    grid-area: 1 / 2 / span 2 / span 1;
+  }
+
+  .game-3 {
+    background-color: goldenrod;
+    grid-area: 3 / 1 / span 2 / span 1;
+  }
+
+  .game-4 {
+    background-color: yellowgreen;
+    grid-area: 3 / 2 / span 2 / span 1;
+  }
+
+  .game-5 {
+    background-color: violet;
+    grid-area: 5 / 1 / span 2 / span 1;
+  }
+
+  .game-6 {
+    background-color: tomato;
+    grid-area: 5 / 2 / span 2 / span 1;
+  }
+
+  .game-7 {
+    background-color: thistle;
+    grid-area: 7 / 1 / span 2 / span 1;
+  }
+
+  .game-8 {
+    background-color: chartreuse;
+    grid-area: 7 / 2 / span 2 / span 1;
+  }
+
+  .game-9 {
+    background-color: chocolate;
+    grid-area: 9 / 1 / span 2 / span 1;
+  }
+
+  .game-10 {
+    background-color: cornflowerblue;
+    grid-area: 9 / 2 / span 2 / span 1;
+  }
+
+  .game-11 {
+    background-color: darkblue;
+    grid-area: 11 / 1 / span 2 / span 1;
+  }
+
+  .game-12 {
+    background-color: crimson;
+    grid-area: 11 / 2 / span 2 / span 1;
+  }
+
+  .game-13 {
+    background-color: darkmagenta;
+    grid-area: 13 / 1 / span 2 / span 1;
+  }
+
+  .game-14 {
+    background-color: rgb(44, 88, 90);
+    grid-area: 13 / 2 / span 2 / span 1;
+  }
+
+  .game-15 {
+    background-color: blueviolet;
+    grid-area: 15 / 1 / span 2 / span 1;
+  }
+
+  .game-16 {
+    background-color: slategrey;
+    grid-area: 15 / 2 / span 2 / span 1;
+  }
+
+  .game-17 {
+    background-color: skyblue;
+    grid-area: 17 / 1 / span 2 / span 1;
+  }
+
+  .game-18 {
+    background-color: rosybrown;
+    grid-area: 17 / 2 / span 2 / span 1;
+  }
+
+  .game-19 {
+    background-color: rgb(11, 66, 102);
+    grid-area: 19 / 1 / span 2 / span 1;
+  }
+
+  .game-20 {
+    background-color: royalblue;
+    grid-area: 19 / 2 / span 2 / span 1;
+  }
+
+  .game-21 {
+    background-color: rgb(16, 67, 70);
+    grid-area: 21 / 1 / span 2 / span 1;
+  }
+
+  .game-22 {
+    background-color: darkmagenta;
+    grid-area: 21 / 2 / span 2 / span 1;
+  }
+
+  .game-23 {
+    background-color: rgb(107, 189, 134);
+    grid-area: 23 / 1 / span 2 / span 1;
+  }
+
+  .game-24 {
+    background-color: rgb(179, 128, 51);
+    grid-area: 23 / 2 / span 2 / span 1;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .games-navigator {
+    width: 98%;
+    min-height: 400vh;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(48, 1fr);
     column-gap: 0;
     row-gap: 0;
   }

@@ -49,11 +49,7 @@ body {
 
 .software-container {
   /* background: #402500; */
-  background-image: radial-gradient(
-    farthest-corner at 60% 5%,
-    rgb(63, 69, 91) 0%,
-    rgb(23, 26, 33) 40%
-  );
+  background-image: radial-gradient(farthest-corner at 60% 5%, rgb(63, 69, 91) 0%, rgb(23, 26, 33) 40%);
   width: calc(100vw - var(--software-category-width));
   /* min-height: 100vh; */
   height: 100vh;
@@ -202,15 +198,13 @@ body {
 
 .software-container > .software > .software-text > .software-title {
   display: inline-block;
-  /* background-color: #002bff; */
-  font-size: 1.25em;
+  font-size: clamp(16px, 1.25em, 2vw);
   color: tomato;
   text-shadow: 1px 1px 1px #111;
   transition: transform 0.5s;
 }
 
 .software-container > .software > .software-text > .software-title:hover {
-  /* background-color: blueviolet; */
   transform: scale(1.05);
   text-decoration: underline;
   text-underline-offset: 0.2em;
@@ -231,7 +225,6 @@ body {
   }
 
   .software-container {
-    /* background: royalblue; */
     width: calc(100vw - 110px);
     margin: 0 0 0 110px;
     padding: 2% 2%;
@@ -240,7 +233,6 @@ body {
   }
 
   .software-container > .software {
-    /* background-color: beige; */
     height: 100%;
     display: flex;
     flex-direction: column;
