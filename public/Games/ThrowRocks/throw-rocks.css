@@ -1,109 +1,13 @@
-.game-area {
+.主体 {
   position: relative;
-  height: calc(100vh - 210px);
-  font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
-}
-
-.game-settings {
-  position: relative;
-  margin: 0 auto;
   width: 100%;
-  height: 250px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
+  height: calc(100vh - 150px);
 }
 
-.风向条 {
-  height: 50px;
-}
-
-.蓄力条 {
-  width: 500px;
-  height: 50px;
-  border-radius: 999px;
-  border: solid 2px lightseagreen;
-  overflow: hidden;
-  filter: drop-shadow(2px 2px 2px #0005);
-  /*box-shadow: 2px 2px 2px 0 #0008;*/
-}
-
-.蓄力条渐变 {
-  --蓄力渐变修剪: 100%;
-  width: 100%;
-  height: 100%;
-  background-image: linear-gradient(90deg, gold 0%, firebrick 100%);
-  clip-path: inset(0 var(--蓄力渐变修剪) 0 0);
-}
-
-.蓄力描述 {
+#绘图区 {
   position: absolute;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-shadow: 1px 1px 1px #0005;
-}
-
-.蓄力值 {
-  display: flex;
-  align-items: center;
-  width: 39px;
-  text-wrap: nowrap;
-}
-
-.蓄力数字 {
-  margin-right: 3px;
-  color: gold;
-}
-
-.蓄力单位 {
-  color: yellowgreen;
-}
-
-#蓄力 {
-  width: 120px;
-  height: 45px;
-  border-radius: 999px;
-  font-size: 16px;
-  font-weight: bold;
-  position: relative;
-}
-
-.按钮文本 {
-  background-color: #234;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  transition: 100ms;
-  border-radius: 999px;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-#蓄力:hover .按钮文本 {
-  background-color: #345;
-}
-
-#蓄力:active .按钮文本 {
-  background-color: #465;
-}
-
-#蓄力[disabled] {
-  pointer-events: none;
-  filter: brightness(25%);
-}
-
-.蓄力特效气泡 {
-  position: absolute;
-  border-radius: 999px;
-  background-color: gold;
-  isolation: isolate;
 }
