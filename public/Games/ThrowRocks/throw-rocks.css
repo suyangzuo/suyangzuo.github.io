@@ -11,3 +11,9 @@
   top: 0;
   left: 0;
 }
+
+@media screen and (width < 1000px) {
+  .主体 {
+    height: calc(100vh - 120px);
+  }
+}

@@ -10,6 +10,8 @@ body {
   position: absolute;
   width: 100%;
   height: 100%;
+  top: 0;
+  left: 0;
   overflow: hidden;
 }
 
@@ -83,7 +85,8 @@ body {
   /* background-color: blueviolet; */
 }
 
-.reset-game, .back-to-navigator {
+.reset-game,
+.back-to-navigator {
   filter: drop-shadow(1px 1px 2px #000a);
 }
 
