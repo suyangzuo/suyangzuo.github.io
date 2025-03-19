@@ -96,8 +96,9 @@ function 绘制击中效果(x, y) {
 
 function 绘制抛射动画() {
   const 当前点 = 获取当前贝塞尔坐标(t);
-  上下文.clearRect(终点.x - 图像宽度, 终点.y - 图像宽度, 图像宽度 * 2, 图像高度 * 2);
-  上下文.clearRect(当前点.x - 图像宽度, 当前点.y - 图像高度, 图像宽度 * 2, 图像高度 * 2);
+  上下文.clearRect(起点.x - 图像宽度, 0, 终点.x + 图像宽度, 终点.y + 图像宽度);
+  /* 上下文.clearRect(终点.x - 图像宽度, 终点.y - 图像宽度, 图像宽度 * 2, 图像高度 * 2);
+  上下文.clearRect(当前点.x - 图像宽度, 当前点.y - 图像高度, 图像宽度 * 2, 图像高度 * 2); */
   绘制贝塞尔曲线();
   绘制贝塞尔曲线参数点();
   绘制抛射物(当前点.x, 当前点.y);
@@ -130,19 +131,14 @@ function 绘制圆角矩形(起点x, 起点y, 宽, 高, 圆角弧度) {
 }
 
 function 绘制蓄力按钮(填充色, 描边色, 描边宽度) {
-  const 宽 = 120;
-  const 高 = 50;
-  const x = (绘图区.width - 宽 * devicePixelRatio) / 2;
+  const 宽 = 120 * devicePixelRatio;
+  const 高 = 50 * devicePixelRatio;
+  const x = (绘图区.width - 宽) / 2;
   const y = 绘图区.height - 100 * devicePixelRatio;
-  const 向外延伸清除距离 = 10;
-  上下文.clearRect(
-    x - 向外延伸清除距离,
-    y - 向外延伸清除距离,
-    宽 * devicePixelRatio + 向外延伸清除距离 * 2,
-    高 * devicePixelRatio + 向外延伸清除距离 * 2
-  );
+  const 向外延伸清除距离 = 10 * devicePixelRatio;
+  上下文.clearRect(x - 向外延伸清除距离, y - 向外延伸清除距离, 宽 + 向外延伸清除距离 * 2, 高 + 向外延伸清除距离 * 2);
   const 弧度 = 10;
-  绘制圆角矩形(x, y, 宽 * devicePixelRatio, 高 * devicePixelRatio, 弧度);
+  绘制圆角矩形(x, y, 宽, 高, 弧度);
   蓄力按钮 = {
     x: x,
     y: y,
@@ -158,7 +154,7 @@ function 绘制蓄力按钮(填充色, 描边色, 描边宽度) {
   const fontSize = 16 * devicePixelRatio;
   上下文.font = `${fontSize}px sans-serif`;
   上下文.fillStyle = "white";
-  上下文.fillText("蓄力", x + ((宽 * devicePixelRatio) / 2 - fontSize), y + 高 - 5);
+  上下文.fillText("蓄力", x + (宽 / 2 - fontSize), y + (高 - fontSize - 4 * devicePixelRatio));
 }
 
 function 获取当前贝塞尔坐标(t) {
@@ -175,14 +171,18 @@ function 获取当前贝塞尔坐标(t) {
   return { x, y };
 }
 
+function 点击区域位于蓄力按钮内(e) {
+  return (
+    e.offsetX * devicePixelRatio >= 蓄力按钮.x &&
+    e.offsetX * devicePixelRatio <= 蓄力按钮.x + 蓄力按钮.width &&
+    e.offsetY * devicePixelRatio >= 蓄力按钮.y &&
+    e.offsetY * devicePixelRatio <= 蓄力按钮.y + 蓄力按钮.height
+  );
+}
+
 绘图区.addEventListener("mousedown", (e) => {
   绘图区.removeEventListener("mousemove", 蓄力按钮鼠标悬停);
-  if (
-    e.offsetX * devicePixelRatio >= 蓄力按钮.x &&
-    e.offsetX * devicePixelRatio <= 蓄力按钮.x + 蓄力按钮.width * devicePixelRatio &&
-    e.offsetY * devicePixelRatio >= 蓄力按钮.y &&
-    e.offsetY * devicePixelRatio <= 蓄力按钮.y + 蓄力按钮.height * devicePixelRatio
-  ) {
+  if (点击区域位于蓄力按钮内(e)) {
     绘制蓄力按钮("#456", "white", 蓄力按钮描边宽度);
   }
 });
@@ -190,12 +190,7 @@ function 获取当前贝塞尔坐标(t) {
 绘图区.addEventListener("mousemove", 蓄力按钮鼠标悬停);
 
 function 蓄力按钮鼠标悬停(e) {
-  if (
-    e.offsetX * devicePixelRatio >= 蓄力按钮.x &&
-    e.offsetX * devicePixelRatio <= 蓄力按钮.x + 蓄力按钮.width * devicePixelRatio &&
-    e.offsetY * devicePixelRatio >= 蓄力按钮.y &&
-    e.offsetY * devicePixelRatio <= 蓄力按钮.y + 蓄力按钮.height * devicePixelRatio
-  ) {
+  if (点击区域位于蓄力按钮内(e)) {
     绘图区.style.cursor = "pointer";
     绘制蓄力按钮("#345", "silver", 蓄力按钮描边宽度);
   } else {
@@ -206,12 +201,7 @@ function 蓄力按钮鼠标悬停(e) {
 
 绘图区.addEventListener("mouseup", (e) => {
   绘图区.addEventListener("mousemove", 蓄力按钮鼠标悬停);
-  if (
-    e.offsetX * devicePixelRatio >= 蓄力按钮.x &&
-    e.offsetX * devicePixelRatio <= 蓄力按钮.x + 蓄力按钮.width * devicePixelRatio &&
-    e.offsetY * devicePixelRatio >= 蓄力按钮.y &&
-    e.offsetY * devicePixelRatio <= 蓄力按钮.y + 蓄力按钮.height * devicePixelRatio
-  ) {
+  if (点击区域位于蓄力按钮内(e)) {
     绘制蓄力按钮("#345", "silver", 蓄力按钮描边宽度);
   } else {
     绘制蓄力按钮("#234", "gray", 蓄力按钮描边宽度);
@@ -221,12 +211,7 @@ function 蓄力按钮鼠标悬停(e) {
 绘图区.addEventListener("click", 点击蓄力按钮);
 
 function 点击蓄力按钮(e) {
-  if (
-    e.offsetX * devicePixelRatio >= 蓄力按钮.x &&
-    e.offsetX * devicePixelRatio <= 蓄力按钮.x + 蓄力按钮.width * devicePixelRatio &&
-    e.offsetY * devicePixelRatio >= 蓄力按钮.y &&
-    e.offsetY * devicePixelRatio <= 蓄力按钮.y + 蓄力按钮.height * devicePixelRatio
-  ) {
+  if (点击区域位于蓄力按钮内(e)) {
     绘图区.removeEventListener("click", 点击蓄力按钮);
     绘制抛射动画();
   }
