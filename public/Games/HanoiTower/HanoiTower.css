@@ -1,0 +1,66 @@
+.game-area {
+  position: relative;
+  height: calc(100vh - 150px);
+  font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.汉诺塔区 {
+  width: max(450px, calc(100% / 3 * 2));
+  height: min(500px, 75%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.操作区 {
+  width: 100%;
+  height: calc(100% - 50px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.操作分区 {
+  width: calc(100% / 3);
+  height: 100%;
+  background-image: linear-gradient(90deg, #fff3 0%, #fff1 100%);
+  position: relative;
+}
+
+.积木区 {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+}
+
+.积木 {
+  height: 35px;
+  border: solid 1px silver;
+}
+
+.操作分区:hover .积木:last-child {
+  background-color: #fff5;
+}
+
+.支柱 {
+  position: absolute;
+  height: 75%;
+  width: 25px;
+  border-radius: 999px 999px 0 0;
+  background-color: burlywood;
+  bottom: 0;
+  left: 50%;
+  translate: -50% 0;
+}
+
+.底座 {
+  width: 100%;
+  height: 50px;
+  background-color: burlywood;
+}
