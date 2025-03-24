@@ -9,10 +9,11 @@
 
 .汉诺塔区 {
   width: max(450px, calc(100% / 3 * 2));
-  height: min(500px, 75%);
+  height: min(600px, 75%);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  align-items: center;
 }
 
 .操作区 {
@@ -26,8 +27,33 @@
 .操作分区 {
   width: calc(100% / 3);
   height: 100%;
-  background-image: linear-gradient(90deg, #fff3 0%, #fff1 100%);
   position: relative;
+}
+
+.操作分区:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.操作分区::before {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  content: "";
+  transition: 125ms;
+  opacity: 0;
+  background-image: linear-gradient(90deg, #000 0%, transparent 50%, #000 100%);
+  mask-image: linear-gradient(transparent 0%, black 50%);
+}
+
+.操作分区:hover::before {
+  opacity: 0.25;
+}
+
+.操作分区.来源::before {
+  background-image: linear-gradient(90deg, #fff 0%, transparent 50%, #fff 100%);
+  opacity: 0.5;
 }
 
 .积木区 {
@@ -41,7 +67,7 @@
 
 .积木 {
   height: 35px;
-  border: solid 1px silver;
+  border-radius: 5px;
 }
 
 .操作分区:hover .积木:last-child {
@@ -53,7 +79,7 @@
   height: 75%;
   width: 25px;
   border-radius: 999px 999px 0 0;
-  background-color: burlywood;
+  background-color: rgb(153, 126, 91);
   bottom: 0;
   left: 50%;
   translate: -50% 0;
@@ -62,5 +88,26 @@
 .底座 {
   width: 100%;
   height: 50px;
-  background-color: burlywood;
+  background: center/cover no-repeat url("./Images/木质纹理.webp");
+  border-radius: 0 0 10px 10px;
+}
+
+.按钮 {
+  margin-top: 50px;
+  width: 150px;
+  height: 60px;
+  border-radius: 999px;
+  font-size: 18px;
+  background-color: #222;
+  border: solid 2px #abc;
+  color: white;
+  backdrop-filter: blur(10px);
+}
+
+.按钮:hover {
+  background-color: #333;
+}
+
+.按钮:active {
+  background-color: #444;
 }
