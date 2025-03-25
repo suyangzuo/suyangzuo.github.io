@@ -5,20 +5,60 @@ const 左积木区 = 左分区.querySelector(".积木区");
 const 中积木区 = 中分区.querySelector(".积木区");
 const 右积木区 = 右分区.querySelector(".积木区");
 
-const 积木数量 = 5;
+const 动画速度描述组 = [
+  { 用时: 1000, 描述: "极慢" },
+  { 用时: 750, 描述: "较慢" },
+  { 用时: 500, 描述: "正常" },
+  { 用时: 250, 描述: "较快" },
+  { 用时: 125, 描述: "极快" },
+];
+
+let 已恢复初始状态 = true;
+let 积木数量 = 5;
+let 动画时长 = 500;
 const 积木高度 = 35;
 const 最大积木宽度百分比 = 90;
-let 动画时长 = 500;
 const 左积木栈 = [];
 const 中积木栈 = [];
 const 右积木栈 = [];
-
 const 操作记录 = [];
 const 恢复记录 = [];
 let 当前积木 = null;
 let 来源 = null;
 let 目标 = null;
 let 动画 = null;
+
+const 设置按钮 = document.getElementById("设置");
+const 设置对话框 = document.getElementById("设置对话框");
+设置按钮.addEventListener("click", () => {
+  设置对话框.showModal();
+  设置对话框.classList.add("启用");
+  设置按钮.classList.add("禁用");
+});
+
+设置对话框.addEventListener("click", (e) => {
+  e.stopPropagation();
+  if (e.target.id === "设置对话框") {
+    设置对话框.close();
+    设置对话框.classList.remove("启用");
+    设置按钮.classList.remove("禁用");
+  }
+});
+
+const 积木数量滑块 = document.getElementById("积木数量");
+const 动画速度滑块 = document.getElementById("动画速度");
+积木数量滑块.addEventListener("input", (e) => {
+  积木数量 = parseInt(积木数量滑块.value, 10);
+  const 值 = 积木数量滑块.nextElementSibling;
+  值.textContent = 积木数量滑块.value;
+  重置游戏();
+});
+动画速度滑块.addEventListener("input", (e) => {
+  const 索引 = parseInt(动画速度滑块.value, 10);
+  动画时长 = 动画速度描述组[索引].用时;
+  const 值 = 动画速度滑块.nextElementSibling;
+  值.textContent = 动画速度描述组[索引].描述;
+});
 
 const 操作分区组 = document.querySelectorAll(".操作分区");
 const 撤销按钮 = document.getElementById("撤销");
@@ -154,7 +194,6 @@ function 撤销操作() {
   撤销按钮.removeEventListener("click", 撤销操作);
   const 记录 = 操作记录.pop();
   恢复记录.push(记录);
-  console.log(恢复记录);
   当前积木 = 记录.目标.querySelector(".积木区").lastElementChild;
   移动积木(记录.目标, 记录.来源);
 }
@@ -177,10 +216,16 @@ function 重置游戏() {
   动画时长 = 500;
   操作记录.length = 0;
   恢复记录.length = 0;
+  撤销按钮.classList.add("禁用");
+  恢复按钮.classList.add("禁用");
   当前积木 = null;
   来源 = null;
   目标 = null;
   动画 = null;
+
+  for (const 操作分区 of 操作分区组) {
+    操作分区.classList.remove("来源");
+  }
 
   初始化积木();
 }

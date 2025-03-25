@@ -1,15 +1,107 @@
+.setup-area {
+  position: fixed;
+  z-index: 10;
+  top: 75px;
+  left: 50%;
+  translate: -50% 0;
+  width: 500px;
+  height: 75px;
+}
+
+#设置 {
+  position: absolute;
+  height: 55px;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  border-radius: 10px;
+  outline: solid 1px #fff3;
+  color: silver;
+}
+
+#设置.禁用 {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#设置对话框 {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 50%;
+  translate: -50% 0;
+  background-color: transparent;
+}
+
+#设置对话框::backdrop {
+  backdrop-filter: brightness(33.3333333333%);
+}
+
+#设置对话框.启用 {
+  display: flex;
+}
+
+.选项区 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 15px;
+  background-color: #fff2;
+  padding: 25px;
+  color: white;
+  border: solid 1px #fff5;
+}
+
+.范围滑块 {
+  accent-color: #ddd;
+}
+
+.范围滑块:hover,
+.标签:hover .范围滑块 {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.标签 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+label span {
+  text-wrap: nowrap;
+  user-select: none;
+}
+
+.设置标题 {
+  color: silver;
+}
+
+.值 {
+  font-family: Consolas, Noto Sans;
+  color: darkkhaki;
+}
+
 .game-area {
   position: relative;
   height: calc(100vh - 150px);
   font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
+  padding: 0 0 clamp(50px, 3.5%, 100px) 0;
 }
 
 .汉诺塔区 {
+  flex-shrink: 0;
   width: max(450px, calc(100% / 3 * 2));
-  height: min(600px, 75%);
+  height: min(500px, 75%);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -17,6 +109,7 @@
 }
 
 .操作区 {
+  flex-shrink: 0;
   width: 100%;
   height: calc(100% - 50px);
   display: flex;
@@ -34,6 +127,36 @@
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
+.操作分区::after {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  translate: -50% 0;
+  content: "";
+  background: conic-gradient(
+    from 0deg at 50% 30%,
+    transparent 120deg,
+    #fff5 150deg,
+    #fff8 180deg,
+    #fff5 210deg,
+    transparent 240deg
+  );
+  mask-image: radial-gradient(circle farthest-side at 50% 30%, #fff 50%, transparent 100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: 125ms;
+}
+
+.操作分区:hover::after {
+  opacity: 0.25;
+}
+
+.操作分区.来源::after {
+  opacity: 1;
+}
+
 .操作分区::before {
   position: absolute;
   width: 100%;
@@ -43,7 +166,7 @@
   content: "";
   transition: 125ms;
   opacity: 0;
-  background-image: linear-gradient(90deg, #000 0%, transparent 50%, #000 100%);
+  background-image: linear-gradient(90deg, #fff5 0%, transparent 50%, #fff5 100%);
   mask-image: linear-gradient(transparent 0%, black 50%);
 }
 
@@ -63,11 +186,13 @@
   display: flex;
   flex-direction: column-reverse;
   align-items: center;
+  gap: 3px;
 }
 
 .积木 {
   height: 35px;
   border-radius: 5px;
+  box-shadow: inset 0 0 0 1px #fff5;
 }
 
 .操作分区:hover .积木:last-child {
@@ -86,6 +211,7 @@
 }
 
 .底座 {
+  flex-shrink: 0;
   width: 100%;
   height: 50px;
   background: center/cover no-repeat url("./Images/木质纹理.webp");
@@ -93,30 +219,38 @@
 }
 
 .按钮区 {
+  flex-shrink: 0;
+  margin-top: 60px;
+  height: 60px;
+  border: solid 2px #fff3;
   display: flex;
-  gap: 25px;
+  border-radius: 999px;
+  transition: 75ms;
+  overflow: hidden;
+}
+
+.按钮区:has(.按钮:not(.禁用)) {
+  border: solid 2px #fff6;
 }
 
 .按钮 {
-  margin-top: 50px;
-  width: 150px;
+  width: 100px;
   height: 60px;
-  border-radius: 999px;
   font-size: 18px;
   background-color: #0005;
-  border: solid 2px #fff6;
   color: white;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(5px);
   user-select: none;
+  transition: 75ms;
 }
 
 .按钮:hover {
-  background-color: #333;
+  background-color: #fff1;
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 .按钮:active {
-  background-color: #444;
+  background-color: #fff3;
 }
 
 .按钮.禁用 {

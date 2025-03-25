@@ -35,6 +35,23 @@
         <img src="../重置.png" alt="重置游戏" title="重置" />
       </div>
     </div>
+    <div class="setup-area">
+      <button id="设置" class="按钮">游戏设置</button>
+      <dialog id="设置对话框" class="对话框">
+        <div class="选项区">
+          <label for="积木数量" class="标签">
+            <span class="设置标题">积木数量</span>
+            <input type="range" id="积木数量" class="范围滑块" min="3" max="7" value="5" autocomplete="off" />
+            <span class="值">5</span>
+          </label>
+          <label for="动画速度" class="标签">
+            <span class="设置标题">动画速度</span>
+            <input type="range" id="动画速度" class="范围滑块" min="0" max="4" value="2" autocomplete="off" />
+            <span class="值">正常</span>
+          </label>
+        </div>
+      </dialog>
+    </div>
     <div class="game-area">
       <div class="汉诺塔区">
         <div class="操作区">
