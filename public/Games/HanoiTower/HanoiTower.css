@@ -52,7 +52,7 @@
 }
 
 .操作分区.来源::before {
-  background-image: linear-gradient(90deg, #fff 0%, transparent 50%, #fff 100%);
+  background-image: linear-gradient(90deg, #fffc 0%, transparent 50%, #fffc 100%);
   opacity: 0.5;
 }
 
@@ -92,22 +92,35 @@
   border-radius: 0 0 10px 10px;
 }
 
+.按钮区 {
+  display: flex;
+  gap: 25px;
+}
+
 .按钮 {
   margin-top: 50px;
   width: 150px;
   height: 60px;
   border-radius: 999px;
   font-size: 18px;
-  background-color: #222;
-  border: solid 2px #abc;
+  background-color: #0005;
+  border: solid 2px #fff6;
   color: white;
   backdrop-filter: blur(10px);
+  user-select: none;
 }
 
 .按钮:hover {
   background-color: #333;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 .按钮:active {
   background-color: #444;
+}
+
+.按钮.禁用 {
+  border: solid 2px #0005;
+  pointer-events: none;
+  filter: brightness(25%);
 }

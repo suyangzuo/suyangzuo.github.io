@@ -14,6 +14,7 @@ const 中积木栈 = [];
 const 右积木栈 = [];
 
 const 操作记录 = [];
+const 恢复记录 = [];
 let 当前积木 = null;
 let 来源 = null;
 let 目标 = null;
@@ -21,6 +22,7 @@ let 动画 = null;
 
 const 操作分区组 = document.querySelectorAll(".操作分区");
 const 撤销按钮 = document.getElementById("撤销");
+const 恢复按钮 = document.getElementById("恢复");
 const 重置按钮 = document.querySelector(".reset-game");
 
 初始化积木();
@@ -118,6 +120,8 @@ function 移动积木(source, target) {
     source.querySelector(".积木区").lastElementChild.remove();
     目标积木区.appendChild(当前积木);
     source.classList.remove("来源");
+    source.classList.remove("目标");
+    target.classList.remove("来源");
     target.classList.remove("目标");
     当前积木 = null;
     来源 = null;
@@ -126,6 +130,13 @@ function 移动积木(source, target) {
       分区.addEventListener("click", 点击操作分区);
     }
     撤销按钮.addEventListener("click", 撤销操作);
+    if (操作记录.length > 0) {
+      撤销按钮.classList.remove("禁用");
+    }
+    恢复按钮.addEventListener("click", 恢复操作);
+    if (恢复记录.length > 0) {
+      恢复按钮.classList.remove("禁用");
+    }
 
     if (目标积木区.children.length === 积木数量) {
     }
@@ -133,16 +144,31 @@ function 移动积木(source, target) {
 }
 
 撤销按钮.addEventListener("click", 撤销操作);
+恢复按钮.addEventListener("click", 恢复操作);
 
 function 撤销操作() {
   if (操作记录.length === 0) {
     return;
   }
-
+  撤销按钮.classList.add("禁用");
   撤销按钮.removeEventListener("click", 撤销操作);
   const 记录 = 操作记录.pop();
+  恢复记录.push(记录);
+  console.log(恢复记录);
   当前积木 = 记录.目标.querySelector(".积木区").lastElementChild;
   移动积木(记录.目标, 记录.来源);
+}
+
+function 恢复操作() {
+  if (恢复记录.length === 0) {
+    return;
+  }
+  恢复按钮.classList.add("禁用");
+  恢复按钮.removeEventListener("click", 撤销操作);
+  const 记录 = 恢复记录.pop();
+  操作记录.push(记录);
+  当前积木 = 记录.来源.querySelector(".积木区").lastElementChild;
+  移动积木(记录.来源, 记录.目标);
 }
 
 重置按钮.addEventListener("click", 重置游戏);
@@ -150,6 +176,7 @@ function 撤销操作() {
 function 重置游戏() {
   动画时长 = 500;
   操作记录.length = 0;
+  恢复记录.length = 0;
   当前积木 = null;
   来源 = null;
   目标 = null;
