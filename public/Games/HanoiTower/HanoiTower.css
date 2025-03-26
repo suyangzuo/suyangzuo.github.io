@@ -95,13 +95,13 @@ label span {
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  padding: 0 0 clamp(50px, 3.5%, 100px) 0;
+  padding: 0 0 clamp(50px, 2.5%, 100px) 0;
 }
 
 .汉诺塔区 {
   flex-shrink: 0;
   width: max(450px, calc(100% / 3 * 2));
-  height: min(500px, 75%);
+  height: min(450px, 55%);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
