@@ -11,6 +11,7 @@ const 设置区高度 = 105 + 25;
 const 控制区高度 = 150;
 const 结果区过渡时长 = parseFloat(结果区计算样式.transition) * 1000;
 
+const 音效复选框 = document.getElementById("音效");
 const 拆弹音效 = new Audio("./Audios/拆弹.mp3");
 
 const 提示时长滑块 = document.getElementById("提示时长");
@@ -182,7 +183,9 @@ function 生成生活用时(时间段) {
 }
 
 function 生成成功效果() {
-  拆弹音效.play();
+  if (音效复选框.checked) {
+    拆弹音效.play();
+  }
   提示序列[当前目标索引].元素.style.opacity = "1";
   const 已确认元素 = 提示序列[当前目标索引].元素.querySelector(".已确认");
   已确认元素.classList.remove("隐藏");
