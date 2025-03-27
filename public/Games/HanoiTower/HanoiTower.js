@@ -15,19 +15,16 @@ const 动画速度描述组 = [
 
 let 已恢复初始状态 = true;
 let 积木数量 = 5;
-let 动画时长 = 500;
+let 动画时长 = 250;
 const 积木高度 = 35;
 const 最大积木宽度百分比 = 90;
-/* const 左积木栈 = [];
-const 中积木栈 = [];
-const 右积木栈 = []; */
-const 操作记录 = [];
+const 操作栈 = [];
 let 栈指针 = -1;
-// const 恢复记录 = [];
 let 当前积木 = null;
 let 来源 = null;
 let 目标 = null;
 let 动画 = null;
+const 木头音效 = new Audio("./Audios/木头.mp3");
 
 const 设置按钮 = document.getElementById("设置");
 const 设置对话框 = document.getElementById("设置对话框");
@@ -61,6 +58,8 @@ const 动画速度滑块 = document.getElementById("动画速度");
   值.textContent = 动画速度描述组[索引].描述;
 });
 
+const 音效复选框 = document.getElementById("音效");
+
 const 操作分区组 = document.querySelectorAll(".操作分区");
 const 撤销按钮 = document.getElementById("撤销");
 const 恢复按钮 = document.getElementById("恢复");
@@ -78,7 +77,6 @@ function 初始化积木() {
     const 当前积木宽度 = 最大积木宽度百分比 - 12.5 * i;
     积木.style.width = `${当前积木宽度}%`;
     积木.id = 当前积木宽度 * 10;
-    // 左积木栈.push(积木);
     左积木区.appendChild(积木);
 
     积木.style.backgroundColor = 生成随机颜色(i);
@@ -128,14 +126,14 @@ function 点击操作分区(e) {
     }
     目标 = 操作分区;
     栈指针++;
-    if (栈指针 <= 操作记录.length - 1) {
-      操作记录[栈指针].来源 = 来源;
-      操作记录[栈指针].目标 = 目标;
-      for (let i = 操作记录.length - 1; i > 栈指针; i--) {
-        操作记录.pop();
+    if (栈指针 <= 操作栈.length - 1) {
+      操作栈[栈指针].来源 = 来源;
+      操作栈[栈指针].目标 = 目标;
+      for (let i = 操作栈.length - 1; i > 栈指针; i--) {
+        操作栈.pop();
       }
     } else {
-      操作记录.push({
+      操作栈.push({
         来源: 来源,
         目标: 目标,
       });
@@ -165,15 +163,15 @@ function 移动积木(source, target) {
   };
   动画 = 当前积木.animate(关键帧序列, 动画设置);
 
-  if (栈指针 < 操作记录.length - 1) {
-    恢复按钮.addEventListener("click", 恢复操作);
-    恢复按钮.classList.remove("禁用");
-  } else {
+  if (栈指针 >= 操作栈.length - 1) {
     恢复按钮.removeEventListener("click", 恢复操作);
     恢复按钮.classList.add("禁用");
   }
 
   setTimeout(() => {
+    if (音效复选框.checked) {
+      木头音效.play();
+    }
     动画.cancel();
     source.querySelector(".积木区").lastElementChild.remove();
     目标积木区.appendChild(当前积木);
@@ -192,6 +190,11 @@ function 移动积木(source, target) {
       撤销按钮.classList.remove("禁用");
     }
 
+    if (栈指针 < 操作栈.length - 1) {
+      恢复按钮.addEventListener("click", 恢复操作);
+      恢复按钮.classList.remove("禁用");
+    }
+
     if (目标积木区.children.length === 积木数量) {
     }
   }, 动画时长);
@@ -201,29 +204,25 @@ function 移动积木(source, target) {
 恢复按钮.addEventListener("click", 恢复操作);
 
 function 撤销操作() {
-  if (操作记录.length === 0) {
+  if (栈指针 < 0) {
     return;
   }
   撤销按钮.classList.add("禁用");
   撤销按钮.removeEventListener("click", 撤销操作);
-  // const 记录 = 操作记录.pop();
-  const 最后记录 = 操作记录[栈指针];
+  const 最后记录 = 操作栈[栈指针];
   栈指针--;
-  // 恢复记录.push(记录);
   当前积木 = 最后记录.目标.querySelector(".积木区").lastElementChild;
   移动积木(最后记录.目标, 最后记录.来源);
 }
 
 function 恢复操作() {
-  /* if (恢复记录.length === 0) {
+  if (栈指针 >= 操作栈.length - 1) {
     return;
-  } */
+  }
   恢复按钮.classList.add("禁用");
   恢复按钮.removeEventListener("click", 撤销操作);
   栈指针++;
-  const 记录 = 操作记录[栈指针];
-  // const 记录 = 恢复记录.pop();
-  // 操作记录.push(记录);
+  const 记录 = 操作栈[栈指针];
   当前积木 = 记录.来源.querySelector(".积木区").lastElementChild;
   移动积木(记录.来源, 记录.目标);
 }
@@ -231,10 +230,9 @@ function 恢复操作() {
 重置按钮.addEventListener("click", 重置游戏);
 
 function 重置游戏() {
-  动画时长 = 500;
-  操作记录.length = 0;
+  动画时长 = 250;
+  操作栈.length = 0;
   栈指针 = -1;
-  // 恢复记录.length = 0;
   撤销按钮.classList.add("禁用");
   恢复按钮.classList.add("禁用");
   当前积木 = null;

@@ -139,13 +139,11 @@ const 名称不符关键帧序列 = [
   { outline: `solid 2px ${警告色}`, backgroundColor: 警告色 },
   { outline: "solid 2px transparent", backgroundColor: "#222" },
   { outline: `solid 2px ${警告色}`, backgroundColor: 警告色 },
-  { outline: "solid 2px transparent", backgroundColor: "#222" },
-  { outline: `solid 2px ${警告色}`, backgroundColor: 警告色 },
   { outline: "solid 2px #def3", backgroundColor: "#222" },
 ];
 
 const 名称不符动画选项 = {
-  duration: 1250,
+  duration: 750,
 };
 
 let 关键帧标识符文本框动画 = null;

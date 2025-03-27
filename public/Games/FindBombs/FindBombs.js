@@ -11,6 +11,8 @@ const 设置区高度 = 105 + 25;
 const 控制区高度 = 150;
 const 结果区过渡时长 = parseFloat(结果区计算样式.transition) * 1000;
 
+const 拆弹音效 = new Audio("./Audios/拆弹.mp3");
+
 const 提示时长滑块 = document.getElementById("提示时长");
 const 炸弹数量滑块 = document.getElementById("炸弹数量");
 let 提示时长 = parseInt(提示时长滑块.value, 10);
@@ -180,6 +182,7 @@ function 生成生活用时(时间段) {
 }
 
 function 生成成功效果() {
+  拆弹音效.play();
   提示序列[当前目标索引].元素.style.opacity = "1";
   const 已确认元素 = 提示序列[当前目标索引].元素.querySelector(".已确认");
   已确认元素.classList.remove("隐藏");
@@ -376,7 +379,7 @@ function 重置游戏() {
     提示.元素?.remove();
   }
   提示序列.length = 0;
-  
+
   起始时间 = null;
   clearTimeout(初始化渐显Id);
   clearTimeout(隐藏全部提示Id);

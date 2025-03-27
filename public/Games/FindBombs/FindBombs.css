@@ -326,3 +326,51 @@ label[for="炸弹数量"] .标签数据 {
 .已确认.隐藏 {
   opacity: 0;
 }
+
+label[for="音效"] {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px 20px;
+  border-radius: 999px;
+}
+
+label[for="音效"]:hover {
+  outline: solid #fff3 2px;
+  backdrop-filter: blur(10px);
+}
+
+.设置标题 {
+  user-select: none;
+}
+
+@property --渐变起始色 {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #f53a;
+}
+
+@property --渐变结束色 {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: transparent;
+}
+
+.复选框 {
+  appearance: none;
+  width: 50px;
+  height: 24px;
+  border-radius: 999px;
+  outline: solid 2px #fff5;
+  border: solid 4px transparent;
+  background: linear-gradient(90deg, var(--渐变起始色) 50%, var(--渐变结束色) 50%) padding-box;
+  transition: --渐变起始色 50ms, --渐变结束色 50ms;
+}
+
+.复选框:checked {
+  --渐变起始色: transparent;
+  --渐变结束色: #5faa;
+}

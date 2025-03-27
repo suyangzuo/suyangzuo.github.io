@@ -15,7 +15,7 @@
   left: 50%;
   translate: -50% -50%;
   border-radius: 10px;
-  outline: solid 1px #fff3;
+  outline: solid 2px #fff2;
   color: silver;
 }
 
@@ -57,15 +57,26 @@
   padding: 25px;
   color: white;
   border: solid 1px #fff5;
+  backdrop-filter: blur(10px);
 }
 
 .范围滑块 {
-  accent-color: #ddd;
+  accent-color: #aaa;
+}
+
+.范围滑块::-webkit-slider-thumb {
+  scale: 1.25;
 }
 
 .范围滑块:hover,
-.标签:hover .范围滑块 {
+.复选框:hover .标签:hover .范围滑块,
+.标签:hover .复选框 {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.标签:hover .复选框,
+.复选框:hover {
+  outline: solid 2px #fffa;
 }
 
 .标签 {
@@ -74,13 +85,47 @@
   gap: 10px;
 }
 
+.标签:hover {
+  cursor: url("/Images/Common/鼠标-默认.cur"), auto;
+}
+
 label span {
   text-wrap: nowrap;
   user-select: none;
 }
 
+@property --渐变起始色 {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #f53a;
+}
+
+@property --渐变结束色 {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: transparent;
+}
+
+.复选框 {
+  appearance: none;
+  width: 50px;
+  height: 24px;
+  border-radius: 999px;
+  outline: solid 2px #fff5;
+  border: solid 4px transparent;
+  background: linear-gradient(90deg, var(--渐变起始色) 50%, var(--渐变结束色) 50%) padding-box;
+  transition: --渐变起始色 50ms, --渐变结束色 50ms;
+}
+
+.复选框:checked {
+  --渐变起始色: transparent;
+  --渐变结束色: #5faa;
+}
+
 .设置标题 {
-  color: silver;
+  width: 64px;
+  color: rgb(13, 167, 65);
+  text-align: right;
 }
 
 .值 {
@@ -236,7 +281,7 @@ label span {
 .按钮 {
   width: 100px;
   height: 60px;
-  font-size: 18px;
+  font-size: 20px;
   background-color: #0005;
   color: white;
   backdrop-filter: blur(5px);
