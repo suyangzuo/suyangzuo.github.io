@@ -17,6 +17,7 @@
   border-radius: 10px;
   outline: solid 2px #fff2;
   color: silver;
+  font-size: 18px;
 }
 
 #设置.禁用 {
@@ -123,7 +124,7 @@ label span {
 }
 
 .设置标题 {
-  width: 64px;
+  width: 80px;
   color: rgb(13, 167, 65);
   text-align: right;
 }
@@ -302,4 +303,149 @@ label span {
   border: solid 2px #0005;
   pointer-events: none;
   filter: brightness(25%);
+}
+
+.数据结构区 {
+  width: min(1200px, 90%);
+  outline: solid 1px #fff5;
+  background-color: #fff1;
+  backdrop-filter: blur(20px);
+  position: absolute;
+  top: 1.5%;
+  left: 50%;
+  translate: -50% 0;
+  display: flex;
+  flex-direction: column;
+  transition: 500ms;
+}
+
+.数据结构区.已屏蔽 {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.数据结构分区 {
+  position: relative;
+  width: 100%;
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  background-image: linear-gradient(#fff1 0%, #fff0 100%);
+}
+
+.数据结构分区:last-child {
+  background-image: linear-gradient(#1237 0%, #def0 100%);
+}
+
+.数据结构分区::before {
+  position: absolute;
+  content: "";
+  height: 100%;
+  width: 1px;
+  background-color: #abc2;
+  left: 110px;
+  top: 50%;
+  translate: 0 -50%;
+}
+
+.数据区标题 {
+  width: 75px;
+  text-align: right;
+  color: lightblue;
+  height: 100%;
+}
+
+.记录区 {
+  height: 35px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.数据指针 {
+  position: absolute;
+  bottom: -18px;
+  width: 22px;
+  height: 10px;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  color: lightgreen;
+  transition: 500ms;
+  rotate: z 180deg;
+}
+
+.记录数据区 .数据指针 {
+  bottom: -10px;
+}
+
+.记录容器 {
+  width: 22px;
+  padding: 0 2px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.记录数据区 .记录容器 {
+  height: 15px;
+}
+
+:is(.左数据区, .中数据区, .右数据区) .记录容器 {
+  height: 100%;
+}
+
+:is(.左数据区, .中数据区, .右数据区) .记录区 .记录容器:last-child .记录可视区 {
+  background-color: gold;
+  outline: none;
+  border: none;
+}
+
+:is(.左数据区, .中数据区, .右数据区) .记录容器 .记录可视区 {
+  background-color: #bcd;
+  border: none;
+}
+
+.记录容器.顶端记录 .记录可视区 {
+  outline: solid 1px gold;
+  border: solid 2px gold;
+}
+
+.记录容器.已撤销 .记录可视区 {
+  border: solid 1px #678;
+}
+
+.记录可视区 {
+  width: 100%;
+  height: 100%;
+  border: solid 1px #bcd;
+}
+
+#高度-7 .记录可视区 {
+  height: 100%;
+}
+
+#高度-6 .记录可视区 {
+  height: calc(100% / 7 * 6);
+}
+
+#高度-5 .记录可视区 {
+  height: calc(100% / 7 * 5);
+}
+
+#高度-4 .记录可视区 {
+  height: calc(100% / 7 * 4);
+}
+
+#高度-3 .记录可视区 {
+  height: calc(100% / 7 * 3);
+}
+
+#高度-2 .记录可视区 {
+  height: calc(100% / 7 * 2);
+}
+
+#高度-1 .记录可视区 {
+  height: calc(100% / 7);
 }

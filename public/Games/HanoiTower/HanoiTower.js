@@ -1,9 +1,31 @@
+const 操作分区组 = Array.from(document.querySelectorAll(".操作分区"));
 const 左分区 = document.querySelector(".左分区");
 const 中分区 = document.querySelector(".中分区");
 const 右分区 = document.querySelector(".右分区");
 const 左积木区 = 左分区.querySelector(".积木区");
 const 中积木区 = 中分区.querySelector(".积木区");
 const 右积木区 = 右分区.querySelector(".积木区");
+
+const 数据结构区 = document.querySelector(".数据结构区");
+const 左数据区 = 数据结构区.querySelector(".左数据区");
+const 中数据区 = 数据结构区.querySelector(".中数据区");
+const 右数据区 = 数据结构区.querySelector(".右数据区");
+const 记录数据区 = 数据结构区.querySelector(".记录数据区");
+const 左记录区 = 左数据区.querySelector(".记录区");
+const 中记录区 = 中数据区.querySelector(".记录区");
+const 右记录区 = 右数据区.querySelector(".记录区");
+const 数据可视化记录组 = [左记录区, 中记录区, 右记录区];
+const 步骤记录区 = 记录数据区.querySelector(".记录区");
+const 左数据指针 = 左数据区.querySelector(".数据指针");
+const 中数据指针 = 中数据区.querySelector(".数据指针");
+const 右数据指针 = 右数据区.querySelector(".数据指针");
+const 记录指针 = 数据结构区.querySelector(".记录指针");
+const 数据指针组 = [左数据指针, 中数据指针, 右数据指针, 记录指针];
+const 数据指针位置组 = [-1, -1, -1, -1];
+/* let 左数据指针位置 = -1;
+let 中数据指针位置 = -1;
+let 右数据指针位置 = -1;
+let 记录指针位置 = -1; */
 
 const 动画速度描述组 = [
   { 用时: 1000, 描述: "极慢" },
@@ -59,13 +81,22 @@ const 动画速度滑块 = document.getElementById("动画速度");
 });
 
 const 音效复选框 = document.getElementById("音效");
+const 数据可视化复选框 = document.getElementById("数据可视化");
 
-const 操作分区组 = document.querySelectorAll(".操作分区");
+数据可视化复选框.addEventListener("change", () => {
+  if (数据可视化复选框.checked) {
+    数据结构区.classList.remove("已屏蔽");
+  } else {
+    数据结构区.classList.add("已屏蔽");
+  }
+});
+
 const 撤销按钮 = document.getElementById("撤销");
 const 恢复按钮 = document.getElementById("恢复");
 const 重置按钮 = document.querySelector(".reset-game");
 
 初始化积木();
+初始化数据结构区();
 
 function 初始化积木() {
   左积木区.innerHTML = "";
@@ -78,9 +109,30 @@ function 初始化积木() {
     积木.style.width = `${当前积木宽度}%`;
     积木.id = 当前积木宽度 * 10;
     左积木区.appendChild(积木);
-
     积木.style.backgroundColor = 生成随机颜色(i);
   }
+}
+
+function 初始化数据结构区() {
+  const 所有记录容器 = 数据结构区.querySelectorAll(".记录容器");
+  for (const 记录容器 of 所有记录容器) {
+    记录容器.remove();
+  }
+
+  for (let i = 0; i < 积木数量; i++) {
+    const 记录容器 = 生成记录容器(左记录区);
+    记录容器.id = `高度-${积木数量 - i}`;
+  }
+
+  for (let i = 0; i < 数据指针位置组.length; i++) {
+    数据指针位置组[i] = -1;
+  }
+  数据指针位置组[0] = 积木数量 - 1;
+  for (let i = 0; i < 数据指针位置组.length; i++) {
+    数据指针组[i].style.translate = `${100 * 数据指针位置组[i]}%`;
+  }
+
+  左记录区.lastElementChild.classList.add("顶端记录");
 }
 
 function 生成随机颜色(index) {
@@ -126,19 +178,33 @@ function 点击操作分区(e) {
     }
     目标 = 操作分区;
     栈指针++;
+    数据指针位置组[数据指针位置组.length - 1]++;
+    刷新数据可视化三区样式(来源, 目标);
+
     if (栈指针 <= 操作栈.length - 1) {
       操作栈[栈指针].来源 = 来源;
       操作栈[栈指针].目标 = 目标;
       for (let i = 操作栈.length - 1; i > 栈指针; i--) {
         操作栈.pop();
       }
+      步骤记录区.querySelector(".顶端记录")?.classList.remove("顶端记录");
+      const 当前全部记录 = 步骤记录区.querySelectorAll(".记录容器");
+      当前全部记录[数据指针位置组[数据指针位置组.length - 1]].classList.remove("已撤销");
+      当前全部记录[数据指针位置组[数据指针位置组.length - 1]].classList.add("顶端记录");
+      for (let i = 数据指针位置组[数据指针位置组.length - 1] + 1; i < 当前全部记录.length; i++) {
+        当前全部记录[i]?.remove();
+      }
     } else {
       操作栈.push({
         来源: 来源,
         目标: 目标,
       });
+      生成记录容器(步骤记录区);
+      步骤记录区.querySelector(".顶端记录")?.classList.remove("顶端记录");
+      步骤记录区.lastElementChild.classList.add("顶端记录");
     }
     移动积木(来源, 目标);
+    数据指针组[数据指针组.length - 1].style.translate = `${100 * 数据指针位置组[数据指针位置组.length - 1]}%`;
   }
 }
 
@@ -213,6 +279,17 @@ function 撤销操作() {
   栈指针--;
   当前积木 = 最后记录.目标.querySelector(".积木区").lastElementChild;
   移动积木(最后记录.目标, 最后记录.来源);
+  数据指针位置组[数据指针位置组.length - 1]--;
+  数据指针组[数据指针组.length - 1].style.translate = `${100 * 数据指针位置组[数据指针位置组.length - 1]}%`;
+  const 顶端记录 = 步骤记录区.querySelector(".顶端记录");
+  顶端记录.classList.remove("顶端记录");
+  顶端记录.classList.add("已撤销");
+  const 前一记录 = 顶端记录.previousElementSibling;
+  if (前一记录.className.includes("记录容器")) {
+    前一记录.classList.add("顶端记录");
+  }
+
+  刷新数据可视化三区样式(最后记录.目标, 最后记录.来源);
 }
 
 function 恢复操作() {
@@ -225,6 +302,39 @@ function 恢复操作() {
   const 记录 = 操作栈[栈指针];
   当前积木 = 记录.来源.querySelector(".积木区").lastElementChild;
   移动积木(记录.来源, 记录.目标);
+
+  数据指针位置组[数据指针位置组.length - 1]++;
+  步骤记录区.querySelector(".顶端记录")?.classList.remove("顶端记录");
+  const 当前全部记录 = 步骤记录区.querySelectorAll(".记录容器");
+  当前全部记录[数据指针位置组[数据指针位置组.length - 1]].classList.remove("已撤销");
+  当前全部记录[数据指针位置组[数据指针位置组.length - 1]].classList.add("顶端记录");
+  数据指针组[数据指针组.length - 1].style.translate = `${100 * 数据指针位置组[数据指针位置组.length - 1]}%`;
+
+  刷新数据可视化三区样式(记录.来源, 记录.目标);
+}
+
+function 刷新数据可视化三区样式(来源, 目标) {
+  const 来源索引 = 操作分区组.indexOf(来源);
+  const 目标索引 = 操作分区组.indexOf(目标);
+  const 数据区操作对象 = 数据可视化记录组[来源索引].lastElementChild;
+  数据区操作对象.remove();
+  数据可视化记录组[目标索引].appendChild(数据区操作对象);
+  数据指针位置组[来源索引]--;
+  数据指针位置组[目标索引]++;
+  数据指针组[来源索引].style.translate = `${100 * 数据指针位置组[来源索引]}%`;
+  数据指针组[目标索引].style.translate = `${100 * 数据指针位置组[目标索引]}%`;
+}
+
+function 生成记录容器(记录区) {
+  const 记录容器 = document.createElement("div");
+  记录容器.className = "记录容器";
+  记录区.appendChild(记录容器);
+
+  const 记录可视区 = document.createElement("div");
+  记录可视区.className = "记录可视区";
+  记录容器.appendChild(记录可视区);
+
+  return 记录容器;
 }
 
 重置按钮.addEventListener("click", 重置游戏);
@@ -239,10 +349,13 @@ function 重置游戏() {
   来源 = null;
   目标 = null;
   动画 = null;
+  /* 数据可视化复选框.checked = false;
+  数据结构区.classList.add("已屏蔽"); */
 
   for (const 操作分区 of 操作分区组) {
     操作分区.classList.remove("来源");
   }
 
   初始化积木();
+  初始化数据结构区();
 }
