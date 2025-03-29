@@ -66,7 +66,7 @@
 }
 
 .范围滑块::-webkit-slider-thumb {
-  scale: 1.25;
+  scale: 1.35;
 }
 
 .范围滑块:hover,
@@ -101,10 +101,10 @@ label span {
   initial-value: #f53a;
 }
 
-@property --渐变结束色 {
-  syntax: "<color>";
+@property --渐变水平位置 {
+  syntax: "<length-percentage>";
   inherits: false;
-  initial-value: transparent;
+  initial-value: 8px;
 }
 
 .复选框 {
@@ -114,13 +114,14 @@ label span {
   border-radius: 999px;
   outline: solid 2px #fff5;
   border: solid 4px transparent;
-  background: linear-gradient(90deg, var(--渐变起始色) 50%, var(--渐变结束色) 50%) padding-box;
-  transition: --渐变起始色 50ms, --渐变结束色 50ms;
+  /* background: linear-gradient(90deg, var(--渐变起始色) 50%, var(--渐变结束色) 50%) padding-box; */
+  background: no-repeat radial-gradient(circle 8px at var(--渐变水平位置) 50%, var(--渐变起始色) 100%, transparent 100%);
+  transition: --渐变起始色 50ms, --渐变水平位置 250ms;
 }
 
 .复选框:checked {
-  --渐变起始色: transparent;
-  --渐变结束色: #5faa;
+  --渐变起始色: #5faa;
+  --渐变水平位置: calc(100% - 8px);
 }
 
 .设置标题 {
@@ -335,7 +336,7 @@ label span {
 }
 
 .数据结构分区:last-child {
-  background-image: linear-gradient(#1237 0%, #def0 100%);
+  background-image: linear-gradient(#123 0%, #def0 100%);
 }
 
 .数据结构分区::before {
@@ -354,6 +355,11 @@ label span {
   text-align: right;
   color: lightblue;
   height: 100%;
+  user-select: none;
+}
+
+.记录数据区 .数据区标题 {
+  color: lightseagreen;
 }
 
 .记录区 {
@@ -378,6 +384,7 @@ label span {
 
 .记录数据区 .数据指针 {
   bottom: -10px;
+  color: greenyellow;
 }
 
 .记录容器 {
@@ -408,12 +415,12 @@ label span {
 }
 
 .记录容器.顶端记录 .记录可视区 {
-  outline: solid 1px gold;
-  border: solid 2px gold;
+  outline: solid 1px darkgoldenrod;
+  border: solid 2px darkgoldenrod;
 }
 
 .记录容器.已撤销 .记录可视区 {
-  border: solid 1px #678;
+  border: solid 1px #567;
 }
 
 .记录可视区 {
