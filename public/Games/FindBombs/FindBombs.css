@@ -339,7 +339,8 @@ label[for="音效"] {
 }
 
 label[for="音效"]:hover {
-  outline: solid #fff3 2px;
+  outline: solid #def2 2px;
+  background-color: #0122;
   backdrop-filter: blur(10px);
 }
 

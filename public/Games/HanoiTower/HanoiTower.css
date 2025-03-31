@@ -351,6 +351,7 @@ label span {
 }
 
 .数据区标题 {
+  flex-shrink: 0;
   width: 75px;
   text-align: right;
   color: lightblue;
@@ -367,6 +368,8 @@ label span {
   position: relative;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  row-gap: 10px;
 }
 
 .数据指针 {
