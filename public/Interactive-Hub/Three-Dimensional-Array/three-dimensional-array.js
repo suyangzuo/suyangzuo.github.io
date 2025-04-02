@@ -15,13 +15,17 @@ let 三维过渡延时函数 = null;
 const 数组容器组 = document.getElementsByClassName("数组容器");
 const 索引容器组 = document.getElementsByClassName("二维数组索引容器");
 const 行号容器组 = document.getElementsByClassName("行号容器");
+const 列号容器组 = document.getElementsByClassName("列号容器");
 const 数组行二维集合 = [];
+const 数组格三维集合 = [];
 
 root.style.setProperty("--数据区坐标-top", `${数组容器组[0].getBoundingClientRect().top}px`);
 root.style.setProperty("--数据区坐标-left", `${数组容器组[0].getBoundingClientRect().left}px`);
 
 Array.from(数组容器组, (数组容器, index) => {
+  const 数组格二维集合 = [];
   for (let i = 0; i < 行数; i++) {
+    const 数组格一维集合 = [];
     const 行 = document.createElement("div");
     行.className = "数组行";
     数组容器.appendChild(行);
@@ -41,8 +45,11 @@ Array.from(数组容器组, (数组容器, index) => {
         数据区.classList.add("隐藏");
         复原当前行号列号(数组格);
       });
+      数组格一维集合.push(数组格);
     }
+    数组格二维集合.push(数组格一维集合);
   }
+  数组格三维集合.push(数组格二维集合);
 
   const 序号容器组 = 生成序号();
   const 二维数组索引容器 = document.createElement("div");
@@ -73,6 +80,68 @@ Array.from(数组容器组, (数组容器, index) => {
     数据区.classList.add("隐藏");
   });
 });
+
+let 三维数据动画对象组 = [
+  [null, null],
+  [null, null],
+  [null, null],
+];
+const 三维容器动画关键帧序列 = [
+  { scale: 1, offset: 0 },
+  { scale: 1.5, offset: 0.15 },
+  { scale: 1.5, offset: 0.85 },
+  { scale: 1, offset: 1 },
+];
+const 行容器动画关键帧序列 = [
+  { scale: 1, offset: 0 },
+  { scale: 1.5, translate: "-30px 0", offset: 0.15 },
+  { scale: 1.5, translate: "-30px 0", offset: 0.85 },
+  { scale: 1, offset: 1 },
+];
+const 列容器动画关键帧序列 = [
+  { scale: 1, offset: 0 },
+  { scale: 1.5, translate: "0 -30px", offset: 0.15 },
+  { scale: 1.5, translate: "0 -30px", offset: 0.85 },
+  { scale: 1, offset: 1 },
+];
+const 三维数据动画关键帧序列 = [
+  { scale: 1, offset: 0 },
+  { scale: 1.5, translate: "0 -50px", offset: 0.15 },
+  { scale: 1.5, translate: "0 -50px", offset: 0.85 },
+  { scale: 1, offset: 1 },
+];
+const 三维数据动画设置 = [
+  { duration: 750, delay: 0 },
+  { duration: 750, delay: 750 * 1.25 },
+  { duration: 750, delay: 750 * 2.5 },
+];
+for (let u = 0; u < 数组格三维集合.length; u++) {
+  for (let i = 0; i < 行数; i++) {
+    for (let j = 0; j < 列数; j++) {
+      const 数组格 = 数组格三维集合[u][i][j];
+      数组格.addEventListener("click", () => {
+        const 三维索引 = 索引容器组[u];
+        const 行 = 行号容器组[u].children[i];
+        const 列 = 列号容器组[u].children[j];
+        const 三维数据 = 索引数据容器组[0];
+        const 行数据 = 索引数据容器组[1];
+        const 列数据 = 索引数据容器组[2];
+
+        for (const 组 of 三维数据动画对象组) {
+          for (const 对象 of 组) {
+            对象?.cancel();
+          }
+        }
+        三维数据动画对象组[0][0] = 三维索引.animate(三维容器动画关键帧序列, 三维数据动画设置[0]);
+        三维数据动画对象组[0][1] = 三维数据.animate(三维数据动画关键帧序列, 三维数据动画设置[0]);
+        三维数据动画对象组[1][0] = 行.animate(行容器动画关键帧序列, 三维数据动画设置[1]);
+        三维数据动画对象组[1][1] = 行数据.animate(三维数据动画关键帧序列, 三维数据动画设置[1]);
+        三维数据动画对象组[2][0] = 列.animate(列容器动画关键帧序列, 三维数据动画设置[2]);
+        三维数据动画对象组[2][1] = 列数据.animate(三维数据动画关键帧序列, 三维数据动画设置[2]);
+      });
+    }
+  }
+}
 
 for (const 数组容器 of 数组容器组) {
   const 数组行集合 = 数组容器.querySelectorAll(".数组行");

@@ -304,6 +304,7 @@ body {
   box-shadow: 2px 2px 4px 0 #0008;
   transition: background-color 75ms;
   user-select: none;
+  transform-origin: 50% 0;
 }
 
 .二维数组索引容器:hover {
