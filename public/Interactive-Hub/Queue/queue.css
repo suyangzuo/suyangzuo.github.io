@@ -2,5 +2,216 @@
   --进度条颜色-已填充: rgb(41, 126, 78);
   --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
   --拇指宽度: 16px;
+  --队列成员宽度: 75px;
+  --头背景色: rgb(56, 141, 73);
+  --尾背景色: rgb(225, 204, 81);
 }
 
+.队列总区 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.队列容器 {
+  display: flex;
+  align-items: center;
+  outline: solid 1px #fff4;
+  position: relative;
+}
+
+.队列成员 {
+  position: relative;
+  width: var(--队列成员宽度);
+  height: var(--队列成员宽度);
+  background-color: #fff4;
+  border: solid 1px #fff4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 500ms;
+}
+
+.队列成员::before {
+  position: absolute;
+  border: solid 4px transparent;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  content: "";
+}
+
+.队列成员.无人 {
+  filter: brightness(25%);
+}
+
+.队列容器:has(.队列成员.无人) {
+  outline: solid 1px #fff2;
+}
+
+.队列成员.头::before {
+  border: solid 4px rgb(74, 186, 96);;
+}
+
+.队列成员.尾::before {
+  border: solid 4px var(--尾背景色);
+}
+
+.队列成员.头.尾:before {
+  border: none;
+  background-image: linear-gradient(var(--头背景色) 50%, var(--尾背景色) 50%);
+}
+
+.序号容器 {
+  color: lightgreen;
+  font-size: 18px;
+}
+
+.索引容器 {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.索引成员 {
+  width: 20%;
+  height: 100%;
+  text-align: center;
+  align-content: center;
+  font-size: 14px;
+  color: rgb(180, 197, 202);
+  transition: 500ms;
+}
+
+.索引成员.无人 {
+  filter: brightness(35%);
+}
+
+.索引成员.头,
+.索引成员.尾 {
+  font-weight: bold;
+}
+
+.索引成员.头 {
+  color: rgb(68, 205, 95);
+}
+
+.索引成员.尾 {
+  color: rgb(225, 204, 81);
+}
+
+.索引成员.头.尾 {
+  background-image: linear-gradient(rgb(68, 205, 95) 50%, rgb(225, 204, 81) 50%);
+  background-clip: text;
+  color: transparent;
+}
+
+.警告容器 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.指针容器 {
+  position: absolute;
+  width: var(--队列成员宽度);
+  height: var(--队列成员宽度);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  translate: -100% 0;
+  transition: 500ms;
+}
+
+.头指针容器 {
+  top: -130%;
+}
+
+.尾指针容器 {
+  bottom: -100%;
+}
+
+.头指针容器 .指针标题 {
+  color: rgb(119, 176, 33);
+}
+
+.头指针容器 .指针箭头 {
+  color: greenyellow;
+}
+
+.尾指针容器 .指针标题 {
+  color: darkgoldenrod;
+}
+
+.尾指针容器 .指针箭头 {
+  color: gold;
+}
+
+#控制区 {
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+}
+
+.按钮 {
+  position: relative;
+  font-family: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑， monospace, sans-serif;
+  border: none;
+  padding: 10px 20px;
+  background-color: #def3;
+  backdrop-filter: blur(10px);
+  color: white;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.按钮:hover {
+  background-color: #def5;
+}
+
+/* .按钮:active {
+  background-color: #def7;
+} */
+
+.函数动画层 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.正确层,
+.错误层 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  text-align: center;
+  align-content: center;
+  font-size: 18px;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.正确层 {
+  color: rgb(102, 214, 126);
+  background-color: rgb(38, 100, 51);
+}
+
+.错误层 {
+  color: rgb(228, 78, 78);
+  background-color: rgb(94, 20, 20);
+}

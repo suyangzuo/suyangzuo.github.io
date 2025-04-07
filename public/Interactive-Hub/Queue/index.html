@@ -1,14 +1,14 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>队列</title>
+    <link rel="icon" href="/Images/Interactive-Hub/HQ/队列.png" type="image/x-icon" />
     <link
-      rel="icon"
-      href="/Images/Interactive-Hub/HQ/队列.png"
-      type="image/x-icon"
+      href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Titillium+Web&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Roboto+Mono&family=M+PLUS+Code+Latin&family=Ubuntu+Mono&family=M+PLUS+1+Code:wght@100..700&display=swap"
+      rel="stylesheet"
     />
     <link rel="stylesheet" href="/Styles/common.css" />
     <link rel="stylesheet" href="/Styles/top-banner-common.css" />
@@ -22,22 +22,57 @@
   </head>
   <body>
     <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
-    <script
-      src="../../Scripts/html-include.js"
-      target="../../top-banner.html"
-      position="afterbegin"
-    ></script>
+    <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
     <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
 
     <section class="队列总区 总区">
-      <script
-        src="../../Scripts/html-include.js"
-        target="../control.html"
-        position="afterbegin"
-      ></script>
+      <script src="../../Scripts/html-include.js" target="../control.html" position="afterbegin"></script>
       <p class="交互标题">队列</p>
-      <figure class="展示区"></figure>
-      <div class="控制区"></div>
+      <div id="展示区">
+        <div class="队列容器">
+          <div class="队列成员 无人"></div>
+          <div class="队列成员 无人"></div>
+          <div class="队列成员 无人"></div>
+          <div class="队列成员 无人"></div>
+          <div class="队列成员 无人"></div>
+          <div class="队列成员 无人"></div>
+          <div class="队列成员 无人"></div>
+          <div class="队列成员 无人"></div>
+          <div class="索引容器"></div>
+          <div class="警告容器"></div>
+          <div class="指针容器 头指针容器">
+            <h4 class="指针标题">头</h4>
+            <span class="指针箭头"><i class="fa-solid fa-arrow-down"></i></span>
+          </div>
+          <div class="指针容器 尾指针容器">
+            <span class="指针箭头"><i class="fa-solid fa-arrow-up"></i></span>
+            <h4 class="指针标题">尾</h4>
+          </div>
+        </div>
+      </div>
+      <div id="控制区">
+        <div class="函数容器 空容器">
+          <button class="按钮" id="空">
+            <span class="函数名称">is_empty</span
+            ><span class="函数动画层"
+              ><span class="正确层"><i class="fa-solid fa-check"></i></span
+              ><span class="错误层"><i class="fa-solid fa-xmark"></i></span
+            ></span>
+          </button>
+        </div>
+        <div class="函数容器 满容器">
+          <button class="按钮" id="满">
+            <span class="函数名称">is_full</span
+            ><span class="函数动画层"
+              ><span class="正确层"><i class="fa-solid fa-check"></i></span
+              ><span class="错误层"><i class="fa-solid fa-xmark"></i></span
+            ></span>
+          </button>
+        </div>
+        <div class="函数容器 入队容器"><button class="按钮" id="入队">en_queue</button></div>
+        <div class="函数容器 出队容器"><button class="按钮" id="出队">de_queue</button></div>
+        <div class="函数容器 清空容器"><button class="按钮" id="清空">clear</button></div>
+      </div>
     </section>
   </body>
 </html>
