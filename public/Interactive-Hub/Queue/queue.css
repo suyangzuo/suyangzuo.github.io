@@ -18,6 +18,46 @@
   align-items: center;
   outline: solid 1px #fff4;
   position: relative;
+  --头指针指示框水平偏移: -100%;
+  --尾指针指示框水平偏移: -100%;
+}
+
+.队列容器::before,
+.队列容器::after {
+  width: var(--队列成员宽度);
+  height: var(--队列成员宽度);
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-width: 4px;
+  border-style: solid;
+  content: "";
+  clip-path: inset(0 0 0 0);
+  transition: 500ms;
+}
+
+.队列容器.空::before,
+.队列容器.空::after {
+  opacity: 0;
+}
+
+.队列容器.头尾相等::before {
+  clip-path: inset(0 0 50% 0);
+}
+
+.队列容器.头尾相等::after {
+  clip-path: inset(50% 0 0 0);
+}
+
+.队列容器::before {
+  border-color: rgb(7, 151, 50);
+  translate: var(--头指针指示框水平偏移) 0;
+  z-index: 1;
+}
+
+.队列容器::after {
+  border-color: var(--尾背景色);
+  translate: var(--尾指针指示框水平偏移) 0;
 }
 
 .队列成员 {
@@ -32,7 +72,7 @@
   transition: 500ms;
 }
 
-.队列成员::before {
+/* .队列成员::before {
   position: absolute;
   border: solid 4px transparent;
   width: 100%;
@@ -40,7 +80,7 @@
   top: 0;
   left: 0;
   content: "";
-}
+} */
 
 .队列成员.无人 {
   filter: brightness(25%);
@@ -50,8 +90,8 @@
   outline: solid 1px #fff2;
 }
 
-.队列成员.头::before {
-  border: solid 4px rgb(74, 186, 96);;
+/* .队列成员.头::before {
+  border: solid 4px rgb(74, 186, 96);
 }
 
 .队列成员.尾::before {
@@ -61,7 +101,7 @@
 .队列成员.头.尾:before {
   border: none;
   background-image: linear-gradient(var(--头背景色) 50%, var(--尾背景色) 50%);
-}
+} */
 
 .序号容器 {
   color: lightgreen;

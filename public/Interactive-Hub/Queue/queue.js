@@ -45,18 +45,26 @@ const 出入动画设置 = {
     出入判断动画 = 警告容器.animate(出入关键帧序列, 出入动画设置);
     return;
   }
-  队列成员组[尾指针]?.classList.remove("尾");
+  队列容器.classList.remove("空");
+  // 队列成员组[尾指针]?.classList.remove("尾");
   索引成员组[尾指针]?.classList.remove("尾");
   if (头指针 === -1) {
     头指针 = 0;
-    队列成员组[头指针].classList.add("头");
+    // 队列成员组[头指针].classList.add("头");
     索引成员组[头指针].classList.add("头");
     头指针容器.style.translate = `${头指针 * 100}% 0`;
+    队列容器.style.setProperty("--头指针指示框水平偏移", `${头指针 * 100}%`);
   }
   尾指针 = (尾指针 + 1) % 队列成员组.length;
   尾指针容器.style.translate = `${尾指针 * 100}% 0`;
+  队列容器.style.setProperty("--尾指针指示框水平偏移", `${尾指针 * 100}%`);
+  if (头指针 !== 尾指针) {
+    队列容器.classList.remove("头尾相等");
+  } else {
+    队列容器.classList.add("头尾相等");
+  }
   队列成员组[尾指针].classList.remove("无人");
-  队列成员组[尾指针].classList.add("尾");
+  // 队列成员组[尾指针].classList.add("尾");
   索引成员组[尾指针].classList.add("尾");
   索引成员组[尾指针].classList.remove("无人");
 });
@@ -67,22 +75,30 @@ const 出入动画设置 = {
     出入判断动画 = 警告容器.animate(出入关键帧序列, 出入动画设置);
     return;
   }
-  队列成员组[头指针].classList.remove("头");
-  队列成员组[头指针].classList.add("无人");
+  // 队列成员组[头指针].classList.remove("头");
   索引成员组[头指针].classList.remove("头");
+  队列成员组[头指针].classList.add("无人");
   索引成员组[头指针].classList.add("无人");
   出队元素 = 队列成员组[头指针];
   if (头指针 === 尾指针) {
-    队列成员组[尾指针].classList.remove("尾");
+    // 队列成员组[尾指针].classList.remove("尾");
     索引成员组[尾指针].classList.remove("尾");
     头指针 = -1;
     尾指针 = -1;
+    队列容器.classList.add("空");
   } else {
     头指针 = (头指针 + 1) % 队列成员组.length;
   }
   头指针容器.style.translate = `${头指针 * 100}% 0`;
   尾指针容器.style.translate = `${尾指针 * 100}% 0`;
-  队列成员组[头指针]?.classList.add("头");
+  队列容器.style.setProperty("--头指针指示框水平偏移", `${头指针 * 100}%`);
+  队列容器.style.setProperty("--尾指针指示框水平偏移", `${尾指针 * 100}%`);
+  if (头指针 !== 尾指针) {
+    队列容器.classList.remove("头尾相等");
+  } else {
+    队列容器.classList.add("头尾相等");
+  }
+  // 队列成员组[头指针]?.classList.add("头");
   索引成员组[头指针]?.classList.add("头");
 });
 
@@ -90,8 +106,8 @@ const 出入动画设置 = {
 
 function 清空队列() {
   队列成员组.forEach((队列成员) => {
-    队列成员.classList.remove("头");
-    队列成员.classList.remove("尾");
+    /* 队列成员.classList.remove("头");
+    队列成员.classList.remove("尾"); */
     队列成员.classList.add("无人");
     头指针 = -1;
     尾指针 = -1;
@@ -104,6 +120,11 @@ function 清空队列() {
     索引成员.classList.remove("尾");
     索引成员.classList.add("无人");
   });
+
+  队列容器.style.setProperty("--头指针指示框水平偏移", `${头指针 * 100}%`);
+  队列容器.style.setProperty("--尾指针指示框水平偏移", `${尾指针 * 100}%`);
+  队列容器.classList.add("空");
+  队列容器.classList.add("头尾相等");
 }
 
 const 关键帧序列 = [
