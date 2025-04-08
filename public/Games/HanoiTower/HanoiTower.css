@@ -372,6 +372,10 @@ label span {
   row-gap: 10px;
 }
 
+.数据结构分区:not(.记录数据区) .记录区 {
+  translate: 0 -5px;
+}
+
 .数据指针 {
   position: absolute;
   bottom: -18px;

@@ -1,3 +1,22 @@
+let 当前角色图 = "./Images/1.png";
+const 角色区 = document.querySelector(".角色区");
+const 角色容器组 = [];
+for (let i = 0; i < 16; i++) {
+  const 角色容器 = document.createElement("figure");
+  角色容器.className = "角色容器";
+  if (i === 0) {
+    角色容器.classList.add("当前角色");
+  }
+  角色区.appendChild(角色容器);
+
+  const img = document.createElement("img");
+  img.className = "角色图";
+  img.src = `./Images/${i + 1}.png`;
+  img.alt = `角色${i + 1}`;
+  角色容器.appendChild(img);
+  角色容器组.push(角色容器);
+}
+
 const 队列容器 = document.querySelector(".队列容器");
 const 警告容器 = document.querySelector(".警告容器");
 const 队列成员组 = document.querySelectorAll(".队列成员");
@@ -7,11 +26,32 @@ for (const [index, 队列成员] of 队列成员组.entries()) {
   序号容器.className = "序号容器";
   队列成员.appendChild(序号容器);
 
+  const 队列图像容器 = document.createElement("figure");
+  队列图像容器.className = "队列图像容器 无人";
+  队列成员.appendChild(队列图像容器);
+  const img = document.createElement("img");
+  img.src = `./Images/1.png`;
+  img.className = "队列图像";
+  队列图像容器.appendChild(img);
+
   const 索引成员 = document.createElement("span");
   索引成员.className = "索引成员 无人";
   索引成员.textContent = index;
   索引容器.appendChild(索引成员);
 }
+
+角色容器组.forEach((角色容器, index) => {
+  角色容器.addEventListener("click", () => {
+    const 当前角色 = 角色区.querySelector(".当前角色");
+    if (当前角色 === 角色容器) {
+      return;
+    }
+    当前角色.classList.remove("当前角色");
+    角色容器.classList.add("当前角色");
+    当前角色图 = `./Images/${index + 1}.png`;
+  });
+});
+
 const 索引成员组 = document.querySelectorAll(".索引成员");
 
 let 头指针 = -1;
@@ -67,6 +107,10 @@ const 出入动画设置 = {
   // 队列成员组[尾指针].classList.add("尾");
   索引成员组[尾指针].classList.add("尾");
   索引成员组[尾指针].classList.remove("无人");
+
+  const 队列图像 = 队列成员组[尾指针].querySelector(".队列图像");
+  队列图像.src = 当前角色图;
+  队列图像.parentElement.classList.remove("无人");
 });
 
 出队按钮.addEventListener("click", () => {
@@ -80,6 +124,8 @@ const 出入动画设置 = {
   队列成员组[头指针].classList.add("无人");
   索引成员组[头指针].classList.add("无人");
   出队元素 = 队列成员组[头指针];
+  const 队列图像 = 队列成员组[头指针].querySelector(".队列图像");
+  队列图像.parentElement.classList.add("无人");
   if (头指针 === 尾指针) {
     // 队列成员组[尾指针].classList.remove("尾");
     索引成员组[尾指针].classList.remove("尾");
@@ -113,6 +159,9 @@ function 清空队列() {
     尾指针 = -1;
     头指针容器.style.translate = `${头指针 * 100}% 0`;
     尾指针容器.style.translate = `${尾指针 * 100}% 0`;
+
+    const 队列图像容器 = 队列成员.querySelector(".队列图像容器");
+    队列图像容器.classList.add("无人");
   });
 
   索引成员组.forEach((索引成员) => {

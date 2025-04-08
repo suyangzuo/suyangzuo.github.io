@@ -130,12 +130,12 @@ const 快捷键列表组 = 快捷键列表区.querySelectorAll(".快捷键列表
     }
   } */
   const 当前列表 = 快捷键列表区.querySelector(".当前列表");
-  const 当前全部列表项容器 = 当前列表.querySelectorAll(".列表项容器");
+  const 当前全部列表项容器 = 当前列表.querySelectorAll(".快捷键列表项:not(.禁用) > .列表项容器");
   const 当前种类 = 快捷键种类区.querySelector(".当前种类");
   const 当前种类索引 = Array.from(快捷键种类组).indexOf(当前种类);
   const 当前软件名称 = 当前列表.classList[1].split("-")[0];
   const 当前软件已选快捷键数 = 测试对象池.filter((item) => item.软件 === 当前软件名称).length;
-  const 当前软件快捷键总数 = 当前列表.querySelectorAll(".快捷键列表项").length;
+  const 当前软件快捷键总数 = 当前列表.querySelectorAll(".快捷键列表项:not(.禁用)").length;
   const 种类计数组 = 快捷键种类区.querySelectorAll(".当前种类选中计数");
   if (当前软件已选快捷键数 <= 0) {
     for (const 容器 of 当前全部列表项容器) {
@@ -160,6 +160,7 @@ const 快捷键列表组 = 快捷键列表区.querySelectorAll(".快捷键列表
     种类计数组[当前种类索引].classList.remove("已有选中数");
     种类计数组[当前种类索引].textContent = "0";
   }
+  console.log(测试对象池);
 
   /* if (种类计数组.length > 0) {
     for (const 种类计数 of 种类计数组) {
@@ -271,7 +272,7 @@ function 添加测试对象(列表项容器) {
   测试对象池.push(测试对象);
 
   const 当前软件已选择快捷键数 = 测试对象池.filter((item) => item.软件 === 软件名称).length;
-  const 当前软件快捷键总数 = 列表项容器.parentElement.parentElement.querySelectorAll(".快捷键列表项").length;
+  const 当前软件快捷键总数 = 列表项容器.parentElement.parentElement.querySelectorAll(".快捷键列表项:not(.禁用)").length;
   更新取消按钮内容(当前软件已选择快捷键数, 当前软件快捷键总数);
 }
 

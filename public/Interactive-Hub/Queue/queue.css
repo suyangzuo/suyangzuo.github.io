@@ -5,12 +5,54 @@
   --队列成员宽度: 75px;
   --头背景色: rgb(56, 141, 73);
   --尾背景色: rgb(225, 204, 81);
+  --过渡时长: 400ms;
 }
 
 .队列总区 {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+#展示区 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.角色区 {
+  width: calc(75px * 8);
+  height: calc(75px * 2);
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 200px;
+}
+
+.角色容器 {
+  width: 12.5%;
+  height: 50%;
+  outline: solid 1px #ced1;
+  border: solid 3px transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.角色容器.当前角色,
+.角色容器.当前角色:hover {
+  background-color: #567;
+  border: solid 3px #ced;
+}
+
+.角色容器:hover {
+  background-color: #345;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.角色图 {
+  width: 85%;
+  height: 85%;
+  object-fit: contain;
 }
 
 .队列容器 {
@@ -33,7 +75,7 @@
   border-style: solid;
   content: "";
   clip-path: inset(0 0 0 0);
-  transition: 500ms;
+  transition: var(--过渡时长);
 }
 
 .队列容器.空::before,
@@ -50,7 +92,7 @@
 }
 
 .队列容器::before {
-  border-color: rgb(7, 151, 50);
+  border-color: rgb(11, 199, 68);
   translate: var(--头指针指示框水平偏移) 0;
   z-index: 1;
 }
@@ -69,7 +111,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: 500ms;
+  transition: var(--过渡时长);
 }
 
 /* .队列成员::before {
@@ -103,6 +145,28 @@
   background-image: linear-gradient(var(--头背景色) 50%, var(--尾背景色) 50%);
 } */
 
+.队列图像容器 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 500ms;
+}
+
+.队列图像容器.无人 {
+  opacity: 0;
+}
+
+.队列图像 {
+  width: 75%;
+  height: 75%;
+  object-fit: contain;
+}
+
 .序号容器 {
   color: lightgreen;
   font-size: 18px;
@@ -125,7 +189,7 @@
   align-content: center;
   font-size: 14px;
   color: rgb(180, 197, 202);
-  transition: 500ms;
+  transition: var(--过渡时长), color 0;
 }
 
 .索引成员.无人 {
@@ -169,7 +233,7 @@
   justify-content: center;
   align-items: center;
   translate: -100% 0;
-  transition: 500ms;
+  transition: var(--过渡时长);
 }
 
 .头指针容器 {
@@ -220,9 +284,9 @@
   background-color: #def5;
 }
 
-/* .按钮:active {
+:is(#入队, #出队, #清空):active {
   background-color: #def7;
-} */
+}
 
 .函数动画层 {
   width: 100%;
