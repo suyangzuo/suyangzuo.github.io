@@ -1,62 +1,184 @@
-const 候选人物组 = [
-  { 肖像: "./人物肖像图片/曹昂.jpeg", 姓名: "曹昂" },
-  { 肖像: "./人物肖像图片/曹操.jpeg", 姓名: "曹操" },
-  { 肖像: "./人物肖像图片/曹婴.jpeg", 姓名: "曹婴" },
-  { 肖像: "./人物肖像图片/陈登.jpeg", 姓名: "陈登" },
-  { 肖像: "./人物肖像图片/邓芝.jpeg", 姓名: "邓芝" },
-  { 肖像: "./人物肖像图片/董允.jpeg", 姓名: "董允" },
-  { 肖像: "./人物肖像图片/杜预.jpeg", 姓名: "杜预" },
-  { 肖像: "./人物肖像图片/关银屏.jpeg", 姓名: "关银屏" },
-  { 肖像: "./人物肖像图片/郭嘉.jpeg", 姓名: "郭嘉" },
-  { 肖像: "./人物肖像图片/黄忠.jpeg", 姓名: "黄忠" },
-  { 肖像: "./人物肖像图片/李傕.jpeg", 姓名: "李傕" },
-  { 肖像: "./人物肖像图片/刘备.jpeg", 姓名: "刘备" },
-  { 肖像: "./人物肖像图片/刘表.jpeg", 姓名: "刘表" },
-  { 肖像: "./人物肖像图片/刘封.jpeg", 姓名: "刘封" },
-  { 肖像: "./人物肖像图片/毛玠.jpeg", 姓名: "毛玠" },
-  { 肖像: "./人物肖像图片/祢衡.jpeg", 姓名: "祢衡" },
-  { 肖像: "./人物肖像图片/司马师.jpeg", 姓名: "司马师" },
-  { 肖像: "./人物肖像图片/太史慈.jpeg", 姓名: "太史慈" },
-  { 肖像: "./人物肖像图片/王异.jpeg", 姓名: "王异" },
-  { 肖像: "./人物肖像图片/王元姬.jpeg", 姓名: "王元姬" },
-  { 肖像: "./人物肖像图片/许攸.jpeg", 姓名: "许攸" },
-  { 肖像: "./人物肖像图片/荀彧.jpeg", 姓名: "荀彧" },
-  { 肖像: "./人物肖像图片/于禁.jpeg", 姓名: "于禁" },
-  { 肖像: "./人物肖像图片/袁绍.png", 姓名: "袁绍" },
-  { 肖像: "./人物肖像图片/张辽.jpeg", 姓名: "张辽" },
-  { 肖像: "./人物肖像图片/张翼.jpeg", 姓名: "张翼" },
-  { 肖像: "./人物肖像图片/钟会.jpeg", 姓名: "钟会" },
-  { 肖像: "./人物肖像图片/周泰.jpeg", 姓名: "周泰" },
-  { 肖像: "./人物肖像图片/朱然.jpeg", 姓名: "朱然" },
-  { 肖像: "./人物肖像图片/诸葛瞻.jpeg", 姓名: "诸葛瞻" },
+// 姓名池后期需要打乱，因此用let
+let 角色姓名池 = [
+  "刘备",
+  "关羽",
+  "张飞",
+  "赵云",
+  "马超",
+  "黄忠",
+  "袁绍",
+  "袁术",
+  "孙权",
+  "黄盖",
+  "周瑜",
+  "太史慈",
+  "夏侯渊",
+  "夏侯惇",
+  "庞统",
+  "徐庶",
+  "曹操",
+  "曹丕",
+  "刘禅",
+  "姜维",
+  "张昭",
+  "司马懿",
+  "司马昭",
+  "张角",
 ];
-const index_array = [];
 
-for (let i = 0; i < 10; i++) {
-  const names = document.createElement("button");
-  names.className = "姓名";
-  names.textContent = "姓名" + `${i + 1}`;
-  document.querySelector(".姓名区").appendChild(names);
+const 登场角色数量 = 10;
+let 登场姓名组 = []; //后期会打乱
+let 登场图片组 = []; //后期会打乱
+const 比较组 = [];
+const 肖像区 = document.querySelector(".肖像区");
+const 姓名区 = document.querySelector(".姓名区");
+
+let 肖像类型 = "影视剧";
+const 肖像类型单选区 = document.querySelector(".肖像类型单选区");
+const 肖像类型单选框组 = 肖像类型单选区.querySelectorAll(".单选框");
+for (const 单选框 of 肖像类型单选框组) {
+  单选框.addEventListener("change", () => {
+    肖像类型 = 单选框.id;
+    生成登场姓名和肖像数据();
+    生成肖像();
+  });
 }
 
-for (let i = 0; i < 10; i++) {
-  do {
-    index = Math.floor(Math.random() * 候选人物组.length);
-  } while (index_array.includes(index));
-  index_array.push(index);
+生成登场姓名和肖像数据();
+
+function 生成登场姓名和肖像数据() {
+  角色姓名池 = 角色姓名池.sort(() => Math.random() - 0.5); // 打乱姓名顺序
+  登场姓名组.length = 0;
+  登场图片组.length = 0;
+  for (let i = 0; i < 登场角色数量; i++) {
+    登场姓名组.push(角色姓名池[i]);
+    登场图片组.push({
+      图片名称: 角色姓名池[i],
+      图片路径: `./人物肖像图片/${肖像类型}/${角色姓名池[i]}.png`,
+    });
+  }
 }
 
+for (let i = 0; i < 登场角色数量; i++) {
+  生成姓名();
+  生成肖像();
+}
+
+function 生成姓名() {
+  姓名区.innerHTML = "";
+  登场姓名组 = 登场姓名组.sort(() => Math.random() - 0.5);
+  for (let i = 0; i < 登场角色数量; i++) {
+    const 本轮姓名 = 登场姓名组[i];
+    const 姓名 = document.createElement("button");
+    姓名.className = "姓名";
+    姓名.setAttribute("data-name", 本轮姓名);
+    姓名.textContent = 本轮姓名;
+    姓名区.appendChild(姓名);
+  }
+}
+
+function 生成肖像() {
+  肖像区.innerHTML = "";
+  登场图片组 = 登场图片组.sort(() => Math.random() - 0.5); //打乱肖像
+  for (let i = 0; i < 登场角色数量; i++) {
+    const 本轮图片 = 登场图片组[i];
+    const 肖像 = document.createElement("div");
+    肖像.className = "肖像";
+    肖像区.appendChild(肖像);
+    const 肖像图容器 = document.createElement("figure");
+    肖像图容器.className = "肖像图容器";
+    肖像图容器.setAttribute("data-name", 本轮图片.图片名称);
+    肖像.appendChild(肖像图容器);
+    const 肖像图 = document.createElement("img");
+    肖像图.className = "肖像图";
+    肖像图.src = 本轮图片.图片路径;
+    肖像图.alt = 本轮图片.图片名称;
+    肖像图容器.appendChild(肖像图);
+  }
+}
+
+const 姓名按钮组 = document.querySelectorAll(".姓名");
 const 肖像组 = document.querySelectorAll(".肖像");
-for (let i = 0; i < 肖像组.length; i++) {
-  肖像组[i].style.backgroundImage = `url(${候选人物组[index_array[i]].肖像})`;
+
+for (const 姓名按钮 of 姓名按钮组) {
+  姓名按钮.addEventListener("click", 点击姓名或肖像);
 }
 
-const 姓名组 = document.querySelectorAll(".姓名");
-const used_indexes = []; 
-for (let i = 0; i < 姓名组.length; i++) {
-  do {
-    index = Math.floor(Math.random() * 姓名组.length);
-  } while (used_indexes.includes(index)); 
-  used_indexes.push(index); 
-  姓名组[i].textContent = `${候选人物组[index_array[index]].姓名}`;
+for (const 肖像 of 肖像组) {
+  const 肖像图容器 = 肖像.querySelector(".肖像图容器");
+  肖像图容器.addEventListener("click", 点击姓名或肖像);
+}
+
+function 点击姓名或肖像(e) {
+  const 点击对象 = e.currentTarget;
+  let 类型 = "肖像";
+  if (点击对象.className.includes("姓名")) {
+    类型 = "姓名";
+  }
+  const 选中姓名 = 点击对象.getAttribute("data-name");
+  if (比较组.length === 0) {
+    比较组.push({
+      元素: 点击对象,
+      类型: 类型,
+      姓名: 选中姓名,
+    });
+    点击对象.classList.add("选中");
+  } else {
+    if (类型 === 比较组[0].类型) {
+      if (点击对象 === 比较组[0].元素) {
+        return;
+      } else {
+        比较组[0].元素.classList.remove("选中");
+        比较组[0].元素 = 点击对象;
+        比较组[0].姓名 = 选中姓名;
+        点击对象.classList.add("选中");
+      }
+    } else {
+      比较组.push({
+        元素: 点击对象,
+        类型: 类型,
+        姓名: 选中姓名,
+      });
+      点击对象.classList.add("选中");
+      获取比较结果();
+    }
+  }
+}
+
+function 获取比较结果() {
+  屏蔽姓名与肖像点击事件();
+  let 结果正确 = false;
+  if (比较组[0].姓名 === 比较组[1].姓名) {
+    结果正确 = true;
+  }
+  setTimeout(() => {
+    比较组[0].元素.classList.remove("选中");
+    比较组[1].元素.classList.remove("选中");
+    if (结果正确) {
+      比较组[0].元素.classList.add("出队");
+      比较组[1].元素.classList.add("出队");
+    }
+    比较组.length = 0;
+    恢复姓名与肖像点击事件();
+  }, 750);
+}
+
+function 屏蔽姓名与肖像点击事件() {
+  for (const 肖像 of 肖像组) {
+    const 肖像图容器 = 肖像.querySelector(".肖像图容器");
+    肖像图容器.removeEventListener("click", 点击姓名或肖像);
+  }
+  for (const 姓名按钮 of 姓名按钮组) {
+    姓名按钮.removeEventListener("click", 点击姓名或肖像);
+  }
+}
+
+function 恢复姓名与肖像点击事件() {
+  for (const 肖像 of 肖像组) {
+    const 肖像图容器 = 肖像.querySelector(".肖像图容器");
+    肖像图容器.addEventListener("click", 点击姓名或肖像);
+  }
+  for (const 姓名按钮 of 姓名按钮组) {
+    姓名按钮.addEventListener("click", 点击姓名或肖像);
+  }
 }

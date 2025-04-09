@@ -30,85 +30,194 @@
   background: linear-gradient(45deg, #4b3d6f, #a45d8d);
   background-clip: text;
   color: transparent;
-  /* border: solid red; */
+}
+
+#user_time {
+  font-family: Consolas, monospace;
+  color: lightcoral;
 }
 
 .rule {
-  /* border: solid red; */
+  position: fixed;
+  right: 25px;
+  top: 200px;
+  padding: 20px;
   display: flex;
-  justify-content: end;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: #def1;
+  outline: solid 2px #def2;
+  border-radius: 5px;
+  backdrop-filter: blur(5px);
 }
 
-.rule > img {
-  margin-right: 40px;
-  width: 80px;
-  height: 80px;
-  transition: 0.3s ease;
-  opacity: 0.8;
+.单选区 {
+  display: flex;
 }
 
-.rule > img:hover {
-  transform: scale(1.4);
+.单选标题 {
+  padding-right: 15px;
+  text-wrap: nowrap;
+  align-content: center;
+  color: yellowgreen;
+}
+
+.控件标签 {
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background-color: #111;
+}
+
+.单选区:hover,
+.控件标签:hover,
+.单选框:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.控件标题 {
+  padding: 10px 15px;
+  top: 0;
+  left: 0;
+  text-wrap: nowrap;
+  font-size: 14px;
+}
+
+.单选框 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  appearance: none;
+}
+
+.控件标签:first-of-type {
+  border-radius: 5px 0 0 5px;
+}
+
+.控件标签:last-of-type {
+  border-radius: 0 5px 5px 0;
+}
+
+.控件标签:has(.单选框:checked) {
+  background-color: silver;
+  color: black;
 }
 
 .main {
-  margin-top: 40px;
+  margin-top: 75px;
   display: flex;
   width: 100vw;
   height: fit-content;
-  /* border: solid red; */
   flex-wrap: wrap;
 }
 
 .姓名区 {
-  /* border: solid red; */
-  margin-top: 20px;
-  width: 100vw;
+  margin: 0 auto;
+  width: max(1000px, 90%);
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
 }
 
 .姓名 {
-  background-color: rgba(136, 103, 151, 0.8);
+  position: relative;
+  background-color: #0122;
+  outline: solid 1px #cde4;
   font-size: 20px;
   color: #f8d3e0;
   width: 120px;
   height: 55px;
   border-radius: 5px;
-  border: 2px solid transparent;
-  box-shadow: 0 0 20px rgba(164, 79, 243, 0.7), 0 0 30px rgba(110, 28, 158, 0.5);
-  transition: box-shadow 0.3s ease;
-  transition: 0.3s ease;
 }
 
 .姓名:hover {
-  transform: scale(1.4);
+  background-color: #cde2;
+  backdrop-filter: blur(10px);
+}
+
+.姓名.选中 {
+  background-color: #fff8;
+  outline: solid 1px #fff8;
+  color: black;
+}
+
+.姓名.出队 {
+  pointer-events: none;
+  filter: brightness(35%);
+  outline: solid 1px transparent;
 }
 
 .肖像区 {
-  margin-top: 8%;
+  margin: min(8%, 100px) auto 0;
   display: flex;
-  justify-content: space-around;
-  width: 100vw;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: clamp(750px, 75%, 95vw);
   height: fit-content;
 }
 
-.肖像{
-  background-image: url(./img/背景图片.png);
+.肖像 {
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  width:  220px;
-  height: 420px;
-  border-radius: 20px;
-  /* border: solid red; */
-  transition: 0.3s ease;
-  box-shadow: 0 0 20px rgba(164, 79, 243, 0.3), 0 0 30px rgba(110, 28, 158, 0.2);
-  transition: box-shadow 0.3s ease;
-  transition: 0.3s ease;
+  width: clamp(150px, 12.5%, 300px);
+  padding: 10px;
+  aspect-ratio: 0.8;
 }
 
-.肖像:hover {
-  transform: scale(1.1);
+.肖像图容器 {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  outline: solid 2px #cdec;
+  transition: transform 250ms;
+  user-select: none;
 }
 
+.肖像图容器:hover {
+  transform: scale(1.05);
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.肖像图容器::before {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  text-align: center;
+  align-content: center;
+  font-size: 125px;
+  content: "";
+}
+
+.肖像图容器.选中 {
+  outline: solid 2px #def;
+}
+
+.肖像图容器.选中::before {
+  content: "\f002";
+  backdrop-filter: brightness(35%);
+}
+
+.肖像图容器.出队 {
+  pointer-events: none;
+  outline: solid 2px transparent;
+}
+
+.肖像图容器.出队 .肖像图 {
+  filter: brightness(25%);
+}
+
+.肖像图容器.出队::before {
+  content: "\f00c";
+  z-index: 1;
+}
+
+.肖像图 {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

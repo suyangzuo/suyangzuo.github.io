@@ -13,24 +13,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&family=Noto+Sans+SC&display=swap"
-      rel="stylesheet" />
+      rel="stylesheet"
+    />
     <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
     <link rel="stylesheet" type="text/css" href="../game-common.css" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="/Styles/top-banner-common.css" />
-    <script
-      src="https://kit.fontawesome.com/d0483e3bd3.js"
-      crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="/Styles/top-banner-common.css" />
+    <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
     <script src="/Scripts/top-banner.js" defer></script>
     <script src="https://cdn.lordicon.com/bhenfmcm.js"></script>
   </head>
   <body>
-    <script
-      src="/Scripts/html-include.js"
-      target="/top-banner.html"
-      position="afterbegin"></script>
+    <script src="/Scripts/html-include.js" target="/top-banner.html" position="afterbegin"></script>
     <div class="control-area">
       <div class="back-to-navigator">
         <a href="../" title="返回游戏大厅">
@@ -44,31 +37,28 @@
     <div class="background"></div>
     <div class="time">
       <span>
-        用时:
+        <span>用时 </span>
         <span id="user_time">00:00</span>
       </span>
     </div>
 
     <div class="rule">
-      <img src="./img/游戏规则 .png" alt="">
+      <div class="单选区 肖像类型单选区">
+        <span class="单选标题">肖像类型</span>
+        <label class="控件标签" for="影视剧">
+          <span class="控件标题">影视剧</span>
+          <input type="radio" class="单选框" id="影视剧" name="肖像类型" checked autocomplete="off" />
+        </label>
+        <label class="控件标签" for="虚拟">
+          <span class="控件标题">虚拟</span>
+          <input type="radio" class="单选框" id="虚拟" name="肖像类型" autocomplete="off" />
+        </label>
+      </div>
     </div>
 
     <div class="main">
-      <div class="姓名区">
-      </div>
-      <div class="肖像区">
-        <div class="肖像"></div>
-        <div class="肖像"></div>
-        <div class="肖像"></div>
-        <div class="肖像"></div>
-        <div class="肖像"></div>
-        <div class="肖像"></div>
-        <div class="肖像"></div>
-        <div class="肖像"></div>
-        <div class="肖像"></div>
-        <div class="肖像"></div>
-      </div>
+      <div class="姓名区"></div>
+      <div class="肖像区"></div>
     </div>
-
   </body>
 </html>

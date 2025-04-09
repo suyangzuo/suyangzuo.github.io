@@ -508,4 +508,29 @@ body {
   }
 }
 
+@media screen and (max-height: 1100px) {
+  .game-grid > a > p {
+    padding: 2px 15px 2px 5px;
+    font-size: 14px;
+    margin: 0 5px 5px 0;
+  }
+
+  .游戏序号 {
+    width: 15px;
+    height: 15px;
+  }
+
+  .game-grid > .游戏作者 {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media screen and (max-height: 900px) {
+  .game-grid > .游戏作者 {
+    width: 30px;
+    height: 30px;
+  }
+}
+
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */
