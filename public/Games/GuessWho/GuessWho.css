@@ -26,6 +26,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 15px;
   font-size: 3rem;
   background: linear-gradient(45deg, #4b3d6f, #a45d8d);
   background-clip: text;
@@ -132,6 +133,10 @@
   border-radius: 5px;
 }
 
+.姓名:focus {
+  outline: solid 1px #cde4;
+}
+
 .姓名:hover {
   background-color: #cde2;
   backdrop-filter: blur(10px);
@@ -174,6 +179,7 @@
   outline: solid 2px #cdec;
   transition: transform 250ms;
   user-select: none;
+  background: center/cover no-repeat url("./img/肖像背景.jpg");
 }
 
 .肖像图容器:hover {

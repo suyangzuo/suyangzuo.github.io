@@ -38,9 +38,13 @@ const 肖像类型单选区 = document.querySelector(".肖像类型单选区");
 const 肖像类型单选框组 = 肖像类型单选区.querySelectorAll(".单选框");
 for (const 单选框 of 肖像类型单选框组) {
   单选框.addEventListener("change", () => {
+    //仅仅替换图片，不做其它任何逻辑上的更改
     肖像类型 = 单选框.id;
-    生成登场姓名和肖像数据();
-    生成肖像();
+    const 所有肖像图 = document.querySelectorAll(".肖像图");
+    for (let i = 0; i < 登场角色数量; i++) {
+      登场图片组[i].图片路径 = `./人物肖像图片/${肖像类型}/${登场图片组[i].图片名称}.png`;
+      所有肖像图[i].src = 登场图片组[i].图片路径;
+    }
   });
 }
 
@@ -93,12 +97,13 @@ function 生成肖像() {
     肖像图.className = "肖像图";
     肖像图.src = 本轮图片.图片路径;
     肖像图.alt = 本轮图片.图片名称;
+    肖像图.setAttribute("data-type", 肖像类型);
     肖像图容器.appendChild(肖像图);
   }
 }
 
-const 姓名按钮组 = document.querySelectorAll(".姓名");
-const 肖像组 = document.querySelectorAll(".肖像");
+const 姓名按钮组 = document.getElementsByClassName("姓名");
+const 肖像组 = document.getElementsByClassName("肖像");
 
 for (const 姓名按钮 of 姓名按钮组) {
   姓名按钮.addEventListener("click", 点击姓名或肖像);
@@ -182,3 +187,19 @@ function 恢复姓名与肖像点击事件() {
     姓名按钮.addEventListener("click", 点击姓名或肖像);
   }
 }
+
+const 重置按钮 = document.querySelector(".reset-game");
+重置按钮.addEventListener("click", () => {
+  比较组.length = 0;
+  生成登场姓名和肖像数据();
+  生成姓名();
+  生成肖像();
+  for (const 姓名按钮 of 姓名按钮组) {
+    姓名按钮.addEventListener("click", 点击姓名或肖像);
+  }
+
+  for (const 肖像 of 肖像组) {
+    const 肖像图容器 = 肖像.querySelector(".肖像图容器");
+    肖像图容器.addEventListener("click", 点击姓名或肖像);
+  }
+});
