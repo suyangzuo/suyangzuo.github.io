@@ -380,17 +380,20 @@ label span {
   position: absolute;
   bottom: -18px;
   width: 20px;
-  height: 10px;
   font-size: 12px;
   display: flex;
   justify-content: center;
   color: lightgreen;
   transition: 500ms;
-  rotate: z 180deg;
+  /* rotate: z 180deg; */
 }
 
 .记录数据区 .数据指针 {
   color: greenyellow;
+}
+
+.记录数据区 .指针容器 {
+  translate: 0 25%;
 }
 
 .记录容器 {
@@ -402,7 +405,9 @@ label span {
 }
 
 .记录数据区 .记录容器 {
-  height: 16px;
+  padding: 4px 8px;
+  background-color: #fff1;
+  border: solid 1px #def2;
   flex-direction: column;
   align-items: center;
   gap: 2px;
@@ -435,6 +440,14 @@ label span {
 :is(.左数据区, .中数据区, .右数据区) .记录容器 .记录可视区 {
   background-color: #bcd;
   border: none;
+}
+
+.记录数据区 .记录容器.顶端记录 {
+  background-color: #fff3;
+}
+
+.记录数据区 .记录容器.已撤销 {
+  background-color: transparent;
 }
 
 .记录容器.顶端记录 .记录流向 {
