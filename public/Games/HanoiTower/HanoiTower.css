@@ -412,18 +412,20 @@ label span {
   align-items: center;
   gap: 2px;
   translate: 0 -25%;
+  scale: 0.85;
 }
 
 .记录流向 {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: bold;
   color: rgb(128, 171, 216);
   transition: 250ms;
 }
 
 .流向图标 {
-  font-size: 7px;
-  color: #999;
+  font-size: 12px;
+  scale: 0.75;
+  color: #888;
   transition: 250ms;
 }
 
@@ -455,7 +457,7 @@ label span {
 }
 
 .记录容器.已撤销 .记录流向 {
-  color: rgb(74, 95, 101);
+  color: rgb(59, 76, 81);
 }
 
 .记录容器.顶端记录 .流向图标 {
