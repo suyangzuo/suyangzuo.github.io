@@ -27,6 +27,12 @@ let 中数据指针位置 = -1;
 let 右数据指针位置 = -1;
 let 记录指针位置 = -1; */
 
+const 位置图标关联对象 = {
+  左: '<i class="fa-solid fa-l"></i>',
+  中: '<i class="fa-solid fa-m"></i>',
+  右: '<i class="fa-solid fa-r"></i>',
+};
+
 const 动画速度描述组 = [
   { 用时: 1000, 描述: "极慢" },
   { 用时: 750, 描述: "较慢" },
@@ -330,9 +336,28 @@ function 生成记录容器(记录区) {
   记录容器.className = "记录容器";
   记录区.appendChild(记录容器);
 
-  const 记录可视区 = document.createElement("div");
-  记录可视区.className = "记录可视区";
-  记录容器.appendChild(记录可视区);
+  if (记录区.parentElement.className.includes("记录数据区")) {
+    const 来源 = document.createElement("span");
+    来源.className = "记录流向";
+    const 目标 = document.createElement("span");
+    目标.className = "记录流向";
+    const 流向图标 = document.createElement("span");
+    流向图标.className = "流向图标";
+    流向图标.innerHTML = '<i class="fa-solid fa-arrow-down"></i>';
+
+    if (栈指针 >= 0) {
+      const 本次操作 = 操作栈[栈指针];
+      const 来源位置 = 本次操作.来源.getAttribute("位置");
+      const 目标位置 = 本次操作.目标.getAttribute("位置");
+      来源.innerHTML = 位置图标关联对象[来源位置];
+      目标.innerHTML = 位置图标关联对象[目标位置];
+    }
+    记录容器.append(来源, 流向图标, 目标);
+  } else {
+    const 记录可视区 = document.createElement("div");
+    记录可视区.className = "记录可视区";
+    记录容器.appendChild(记录可视区);
+  }
 
   return 记录容器;
 }
