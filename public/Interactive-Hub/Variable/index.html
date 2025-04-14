@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>变量</title>
+    <link rel="icon" href="/Images/Interactive-Hub/HQ/变量.png" type="image/x-icon" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Titillium+Web&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Roboto+Mono&family=M+PLUS+Code+Latin&family=Ubuntu+Mono&family=M+PLUS+1+Code:wght@100..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/Styles/common.css" />
+    <link rel="stylesheet" href="/Styles/top-banner-common.css" />
+    <link rel="stylesheet" href="../control.css" />
+    <link rel="stylesheet" href="../interactive-common.css" />
+    <link rel="stylesheet" href="./variable.css" />
+    <script src="/Scripts/top-banner.js" defer></script>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
+    <script src="./variable.js" defer></script>
+  </head>
+  <body>
+    <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
+    <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
+    <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
+
+    <section class="变量总区 总区">
+      <script src="../../Scripts/html-include.js" target="../control.html" position="afterbegin"></script>
+      <p class="交互标题">变量</p>
+      <div class="设置区">
+        <label for="内存容量" class="滑块标签">
+          <span class="滑块标题 控件标题">内存容量</span>
+          <input type="range" min="50" max="1500" value="1000" id="内存容量" class="滑块" />
+          <span class="滑块值">1000</span>
+          <span class="滑块单位"
+            ><span class="单位英文">B</span><span class="单位分隔符">/</span><span class="单位英文">Byte</span
+            ><span class="单位分隔符">/</span><span class="单位中文">字节</span></span
+          >
+        </label>
+        <div class="代码输入区"></div>
+      </div>
+      <div class="展示区">
+        <div class="变量区">
+          <div class="变量容器区"></div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

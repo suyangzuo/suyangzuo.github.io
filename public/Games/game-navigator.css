@@ -14,12 +14,17 @@ body {
 
 .game-grid {
   border-radius: 10px;
-  background-color: #567;
+  background-color: #000;
+  outline: solid 2px transparent;
   /* border: solid 2px rgb(15, 15, 15); */
   margin: 3px;
   position: relative;
   overflow: hidden;
-  transition: transform 0.3s;
+  transition: transform 250ms, outline 250ms;
+}
+
+.game-grid.none {
+  pointer-events: none;
 }
 
 /* ea → early access：早期开发中 */
@@ -50,10 +55,11 @@ body {
 }
 
 .game-grid:hover {
-  transform: scale(1.15);
+  transform: scale(1.1);
   z-index: 1;
   cursor: url(/Images/Common/鼠标-指向.png), pointer;
   box-shadow: 2px 2px 10px 0 #000, -2px -2px 10px 0 #000;
+  outline: solid 2px #abcc;
 }
 
 .game-grid > a {
