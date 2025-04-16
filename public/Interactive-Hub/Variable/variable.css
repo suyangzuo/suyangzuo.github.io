@@ -2,6 +2,9 @@
   --进度条颜色-已填充: rgb(41, 126, 78);
   --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
   --拇指宽度: 16px;
+  --变量背景色: #cde2;
+  --光标-指向: url("/Images/Common/鼠标-指向.cur"), pointer;
+  --已占用颜色: rgba(154, 205, 50, 0.75);
 }
 
 .变量总区 {
@@ -35,13 +38,22 @@
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: flex-start;
-  gap: 1px;
 }
 
 .变量容器 {
   width: 35px;
   height: 35px;
-  background-color: #cde2;
+  background: linear-gradient(transparent 0%, transparent 100%) border-box,
+    linear-gradient(var(--变量背景色) 0%, var(--变量背景色) 100%) padding-box;
+  border: solid 1px transparent;
+}
+
+.变量容器:hover {
+  border: solid 1px silver;
+  outline: solid 1px silver;
+  box-shadow: inset 0 0 0 2px black;
+  cursor: var(--光标-指向);
+  filter: brightness(125%);
 }
 
 .变量容器.预占用 {
@@ -74,7 +86,7 @@
 }
 
 .滑块:hover {
-  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  cursor: var(--光标-指向);
 }
 
 .滑块值 {

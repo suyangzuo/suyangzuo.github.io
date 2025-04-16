@@ -231,6 +231,7 @@ body {
   width: 45%;
   padding-right: 3px;
   color: lightgreen;
+  text-wrap: no-wrap;
 }
 
 .修剪数据-坐标数据 {
@@ -488,35 +489,19 @@ label:hover {
 }
 
 #向内修剪滑块-上 {
-  background-image: linear-gradient(
-    90deg,
-    #aba var(--向内修剪比例-上),
-    transparent var(--向内修剪比例-上)
-  );
+  background-image: linear-gradient(90deg, #aba var(--向内修剪比例-上), transparent var(--向内修剪比例-上));
 }
 
 #向内修剪滑块-右 {
-  background-image: linear-gradient(
-    90deg,
-    #aba var(--向内修剪比例-右),
-    transparent var(--向内修剪比例-右)
-  );
+  background-image: linear-gradient(90deg, #aba var(--向内修剪比例-右), transparent var(--向内修剪比例-右));
 }
 
 #向内修剪滑块-下 {
-  background-image: linear-gradient(
-    90deg,
-    #aba var(--向内修剪比例-下),
-    transparent var(--向内修剪比例-下)
-  );
+  background-image: linear-gradient(90deg, #aba var(--向内修剪比例-下), transparent var(--向内修剪比例-下));
 }
 
 #向内修剪滑块-左 {
-  background-image: linear-gradient(
-    90deg,
-    #aba var(--向内修剪比例-左),
-    transparent var(--向内修剪比例-左)
-  );
+  background-image: linear-gradient(90deg, #aba var(--向内修剪比例-左), transparent var(--向内修剪比例-左));
 }
 
 .滑块:hover {
@@ -562,9 +547,7 @@ label:hover {
   pointer-events: none;
   visibility: hidden;
   opacity: 0;
-  transition:
-    top 250ms,
-    left 250ms;
+  transition: top 250ms, left 250ms;
 }
 
 .圆心区.圆心区可见 {
@@ -618,11 +601,7 @@ label:hover {
 }
 
 #圆形半径滑块 {
-  background-image: linear-gradient(
-    90deg,
-    #aba var(--圆形半径),
-    transparent var(--圆形半径)
-  );
+  background-image: linear-gradient(90deg, #aba var(--圆形半径), transparent var(--圆形半径));
   user-select: none;
 }
 
@@ -642,20 +621,12 @@ label:hover {
 }
 
 #椭圆水平半径滑块 {
-  background-image: linear-gradient(
-    90deg,
-    #aba var(--椭圆水平半径),
-    transparent var(--椭圆水平半径)
-  );
+  background-image: linear-gradient(90deg, #aba var(--椭圆水平半径), transparent var(--椭圆水平半径));
   user-select: none;
 }
 
 #椭圆垂直半径滑块 {
-  background-image: linear-gradient(
-    90deg,
-    #aba var(--椭圆垂直半径),
-    transparent var(--椭圆垂直半径)
-  );
+  background-image: linear-gradient(90deg, #aba var(--椭圆垂直半径), transparent var(--椭圆垂直半径));
   user-select: none;
 }
 
