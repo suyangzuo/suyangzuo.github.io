@@ -5,6 +5,7 @@
   --变量背景色: #cde2;
   --光标-指向: url("/Images/Common/鼠标-指向.cur"), pointer;
   --已占用颜色: rgba(154, 205, 50, 0.75);
+  --抬头应用名称: "";
 }
 
 .变量总区 {
@@ -22,15 +23,16 @@
   translate: 0 -50%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   padding: 15px;
   background-color: #cde1;
   outline: solid 2px #def3;
 }
 
 .内存分配区标题 {
-  color: lightyellow;
-  margin-bottom: 20px;
+  color: #cdea;
+  margin-bottom: 15px;
+  font-size: 14px;
 }
 
 .内存分配名称 {
@@ -38,13 +40,14 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .名称颜色 {
   width: 10px;
   height: 10px;
   border-radius: 999px;
+  box-shadow: inset 0 0 0 1px #777;
 }
 
 .名称文本 {
@@ -86,25 +89,124 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .本应用内存顺序 {
+  position: relative;
   text-align: center;
   align-content: center;
   font-size: 12px;
-  text-shadow: 0 0 1px black, 0 0 1px black, 0 0 1px black;
+  text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black;
+  scale: 0.83333333;
 }
 
-.变量容器:hover {
-  border: solid 1px silver;
-  outline: solid 1px silver;
+.变量容器:not(:has(.应用抬头容器:hover)):hover,
+.变量容器.当前应用 {
   box-shadow: inset 0 0 0 2px black;
   cursor: var(--光标-指向);
   filter: brightness(125%);
 }
 
+.变量容器:not(:has(.应用抬头容器:hover)):hover {
+  border: solid 1px silver;
+}
+
+.变量容器.当前应用 {
+  border: solid 1px white;
+}
+
 .变量容器.预占用 {
   background-color: rgb(255, 255, 0, 0.5);
+}
+
+.字节描述 {
+  position: absolute;
+  top: -165%;
+  left: 50%;
+  translate: -50% 100%;
+  opacity: 0;
+  transition: 250ms;
+  font-size: 12px;
+  pointer-events: none;
+  border-radius: 4px;
+  border: solid 1px #cde;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transform-origin: 50% 100%;
+  scale: 0.9;
+  z-index: 10;
+}
+
+.字节名称与顺位 {
+  width: 100%;
+  padding: 3px 10px;
+  background-color: #222;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  color: yellowgreen;
+}
+
+.字节名称 {
+  text-wrap: nowrap;
+}
+
+.字节顺位 {
+  color: gray;
+}
+
+.字节地址 {
+  width: 100%;
+  padding: 3px 10px;
+  background-color: #333;
+  text-align: center;
+  color: silver;
+}
+
+.变量容器.已占用:not(:has(.应用抬头容器:hover)):hover .字节描述 {
+  translate: -50% 0;
+  opacity: 1;
+}
+
+.应用抬头容器 {
+  padding-right: 5px;
+  position: absolute;
+  top: -30%;
+  right: 100%;
+}
+
+.应用抬头容器:hover {
+  cursor: var(--光标-指向);
+}
+
+.应用抬头 {
+  padding: 5px 10px;
+  outline: solid 1px #fff;
+  background-color: #111;
+  font-size: 12px;
+  transform-origin: 100% 50%;
+  border-radius: 3px;
+  box-shadow: 2px 2px 2px 0 #000;
+  scale: 0.8;
+}
+
+.应用抬头:hover {
+  outline: solid 1px #111;
+  background-color: #fff;
+}
+
+.应用抬头:hover .抬头文本 {
+  color: black;
+}
+
+.抬头文本 {
+  text-wrap: nowrap;
+  color: white;
 }
 
 .滑块标签 {
