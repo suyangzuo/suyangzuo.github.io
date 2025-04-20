@@ -24,6 +24,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  gap: 5px;
   padding: 15px;
   background-color: #cde1;
   outline: solid 2px #def3;
@@ -31,7 +32,7 @@
 
 .内存分配区标题 {
   color: #cdea;
-  margin-bottom: 15px;
+  margin: 0 auto 10px;
   font-size: 14px;
 }
 
@@ -54,10 +55,116 @@
   color: silver;
 }
 
+.名称文本,
+.抬头文本,
+.字节名称 {
+  font-family: Noto Sans SC, sans-serif;
+}
+
 .设置区 {
   width: max(750px, 75%);
   margin: 0 auto;
-  height: 100px;
+  display: flex;
+  gap: 50px;
+}
+
+.代码输入区 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.代码输入分区 {
+  width: 325px;
+  padding: 0 0 10px;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  background-color: #fff1;
+  backdrop-filter: blur(5px);
+  border: solid 1px #fff2;
+}
+
+.代码输入分区标题 {
+  width: 100%;
+  text-align: center;
+  align-content: center;
+  color: gold;
+  padding: 5px 0;
+  background-color: #def1;
+}
+
+.代码含义区,
+.代码区 {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 10px;
+}
+
+.占位符 {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.变量类型,
+.类型框 {
+  flex-grow: 1.2;
+}
+
+.变量标识符,
+.标识符框 {
+  flex-grow: 1.25;
+}
+
+.变量值,
+.值框 {
+  flex-grow: 1.75;
+}
+
+.等号,
+.分号 {
+  width: 0;
+  flex-grow: 0.25;
+  text-align: center;
+  color: gray;
+}
+
+.标签 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 0;
+  padding: 3px 4px;
+  color: lightblue;
+}
+
+.文本框 {
+  width: 0;
+  font-family: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑， monospace, sans-serif;
+  padding: 3px 4px;
+  background-color: #20252a;
+  outline: solid 1px #80858a;
+  border: none;
+  text-align: center;
+}
+
+.类型框 {
+  color: palevioletred;
+}
+
+.标识符框 {
+  color: darkorange;
+}
+
+.值框 {
+  color: greenyellow;
+}
+
+.文本框:focus {
+  background-color: #40454a;
+  outline: solid 1px #c0c5ca;
 }
 
 .展示区 {
@@ -108,6 +215,10 @@
   filter: brightness(125%);
 }
 
+.变量容器:hover .应用抬头容器 {
+  filter: brightness(80%);
+}
+
 .变量容器:not(:has(.应用抬头容器:hover)):hover {
   border: solid 1px silver;
 }
@@ -122,15 +233,13 @@
 
 .字节描述 {
   position: absolute;
-  top: -165%;
+  top: -170%;
   left: 50%;
-  translate: -50% 100%;
+  translate: -50% 0;
   opacity: 0;
-  transition: 250ms;
-  font-size: 12px;
+  font-size: 14px;
   pointer-events: none;
-  border-radius: 4px;
-  border: solid 1px #cde;
+  border: solid 1px #89a;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -139,25 +248,27 @@
   transform-origin: 50% 100%;
   scale: 0.9;
   z-index: 10;
+  box-shadow: 2px 2px 2px 0 #111;
 }
 
 .字节名称与顺位 {
   width: 100%;
-  padding: 3px 10px;
+  padding: 3px 0;
   background-color: #222;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 10px;
   color: yellowgreen;
 }
 
 .字节名称 {
   text-wrap: nowrap;
+  padding: 0 10px;
 }
 
 .字节顺位 {
   color: gray;
+  padding: 0 10px;
 }
 
 .字节地址 {
@@ -166,6 +277,11 @@
   background-color: #333;
   text-align: center;
   color: silver;
+}
+
+.地址前缀 {
+  color: rgb(139, 174, 185);
+  margin-right: 2px;
 }
 
 .变量容器.已占用:not(:has(.应用抬头容器:hover)):hover .字节描述 {
@@ -178,6 +294,8 @@
   position: absolute;
   top: -30%;
   right: 100%;
+  scale: 0.8;
+  transform-origin: 100% 50%;
 }
 
 .应用抬头容器:hover {
@@ -186,22 +304,19 @@
 
 .应用抬头 {
   padding: 5px 10px;
-  outline: solid 1px #fff;
+  outline: solid 1px #aaa;
   background-color: #111;
   font-size: 12px;
-  transform-origin: 100% 50%;
-  border-radius: 3px;
-  box-shadow: 2px 2px 2px 0 #000;
-  scale: 0.8;
+  box-shadow: 2px 2px 2px 0 #111;
 }
 
 .应用抬头:hover {
-  outline: solid 1px #111;
-  background-color: #fff;
+  outline: solid 1px orange;
+  background-color: #123;
 }
 
 .应用抬头:hover .抬头文本 {
-  color: black;
+  color: #8fc;
 }
 
 .抬头文本 {
