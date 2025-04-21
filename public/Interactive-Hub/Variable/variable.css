@@ -71,7 +71,7 @@
 .代码输入区 {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
 }
 
 .代码输入分区 {
@@ -82,7 +82,55 @@
   font-size: 14px;
   background-color: #fff1;
   backdrop-filter: blur(5px);
-  border: solid 1px #fff2;
+  border: solid 1px #fff4;
+}
+
+.可变代码输入分区 .代码输入分区标题 {
+  display: flex;
+  justify-content: center;
+
+  .标签 {
+    display: flex;
+    width: fit-content;
+    position: relative;
+    padding: 0;
+
+    .标签文本 {
+      width: fit-content;
+      text-wrap: nowrap;
+      padding: 3px 10px;
+      position: relative;
+      font-size: 0.9em;
+      border: solid 2px transparent;
+      color: rgb(155, 155, 155);
+      background-color: #fff1;
+      transition: 25ms;
+    }
+
+    .单选框 {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      appearance: none;
+    }
+
+    .单选框:checked + .标签文本 {
+      border: solid 2px #fff4;
+      color: gold;
+      background-color: #def3;
+      font-size: 1em;
+    }
+
+    &:hover {
+      .标签文本 {
+        background-color: #fff2;
+        color: silver;
+        cursor: var(--光标-指向);
+      }
+    }
+  }
 }
 
 .代码输入分区标题 {
@@ -90,7 +138,7 @@
   text-align: center;
   align-content: center;
   color: gold;
-  padding: 5px 0;
+  padding: 8px 0;
   background-color: #def1;
 }
 
@@ -145,7 +193,7 @@
   font-family: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑， monospace, sans-serif;
   padding: 3px 4px;
   background-color: #20252a;
-  outline: solid 1px #80858a;
+  outline: solid 1px #60656a;
   border: none;
   text-align: center;
 }
@@ -163,8 +211,8 @@
 }
 
 .文本框:focus {
-  background-color: #40454a;
-  outline: solid 1px #c0c5ca;
+  background-color: #30353a;
+  outline: solid 1px #a0a5aa;
 }
 
 .展示区 {
@@ -233,13 +281,13 @@
 
 .字节描述 {
   position: absolute;
-  top: -170%;
+  bottom: 125%;
   left: 50%;
   translate: -50% 0;
   opacity: 0;
   font-size: 14px;
   pointer-events: none;
-  border: solid 1px #89a;
+  border: solid 1px silver;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -263,25 +311,52 @@
 
 .字节名称 {
   text-wrap: nowrap;
-  padding: 0 10px;
+  padding: 0 10px 0 5px;
 }
 
 .字节顺位 {
   color: gray;
-  padding: 0 10px;
+  padding: 0 5px 0 10px;
 }
 
 .字节地址 {
   width: 100%;
-  padding: 3px 10px;
   background-color: #333;
-  text-align: center;
   color: silver;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.进制地址 {
+  display: flex;
+  align-items: center;
+  padding-right: 5px;
+}
+
+.进制 {
+  height: 100%;
+  text-wrap: nowrap;
+  padding: 5px;
+  margin-right: 10px;
+  background-color: #456;
+  color: lightcyan;
+  scale: 0.9;
+}
+
+.地址代码 {
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .地址前缀 {
-  color: rgb(139, 174, 185);
-  margin-right: 2px;
+  color: peru;
+}
+
+.地址值 {
+  text-align: right;
 }
 
 .变量容器.已占用:not(:has(.应用抬头容器:hover)):hover .字节描述 {
@@ -341,6 +416,7 @@
 
 .滑块 {
   width: 150px;
+  height: 6px;
   margin: 0 10px;
   accent-color: silver;
 }

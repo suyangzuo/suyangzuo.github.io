@@ -32,7 +32,7 @@
       <div class="设置区">
         <label for="内存容量" class="滑块标签">
           <span class="滑块标题 控件标题">内存容量</span>
-          <input type="range" min="150" max="1500" value="800" id="内存容量" class="滑块" />
+          <input type="range" min="150" max="1500" value="800" id="内存容量" class="滑块" autocomplete="off" />
           <span class="滑块值">800</span>
           <span class="滑块单位"
             ><span class="单位英文">B</span><span class="单位分隔符">/</span><span class="单位英文">Byte</span
@@ -40,34 +40,43 @@
           >
         </label>
         <div class="代码输入区">
-          <div class="代码输入分区 初始化">
-            <h3 class="代码输入分区标题">初始化</h3>
+          <div class="代码输入分区 初始化" 自定义代码索引="0">
+            <h4 class="代码输入分区标题">初始化</h4>
             <div class="代码含义区">
-              <label class="变量类型 标签" for="类型-初始化">类型</label>
-              <label class="变量标识符 标签" for="标识符-初始化">标识符</label>
+              <label class="变量类型 标签" for="类型-1">类型</label>
+              <label class="变量标识符 标签" for="标识符-1">标识符</label>
               <span class="等号">=</span>
-              <label class="变量值 标签" for="值-初始化">值</label>
+              <label class="变量值 标签" for="值-1">值</label>
             </div>
             <div class="代码区">
-              <input type="text" class="文本框 类型框" id="类型-初始化" />
-              <input type="text" class="文本框 标识符框" id="标识符-初始化" />
+              <input type="text" class="文本框 类型框" id="类型-1" />
+              <input type="text" class="文本框 标识符框" id="标识符-1" />
               <span class="等号">=</span>
-              <input type="text" class="文本框 值框" id="值-初始化" />
+              <input type="text" class="文本框 值框" id="值-1" />
             </div>
           </div>
-          <div class="代码输入分区 更改">
-            <h3 class="代码输入分区标题">更改</h3>
+          <div class="代码输入分区 初始化 可变代码输入分区" 自定义代码索引="1">
+            <h4 class="代码输入分区标题">
+              <label class="标签">
+                <input type="radio" class="单选框" id="作用-初始化" name="作用" checked />
+                <span class="标签文本">初始化</span>
+              </label>
+              <label class="标签">
+                <input type="radio" class="单选框" id="作用-更改" name="作用" />
+                <span class="标签文本">更改</span>
+              </label>
+            </h4>
             <div class="代码含义区">
-              <label class="变量类型 标签 占位符" for="类型-更改">类型</label>
-              <label class="变量标识符 标签" for="标识符-更改">标识符</label>
+              <label class="变量类型 标签" for="类型-2">类型</label>
+              <label class="变量标识符 标签" for="标识符-2">标识符</label>
               <span class="等号">=</span>
-              <label class="变量值 标签" for="值-更改">值</label>
+              <label class="变量值 标签" for="值-2">值</label>
             </div>
             <div class="代码区">
-              <input type="text" class="文本框 类型框 占位符" id="类型-更改" />
-              <input type="text" class="文本框 标识符框" id="标识符-更改" />
+              <input type="text" class="文本框 类型框" id="类型-2" />
+              <input type="text" class="文本框 标识符框" id="标识符-2" />
               <span class="等号">=</span>
-              <input type="text" class="文本框 值框" id="值-更改" />
+              <input type="text" class="文本框 值框" id="值-2" />
             </div>
           </div>
         </div>

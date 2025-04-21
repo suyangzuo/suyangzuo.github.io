@@ -9,7 +9,7 @@ const 重置按钮 = document.querySelector(".重置按钮");
 let 程序颜色 = "black";
 let 内存容量 = parseInt(内存容量滑块.value, 10);
 const 内存位数 = 32;
-let 内存起始地址_10进制 = Math.floor(Math.random() * 300000000);
+let 内存起始地址_10进制 = Math.floor(Math.random() * (4294967296 - 1 - 内存容量));
 let 空闲内存表 = [{ 起始位置: 0, 容量: 内存容量 - 1 }];
 
 const 变量类型表 = new Map();
@@ -261,7 +261,7 @@ function 向内存中添加应用(应用键值对) {
       字节名称与顺位.append(字节名称, 字节顺位);
       字节名称.textContent = 应用键值对[0];
       字节顺位.textContent = 应用内存顺序;
-      const 字节地址 = 字节描述.querySelector(".字节地址");
+      /* const 字节地址 = 字节描述.querySelector(".字节地址");
       const 地址前缀 = document.createElement("span");
       地址前缀.className = "地址前缀";
       地址前缀.textContent = "0x";
@@ -269,12 +269,48 @@ function 向内存中添加应用(应用键值对) {
       地址值.className = "地址值";
       地址值.textContent = 变量容器组[j].getAttribute("内存地址-16进制");
       字节地址.innerHTML = "";
-      字节地址.append(地址前缀, 地址值);
+      字节地址.append(地址前缀, 地址值); */
+      添加字节地址描述(变量容器组[j]);
       应用内存顺序++;
     }
   }
   空闲内存表 = 新的空闲内存表;
   return 已分配内存;
+}
+
+function 添加字节地址描述(变量容器) {
+  const 十进制地址 = document.createElement("div");
+  十进制地址.className = "进制地址-10 进制地址";
+  const 十进制 = document.createElement("span");
+  十进制.className = "进制";
+  十进制.textContent = "10";
+  const 十进制地址代码 = document.createElement("div");
+  十进制地址代码.className = "地址代码";
+  const 十进制地址值 = document.createElement("span");
+  十进制地址值.className = "地址值";
+  十进制地址值.textContent = 变量容器.getAttribute("内存地址-10进制");
+  十进制地址代码.appendChild(十进制地址值);
+  十进制地址.append(十进制, 十进制地址代码);
+
+  const 十六进制地址 = document.createElement("div");
+  十六进制地址.className = "进制地址-16 进制地址";
+  const 十六进制 = document.createElement("span");
+  十六进制.className = "进制";
+  十六进制.textContent = "16";
+  const 十六进制地址代码 = document.createElement("div");
+  十六进制地址代码.className = "地址代码";
+  const 十六进制地址前缀 = document.createElement("span");
+  十六进制地址前缀.className = "地址前缀";
+  十六进制地址前缀.textContent = "0x";
+  const 十六进制地址值 = document.createElement("span");
+  十六进制地址值.className = "地址值";
+  十六进制地址值.textContent = 变量容器.getAttribute("内存地址-16进制");
+  十六进制地址代码.append(十六进制地址前缀, 十六进制地址值);
+  十六进制地址.append(十六进制, 十六进制地址代码);
+
+  const 字节地址 = 变量容器.querySelector(".字节地址");
+  字节地址.innerHTML = "";
+  字节地址.append(十进制地址, 十六进制地址);
 }
 
 function 添加内存分配示意(程序) {
@@ -324,17 +360,18 @@ function 数组洗牌(数组) {
 
 const 代码输入区 = document.querySelector(".代码输入区");
 const 代码输入框组 = 代码输入区.querySelectorAll('input[type="text"]');
-let 自定义应用键值对 = null;
+let 自定义应用键值对组 = [null, null];
 let 之前值长度 = 0;
 for (const 代码输入框 of 代码输入框组) {
   代码输入框.addEventListener("input", (event) => {
+    const 自定义代码索引 = 代码输入框.parentElement.parentElement.getAttribute("自定义代码索引");
     if (代码输入框.parentElement.parentElement.classList.contains("初始化")) {
       const 类型框 = 代码输入框.parentElement.querySelector(".类型框");
       const 标识符框 = 代码输入框.parentElement.querySelector(".标识符框");
       const 值框 = 代码输入框.parentElement.querySelector(".值框");
-      const 类型 = 类型框.value;
-      const 标识符 = 标识符框.value;
-      const 值 = 值框.value;
+      const 类型 = 类型框.value.trim();
+      const 标识符 = 标识符框.value.trim();
+      const 值 = 值框.value.trim();
       const 类型正确 = 类型.length > 0 && 变量类型表.has(类型);
       const 标识符正确 =
         标识符.length > 0 &&
@@ -345,25 +382,25 @@ for (const 代码输入框 of 代码输入框组) {
       const 输入值 = 值.length !== 之前值长度;
       const 从零输入值 = 值.length === 1 && 值.length > 之前值长度;
       if (!代码内容正确) {
-        从内存中删除应用(自定义应用键值对);
-        自定义应用键值对 = null;
+        从内存中删除应用(自定义应用键值对组[自定义代码索引]);
+        自定义应用键值对组[自定义代码索引] = null;
       } else {
         if (代码输入框.id.includes("类型") || 代码输入框.id.includes("标识符")) {
-          从内存中删除应用(自定义应用键值对);
+          从内存中删除应用(自定义应用键值对组[自定义代码索引]);
           const 类型容量 = 变量类型表.get(类型).长度;
-          自定义应用键值对 = [标识符, { 起始位置: 0, 容量: 类型容量 }];
+          自定义应用键值对组[自定义代码索引] = [标识符, { 起始位置: 0, 容量: 类型容量 }];
           空闲内存表 = 数组洗牌(空闲内存表);
-          const 已分配内存 = 向内存中添加应用(自定义应用键值对);
+          const 已分配内存 = 向内存中添加应用(自定义应用键值对组[自定义代码索引]);
           if (已分配内存) {
-            添加内存分配示意(自定义应用键值对);
+            添加内存分配示意(自定义应用键值对组[自定义代码索引]);
           }
         } else if (从零输入值) {
           const 类型容量 = 变量类型表.get(类型).长度;
-          自定义应用键值对 = [标识符, { 起始位置: 0, 容量: 类型容量 }];
+          自定义应用键值对组[自定义代码索引] = [标识符, { 起始位置: 0, 容量: 类型容量 }];
           空闲内存表 = 数组洗牌(空闲内存表);
-          const 已分配内存 = 向内存中添加应用(自定义应用键值对);
+          const 已分配内存 = 向内存中添加应用(自定义应用键值对组[自定义代码索引]);
           if (已分配内存) {
-            添加内存分配示意(自定义应用键值对);
+            添加内存分配示意(自定义应用键值对组[自定义代码索引]);
           }
         }
       }
