@@ -261,15 +261,6 @@ function 向内存中添加应用(应用键值对) {
       字节名称与顺位.append(字节名称, 字节顺位);
       字节名称.textContent = 应用键值对[0];
       字节顺位.textContent = 应用内存顺序;
-      /* const 字节地址 = 字节描述.querySelector(".字节地址");
-      const 地址前缀 = document.createElement("span");
-      地址前缀.className = "地址前缀";
-      地址前缀.textContent = "0x";
-      const 地址值 = document.createElement("span");
-      地址值.className = "地址值";
-      地址值.textContent = 变量容器组[j].getAttribute("内存地址-16进制");
-      字节地址.innerHTML = "";
-      字节地址.append(地址前缀, 地址值); */
       添加字节地址描述(变量容器组[j]);
       应用内存顺序++;
     }
@@ -318,16 +309,50 @@ function 添加内存分配示意(程序) {
   内存分配分区.className = "内存分配分区";
   内存分配分区.setAttribute("程序名称", 程序[0]);
   内存分配区.appendChild(内存分配分区);
-  const 内存分配名称 = document.createElement("h4");
-  内存分配名称.className = "内存分配名称";
-  内存分配分区.appendChild(内存分配名称);
+
+  const 内存分配颜色名称与容量 = document.createElement("h4");
+  const 内存分配颜色与名称 = document.createElement("span");
+  内存分配颜色与名称.className = "内存分配颜色与名称";
+  内存分配颜色名称与容量.className = "内存分配颜色名称与容量";
   const 名称颜色 = document.createElement("span");
   名称颜色.className = "名称颜色";
   名称颜色.style.backgroundColor = 程序颜色;
   const 名称文本 = document.createElement("span");
   名称文本.className = "名称文本";
   名称文本.textContent = 程序[0];
-  内存分配名称.append(名称颜色, 名称文本);
+  内存分配颜色与名称.append(名称颜色, 名称文本);
+  const 内存分配容量 = document.createElement("span");
+  内存分配容量.className = "内存分配容量";
+  内存分配容量.textContent = `${程序[1].容量}`;
+  内存分配颜色名称与容量.append(内存分配颜色与名称, 内存分配容量);
+
+  const 内存分配数据 = document.createElement("div");
+  内存分配数据.className = "内存分配数据";
+  const 内存分配地址 = document.createElement("span");
+  内存分配地址.className = "内存分配地址";
+  const 起始内存格 = 变量容器组[程序[1].起始位置];
+  const 起始内存地址_16进制 = 起始内存格.getAttribute("内存地址-16进制");
+  const 结束内存格 = 变量容器组[程序[1].起始位置 + 程序[1].容量 - 1];
+  const 结束内存地址_16进制 = 结束内存格.getAttribute("内存地址-16进制");
+  const 起始地址前缀 = document.createElement("span");
+  起始地址前缀.className = "地址前缀";
+  起始地址前缀.textContent = "0x";
+  const 结束地址前缀 = document.createElement("span");
+  结束地址前缀.className = "地址前缀";
+  结束地址前缀.textContent = "0x";
+  const 内存分配起始地址 = document.createElement("span");
+  内存分配起始地址.className = "内存分配起始地址";
+  内存分配起始地址.textContent = 起始内存地址_16进制;
+  const 内存分配结束地址 = document.createElement("span");
+  内存分配结束地址.className = "内存分配结束地址";
+  内存分配结束地址.textContent = 结束内存地址_16进制;
+  const 内存地址连接线 = document.createElement("span");
+  内存地址连接线.className = "内存地址连接线";
+  内存地址连接线.textContent = "~";
+  内存分配地址.append(起始地址前缀, 内存分配起始地址, 内存地址连接线, 结束地址前缀, 内存分配结束地址);
+  内存分配数据.appendChild(内存分配地址);
+
+  内存分配分区.append(内存分配颜色名称与容量, 内存分配数据);
 }
 
 function 生成随机颜色() {
@@ -352,15 +377,9 @@ function 数组洗牌(数组) {
   return 数组;
 }
 
-重置按钮.addEventListener("click", () => {
-  内存起始地址_10进制 = Math.floor(Math.random() * 300000000);
-  空闲内存表 = [{ 起始位置: 0, 容量: 内存容量 - 1 }];
-  初始化内存();
-});
-
 const 代码输入区 = document.querySelector(".代码输入区");
 const 代码输入框组 = 代码输入区.querySelectorAll('input[type="text"]');
-let 自定义应用键值对组 = [null, null];
+const 自定义应用键值对组 = [null, null];
 let 之前值长度 = 0;
 for (const 代码输入框 of 代码输入框组) {
   代码输入框.addEventListener("input", (event) => {
@@ -373,14 +392,20 @@ for (const 代码输入框 of 代码输入框组) {
       const 标识符 = 标识符框.value.trim();
       const 值 = 值框.value.trim();
       const 类型正确 = 类型.length > 0 && 变量类型表.has(类型);
-      const 标识符正确 =
-        标识符.length > 0 &&
-        !无效标识符起始字符表.has(标识符[0]) &&
-        ((标识符, 无效标识符字符表) => [...标识符].some((字符) => 无效标识符字符表.has(字符)));
+      const 标识符包含无效字符 = [...标识符].some((字符) => 无效标识符字符表.has(字符));
+      const 标识符有字 = 标识符.length > 0;
+      const 标识符正确 = !无效标识符起始字符表.has(标识符[0]) && !标识符包含无效字符;
       const 值正确 = 值.length > 0;
-      const 代码内容正确 = 类型正确 && 标识符正确 && 值正确;
+      const 代码内容正确 = 类型正确 && 标识符有字 && 标识符正确 && 值正确;
       const 输入值 = 值.length !== 之前值长度;
       const 从零输入值 = 值.length === 1 && 值.length > 之前值长度;
+
+      if (!标识符有字 || 标识符正确) {
+        标识符框.classList.remove("错误");
+      } else {
+        标识符框.classList.add("错误");
+      }
+
       if (!代码内容正确) {
         从内存中删除应用(自定义应用键值对组[自定义代码索引]);
         自定义应用键值对组[自定义代码索引] = null;
@@ -482,4 +507,23 @@ function 从内存中删除应用(自定义应用键值对) {
 
   const 内存分配分区 = 内存分配区.querySelector(`.内存分配分区[程序名称="${应用名称}"]`);
   内存分配分区?.remove();
+  const 应用索引 = 自定义应用键值对组.findIndex((应用) => 应用 === 自定义应用键值对);
+  自定义应用键值对组[应用索引] = null;
 }
+
+重置按钮.addEventListener("click", () => {
+  const 输入框组 = document.querySelectorAll('input[type="text"]');
+  for (const 输入框 of 输入框组) {
+    输入框.value = "";
+  }
+  输入框组[0].focus();
+  for (const 自定义应用键值对 of 自定义应用键值对组) {
+    if (自定义应用键值对 === null) continue;
+    从内存中删除应用(自定义应用键值对);
+  }
+  之前值长度 = 0;
+
+  内存起始地址_10进制 = Math.floor(Math.random() * 300000000);
+  空闲内存表 = [{ 起始位置: 0, 容量: 内存容量 - 1 }];
+  初始化内存();
+});

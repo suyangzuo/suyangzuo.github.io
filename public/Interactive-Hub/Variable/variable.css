@@ -24,24 +24,56 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 5px;
-  padding: 15px;
+  /* gap: 10px; */
   background-color: #cde1;
   outline: solid 2px #def3;
 }
 
+.内存分配分区 {
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  background-image: linear-gradient(#cdf2 0%, rgba(255, 255, 255, 0.05) 100%);
+  padding: 5px 15px;
+}
+
 .内存分配区标题 {
   color: #cdea;
-  margin: 0 auto 10px;
+  margin: 10px auto;
   font-size: 14px;
 }
 
-.内存分配名称 {
+.内存分配颜色名称与容量 {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   gap: 10px;
-  font-size: 12px;
+  font-size: 13px;
+  padding: 5px 0 2px;
+}
+
+.内存分配颜色与名称 {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.内存分配容量 {
+  color: rgb(97, 169, 97);
+}
+
+.内存分配数据 {
+  padding: 2px 0 5px;
+  font-size: 13px;
+}
+
+.内存地址连接线 {
+  color: gray;
+}
+
+.内存分配起始地址,
+.内存分配结束地址 {
+  color: silver;
 }
 
 .名称颜色 {
@@ -52,13 +84,23 @@
 }
 
 .名称文本 {
-  color: silver;
+  color: rgb(122, 168, 183);
+  font-weight: normal;
 }
 
 .名称文本,
 .抬头文本,
 .字节名称 {
   font-family: Noto Sans SC, sans-serif;
+}
+
+.内存分配地址 {
+  display: flex;
+  align-items: center;
+}
+
+.内存地址连接线 {
+  margin: 0 5px;
 }
 
 .设置区 {
@@ -70,7 +112,7 @@
 
 .代码输入区 {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 20px;
 }
 
@@ -101,9 +143,10 @@
       padding: 3px 10px;
       position: relative;
       font-size: 0.9em;
-      border: solid 2px transparent;
+      border: solid 1px transparent;
       color: rgb(155, 155, 155);
       background-color: #fff1;
+      user-select: none;
       transition: 25ms;
     }
 
@@ -117,7 +160,7 @@
     }
 
     .单选框:checked + .标签文本 {
-      border: solid 2px #fff4;
+      border: solid 1px #fff6;
       color: gold;
       background-color: #def3;
       font-size: 1em;
@@ -135,6 +178,7 @@
 
 .代码输入分区标题 {
   width: 100%;
+  height: 46px;
   text-align: center;
   align-content: center;
   color: gold;
@@ -204,6 +248,10 @@
 
 .标识符框 {
   color: darkorange;
+}
+
+.标识符框.错误 {
+  background-color: rgb(125, 30, 30) !important;
 }
 
 .值框 {
@@ -337,7 +385,7 @@
 .进制 {
   height: 100%;
   text-wrap: nowrap;
-  padding: 5px;
+  padding: 5px 7px;
   margin-right: 10px;
   background-color: #456;
   color: lightcyan;
