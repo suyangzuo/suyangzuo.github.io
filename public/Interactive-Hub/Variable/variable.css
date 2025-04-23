@@ -19,22 +19,63 @@
 .内存分配区 {
   position: fixed;
   top: 50%;
-  left: 0;
-  translate: 0 -50%;
+  left: -1px;
+  translate: -100% -50%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  /* gap: 10px; */
   background-color: #cde1;
-  outline: solid 2px #def3;
+  border: solid 1px #888;
+  transition: 250ms;
+}
+
+.内存分配区.可见 {
+  translate: 0 -50%;
+}
+
+.内存分配区.可见 #内存分配区开关 {
+  top: 10px;
+  right: 10px;
+  font-size: 10px;
+  width: 20px;
+  height: 20px;
+  translate: 0 0;
+}
+
+#内存分配区开关 {
+  border-radius: 999px;
+  border: none;
+  background-color: rgb(81, 104, 45);
+  color: white;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  translate: 125% -50%;
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  align-content: center;
+}
+
+#内存分配区开关:hover {
+  background-color: rgb(104, 133, 58);
 }
 
 .内存分配分区 {
   font-size: 12px;
   display: flex;
   flex-direction: column;
-  background-image: linear-gradient(#cdf2 0%, rgba(255, 255, 255, 0.05) 100%);
+  background-image: linear-gradient(rgba(211, 228, 256, 0.15) 0%, rgba(255, 255, 255, 0.025) 100%);
   padding: 5px 15px;
+}
+
+.内存分配分区:hover {
+  cursor: var(--光标-指向);
+  /* background-image: linear-gradient(rgba(190, 215, 256, 0.3) 0%, rgba(255, 255, 255, 0.075) 100%); */
+  background-image: none;
+  background-color: #fff3;
+  filter: brightness(135%);
 }
 
 .内存分配区标题 {
@@ -49,7 +90,7 @@
   align-items: center;
   gap: 10px;
   font-size: 13px;
-  padding: 5px 0 2px;
+  padding: 5px 0;
 }
 
 .内存分配颜色与名称 {
@@ -59,7 +100,12 @@
 }
 
 .内存分配容量 {
-  color: rgb(97, 169, 97);
+  color: lightgreen;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background-color: rgb(54, 61, 69);
+  border: solid 1px #aaa;
+  font-size: 12px;
 }
 
 .内存分配数据 {
@@ -84,8 +130,13 @@
 }
 
 .名称文本 {
-  color: rgb(122, 168, 183);
+  color: lightcyan;
   font-weight: normal;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background-color: rgb(54, 61, 69);
+  border: solid 1px #aaa;
+  font-size: 12px;
 }
 
 .名称文本,
@@ -240,6 +291,11 @@
   outline: solid 1px #60656a;
   border: none;
   text-align: center;
+}
+
+.文本框:hover {
+  background-color: #252a2f;
+  outline: solid 1px #80858a;
 }
 
 .类型框 {

@@ -280,12 +280,15 @@ function 更新取消按钮内容(已选择数量, 总数量) {
   if (已选择数量 === 0) {
     取消选择按钮.innerHTML = "";
     取消选择按钮.classList.remove("已满");
+    取消选择按钮.classList.remove("部分选中");
   } else if (已选择数量 < 总数量) {
     取消选择按钮.innerHTML = '<i class="fa-solid fa-square"></i>';
     取消选择按钮.classList.remove("已满");
+    取消选择按钮.classList.add("部分选中");
   } else if (已选择数量 === 总数量) {
     取消选择按钮.innerHTML = '<i class="fa-solid fa-check"></i>';
     取消选择按钮.classList.add("已满");
+    取消选择按钮.classList.remove("部分选中");
   }
 }
 

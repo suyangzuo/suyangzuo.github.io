@@ -304,7 +304,27 @@ function 添加字节地址描述(变量容器) {
   字节地址.append(十进制地址, 十六进制地址);
 }
 
+function 添加内存分配区开关() {
+  if (内存分配区.querySelector("#内存分配区开关") !== null) return;
+  const 内存分配区开关 = document.createElement("button");
+  内存分配区开关.className = "按钮";
+  内存分配区开关.id = "内存分配区开关";
+  内存分配区开关.innerHTML = '<i class="fa-solid fa-arrow-right"></i>';
+  内存分配区开关.addEventListener("click", () => {
+    内存分配区.classList.toggle("可见");
+    if (内存分配区.classList.contains("可见")) {
+      内存分配区开关.innerHTML = '<i class="fa-solid fa-arrow-left"></i>';
+    } else {
+      内存分配区开关.innerHTML = '<i class="fa-solid fa-arrow-right"></i>';
+    }
+  });
+  内存分配区.appendChild(内存分配区开关);
+  return 内存分配区开关;
+}
+
 function 添加内存分配示意(程序) {
+  添加内存分配区开关();
+
   const 内存分配分区 = document.createElement("div");
   内存分配分区.className = "内存分配分区";
   内存分配分区.setAttribute("程序名称", 程序[0]);
@@ -353,6 +373,18 @@ function 添加内存分配示意(程序) {
   内存分配数据.appendChild(内存分配地址);
 
   内存分配分区.append(内存分配颜色名称与容量, 内存分配数据);
+
+  内存分配分区.addEventListener("mouseenter", () => {
+    for (let i = 程序[1].起始位置; i < 程序[1].起始位置 + 程序[1].容量; i++) {
+      变量容器组[i].classList.add("当前应用");
+    }
+  });
+
+  内存分配分区.addEventListener("mouseleave", () => {
+    for (let i = 程序[1].起始位置; i < 程序[1].起始位置 + 程序[1].容量; i++) {
+      变量容器组[i].classList.remove("当前应用");
+    }
+  });
 }
 
 function 生成随机颜色() {
@@ -479,6 +511,7 @@ function 从内存中删除应用(自定义应用键值对) {
 
   for (let i = 0; i < 应用占用内存; i++) {
     当前应用变量容器.classList.remove("已占用");
+    当前应用变量容器.classList.remove("当前应用");
     当前应用变量容器.removeAttribute("应用名称");
     当前应用变量容器.style.backgroundColor = "";
     if (i === 0) {
