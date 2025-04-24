@@ -26,6 +26,8 @@
   align-items: flex-start;
   background-color: #cde1;
   border: solid 1px #888;
+  z-index: 1;
+  backdrop-filter: blur(20px);
   transition: 250ms;
 }
 
@@ -70,7 +72,8 @@
   padding: 5px 15px;
 }
 
-.内存分配分区:hover {
+.内存分配分区:hover,
+.内存分配分区.当前内存分配分区 {
   cursor: var(--光标-指向);
   /* background-image: linear-gradient(rgba(190, 215, 256, 0.3) 0%, rgba(255, 255, 255, 0.075) 100%); */
   background-image: none;
@@ -106,6 +109,7 @@
   background-color: rgb(54, 61, 69);
   border: solid 1px #aaa;
   font-size: 12px;
+  font-weight: normal;
 }
 
 .内存分配数据 {
@@ -137,6 +141,12 @@
   background-color: rgb(54, 61, 69);
   border: solid 1px #aaa;
   font-size: 12px;
+}
+
+.内存分配分区:hover :where(.名称文本, .内存分配容量),
+.内存分配分区.当前内存分配分区 :where(.名称文本, .内存分配容量) {
+  background-color: rgb(13, 56, 99);
+  color: lightcyan;
 }
 
 .名称文本,
@@ -489,12 +499,14 @@
   box-shadow: 2px 2px 2px 0 #111;
 }
 
-.应用抬头:hover {
+.应用抬头:hover,
+.应用抬头.当前应用抬头 {
   outline: solid 1px orange;
   background-color: #123;
 }
 
-.应用抬头:hover .抬头文本 {
+.应用抬头:hover .抬头文本,
+.应用抬头.当前应用抬头 .抬头文本 {
   color: #8fc;
 }
 

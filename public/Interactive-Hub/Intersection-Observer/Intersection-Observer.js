@@ -214,11 +214,13 @@ function 删除触发计数器() {
 
 const 重置按钮 = document.querySelector(".重置按钮");
 重置按钮.addEventListener("click", 重置参数);
+
 function 重置参数() {
   视口.checked = true;
 
   for (const 滑块 of 根元素外边距滑块组) {
     滑块.nextElementSibling.querySelector(".数值").textContent = "0";
+    滑块.value = "0";
     root.style.setProperty(`--根元素外边距-${滑块.id}`, "0px");
     起始阈值数字框.value = "0";
     阈值数量数字框.value = "1";
