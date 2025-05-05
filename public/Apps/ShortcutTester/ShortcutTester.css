@@ -147,9 +147,9 @@
 
 #取消选择.部分选中 {
   font-size: 12px;
-  border: solid 2px #888;
+  border: solid 2px #ddd;
   --边框背景色: #465;
-  color: silver;
+  color: #ddd;
 }
 
 #取消选择.已满 {
@@ -253,7 +253,7 @@
   align-items: center;
   gap: 5px;
   font-size: 13px;
-  font-family: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑， monospace, sans-serif;
+  font-family: "JetBrains Mono", Consolas, monospace, "Noto Sans SC", 微软雅黑， sans-serif;
 }
 
 .列表项容器.已确认容器 .功能键 {
@@ -336,7 +336,7 @@
 
 .文本框,
 .数字框 {
-  font-family: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑， monospace, sans-serif;
+  font-family: "JetBrains Mono", Consolas, monospace, "Noto Sans SC", 微软雅黑， sans-serif;
   background-color: transparent;
   border: none;
   font-size: 16px;
@@ -445,7 +445,8 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .测试区 {
   position: relative;
-  height: max(350px, calc(100vh - 621px));
+  height: max(450px, calc(100vh - 621px));
+  margin-bottom: 50px;
   display: flex;
   justify-content: center;
 }
@@ -518,7 +519,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .单次测试用时容器 {
-  font-family: Consolas, "Noto Sans SC", monospace, sans-serif;
+  font-family: Consolas, monospace, "Noto Sans SC", sans-serif;
   display: flex;
   align-items: center;
   gap: 3px;
@@ -559,7 +560,7 @@ input[type="number"]::-webkit-inner-spin-button {
   position: absolute;
   top: 15px;
   left: 10px;
-  font-family: Consolas, "Noto Sans SC", 微软雅黑， monospace, sans-serif;
+  font-family: Consolas, monospace, "Noto Sans SC", 微软雅黑, sans-serif;
   font-size: 16px;
   display: flex;
   justify-content: center;
@@ -711,7 +712,7 @@ input[type="number"]::-webkit-inner-spin-button {
   left: 50%;
   color: silver;
   overflow: hidden;
-  font-family: Consolas, "Noto Sans SC", monospace, sans-serif;
+  font-family: Consolas, monospace, "Noto Sans SC", sans-serif;
 }
 
 #结果对话框[open] {

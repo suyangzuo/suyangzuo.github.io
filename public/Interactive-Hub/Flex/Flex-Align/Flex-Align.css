@@ -42,7 +42,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .code {
-  font-family: "JetBrains Mono", Consolas, 微软雅黑, monospace;
+  font-family: "JetBrains Mono", Consolas, monospace, 微软雅黑;
 }
 
 input:hover {
@@ -88,8 +88,7 @@ label span {
 }
 
 .选中指示器 {
-  background: no-repeat center/contain
-    linear-gradient(125deg, #886508 0%, #465826 100%);
+  background: no-repeat center/contain linear-gradient(125deg, #886508 0%, #465826 100%);
   position: absolute;
   border-radius: 5px;
   transition: 250ms;
@@ -139,10 +138,7 @@ label span {
   isolation: isolate;
   width: 135%;
   pointer-events: none;
-  background-image: linear-gradient(
-    var(--弹性行渐变起始色) 0%,
-    var(--弹性行渐变结束色) 100%
-  );
+  background-image: linear-gradient(var(--弹性行渐变起始色) 0%, var(--弹性行渐变结束色) 100%);
 }
 
 .弹性行::before {
@@ -216,7 +212,7 @@ label span {
 .标题行号 {
   margin: 0 5px;
   color: cornflowerblue;
-  font-family: "JetBrains Mono", Consolas, 微软雅黑, monospace;
+  font-family: "JetBrains Mono", Consolas, monospace, 微软雅黑;
 }
 
 .弹性数据 {
@@ -228,7 +224,7 @@ label span {
 .弹性数据数值 {
   color: lightseagreen;
   margin-right: 2px;
-  font-family: "JetBrains Mono", Consolas, 微软雅黑, monospace;
+  font-family: "JetBrains Mono", Consolas, monospace, 微软雅黑;
 }
 
 .弹性数据单位 {
@@ -258,7 +254,7 @@ label span {
   justify-content: center;
   align-items: center;
   gap: 2px;
-  font-family: "JetBrains Mono", Consolas, 微软雅黑, monospace;
+  font-family: "JetBrains Mono", Consolas, monospace, 微软雅黑;
 }
 
 .弹性项高度数值 {
@@ -272,7 +268,7 @@ label span {
 }
 
 label span {
-  font-family: "JetBrains Mono", Consolas, 微软雅黑, monospace;
+  font-family: "JetBrains Mono", Consolas, monospace, 微软雅黑;
 }
 
 .操纵区 {
@@ -317,12 +313,8 @@ label span {
   --盒子数量比例: 50%;
   appearance: none;
   width: 200px;
-  height: 10px;
-  background-image: linear-gradient(
-    90deg,
-    seagreen var(--盒子数量比例),
-    rgb(100, 100, 100) var(--盒子数量比例)
-  );
+  height: 6px;
+  background-image: linear-gradient(90deg, seagreen var(--盒子数量比例), rgb(100, 100, 100) var(--盒子数量比例));
   border-radius: 999px;
 }
 
@@ -354,7 +346,7 @@ label span {
 #盒子数量文本 {
   width: 25px;
   text-align: left;
-  font-family: "JetBrains Mono", Consolas, 微软雅黑, monospace;
+  font-family: "JetBrains Mono", Consolas, monospace, 微软雅黑;
 }
 
 #盒子尺寸操纵区 .操纵区标题 {
@@ -439,7 +431,7 @@ label:hover :is(#盒子透明复选框, #行透明复选框) {
 }
 
 .操纵区标题 {
-  font-family: "JetBrains Mono", Consolas, 微软雅黑, monospace;
+  font-family: "JetBrains Mono", Consolas, monospace, 微软雅黑;
   color: rgb(223, 115, 53);
   width: 140px;
   user-select: none;

@@ -160,7 +160,6 @@ const 快捷键列表组 = 快捷键列表区.querySelectorAll(".快捷键列表
     种类计数组[当前种类索引].classList.remove("已有选中数");
     种类计数组[当前种类索引].textContent = "0";
   }
-  console.log(测试对象池);
 
   /* if (种类计数组.length > 0) {
     for (const 种类计数 of 种类计数组) {
@@ -500,9 +499,8 @@ function 按下快捷键(event) {
           break;
       }
     } else {
-      keyElement.textContent = key.toUpperCase();
+      keyElement.textContent = key.length > 1 ? key : key.toUpperCase();
     }
-
     用户快捷键内容.appendChild(keyElement);
     const 功能键组 = 用户快捷键内容.querySelectorAll(".功能键");
     if (功能键组.length > 0) {
@@ -724,7 +722,7 @@ function 生成测试目标(总次数, 剩余次数) {
         key.textContent = "⬇";
         break;
       default:
-        key.textContent = 测试对象.key.toUpperCase();
+        key.textContent = 测试对象.key.length > 1 ? 测试对象.key : 测试对象.key.toUpperCase();
         break;
     }
     快捷键内容.appendChild(key);
@@ -1077,7 +1075,6 @@ function 生成错误数据() {
 
   const 错误对象组 = 测试对象组.filter((item) => !item.passed);
   const 错误分组对象 = Object.groupBy(错误对象组, (测试对象) => 测试对象.usage);
-  console.log(错误分组对象);
   const 错误最多对象 = {
     用途: "",
     数量: 0,

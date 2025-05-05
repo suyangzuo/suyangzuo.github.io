@@ -27,7 +27,7 @@ span {
   justify-content: center;
   align-items: center;
   gap: 25px;
-  font-family: Consolas, "Noto Sans SC", 微软雅黑， monospace, sans-serif;
+  font-family: Consolas, monospace, "Noto Sans SC", 微软雅黑， sans-serif;
 }
 
 .标题 {
@@ -83,7 +83,7 @@ span {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  font-family: Consolas, "Noto Sans SC", 微软雅黑， monospace, sans-serif;
+  font-family: Consolas, monospace, "Noto Sans SC", 微软雅黑， sans-serif;
   padding: 15px 25px;
   border-radius: 10px;
   background-color: #0003;

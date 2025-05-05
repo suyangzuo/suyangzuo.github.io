@@ -70,32 +70,40 @@ body {
 }
 
 .app-center {
+  margin: 0 auto;
   min-height: calc(100vh - 550px);
-  padding: 100px 10% 300px;
+  width: clamp(1000px, 90%, 2000px);
+  padding: 100px 5vw 300px;
   display: flex;
+  justify-content: flex-start;
   flex-wrap: wrap;
-  gap: 50px;
 }
 
 .app {
   position: relative;
-  width: 275px;
-  height: 350px;
+  width: max(17.5%, 200px);
+  width: 20%;
+  aspect-ratio: 0.8;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   background-color: #111;
   box-shadow: 2px 2px 2px 0 #111;
-  border-radius: 10px;
-  padding: 20px 10px;
-  outline: solid 2px #ffffff16;
+  padding: 25px;
+  border: solid 1px #ffffff32;
   transition: 150ms;
 }
 
 .app:hover {
-  outline: solid 2px #fff8;
-  background-color: #1a2026;
+  border: solid 1px #abc;
+  /* background-color: #1a2026; */
+  background-color: #abc;
+}
+
+.app:hover .app-名称 {
+  color: rgb(53, 61, 69);
 }
 
 .app.开发中:hover :where(.app-名称, .图片区, .app-access) {
@@ -129,6 +137,7 @@ body {
   height: 50%;
   width: 90%;
   overflow: hidden;
+  filter: drop-shadow(2px 2px 2px #000a);
 }
 
 .图片区 > img {
@@ -142,11 +151,12 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   width: fit-content;
   border-radius: 8px;
   color: #9ab;
   font-weight: bold;
+  text-wrap: nowrap;
 }
 
 .app-access {
@@ -259,7 +269,7 @@ body {
 
 @media screen and (max-width: 1000px) {
   .app-center {
-    flex-direction: column;
+    /* flex-direction: column; */
     align-items: center;
   }
 }
