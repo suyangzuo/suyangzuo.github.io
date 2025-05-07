@@ -72,7 +72,7 @@ body {
 .app-center {
   margin: 0 auto;
   min-height: calc(100vh - 550px);
-  width: clamp(1000px, 90%, 2000px);
+  width: clamp(1000px, 90%, 1500px);
   padding: 100px 5vw 300px;
   display: flex;
   justify-content: flex-start;

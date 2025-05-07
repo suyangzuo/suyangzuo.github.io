@@ -5,6 +5,7 @@ const 栈内容间距 = parseInt(rootStyle.getPropertyValue("--栈内容间距")
 let 栈容量 = 8;
 let 栈指针 = -1;
 let 当前图源 = document.querySelector(".当前资源").querySelector("img").src;
+const 自动选择复选框 = document.getElementById("自动选择");
 const 资源组 = document.querySelectorAll(".资源");
 const 栈 = document.querySelector(".栈");
 const 极效模式 = document.getElementById("极效模式");
@@ -69,12 +70,7 @@ const 栈操作动画设置 = {
   duration: 750,
 };
 
-const 空满判断动画关键帧 = [
-  { opacity: 0 },
-  { opacity: 1, offset: 0.01 },
-  { opacity: 1, offset: 0.99 },
-  { opacity: 0 },
-];
+const 空满判断动画关键帧 = [{ opacity: 0 }, { opacity: 1, offset: 0.01 }, { opacity: 1, offset: 0.99 }, { opacity: 0 }];
 
 const 空满判断动画设置 = {
   easing: "linear",
@@ -133,13 +129,7 @@ function Peek() {
   }
 
   const 当前栈内容 = 栈内容组[栈指针];
-  const peek动画关键帧 = [
-    { scale: 1 },
-    { scale: 1.5 },
-    { scale: 1 },
-    { scale: 1.5 },
-    { scale: 1 },
-  ];
+  const peek动画关键帧 = [{ scale: 1 }, { scale: 1.5 }, { scale: 1 }, { scale: 1.5 }, { scale: 1 }];
 
   const peek动画设置 = {
     easing: "linear",
@@ -164,17 +154,27 @@ function Push() {
   索引组[栈指针].classList.add("已添加");
   索引组[栈指针].classList.add("当前索引");
   const 当前栈内容 = 栈内容组[栈指针];
+
+  const 栈内图像源 = 当前图源;
   setTimeout(
     () => {
-      当前栈内容.querySelector("img").src = 当前图源;
+      当前栈内容.querySelector("img").src = 栈内图像源;
     },
-    极效模式.checked ? 栈动画时长 : 0,
+    极效模式.checked ? 栈动画时长 : 0
   );
   显示当前栈内容延时函数 = setTimeout(() => {
     当前栈内容.classList.remove("已删除");
   }, 栈动画时长);
   刷新栈指针位置();
   生成push动画();
+
+  if (自动选择复选框.checked) {
+    const index = Math.floor(Math.random() * 资源组.length);
+    当前资源.classList.remove("当前资源");
+    资源组[index].classList.add("当前资源");
+    当前资源 = 资源组[index];
+    当前图源 = 当前资源.querySelector("img").src;
+  }
 }
 
 function Pop() {
@@ -224,10 +224,7 @@ function 生成pop动画(弹出栈内容) {
   pop动画.alt = "pop动画";
   栈.appendChild(pop动画);
   const 垂直偏移 = `${弹出栈内容.offsetTop}px`;
-  const pop动画关键帧 = [
-    { translate: `-50% ${垂直偏移}` },
-    { translate: "-50% -150px" },
-  ];
+  const pop动画关键帧 = [{ translate: `-50% ${垂直偏移}` }, { translate: "-50% -150px" }];
   const pop动画设置 = {
     easing: "ease-out",
     duration: 栈动画时长,

@@ -1563,6 +1563,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 .分区列表:not(.有序列表) > .分区列表项 {
   padding-left: 1.5em;
   text-indent: -1.425em;
+  line-height: 1.75rem;
 }
 
 .分区列表项:has(.分区列表:last-child) + .分区列表项 {
@@ -1831,7 +1832,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 
 .分区普通文本 {
   font-size: 1.05em;
-  line-height: 1.75rem;
+  line-height: 2rem;
   padding: 10px 0;
   /*color: #b4c5d7;*/
   color: var(--正文颜色);
@@ -1896,7 +1897,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .提醒 > p {
-  line-height: 1.75rem;
+  line-height: 2rem;
 }
 
 .强调 {

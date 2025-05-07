@@ -187,11 +187,44 @@
 }
 
 .资源池区 {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
   gap: 25px;
+}
+
+.控件容器 {
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  translate: -50% 0;
+  display: flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 7px 15px;
+}
+
+.控件标签 {
+  padding-right: 5px;
+  font-family: var(--中文字体);
+  user-select: none;
+  text-wrap: nowrap;
+}
+
+.复选框 {
+  scale: 1.1;
+  filter: invert(1) sepia(1) hue-rotate(90deg);
+}
+
+.复选框:hover,
+.控件标签:hover {
+  cursor: var(--光标-手指);
+}
+
+.控件容器:has(.复选框:hover, .控件标签:hover) {
+  background-color: #def2;
 }
 
 .资源池 {
@@ -262,7 +295,7 @@
   text-align: center;
   align-content: center;
   font-size: 12px;
-  font-family: Consolas, "Noto Sans SC", monospace, sans-serif;
+  font-family: var(--代码字体);
   opacity: 0;
   transition: 250ms;
 }

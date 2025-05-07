@@ -6,6 +6,10 @@
   --头背景色: rgb(56, 141, 73);
   --尾背景色: rgb(225, 204, 81);
   --过渡时长: 400ms;
+  --光标-手指: url("/Images/Common/鼠标-指向.cur"), pointer;
+  --中文字体: "Noto Sans SC", 微软雅黑，sans-serif;
+  --代码字体: "JetBrains Mono", Consolas, monospace;
+  --中文代码混合字体: "JetBrains Mono", Consolas, monospace, "Noto Sans SC", 微软雅黑，sans-serif;
 }
 
 .队列总区 {
@@ -18,6 +22,34 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.控件容器 {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+  border-radius: 9999px;
+  padding: 7px 15px;
+}
+
+.控件标签 {
+  padding-right: 5px;
+  user-select: none;
+  font-family: var(--中文字体);
+}
+
+.复选框 {
+  scale: 1.1;
+  filter: invert(1) sepia(1) hue-rotate(90deg);
+}
+
+.复选框:hover,
+.控件标签:hover {
+  cursor: var(--光标-手指);
+}
+
+.控件容器:has(.复选框:hover, .控件标签:hover) {
+  background-color: #def2;
 }
 
 .角色区 {
@@ -270,7 +302,7 @@
 
 .按钮 {
   position: relative;
-  font-family: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑， monospace, sans-serif;
+  font-family: var(--中文代码混合字体);
   border: none;
   padding: 10px 20px;
   background-color: #def3;

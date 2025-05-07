@@ -1,4 +1,6 @@
 let 当前角色图 = "./Images/1.png";
+
+const 自动更换复选框 = document.getElementById("自动更换");
 const 角色区 = document.querySelector(".角色区");
 const 角色容器组 = [];
 for (let i = 0; i < 16; i++) {
@@ -85,6 +87,7 @@ const 出入动画设置 = {
     出入判断动画 = 警告容器.animate(出入关键帧序列, 出入动画设置);
     return;
   }
+
   队列容器.classList.remove("空");
   // 队列成员组[尾指针]?.classList.remove("尾");
   索引成员组[尾指针]?.classList.remove("尾");
@@ -111,6 +114,14 @@ const 出入动画设置 = {
   const 队列图像 = 队列成员组[尾指针].querySelector(".队列图像");
   队列图像.src = 当前角色图;
   队列图像.parentElement.classList.remove("无人");
+
+  if (自动更换复选框.checked) {
+    const index = Math.floor(Math.random() * 角色容器组.length);
+    当前角色图 = `./Images/${index + 1}.png`;
+    const 当前角色 = 角色区.querySelector(".当前角色");
+    当前角色.classList.remove("当前角色");
+    角色容器组[index].classList.add("当前角色");
+  }
 });
 
 出队按钮.addEventListener("click", () => {

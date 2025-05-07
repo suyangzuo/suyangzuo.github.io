@@ -3,13 +3,18 @@
   --bg-color: rgb(23, 28, 33);
   --f-color: #eeeeee;
   --top-banner-color: #9e2a2b;
-  --contributers-bg-color: #183656;
+  --contributors-bg-color: #183656;
   --name: #c97719;
   --hover-link: #222f33;
   --shadow-color: #101010;
   --scrollbar-track-color: #222426;
   --scrollbar-thumb-color: #426556;
   --scrollbar-width: 12px;
+  --光标-默认: url("/Images/Common/鼠标-默认.cur"), auto;
+  --光标-手指: url("/Images/Common/鼠标-指向.cur"), pointer;
+  --中文字体: "Noto Sans SC", 微软雅黑，sans-serif;
+  --代码字体: "JetBrains Mono", Consolas, monospace;
+  --中文代码混合字体: "JetBrains Mono", Consolas, monospace, "Noto Sans SC", 微软雅黑，sans-serif;
 }
 
 *,
