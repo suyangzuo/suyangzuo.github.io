@@ -1,0 +1,110 @@
+:root {
+  --光标-默认: url("/Images/Common/鼠标-默认.cur"), auto;
+  --光标-手指: url("/Images/Common/鼠标-指向.cur"), pointer;
+  --中文字体: "Noto Sans SC", 微软雅黑，sans-serif;
+  --代码字体: "JetBrains Mono", Consolas, monospace;
+  --中文代码混合字体: "JetBrains Mono", Consolas, monospace, "Noto Sans SC", 微软雅黑，sans-serif;
+}
+
+.总区 {
+  min-height: 100vh;
+  padding: 50px 0;
+}
+
+.标题区 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.大标题 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 8ch;
+  gap: 1ch;
+}
+
+.标题英文 {
+  font-family: var(--代码字体);
+  font-size: 1.25em;
+  color: darkgoldenrod;
+}
+
+.标题中文 {
+  font-family: var(--中文字体);
+  font-weight: normal;
+  color: rgb(126, 186, 35);
+}
+
+.心得区 {
+  width: 90%;
+  margin: 0 auto;
+  min-height: calc(100vh - 100px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.条目链接 {
+  padding: 10px 20px;
+  height: fit-content;
+  border-radius: 999px;
+  background-color: #fff1;
+}
+
+.条目链接:hover {
+  background-color: #def2;
+}
+
+.目录区 {
+  position: fixed;
+  bottom: 25px;
+  width: 100%;
+  padding: 0 5%;
+  display: flex;
+  align-items: center;
+}
+
+.目录:hover {
+  cursor: var(--光标-手指);
+}
+
+.目录:nth-child(even) {
+  background-color: #ffffff1a;
+}
+
+.目录:nth-child(odd) {
+  background-color: #fff1;
+}
+
+.目录:hover {
+  box-shadow: inset 0 0 0 2px #fff4;
+}
+
+.目录链接 {
+  width: fit-content;
+  height: 100%;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.目录Logo容器 {
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.目录Logo {
+  width: 100%;
+  height: 100%;
+}
+
+.目录标题 {
+  flex-grow: 1;
+}

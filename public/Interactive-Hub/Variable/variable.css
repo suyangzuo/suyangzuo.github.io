@@ -3,9 +3,13 @@
   --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
   --拇指宽度: 16px;
   --变量背景色: #cde2;
-  --光标-指向: url("/Images/Common/鼠标-指向.cur"), pointer;
   --已占用颜色: rgba(154, 205, 50, 0.75);
   --抬头应用名称: "";
+  --光标-默认: url("/Images/Common/鼠标-默认.cur"), auto;
+  --光标-手指: url("/Images/Common/鼠标-指向.cur"), pointer;
+  --中文字体: "Noto Sans SC", 微软雅黑，sans-serif;
+  --代码字体: "JetBrains Mono", Consolas, monospace;
+  --中文代码混合字体: "JetBrains Mono", Consolas, monospace, "Noto Sans SC", 微软雅黑，sans-serif;
 }
 
 .变量总区 {
@@ -74,7 +78,7 @@
 
 .内存分配分区:hover,
 .内存分配分区.当前内存分配分区 {
-  cursor: var(--光标-指向);
+  cursor: var(--光标-手指);
   /* background-image: linear-gradient(rgba(190, 215, 256, 0.3) 0%, rgba(255, 255, 255, 0.075) 100%); */
   background-image: none;
   background-color: #fff3;
@@ -158,6 +162,7 @@
 .内存分配地址 {
   display: flex;
   align-items: center;
+  text-shadow: 1px 1px 1px #000a;
 }
 
 .内存地址连接线 {
@@ -231,10 +236,14 @@
       .标签文本 {
         background-color: #fff2;
         color: silver;
-        cursor: var(--光标-指向);
+        cursor: var(--光标-手指);
       }
     }
   }
+}
+
+.可变代码输入分区:has(#作用-更改:checked) :where(.变量类型, .类型框) {
+  visibility: hidden;
 }
 
 .代码输入分区标题 {
@@ -313,7 +322,7 @@
 }
 
 .标识符框 {
-  color: darkorange;
+  color: rgb(204, 211, 216);
 }
 
 .标识符框.错误 {
@@ -321,7 +330,7 @@
 }
 
 .值框 {
-  color: greenyellow;
+  color: darkgoldenrod;
 }
 
 .文本框:focus {
@@ -373,7 +382,7 @@
 .变量容器:not(:has(.应用抬头容器:hover)):hover,
 .变量容器.当前应用 {
   box-shadow: inset 0 0 0 2px black;
-  cursor: var(--光标-指向);
+  cursor: var(--光标-手指);
   filter: brightness(125%);
 }
 
@@ -488,7 +497,7 @@
 }
 
 .应用抬头容器:hover {
-  cursor: var(--光标-指向);
+  cursor: var(--光标-手指);
 }
 
 .应用抬头 {
@@ -528,6 +537,11 @@
 
 .控件标题 {
   color: rgb(96, 138, 189);
+  text-wrap: nowrap;
+}
+
+.滑块单位 {
+  text-wrap: nowrap;
 }
 
 .滑块 {
@@ -542,7 +556,7 @@
 }
 
 .滑块:hover {
-  cursor: var(--光标-指向);
+  cursor: var(--光标-手指);
 }
 
 .滑块值 {

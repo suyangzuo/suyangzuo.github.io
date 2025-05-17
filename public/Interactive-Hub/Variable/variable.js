@@ -280,7 +280,7 @@ function 添加字节地址描述(变量容器) {
   十进制地址.className = "进制地址-10 进制地址";
   const 十进制 = document.createElement("span");
   十进制.className = "进制";
-  十进制.textContent = "10";
+  十进制.textContent = "Dec";
   const 十进制地址代码 = document.createElement("div");
   十进制地址代码.className = "地址代码";
   const 十进制地址值 = document.createElement("span");
@@ -293,7 +293,7 @@ function 添加字节地址描述(变量容器) {
   十六进制地址.className = "进制地址-16 进制地址";
   const 十六进制 = document.createElement("span");
   十六进制.className = "进制";
-  十六进制.textContent = "16";
+  十六进制.textContent = "Hex";
   const 十六进制地址代码 = document.createElement("div");
   十六进制地址代码.className = "地址代码";
   const 十六进制地址前缀 = document.createElement("span");
@@ -452,24 +452,31 @@ for (const 代码输入框 of 代码输入框组) {
         从内存中删除应用(自定义应用键值对组[自定义代码索引]);
         自定义应用键值对组[自定义代码索引] = null;
       } else {
-        if (代码输入框.id.includes("类型") || 代码输入框.id.includes("标识符")) {
+        const 类型容量 = 变量类型表.get(类型).长度;
+        const 有符号 = 变量类型表.get(类型).有符号;
+        const 输入类型或标识符 = 代码输入框.id.includes("类型") || 代码输入框.id.includes("标识符");
+        if (输入类型或标识符) {
           从内存中删除应用(自定义应用键值对组[自定义代码索引]);
-          const 类型容量 = 变量类型表.get(类型).长度;
-          自定义应用键值对组[自定义代码索引] = [标识符, { 起始位置: 0, 容量: 类型容量 }];
-          空闲内存表 = 数组洗牌(空闲内存表);
-          const 已分配内存 = 向内存中添加应用(自定义应用键值对组[自定义代码索引]);
-          if (已分配内存) {
-            添加内存分配示意(自定义应用键值对组[自定义代码索引]);
-          }
-        } else if (从零输入值) {
-          const 类型容量 = 变量类型表.get(类型).长度;
-          自定义应用键值对组[自定义代码索引] = [标识符, { 起始位置: 0, 容量: 类型容量 }];
-          空闲内存表 = 数组洗牌(空闲内存表);
-          const 已分配内存 = 向内存中添加应用(自定义应用键值对组[自定义代码索引]);
-          if (已分配内存) {
-            添加内存分配示意(自定义应用键值对组[自定义代码索引]);
-          }
         }
+
+        if (输入类型或标识符 || 从零输入值) {
+          自定义应用键值对组[自定义代码索引] = [标识符, { 起始位置: 0, 容量: 类型容量 }];
+          空闲内存表 = 数组洗牌(空闲内存表);
+          const 已分配内存 = 向内存中添加应用(自定义应用键值对组[自定义代码索引]);
+          if (已分配内存) {
+            内存占用表.set(标识符, {
+              起始位置: 自定义应用键值对组[自定义代码索引][1].起始位置,
+              容量: 类型容量,
+              值: 值,
+              有符号: 有符号,
+            });
+            添加内存分配示意(自定义应用键值对组[自定义代码索引]);
+          }
+        } else if (输入值) {
+          内存占用表.get(标识符).值 = 值;
+        }
+
+        生成当前应用内存位数据(标识符);
 
         const 值类型是字符串 = Number.isNaN(parseInt(值), 10);
         if (值类型是字符串) {
@@ -559,7 +566,14 @@ function 从内存中删除应用(自定义应用键值对) {
   自定义应用键值对组[应用索引] = null;
 }
 
-function 生成当前应用内存位数据(应用名称) {}
+function 生成当前应用内存位数据(应用名称) {
+  const 占用内存 = 内存占用表.get(应用名称).容量;
+  const 十进制值 = 内存占用表.get(应用名称).值;
+  const 数字值 = parseInt(十进制值, 10);
+  const 二进制值 = 数字值.toString(2);
+  const 位数 = 占用内存 * 8;
+  
+}
 
 重置按钮.addEventListener("click", () => {
   const 输入框组 = document.querySelectorAll('input[type="text"]');

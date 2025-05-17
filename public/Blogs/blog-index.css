@@ -1036,7 +1036,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .专题列表::-webkit-scrollbar {
-  width: 12px;
+  width: 6px;
 }
 
 .专题列表::-webkit-scrollbar-track {
@@ -1044,12 +1044,14 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .专题列表::-webkit-scrollbar-thumb {
-  background-color: #426556;
+  /* background-color: #426556; */
+  background-color: rgb(127, 127, 127);
   /*border-radius: 100px;*/
 }
 
 .专题列表::-webkit-scrollbar-thumb:hover {
-  background-color: #577e6d;
+  /* background-color: #577e6d; */
+  background-color: rgb(160, 160, 160);
 }
 
 .专题 {
@@ -1833,7 +1835,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 .分区普通文本 {
   font-size: 1.05em;
   line-height: 2rem;
-  padding: 10px 0;
+  padding: 20px 0;
   /*color: #b4c5d7;*/
   color: var(--正文颜色);
 }
@@ -2188,6 +2190,10 @@ div.code-toolbar > .toolbar {
 
   .收藏区 {
     right: 25px;
+  }
+
+  body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .收藏区 {
+    right: calc(25px + var(--scrollbar-width));
   }
 }
 

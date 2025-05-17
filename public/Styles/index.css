@@ -19,7 +19,6 @@
 
 /* <!-- ------------------ ↓ 欢迎内容 ------------------- --> */
 .welcome-main {
-  background-image: url("/Images/Index-Images/沙漠夜空.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -438,6 +437,35 @@
 
 .推荐卡片-经验之谈:hover {
   background-color: #3b4557cc;
+  box-shadow: 5px 5px 10px 0 #0005, inset 0 0 15px 0 #b7d6d6dd;
+}
+
+.推荐卡片-学习笔记 {
+  background-color: #cbcbcbdd;
+  color: #3b4646;
+  clip-path: inset(50% 50% 50% 50%);
+  animation: 学习笔记推荐卡片动画 0.5s ease-out 750ms forwards;
+}
+
+@keyframes 学习笔记推荐卡片动画 {
+  from {
+    clip-path: inset(50% 50% 50% 50%);
+  }
+  99.99% {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: none;
+  }
+}
+
+.推荐卡片-学习笔记:link,
+.推荐卡片-学习笔记:visited {
+  color: #3b4646;
+}
+
+.推荐卡片-学习笔记:hover {
+  background-color: #cbcbcbee;
   box-shadow: 5px 5px 10px 0 #0005, inset 0 0 15px 0 #b7d6d6dd;
 }
 

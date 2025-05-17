@@ -275,6 +275,7 @@
   color: var(--贡献区文本颜色);
   flex-grow: 1;
   font-size: 18px;
+  outline: none;
 }
 
 .贡献分区:hover {
