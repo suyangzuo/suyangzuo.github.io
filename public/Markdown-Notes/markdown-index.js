@@ -1,17 +1,25 @@
 const 笔记对象 = {
-  Linux: { 图标: "/Images/Page-Logos/Linux.png", 笔记: ["apt 查找软件包", "深色模式", "115网盘"] },
+  Linux: { 图标: "/Images/Page-Logos/Linux.png", 笔记: ["apt搜索包名称", "深色模式", "115网盘"] },
+  SQLite: { 图标: "/Images/Page-Logos/数据库/SQLite.png", 笔记: [] },
 };
 
-const 心得区 = document.querySelector(".心得区");
+const 二级目录区 = document.querySelector(".二级目录区");
 const 目录区 = document.querySelector(".目录区");
 const 笔记对话框 = document.getElementById("笔记对话框");
+const 关闭对话框按钮 = 笔记对话框.querySelector("#关闭对话框");
+关闭对话框按钮.addEventListener("click", () => {
+  笔记对话框.close();
+});
 
 for (const 键 in 笔记对象) {
-  生成学习心得标题目录(键);
-  生成学习心得目录(键);
+  生成一级目录(键);
 }
 
-function 生成学习心得标题目录(键) {
+生成二级目录("Linux");
+
+document.querySelector(".目录").classList.add("当前目录");
+
+function 生成一级目录(键) {
   const 目录 = document.createElement("div");
   目录.className = "目录";
   目录区.appendChild(目录);
@@ -33,15 +41,32 @@ function 生成学习心得标题目录(键) {
   目录Logo容器.appendChild(目录Logo);
 
   目录链接.append(目录Logo容器, 目录标题);
+
+  目录.addEventListener("click", () => {
+    二级目录区.innerHTML = "";
+    const 当前目录 = 目录区.querySelector(".当前目录");
+    当前目录.classList.remove("当前目录");
+    目录.classList.add("当前目录");
+    if (笔记对象[键].笔记.length === 0) {
+      return;
+    }
+    生成二级目录(键);
+  });
 }
 
-function 生成学习心得目录(键) {
+function 生成二级目录(键) {
   const 笔记名称组 = 笔记对象[键].笔记;
-  for (const 笔记名称 of 笔记名称组) {
+  for (const [index, 笔记名称] of 笔记名称组.entries()) {
     const 条目链接 = document.createElement("div");
     条目链接.className = "条目链接";
-    条目链接.textContent = 笔记名称;
-    心得区.appendChild(条目链接);
+    二级目录区.appendChild(条目链接);
+    const 链接序号 = document.createElement("span");
+    链接序号.className = "链接序号";
+    链接序号.textContent = index + 1;
+    const 链接标题 = document.createElement("span");
+    链接标题.className = "链接标题";
+    链接标题.textContent = 笔记名称;
+    条目链接.append(链接序号, 链接标题);
 
     const 笔记文件名 = 笔记名称.replaceAll(" ", "");
     条目链接.addEventListener("click", () => {
@@ -56,8 +81,16 @@ function 生成学习心得目录(键) {
             const src_final = `${src_split[0]}Markdown-Notes/${键}/${笔记文件名}${src_split[1]}`;
             img.src = src_final;
           }
+          const h2_all = 笔记区.querySelectorAll("h2");
+          for (const h2 of h2_all) {
+            const 前缀符号 = document.createElement("span");
+            前缀符号.className = "前缀符号";
+            前缀符号.innerHTML = "&#10017; ";
+            h2.prepend(前缀符号);
+          }
           hljs.highlightAll();
           笔记对话框.showModal();
+          笔记对话框.scrollTop = 0;
         });
     });
   }

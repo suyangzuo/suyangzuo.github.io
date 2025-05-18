@@ -17,9 +17,14 @@
   --中文代码混合字体: "JetBrains Mono", Consolas, monospace, "Noto Sans SC", 微软雅黑，sans-serif;
 }
 
-:where(.top-banner, #公共页脚, .标题区, .心得区, .目录区, .笔记信息区) *,
-:where(.top-banner, #公共页脚, .标题区, .心得区, .目录区, .笔记信息区) *::before,
-:where(.top-banner, #公共页脚, .标题区, .心得区, .目录区, .笔记信息区) *::after {
+.top-banner,
+#公共页脚 {
+  box-sizing: border-box;
+}
+
+:where(.top-banner, #公共页脚, .标题区, .二级目录区, .目录区, .笔记信息区) *,
+:where(.top-banner, #公共页脚, .标题区, .二级目录区, .目录区, .笔记信息区) *::before,
+:where(.top-banner, #公共页脚, .标题区, .二级目录区, .目录区, .笔记信息区) *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -58,10 +63,28 @@ body {
 }
 
 #笔记对话框 {
+  position: relative;
   width: 100%;
   height: 100%;
   background-color: transparent;
   outline: none;
+}
+
+#关闭对话框 {
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  font-size: 18px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
+
+#关闭对话框:hover {
+  background-color: #fff2;
 }
 
 #笔记对话框::backdrop {
@@ -83,14 +106,27 @@ body {
   color: rgb(48, 181, 90);
 }
 
+.前缀符号 {
+  color: lightsteelblue;
+}
+
 .笔记区 li,
-.笔记本 p {
+.笔记区 p {
   line-height: 1.75em;
 }
 
-.笔记区 h1:not(:first-of-type) {
-  margin-top: 75px;
+.笔记区 h1 {
+  margin-bottom: 40px;
 }
+
+.笔记区 h1:not(:first-of-type) {
+  margin-top: 100px;
+}
+
+.笔记区 h2:not(:first-of-type) {
+  margin-top: 40px;
+}
+
 
 .笔记区 :where(h1, h2, h3) {
   position: relative;
@@ -107,7 +143,7 @@ body {
 }
 
 .笔记区 img {
-  width: 100%;
+  max-width: 100%;
 }
 
 .笔记区 pre {
@@ -150,10 +186,18 @@ a {
 }
 
 a:link {
-  color: rgb(110, 156, 212);
+  color: aliceblue;
 }
 
 a:visited {
+  color: aliceblue;
+}
+
+.笔记区 a:link {
+  color: rgb(110, 156, 212);
+}
+
+.笔记区 a:visited {
   color: rgb(110, 156, 212);
 }
 
