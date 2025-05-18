@@ -17,12 +17,33 @@
   --中文代码混合字体: "JetBrains Mono", Consolas, monospace, "Noto Sans SC", 微软雅黑，sans-serif;
 }
 
-:where(.top-banner, #公共页脚) *,
-:where(.top-banner, #公共页脚) *::before,
-:where(.top-banner, #公共页脚) *::after {
+:where(.top-banner, #公共页脚, .标题区, .心得区, .目录区, .笔记信息区) *,
+:where(.top-banner, #公共页脚, .标题区, .心得区, .目录区, .笔记信息区) *::before,
+:where(.top-banner, #公共页脚, .标题区, .心得区, .目录区, .笔记信息区) *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+*::-webkit-scrollbar {
+  width: var(--scrollbar-width);
+}
+
+*::-webkit-scrollbar:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track-color);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-color);
+  border-radius: 30px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #577e6d;
 }
 
 body {
@@ -36,25 +57,72 @@ body {
   font-family: "Noto Sans SC", 微软雅黑, sans-serif, Consolas, monospace;
 }
 
-.Markdown {
+#笔记对话框 {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  outline: none;
+}
+
+#笔记对话框::backdrop {
+  background-color: #00050acc;
+  backdrop-filter: blur(15px);
+}
+
+.笔记区 {
   box-sizing: border-box;
   width: 1000px;
   padding: 50px;
-  margin: 100px auto;
-  background-color: #ffffff05;
+  margin: 50px auto;
+  background-color: #ffffff0a;
   color: silver;
   font-family: var(--中文代码混合字体);
 }
 
-.Markdown img {
+.笔记区 strong {
+  color: rgb(48, 181, 90);
+}
+
+.笔记区 li,
+.笔记本 p {
+  line-height: 1.75em;
+}
+
+.笔记区 h1:not(:first-of-type) {
+  margin-top: 75px;
+}
+
+.笔记区 :where(h1, h2, h3) {
+  position: relative;
+}
+
+.笔记区 :where(h1, h2, h3)::after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 1px;
+  background-color: #def1;
+  bottom: -10px;
+  left: 0;
+}
+
+.笔记区 img {
   width: 100%;
 }
 
-.Markdown pre {
+.笔记区 pre {
   border: solid 1px #def3;
 }
 
-.Markdown code:not(pre code) {
+.笔记区 code {
+  font-size: 14px;
+}
+
+.笔记区 :is(h1, h2, h3, h4, h5, h6) code {
+  font-size: 1em;
+}
+
+.笔记区 code:not(pre code) {
   background-color: #fff1;
   color: rgb(207, 191, 100);
   padding: 2px 5px;
@@ -77,8 +145,16 @@ a:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
-:where(.top-banner, #公共页脚) a:visited {
-  color: aliceblue;
+a {
+  outline: none;
+}
+
+a:link {
+  color: rgb(110, 156, 212);
+}
+
+a:visited {
+  color: rgb(110, 156, 212);
 }
 
 :where(.top-banner, #公共页脚) button {

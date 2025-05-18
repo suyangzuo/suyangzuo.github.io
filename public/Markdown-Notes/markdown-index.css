@@ -1,11 +1,3 @@
-:root {
-  --光标-默认: url("/Images/Common/鼠标-默认.cur"), auto;
-  --光标-手指: url("/Images/Common/鼠标-指向.cur"), pointer;
-  --中文字体: "Noto Sans SC", 微软雅黑，sans-serif;
-  --代码字体: "JetBrains Mono", Consolas, monospace;
-  --中文代码混合字体: "JetBrains Mono", Consolas, monospace, "Noto Sans SC", 微软雅黑，sans-serif;
-}
-
 .总区 {
   min-height: 100vh;
   padding: 50px 0;
@@ -27,13 +19,14 @@
 
 .标题英文 {
   font-family: var(--代码字体);
-  font-size: 1.25em;
+  font-size: 1em;
   color: darkgoldenrod;
 }
 
 .标题中文 {
   font-family: var(--中文字体);
   font-weight: normal;
+  font-size: 1.25em;
   color: rgb(126, 186, 35);
 }
 
@@ -55,6 +48,7 @@
 
 .条目链接:hover {
   background-color: #def2;
+  cursor: var(--光标-手指);
 }
 
 .目录区 {

@@ -4,23 +4,29 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>学习笔记</title>
-    <link rel="icon" href="/Images/Markdown-Notes/学习笔记-01.webp" type="image/x-icon" />
+    <title>知识库</title>
+    <link rel="icon" href="/Images/Markdown-Notes/知识库-01.webp" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Titillium+Web&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Roboto+Mono&family=M+PLUS+Code+Latin&family=Ubuntu+Mono&family=M+PLUS+1+Code:wght@100..700&display=swap"
       rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="/Styles/common.css" /> -->
     <link rel="stylesheet" type="text/css" href="/Styles/top-banner-common.css" />
     <link rel="stylesheet" href="./markdown-index.css" />
+    <link rel="stylesheet" href="./markdown-common.css" />
     <link rel="stylesheet" href="/Font-Awesome-Free/css/fontawesome.css" />
     <link rel="stylesheet" href="/Font-Awesome-Free/css/brands.css" />
     <link rel="stylesheet" href="/Font-Awesome-Free/css/solid.css" />
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
     <script src="/Scripts/top-banner.js" defer></script>
     <script src="/Scripts/footer.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="./markdown-index.js" defer></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
   </head>
 
   <body>
@@ -31,11 +37,15 @@
     <div class="总区">
       <div class="标题区">
         <h2 class="大标题">
-          <span class="标题英文">Mark</span><span class="标题中文">学习心得</span><span class="标题英文">Down</span>
+          <span class="标题英文">Mark</span><span class="标题中文">知识</span><span class="标题英文">Down</span>
         </h2>
       </div>
       <div class="心得区"></div>
       <div class="目录区"></div>
+      <dialog id="笔记对话框">
+        <div class="笔记信息区"></div>
+        <div class="笔记区"></div>
+      </dialog>
     </div>
 
     <!-- --------------------------- ↓ 底部横幅 -------------------------------- -->
