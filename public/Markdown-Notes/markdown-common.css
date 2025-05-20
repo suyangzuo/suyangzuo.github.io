@@ -75,16 +75,17 @@ body {
   height: 50px;
   border-radius: 5px;
   font-size: 18px;
-  position: absolute;
+  position: fixed;
   top: 20px;
-  right: 20px;
+  right: 30px;
   outline: none;
   border: none;
   background-color: transparent;
 }
 
 #关闭对话框:hover {
-  background-color: #fff2;
+  outline: solid 2px #fff3;
+  filter: brightness(2);
 }
 
 #笔记对话框::backdrop {
@@ -97,13 +98,17 @@ body {
   width: 1000px;
   padding: 50px;
   margin: 50px auto;
-  background-color: #ffffff0a;
+  background-color: #ffffff12;
   color: silver;
   font-family: var(--中文代码混合字体);
 }
 
 .笔记区 strong {
   color: rgb(48, 181, 90);
+}
+
+.笔记区 em {
+  color: rgb(255, 100, 100);
 }
 
 .前缀符号 {
@@ -126,7 +131,6 @@ body {
 .笔记区 h2:not(:first-of-type) {
   margin-top: 40px;
 }
-
 
 .笔记区 :where(h1, h2, h3) {
   position: relative;

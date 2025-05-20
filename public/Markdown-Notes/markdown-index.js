@@ -1,5 +1,72 @@
-const 笔记对象 = {
-  Linux: { 图标: "/Images/Page-Logos/Linux.png", 笔记: ["apt搜索包名称", "深色模式", "115网盘"] },
+const 知识库 = {
+  Linux: {
+    图标: "/Images/Page-Logos/Linux.png",
+    笔记: [
+      {
+        标题: "apt搜索包名称",
+        作者: "苏扬",
+        时间: {
+          年: 2025,
+          月: 5,
+          日: 10,
+        },
+      },
+      {
+        标题: "深色模式",
+        作者: "苏扬",
+        时间: {
+          年: 2025,
+          月: 5,
+          日: 11,
+        },
+      },
+      {
+        标题: "115网盘",
+        作者: "苏扬",
+        时间: {
+          年: 2025,
+          月: 5,
+          日: 12,
+        },
+      },
+      {
+        标题: "Fcitx",
+        作者: "苏扬",
+        时间: {
+          年: 2025,
+          月: 5,
+          日: 10,
+        },
+      },
+      {
+        标题: "终端 & Shell",
+        作者: "苏扬",
+        时间: {
+          年: 2025,
+          月: 5,
+          日: 10,
+        },
+      },
+      {
+        标题: "Flatpak",
+        作者: "苏扬",
+        时间: {
+          年: 2025,
+          月: 5,
+          日: 10,
+        },
+      },
+      {
+        标题: "字体",
+        作者: "苏扬",
+        时间: {
+          年: 2025,
+          月: 5,
+          日: 10,
+        },
+      },
+    ],
+  },
   SQLite: { 图标: "/Images/Page-Logos/数据库/SQLite.png", 笔记: [] },
 };
 
@@ -11,7 +78,7 @@ const 关闭对话框按钮 = 笔记对话框.querySelector("#关闭对话框");
   笔记对话框.close();
 });
 
-for (const 键 in 笔记对象) {
+for (const 键 in 知识库) {
   生成一级目录(键);
 }
 
@@ -36,7 +103,7 @@ function 生成一级目录(键) {
   目录Logo容器.className = "目录Logo容器";
   const 目录Logo = document.createElement("img");
   目录Logo.className = "目录Logo";
-  目录Logo.src = 笔记对象[键].图标;
+  目录Logo.src = 知识库[键].图标;
   目录Logo.alt = "目录Logo";
   目录Logo容器.appendChild(目录Logo);
 
@@ -47,7 +114,7 @@ function 生成一级目录(键) {
     const 当前目录 = 目录区.querySelector(".当前目录");
     当前目录.classList.remove("当前目录");
     目录.classList.add("当前目录");
-    if (笔记对象[键].笔记.length === 0) {
+    if (知识库[键].笔记.length === 0) {
       return;
     }
     生成二级目录(键);
@@ -55,8 +122,8 @@ function 生成一级目录(键) {
 }
 
 function 生成二级目录(键) {
-  const 笔记名称组 = 笔记对象[键].笔记;
-  for (const [index, 笔记名称] of 笔记名称组.entries()) {
+  const 笔记对象组 = 知识库[键].笔记;
+  for (const [index, 笔记对象] of 笔记对象组.entries()) {
     const 条目链接 = document.createElement("div");
     条目链接.className = "条目链接";
     二级目录区.appendChild(条目链接);
@@ -65,10 +132,10 @@ function 生成二级目录(键) {
     链接序号.textContent = index + 1;
     const 链接标题 = document.createElement("span");
     链接标题.className = "链接标题";
-    链接标题.textContent = 笔记名称;
+    链接标题.textContent = 笔记对象.标题;
     条目链接.append(链接序号, 链接标题);
 
-    const 笔记文件名 = 笔记名称.replaceAll(" ", "");
+    const 笔记文件名 = 笔记对象.标题.replaceAll(" ", "");
     条目链接.addEventListener("click", () => {
       const 笔记区 = 笔记对话框.querySelector(".笔记区");
       fetch(`./${键}/${笔记文件名}/${笔记文件名}.md`)
@@ -85,7 +152,7 @@ function 生成二级目录(键) {
           for (const h2 of h2_all) {
             const 前缀符号 = document.createElement("span");
             前缀符号.className = "前缀符号";
-            前缀符号.innerHTML = "&#10017; ";
+            前缀符号.innerHTML = "&#128209; ";
             h2.prepend(前缀符号);
           }
           hljs.highlightAll();

@@ -33,7 +33,7 @@
 - `apt list | grep edge | grep microsoft`
 
   ![sudo apt install qq](./Images/grep-edge_grep-microsoft.png)
-  非常好！这回只有 `3` 个结果。仔细看可以发现，`Edge` 浏览器分为 3 个分支：
+  非常好！这回只有 `3` 个结果，说明 `Edge` 浏览器分为 **3** 个分支：
 
   - `beta`：公开测试分支
   - `dev`：开发分支
