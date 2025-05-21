@@ -48,7 +48,7 @@
   display: flex;
   justify-content: center;
   gap: 20px;
-  --目录背景色: #def1;
+  --目录背景色: #456;
   --未选目录背景色: #0006;
 }
 
@@ -58,25 +58,38 @@
   display: flex;
   flex-direction: column;
   font-family: var(--中文代码混合字体);
-  /* border-right: solid 1px var(--目录背景色); */
 }
 
 .目录 {
-  border: solid 1px #def3;
+  position: relative;
   padding-right: 25px;
-  background-color: #000a;
+  background-color: #111;
 }
 
-.目录:hover {
+.目录::before {
+  position: absolute;
+  z-index: -1;
+  content: "";
+  width: 35px;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: var(--目录背景色);
+  clip-path: polygon(100% 0%, 100% 100%, 0% 50%);
+}
+
+.当前目录::before {
+  translate: -100% 0;
+  transition: 250ms;
+}
+
+.目录:not(.当前目录):hover {
   cursor: var(--光标-手指);
+  box-shadow: inset 0 0 0 1px #999;
 }
 
 .目录.当前目录 {
   background-color: var(--目录背景色);
-}
-
-.目录:hover {
-  border: solid 1px rgb(104, 155, 28);
 }
 
 .目录链接 {
@@ -105,7 +118,7 @@
 .目录标题 {
   flex-grow: 1;
   font-size: 15px;
-  color: rgb(173, 186, 186);
+  color: rgb(203, 219, 219);
 }
 
 .二级目录区 {
@@ -145,7 +158,7 @@
   text-align: center;
   align-content: center;
   flex-shrink: 0;
-  outline: solid 1px #444;
+  outline: solid 1px #555;
   box-shadow: 2px 2px 2px 0 #000a;
 }
 
@@ -153,7 +166,7 @@
   text-wrap: nowrap;
   flex-shrink: 0;
   font-size: 15px;
-  color: lightcyan;
+  color: rgb(233, 235, 235);
 }
 
 .条目链接:hover .链接标题 {
