@@ -120,6 +120,11 @@ body {
   line-height: 1.75em;
 }
 
+.笔记区 ul:not(ul ul, ol ul),
+.笔记区 ol:not(ul ol, ol ol) {
+  padding-left: 2ch;
+}
+
 .笔记区 h1 {
   margin-bottom: 40px;
 }
