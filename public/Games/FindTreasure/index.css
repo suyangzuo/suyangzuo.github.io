@@ -1,0 +1,294 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: rgb(33, 40, 48);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  color: #e0e0e0;
+}
+
+/* ----------------------------------------------动态背景---------------------------------------------- */
+.背景 {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(
+      circle at 20% 30%,
+      rgba(255, 255, 255, 0.1) 1px,
+      transparent 1px
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(255, 255, 255, 0.1) 1px,
+      transparent 1px
+    );
+  background-size: 3vmin 3vmin;
+  animation: starsMove 20s linear infinite;
+  z-index: -1;
+}
+
+@keyframes starsMove {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 100vmin 50vmin;
+  }
+}
+/* ----------------------------------------------动态背景---------------------------------------------- */
+
+/*  游戏主容器  */
+.game-container {
+  background-color: rgba(45, 52, 60, 0.9);
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  padding: 30px;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 游戏标题样式 */
+h1 {
+  color: #6bb9f0;
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+/* 9个圆形容器布局 */
+.game-board-container {
+  display: flex;
+  justify-content: center;
+  /* margin: 20px 0; */
+}
+
+/* 网格布局 */
+.game-board {
+  display: grid; /* 网格布局 */
+  grid-template-columns: repeat(3, 1fr); /* 3列等宽 */
+  gap: 15px; /*元素间距 */
+}
+
+/* 单个圆形样式 */
+.hole {
+  width: 120px;
+  height: 120px;
+  background-color: rgb(60, 70, 80);
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden; /* 隐藏溢出内容 */
+  cursor: pointer;
+  box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* 悬停效果 */
+.hole:hover {
+  transform: scale(1.05);
+}
+
+/* 宝藏样式 */
+.mole {
+  width: 80%;
+  height: 80%;
+  position: absolute; /* 绝对定位 */
+  bottom: -100%; /* 初始隐藏位置 */
+  left: 10%; /* 水平居中 */
+  background-image: url(./OIP-C.png);
+  background-size: contain; /* 图片适应 */
+  background-repeat: no-repeat; /* 禁止重复 */
+  transition: bottom 0.3s; /* 上升动画 */
+}
+
+/* 宝藏出现 */
+.mole.up {
+  bottom: 10%;
+} /* 上升后位置 */
+
+/* 控制区域布局 */
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* 难度按钮组布局 */
+.difficulty {
+  display: flex;
+  gap: 20px;
+}
+
+button {
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 1rem;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+  min-width: 80px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 难度按钮特殊样式 */
+.difficulty button {
+  background: linear-gradient(145deg, #4a89dc, #3b7dd8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 禁用状态按钮 */
+.difficulty button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #555;
+}
+
+/* 开始按钮样式 */
+#start {
+  background: linear-gradient(145deg, #37bc9b, #2ca189);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 10px 25px;
+}
+
+/* 按钮交互状态  */
+button:not(:disabled):hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* 激活按钮 */
+button.active {
+  background: linear-gradient(145deg, #e9573f, #d6452b);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+
+/* 得分 */
+.score-board {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+  font-size: 1.2rem;
+  background-color: rgba(60, 70, 80, 0.7);
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 分数显示 */
+.score {
+  color: #ff6b6b;
+  font-weight: bold;
+}
+
+/* 时间显示 */
+.time {
+  color: #6bb9f0;
+  font-weight: bold;
+}
+
+.规则按钮 {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px; /* 固定宽度 */
+  height: 40px; /* 与宽度相同 */
+  min-width: 40px; /* 覆盖按钮默认的min-width */
+  padding: 0; /* 清除内边距 */
+  border-radius: 50%; /* 强制圆形 */
+  background: rgb(80, 90, 100);
+  color: #6bb9f0;
+  border: none;
+  font-size: 1.5rem; /* 调整问号大小 */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  line-height: 1; /* 确保垂直居中 */
+}
+
+.规则按钮:hover {
+  background: rgb(90, 100, 110);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+}
+
+ /* 规则窗口 */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+}
+
+ /* 弹窗内容 */
+.modal-content {
+  background-color: rgb(45, 52, 60);
+  padding: 25px;
+  border-radius: 15px;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #aaa;
+  background: none;
+  border: none;
+  width: 30px; /* 固定宽度 */
+  height: 30px; /* 与宽度相同 */
+  padding: 0; /* 清除内边距 */
+  min-width: auto; /* 覆盖全局按钮样式 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%; /* 强制圆形 */
+  transition: all 0.2s;
+  line-height: 1; /* 文字垂直居中 */
+}
+
+.close-btn:hover {
+  color: #ff6b6b;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+h2 {
+  color: #6bb9f0;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+ul {
+  text-align: left;
+  padding-left: 20px;
+  color: #e0e0e0;
+}
+
+li {
+  margin-bottom: 15px;
+}
