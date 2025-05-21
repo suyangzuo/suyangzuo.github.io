@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>找宝藏</title>
+    <link rel="icon" href="/Games/Mario-Run.gif" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&family=Noto+Sans+SC&display=swap"
+      rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="../game-common.css" />
+    <link rel="stylesheet" type="text/css" href="./index.css" />
+    <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/Styles/top-banner-common.css" />
+    <script src="/Scripts/d0483e3bd3.js" crossorigin="anonymous"></script>
+    <script src="/Scripts/top-banner.js" defer></script>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+  </head>
+
+  <body>
+    <div class="背景">
+      <script
+        src="/Scripts/html-include.js"
+        target="/top-banner.html"
+        position="afterbegin"></script>
+      <div class="control-area">
+        <div class="back-to-navigator">
+          <a href="../" title="返回游戏大厅">
+            <img src="../后退.png" alt="后退" />
+          </a>
+        </div>
+        <div class="reset-game">
+          <img src="../重置.png" alt="重置游戏" title="重置" />
+        </div>
+      </div>
+    </div>
+
+    <div class="game-container">
+      <button class="规则按钮">?</button>
+
+      <h1>找宝藏</h1>
+
+      <div class="controls">
+        <div class="difficulty">
+          <button id="easy" class="active">简单</button>
+          <button id="medium">中等</button>
+          <button id="hard">困难</button>
+        </div>
+        <button id="start">开始游戏</button>
+      </div>
+
+      <div class="game-board-container">
+        <div class="game-board">
+          <div class="hole"><div class="mole"></div></div>
+          <div class="hole"><div class="mole"></div></div>
+          <div class="hole"><div class="mole"></div></div>
+          <div class="hole"><div class="mole"></div></div>
+          <div class="hole"><div class="mole"></div></div>
+          <div class="hole"><div class="mole"></div></div>
+          <div class="hole"><div class="mole"></div></div>
+          <div class="hole"><div class="mole"></div></div>
+          <div class="hole"><div class="mole"></div></div>
+        </div>
+      </div>
+
+      <div class="score-board">
+        <div>得分: <span class="score">0</span></div>
+        <div>时间: <span class="time">30</span>秒</div>
+      </div>
+    </div>
+
+    <div class="modal">
+      <div class="modal-content">
+        <button class="close-btn">&times;</button>
+        <h2>游戏规则</h2>
+        <ul>
+          <li>点击"开始游戏"按钮开始</li>
+          <li>当宝藏出现时，点击宝藏</li>
+          <li>每找到宝藏得1分</li>
+          <li>游戏时间为60秒</li>
+          <li>游戏开始后不能切换难度</li>
+          <li>
+            以下是三种难度介绍：
+            <ul>
+              <li><strong>简单</strong>：宝藏出现速度慢</li>
+              <li><strong>中等</strong>：宝藏速度中等</li>
+              <li><strong>困难</strong>：宝藏出现速度快</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <script src="./index.js" defder></script>
+  </body>
+</html>
