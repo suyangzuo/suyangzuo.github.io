@@ -12,9 +12,9 @@
   --scrollbar-width: 10px;
   --光标-默认: url("/Images/Common/鼠标-默认.cur"), auto;
   --光标-手指: url("/Images/Common/鼠标-指向.cur"), pointer;
-  --中文字体: "Noto Sans SC", 微软雅黑，sans-serif;
+  --中文字体: "Noto Sans SC", 微软雅黑,sans-serif;
   --代码字体: "JetBrains Mono", Consolas, monospace;
-  --中文代码混合字体: "JetBrains Mono", Consolas, monospace, "Noto Sans SC", 微软雅黑，sans-serif;
+  --中文代码混合字体: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑,sans-serif, monospace;
 }
 
 .top-banner,
@@ -162,6 +162,7 @@ body {
 
 .笔记区 code {
   font-size: 14px;
+  font-family: var(--中文代码混合字体)
 }
 
 .笔记区 :is(h1, h2, h3, h4, h5, h6) code {
