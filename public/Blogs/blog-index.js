@@ -283,6 +283,7 @@ async function 设置内容() {
       const document = parser.parseFromString(content, "text/html");
       const 脚本组 = document.body.querySelectorAll("script");
       脚本组?.forEach((脚本) => {
+        脚本.type = "text/javascript";
         const 脚本代码 = 脚本.textContent.trim();
         Function(`'use strict'; return ${脚本代码}`)();
       });
