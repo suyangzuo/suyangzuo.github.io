@@ -4,6 +4,7 @@ const 变量区 = document.querySelector(".变量区");
 const 变量容器区 = 变量区.querySelector(".变量容器区");
 const 内存容量滑块 = document.getElementById("内存容量");
 const 变量容器组 = document.getElementsByClassName("变量容器");
+const 已占用变量容器组 = document.getElementsByClassName("变量容器 已占用");
 const 重置按钮 = document.querySelector(".重置按钮");
 
 let 程序颜色 = "black";
@@ -478,7 +479,7 @@ for (const 代码输入框 of 代码输入框组) {
 
         生成当前应用内存位数据(标识符);
 
-        const 值类型是字符串 = Number.isNaN(parseInt(值), 10);
+        const 值类型是字符串 = Number.isNaN(parseInt(值, 10));
         if (值类型是字符串) {
           const 字符串正确 = 值.length > 1 && 值[0] === '"' && 值[值.length - 1] === '"';
         }
@@ -572,7 +573,6 @@ function 生成当前应用内存位数据(应用名称) {
   const 数字值 = parseInt(十进制值, 10);
   const 二进制值 = 数字值.toString(2);
   const 位数 = 占用内存 * 8;
-  
 }
 
 重置按钮.addEventListener("click", () => {

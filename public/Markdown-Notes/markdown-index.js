@@ -76,6 +76,20 @@ const 知识库 = {
       },
     ],
   },
+  JetBrains: {
+    图标: "/Images/Page-Logos/JetBrains.png",
+    笔记: [
+      {
+        标题: "使用 Prettier",
+        作者: "苏扬",
+        时间: {
+          年: 2025,
+          月: 5,
+          日: 27,
+        },
+      },
+    ],
+  },
   SQLite: { 图标: "/Images/Page-Logos/数据库/SQLite.png", 笔记: [] },
 };
 
