@@ -14,8 +14,7 @@ const 关闭技术栈对话框按钮 = document.querySelector(".关闭技术栈�
 const 技术栈组 = document.querySelectorAll(".技术栈");
 const 专题内容区 = document.getElementsByClassName("专题内容区")[0];
 
-const 转载提醒文本 =
-  "基于对初学者友好、易读易懂的原则，译者对原文内容和格式作了一些调整和补充。";
+const 转载提醒文本 = "基于对初学者友好、易读易懂的原则，译者对原文内容和格式作了一些调整和补充。";
 
 const 收藏栏按钮 = document.getElementById("收藏栏按钮");
 const 收藏按钮 = document.getElementById("收藏按钮");
@@ -56,9 +55,7 @@ if (sessionStorage.getItem("页面技术栈") === null) {
   技术栈名称 = sessionStorage.getItem("页面技术栈");
 }
 
-let index = JSON.parse(sessionStorage.getItem("专题索引记录")).find(
-  (记录) => 记录.技术栈 === 技术栈名称,
-).专题索引;
+let index = JSON.parse(sessionStorage.getItem("专题索引记录")).find((记录) => 记录.技术栈 === 技术栈名称).专题索引;
 
 let 专题名称 = "首页";
 if (sessionStorage.getItem("专题") === null) {
@@ -217,8 +214,7 @@ function 设置侧边栏(event) {
   // 此if用于后退、前进时
   if (event === undefined) {
     const 当前专题 = Array.from(专题组).find(
-      (专题) =>
-        专题名称 === 专题.getElementsByClassName("专题-内容")[0].innerText,
+      (专题) => 专题名称 === 专题.getElementsByClassName("专题-内容")[0].innerText
     );
 
     if (当前专题 === undefined) return;
@@ -245,9 +241,7 @@ function 设置侧边栏(event) {
 
   专题标记组 = document.querySelectorAll(".专题-标记");
 
-  index = JSON.parse(sessionStorage.getItem("专题索引记录")).find(
-    (记录) => 记录.技术栈 === 技术栈名称,
-  ).专题索引;
+  index = JSON.parse(sessionStorage.getItem("专题索引记录")).find((记录) => 记录.技术栈 === 技术栈名称).专题索引;
 
   专题组[index]?.classList.add("当前专题");
   专题组.forEach((专题) => {
@@ -409,9 +403,7 @@ function 生成章节() {
         event.preventDefault(); //防止将锚链接加入历史记录
 
         //上一行也会同时屏蔽锚链接的滚动，下面的代码恢复滚动功能
-        const targetElement = document.querySelector(
-          锚链接.getAttribute("href"),
-        );
+        const targetElement = document.querySelector(锚链接.getAttribute("href"));
         targetElement.scrollIntoView();
       });
 
@@ -429,16 +421,12 @@ function 生成章节() {
         event.preventDefault(); //防止将锚链接加入历史记录
 
         //上一行也会同时屏蔽锚链接的滚动，下面的代码恢复滚动功能
-        const targetElement = document.querySelector(
-          二级锚链接.getAttribute("href"),
-        );
+        const targetElement = document.querySelector(二级锚链接.getAttribute("href"));
         targetElement.scrollIntoView();
       });
 
       章节区内容.appendChild(二级锚链接);
-      const 三级标题组 = document.querySelectorAll(
-        `#${二级标题.id} ~ .分区3级标题`,
-      );
+      const 三级标题组 = document.querySelectorAll(`#${二级标题.id} ~ .分区3级标题`);
       三级标题组.forEach((三级标题, index_3) => {
         三级标题.id = `三级标题-${index_2 + 1}-${index_3 + 1}`;
         const 三级锚链接 = document.createElement("a");
@@ -450,9 +438,7 @@ function 生成章节() {
           event.preventDefault(); //防止将锚链接加入历史记录
 
           //上一行也会同时屏蔽锚链接的滚动，下面的代码恢复滚动功能
-          const targetElement = document.querySelector(
-            三级锚链接.getAttribute("href"),
-          );
+          const targetElement = document.querySelector(三级锚链接.getAttribute("href"));
           targetElement.scrollIntoView();
         });
 
@@ -475,9 +461,7 @@ function 初始化章节观察器() {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         let 标题索引 =
-          entry.target.className === 简介标题.className
-            ? -1
-            : Array.from(正文区标题组).indexOf(entry.target);
+          entry.target.className === 简介标题.className ? -1 : Array.from(正文区标题组).indexOf(entry.target);
 
         if (entry.target.className !== 简介标题.className) {
           章节区标题组[标题索引].classList.add("已激活");
@@ -559,8 +543,7 @@ function 特殊元素样式补充() {
     }
 
     if (
-      (内部行内专业名词前一节点.nodeType === Node.TEXT_NODE &&
-        内部行内专业名词前一节点.textContent.trim() === "") ||
+      (内部行内专业名词前一节点.nodeType === Node.TEXT_NODE && 内部行内专业名词前一节点.textContent.trim() === "") ||
       内部行内专业名词前一节点?.className?.includes("标题序号")
     ) {
       内部行内专业名词.style.marginLeft = "0";
@@ -576,10 +559,7 @@ function 特殊元素样式补充() {
       附加说明.style.marginLeft = "0";
     }
 
-    if (
-      前一节点.className !== "超链接" &&
-      前一节点.nodeType === Node.ELEMENT_NODE
-    ) {
+    if (前一节点.className !== "超链接" && 前一节点.nodeType === Node.ELEMENT_NODE) {
       附加说明.style.marginLeft = "2px";
     }
 
@@ -595,10 +575,7 @@ function 特殊元素样式补充() {
       超链接.style.marginLeft = "0";
     }
 
-    if (
-      前一节点?.nodeType === Node.TEXT_NODE &&
-      远距标点组.some((标点) => 标点 === 前一节点?.textContent.at(-1))
-    ) {
+    if (前一节点?.nodeType === Node.TEXT_NODE && 远距标点组.some((标点) => 标点 === 前一节点?.textContent.at(-1))) {
       超链接.style.marginLeft = "0";
     }
   });
@@ -611,20 +588,14 @@ function 特殊元素样式补充() {
     if (
       前一节点.tagName === "BR" ||
       (前一节点.nodeType === Node.TEXT_NODE &&
-        (远距标点组
-          .slice(-(远距标点组.length - 1))
-          .some((标点) => 标点 === 前一节点.textContent.at(-1)) ||
+        (远距标点组.slice(-(远距标点组.length - 1)).some((标点) => 标点 === 前一节点.textContent.at(-1)) ||
           前一节点.textContent.trim() === "")) ||
-      (前一节点.nodeType === Node.ELEMENT_NODE &&
-        行内专业名词.previousElementSibling.className === "专业名词")
+      (前一节点.nodeType === Node.ELEMENT_NODE && 行内专业名词.previousElementSibling.className === "专业名词")
     ) {
       行内专业名词.style.marginLeft = "0";
     }
 
-    if (
-      行内专业名词.parentElement.className === "附加说明" &&
-      行内专业名词 === 行内专业名词.parentNode.lastChild
-    ) {
+    if (行内专业名词.parentElement.className === "附加说明" && 行内专业名词 === 行内专业名词.parentNode.lastChild) {
       行内专业名词.style.marginRight = "0";
     }
 
@@ -639,10 +610,7 @@ function 特殊元素样式补充() {
   分区普通文本组?.forEach((分区普通文本) => {
     const 首节点 = 分区普通文本.firstChild;
     if (首节点 === null) return;
-    if (
-      首节点.nodeType === Node.TEXT_NODE &&
-      首节点.textContent.trim().length === 0
-    ) {
+    if (首节点.nodeType === Node.TEXT_NODE && 首节点.textContent.trim().length === 0) {
       const 第2节点 = 首节点.nextSibling;
       if (第2节点.nodeType === Node.ELEMENT_NODE) {
         第2节点.style.marginLeft = "0";
@@ -653,10 +621,7 @@ function 特殊元素样式补充() {
   const 专业名词组 = document.querySelectorAll(".专业名词");
   专业名词组?.forEach((专业名词) => {
     const 前一节点 = 专业名词.previousSibling;
-    if (
-      前一节点 === null ||
-      远距标点组.some((标点) => 标点 === 前一节点.textContent.at(-1))
-    ) {
+    if (前一节点 === null || 远距标点组.some((标点) => 标点 === 前一节点.textContent.at(-1))) {
       专业名词.style.marginLeft = "0";
     }
   });
@@ -664,10 +629,7 @@ function 特殊元素样式补充() {
   const 代码组 = document.querySelectorAll(".代码");
   代码组?.forEach((代码) => {
     const 前一节点 = 代码.previousSibling;
-    if (
-      前一节点 === null ||
-      远距标点组.some((标点) => 标点 === 前一节点.textContent.at(-1))
-    ) {
+    if (前一节点 === null || 远距标点组.some((标点) => 标点 === 前一节点.textContent.at(-1))) {
       代码.style.marginLeft = "0";
     }
 
@@ -684,10 +646,7 @@ function 特殊元素样式补充() {
 
     const 父元素 = 代码.parentElement;
     if (父元素 === null) return;
-    if (
-      父元素.className === "行内专业名词" &&
-      父元素.style.marginRight !== "0"
-    ) {
+    if (父元素.className === "行内专业名词" && 父元素.style.marginRight !== "0") {
       代码.style.marginRight = "0";
     }
 
@@ -711,12 +670,13 @@ function 特殊元素样式补充() {
       const 前一节点 = 行内代码.previousSibling;
       if (前一节点.nodeType === Node.ELEMENT_NODE) {
         const 前一元素 = 行内代码.previousElementSibling;
-        if (前一元素.className === "行内专业名词") {
+        if (前一元素.className === "行内专业名词" || 前一元素.className.includes("标题序号")) {
           行内代码.style.marginLeft = "0";
           return;
         }
       }
       const 修剪文本 = 前一节点.textContent.trim();
+      console.log(前一节点);
       if (
         修剪文本 === "" ||
         远距标点组.some((标点) => 标点 === 修剪文本) ||
@@ -736,9 +696,7 @@ function 特殊元素样式补充() {
     }
   });
 
-  const 换行符后续块内组 = document.querySelectorAll(
-    "br + :is(.代码, .专业名词, .附加说明)",
-  );
+  const 换行符后续块内组 = document.querySelectorAll("br + :is(.代码, .专业名词, .附加说明)");
   换行符后续块内组?.forEach((元素) => {
     let 前一节点 = 元素.previousSibling;
     let 前一元素 = 元素.previousElementSibling;
@@ -753,10 +711,7 @@ function 特殊元素样式补充() {
   const 强调组 = document.querySelectorAll(".强调");
   强调组?.forEach((强调) => {
     const 前一节点 = 强调.previousSibling;
-    if (
-      前一节点 === null ||
-      远距标点组.some((标点) => 标点 === 前一节点.textContent.at(-1))
-    ) {
+    if (前一节点 === null || 远距标点组.some((标点) => 标点 === 前一节点.textContent.at(-1))) {
       强调.style.marginLeft = "0";
     }
 
@@ -815,9 +770,7 @@ function 修改视口尺寸() {
 
 function 当前专题已被收藏时刷新收藏按钮样式() {
   if (
-    JSON.parse(localStorage.getItem("博客收藏"))?.some(
-      (收藏) => 收藏.技术栈 === 技术栈名称 && 收藏.专题 === 专题名称,
-    )
+    JSON.parse(localStorage.getItem("博客收藏"))?.some((收藏) => 收藏.技术栈 === 技术栈名称 && 收藏.专题 === 专题名称)
   ) {
     // 收藏按钮.style.color = "seagreen";
     收藏按钮.classList.add("已收藏状态按钮");
@@ -895,10 +848,7 @@ function 更新图像序号() {
     截图序号.textContent = `图 ${imageIndex + 1}`;
 
     const containerSibling = container.nextElementSibling;
-    if (
-      containerSibling !== null &&
-      containerSibling.className === "分区普通文本"
-    ) {
+    if (containerSibling !== null && containerSibling.className === "分区普通文本") {
       const 行内截图序号 = document.createElement("span");
       行内截图序号.className = "行内截图序号";
       行内截图序号.textContent = `· 图${imageIndex + 1} ·`;
@@ -909,10 +859,7 @@ function 更新图像序号() {
 
 function 生成永恒代码统计图表() {
   // 基于准备好的dom，初始化echarts实例
-  const myChart = echarts.init(
-    document.getElementById("永恒代码统计图表"),
-    "dark",
-  );
+  const myChart = echarts.init(document.getElementById("永恒代码统计图表"), "dark");
 
   // 指定图表的配置项和数据
   const option = {
@@ -1006,4 +953,3 @@ function 生成永恒代码统计图表() {
 }
 
 //------------------- ↑ 监控专题内容区内 DOM 修改 -------------------
-
