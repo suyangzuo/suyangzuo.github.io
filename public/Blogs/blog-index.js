@@ -365,7 +365,7 @@ function 生成章节区() {
   章节区.id = "章节区";
   const 章节区标题 = document.createElement("h2");
   章节区标题.className = "章节区标题";
-  章节区标题.textContent = "章节";
+  章节区标题.textContent = "目录";
   const 章节区内容 = document.createElement("div");
   章节区内容.className = "章节区内容";
   章节区.append(章节区标题, 章节区内容);
@@ -676,7 +676,6 @@ function 特殊元素样式补充() {
         }
       }
       const 修剪文本 = 前一节点.textContent.trim();
-      console.log(前一节点);
       if (
         修剪文本 === "" ||
         远距标点组.some((标点) => 标点 === 修剪文本) ||
@@ -796,45 +795,50 @@ function 专题改变时运行() {
 function 双击图像生成图像对话框() {
   const 截图容器组 = document.getElementsByClassName("截图容器");
   for (const 截图容器 of 截图容器组) {
-    const 图像 = 截图容器.querySelector("img");
-    if (图像 === null) continue;
-    const 图像源 = 图像.src;
-    const 图像替换文本 = 图像.alt;
-    图像.title = "单击以放大";
+    // const 图像 = 截图容器.querySelector("img");
+    // if (图像 === null) continue;
+    const 图像组 = 截图容器.querySelectorAll("img");
+    if (图像组.length === 0) continue;
 
-    图像.addEventListener("click", () => {
-      const 对话框 = document.createElement("dialog");
-      对话框.className = "图像对话框";
-      对话框.classList.add("图像对话框出现");
-      对话框.addEventListener("click", () => {
-        对话框.classList.remove("图像对话框出现");
-        对话框.classList.add("图像对话框消失");
-        setTimeout(() => {
-          对话框.remove();
-        }, 250);
+    for (const 图像 of 图像组) {
+      const 图像源 = 图像.src;
+      const 图像替换文本 = 图像.alt;
+      图像.title = "单击以放大";
+
+      图像.addEventListener("click", () => {
+        const 对话框 = document.createElement("dialog");
+        对话框.className = "图像对话框";
+        对话框.classList.add("图像对话框出现");
+        对话框.addEventListener("click", () => {
+          对话框.classList.remove("图像对话框出现");
+          对话框.classList.add("图像对话框消失");
+          setTimeout(() => {
+            对话框.remove();
+          }, 250);
+        });
+
+        const 关闭按钮 = document.createElement("button");
+        关闭按钮.className = "图像对话框关闭按钮";
+        关闭按钮.textContent = "✖";
+        关闭按钮.addEventListener("click", (event) => {
+          event.stopPropagation();
+          对话框.classList.remove("图像对话框出现");
+          对话框.classList.add("图像对话框消失");
+          setTimeout(() => {
+            对话框.remove();
+          }, 250);
+        });
+
+        const image = document.createElement("img");
+        image.src = 图像源;
+        image.alt = 图像替换文本;
+        image.className = "原始图";
+        对话框.append(关闭按钮, image);
+
+        截图容器.appendChild(对话框);
+        对话框.show();
       });
-
-      const 关闭按钮 = document.createElement("button");
-      关闭按钮.className = "图像对话框关闭按钮";
-      关闭按钮.textContent = "✖";
-      关闭按钮.addEventListener("click", (event) => {
-        event.stopPropagation();
-        对话框.classList.remove("图像对话框出现");
-        对话框.classList.add("图像对话框消失");
-        setTimeout(() => {
-          对话框.remove();
-        }, 250);
-      });
-
-      const image = document.createElement("img");
-      image.src = 图像源;
-      image.alt = 图像替换文本;
-      image.className = "原始图";
-      对话框.append(关闭按钮, image);
-
-      截图容器.appendChild(对话框);
-      对话框.show();
-    });
+    }
   }
 }
 
