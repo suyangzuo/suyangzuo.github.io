@@ -1,6 +1,6 @@
 # <center>使用 **Prettier**</center>
 
-## 下载 **Prettier**
+## 下载 `Prettier`
 
 通过 `npm` 进行下载：
 

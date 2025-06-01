@@ -208,6 +208,14 @@ function 生成笔记目录区内容() {
     目录区_一级目录.className = "一级目录";
     目录区_一级目录.innerHTML = 一级目录.innerHTML;
     目录分级容器.appendChild(目录区_一级目录);
+    if (index_1 === 0) {
+      目录区_一级目录.classList.add("当前目录");
+    }
+    目录区_一级目录.addEventListener("click", () => {
+      const 当前目录 = 笔记目录容器.querySelector(".当前目录");
+      当前目录?.classList.remove("当前目录");
+      目录区_一级目录.classList.add("当前目录");
+    });
 
     const 二级目录组 = 笔记区.querySelectorAll(`#${一级目录.id} ~ h2:not(#${一级目录.id} ~ h1 ~ h2)`);
     for (const [index_2, 二级目录] of 二级目录组.entries()) {
@@ -219,6 +227,11 @@ function 生成笔记目录区内容() {
       const 前缀符号 = 目录区_二级目录.querySelector(".前缀符号");
       前缀符号?.remove();
       目录分级容器.appendChild(目录区_二级目录);
+      目录区_二级目录.addEventListener("click", () => {
+        const 当前目录 = 笔记目录容器.querySelector(".当前目录");
+        当前目录?.classList.remove("当前目录");
+        目录区_二级目录.classList.add("当前目录");
+      });
     }
   }
 }
