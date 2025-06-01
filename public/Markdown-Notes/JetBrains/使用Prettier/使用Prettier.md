@@ -8,7 +8,7 @@
 npm install -g prettier
 ```
 
-命令下载，`-g`代表全局有效。下载完成后，运行以下代码：
+命令下载，`-g` 代表全局有效。下载完成后，运行以下代码：
 ```bash
 prettier --version
 ```

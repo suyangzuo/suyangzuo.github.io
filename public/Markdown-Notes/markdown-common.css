@@ -12,9 +12,9 @@
   --scrollbar-width: 10px;
   --光标-默认: url("/Images/Common/鼠标-默认.cur"), auto;
   --光标-手指: url("/Images/Common/鼠标-指向.cur"), pointer;
-  --中文字体: "Noto Sans SC", 微软雅黑,sans-serif;
+  --中文字体: "Noto Sans SC", 微软雅黑, sans-serif;
   --代码字体: "JetBrains Mono", Consolas, monospace;
-  --中文代码混合字体: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑,sans-serif, monospace;
+  --中文代码混合字体: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif, monospace;
 }
 
 .top-banner,
@@ -67,13 +67,14 @@ body {
   height: 100%;
   background-color: transparent;
   outline: none;
+  scrollbar-gutter: stable;
+  scroll-behavior: smooth;
 }
 
 #关闭对话框 {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 5px;
-  font-size: 18px;
   position: fixed;
   top: 20px;
   right: 30px;
@@ -81,11 +82,11 @@ body {
   border: none;
   background-color: transparent;
   color: white;
-  font-size: 36px;
+  font-size: 30px;
 }
 
 #关闭对话框:hover {
-  outline: solid 2px #fff3;
+  background-color: #fff3;
   filter: brightness(2);
 }
 
@@ -94,18 +95,25 @@ body {
   backdrop-filter: blur(15px);
 }
 
+.容器区 {
+  width: 1000px;
+  height: fit-content;
+  margin: 25px auto;
+  position: relative;
+}
+
 .笔记区 {
   box-sizing: border-box;
   width: 1000px;
   padding: 50px;
-  margin: 50px auto;
   background-color: #ffffff12;
   color: silver;
   font-family: var(--中文代码混合字体) !important;
+  outline: solid 1px #def3;
 }
 
 .笔记区 strong {
-  color: rgb(48, 181, 90);
+  color: rgb(48, 150, 90);
 }
 
 .笔记区 em {
@@ -128,6 +136,10 @@ body {
 
 .笔记区 h1 {
   margin-bottom: 40px;
+}
+
+.笔记区 h1 > center {
+  color: lightblue;
 }
 
 .笔记区 h1:not(:first-of-type) {
@@ -162,7 +174,7 @@ body {
 
 .笔记区 code {
   font-size: 14px;
-  font-family: var(--中文代码混合字体)
+  font-family: var(--中文代码混合字体);
 }
 
 .笔记区 :is(h1, h2, h3, h4, h5, h6) code {
@@ -173,6 +185,110 @@ body {
   background-color: #fff1;
   color: rgb(207, 191, 100);
   padding: 2px 5px;
+  border-radius: 5px;
+}
+
+.笔记目录区 {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  height: 100%;
+  font-size: 16px;
+}
+
+.笔记目录容器 {
+  position: sticky;
+  top: 25px;
+  padding: 0 25px 0 5px;
+  display: flex;
+  flex-direction: column;
+  border-left: solid 1px rgba(132, 90, 27, 0.5);
+  margin-left: 30px;
+}
+
+.目录分级容器 {
+  text-wrap: nowrap;
+  display: flex;
+  flex-direction: column;
+}
+
+.一级目录,
+.二级目录 {
+  margin: 0;
+  text-decoration: none;
+}
+
+.一级目录 {
+  width: fit-content;
+  color: white;
+  font-size: 1.2em;
+  font-weight: bold;
+  padding: 8px 10px;
+}
+
+.二级目录,
+.二级目录:visited {
+  width: fit-content;
+  color: darkgray;
+  /* margin: 0 0 0 25px; */
+  padding: 5px 10px 5px 35px;
+}
+
+.一级目录:hover,
+.二级目录:hover {
+  background-color: #aaa;
+  color: black;
+}
+
+.笔记信息区 {
+  position: absolute;
+  right: 100%;
+  top: 0;
+  height: 100%;
+  color: silver;
+  padding: 0 25px;
+  font-size: 14px;
+}
+
+.笔记信息容器 {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: flex-end;
+  position: sticky;
+  top: 25px;
+}
+
+.作者容器 {
+  width: 150px;
+  height: 150px;
+  position: relative;
+}
+
+.作者 {
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+  padding: 2px 10px;
+  border-radius: 5px;
+  background-color: #151515;
+  font-family: var(--中文字体);
+  text-decoration: none;
+}
+
+.作者:hover {
+  text-decoration: underline;
+}
+
+.日期容器 {
+  color: rgb(150, 150, 150);
+  font-family: var(--中文代码混合字体);
+}
+
+.日期子容器 {
+  color: rgb(89, 120, 171);
+  margin: 0 2px;
+  font-family: var(--代码字体);
 }
 
 body:has(dialog[open]) {

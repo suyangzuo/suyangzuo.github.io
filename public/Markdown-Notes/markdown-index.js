@@ -96,6 +96,9 @@ const 知识库 = {
 const 二级目录区 = document.querySelector(".二级目录区");
 const 目录区 = document.querySelector(".目录区");
 const 笔记对话框 = document.getElementById("笔记对话框");
+const 笔记区 = 笔记对话框.querySelector(".笔记区");
+const 笔记信息区 = 笔记对话框.querySelector(".笔记信息区");
+const 笔记目录区 = 笔记对话框.querySelector(".笔记目录区");
 const 关闭对话框按钮 = 笔记对话框.querySelector("#关闭对话框");
 关闭对话框按钮.addEventListener("click", () => {
   笔记对话框.close();
@@ -160,28 +163,101 @@ function 生成二级目录(键) {
 
     const 笔记文件名 = 笔记对象.标题.replaceAll(" ", "");
     条目链接.addEventListener("click", () => {
-      const 笔记区 = 笔记对话框.querySelector(".笔记区");
       fetch(`./${键}/${笔记文件名}/${笔记文件名}.md`)
         .then((response) => response.text())
-        .then((text) => {
-          笔记区.innerHTML = marked.parse(text);
-          const images = 笔记区.querySelectorAll("img");
-          for (const img of images) {
-            const src_split = img.src.split("Markdown-Notes");
-            const src_final = `${src_split[0]}Markdown-Notes/${键}/${笔记文件名}${src_split[1]}`;
-            img.src = src_final;
-          }
-          const h2_all = 笔记区.querySelectorAll("h2");
-          for (const h2 of h2_all) {
-            const 前缀符号 = document.createElement("span");
-            前缀符号.className = "前缀符号";
-            前缀符号.innerHTML = "&#128209; ";
-            h2.prepend(前缀符号);
-          }
-          hljs.highlightAll();
-          笔记对话框.showModal();
-          笔记对话框.scrollTop = 0;
-        });
+        .then((text) => 生成笔记区内容(键, 笔记文件名, text))
+        .then(() => 生成笔记目录区内容())
+        .then(() => 生成作者和日期(键, 笔记文件名));
     });
   }
+}
+
+function 生成笔记区内容(技术栈, 笔记文件名, 文本) {
+  笔记区.innerHTML = marked.parse(文本);
+  const images = 笔记区.querySelectorAll("img");
+  for (const img of images) {
+    const src_split = img.src.split("Markdown-Notes");
+    const src_final = `${src_split[0]}Markdown-Notes/${技术栈}/${笔记文件名}${src_split[1]}`;
+    img.src = src_final;
+  }
+  const h2_all = 笔记区.querySelectorAll("h2");
+  for (const h2 of h2_all) {
+    const 前缀符号 = document.createElement("span");
+    前缀符号.className = "前缀符号";
+    前缀符号.innerHTML = "&#128209; ";
+    h2.prepend(前缀符号);
+  }
+  hljs.highlightAll();
+  笔记对话框.showModal();
+  笔记对话框.scrollTop = 0;
+}
+
+function 生成笔记目录区内容() {
+  const 笔记目录容器 = 笔记目录区.querySelector(".笔记目录容器");
+  笔记目录容器.innerHTML = "";
+
+  const 一级目录组 = 笔记区.querySelectorAll("h1");
+  for (const [index_1, 一级目录] of 一级目录组.entries()) {
+    一级目录.id = `目录-${index_1 + 1}`;
+
+    const 目录分级容器 = document.createElement("div");
+    目录分级容器.className = "目录分级容器";
+    笔记目录容器.appendChild(目录分级容器);
+    const 目录区_一级目录 = document.createElement("a");
+    目录区_一级目录.href = `#${一级目录.id}`;
+    目录区_一级目录.className = "一级目录";
+    目录区_一级目录.innerHTML = 一级目录.innerHTML;
+    目录分级容器.appendChild(目录区_一级目录);
+
+    const 二级目录组 = 笔记区.querySelectorAll(`#${一级目录.id} ~ h2:not(#${一级目录.id} ~ h1 ~ h2)`);
+    for (const [index_2, 二级目录] of 二级目录组.entries()) {
+      二级目录.id = `${一级目录.id}-${index_2 + 1}`;
+      const 目录区_二级目录 = document.createElement("a");
+      目录区_二级目录.href = `#${二级目录.id}`;
+      目录区_二级目录.className = "二级目录";
+      目录区_二级目录.innerHTML = 二级目录.innerHTML;
+      const 前缀符号 = 目录区_二级目录.querySelector(".前缀符号");
+      前缀符号?.remove();
+      目录分级容器.appendChild(目录区_二级目录);
+    }
+  }
+}
+
+function 获取笔记作者(技术栈, 笔记文件名) {
+  const 匹配笔记 = 知识库[技术栈].笔记.find((笔记) => 笔记.标题.replaceAll(" ", "") === 笔记文件名);
+  return 匹配笔记.作者;
+}
+
+function 获取笔记日期(技术栈, 笔记文件名) {
+  const 匹配笔记 = 知识库[技术栈].笔记.find((笔记) => 笔记.标题.replaceAll(" ", "") === 笔记文件名);
+  return 匹配笔记.时间;
+}
+
+function 生成作者和日期(技术栈, 笔记文件名) {
+  const 作者容器 = document.createElement("div");
+  作者容器.className = "作者容器";
+  const 作者 = document.createElement("a");
+  作者.className = "作者";
+  作者.target = "_self";
+  作者.href = `/Introduction/contributors.html`;
+  const 作者姓名 = 获取笔记作者(技术栈, 笔记文件名);
+  作者容器.style.background = `center/contain no-repeat url("/Images/Contributors/${作者姓名}.jpg")`;
+  作者.textContent = 作者姓名;
+  作者容器.appendChild(作者);
+  const 日期 = 获取笔记日期(技术栈, 笔记文件名);
+  const 日期容器 = document.createElement("div");
+  日期容器.className = "日期容器";
+  const 年容器 = document.createElement("span");
+  年容器.className = "年容器 日期子容器";
+  年容器.textContent = 日期.年;
+  const 月容器 = document.createElement("span");
+  月容器.className = "月容器 日期子容器";
+  月容器.textContent = 日期.月;
+  const 日容器 = document.createElement("span");
+  日容器.className = "日容器 日期子容器";
+  日容器.textContent = 日期.日;
+  日期容器.append(年容器, "年", 月容器, "月", 日容器, "日");
+  const 笔记信息容器 = 笔记信息区.querySelector(".笔记信息容器");
+  笔记信息容器.innerHTML = "";
+  笔记信息容器.append(作者容器, 日期容器);
 }

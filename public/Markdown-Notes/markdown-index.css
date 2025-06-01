@@ -85,7 +85,8 @@
 
 .目录:not(.当前目录):hover {
   cursor: var(--光标-手指);
-  box-shadow: inset 0 0 0 1px #999;
+  /* box-shadow: inset 0 0 0 1px #999; */
+  background-color: #20252a;
 }
 
 .目录.当前目录 {
@@ -143,9 +144,7 @@
 }
 
 .条目链接:hover {
-  box-shadow:
-    inset 0 0 0 1px rgb(121, 161, 41),
-    inset 0 0 1px 2px #000a;
+  box-shadow: inset 0 0 0 1px rgb(121, 161, 41), inset 0 0 1px 2px #000a;
   background-color: #3455;
   cursor: var(--光标-手指);
 }

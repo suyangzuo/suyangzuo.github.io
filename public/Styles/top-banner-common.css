@@ -1,5 +1,10 @@
 :root {
   --二级菜单色: rgb(47, 95, 69);
+  --光标-默认: url("/Images/Common/鼠标-默认.cur"), auto;
+  --光标-手指: url("/Images/Common/鼠标-指向.cur"), pointer;
+  --中文字体: "Noto Sans SC", 微软雅黑，sans-serif;
+  --代码字体: "JetBrains Mono", Consolas, monospace;
+  --中文代码混合字体: "JetBrains Mono", Consolas, monospace, "Noto Sans SC", 微软雅黑，sans-serif;
 }
 
 .top-banner {
@@ -16,6 +21,7 @@
   -webkit-backdrop-filter: blur(15px);
   backdrop-filter: blur(15px);
   box-shadow: inset 0 -1px 0 0 #2f353a;
+  font-family: var(--中文字体);
 }
 
 .导航左区 {
