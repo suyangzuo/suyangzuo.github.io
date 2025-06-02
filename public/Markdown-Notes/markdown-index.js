@@ -42,27 +42,27 @@ const 知识库 = {
         标题: "终端 & Shell",
         作者: "苏扬",
         时间: {
-          年: 2025,
-          月: 5,
-          日: 10,
+          年: 0,
+          月: 0,
+          日: 0,
         },
       },
       {
         标题: "Flatpak",
         作者: "苏扬",
         时间: {
-          年: 2025,
-          月: 5,
-          日: 10,
+          年: 0,
+          月: 0,
+          日: 0,
         },
       },
       {
         标题: "字体",
         作者: "苏扬",
         时间: {
-          年: 2025,
-          月: 5,
-          日: 10,
+          年: 0,
+          月: 0,
+          日: 0,
         },
       },
       {
@@ -88,9 +88,18 @@ const 知识库 = {
           日: 27,
         },
       },
+      {
+        标题: "使用中文输入法",
+        作者: "苏扬",
+        时间: {
+          年: 0,
+          月: 0,
+          日: 0,
+        },
+      },
     ],
   },
-  SQLite: { 图标: "/Images/Page-Logos/数据库/SQLite.png", 笔记: [] },
+  Rust: { 图标: "/Images/Page-Logos/编程开发/Rust.png", 笔记: [] },
 };
 
 const 二级目录区 = document.querySelector(".二级目录区");
@@ -153,13 +162,29 @@ function 生成二级目录(键) {
     const 条目链接 = document.createElement("div");
     条目链接.className = "条目链接";
     二级目录区.appendChild(条目链接);
+    const 条目链接旋转容器 = document.createElement("div");
+    条目链接旋转容器.className = "条目链接旋转容器";
+    条目链接.appendChild(条目链接旋转容器);
     const 链接序号 = document.createElement("span");
     链接序号.className = "链接序号";
     链接序号.textContent = index + 1;
     const 链接标题 = document.createElement("span");
     链接标题.className = "链接标题";
     链接标题.textContent = 笔记对象.标题;
-    条目链接.append(链接序号, 链接标题);
+    const 链接序号与标题 = document.createElement("div");
+    链接序号与标题.className = "链接序号与标题";
+    链接序号与标题.append(链接序号, 链接标题);
+
+    const 链接作者 = document.createElement("span");
+    链接作者.className = "链接作者";
+    链接作者.textContent = 笔记对象.作者;
+    const 链接时间 = document.createElement("span");
+    链接时间.className = "链接时间";
+    链接时间.textContent = `${笔记对象.时间.年}.${笔记对象.时间.月}.${笔记对象.时间.日}`;
+    const 作者与时间 = document.createElement("div");
+    作者与时间.className = "链接作者与时间";
+    作者与时间.append(链接作者, 链接时间);
+    条目链接旋转容器.append(链接序号与标题, 作者与时间);
 
     const 笔记文件名 = 笔记对象.标题.replaceAll(" ", "");
     条目链接.addEventListener("click", () => {

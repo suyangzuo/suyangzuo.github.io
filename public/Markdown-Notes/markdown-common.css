@@ -227,8 +227,12 @@ body {
 .一级目录 {
   width: fit-content;
   color: white;
-  font-size: 1.1em;
+  font-size: 16px;
   padding: 8px 10px;
+}
+
+.二级目录 {
+  font-size: 14px;
 }
 
 .二级目录,
@@ -236,19 +240,17 @@ body {
 .二级目录:link {
   width: fit-content;
   color: darkgray;
-  /* margin: 0 0 0 25px; */
   padding: 5px 10px 5px 35px;
 }
 
 .一级目录:hover,
 .二级目录:hover {
   background-color: #ffffff12;
-  /* color: black; */
 }
 
 .一级目录.当前目录,
 .二级目录.当前目录 {
-  background-color: #ffffff2a;
+  background-color: rgb(78, 48, 79);
 }
 
 .一级目录 code,
@@ -307,7 +309,7 @@ body {
 }
 
 .日期子容器 {
-  color: rgb(89, 120, 171);
+  color: white;
   margin: 0 2px;
   font-family: var(--代码字体);
 }
