@@ -26,7 +26,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 8ch;
+  padding: 50px 0;
+  font-size: 40px;
   gap: 1ch;
 }
 
@@ -48,7 +49,7 @@
   display: flex;
   justify-content: center;
   gap: 20px;
-  --目录背景色: #456;
+  --目录背景色: #613c72;
   --未选目录背景色: #0006;
 }
 
@@ -85,8 +86,7 @@
 
 .目录:not(.当前目录):hover {
   cursor: var(--光标-手指);
-  /* box-shadow: inset 0 0 0 1px #999; */
-  background-color: #20252a;
+  background-color: #2c343a;
 }
 
 .目录.当前目录 {
@@ -109,6 +109,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  filter: drop-shadow(2px 2px 1px #000a);
 }
 
 .目录Logo {
@@ -124,29 +125,61 @@
 
 .二级目录区 {
   flex-shrink: 0;
-  width: 1000px;
+  width: 1100px;
   min-height: calc(100vh - 100px);
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
-  /* background-color: var(--目录背景色); */
+  gap: 10px;
   font-family: var(--中文代码混合字体);
+  background-image: linear-gradient(#324251 10%, #24335a 90%);
+  padding: 25px;
 }
 
 .条目链接 {
-  padding: 0 15px;
-  width: 20%;
-  height: 55px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  /* box-shadow: inset 0 0 0 1px #3f454a; */
+  width: calc(20% - 8px);
+  perspective: 500px;
 }
 
 .条目链接:hover {
-  box-shadow: inset 0 0 0 1px rgb(121, 161, 41), inset 0 0 1px 2px #000a;
-  background-color: #3455;
   cursor: var(--光标-手指);
+}
+
+.条目链接旋转容器 {
+  padding: 15px;
+  width: 100%;
+  height: 100%;
+  background-color: #0003;
+  box-shadow: 2px 2px 4px #0005;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.条目链接旋转容器:hover {
+  box-shadow: inset 0 0 0 1px rgb(121, 161, 41);
+  background-color: #0006;
+}
+
+.条目链接旋转容器:hover .链接序号 {
+  outline: solid 1px #fff4;
+}
+
+.链接序号与标题 {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}
+
+.链接作者与时间 {
+  font-size: 12px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .链接序号 {
@@ -159,8 +192,6 @@
   text-align: center;
   align-content: center;
   flex-shrink: 0;
-  outline: solid 1px #555;
-  box-shadow: 2px 2px 2px 0 #000a;
 }
 
 .链接标题 {
@@ -172,4 +203,12 @@
 
 .条目链接:hover .链接标题 {
   color: white;
+}
+
+.链接作者 {
+  color: #b5b5b5;
+}
+
+.链接时间 {
+  color: #b5b5b5;
 }
