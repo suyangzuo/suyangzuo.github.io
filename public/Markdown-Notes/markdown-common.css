@@ -62,13 +62,15 @@ body {
 }
 
 #笔记对话框 {
-  position: relative;
+  position: fixed;
   width: 100%;
   height: 100%;
   background-color: transparent;
   outline: none;
+  border: none;
   scrollbar-gutter: stable;
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 #关闭对话框 {
@@ -204,11 +206,11 @@ body {
 
 .笔记目录容器 {
   position: sticky;
-  top: 25px;
+  top: 75px;
   padding: 0 25px 0 5px;
   display: flex;
   flex-direction: column;
-  margin-left: 30px;
+  margin-left: 25px;
   font-family: var(--中文代码混合字体);
 }
 
@@ -224,8 +226,12 @@ body {
   text-decoration: none;
 }
 
+.一级目录 > center,
+.二级目录 > center {
+  text-align: left;
+}
+
 .一级目录 {
-  width: fit-content;
   color: white;
   font-size: 16px;
   padding: 8px 10px;
@@ -238,19 +244,19 @@ body {
 .二级目录,
 .二级目录:visited,
 .二级目录:link {
-  width: fit-content;
   color: darkgray;
-  padding: 5px 10px 5px 35px;
+  padding: 4px 10px 4px 35px;
 }
 
-.一级目录:hover,
-.二级目录:hover {
-  background-color: #ffffff12;
+.一级目录:not(.当前目录):hover,
+.二级目录:not(.当前目录):hover {
+  background-color: #ffffff1a;
 }
 
 .一级目录.当前目录,
 .二级目录.当前目录 {
-  background-color: rgb(78, 48, 79);
+  /* background-color: rgb(78, 48, 79); */
+  background-image: linear-gradient(90deg, rgb(78, 48, 79) 10%, transparent 100%);
 }
 
 .一级目录 code,
@@ -279,7 +285,7 @@ body {
   gap: 15px;
   align-items: flex-end;
   position: sticky;
-  top: 25px;
+  top: 75px;
 }
 
 .作者容器 {
