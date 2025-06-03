@@ -105,7 +105,7 @@ body {
 
 .game-grid > .游戏作者 {
   position: absolute;
-  right: 10px;
+  right: 5px;
   top: 5px;
   display: flex;
   width: 50px;

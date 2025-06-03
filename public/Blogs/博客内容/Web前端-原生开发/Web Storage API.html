@@ -166,7 +166,8 @@
             <div class="单元格弹性区">
               <img
                 src="/Images/Blogs/Web前端-原生开发/Web Storage API/Session-Storage-Logo.png"
-                alt="Session Storage" />
+                alt="Session Storage"
+              />
               <span>Session Storage</span>
             </div>
           </th>
@@ -326,7 +327,8 @@
     <figure class="截图容器">
       <img
         src="/Images/Blogs/Web前端-原生开发/Web Storage API/浏览器开发工具-应用程序菜单.png"
-        alt="浏览器开发工具-应用程序菜单" />
+        alt="浏览器开发工具-应用程序菜单"
+      />
     </figure>
     <p class="分区普通文本">在开发工具中点击<span class="行内专业名词">应用程序</span>，打开对应界面：</p>
     <figure class="截图容器">
@@ -402,7 +404,8 @@
     <figure class="截图容器">
       <img
         src="/Images/Blogs/Web前端-原生开发/Web Storage API/会话存储-读取以保持同步.webp"
-        alt="会话存储-读取以保持同步" />
+        alt="会话存储-读取以保持同步"
+      />
     </figure>
     <p class="分区普通文本">
       此时刷新页面，滑块的数据不会再重置了。第<span class="行内专业名词">2</span>行代码非常重要，读取的数据可能为<span
@@ -446,7 +449,7 @@
         <span class="行内专业名词">会话存储中<span class="强调">没有</span>显卡价格数据：</span>设置为默认值
       </li>
     </ul>
-    <pre>
+    <pre class="line-numbers">
       <code class="lang-js">
         // 思路：
         如果 (读取的数据是 null)
@@ -473,7 +476,8 @@
       <img
         src="/Images/Blogs/Web前端-原生开发/Web Storage API/控制台-显卡价格.png"
         alt="控制台-显卡价格"
-        style="margin-top: 50px" />
+        style="margin-top: 50px"
+      />
     </figure>
     <p class="分区普通文本">控制台能够正常显示显卡价格，并且会话存储中也存储了显卡价格数据。</p>
   </article>
@@ -503,7 +507,8 @@
     <figure class="截图容器">
       <img
         src="/Images/Blogs/Web前端-原生开发/Web Storage API/会话存储-读取数字-进行运算.png"
-        alt="会话存储-读取数字-进行运算" />
+        alt="会话存储-读取数字-进行运算"
+      />
     </figure>
     <p class="分区普通文本">
       照理应该是<span class="行内代码">250</span>，结果却是<span class="行内代码">150100</span>，说明<span
@@ -526,7 +531,8 @@
     <figure class="截图容器">
       <img
         src="/Images/Blogs/Web前端-原生开发/Web Storage API/会话存储-字符串转换为整数.png"
-        alt="会话存储-字符串转换为整数" />
+        alt="会话存储-字符串转换为整数"
+      />
     </figure>
     <p class="分区普通文本">这回得到了正常的结果：<span class="行内代码">150 + 100 = 250</span>。</p>
 
@@ -548,7 +554,8 @@
     <figure class="截图容器">
       <img
         src="/Images/Blogs/Web前端-原生开发/Web Storage API/会话存储-保存布尔类型.webp"
-        alt="会话存储-保存布尔类型" />
+        alt="会话存储-保存布尔类型"
+      />
     </figure>
     <p class="分区普通文本">
       尽管看起来都是<span class="行内代码">true</span>，但实际上存储的是<span class="行内专业名词">字符串</span
@@ -566,7 +573,8 @@
     <figure class="截图容器">
       <img
         src="/Images/Blogs/Web前端-原生开发/Web Storage API/会话存储-布尔类型-直接使用.png"
-        alt="会话存储-布尔类型-直接使用.png" />
+        alt="会话存储-布尔类型-直接使用.png"
+      />
     </figure>
     <p class="分区普通文本">
       尽管类型是字符串，但是放到<span class="行内代码">if</span>的括号内却可以使用。因为<span class="行内专业名词"
@@ -593,7 +601,8 @@
     <figure class="截图容器">
       <img
         src="/Images/Blogs/Web前端-原生开发/Web Storage API/会话存储-布尔类型-转换后再使用.png"
-        alt="会话存储-布尔类型-转换后再使用" />
+        alt="会话存储-布尔类型-转换后再使用"
+      />
     </figure>
     <p class="分区普通文本">
       转换后，<span class="行内专业名词">显示时间</span>成为了真正的<span class="行内专业名词">布尔类型</span>。
@@ -618,7 +627,8 @@
     <figure class="截图容器">
       <img
         src="/Images/Blogs/Web前端-原生开发/Web Storage API/会话存储-直接存储对象.webp"
-        alt="会话存储-直接存储对象" />
+        alt="会话存储-直接存储对象"
+      />
     </figure>
     <p class="分区普通文本">
       直接存储对象，无法看到对象的属性和值，这不是我们想要的结果。要正确存储对象，首先要将对象转换为<span
@@ -644,7 +654,8 @@
     <figure class="截图容器">
       <img
         src="/Images/Blogs/Web前端-原生开发/Web Storage API/会话存储-转换后存储对象.webp"
-        alt="会话存储-转换后存储对象" />
+        alt="会话存储-转换后存储对象"
+      />
     </figure>
     <p class="分区普通文本">
       成功存储了对象。<span class="强调">注意：</span>此时<span class="行内专业名词">sessionStorage</span>中存储的<span
@@ -664,7 +675,8 @@
     <figure class="截图容器">
       <img
         src="/Images/Blogs/Web前端-原生开发/Web Storage API/会话存储-读取JSON对象后直接使用.png"
-        alt="会话存储-读取JSON对象后直接使用" />
+        alt="会话存储-读取JSON对象后直接使用"
+      />
     </figure>
     <p class="分区普通文本">
       这样做只是简单粗暴地将数据当成字符串读取出来，没有解析为对象。调用<span class="行内代码">JSON.parse</span
@@ -679,7 +691,8 @@
     <figure class="截图容器">
       <img
         src="/Images/Blogs/Web前端-原生开发/Web Storage API/会话存储-读取JSON后转换为对象.png"
-        alt="会话存储-读取JSON后转换为对象" />
+        alt="会话存储-读取JSON后转换为对象"
+      />
     </figure>
     <p class="分区普通文本">
       <span class="行内专业名词">JSON格式</span>的字符串经过解析之后，得到了真正的<span class="行内专业名词"
