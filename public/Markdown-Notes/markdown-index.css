@@ -53,6 +53,12 @@
   --未选目录背景色: #0006;
 }
 
+.目录区,
+.二级目录区 {
+  position: sticky;
+  top: 50px;
+}
+
 .目录区 {
   flex-shrink: 0;
   width: fit-content;
@@ -119,25 +125,25 @@
 
 .目录标题 {
   flex-grow: 1;
-  font-size: 15px;
+  font-size: 14px;
   color: rgb(203, 219, 219);
 }
 
 .二级目录区 {
   flex-shrink: 0;
   width: 1100px;
-  min-height: calc(100vh - 100px);
+  min-height: calc(100vh - 150px);
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
-  gap: 10px;
+  gap: 15px;
   font-family: var(--中文代码混合字体);
   background-image: linear-gradient(#324251 10%, #24335a 90%);
-  padding: 25px;
+  padding: 20px;
 }
 
 .条目链接 {
-  width: calc(20% - 8px);
+  width: calc(20% - 12px);
   perspective: 500px;
 }
 
@@ -158,12 +164,14 @@
 }
 
 .条目链接旋转容器:hover {
-  box-shadow: inset 0 0 0 1px rgb(121, 161, 41);
-  background-color: #0006;
+  /*box-shadow: inset 0 0 0 1px rgb(121, 161, 41);*/
+  /*background-color: #0006;*/
+  background-color: #fff3;
 }
 
-.条目链接旋转容器:hover .链接序号 {
-  outline: solid 1px #fff4;
+.条目链接旋转容器:hover .链接作者,
+.条目链接旋转容器:hover .链接时间 {
+  color: #ccc;
 }
 
 .链接序号与标题 {
@@ -197,7 +205,7 @@
 .链接标题 {
   text-wrap: nowrap;
   flex-shrink: 0;
-  font-size: 15px;
+  font-size: 14px;
   color: rgb(233, 235, 235);
 }
 
