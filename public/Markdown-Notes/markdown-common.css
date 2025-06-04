@@ -180,7 +180,8 @@ body {
   border: solid 1px #def3;
 }
 
-.笔记区 code {
+.笔记区 code,
+.笔记目录区 code {
   font-size: 14px;
   font-family: var(--中文代码混合字体);
 }
