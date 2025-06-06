@@ -21,30 +21,12 @@ const 知识库 = {
         },
       },
       {
-        标题: "115网盘",
-        作者: "苏扬",
-        时间: {
-          年: 2025,
-          月: 5,
-          日: 12,
-        },
-      },
-      {
         标题: "输入法",
         作者: "",
         时间: {
           年: 2025,
           月: 5,
           日: 10,
-        },
-      },
-      {
-        标题: "终端 & Shell",
-        作者: "",
-        时间: {
-          年: 0,
-          月: 0,
-          日: 0,
         },
       },
       {
@@ -66,7 +48,7 @@ const 知识库 = {
         },
       },
       {
-        标题: "Linux下载GCC",
+        标题: "使用 GCC",
         作者: "凌子轩",
         时间: {
           年: 2025,
@@ -99,7 +81,7 @@ const 知识库 = {
       },
     ],
   },
-  Rust: { 图标: "/Images/Page-Logos/编程开发/Rust.png", 笔记: [] },
+  包管理器: { 图标: "/Images/Page-Logos/包管理器.png", 笔记: [] },
   Blender: { 图标: "/Images/Page-Logos/3D/Blender.png", 笔记: [] },
 };
 
@@ -110,6 +92,9 @@ const 笔记区 = 笔记对话框.querySelector(".笔记区");
 const 笔记信息区 = 笔记对话框.querySelector(".笔记信息区");
 const 笔记目录区 = 笔记对话框.querySelector(".笔记目录区");
 const 关闭对话框按钮 = 笔记对话框.querySelector("#关闭对话框");
+const 笔记区目录组 = [];
+const 笔记目录区标题组 = [];
+
 关闭对话框按钮.addEventListener("click", () => {
   笔记对话框.close();
 });
@@ -117,8 +102,7 @@ const 关闭对话框按钮 = 笔记对话框.querySelector("#关闭对话框");
 for (const 键 in 知识库) {
   生成一级目录(键);
 }
-
-生成二级目录("Linux");
+生成二级目录(Object.keys(知识库)[0]);
 
 document.querySelector(".目录").classList.add("当前目录");
 
@@ -206,7 +190,9 @@ function 生成笔记区内容(技术栈, 笔记文件名, 文本) {
     const src_final = `${src_split[0]}Markdown-Notes/${技术栈}/${笔记文件名}${src_split[1]}`;
     img.src = src_final;
   }
+  // const h1_all = 笔记区.querySelectorAll("h1");
   const h2_all = 笔记区.querySelectorAll("h2");
+
   for (const h2 of h2_all) {
     const 前缀符号 = document.createElement("span");
     前缀符号.className = "前缀符号";
@@ -221,6 +207,8 @@ function 生成笔记区内容(技术栈, 笔记文件名, 文本) {
 function 生成笔记目录区内容() {
   const 笔记目录容器 = 笔记目录区.querySelector(".笔记目录容器");
   笔记目录容器.innerHTML = "";
+  笔记目录区标题组.length = 0;
+  笔记区目录组.length = 0;
 
   const 一级目录组 = 笔记区.querySelectorAll("h1");
   for (const [index_1, 一级目录] of 一级目录组.entries()) {
@@ -242,6 +230,8 @@ function 生成笔记目录区内容() {
       当前目录?.classList.remove("当前目录");
       目录区_一级目录.classList.add("当前目录");
     });
+    笔记目录区标题组.push(目录区_一级目录);
+    笔记区目录组.push(一级目录);
 
     const 二级目录组 = 笔记区.querySelectorAll(`#${一级目录.id} ~ h2:not(#${一级目录.id} ~ h1 ~ h2)`);
     for (const [index_2, 二级目录] of 二级目录组.entries()) {
@@ -258,6 +248,8 @@ function 生成笔记目录区内容() {
         当前目录?.classList.remove("当前目录");
         目录区_二级目录.classList.add("当前目录");
       });
+      笔记目录区标题组.push(目录区_二级目录);
+      笔记区目录组.push(二级目录);
     }
   }
 }
@@ -300,3 +292,55 @@ function 生成作者和日期(技术栈, 笔记文件名) {
   笔记信息容器.innerHTML = "";
   笔记信息容器.append(作者容器, 日期容器);
 }
+
+/* const 交叉观察器参数 = {
+  rootMargin: "-100px 0px -66.666667% 0px",
+  threshold: 1,
+};
+function 交叉观察器回调(entries) {
+  for (const entry of entries) {
+    if (entry.isIntersecting) {
+      const current_element = entry.target;
+      const current_index = Array.from(观察目标组).indexOf(current_element);
+      const current_chapter = 笔记目录区.querySelector(".当前目录");
+      current_chapter.classList.remove("当前目录");
+      观察目录组[current_index].classList.add("当前目录");
+    }
+  }
+}
+const 交叉观察器 = new IntersectionObserver(交叉观察器回调, 交叉观察器参数);
+
+function 生成交叉观察器() {
+  for (const 目标 of Array.from(观察目标组)) {
+    交叉观察器.observe(目标);
+  }
+} */
+
+function 防抖(回调, 延时 = 100) {
+  let timer = null;
+  return function (...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      回调.apply(this, args);
+    }, 延时);
+  };
+}
+
+const 滚动控制器 = 防抖(() => {
+  const 标题边界矩形组 = 笔记区目录组.map((标题) => 标题.getBoundingClientRect());
+  const 视口高度 = document.documentElement.clientHeight;
+  for (let i = 0; i < 笔记区目录组.length; i++) {
+    const 目录 = 笔记目录区标题组[i];
+    const 边界矩形 = 标题边界矩形组[i];
+    const 条件1 = 边界矩形.top >= 50 && 边界矩形.top <= 视口高度 / 3;
+    const 条件2 = 标题边界矩形组[i + 1] && 标题边界矩形组[i + 1].top > 视口高度 && 边界矩形.top < 0;
+    if (条件1 || 条件2) {
+      const 当前高亮目录 = 笔记目录区.querySelector(".当前目录");
+      当前高亮目录.classList.remove("当前目录");
+      目录.classList.add("当前目录");
+      break;
+    }
+  }
+}, 100);
+
+笔记对话框.addEventListener("scroll", 滚动控制器);

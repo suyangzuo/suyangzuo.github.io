@@ -1127,12 +1127,15 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   color: orange;
 }
 
-.专题-内容 .专题内名词 {
+.专题-内容 .专题内名词,
+.专题-内容 .行内专业名词 {
+  font-family: "Fira Sans", "Noto Sans SC", sans-serif;
   color: #5e7ccb;
   font-weight: 500;
 }
 
-.专题.当前专题 .专题内名词 {
+.专题.当前专题 .专题内名词,
+.专题.当前专题 .行内专业名词 {
   color: #78ade1;
 }
 
@@ -1250,9 +1253,9 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .简介标题 {
-  font-family: /* "Titillium Web",  */ "Noto Sans SC", sans-serif;
+  font-family: “Fira Sans”, "Noto Sans SC", sans-serif;
   font-size: 2.25rem;
-  letter-spacing: 0.25rem;
+  letter-spacing: 1px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1818,7 +1821,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 
 .侧边栏 .行内代码 {
   font-size: 1.075em;
-  font-family: "M PLUS 1 Code", monospace;
+  font-family: "Ubuntu Mono", monospace;
 }
 
 .附加说明 {
