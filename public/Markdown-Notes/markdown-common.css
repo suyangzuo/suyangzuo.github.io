@@ -283,23 +283,23 @@ body {
 .笔记信息容器 {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 35px;
   align-items: flex-end;
   position: sticky;
   top: 75px;
 }
 
 .作者容器 {
-  width: 150px;
-  height: 150px;
+  width: 50px;
+  height: 50px;
   position: relative;
 }
 
 .作者 {
   position: absolute;
-  bottom: 3px;
-  right: 3px;
-  padding: 2px 10px;
+  top: 115%;
+  right: 0;
+  padding: 2px 0;
   border-radius: 5px;
   background-color: #151515;
   font-family: var(--中文字体);
@@ -313,6 +313,7 @@ body {
 .日期容器 {
   color: rgb(150, 150, 150);
   font-family: var(--中文代码混合字体);
+  text-wrap: nowrap;
 }
 
 .日期子容器 {

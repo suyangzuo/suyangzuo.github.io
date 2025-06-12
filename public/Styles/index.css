@@ -8,6 +8,12 @@
   --网站风格颜色: rgb(42, 151, 140);
   --分页渐变黑色标位置: 0.25%;
   --分页渐变透明色标位置: 0.25%;
+  --光标-默认: url("/Images/Common/鼠标-默认.cur"), auto;
+  --光标-手指: url("/Images/Common/鼠标-指向.cur"), pointer;
+  --中文字体: "Noto Sans SC", 微软雅黑, sans-serif;
+  --代码字体: "JetBrains Mono", Consolas, monospace;
+  --中文代码混合字体: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, monospace, sans-serif;
+  --无衬线字体: "Inter", sans-serif;
 }
 
 .main-content {
@@ -15,1181 +21,697 @@
   position: relative;
   margin: 0 auto;
   width: 100%;
+  height: fit-content;
+  font-family: var(--中文代码混合字体);
 }
 
-/* <!-- ------------------ ↓ 欢迎内容 ------------------- --> */
-.welcome-main {
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+.背景渐变区 {
+  position: absolute;
   width: 100%;
-  height: 100vh;
-  margin: 0 auto;
+  height: 100%;
+  top: 0;
+}
+
+.渐变分区 {
+  width: 100%;
+  height: max(100vh, 1500px);
+  mask-image: radial-gradient(ellipse 150% 40% at center center, #000d 20%, #0005 50%, #0000);
+}
+
+.渐变分区:nth-child(1) {
+  background: radial-gradient(circle at right center, #4b296980, #563277 25%, #4a378c 40%, #4066a8 65%, #32517380);
+}
+
+.渐变分区:nth-child(2) {
+  background: radial-gradient(circle at right center, #25634e80, #2b4741 25%, #42421b 40%, #523926 65%, #733c3280);
+}
+
+.渐变分区:nth-child(3) {
+  background: radial-gradient(circle at right center, #2c421e80, #254e3b 25%, #262f55 40%, #4b2b57 65%, #73323780);
+}
+
+.主页分区 {
+  padding: 100px 0;
+  position: relative;
+}
+
+.介绍分区 {
+  position: relative;
+  height: clamp(800px, 90vh, 1200px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: max(50px, 15dvh);
+}
+
+.背景修饰容器 {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  mix-blend-mode: screen;
+  mask-image: linear-gradient(0deg, transparent 0%, #0003 5%);
+}
+
+.背景修饰容器 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.介绍分区标题,
+.介绍分区中文标题,
+.介绍分区英文标题 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.介绍分区中文标题 {
+  font-size: clamp(20px, 1.75vw, 40px);
+}
+
+.介绍分区英文标题 {
+  font-size: clamp(12px, 1vw, 16px);
+  font-family: "Inter", sans-serif;
+  margin-top: 15px;
+  color: rgb(160, 160, 160);
+  gap: 5px;
+}
+
+.介绍分区英文标题 > :where(.介绍分区大标题, .介绍分区小标题) {
+  font-weight: normal;
+}
+
+.介绍分区容器 {
+  width: 100%;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: min(100px, 5vh);
+}
+
+.介绍分区-工具 {
+  width: 75%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  font-size: 13px;
+  margin-top: 50px 0 30px;
+  padding: 40px 0;
+  background-image: linear-gradient(90deg, transparent 0%, #ffffff0a 45%, #ffffff0a 55%, transparent 100%);
+}
+
+.工具-GitHub,
+.工具-部署 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 999px;
   overflow: hidden;
 }
 
-.欢迎区背景视频容器 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+.工具-GitHub {
+  outline: solid 1px #fffa;
 }
 
-.欢迎区背景视频 {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: brightness(50%);
-}
-
-.渐变覆盖层 {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-
-.欢迎区覆盖层 {
+.GitHub介绍区 {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: max(50px, 10dvh);
-  background-image: linear-gradient(
-    transparent calc(100% - var(--分页渐变透明色标位置)),
-    black calc(100% - var(--分页渐变黑色标位置))
-  );
 }
 
-.欢迎区覆盖层 > * {
-  flex-shrink: 0;
+.GitHub介绍区 > span {
+  padding: 5px 10px;
+  height: 100%;
 }
 
-.欢迎文本区 {
-  position: relative;
-  font-weight: bold;
+.GitHub介绍区:nth-child(1) > span:nth-child(1) {
+  background-color: #fffa;
+  color: black;
 }
 
-.中文欢迎标题 {
-  font-size: max(45px, calc(3.25dvw + 10px));
-  line-height: 1.4em;
-  filter: drop-shadow(2px 2px 2px #000d);
+.GitHub介绍区:nth-child(1) > span:nth-child(2) {
+  background-color: #0005;
 }
 
-.欢迎标题-第1行,
-.欢迎标题-第2行 {
-  margin: 0 auto;
-  width: fit-content;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+.GitHub介绍区:nth-child(2) > span:nth-child(1) {
+  background-color: #fffa;
+  color: black;
 }
 
-.中文欢迎标题 .欢迎标题-第1行 {
-  /*background-image: linear-gradient(125deg, #3b4557 40%, #414d4d 60%);*/
-  background-image: linear-gradient(125deg, darkolivegreen 30%, seagreen 100%);
-  animation: 中文第1行动画 1s ease-out forwards;
+.GitHub介绍区:nth-child(2) > span:nth-child(2) {
+  background-color: #0005;
 }
 
-@keyframes 中文第1行动画 {
-  from {
-    opacity: 0;
-    translate: -100px 0;
-  }
-  to {
-    opacity: 1;
-    translate: 0 0;
-  }
+.工具-部署 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 26px;
+  outline: solid 1px #fffa;
 }
 
-.中文欢迎标题 .欢迎标题-第2行 {
-  /*background-image: linear-gradient(125deg, #525e74 40%, #5a6969 60%);*/
-  background-image: linear-gradient(125deg, darkseagreen 0%, olivedrab 100%);
-  animation: 中文第2行动画 1s ease-out forwards;
+.工具介绍区 {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-@keyframes 中文第2行动画 {
-  from {
-    opacity: 0;
-    translate: 100px 0;
-  }
-  to {
-    opacity: 1;
-    translate: 0 0;
-  }
+.工具介绍区 > span {
+  padding: 0 10px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.中文欢迎标题 .标题-强调 {
-  font-size: 1.35em;
-  background-image: linear-gradient(125deg, #b2c6cd 40%, #b7d6d6 60%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+.工具-部署 > .工具介绍区:nth-child(1) {
+  filter: invert(1);
 }
 
-@property --英文色标1 {
-  syntax: "<color>";
-  inherits: false;
-  initial-value: silver;
+.工具-部署 > .工具介绍区:nth-child(2) {
+  background-color: #0005;
 }
 
-@property --英文色标2 {
-  syntax: "<color>";
-  inherits: false;
-  initial-value: lightcyan;
+.工具-部署 > .工具介绍区:nth-child(3) {
+  background-color: #bdf2;
 }
 
-@property --英文色标3 {
-  syntax: "<color>";
-  inherits: false;
-  initial-value: silver;
+.工具介绍区 img {
+  object-fit: contain;
+  width: 14px;
+  height: 14px;
 }
 
-@property --英文色标4 {
-  syntax: "<color>";
-  inherits: false;
-  initial-value: lightcyan;
+.介绍分区团队宗旨 {
+  width: 100%;
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 35px;
 }
 
-@property --英文背景位置 {
+.团队宗旨链接 {
+  padding: 10px 20px;
+  border-radius: 7px;
+  font-size: 18px;
+  transition: 125ms;
+}
+
+.团队宗旨链接:nth-child(1) {
+  background-color: lightblue;
+  color: black;
+  outline: solid 1px transparent;
+}
+
+.团队宗旨链接:nth-child(1):hover {
+  background-color: rgb(44, 58, 95);
+  color: white;
+  outline: solid 1px silver;
+}
+
+.团队宗旨链接:nth-child(2) {
+  border: solid 1px #999;
+}
+
+.团队宗旨链接:nth-child(2):hover {
+  border: solid 1px #fff;
+}
+
+.交互式学习中心分区 {
+  padding: 100px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@property --径向渐变发散距离 {
   syntax: "<percentage>";
   inherits: false;
   initial-value: 0%;
 }
 
-.英文欢迎标题 {
-  margin-top: 15px;
-  font-size: calc(1.25dvw + 8px);
-  background-image: linear-gradient(
-    90deg,
-    var(--英文色标4) 0,
-    var(--英文色标1) 25%,
-    var(--英文色标2) 50%,
-    var(--英文色标3) 75%,
-    var(--英文色标4) 100%
-  );
-  background-position: var(--英文背景位置) 0;
-  background-size: 200%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-family: "Molengo", sans-serif;
-  opacity: 0;
-  animation: 英文欢迎标题动画 1s ease-out 750ms forwards, 英文标题颜色变化 12s ease-out 3s infinite;
-  filter: drop-shadow(2px 2px 2px #0008);
-  /*mix-blend-mode: difference;*/
+.交互式学习中心容器 {
+  position: relative;
+  width: max(80%, 1000px);
+  height: max(80vh, 800px);
+  outline: solid 2px #def1;
+  background-color: #ffffff05;
+  background-image: radial-gradient(ellipse at 50% 8%, #def3 0%, transparent var(--径向渐变发散距离));
+  padding: 2.5%;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  transition: background-color 250ms;
 }
 
-@keyframes 英文标题颜色变化 {
-  from {
-    --英文背景位置: 0%;
-    --英文色标1: silver;
-    --英文色标2: lightcyan;
-    --英文色标3: silver;
-    --英文色标4: lightcyan;
-  }
-  5% {
-    --英文背景位置: 0%;
-    --英文色标1: silver;
-    --英文色标2: lightcyan;
-    --英文色标3: silver;
-    --英文色标4: lightcyan;
-  }
-  15% {
-    --英文背景位置: 100%;
-    --英文色标1: darkorange;
-    --英文色标2: #256f44;
-    --英文色标3: brown;
-    --英文色标4: royalblue;
-  }
-  40% {
-    --英文背景位置: 200%;
-  }
-  50% {
-    --英文背景位置: 200%;
-  }
-  60% {
-    --英文背景位置: 200%;
-  }
-  85% {
-    --英文背景位置: 100%;
-    --英文色标1: darkorange;
-    --英文色标2: #256f44;
-    --英文色标3: brown;
-    --英文色标4: royalblue;
-  }
-  95% {
-    --英文背景位置: 0%;
-    --英文色标1: silver;
-    --英文色标2: lightcyan;
-    --英文色标3: silver;
-    --英文色标4: lightcyan;
-  }
-  100% {
-    --英文背景位置: 0%;
-    --英文色标1: silver;
-    --英文色标2: lightcyan;
-    --英文色标3: silver;
-    --英文色标4: lightcyan;
-  }
+.交互式学习中心标题区 {
+  width: 100%;
 }
 
-@keyframes 英文欢迎标题动画 {
-  from {
-    opacity: 0;
-    translate: 0 50px;
-  }
-  to {
-    opacity: 1;
-    translate: 0 0;
-  }
-}
-
-.欢迎特色区 {
-  margin-bottom: 5vh;
-}
-
-.特色列表 {
+.交互式学习中心大标题 {
+  position: relative;
+  font-size: clamp(40px, 3vw, 100px);
+  font-weight: normal;
+  text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 25px;
 }
 
-.特色项 {
-  border-radius: 5px;
-  overflow: hidden;
-  background-color: #6b7a8980;
+.交互式学习中心大标题 > a {
+  position: relative;
+  height: 100%;
+  padding: 10px 0;
+  color: white;
+}
+
+.交互式学习中心容器:has(a:hover) {
+  --径向渐变发散距离: 100%;
+  background-color: transparent;
+  transition: --径向渐变发散距离 500ms;
+}
+
+.交互式学习中心小标题 {
+  color: rgb(175, 175, 175);
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 15px;
-  font-size: max(14px, calc(0.65vw + 2px));
-  opacity: 0;
-  box-shadow: 2px 2px 4px 0 #0005;
-  backdrop-filter: blur(3px);
+  margin-top: 15px;
+  font-weight: normal;
+  font-size: 1.25em;
 }
 
-.特色项:nth-child(1) {
-  animation: 特色项动画_左上 1s ease-out forwards;
-}
-
-.特色项:nth-child(2) {
-  animation: 特色项动画_右上 1s ease-out forwards;
-}
-
-.特色项:nth-child(3) {
-  animation: 特色项动画_左下 1s ease-out forwards;
-}
-
-.特色项:nth-child(4) {
-  animation: 特色项动画_右下 1s ease-out forwards;
-}
-
-@keyframes 特色项动画_右上 {
-  from {
-    translate: 50px -50px;
-    opacity: 0;
-  }
-  to {
-    translate: 0 0;
-    opacity: 1;
-  }
-}
-
-@keyframes 特色项动画_右下 {
-  from {
-    translate: 50px 50px;
-    opacity: 0;
-  }
-  to {
-    translate: 0 0;
-    opacity: 1;
-  }
-}
-
-@keyframes 特色项动画_左下 {
-  from {
-    translate: -50px 50px;
-    opacity: 0;
-  }
-  to {
-    translate: 0 0;
-    opacity: 1;
-  }
-}
-
-@keyframes 特色项动画_左上 {
-  from {
-    translate: -50px -50px;
-    opacity: 0;
-  }
-  to {
-    translate: 0 0;
-    opacity: 1;
-  }
-}
-
-.特色图标 {
-  height: 100%;
-  padding: 15px;
+.交互式学习中心展示区 {
+  width: 100%;
+  height: 50%;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
+  align-items: flex-start;
 }
 
-.特色文本 {
-  padding-right: 15px;
-  text-shadow: 1px 1px 1px #0007;
-}
-
-.欢迎推荐区 {
-  display: flex;
-  gap: 5vw;
-  justify-content: space-between;
-}
-
-.推荐卡片 {
+.交互式学习中心展示分区 {
   position: relative;
-  width: max(175px, calc(10dvw + 50px));
-  aspect-ratio: 3;
+  width: max(25%, 200px);
+  height: 100%;
+  background: center/cover no-repeat radial-gradient(circle at 50% 10%, #ffffff1a 0%, #ffffff07 70%);
   border-radius: 10px;
   overflow: hidden;
-  transition: 250ms;
+}
+
+.展示分区背景 {
+  position: absolute;
+  width: 100%;
+  height: 65%;
+  top: 0;
+  left: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 5%;
-  padding-right: max(3px, 2%);
-  box-shadow: 5px 5px 10px 0 #0005;
 }
 
-.推荐卡片:hover {
-  scale: 1.15 !important;
-  z-index: 1;
+.展示分区背景 > img {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
 }
 
-.推荐卡片-交互式学习中心 {
-  background-color: #b7d6d6dd;
-  color: #2d3542;
-  clip-path: inset(0 0 100% 0);
-  animation: 交互式学习中心推荐卡片动画 1s ease-out 750ms forwards;
-}
-
-@keyframes 交互式学习中心推荐卡片动画 {
-  from {
-    clip-path: inset(0 0 100% 0);
-  }
-  99.99% {
-    clip-path: inset(0 0 0 0);
-  }
-  to {
-    clip-path: none;
-  }
-}
-
-.推荐卡片-交互式学习中心:hover {
-  background-color: #b7d6d6cc;
-  box-shadow: 5px 5px 10px 0 #0005, inset 0 0 15px 0 white;
-}
-
-.推荐卡片-交互式学习中心:link {
-  color: #2d3542;
-}
-
-.推荐卡片-交互式学习中心:visited {
-  color: #2d3542;
-}
-
-.推荐卡片-经验之谈 {
-  background-color: #3b4557dd;
-  color: #b7d6d6;
-  clip-path: inset(100% 0 0 0);
-  animation: 经验之谈推荐卡片动画 1s ease-out 750ms forwards;
-}
-
-@keyframes 经验之谈推荐卡片动画 {
-  from {
-    clip-path: inset(100% 0 0 0);
-  }
-  99.99% {
-    clip-path: inset(0 0 0 0);
-  }
-  to {
-    clip-path: none;
-  }
-}
-
-.推荐卡片-经验之谈:link {
-  color: #b7d6d6;
-}
-
-.推荐卡片-经验之谈:visited {
-  color: #b7d6d6;
-}
-
-.推荐卡片-经验之谈:hover {
-  background-color: #3b4557cc;
-  box-shadow: 5px 5px 10px 0 #0005, inset 0 0 15px 0 #b7d6d6dd;
-}
-
-.推荐卡片-学习笔记 {
-  background-color: #cbcbcbdd;
-  color: #3b4646;
-  clip-path: inset(50% 50% 50% 50%);
-  animation: 学习笔记推荐卡片动画 0.5s ease-out 750ms forwards;
-}
-
-@keyframes 学习笔记推荐卡片动画 {
-  from {
-    clip-path: inset(50% 50% 50% 50%);
-  }
-  99.99% {
-    clip-path: inset(0 0 0 0);
-  }
-  to {
-    clip-path: none;
-  }
-}
-
-.推荐卡片-学习笔记:link,
-.推荐卡片-学习笔记:visited {
-  color: #3b4646;
-}
-
-.推荐卡片-学习笔记:hover {
-  background-color: #cbcbcbee;
-  box-shadow: 5px 5px 10px 0 #0005, inset 0 0 15px 0 #b7d6d6dd;
-}
-
-.推荐卡片Logo容器 {
-  width: 20%;
-  aspect-ratio: 1;
+.展示分区内容 {
+  position: absolute;
+  width: 85%;
+  height: 25%;
+  left: 25px;
+  bottom: 25px;
   display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.推荐卡片Logo {
+.展示分区标题 {
+  font-size: 1.125em;
+}
+
+.展示分区描述 {
+  font-size: 0.9em;
+  color: rgb(160, 160, 160);
+}
+
+.博客分区 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.博客容器 {
+  position: relative;
+  width: max(100%, 1000px);
+  height: max(90vh, 800px);
+  display: flex;
+  justify-content: center;
+  gap: 5vw;
+}
+
+.博客背景区 {
+  position: absolute;
+  height: 70%;
+  aspect-ratio: 1;
+  left: 50%;
+  top: 47.5%;
+  translate: 7.5% -50%;
+}
+
+.博客背景容器 {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.博客背景容器 > img {
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
-.推荐卡片标题 {
-  font-size: max(14px, calc(0.5dvw + 8px));
-}
-
-/* <!-- ------------------ ↑ 欢迎内容 ------------------- --> */
-
-/* <!-- ------------------ ↓ 非主推内容 ------------------- --> */
-.非主推区域 {
-  height: 100vh;
-  min-height: 100vh;
-  width: 100%;
-  background-image: url("/Images/Background-Images/盘山公路.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-}
-
-.非主推区域覆盖层 {
-  background-image: linear-gradient(
-    black var(--分页渐变黑色标位置),
-    transparent var(--分页渐变透明色标位置),
-    transparent calc(100% - var(--分页渐变透明色标位置)),
-    black calc(100% - var(--分页渐变黑色标位置))
-  );
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.非主推列表 {
-  width: 100%;
-  padding: 0 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 15px;
-  perspective: 600px;
-}
-
-.非主推项 {
-  width: 200px;
-  height: 250px;
-  transform-style: preserve-3d;
-  rotate: y 180deg;
-  backface-visibility: hidden;
-  transition: 1000ms;
-}
-
-.非主推链接 {
-  position: relative;
-  width: 100%;
-  height: 100%;
+.博客左区 {
+  width: fit-content;
   display: flex;
   flex-direction: column;
-  border-radius: 0 10px 10px 10px;
-  overflow: hidden;
-  background-color: #345a;
+  justify-content: center;
+  gap: min(5vh, 100px);
 }
 
-.非主推链接-内容 {
-  position: relative;
-  width: 100%;
+.博客标题区 {
+  padding: 0 25px;
+}
+
+.博客大标题 {
+  font-size: clamp(35px, 4vw, 100px);
+}
+
+.博客小标题 {
+  color: rgb(175, 175, 175);
+  font-weight: normal;
+  font-size: clamp(16px, 1.25vw, 50px);
+}
+
+.博客子分区容器 {
+  display: flex;
+  flex-direction: column;
+}
+
+.经验之谈子分区,
+.知识库子分区 {
+  display: flex;
+  gap: 25px;
+  padding: 50px 25px;
+}
+
+.经验之谈子分区:hover,
+.知识库子分区:hover {
+  background-color: #def1;
+}
+
+.博客子分区容器:has(.经验之谈子分区:hover, .知识库子分区:hover) .分割线 {
+  opacity: 0;
+}
+
+.博客Logo容器 {
+  width: 150px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: center/cover no-repeat radial-gradient(circle at 50% 10%, #ffffff2a 0%, #ffffff10 80%);
+}
+
+.博客Logo容器 > img {
+  width: 75%;
   height: 75%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 5em;
+  object-fit: contain;
 }
 
-.非主推链接-标题 {
-  position: relative;
-  width: 100%;
-  height: 25%;
+.博客子分区内容 {
+  width: 300px;
+  padding: 5px 0;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.05em;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.非主推链接::before {
-  position: absolute;
-  width: 100%;
-  height: 25%;
-  content: "";
-  top: 75%;
+.博客子分区标题 {
+  font-size: 1.25em;
   transition: 250ms;
 }
 
-.游戏链接::before {
-  background-color: #ff8c00aa;
+.博客子分区描述 {
+  font-weight: normal;
+  color: rgb(160, 160, 160);
 }
 
-.Web应用链接::before {
-  background-color: #256f44aa;
+.分割线 {
+  width: 100%;
+  height: 1px;
+  background-image: linear-gradient(90deg, transparent 0%, #fff1 5%, #fff3 40%, #fff3 60%, #fff1 95%, transparent 100%);
 }
 
-.第三方教程链接::before {
-  background-color: #a52a2aaa;
+.博客右区 {
+  position: relative;
+  width: 35%;
+  height: 100%;
 }
 
-.软件下载链接::before {
-  background-color: #4169e1aa;
-}
-
-.非主推链接:hover::before {
+.博客右区背景容器 {
+  position: absolute;
   top: 0;
-  height: 75%;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
-/* <!-- ------------------ ↑ 非主推内容 ------------------- --> */
+.博客右区背景容器 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 
-/* <!-- ------------------ ↓ 贡献者和宗旨 ------------------- --> */
-.about {
+.博客子分区:hover .博客子分区标题 {
+  font-size: 1.5em;
+}
+
+.App和游戏容器 {
   position: relative;
-  width: 100dvw;
-  height: 100dvh;
+  width: max(100%, 1000px);
+  /* height: max(90vh, 800px); */
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.App和游戏导航区 {
+  position: relative;
+  border-radius: 10px 0 0 10px;
   overflow: hidden;
-  background-image: url("/Images/Background-Images/背景-08.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+  border: solid 1px #def2;
 }
 
-.关于覆盖层 {
-  background-image: linear-gradient(
-    black var(--分页渐变黑色标位置),
-    transparent var(--分页渐变透明色标位置),
-    transparent calc(100% - var(--分页渐变透明色标位置)),
-    black calc(100% - var(--分页渐变黑色标位置))
-  );
-  display: flex;
-  justify-content: center;
-  align-items: center;
+@property --径向渐变原点垂直坐标 {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 20%;
 }
 
-.关于内容区 {
+.App和游戏导航区背景 {
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  top: 0;
+  left: 0;
+  background-image: radial-gradient(ellipse at 50% var(--径向渐变原点垂直坐标), #bdf5 0%, #bdf1 100%);
+  transition: 250ms, --径向渐变原点垂直坐标 250ms;
+}
+
+.App游戏和导航区:has(.App导航区):hover .App和游戏导航区背景 {
+  --径向渐变原点垂直坐标: 20%;
+}
+
+.App游戏和导航区:has(.游戏导航区):hover .App和游戏导航区背景 {
+  --径向渐变原点垂直坐标: 80%;
+}
+
+.App和游戏导航分区 {
   position: relative;
-  width: 66.667%;
-  height: fit-content;
   display: flex;
   flex-direction: column;
+  background-color: #bbddff06;
+  transition: 250ms;
 }
 
-.关于内容中间线 {
-  width: 100%;
-  height: 4px;
-  background-color: #123a;
-  transition: 1000ms;
-  clip-path: inset(0 0 0 0);
-}
-
-.贡献者区,
-.宗旨区 {
-  position: absolute;
+.App和游戏导航图像容器 {
   width: 250px;
-  height: 300px;
-  top: 50%;
+  height: 250px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.贡献者区 {
-  left: 20%;
-  translate: -50% calc(-100% - 1px);
-  transition: 1000ms;
-}
-
-.宗旨区 {
-  right: 20%;
-  translate: 50% 1px;
-  transition: 1000ms;
-}
-
-.关于图像容器 {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1;
-  border-radius: 999px;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  transition: 150ms;
 }
 
-@property --渐变旋转角度-前 {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
+.App和游戏导航图像容器 > img {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
 }
 
-@property --渐变旋转角度-后 {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
+.App和游戏导航文本区 {
+  border-top: solid 1px #def2;
+  display: flex;
+  flex-direction: column;
 }
 
-.关于图像容器::before {
-  position: absolute;
-  width: 100%;
+.App和游戏导航标题 {
+  padding: 15px 15px 5px;
+}
+
+.App和游戏导航描述 {
+  font-size: 0.9em;
+  color: rgb(170, 170, 170);
+  padding: 0 15px 20px;
+}
+
+.App和游戏范例区 {
+  position: relative;
+  width: max(60%, 800px);
   height: 100%;
-  border-radius: 999px;
+}
+
+.范例分区 {
+  position: absolute;
   top: 0;
   left: 0;
-  background-image: conic-gradient(
-    transparent var(--渐变旋转角度-前),
-    lightskyblue var(--渐变旋转角度-前),
-    lightcyan var(--渐变旋转角度-后),
-    transparent var(--渐变旋转角度-后)
-  );
-  content: "";
-  opacity: 0;
-  animation: 角度渐变旋转 2.5s linear infinite;
-  animation-play-state: paused;
-  transition: 500ms;
-}
-
-.关于图像容器:hover::before {
-  opacity: 1;
-  animation-play-state: running;
-}
-
-@keyframes 角度渐变旋转 {
-  from {
-    --渐变旋转角度-前: 0deg;
-    --渐变旋转角度-后: 0deg;
-  }
-  50% {
-    --渐变旋转角度-前: 60deg;
-    --渐变旋转角度-后: 240deg;
-  }
-  to {
-    --渐变旋转角度-前: 360deg;
-    --渐变旋转角度-后: 360deg;
-  }
-}
-
-.关于图像 {
-  width: 95%;
-  height: 95%;
-  border-radius: 999px;
-  object-fit: cover;
-  filter: drop-shadow(5px 5px 5px #0007);
-}
-
-.关于图像容器:hover .关于图像容器标题 {
-  background-color: lightcyan;
-  color: #000a;
-}
-
-.关于图像容器标题 {
-  position: absolute;
-  left: 50%;
-  translate: -50% 0;
-  font-size: 1.25em;
-  padding: 10px 25px;
-  border-radius: 5px;
-  width: fit-content;
-  text-wrap: nowrap;
-  background-color: #012d;
-  transition: 125ms;
-}
-
-.贡献者图像容器 .关于图像容器标题 {
-  top: 125%;
-}
-
-.宗旨图像容器 .关于图像容器标题 {
-  top: -47%;
-}
-
-.关于分区支撑线 {
-  width: 2px;
-  height: 0;
-  flex-grow: 1;
-  background-color: #123a;
-}
-
-/* <!-- ------------------ ↑ 贡献者和宗旨 ------------------- --> */
-
-/* <!-- ------------------ ↓ 美图欣赏 ------------------- --> */
-.艺术展示区 {
-  width: 100%;
-  height: 100vh;
-  background-image: url("/Images/Background-Images/背景-06.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-}
-
-.图像长廊区 {
   width: 100%;
   height: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-  background-image: linear-gradient(
-    black var(--分页渐变黑色标位置),
-    transparent var(--分页渐变透明色标位置),
-    transparent calc(100% - var(--分页渐变透明色标位置) * 2),
-    black calc(100% - var(--分页渐变黑色标位置) * 2)
-  );
-}
-
-.图像长廊标题 {
-  position: absolute;
-  width: 100%;
-  top: 10%;
-  left: 50%;
-  transform: translateX(-50%);
-  transform-origin: 50% 0;
-  display: flex;
-  justify-content: center;
-  gap: 100px;
-}
-
-.图像长廊标题 > p {
-  font-size: 5rem;
-  font-family: "Ma Shan Zheng", cursive;
+  flex-wrap: wrap;
   opacity: 0;
-  transition: 1.25s;
-  text-shadow: 5px 5px 5px #000a;
-}
-
-.图像长廊标题 > p:nth-child(1) {
-  transform: translateX(-40%);
-}
-
-.图像长廊标题 > p:nth-child(2) {
-  right: 2%;
-  transform: translateX(40%);
-}
-
-.图像长廊分区 {
-  width: 100%;
-  height: var(--图像长廊分区高度);
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
-
-.图像长廊分区::after {
-  position: absolute;
-  width: 100%;
-  height: var(--图像容器高度);
-  content: "";
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 1) 2.5%,
-    rgba(0, 0, 0, 0) 20%,
-    rgba(0, 0, 0, 0) 80%,
-    rgba(0, 0, 0, 1) 97.5%
-  );
   pointer-events: none;
 }
 
-.图像长廊分区 > .箭头 {
-  width: 50px;
-  height: 50px;
-  overflow: hidden;
-  position: absolute;
-  top: 50%;
-  border-radius: 50px;
-  background: linear-gradient(135deg, #ddd, #999);
-  box-shadow: 0 0 5px 0 black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1;
-  transition: box-shadow 0.2s;
+.范例分区.当前范例分区 {
+  opacity: 1;
+  pointer-events: all;
 }
 
-.图像长廊分区 > .箭头:hover {
-  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
-  box-shadow: 0 0 5px 0 black, inset 0 1px 0 0 white;
-}
-
-.图像长廊分区 > .箭头:hover > img {
-  filter: saturate(2.5);
-}
-
-.图像长廊分区 > .箭头 > img {
+.范例链接 {
+  position: relative;
   width: 50%;
   height: 50%;
-  object-fit: contain;
-  -webkit-user-select: none;
-  user-select: none;
-  -webkit-user-drag: none;
-  transition: 0.2s;
+  transition: 250ms;
 }
 
-.图像长廊分区 > .左箭头 {
-  left: 50%;
-  transform: translateX(calc(-50% - var(--图像容器宽度) / 2)) translateY(-50%);
+.范例链接:hover {
+  background-color: #fff1;
 }
 
-.图像长廊分区 > .右箭头 {
-  right: 50%;
-  transform: translateX(calc(50% + var(--图像容器宽度) / 2)) translateY(-50%);
-}
-
-.图像滑块组 {
-  width: calc(var(--图像容器宽度) * 30);
-  height: var(--图像容器高度);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  transform: translateX(calc(var(--图像容器宽度) / 2));
+.范例链接::after {
+  position: absolute;
+  content: "";
+  top: 0;
   left: 0;
-  right: 0;
-  transition: transform var(--图像移动时长) ease-out, left 250ms ease-out;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 0%, #0005 75%, #000 100%);
 }
 
-.图像滑块 {
-  height: 100%;
-  width: calc(var(--图像容器宽度) * 10);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.图像容器 {
-  height: 100%;
-  width: var(--图像容器宽度);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
-
-.图像容器 > img {
-  height: 100%;
-  width: var(--图像宽度);
-  border-radius: 6px;
-  object-fit: cover;
-  box-shadow: 5px 5px 20px 0 black;
-  -webkit-user-select: none;
-  user-select: none;
-}
-
-.图像容器 > .img-overlay {
-  height: 100%;
-  width: var(--图像宽度);
-  border-radius: 6px;
+.范例背景 {
   position: absolute;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: white;
-  opacity: 0.5;
-  transition: 0.25s;
-}
-
-.图像容器 > .img-overlay:hover {
-  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
-}
-
-.图像容器 > .图像来源 {
-  position: absolute;
-  bottom: 15px;
-  right: calc((var(--图像容器宽度) - var(--图像宽度)) / 2 + 15px);
-  width: 100px;
-  height: 35px;
-  border-radius: 5px;
-  background-color: #456;
-  backdrop-filter: blur(10px);
-  color: #ccc;
+  left: 0;
+  width: 100%;
+  height: 75%;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 5px;
-  font-size: 0.9em;
 }
 
-.图像容器 > .图像来源 > .来源图示 {
-  font-size: 1.2em;
-  color: lightblue;
-  font-family: "Zilla Slab", serif;
+.范例背景 > img {
+  width: 80%;
+  height: 80%;
+  object-fit: cover;
 }
 
-.图像序号指示器组 {
+.范例信息 {
   position: absolute;
-  width: 500px;
-  height: 30px;
+  bottom: 0;
   left: 50%;
-  transform: translateX(-50%);
-  bottom: 5%;
+  width: 80%;
+  height: 25%;
+  translate: -50% 0;
+  padding: 0 2.5%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 }
 
-.图像序号指示器 {
-  width: 8.5%;
-  height: 100%;
-  border-radius: 50px;
+.范例标题 {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
 }
 
-.图像序号指示器:hover {
-  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+.范例标题-下 {
+  font-size: 0.8em;
+  color: rgb(170, 170, 170);
+  font-weight: normal;
+  font-family: var(--无衬线字体);
 }
 
-.指示器内部 {
+.范例作者容器 {
+  height: 60%;
+  aspect-ratio: 1;
+}
+
+.范例作者容器 > img {
   width: 100%;
-  height: 5px;
-  border-radius: 50px;
-  background: rgba(173, 173, 173, 0.75);
-  box-shadow: 0 0 1px 0 #000;
-  pointer-events: none;
-  transition: 0.25s;
+  height: 100%;
+  object-fit: contain;
 }
 
-.图像序号指示器:hover .指示器内部 {
-  background: rgb(175, 224, 247) !important;
+.横线,
+.竖线 {
+  position: absolute;
 }
 
-/* <!-- ------------------ ↑ 美图欣赏 ------------------- --> */
+.横线 {
+  width: 100%;
+  height: 1px;
+  top: 50%;
+  left: 0;
+  translate: 0 -50%;
+  background-image: linear-gradient(90deg, transparent 15%, #fff3 45%, #fff3 55%, transparent 85%);
+}
+
+.竖线 {
+  width: 1px;
+  height: 100%;
+  top: 0;
+  left: 50%;
+  translate: -50% 0;
+  background-image: linear-gradient(transparent 15%, #fff3 45%, #fff3 55%, transparent 85%);
+}
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */
-@media screen and (width <= 1500px) {
-  .learn-list {
-    width: min(95%, 1000px);
-    padding: 50px 25px;
-  }
-}
-
-@media screen and (max-width: 1200px) {
-  .welcome-main {
-    gap: 5%;
-  }
-
-  .learn-title,
-  .learn-brief {
-    width: 90dvw;
-  }
-
-  .learn-brief {
-    height: 200px;
-    overflow: auto;
-  }
-
-  .learn-services {
-    width: 95dvw;
-  }
-
-  .learn-service {
-    width: 30%;
-    min-width: 250px;
-    max-height: 300px;
-  }
-}
-
-@media screen and (max-width: 1100px) {
-  .欢迎图像区 {
-    position: absolute;
-    top: 50%;
-    right: 50%;
-    translate: 50% -50%;
-    opacity: 25%;
-  }
-
-  .欢迎图像容器 {
-    width: min(500px, 75vw);
-    height: 100%;
-  }
-
-  .图像长廊分区::after {
-    position: absolute;
-    width: 100%;
-    height: 400px;
-    content: "";
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-  }
-
-  .图像长廊分区 > .左箭头 {
-    left: 2.5%;
-    transform: translateX(0) translateY(-50%);
-  }
-
-  .图像长廊分区 > .右箭头 {
-    right: 2.5%;
-    transform: translateX(0) translateY(-50%);
-  }
-}
-
-@media screen and (max-width: 1000px) {
-  .图像长廊标题 {
-    display: none;
-  }
-}
-
-@media screen and (max-height: 1100px) {
-  .learn-page {
-    justify-content: center;
-  }
-
-  .learn-brief {
-    display: none;
-  }
-
-  .learn-service {
-    height: 42.5%;
-  }
-
-  .learn-service-title {
-    height: 35%;
-    font-size: 1.35rem;
-  }
-
-  .learn-service-content {
-    height: 65%;
-    line-height: 1.375rem;
-  }
-}
-
-@media screen and (max-height: 1000px) {
-  .欢迎图像容器 {
-    width: min(600px, 50vw);
-    height: 100%;
-  }
-
-  .欢迎动画区 {
-    bottom: 6%;
-  }
-
-  .learn-page {
-    gap: 75px;
-    padding-top: 2.5dvh;
-  }
-
-  .learn-profile {
-    height: max(350px, 30vh);
-    gap: 25px;
-  }
-
-  .profile-github {
-    width: 85%;
-  }
-
-  .profile-link {
-    margin-top: 10px;
-    padding: 8px 30px;
-  }
-
-  .profile-link > img {
-    width: 25px;
-    height: 25px;
-  }
-
-  .profile-link > span {
-    font-size: 0.95em;
-  }
-
-  .图像长廊标题 {
-    display: none;
-  }
-}
-
-@media screen and (max-width: 650px) {
-  .欢迎文本区 {
-    width: 90%;
-  }
-
-  .欢迎文本区 > h1 {
-    font-size: 2.25rem;
-  }
-
-  .欢迎图像容器 {
-    width: min(500px, 95vw);
-    height: 100%;
-  }
-
-  .欢迎按钮区 {
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .欢迎按钮:nth-child(2) {
-    font-size: 0.95rem;
-  }
-
-  .图像序号指示器组 {
-    width: 95%;
-  }
-}
 
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */
