@@ -20,6 +20,7 @@
   background-image: linear-gradient(60deg, #0d0f11 0%, #22272b 100%);
   position: relative;
   margin: 0 auto;
+  padding-bottom: 200px;
   width: 100%;
   height: fit-content;
   font-family: var(--中文代码混合字体);
@@ -30,6 +31,7 @@
   width: 100%;
   height: 100%;
   top: 0;
+  overflow: hidden;
 }
 
 .渐变分区 {
@@ -48,6 +50,10 @@
 
 .渐变分区:nth-child(3) {
   background: radial-gradient(circle at right center, #2c421e80, #254e3b 25%, #262f55 40%, #4b2b57 65%, #73323780);
+}
+
+.渐变分区:nth-child(4) {
+  background: radial-gradient(circle at right center, #31588dbc, #362d8a 25%, #613d2b 40%, #5c2f39 65%, #7d8531bf);
 }
 
 .主页分区 {
@@ -299,7 +305,7 @@
 .交互式学习中心容器:has(a:hover) {
   --径向渐变发散距离: 100%;
   background-color: transparent;
-  transition: --径向渐变发散距离 500ms;
+  transition: --径向渐变发散距离 500ms cubic-bezier(0.1, 0.75, 0.2, 0.9);
 }
 
 .交互式学习中心小标题 {
@@ -514,7 +520,7 @@
 .App和游戏容器 {
   position: relative;
   width: max(100%, 1000px);
-  /* height: max(90vh, 800px); */
+  height: max(50vh, 800px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -522,9 +528,14 @@
 
 .App和游戏导航区 {
   position: relative;
+  width: clamp(250px, 17.5%, 300px);
+  height: 100%;
   border-radius: 10px 0 0 10px;
   overflow: hidden;
-  border: solid 1px #def2;
+  border-top: solid 1px #def2;
+  border-bottom: solid 1px #def2;
+  border-left: solid 1px #def2;
+  border-right: solid 1px #def5;
 }
 
 @property --径向渐变原点垂直坐标 {
@@ -553,6 +564,7 @@
 
 .App和游戏导航分区 {
   position: relative;
+  height: 50%;
   display: flex;
   flex-direction: column;
   background-color: #bbddff06;
@@ -560,8 +572,8 @@
 }
 
 .App和游戏导航图像容器 {
-  width: 250px;
-  height: 250px;
+  width: 100%;
+  height: 75%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -574,6 +586,7 @@
 }
 
 .App和游戏导航文本区 {
+  height: 25%;
   border-top: solid 1px #def2;
   display: flex;
   flex-direction: column;
@@ -591,8 +604,11 @@
 
 .App和游戏范例区 {
   position: relative;
-  width: max(60%, 800px);
+  width: clamp(800px, 60%, 1200px);
   height: 100%;
+  border-right: solid 1px #def2;
+  border-top: solid 1px #def2;
+  border-bottom: solid 1px #def2;
 }
 
 .范例分区 {
@@ -620,7 +636,7 @@
 }
 
 .范例链接:hover {
-  background-color: #fff1;
+  background-color: #fff2;
 }
 
 .范例链接::after {
@@ -710,6 +726,97 @@
   left: 50%;
   translate: -50% 0;
   background-image: linear-gradient(transparent 15%, #fff3 45%, #fff3 55%, transparent 85%);
+}
+
+.第三方教程与软件分区容器 {
+  position: relative;
+  width: max(100%, 1000px);
+  height: max(90vh, 800px);
+}
+
+.容器背景 {
+  position: absolute;
+  width: 100%;
+  height: 150%;
+  top: 0;
+  filter: brightness(0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  mask-image: linear-gradient(90deg, transparent 5%, #0002 45%, #0002 55%, transparent 95%),
+    linear-gradient(transparent 5%, #0002 45%, #0002 55%, transparent 95%);
+}
+
+.容器背景 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.第三方教程与软件访问区 {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5vw;
+}
+
+.访问分区 {
+  width: min(25%, 350px);
+  height: 65%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  overflow: hidden;
+  background-image: linear-gradient(320deg, rgb(44, 52, 115) 10%, rgb(49, 68, 94) 100%);
+  box-shadow: 10px 10px 10px 0 #0007;
+}
+
+.访问Logo容器 {
+  width: 100%;
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.访问Logo容器 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.三点区 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  height: 12%;
+}
+
+.点 {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background-color: rgb(214, 214, 214);
+}
+
+.访问信息区 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.访问标题 {
+  padding: 0 15px 15px;
+}
+
+.访问描述 {
+  padding: 0 10%;
+  color: rgb(200, 200, 200);
 }
 
 /* <!-- ------------------ ↓ 响应式设计 ------------------- --> */

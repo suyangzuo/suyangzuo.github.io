@@ -127,6 +127,7 @@
 .目录标题 {
   flex-grow: 1;
   font-size: 14px;
+  font-weight: normal;
   color: rgb(203, 219, 219);
 }
 
