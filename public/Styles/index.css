@@ -332,6 +332,7 @@
   width: max(25%, 200px);
   height: 100%;
   background: center/cover no-repeat radial-gradient(circle at 50% 10%, #ffffff1a 0%, #ffffff07 70%);
+  /* background: center/cover no-repeat radial-gradient(circle at 50% 10%, #0000008a 0%, #00000067 70%); */
   border-radius: 10px;
   overflow: hidden;
 }
@@ -743,8 +744,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  mask-image: linear-gradient(90deg, transparent 5%, #0002 45%, #0002 55%, transparent 95%),
-    linear-gradient(transparent 5%, #0002 45%, #0002 55%, transparent 95%);
+  mask-image: linear-gradient(transparent 2%, #0002 50%);
 }
 
 .容器背景 > img {
@@ -765,13 +765,19 @@
 
 .访问分区 {
   width: min(25%, 350px);
-  height: 65%;
+  height: min(75%, 650px);
   display: flex;
   flex-direction: column;
   border-radius: 10px;
   overflow: hidden;
   background-image: linear-gradient(320deg, rgb(44, 52, 115) 10%, rgb(49, 68, 94) 100%);
   box-shadow: 10px 10px 10px 0 #0007;
+  transition: 250ms;
+}
+
+.访问分区:hover{
+  scale:1.1;
+  box-shadow: 0 0 30px 15px #0007;
 }
 
 .访问Logo容器 {
