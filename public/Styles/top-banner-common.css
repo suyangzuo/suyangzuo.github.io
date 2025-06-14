@@ -232,7 +232,7 @@
   border-radius: 8px;
   visibility: hidden;
   opacity: 0;
-  transition: 350ms ease-out;
+  transition: 150ms ease-out;
   pointer-events: none;
 
   .导航2级菜单 {
@@ -243,7 +243,7 @@
     background-color: rgb(23, 28, 33);
     border-radius: 5px;
     overflow: hidden;
-    transition: 350ms ease-out;
+    transition: 150ms ease-out;
     box-shadow: 0 5px 30px 5px #0008, inset 0 0 0 1px var(--二级菜单色);
 
     .导航2级链接 {
