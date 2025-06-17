@@ -4,6 +4,26 @@
   --中文字体: "Noto Sans SC", 微软雅黑, sans-serif;
   --代码字体: "JetBrains Mono", Consolas, monospace;
   --中文代码混合字体: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, monospace, sans-serif;
+
+  /* 科技感配色 */
+  --主色调: #00d4ff;
+  --辅助色: #0066cc;
+  --背景深色: #0a0a0a;
+  --背景渐变: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+  --卡片背景: rgba(255, 255, 255, 0.05);
+  --边框发光: 0 0 20px rgba(0, 212, 255, 0.3);
+  --文字主色: #ffffff;
+  --文字次色: #b0b0b0;
+  --悬停效果: rgba(0, 212, 255, 0.1);
+
+  /* 现代科技感效果变量 */
+  --霓虹蓝: #00d4ff;
+  --霓虹青: #00ffff;
+  --科技紫: #8a2be2;
+  --发光强度: 0 0 30px;
+  --毛玻璃效果: blur(20px);
+  --现代阴影: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --内发光: inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .总区 {
@@ -13,44 +33,383 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-bottom: solid 10px #111;
+  background: var(--背景渐变);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 添加科技感背景效果 */
+.总区::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(0, 102, 204, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(0, 212, 255, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .标题区 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 30px;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  background: linear-gradient(
+    135deg,
+    rgba(0, 212, 255, 0.1) 0%,
+    rgba(0, 102, 204, 0.05) 50%,
+    rgba(0, 212, 255, 0.08) 100%
+  );
+  border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+/* 添加动态背景效果 */
+.标题区::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 25% 25%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(0, 102, 204, 0.06) 0%, transparent 50%),
+    linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.03) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+  animation: backgroundShift 12s ease-in-out infinite;
+}
+
+/* 添加移动光影效果 */
+.标题区::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 212, 255, 0.08) 15%,
+    rgba(0, 212, 255, 0.15) 30%,
+    rgba(0, 212, 255, 0.2) 50%,
+    rgba(0, 212, 255, 0.15) 70%,
+    rgba(0, 212, 255, 0.08) 85%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+  animation: lightSweep 8s ease-in-out infinite;
+}
+
+@keyframes backgroundShift {
+  0% {
+    background: radial-gradient(circle at 25% 25%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 75% 75%, rgba(0, 102, 204, 0.06) 0%, transparent 50%),
+      linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.03) 50%, transparent 100%);
+  }
+  16.67% {
+    background: radial-gradient(circle at 30% 30%, rgba(0, 212, 255, 0.09) 0%, transparent 50%),
+      radial-gradient(circle at 70% 70%, rgba(0, 102, 204, 0.07) 0%, transparent 50%),
+      linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.04) 50%, transparent 100%);
+  }
+  33.33% {
+    background: radial-gradient(circle at 35% 35%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 65% 65%, rgba(0, 102, 204, 0.08) 0%, transparent 50%),
+      linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.05) 50%, transparent 100%);
+  }
+  50% {
+    background: radial-gradient(circle at 40% 40%, rgba(0, 212, 255, 0.11) 0%, transparent 50%),
+      radial-gradient(circle at 60% 60%, rgba(0, 102, 204, 0.09) 0%, transparent 50%),
+      linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.06) 50%, transparent 100%);
+  }
+  66.67% {
+    background: radial-gradient(circle at 35% 35%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 65% 65%, rgba(0, 102, 204, 0.08) 0%, transparent 50%),
+      linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.05) 50%, transparent 100%);
+  }
+  83.33% {
+    background: radial-gradient(circle at 30% 30%, rgba(0, 212, 255, 0.09) 0%, transparent 50%),
+      radial-gradient(circle at 70% 70%, rgba(0, 102, 204, 0.07) 0%, transparent 50%),
+      linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.04) 50%, transparent 100%);
+  }
+  100% {
+    background: radial-gradient(circle at 25% 25%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 75% 75%, rgba(0, 102, 204, 0.06) 0%, transparent 50%),
+      linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.03) 50%, transparent 100%);
+  }
+}
+
+@keyframes lightSweep {
+  0% {
+    left: -100%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.3;
+  }
+  20% {
+    opacity: 0.8;
+  }
+  30% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
 }
 
 .大标题 {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 50px 0;
-  font-size: 40px;
-  gap: 1ch;
+  padding: 75px 40px;
+  font-size: 38px;
+  gap: 0;
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
 }
 
-.标题英文 {
+/* 重新设计三个元素的布局 */
+.标题英文:first-child {
+  /* Mark */
   font-family: var(--代码字体);
-  font-size: 1em;
-  color: darkgoldenrod;
+  font-size: 0.72em;
+  font-weight: 700;
+  color: var(--主色调);
+  text-shadow: 0 0 18px rgba(0, 212, 255, 0.6);
+  letter-spacing: 2.4px;
+  position: relative;
+  padding: 12px 18px;
+  border-radius: 10px;
+  background: rgba(0, 212, 255, 0.1);
+  border: 1.2px solid rgba(0, 212, 255, 0.3);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 5px 19px rgba(0, 212, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  transform: translateY(0);
+  /* 确保文字清晰渲染 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.标题英文:first-child:hover {
+  transform: translateY(-5px) scale(1.05);
+  background: rgba(0, 212, 255, 0.15);
+  border-color: rgba(0, 212, 255, 0.5);
+  box-shadow: 0 10px 29px rgba(0, 212, 255, 0.3), 0 0 0 1px rgba(0, 212, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .标题中文 {
+  /* 知识 */
   font-family: var(--中文字体);
-  font-weight: normal;
-  font-size: 1.25em;
-  color: rgb(126, 186, 35);
+  font-weight: 500;
+  font-size: 0.84em;
+  color: var(--文字主色);
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+  letter-spacing: 1.8px;
+  position: relative;
+  padding: 15px 24px;
+  margin: 0 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  border: 1.2px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 5px 19px rgba(255, 255, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  /* 确保文字清晰渲染 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.标题中文:hover {
+  transform: translateY(-4px) scale(1.03);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 7px 24px rgba(255, 255, 255, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.标题英文:last-child {
+  /* Down */
+  font-family: var(--代码字体);
+  font-size: 0.72em;
+  font-weight: 700;
+  color: var(--主色调);
+  text-shadow: 0 0 18px rgba(0, 212, 255, 0.6);
+  letter-spacing: 2.4px;
+  position: relative;
+  padding: 12px 18px;
+  border-radius: 10px;
+  background: rgba(0, 212, 255, 0.1);
+  border: 1.2px solid rgba(0, 212, 255, 0.3);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 5px 19px rgba(0, 212, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  transform: translateY(0);
+  /* 确保文字清晰渲染 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.标题英文:last-child:hover {
+  transform: translateY(-5px) scale(1.05);
+  background: rgba(0, 212, 255, 0.15);
+  border-color: rgba(0, 212, 255, 0.5);
+  box-shadow: 0 10px 29px rgba(0, 212, 255, 0.3), 0 0 0 1px rgba(0, 212, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* 添加连接线效果 */
+.大标题::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 212, 255, 0.3) 20%,
+    rgba(0, 212, 255, 0.6) 50%,
+    rgba(0, 212, 255, 0.3) 80%,
+    transparent 100%
+  );
+  z-index: 0;
+  opacity: 0.6;
+}
+
+/* 添加装饰性元素 */
+.大标题::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(0, 212, 255, 0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  z-index: 0;
+  animation: subtleGlow 10s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes subtleGlow {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  25% {
+    opacity: 0.4;
+    transform: translate(-50%, -50%) scale(1.02);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+  75% {
+    opacity: 0.4;
+    transform: translate(-50%, -50%) scale(1.02);
+  }
+}
+
+/* 添加额外的装饰性光点 */
+.标题区 .装饰光点 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.标题区 .装饰光点::before,
+.标题区 .装饰光点::after {
+  content: "";
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: var(--主色调);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--主色调);
+  animation: floatingLight 15s ease-in-out infinite;
+}
+
+.标题区 .装饰光点::before {
+  top: 20%;
+  left: 15%;
+  animation-delay: 0s;
+}
+
+.标题区 .装饰光点::after {
+  top: 80%;
+  right: 15%;
+  animation-delay: 7.5s;
+}
+
+@keyframes floatingLight {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0) scale(1);
+  }
+  25% {
+    opacity: 0.6;
+    transform: translateY(-10px) scale(1.2);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-5px) scale(1.1);
+  }
+  75% {
+    opacity: 0.5;
+    transform: translateY(-15px) scale(1.3);
+  }
 }
 
 .目录总区 {
+  width: max(95vw, 1200px);
+  height: max(800px, calc(100vh - 100px));
   flex-grow: 1;
   display: flex;
   justify-content: center;
-  gap: 20px;
-  --目录背景色: #613c72;
-  --未选目录背景色: #0006;
+  gap: 30px;
+  position: relative;
+  z-index: 1;
+  --目录背景色: var(--主色调);
+  --未选目录背景色: rgba(255, 255, 255, 0.05);
 }
 
 .目录区,
@@ -60,62 +419,63 @@
 }
 
 .目录区 {
+  width: 200px;
   flex-shrink: 0;
-  width: fit-content;
   display: flex;
   flex-direction: column;
   font-family: var(--中文代码混合字体);
+  gap: 15px;
 }
 
 .目录 {
   position: relative;
-  padding-right: 25px;
-  background-color: #111;
-}
-
-.目录::before {
-  position: absolute;
-  z-index: -1;
-  content: "";
-  width: 50px;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background-color: var(--目录背景色);
-  clip-path: polygon(50% 0%, 100% 0%, 100% 100%, 50% 100%, 0% 50%);
-}
-
-.当前目录::before {
-  translate: -50% 0;
-  transition: 125ms;
+  transition: all 0.25s ease;
 }
 
 .目录:not(.当前目录):hover {
   cursor: var(--光标-手指);
-  background-color: #2c343a;
 }
 
-.目录.当前目录 {
-  background-color: var(--目录背景色);
+.目录.当前目录 .目录链接 {
+  background: rgba(0, 212, 255, 0.1);
+  border-color: var(--主色调);
+  box-shadow: var(--边框发光);
+}
+
+.目录:not(.当前目录):hover .目录链接 {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 3px 12px rgba(255, 255, 255, 0.075);
 }
 
 .目录链接 {
-  width: fit-content;
-  height: 45px;
-  padding: 0 20px;
+  width: 100%;
+  height: 50px;
+  padding: 0 25px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 15px;
+  background: var(--卡片背景);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  transition: all 0.25s ease;
 }
 
 .目录Logo容器 {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   display: flex;
   justify-content: center;
   align-items: center;
-  filter: drop-shadow(2px 2px 1px #000a);
+  transition: all 0.25s ease;
+}
+
+.目录:not(.当前目录):hover .目录Logo容器 {
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.25));
+  transform: scale(1.05);
 }
 
 .目录Logo {
@@ -127,50 +487,62 @@
 .目录标题 {
   flex-grow: 1;
   font-size: 14px;
-  font-weight: normal;
-  color: rgb(203, 219, 219);
+  font-weight: 500;
+  color: var(--文字主色);
+  letter-spacing: 0.5px;
 }
 
 .二级目录区 {
   flex-shrink: 0;
-  width: 1100px;
-  min-height: calc(100vh - 150px);
+  width: min(1200px, calc(100% - 300px));
+  min-height: calc(100vh - 200px);
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
-  gap: 15px;
+  gap: 20px;
   font-family: var(--中文代码混合字体);
-  background-image: linear-gradient(#324251 10%, #24335a 90%);
-  padding: 20px;
+  background: var(--卡片背景);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(15px);
+  padding: 30px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }
 
 .条目链接 {
-  width: calc(20% - 12px);
-  perspective: 500px;
+  width: calc(25% - 15px);
+  transition: all 0.25s ease;
 }
 
 .条目链接:hover {
   cursor: var(--光标-手指);
+  transform: translateY(-5px);
 }
 
 .条目链接旋转容器 {
-  padding: 15px;
+  padding: 20px;
   width: 100%;
   height: 100%;
-  background-color: #0003;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 25px;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(5px);
 }
 
 .条目链接旋转容器:hover {
-  background-color: #fff3;
+  background: var(--悬停效果);
+  border-color: var(--主色调);
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
 }
 
 .条目链接旋转容器:hover .链接作者,
 .条目链接旋转容器:hover .链接时间 {
-  color: #ccc;
+  color: var(--主色调);
 }
 
 .链接序号与标题 {
@@ -178,11 +550,11 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .链接作者与时间 {
-  font-size: 12px;
+  font-size: 13px;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -190,32 +562,173 @@
 }
 
 .链接序号 {
-  width: 22px;
-  height: 22px;
-  border-radius: 3px;
-  background-color: #151515;
-  color: silver;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--主色调), var(--辅助色));
+  color: var(--文字主色);
   font-size: 12px;
   text-align: center;
   align-content: center;
   flex-shrink: 0;
+  font-weight: 600;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
 }
 
 .链接标题 {
   text-wrap: nowrap;
   flex-shrink: 0;
-  font-size: 14px;
-  color: rgb(233, 235, 235);
+  font-size: 15px;
+  color: var(--文字主色);
+  font-weight: 500;
+  letter-spacing: 0.3px;
 }
 
 .条目链接:hover .链接标题 {
-  color: white;
+  color: var(--主色调);
+  text-shadow: 0 0 5px rgba(0, 212, 255, 0.3);
+}
+
+.链接作者与照片 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.链接作者照片 {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .链接作者 {
-  color: #b5b5b5;
+  color: var(--文字次色);
+  font-weight: 400;
 }
 
 .链接时间 {
-  color: #b5b5b5;
+  color: var(--文字次色);
+  font-weight: 400;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .标题区 {
+    margin-bottom: 20px;
+  }
+
+  .大标题 {
+    font-size: 30px;
+    padding: 80px 20px;
+    gap: 0;
+  }
+
+  .标题英文:first-child,
+  .标题英文:last-child {
+    font-size: 0.72em;
+    padding: 10px 15px;
+    letter-spacing: 2px;
+  }
+
+  .标题中文 {
+    font-size: 0.84em;
+    padding: 12px 18px;
+    margin: 0 10px;
+    letter-spacing: 1.5px;
+  }
+
+  .大标题::after {
+    width: 150px;
+    height: 150px;
+  }
+
+  .大标题::before {
+    width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  .标题区 {
+    margin-bottom: 15px;
+  }
+
+  .大标题 {
+    font-size: 24px;
+    padding: 60px 15px;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .标题英文:first-child,
+  .标题英文:last-child {
+    font-size: 0.72em;
+    padding: 8px 12px;
+    letter-spacing: 1.5px;
+  }
+
+  .标题中文 {
+    font-size: 0.84em;
+    padding: 10px 15px;
+    margin: 0;
+    letter-spacing: 1px;
+  }
+
+  .大标题::after {
+    width: 120px;
+    height: 120px;
+  }
+
+  .大标题::before {
+    display: none;
+  }
+}
+
+/* 深色模式优化 */
+@media (prefers-color-scheme: dark) {
+  .标题区 {
+    background: linear-gradient(
+      135deg,
+      rgba(0, 212, 255, 0.12) 0%,
+      rgba(0, 102, 204, 0.08) 50%,
+      rgba(0, 212, 255, 0.1) 100%
+    );
+    border-bottom-color: rgba(0, 212, 255, 0.25);
+  }
+
+  .标题中文 {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* 减少动画偏好支持 */
+@media (prefers-reduced-motion: reduce) {
+  .大标题::after {
+    animation: none;
+  }
+
+  .标题区::before,
+  .标题区::after {
+    animation: none;
+  }
+
+  .标题区 .装饰光点::before,
+  .标题区 .装饰光点::after {
+    animation: none;
+  }
+
+  .大标题,
+  .标题英文:first-child,
+  .标题英文:last-child,
+  .标题中文 {
+    transition: none;
+  }
+
+  .标题英文:first-child:hover,
+  .标题英文:last-child:hover,
+  .标题中文:hover {
+    transform: none;
+  }
 }

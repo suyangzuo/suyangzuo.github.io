@@ -256,8 +256,7 @@ body {
 
 .一级目录.当前目录,
 .二级目录.当前目录 {
-  /* background-color: rgb(78, 48, 79); */
-  background-image: linear-gradient(90deg, rgb(78, 48, 79) 10%, rgba(78, 48, 79, 0.5) 75%);
+  background-image: linear-gradient(90deg, rgb(78, 48, 79) 10%, rgba(78, 48, 79, 0.75) 75%);
 }
 
 .一级目录 code,

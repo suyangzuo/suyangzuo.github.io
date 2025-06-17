@@ -1,4 +1,18 @@
 const 知识库 = {
+  通用: {
+    图标: "/Images/Page-Logos/包管理器.png",
+    笔记: [
+      {
+        标题: "压缩解压软件",
+        作者: "",
+        时间: {
+          年: 0,
+          月: 0,
+          日: 0,
+        },
+      },
+    ],
+  },
   Linux: {
     图标: "/Images/Page-Logos/Linux.png",
     笔记: [
@@ -80,8 +94,8 @@ const 知识库 = {
         },
       },
       {
-        标题: "使用中文输入法",
-        作者: "",
+        标题: "使用 Fcitx 输入法框架",
+        作者: "苏扬",
         时间: {
           年: 0,
           月: 0,
@@ -104,16 +118,77 @@ const 关闭对话框按钮 = 笔记对话框.querySelector("#关闭对话框");
 const 笔记区目录组 = [];
 const 笔记目录区标题组 = [];
 
+// 添加 URL 处理函数
+function 更新URL(技术栈, 笔记文件名) {
+  const url = new URL(window.location.href);
+  url.searchParams.set("技术栈", 技术栈);
+  url.searchParams.set("笔记", 笔记文件名);
+  window.history.pushState({}, "", url);
+}
+
+function 清除URL参数() {
+  const url = new URL(window.location.href);
+  url.searchParams.delete("技术栈");
+  url.searchParams.delete("笔记");
+  window.history.pushState({}, "", url);
+}
+
+function 从URL获取笔记信息() {
+  const url = new URL(window.location.href);
+  const 技术栈 = url.searchParams.get("技术栈");
+  const 笔记 = url.searchParams.get("笔记");
+  return { 技术栈, 笔记 };
+}
+
+// 修改关闭对话框按钮的事件处理
 关闭对话框按钮.addEventListener("click", () => {
   笔记对话框.close();
+  清除URL参数();
+  // 不再清除任何状态，保留所有信息
+  
+  // 恢复页面标题为技术栈
+  const 笔记状态 = JSON.parse(localStorage.getItem("笔记状态") || "null");
+  if (笔记状态?.当前目录) {
+    document.title = `知识库 - ${笔记状态.当前目录}`;
+  } else {
+    document.title = "知识库";
+  }
 });
 
-for (const 键 in 知识库) {
-  生成一级目录(键);
-}
-生成二级目录(Object.keys(知识库)[0]);
+// 添加页面加载时的状态恢复
+document.addEventListener("DOMContentLoaded", () => {
+  // 优先使用 localStorage 中的状态，如果没有则使用 URL 参数
+  const 笔记状态 = JSON.parse(localStorage.getItem("笔记状态") || "null");
 
-document.querySelector(".目录").classList.add("当前目录");
+  // 生成所有一级目录
+  for (const 键 in 知识库) {
+    生成一级目录(键);
+  }
+
+  // 如果有保存的状态，使用保存的目录，否则使用第一个目录
+  const 初始目录 = 笔记状态?.当前目录 || Object.keys(知识库)[0];
+  生成二级目录(初始目录);
+
+  // 设置当前目录的高亮状态
+  const 当前目录元素 = Array.from(目录区.children).find(
+    (目录) => 目录.querySelector(".目录标题").textContent === 初始目录
+  );
+  if (当前目录元素) {
+    当前目录元素.classList.add("当前目录");
+    // 设置初始页面标题
+    document.title = `${初始目录} - 知识库`;
+  }
+
+  // 如果有保存的笔记状态，自动打开上次查看的笔记
+  if (笔记状态?.技术栈 && 笔记状态?.笔记文件名) {
+    const 目录元素 = Array.from(目录区.children).find(
+      (目录) => 目录.querySelector(".目录标题").textContent === 笔记状态.技术栈
+    );
+    if (目录元素) {
+      目录元素.click();
+    }
+  }
+});
 
 function 生成一级目录(键) {
   const 目录 = document.createElement("div");
@@ -147,6 +222,14 @@ function 生成一级目录(键) {
       return;
     }
     生成二级目录(键);
+    
+    // 保存当前目录状态
+    const 笔记状态 = JSON.parse(localStorage.getItem("笔记状态") || "null") || {};
+    笔记状态.当前目录 = 键;
+    localStorage.setItem("笔记状态", JSON.stringify(笔记状态));
+    
+    // 更新页面标题为技术栈名称
+    document.title = `知识库 - ${键}`;
   });
 }
 
@@ -169,15 +252,24 @@ function 生成二级目录(键) {
     链接序号与标题.className = "链接序号与标题";
     链接序号与标题.append(链接序号, 链接标题);
 
+    const 链接作者与照片 = document.createElement("div");
+    链接作者与照片.className = "链接作者与照片";
     const 链接作者 = document.createElement("span");
     链接作者.className = "链接作者";
     链接作者.textContent = 笔记对象.作者;
+    const 链接作者照片 = document.createElement("img");
+    链接作者照片.className = "链接作者照片";
+    链接作者照片.src = 笔记对象.作者
+      ? `/Images/Contributors/${笔记对象.作者}.jpg`
+      : "/Images/Contributors/Mystery_Men.jpg";
+    链接作者照片.alt = "链接作者照片";
+    链接作者与照片.append(链接作者照片, 链接作者);
     const 链接时间 = document.createElement("span");
     链接时间.className = "链接时间";
     链接时间.textContent = `${笔记对象.时间.年}.${笔记对象.时间.月}.${笔记对象.时间.日}`;
     const 作者与时间 = document.createElement("div");
     作者与时间.className = "链接作者与时间";
-    作者与时间.append(链接作者, 链接时间);
+    作者与时间.append(链接作者与照片, 链接时间);
     条目链接旋转容器.append(链接序号与标题, 作者与时间);
 
     const 笔记文件名 = 笔记对象.标题.replaceAll(" ", "");
@@ -199,7 +291,6 @@ function 生成笔记区内容(技术栈, 笔记文件名, 文本) {
     const src_final = `${src_split[0]}Markdown-Notes/${技术栈}/${笔记文件名}${src_split[1]}`;
     img.src = src_final;
   }
-  // const h1_all = 笔记区.querySelectorAll("h1");
   const h2_all = 笔记区.querySelectorAll("h2");
 
   for (const h2 of h2_all) {
@@ -211,6 +302,17 @@ function 生成笔记区内容(技术栈, 笔记文件名, 文本) {
   hljs.highlightAll();
   笔记对话框.showModal();
   笔记对话框.scrollTop = 0;
+  更新URL(技术栈, 笔记文件名);
+  
+  // 保存状态到 localStorage，保留当前目录状态
+  const 笔记状态 = JSON.parse(localStorage.getItem("笔记状态") || "null") || {};
+  笔记状态.技术栈 = 技术栈;
+  笔记状态.笔记文件名 = 笔记文件名;
+  笔记状态.时间戳 = new Date().getTime();
+  localStorage.setItem("笔记状态", JSON.stringify(笔记状态));
+  
+  // 更新页面标题为技术栈+笔记
+  document.title = `知识库 - ${笔记文件名} - ${技术栈}`;
 }
 
 function 生成笔记目录区内容() {
@@ -274,13 +376,13 @@ function 获取笔记日期(技术栈, 笔记文件名) {
 }
 
 function 生成作者和日期(技术栈, 笔记文件名) {
+  const 作者姓名 = 获取笔记作者(技术栈, 笔记文件名);
   const 作者容器 = document.createElement("div");
   作者容器.className = "作者容器";
   const 作者 = document.createElement("a");
   作者.className = "作者";
   作者.target = "_self";
-  作者.href = `/Introduction/contributors.html`;
-  const 作者姓名 = 获取笔记作者(技术栈, 笔记文件名);
+  作者.href = `/Introduction/contributors.html#${作者姓名}`;
   作者容器.style.background = `center/contain no-repeat url("/Images/Contributors/${作者姓名}.jpg")`;
   作者.textContent = 作者姓名;
   作者容器.appendChild(作者);
