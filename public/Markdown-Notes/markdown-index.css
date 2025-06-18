@@ -406,16 +406,11 @@
   display: flex;
   justify-content: center;
   gap: 30px;
-  position: relative;
+  position: sticky;
+  top: 50px;
   z-index: 1;
   --目录背景色: var(--主色调);
   --未选目录背景色: rgba(255, 255, 255, 0.05);
-}
-
-.目录区,
-.二级目录区 {
-  position: sticky;
-  top: 50px;
 }
 
 .目录区 {
@@ -452,7 +447,7 @@
 .目录链接 {
   width: 100%;
   height: 50px;
-  padding: 0 25px;
+  padding: 0 15px;
   display: flex;
   justify-content: center;
   align-items: center;

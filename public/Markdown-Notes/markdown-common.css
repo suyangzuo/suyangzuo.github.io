@@ -134,7 +134,13 @@ body {
 
 .笔记区 ul:not(ul ul, ol ul),
 .笔记区 ol:not(ul ol, ol ol) {
-  padding-left: 2ch;
+  padding-left: 2em;
+  list-style-position: outside;
+}
+
+.笔记区 h1,
+.笔记区 h2 {
+  scroll-margin-top: 50px;
 }
 
 .笔记区 h1 {
@@ -147,11 +153,6 @@ body {
 
 .笔记区 h1:not(:first-of-type) {
   margin-top: 100px;
-}
-
-.笔记区 h1,
-.笔记区 h2 {
-  scroll-margin-top: 50px;
 }
 
 .笔记区 h2:not(:first-of-type) {
@@ -203,28 +204,62 @@ body {
   top: 0;
   height: 100%;
   font-size: 16px;
+  backdrop-filter: blur(10px);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3);
 }
 
 .笔记目录容器 {
   position: sticky;
   top: 75px;
-  padding: 0 25px 0 5px;
+  padding: 0 15px;
   display: flex;
   flex-direction: column;
-  margin-left: 25px;
+  gap: 10px;
   font-family: var(--中文代码混合字体);
+  animation: fadeInUp 0.25s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    /* transform: translateY(20px); */
+  }
+  to {
+    opacity: 1;
+    /* transform: translateY(0); */
+  }
 }
 
 .目录分级容器 {
   text-wrap: nowrap;
   display: flex;
   flex-direction: column;
+  gap: 2px;
+  transition: all 0.3s ease;
+  animation: slideInRight 0.45s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(10px) translateY(20px);
+  }
+  to {
+    transform: translateX(0) translateY(0);
+  }
+}
+
+.目录分级容器:hover {
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .一级目录,
 .二级目录 {
   margin: 0;
   text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 }
 
 .一级目录 > center,
@@ -233,40 +268,85 @@ body {
 }
 
 .一级目录 {
-  color: white;
-  font-size: 16px;
-  padding: 8px 10px;
+  color: #e0e0e0;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 10px 12px;
+  letter-spacing: 0.3px;
+  border-left: 3px solid transparent;
 }
 
 .二级目录 {
-  font-size: 14px;
+  font-size: 13px;
+  color: #b0b0b0;
+  padding: 5px 12px 5px 40px;
+  border-left: 2px solid transparent;
+  position: relative;
+}
+
+.二级目录::before {
+  content: "•";
+  position: absolute;
+  left: 25px;
+  color: #666;
+  font-size: 16px;
+  transition: all 0.3s ease;
 }
 
 .二级目录,
 .二级目录:visited,
 .二级目录:link {
-  color: darkgray;
-  padding: 4px 10px 4px 35px;
+  color: #b0b0b0;
 }
 
 .一级目录:not(.当前目录):hover,
 .二级目录:not(.当前目录):hover {
-  background-color: #ffffff1a;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
+  border-left-color: rgba(255, 255, 255, 0.3);
+}
+
+.二级目录:not(.当前目录):hover::before {
+  color: #999;
+  transform: scale(1.2);
 }
 
 .一级目录.当前目录,
 .二级目录.当前目录 {
-  background-image: linear-gradient(90deg, rgb(78, 48, 79) 10%, rgba(78, 48, 79, 0.75) 75%);
+  background: linear-gradient(135deg, rgba(78, 48, 79, 0.9) 0%, rgba(78, 48, 79, 0.7) 50%, rgba(78, 48, 79, 0.5) 100%);
+  box-shadow: 0 2px 8px rgba(78, 48, 79, 0.4);
+  border-left-color: #9c6b9d;
+  color: #fff;
+  animation: highlightPulse 2s ease-in-out infinite;
+}
+
+@keyframes highlightPulse {
+  0%,
+  100% {
+    box-shadow: 0 2px 8px rgba(78, 48, 79, 0.4);
+  }
+  50% {
+    box-shadow: 0 2px 12px rgba(78, 48, 79, 0.6);
+  }
+}
+
+.二级目录.当前目录::before {
+  color: #9c6b9d;
+  transform: scale(1.3);
 }
 
 .一级目录 code,
 .二级目录 code {
-  color: rgb(207, 191, 100);
+  color: #ffd700;
+  background: rgba(255, 215, 0, 0.1);
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 0.9em;
 }
 
 .一级目录 strong,
 .二级目录 strong {
-  color: rgb(48, 150, 90);
+  color: #4ade80;
+  font-weight: 600;
 }
 
 .笔记信息区 {
@@ -282,30 +362,42 @@ body {
 .笔记信息容器 {
   display: flex;
   flex-direction: column;
-  gap: 35px;
+  gap: 15px;
   align-items: flex-end;
   position: sticky;
   top: 75px;
 }
 
-.作者容器 {
+/* 作者信息组样式 - 保持现有视觉效果 */
+.作者信息组 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+/* 作者头像容器样式 - 对应原来的作者容器 */
+.作者头像容器 {
   width: 50px;
   height: 50px;
   position: relative;
 }
 
-.作者 {
-  position: absolute;
-  top: 115%;
-  right: 0;
+/* 作者姓名标签样式 - 对应原来的作者 */
+.作者姓名标签 {
+  position: relative;
   padding: 2px 0;
   border-radius: 5px;
   background-color: #151515;
   font-family: var(--中文字体);
   text-decoration: none;
+  color: silver;
+  font-size: 14px;
+  text-align: center;
+  white-space: nowrap;
 }
 
-.作者:hover {
+.作者姓名标签:hover {
   text-decoration: underline;
 }
 
@@ -581,4 +673,85 @@ a:visited {
   }
 }
 
+/* 添加目录项的焦点状态 */
+.一级目录:focus,
+.二级目录:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(78, 48, 79, 0.5);
+}
+
+/* 响应式设计 */
+@media screen and (max-width: 1400px) {
+  .笔记目录区 {
+    width: 280px;
+  }
+
+  .笔记目录容器 {
+    padding: 15px 10px 15px 15px;
+  }
+
+  .一级目录 {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+
+  .二级目录 {
+    font-size: 12px;
+    padding: 6px 10px 6px 35px;
+  }
+
+  .二级目录::before {
+    left: 20px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .笔记目录区 {
+    position: fixed;
+    left: auto;
+    right: 20px;
+    top: 100px;
+    width: 250px;
+    height: calc(100vh - 140px);
+    z-index: 1000;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .笔记目录容器 {
+    padding: 15px;
+  }
+}
+
 /* <!-- ------------------ ↑ 响应式设计 ------------------- --> */
+
+.笔记区 h2 {
+  scroll-margin-top: 50px;
+  font-size: 1.5em;
+  font-weight: 600;
+  color: #e8f4fd;
+  margin: 2em 0 1em 0;
+  padding: 15px 20px;
+  background: linear-gradient(135deg, rgba(42, 151, 140, 0.15) 0%, rgba(42, 151, 140, 0.05) 100%);
+  border-left: 4px solid var(--网站风格颜色);
+  border-radius: 0 8px 8px 0;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(42, 151, 140, 0.1);
+  transition: all 0.3s ease;
+}
+
+.笔记区 h2:hover {
+  background: linear-gradient(135deg, rgba(42, 151, 140, 0.2) 0%, rgba(42, 151, 140, 0.1) 100%);
+  box-shadow: 0 4px 12px rgba(42, 151, 140, 0.2);
+  transform: translateX(5px);
+}
+
+.笔记区 h2::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--网站风格颜色) 0%, rgba(42, 151, 140, 0.7) 100%);
+  border-radius: 2px;
+}

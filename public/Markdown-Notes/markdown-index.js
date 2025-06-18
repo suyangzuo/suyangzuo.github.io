@@ -97,9 +97,9 @@ const 知识库 = {
         标题: "使用 Fcitx 输入法框架",
         作者: "苏扬",
         时间: {
-          年: 0,
-          月: 0,
-          日: 0,
+          年: 2025,
+          月: 6,
+          日: 18,
         },
       },
     ],
@@ -145,7 +145,18 @@ function 从URL获取笔记信息() {
   笔记对话框.close();
   清除URL参数();
   // 不再清除任何状态，保留所有信息
+
+  // 清除所有高亮状态
+  const 所有高亮目录 = 笔记目录区.querySelectorAll(".当前目录");
+  所有高亮目录.forEach(目录 => 目录.classList.remove("当前目录"));
   
+  // 重置所有状态
+  当前高亮索引 = -1;
+  滚动方向 = "down";
+  上次滚动位置 = 0;
+  点击目标索引 = -1;
+  点击目标时间戳 = 0;
+
   // 恢复页面标题为技术栈
   const 笔记状态 = JSON.parse(localStorage.getItem("笔记状态") || "null");
   if (笔记状态?.当前目录) {
@@ -157,7 +168,8 @@ function 从URL获取笔记信息() {
 
 // 添加页面加载时的状态恢复
 document.addEventListener("DOMContentLoaded", () => {
-  // 优先使用 localStorage 中的状态，如果没有则使用 URL 参数
+  // 获取URL参数和localStorage状态
+  const URL参数 = 从URL获取笔记信息();
   const 笔记状态 = JSON.parse(localStorage.getItem("笔记状态") || "null");
 
   // 生成所有一级目录
@@ -165,28 +177,59 @@ document.addEventListener("DOMContentLoaded", () => {
     生成一级目录(键);
   }
 
-  // 如果有保存的状态，使用保存的目录，否则使用第一个目录
-  const 初始目录 = 笔记状态?.当前目录 || Object.keys(知识库)[0];
-  生成二级目录(初始目录);
+  // 确定要显示的目录
+  let 目标目录 = null;
+  let 要打开的笔记 = null;
+
+  // 优先级：URL参数 > localStorage > 默认第一个目录
+  if (URL参数.技术栈 && URL参数.笔记) {
+    // 如果有URL参数，使用URL参数
+    目标目录 = URL参数.技术栈;
+    要打开的笔记 = URL参数.笔记;
+  } else if (笔记状态?.当前目录) {
+    // 如果有localStorage记录，使用localStorage
+    目标目录 = 笔记状态.当前目录;
+    if (笔记状态?.技术栈 && 笔记状态?.笔记文件名) {
+      要打开的笔记 = 笔记状态.笔记文件名;
+    }
+  } else {
+    // 默认使用第一个目录
+    目标目录 = Object.keys(知识库)[0];
+  }
 
   // 设置当前目录的高亮状态
   const 当前目录元素 = Array.from(目录区.children).find(
-    (目录) => 目录.querySelector(".目录标题").textContent === 初始目录
+    (目录) => 目录.querySelector(".目录标题").textContent === 目标目录
   );
   if (当前目录元素) {
     当前目录元素.classList.add("当前目录");
     // 设置初始页面标题
-    document.title = `${初始目录} - 知识库`;
+    document.title = `知识库 - ${目标目录}`;
   }
 
-  // 如果有保存的笔记状态，自动打开上次查看的笔记
-  if (笔记状态?.技术栈 && 笔记状态?.笔记文件名) {
-    const 目录元素 = Array.from(目录区.children).find(
-      (目录) => 目录.querySelector(".目录标题").textContent === 笔记状态.技术栈
-    );
-    if (目录元素) {
-      目录元素.click();
+  // 生成二级目录
+  if (知识库[目标目录] && 知识库[目标目录].笔记.length > 0) {
+    生成二级目录(目标目录);
+  }
+
+  // 如果有要打开的笔记，自动打开
+  if (要打开的笔记 && URL参数.技术栈 && URL参数.笔记) {
+    // 只有在URL参数存在时才自动打开笔记对话框
+    const 笔记条目 = Array.from(二级目录区.children).find(条目 => {
+      const 标题元素 = 条目.querySelector(".链接标题");
+      return 标题元素 && 标题元素.textContent.replaceAll(" ", "") === 要打开的笔记;
+    });
+    
+    if (笔记条目) {
+      笔记条目.click();
     }
+  }
+
+  // 更新localStorage中的当前目录（如果没有的话）
+  if (!笔记状态?.当前目录) {
+    const 新笔记状态 = 笔记状态 || {};
+    新笔记状态.当前目录 = 目标目录;
+    localStorage.setItem("笔记状态", JSON.stringify(新笔记状态));
   }
 });
 
@@ -218,16 +261,19 @@ function 生成一级目录(键) {
     const 当前目录 = 目录区.querySelector(".当前目录");
     当前目录.classList.remove("当前目录");
     目录.classList.add("当前目录");
-    if (知识库[键].笔记.length === 0) {
-      return;
-    }
-    生成二级目录(键);
     
-    // 保存当前目录状态
+    // 保存当前目录状态（无论是否有笔记都要保存）
     const 笔记状态 = JSON.parse(localStorage.getItem("笔记状态") || "null") || {};
     笔记状态.当前目录 = 键;
     localStorage.setItem("笔记状态", JSON.stringify(笔记状态));
     
+    if (知识库[键].笔记.length === 0) {
+      // 即使没有笔记，也要更新页面标题
+      document.title = `知识库 - ${键}`;
+      return;
+    }
+    生成二级目录(键);
+
     // 更新页面标题为技术栈名称
     document.title = `知识库 - ${键}`;
   });
@@ -303,14 +349,25 @@ function 生成笔记区内容(技术栈, 笔记文件名, 文本) {
   笔记对话框.showModal();
   笔记对话框.scrollTop = 0;
   更新URL(技术栈, 笔记文件名);
-  
+
+  // 重置滚动状态
+  当前高亮索引 = -1;
+  滚动方向 = "down";
+  上次滚动位置 = 0;
+  点击目标索引 = -1; // 重置点击目标记录
+  点击目标时间戳 = 0;
+
   // 保存状态到 localStorage，保留当前目录状态
   const 笔记状态 = JSON.parse(localStorage.getItem("笔记状态") || "null") || {};
   笔记状态.技术栈 = 技术栈;
   笔记状态.笔记文件名 = 笔记文件名;
   笔记状态.时间戳 = new Date().getTime();
+  // 确保当前目录也被保存
+  if (!笔记状态.当前目录) {
+    笔记状态.当前目录 = 技术栈;
+  }
   localStorage.setItem("笔记状态", JSON.stringify(笔记状态));
-  
+
   // 更新页面标题为技术栈+笔记
   document.title = `知识库 - ${笔记文件名} - ${技术栈}`;
 }
@@ -320,6 +377,17 @@ function 生成笔记目录区内容() {
   笔记目录容器.innerHTML = "";
   笔记目录区标题组.length = 0;
   笔记区目录组.length = 0;
+
+  // 清除所有高亮状态
+  const 所有高亮目录 = 笔记目录区.querySelectorAll(".当前目录");
+  所有高亮目录.forEach(目录 => 目录.classList.remove("当前目录"));
+  
+  // 重置所有状态
+  当前高亮索引 = -1;
+  滚动方向 = "down";
+  上次滚动位置 = 0;
+  点击目标索引 = -1;
+  点击目标时间戳 = 0;
 
   const 一级目录组 = 笔记区.querySelectorAll("h1");
   for (const [index_1, 一级目录] of 一级目录组.entries()) {
@@ -333,13 +401,19 @@ function 生成笔记目录区内容() {
     目录区_一级目录.className = "一级目录";
     目录区_一级目录.innerHTML = 一级目录.innerHTML;
     目录分级容器.appendChild(目录区_一级目录);
-    if (index_1 === 0) {
-      目录区_一级目录.classList.add("当前目录");
-    }
     目录区_一级目录.addEventListener("click", () => {
-      const 当前目录 = 笔记目录容器.querySelector(".当前目录");
-      当前目录?.classList.remove("当前目录");
+      // 记录点击目标
+      const 目标索引 = 笔记目录区标题组.indexOf(目录区_一级目录);
+      点击目标索引 = 目标索引;
+      点击目标时间戳 = Date.now();
+      
+      // 清除所有高亮状态
+      const 所有高亮目录 = 笔记目录容器.querySelectorAll(".当前目录");
+      所有高亮目录.forEach(目录 => 目录.classList.remove("当前目录"));
+      
+      // 立即高亮点击的标题
       目录区_一级目录.classList.add("当前目录");
+      当前高亮索引 = 目标索引;
     });
     笔记目录区标题组.push(目录区_一级目录);
     笔记区目录组.push(一级目录);
@@ -355,14 +429,32 @@ function 生成笔记目录区内容() {
       前缀符号?.remove();
       目录分级容器.appendChild(目录区_二级目录);
       目录区_二级目录.addEventListener("click", () => {
-        const 当前目录 = 笔记目录容器.querySelector(".当前目录");
-        当前目录?.classList.remove("当前目录");
+        // 记录点击目标
+        const 目标索引 = 笔记目录区标题组.indexOf(目录区_二级目录);
+        点击目标索引 = 目标索引;
+        点击目标时间戳 = Date.now();
+        
+        // 清除所有高亮状态
+        const 所有高亮目录 = 笔记目录容器.querySelectorAll(".当前目录");
+        所有高亮目录.forEach(目录 => 目录.classList.remove("当前目录"));
+        
+        // 立即高亮点击的标题
         目录区_二级目录.classList.add("当前目录");
+        当前高亮索引 = 目标索引;
       });
       笔记目录区标题组.push(目录区_二级目录);
       笔记区目录组.push(二级目录);
     }
   }
+
+  // 初始化交叉观察器并开始观察
+  初始化交叉观察器();
+  开始观察标题();
+
+  // 延迟设置初始高亮，确保高亮第一个一级标题
+  setTimeout(() => {
+    设置初始高亮();
+  }, 100);
 }
 
 function 获取笔记作者(技术栈, 笔记文件名) {
@@ -377,15 +469,27 @@ function 获取笔记日期(技术栈, 笔记文件名) {
 
 function 生成作者和日期(技术栈, 笔记文件名) {
   const 作者姓名 = 获取笔记作者(技术栈, 笔记文件名);
-  const 作者容器 = document.createElement("div");
-  作者容器.className = "作者容器";
-  const 作者 = document.createElement("a");
-  作者.className = "作者";
-  作者.target = "_self";
-  作者.href = `/Introduction/contributors.html#${作者姓名}`;
-  作者容器.style.background = `center/contain no-repeat url("/Images/Contributors/${作者姓名}.jpg")`;
-  作者.textContent = 作者姓名;
-  作者容器.appendChild(作者);
+  
+  // 创建作者信息组
+  const 作者信息组 = document.createElement("div");
+  作者信息组.className = "作者信息组";
+  
+  // 作者头像容器
+  const 作者头像容器 = document.createElement("div");
+  作者头像容器.className = "作者头像容器";
+  作者头像容器.style.background = `center/contain no-repeat url("/Images/Contributors/${作者姓名}.jpg")`;
+  
+  // 作者姓名标签
+  const 作者姓名标签 = document.createElement("a");
+  作者姓名标签.className = "作者姓名标签";
+  作者姓名标签.target = "_self";
+  作者姓名标签.href = `/Introduction/contributors.html#${作者姓名}`;
+  作者姓名标签.textContent = 作者姓名;
+  
+  作者信息组.appendChild(作者头像容器);
+  作者信息组.appendChild(作者姓名标签);
+  
+  // 日期容器
   const 日期 = 获取笔记日期(技术栈, 笔记文件名);
   const 日期容器 = document.createElement("div");
   日期容器.className = "日期容器";
@@ -399,33 +503,11 @@ function 生成作者和日期(技术栈, 笔记文件名) {
   日容器.className = "日容器 日期子容器";
   日容器.textContent = 日期.日;
   日期容器.append(年容器, "年", 月容器, "月", 日容器, "日");
+  
   const 笔记信息容器 = 笔记信息区.querySelector(".笔记信息容器");
   笔记信息容器.innerHTML = "";
-  笔记信息容器.append(作者容器, 日期容器);
+  笔记信息容器.append(作者信息组, 日期容器);
 }
-
-/* const 交叉观察器参数 = {
-  rootMargin: "-100px 0px -66.666667% 0px",
-  threshold: 1,
-};
-function 交叉观察器回调(entries) {
-  for (const entry of entries) {
-    if (entry.isIntersecting) {
-      const current_element = entry.target;
-      const current_index = Array.from(观察目标组).indexOf(current_element);
-      const current_chapter = 笔记目录区.querySelector(".当前目录");
-      current_chapter.classList.remove("当前目录");
-      观察目录组[current_index].classList.add("当前目录");
-    }
-  }
-}
-const 交叉观察器 = new IntersectionObserver(交叉观察器回调, 交叉观察器参数);
-
-function 生成交叉观察器() {
-  for (const 目标 of Array.from(观察目标组)) {
-    交叉观察器.observe(目标);
-  }
-} */
 
 function 防抖(回调, 延时 = 100) {
   let timer = null;
@@ -437,21 +519,185 @@ function 防抖(回调, 延时 = 100) {
   };
 }
 
-const 滚动控制器 = 防抖(() => {
-  const 标题边界矩形组 = 笔记区目录组.map((标题) => 标题.getBoundingClientRect());
-  const 视口高度 = document.documentElement.clientHeight;
-  for (let i = 0; i < 笔记区目录组.length; i++) {
-    const 目录 = 笔记目录区标题组[i];
-    const 边界矩形 = 标题边界矩形组[i];
-    const 条件1 = 边界矩形.top >= 50 && 边界矩形.top <= 视口高度 / 3;
-    const 条件2 = 标题边界矩形组[i + 1] && 标题边界矩形组[i + 1].top > 视口高度 && 边界矩形.top < 0;
-    if (条件1 || 条件2) {
-      const 当前高亮目录 = 笔记目录区.querySelector(".当前目录");
-      当前高亮目录.classList.remove("当前目录");
-      目录.classList.add("当前目录");
-      break;
+// 交叉观察器配置
+const 交叉观察器配置 = {
+  root: null, // 使用视口作为根
+  rootMargin: "-20% 0px -70% 0px", // 顶部25%处开始高亮，底部50%作为结束区域
+  threshold: /* [0, 0.1, 0.5, 1] */ 0, // 多个阈值，更精确的触发
+};
+
+let 交叉观察器 = null;
+let 当前高亮索引 = -1;
+let 滚动方向 = "down";
+let 上次滚动位置 = 0;
+let 点击目标索引 = -1; // 记录点击的目标标题索引
+let 点击目标时间戳 = 0; // 记录点击的时间戳
+
+// 检测滚动方向
+function 检测滚动方向(当前位置) {
+  滚动方向 = 当前位置 > 上次滚动位置 ? "down" : "up";
+  上次滚动位置 = 当前位置;
+}
+
+// 初始化交叉观察器
+function 初始化交叉观察器() {
+  if (交叉观察器) {
+    交叉观察器.disconnect();
+  }
+
+  交叉观察器 = new IntersectionObserver((entries) => {
+    // 过滤出可见的标题
+    const 可见标题 = entries.filter((entry) => entry.isIntersecting);
+
+    if (可见标题.length === 0) return;
+
+    // 获取当前滚动位置
+    const 滚动容器 = 笔记对话框;
+    const 当前滚动位置 = 滚动容器.scrollTop;
+    检测滚动方向(当前滚动位置);
+
+    // 计算每个可见标题的"优先级分数"
+    const 标题分数 = 可见标题.map((entry) => {
+      const 标题位置 = entry.boundingClientRect.top;
+      const 可见度 = entry.intersectionRatio;
+      const 标题索引 = 笔记区目录组.indexOf(entry.target);
+      
+      // 基础分数：越靠近视口顶部分数越高
+      let 分数 = 1000 - Math.abs(标题位置 - 100); // 100px是理想位置
+      
+      // 可见度加成：可见度越高分数越高
+      分数 += 可见度 * 100;
+      
+      // 滚动方向加成：向下滚动时，位置更低的标题得分更高
+      if (滚动方向 === "down") {
+        分数 += 标题位置 > 100 ? 50 : 0;
+      } else if (滚动方向 === "up") {
+        分数 += 标题位置 < 100 ? 50 : 0;
+      }
+      
+      // 点击目标加成：如果是最近点击的目标，给予额外分数
+      const 当前时间 = Date.now();
+      if (标题索引 === 点击目标索引 && 当前时间 - 点击目标时间戳 < 3000) {
+        分数 += 1000; // 大幅提高点击目标的分数
+      }
+      
+      return {
+        entry,
+        分数,
+        位置: 标题位置,
+        索引: 标题索引,
+      };
+    });
+
+    // 选择分数最高的标题
+    标题分数.sort((a, b) => b.分数 - a.分数);
+    const 最佳标题 = 标题分数[0];
+
+    const 目标索引 = 笔记区目录组.indexOf(最佳标题.entry.target);
+
+    if (目标索引 !== -1 && 目标索引 !== 当前高亮索引) {
+      // 额外的防回跳检查
+      const 当前标题位置 = 笔记区目录组[当前高亮索引]?.getBoundingClientRect().top || 0;
+      const 新标题位置 = 最佳标题.entry.target.getBoundingClientRect().top;
+      
+      let 应该切换 = true;
+      
+      // 检查是否是点击目标
+      const 当前时间 = Date.now();
+      const 是点击目标 = 目标索引 === 点击目标索引 && 当前时间 - 点击目标时间戳 < 3000;
+      
+      // 如果是点击目标，强制切换，跳过防回跳检查
+      if (是点击目标) {
+        应该切换 = true;
+      } else {
+        // 向下滚动时，新标题应该在当前标题下方
+        if (滚动方向 === "down" && 新标题位置 < 当前标题位置 - 20) {
+          应该切换 = false;
+        }
+        // 向上滚动时，新标题应该在当前标题上方
+        else if (滚动方向 === "up" && 新标题位置 > 当前标题位置 + 20) {
+          应该切换 = false;
+        }
+      }
+      
+      if (应该切换) {
+        更新高亮状态(目标索引);
+      }
+    }
+  }, 交叉观察器配置);
+}
+
+// 更新高亮状态
+function 更新高亮状态(目标索引) {
+  const 当前高亮目录 = 笔记目录区.querySelector(".当前目录");
+  const 目标目录 = 笔记目录区标题组[目标索引];
+
+  if (当前高亮目录 !== 目标目录) {
+    // 清除所有高亮状态
+    const 所有高亮目录 = 笔记目录区.querySelectorAll(".当前目录");
+    所有高亮目录.forEach(目录 => 目录.classList.remove("当前目录"));
+    
+    // 高亮目标目录
+    目标目录.classList.add("当前目录");
+
+    // 平滑滚动到目标目录（如果目标目录不在可视区域内）
+    const 目录容器 = 笔记目录区.querySelector(".笔记目录容器");
+    const 目录边界 = 目标目录.getBoundingClientRect();
+    const 容器边界 = 目录容器.getBoundingClientRect();
+
+    // 如果目标目录在容器可视区域外，则滚动到可见位置
+    if (目录边界.top < 容器边界.top || 目录边界.bottom > 容器边界.bottom) {
+      目标目录.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    }
+
+    当前高亮索引 = 目标索引;
+    
+    // 如果这是点击目标，清除点击目标记录
+    if (目标索引 === 点击目标索引) {
+      点击目标索引 = -1;
+      点击目标时间戳 = 0;
     }
   }
-}, 100);
+}
 
-笔记对话框.addEventListener("scroll", 滚动控制器);
+// 开始观察所有标题
+function 开始观察标题() {
+  if (!交叉观察器) return;
+
+  // 清除之前的观察
+  交叉观察器.disconnect();
+
+  // 观察所有标题
+  for (const 标题 of 笔记区目录组) {
+    交叉观察器.observe(标题);
+  }
+}
+
+// 设置初始高亮
+function 设置初始高亮() {
+  if (笔记区目录组.length > 0) {
+    // 清除所有高亮状态
+    const 所有高亮目录 = 笔记目录区.querySelectorAll(".当前目录");
+    所有高亮目录.forEach(目录 => 目录.classList.remove("当前目录"));
+    
+    当前高亮索引 = 0; // 第一个标题总是一级标题
+    const 第一个目录 = 笔记目录区标题组[0];
+    第一个目录.classList.add("当前目录");
+    
+    // 清除点击目标记录
+    点击目标索引 = -1;
+    点击目标时间戳 = 0;
+  }
+}
+
+// 滚动事件监听器（用于检测滚动方向）
+const 滚动方向检测器 = 防抖(() => {
+  const 滚动容器 = 笔记对话框;
+  const 当前滚动位置 = 滚动容器.scrollTop;
+  检测滚动方向(当前滚动位置);
+}, 50);
+
+笔记对话框.addEventListener("scroll", 滚动方向检测器);
