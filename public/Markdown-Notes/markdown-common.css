@@ -65,6 +65,7 @@ body {
   position: fixed;
   width: 100%;
   height: 100%;
+  margin: auto;
   background-color: transparent;
   outline: none;
   border: none;
@@ -134,8 +135,14 @@ body {
 
 .笔记区 ul:not(ul ul, ol ul),
 .笔记区 ol:not(ul ol, ol ol) {
-  padding-left: 2em;
   list-style-position: outside;
+}
+
+ul ul,
+ol ul,
+ul ol,
+ol ol {
+  padding-left: 1.5em;
 }
 
 .笔记区 h1,
@@ -156,7 +163,7 @@ body {
 }
 
 .笔记区 h2:not(:first-of-type) {
-  margin-top: 40px;
+  margin-top: 80px;
 }
 
 .笔记区 :where(h1, h2, h3) {
@@ -235,7 +242,6 @@ body {
   text-wrap: nowrap;
   display: flex;
   flex-direction: column;
-  gap: 2px;
   transition: all 0.3s ease;
   animation: slideInRight 0.45s ease-out;
 }
@@ -411,6 +417,21 @@ body {
   color: white;
   margin: 0 2px;
   font-family: var(--代码字体);
+}
+
+table {
+  border: solid 2px #40454a;
+  border-collapse: collapse;
+}
+
+table thead {
+  border-bottom: 2px solid #fff4;
+}
+
+table th,
+table td {
+  border: 1px solid #fff2;
+  padding: 8px 15px;
 }
 
 body:has(dialog[open]) {

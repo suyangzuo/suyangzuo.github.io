@@ -1,6 +1,6 @@
 const 知识库 = {
   通用: {
-    图标: "/Images/Page-Logos/包管理器.png",
+    图标: "/Images/Markdown-Notes/知识库-01.webp",
     笔记: [
       {
         标题: "压缩解压软件",
@@ -16,6 +16,15 @@ const 知识库 = {
   Linux: {
     图标: "/Images/Page-Logos/Linux.png",
     笔记: [
+      {
+        标题: "文件权限",
+        作者: "苏扬",
+        时间: {
+          年: 2025,
+          月: 6,
+          日: 20,
+        },
+      },
       {
         标题: "apt搜索包名称",
         作者: "苏扬",
@@ -35,7 +44,7 @@ const 知识库 = {
         },
       },
       {
-        标题: "输入法",
+        标题: "Fcitx 输入法",
         作者: "",
         时间: {
           年: 2025,
@@ -122,7 +131,11 @@ const 笔记目录区标题组 = [];
 function 更新URL(技术栈, 笔记文件名) {
   const url = new URL(window.location.href);
   url.searchParams.set("技术栈", 技术栈);
+  if (笔记文件名) {
   url.searchParams.set("笔记", 笔记文件名);
+  } else {
+    url.searchParams.delete("笔记");
+  }
   window.history.pushState({}, "", url);
 }
 
@@ -143,8 +156,14 @@ function 从URL获取笔记信息() {
 // 修改关闭对话框按钮的事件处理
 关闭对话框按钮.addEventListener("click", () => {
   笔记对话框.close();
+  
+  // 获取当前目录，只保留一级目录参数
+  const 笔记状态 = JSON.parse(localStorage.getItem("笔记状态") || "null");
+  if (笔记状态?.当前目录) {
+    更新URL(笔记状态.当前目录, null); // 只设置技术栈，不设置笔记
+  } else {
   清除URL参数();
-  // 不再清除任何状态，保留所有信息
+  }
 
   // 清除所有高亮状态
   const 所有高亮目录 = 笔记目录区.querySelectorAll(".当前目录");
@@ -158,7 +177,6 @@ function 从URL获取笔记信息() {
   点击目标时间戳 = 0;
 
   // 恢复页面标题为技术栈
-  const 笔记状态 = JSON.parse(localStorage.getItem("笔记状态") || "null");
   if (笔记状态?.当前目录) {
     document.title = `知识库 - ${笔记状态.当前目录}`;
   } else {
@@ -182,10 +200,27 @@ document.addEventListener("DOMContentLoaded", () => {
   let 要打开的笔记 = null;
 
   // 优先级：URL参数 > localStorage > 默认第一个目录
-  if (URL参数.技术栈 && URL参数.笔记) {
-    // 如果有URL参数，使用URL参数
-    目标目录 = URL参数.技术栈;
+  if (URL参数.技术栈) {
+    // 验证URL参数中的技术栈名称是否存在于知识库中（不区分大小写）
+    const 知识库键名 = Object.keys(知识库);
+    const 匹配的键名 = 知识库键名.find(键名 => 键名.toLowerCase() === URL参数.技术栈.toLowerCase());
+    
+    if (匹配的键名) {
+      // 如果找到匹配的键名，使用知识库中的原始键名（保持正确的大小写）
+      目标目录 = 匹配的键名;
     要打开的笔记 = URL参数.笔记;
+    } else {
+      // 如果没有找到匹配的键名，使用localStorage或默认值
+      console.warn(`未找到匹配的技术栈: ${URL参数.技术栈}`);
+      if (笔记状态?.当前目录) {
+        目标目录 = 笔记状态.当前目录;
+        if (笔记状态?.技术栈 && 笔记状态?.笔记文件名) {
+          要打开的笔记 = 笔记状态.笔记文件名;
+        }
+      } else {
+        目标目录 = Object.keys(知识库)[0];
+      }
+    }
   } else if (笔记状态?.当前目录) {
     // 如果有localStorage记录，使用localStorage
     目标目录 = 笔记状态.当前目录;
@@ -225,11 +260,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 更新localStorage中的当前目录（如果没有的话）
-  if (!笔记状态?.当前目录) {
+  // 无论来源如何，都更新localStorage中的当前目录
     const 新笔记状态 = 笔记状态 || {};
     新笔记状态.当前目录 = 目标目录;
     localStorage.setItem("笔记状态", JSON.stringify(新笔记状态));
+  
+  // 确保URL包含技术栈参数（无论是从URL参数、localStorage还是默认值获取的）
+  if (!URL参数.技术栈) {
+    更新URL(目标目录, null);
+  } else if (URL参数.技术栈 && !URL参数.笔记) {
+    // 如果URL中有技术栈参数但没有笔记参数，确保URL正确
+    更新URL(目标目录, null);
   }
 });
 
@@ -259,13 +300,18 @@ function 生成一级目录(键) {
   目录.addEventListener("click", () => {
     二级目录区.innerHTML = "";
     const 当前目录 = 目录区.querySelector(".当前目录");
+    if (当前目录) {
     当前目录.classList.remove("当前目录");
+    }
     目录.classList.add("当前目录");
     
     // 保存当前目录状态（无论是否有笔记都要保存）
     const 笔记状态 = JSON.parse(localStorage.getItem("笔记状态") || "null") || {};
     笔记状态.当前目录 = 键;
     localStorage.setItem("笔记状态", JSON.stringify(笔记状态));
+    
+    // 更新URL只包含一级目录参数
+    更新URL(键, null);
     
     if (知识库[键].笔记.length === 0) {
       // 即使没有笔记，也要更新页面标题

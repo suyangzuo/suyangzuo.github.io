@@ -266,7 +266,7 @@
 .交互式学习中心容器 {
   position: relative;
   width: max(80%, 1000px);
-  height: max(80vh, 800px);
+  height: max(85vh, 800px);
   outline: solid 2px #def1;
   background-color: #ffffff05;
   background-image: radial-gradient(ellipse at 50% 8%, #def3 0%, transparent var(--径向渐变发散距离));
