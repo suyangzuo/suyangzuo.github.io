@@ -113,7 +113,7 @@ body {
   background-color: #ffffff12;
   color: silver;
   font-family: var(--中文代码混合字体) !important;
-  outline: solid 1px #def3;
+  outline: solid 2px #def3;
 }
 
 .笔记区 strong {
@@ -211,7 +211,6 @@ ol ol {
   top: 0;
   height: 100%;
   font-size: 16px;
-  backdrop-filter: blur(10px);
   border-left: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3);
 }
@@ -760,12 +759,6 @@ a:visited {
   transition: all 0.3s ease;
 }
 
-.笔记区 h2:hover {
-  background: linear-gradient(135deg, rgba(42, 151, 140, 0.2) 0%, rgba(42, 151, 140, 0.1) 100%);
-  box-shadow: 0 4px 12px rgba(42, 151, 140, 0.2);
-  transform: translateX(5px);
-}
-
 .笔记区 h2::before {
   content: "";
   position: absolute;
@@ -775,4 +768,156 @@ a:visited {
   width: 4px;
   background: linear-gradient(180deg, var(--网站风格颜色) 0%, rgba(42, 151, 140, 0.7) 100%);
   border-radius: 2px;
+}
+
+/* 图片对话框样式 */
+.图片对话框 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  border: none;
+  padding: 0;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  z-index: 10000;
+}
+
+.图片对话框::backdrop {
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px);
+}
+
+.图片对话框内容 {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.图片工具栏 {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  z-index: 10001;
+}
+
+.图片工具栏按钮 {
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.图片工具栏按钮:hover {
+  background: rgba(0, 212, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+}
+
+.图片工具栏按钮:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 212, 255, 0.2);
+}
+
+.图片工具栏按钮 svg {
+  transition: all 0.3s ease;
+}
+
+.图片工具栏按钮:hover svg {
+  stroke: var(--主色调);
+  transform: scale(1.1);
+}
+
+.图片容器 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.放大图片 {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  cursor: zoom-out;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .图片工具栏 {
+    top: 10px;
+    right: 10px;
+    gap: 8px;
+    padding: 6px;
+  }
+
+  .图片工具栏按钮 {
+    width: 36px;
+    height: 36px;
+  }
+
+  .图片工具栏按钮 svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .图片容器 {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .图片工具栏 {
+    top: 5px;
+    right: 5px;
+    gap: 6px;
+    padding: 4px;
+  }
+
+  .图片工具栏按钮 {
+    width: 32px;
+    height: 32px;
+  }
+
+  .图片工具栏按钮 svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* 为笔记区图片添加悬停效果 */
+.笔记区 img {
+  max-width: 100%;
+  border: solid 1px #444;
+  transition: 125ms;
 }

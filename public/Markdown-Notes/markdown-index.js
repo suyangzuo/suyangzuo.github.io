@@ -155,14 +155,22 @@ function 从URL获取笔记信息() {
 
 // 修改关闭对话框按钮的事件处理
 关闭对话框按钮.addEventListener("click", () => {
+  // 如果图片对话框是打开的，先关闭图片对话框
+  if (图片对话框 && 图片对话框.open) {
+    关闭图片对话框();
+  }
+  
   笔记对话框.close();
+  
+  // 清除URL中的锚点（#及其后面的部分）
+  history.replaceState(null, '', window.location.pathname + window.location.search);
   
   // 获取当前目录，只保留一级目录参数
   const 笔记状态 = JSON.parse(localStorage.getItem("笔记状态") || "null");
   if (笔记状态?.当前目录) {
     更新URL(笔记状态.当前目录, null); // 只设置技术栈，不设置笔记
   } else {
-  清除URL参数();
+    清除URL参数();
   }
 
   // 清除所有高亮状态
@@ -382,6 +390,11 @@ function 生成笔记区内容(技术栈, 笔记文件名, 文本) {
     const src_split = img.src.split("Markdown-Notes");
     const src_final = `${src_split[0]}Markdown-Notes/${技术栈}/${笔记文件名}${src_split[1]}`;
     img.src = src_final;
+    img.title = "点击查看大图";
+    
+    // 为图片添加点击事件
+    img.style.cursor = "pointer";
+    img.addEventListener("click", () => 打开图片对话框(img));
   }
   const h2_all = 笔记区.querySelectorAll("h2");
 
@@ -747,3 +760,243 @@ const 滚动方向检测器 = 防抖(() => {
 }, 50);
 
 笔记对话框.addEventListener("scroll", 滚动方向检测器);
+
+// 图片点击放大功能
+let 图片对话框 = null;
+let 当前图片 = null;
+let 当前缩放比例 = 1;
+let 图片原始尺寸 = { width: 0, height: 0 };
+let 图片当前尺寸 = { width: 0, height: 0 };
+
+// 创建图片对话框
+function 创建图片对话框() {
+  if (图片对话框) return 图片对话框;
+
+  图片对话框 = document.createElement("dialog");
+  图片对话框.className = "图片对话框";
+  图片对话框.innerHTML = `
+    <div class="图片对话框内容">
+      <div class="图片工具栏">
+        <button class="图片工具栏按钮" id="放大按钮" title="放大">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+            <line x1="11" y1="8" x2="11" y2="14"></line>
+            <line x1="8" y1="11" x2="14" y2="11"></line>
+          </svg>
+        </button>
+        <button class="图片工具栏按钮" id="缩小按钮" title="缩小">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+            <line x1="8" y1="11" x2="14" y2="11"></line>
+          </svg>
+        </button>
+        <button class="图片工具栏按钮" id="重置按钮" title="重置">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+            <path d="M21 3v5h-5"></path>
+            <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+            <path d="M3 21v-5h5"></path>
+          </svg>
+        </button>
+        <button class="图片工具栏按钮" id="关闭图片按钮" title="关闭">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="图片容器">
+        <img class="放大图片" alt="放大图片">
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(图片对话框);
+
+  // 绑定事件
+  const 放大按钮 = 图片对话框.querySelector("#放大按钮");
+  const 缩小按钮 = 图片对话框.querySelector("#缩小按钮");
+  const 重置按钮 = 图片对话框.querySelector("#重置按钮");
+  const 关闭图片按钮 = 图片对话框.querySelector("#关闭图片按钮");
+  const 放大图片 = 图片对话框.querySelector(".放大图片");
+
+  放大按钮.addEventListener("click", () => 缩放图片(1.2));
+  缩小按钮.addEventListener("click", () => 缩放图片(0.8));
+  重置按钮.addEventListener("click", 重置图片);
+  关闭图片按钮.addEventListener("click", 关闭图片对话框);
+
+  // 点击背景关闭
+  图片对话框.addEventListener("click", (e) => {
+    if (e.target === 图片对话框) {
+      关闭图片对话框();
+    }
+  });
+
+  // 键盘事件
+  document.addEventListener("keydown", (e) => {
+    if (图片对话框.open) {
+      switch (e.key) {
+        case "Escape":
+          关闭图片对话框();
+          break;
+        case "+":
+        case "=":
+          e.preventDefault();
+          缩放图片(1.2);
+          break;
+        case "-":
+          e.preventDefault();
+          缩放图片(0.8);
+          break;
+        case "0":
+          重置图片();
+          break;
+      }
+    }
+  });
+
+  // 鼠标滚轮缩放
+  图片对话框.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    const 缩放因子 = e.deltaY > 0 ? 0.9 : 1.1;
+    缩放图片(缩放因子);
+  });
+
+  return 图片对话框;
+}
+
+// 打开图片对话框
+function 打开图片对话框(图片元素) {
+  if (!图片对话框) {
+    创建图片对话框();
+  }
+
+  当前图片 = 图片对话框.querySelector(".放大图片");
+  当前图片.src = 图片元素.src;
+  当前图片.alt = 图片元素.alt || "图片";
+
+  // 重置缩放状态
+  当前缩放比例 = 1;
+  图片原始尺寸 = { width: 0, height: 0 };
+  图片当前尺寸 = { width: 0, height: 0 };
+
+  // 等待图片加载完成后设置初始尺寸
+  当前图片.onload = () => {
+    图片原始尺寸 = {
+      width: 当前图片.naturalWidth,
+      height: 当前图片.naturalHeight
+    };
+    
+    // 计算初始尺寸，确保图片在视口内
+    const 视口宽度 = window.innerWidth * 0.9;
+    const 视口高度 = window.innerHeight * 0.9;
+    const 宽高比 = 图片原始尺寸.width / 图片原始尺寸.height;
+    
+    if (宽高比 > 视口宽度 / 视口高度) {
+      // 图片较宽，以宽度为准
+      图片当前尺寸.width = Math.min(视口宽度, 图片原始尺寸.width);
+      图片当前尺寸.height = 图片当前尺寸.width / 宽高比;
+    } else {
+      // 图片较高，以高度为准
+      图片当前尺寸.height = Math.min(视口高度, 图片原始尺寸.height);
+      图片当前尺寸.width = 图片当前尺寸.height * 宽高比;
+    }
+
+    当前图片.style.width = `${图片当前尺寸.width}px`;
+    当前图片.style.height = `${图片当前尺寸.height}px`;
+  };
+
+  图片对话框.showModal();
+}
+
+// 缩放图片
+function 缩放图片(缩放因子) {
+  if (!当前图片 || !图片原始尺寸.width) return;
+
+  const 新缩放比例 = 当前缩放比例 * 缩放因子;
+  
+  // 计算新尺寸
+  const 新宽度 = 图片原始尺寸.width * 新缩放比例;
+  const 新高度 = 图片原始尺寸.height * 新缩放比例;
+  
+  // 限制最大尺寸为视口的90%
+  const 最大宽度 = window.innerWidth * 0.9;
+  const 最大高度 = window.innerHeight * 0.9;
+  
+  // 如果新尺寸超过视口限制，则限制为视口大小
+  if (新宽度 > 最大宽度 || 新高度 > 最大高度) {
+    // 计算在视口限制下的最大缩放比例
+    const 宽度缩放比例 = 最大宽度 / 图片原始尺寸.width;
+    const 高度缩放比例 = 最大高度 / 图片原始尺寸.height;
+    const 最大缩放比例 = Math.min(宽度缩放比例, 高度缩放比例);
+    
+    当前缩放比例 = 最大缩放比例;
+    图片当前尺寸.width = 图片原始尺寸.width * 最大缩放比例;
+    图片当前尺寸.height = 图片原始尺寸.height * 最大缩放比例;
+  } else {
+    当前缩放比例 = 新缩放比例;
+    图片当前尺寸.width = 新宽度;
+    图片当前尺寸.height = 新高度;
+  }
+
+  当前图片.style.width = `${图片当前尺寸.width}px`;
+  当前图片.style.height = `${图片当前尺寸.height}px`;
+}
+
+// 重置图片
+function 重置图片() {
+  if (!当前图片 || !图片原始尺寸.width) return;
+
+  当前缩放比例 = 1;
+  
+  // 重新计算适合视口的尺寸
+  const 视口宽度 = window.innerWidth * 0.9;
+  const 视口高度 = window.innerHeight * 0.9;
+  const 宽高比 = 图片原始尺寸.width / 图片原始尺寸.height;
+  
+  if (宽高比 > 视口宽度 / 视口高度) {
+    // 图片较宽，以宽度为准
+    图片当前尺寸.width = Math.min(视口宽度, 图片原始尺寸.width);
+    图片当前尺寸.height = 图片当前尺寸.width / 宽高比;
+  } else {
+    // 图片较高，以高度为准
+    图片当前尺寸.height = Math.min(视口高度, 图片原始尺寸.height);
+    图片当前尺寸.width = 图片当前尺寸.height * 宽高比;
+  }
+
+  当前图片.style.width = `${图片当前尺寸.width}px`;
+  当前图片.style.height = `${图片当前尺寸.height}px`;
+}
+
+// 关闭图片对话框
+function 关闭图片对话框() {
+  if (图片对话框) {
+    图片对话框.close();
+    // 彻底移除对话框元素
+    if (图片对话框.parentNode) {
+      图片对话框.parentNode.removeChild(图片对话框);
+    }
+    // 重置相关变量
+    图片对话框 = null;
+    当前图片 = null;
+    当前缩放比例 = 1;
+    图片原始尺寸 = { width: 0, height: 0 };
+    图片当前尺寸 = { width: 0, height: 0 };
+  }
+}
+
+// 页面卸载时清理图片对话框
+window.addEventListener("beforeunload", () => {
+  if (图片对话框) {
+    关闭图片对话框();
+  }
+});
+
+// 页面隐藏时也清理图片对话框（防止在移动设备上切换应用时出现问题）
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden && 图片对话框 && 图片对话框.open) {
+    关闭图片对话框();
+  }
+});
