@@ -1,64 +1,224 @@
-# “永恒” 网站简介
+## 🎯 功能模块
 
-## 1. 网站直达：
+### 📝 经验之谈 (`/public/Blogs/`)
 
-[Vercel](https://suyang.vercel.app/)、[Render](https://suyang.onrender.com/)、[腾讯云](https://suyangzuo.com/)
+**路径**: `/public/Blogs/`  
+**类型**: 重博客系统  
+**特色**: 原创技术文章，高度定制的转载内容
 
-## 2. 网站Logo、图片资产：
+- **内容丰富**: 涵盖编程开发、数据库、Linux、Git等多个技术领域
+- **图文并茂**: 配有大量图片和动图，提供直观的效果展示
+- **代码实例**: 每个知识点都配有完整的代码示例
+- **分类清晰**: 按技术栈分类，便于查找和学习
+- **交互友好**: 支持收藏、搜索、目录导航等功能
 
-- 永恒Logo以及 `永恒` 艺术字，均由本人同事 `氯化银` 原创设计
+### 📚 知识库 (`/public/Markdown-Notes/`)
 
-<img src="/public/Images/Page-Logos/Eternal-Logo.png" style="width:25%; margin-right: 20px" alt="永恒Logo"><img src="/public/Images/Index-Images/永.png" style="width:25%; filter: invert(75%); margin-right: 20px" alt="永"><img src="/public/Images/Index-Images/恒.png" style="width:25%; filter: invert(75%)" alt="恒">
+**路径**: `/public/Markdown-Notes/`  
+**类型**: 轻博客系统  
+**特色**: Markdown格式，专为学生合作打造
 
-- 其它图片资产：本站几乎所有图片资产均来自于互联网，版权均归其作者或版权方所有。
+- **简洁易读**: 采用Markdown格式，界面简洁清爽
+- **快速访问**: 支持URL参数直接定位到特定技术栈和笔记
+- **实时预览**: 支持Markdown实时渲染
+- **代码高亮**: 集成语法高亮功能
+- **分享友好**: 支持URL分享，自动高亮对应目录
 
-## 3. 主要目标：
+### 🎮 交互式学习中心 (`/public/Interactive-Hub/`)
 
-- 打造简洁、易用、高效的在线自学网站
-- 为学生提供匹配其能力与经验的教程
-- 致力于提供更加具备针对性的自学形式
+**路径**: `/public/Interactive-Hub/`  
+**类型**: 可视化学习平台  
+**特色**: 将抽象概念转化为可交互的视觉体验
 
-## 4. 开发历程：
+- **实时交互**: 通过鼠标点击即可实时观察代码效果
+- **多领域覆盖**: 涵盖CSS、JavaScript、数据结构、算法等
+- **统一界面**: 所有模块采用统一的交互界面设计
+- **学习路径**: 从基础到进阶的完整学习路径
+- **实践导向**: 强调动手实践，加深理解
 
-本站开发之初，我仅学习了两天的前端基础知识（`刚搞懂什么是块元素和行内元素`），换言之，本站是在边学习、边开发的过程中诞生的。
-一开始我只是想将网上搜到的各种优秀的教程网站，例如`MDN`、`W3Schools`等，做成一个聚合页面，而这个页面也成为了现在的
-`第三方在线教程`。
+**包含模块**:
+- CSS属性可视化（Box-Model、Flex、Grid、Transform等）
+- JavaScript数据结构（Array、Stack、Queue、LinkedList等）
+- 算法可视化（Bubble-Sort、Selection-Sort、Insert-Sort等）
+- 前端技术（CSS-Selector、Animation、Filter等）
 
-经过本人长时间的学习和观察，类似于`MDN`、`W3Schools`、`web.dev`
-这样的教程的确非常优秀，但对于学生，尤其是基础薄弱的学生来说，门槛依然太高，假如没有一定的编程基础，经常会看不懂在说什么，简单地说就是
-`太高深`。
+### 🎯 休闲游戏 (`/public/Games/`)
 
-为了降低自学难度，平缓学习曲线，提升学习的信心和乐趣，我先后设计开发了`交互式学习中心`、`经验之谈`、`Web应用实验室`、`休闲游戏`
-这4个模块，从多个维度为学生提供了各类学习体验。
+**路径**: `/public/Games/`  
+**类型**: 轻量级游戏集合  
+**特色**: 自娱自乐，自产自销
 
-其中，`经验之谈`非常类似于`MDN`这样的在线教程，但它也有自己的特色。如果你体验过`经验之谈`，你会发现其中包含了大量的图片（
-`还有很多动图！`），这些图片的作用是为了向本站的预设阅读群体，也就是`学生`，提供更加直观的效果展示。同时，本站的文本样式更丰富（
-`也显得更凌乱`），这是本站有意为之，目的是突出显示一些词汇，帮助读者聚焦重要内容。
+- **经典游戏**: 俄罗斯方块、贪吃蛇、打砖块等经典游戏
+- **益智游戏**: 汉诺塔、找炸弹、猜人物等益智类游戏
+- **休闲娱乐**: 石头剪刀布、投掷石头等简单休闲游戏
+- **学习结合**: 部分游戏融入编程概念，寓教于乐
+- **响应式设计**: 适配不同设备，提供良好的游戏体验
 
-本站事实上只有我一人进行开发、维护，且本人有全职工作（`教师兼班主任`
-），因此网站的开发进度缓慢。你会看到很多模块都只有一个占位符，没有实际的内容，这是因为我根本没有时间和精力。因此，类似于
-`怎么只有两个游戏？`之类的问题，就不要再反反复复地问我了。
+### 🔬 Web应用实验室 (`/public/Apps/`)
 
-## 5. 网站结构
+**路径**: `/public/Apps/`  
+**类型**: 创意应用展示平台  
+**特色**: 将各种稀奇古怪的想法付诸实践
 
-- ### 主页
-    - 提供各个子页面的访问入口。部分区域为纯学习测试用，并没有实际意义，比如主页的轮播图。
-      <br/><br/>
-- ### 交互式学习中心
-  <p style="padding:5px 10px; margin-bottom: 10px; border:solid 1px #666; background-color:#111; width:fit-content; border-radius: 5px;">将代码转换为可视化选项，通过鼠标点击即可实时观察结果。</p>
-  <img src="./public/Images/Others/截图-交互式学习中心.png" style="width:100%" alt="交互式学习中心"><br/><br/>
-- ### 经验之谈
-  <p style="padding:5px 10px; margin-bottom: 10px; border:solid 1px #666; background-color:#111; width:fit-content; border-radius: 5px;">经典的博客类教程，图文并茂，伴有丰富的代码实例、效果演示。</p>
-  <img src="./public/Images/Others/截图-经验之谈.png" style="width:100%" alt="经验之谈"><br/><br/>
-- ### 第三方在线教程
-  <p style="padding:5px 10px; margin-bottom: 10px; border:solid 1px #666; background-color:#111; width:fit-content; border-radius: 5px;">搜集了全网最优秀的在线教程，分门别类进行了归纳、总结，方便读者进行访问。</p>
-  <img src="./public/Images/Others/截图-第三方在线教程.png" style="width:100%" alt="第三方在线教程"><br/><br/>
-- ### Web应用实验室
-  <p style="padding:5px 10px; margin-bottom: 10px; border:solid 1px #666; background-color:#111; width:fit-content; border-radius: 5px;">将各种稀奇古怪的想法付诸实践，不求完美，有创意即可！</p>
-  <img src="./public/Images/Others/截图-Web应用实验室.png" style="width:100%" alt="Web应用实验室"><br/><br/>
-- ### 休闲游戏
-  <p style="padding:5px 10px; margin-bottom: 10px; border:solid 1px #666; background-color:#111; width:fit-content; border-radius: 5px;">闲暇时刻不妨放松一下！</p>
-  <img src="./public/Images/Others/截图-休闲游戏.png" style="width:100%" alt="休闲游戏"><br/><br/>
-- ### 视频教程
-  筹划中（`事实上只存在于脑海里`），我理想中的视频是学生为主持人，对知识进行讲解，非常类似于`YouTube`
-  上的各种教程视频。然而理想与现实有着巨大差距，这个设想只能先暂时搁置了。
+- **密码生成器**: 安全可靠的密码生成工具
+- **随机选择器**: 帮助做出随机决策的工具
+- **快捷键测试器**: 测试键盘快捷键熟练度
+- **十指练习**: 提高打字速度和准确率
+- **快乐大转盘**: 有趣的随机选择工具
+- **班级通知**: 实用的班级管理工具
+
+### 💾 软件下载 (`/public/Software/`)
+
+**路径**: `/public/Software/`  
+**类型**: 软件资源聚合平台  
+**特色**: 精选优质软件，分类整理
+
+- **开发工具**: IDE、文本编辑器、开发工具等
+- **数据库软件**: MySQL、PostgreSQL、MongoDB等
+- **设计软件**: 平面设计、3D建模、视频后期等
+- **操作系统**: 各种Linux发行版、虚拟机等
+- **实用工具**: 包管理器、版本控制工具等
+
+## 📄 信息页面
+
+### 👥 贡献者 (`/public/Introduction/contributors.html`)
+
+**路径**: `/public/Introduction/contributors.html`  
+**内容**: 项目贡献者介绍
+
+- **团队成员**: 展示所有参与项目开发的贡献者
+- **个人介绍**: 每位贡献者的详细信息和贡献内容
+- **技能展示**: 团队成员的技术栈和专长领域
+- **联系方式**: 提供与贡献者交流的渠道
+
+### 🎯 网站宗旨 (`/public/Introduction/purpose.html`)
+
+**路径**: `/public/Introduction/purpose.html`  
+**内容**: 项目理念和目标说明
+
+- **项目定位**: 探索/试验性质的自学服务中心
+- **开发初衷**: 降低优质资源搜索难度，节省宝贵时间
+- **目标用户**: 学生、初学者、寻找优质教程资源的入门开发者
+- **维护团队**: 职业学校教师主导，多位朋友/同事参与贡献
+- **反馈渠道**: GitHub Discussions、邮件等多种反馈方式
+
+
+
+## 🚀 快速开始
+
+### 环境要求
+
+- Node.js >= 18.16.1
+- npm >= 9.0.0
+
+### 安装步骤
+
+1. **克隆项目**
+   ```bash
+   git clone https://github.com/suyangzuo/suyangzuo.github.io.git
+   cd suyangzuo.github.io
+   ```
+
+2. **安装依赖**
+   ```bash
+   npm install
+   ```
+
+3. **启动开发服务器**
+   ```bash
+   npm run live
+   ```
+
+4. **访问应用**
+   
+   打开浏览器访问 [http://localhost:3000](http://localhost:3000)
+
+### 生产部署
+
+项目支持多种部署方式：
+
+- **Vercel**: 自动部署，支持GitHub集成
+- **Render**: 云平台部署，支持自动构建
+- **腾讯云**: 传统服务器部署
+
+## 👨‍💻 开发指南
+
+### 开发环境配置
+
+1. **代码格式化**
+   
+   项目使用Prettier进行代码格式化，配置在`package.json`中：
+   ```json
+   {
+     "prettier": {
+       "printWidth": 120
+     }
+   }
+   ```
+
+2. **热重载开发**
+   
+   使用nodemon实现开发环境热重载：
+   ```bash
+   npm run live
+   ```
+
+### 代码规范
+
+- 使用中文变量名和函数名，提高代码可读性
+- 遵循HTML5语义化标签规范
+- CSS采用BEM命名规范
+- JavaScript使用ES6+语法特性
+
+### 文件组织
+
+- **静态资源**: 所有静态文件放在`public`目录下
+- **模块化**: 每个功能模块独立目录
+- **资源分类**: 图片、脚本、样式分别存放
+
+## 🤝 贡献指南
+
+我们欢迎所有形式的贡献！
+
+### 贡献方式
+
+1. **提交Issue**: 报告bug或提出新功能建议
+2. **提交PR**: 修复bug或添加新功能
+3. **完善文档**: 改进项目文档
+4. **分享经验**: 在博客中分享技术经验
+
+### 贡献流程
+
+1. Fork项目
+2. 创建功能分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 创建Pull Request
+
+## 📄 许可证
+
+本项目采用 [MIT License](LICENSE) 许可证。
+
+## 🎉 致谢
+
+### 设计资源
+
+- **永恒Logo**: 由同事"氯化银"原创设计
+- **图片资源**: 大部分图片资源来自互联网，版权归原作者所有
+
+### 技术资源
+
+- **Font Awesome**: 提供丰富的图标资源
+- **Google Fonts**: 提供优质字体服务
+- **Express**: 提供强大的Web框架
+- **开源社区**: 提供各种开源工具和库
+
+## 📞 联系我们
+
+- **GitHub**: [https://github.com/suyangzuo](https://github.com/suyangzuo)
+- **网站**: [https://suyangzuo.com](https://suyangzuo.com)
+- **邮箱**: 通过GitHub Issues联系
+
+---
+
+⭐ 如果这个项目对你有帮助，请给我们一个Star！
