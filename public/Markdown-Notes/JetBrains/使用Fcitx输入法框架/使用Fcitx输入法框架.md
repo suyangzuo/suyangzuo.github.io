@@ -8,7 +8,7 @@
 
 ![JetBrains编辑环境变量](./Images/JetBrains_编辑环境变量.png)
 
-勾选**包含系统环境变量**，查看**3**个名称的值是否为 `fcitx` ：
+勾选**编辑系统环境变量**，查看**3**个名称的值是否为 `fcitx` ：
 
 1. `GTK_IM_MODULE`
 

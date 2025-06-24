@@ -1,108 +1,95 @@
-## 🎯 功能模块
+# 🚀 永恒
 
-### 📝 经验之谈 (`/public/Blogs/`)
+> 一个探索/试验性质的自学服务中心，致力于为学生提供优质的自学资源
 
-**路径**: `/public/Blogs/`  
-**类型**: 重博客系统  
-**特色**: 原创技术文章，高度定制的转载内容
+<style>
+/* 表格样式 - 深色优雅风格 */
+table {
+  border-collapse: collapse;
+  width: auto;
+  margin: 20px 0;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+  outline:solid 2px #fff2;
+}
 
-- **内容丰富**: 涵盖编程开发、数据库、Linux、Git等多个技术领域
-- **图文并茂**: 配有大量图片和动图，提供直观的效果展示
-- **代码实例**: 每个知识点都配有完整的代码示例
-- **分类清晰**: 按技术栈分类，便于查找和学习
-- **交互友好**: 支持收藏、搜索、目录导航等功能
+th {
+  background: #2d2d2d;
+  color: #e0e0e0;
+  font-weight: 600;
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 1px solid #2a2a2a;
+  border-right: 1px solid #333;
+  font-size: 13px;
+  text-transform: none;
+  letter-spacing: 0.5px;
+}
 
-### 📚 知识库 (`/public/Markdown-Notes/`)
+th:last-child {
+  border-right: none;
+}
 
-**路径**: `/public/Markdown-Notes/`  
-**类型**: 轻博客系统  
-**特色**: Markdown格式，专为学生合作打造
+td {
+  padding: 14px 18px;
+  border-bottom: 1px solid #2a2a2a;
+  border-right: 1px solid #333;
+  color: #d0d0d0;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+}
 
-- **简洁易读**: 采用Markdown格式，界面简洁清爽
-- **快速访问**: 支持URL参数直接定位到特定技术栈和笔记
-- **实时预览**: 支持Markdown实时渲染
-- **代码高亮**: 集成语法高亮功能
-- **分享友好**: 支持URL分享，自动高亮对应目录
+td:last-child {
+  border-right: none;
+}
 
-### 🎮 交互式学习中心 (`/public/Interactive-Hub/`)
+td:first-child {
+  background: #252525;
+  color: #f0f0f0;
+  font-weight: 600;
+  text-shadow: none;
+}
 
-**路径**: `/public/Interactive-Hub/`  
-**类型**: 可视化学习平台  
-**特色**: 将抽象概念转化为可交互的视觉体验
+tr:hover td {
+  background: #2a2a2a;
+  transform: none;
+}
 
-- **实时交互**: 通过鼠标点击即可实时观察代码效果
-- **多领域覆盖**: 涵盖CSS、JavaScript、数据结构、算法等
-- **统一界面**: 所有模块采用统一的交互界面设计
-- **学习路径**: 从基础到进阶的完整学习路径
-- **实践导向**: 强调动手实践，加深理解
+tr:hover td:first-child {
+  background: #303030;
+}
 
-**包含模块**:
-- CSS属性可视化（Box-Model、Flex、Grid、Transform等）
-- JavaScript数据结构（Array、Stack、Queue、LinkedList等）
-- 算法可视化（Bubble-Sort、Selection-Sort、Insert-Sort等）
-- 前端技术（CSS-Selector、Animation、Filter等）
+tr:last-child td {
+  border-bottom: none;
+}
 
-### 🎯 休闲游戏 (`/public/Games/`)
+/* 代码块样式 */
+code {
+  background: #2d2d2d;
+  color: #00d4aa;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  border: 1px solid #404040;
+  font-size: 13px;
+}
 
-**路径**: `/public/Games/`  
-**类型**: 轻量级游戏集合  
-**特色**: 自娱自乐，自产自销
+/* 链接样式 */
+a {
+  color: #4a9eff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
 
-- **经典游戏**: 俄罗斯方块、贪吃蛇、打砖块等经典游戏
-- **益智游戏**: 汉诺塔、找炸弹、猜人物等益智类游戏
-- **休闲娱乐**: 石头剪刀布、投掷石头等简单休闲游戏
-- **学习结合**: 部分游戏融入编程概念，寓教于乐
-- **响应式设计**: 适配不同设备，提供良好的游戏体验
-
-### 🔬 Web应用实验室 (`/public/Apps/`)
-
-**路径**: `/public/Apps/`  
-**类型**: 创意应用展示平台  
-**特色**: 将各种稀奇古怪的想法付诸实践
-
-- **密码生成器**: 安全可靠的密码生成工具
-- **随机选择器**: 帮助做出随机决策的工具
-- **快捷键测试器**: 测试键盘快捷键熟练度
-- **十指练习**: 提高打字速度和准确率
-- **快乐大转盘**: 有趣的随机选择工具
-- **班级通知**: 实用的班级管理工具
-
-### 💾 软件下载 (`/public/Software/`)
-
-**路径**: `/public/Software/`  
-**类型**: 软件资源聚合平台  
-**特色**: 精选优质软件，分类整理
-
-- **开发工具**: IDE、文本编辑器、开发工具等
-- **数据库软件**: MySQL、PostgreSQL、MongoDB等
-- **设计软件**: 平面设计、3D建模、视频后期等
-- **操作系统**: 各种Linux发行版、虚拟机等
-- **实用工具**: 包管理器、版本控制工具等
-
-## 📄 信息页面
-
-### 👥 贡献者 (`/public/Introduction/contributors.html`)
-
-**路径**: `/public/Introduction/contributors.html`  
-**内容**: 项目贡献者介绍
-
-- **团队成员**: 展示所有参与项目开发的贡献者
-- **个人介绍**: 每位贡献者的详细信息和贡献内容
-- **技能展示**: 团队成员的技术栈和专长领域
-- **联系方式**: 提供与贡献者交流的渠道
-
-### 🎯 网站宗旨 (`/public/Introduction/purpose.html`)
-
-**路径**: `/public/Introduction/purpose.html`  
-**内容**: 项目理念和目标说明
-
-- **项目定位**: 探索/试验性质的自学服务中心
-- **开发初衷**: 降低优质资源搜索难度，节省宝贵时间
-- **目标用户**: 学生、初学者、寻找优质教程资源的入门开发者
-- **维护团队**: 职业学校教师主导，多位朋友/同事参与贡献
-- **反馈渠道**: GitHub Discussions、邮件等多种反馈方式
-
-
+a:hover {
+  color: #66b3ff;
+  text-shadow: none;
+}
+</style>
 
 ## 🚀 快速开始
 
@@ -114,30 +101,33 @@
 ### 安装步骤
 
 1. **克隆项目**
+
    ```bash
    git clone https://github.com/suyangzuo/suyangzuo.github.io.git
    cd suyangzuo.github.io
    ```
 
 2. **安装依赖**
+
    ```bash
    npm install
    ```
 
 3. **启动开发服务器**
+
    ```bash
    npm run live
    ```
 
 4. **访问应用**
-   
+
    打开浏览器访问 [http://localhost:3000](http://localhost:3000)
 
 ### 生产部署
 
 项目支持多种部署方式：
 
-- **Vercel**: 自动部署，支持GitHub集成
+- **Vercel**: 自动部署，支持 GitHub 集成
 - **Render**: 云平台部署，支持自动构建
 - **腾讯云**: 传统服务器部署
 
@@ -146,8 +136,9 @@
 ### 开发环境配置
 
 1. **代码格式化**
-   
-   项目使用Prettier进行代码格式化，配置在`package.json`中：
+
+   项目使用 Prettier 进行代码格式化，配置在`package.json`中：
+
    ```json
    {
      "prettier": {
@@ -157,8 +148,9 @@
    ```
 
 2. **热重载开发**
-   
-   使用nodemon实现开发环境热重载：
+
+   使用 nodemon 实现开发环境热重载：
+
    ```bash
    npm run live
    ```
@@ -166,9 +158,9 @@
 ### 代码规范
 
 - 使用中文变量名和函数名，提高代码可读性
-- 遵循HTML5语义化标签规范
-- CSS采用BEM命名规范
-- JavaScript使用ES6+语法特性
+- 遵循 HTML5 语义化标签规范
+- CSS 采用 BEM 命名规范
+- JavaScript 使用 ES6+语法特性
 
 ### 文件组织
 
@@ -182,18 +174,18 @@
 
 ### 贡献方式
 
-1. **提交Issue**: 报告bug或提出新功能建议
-2. **提交PR**: 修复bug或添加新功能
+1. **提交 Issue**: 报告 bug 或提出新功能建议
+2. **提交 PR**: 修复 bug 或添加新功能
 3. **完善文档**: 改进项目文档
 4. **分享经验**: 在博客中分享技术经验
 
 ### 贡献流程
 
-1. Fork项目
+1. Fork 项目
 2. 创建功能分支 (`git checkout -b feature/AmazingFeature`)
 3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
 4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 创建Pull Request
+5. 创建 Pull Request
 
 ## 📄 许可证
 
@@ -203,22 +195,67 @@
 
 ### 设计资源
 
-- **永恒Logo**: 由同事"氯化银"原创设计
+- **永恒 Logo**: 由同事"氯化银"原创设计
 - **图片资源**: 大部分图片资源来自互联网，版权归原作者所有
 
 ### 技术资源
 
 - **Font Awesome**: 提供丰富的图标资源
 - **Google Fonts**: 提供优质字体服务
-- **Express**: 提供强大的Web框架
+- **Express**: 提供强大的 Web 框架
 - **开源社区**: 提供各种开源工具和库
 
 ## 📞 联系我们
 
 - **GitHub**: [https://github.com/suyangzuo](https://github.com/suyangzuo)
 - **网站**: [https://suyangzuo.com](https://suyangzuo.com)
-- **邮箱**: 通过GitHub Issues联系
+- **邮箱**: 通过 GitHub Issues 联系
 
 ---
 
-⭐ 如果这个项目对你有帮助，请给我们一个Star！
+⭐ 如果这个项目对你有帮助，请给我们一个 Star！
+
+## 🎯 功能模块
+
+| 模块              | 类型       | 特色功能                       | 技术栈          |
+| ----------------- | ---------- | ------------------------------ | --------------- |
+| **📝 经验之谈**   | 重博客     | 原创文章、图文并茂、代码实例   | HTML/CSS/JS     |
+| **📚 知识库**     | 轻博客     | Markdown、实时预览、代码高亮   | Markdown/JS     |
+| **🎮 交互式学习** | 可视化平台 | 实时交互、多领域覆盖、统一界面 | CSS/JS/Canvas   |
+| **🎯 休闲游戏**   | 游戏集合   | 经典游戏、益智游戏、学习结合   | HTML5/Canvas/JS |
+| **🔬 Web 应用**   | 应用展示   | 密码生成、随机选择、快捷键测试 | Vanilla JS      |
+| **💾 软件下载**   | 资源聚合   | 开发工具、数据库、设计软件     | 静态资源        |
+
+### 🎮 交互式学习中心 - 核心模块
+
+| 类别           | 数量 | 核心功能                                 |
+| -------------- | ---- | ---------------------------------------- |
+| **CSS 可视化** | 12+  | Box-Model、Flex、Grid、Transform         |
+| **数据结构**   | 6+   | Array、Stack、Queue、LinkedList          |
+| **算法可视化** | 4+   | Bubble-Sort、Selection-Sort、Insert-Sort |
+| **前端技术**   | 8+   | CSS-Selector、Filter、Clip-Path          |
+
+### 🎯 休闲游戏 - 游戏类型
+
+| 类型         | 数量 | 代表作品                   |
+| ------------ | ---- | -------------------------- |
+| **经典游戏** | 4+   | 俄罗斯方块、贪吃蛇、打砖块 |
+| **益智游戏** | 3+   | 汉诺塔、找炸弹、猜人物     |
+| **休闲娱乐** | 2+   | 石头剪刀布、投掷石头       |
+
+## 📄 信息页面
+
+| 页面            | 类型     | 功能                         |
+| --------------- | -------- | ---------------------------- |
+| **👥 贡献者**   | 团队介绍 | 成员展示、技能展示、联系方式 |
+| **🎯 网站宗旨** | 项目理念 | 项目定位、开发初衷、目标用户 |
+
+### 🎯 网站宗旨 - 核心理念
+
+| 维度         | 内容                                       |
+| ------------ | ------------------------------------------ |
+| **项目定位** | 探索/试验性质的自学服务中心                |
+| **开发初衷** | 降低优质资源搜索难度，节省宝贵时间         |
+| **目标用户** | 学生、初学者、寻找优质教程资源的入门开发者 |
+| **维护团队** | 职业学校教师主导，多位朋友/同事参与贡献    |
+| **反馈渠道** | GitHub Discussions、邮件等多种反馈方式     |
