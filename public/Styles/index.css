@@ -71,7 +71,7 @@ html {
   min-height: clamp(1200px, 110vh, 1700px);
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   padding: 100px 0 120px 0;
 }
@@ -104,7 +104,7 @@ html {
 
 .介绍分区中文标题 {
   position: relative;
-  font-size: clamp(24px, 2.5vw, 48px);
+  font-size: clamp(20px, 2.2vw, 36px);
   font-weight: 600;
   line-height: 1.2;
   text-align: center;
@@ -162,7 +162,7 @@ html {
 
 .介绍分区英文标题 {
   position: relative;
-  font-size: clamp(14px, 1.2vw, 20px);
+  font-size: clamp(14px, 1.2vw, 18px);
   font-family: "Inter", sans-serif;
   font-weight: 400;
   color: rgba(255, 255, 255, 0.7);
@@ -307,15 +307,6 @@ html {
   padding: 40px 0;
 }
 
-/* 新增：平台特色描述样式 */
-.平台特色描述 {
-  width: 80%;
-  max-width: 800px;
-  text-align: center;
-  margin: 20px 0;
-  animation: fadeInUp 0.8s ease-out;
-}
-
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -325,14 +316,6 @@ html {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.特色描述文本 {
-  font-size: clamp(16px, 1.2vw, 24px);
-  color: rgb(200, 200, 200);
-  line-height: 1.6;
-  font-weight: 300;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
 /* 新增：统计数据展示样式 */
@@ -1061,7 +1044,7 @@ html {
 .第三方教程与软件分区容器 {
   position: relative;
   width: max(100%, 1000px);
-  height: max(90vh, 800px);
+  height: min(90vh, 800px);
 }
 
 .容器背景 {
@@ -1164,7 +1147,7 @@ html {
   }
 
   .介绍分区中文标题 {
-    font-size: clamp(20px, 3vw, 32px);
+    font-size: clamp(18px, 2.5vw, 28px);
     margin-bottom: 15px;
   }
 
@@ -1196,11 +1179,6 @@ html {
   .功能卡片 {
     padding: 20px;
     gap: 15px;
-  }
-
-  .平台特色描述 {
-    width: 95%;
-    margin: 15px 0;
   }
 
   .开始探索区域 {
@@ -1239,10 +1217,6 @@ html {
     margin: 25px 0;
   }
 
-  .平台特色描述 {
-    margin: 20px 0;
-  }
-
   .开始探索区域 {
     margin: 25px 0;
   }
@@ -1253,7 +1227,7 @@ html {
 /* 贡献者与宗旨分区样式 */
 .贡献者与宗旨分区 {
   position: relative;
-  min-height: clamp(800px, 90vh, 1200px);
+  height: clamp(800px, 90vh, 950px);
   display: flex;
   justify-content: center;
   align-items: center;

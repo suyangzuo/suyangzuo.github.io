@@ -1,5 +1,339 @@
-.game-area {
+.background-image {
+  filter: brightness(0.25);
+}
+
+/* 游戏容器 */
+.game-container {
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 20px;
   height: calc(100vh - 210px);
   font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
+}
+
+/* 游戏信息面板 */
+.game-info-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-width: 150px;
+}
+
+.info-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.info-card:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.info-card h3 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.info-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* 游戏画布区域 */
+.game-canvas-area {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#gameCanvas {
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  width: 350px; /* 10 * 35 */
+  height: 700px; /* 20 * 35 */
+}
+
+#gameCanvas:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+}
+
+/* 画布覆盖层 */
+.canvas-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.overlay-content {
+  text-align: center;
+  color: white;
+}
+
+.overlay-content h2 {
+  font-size: 28px;
+  margin: 0 0 15px 0;
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.overlay-content p {
+  font-size: 16px;
+  margin: 0 0 25px 0;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.overlay-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.game-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.game-btn.primary {
+  background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+  color: white;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+}
+
+.game-btn.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+}
+
+.game-btn.secondary {
+  background: linear-gradient(45deg, #4ecdc4, #44a08d);
+  color: white;
+  box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4);
+}
+
+.game-btn.secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(78, 205, 196, 0.6);
+}
+
+/* 下一个方块预览 */
+.next-piece-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  min-width: 150px;
+}
+
+.next-piece-panel h3 {
+  margin: 0;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+#nextCanvas {
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+/* 操作说明面板 */
+.controls-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-width: 150px;
+}
+
+.controls-panel h3 {
+  margin: 0;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.control-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.control-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateX(5px);
+}
+
+.key {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  width: 40px;
+  text-align: center;
+}
+
+.desc {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+}
+
+/* 重置按钮样式 */
+#resetGame {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#resetGame:hover {
+  transform: scale(1.1);
+  filter: brightness(1.2);
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+  .game-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    height: auto;
+    min-height: calc(100vh - 210px);
+  }
+
+  .game-info-panel {
+    flex-direction: row;
+    min-width: auto;
+    width: 100%;
+    max-width: 600px;
+  }
+
+  .next-piece-panel,
+  .controls-panel {
+    min-width: auto;
+    width: 100%;
+    max-width: 600px;
+  }
+
+  .controls-panel {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .control-item {
+    flex: 1;
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 768px) {
+  .game-container {
+    padding: 10px;
+    gap: 15px;
+  }
+
+  #gameCanvas {
+    width: 280px; /* 8 * 35 */
+    height: 560px; /* 16 * 35 */
+  }
+
+  #nextCanvas {
+    width: 100px;
+    height: 100px;
+  }
+
+  .game-info-panel {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .info-card {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .controls-panel {
+    flex-direction: column;
+  }
+
+  .control-item {
+    min-width: auto;
+  }
+}
+
+/* 动画效果 */
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.info-value {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* 游戏状态样式 */
+.game-paused .canvas-overlay {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.game-over .canvas-overlay {
+  background: rgba(255, 0, 0, 0.2);
+}
+
+.level-complete .canvas-overlay {
+  background: rgba(0, 255, 0, 0.2);
 }

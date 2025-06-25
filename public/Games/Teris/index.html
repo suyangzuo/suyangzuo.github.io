@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>俄罗斯方块</title>
+    <title>俄罗斯方块 - 现代版</title>
     <link rel="icon" href="/Games/Mario-Run.gif" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -37,17 +37,84 @@
     <div class="background-image">
       <img src="../Images-Common/俄罗斯方块.webp" alt="游戏背景墙" />
     </div>
+    
+    <!-- 游戏控制区域 -->
     <div class="control-area">
       <div class="back-to-navigator">
         <a href="../" title="返回游戏大厅">
           <img src="../后退.png" alt="后退" />
         </a>
       </div>
-      <div class="reset-game">
-        <img src="../重置.png" alt="重置游戏" title="重置" />
+      <div class="reset-game" id="resetGame" title="重置游戏">
+        <img src="../重置.png" alt="重置游戏" />
       </div>
     </div>
-    <div class="game-area"></div>
+
+    <!-- 游戏主区域 -->
+    <div class="game-container">
+      <!-- 游戏信息面板 -->
+      <div class="game-info-panel">
+        <div class="info-card">
+          <h3>关卡</h3>
+          <div class="info-value" id="level">1</div>
+        </div>
+        <div class="info-card">
+          <h3>分数</h3>
+          <div class="info-value" id="score">0</div>
+        </div>
+        <div class="info-card">
+          <h3>目标</h3>
+          <div class="info-value" id="target">1000</div>
+        </div>
+        <div class="info-card">
+          <h3>行数</h3>
+          <div class="info-value" id="lines">0</div>
+        </div>
+      </div>
+
+      <!-- 游戏画布区域 -->
+      <div class="game-canvas-area">
+        <canvas id="gameCanvas" width="300" height="600"></canvas>
+        <div class="canvas-overlay" id="gameOverlay">
+          <div class="overlay-content">
+            <h2 id="overlayTitle">游戏开始</h2>
+            <p id="overlayMessage">按空格键开始游戏</p>
+            <div class="overlay-buttons">
+              <button id="startBtn" class="game-btn primary">开始游戏</button>
+              <button id="pauseBtn" class="game-btn secondary" style="display: none;">继续游戏</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 下一个方块预览 -->
+      <div class="next-piece-panel">
+        <h3>下一个</h3>
+        <canvas id="nextCanvas" width="120" height="120"></canvas>
+      </div>
+
+      <!-- 操作说明 -->
+      <div class="controls-panel">
+        <h3>操作说明</h3>
+        <div class="control-item">
+          <span class="key">A/D</span>
+          <span class="desc">左右移动</span>
+        </div>
+        <div class="control-item">
+          <span class="key">S</span>
+          <span class="desc">快速下降</span>
+        </div>
+        <div class="control-item">
+          <span class="key">空格</span>
+          <span class="desc">旋转方块</span>
+        </div>
+        <div class="control-item">
+          <span class="key">P</span>
+          <span class="desc">暂停游戏</span>
+        </div>
+      </div>
+    </div>
+
     <script src="Teris.js"></script>
   </body>
 </html>
