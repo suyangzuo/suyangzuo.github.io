@@ -68,12 +68,12 @@ html {
 
 .介绍分区 {
   position: relative;
-  min-height: clamp(1100px, 100vh, 1600px);
+  min-height: clamp(1200px, 110vh, 1700px);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding: 80px 0 100px 0;
+  padding: 100px 0 120px 0;
 }
 
 .背景修饰容器 {
@@ -98,22 +98,202 @@ html {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
+  z-index: 2;
 }
 
 .介绍分区中文标题 {
-  font-size: clamp(20px, 1.75vw, 40px);
+  position: relative;
+  font-size: clamp(24px, 2.5vw, 48px);
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  margin-bottom: 20px;
+  animation: titleReveal 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.介绍分区中文标题::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, var(--网站风格颜色), transparent);
+  border-radius: 2px;
+  animation: lineExpand 1s ease-out 0.5s forwards;
+  opacity: 0;
+}
+
+.介绍分区中文标题::after {
+  content: "";
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  border-radius: 1px;
+  animation: lineExpand 0.8s ease-out 0.7s forwards;
+  opacity: 0;
+}
+
+.介绍分区大标题 {
+  display: block;
+  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 25%, var(--网站风格颜色) 50%, #2a978c 75%, #ffffff 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 3s ease-in-out infinite, textGlow 2s ease-in-out infinite alternate;
+  position: relative;
+}
+
+.介绍分区大标题:first-child {
+  margin-bottom: 8px;
+  animation-delay: 0s;
+}
+
+.介绍分区大标题:last-child {
+  animation-delay: 0.3s;
 }
 
 .介绍分区英文标题 {
-  font-size: clamp(12px, 1vw, 16px);
+  position: relative;
+  font-size: clamp(14px, 1.2vw, 20px);
   font-family: "Inter", sans-serif;
-  margin-top: 15px;
-  color: rgb(160, 160, 160);
-  gap: 5px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 25px;
+  animation: subtitleFade 1s ease-out 0.8s forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.介绍分区英文标题::before {
+  content: "";
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 0.5px;
 }
 
 .介绍分区英文标题 > :where(.介绍分区大标题, .介绍分区小标题) {
-  font-weight: normal;
+  font-weight: inherit;
+  display: block;
+  margin: 2px 0;
+  transition: color 0.3s ease;
+}
+
+.介绍分区英文标题:hover > :where(.介绍分区大标题, .介绍分区小标题) {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* 标题动画 */
+@keyframes titleReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateY(15px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes lineExpand {
+  0% {
+    width: 0;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    width: 100%;
+    opacity: 1;
+  }
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes textGlow {
+  0% {
+    filter: drop-shadow(0 0 5px rgba(42, 151, 140, 0.3));
+  }
+  100% {
+    filter: drop-shadow(0 0 20px rgba(42, 151, 140, 0.6));
+  }
+}
+
+@keyframes subtitleFade {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 添加装饰性背景元素 */
+.介绍分区标题::before {
+  content: "";
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(42, 151, 140, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: float 6s ease-in-out infinite;
+  z-index: -1;
+}
+
+.介绍分区标题::after {
+  content: "";
+  position: absolute;
+  bottom: -50px;
+  right: -50px;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, rgba(42, 151, 140, 0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: float 8s ease-in-out infinite reverse;
+  z-index: -1;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-20px) rotate(120deg);
+  }
+  66% {
+    transform: translateY(10px) rotate(240deg);
+  }
 }
 
 .介绍分区容器 {
@@ -123,7 +303,7 @@ html {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  gap: min(45px, 2.5vh);
+  gap: min(25px, 1.25vh);
   padding: 40px 0;
 }
 
@@ -979,8 +1159,19 @@ html {
 /* 移动端适配 */
 @media (max-width: 768px) {
   .介绍分区 {
-    min-height: clamp(1300px, 120vh, 1800px);
-    padding: 60px 0 80px 0;
+    min-height: clamp(1400px, 130vh, 1900px);
+    padding: 80px 0 100px 0;
+  }
+
+  .介绍分区中文标题 {
+    font-size: clamp(20px, 3vw, 32px);
+    margin-bottom: 15px;
+  }
+
+  .介绍分区英文标题 {
+    font-size: clamp(12px, 1.5vw, 16px);
+    margin-top: 20px;
+    letter-spacing: 1px;
   }
 
   .介绍分区容器 {
@@ -1020,8 +1211,16 @@ html {
 /* 平板端适配 */
 @media (min-width: 769px) and (max-width: 1024px) {
   .介绍分区 {
-    min-height: clamp(1200px, 110vh, 1700px);
-    padding: 70px 0 90px 0;
+    min-height: clamp(1300px, 120vh, 1800px);
+    padding: 90px 0 110px 0;
+  }
+
+  .介绍分区中文标题 {
+    font-size: clamp(22px, 2.8vw, 40px);
+  }
+
+  .介绍分区英文标题 {
+    font-size: clamp(13px, 1.3vw, 18px);
   }
 
   .介绍分区容器 {
