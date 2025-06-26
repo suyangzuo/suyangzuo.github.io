@@ -2,10 +2,537 @@
   --进度条颜色-已填充: rgb(41, 126, 78);
   --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
   --拇指宽度: 16px;
+
+  /* 代码高亮颜色 */
+  --code-bg: #1e1e1e;
+  --code-text: #d4d4d4;
+  --code-tag: #569cd6;
+  --code-attr: #9cdcfe;
+  --code-string: #ce9178;
+  --code-comment: #6a9955;
+  --code-keyword: #c586c0;
+
+  /* 高亮颜色 */
+  --highlight-bg: rgba(255, 215, 0, 0.3);
+  --highlight-border: #ffd700;
+  --highlight-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+
+  /* 布局颜色 */
+  --border-color: #333;
+  --bg-color: #2d2d2d;
+  --card-bg: #3c3c3c;
+  --text-color: silver;
+  --input-bg: #2a2a2a;
+  --input-border: #555;
+  --button-bg: #007acc;
+  --button-hover: #005a9e;
 }
 
-.外部容器 {
-  width: 600px;
-  height: 750px;
-  background-color: #7f93aa;
+/* 主容器布局 */
+.main-container {
+  display: flex;
+  gap: 30px;
+  width: 1600px;
+  margin: 0 auto;
+  padding: 20px;
+  height: clamp(850px, 80vh, 1080px);
+}
+
+/* 展示区样式 */
+.展示区 {
+  max-width: 1000px;
+  height: fit-content;
+  flex: 3;
+  background: var(--card-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.code-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.code-header {
+  background: var(--code-bg);
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.file-name {
+  color: var(--text-color);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+}
+
+.code-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.control-btn {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ff5f56;
+}
+
+.control-btn:nth-child(2) {
+  background: #ffbd2e;
+}
+
+.control-btn:nth-child(3) {
+  background: #27ca3f;
+}
+
+.code-content {
+  flex: 1;
+  overflow: auto;
+  background: var(--code-bg);
+  padding: 20px;
+  position: relative;
+}
+
+/* Prism.js 样式覆盖 */
+/* code[class*="language-"],
+pre[class*="language-"] {
+  line-height: 1.6;
+} */
+
+.code-content pre[class*="language-"] {
+  margin: 0;
+  font-family: "JetBrains Mono", "Consolas", "Monaco", monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--code-text);
+  background: var(--code-bg) !important;
+  border-radius: 0;
+  padding: 0;
+  overflow: visible;
+  position: relative;
+}
+
+.code-content pre[class*="language-"].line-numbers {
+  padding-left: 3.8em;
+  counter-reset: linenumber;
+}
+
+.code-content .line-numbers-rows {
+  position: absolute;
+  pointer-events: none;
+  top: 0;
+  font-size: 100%;
+  left: -3.8em;
+  width: 3em;
+  letter-spacing: -1px;
+  border-right: 1px solid #555;
+  user-select: none;
+  background: transparent !important;
+  padding: 0;
+  border-radius: 0;
+}
+
+.code-content .line-numbers-rows > span {
+  display: block;
+  counter-increment: linenumber;
+  color: #888;
+  font-size: 14px;
+  line-height: 1.6;
+  padding: 0;
+  height: 1.5em;
+}
+
+.code-content .line-numbers-rows > span:before {
+  content: counter(linenumber);
+  color: #888;
+  display: block;
+  padding-right: 0.8em;
+  text-align: right;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* 缩进圆点 */
+.code-content pre[class*="language-"] code {
+  position: relative;
+  white-space: pre;
+  display: block;
+  padding: 0;
+  background: transparent;
+  font-family: "JetBrains Mono", "Consolas", "Monaco", monospace;
+}
+
+/* 为缩进添加圆点 */
+.code-content pre[class*="language-"] code {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.15) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 1.5em 1.6em, 3em 1.6em, 4.5em 1.6em;
+  background-position: 0.75em 0.8em, 2.25em 0.8em, 3.75em 0.8em;
+  background-repeat: repeat-y, repeat-y, repeat-y;
+}
+
+/* 覆盖Prism.js的token样式 */
+.code-content pre[class*="language-"] .token {
+  font-family: "JetBrains Mono", "Consolas", "Monaco", monospace;
+}
+
+.code-content pre[class*="language-"] .token.tag {
+  color: var(--code-tag);
+}
+
+.code-content pre[class*="language-"] .token.attr-name {
+  color: var(--code-attr);
+}
+
+.code-content pre[class*="language-"] .token.attr-value {
+  color: var(--code-string);
+}
+
+.code-content pre[class*="language-"] .token.comment {
+  color: var(--code-comment);
+}
+
+.code-content pre[class*="language-"] .token.keyword {
+  color: var(--code-keyword);
+}
+
+.code-content pre[class*="language-"] .token.punctuation {
+  color: var(--code-text);
+}
+
+.code-content pre[class*="language-"] .line-highlight {
+  background: none;
+}
+
+/* 代码高亮样式 */
+.code-content .tag {
+  color: var(--code-tag);
+  font-family: "JetBrains Mono", "Consolas", "Monaco", monospace;
+}
+
+.code-content .attr {
+  color: var(--code-attr);
+  font-family: "JetBrains Mono", "Consolas", "Monaco", monospace;
+}
+
+.code-content .string {
+  color: var(--code-string);
+  font-family: "JetBrains Mono", "Consolas", "Monaco", monospace;
+}
+
+.code-content .comment {
+  color: var(--code-comment);
+  font-family: "JetBrains Mono", "Consolas", "Monaco", monospace;
+}
+
+.code-content .keyword {
+  color: var(--code-keyword);
+  font-family: "JetBrains Mono", "Consolas", "Monaco", monospace;
+}
+
+/* 选择器匹配高亮 - 针对Prism.js token */
+.code-content .token.matched {
+  background: rgba(255, 215, 0, 0.3) !important;
+  border: 2px solid rgba(255, 215, 0, 0.8) !important;
+  border-radius: 3px !important;
+  box-shadow: 0 0 6px rgba(255, 215, 0, 0.5) !important;
+  position: relative !important;
+  z-index: 10 !important;
+  display: inline-block !important;
+  margin: 1px 2px !important;
+  padding: 1px 2px !important;
+  animation: tokenPulse 1.5s infinite !important;
+}
+
+@keyframes tokenPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 6px rgba(255, 215, 0, 0.5) !important;
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.8) !important;
+  }
+}
+
+/* 保持原有的matched样式作为备用 */
+.code-content .matched {
+  background: rgba(255, 215, 0, 0.3) !important;
+  border: 2px solid rgba(255, 215, 0, 0.6);
+  border-radius: 4px;
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+  position: relative;
+  animation: pulse 2s infinite;
+  z-index: 2;
+  font-family: "JetBrains Mono", "Consolas", "Monaco", monospace;
+  display: inline-block;
+  margin: 1px 0;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+  }
+}
+
+/* 设置区样式 */
+.设置区 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 300px;
+  height: fit-content;
+}
+
+.selector-input-container,
+.help-container {
+  background: #def2;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.selector-input-container {
+  flex-grow: 1;
+}
+
+.help-container {
+  flex-grow: 4;
+}
+
+.selector-input-container h3,
+.help-container h3 {
+  color: white;
+  margin: 0 0 15px 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* 输入框样式 */
+.input-group {
+  margin-bottom: 15px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+#selectorInput {
+  width: 100%;
+  padding: 12px 40px 12px 10px; /* 右侧留出空间给清除按钮 */
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  color: var(--text-color);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+#selectorInput:focus {
+  border-color: var(--button-bg);
+  box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.2);
+}
+
+#selectorInput.error {
+  border-color: #ff6b6b;
+  box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.2);
+}
+
+#selectorInput::placeholder {
+  color: #888;
+  font-style: italic;
+}
+
+/* 错误和无匹配消息样式 */
+.error-message,
+.no-matches-message {
+  position: static;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-top: 10px;
+  z-index: 10;
+}
+
+.error-message {
+  background: rgba(255, 71, 87, 0.1);
+  border: 1px solid #ff4757;
+  color: #ff4757;
+}
+
+.no-matches-message {
+  background: rgba(255, 193, 7, 0.1);
+  border: 1px solid #ffc107;
+  color: #ffc107;
+}
+
+.clear-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clear-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/* 选择器信息 */
+.selector-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #aaa;
+}
+
+.selector-info span {
+  font-size: 0.9em;
+  color: var(--text-secondary);
+  margin-right: 15px;
+}
+
+/* 帮助内容 */
+.help-content {
+  font-size: 13px;
+  line-height: 1.6;
+  margin-top: 10px;
+}
+
+.help-content p {
+  padding: 10px 15px;
+  font-size: 1em;
+  font-weight: normal;
+}
+
+.help-content p:nth-child(odd) {
+  background-color: #0004;
+}
+
+.help-content p:nth-child(even) {
+  background-color: #fff1;
+}
+
+.help-content strong {
+  color: var(--code-keyword); /* 默认颜色（其他字） */
+  font-weight: 600;
+  display: inline-block;
+  width: 105px; /* 固定宽度，以最大的strong元素为准 */
+  text-align: right; /* 文本右对齐 */
+  margin-right: 8px; /* 与后面的文本保持间距 */
+}
+
+/* 为strong内部的span元素添加间隔 */
+.help-content strong span {
+  margin-right: 2px; /* 每个span后面添加2px间隔 */
+}
+
+/* 最后一个span不需要右边距 */
+.help-content strong span:last-child {
+  margin-right: 0;
+}
+
+/* 选择器说明中的分隔符样式 */
+.help-content .separator {
+  color: #666;
+  margin: 0 4px;
+  font-weight: normal;
+}
+
+/* 属性选择器中的操作符样式 */
+.help-content .operator {
+  color: #4a9eff;
+  font-weight: normal;
+}
+
+/* 并集选择器中的逗号样式 */
+.help-content .union-comma {
+  color: #ff6b6b;
+  font-weight: normal;
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+  .main-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .展示区 {
+    height: 600px;
+  }
+
+  .设置区 {
+    min-width: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-container {
+    padding: 10px;
+    gap: 15px;
+  }
+
+  .code-content {
+    padding: 15px;
+  }
+
+  .code-content pre {
+    font-size: 12px;
+  }
+}
+
+/* 匹配高亮样式 */
+.match-highlight {
+  position: absolute;
+  background-color: rgba(255, 193, 7, 0.1);
+  border: 2px solid #ffc107;
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 10;
+  /* 调整高度，避免遮挡其他行 */
+  height: calc(100% - 2px);
+  top: 1px;
+  left: 0;
+  right: 0;
+  /* 确保不影响文档流 */
+  margin: 0;
+  padding: 0;
+}
+
+/* 确保代码容器有相对定位 */
+.code-content {
+  position: relative;
+}
+
+/* 确保pre元素有相对定位 */
+.code-content pre {
+  position: relative;
 }
