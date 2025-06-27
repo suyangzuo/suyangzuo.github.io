@@ -20,6 +20,7 @@ class CSSSelectorTutorial {
     this.initializePrism();
     this.setupEventListeners();
     this.setupStrongElementColors();
+    this.setupRandomHtmlBtn();
   }
 
   initializePrism() {
@@ -89,7 +90,6 @@ class CSSSelectorTutorial {
 </html>`;
 
     this.originalHTML = originalCode;
-    console.log("提取的原始HTML:", this.originalHTML);
   }
 
   setupEventListeners() {
@@ -181,9 +181,6 @@ class CSSSelectorTutorial {
   }
 
   findMatches(selector) {
-    console.log("查找选择器:", selector);
-    console.log("原始HTML:", this.originalHTML);
-
     // 检查是否是根级元素选择器
     const rootElements = ["html", "body", "head"];
     if (rootElements.includes(selector)) {
@@ -196,14 +193,11 @@ class CSSSelectorTutorial {
     // 直接使用原始HTML，不需要解码
     tempDiv.innerHTML = this.originalHTML;
 
-    console.log("解析后的HTML:", tempDiv.innerHTML);
-
     const matches = [];
 
     try {
       // 使用querySelectorAll进行选择器匹配
       const elements = tempDiv.querySelectorAll(selector);
-      console.log("querySelectorAll结果:", elements.length, elements);
 
       // 限制匹配数量，避免性能问题
       const maxMatches = 50;
@@ -215,7 +209,6 @@ class CSSSelectorTutorial {
           break;
         }
 
-        console.log("处理元素:", element.outerHTML);
         const elementInfo = this.getElementInfo(element);
         if (elementInfo) {
           matches.push(elementInfo);
@@ -229,13 +222,10 @@ class CSSSelectorTutorial {
       matches.push(...customMatches.slice(0, 50)); // 限制自定义匹配数量
     }
 
-    console.log("最终匹配结果:", matches);
     return matches;
   }
 
   findRootElementMatches(selector) {
-    console.log("查找根级元素:", selector);
-
     // 从原始HTML中提取根级元素信息
     const matches = [];
 
@@ -244,8 +234,6 @@ class CSSSelectorTutorial {
     const match = this.originalHTML.match(tagPattern);
 
     if (match) {
-      console.log("找到根级元素:", match[0]);
-
       // 提取属性
       const attributes = match[1] || "";
       const idMatch = attributes.match(/id\s*=\s*["']([^"']+)["']/);
@@ -262,7 +250,6 @@ class CSSSelectorTutorial {
       matches.push(elementInfo);
     }
 
-    console.log("根级元素匹配结果:", matches);
     return matches;
   }
 
@@ -512,22 +499,24 @@ class CSSSelectorTutorial {
       return this.findRootElementTokenRange(match, tokens, processedPositions);
     }
 
+    // 检查是否是自闭合标签
+    const selfClosingTags = ['input', 'img', 'br', 'hr', 'meta', 'link', 'area', 'base', 'col', 'embed', 'source', 'track', 'wbr'];
+    const isSelfClosing = selfClosingTags.includes(tagName.toLowerCase());
+
     // 查找开始标签
     let startIndex = -1;
     let endIndex = -1;
 
-    console.log(`开始查找元素: ${tagName}${className ? '.' + className : ''}${id ? '#' + id : ''}`);
+    console.log(`开始查找元素: ${tagName}${className ? '.' + className : ''}${id ? '#' + id : ''}${isSelfClosing ? ' (自闭合标签)' : ''}`);
     console.log(`已处理的位置数量: ${processedPositions.size}`);
 
-    // 确定搜索起始位置：从上一个已处理元素的结束位置之后开始
-    let searchStartIndex = 0;
-    if (processedPositions.size > 0) {
-      // 找到最大的已处理位置（通常是上一个元素的结束位置）
-      const maxProcessedPosition = Math.max(...Array.from(processedPositions));
-      searchStartIndex = maxProcessedPosition + 1;
-      console.log(`从位置 ${searchStartIndex} 开始搜索（上一个已处理位置: ${maxProcessedPosition}）`);
-    }
+    // 生成当前元素的特征签名
+    const currentElementSignature = this.getElementSignature(tagName, className, id);
 
+    // 确定搜索起始位置：使用基于DOM层级关系的搜索策略
+    let searchStartIndex = this.determineSearchStartIndexByDOM(tokens, processedPositions, currentElementSignature, element);
+
+    // 从搜索起始位置开始搜索
     for (let i = searchStartIndex; i < tokens.length; i++) {
       const tokenText = tokens[i].textContent;
 
@@ -559,8 +548,48 @@ class CSSSelectorTutorial {
         console.log(`属性匹配结果: ${attributesMatch}`);
 
         if (attributesMatch) {
+          // 检查这个位置是否已经被相同特征的元素处理过
+          const positionSignature = `${currentElementSignature}:${i}`;
+          if (processedPositions.has(positionSignature)) {
+            console.log(`位置 ${i} 已被相同特征元素处理，跳过`);
+            continue;
+          }
+
           startIndex = i;
           console.log(`找到开始标签: ${tagName} 在位置 ${i}, 内容: ${tokenText}`);
+
+          // 对于自闭合标签，结束位置就是开始位置
+          if (isSelfClosing) {
+            endIndex = i;
+            console.log(`自闭合标签 ${tagName}，结束位置与开始位置相同: ${endIndex}`);
+          } else {
+            // 查找结束标签
+            console.log(`开始查找 ${tagName} 标签的结束标签，从位置 ${startIndex} 开始`);
+            
+            // 对所有可能嵌套的标签都使用深度计数逻辑
+            const nestedTags = ['div', 'li', 'span', 'p', 'article', 'section', 'header', 'footer', 'nav', 'aside', 'main', 'ul', 'ol'];
+            if (nestedTags.includes(tagName.toLowerCase())) {
+              console.log(`检测到可能嵌套的${tagName}元素，使用深度计数逻辑`);
+              endIndex = this.findMatchingEndTagWithDepth(tagName, startIndex, tokens);
+            } else {
+              endIndex = this.findMatchingEndTag(tagName, startIndex, tokens);
+            }
+          }
+
+          if (endIndex === -1) {
+            console.log(`未找到结束标签，使用开始位置作为结束位置`);
+            endIndex = startIndex;
+          }
+
+          console.log(`找到匹配的结束标签在位置 ${endIndex}`);
+
+          // 标记开始和结束位置为已处理，使用位置签名避免重复
+          const startPositionSignature = `${currentElementSignature}:${startIndex}`;
+          const endPositionSignature = `${currentElementSignature}:${endIndex}`;
+          processedPositions.add(startPositionSignature);
+          processedPositions.add(endPositionSignature);
+          console.log(`标记位置签名 ${startPositionSignature} 和 ${endPositionSignature} 为已处理`);
+
           break;
         }
       }
@@ -571,29 +600,6 @@ class CSSSelectorTutorial {
       return null;
     }
 
-    // 查找结束标签
-    console.log(`开始查找 ${tagName} 标签的结束标签，从位置 ${startIndex} 开始`);
-    
-    // 对于div元素，使用深度计数逻辑
-    if (tagName.toLowerCase() === 'div') {
-      console.log(`检测到div元素，使用深度计数逻辑`);
-      endIndex = this.findMatchingEndTagWithDepth(tagName, startIndex, tokens);
-    } else {
-      endIndex = this.findMatchingEndTag(tagName, startIndex, tokens);
-    }
-
-    if (endIndex === -1) {
-      console.log(`未找到结束标签`);
-      return null;
-    }
-
-    console.log(`找到匹配的结束标签在位置 ${endIndex}`);
-
-    // 标记位置为已处理（不标记子元素位置）
-    processedPositions.add(startIndex);
-    processedPositions.add(endIndex);
-    console.log(`标记位置 ${startIndex} 和 ${endIndex} 为已处理（不标记子元素位置）`);
-
     return {
       startToken: tokens[startIndex],
       endToken: tokens[endIndex],
@@ -602,19 +608,100 @@ class CSSSelectorTutorial {
     };
   }
 
+  // 新增：基于DOM层级关系确定搜索起始位置
+  determineSearchStartIndexByDOM(tokens, processedPositions, currentElementSignature, element) {
+    if (processedPositions.size === 0) {
+      return 0; // 第一个元素从位置0开始
+    }
+
+    // 获取所有已处理的位置
+    const processedPositionsArray = Array.from(processedPositions);
+    
+    // 找到当前元素特征的所有已处理位置
+    const currentElementPositions = processedPositionsArray.filter(pos => 
+      pos.startsWith(currentElementSignature + ':')
+    );
+
+    if (currentElementPositions.length === 0) {
+      // 如果当前元素特征还没有处理过，需要根据DOM层级关系确定搜索位置
+      return this.findSearchStartByDOMHierarchy(tokens, processedPositions, element);
+    } else {
+      // 如果当前元素特征已经处理过，从最后一个已处理位置之后开始
+      const lastProcessedPosition = Math.max(...currentElementPositions.map(pos => {
+        const parts = pos.split(':');
+        return parseInt(parts[parts.length - 1]) || 0;
+      }));
+      console.log(`当前元素特征已处理过，从位置 ${lastProcessedPosition + 1} 开始搜索`);
+      return lastProcessedPosition + 1;
+    }
+  }
+
+  // 新增：根据DOM层级关系确定搜索起始位置
+  findSearchStartByDOMHierarchy(tokens, processedPositions, element) {
+    // 获取元素的父元素
+    const parentElement = element.parentElement;
+    
+    if (!parentElement || parentElement.tagName === 'BODY' || parentElement.tagName === 'HTML') {
+      // 如果没有父元素或父元素是body/html，从最大的已处理位置之后开始
+      const processedPositionsArray = Array.from(processedPositions);
+      const maxProcessedPosition = Math.max(...processedPositionsArray.map(pos => {
+        const parts = pos.split(':');
+        return parseInt(parts[parts.length - 1]) || 0;
+      }));
+      console.log(`元素没有有效父元素，从位置 ${maxProcessedPosition + 1} 开始搜索`);
+      return maxProcessedPosition + 1;
+    }
+
+    // 查找父元素在已处理位置中的信息
+    const parentSignature = this.getElementSignature(
+      parentElement.tagName.toLowerCase(),
+      parentElement.className,
+      parentElement.id
+    );
+
+    // 找到父元素的所有已处理位置
+    const processedPositionsArray = Array.from(processedPositions);
+    const parentPositions = processedPositionsArray.filter(pos => 
+      pos.startsWith(parentSignature + ':')
+    );
+
+    if (parentPositions.length > 0) {
+      // 如果父元素已经处理过，从父元素的开始位置之后开始搜索
+      const parentStartPosition = Math.min(...parentPositions.map(pos => {
+        const parts = pos.split(':');
+        return parseInt(parts[parts.length - 1]) || 0;
+      }));
+      console.log(`父元素已处理过，从父元素开始位置 ${parentStartPosition + 1} 之后开始搜索`);
+      return parentStartPosition + 1;
+    } else {
+      // 如果父元素还没有处理过，从位置0开始搜索
+      console.log(`父元素未处理过，从位置 0 开始搜索`);
+      return 0;
+    }
+  }
+
   findRootElementTokenRange(match, tokens, processedPositions) {
     const { tagName, className, id, outerHTML } = match;
 
     // 将tagName转换为小写以匹配HTML代码
     const lowerTagName = tagName.toLowerCase();
 
+    // 检查是否是自闭合标签
+    const selfClosingTags = ['input', 'img', 'br', 'hr', 'meta', 'link', 'area', 'base', 'col', 'embed', 'source', 'track', 'wbr'];
+    const isSelfClosing = selfClosingTags.includes(lowerTagName);
+
     // 查找开始标签
     let startIndex = -1;
     let endIndex = -1;
 
-    for (let i = 0; i < tokens.length; i++) {
-      if (processedPositions.has(i)) continue;
+    // 生成当前元素的特征签名
+    const currentElementSignature = this.getElementSignature(lowerTagName, className, id);
 
+    // 确定搜索起始位置：使用基于DOM层级关系的搜索策略
+    let searchStartIndex = this.determineSearchStartIndexByDOM(tokens, processedPositions, currentElementSignature, null);
+
+    // 从搜索起始位置开始搜索
+    for (let i = searchStartIndex; i < tokens.length; i++) {
       const tokenText = tokens[i].textContent;
 
       // 检查是否是开始标签
@@ -647,22 +734,38 @@ class CSSSelectorTutorial {
         console.log(`属性匹配结果: ${attributesMatch}`);
 
         if (attributesMatch) {
-          startIndex = i;
-          console.log(`找到根元素开始标签: ${lowerTagName} 在位置 ${i}, 内容: ${tokenText}`);
-
-          // 使用栈来查找正确的结束标签
-          endIndex = this.findMatchingEndTag(lowerTagName, i, tokens);
-
-          if (endIndex !== -1) {
-            console.log(`找到根元素匹配的结束标签在位置 ${endIndex}`);
-          } else {
-            console.log(`未找到根元素匹配的结束标签，使用开始位置: ${i}`);
-            endIndex = i;
+          // 检查这个位置是否已经被相同特征的元素处理过
+          const positionSignature = `${currentElementSignature}:${i}`;
+          if (processedPositions.has(positionSignature)) {
+            console.log(`根元素位置 ${i} 已被相同特征元素处理，跳过`);
+            continue;
           }
 
-          // 标记整个元素范围为已处理，避免重复处理
-          processedPositions.add(startIndex);
-          processedPositions.add(endIndex);
+          startIndex = i;
+          console.log(`找到根元素开始标签: ${lowerTagName} 在位置 ${i}, 内容: ${tokenText}${isSelfClosing ? ' (自闭合标签)' : ''}`);
+
+          // 对于自闭合标签，结束位置就是开始位置
+          if (isSelfClosing) {
+            endIndex = i;
+            console.log(`根元素自闭合标签 ${lowerTagName}，结束位置与开始位置相同: ${endIndex}`);
+          } else {
+            // 使用栈来查找正确的结束标签
+            endIndex = this.findMatchingEndTag(lowerTagName, i, tokens);
+
+            if (endIndex !== -1) {
+              console.log(`找到根元素匹配的结束标签在位置 ${endIndex}`);
+            } else {
+              console.log(`未找到根元素匹配的结束标签，使用开始位置: ${i}`);
+              endIndex = i;
+            }
+          }
+
+          // 标记开始和结束位置为已处理，使用位置签名避免重复
+          const startPositionSignature = `${currentElementSignature}:${startIndex}`;
+          const endPositionSignature = `${currentElementSignature}:${endIndex}`;
+          processedPositions.add(startPositionSignature);
+          processedPositions.add(endPositionSignature);
+          console.log(`标记根元素位置签名 ${startPositionSignature} 和 ${endPositionSignature} 为已处理`);
 
           break;
         }
@@ -684,8 +787,9 @@ class CSSSelectorTutorial {
   findMatchingEndTag(tagName, startIndex, tokens) {
     console.log(`开始查找 ${tagName} 标签的结束标签，从位置 ${startIndex} 开始`);
 
-    // 检查是否是可能有嵌套的元素（div、li等）
-    if (tagName.toLowerCase() === "div" || tagName.toLowerCase() === "li") {
+    // 检查是否是可能有嵌套的元素
+    const nestedTags = ['div', 'li', 'span', 'p', 'article', 'section', 'header', 'footer', 'nav', 'aside', 'main', 'ul', 'ol'];
+    if (nestedTags.includes(tagName.toLowerCase())) {
       console.log(`检测到${tagName}元素，使用深度计数逻辑`);
       return this.findMatchingEndTagWithDepth(tagName, startIndex, tokens);
     } else {
@@ -858,21 +962,16 @@ class CSSSelectorTutorial {
   }
 
   showNoMatchesMessage() {
-    let message = document.getElementById("noMatchesMessage");
-    if (!message) {
-      message = document.createElement("div");
-      message.id = "noMatchesMessage";
-      message.className = "no-matches-message";
-      message.textContent = "没有找到匹配的元素";
-      this.selectorInput.closest(".selector-input-container").appendChild(message);
+    const message = document.getElementById("noMatchesMessage");
+    if (message) {
+      message.style.visibility = "visible";
     }
-    message.style.display = "block";
   }
 
   hideNoMatchesMessage() {
     const message = document.getElementById("noMatchesMessage");
     if (message) {
-      message.style.display = "none";
+      message.style.visibility = "hidden";
     }
   }
 
@@ -1085,6 +1184,540 @@ class CSSSelectorTutorial {
         }
       }
     });
+
+    // 为选择器符号添加颜色样式
+    this.setupSelectorSymbolColors();
+  }
+
+  setupSelectorSymbolColors() {
+    // 获取所有帮助内容段落
+    const helpParagraphs = document.querySelectorAll(".help-content p");
+    
+    helpParagraphs.forEach((paragraph) => {
+      // 找到strong元素
+      const strongElement = paragraph.querySelector("strong");
+      if (!strongElement) return;
+      
+      // 检查是否已经处理过（避免重复处理）
+      if (paragraph.dataset.processed === 'true') return;
+      
+      // 检查strong元素后面是否已经包含HTML标签（如span元素）
+      let hasHtmlElements = false;
+      let currentNode = strongElement.nextSibling;
+      while (currentNode) {
+        if (currentNode.nodeType === Node.ELEMENT_NODE && currentNode.tagName !== 'BR') {
+          hasHtmlElements = true;
+          break;
+        }
+        currentNode = currentNode.nextSibling;
+      }
+      
+      // 如果已经包含HTML元素，跳过处理
+      if (hasHtmlElements) {
+        console.log('段落已包含HTML元素，跳过处理:', paragraph.textContent);
+        paragraph.dataset.processed = 'true';
+        return;
+      }
+      
+      // 获取strong元素后面的所有文本节点和元素
+      currentNode = strongElement.nextSibling;
+      let processedContent = "";
+      
+      // 收集strong元素后面的所有内容
+      while (currentNode) {
+        if (currentNode.nodeType === Node.TEXT_NODE) {
+          processedContent += currentNode.textContent;
+        } else if (currentNode.nodeType === Node.ELEMENT_NODE) {
+          // 对于已经存在的HTML元素，保留其outerHTML
+          processedContent += currentNode.outerHTML;
+        }
+        currentNode = currentNode.nextSibling;
+      }
+      
+      // 处理选择器符号颜色（只处理纯文本部分）
+      let processedText = this.processSelectorSymbols(processedContent);
+      
+      // 移除strong元素后面的所有内容
+      currentNode = strongElement.nextSibling;
+      while (currentNode) {
+        const nextNode = currentNode.nextSibling;
+        currentNode.remove();
+        currentNode = nextNode;
+      }
+      
+      // 在strong元素后面插入处理后的内容
+      const tempDiv = document.createElement("div");
+      tempDiv.innerHTML = processedText;
+      while (tempDiv.firstChild) {
+        strongElement.parentNode.insertBefore(tempDiv.firstChild, strongElement.nextSibling);
+      }
+      
+      // 标记为已处理
+      paragraph.dataset.processed = 'true';
+    });
+  }
+
+  processSelectorSymbols(text) {
+    // 首先检查是否已经包含HTML标签，如果有则不处理
+    if (text.includes('<span class=')) {
+      return text; // 如果已经包含span标签，直接返回，避免重复处理
+    }
+    
+    // 处理 "." 和 "#" 符号（紫色）- 类选择器、ID选择器、交集选择器、并集选择器
+    let processedText = text
+      .replace(/(\s|^)(\.)(\w+)/g, '$1<span class="selector-class-id">$2</span>$3')
+      .replace(/(\s|^)(#)(\w+)/g, '$1<span class="selector-class-id">$2</span>$3');
+    
+    // 处理 ">"、"+"、"~" 符号（绿色）- 子元素选择器、接续兄弟选择器、后续兄弟选择器
+    processedText = processedText
+      .replace(/(\s|^)(>)(\s|$)/g, '$1<span class="selector-child">$2</span>$3')
+      .replace(/(\s|^)(\+)(\s|$)/g, '$1<span class="selector-adjacent">$2</span>$3')
+      .replace(/(\s|^)(~)(\s|$)/g, '$1<span class="selector-sibling">$2</span>$3');
+    
+    // 处理 "::" 符号（橙色）- 伪元素选择器（必须先处理双冒号，避免被单冒号正则匹配）
+    processedText = processedText
+      .replace(/(\s|^)(::)(\w+)/g, '$1<span class="selector-pseudo">$2</span>$3');
+    
+    // 处理 ":" 符号（橙色）- 伪类选择器（后处理单冒号）
+    processedText = processedText
+      .replace(/(\s|^)(:)(\w+)/g, '$1<span class="selector-pseudo">$2</span>$3');
+    
+    return processedText;
+  }
+
+  // 新增：生成元素特征签名（不包含位置信息）
+  getElementSignature(tagName, className, id) {
+    return `${tagName}:${className || ''}:${id || ''}`;
+  }
+
+  setupRandomHtmlBtn() {
+    const btn = document.getElementById("randomHtmlBtn");
+    if (!btn) return;
+    btn.addEventListener("click", () => {
+      const html = this.generateRandomHtmlCode();
+      const pre = document.querySelector(".code-content pre.line-numbers");
+      const code = document.getElementById("htmlCode");
+      if (pre && code) {
+        code.textContent = html;
+        Prism.highlightElement(code);
+        this.originalHTML = html;
+        this.handleSelectorInput(); // 自动刷新高亮
+      }
+    });
+  }
+
+  generateRandomHtmlCode() {
+    // 随机生成一段包含多种选择器的HTML代码，行数35~45
+    const tags = ["div", "span", "ul", "li", "section", "article", "nav", "header", "footer", "main", "aside", "p", "h1", "h2", "h3", "a", "button", "input"];
+    const classes = ["box", "item", "highlight", "special", "active", "disabled", "container", "wrapper", "main", "sidebar", "title", "desc", "note", "btn", "link", "card", "row", "col"];
+    const ids = ["main", "sidebar", "footer", "header", "nav", "content", "section1", "section2", "item1", "item2", "unique", "special"];
+    const attrs = [
+      () => `type="button"`,
+      () => `href="#"`,
+      () => `placeholder="输入内容"`,
+      () => `disabled`,
+      () => `checked`,
+      () => `data-random="${Math.floor(Math.random()*100)}"`
+    ];
+    const textPool = ["你好世界", "Hello World", "测试文本", "随机内容", "示例", "内容", "按钮", "链接", "段落", "标题", "注释", "项目", "更多...", "选择器", "样式", "高亮", "演示", "行内元素", "块级元素", "嵌套", "组合", "ID", "Class"];
+
+    // 生成结构
+    let lines = [];
+    lines.push("<!DOCTYPE html>");
+    lines.push("<html lang=\"zh-CN\">\n  <head>\n    <title>随机HTML示例</title>\n  </head>\n  <body>");
+
+    // 随机生成若干块级结构
+    const blockCount = Math.floor(Math.random()*3)+2; // 2~4个主块
+    for(let b=0; b<blockCount; b++) {
+      const blockTag = this.pick(tags, ["section","article","div","main","aside","nav","header","footer"]);
+      const blockClassArr = this.pickSome(classes, 1, 2);
+      const blockClass = blockClassArr.length ? ` class="${blockClassArr.join(" ")}"` : "";
+      const blockId = Math.random()<0.3 ? ` id="${this.pick(ids)}"` : "";
+      const blockData = this.randomCustomAttrs();
+      lines.push(`    <${blockTag}${blockClass}${blockId}${blockData}>`);
+      
+      // 随机生成若干行内容
+      const rowCount = Math.floor(Math.random()*4)+2; // 2~5行
+      for(let r=0; r<rowCount; r++) {
+        // 随机选择内容类型
+        const t = Math.random();
+        if(t<0.2) {
+          // 列表
+          const ulClassArr = this.pickSome(classes,0,1);
+          const ulClass = ulClassArr.length ? ` class="${ulClassArr.join(" ")}"` : "";
+          const ulData = this.randomCustomAttrs();
+          lines.push(`      <ul${ulClass}${ulData}>`);
+          const liCount = Math.floor(Math.random()*3)+2;
+          for(let l=0;l<liCount;l++) {
+            const liClassArr = this.pickSome(classes,0,2);
+            const liClass = liClassArr.length ? ` class="${liClassArr.join(" ")}"` : "";
+            const liId = Math.random()<0.2 ? ` id="${this.pick(ids)}"` : "";
+            const liData = this.randomCustomAttrs();
+            lines.push(`        <li${liClass}${liId}${liData}>${this.pick(textPool)}</li>`);
+          }
+          lines.push("      </ul>");
+        } else if(t<0.4) {
+          // 段落/标题
+          const tag = this.pick(["p","h2","h3"]);
+          const clsArr = this.pickSome(classes,0,2);
+          const cls = clsArr.length ? ` class="${clsArr.join(" ")}"` : "";
+          const id = Math.random()<0.15 ? ` id="${this.pick(ids)}"` : "";
+          const data = this.randomCustomAttrs();
+          let inner = `${this.pick(textPool)}`;
+          if(Math.random()<0.3) {
+            // 内部span单独换行
+            const spanClass = this.pick(classes);
+            const spanData = this.randomCustomAttrs();
+            inner += `\n        <span class="${spanClass}"${spanData}>${this.pick(textPool)}</span>`;
+          }
+          // 如果内容包含换行符，需要特殊处理
+          if(inner.includes('\n')) {
+            // 分别添加开始标签、内容和结束标签
+            lines.push(`      <${tag}${cls}${id}${data}>`);
+            const contentLines = inner.split('\n');
+            contentLines.forEach(contentLine => {
+              if(contentLine.trim()) {
+                lines.push(`        ${contentLine.trim()}`);
+              }
+            });
+            lines.push(`      </${tag}>`);
+          } else {
+            lines.push(`      <${tag}${cls}${id}${data}>${inner}</${tag}>`);
+          }
+        } else if(t<0.6) {
+          // 按钮/链接
+          if(Math.random()<0.5) {
+            const btnClassArr = this.pickSome(classes,0,2);
+            const btnClass = btnClassArr.length ? ` class="${btnClassArr.join(" ")}"` : "";
+            const btnData = this.randomCustomAttrs();
+            lines.push(`      <button${btnClass} ${this.pick(attrs)()}${btnData}>${this.pick(textPool)}</button>`);
+          } else {
+            const aClassArr = this.pickSome(classes,0,2);
+            const aClass = aClassArr.length ? ` class="${aClassArr.join(" ")}"` : "";
+            const aData = this.randomCustomAttrs();
+            lines.push(`      <a${aClass} href="#"${aData}>${this.pick(textPool)}</a>`);
+          }
+        } else if(t<0.8) {
+          // 嵌套div/span
+          if(Math.random()<0.5) {
+            const divClassArr = this.pickSome(classes,1,2);
+            const divClass = divClassArr.length ? ` class="${divClassArr.join(" ")}"` : "";
+            const divData = this.randomCustomAttrs();
+            let inner = `${this.pick(textPool)}`;
+            if(Math.random()<0.4) {
+              // 内部span单独换行
+              const spanClass = this.pick(classes);
+              const spanData = this.randomCustomAttrs();
+              inner += `\n        <span class="${spanClass}"${spanData}>${this.pick(textPool)}</span>`;
+            }
+            // 如果内容包含换行符，需要特殊处理
+            if(inner.includes('\n')) {
+              // 分别添加开始标签、内容和结束标签
+              lines.push(`      <div${divClass}${divData}>`);
+              const contentLines = inner.split('\n');
+              contentLines.forEach(contentLine => {
+                if(contentLine.trim()) {
+                  lines.push(`        ${contentLine.trim()}`);
+                }
+              });
+              lines.push(`      </div>`);
+            } else {
+              lines.push(`      <div${divClass}${divData}>${inner}</div>`);
+            }
+          } else {
+            const spanClassArr = this.pickSome(classes,1,2);
+            const spanClass = spanClassArr.length ? ` class="${spanClassArr.join(" ")}"` : "";
+            const spanData = this.randomCustomAttrs();
+            lines.push(`      <span${spanClass}${spanData}>${this.pick(textPool)}</span>`);
+          }
+        } else {
+          // 输入框
+          const inputClassArr = this.pickSome(classes,0,2);
+          const inputClass = inputClassArr.length ? ` class="${inputClassArr.join(" ")}"` : "";
+          const inputData = this.randomCustomAttrs();
+          lines.push(`      <input${inputClass} ${this.pick(attrs)()}${inputData}/>`);
+        }
+      }
+      lines.push(`    </${blockTag}>`);
+    }
+    lines.push("  </body>\n</html>");
+    
+    // 限制行数
+    if(lines.length>45) lines = lines.slice(0,45);
+    if(lines.length<35) {
+      // 补充空行到35行
+      while(lines.length<35) lines.splice(lines.length-2,0,"      <div class=\"filler\"></div>");
+    }
+    
+    // 行长处理：如超80字符，将内部元素换行
+    lines = lines.flatMap(line => {
+      if(line.length<=80) return [line];
+      // 只对含有span、a、button、input等内部元素的行处理
+      if(/[ ]<(span|a|button|input)[ >]/.test(line)) {
+        // 分析行结构，确保开始标签和结束标签对齐
+        const processedLines = this.processLongLine(line);
+        return processedLines;
+      }
+      return [line];
+    });
+    return lines.join("\n");
+  }
+
+  processLongLine(line) {
+    // 处理超长行，确保标签对齐
+    const lines = [];
+    
+    // 匹配开始标签和结束标签
+    const tagMatch = line.match(/^(\s*<[^>]+>)(.*?)(<\/[^>]+>\s*)$/);
+    if (!tagMatch) {
+      // 如果没有匹配到开始和结束标签，使用原来的逻辑
+      return line.replace(/(>)(\s*<)(span|a|button|input)([\s>])/g, '$1\n        <$3$4')
+                 .replace(/(<\/span>|<\/a>|<\/button>)/g, '$1\n')
+                 .split(/\n/).map(l=>l.trimEnd());
+    }
+    
+    const [, startTag, content, endTag] = tagMatch;
+    const indent = startTag.match(/^(\s*)/)[1];
+    const baseIndent = indent.length;
+    
+    console.log('处理长行:', {
+      originalLine: line,
+      startTag: startTag,
+      content: content,
+      endTag: endTag,
+      baseIndent: baseIndent
+    });
+    
+    // 检查内容是否包含换行符（表示内部元素已经换行）
+    const hasInternalNewlines = content.includes('\n');
+    
+    if (hasInternalNewlines) {
+      // 如果内容已经包含换行符，说明内部元素已经换行
+      // 需要特殊处理，确保结束标签与开始标签对齐
+      console.log('检测到内容包含换行符，使用特殊处理逻辑');
+      
+      // 分割内容为行
+      const contentLines = content.split('\n');
+      
+      // 构建新的行结构
+      lines.push(startTag); // 开始标签单独一行
+      
+      // 处理每一行内容
+      contentLines.forEach((contentLine, index) => {
+        if (contentLine.trim()) {
+          // 计算当前行的缩进
+          const partIndent = ' '.repeat(baseIndent + 2);
+          const processedLine = partIndent + contentLine.trim();
+          lines.push(processedLine);
+          console.log(`内容行 ${index}: "${processedLine}"`);
+        }
+      });
+      
+      // 结束标签与开始标签对齐
+      const endTagIndent = ' '.repeat(baseIndent);
+      const trimmedEndTag = endTag.trim();
+      const processedEndTag = endTagIndent + trimmedEndTag;
+      lines.push(processedEndTag);
+      
+      console.log('最终结果（换行内容）:', {
+        endTagIndent: endTagIndent,
+        trimmedEndTag: trimmedEndTag,
+        processedEndTag: processedEndTag,
+        allLines: lines
+      });
+      
+      return lines;
+    } else {
+      // 内容不包含换行符，使用原来的逻辑
+      const contentParts = this.splitContentByElements(content);
+      
+      console.log('内容分割结果:', contentParts);
+      
+      if (contentParts.length === 1) {
+        // 只有一个内容部分，不需要换行
+        console.log('只有一个内容部分，不换行');
+        return [line];
+      }
+      
+      // 构建新的行结构
+      lines.push(startTag); // 开始标签单独一行
+      
+      // 处理内容部分
+      contentParts.forEach((part, index) => {
+        if (part.trim()) {
+          // 计算当前部分的缩进
+          const partIndent = ' '.repeat(baseIndent + 2);
+          const processedPart = partIndent + part.trim();
+          lines.push(processedPart);
+          console.log(`内容部分 ${index}: "${processedPart}"`);
+        }
+      });
+      
+      // 结束标签与开始标签对齐
+      const endTagIndent = ' '.repeat(baseIndent);
+      const trimmedEndTag = endTag.trim();
+      const processedEndTag = endTagIndent + trimmedEndTag;
+      lines.push(processedEndTag);
+      
+      console.log('最终结果（普通内容）:', {
+        endTagIndent: endTagIndent,
+        trimmedEndTag: trimmedEndTag,
+        processedEndTag: processedEndTag,
+        allLines: lines
+      });
+      
+      return lines;
+    }
+  }
+
+  splitContentByElements(content) {
+    // 将内容按内部元素分割，正确处理混合内容
+    const parts = [];
+    let currentPart = '';
+    let inTag = false;
+    let tagBuffer = '';
+    
+    for (let i = 0; i < content.length; i++) {
+      const char = content[i];
+      
+      if (char === '<') {
+        // 如果当前有文本内容，先保存
+        if (currentPart.trim()) {
+          parts.push(currentPart);
+          currentPart = '';
+        }
+        inTag = true;
+        tagBuffer = char;
+      } else if (char === '>') {
+        tagBuffer += char;
+        if (inTag) {
+          // 检查是否是结束标签
+          if (tagBuffer.includes('</')) {
+            // 结束标签，添加到当前部分并结束当前部分
+            currentPart += tagBuffer;
+            parts.push(currentPart);
+            currentPart = '';
+          } else {
+            // 开始标签，开始新部分
+            currentPart = tagBuffer;
+          }
+        }
+        inTag = false;
+        tagBuffer = '';
+      } else if (inTag) {
+        tagBuffer += char;
+      } else {
+        currentPart += char;
+      }
+    }
+    
+    // 添加剩余内容
+    if (currentPart.trim()) {
+      parts.push(currentPart);
+    }
+    
+    // 过滤空内容并合并相邻的文本部分
+    const filteredParts = parts.filter(part => part.trim());
+    const mergedParts = [];
+    let textBuffer = '';
+    
+    for (const part of filteredParts) {
+      if (part.startsWith('<') && part.endsWith('>')) {
+        // 这是一个标签，先保存之前的文本缓冲
+        if (textBuffer.trim()) {
+          mergedParts.push(textBuffer.trim());
+          textBuffer = '';
+        }
+        // 添加标签
+        mergedParts.push(part);
+      } else {
+        // 这是文本内容，累积到缓冲中
+        textBuffer += part;
+      }
+    }
+    
+    // 保存最后的文本缓冲
+    if (textBuffer.trim()) {
+      mergedParts.push(textBuffer.trim());
+    }
+    
+    return mergedParts;
+  }
+
+  randomCustomAttrs() {
+    // 随机生成1~2个自定义属性，支持中英文、非data-前缀
+    const n = Math.floor(Math.random()*2)+1;
+    let attrs = [];
+    
+    // 定义属性名和对应的值生成规则
+    const attrValueRules = {
+      "作者": () => this.pick(["张三", "李四", "王五", "赵六", "Alice", "Bob", "Charlie", "David"]),
+      "编号": () => this.pick(["ISBN-978-0-123456-78-9", "SN-2024-001", "ID-2024-03-15", "REF-2024-001"]),
+      "状态": () => this.pick(["active", "inactive", "pending", "completed", "draft", "published"]),
+      "类型": () => this.pick(["primary", "secondary", "success", "warning", "danger", "info"]),
+      "模式": () => this.pick(["light", "dark", "auto", "compact", "wide", "narrow"]),
+      "版本": () => this.pick(["v1.0", "v2.1", "beta", "alpha", "rc1", "stable"]),
+      "标签": () => this.pick(["重要", "紧急", "普通", "高亮", "默认", "特殊"]),
+      "来源": () => this.pick(["用户", "系统", "API", "数据库", "缓存", "外部"]),
+      "级别": () => this.pick(["low", "medium", "high", "critical", "info", "debug"]),
+      "分类": () => this.pick(["技术", "设计", "内容", "功能", "样式", "交互"]),
+      "主题": () => this.pick(["科技", "自然", "商务", "艺术", "简约", "复古"]),
+      "区域": () => this.pick(["header", "main", "sidebar", "footer", "nav", "content"]),
+      "角色": () => this.pick(["admin", "user", "guest", "moderator", "editor", "viewer"]),
+      "权限": () => this.pick(["read", "write", "delete", "admin", "public", "private"]),
+      "时间": () => this.pick(["2024-03-15", "2024-01-01", "2023-12-31", "2024-06-01"]),
+      "位置": () => this.pick(["top", "bottom", "left", "right", "center", "auto"]),
+      "大小": () => this.pick(["small", "medium", "large", "xl", "xs", "xxl"]),
+      "颜色": () => this.pick(["red", "blue", "green", "yellow", "purple", "orange"]),
+      "语言": () => this.pick(["zh-CN", "en-US", "ja-JP", "ko-KR", "fr-FR", "de-DE"]),
+      "设备": () => this.pick(["desktop", "mobile", "tablet", "tv", "watch", "car"])
+    };
+    
+    // 简化的属性名列表，避免过长
+    const simpleNames = ["作者", "编号", "状态", "类型", "模式", "版本", "标签", "来源", "级别", "分类", "主题", "区域", "角色", "权限", "时间", "位置", "大小", "颜色", "语言", "设备"];
+    
+    for(let i=0;i<n;i++) {
+      let name = this.pick(simpleNames);
+      
+      // 随机决定是否加前缀，但确保只有一个"-"
+      if(Math.random()<0.3) {
+        const prefixes = ["data", "x", "my", "is", "has", "can"];
+        name = this.pick(prefixes) + "-" + name;
+      } else if(Math.random()<0.2) {
+        const cnPrefixes = ["自定义", "属性", "扩展"];
+        name = this.pick(cnPrefixes) + "-" + name;
+      }
+      
+      // 根据属性名生成合适的值
+      let val;
+      if(attrValueRules[name.split("-").pop()]) {
+        val = attrValueRules[name.split("-").pop()]();
+      } else {
+        // 默认值生成
+        val = Math.random()<0.5 ? 
+          this.pick(["true", "false", "yes", "no", "on", "off"]) : 
+          Math.floor(Math.random()*100);
+      }
+      
+      attrs.push(` ${name}="${val}"`);
+    }
+    return attrs.join("");
+  }
+
+  pick(arr, restrict) {
+    if(restrict) arr = arr.filter(x=>restrict.includes(x));
+    return arr[Math.floor(Math.random()*arr.length)];
+  }
+  pickSome(arr, min=1, max=2) {
+    const n = Math.floor(Math.random()*(max-min+1))+min;
+    const copy = arr.slice();
+    const res = [];
+    for(let i=0;i<n&&copy.length;i++) {
+      const idx = Math.floor(Math.random()*copy.length);
+      res.push(copy[idx]);
+      copy.splice(idx,1);
+    }
+    return res;
   }
 }
 

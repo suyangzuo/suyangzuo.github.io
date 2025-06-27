@@ -72,6 +72,7 @@
 
 .code-controls {
   display: flex;
+  align-items: center;
   gap: 8px;
 }
 
@@ -365,7 +366,7 @@ pre[class*="language-"] {
   padding: 8px 12px;
   border-radius: 4px;
   font-size: 12px;
-  margin-top: 10px;
+  margin-top: 20px;
   z-index: 10;
 }
 
@@ -379,6 +380,7 @@ pre[class*="language-"] {
   background: rgba(255, 193, 7, 0.1);
   border: 1px solid #ffc107;
   color: #ffc107;
+  visibility: hidden; /* 默认隐藏 */
 }
 
 .clear-btn {
@@ -474,8 +476,41 @@ pre[class*="language-"] {
 
 /* 并集选择器中的逗号样式 */
 .help-content .union-comma {
-  color: #ff6b6b;
+  color: #eed462;
   font-weight: normal;
+}
+
+/* 选择器符号颜色样式 */
+/* 类选择器、ID选择器、交集选择器、并集选择器中的.和#符号用紫色 */
+.help-content .selector-class-id {
+  color: #ff7474;
+  font-weight: bold;
+}
+
+/* 子元素选择器、接续兄弟选择器、后续兄弟选择器中的符号用绿色 */
+.help-content .selector-child,
+.help-content .selector-adjacent,
+.help-content .selector-sibling {
+  color: #4caf50;
+  font-weight: bold;
+}
+
+/* 伪类选择器、伪元素选择器中的冒号用橙色 */
+.help-content .selector-pseudo {
+  color: #ff8c00;
+  font-weight: bold;
+}
+
+/* 属性选择器中的[和]符号用浅蓝色 */
+.help-content .selector-attribute {
+  color: #64b5f6;
+  font-weight: bold;
+}
+
+/* 属性选择器中的=和*=符号用浅绿色 */
+.help-content .selector-operator {
+  color: #81c784;
+  font-weight: bold;
 }
 
 /* 响应式设计 */
@@ -535,4 +570,26 @@ pre[class*="language-"] {
 /* 确保pre元素有相对定位 */
 .code-content pre {
   position: relative;
+}
+
+.random-html-btn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: #222c;
+  border-radius: 50%;
+  margin-right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffd700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+.random-html-btn:hover {
+  background: #ffd700;
+  color: #222;
+  box-shadow: 0 4px 16px rgba(255, 215, 0, 0.15);
 }
