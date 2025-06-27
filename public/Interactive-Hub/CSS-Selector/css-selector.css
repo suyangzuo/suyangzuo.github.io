@@ -298,7 +298,7 @@ pre[class*="language-"] {
 
 .selector-input-container,
 .help-container {
-  background: #def2;
+  background: #def1;
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -411,14 +411,26 @@ pre[class*="language-"] {
 .selector-info {
   display: flex;
   justify-content: space-between;
-  font-size: 12px;
+  font-size: 14px;
   color: #aaa;
 }
 
 .selector-info span {
-  font-size: 0.9em;
   color: var(--text-secondary);
   margin-right: 15px;
+}
+
+/* 匹配数量数字样式 */
+.selector-info .match-count-number {
+  color: #4caf50; /* 绿色 */
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+/* 选择器类型文本样式 */
+.selector-info .selector-type-text {
+  color: #2196f3; /* 蓝色 */
+  font-weight: bold;
 }
 
 /* 帮助内容 */
@@ -446,7 +458,7 @@ pre[class*="language-"] {
   color: var(--code-keyword); /* 默认颜色（其他字） */
   font-weight: 600;
   display: inline-block;
-  width: 105px; /* 固定宽度，以最大的strong元素为准 */
+  width: 120px; /* 固定宽度，以最大的strong元素为准 */
   text-align: right; /* 文本右对齐 */
   margin-right: 8px; /* 与后面的文本保持间距 */
 }
@@ -497,7 +509,13 @@ pre[class*="language-"] {
 
 /* 伪类选择器、伪元素选择器中的冒号用橙色 */
 .help-content .selector-pseudo {
-  color: #ff8c00;
+  color: gold;
+  font-weight: bold;
+}
+
+/* 函数式伪类选择器的圆括号 */
+.help-content .selector-function {
+  color: #a9e363;
   font-weight: bold;
 }
 

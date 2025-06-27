@@ -107,8 +107,8 @@
               </div>
             </div>
             <div class="selector-info">
-              <span id="matchCount">匹配数量: 0</span>
-              <span id="selectorType">选择器类型: -</span>
+              <span id="matchCount">匹配数量: <span class="match-count-number">0</span></span>
+              <span id="selectorType">选择器类型: <span class="selector-type-text">-</span></span>
             </div>
             <div id="noMatchesMessage" class="no-matches-message">没有找到匹配的元素</div>
           </div>
@@ -116,26 +116,61 @@
           <div class="help-container">
             <h3>选择器说明</h3>
             <div class="help-content">
+              <p><strong>通用选择器:</strong> *</p>
               <p>
                 <strong>元素选择器:</strong> h1 <span class="separator">|</span> p <span class="separator">|</span> div
               </p>
-              <p><strong>类选择器:</strong> <span class="selector-class-id">.</span>title <span class="separator">|</span> <span class="selector-class-id">.</span>paragraph</p>
-              <p><strong>ID选择器:</strong> <span class="selector-class-id">#</span>main-header</p>
-              <p><strong>后代选择器:</strong> nav a <span class="separator">|</span> article p</p>
-              <p><strong>子元素选择器:</strong> article <span class="selector-child">></span> h2 </p>
-              <p><strong>接续兄弟选择器:</strong> p <span class="selector-adjacent">+</span> div </p>
-              <p><strong>后续兄弟选择器:</strong> p <span class="selector-sibling">~</span> div </p>
-              <p><strong>伪类选择器:</strong> <span class="selector-pseudo">:</span>first-child <span class="separator">|</span> <span class="selector-pseudo">:</span>hover</p>
-              <p><strong>伪元素选择器:</strong> <span class="selector-pseudo">::</span>before <span class="separator">|</span> <span class="selector-pseudo">::</span>after</p>
               <p>
-                <strong>属性选择器:</strong> <span class="selector-attribute">[</span>type<span class="selector-operator">=</span>"text"<span class="selector-attribute">]</span>
-                <span class="separator">|</span> <span class="selector-attribute">[</span>class<span class="selector-operator">*=</span>"btn"<span class="selector-attribute">]</span>
+                <strong>类选择器:</strong> <span class="selector-class-id">.</span>title
+                <span class="separator">|</span> <span class="selector-class-id">.</span>paragraph
               </p>
-              <p><strong>交集选择器:</strong> div<span class="selector-class-id">.</span>box <span class="separator">|</span> <span class="selector-class-id">.</span>highlight<span class="selector-class-id">#</span>code</p>
+              <p><strong>ID选择器:</strong> <span class="selector-class-id">#</span>main-header</p>
+              <p><strong>后代选择器:</strong> div p <span class="separator">|</span> article h2</p>
+              <p><strong>子元素选择器:</strong> div <span class="selector-child">></span> p</p>
+              <p><strong>接续兄弟选择器:</strong> div <span class="selector-adjacent">+</span> p</p>
+              <p><strong>后续兄弟选择器:</strong> div <span class="selector-sibling">~</span> p</p>
               <p>
-                <strong>并集选择器:</strong> h1<span class="union-comma">,</span> <span class="selector-class-id">.</span>test<span class="union-comma"
-                  >,</span
+                <strong>伪类选择器:</strong> <span class="selector-pseudo">:</span>first-child
+                <span class="separator">|</span> <span class="selector-pseudo">:</span>hover
+              </p>
+              <p>
+                <strong>函数式伪类选择器:</strong> <span class="selector-pseudo">:</span>where<span
+                  class="selector-function"
+                  >()</span
                 >
+                <span class="separator">|</span> <span class="selector-pseudo">:</span>has<span
+                  class="selector-function"
+                  >()</span
+                >
+                <span class="separator">|</span> <span class="selector-pseudo">:</span>not<span
+                  class="selector-function"
+                  >()</span
+                >
+              </p>
+              <p>
+                <strong>伪元素选择器:</strong> <span class="selector-pseudo">::</span>before
+                <span class="separator">|</span> <span class="selector-pseudo">::</span>after
+              </p>
+              <p>
+                <strong>属性选择器:</strong> <span class="selector-attribute">[</span>type<span
+                  class="selector-operator"
+                  >=</span
+                >"text"<span class="selector-attribute">]</span> <span class="separator">|</span>
+                <span class="selector-attribute">[</span>class<span class="selector-operator">*=</span>"btn"<span
+                  class="selector-attribute"
+                  >]</span
+                >
+              </p>
+              <p>
+                <strong>交集选择器:</strong> div<span class="selector-class-id">.</span>box
+                <span class="separator">|</span> <span class="selector-class-id">.</span>highlight<span
+                  class="selector-class-id"
+                  >#</span
+                >code
+              </p>
+              <p>
+                <strong>并集选择器:</strong> h1<span class="union-comma">,</span>
+                <span class="selector-class-id">.</span>test<span class="union-comma">,</span>
                 <span class="selector-class-id">#</span>count
               </p>
             </div>
