@@ -1,15 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>长度</title>
-    <link
-      rel="icon"
-      href="/Images/Interactive-Hub/HQ/长度.png"
-      type="image/x-icon"
-    />
+    <link rel="icon" href="/Images/Interactive-Hub/HQ/长度.png" type="image/x-icon" />
     <link rel="stylesheet" href="/Styles/common.css" />
     <link rel="stylesheet" href="/Styles/top-banner-common.css" />
     <link rel="stylesheet" href="../control.css" />
@@ -22,22 +18,103 @@
   </head>
   <body>
     <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
-    <script
-      src="../../Scripts/html-include.js"
-      target="../../top-banner.html"
-      position="afterbegin"
-    ></script>
+    <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
     <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
 
     <section class="长度总区 总区">
-      <script
-        src="../../Scripts/html-include.js"
-        target="../control.html"
-        position="afterbegin"
-      ></script>
+      <script src="../../Scripts/html-include.js" target="../control.html" position="afterbegin"></script>
       <p class="交互标题">长度</p>
-      <figure class="展示区"></figure>
-      <div class="控制区"></div>
+      <figure class="展示区">
+        <div class="canvas-container">
+          <canvas id="lengthCanvas" width="800" height="400"></canvas>
+          <div class="length-info horizontal">
+            <span class="length-value">100</span><span class="length-unit">px</span>
+          </div>
+          <div class="unit-info horizontal">
+            <span class="unit-details">像素单位</span>
+          </div>
+        </div>
+      </figure>
+      <div class="控制区">
+        <div class="单位选择区">
+          <label class="单位选项 selected" for="unit-px">
+            <input type="radio" id="unit-px" name="unit" value="px" checked />
+            <span class="单位标签">px</span>
+          </label>
+          <label class="单位选项" for="unit-rem">
+            <input type="radio" id="unit-rem" name="unit" value="rem" />
+            <span class="单位标签">rem</span>
+          </label>
+          <label class="单位选项" for="unit-em">
+            <input type="radio" id="unit-em" name="unit" value="em" />
+            <span class="单位标签">em</span>
+          </label>
+          <label class="单位选项" for="unit-vw">
+            <input type="radio" id="unit-vw" name="unit" value="vw" />
+            <span class="单位标签">vw</span>
+          </label>
+          <label class="单位选项" for="unit-vh">
+            <input type="radio" id="unit-vh" name="unit" value="vh" />
+            <span class="单位标签">vh</span>
+          </label>
+          <label class="单位选项" for="unit-ch">
+            <input type="radio" id="unit-ch" name="unit" value="ch" />
+            <span class="单位标签">ch</span>
+          </label>
+        </div>
+
+        <div class="数值控制区">
+          <div class="数值滑块组">
+            <span class="数值标签">数值:</span>
+            <input type="range" class="数值滑块" id="lengthSlider" min="1" max="500" value="100" step="1" />
+            <span class="数值显示" id="lengthValue">100</span>
+          </div>
+          
+          <!-- 根元素font-size控制区，仅在rem单位时显示 -->
+          <div class="根元素控制区" id="rootFontSizeControl">
+            <div class="根元素标签">
+              <span class="根元素文本">根元素</span><span class="font-size文本">font-size</span>:
+            </div>
+            <div class="根元素数值组">
+              <button class="根元素按钮 减少按钮" id="decreaseRootFont">-</button>
+              <input type="number" class="根元素数值框" id="rootFontSizeInput" value="16" min="8" max="32" step="1" />
+              <button class="根元素按钮 增加按钮" id="increaseRootFont">+</button>
+              <span class="根元素单位">px</span>
+            </div>
+            <button class="根元素重置按钮" id="resetRootFont">重置</button>
+          </div>
+        </div>
+
+        <div class="单位说明区">
+          <div class="单位说明标题">长度单位说明</div>
+          <div class="单位说明内容" id="unitDescription">
+            <div class="unit-item">
+              <strong><span class="unit-en">px</span> <span class="unit-cn">像素：</span></strong>
+              <span class="unit-description">绝对长度单位，1px 等于屏幕上的一个像素点，是最常用的CSS长度单位，适合精确控制元素尺寸。</span>
+            </div>
+            <div class="unit-item">
+              <strong><span class="unit-en">rem</span> <span class="unit-cn">根元素字体大小：</span></strong>
+              <span class="unit-description">相对长度单位，相对于根元素 html 的字体大小。1rem = 根元素字体大小，适合响应式设计。</span>
+            </div>
+            <div class="unit-item">
+              <strong><span class="unit-en">em</span> <span class="unit-cn">父元素字体大小：</span></strong>
+              <span class="unit-description">相对长度单位，相对于父元素的字体大小。1em = 父元素字体大小，适合文本相关的尺寸设置。</span>
+            </div>
+            <div class="unit-item">
+              <strong><span class="unit-en">vw</span> <span class="unit-cn">视口宽度：</span></strong>
+              <span class="unit-description">相对长度单位，相对于视口宽度的百分比。1vw = 视口宽度的1%，适合响应式布局。</span>
+            </div>
+            <div class="unit-item">
+              <strong><span class="unit-en">vh</span> <span class="unit-cn">视口高度：</span></strong>
+              <span class="unit-description">相对长度单位，相对于视口高度的百分比。1vh = 视口高度的1%，适合全屏布局。</span>
+            </div>
+            <div class="unit-item">
+              <strong><span class="unit-en">ch</span> <span class="unit-cn">字符宽度：</span></strong>
+              <span class="unit-description">相对长度单位，等于数字 0 的宽度。适合文本相关的布局，如设置容器宽度为字符数的倍数。</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   </body>
 </html>

@@ -1,6 +1,616 @@
 :root {
-  --进度条颜色-已填充: rgb(41, 126, 78);
+  --进度条颜色-已填充: rgb(65, 165, 109);
   --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
   --拇指宽度: 16px;
+
+  /* 长度单位相关变量 */
+  --线条颜色: #4caf50;
+  --线条宽度: 4px;
+  --拖拽点颜色: #2196f3;
+  --拖拽点悬停颜色: #1976d2;
+  --拖拽点大小: 12px;
+  --拖拽点悬停大小: 16px;
+  --文字颜色: #e0e0e0;
+  --背景色: #1e1e1e;
+  --控制区背景: rgba(30, 30, 30, 0.95);
+  --选中单位颜色: #4caf50;
+  --未选中单位颜色: #888;
+  --单位悬停颜色: #2196f3;
+
+  /* 深色模式颜色 */
+  --深色边框: #444;
+  --深色卡片背景: #2d2d2d;
+  --深色文本: #e0e0e0;
+  --深色次要文本: #aaa;
+  --深色悬停背景: #3a3a3a;
 }
 
+/* 主容器布局 */
+.长度总区 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* 展示区样式 */
+.展示区 {
+  width: 100vw;
+  height: 100vh;
+  /* background: var(--背景色); */
+  border-radius: 0;
+  border: none;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: none;
+  margin: 0 -20px;
+}
+
+/* Canvas容器 */
+.canvas-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+#lengthCanvas {
+  display: block;
+  background: transparent;
+  cursor: crosshair;
+  max-width: 100%;
+  max-height: 100%;
+  z-index: 1;
+}
+
+/* 长度信息显示 */
+.length-info {
+  position: absolute;
+  background: rgba(45, 45, 45, 0.95);
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--深色边框);
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 14px;
+  color: var(--深色文本);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  z-index: 9998;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+}
+
+.length-info.horizontal {
+  top: -40px;
+  left: 50%;
+}
+
+.length-info.vertical {
+  left: -120px;
+  top: 50%;
+}
+
+/* 单位信息显示 */
+.unit-info {
+  position: absolute;
+  background: rgba(45, 45, 45, 0.95);
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--深色边框);
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 12px;
+  color: var(--深色文本);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  z-index: 9998;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+}
+
+.unit-info.horizontal {
+  top: -25px;
+  left: 50%;
+}
+
+.unit-info.vertical {
+  left: -80px;
+  top: 50%;
+}
+
+/* 控制区样式 */
+.控制区 {
+  background: var(--控制区背景);
+  border-radius: 12px;
+  border: 2px solid var(--深色边框);
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000;
+  transition: opacity 0.3s ease;
+}
+
+/* 拖拽时控制区的透明度 */
+.控制区.dragging {
+  opacity: 0.25;
+}
+
+/* 单位选择区域 */
+.单位选择区 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.单位选项 {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--深色卡片背景);
+  border: 2px solid var(--深色边框);
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.单位选项:hover {
+  border-color: var(--单位悬停颜色);
+  background: var(--深色悬停背景);
+}
+
+.单位选项.selected {
+  border-color: var(--选中单位颜色);
+  background: rgba(76, 175, 80, 0.2);
+  color: var(--选中单位颜色);
+}
+
+.单位选项 input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.单位标签 {
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--深色文本);
+}
+
+.单位选项.selected .单位标签 {
+  color: var(--选中单位颜色);
+}
+
+/* 数值控制区域 */
+.数值控制区 {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.数值滑块组 {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 10px;
+}
+
+.数值标签 {
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 14px;
+  color: var(--深色文本);
+  min-width: 40px;
+  text-align: right;
+}
+
+.数值滑块 {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--进度条颜色-未填充);
+  outline: none;
+  accent-color: var(--进度条颜色-已填充);
+}
+
+.数值滑块::-webkit-slider-thumb {
+  scale: 1.25;
+}
+
+.数值显示 {
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 14px;
+  color: var(--进度条颜色-已填充);
+  font-weight: 500;
+  min-width: 32px;
+  text-align: left;
+}
+
+/* 单位说明区域 */
+.单位说明区 {
+  margin-top: 20px;
+  padding: 15px;
+  background: var(--深色卡片背景);
+  border-left: 4px solid var(--选中单位颜色);
+  overflow-y: auto;
+  min-width: 600px; /* 确保有足够的宽度 */
+}
+
+.单位说明标题 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--深色文本);
+  margin-bottom: 12px;
+  padding-left: 5px;
+  color: white;
+}
+
+.单位说明内容 {
+  font-size: 14px;
+  color: var(--深色次要文本);
+  line-height: 1.6;
+  width: 1200px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.unit-item {
+  display: flex;
+  flex-direction: column;
+  width: calc(50% - 5px);
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 3px solid transparent;
+  transition: all 0.3s ease;
+  font-family: "JetBrains Mono", Consolas, sans-serif;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+.unit-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-left-color: var(--选中单位颜色);
+}
+
+.unit-item.selected {
+  background: rgba(76, 175, 80, 0.25);
+  border-left-color: var(--选中单位颜色);
+}
+
+.unit-item strong {
+  color: var(--深色文本);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.unit-item .unit-description {
+  text-wrap: nowrap;
+  color: var(--深色次要文本);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.unit-en {
+  font-family: "JetBrains Mono", Consolas, monospace;
+  color: var(--选中单位颜色);
+  font-weight: 600;
+  font-size: 15px;
+  margin-right: 5px;
+  text-align: right;
+}
+
+.unit-cn {
+  color: var(--深色文本);
+  font-weight: 500;
+}
+
+.unit-item:last-child {
+  margin-bottom: 0;
+}
+
+.单位说明代码 {
+  font-family: "JetBrains Mono", Consolas, monospace;
+  background: #3a3a3a;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #e0e0e0;
+}
+
+/* 滚动条样式 */
+.单位说明区::-webkit-scrollbar {
+  width: 8px;
+}
+
+.单位说明区::-webkit-scrollbar-track {
+  background: var(--深色卡片背景);
+  border-radius: 4px;
+}
+
+.单位说明区::-webkit-scrollbar-thumb {
+  background: var(--深色边框);
+  border-radius: 4px;
+}
+
+.单位说明区::-webkit-scrollbar-thumb:hover {
+  background: var(--未选中单位颜色);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .长度总区 {
+    gap: 20px;
+    padding: 0 15px;
+  }
+
+  .展示区 {
+    height: 100vh;
+  }
+
+  .控制区 {
+    padding: 15px;
+    bottom: 10px;
+    max-width: 95%;
+  }
+
+  .单位选择区 {
+    gap: 8px;
+  }
+
+  .单位选项 {
+    padding: 6px 12px;
+  }
+
+  .数值滑块组 {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .数值标签,
+  .数值显示 {
+    text-align: center;
+  }
+
+  .length-info.vertical {
+    left: -100px;
+  }
+
+  .unit-info.vertical {
+    left: -70px;
+  }
+
+  /* 响应式单位说明区域 */
+  .单位说明区 {
+    min-width: auto;
+    max-width: 100%;
+  }
+
+  .unit-item {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .长度总区 {
+    padding: 0 10px;
+  }
+
+  .展示区 {
+    height: 100vh;
+  }
+
+  .控制区 {
+    padding: 10px;
+    bottom: 5px;
+  }
+
+  .单位选择区 {
+    gap: 5px;
+  }
+
+  .单位选项 {
+    padding: 5px 10px;
+  }
+
+  .单位标签 {
+    font-size: 12px;
+  }
+
+  .length-info.vertical {
+    left: -80px;
+    font-size: 12px;
+  }
+
+  .unit-info.vertical {
+    left: -60px;
+    font-size: 10px;
+  }
+
+  /* 响应式单位说明区域 */
+  .单位说明区 {
+    min-width: auto;
+    padding: 10px;
+  }
+
+  .unit-item {
+    width: 100%;
+    padding: 6px;
+  }
+
+  .unit-item .unit-description {
+    font-size: 12px;
+  }
+}
+
+/* 交互标题样式 */
+.交互标题 {
+  transition: opacity 0.3s ease;
+}
+
+/* 拖拽时交互标题的透明度 */
+.交互标题.dragging {
+  opacity: 0.25;
+}
+
+/* 根元素font-size控制区样式 */
+.根元素控制区 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+  background: var(--深色卡片背景);
+  border: 2px solid var(--深色边框);
+  border-radius: 8px;
+  transition: all 250ms ease-out;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  margin-top: 0;
+  padding: 15px;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  height: 0;
+}
+
+.根元素控制区.show {
+  opacity: 1;
+  pointer-events: auto;
+  height: 135px;
+}
+
+.根元素标签 {
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 14px;
+  color: var(--深色文本);
+  font-weight: 500;
+}
+
+.根元素文本 {
+  color: var(--深色文本);
+  margin-right: 2px;
+}
+
+.font-size文本 {
+  color: var(--选中单位颜色);
+  font-weight: 600;
+}
+
+.根元素数值组 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.根元素按钮 {
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--深色边框);
+  background: var(--深色卡片背景);
+  color: var(--深色文本);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.根元素按钮:hover {
+  border-color: var(--单位悬停颜色);
+  background: var(--深色悬停背景);
+  color: var(--单位悬停颜色);
+}
+
+.根元素按钮:active {
+  transform: scale(0.95);
+}
+
+.根元素按钮.减少按钮 {
+  color: #ff6b6b;
+}
+
+.根元素按钮.增加按钮 {
+  color: #4ecdc4;
+}
+
+.根元素数值框 {
+  width: 60px;
+  height: 32px;
+  border: 2px solid var(--深色边框);
+  background: var(--深色卡片背景);
+  color: var(--深色文本);
+  border-radius: 6px;
+  text-align: center;
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.根元素数值框:focus {
+  border-color: var(--选中单位颜色);
+}
+
+/* 去掉原生增减按钮 */
+.根元素数值框::-webkit-outer-spin-button,
+.根元素数值框::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.根元素数值框[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.根元素单位 {
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 14px;
+  color: var(--深色次要文本);
+  font-weight: 500;
+}
+
+.根元素重置按钮 {
+  margin-top: 5px;
+  padding: 6px 12px;
+  border: 2px solid var(--深色边框);
+  background: var(--深色卡片背景);
+  color: var(--深色文本);
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.根元素重置按钮:hover {
+  border-color: var(--单位悬停颜色);
+  background: var(--深色悬停背景);
+  color: var(--单位悬停颜色);
+}
+
+.根元素重置按钮:active {
+  transform: scale(0.95);
+}
