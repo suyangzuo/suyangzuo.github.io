@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>长度</title>
     <link rel="icon" href="/Images/Interactive-Hub/HQ/长度.png" type="image/x-icon" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Ubuntu+Mono&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="/Styles/common.css" />
     <link rel="stylesheet" href="/Styles/top-banner-common.css" />
     <link rel="stylesheet" href="../control.css" />
@@ -66,10 +70,19 @@
         <div class="数值控制区">
           <div class="数值滑块组">
             <span class="数值标签">数值:</span>
-            <input type="range" class="数值滑块" id="lengthSlider" min="1" max="500" value="100" step="1" />
+            <input
+              type="range"
+              class="数值滑块"
+              id="lengthSlider"
+              min="1"
+              max="500"
+              value="100"
+              step="1"
+              list="px-datalist"
+            />
             <span class="数值显示" id="lengthValue">100</span>
           </div>
-          
+
           <!-- 根元素font-size控制区，仅在rem单位时显示 -->
           <div class="根元素控制区" id="rootFontSizeControl">
             <div class="根元素标签">
@@ -85,32 +98,107 @@
           </div>
         </div>
 
+        <!-- 不同单位的datalist，用于滑块的停顿感 -->
+        <datalist id="px-datalist" style="display: none">
+          <option value="100"></option>
+          <option value="200"></option>
+          <option value="300"></option>
+          <option value="400"></option>
+          <option value="500"></option>
+          <option value="600"></option>
+          <option value="700"></option>
+          <option value="800"></option>
+          <option value="900"></option>
+        </datalist>
+
+        <datalist id="rem-datalist" style="display: none">
+          <option value="10"></option>
+          <option value="20"></option>
+          <option value="30"></option>
+          <option value="40"></option>
+        </datalist>
+
+        <datalist id="em-datalist" style="display: none">
+          <option value="10"></option>
+          <option value="20"></option>
+          <option value="30"></option>
+          <option value="40"></option>
+        </datalist>
+
+        <datalist id="vw-datalist" style="display: none">
+          <option value="10"></option>
+          <option value="20"></option>
+          <option value="30"></option>
+          <option value="40"></option>
+          <option value="50"></option>
+          <option value="60"></option>
+          <option value="70"></option>
+          <option value="80"></option>
+          <option value="90"></option>
+        </datalist>
+
+        <datalist id="vh-datalist" style="display: none">
+          <option value="10"></option>
+          <option value="20"></option>
+          <option value="30"></option>
+          <option value="40"></option>
+          <option value="50"></option>
+          <option value="60"></option>
+          <option value="70"></option>
+          <option value="80"></option>
+          <option value="90"></option>
+        </datalist>
+
+        <datalist id="ch-datalist" style="display: none">
+          <option value="10"></option>
+          <option value="20"></option>
+          <option value="30"></option>
+          <option value="40"></option>
+          <option value="50"></option>
+          <option value="60"></option>
+          <option value="70"></option>
+          <option value="80"></option>
+          <option value="90"></option>
+        </datalist>
+
         <div class="单位说明区">
           <div class="单位说明标题">长度单位说明</div>
           <div class="单位说明内容" id="unitDescription">
             <div class="unit-item">
               <strong><span class="unit-en">px</span> <span class="unit-cn">像素：</span></strong>
-              <span class="unit-description">绝对长度单位，1px 等于屏幕上的一个像素点，是最常用的CSS长度单位，适合精确控制元素尺寸。</span>
+              <span class="unit-description"
+                >绝对长度单位，1px 等于屏幕上的一个像素点，是最常用的CSS长度单位，适合精确控制元素尺寸。</span
+              >
             </div>
             <div class="unit-item">
               <strong><span class="unit-en">rem</span> <span class="unit-cn">根元素字体大小：</span></strong>
-              <span class="unit-description">相对长度单位，相对于根元素 html 的字体大小。1rem = 根元素字体大小，适合响应式设计。</span>
+              <span class="unit-description"
+                >相对长度单位，相对于根元素 html 的字体大小。1rem = 根元素字体大小，适合响应式设计。</span
+              >
             </div>
             <div class="unit-item">
               <strong><span class="unit-en">em</span> <span class="unit-cn">父元素字体大小：</span></strong>
-              <span class="unit-description">相对长度单位，相对于父元素的字体大小。1em = 父元素字体大小，适合文本相关的尺寸设置。</span>
+              <span class="unit-description"
+                >相对长度单位，相对于父元素的字体大小。1em = 父元素字体大小，适合文本相关的尺寸设置。</span
+              >
             </div>
             <div class="unit-item">
               <strong><span class="unit-en">vw</span> <span class="unit-cn">视口宽度：</span></strong>
-              <span class="unit-description">相对长度单位，相对于视口宽度的百分比。1vw = 视口宽度的1%，适合响应式布局。</span>
+              <span class="unit-description"
+                >相对长度单位，相对于视口宽度的百分比。1vw = 视口宽度的1%，适合响应式布局。</span
+              >
             </div>
             <div class="unit-item">
               <strong><span class="unit-en">vh</span> <span class="unit-cn">视口高度：</span></strong>
-              <span class="unit-description">相对长度单位，相对于视口高度的百分比。1vh = 视口高度的1%，适合全屏布局。</span>
+              <span class="unit-description"
+                >相对长度单位，相对于视口高度的百分比。1vh = 视口高度的1%，适合全屏布局。</span
+              >
             </div>
             <div class="unit-item">
               <strong><span class="unit-en">ch</span> <span class="unit-cn">字符宽度：</span></strong>
-              <span class="unit-description">相对长度单位，等于数字 0 的宽度。适合文本相关的布局，如设置容器宽度为字符数的倍数。</span>
+              <span class="unit-description"
+                >相对长度单位，等于数字 0 的宽度。适合文本相关的布局，如设置容器宽度为字符数的倍数。</span
+              >
             </div>
           </div>
         </div>

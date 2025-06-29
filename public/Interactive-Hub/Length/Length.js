@@ -138,6 +138,11 @@ class LengthVisualizer {
       this.lineStartY = 0;
       this.lineEndX = this.lineStartX;
       this.lineEndY = this.getPixelValue();
+      
+      // 立即检查与交互标题的重叠状态
+      requestAnimationFrame(() => {
+        this.checkTitleOverlap();
+      });
     } else if (["px", "rem", "em", "ch"].includes(this.currentUnit)) {
       // px、rem、em、ch单位：居中显示
       const maxPixelValue = this.getMaxPixelValue();
@@ -166,7 +171,17 @@ class LengthVisualizer {
         
         this.updateUnitSelection();
         this.updateSliderRange();
-        this.checkTitleOverlap(); // 检查与交互标题的重叠
+        
+        // 如果是vh单位，立即检查与交互标题的重叠
+        if (newUnit === "vh") {
+          // 延迟一帧确保DOM更新完成后再检查重叠
+          requestAnimationFrame(() => {
+            this.checkTitleOverlap();
+          });
+        } else {
+          this.checkTitleOverlap(); // 检查与交互标题的重叠
+        }
+        
         this.draw();
       });
     });
@@ -232,19 +247,32 @@ class LengthVisualizer {
     window.addEventListener("resize", () => {
       setTimeout(() => {
         this.setupCanvas();
-        // 对于vw、vh、px、rem、em、ch单位，需要重新计算线条位置
-        if (
-          this.currentUnit === "vw" ||
-          this.currentUnit === "vh" ||
-          ["px", "rem", "em", "ch"].includes(this.currentUnit)
-        ) {
+        
+        // 对于vw和vh单位，保持百分比值不变，只更新线条的实际像素长度
+        if (this.currentUnit === "vw" || this.currentUnit === "vh") {
+          // 保持currentValue（百分比值）不变，只更新线条位置
+          if (!this.isAnimating) {
+            this.updateLinePosition();
+          }
+        } else if (["px", "rem", "em", "ch"].includes(this.currentUnit)) {
+          // 对于其他单位，需要重新计算线条位置
           if (!this.isAnimating) {
             this.updateLinePosition();
           }
         }
+        
         // 确保z-index设置正确
         this.updateUnitSelection();
-        this.checkTitleOverlap(); // 检查与交互标题的重叠
+        
+        // 如果是vh单位，立即检查与交互标题的重叠
+        if (this.currentUnit === "vh") {
+          requestAnimationFrame(() => {
+            this.checkTitleOverlap();
+          });
+        } else {
+          this.checkTitleOverlap(); // 检查与交互标题的重叠
+        }
+        
         this.draw();
       }, 100);
     });
@@ -317,6 +345,11 @@ class LengthVisualizer {
       // vh单位：Canvas在顶栏上方，但在后退区、重置区、控制区下方
       canvas.style.zIndex = "9999";
       canvasContainer.style.zIndex = "9999";
+      
+      // 立即检查与交互标题的重叠状态
+      requestAnimationFrame(() => {
+        this.checkTitleOverlap();
+      });
     } else {
       // 其他单位：Canvas在最底层，所有其他元素在上方
       canvas.style.zIndex = "1";
@@ -330,6 +363,9 @@ class LengthVisualizer {
     slider.min = 1;
     slider.max = unit.maxValue;
     slider.step = this.currentUnit === "px" ? 1 : 0.1; // px单位step=1，其他单位step=0.1
+    
+    // 更新滑块的datalist属性，提供停顿感
+    slider.setAttribute("list", `${this.currentUnit}-datalist`);
     
     // 只有在非动画状态下才更新滑块值
     if (!this.isAnimating) {
@@ -554,22 +590,18 @@ class LengthVisualizer {
     if (this.isDragging === "end") {
       if (this.currentUnit === "vw") {
         // vw单位：起点固定在视口左边缘，只能拖拽终点
-        const newLength = x - this.lineStartX;
-        if (newLength > 0) {
-          const unitValue = this.pixelToUnitValue(newLength);
-          const processedValue = this.currentUnit === "px" ? Math.round(unitValue) : Math.round(unitValue * 10) / 10;
-          this.currentValue = Math.max(1, Math.min(this.units[this.currentUnit].maxValue, processedValue));
-          this.lineEndX = x;
-        }
+        // 直接根据鼠标位置计算百分比值
+        const percentage = (x / this.canvas.width) * 100;
+        const processedValue = Math.round(percentage * 10) / 10;
+        this.currentValue = Math.max(1, Math.min(this.units[this.currentUnit].maxValue, processedValue));
+        this.lineEndX = this.getPixelValue(); // 根据百分比值计算像素位置
       } else if (this.currentUnit === "vh") {
         // vh单位：起点固定在视口顶部，只能拖拽终点
-        const newLength = y - this.lineStartY;
-        if (newLength > 0) {
-          const unitValue = this.pixelToUnitValue(newLength);
-          const processedValue = this.currentUnit === "px" ? Math.round(unitValue) : Math.round(unitValue * 10) / 10;
-          this.currentValue = Math.max(1, Math.min(this.units[this.currentUnit].maxValue, processedValue));
-          this.lineEndY = y;
-        }
+        // 直接根据鼠标位置计算百分比值
+        const percentage = (y / this.canvas.height) * 100;
+        const processedValue = Math.round(percentage * 10) / 10;
+        this.currentValue = Math.max(1, Math.min(this.units[this.currentUnit].maxValue, processedValue));
+        this.lineEndY = this.getPixelValue(); // 根据百分比值计算像素位置
       } else if (this.isHorizontal) {
         const newLength = x - this.lineStartX;
         if (newLength > 0) {
@@ -594,22 +626,20 @@ class LengthVisualizer {
     } else if (this.isDragging === "start") {
       if (this.currentUnit === "vw") {
         // vw单位：起点固定在视口左边缘，只能拖拽终点
-        const newLength = this.lineEndX - x;
-        if (newLength > 0) {
-          const unitValue = this.pixelToUnitValue(newLength);
-          const processedValue = this.currentUnit === "px" ? Math.round(unitValue) : Math.round(unitValue * 10) / 10;
-          this.currentValue = Math.max(1, Math.min(this.units[this.currentUnit].maxValue, processedValue));
-          this.lineStartX = 0; // 保持起点在视口左边缘
-        }
+        // 直接根据鼠标位置计算百分比值
+        const percentage = (x / this.canvas.width) * 100;
+        const processedValue = Math.round(percentage * 10) / 10;
+        this.currentValue = Math.max(1, Math.min(this.units[this.currentUnit].maxValue, processedValue));
+        this.lineStartX = 0; // 保持起点在视口左边缘
+        this.lineEndX = this.getPixelValue(); // 根据百分比值计算像素位置
       } else if (this.currentUnit === "vh") {
         // vh单位：起点固定在视口顶部，只能拖拽终点
-        const newLength = this.lineEndY - y;
-        if (newLength > 0) {
-          const unitValue = this.pixelToUnitValue(newLength);
-          const processedValue = this.currentUnit === "px" ? Math.round(unitValue) : Math.round(unitValue * 10) / 10;
-          this.currentValue = Math.max(1, Math.min(this.units[this.currentUnit].maxValue, processedValue));
-          this.lineStartY = 0; // 保持起点在视口顶部
-        }
+        // 直接根据鼠标位置计算百分比值
+        const percentage = (y / this.canvas.height) * 100;
+        const processedValue = Math.round(percentage * 10) / 10;
+        this.currentValue = Math.max(1, Math.min(this.units[this.currentUnit].maxValue, processedValue));
+        this.lineStartY = 0; // 保持起点在视口顶部
+        this.lineEndY = this.getPixelValue(); // 根据百分比值计算像素位置
       } else if (["rem", "em", "ch"].includes(this.currentUnit)) {
         // rem、em、ch单位：保持居中，只能拖拽终点
         const newLength = this.lineEndX - x;
@@ -664,8 +694,8 @@ class LengthVisualizer {
     // 更新当前单位的存储值
     this.unitValues[this.currentUnit] = this.currentValue;
     this.updateValueDisplay();
-    // 如果不在动画中，才更新线条位置
-    if (!this.isAnimating) {
+    // 如果不在动画中，才更新线条位置（vw和vh单位已经手动更新了位置）
+    if (!this.isAnimating && this.currentUnit !== "vw" && this.currentUnit !== "vh") {
       this.updateLinePosition();
     }
     this.checkControlAreaOverlap(); // 检查重叠并更新透明度
@@ -1372,6 +1402,11 @@ class LengthVisualizer {
     // 实时检查控制区重叠状态
     this.checkControlAreaOverlap();
     
+    // 如果是vh单位，实时检查与交互标题的重叠状态
+    if (this.currentUnit === "vh") {
+      this.checkTitleOverlap();
+    }
+    
     // 重新绘制
     this.draw();
     
@@ -1569,6 +1604,11 @@ class LengthVisualizer {
       // 实时检查控制区重叠状态
       this.checkControlAreaOverlap();
       
+      // 如果是vh单位，实时检查与交互标题的重叠状态
+      if (this.currentUnit === "vh") {
+        this.checkTitleOverlap();
+      }
+      
       this.draw();
       
       if (elapsed < duration) {
@@ -1695,6 +1735,11 @@ class LengthVisualizer {
       // 实时检查控制区重叠状态
       this.checkControlAreaOverlap();
       
+      // 如果是vh单位，实时检查与交互标题的重叠状态
+      if (this.currentUnit === "vh") {
+        this.checkTitleOverlap();
+      }
+      
       this.draw();
       
       if (elapsed < duration) {
@@ -1721,6 +1766,24 @@ class LengthVisualizer {
 
   // 根据像素长度更新显示的单位值
   updateDisplayValueFromPixelLength(pixelLength) {
+    // 对于vw和vh单位，保持百分比值不变，不根据像素长度重新计算
+    if (this.currentUnit === "vw" || this.currentUnit === "vh") {
+      // 保持currentValue不变，只更新显示
+      const formattedValue = Number.isInteger(this.currentValue) ? this.currentValue : this.currentValue.toFixed(1);
+      document.getElementById("lengthValue").textContent = formattedValue;
+      
+      // 更新长度信息显示
+      const lengthValue = document.querySelector(".length-value");
+      const lengthUnit = document.querySelector(".length-unit");
+      const unitDetails = document.querySelector(".unit-details");
+      
+      if (lengthValue) lengthValue.textContent = formattedValue;
+      if (lengthUnit) lengthUnit.textContent = this.currentUnit;
+      
+      if (unitDetails) unitDetails.textContent = this.units[this.currentUnit].name;
+      return;
+    }
+    
     // 将像素长度转换为当前单位的值
     let unitValue;
     switch (this.currentUnit) {
@@ -1732,12 +1795,6 @@ class LengthVisualizer {
         break;
       case "em":
         unitValue = pixelLength / parseFloat(getComputedStyle(document.body).fontSize);
-        break;
-      case "vw":
-        unitValue = (pixelLength / window.innerWidth) * 100;
-        break;
-      case "vh":
-        unitValue = (pixelLength / window.innerHeight) * 100;
         break;
       case "ch":
         unitValue = pixelLength / 8; // 近似值

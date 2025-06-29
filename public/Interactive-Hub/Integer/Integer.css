@@ -1,0 +1,1183 @@
+:root {
+  --进度条颜色-已填充: rgb(41, 126, 78);
+  --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
+  --拇指宽度: 16px;
+
+  /* 整数相关变量 */
+  --位格子背景: #2d2d2d;
+  --位格子边框: #444;
+  --位格子悬停: #3a3a3a;
+  --位格子激活: #2e7d32;
+  --位格子激活悬停: #1b5e20;
+  --符号位背景: #cc5555;
+  --符号位边框: #e74c3c;
+  --符号位悬停: #ff5252;
+  --符号位激活: #1976d2;
+  --符号位激活悬停: #1565c0;
+  --字节分隔线: #666;
+  --索引文字: #aaa;
+  --计算表达式背景: rgba(45, 45, 45, 0.95);
+  --计算表达式边框: #444;
+  --数字颜色: #4caf50;
+  --次方符号颜色: #ff9800;
+  --运算符颜色: #aaa;
+  --等号颜色: gold;
+  --结果颜色: #eaeaea;
+  --深色文本: #e0e0e0;
+  --深色次要文本: #aaa;
+  --深色悬停背景: #3a3a3a;
+  --选中选项颜色: #4caf50;
+  --未选中选项颜色: #888;
+  --选项悬停颜色: #2196f3;
+  --字节1颜色: #ff6b6b;
+  --字节2颜色: #4ecdc4;
+  --字节3颜色: #45b7d1;
+  --字节4颜色: #96ceb4;
+  --字节5颜色: #feca57;
+  --字节6颜色: #ff9ff3;
+  --字节7颜色: #54a0ff;
+  --字节8颜色: #5f27cd;
+}
+
+/* 主容器布局 */
+.整数总区 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 30px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 150px 20px 0;
+}
+
+/* 展示区样式 */
+.展示区 {
+  width: 100%;
+  min-height: 400px;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Canvas容器 */
+.canvas-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 15px;
+}
+
+#integerCanvas {
+  display: block;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 8px;
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+}
+
+/* 位格子样式 - 改进开关样式 */
+.位格子 {
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--位格子边框);
+  background: var(--位格子背景);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--深色文本);
+  user-select: none;
+  overflow: hidden;
+}
+
+.位格子::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  background: var(--位格子背景);
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+.位格子::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 32px;
+  height: 12px;
+  background: #666;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+.位格子:hover {
+  border-color: var(--选项悬停颜色);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.位格子:hover::before {
+  background: var(--位格子悬停);
+}
+
+.位格子.激活 {
+  border-color: var(--位格子激活);
+}
+
+.位格子.激活::before {
+  background: var(--位格子激活);
+}
+
+.位格子.激活::after {
+  background: #333;
+  top: calc(100% - 16px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.位格子.激活:hover::before {
+  background: var(--位格子激活悬停);
+}
+
+/* 符号位样式 */
+.位格子.符号位 {
+  border-color: var(--符号位边框);
+}
+
+.位格子.符号位::before {
+  background: var(--符号位背景);
+}
+
+.位格子.符号位:hover::before {
+  background: var(--符号位悬停);
+}
+
+.位格子.符号位.激活 {
+  border-color: var(--符号位激活);
+}
+
+.位格子.符号位.激活::before {
+  background: var(--符号位激活);
+}
+
+.位格子.符号位.激活:hover::before {
+  background: var(--符号位激活悬停);
+}
+
+/* 字节分隔线 - 改进为长花括号样式 */
+.字节分隔线 {
+  position: relative;
+  height: 30px;
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.字节分隔线::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--字节分隔线);
+  transform: translateY(-50%);
+}
+
+.字节分隔线::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  border: 3px solid var(--字节分隔线);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  transform: translateX(-50%);
+}
+
+/* 索引标签 */
+.索引标签 {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 12px;
+  color: var(--索引文字);
+  user-select: none;
+}
+
+/* 字节标签 */
+.字节标签 {
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 12px;
+  color: var(--索引文字);
+  user-select: none;
+}
+
+/* 位值显示 */
+.位值显示 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--深色文本);
+  z-index: 3;
+  user-select: none;
+}
+
+.位格子.激活 .位值显示 {
+  color: #333;
+}
+
+/* 计算表达式区域 */
+.计算表达式区 {
+  background: var(--计算表达式背景);
+  border: 2px solid var(--计算表达式边框);
+  border-radius: 8px;
+  padding: 15px;
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--深色文本);
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-width: 100%;
+  width: fit-content;
+  margin: 0 auto;
+  overflow-x: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.计算表达式内容 {
+  text-align: center;
+}
+
+.解释原理按钮 {
+  background: var(--选项悬停颜色);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  align-self: center;
+}
+
+.解释原理按钮:hover {
+  background: #1976d2;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+}
+
+.解释原理按钮:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(33, 150, 243, 0.5);
+}
+
+/* 弹出对话框样式 */
+.原理对话框 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+}
+
+.原理对话框.show {
+  display: flex;
+}
+
+.对话框内容 {
+  background: var(--计算表达式背景);
+  border: 2px solid var(--计算表达式边框);
+  border-radius: 12px;
+  padding: 30px;
+  max-width: 1500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.对话框标题 {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--选中选项颜色);
+  margin-bottom: 20px;
+  text-align: center;
+  border-bottom: 2px solid var(--计算表达式边框);
+  padding-bottom: 15px;
+}
+
+.对话框关闭按钮 {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  align-content: center;
+  position: sticky;
+  top: 0;
+  left: 100%;
+  background: transparent;
+  color: var(--深色文本);
+  font-size: 24px;
+  cursor: pointer;
+  border-radius: 4px;
+  outline: solid 2px transparent;
+  transition: all 0.2s ease;
+}
+
+.对话框关闭按钮:hover {
+  background: var(--深色悬停背景);
+  color: var(--选项悬停颜色);
+  outline: solid 2px #fff2;
+}
+
+.原理内容 {
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--深色文本);
+}
+
+.原理内容 h3 {
+  color: var(--选中选项颜色);
+  margin: 25px 0 15px 0;
+  font-size: 18px;
+}
+
+.原理内容 p {
+  margin: 12px 0;
+  text-align: justify;
+}
+
+.原理内容 .重点 {
+  color: var(--数字颜色);
+  font-weight: bold;
+}
+
+.原理内容 .示例 {
+  background: rgba(76, 175, 80, 0.1);
+  border-left: 4px solid var(--数字颜色);
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 4px;
+}
+
+.原理内容 .公式 {
+  background: rgba(255, 152, 0, 0.1);
+  border: 1px solid var(--次方符号颜色);
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.原理内容 .图解 {
+  text-align: center;
+  margin: 20px 0;
+  padding: 15px;
+  background: rgba(33, 150, 243, 0.1);
+  border-radius: 8px;
+}
+
+.原理内容 .图解 .箭头 {
+  color: var(--运算符颜色);
+  font-size: 20px;
+  margin: 0 10px;
+}
+
+.原理内容 .图解 .结果 {
+  color: var(--等号颜色);
+  font-weight: bold;
+}
+
+/* 垂直运算样式 */
+.原理内容 .图解 .垂直运算 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.原理内容 .图解 .运算行 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 40px;
+  position: relative;
+  width: fit-content;
+}
+
+/* 位数字容器样式 */
+.原理内容 .图解 .位数字容器 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 30px;
+}
+
+.原理内容 .图解 .位值 {
+  margin: 0;
+  padding: 3px 8px;
+  text-align: center;
+  display: inline-block;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+
+.原理内容 .图解 .位值.位值0 {
+  background-color: #0008;
+}
+
+.原理内容 .图解 .位值.位值1 {
+  background-color: #fff2;
+}
+
+/* 运算符和等号使用绝对定位，放在行的左边 */
+.原理内容 .图解 .运算行 .运算符 {
+  color: var(--运算符颜色);
+  font-size: 20px;
+  position: absolute;
+  left: -30px;
+  top: 50%;
+  transform: translateY(-50%);
+  min-width: 20px;
+  width: 20px;
+  text-align: center;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+.原理内容 .图解 .运算行 .等号 {
+  color: var(--等号颜色);
+  font-size: 20px;
+  position: absolute;
+  left: -30px;
+  top: 50%;
+  transform: translateY(-50%);
+  min-width: 20px;
+  width: 20px;
+  text-align: center;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+.原理内容 .图解 .运算行 .进位 {
+  color: #ff9800;
+  font-size: 16px;
+  padding: 3px 8px;
+  min-width: 20px;
+  /* width: 20px; */
+  text-align: center;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+.原理内容 .图解 .运算行 .说明 {
+  color: var(--深色次要文本);
+  font-size: 14px;
+  font-weight: normal;
+  white-space: nowrap;
+  width: 90px;
+  text-align: left;
+  position: absolute;
+  right: -110px;
+}
+
+/* 步骤1的特殊样式 - 确保位数字容器和p元素都居中 */
+.原理内容 .图解 .步骤1容器 {
+  text-align: center;
+  margin: 15px 0;
+}
+
+.原理内容 .图解 .步骤1容器 .位数字容器 {
+  margin: 0 auto 10px auto;
+}
+
+.原理内容 .图解 .步骤1容器 p {
+  margin: 0;
+  text-align: center;
+}
+
+/* 控制区样式 */
+.控制区 {
+  background: var(--计算表达式背景);
+  border-radius: 12px;
+  border: 2px solid var(--计算表达式边框);
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000;
+  transition: opacity 0.3s ease;
+}
+
+/* 拖拽时控制区的透明度 */
+.控制区.dragging {
+  opacity: 0.25;
+}
+
+/* 整数类型选择区域 */
+.整数类型选择区 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.整数类型选项 {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--位格子背景);
+  border: 2px solid var(--位格子边框);
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.整数类型选项:hover {
+  border-color: var(--选项悬停颜色);
+  background: var(--深色悬停背景);
+}
+
+.整数类型选项.selected {
+  border-color: var(--选中选项颜色);
+  background: rgba(76, 175, 80, 0.2);
+  color: var(--选中选项颜色);
+}
+
+.整数类型选项 input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.整数类型标签 {
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--深色文本);
+  display: flex;
+  align-items: center;
+}
+
+.整数类型选项.selected .整数类型标签 {
+  color: var(--选中选项颜色);
+}
+
+/* 整数类型标签中的变量类型和字节数样式 */
+.整数类型标签 .变量类型 {
+  color: var(--深色文本);
+  font-weight: 600;
+}
+
+.整数类型标签 .字节数 {
+  color: var(--数字颜色);
+  font-weight: 500;
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.整数类型标签 .字节数 .数字 {
+  color: #ff9800;
+  font-weight: 600;
+}
+
+.整数类型标签 .字节数 .单位 {
+  color: var(--深色次要文本);
+  font-weight: 500;
+}
+
+.整数类型选项.selected .整数类型标签 .变量类型 {
+  color: var(--选中选项颜色);
+}
+
+.整数类型选项.selected .整数类型标签 .字节数 {
+  color: var(--数字颜色);
+}
+
+.整数类型选项.selected .整数类型标签 .字节数 .数字 {
+  color: #ff9800;
+}
+
+.整数类型选项.selected .整数类型标签 .字节数 .单位 {
+  color: var(--深色次要文本);
+}
+
+/* 符号选择区域 */
+.符号选择区 {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.符号选项 {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--位格子背景);
+  border: 2px solid var(--位格子边框);
+  border-radius: 12px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.符号选项:hover {
+  border-color: var(--选项悬停颜色);
+  background: var(--深色悬停背景);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.符号选项.selected {
+  border-color: var(--符号位激活);
+  background: rgba(25, 118, 210, 0.2);
+  color: var(--符号位激活);
+}
+
+.符号选项 input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.符号标签 {
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--深色文本);
+}
+
+.符号选项.selected .符号标签 {
+  color: lightskyblue;
+}
+
+/* 数值显示区域 */
+.数值显示区 {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 35px;
+}
+
+.数值标签 {
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 14px;
+  color: var(--深色文本);
+  font-weight: 500;
+}
+
+/* 数值输入组样式改进 */
+.数值输入组 {
+  display: flex;
+  align-items: center;
+  background: var(--位格子背景);
+  border-radius: 8px;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.数值输入组:hover {
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+.数值输入组:focus-within {
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+.数值输入组.button-active {
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+.数值输入框 {
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 18px;
+  color: var(--数字颜色);
+  font-weight: bold;
+  padding: 12px 20px;
+  background: transparent;
+  border: none;
+  outline: none;
+  min-width: 120px;
+  text-align: center;
+  -moz-appearance: textfield;
+}
+
+.数值输入框::-webkit-outer-spin-button,
+.数值输入框::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* 重新设计的数值增减按钮 */
+.数值增减按钮 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: var(--位格子背景);
+  border: 2px solid var(--位格子边框);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--深色文本);
+  user-select: none;
+}
+
+.数值增减按钮:hover {
+  border-color: var(--选项悬停颜色);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+}
+
+.数值增减按钮:active,
+.数值增减按钮.active {
+  background: var(--选项悬停颜色);
+  color: white;
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(33, 150, 243, 0.5);
+}
+
+.数值增减按钮.增加按钮::before {
+  content: "+";
+}
+
+.数值增减按钮.减少按钮::before {
+  content: "−";
+}
+
+/* 最大值最小值按钮样式 */
+.极值按钮组 {
+  display: flex;
+  gap: 10px;
+  margin-left: 25px;
+}
+
+.极值按钮 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 36px;
+  background: var(--位格子背景);
+  border: 2px solid var(--位格子边框);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--深色文本);
+  user-select: none;
+}
+
+.极值按钮:hover {
+  border-color: var(--选项悬停颜色);
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+}
+
+.极值按钮:active {
+  color: white;
+  box-shadow: 0 1px 4px rgba(33, 150, 243, 0.5);
+}
+
+.极值按钮.最大值按钮:active {
+  background: rgba(76, 175, 80, 0.2);
+}
+
+.极值按钮.最小值按钮:active {
+  background: rgba(244, 67, 54, 0.2);
+}
+
+.极值按钮.最大值按钮 {
+  color: #4caf50;
+  border-color: #4caf5030;
+}
+
+.极值按钮.最小值按钮 {
+  color: #f44336;
+  border-color: #f4433630;
+}
+
+.极值按钮.最大值按钮:hover {
+  border-color: #4caf50;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+.极值按钮.最小值按钮:hover {
+  border-color: #f44336;
+  box-shadow: 0 2px 8px rgba(244, 67, 54, 0.3);
+}
+
+/* 极值按钮高亮状态 */
+.极值按钮.最大值按钮.highlighted {
+  background: rgba(76, 175, 80, 0.4);
+  color: white;
+  border-color: #4caf50;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.4);
+  transform: translateY(-1px);
+}
+
+.极值按钮.最小值按钮.highlighted {
+  background: rgba(244, 67, 54, 0.4);
+  color: white;
+  border-color: #f44336;
+  box-shadow: 0 2px 8px rgba(244, 67, 54, 0.4);
+  transform: translateY(-1px);
+}
+
+.极值按钮.highlighted:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .整数总区 {
+    padding: 0 10px;
+    gap: 20px;
+  }
+
+  .展示区 {
+    padding: 15px;
+  }
+
+  .位格子 {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+  }
+
+  .位格子::before {
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    border-radius: 5px;
+  }
+
+  .位格子::after {
+    top: 3px;
+    left: 3px;
+    width: 24px;
+    height: 9px;
+  }
+
+  .位格子.激活::after {
+    top: calc(100% - 12px);
+  }
+
+  .位值显示 {
+    font-size: 14px;
+  }
+
+  .索引标签 {
+    font-size: 10px;
+    top: -25px;
+  }
+
+  .数值输入框 {
+    font-size: 16px;
+    padding: 10px 16px;
+    min-width: 100px;
+  }
+
+  .数值增减按钮 {
+    width: 38px;
+    height: 38px;
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .位格子 {
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
+  }
+
+  .位格子::before {
+    border-radius: 4px;
+  }
+
+  .位格子::after {
+    top: 2px;
+    left: 2px;
+    width: 21px;
+    height: 8px;
+  }
+
+  .位格子.激活::after {
+    top: calc(100% - 10px);
+  }
+
+  .位值显示 {
+    font-size: 12px;
+  }
+
+  .索引标签 {
+    font-size: 9px;
+    top: -23px;
+  }
+
+  .数值输入框 {
+    font-size: 14px;
+    padding: 8px 12px;
+    min-width: 80px;
+  }
+
+  .数值增减按钮 {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+}
+
+/* 计算表达式中的不同颜色 */
+.计算表达式区 .数字 {
+  font-weight: bold;
+  padding: 0 1px;
+}
+
+.计算表达式区 .数字.位值0 {
+  color: #888 !important; /* 深灰色，使用!important确保优先级 */
+}
+
+.计算表达式区 .数字.位值1 {
+  color: #ccc !important; /* 浅灰色，使用!important确保优先级 */
+}
+
+.计算表达式区 .次方符号 {
+  color: var(--次方符号颜色);
+  font-weight: bold;
+}
+
+.计算表达式区 .运算符 {
+  color: var(--运算符颜色);
+  font-weight: bold;
+}
+
+.计算表达式区 .等号 {
+  color: var(--等号颜色);
+  font-weight: bold;
+}
+
+.计算表达式区 .结果 {
+  color: var(--结果颜色);
+  font-weight: bold;
+}
+
+/* 计算表达式标签样式 */
+.计算表达式区 .标签 {
+  display: inline-block;
+  width: 90px;
+  text-align: right;
+  margin-right: 10px;
+  font-weight: bold;
+  color: var(--深色文本);
+}
+
+/* 标签中的分隔符样式 */
+.计算表达式区 .分隔符 {
+  margin: 0 2px;
+  color: var(--深色文本);
+  font-weight: bold;
+}
+
+/* 计算表达式标题样式 */
+.计算表达式区 .标题 {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--选中选项颜色);
+  text-align: center;
+  margin-bottom: 15px;
+  border-bottom: 2px solid var(--计算表达式边框);
+  padding-bottom: 10px;
+}
+
+/* 特殊术语样式 */
+.计算表达式区 .术语 {
+  color: #ff6b6b;
+  font-weight: bold;
+}
+
+/* 无符号类型和有符号正数的特殊颜色 - 只应用于没有位值类的数字 */
+.计算表达式区.无符号 .数字:not(.位值0):not(.位值1),
+.计算表达式区.有符号正数 .数字:not(.位值0):not(.位值1) {
+  color: #4caf50;
+}
+
+.计算表达式区.无符号 .次方符号,
+.计算表达式区.有符号正数 .次方符号 {
+  color: #ff9800;
+}
+
+.计算表达式区.无符号 .运算符,
+.计算表达式区.有符号正数 .运算符 {
+  color: #aaa;
+}
+
+.计算表达式区.无符号 .等号,
+.计算表达式区.有符号正数 .等号 {
+  color: gold;
+}
+
+.计算表达式区.无符号 .结果,
+.计算表达式区.有符号正数 .结果 {
+  color: #eaeaea;
+}
+
+/* 结果分解样式 */
+.计算表达式区 .结果标签 {
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.计算表达式区 .等号符号 {
+  color: #ff9800;
+  font-weight: bold;
+  margin: 0 10px;
+}
+
+.计算表达式区 .负号符号 {
+  color: #f44336;
+  font-weight: bold;
+}
+
+.计算表达式区 .结果数字 {
+  color: #2196f3;
+  font-weight: bold;
+}
+
+/* 计算步骤容器样式 */
+.计算表达式区 .计算步骤容器 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 7px 0;
+  background: rgba(45, 45, 45, 0.3);
+  border-radius: 8px;
+}
+
+/* 结果显示和解释原理按钮的容器 */
+.计算表达式区 .结果按钮容器 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  margin: 30px 0 7px;
+}
+
+/* 结果显示容器的特殊样式 */
+.计算表达式区 .计算步骤容器:last-child {
+  margin: 0; /* 移除原来的margin，因为现在在容器中 */
+}
+
+.计算表达式区 .步骤标签区 {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+  width: 90px;
+}
+
+.计算表达式区 .步骤数字区 {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+/* 向下箭头样式 */
+.计算表达式区 .向下箭头 {
+  color: #ff9800;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  animation: bounce 1s infinite;
+  position: relative;
+  width: fit-content;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-5px);
+  }
+  60% {
+    transform: translateY(-3px);
+  }
+}

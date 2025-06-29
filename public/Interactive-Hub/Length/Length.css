@@ -614,3 +614,17 @@
 .根元素重置按钮:active {
   transform: scale(0.95);
 }
+
+/* datalist元素样式 - 确保完全不可见且不占用空间 */
+datalist {
+  display: none !important;
+  position: absolute !important;
+  left: -9999px !important;
+  top: -9999px !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
