@@ -163,7 +163,7 @@
   border: 2px solid var(--深色边框);
   border-radius: 8px;
   padding: 8px 16px;
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   transition: all 0.3s ease;
   user-select: none;
 }
@@ -529,7 +529,7 @@
   background: var(--深色卡片背景);
   color: var(--深色文本);
   border-radius: 6px;
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   font-size: 16px;
   font-weight: bold;
   transition: all 0.2s ease;
@@ -597,7 +597,7 @@
   background: var(--深色卡片背景);
   color: var(--深色文本);
   border-radius: 6px;
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   font-family: "JetBrains Mono", Consolas, monospace;
   font-size: 12px;
   font-weight: 500;

@@ -488,7 +488,7 @@ html {
   box-shadow: 0 5px 15px rgba(42, 151, 140, 0.3);
   position: relative;
   overflow: hidden;
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 .开始探索按钮::before {

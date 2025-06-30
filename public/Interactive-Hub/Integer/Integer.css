@@ -19,7 +19,7 @@
   --计算表达式背景: rgba(45, 45, 45, 0.95);
   --计算表达式边框: #444;
   --数字颜色: #4caf50;
-  --次方符号颜色: #ff9800;
+  --指数颜色: #ff9800;
   --运算符颜色: #aaa;
   --等号颜色: gold;
   --结果颜色: #eaeaea;
@@ -76,7 +76,7 @@
 #integerCanvas {
   display: block;
   background: transparent;
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   border-radius: 8px;
   width: 100%;
   height: auto;
@@ -90,7 +90,7 @@
   border: 2px solid var(--位格子边框);
   background: var(--位格子背景);
   border-radius: 8px;
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   transition: all 0.3s ease;
   position: relative;
   display: flex;
@@ -298,7 +298,7 @@
   font-family: "JetBrains Mono", Consolas, monospace;
   font-size: 14px;
   font-weight: bold;
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   transition: all 0.2s ease;
   align-self: center;
 }
@@ -365,7 +365,7 @@
   background: transparent;
   color: var(--深色文本);
   font-size: 24px;
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   border-radius: 4px;
   outline: solid 2px transparent;
   transition: all 0.2s ease;
@@ -410,7 +410,7 @@
 
 .原理内容 .公式 {
   background: rgba(255, 152, 0, 0.1);
-  border: 1px solid var(--次方符号颜色);
+  border: 1px solid var(--指数颜色);
   padding: 10px;
   margin: 10px 0;
   border-radius: 4px;
@@ -512,7 +512,7 @@
 }
 
 .原理内容 .图解 .运算行 .进位 {
-  color: #ff9800;
+  color: var(--指数颜色);
   font-size: 16px;
   padding: 3px 8px;
   min-width: 20px;
@@ -585,7 +585,7 @@
   border: 2px solid var(--位格子边框);
   border-radius: 8px;
   padding: 8px 16px;
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   transition: all 0.3s ease;
   user-select: none;
 }
@@ -636,7 +636,7 @@
 }
 
 .整数类型标签 .字节数 .数字 {
-  color: #ff9800;
+  color: var(--指数颜色);
   font-weight: 600;
 }
 
@@ -654,7 +654,7 @@
 }
 
 .整数类型选项.selected .整数类型标签 .字节数 .数字 {
-  color: #ff9800;
+  color: var(--指数颜色);
 }
 
 .整数类型选项.selected .整数类型标签 .字节数 .单位 {
@@ -677,7 +677,7 @@
   border: 2px solid var(--位格子边框);
   border-radius: 12px;
   padding: 10px 20px;
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   transition: all 0.3s ease;
   user-select: none;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -780,7 +780,7 @@
   background: var(--位格子背景);
   border: 2px solid var(--位格子边框);
   border-radius: 4px;
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   transition: all 0.2s ease;
   position: relative;
   font-family: "JetBrains Mono", Consolas, monospace;
@@ -828,7 +828,7 @@
   background: var(--位格子背景);
   border: 2px solid var(--位格子边框);
   border-radius: 6px;
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   transition: all 0.2s ease;
   font-family: "JetBrains Mono", Consolas, monospace;
   font-size: 14px;
@@ -1006,16 +1006,18 @@
 }
 
 .计算表达式区 .数字.位值0 {
-  color: #888 !important; /* 深灰色，使用!important确保优先级 */
+  color: #777 !important; /* 深灰色，使用!important确保优先级 */
 }
 
 .计算表达式区 .数字.位值1 {
-  color: #ccc !important; /* 浅灰色，使用!important确保优先级 */
+  color: #ddd !important; /* 浅灰色，使用!important确保优先级 */
 }
 
-.计算表达式区 .次方符号 {
-  color: var(--次方符号颜色);
+.计算表达式区 .指数 {
+  color: var(--指数颜色);
   font-weight: bold;
+  font-size: 12px;
+  vertical-align: super;
 }
 
 .计算表达式区 .运算符 {
@@ -1070,27 +1072,27 @@
 /* 无符号类型和有符号正数的特殊颜色 - 只应用于没有位值类的数字 */
 .计算表达式区.无符号 .数字:not(.位值0):not(.位值1),
 .计算表达式区.有符号正数 .数字:not(.位值0):not(.位值1) {
-  color: #4caf50;
+  color: #4caf50 !important;
 }
 
-.计算表达式区.无符号 .次方符号,
-.计算表达式区.有符号正数 .次方符号 {
-  color: #ff9800;
+.计算表达式区.无符号 .指数,
+.计算表达式区.有符号正数 .指数 {
+  color: var(--指数颜色) !important;
 }
 
 .计算表达式区.无符号 .运算符,
 .计算表达式区.有符号正数 .运算符 {
-  color: #aaa;
+  color: #aaa !important;
 }
 
 .计算表达式区.无符号 .等号,
 .计算表达式区.有符号正数 .等号 {
-  color: gold;
+  color: gold !important;
 }
 
 .计算表达式区.无符号 .结果,
 .计算表达式区.有符号正数 .结果 {
-  color: #eaeaea;
+  color: #eaeaea !important;
 }
 
 /* 结果分解样式 */
@@ -1100,7 +1102,7 @@
 }
 
 .计算表达式区 .等号符号 {
-  color: #ff9800;
+  color: var(--指数颜色);
   font-weight: bold;
   margin: 0 10px;
 }
@@ -1155,7 +1157,7 @@
 
 /* 向下箭头样式 */
 .计算表达式区 .向下箭头 {
-  color: #ff9800;
+  color: var(--指数颜色);
   font-size: 16px;
   font-weight: bold;
   text-align: center;

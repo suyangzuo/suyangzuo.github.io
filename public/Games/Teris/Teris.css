@@ -125,7 +125,7 @@
   border-radius: 25px;
   font-size: 14px;
   font-weight: 600;
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -230,7 +230,7 @@
 
 /* 重置按钮样式 */
 #resetGame {
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   transition: all 0.3s ease;
 }
 

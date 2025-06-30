@@ -824,7 +824,7 @@ a:visited {
   background: rgba(255, 255, 255, 0.1);
   color: white;
   border-radius: 8px;
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   display: flex;
   align-items: center;
   justify-content: center;

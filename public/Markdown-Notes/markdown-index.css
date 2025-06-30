@@ -223,7 +223,7 @@
     0 5px 19px rgba(0, 212, 255, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   transform: translateY(0);
   /* 确保文字清晰渲染 */
   -webkit-font-smoothing: antialiased;
@@ -294,7 +294,7 @@
     0 5px 19px rgba(0, 212, 255, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   transform: translateY(0);
   /* 确保文字清晰渲染 */
   -webkit-font-smoothing: antialiased;

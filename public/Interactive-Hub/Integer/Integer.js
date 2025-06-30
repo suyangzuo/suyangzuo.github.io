@@ -93,6 +93,9 @@ class IntegerVisualizer {
   }
 
   setupCanvas() {
+    // 获取设备像素比
+    const dpr = window.devicePixelRatio || 1;
+    
     // 获取容器宽度
     const container = this.canvas.parentElement;
     const containerWidth = container.clientWidth;
@@ -140,8 +143,15 @@ class IntegerVisualizer {
     // 计算格子尺寸，确保不超过最大值
     const bitWidth = Math.min(maxBitSize, (availableWidth - totalGaps * gap - totalExtraGaps) / actualBitsPerRow);
     
-    // 设置Canvas宽度为容器宽度
-    this.canvas.width = containerWidth;
+    // 设置Canvas的CSS尺寸为容器宽度
+    this.canvas.style.width = containerWidth + 'px';
+    
+    // 设置Canvas的实际尺寸（考虑DPI缩放）
+    this.canvas.width = containerWidth * dpr;
+    this.canvas.height = 200 * dpr; // 临时高度，稍后会重新计算
+    
+    // 缩放绘图上下文以匹配DPI
+    this.ctx.scale(dpr, dpr);
     
     // 计算实际需要的宽度（包含字节间距）
     const totalBytes = Math.ceil(this.bitSize / 8);
@@ -150,7 +160,13 @@ class IntegerVisualizer {
     
     // 调整高度以适应新的字节分隔线布局和更大的行距
     const bytes = Math.ceil(this.bitSize / 8);
-    this.canvas.height = rows * (bitWidth + gap + 80) + bytes * 50 + 80; // 增加行距到80px
+    const calculatedHeight = rows * (bitWidth + gap + 80) + bytes * 50 + 80; // 增加行距到80px
+    
+    // 重新设置Canvas的实际高度
+    this.canvas.height = calculatedHeight * dpr;
+    
+    // 重新缩放绘图上下文（因为重新设置尺寸会重置变换）
+    this.ctx.scale(dpr, dpr);
     
     // 存储当前格子尺寸，供其他方法使用
     this.currentBitSize = bitWidth;
@@ -220,13 +236,39 @@ class IntegerVisualizer {
     // 数值输入框事件
     const valueInput = document.getElementById("currentValue");
     valueInput.addEventListener("input", (e) => {
-      const value = parseInt(e.target.value) || 0;
-      this.setValueToBits(value);
+      const inputValue = e.target.value.trim();
+      
+      // 允许空值、单独的负号、以及有效的数字
+      if (inputValue === "" || inputValue === "-") {
+        // 不触发任何事件，保持当前状态
+        return;
+      }
+      
+      // 检查是否是有效的数字（包括负数）
+      const numberValue = parseInt(inputValue);
+      if (isNaN(numberValue)) {
+        // 无效输入，恢复为当前值
+        e.target.value = this.calculateValue();
+        return;
+      }
+      
+      // 有效数字，更新位值
+      this.setValueToBits(numberValue);
       // 使用智能更新
       this.updateCalculationExpression();
       // 控制解释原理按钮的显示
       this.updateExplainButtonVisibility();
       this.redrawCanvasOnly();
+    });
+    
+    // 添加失去焦点事件，处理不完整的输入
+    valueInput.addEventListener("blur", (e) => {
+      const inputValue = e.target.value.trim();
+      
+      // 如果输入为空或只有负号，恢复为当前值
+      if (inputValue === "" || inputValue === "-") {
+        e.target.value = this.calculateValue();
+      }
     });
     
     // 增减按钮事件
@@ -422,7 +464,8 @@ class IntegerVisualizer {
       this.increaseValue();
       
       // 检查是否达到最大值，如果达到则停止连续增加
-      const currentValue = parseInt(document.getElementById("currentValue").value) || 0;
+      const inputValue = document.getElementById("currentValue").value.trim();
+      const currentValue = parseInt(inputValue) || 0;
       let maxValue;
       if (this.isSigned) {
         maxValue = Math.pow(2, this.bitSize - 1) - 1;
@@ -446,7 +489,8 @@ class IntegerVisualizer {
       this.decreaseValue();
       
       // 检查是否达到最小值，如果达到则停止连续减少
-      const currentValue = parseInt(document.getElementById("currentValue").value) || 0;
+      const inputValue = document.getElementById("currentValue").value.trim();
+      const currentValue = parseInt(inputValue) || 0;
       let minValue;
       if (this.isSigned) {
         minValue = -Math.pow(2, this.bitSize - 1);
@@ -475,7 +519,8 @@ class IntegerVisualizer {
   }
 
   increaseValue() {
-    const currentValue = parseInt(document.getElementById("currentValue").value) || 0;
+    const inputValue = document.getElementById("currentValue").value.trim();
+    const currentValue = parseInt(inputValue) || 0;
     
     // 计算当前类型的最大值
     let maxValue;
@@ -500,7 +545,8 @@ class IntegerVisualizer {
   }
 
   decreaseValue() {
-    const currentValue = parseInt(document.getElementById("currentValue").value) || 0;
+    const inputValue = document.getElementById("currentValue").value.trim();
+    const currentValue = parseInt(inputValue) || 0;
     
     // 计算当前类型的最小值
     let minValue;
@@ -643,9 +689,10 @@ class IntegerVisualizer {
     const bitWidth = this.currentBitSize || 35; // 使用动态计算的格子尺寸，默认35px
     const bitHeight = bitWidth; // 确保宽高相等
     const gap = 5;
-    const maxWidth = this.canvas.width;
+    const container = this.canvas.parentElement;
+    const containerWidth = container.clientWidth; // 使用容器宽度而不是Canvas实际宽度
     const padding = 100; // 左右各50px的内边距
-    const availableWidth = maxWidth - padding;
+    const availableWidth = containerWidth - padding;
     const bitsPerRow = Math.floor(availableWidth / (bitWidth + gap));
     
     // 特殊处理不同类型的换行逻辑
@@ -727,8 +774,11 @@ class IntegerVisualizer {
 
   // 新增方法：只重绘Canvas，不重新生成计算表达式
   redrawCanvasOnly() {
-    // 清空Canvas
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    // 清空Canvas - 由于已经通过 ctx.scale 处理了 DPI 缩放，直接使用 CSS 尺寸
+    const container = this.canvas.parentElement;
+    const containerWidth = container.clientWidth;
+    const calculatedHeight = this.canvas.height / (window.devicePixelRatio || 1);
+    this.ctx.clearRect(0, 0, containerWidth, calculatedHeight);
     
     // 绘制位格子
     for (let i = 0; i < this.bitSize; i++) {
@@ -837,7 +887,7 @@ class IntegerVisualizer {
         if (hasTerms) {
           expression += '<span class="运算符"> + </span>';
         }
-        expression += `<span class="数字">2<span class="次方符号">^</span>${this.bitSize - 1 - i}</span>`;
+        expression += `<span class="数字">2<sup class="指数">${this.bitSize - 1 - i}</sup></span>`;
         hasTerms = true;
       }
     }
@@ -863,7 +913,7 @@ class IntegerVisualizer {
           if (hasTerms) {
             expression += '<span class="运算符"> + </span>';
           }
-          expression += `<span class="数字">2<span class="次方符号">^</span>${this.bitSize - 1 - i}</span>`;
+          expression += `<span class="数字">2<sup class="指数">${this.bitSize - 1 - i}</sup></span>`;
           hasTerms = true;
         }
       }
@@ -967,8 +1017,11 @@ class IntegerVisualizer {
   }
 
   draw() {
-    // 清空Canvas
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    // 清空Canvas - 由于已经通过 ctx.scale 处理了 DPI 缩放，直接使用 CSS 尺寸
+    const container = this.canvas.parentElement;
+    const containerWidth = container.clientWidth;
+    const calculatedHeight = this.canvas.height / (window.devicePixelRatio || 1);
+    this.ctx.clearRect(0, 0, containerWidth, calculatedHeight);
     
     // 绘制位格子
     for (let i = 0; i < this.bitSize; i++) {
@@ -983,9 +1036,6 @@ class IntegerVisualizer {
     
     // 控制解释原理按钮的显示
     this.updateExplainButtonVisibility();
-    
-    // 更新计算表达式区域的CSS类
-    this.updateCalculationExpressionClasses();
     
     // 设置计算表达式区域的位置
     this.updateCalculationExpressionPosition();
@@ -1014,6 +1064,9 @@ class IntegerVisualizer {
       // 只需要更新数字内容
       this.updateCalculationNumbers();
     }
+    
+    // 确保CSS类是最新的
+    this.updateCalculationExpressionClasses();
   }
 
   // 获取当前表达式类型
@@ -1034,6 +1087,9 @@ class IntegerVisualizer {
     
     // 缓存DOM元素
     this.cacheDOMElements();
+    
+    // 立即更新CSS类
+    this.updateCalculationExpressionClasses();
     
     // 调整箭头位置
     this.adjustArrowPositions();
@@ -1083,6 +1139,9 @@ class IntegerVisualizer {
     
     // 更新结果
     this.updateResultNumbers();
+    
+    // 确保CSS类是最新的
+    this.updateCalculationExpressionClasses();
   }
 
   // 更新正数表达式中的数字
@@ -1234,6 +1293,7 @@ class IntegerVisualizer {
     }
     
     this.ctx.fillStyle = displayValue === 1 ? "#fff" : getComputedStyle(document.documentElement).getPropertyValue("--深色文本");
+    // 字体大小不需要考虑DPI缩放，因为已经通过ctx.scale处理了
     const fontSize = Math.max(12, Math.min(16, this.currentBitSize * 0.4)); // 根据格子尺寸动态调整字体大小
     this.ctx.font = `${fontSize}px JetBrains Mono, Consolas, monospace`;
     this.ctx.textAlign = "center";
@@ -1245,7 +1305,7 @@ class IntegerVisualizer {
     this.ctx.font = "12px JetBrains Mono, Consolas, monospace";
     this.ctx.textAlign = "center";
     this.ctx.textBaseline = "middle";
-    this.ctx.fillText((this.bitSize - 1 - index).toString(), bitRect.x + bitRect.width / 2, bitRect.y - 10);
+    this.ctx.fillText((this.bitSize - 1 - index).toString(), bitRect.x + bitRect.width / 2, bitRect.y - 12);
   }
 
   // 绘制圆角矩形的辅助方法
@@ -1303,11 +1363,12 @@ class IntegerVisualizer {
         this.ctx.fillText(`字节${totalBytes - byteIndex + 1}`, centerX, y + 20);
       } else {
         // 跨行，需要分别绘制每一行的部分
-        const maxWidth = this.canvas.width;
+        const container = this.canvas.parentElement;
+        const containerWidth = container.clientWidth; // 使用容器宽度而不是Canvas实际宽度
         const bitWidth = this.currentBitSize || 35; // 使用动态计算的格子尺寸
         const gap = 5;
         const padding = 100; // 左右各50px的内边距
-        const availableWidth = maxWidth - padding;
+        const availableWidth = containerWidth - padding;
         const bitsPerRow = Math.floor(availableWidth / (bitWidth + gap));
         
         // 特殊处理不同类型的换行逻辑，与setupCanvas方法保持一致
@@ -1382,11 +1443,12 @@ class IntegerVisualizer {
 
   updateCalculationExpressionPosition() {
     // 计算最下面一行格子的位置
-    const maxWidth = this.canvas.width;
+    const container = this.canvas.parentElement;
+    const containerWidth = container.clientWidth; // 使用容器宽度而不是Canvas实际宽度
     const bitWidth = this.currentBitSize || 35; // 使用动态计算的格子尺寸
     const gap = 5;
     const padding = 100;
-    const availableWidth = maxWidth - padding;
+    const availableWidth = containerWidth - padding;
     const bitsPerRow = Math.floor(availableWidth / (bitWidth + gap));
     
     // 特殊处理不同类型的换行逻辑，与setupCanvas方法保持一致
@@ -1462,7 +1524,8 @@ class IntegerVisualizer {
   }
 
   updateExtremeButtons() {
-    const currentValue = parseInt(document.getElementById("currentValue").value) || 0;
+    const inputValue = document.getElementById("currentValue").value.trim();
+    const currentValue = parseInt(inputValue) || 0;
     const maxBtn = document.getElementById("maxBtn");
     const minBtn = document.getElementById("minBtn");
     
@@ -1649,9 +1712,9 @@ class IntegerVisualizer {
       <h3>补码的数学原理</h3>
       <p>在n位系统中，补码的数学定义是：</p>
       <div class="公式">
-        对于负数 -x，其补码 = 2^n - x
+        对于负数 -x，其补码 = 2<sup>n</sup> - x
       </div>
-      <p>例如：在8位系统中，-5的补码 = 2^8 - 5 = 256 - 5 = 251</p>
+      <p>例如：在8位系统中，-5的补码 = 2<sup>8</sup> - 5 = 256 - 5 = 251</p>
       <p>251的二进制表示正是：11111011</p>
 
       <h3>为什么选择补码？</h3>

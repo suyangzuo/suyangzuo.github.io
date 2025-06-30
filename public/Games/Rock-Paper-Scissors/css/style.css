@@ -91,7 +91,7 @@ body {
 
   opacity: 0.5;
   transition: opacity 0.3s ease;
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 .option_image.active,
 .option_image:hover {

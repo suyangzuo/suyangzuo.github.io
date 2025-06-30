@@ -36,7 +36,7 @@
           </div>
         </div>
       </figure>
-      
+
       <!-- 原理解释对话框 -->
       <div class="原理对话框" id="principleDialog">
         <div class="对话框内容">
@@ -64,26 +64,26 @@
               ><span class="字节数"><span class="数字">8</span><span class="单位">字节</span></span></span
             >
           </label>
+          <div class="步进设置区">
+            <span class="步进标签">步进</span>
+            <input type="number" class="步进输入框" id="stepValue" value="0.1" min="0.000001" max="1000000" step="0.000001" />
+          </div>
         </div>
 
         <div class="数值显示区">
           <span class="数值标签">当前数值:</span>
           <div class="数值输入组">
             <button class="数值增减按钮 减少按钮" id="decreaseBtn" type="button"></button>
-            <input type="number" class="数值输入框" id="currentValue" value="0" step="0.1" />
+            <div class="数值显示区域">
+              <div class="科学记数法" id="scientificValue">0.000000e+00</div>
+              <input type="number" class="数值输入框" id="currentValue" value="0" step="0.01" />
+            </div>
             <button class="数值增减按钮 增加按钮" id="increaseBtn" type="button"></button>
           </div>
           <div class="极值按钮组">
             <button class="极值按钮 最小值按钮" id="minBtn" type="button">MIN</button>
             <button class="极值按钮 最大值按钮" id="maxBtn" type="button">MAX</button>
           </div>
-        </div>
-
-        <div class="特殊值按钮组">
-          <button class="特殊值按钮" id="zeroBtn" type="button">0</button>
-          <button class="特殊值按钮" id="infinityBtn" type="button">∞</button>
-          <button class="特殊值按钮" id="negativeInfinityBtn" type="button">-∞</button>
-          <button class="特殊值按钮" id="nanBtn" type="button">NaN</button>
         </div>
       </div>
     </section>

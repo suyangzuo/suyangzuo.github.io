@@ -393,7 +393,7 @@ pre[class*="language-"] {
   background: none;
   border: none;
   color: #888;
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   padding: 4px;
   border-radius: 3px;
   transition: all 0.2s ease;
@@ -602,7 +602,7 @@ pre[class*="language-"] {
   justify-content: center;
   color: #ffd700;
   font-size: 16px;
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   transition: background 0.2s, color 0.2s, box-shadow 0.2s;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
