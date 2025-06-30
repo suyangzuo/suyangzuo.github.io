@@ -58,3 +58,9 @@ body {
   text-shadow: 2px 2px 2px #000a;
   z-index: 9999;
 }
+
+.和与 {
+  font-size: 0.9em;
+  color: #aaa;
+  margin: 0 2px;
+}

@@ -28,8 +28,64 @@
     <section class="浮点数总区 总区">
       <script src="../../Scripts/html-include.js" target="../control.html" position="afterbegin"></script>
       <p class="交互标题">浮点数</p>
-      <figure class="展示区"></figure>
-      <div class="控制区"></div>
+      <figure class="展示区">
+        <div class="canvas-container">
+          <canvas id="floatCanvas" width="800" height="200"></canvas>
+          <div class="计算表达式区" id="calculationExpression">
+            <div class="计算表达式内容" id="calculationContent">计算表达式将在这里显示...</div>
+          </div>
+        </div>
+      </figure>
+      
+      <!-- 原理解释对话框 -->
+      <div class="原理对话框" id="principleDialog">
+        <div class="对话框内容">
+          <button class="对话框关闭按钮" id="closeDialogBtn">&times;</button>
+          <div class="对话框标题">浮点数原理详解</div>
+          <div class="原理内容" id="principleContent">
+            <!-- 原理内容将通过JavaScript动态生成 -->
+          </div>
+        </div>
+      </div>
+
+      <div class="控制区">
+        <div class="浮点数类型选择区">
+          <label class="浮点数类型选项 selected" for="type-float">
+            <input type="radio" id="type-float" name="floatType" value="float" checked />
+            <span class="浮点数类型标签"
+              ><span class="变量类型">float</span
+              ><span class="字节数"><span class="数字">4</span><span class="单位">字节</span></span></span
+            >
+          </label>
+          <label class="浮点数类型选项" for="type-double">
+            <input type="radio" id="type-double" name="floatType" value="double" />
+            <span class="浮点数类型标签"
+              ><span class="变量类型">double</span
+              ><span class="字节数"><span class="数字">8</span><span class="单位">字节</span></span></span
+            >
+          </label>
+        </div>
+
+        <div class="数值显示区">
+          <span class="数值标签">当前数值:</span>
+          <div class="数值输入组">
+            <button class="数值增减按钮 减少按钮" id="decreaseBtn" type="button"></button>
+            <input type="number" class="数值输入框" id="currentValue" value="0" step="0.1" />
+            <button class="数值增减按钮 增加按钮" id="increaseBtn" type="button"></button>
+          </div>
+          <div class="极值按钮组">
+            <button class="极值按钮 最小值按钮" id="minBtn" type="button">MIN</button>
+            <button class="极值按钮 最大值按钮" id="maxBtn" type="button">MAX</button>
+          </div>
+        </div>
+
+        <div class="特殊值按钮组">
+          <button class="特殊值按钮" id="zeroBtn" type="button">0</button>
+          <button class="特殊值按钮" id="infinityBtn" type="button">∞</button>
+          <button class="特殊值按钮" id="negativeInfinityBtn" type="button">-∞</button>
+          <button class="特殊值按钮" id="nanBtn" type="button">NaN</button>
+        </div>
+      </div>
     </section>
   </body>
 </html>

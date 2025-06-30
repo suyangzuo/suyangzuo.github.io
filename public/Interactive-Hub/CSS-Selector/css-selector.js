@@ -23,6 +23,54 @@ class CSSSelectorTutorial {
     this.setupRandomHtmlBtn();
   }
 
+  // 新增：获取默认HTML代码的方法
+  getDefaultHTML() {
+    return `<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <title>示例页面</title>
+  </head>
+  <body>
+    <header class="header" id="main-header">
+      <h1 class="title">欢迎来到我的网站</h1>
+      <nav class="navigation">
+        <ul class="nav-list list">
+          <li class="nav-item gift"><a href="#random" class="nav-link">首页</a></li>
+          <li class="nav-item tool"><a href="#payment" class="nav-link">关于</a></li>
+          <li class="nav-item special"><a href="#cat" class="nav-link">联系</a></li>
+        </ul>
+      </nav>
+    </header>
+    
+    <main class="main-content">
+      <article class="article">
+        <h2 class="article-title">文章标题</h2>
+        <p class="paragraph">
+          这是一段<span class="highlight">重要的</span>文字内容，
+          包含了<em class="emphasis">强调</em>和<strong class="bold">粗体</strong>元素。
+        </p>
+        <div class="container">
+          <div class="box gift" 作用="礼物">盒子1</div>
+          <div class="box tool" 所用="工具">盒子2</div>
+          <div class="box special">特殊盒子</div>
+        </div>
+      </article>
+      
+      <aside class="sidebar">
+        <div class="widget">
+          <h3 class="widget-title">侧边栏</h3>
+          <p class="widget-content">侧边栏内容</p>
+        </div>
+      </aside>
+    </main>
+    
+    <footer class="footer">
+      <p class="copyright">&copy; 2024 我的网站</p>
+    </footer>
+  </body>
+</html>`;
+  }
+
   initializePrism() {
     // 确保Prism.js已经加载
     if (typeof Prism !== "undefined") {
@@ -44,52 +92,7 @@ class CSSSelectorTutorial {
   extractOriginalHTML() {
     // 直接从HTML文件中获取原始代码
     // 这是HTML文件中<code>标签内的原始内容
-    const originalCode = `<!DOCTYPE html>
-<html lang="zh-CN">
-  <head>
-    <title>示例页面</title>
-  </head>
-  <body>
-    <header class="header" id="main-header">
-      <h1 class="title">欢迎来到我的网站</h1>
-      <nav class="navigation">
-        <ul class="nav-list">
-          <li class="nav-item"><a href="#" class="nav-link">首页</a></li>
-          <li class="nav-item"><a href="#" class="nav-link">关于</a></li>
-          <li class="nav-item"><a href="#" class="nav-link">联系</a></li>
-        </ul>
-      </nav>
-    </header>
-    
-    <main class="main-content">
-      <article class="article">
-        <h2 class="article-title">文章标题</h2>
-        <p class="paragraph">
-          这是一段<span class="highlight">重要的</span>文字内容，
-          包含了<em class="emphasis">强调</em>和<strong class="bold">粗体</strong>元素。
-        </p>
-        <div class="container">
-          <div class="box">盒子1</div>
-          <div class="box">盒子2</div>
-          <div class="box special">特殊盒子</div>
-        </div>
-      </article>
-      
-      <aside class="sidebar">
-        <div class="widget">
-          <h3 class="widget-title">侧边栏</h3>
-          <p class="widget-content">侧边栏内容</p>
-        </div>
-      </aside>
-    </main>
-    
-    <footer class="footer">
-      <p class="copyright">&copy; 2024 我的网站</p>
-    </footer>
-  </body>
-</html>`;
-
-    this.originalHTML = originalCode;
+    this.originalHTML = this.getDefaultHTML();
   }
 
   setupEventListeners() {
@@ -214,50 +217,7 @@ class CSSSelectorTutorial {
     if (!codeElement) return;
     
     // 重置为指定的HTML内容
-    const resetHTML = `<!DOCTYPE html>
-<html lang="zh-CN">
-  <head>
-    <title>示例页面</title>
-  </head>
-  <body>
-    <header class="header" id="main-header">
-      <h1 class="title">欢迎来到我的网站</h1>
-      <nav class="navigation">
-        <ul class="nav-list">
-          <li class="nav-item"><a href="#" class="nav-link">首页</a></li>
-          <li class="nav-item"><a href="#" class="nav-link">关于</a></li>
-          <li class="nav-item"><a href="#" class="nav-link">联系</a></li>
-        </ul>
-      </nav>
-    </header>
-    
-    <main class="main-content">
-      <article class="article">
-        <h2 class="article-title">文章标题</h2>
-        <p class="paragraph">
-          这是一段<span class="highlight">重要的</span>文字内容，
-          包含了<em class="emphasis">强调</em>和<strong class="bold">粗体</strong>元素。
-        </p>
-        <div class="container">
-          <div class="box">盒子1</div>
-          <div class="box">盒子2</div>
-          <div class="box special">特殊盒子</div>
-        </div>
-      </article>
-      
-      <aside class="sidebar">
-        <div class="widget">
-          <h3 class="widget-title">侧边栏</h3>
-          <p class="widget-content">侧边栏内容</p>
-        </div>
-      </aside>
-    </main>
-    
-    <footer class="footer">
-      <p class="copyright">&copy; 2024 我的网站</p>
-    </footer>
-  </body>
-</html>`;
+    const resetHTML = this.getDefaultHTML();
     
     // 重新设置HTML内容
     codeElement.textContent = resetHTML;
