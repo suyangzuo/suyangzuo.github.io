@@ -1,0 +1,67 @@
+*,
+::after,
+::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.main {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+.left {
+  width: 20%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.right {
+  width: 80%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.科目区 {
+  width: 80%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.科目 {
+  width: 40%;
+  height: 7%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+}
+table {
+  width: 80%;
+  height: 80%;
+  border-collapse: separate;
+  border-spacing: 10px;
+}
+
+td {
+  width: 2%;
+  height: 10%;
+  border: solid rgb(184, 177, 177) 0.8px;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.午休 {
+  border: none;
+  text-align: center;
+}
