@@ -9,7 +9,7 @@
   --光标-手指: url("/Images/Common/鼠标-指向.cur"), pointer;
   --中文字体: "Noto Sans SC", 微软雅黑，sans-serif;
   --代码字体: "JetBrains Mono", Consolas, monospace;
-  --中文代码混合字体: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, monospace, sans-serif;;
+  --中文代码混合字体: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, monospace, sans-serif;
 }
 
 .变量总区 {
@@ -30,7 +30,7 @@
   align-items: flex-start;
   background-color: #cde1;
   border: solid 1px #888;
-  z-index: 1;
+  z-index: 10;
   backdrop-filter: blur(20px);
   transition: 250ms;
 }
@@ -345,7 +345,7 @@
 
 .变量区 {
   margin: 0 auto;
-  width: max(750px, 75%);
+  width: max(750px, 90%);
   backdrop-filter: blur(10px);
 }
 
@@ -356,6 +356,101 @@
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: flex-start;
+}
+
+/* Canvas 相关样式 */
+.内存Canvas {
+  margin: 0 auto;
+  width: 100%;
+  height: auto;
+  display: block;
+  cursor: var(--光标-默认);
+  border: 1px solid transparent;
+  background-color: transparent;
+}
+
+.内存Canvas:hover {
+  cursor: var(--光标-手指);
+}
+
+/* 悬停提示框样式 */
+.字节描述提示框 {
+  position: fixed;
+  opacity: 0;
+  pointer-events: none;
+  border: solid 1px silver;
+  background-color: #222;
+  color: white;
+  font-size: 14px;
+  z-index: 1000;
+  box-shadow: 2px 2px 2px 0 #111;
+  transform-origin: 50% 100%;
+  scale: 0.9;
+  transition: opacity 0.2s ease;
+}
+
+.字节描述提示框.可见 {
+  opacity: 1;
+}
+
+.字节描述提示框 .字节名称与顺位 {
+  width: 100%;
+  padding: 3px 0;
+  background-color: #222;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: yellowgreen;
+}
+
+.字节描述提示框 .字节名称 {
+  text-wrap: nowrap;
+  padding: 0 10px 0 5px;
+}
+
+.字节描述提示框 .字节顺位 {
+  color: gray;
+  padding: 0 5px 0 10px;
+}
+
+.字节描述提示框 .字节地址 {
+  width: 100%;
+  background-color: #333;
+  color: silver;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.字节描述提示框 .进制地址 {
+  display: flex;
+  align-items: center;
+  padding-right: 5px;
+}
+
+.字节描述提示框 .进制 {
+  height: 100%;
+  text-wrap: nowrap;
+  padding: 5px 7px;
+  margin-right: 10px;
+  background-color: #456;
+  color: lightcyan;
+  scale: 0.9;
+}
+
+.字节描述提示框 .地址代码 {
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.字节描述提示框 .地址前缀 {
+  color: peru;
+}
+
+.字节描述提示框 .地址值 {
+  text-align: right;
 }
 
 .变量容器 {
