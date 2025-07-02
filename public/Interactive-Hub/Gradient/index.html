@@ -1,15 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>渐变</title>
-    <link
-      rel="icon"
-      href="/Images/Interactive-Hub/HQ/渐变.avif"
-      type="image/x-icon"
-    />
+    <link rel="icon" href="/Images/Interactive-Hub/HQ/渐变.avif" type="image/x-icon" />
     <link rel="stylesheet" href="/Styles/common.css" />
     <link rel="stylesheet" href="/Styles/top-banner-common.css" />
     <link rel="stylesheet" href="../control.css" />
@@ -22,22 +18,195 @@
   </head>
   <body>
     <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
-    <script
-      src="../../Scripts/html-include.js"
-      target="../../top-banner.html"
-      position="afterbegin"
-    ></script>
+    <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
     <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
 
     <section class="渐变总区 总区">
-      <script
-        src="../../Scripts/html-include.js"
-        target="../control.html"
-        position="afterbegin"
-      ></script>
+      <script src="../../Scripts/html-include.js" target="../control.html" position="afterbegin"></script>
       <p class="交互标题">渐变</p>
-      <section class="展示区"></section>
-      <section class="控制区"></section>
+
+      <!-- 展示区 -->
+      <section class="展示区">
+        <!-- 线性渐变Canvas -->
+        <div class="canvas-container active" id="linear-canvas-container">
+          <canvas class="gradient-canvas" id="linear-canvas"></canvas>
+          <div class="canvas-overlay" id="linear-overlay">
+          </div>
+        </div>
+
+        <!-- 径向渐变Canvas -->
+        <div class="canvas-container" id="radial-canvas-container">
+          <canvas class="gradient-canvas" id="radial-canvas"></canvas>
+          <div class="canvas-overlay" id="radial-overlay">
+            <div class="center-point" id="radial-center"></div>
+            <div class="size-indicator" id="radial-size-indicator"></div>
+            <div class="size-handle" id="radial-size-handle-top"></div>
+            <div class="size-handle" id="radial-size-handle-right"></div>
+            <div class="size-handle" id="radial-size-handle-bottom"></div>
+            <div class="size-handle" id="radial-size-handle-left"></div>
+          </div>
+        </div>
+
+        <!-- 锥形渐变Canvas -->
+        <div class="canvas-container" id="conic-canvas-container">
+          <canvas class="gradient-canvas" id="conic-canvas"></canvas>
+          <div class="canvas-overlay" id="conic-overlay">
+            <div class="center-point" id="conic-center"></div>
+            <div class="angle-indicator" id="conic-angle-indicator"></div>
+            <div class="angle-handle" id="conic-angle-handle"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 控制区 -->
+      <section class="控制区">
+        <!-- 线性渐变控制 -->
+        <div class="control-section linear-controls active">
+          <div class="control-row">
+            <label class="control-label">CSS代码</label>
+            <div class="control-input css-code" id="linear-css">linear-gradient(180deg, #ffffff, #000000)</div>
+          </div>
+        </div>
+
+        <!-- 径向渐变控制 -->
+        <div class="control-section radial-controls">
+          <div class="control-title">径向渐变控制</div>
+          <div class="radial-options">
+            <div class="option-group">
+              <div class="option-label">形状:</div>
+              <div class="radio-group">
+                <label class="radio-option">
+                  <input type="radio" name="radial-shape" value="ellipse" checked />
+                  椭圆
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="radial-shape" value="circle" />
+                  正圆
+                </label>
+              </div>
+            </div>
+            <div class="option-group">
+              <div class="option-label">尺寸关键字:</div>
+              <div class="radio-group">
+                <label class="radio-option">
+                  <input type="radio" name="radial-size" value="closest-side" checked />
+                  closest-side
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="radial-size" value="closest-corner" />
+                  closest-corner
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="radial-size" value="farthest-side" />
+                  farthest-side
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="radial-size" value="farthest-corner" />
+                  farthest-corner
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="size-controls">
+            <label class="control-label">尺寸:</label>
+            <div class="size-slider">
+              <input type="range" id="radial-size-slider" min="0" max="100" value="50" />
+            </div>
+            <div class="size-unit">
+              <select id="radial-size-unit">
+                <option value="px">px</option>
+                <option value="%" selected>%</option>
+              </select>
+            </div>
+          </div>
+          <div class="control-row">
+            <label class="control-label">CSS代码:</label>
+            <div class="control-input css-code" id="radial-css">
+              radial-gradient(ellipse 50% 50% at 50% 50%, #ff0000, #0000ff)
+            </div>
+          </div>
+        </div>
+
+        <!-- 锥形渐变控制 -->
+        <div class="control-section conic-controls">
+          <div class="control-title">锥形渐变控制</div>
+          <div class="control-row">
+            <label class="control-label">CSS代码:</label>
+            <div class="control-input css-code" id="conic-css">
+              conic-gradient(from 0deg at 50% 50%, #ff0000, #0000ff)
+            </div>
+          </div>
+        </div>
+
+        <!-- 渐变类型选择器 -->
+        <div class="gradient-type-selector">
+          <button class="gradient-type-btn active" data-type="linear">线性渐变</button>
+          <button class="gradient-type-btn" data-type="radial">径向渐变</button>
+          <button class="gradient-type-btn" data-type="conic">锥形渐变</button>
+        </div>
+      </section>
     </section>
+
+    <!-- 现代化拾色器 -->
+    <div class="color-picker-overlay" id="color-picker-overlay">
+      <div class="color-picker">
+        <div class="color-picker-header">
+          <div class="color-picker-drag-handle" id="color-picker-drag-handle">⋮⋮</div>
+          <div class="color-picker-title">选择颜色</div>
+          <button class="color-picker-close" id="color-picker-close">&times;</button>
+        </div>
+        <div class="color-picker-main">
+          <div class="color-picker-controls">
+            <div class="color-wheel-container">
+              <canvas id="color-wheel" width="200" height="200"></canvas>
+              <div class="color-wheel-cursor" id="color-wheel-cursor"></div>
+            </div>
+            <div class="brightness-slider-container">
+              <div class="slider-group">
+                <span class="slider-label">亮度</span>
+                <input type="range" class="slider-input" id="brightness-slider" data-type="brightness" min="0" max="100" value="50">
+                <span class="slider-value" id="brightness-value">50</span>
+              </div>
+              <div class="slider-group">
+                <span class="slider-label">透明度</span>
+                <input type="range" class="slider-input" id="alpha-slider" data-type="alpha" min="0" max="255" value="255">
+                <span class="slider-value" id="alpha-value">255</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="color-picker-inputs">
+          <div class="input-group">
+            <div class="input-label">16进制代码</div>
+            <div class="hex-input-container">
+              <span class="hex-prefix">#</span>
+              <input type="text" class="hex-input-field" id="hex-r-input" value="ff" maxlength="2">
+              <input type="text" class="hex-input-field" id="hex-g-input" value="00" maxlength="2">
+              <input type="text" class="hex-input-field" id="hex-b-input" value="00" maxlength="2">
+            </div>
+          </div>
+          <div class="input-group">
+            <div class="input-label">10进制代码</div>
+            <div class="rgb-input-container">
+              <span class="rgb-prefix">rgb(</span>
+              <input type="number" class="rgb-input-field" id="rgb-r-input" value="255" min="0" max="255">
+              <span class="rgb-separator">,</span>
+              <input type="number" class="rgb-input-field" id="rgb-g-input" value="0" min="0" max="255">
+              <span class="rgb-separator">,</span>
+              <input type="number" class="rgb-input-field" id="rgb-b-input" value="0" min="0" max="255">
+              <span class="rgb-suffix">)</span>
+            </div>
+          </div>
+          <div class="input-group">
+            <div class="input-label">HSL代码</div>
+            <input type="text" class="input-field" id="hsl-input" value="0, 100%, 50%">
+          </div>
+        </div>
+        <div class="color-picker-buttons">
+          <button class="color-picker-btn secondary" id="color-picker-cancel">取消</button>
+          <button class="color-picker-btn primary" id="color-picker-apply">应用</button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
