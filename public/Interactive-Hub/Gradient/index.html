@@ -30,21 +30,13 @@
         <!-- 线性渐变Canvas -->
         <div class="canvas-container active" id="linear-canvas-container">
           <canvas class="gradient-canvas" id="linear-canvas"></canvas>
-          <div class="canvas-overlay" id="linear-overlay">
-          </div>
+          <div class="canvas-overlay" id="linear-overlay"></div>
         </div>
 
         <!-- 径向渐变Canvas -->
         <div class="canvas-container" id="radial-canvas-container">
+          <div class="canvas-overlay" id="radial-overlay"></div>
           <canvas class="gradient-canvas" id="radial-canvas"></canvas>
-          <div class="canvas-overlay" id="radial-overlay">
-            <div class="center-point" id="radial-center"></div>
-            <div class="size-indicator" id="radial-size-indicator"></div>
-            <div class="size-handle" id="radial-size-handle-top"></div>
-            <div class="size-handle" id="radial-size-handle-right"></div>
-            <div class="size-handle" id="radial-size-handle-bottom"></div>
-            <div class="size-handle" id="radial-size-handle-left"></div>
-          </div>
         </div>
 
         <!-- 锥形渐变Canvas -->
@@ -63,25 +55,24 @@
         <!-- 线性渐变控制 -->
         <div class="control-section linear-controls active">
           <div class="control-row">
-            <label class="control-label">CSS代码</label>
+            <label class="control-label"><span class="css-text">CSS</span><span class="code-text">代码</span></label>
             <div class="control-input css-code" id="linear-css">linear-gradient(180deg, #ffffff, #000000)</div>
           </div>
         </div>
 
         <!-- 径向渐变控制 -->
         <div class="control-section radial-controls">
-          <div class="control-title">径向渐变控制</div>
           <div class="radial-options">
             <div class="option-group">
               <div class="option-label">形状:</div>
               <div class="radio-group">
                 <label class="radio-option">
                   <input type="radio" name="radial-shape" value="ellipse" checked />
-                  椭圆
+                  <span>椭圆</span>
                 </label>
                 <label class="radio-option">
                   <input type="radio" name="radial-shape" value="circle" />
-                  正圆
+                  <span>正圆</span>
                 </label>
               </div>
             </div>
@@ -89,38 +80,26 @@
               <div class="option-label">尺寸关键字:</div>
               <div class="radio-group">
                 <label class="radio-option">
-                  <input type="radio" name="radial-size" value="closest-side" checked />
-                  closest-side
-                </label>
-                <label class="radio-option">
-                  <input type="radio" name="radial-size" value="closest-corner" />
-                  closest-corner
+                  <input type="radio" name="radial-size" value="closest-side" />
+                  <span>closest-side</span>
                 </label>
                 <label class="radio-option">
                   <input type="radio" name="radial-size" value="farthest-side" />
-                  farthest-side
+                  <span>farthest-side</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="radial-size" value="closest-corner" />
+                  <span>closest-corner</span>
                 </label>
                 <label class="radio-option">
                   <input type="radio" name="radial-size" value="farthest-corner" />
-                  farthest-corner
+                  <span>farthest-corner</span>
                 </label>
               </div>
             </div>
           </div>
-          <div class="size-controls">
-            <label class="control-label">尺寸:</label>
-            <div class="size-slider">
-              <input type="range" id="radial-size-slider" min="0" max="100" value="50" />
-            </div>
-            <div class="size-unit">
-              <select id="radial-size-unit">
-                <option value="px">px</option>
-                <option value="%" selected>%</option>
-              </select>
-            </div>
-          </div>
           <div class="control-row">
-            <label class="control-label">CSS代码:</label>
+            <label class="control-label"><span class="css-text">CSS</span><span class="code-text">代码</span></label>
             <div class="control-input css-code" id="radial-css">
               radial-gradient(ellipse 50% 50% at 50% 50%, #ff0000, #0000ff)
             </div>
@@ -129,9 +108,8 @@
 
         <!-- 锥形渐变控制 -->
         <div class="control-section conic-controls">
-          <div class="control-title">锥形渐变控制</div>
           <div class="control-row">
-            <label class="control-label">CSS代码:</label>
+            <label class="control-label"><span class="css-text">CSS</span><span class="code-text">代码</span></label>
             <div class="control-input css-code" id="conic-css">
               conic-gradient(from 0deg at 50% 50%, #ff0000, #0000ff)
             </div>
@@ -164,12 +142,28 @@
             <div class="brightness-slider-container">
               <div class="slider-group">
                 <span class="slider-label">亮度</span>
-                <input type="range" class="slider-input" id="brightness-slider" data-type="brightness" min="0" max="100" value="50">
+                <input
+                  type="range"
+                  class="slider-input"
+                  id="brightness-slider"
+                  data-type="brightness"
+                  min="0"
+                  max="100"
+                  value="50"
+                />
                 <span class="slider-value" id="brightness-value">50</span>
               </div>
               <div class="slider-group">
                 <span class="slider-label">透明度</span>
-                <input type="range" class="slider-input" id="alpha-slider" data-type="alpha" min="0" max="255" value="255">
+                <input
+                  type="range"
+                  class="slider-input"
+                  id="alpha-slider"
+                  data-type="alpha"
+                  min="0"
+                  max="255"
+                  value="255"
+                />
                 <span class="slider-value" id="alpha-value">255</span>
               </div>
             </div>
@@ -180,26 +174,26 @@
             <div class="input-label">16进制代码</div>
             <div class="hex-input-container">
               <span class="hex-prefix">#</span>
-              <input type="text" class="hex-input-field" id="hex-r-input" value="ff" maxlength="2">
-              <input type="text" class="hex-input-field" id="hex-g-input" value="00" maxlength="2">
-              <input type="text" class="hex-input-field" id="hex-b-input" value="00" maxlength="2">
+              <input type="text" class="hex-input-field" id="hex-r-input" value="ff" maxlength="2" />
+              <input type="text" class="hex-input-field" id="hex-g-input" value="00" maxlength="2" />
+              <input type="text" class="hex-input-field" id="hex-b-input" value="00" maxlength="2" />
             </div>
           </div>
           <div class="input-group">
             <div class="input-label">10进制代码</div>
             <div class="rgb-input-container">
               <span class="rgb-prefix">rgb(</span>
-              <input type="number" class="rgb-input-field" id="rgb-r-input" value="255" min="0" max="255">
+              <input type="number" class="rgb-input-field" id="rgb-r-input" value="255" min="0" max="255" />
               <span class="rgb-separator">,</span>
-              <input type="number" class="rgb-input-field" id="rgb-g-input" value="0" min="0" max="255">
+              <input type="number" class="rgb-input-field" id="rgb-g-input" value="0" min="0" max="255" />
               <span class="rgb-separator">,</span>
-              <input type="number" class="rgb-input-field" id="rgb-b-input" value="0" min="0" max="255">
+              <input type="number" class="rgb-input-field" id="rgb-b-input" value="0" min="0" max="255" />
               <span class="rgb-suffix">)</span>
             </div>
           </div>
           <div class="input-group">
             <div class="input-label">HSL代码</div>
-            <input type="text" class="input-field" id="hsl-input" value="0, 100%, 50%">
+            <input type="text" class="input-field" id="hsl-input" value="0, 100%, 50%" />
           </div>
         </div>
         <div class="color-picker-buttons">

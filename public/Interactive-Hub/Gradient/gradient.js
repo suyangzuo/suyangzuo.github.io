@@ -8,6 +8,7 @@ class GradientTutorial {
     this.currentRGB = { r: 255, g: 0, b: 0, a: 255 };
     this.colorPickerInitialized = false;
     this.originalColor = null; // 保存原始颜色，用于取消时恢复
+    this.selectedColor = "#ff0000"; // 默认选中的颜色
 
     // 警告相关属性
     this.warning = {
@@ -18,6 +19,9 @@ class GradientTutorial {
     };
     this.warningTimeout = null;
     this.isDraggingColorStop = false; // 新增：标记是否正在拖拽色标
+
+    // 颜色选择器位置记忆（相对于视口的百分比）
+    this.colorPickerPosition = { x: 50, y: 50 }; // 默认屏幕正中间
 
     // 线性渐变数据
     this.linearData = {
@@ -33,14 +37,37 @@ class GradientTutorial {
     this.radialData = {
       center: { x: 0.5, y: 0.5 },
       shape: "ellipse",
-      sizeKeyword: "closest-side",
+      sizeKeyword: null, // 默认不选中任何关键字
       size: { x: 50, y: 50 },
       sizeUnit: "%",
       colorStops: [
-        { position: 0, color: "#ff0000" },
-        { position: 100, color: "#0000ff" },
+        { position: 0, color: "#ffffff", isAboveLine: true },
+        { position: 100, color: "#000000", isAboveLine: true },
       ],
       selectedStop: null,
+    };
+
+    // 椭圆和圆的独立参数存储
+    this.ellipseData = {
+      center: { x: 0.5, y: 0.5 },
+      size: { x: 50, y: 50 }, // 椭圆：水平半径50%，垂直半径50%
+      sizeUnit: "%",
+      sizeKeyword: null, // 椭圆的尺寸关键字
+      colorStops: [
+        { position: 0, color: "#ffffff", isAboveLine: true },
+        { position: 100, color: "#000000", isAboveLine: true },
+      ],
+    };
+
+    this.circleData = {
+      center: { x: 0.5, y: 0.5 },
+      size: { x: 50, y: 50 }, // 正圆：半径50%
+      sizeUnit: "%",
+      sizeKeyword: null, // 正圆的尺寸关键字
+      colorStops: [
+        { position: 0, color: "#ffffff", isAboveLine: true },
+        { position: 100, color: "#000000", isAboveLine: true },
+      ],
     };
 
     // 锥形渐变数据
@@ -70,11 +97,13 @@ class GradientTutorial {
       document.addEventListener("DOMContentLoaded", () => {
         this.setupCanvases();
         this.setupEventListeners();
+        this.initializeRadialDefaults();
         this.renderAll();
       });
     } else {
       this.setupCanvases();
       this.setupEventListeners();
+      this.initializeRadialDefaults();
       this.renderAll();
     }
   }
@@ -97,6 +126,40 @@ class GradientTutorial {
     });
   }
 
+  initializeRadialDefaults() {
+    // 初始化椭圆和圆的默认参数，严格按照CSS代码实现
+    const radialCanvas = this.canvases["radial-canvas"];
+
+    if (radialCanvas) {
+      const rect = radialCanvas.getBoundingClientRect();
+
+      // 设置椭圆的默认尺寸：CSS代码中的 ellipse 50% 50% 表示水平半径是容器宽度的50%，垂直半径是容器高度的50%
+      this.ellipseData.size = { x: 50, y: 50 };
+
+      // 设置圆的默认尺寸：CSS代码中的 circle 50% 表示半径是容器高度的50%
+      this.circleData.size = { x: 50, y: 50 };
+
+      // 根据当前形状设置初始参数
+      if (this.radialData.shape === "ellipse") {
+        this.radialData.size = { ...this.ellipseData.size };
+      } else if (this.radialData.shape === "circle") {
+        this.radialData.size = { ...this.circleData.size };
+      }
+
+      // 如果使用了尺寸关键字，计算对应的尺寸
+      if (this.radialData.sizeKeyword) {
+        this.calculateSizeFromKeyword(this.radialData.sizeKeyword);
+      }
+
+      // 更新滑块值
+      this.updateRadialSlider();
+
+      // 确保渲染径向渐变
+      this.renderRadial();
+      this.updateRadialColorStops();
+    }
+  }
+
   setupEventListeners() {
     // 渐变类型切换
     document.querySelectorAll(".gradient-type-btn").forEach((btn) => {
@@ -117,7 +180,11 @@ class GradientTutorial {
     // 窗口大小改变
     window.addEventListener("resize", () => {
       this.setupCanvases();
+      this.initializeRadialDefaults();
+      this.updateRadialControls();
       this.renderAll();
+      // 更新颜色选择器位置
+      this.updateColorPickerPositionOnResize();
     });
   }
 
@@ -230,8 +297,6 @@ class GradientTutorial {
       }
     });
 
-
-
     // Canvas鼠标按下事件 - 处理色标添加和角度控制器
     canvas.addEventListener("mousedown", (e) => {
       if (this.currentType !== "linear") return;
@@ -256,12 +321,13 @@ class GradientTutorial {
         }
       }
 
-      // 检查是否点击在角度控制器的小十字上
+      // 检查是否点击在角度控制器的圆球上
       if (this.angleController) {
-        const dx = clickX - this.angleController.crossX;
-        const dy = clickY - this.angleController.crossY;
-        const crossDistance = Math.sqrt(dx * dx + dy * dy);
-        if (crossDistance <= 12) { // 只有点击在小十字中心点附近才允许拖拽
+        const dx = clickX - this.angleController.ballX;
+        const dy = clickY - this.angleController.ballY;
+        const ballDistance = Math.sqrt(dx * dx + dy * dy);
+        if (ballDistance <= 12) {
+          // 只有点击在圆球附近才允许拖拽
           this.startAngleAdjustment(e);
           return;
         }
@@ -306,63 +372,207 @@ class GradientTutorial {
 
   setupRadialEvents() {
     const canvas = this.canvases["radial-canvas"];
-    const center = document.getElementById("radial-center");
-    const sizeHandles = document.querySelectorAll('[id^="radial-size-handle"]');
-
-    // 圆心拖拽
-    center.addEventListener("mousedown", (e) => {
-      e.stopPropagation();
-      this.startDrag("radial-center", null, e);
-    });
-
-    // 尺寸控制点拖拽
-    sizeHandles.forEach((handle, index) => {
-      handle.addEventListener("mousedown", (e) => {
-        e.stopPropagation();
-        this.startDrag("radial-size", index, e);
-      });
-    });
 
     // 形状和尺寸关键字选择
     document.querySelectorAll('input[name="radial-shape"], input[name="radial-size"]').forEach((radio) => {
       radio.addEventListener("change", () => {
         this.updateRadialData();
+        this.updateRadialSlider();
         this.renderRadial();
+        this.updateRadialColorStops();
         this.updateRadialCSS();
       });
     });
 
-    // 尺寸滑块
-    document.getElementById("radial-size-slider").addEventListener("input", (e) => {
-      this.radialData.size.x = this.radialData.size.y = parseInt(e.target.value);
-      this.renderRadial();
-      this.updateRadialCSS();
-    });
-
-    // 尺寸单位选择
-    document.getElementById("radial-size-unit").addEventListener("change", (e) => {
-      this.radialData.sizeUnit = e.target.value;
-      this.renderRadial();
-      this.updateRadialCSS();
-    });
-
-    // Canvas鼠标按下事件 - 处理色标添加
+    // Canvas鼠标事件处理
     canvas.addEventListener("mousedown", (e) => {
       if (this.currentType !== "radial") return;
 
-      const rect = canvas.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const y = (e.clientY - rect.top) / rect.height;
-
-      // 计算到圆心的距离和角度
-      const dx = x - this.radialData.center.x;
-      const dy = y - this.radialData.center.y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-
-      // 在半径线上添加色标
-      if (distance > 0.1 && distance < 0.4) {
-        this.addRadialColorStop(distance * 100);
+      // 检查鼠标是否在色标上
+      const target = e.target;
+      if (target && (target.classList.contains("radial-color-stop") || target.closest(".radial-color-stop"))) {
+        return; // 在色标上点击时不添加新色标
       }
+
+      // 获取radial-canvas-container的尺寸和位置
+      const container = document.getElementById("radial-canvas-container");
+      const containerRect = container.getBoundingClientRect();
+
+      // 获取Canvas的尺寸和位置
+      const canvasRect = canvas.getBoundingClientRect();
+
+      // 计算container在Canvas坐标系中的偏移量
+      const offsetX = containerRect.left - canvasRect.left;
+      const offsetY = containerRect.top - canvasRect.top;
+
+      // 将鼠标坐标转换为container坐标系
+      const x = e.clientX - containerRect.left;
+      const y = e.clientY - containerRect.top;
+
+      // 检查是否点击在控制点上
+      if (this.radialHandles) {
+        // 检查圆心控制点（需要将container坐标转换为Canvas坐标）
+        const center = this.radialHandles.center;
+        const centerDistance = Math.sqrt((x + offsetX - center.x) ** 2 + (y + offsetY - center.y) ** 2);
+        if (centerDistance <= center.radius) {
+          e.stopPropagation();
+          this.startDrag("radial-center", null, e);
+          return;
+        }
+
+        // 检查尺寸控制点
+        for (const handle of this.radialHandles.sizeHandles) {
+          const handleDistance = Math.sqrt((x + offsetX - handle.x) ** 2 + (y + offsetY - handle.y) ** 2);
+          if (handleDistance <= handle.radius) {
+            e.stopPropagation();
+            this.startDrag("radial-size", handle.index, e);
+            return;
+          }
+        }
+      }
+
+      // 检查是否在虚线上方或下方60px范围内
+      const centerX = this.radialData.center.x * containerRect.width;
+      const centerY = this.radialData.center.y * containerRect.height;
+      const distanceFromLine = Math.abs(y - centerY);
+      if (distanceFromLine > 60) return; // 超出范围，不添加色标
+
+      // 根据形状计算最大半径
+      let maxRadius;
+      if (this.radialData.shape === "circle") {
+        maxRadius = (this.radialData.size.x / 100) * containerRect.height;
+      } else {
+        maxRadius = (this.radialData.size.x / 100) * containerRect.width;
+      }
+
+      // 检查点击位置是否在有效范围内
+      const rightBound = centerX + maxRadius;
+      const validRangeStart = centerX - 40;
+      const validRangeEnd = rightBound + 40;
+
+      if (x < validRangeStart || x > validRangeEnd) return;
+
+      // 计算点击位置到圆心的水平距离
+      const horizontalDistance = x - centerX;
+
+      // 计算位置百分比
+      let position;
+      if (horizontalDistance >= 0) {
+        position = Math.max(0, Math.min(100, (horizontalDistance / maxRadius) * 100));
+      } else {
+        position = 0;
+      }
+
+      // 判断是在虚线上方还是下方
+      const isAboveLine = y < centerY;
+
+      // 获取当前位置的渐变颜色
+      const color = this.getColorAtRadialPosition(position);
+
+      // 添加新的色标
+      const newStop = {
+        position: position,
+        color: color,
+        isSelected: false,
+        isAboveLine: isAboveLine,
+      };
+
+      this.radialData.colorStops.push(newStop);
+      this.radialData.colorStops.sort((a, b) => a.position - b.position);
+      this.renderRadial();
+      this.updateRadialColorStops();
+      this.updateRadialCSS();
+    });
+
+    // 添加鼠标悬停效果
+    canvas.addEventListener("mousemove", (e) => {
+      if (this.currentType !== "radial") return;
+
+      // 检查鼠标是否在色标上
+      const target = e.target;
+      if (target && (target.classList.contains("radial-color-stop") || target.closest(".radial-color-stop"))) {
+        this.hideRadialPreview();
+        return;
+      }
+
+      // 获取radial-canvas-container的尺寸和位置
+      const container = document.getElementById("radial-canvas-container");
+      const containerRect = container.getBoundingClientRect();
+
+      // 获取Canvas的尺寸和位置
+      const canvasRect = canvas.getBoundingClientRect();
+
+      // 计算container在Canvas坐标系中的偏移量
+      const offsetX = containerRect.left - canvasRect.left;
+      const offsetY = containerRect.top - canvasRect.top;
+
+      // 将鼠标坐标转换为container坐标系
+      const x = e.clientX - containerRect.left;
+      const y = e.clientY - containerRect.top;
+
+      // 检查是否悬停在控制点上
+      if (this.radialHandles) {
+        let isOverControl = false;
+
+        // 检查圆心控制点（需要将container坐标转换为Canvas坐标）
+        const center = this.radialHandles.center;
+        const centerDistance = Math.sqrt((x + offsetX - center.x) ** 2 + (y + offsetY - center.y) ** 2);
+        if (centerDistance <= center.radius) {
+          canvas.style.cursor = "move";
+          isOverControl = true;
+        }
+
+        // 检查尺寸控制点
+        if (!isOverControl) {
+          for (const handle of this.radialHandles.sizeHandles) {
+            const handleDistance = Math.sqrt((x + offsetX - handle.x) ** 2 + (y + offsetY - handle.y) ** 2);
+            if (handleDistance <= handle.radius) {
+              canvas.style.cursor = "pointer";
+              isOverControl = true;
+              break;
+            }
+          }
+        }
+
+        // 如果悬停在控制点上，隐藏预览色标并返回
+        if (isOverControl) {
+          this.hideRadialPreview();
+          return;
+        }
+
+        canvas.style.cursor = "crosshair";
+      }
+
+      // 原有的预览色标逻辑
+      const centerX = this.radialData.center.x * containerRect.width;
+      const centerY = this.radialData.center.y * containerRect.height;
+
+      let maxRadius;
+      if (this.radialData.shape === "circle") {
+        maxRadius = (this.radialData.size.x / 100) * containerRect.height;
+      } else {
+        maxRadius = (this.radialData.size.x / 100) * containerRect.width;
+      }
+
+      const distanceFromLine = Math.abs(y - centerY);
+      if (distanceFromLine <= 60) {
+        const rightBound = centerX + maxRadius;
+        const validRangeStart = centerX - 40;
+        const validRangeEnd = rightBound + 40;
+
+        if (x >= validRangeStart && x <= validRangeEnd) {
+          this.showRadialPreview(x, y, centerX, centerY, y < centerY);
+        } else {
+          this.hideRadialPreview();
+        }
+      } else {
+        this.hideRadialPreview();
+      }
+    });
+
+    canvas.addEventListener("mouseleave", () => {
+      this.hideRadialPreview();
+      canvas.style.cursor = "crosshair";
     });
   }
 
@@ -405,10 +615,22 @@ class GradientTutorial {
   }
 
   startDrag(type, target, e) {
-    console.log("开始拖拽:", type, target); // 调试信息
     this.isDragging = true;
     this.dragTarget = { type, target };
-    this.dragStartPos = { x: e.clientX, y: e.clientY };
+
+    // 对于尺寸控制点，记录container的偏移量
+    if (type === "radial-size") {
+      const container = document.getElementById("radial-canvas-container");
+      const containerRect = container.getBoundingClientRect();
+      this.dragStartPos = {
+        x: e.clientX,
+        y: e.clientY,
+        canvasLeft: containerRect.left,
+        canvasTop: containerRect.top,
+      };
+    } else {
+      this.dragStartPos = { x: e.clientX, y: e.clientY };
+    }
 
     // 使用绑定后的函数引用，确保能正确移除事件监听器
     this.boundHandleDrag = this.handleDrag.bind(this);
@@ -425,20 +647,22 @@ class GradientTutorial {
     const deltaX = e.clientX - this.dragStartPos.x;
     const deltaY = e.clientY - this.dragStartPos.y;
 
-    console.log("拖拽中:", type, target, "delta:", deltaX, deltaY); // 调试信息
-
     if (type === "radial-center") {
       this.updateRadialCenter(deltaX, deltaY);
+      // 更新拖拽起始位置为当前位置，用于下一次计算
+      this.dragStartPos = { x: e.clientX, y: e.clientY };
     } else if (type === "radial-size") {
       this.updateRadialSize(target, deltaX, deltaY);
+      // 对于尺寸控制点，不更新拖拽起始位置，让控制点跟随鼠标
     } else if (type === "conic-center") {
       this.updateConicCenter(deltaX, deltaY);
+      // 更新拖拽起始位置为当前位置，用于下一次计算
+      this.dragStartPos = { x: e.clientX, y: e.clientY };
     } else if (type === "conic-angle") {
       this.updateConicAngle(deltaX, deltaY);
+      // 更新拖拽起始位置为当前位置，用于下一次计算
+      this.dragStartPos = { x: e.clientX, y: e.clientY };
     }
-
-    // 更新拖拽起始位置为当前位置，用于下一次计算
-    this.dragStartPos = { x: e.clientX, y: e.clientY };
   }
 
   stopDrag() {
@@ -463,17 +687,34 @@ class GradientTutorial {
       btn.classList.toggle("active", btn.dataset.type === type);
     });
 
-    // 更新Canvas显示
-    document.querySelectorAll(".canvas-container").forEach((container) => {
-      container.classList.toggle("active", container.id === `${type}-canvas-container`);
-    });
+    // 更新Canvas显示 - 使用具体的ID选择器
+    const linearContainer = document.getElementById("linear-canvas-container");
+    const radialContainer = document.getElementById("radial-canvas-container");
+    const conicContainer = document.getElementById("conic-canvas-container");
+
+    if (linearContainer) linearContainer.classList.toggle("active", type === "linear");
+    if (radialContainer) radialContainer.classList.toggle("active", type === "radial");
+    if (conicContainer) conicContainer.classList.toggle("active", type === "conic");
 
     // 更新控制区显示
     document.querySelectorAll(".control-section").forEach((section) => {
       section.classList.toggle("active", section.classList.contains(`${type}-controls`));
     });
 
-    this.renderAll();
+    // 只渲染当前类型的Canvas和色标
+    if (type === "linear") {
+      this.renderLinear();
+      this.updateLinearColorStops();
+      this.updateLinearCSS();
+    } else if (type === "radial") {
+      this.renderRadial();
+      this.updateRadialColorStops();
+      this.updateRadialCSS();
+    } else if (type === "conic") {
+      this.renderConic();
+      this.updateConicColorStops();
+      this.updateConicCSS();
+    }
   }
 
   // 线性渐变方法
@@ -509,47 +750,92 @@ class GradientTutorial {
     this.updateLinearCSS();
   }
 
-
-
   // 径向渐变方法
   updateRadialCenter(deltaX, deltaY) {
-    const canvas = this.canvases["radial-canvas"];
-    const rect = canvas.getBoundingClientRect();
+    // 获取radial-canvas-container的尺寸
+    const container = document.getElementById("radial-canvas-container");
+    const containerRect = container.getBoundingClientRect();
 
-    this.radialData.center.x += deltaX / rect.width;
-    this.radialData.center.y += deltaY / rect.height;
+    this.radialData.center.x += deltaX / containerRect.width;
+    this.radialData.center.y += deltaY / containerRect.height;
 
     // 限制在Canvas范围内
     this.radialData.center.x = Math.max(0.1, Math.min(0.9, this.radialData.center.x));
     this.radialData.center.y = Math.max(0.1, Math.min(0.9, this.radialData.center.y));
 
+    // 如果选择了尺寸关键字，根据新的圆心位置重新计算尺寸
+    if (this.radialData.sizeKeyword) {
+      this.calculateSizeFromKeyword(this.radialData.sizeKeyword);
+    }
+
     this.renderRadial();
+    this.updateRadialColorStops();
     this.updateRadialCSS();
   }
 
   updateRadialSize(target, deltaX, deltaY) {
-    const canvas = this.canvases["radial-canvas"];
-    const rect = canvas.getBoundingClientRect();
+    // 获取radial-canvas-container的尺寸
+    const container = document.getElementById("radial-canvas-container");
+    const containerRect = container.getBoundingClientRect();
 
-    if (target === 0 || target === 2) {
-      // 上下
-      this.radialData.size.y += ((target === 0 ? -deltaY : deltaY) / rect.height) * 100;
+    const centerX = this.radialData.center.x * containerRect.width;
+    const centerY = this.radialData.center.y * containerRect.height;
+
+    // 使用记录的Canvas偏移量计算鼠标位置
+    const mouseX = this.dragStartPos.x - this.dragStartPos.canvasLeft + deltaX;
+    const mouseY = this.dragStartPos.y - this.dragStartPos.canvasTop + deltaY;
+
+    // 计算鼠标到圆心的距离
+    const dx = mouseX - centerX;
+    const dy = mouseY - centerY;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    // 根据形状计算新的尺寸
+    let newSize;
+    if (this.radialData.shape === "circle") {
+      // 圆的尺寸：基于container高度计算
+      const defaultRadius = containerRect.height;
+      newSize = Math.max(5, (distance / defaultRadius) * 100);
     } else {
-      // 左右
-      this.radialData.size.x += ((target === 1 ? deltaX : -deltaX) / rect.width) * 100;
+      // 椭圆的尺寸：基于container的宽度或高度计算
+      if (target === 0 || target === 2) {
+        // 上下控制点：基于container高度计算
+        const defaultRadius = containerRect.height;
+        newSize = Math.max(5, (distance / defaultRadius) * 100);
+      } else {
+        // 左右控制点：基于container宽度计算
+        const defaultRadius = containerRect.width;
+        newSize = Math.max(5, (distance / defaultRadius) * 100);
+      }
     }
 
-    // 限制尺寸范围
-    this.radialData.size.x = Math.max(5, Math.min(100, this.radialData.size.x));
-    this.radialData.size.y = Math.max(5, Math.min(100, this.radialData.size.y));
+    // 根据拖拽的控制点更新对应的尺寸
+    if (target === 0 || target === 2) {
+      // 上下控制点
+      this.radialData.size.y = newSize;
+    } else {
+      // 左右控制点
+      this.radialData.size.x = newSize;
+    }
+
+    // 手动拖拽尺寸时，取消尺寸关键字选中（因为用户主动改变了尺寸）
+    if (this.radialData.sizeKeyword) {
+      this.radialData.sizeKeyword = null;
+      this.clearSizeKeywordSelection();
+    }
 
     this.renderRadial();
+    this.updateRadialColorStops();
     this.updateRadialCSS();
   }
 
-  addRadialColorStop(position) {
+  addRadialColorStop(position, isAboveLine = true) {
     const color = this.getColorAtRadialPosition(position);
-    this.radialData.colorStops.push({ position, color });
+    this.radialData.colorStops.push({
+      position,
+      color,
+      isAboveLine: isAboveLine,
+    });
     this.radialData.colorStops.sort((a, b) => a.position - b.position);
 
     this.renderRadial();
@@ -570,24 +856,54 @@ class GradientTutorial {
   }
 
   updateRadialColorStops() {
-    const overlay = document.getElementById("radial-overlay");
-    const existingStops = overlay.querySelectorAll(".radial-color-stop");
+    // 只在当前类型为radial时才更新径向渐变色标
+    if (this.currentType !== "radial") return;
+
+    const canvasContainer = document.getElementById("radial-canvas-container");
+    const existingStops = canvasContainer.querySelectorAll(".radial-color-stop");
     existingStops.forEach((stop) => stop.remove());
 
     this.radialData.colorStops.forEach((stop, index) => {
       const stopElement = document.createElement("div");
       stopElement.className = "radial-color-stop";
-      stopElement.style.backgroundColor = stop.color;
 
-      // 计算色标位置（在半径线上）
-      const canvas = this.canvases["radial-canvas"];
-      const rect = canvas.getBoundingClientRect();
-      const centerX = this.radialData.center.x * rect.width;
-      const centerY = this.radialData.center.y * rect.height;
-      const radius = (stop.position / 100) * Math.min(rect.width, rect.height) * 0.4;
+      // 设置色标颜色
+      stopElement.style.setProperty("--色标-默认", stop.color);
 
-      stopElement.style.left = `${centerX + radius}px`;
-      stopElement.style.top = `${centerY}px`;
+      // 计算相对颜色并设置伪元素颜色
+      const contrastColor = this.getContrastColor(stop.color);
+      stopElement.style.setProperty("--色标-相对色", contrastColor);
+
+      // 计算色标位置（基于container的尺寸）
+      const container = document.getElementById("radial-canvas-container");
+      const containerRect = container.getBoundingClientRect();
+
+      const centerX = this.radialData.center.x * containerRect.width;
+      const centerY = this.radialData.center.y * containerRect.height;
+
+      // 根据形状计算色标位置
+      let radius;
+      if (this.radialData.shape === "circle") {
+        // 圆的色标位置：基于半径百分比，使用容器的最小尺寸作为基准
+        const minDimension = Math.min(containerRect.width, containerRect.height);
+        radius = (stop.position / 100) * (this.radialData.size.x / 100) * minDimension;
+      } else {
+        // 椭圆的色标位置：基于水平半径百分比
+        radius = (stop.position / 100) * (this.radialData.size.x / 100) * containerRect.width;
+      }
+
+      // 将container坐标系转换为屏幕坐标系
+      const screenX = centerX + radius;
+      stopElement.style.left = `${screenX}px`;
+
+      // 根据色标位置决定三角形方向
+      if (stop.isAboveLine) {
+        stopElement.style.top = `${centerY - 20}px`; // 圆心上方4px + 三角形高度(18px) - 4px调整 = 18px
+        stopElement.classList.remove("upside-down"); // 底边在上，尖角在下
+      } else {
+        stopElement.style.top = `${centerY + 22}px`; // 圆心下方4px + 4px调整 = 8px
+        stopElement.classList.add("upside-down"); // 底边在下，尖角在上
+      }
 
       stopElement.addEventListener("mousedown", (e) => {
         e.stopPropagation();
@@ -598,7 +914,10 @@ class GradientTutorial {
         this.selectRadialColorStop(stopElement, stop);
       });
 
-      overlay.appendChild(stopElement);
+      // 设置色标的z-index，确保在控制元素之上
+      stopElement.style.zIndex = "20";
+
+      canvasContainer.appendChild(stopElement);
     });
   }
 
@@ -665,6 +984,9 @@ class GradientTutorial {
   }
 
   updateConicColorStops() {
+    // 只在当前类型为conic时才更新锥形渐变色标
+    if (this.currentType !== "conic") return;
+
     const overlay = document.getElementById("conic-overlay");
     const existingStops = overlay.querySelectorAll(".conic-color-stop");
     existingStops.forEach((stop) => stop.remove());
@@ -672,7 +994,11 @@ class GradientTutorial {
     this.conicData.colorStops.forEach((stop, index) => {
       const stopElement = document.createElement("div");
       stopElement.className = "conic-color-stop";
-      stopElement.style.backgroundColor = stop.color;
+      stopElement.style.setProperty("--色标-默认", stop.color);
+
+      // 计算相对颜色并设置伪元素颜色
+      const contrastColor = this.getContrastColor(stop.color);
+      stopElement.style.setProperty("--色标-相对色", contrastColor);
 
       // 计算色标位置（在圆周上）
       const canvas = this.canvases["conic-canvas"];
@@ -712,6 +1038,9 @@ class GradientTutorial {
 
   // 渲染方法
   renderLinear() {
+    // 只在当前类型为linear时才渲染线性渐变
+    if (this.currentType !== "linear") return;
+
     const canvas = this.canvases["linear-canvas"];
     const ctx = this.ctxs["linear-canvas"];
     const width = canvas.width / this.dpr;
@@ -728,18 +1057,23 @@ class GradientTutorial {
     // 创建线性渐变
     const angle = this.linearData.angle;
     let startX, startY, endX, endY;
-    
+
     // 计算角度线与色带边界的交点
     const angleRad = ((angle - 90) * Math.PI) / 180; // 转换为数学坐标系
     const centerX = gradientX + gradientWidth / 2;
     const centerY = gradientY + gradientHeight / 2;
-    
+
     // 计算从中心点出发的角度线与色带边界的交点
     const intersections = this.getLineRectangleIntersections(
-      centerX, centerY, angleRad,
-      gradientX, gradientY, gradientWidth, gradientHeight
+      centerX,
+      centerY,
+      angleRad,
+      gradientX,
+      gradientY,
+      gradientWidth,
+      gradientHeight
     );
-    
+
     if (intersections.length >= 2) {
       // 计算两个交点相对于中心的极角
       const [p1, p2] = intersections;
@@ -799,7 +1133,7 @@ class GradientTutorial {
     const gradientWidth = width - 100; // 色带宽度
     const gradientHeight = height - 150; // 色带高度
     const controllerRadius = 50; // 控制器半径 - 缩小到50px
-    
+
     const controllerX = gradientX + gradientWidth - 40 - controllerRadius; // 色带右边缘向左40px，再减去时钟半径
     const controllerY = gradientY + gradientHeight - 40 - controllerRadius; // 色带下边缘向上40px，再减去时钟半径
 
@@ -843,7 +1177,7 @@ class GradientTutorial {
       const textWidth = ctx.measureText(`${angle}°`).width;
       const textHeight = 16;
       const textPadding = 4;
-      
+
       ctx.fillStyle = "#0005"; // 半透明黑色背景
       this.drawRoundedRect(
         ctx,
@@ -866,38 +1200,39 @@ class GradientTutorial {
     ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
     ctx.fill();
 
-    // 绘制可拖拽的小十字
-    const crossSize = 8; // 十字大小
-    const crossDistance = controllerRadius - 20; // 十字距离圆心的距离
-    
-    // 根据当前角度计算十字位置
+    // 绘制可拖拽的蓝色圆球
+    const ballRadius = 5; // 圆球半径5px，直径10px
+    const ballDistance = controllerRadius - ballRadius - 5; // 圆球紧贴时钟边界内侧，留5px边距
+
+    // 根据当前角度计算圆球位置
     // CSS渐变角度0deg在正上，需要转换为数学坐标系
     const currentAngleRad = ((this.linearData.angle - 90) * Math.PI) / 180;
-    const crossX = controllerX + Math.cos(currentAngleRad) * crossDistance;
-    const crossY = controllerY + Math.sin(currentAngleRad) * crossDistance;
+    const ballX = controllerX + Math.cos(currentAngleRad) * ballDistance;
+    const ballY = controllerY + Math.sin(currentAngleRad) * ballDistance;
 
-    // 绘制十字
-    ctx.strokeStyle = "rgba(52, 152, 219, 0.9)";
-    ctx.lineWidth = 2;
-    ctx.lineCap = "round";
-    
-    // 水平线
+    // 绘制圆心到圆球的灰色虚线连接
+    ctx.strokeStyle = "rgba(128, 128, 128, 0.6)";
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 3]); // 设置虚线样式：3px实线，3px空白
+
     ctx.beginPath();
-    ctx.moveTo(crossX - crossSize, crossY);
-    ctx.lineTo(crossX + crossSize, crossY);
-    ctx.stroke();
-    
-    // 垂直线
-    ctx.beginPath();
-    ctx.moveTo(crossX, crossY - crossSize);
-    ctx.lineTo(crossX, crossY + crossSize);
+    ctx.moveTo(controllerX, controllerY);
+    ctx.lineTo(ballX, ballY);
     ctx.stroke();
 
-    // 绘制十字中心点
+    // 重置虚线样式
+    ctx.setLineDash([]);
+
+    // 绘制蓝色圆球
     ctx.fillStyle = "rgba(52, 152, 219, 0.9)";
     ctx.beginPath();
-    ctx.arc(crossX, crossY, 3, 0, 2 * Math.PI);
+    ctx.arc(ballX, ballY, ballRadius, 0, 2 * Math.PI);
     ctx.fill();
+
+    // 绘制圆球边框
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
+    ctx.lineWidth = 1;
+    ctx.stroke();
 
     // 恢复状态
     ctx.restore();
@@ -907,90 +1242,192 @@ class GradientTutorial {
       x: controllerX,
       y: controllerY,
       radius: controllerRadius,
-      crossX: crossX,
-      crossY: crossY,
+      ballX: ballX,
+      ballY: ballY,
     };
   }
 
   startAngleAdjustment(e) {
     this.isAdjustingAngle = true;
     this.adjustAngle(e);
-    
+
     // 绑定鼠标移动和松开事件
     const handleMouseMove = (e) => {
       if (this.isAdjustingAngle) {
         this.adjustAngle(e);
       }
     };
-    
+
     const handleMouseUp = () => {
       this.isAdjustingAngle = false;
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
     };
-    
+
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
   }
 
   adjustAngle(e) {
     if (!this.angleController) return;
-    
+
     const canvas = this.canvases["linear-canvas"];
     const rect = canvas.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
-    
+
     // 计算鼠标相对于圆心的角度
     const dx = mouseX - this.angleController.x;
     const dy = mouseY - this.angleController.y;
     const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
-    
+
     // 转换为CSS渐变角度：0deg在正上，180deg在正下
     let newAngle = angle + 90; // 加上90度，转换为CSS渐变角度
     if (newAngle < 0) newAngle += 360;
     if (newAngle >= 360) newAngle -= 360;
-    
+
     // 更新角度
     this.linearData.angle = newAngle;
-    
+
     // 重新渲染
     this.renderLinear();
     this.updateLinearCSS();
   }
 
-
-
   renderRadial() {
+    // 只在当前类型为radial时才渲染径向渐变
+    if (this.currentType !== "radial") return;
+
+    // 使用CSS background-image替代Canvas渲染
+    const overlay = document.getElementById("radial-overlay");
+    const cssCode = this.generateRadialGradientCSS();
+    overlay.style.backgroundImage = cssCode;
+
+    // 在Canvas上绘制控制元素
+    this.drawRadialControls();
+  }
+
+  // 新增：在Canvas上绘制径向渐变控制元素
+  drawRadialControls() {
     const canvas = this.canvases["radial-canvas"];
     const ctx = this.ctxs["radial-canvas"];
-    const width = canvas.width / this.dpr;
-    const height = canvas.height / this.dpr;
 
-    ctx.clearRect(0, 0, width, height);
+    // 获取radial-canvas-container的尺寸和位置（这是实际的渲染区域）
+    const container = document.getElementById("radial-canvas-container");
+    const containerRect = container.getBoundingClientRect();
 
-    // 创建径向渐变
-    const centerX = this.radialData.center.x * width;
-    const centerY = this.radialData.center.y * height;
-    const radiusX = (this.radialData.size.x / 100) * Math.min(width, height) * 0.8;
-    const radiusY = (this.radialData.size.y / 100) * Math.min(width, height) * 0.8;
+    // 获取Canvas的尺寸和位置
+    const canvasRect = canvas.getBoundingClientRect();
 
-    const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, Math.max(radiusX, radiusY));
+    // 清除Canvas
+    ctx.clearRect(0, 0, canvas.width / this.dpr, canvas.height / this.dpr);
 
-    // 添加色标
-    this.radialData.colorStops.forEach((stop) => {
-      gradient.addColorStop(stop.position / 100, stop.color);
+    // 计算container在Canvas坐标系中的偏移量
+    const offsetX = containerRect.left - canvasRect.left;
+    const offsetY = containerRect.top - canvasRect.top;
+
+    // 使用container的尺寸来计算控制点位置，但需要加上偏移量
+    const containerWidth = containerRect.width;
+    const containerHeight = containerRect.height;
+
+    const centerX = this.radialData.center.x * containerWidth + offsetX;
+    const centerY = this.radialData.center.y * containerHeight + offsetY;
+
+    // 根据形状计算半径
+    let radiusX, radiusY;
+    if (this.radialData.shape === "circle") {
+      radiusX = radiusY = (this.radialData.size.x / 100) * containerHeight;
+    } else {
+      radiusX = (this.radialData.size.x / 100) * containerWidth;
+      radiusY = (this.radialData.size.y / 100) * containerHeight;
+    }
+
+    // 绘制尺寸指示器（虚线圆/椭圆）
+    ctx.save();
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.6)";
+    ctx.lineWidth = 2;
+    ctx.setLineDash([8, 8]); // 8px实线，8px空白
+
+    if (this.radialData.shape === "circle") {
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radiusX, 0, 2 * Math.PI);
+    } else {
+      ctx.beginPath();
+      ctx.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, 2 * Math.PI);
+    }
+    ctx.stroke();
+    ctx.restore();
+
+    // 绘制圆心控制点（黑色圆点）
+    ctx.save();
+    ctx.fillStyle = "#000000";
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, 8, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
+
+    // 绘制尺寸控制点（红色圆点，4个方向）
+    const sizeHandlePositions = [
+      { x: centerX, y: centerY - radiusY }, // 上
+      { x: centerX + radiusX, y: centerY }, // 右
+      { x: centerX, y: centerY + radiusY }, // 下
+      { x: centerX - radiusX, y: centerY }, // 左
+    ];
+
+    ctx.save();
+    ctx.fillStyle = "#e74c3c";
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 2;
+
+    sizeHandlePositions.forEach((pos, index) => {
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y, 7.5, 0, 2 * Math.PI); // 半径改为7.5px，直径15px
+      ctx.fill();
+      ctx.stroke();
     });
+    ctx.restore();
 
-    // 绘制渐变
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, width, height);
+    // 绘制90度指示虚线（黑白间隔）
+    ctx.save();
+    ctx.strokeStyle = "rgba(0, 0, 0, 0.75)";
+    ctx.lineWidth = 1;
+    ctx.setLineDash([8, 8]);
 
-    // 更新控制点位置
-    this.updateRadialControls();
+    ctx.beginPath();
+    ctx.moveTo(centerX, centerY);
+    ctx.lineTo(centerX + radiusX, centerY);
+    ctx.stroke();
+
+    // 绘制白色部分
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.75)";
+    ctx.setLineDash([8, 8]);
+    ctx.lineDashOffset = 8; // 偏移8px，让白色部分与黑色部分错开
+
+    ctx.beginPath();
+    ctx.moveTo(centerX, centerY);
+    ctx.lineTo(centerX + radiusX, centerY);
+    ctx.stroke();
+    ctx.restore();
+
+    // 保存控制点位置用于交互检测
+    this.radialHandles = {
+      center: { x: centerX, y: centerY, radius: 8 },
+      sizeHandles: sizeHandlePositions.map((pos, index) => ({
+        x: pos.x,
+        y: pos.y,
+        radius: 7.5, // 半径改为7.5px，直径15px
+        index: index,
+      })),
+    };
   }
 
   renderConic() {
+    // 只在当前类型为conic时才渲染锥形渐变
+    if (this.currentType !== "conic") return;
+
     const canvas = this.canvases["conic-canvas"];
     const ctx = this.ctxs["conic-canvas"];
     const width = canvas.width / this.dpr;
@@ -1047,43 +1484,31 @@ class GradientTutorial {
     }
   }
 
-
-
   updateRadialControls() {
-    const canvas = this.canvases["radial-canvas"];
-    const rect = canvas.getBoundingClientRect();
-    const center = document.getElementById("radial-center");
-    const sizeIndicator = document.getElementById("radial-size-indicator");
-    const sizeHandles = document.querySelectorAll('[id^="radial-size-handle"]');
+    // 只在当前类型为radial时才更新径向渐变控制点
+    if (this.currentType !== "radial") return;
 
-    const centerX = this.radialData.center.x * rect.width;
-    const centerY = this.radialData.center.y * rect.height;
-    const radiusX = (this.radialData.size.x / 100) * Math.min(rect.width, rect.height) * 0.8;
-    const radiusY = (this.radialData.size.y / 100) * Math.min(rect.width, rect.height) * 0.8;
+    // 现在控制点直接在Canvas上绘制，不需要更新DOM元素
+    this.drawRadialControls();
+  }
 
-    center.style.left = `${centerX}px`;
-    center.style.top = `${centerY}px`;
-
-    sizeIndicator.style.left = `${centerX - radiusX}px`;
-    sizeIndicator.style.top = `${centerY - radiusY}px`;
-    sizeIndicator.style.width = `${radiusX * 2}px`;
-    sizeIndicator.style.height = `${radiusY * 2}px`;
-
-    // 更新尺寸控制点
-    const positions = [
-      { x: centerX, y: centerY - radiusY }, // 上
-      { x: centerX + radiusX, y: centerY }, // 右
-      { x: centerX, y: centerY + radiusY }, // 下
-      { x: centerX - radiusX, y: centerY }, // 左
-    ];
-
-    sizeHandles.forEach((handle, index) => {
-      handle.style.left = `${positions[index].x}px`;
-      handle.style.top = `${positions[index].y}px`;
-    });
+  updateRadialSlider() {
+    // 更新滑块值以匹配当前尺寸
+    const slider = document.getElementById("radial-size-slider");
+    if (slider) {
+      // 对于圆，使用x值；对于椭圆，使用x和y的平均值
+      const value =
+        this.radialData.shape === "circle"
+          ? this.radialData.size.x
+          : Math.round((this.radialData.size.x + this.radialData.size.y) / 2);
+      slider.value = value;
+    }
   }
 
   updateConicControls() {
+    // 只在当前类型为conic时才更新锥形渐变控制点
+    if (this.currentType !== "conic") return;
+
     const canvas = this.canvases["conic-canvas"];
     const rect = canvas.getBoundingClientRect();
     const center = document.getElementById("conic-center");
@@ -1112,6 +1537,9 @@ class GradientTutorial {
   }
 
   updateLinearColorStops() {
+    // 只在当前类型为linear时才更新线性渐变色标
+    if (this.currentType !== "linear") return;
+
     const overlay = document.getElementById("linear-overlay");
     const existingStops = overlay.querySelectorAll(".canvas-color-stop");
     existingStops.forEach((stop) => stop.remove());
@@ -1170,7 +1598,9 @@ class GradientTutorial {
       .map((stop) => {
         const parts = stop.trim().split(" ");
         if (parts[0].startsWith("#")) {
-          return `<span class="css-hash">#</span><span class="css-number">${parts[0].slice(1)}</span> <span class="css-number">${parts[1]}</span><span class="css-unit">%</span>`;
+          return `<span class="css-hash">#</span><span class="css-number">${parts[0].slice(
+            1
+          )}</span> <span class="css-number">${parts[1]}</span><span class="css-unit">%</span>`;
         } else if (parts[0].startsWith("rgb")) {
           return `<span class="css-bracket">${parts[0]}</span> <span class="css-number">${parts[1]}</span><span class="css-unit">%</span>`;
         } else {
@@ -1186,12 +1616,28 @@ class GradientTutorial {
     const sizeX = this.radialData.size.x;
     const sizeY = this.radialData.size.y;
     const unit = this.radialData.sizeUnit;
+    const sizeKeyword = this.radialData.sizeKeyword;
 
     const stops = this.radialData.colorStops.map((stop) => `${stop.color} ${stop.position}%`).join(", ");
 
+    // 如果使用了尺寸关键字，直接使用关键字
+    if (sizeKeyword) {
+      if (this.radialData.shape === "circle") {
+        return `radial-gradient(circle ${sizeKeyword} at ${centerX}% ${centerY}%, ${stops})`;
+      } else {
+        return `radial-gradient(ellipse ${sizeKeyword} at ${centerX}% ${centerY}%, ${stops})`;
+      }
+    }
+
+    // 否则使用具体的尺寸值
     if (this.radialData.shape === "circle") {
-      return `radial-gradient(circle ${sizeX}${unit} at ${centerX}% ${centerY}%, ${stops})`;
+      // 正圆模式：需要计算实际的像素半径
+      const container = document.getElementById("radial-canvas-container");
+      const containerRect = container.getBoundingClientRect();
+      const radiusPx = (sizeX / 100) * containerRect.height; // 圆的半径基于容器高度
+      return `radial-gradient(circle ${radiusPx}px at ${centerX}% ${centerY}%, ${stops})`;
     } else {
+      // 椭圆模式：可以使用百分比
       return `radial-gradient(ellipse ${sizeX}${unit} ${sizeY}${unit} at ${centerX}% ${centerY}%, ${stops})`;
     }
   }
@@ -1202,13 +1648,61 @@ class GradientTutorial {
     const sizeX = this.radialData.size.x;
     const sizeY = this.radialData.size.y;
     const unit = this.radialData.sizeUnit;
+    const sizeKeyword = this.radialData.sizeKeyword;
 
     const stops = this.radialData.colorStops.map((stop) => `${stop.color} ${stop.position.toFixed(1)}`).join(", ");
 
+    // 如果使用了尺寸关键字，直接使用关键字
+    if (sizeKeyword) {
+      if (this.radialData.shape === "circle") {
+        return `<span class="css-function">radial-gradient</span><span class="css-bracket">(</span><span class="css-shape">circle</span> <span class="css-bracket">${sizeKeyword}</span> <span class="css-keyword">at</span> <span class="css-number">${centerX.toFixed(
+          1
+        )}</span><span class="css-unit">%</span> <span class="css-number">${centerY.toFixed(
+          1
+        )}</span><span class="css-unit">%</span><span class="css-comma">,</span> ${stops
+          .split(",")
+          .map((stop) => {
+            const parts = stop.trim().split(" ");
+            if (parts[0].startsWith("#")) {
+              return `<span class="css-hash">#</span><span class="css-number">${parts[0].slice(
+                1
+              )}</span> <span class="css-number">${parts[1]}</span><span class="css-unit">%</span>`;
+            } else {
+              return `<span class="css-bracket">${parts[0]}</span> <span class="css-number">${parts[1]}</span><span class="css-unit">%</span>`;
+            }
+          })
+          .join('<span class="css-comma">,</span> ')}<span class="css-bracket">)</span>`;
+      } else {
+        return `<span class="css-function">radial-gradient</span><span class="css-bracket">(</span><span class="css-shape">ellipse</span> <span class="css-bracket">${sizeKeyword}</span> <span class="css-keyword">at</span> <span class="css-number">${centerX.toFixed(
+          1
+        )}</span><span class="css-unit">%</span> <span class="css-number">${centerY.toFixed(
+          1
+        )}</span><span class="css-unit">%</span><span class="css-comma">,</span> ${stops
+          .split(",")
+          .map((stop) => {
+            const parts = stop.trim().split(" ");
+            if (parts[0].startsWith("#")) {
+              return `<span class="css-hash">#</span><span class="css-number">${parts[0].slice(
+                1
+              )}</span> <span class="css-number">${parts[1]}</span><span class="css-unit">%</span>`;
+            } else {
+              return `<span class="css-bracket">${parts[0]}</span> <span class="css-number">${parts[1]}</span><span class="css-unit">%</span>`;
+            }
+          })
+          .join('<span class="css-comma">,</span> ')}<span class="css-bracket">)</span>`;
+      }
+    }
+
+    // 否则使用具体的尺寸值
     if (this.radialData.shape === "circle") {
-      return `<span class="css-function">radial-gradient</span><span class="css-bracket">(</span><span class="css-bracket">circle</span> <span class="css-number">${sizeX.toFixed(
+      // 正圆模式：需要计算实际的像素半径
+      const container = document.getElementById("radial-canvas-container");
+      const containerRect = container.getBoundingClientRect();
+      const radiusPx = (sizeX / 100) * containerRect.height; // 圆的半径基于容器高度
+
+      return `<span class="css-function">radial-gradient</span><span class="css-bracket">(</span><span class="css-shape">circle</span> <span class="css-number">${radiusPx.toFixed(
         1
-      )}</span><span class="css-unit">${unit}</span> <span class="css-bracket">at</span> <span class="css-number">${centerX.toFixed(
+      )}</span><span class="css-unit">px</span> <span class="css-keyword">at</span> <span class="css-number">${centerX.toFixed(
         1
       )}</span><span class="css-unit">%</span> <span class="css-number">${centerY.toFixed(
         1
@@ -1217,18 +1711,20 @@ class GradientTutorial {
         .map((stop) => {
           const parts = stop.trim().split(" ");
           if (parts[0].startsWith("#")) {
-            return `<span class="css-hash">#</span><span class="css-number">${parts[0].slice(1)}</span> <span class="css-number">${parts[1]}</span><span class="css-unit">%</span>`;
+            return `<span class="css-hash">#</span><span class="css-number">${parts[0].slice(
+              1
+            )}</span> <span class="css-number">${parts[1]}</span><span class="css-unit">%</span>`;
           } else {
             return `<span class="css-bracket">${parts[0]}</span> <span class="css-number">${parts[1]}</span><span class="css-unit">%</span>`;
           }
         })
         .join('<span class="css-comma">,</span> ')}<span class="css-bracket">)</span>`;
     } else {
-      return `<span class="css-function">radial-gradient</span><span class="css-bracket">(</span><span class="css-bracket">ellipse</span> <span class="css-number">${sizeX.toFixed(
+      return `<span class="css-function">radial-gradient</span><span class="css-bracket">(</span><span class="css-shape">ellipse</span> <span class="css-number">${sizeX.toFixed(
         1
       )}</span><span class="css-unit">${unit}</span> <span class="css-number">${sizeY.toFixed(
         1
-      )}</span><span class="css-unit">${unit}</span> <span class="css-bracket">at</span> <span class="css-number">${centerX.toFixed(
+      )}</span><span class="css-unit">${unit}</span> <span class="css-keyword">at</span> <span class="css-number">${centerX.toFixed(
         1
       )}</span><span class="css-unit">%</span> <span class="css-number">${centerY.toFixed(
         1
@@ -1237,7 +1733,9 @@ class GradientTutorial {
         .map((stop) => {
           const parts = stop.trim().split(" ");
           if (parts[0].startsWith("#")) {
-            return `<span class="css-hash">#</span><span class="css-number">${parts[0].slice(1)}</span> <span class="css-number">${parts[1]}</span><span class="css-unit">%</span>`;
+            return `<span class="css-hash">#</span><span class="css-number">${parts[0].slice(
+              1
+            )}</span> <span class="css-number">${parts[1]}</span><span class="css-unit">%</span>`;
           } else {
             return `<span class="css-bracket">${parts[0]}</span> <span class="css-number">${parts[1]}</span><span class="css-unit">%</span>`;
           }
@@ -1274,7 +1772,9 @@ class GradientTutorial {
       .map((stop) => {
         const parts = stop.trim().split(" ");
         if (parts[0].startsWith("#")) {
-          return `<span class="css-hash">#</span><span class="css-number">${parts[0].slice(1)}</span> <span class="css-number">${parts[1]}</span><span class="css-unit">deg</span>`;
+          return `<span class="css-hash">#</span><span class="css-number">${parts[0].slice(
+            1
+          )}</span> <span class="css-number">${parts[1]}</span><span class="css-unit">deg</span>`;
         } else {
           return `<span class="css-bracket">${parts[0]}</span> <span class="css-number">${parts[1]}</span><span class="css-unit">deg</span>`;
         }
@@ -1283,23 +1783,284 @@ class GradientTutorial {
   }
 
   updateLinearCSS() {
+    // 只在当前类型为linear时才更新线性渐变CSS
+    if (this.currentType !== "linear") return;
+
     const cssElement = document.getElementById("linear-css");
     cssElement.innerHTML = this.generateLinearGradientCSSHighlighted();
   }
 
   updateRadialCSS() {
+    // 只在当前类型为radial时才更新径向渐变CSS
+    if (this.currentType !== "radial") return;
+
     const cssElement = document.getElementById("radial-css");
     cssElement.innerHTML = this.generateRadialGradientCSSHighlighted();
   }
 
   updateConicCSS() {
+    // 只在当前类型为conic时才更新锥形渐变CSS
+    if (this.currentType !== "conic") return;
+
     const cssElement = document.getElementById("conic-css");
     cssElement.innerHTML = this.generateConicGradientCSSHighlighted();
   }
 
   updateRadialData() {
-    this.radialData.shape = document.querySelector('input[name="radial-shape"]:checked').value;
-    this.radialData.sizeKeyword = document.querySelector('input[name="radial-size"]:checked').value;
+    const newShape = document.querySelector('input[name="radial-shape"]:checked').value;
+    const sizeKeywordElement = document.querySelector('input[name="radial-size"]:checked');
+    const newSizeKeyword = sizeKeywordElement ? sizeKeywordElement.value : null;
+
+    // 如果形状发生变化，保存当前参数并恢复对应形状的参数
+    if (newShape !== this.radialData.shape) {
+      // 保存当前参数到对应的存储
+      if (this.radialData.shape === "ellipse") {
+        this.ellipseData.center = { ...this.radialData.center };
+        this.ellipseData.size = { ...this.radialData.size };
+        this.ellipseData.sizeUnit = this.radialData.sizeUnit;
+        this.ellipseData.sizeKeyword = this.radialData.sizeKeyword;
+        this.ellipseData.colorStops = this.radialData.colorStops.map((stop) => ({ ...stop }));
+      } else if (this.radialData.shape === "circle") {
+        this.circleData.center = { ...this.radialData.center };
+        this.circleData.size = { ...this.radialData.size };
+        this.circleData.sizeUnit = this.radialData.sizeUnit;
+        this.circleData.sizeKeyword = this.radialData.sizeKeyword;
+        this.circleData.colorStops = this.radialData.colorStops.map((stop) => ({ ...stop }));
+      }
+
+      // 恢复新形状的参数
+      if (newShape === "ellipse") {
+        this.radialData.center = { ...this.ellipseData.center };
+        this.radialData.size = { ...this.ellipseData.size };
+        this.radialData.sizeUnit = this.ellipseData.sizeUnit;
+        this.radialData.sizeKeyword = this.ellipseData.sizeKeyword;
+        this.radialData.colorStops = this.ellipseData.colorStops.map((stop) => ({ ...stop }));
+      } else if (newShape === "circle") {
+        this.radialData.center = { ...this.circleData.center };
+        this.radialData.size = { ...this.circleData.size };
+        this.radialData.sizeUnit = this.circleData.sizeUnit;
+        this.radialData.sizeKeyword = this.circleData.sizeKeyword;
+        this.radialData.colorStops = this.circleData.colorStops.map((stop) => ({ ...stop }));
+      }
+      // 更新HTML中的选中状态
+      this.updateSizeKeywordSelection();
+    }
+
+    this.radialData.shape = newShape;
+    this.radialData.sizeKeyword = newSizeKeyword;
+
+    // 如果选择了尺寸关键字，计算对应的尺寸
+    if (newSizeKeyword) {
+      this.calculateSizeFromKeyword(newSizeKeyword);
+    }
+  }
+
+  // 根据尺寸关键字计算尺寸
+  calculateSizeFromKeyword(keyword) {
+    const container = document.getElementById("radial-canvas-container");
+    const containerRect = container.getBoundingClientRect();
+    const centerX = this.radialData.center.x * containerRect.width;
+    const centerY = this.radialData.center.y * containerRect.height;
+
+    // 计算到各个边界的距离
+    const distanceToLeft = centerX;
+    const distanceToRight = containerRect.width - centerX;
+    const distanceToTop = centerY;
+    const distanceToBottom = containerRect.height - centerY;
+
+    // 计算到各个角的距离
+    const distanceToTopLeft = Math.sqrt(centerX * centerX + centerY * centerY);
+    const distanceToTopRight = Math.sqrt(
+      (containerRect.width - centerX) * (containerRect.width - centerX) + centerY * centerY
+    );
+    const distanceToBottomLeft = Math.sqrt(
+      centerX * centerX + (containerRect.height - centerY) * (containerRect.height - centerY)
+    );
+    const distanceToBottomRight = Math.sqrt(
+      (containerRect.width - centerX) * (containerRect.width - centerX) +
+        (containerRect.height - centerY) * (containerRect.height - centerY)
+    );
+
+    let radiusX, radiusY;
+
+    switch (keyword) {
+      case "closest-side":
+        // 等比缩放圆，直到圆和离圆最近的渲染范围边界相交
+        if (this.radialData.shape === "circle") {
+          const minDistance = Math.min(distanceToLeft, distanceToRight, distanceToTop, distanceToBottom);
+          radiusX = radiusY = minDistance;
+        } else {
+          radiusX = Math.min(distanceToLeft, distanceToRight);
+          radiusY = Math.min(distanceToTop, distanceToBottom);
+        }
+        break;
+
+      case "farthest-side":
+        // 等比缩放圆，直到圆和离圆最远的渲染范围边界相交
+        if (this.radialData.shape === "circle") {
+          const maxDistance = Math.max(distanceToLeft, distanceToRight, distanceToTop, distanceToBottom);
+          radiusX = radiusY = maxDistance;
+        } else {
+          radiusX = Math.max(distanceToLeft, distanceToRight);
+          radiusY = Math.max(distanceToTop, distanceToBottom);
+        }
+        break;
+
+      case "closest-corner":
+        // 等比缩放圆，直到圆和离圆最近的渲染范围的角相交
+        const minCornerDistance = Math.min(
+          distanceToTopLeft,
+          distanceToTopRight,
+          distanceToBottomLeft,
+          distanceToBottomRight
+        );
+        if (this.radialData.shape === "circle") {
+          radiusX = radiusY = minCornerDistance;
+        } else {
+          // 对于椭圆，closest-corner 表示椭圆刚好与最近的角落相交
+          // 椭圆的形状应该根据到角落的实际距离来确定，不保持容器的宽高比
+          // 找到最近的角落
+          let closestCornerX, closestCornerY;
+          if (
+            distanceToTopLeft <= distanceToTopRight &&
+            distanceToTopLeft <= distanceToBottomLeft &&
+            distanceToTopLeft <= distanceToBottomRight
+          ) {
+            closestCornerX = 0;
+            closestCornerY = 0;
+          } else if (distanceToTopRight <= distanceToBottomLeft && distanceToTopRight <= distanceToBottomRight) {
+            closestCornerX = containerRect.width;
+            closestCornerY = 0;
+          } else if (distanceToBottomLeft <= distanceToBottomRight) {
+            closestCornerX = 0;
+            closestCornerY = containerRect.height;
+          } else {
+            closestCornerX = containerRect.width;
+            closestCornerY = containerRect.height;
+          }
+
+          // 计算椭圆半径，使其刚好经过最近的角落
+          const dx = Math.abs(closestCornerX - centerX);
+          const dy = Math.abs(closestCornerY - centerY);
+
+          // 对于椭圆，使用椭圆标准方程：(x/rx)^2 + (y/ry)^2 = 1
+          // 当椭圆经过角落时，满足：(dx/rx)^2 + (dy/ry)^2 = 1
+          // 椭圆的形状比例 = 水平半径 / 垂直半径
+          const aspectRatio = dx / dy;
+
+          // 解方程：设 ry = k，则 rx = k * aspectRatio
+          // 代入椭圆方程：(dx/(k*aspectRatio))^2 + (dy/k)^2 = 1
+          // 化简：dx^2/(k^2*aspectRatio^2) + dy^2/k^2 = 1
+          // 进一步：dx^2 + dy^2*aspectRatio^2 = k^2*aspectRatio^2
+          // 所以：k = sqrt((dx^2 + dy^2*aspectRatio^2) / aspectRatio^2)
+          const k = Math.sqrt((dx * dx + dy * dy * aspectRatio * aspectRatio) / (aspectRatio * aspectRatio));
+
+          radiusX = k * aspectRatio;
+          radiusY = k;
+        }
+        break;
+
+      case "farthest-corner":
+        // 等比缩放圆，直到圆和离圆最远的渲染范围的角相交
+        const maxCornerDistance = Math.max(
+          distanceToTopLeft,
+          distanceToTopRight,
+          distanceToBottomLeft,
+          distanceToBottomRight
+        );
+        if (this.radialData.shape === "circle") {
+          radiusX = radiusY = maxCornerDistance;
+        } else {
+          // 对于椭圆，farthest-corner 表示椭圆刚好与最远的角落相交
+          // 椭圆的形状应该根据到角落的实际距离来确定，不保持容器的宽高比
+          // 找到最远的角落
+          let farthestCornerX, farthestCornerY;
+          if (
+            distanceToTopLeft >= distanceToTopRight &&
+            distanceToTopLeft >= distanceToBottomLeft &&
+            distanceToTopLeft >= distanceToBottomRight
+          ) {
+            farthestCornerX = 0;
+            farthestCornerY = 0;
+          } else if (distanceToTopRight >= distanceToBottomLeft && distanceToTopRight >= distanceToBottomRight) {
+            farthestCornerX = containerRect.width;
+            farthestCornerY = 0;
+          } else if (distanceToBottomLeft >= distanceToBottomRight) {
+            farthestCornerX = 0;
+            farthestCornerY = containerRect.height;
+          } else {
+            farthestCornerX = containerRect.width;
+            farthestCornerY = containerRect.height;
+          }
+
+          // 计算椭圆半径，使其刚好经过最远的角落
+          const dx = Math.abs(farthestCornerX - centerX);
+          const dy = Math.abs(farthestCornerY - centerY);
+
+          // 对于椭圆，使用椭圆标准方程：(x/rx)^2 + (y/ry)^2 = 1
+          // 当椭圆经过角落时，满足：(dx/rx)^2 + (dy/ry)^2 = 1
+          // 椭圆的形状比例 = 水平半径 / 垂直半径
+          const aspectRatio = dx / dy;
+
+          // 解方程：设 ry = k，则 rx = k * aspectRatio
+          // 代入椭圆方程：(dx/(k*aspectRatio))^2 + (dy/k)^2 = 1
+          // 化简：dx^2/(k^2*aspectRatio^2) + dy^2/k^2 = 1
+          // 进一步：dx^2 + dy^2*aspectRatio^2 = k^2*aspectRatio^2
+          // 所以：k = sqrt((dx^2 + dy^2*aspectRatio^2) / aspectRatio^2)
+          const k = Math.sqrt((dx * dx + dy * dy * aspectRatio * aspectRatio) / (aspectRatio * aspectRatio));
+
+          radiusX = k * aspectRatio;
+          radiusY = k;
+        }
+        break;
+    }
+
+    // 将像素值转换为百分比
+    if (this.radialData.shape === "circle") {
+      // 对于圆形，使用实际计算的半径值，不强制保持宽高比
+      // 使用容器的最小尺寸作为基准，确保圆不会超出容器
+      const minDimension = Math.min(containerRect.width, containerRect.height);
+      this.radialData.size.x = (radiusX / minDimension) * 100;
+    } else {
+      this.radialData.size.x = (radiusX / containerRect.width) * 100;
+      this.radialData.size.y = (radiusY / containerRect.height) * 100;
+    }
+  }
+
+  // 清除尺寸关键字选中状态
+  clearSizeKeywordSelection() {
+    document.querySelectorAll('input[name="radial-size"]').forEach((radio) => {
+      radio.checked = false;
+    });
+  }
+
+  // 获取当前径向渐变的实际半径，严格按照CSS代码实现
+  getCurrentRadialRadius() {
+    const radialCanvas = this.canvases["radial-canvas"];
+    const rect = radialCanvas.getBoundingClientRect();
+
+    if (this.radialData.shape === "circle") {
+      // 圆：使用容器的最小尺寸作为基准，与 calculateSizeFromKeyword 保持一致
+      const minDimension = Math.min(rect.width, rect.height);
+      return (this.radialData.size.x / 100) * minDimension;
+    } else {
+      // 椭圆：CSS代码中的 ellipse 50% 50% 表示水平半径是容器宽度的50%
+      // 对于椭圆，色标位置应该基于水平半径（90度方向）
+      return (this.radialData.size.x / 100) * rect.width;
+    }
+  }
+
+  // 计算相对颜色（对比色）
+  getContrastColor(color) {
+    // 解析颜色
+    const rgb = this.parseColor(color);
+    if (!rgb) return "#ffffff"; // 默认白色
+
+    // 计算亮度 (YIQ公式)
+    const brightness = (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
+
+    // 如果亮度大于128，返回深色；否则返回浅色
+    return brightness > 128 ? "#000000" : "#ffffff";
   }
 
   // 辅助方法
@@ -1348,9 +2109,25 @@ class GradientTutorial {
   }
 
   getColorAtRadialPosition(position) {
-    // 简化的颜色获取，实际应该从Canvas中采样
-    const hue = (position / 100) * 360;
-    return `hsl(${hue}, 70%, 50%)`;
+    // 使用CSS渐变插值计算颜色，而不是从Canvas采样
+    const stops = this.radialData.colorStops;
+    if (stops.length === 0) return "#000000";
+    if (stops.length === 1) return stops[0].color;
+
+    // 找到位置所在的色标区间
+    for (let i = 0; i < stops.length - 1; i++) {
+      const current = stops[i];
+      const next = stops[i + 1];
+
+      if (position >= current.position && position <= next.position) {
+        const ratio = (position - current.position) / (next.position - current.position);
+        return this.interpolateColor(current.color, next.color, ratio);
+      }
+    }
+
+    // 如果位置超出范围，返回最近的色标颜色
+    if (position <= stops[0].position) return stops[0].color;
+    return stops[stops.length - 1].color;
   }
 
   getColorAtConicAngle(angle) {
@@ -1367,64 +2144,36 @@ class GradientTutorial {
 
   // 获取色标位置并计算拾色器位置
   getColorPickerPosition(colorStop) {
-    const canvas = this.canvases[`${this.currentType}-canvas`];
-    const rect = canvas.getBoundingClientRect();
-    
-    let stopX, stopY;
-    let gradientBottomY = 0; // 色带下边界位置
-    
-    if (this.currentType === "linear") {
-      // 线性渐变色标位置
-      const scaleX = rect.width / (canvas.width / this.dpr);
-      const scaleY = rect.height / (canvas.height / this.dpr);
-      const gradientScreenX = this.linearGradientRect.x * scaleX;
-      const gradientScreenY = this.linearGradientRect.y * scaleY;
-      const gradientScreenWidth = this.linearGradientRect.width * scaleX;
-      const gradientScreenHeight = this.linearGradientRect.height * scaleY;
-      
-      stopX = gradientScreenX + (colorStop.position / 100) * gradientScreenWidth;
-      stopY = gradientScreenY + gradientScreenHeight + 10;
-      gradientBottomY = gradientScreenY + gradientScreenHeight; // 色带下边界
-    } else if (this.currentType === "radial") {
-      // 径向渐变色标位置
-      const centerX = this.radialData.center.x * rect.width;
-      const centerY = this.radialData.center.y * rect.height;
-      const radius = (colorStop.position / 100) * Math.min(rect.width, rect.height) * 0.4;
-      
-      stopX = centerX + radius;
-      stopY = centerY;
-      gradientBottomY = rect.height; // 对于径向渐变，使用Canvas底部作为参考
-    } else if (this.currentType === "conic") {
-      // 锥形渐变色标位置
-      const centerX = this.conicData.center.x * rect.width;
-      const centerY = this.conicData.center.y * rect.height;
-      const radius = Math.min(rect.width, rect.height) * 0.3;
-      const angleRad = (colorStop.position * Math.PI) / 180;
-      
-      stopX = centerX + Math.cos(angleRad) * radius;
-      stopY = centerY + Math.sin(angleRad) * radius;
-      gradientBottomY = rect.height; // 对于锥形渐变，使用Canvas底部作为参考
-    }
-    
-    // 计算拾色器位置
-    const pickerWidth = 320; // 拾色器宽度
-    const pickerHeight = 280; // 拾色器高度
-    
-    // 水平位置：屏幕正中间
-    const pickerX = (window.innerWidth - pickerWidth) / 2;
-    
-    // 垂直位置：拾色器下边界与色带下边界一致
-    const pickerY = gradientBottomY - pickerHeight;
-    
-    // 调整Y位置，确保不超出屏幕
+    // 使用记忆的位置（相对于视口的百分比）
+    const pickerWidth = 320; // 拾色器宽度（未缩放）
+    const pickerHeight = 280; // 拾色器高度（未缩放）
+    const scale = 0.8; // 拾色器的缩放比例
+    const scaledWidth = pickerWidth * scale;
+    const scaledHeight = pickerHeight * scale;
+
+    // 计算基于百分比的位置（让拾色器中心点与屏幕中心点重合）
+    // 当 this.colorPickerPosition.x = 50, y = 50 时，拾色器应该完全居中
+    const pickerX = (this.colorPickerPosition.x / 100) * window.innerWidth - scaledWidth / 2;
+    const pickerY = (this.colorPickerPosition.y / 100) * window.innerHeight - scaledHeight / 2;
+
+    // 确保不超出屏幕边界，但优先保持居中位置
+    let finalPickerX = pickerX;
     let finalPickerY = pickerY;
-    if (finalPickerY < 10) {
-      finalPickerY = 10;
-    } else if (finalPickerY + pickerHeight > window.innerHeight - 10) {
-      finalPickerY = window.innerHeight - pickerHeight - 10;
+
+    // 只有当拾色器完全超出屏幕边界时才调整位置
+    if (pickerX < 0) {
+      finalPickerX = 0;
+    } else if (pickerX + scaledWidth > window.innerWidth) {
+      finalPickerX = window.innerWidth - scaledWidth;
     }
-    
-    return { x: pickerX, y: finalPickerY };
+
+    if (pickerY < 0) {
+      finalPickerY = 0;
+    } else if (pickerY + scaledHeight > window.innerHeight) {
+      finalPickerY = window.innerHeight - scaledHeight;
+    }
+
+    return { x: finalPickerX, y: finalPickerY };
   }
 
   showColorPicker(initialColor) {
@@ -1458,7 +2207,7 @@ class GradientTutorial {
 
     // 计算拾色器位置
     const position = this.getColorPickerPosition(this.currentColorStop);
-    
+
     // 设置拾色器位置
     picker.style.position = "fixed";
     picker.style.left = `${position.x}px`;
@@ -1477,17 +2226,17 @@ class GradientTutorial {
       // 色盘事件
       colorWheel.addEventListener("mousedown", (e) => {
         this.handleColorWheelClick(e, colorWheel, colorWheelCursor, brightnessSlider);
-        
+
         // 添加拖拽功能
         const handleMouseMove = (e) => {
           this.handleColorWheelClick(e, colorWheel, colorWheelCursor, brightnessSlider);
         };
-        
+
         const handleMouseUp = () => {
           document.removeEventListener("mousemove", handleMouseMove);
           document.removeEventListener("mouseup", handleMouseUp);
         };
-        
+
         document.addEventListener("mousemove", handleMouseMove);
         document.addEventListener("mouseup", handleMouseUp);
       });
@@ -1517,12 +2266,12 @@ class GradientTutorial {
         const r = parseInt(rgbRInput.value) || 0;
         const g = parseInt(rgbGInput.value) || 0;
         const b = parseInt(rgbBInput.value) || 0;
-        
+
         if (r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255) {
           this.currentRGB = { r, g, b, a: this.currentRGB.a };
           this.updateColorPickerDisplay();
           this.updateCurrentColorStop();
-          
+
           // 更新色盘光标位置
           const hsl = this.rgbToHSL(r, g, b);
           this.updateColorWheelCursor(colorWheel, colorWheelCursor, hsl.h, hsl.s);
@@ -1543,7 +2292,7 @@ class GradientTutorial {
         const r = hexRInput.value.toLowerCase();
         const g = hexGInput.value.toLowerCase();
         const b = hexBInput.value.toLowerCase();
-        
+
         // 验证16进制格式
         const hexRegex = /^[0-9a-f]{2}$/;
         if (hexRegex.test(r) && hexRegex.test(g) && hexRegex.test(b)) {
@@ -1552,7 +2301,7 @@ class GradientTutorial {
           this.currentRGB = { ...color, a: this.currentRGB.a };
           this.updateColorPickerDisplay();
           this.updateCurrentColorStop();
-          
+
           // 更新色盘光标位置
           const hsl = this.rgbToHSL(color.r, color.g, color.b);
           this.updateColorWheelCursor(colorWheel, colorWheelCursor, hsl.h, hsl.s);
@@ -1575,7 +2324,7 @@ class GradientTutorial {
           this.currentRGB = { ...color, a: this.currentRGB.a };
           this.updateColorPickerDisplay();
           this.updateCurrentColorStop();
-          
+
           // 更新色盘光标位置
           this.updateColorWheelCursor(colorWheel, colorWheelCursor, h, s);
           brightnessSlider.value = l;
@@ -1609,9 +2358,9 @@ class GradientTutorial {
           this.renderAll();
           this.hideColorPicker();
         }
-              });
+      });
 
-        this.colorPickerInitialized = true;
+      this.colorPickerInitialized = true;
     }
   }
 
@@ -1619,29 +2368,42 @@ class GradientTutorial {
     const overlay = document.getElementById("color-picker-overlay");
     const picker = document.querySelector(".color-picker");
     overlay.classList.remove("show");
-    
+
     // 保持拾色器位置不变，只隐藏遮罩
     // 不重置位置，避免突然跳到左上角
+  }
+
+  // 窗口大小改变时更新颜色选择器位置
+  updateColorPickerPositionOnResize() {
+    const overlay = document.getElementById("color-picker-overlay");
+    const picker = document.querySelector(".color-picker");
+
+    // 如果颜色选择器当前是显示的，则更新其位置
+    if (overlay.classList.contains("show") && picker) {
+      const position = this.getColorPickerPosition(this.currentColorStop);
+      picker.style.left = `${position.x}px`;
+      picker.style.top = `${position.y}px`;
+    }
   }
 
   setupColorPickerDrag() {
     const picker = document.querySelector(".color-picker");
     const dragHandle = document.getElementById("color-picker-drag-handle");
     const header = document.querySelector(".color-picker-header");
-    
+
     let isDragging = false;
     let startX, startY, startLeft, startTop;
 
     const startDrag = (e) => {
       e.preventDefault();
       isDragging = true;
-      
+
       const rect = picker.getBoundingClientRect();
       startX = e.clientX;
       startY = e.clientY;
       startLeft = rect.left;
       startTop = rect.top;
-      
+
       picker.style.transition = "none";
       document.body.style.cursor = "move";
       document.body.style.userSelect = "none";
@@ -1649,28 +2411,48 @@ class GradientTutorial {
 
     const handleDrag = (e) => {
       if (!isDragging) return;
-      
+
       const deltaX = e.clientX - startX;
       const deltaY = e.clientY - startY;
-      
+
       const newLeft = startLeft + deltaX;
       const newTop = startTop + deltaY;
-      
+
       // 确保拾色器不会完全移出屏幕
       const pickerRect = picker.getBoundingClientRect();
       const maxLeft = window.innerWidth - pickerRect.width;
       const maxTop = window.innerHeight - pickerRect.height;
-      
+
       const clampedLeft = Math.max(0, Math.min(newLeft, maxLeft));
       const clampedTop = Math.max(0, Math.min(newTop, maxTop));
-      
+
       picker.style.left = `${clampedLeft}px`;
       picker.style.top = `${clampedTop}px`;
     };
 
     const stopDrag = () => {
       if (!isDragging) return;
-      
+
+      // 保存位置（拾色器中心点相对于屏幕中心点的百分比）
+      const pickerRect = picker.getBoundingClientRect();
+      const scale = 0.8; // 拾色器的缩放比例
+      const scaledWidth = 320 * scale; // 拾色器实际显示宽度
+      const scaledHeight = 280 * scale; // 拾色器实际显示高度
+
+      // 计算拾色器中心点位置
+      const pickerCenterX = pickerRect.left + scaledWidth / 2;
+      const pickerCenterY = pickerRect.top + scaledHeight / 2;
+
+      // 计算相对于屏幕中心点的百分比位置
+      const xPercent = (pickerCenterX / window.innerWidth) * 100;
+      const yPercent = (pickerCenterY / window.innerHeight) * 100;
+
+      // 保存位置
+      this.colorPickerPosition = {
+        x: Math.max(0, Math.min(100, xPercent)),
+        y: Math.max(0, Math.min(100, yPercent)),
+      };
+
       isDragging = false;
       picker.style.transition = "";
       document.body.style.cursor = "";
@@ -1680,10 +2462,10 @@ class GradientTutorial {
     // 绑定事件监听器
     dragHandle.addEventListener("mousedown", startDrag);
     header.addEventListener("mousedown", startDrag);
-    
+
     document.addEventListener("mousemove", handleDrag);
     document.addEventListener("mouseup", stopDrag);
-    
+
     // 防止拖拽时触发其他事件
     dragHandle.addEventListener("click", (e) => e.stopPropagation());
     header.addEventListener("click", (e) => e.stopPropagation());
@@ -1760,28 +2542,28 @@ class GradientTutorial {
     const rect = canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    
+
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
     const radius = Math.min(centerX, centerY) - 10;
-    
+
     const dx = x - centerX;
     const dy = y - centerY;
     const distance = Math.sqrt(dx * dx + dy * dy);
-    
+
     if (distance <= radius) {
       const angle = ((Math.atan2(dy, dx) * 180) / Math.PI + 360) % 360;
       const saturation = Math.min(100, (distance / radius) * 100);
-      
+
       // 更新光标位置
       cursor.style.left = `${x}px`;
       cursor.style.top = `${y}px`;
-      
+
       // 更新颜色
       const lightness = parseInt(brightnessSlider.value);
       const color = this.hslToRGB(angle, saturation, lightness);
       this.currentRGB = { ...color, a: this.currentRGB.a };
-      
+
       this.updateColorPickerDisplay();
       this.updateCurrentColorStop();
     }
@@ -1792,22 +2574,22 @@ class GradientTutorial {
     const rect = canvas.getBoundingClientRect();
     const cursorLeft = parseFloat(cursor.style.left);
     const cursorTop = parseFloat(cursor.style.top);
-    
+
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
     const radius = Math.min(centerX, centerY) - 10;
-    
+
     const dx = cursorLeft - centerX;
     const dy = cursorTop - centerY;
     const distance = Math.sqrt(dx * dx + dy * dy);
-    
+
     const angle = ((Math.atan2(dy, dx) * 180) / Math.PI + 360) % 360;
     const saturation = Math.min(100, (distance / radius) * 100);
     const lightness = parseInt(brightnessSlider.value);
-    
+
     const color = this.hslToRGB(angle, saturation, lightness);
     this.currentRGB = { ...color, a: this.currentRGB.a };
-    
+
     this.updateColorPickerDisplay();
     this.updateCurrentColorStop();
   }
@@ -1817,13 +2599,13 @@ class GradientTutorial {
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
     const radius = Math.min(centerX, centerY) - 10;
-    
+
     const distance = (saturation / 100) * radius;
     const angleRad = (hue * Math.PI) / 180;
-    
+
     const x = centerX + Math.cos(angleRad) * distance;
     const y = centerY + Math.sin(angleRad) * distance;
-    
+
     cursor.style.left = `${x}px`;
     cursor.style.top = `${y}px`;
   }
@@ -1833,7 +2615,21 @@ class GradientTutorial {
     if (this.currentColorStop) {
       const hexColor = this.rgbToHex(this.currentRGB.r, this.currentRGB.g, this.currentRGB.b);
       this.currentColorStop.color = hexColor;
-      this.renderAll();
+
+      // 只渲染当前类型的Canvas
+      if (this.currentType === "linear") {
+        this.renderLinear();
+        this.updateLinearColorStops();
+        this.updateLinearCSS();
+      } else if (this.currentType === "radial") {
+        this.renderRadial();
+        this.updateRadialColorStops();
+        this.updateRadialCSS();
+      } else if (this.currentType === "conic") {
+        this.renderConic();
+        this.updateConicColorStops();
+        this.updateConicCSS();
+      }
     }
   }
 
@@ -2154,17 +2950,38 @@ class GradientTutorial {
       }
 
       // 径向拖拽调整位置
-      const centerX = this.radialData.center.x * rect.width;
-      const centerY = this.radialData.center.y * rect.height;
-      const clickX = e.clientX - rect.left;
-      const clickY = e.clientY - rect.top;
+      // 获取radial-canvas-container的尺寸和位置
+      const container = document.getElementById("radial-canvas-container");
+      const containerRect = container.getBoundingClientRect();
 
-      const dx = clickX - centerX;
-      const dy = clickY - centerY;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      const maxRadius = Math.min(rect.width, rect.height) * 0.4;
+      const centerX = this.radialData.center.x * containerRect.width;
+      const centerY = this.radialData.center.y * containerRect.height;
 
-      stop.position = Math.max(0, Math.min(100, (distance / maxRadius) * 100));
+      // 计算鼠标在container坐标系中的位置
+      const clickX = e.clientX - containerRect.left;
+      const clickY = e.clientY - containerRect.top;
+
+      // 只使用水平距离来计算色标位置，避免垂直移动影响
+      const horizontalDistance = clickX - centerX;
+
+      // 根据形状计算最大半径
+      let maxRadius;
+      if (this.radialData.shape === "circle") {
+        maxRadius = (this.radialData.size.x / 100) * containerRect.height;
+      } else {
+        maxRadius = (this.radialData.size.x / 100) * containerRect.width;
+      }
+
+      // 如果鼠标在圆心右侧，正常计算位置
+      if (horizontalDistance >= 0) {
+        stop.position = Math.max(0, Math.min(100, (horizontalDistance / maxRadius) * 100));
+      } else {
+        // 如果鼠标在圆心左侧，限制色标位置为0（圆心位置）
+        stop.position = 0;
+      }
+
+      // 更新色标显示方向（圆心上方或下方）
+      stop.isAboveLine = clickY < centerY;
 
       this.radialData.colorStops.sort((a, b) => a.position - b.position);
       this.renderRadial();
@@ -2463,6 +3280,102 @@ class GradientTutorial {
       return db - da;
     });
     return points.slice(0, 2);
+  }
+
+  showRadialPreview(x, y, centerX, centerY, isAboveLine) {
+    // 移除现有预览
+    this.hideRadialPreview();
+
+    // 获取radial-canvas-container的尺寸和位置
+    const container = document.getElementById("radial-canvas-container");
+    const containerRect = container.getBoundingClientRect();
+
+    // 计算圆的右边界（基于container的尺寸）
+    let maxRadius;
+    if (this.radialData.shape === "circle") {
+      // 对于圆形，使用容器的最小尺寸作为基准
+      const minDimension = Math.min(containerRect.width, containerRect.height);
+      maxRadius = (this.radialData.size.x / 100) * minDimension;
+    } else {
+      maxRadius = (this.radialData.size.x / 100) * containerRect.width;
+    }
+
+    const rightBound = centerX + maxRadius;
+
+    // 计算预览色标的有效范围
+    const validRangeStart = centerX - 40; // 圆心偏左40px
+    const validRangeEnd = rightBound + 40; // 圆的右边界偏右40px
+
+    // 检查光标是否在有效范围内
+    if (x < validRangeStart || x > validRangeEnd) {
+      return; // 不在有效范围内，不显示预览
+    }
+
+    // 计算预览色标的实际位置（限制在圆心到右边界之间）
+    const actualX = Math.max(centerX, Math.min(rightBound, x));
+
+    // 计算当前位置对应的渐变位置百分比
+    const horizontalDistance = actualX - centerX;
+    let position;
+    if (horizontalDistance >= 0) {
+      position = Math.max(0, Math.min(100, (horizontalDistance / maxRadius) * 100));
+    } else {
+      position = 0;
+    }
+
+    // 获取当前位置的渐变颜色
+    const color = this.getColorAtRadialPosition(position);
+
+    // 创建预览元素
+    const preview = document.createElement("div");
+    preview.className = "radial-color-stop preview";
+    preview.style.setProperty("--色标-默认", color);
+    preview.style.setProperty("--色标-相对色", this.getContrastColor(color)); // 使用相对颜色
+    preview.style.opacity = "1";
+    preview.style.zIndex = "25"; // 预览色标应该在最上层
+
+    // 预览色标的水平中点应该始终和光标处于同一位置
+    // 但实际位置不能小于圆心，不能超过圆的右边界
+    preview.style.left = `${actualX}px`;
+
+    if (isAboveLine) {
+      // 圆心上方：预览色标的下边缘在圆心上方4px
+      preview.style.top = `${centerY - 20}px`; // 18px(三角形高度) + 4px - 4px调整 = 18px
+      preview.classList.remove("upside-down"); // 底边在上，尖角在下
+    } else {
+      // 圆心下方：预览色标的上边缘在圆心下方4px
+      preview.style.top = `${centerY + 22}px`; // 4px + 4px调整 = 8px
+      preview.classList.add("upside-down"); // 底边在下，尖角在上
+    }
+
+    // 添加到Canvas容器
+    const canvasContainer = document.getElementById("radial-canvas-container");
+    canvasContainer.appendChild(preview);
+    this.radialPreview = preview;
+  }
+
+  hideRadialPreview() {
+    if (this.radialPreview) {
+      this.radialPreview.remove();
+      this.radialPreview = null;
+    }
+  }
+
+  updateSizeKeywordSelection() {
+    // 先全部取消选中
+    document.querySelectorAll('input[name="radial-size"]').forEach((radio) => {
+      radio.checked = false;
+    });
+    // 恢复单位选中
+    if (this.radialData.sizeUnit) {
+      const unitRadio = document.querySelector(`input[name="radial-size"][value="${this.radialData.sizeUnit}"]`);
+      if (unitRadio) unitRadio.checked = true;
+    }
+    // 恢复关键字选中
+    if (this.radialData.sizeKeyword) {
+      const keywordRadio = document.querySelector(`input[name="radial-size"][value="${this.radialData.sizeKeyword}"]`);
+      if (keywordRadio) keywordRadio.checked = true;
+    }
   }
 }
 

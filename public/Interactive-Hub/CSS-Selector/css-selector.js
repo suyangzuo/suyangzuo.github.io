@@ -407,19 +407,13 @@ class CSSSelectorTutorial {
     const processedPositions = new Set();
 
     matches.forEach((match, index) => {
-      console.log(`处理匹配元素 ${index + 1}:`, match);
-
       const range = this.findElementTokenRange(match, tokens, processedPositions);
       if (!range) {
-        console.log(`未找到元素token范围，跳过`);
         return;
       }
 
-      console.log("开始计算高亮范围...");
       const startToken = range.startToken;
       const endToken = range.endToken;
-      console.log("开始token:", startToken.textContent, "位置:", range.startIndex);
-      console.log("结束token:", endToken.textContent, "位置:", range.endIndex);
 
       // 使用新的高亮逻辑
       const highlightRanges = this.calculateHighlightRange(startToken, endToken, tokens);
@@ -437,8 +431,6 @@ class CSSSelectorTutorial {
   }
 
   createHighlightElement(range, type) {
-    console.log(`创建高亮元素:`, { range, type });
-
     const highlight = document.createElement("div");
     highlight.className = `match-highlight match-highlight-${type}`;
     highlight.style.position = "absolute";
@@ -454,16 +446,12 @@ class CSSSelectorTutorial {
     const codeContainer = document.querySelector(".code-content");
     codeContainer.appendChild(highlight);
     this.highlightElements.push(highlight);
-
-    console.log(`高亮元素已创建:`, highlight);
   }
 
   findCompleteElementRange(range, tokens, match) {
     const tagName = match.tagName.toLowerCase();
     let startIndex = range.start;
     let endIndex = range.end;
-
-    console.log("查找完整元素范围:", { tagName, startIndex, endIndex });
 
     // 查找完整的开始标签范围
     let startTagStart = startIndex;
@@ -474,7 +462,6 @@ class CSSSelectorTutorial {
       const tokenText = tokens[i].textContent;
       if (tokenText.includes("&lt;") || tokenText.includes("<")) {
         startTagStart = i;
-        console.log("找到开始标签开始:", tokenText, "位置:", i);
         break;
       }
     }
@@ -484,7 +471,6 @@ class CSSSelectorTutorial {
       const tokenText = tokens[i].textContent;
       if (tokenText.includes("&gt;") || tokenText.includes(">")) {
         startTagEnd = i;
-        console.log("找到开始标签结束:", tokenText, "位置:", i);
         break;
       }
     }
@@ -496,9 +482,6 @@ class CSSSelectorTutorial {
     // 查找结束标签 - 改进的逻辑
     let depth = 0;
     let foundStart = false;
-
-    console.log("开始查找结束标签，从位置:", startIndex);
-    console.log("开始标签内容:", tokens[startIndex].textContent);
 
     for (let i = startIndex; i < tokens.length; i++) {
       const tokenText = tokens[i].textContent;
@@ -513,17 +496,14 @@ class CSSSelectorTutorial {
         if (i === startIndex) {
           foundStart = true;
         }
-        console.log(`位置 ${i}: 找到开始标签 "${tokenText}", depth: ${depth}, foundStart: ${foundStart}`);
       }
 
       // 检查是否是结束标签
       if (tokenText.includes(`&lt;/${tagName}&gt;`) || tokenText.includes(`</${tagName}>`)) {
         depth--;
-        console.log(`位置 ${i}: 找到结束标签 "${tokenText}", depth: ${depth}, foundStart: ${foundStart}`);
         if (depth === 0 && foundStart) {
           endTagStart = i;
           endTagEnd = i;
-          console.log("找到结束标签:", tokenText, "位置:", i);
           break;
         }
       }
@@ -532,18 +512,15 @@ class CSSSelectorTutorial {
       if ((tokenText.includes("/&gt;") || tokenText.includes("/>")) && i === startIndex) {
         endTagStart = i;
         endTagEnd = i;
-        console.log("找到自闭合标签:", tokenText, "位置:", i);
         break;
       }
     }
 
     // 如果没有找到结束标签，可能元素没有结束标签（自闭合标签）
     if (endTagStart === -1) {
-      console.log("未找到结束标签，使用开始标签范围");
       return { start: startTagStart, end: startTagEnd };
     }
 
-    console.log("完整元素范围:", { start: startTagStart, end: endTagEnd });
     return { start: startTagStart, end: endTagEnd };
   }
 
@@ -577,13 +554,6 @@ class CSSSelectorTutorial {
     let startIndex = -1;
     let endIndex = -1;
 
-    console.log(
-      `开始查找元素: ${tagName}${className ? "." + className : ""}${id ? "#" + id : ""}${
-        isSelfClosing ? " (自闭合标签)" : ""
-      }`
-    );
-    console.log(`已处理的位置数量: ${processedPositions.size}`);
-
     // 生成当前元素的特征签名
     const currentElementSignature = this.getElementSignature(tagName, className, id);
 
@@ -610,9 +580,7 @@ class CSSSelectorTutorial {
 
         if (className) {
           const classPattern = `class="${this.escapeRegex(className)}"`;
-          console.log(`检查类名匹配: ${classPattern}`);
           if (!this.findAttributeInTokens(classPattern, tokens, i)) {
-            console.log(`类名匹配失败: ${classPattern}`);
             attributesMatch = false;
           }
         }
@@ -624,27 +592,19 @@ class CSSSelectorTutorial {
           }
         }
 
-        console.log(`属性匹配结果: ${attributesMatch}`);
-
         if (attributesMatch) {
           // 检查这个位置是否已经被相同特征的元素处理过
           const positionSignature = `${currentElementSignature}:${i}`;
           if (processedPositions.has(positionSignature)) {
-            console.log(`位置 ${i} 已被相同特征元素处理，跳过`);
             continue;
           }
 
           startIndex = i;
-          console.log(`找到开始标签: ${tagName} 在位置 ${i}, 内容: ${tokenText}`);
 
           // 对于自闭合标签，结束位置就是开始位置
           if (isSelfClosing) {
             endIndex = i;
-            console.log(`自闭合标签 ${tagName}，结束位置与开始位置相同: ${endIndex}`);
           } else {
-            // 查找结束标签
-            console.log(`开始查找 ${tagName} 标签的结束标签，从位置 ${startIndex} 开始`);
-
             // 对所有可能嵌套的标签都使用深度计数逻辑
             const nestedTags = [
               "div",
@@ -662,7 +622,6 @@ class CSSSelectorTutorial {
               "ol",
             ];
             if (nestedTags.includes(tagName.toLowerCase())) {
-              console.log(`检测到可能嵌套的${tagName}元素，使用深度计数逻辑`);
               endIndex = this.findMatchingEndTagWithDepth(tagName, startIndex, tokens);
             } else {
               endIndex = this.findMatchingEndTag(tagName, startIndex, tokens);
@@ -670,26 +629,20 @@ class CSSSelectorTutorial {
           }
 
           if (endIndex === -1) {
-            console.log(`未找到结束标签，使用开始位置作为结束位置`);
             endIndex = startIndex;
           }
-
-          console.log(`找到匹配的结束标签在位置 ${endIndex}`);
 
           // 标记开始和结束位置为已处理，使用位置签名避免重复
           const startPositionSignature = `${currentElementSignature}:${startIndex}`;
           const endPositionSignature = `${currentElementSignature}:${endIndex}`;
           processedPositions.add(startPositionSignature);
           processedPositions.add(endPositionSignature);
-          console.log(`标记位置签名 ${startPositionSignature} 和 ${endPositionSignature} 为已处理`);
-
           break;
         }
       }
     }
 
     if (startIndex === -1) {
-      console.log(`未找到开始标签`);
       return null;
     }
 
@@ -726,7 +679,6 @@ class CSSSelectorTutorial {
           return parseInt(parts[parts.length - 1]) || 0;
         })
       );
-      console.log(`当前元素特征已处理过，从位置 ${lastProcessedPosition + 1} 开始搜索`);
       return lastProcessedPosition + 1;
     }
   }
@@ -745,7 +697,6 @@ class CSSSelectorTutorial {
           return parseInt(parts[parts.length - 1]) || 0;
         })
       );
-      console.log(`元素没有有效父元素，从位置 ${maxProcessedPosition + 1} 开始搜索`);
       return maxProcessedPosition + 1;
     }
 
@@ -768,11 +719,9 @@ class CSSSelectorTutorial {
           return parseInt(parts[parts.length - 1]) || 0;
         })
       );
-      console.log(`父元素已处理过，从父元素开始位置 ${parentStartPosition + 1} 之后开始搜索`);
       return parentStartPosition + 1;
     } else {
       // 如果父元素还没有处理过，从位置0开始搜索
-      console.log(`父元素未处理过，从位置 0 开始搜索`);
       return 0;
     }
   }
@@ -831,49 +780,36 @@ class CSSSelectorTutorial {
 
         if (className) {
           const classPattern = `class="${this.escapeRegex(className)}"`;
-          console.log(`检查类名匹配: ${classPattern}`);
           if (!this.findAttributeInTokens(classPattern, tokens, i)) {
-            console.log(`类名匹配失败: ${classPattern}`);
             attributesMatch = false;
           }
         }
 
         if (id) {
           const idPattern = `id="${this.escapeRegex(id)}"`;
-          console.log(`检查ID匹配: ${idPattern}`);
           if (!this.findAttributeInTokens(idPattern, tokens, i)) {
-            console.log(`ID匹配失败: ${idPattern}`);
             attributesMatch = false;
           }
         }
-
-        console.log(`属性匹配结果: ${attributesMatch}`);
 
         if (attributesMatch) {
           // 检查这个位置是否已经被相同特征的元素处理过
           const positionSignature = `${currentElementSignature}:${i}`;
           if (processedPositions.has(positionSignature)) {
-            console.log(`根元素位置 ${i} 已被相同特征元素处理，跳过`);
             continue;
           }
 
           startIndex = i;
-          console.log(
-            `找到根元素开始标签: ${lowerTagName} 在位置 ${i}, 内容: ${tokenText}${isSelfClosing ? " (自闭合标签)" : ""}`
-          );
 
           // 对于自闭合标签，结束位置就是开始位置
           if (isSelfClosing) {
             endIndex = i;
-            console.log(`根元素自闭合标签 ${lowerTagName}，结束位置与开始位置相同: ${endIndex}`);
           } else {
             // 使用栈来查找正确的结束标签
             endIndex = this.findMatchingEndTag(lowerTagName, i, tokens);
 
             if (endIndex !== -1) {
-              console.log(`找到根元素匹配的结束标签在位置 ${endIndex}`);
             } else {
-              console.log(`未找到根元素匹配的结束标签，使用开始位置: ${i}`);
               endIndex = i;
             }
           }
@@ -883,8 +819,6 @@ class CSSSelectorTutorial {
           const endPositionSignature = `${currentElementSignature}:${endIndex}`;
           processedPositions.add(startPositionSignature);
           processedPositions.add(endPositionSignature);
-          console.log(`标记根元素位置签名 ${startPositionSignature} 和 ${endPositionSignature} 为已处理`);
-
           break;
         }
       }
@@ -903,8 +837,6 @@ class CSSSelectorTutorial {
   }
 
   findMatchingEndTag(tagName, startIndex, tokens) {
-    console.log(`开始查找 ${tagName} 标签的结束标签，从位置 ${startIndex} 开始`);
-
     // 检查是否是可能有嵌套的元素
     const nestedTags = [
       "div",
@@ -922,10 +854,8 @@ class CSSSelectorTutorial {
       "ol",
     ];
     if (nestedTags.includes(tagName.toLowerCase())) {
-      console.log(`检测到${tagName}元素，使用深度计数逻辑`);
       return this.findMatchingEndTagWithDepth(tagName, startIndex, tokens);
     } else {
-      console.log(`使用简单匹配逻辑`);
       return this.findMatchingEndTagSimple(tagName, startIndex, tokens);
     }
   }
@@ -954,7 +884,6 @@ class CSSSelectorTutorial {
       ) {
         if (depth === 0) {
           // 找到当前元素的结束标签
-          console.log(`找到匹配的结束标签在位置 ${i}: ${tokenText}`);
           return i;
         } else {
           depth--;
@@ -962,24 +891,15 @@ class CSSSelectorTutorial {
       }
     }
 
-    console.log(`未找到匹配的结束标签`);
     return -1;
   }
 
   findMatchingEndTagWithDepth(tagName, startIndex, tokens) {
     let depth = 0;
 
-    console.log(`开始深度计数搜索，从位置 ${startIndex} 开始`);
-    console.log(`搜索标签: ${tagName}`);
-
     // 从开始标签的下一个token开始搜索
     for (let i = startIndex + 1; i < tokens.length; i++) {
       const tokenText = tokens[i].textContent;
-
-      // 调试：打印前几个token的内容
-      if (i < startIndex + 10) {
-        console.log(`Token ${i}: "${tokenText}"`);
-      }
 
       // 检查是否是完整的开始标签（必须包含>符号）
       if (
@@ -989,7 +909,6 @@ class CSSSelectorTutorial {
         (tokenText.includes("&gt;") || tokenText.includes(">"))
       ) {
         depth++;
-        console.log(`找到嵌套的 ${tagName} 开始标签，深度增加到 ${depth}: ${tokenText}`);
       }
 
       // 检查是否是完整的结束标签（必须包含/和>符号）
@@ -1000,16 +919,13 @@ class CSSSelectorTutorial {
       ) {
         if (depth === 0) {
           // 找到当前元素的结束标签
-          console.log(`找到匹配的结束标签在位置 ${i}: ${tokenText}`);
           return i;
         } else {
           depth--;
-          console.log(`找到嵌套的 ${tagName} 结束标签，深度减少到 ${depth}: ${tokenText}`);
         }
       }
     }
 
-    console.log(`未找到匹配的结束标签`);
     return -1;
   }
 
@@ -1026,7 +942,6 @@ class CSSSelectorTutorial {
       ) {
         // 检查是否是完整的开始标签（包含>符号）
         if (tokenText.includes("&gt;") || tokenText.includes(">")) {
-          console.log(`找到下一个同级元素开始标签在位置 ${i}: ${tokenText}`);
           return i;
         }
       }
@@ -1042,18 +957,13 @@ class CSSSelectorTutorial {
     const start = Math.max(0, startIndex - searchRange);
     const end = Math.min(tokens.length, startIndex + searchRange);
 
-    console.log(`在位置 ${startIndex} 附近查找属性: ${attributePattern}`);
-    console.log(`搜索范围: ${start} 到 ${end}`);
-
     for (let i = start; i < end; i++) {
       const tokenText = tokens[i].textContent;
       if (tokenText.includes(attributePattern)) {
-        console.log(`在位置 ${i} 找到属性: ${tokenText}`);
         return true;
       }
     }
 
-    console.log(`未找到属性: ${attributePattern}`);
     return false;
   }
 
@@ -1133,28 +1043,19 @@ class CSSSelectorTutorial {
   }
 
   calculateHighlightRange(startToken, endToken, tokens) {
-    console.log("开始计算高亮范围...");
-
     const startIndex = tokens.indexOf(startToken);
     const endIndex = tokens.indexOf(endToken);
-
-    console.log("开始token:", startToken.textContent, "位置:", startIndex);
-    console.log("结束token:", endToken.textContent, "位置:", endIndex);
 
     // 获取开始标签和结束标签的行号
     const startLine = this.getTokenLineNumber(startToken);
     const endLine = this.getTokenLineNumber(endToken);
 
-    console.log("开始标签行号:", startLine, "结束标签行号:", endLine);
-
     // 检查开始标签和结束标签是否在同一行
     if (startLine === endLine) {
       // 同一行：高亮整个元素（开始标签、内容、结束标签）
-      console.log("开始标签和结束标签在同一行，高亮整个元素");
       return this.highlightFullElement(startIndex, endIndex, tokens);
     } else {
       // 不同行：分别高亮开始标签和结束标签
-      console.log("开始标签和结束标签在不同行，分别高亮");
       return this.highlightSeparateTags(startIndex, endIndex, tokens);
     }
   }
@@ -1214,15 +1115,6 @@ class CSSSelectorTutorial {
     const width = endRect.left + endRect.width - startRect.left;
     // 使用结束标签的底部位置减去开始标签的顶部位置，确保覆盖整个元素
     const height = endRect.top + endRect.height - startRect.top;
-
-    console.log(`高亮范围计算:`, {
-      startToken: startToken.textContent,
-      endToken: endToken.textContent,
-      startRect: { left: startRect.left, top: startRect.top, width: startRect.width, height: startRect.height },
-      endRect: { left: endRect.left, top: endRect.top, width: endRect.width, height: endRect.height },
-      containerRect: { left: containerRect.left, top: containerRect.top },
-      result: { left, top, width, height },
-    });
 
     return {
       left: left,
@@ -1359,7 +1251,6 @@ class CSSSelectorTutorial {
 
       // 如果已经包含HTML元素，跳过处理
       if (hasHtmlElements) {
-        console.log("段落已包含HTML元素，跳过处理:", paragraph.textContent);
         paragraph.dataset.processed = "true";
         return;
       }
@@ -1700,21 +1591,12 @@ class CSSSelectorTutorial {
     const indent = startTag.match(/^(\s*)/)[1];
     const baseIndent = indent.length;
 
-    console.log("处理长行:", {
-      originalLine: line,
-      startTag: startTag,
-      content: content,
-      endTag: endTag,
-      baseIndent: baseIndent,
-    });
-
     // 检查内容是否包含换行符（表示内部元素已经换行）
     const hasInternalNewlines = content.includes("\n");
 
     if (hasInternalNewlines) {
       // 如果内容已经包含换行符，说明内部元素已经换行
       // 需要特殊处理，确保结束标签与开始标签对齐
-      console.log("检测到内容包含换行符，使用特殊处理逻辑");
 
       // 分割内容为行
       const contentLines = content.split("\n");
@@ -1729,7 +1611,6 @@ class CSSSelectorTutorial {
           const partIndent = " ".repeat(baseIndent + 2);
           const processedLine = partIndent + contentLine.trim();
           lines.push(processedLine);
-          console.log(`内容行 ${index}: "${processedLine}"`);
         }
       });
 
@@ -1738,24 +1619,13 @@ class CSSSelectorTutorial {
       const trimmedEndTag = endTag.trim();
       const processedEndTag = endTagIndent + trimmedEndTag;
       lines.push(processedEndTag);
-
-      console.log("最终结果（换行内容）:", {
-        endTagIndent: endTagIndent,
-        trimmedEndTag: trimmedEndTag,
-        processedEndTag: processedEndTag,
-        allLines: lines,
-      });
-
       return lines;
     } else {
       // 内容不包含换行符，使用原来的逻辑
       const contentParts = this.splitContentByElements(content);
 
-      console.log("内容分割结果:", contentParts);
-
       if (contentParts.length === 1) {
         // 只有一个内容部分，不需要换行
-        console.log("只有一个内容部分，不换行");
         return [line];
       }
 
@@ -1769,7 +1639,6 @@ class CSSSelectorTutorial {
           const partIndent = " ".repeat(baseIndent + 2);
           const processedPart = partIndent + part.trim();
           lines.push(processedPart);
-          console.log(`内容部分 ${index}: "${processedPart}"`);
         }
       });
 
@@ -1778,14 +1647,6 @@ class CSSSelectorTutorial {
       const trimmedEndTag = endTag.trim();
       const processedEndTag = endTagIndent + trimmedEndTag;
       lines.push(processedEndTag);
-
-      console.log("最终结果（普通内容）:", {
-        endTagIndent: endTagIndent,
-        trimmedEndTag: trimmedEndTag,
-        processedEndTag: processedEndTag,
-        allLines: lines,
-      });
-
       return lines;
     }
   }
