@@ -4,3 +4,119 @@
   --拇指宽度: 16px;
 }
 
+.弧度和角度总区 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.展示区 {
+  width: 800px;
+  height: 600px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.展示区 canvas {
+  display: block;
+}
+
+.展示区 canvas:hover {
+  cursor: url("/Images/Common/鼠标-默认.cur"), auto;
+}
+
+.控制区 {
+  width: 800px;
+  background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  color: #e0e0e0;
+}
+
+.控制区 h3 {
+  color: #64b5f6;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.2em;
+  text-shadow: 0 0 10px rgba(100, 181, 246, 0.3);
+}
+
+.控制区 ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.控制区 li {
+  margin-bottom: 10px;
+  line-height: 1.5;
+  color: #e0e0e0;
+}
+
+.控制区 li strong {
+  color: #81c784;
+  text-shadow: 0 0 5px rgba(129, 199, 132, 0.3);
+}
+
+/* 符号颜色样式 */
+.控制区 li .数值 {
+  color: #ffd54f; /* 黄色 - 数值 */
+}
+
+.控制区 li .单位 {
+  color: #ff8a65; /* 橙色 - 单位 */
+}
+
+.控制区 li .符号 {
+  color: #90caf9; /* 蓝色 - 符号 */
+}
+
+.控制区 li .除号 {
+  color: #90caf9; /* 蓝色 - 除号 */
+  margin: 0 3px;
+}
+
+.控制区 li .括号 {
+  color: #a5d6a7; /* 浅绿色 - 括号 */
+}
+
+.控制区 li .等号 {
+  color: #aaa; /* 浅灰色 - 等号和约等号 */
+}
+
+.控制区 li .中文单位 {
+  margin-left: 2px;
+}
+
+/* 响应式设计 */
+@media (max-width: 900px) {
+  .展示区,
+  .控制区 {
+    width: 95vw;
+    max-width: 600px;
+  }
+
+  .展示区 {
+    height: 400px;
+  }
+
+  .交互标题 {
+    font-size: 1.5em;
+  }
+}
+
+@media (max-width: 600px) {
+  .展示区 {
+    height: 300px;
+  }
+
+  .交互标题 {
+    font-size: 1.2em;
+  }
+}

@@ -1,0 +1,597 @@
+class RadiusAndAngleCanvas {
+  constructor(canvasId) {
+    this.canvas = document.getElementById(canvasId);
+    this.ctx = this.canvas.getContext('2d');
+    
+    // 获取设备像素比
+    this.devicePixelRatio = window.devicePixelRatio || 1;
+    
+    // 圆的基本参数 - 增大半径
+    this.圆心X = 0;
+    this.圆心Y = 0;
+    this.半径 = 180; // 增大半径
+    
+    // 控制点参数 - 修改默认位置
+    this.控制点1角度 = -Math.PI / 2; // 0度，正上方
+    this.控制点2角度 = -Math.PI / 2 + 1; // 1弧度，从正上方开始
+    this.拖拽的控制点 = null;
+    this.鼠标在控制点上 = false;
+    this.悬停的控制点 = null; // 新增：跟踪悬停的控制点
+    
+    // 保存初始值用于重置
+    this.初始值 = {
+      控制点1角度: -Math.PI / 2,
+      控制点2角度: -Math.PI / 2 + 1
+    };
+    
+    // 缓存计算结果，避免重复计算
+    this.缓存 = {
+      角度差: 0,
+      角度值: 0,
+      弧度值: 0,
+      需要更新: true
+    };
+    
+    // 颜色定义 - 深色模式
+    this.颜色 = {
+      圆: '#64b5f6',
+      圆心: '#ff6b6b',
+      控制点: '#ffa726',
+      控制点悬停: '#ffcc02', // 新增：悬停颜色
+      虚线: '#9e9e9e',
+      特殊弧: '#ff7043',
+      文本: '#e0e0e0',
+      公式背景: 'rgba(30, 30, 46, 0.95)',
+      角度区域: 'rgba(100, 181, 246, 0.15)',
+      公式边框: '#444',
+      // 新增：文本颜色
+      标签文本: '#81c784', // 绿色
+      数值文本: '#ffd54f', // 黄色
+      单位文本: '#ff8a65', // 橙色
+      符号文本: '#90caf9', // 蓝色
+      括号文本: '#a5d6a7'  // 浅绿色
+    };
+    
+    // 字体设置
+    this.字体 = '"JetBrains Mono", "Noto Sans SC", Consolas, monospace';
+    
+    this.init();
+  }
+  
+  init() {
+    this.resizeCanvas();
+    this.setupEventListeners();
+    this.render();
+    
+    window.addEventListener('resize', () => {
+      this.resizeCanvas();
+      this.render();
+    });
+  }
+  
+  resizeCanvas() {
+    const container = this.canvas.parentElement;
+    const rect = container.getBoundingClientRect();
+    
+    // 设置canvas的CSS尺寸
+    this.canvas.style.width = rect.width + 'px';
+    this.canvas.style.height = rect.height + 'px';
+    
+    // 设置canvas的实际像素尺寸（考虑DPI缩放）
+    this.canvas.width = rect.width * this.devicePixelRatio;
+    this.canvas.height = rect.height * this.devicePixelRatio;
+    
+    // 缩放绘图上下文以匹配DPI
+    this.ctx.scale(this.devicePixelRatio, this.devicePixelRatio);
+    
+    // 重新计算圆心位置（基于CSS尺寸）
+    this.圆心X = rect.width / 2;
+    
+    // 计算圆的位置，确保上下距离一致
+    const 公式区域高度 = 80;
+    const 可用高度 = rect.height - 公式区域高度;
+    const 上边距 = (可用高度 - this.半径 * 2) / 2;
+    this.圆心Y = 上边距 + this.半径;
+    
+    // 标记需要更新缓存
+    this.缓存.需要更新 = true;
+  }
+  
+  setupEventListeners() {
+    this.canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e));
+    this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+    this.canvas.addEventListener('mouseup', () => this.handleMouseUp());
+    this.canvas.addEventListener('mouseleave', () => this.handleMouseUp());
+  }
+  
+  // 统一的角度计算函数，确保精度
+  calculate角度() {
+    if (!this.缓存.需要更新) {
+      return this.缓存;
+    }
+    
+    // 计算角度差，确保精度
+    let 角度差 = this.控制点2角度 - this.控制点1角度;
+    if (角度差 < 0) {
+      角度差 += 2 * Math.PI;
+    }
+    
+    // 使用更精确的转换公式
+    const 角度值 = (角度差 * 180) / Math.PI;
+    
+    // 缓存结果
+    this.缓存 = {
+      角度差: 角度差,
+      角度值: 角度值,
+      弧度值: 角度差,
+      需要更新: false
+    };
+    
+    return this.缓存;
+  }
+  
+  handleMouseDown(e) {
+    const rect = this.canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    // 检查是否点击了控制点
+    const 控制点1X = this.圆心X + this.半径 * Math.cos(this.控制点1角度);
+    const 控制点1Y = this.圆心Y + this.半径 * Math.sin(this.控制点1角度);
+    const 控制点2X = this.圆心X + this.半径 * Math.cos(this.控制点2角度);
+    const 控制点2Y = this.圆心Y + this.半径 * Math.sin(this.控制点2角度);
+    
+    const 点击距离1 = Math.sqrt((x - 控制点1X) ** 2 + (y - 控制点1Y) ** 2);
+    const 点击距离2 = Math.sqrt((x - 控制点2X) ** 2 + (y - 控制点2Y) ** 2);
+    
+    if (点击距离1 <= 15) {
+      this.拖拽的控制点 = 1;
+      this.canvas.style.cursor = 'grabbing';
+    } else if (点击距离2 <= 15) {
+      this.拖拽的控制点 = 2;
+      this.canvas.style.cursor = 'grabbing';
+    }
+  }
+  
+  handleMouseMove(e) {
+    const rect = this.canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    if (this.拖拽的控制点) {
+      // 计算鼠标相对于圆心的角度
+      const dx = x - this.圆心X;
+      const dy = y - this.圆心Y;
+      const 角度 = Math.atan2(dy, dx);
+      
+      // 更新控制点角度
+      if (this.拖拽的控制点 === 1) {
+        this.控制点1角度 = 角度;
+      } else {
+        this.控制点2角度 = 角度;
+      }
+      
+      // 标记需要更新缓存
+      this.缓存.需要更新 = true;
+      this.render();
+    } else {
+      // 检查鼠标是否悬停在控制点上
+      const 控制点1X = this.圆心X + this.半径 * Math.cos(this.控制点1角度);
+      const 控制点1Y = this.圆心Y + this.半径 * Math.sin(this.控制点1角度);
+      const 控制点2X = this.圆心X + this.半径 * Math.cos(this.控制点2角度);
+      const 控制点2Y = this.圆心Y + this.半径 * Math.sin(this.控制点2角度);
+      
+      const 悬停距离1 = Math.sqrt((x - 控制点1X) ** 2 + (y - 控制点1Y) ** 2);
+      const 悬停距离2 = Math.sqrt((x - 控制点2X) ** 2 + (y - 控制点2Y) ** 2);
+      
+      let 新的悬停控制点 = null;
+      if (悬停距离1 <= 15) {
+        新的悬停控制点 = 1;
+        this.canvas.style.cursor = 'grab';
+      } else if (悬停距离2 <= 15) {
+        新的悬停控制点 = 2;
+        this.canvas.style.cursor = 'grab';
+      } else {
+        this.canvas.style.cursor = 'default';
+      }
+      
+      // 如果悬停状态发生变化，重新渲染
+      if (this.悬停的控制点 !== 新的悬停控制点) {
+        this.悬停的控制点 = 新的悬停控制点;
+        this.render();
+      }
+    }
+  }
+  
+  handleMouseUp() {
+    this.拖拽的控制点 = null;
+    this.canvas.style.cursor = 'default';
+  }
+  
+  render() {
+    this.ctx.clearRect(0, 0, this.canvas.width / this.devicePixelRatio, this.canvas.height / this.devicePixelRatio);
+    
+    // 绘制圆
+    this.draw圆();
+    
+    // 绘制角度区域
+    this.draw角度区域();
+    
+    // 绘制圆心
+    this.draw圆心();
+    
+    // 绘制虚线
+    this.draw虚线();
+    
+    // 绘制特殊弧段
+    this.draw特殊弧段();
+    
+    // 绘制控制点 - 移到最后确保在最上层
+    this.draw控制点();
+    
+    // 绘制角度和弧度值
+    this.draw角度弧度值();
+    
+    // 绘制公式
+    this.draw公式();
+  }
+  
+  draw圆() {
+    this.ctx.beginPath();
+    this.ctx.arc(this.圆心X, this.圆心Y, this.半径, 0, 2 * Math.PI);
+    this.ctx.strokeStyle = this.颜色.圆;
+    this.ctx.lineWidth = 2;
+    this.ctx.stroke();
+  }
+  
+  draw角度区域() {
+    // 绘制角度区域（扇形）
+    this.ctx.beginPath();
+    this.ctx.moveTo(this.圆心X, this.圆心Y);
+    this.ctx.arc(this.圆心X, this.圆心Y, this.半径, this.控制点1角度, this.控制点2角度);
+    this.ctx.closePath();
+    this.ctx.fillStyle = this.颜色.角度区域;
+    this.ctx.fill();
+    
+    // 绘制角度弧线
+    this.ctx.beginPath();
+    this.ctx.arc(this.圆心X, this.圆心Y, this.半径 * 0.3, this.控制点1角度, this.控制点2角度);
+    this.ctx.strokeStyle = '#ffd54f40'; // 黄色弧线
+    this.ctx.lineWidth = 3;
+    this.ctx.stroke();
+    
+    // 填充圆心到角度弧线之间的区域
+    this.ctx.beginPath();
+    this.ctx.moveTo(this.圆心X, this.圆心Y);
+    this.ctx.arc(this.圆心X, this.圆心Y, this.半径 * 0.3, this.控制点1角度, this.控制点2角度);
+    this.ctx.closePath();
+    this.ctx.fillStyle = 'rgba(255, 213, 79, 0.1)'; // 半透明黄色填充
+    this.ctx.fill();
+  }
+  
+  draw圆心() {
+    // 绘制圆心阴影
+    this.ctx.beginPath();
+    this.ctx.arc(this.圆心X + 2, this.圆心Y + 2, 7.5, 0, 2 * Math.PI);
+    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+    this.ctx.fill();
+    
+    // 绘制圆心
+    this.ctx.beginPath();
+    this.ctx.arc(this.圆心X, this.圆心Y, 7.5, 0, 2 * Math.PI);
+    this.ctx.fillStyle = this.颜色.圆心;
+    this.ctx.fill();
+    this.ctx.strokeStyle = '#fff';
+    this.ctx.lineWidth = 2;
+    this.ctx.stroke();
+    
+    // 绘制圆心标签
+    this.ctx.fillStyle = '#fff';
+    this.ctx.font = `bold 12px ${this.字体}`;
+    this.ctx.textAlign = 'center';
+    this.ctx.fillText('O', this.圆心X, this.圆心Y + 4);
+  }
+  
+  draw控制点() {
+    const 控制点1X = this.圆心X + this.半径 * Math.cos(this.控制点1角度);
+    const 控制点1Y = this.圆心Y + this.半径 * Math.sin(this.控制点1角度);
+    const 控制点2X = this.圆心X + this.半径 * Math.cos(this.控制点2角度);
+    const 控制点2Y = this.圆心Y + this.半径 * Math.sin(this.控制点2角度);
+    
+    // 绘制控制点1
+    this.draw单个控制点(控制点1X, 控制点1Y, 'A', 1);
+    
+    // 绘制控制点2
+    this.draw单个控制点(控制点2X, 控制点2Y, 'B', 2);
+  }
+  
+  draw单个控制点(x, y, 标签, 控制点编号) {
+    const 是否悬停 = this.悬停的控制点 === 控制点编号;
+    const 是否拖拽 = this.拖拽的控制点 === 控制点编号;
+    
+    // 控制点大小根据状态调整
+    const 基础大小 = 7.5;
+    const 悬停大小 = 基础大小 + 2;
+    const 拖拽大小 = 基础大小 + 3;
+    const 当前大小 = 是否拖拽 ? 拖拽大小 : (是否悬停 ? 悬停大小 : 基础大小);
+    
+    // 控制点颜色
+    const 控制点颜色 = 是否悬停 || 是否拖拽 ? this.颜色.控制点悬停 : this.颜色.控制点;
+    
+    // 绘制控制点阴影
+    this.ctx.beginPath();
+    this.ctx.arc(x + 2, y + 2, 当前大小, 0, 2 * Math.PI);
+    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+    this.ctx.fill();
+    
+    // 绘制控制点
+    this.ctx.beginPath();
+    this.ctx.arc(x, y, 当前大小, 0, 2 * Math.PI);
+    this.ctx.fillStyle = 控制点颜色;
+    this.ctx.fill();
+    this.ctx.strokeStyle = '#fff';
+    this.ctx.lineWidth = 是否悬停 || 是否拖拽 ? 3 : 2;
+    this.ctx.stroke();
+    
+    // 绘制控制点标签
+    this.ctx.fillStyle = '#fff';
+    this.ctx.font = `bold 10px ${this.字体}`;
+    this.ctx.textAlign = 'center';
+    this.ctx.fillText(标签, x, y + 3);
+    
+    // 如果悬停或拖拽，绘制外圈光晕效果
+    if (是否悬停 || 是否拖拽) {
+      this.ctx.beginPath();
+      this.ctx.arc(x, y, 当前大小 + 5, 0, 2 * Math.PI);
+      this.ctx.strokeStyle = 控制点颜色;
+      this.ctx.lineWidth = 1;
+      this.ctx.globalAlpha = 0.3;
+      this.ctx.stroke();
+      this.ctx.globalAlpha = 1;
+    }
+  }
+  
+  draw虚线() {
+    const 控制点1X = this.圆心X + this.半径 * Math.cos(this.控制点1角度);
+    const 控制点1Y = this.圆心Y + this.半径 * Math.sin(this.控制点1角度);
+    const 控制点2X = this.圆心X + this.半径 * Math.cos(this.控制点2角度);
+    const 控制点2Y = this.圆心Y + this.半径 * Math.sin(this.控制点2角度);
+    
+    // 绘制从圆心到控制点的虚线
+    this.ctx.setLineDash([5, 5]);
+    this.ctx.strokeStyle = this.颜色.虚线;
+    this.ctx.lineWidth = 1;
+    
+    // 到控制点A的线
+    this.ctx.beginPath();
+    this.ctx.moveTo(this.圆心X, this.圆心Y);
+    this.ctx.lineTo(控制点1X, 控制点1Y);
+    this.ctx.stroke();
+    
+    // 到控制点B的线
+    this.ctx.beginPath();
+    this.ctx.moveTo(this.圆心X, this.圆心Y);
+    this.ctx.lineTo(控制点2X, 控制点2Y);
+    this.ctx.stroke();
+    
+    this.ctx.setLineDash([]);
+  }
+  
+  draw特殊弧段() {
+    const 计算结果 = this.calculate角度();
+    
+    // 绘制特殊弧段
+    this.ctx.beginPath();
+    this.ctx.arc(this.圆心X, this.圆心Y, this.半径, this.控制点1角度, this.控制点2角度);
+    this.ctx.strokeStyle = this.颜色.特殊弧;
+    this.ctx.lineWidth = 4;
+    this.ctx.stroke();
+    
+    // 在弧段外侧显示弧度值 - 使用椭圆路径，确保始终在弧度线一侧
+    const 弧度中点 = (this.控制点1角度 + this.控制点2角度) / 2;
+    
+    // 计算弧度线的方向，确保文本始终在弧度线的一侧
+    const 弧度方向 = this.控制点2角度 - this.控制点1角度;
+    const 是否顺时针 = 弧度方向 > 0 || (弧度方向 < 0 && Math.abs(弧度方向) > Math.PI);
+    
+    // 根据弧度方向调整文本位置，确保始终在弧度线外侧
+    let 文本角度 = 弧度中点;
+    if (!是否顺时针) {
+      // 如果是逆时针，文本角度需要调整到弧度线的外侧
+      文本角度 = 弧度中点 + Math.PI;
+    }
+    
+    // 使用椭圆路径确保距离一致，水平半径略大
+    const 椭圆水平半径 = this.半径 + 80; // 水平方向更大
+    const 椭圆垂直半径 = this.半径 + 35; // 垂直方向
+    const 文本X = this.圆心X + 椭圆水平半径 * Math.cos(文本角度);
+    const 文本Y = this.圆心Y + 椭圆垂直半径 * Math.sin(文本角度);
+    
+    // 绘制弧度文本（多色显示，添加间距）
+    this.draw多色文本(
+      `弧度：${计算结果.弧度值.toFixed(2)} rad`,
+      文本X,
+      文本Y + 4,
+      [
+        { 文本: '弧度：', 颜色: this.颜色.标签文本 },
+        { 文本: 计算结果.弧度值.toFixed(2), 颜色: this.颜色.数值文本 },
+        { 文本: ' ', 颜色: this.颜色.数值文本 }, // 2px间距
+        { 文本: 'rad', 颜色: this.颜色.单位文本 }
+      ]
+    );
+  }
+  
+  draw角度弧度值() {
+    const 计算结果 = this.calculate角度();
+    
+    // 在圆心下方显示角度值（多色显示）
+    this.draw多色文本(
+      `角度：${计算结果.角度值.toFixed(1)}°`,
+      this.圆心X,
+      this.圆心Y + 30,
+      [
+        { 文本: '角度：', 颜色: this.颜色.标签文本 },
+        { 文本: 计算结果.角度值.toFixed(1), 颜色: this.颜色.数值文本 },
+        { 文本: '°', 颜色: this.颜色.单位文本 }
+      ]
+    );
+  }
+  
+  // 绘制多色文本的辅助函数
+  draw多色文本(完整文本, x, y, 颜色配置) {
+    this.ctx.font = `bold 14px ${this.字体}`;
+    this.ctx.textAlign = 'center';
+    
+    let 当前X = x;
+    const 总宽度 = this.ctx.measureText(完整文本).width;
+    当前X = x - 总宽度 / 2;
+    
+    for (const 配置 of 颜色配置) {
+      // 绘制文字阴影
+      this.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+      this.ctx.fillText(配置.文本, 当前X + this.ctx.measureText(配置.文本).width / 2 + 2, y + 2);
+      
+      // 绘制主文字
+      this.ctx.fillStyle = 配置.颜色;
+      this.ctx.fillText(配置.文本, 当前X + this.ctx.measureText(配置.文本).width / 2, y);
+      当前X += this.ctx.measureText(配置.文本).width;
+    }
+  }
+  
+  draw公式() {
+    const 计算结果 = this.calculate角度();
+    const canvasHeight = this.canvas.height / this.devicePixelRatio;
+    const 公式Y = canvasHeight - 60; // 放在Canvas最下方
+    
+    // 绘制精简的公式（多色显示，垂直居中）
+    this.ctx.font = `bold 16px ${this.字体}`;
+    this.ctx.textAlign = 'left';
+    
+    // 当前角度的获取公式
+    this.draw公式多色文本(
+      `当前角度：${计算结果.角度值.toFixed(1)}° = ${计算结果.弧度值.toFixed(2)} × (180° / π)`,
+      40,
+      公式Y - 20
+    );
+    
+    // 当前弧度的获取公式
+    this.draw公式多色文本(
+      `当前弧度：${计算结果.弧度值.toFixed(2)} = ${计算结果.角度值.toFixed(1)}° × (π / 180°)`,
+      40,
+      公式Y + 20
+    );
+  }
+  
+  // 绘制公式多色文本的辅助函数
+  draw公式多色文本(完整文本, x, y) {
+    this.ctx.font = `16px ${this.字体}`; // 不加粗
+    this.ctx.textAlign = 'left';
+    
+    let 当前X = x;
+    
+    // 解析文本并应用不同颜色
+    const 标签 = 完整文本.match(/^(.+：)/)[1];
+    this.ctx.fillStyle = this.颜色.标签文本;
+    this.ctx.fillText(标签, 当前X, y);
+    当前X += this.ctx.measureText(标签).width;
+    
+    // 提取数值部分
+    const 数值匹配 = 完整文本.match(/：([0-9.]+)/);
+    if (数值匹配) {
+      const 数值 = 数值匹配[1];
+      this.ctx.fillStyle = this.颜色.数值文本;
+      this.ctx.fillText(数值, 当前X, y);
+      当前X += this.ctx.measureText(数值).width;
+    }
+    
+    // 提取单位部分
+    const 单位匹配 = 完整文本.match(/([°rad])/);
+    if (单位匹配) {
+      const 单位 = 单位匹配[1];
+      this.ctx.fillStyle = this.颜色.单位文本;
+      this.ctx.fillText(单位, 当前X, y);
+      当前X += this.ctx.measureText(单位).width;
+    }
+    
+    // 等号前添加较小间距
+    当前X += 6;
+    
+    // 等号
+    const 等号匹配 = 完整文本.match(/(=)/);
+    if (等号匹配) {
+      this.ctx.fillStyle = '#aaa';
+      this.ctx.fillText('=', 当前X, y);
+      当前X += this.ctx.measureText('=').width;
+    }
+    
+    // 等号后添加较大间距
+    当前X += 0;
+    
+    // 剩余文本（π等）- 分别处理不同符号的颜色
+    const 剩余文本 = 完整文本.substring(完整文本.indexOf('=') + 1);
+    
+    // 逐字符处理剩余文本
+    for (let i = 0; i < 剩余文本.length; i++) {
+      const 字符 = 剩余文本[i];
+      
+      if (字符 === '°') {
+        this.ctx.fillStyle = this.颜色.单位文本;
+      } else if (字符 === '×' || 字符 === '/') {
+        this.ctx.fillStyle = this.颜色.符号文本;
+      } else if (字符 === '(' || 字符 === ')') {
+        this.ctx.fillStyle = this.颜色.括号文本;
+      } else {
+        this.ctx.fillStyle = this.颜色.文本;
+      }
+      
+      this.ctx.fillText(字符, 当前X, y);
+      当前X += this.ctx.measureText(字符).width;
+    }
+  }
+  
+  // 重置功能
+  reset() {
+    // 重置控制点位置到初始值
+    this.控制点1角度 = this.初始值.控制点1角度;
+    this.控制点2角度 = this.初始值.控制点2角度;
+    
+    // 清除拖拽和悬停状态
+    this.拖拽的控制点 = null;
+    this.悬停的控制点 = null;
+    this.canvas.style.cursor = 'default';
+    
+    // 标记需要更新缓存
+    this.缓存.需要更新 = true;
+    
+    // 重新渲染
+    this.render();
+  }
+}
+
+// 初始化Canvas
+function initCanvas() {
+  const canvas = document.createElement('canvas');
+  canvas.id = 'radius-angle-canvas';
+  canvas.style.width = '100%';
+  canvas.style.height = '100%';
+  
+  // 替换展示区内容
+  const 展示区 = document.querySelector('.展示区');
+  展示区.innerHTML = '';
+  展示区.appendChild(canvas);
+  
+  const canvas实例 = new RadiusAndAngleCanvas('radius-angle-canvas');
+  
+  // 绑定重置按钮事件
+  const 重置按钮 = document.querySelector('.重置按钮');
+  if (重置按钮) {
+    重置按钮.addEventListener('click', () => {
+      canvas实例.reset();
+    });
+  }
+}
+
+// 页面加载完成后初始化
+document.addEventListener('DOMContentLoaded', () => {
+  initCanvas();
+});
