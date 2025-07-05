@@ -101,7 +101,21 @@ class RadiusAndAngleCanvas {
     this.canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e));
     this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
     this.canvas.addEventListener('mouseup', () => this.handleMouseUp());
-    this.canvas.addEventListener('mouseleave', () => this.handleMouseUp());
+    // 移除mouseleave事件，让拖拽状态在鼠标离开Canvas时保持
+    // this.canvas.addEventListener('mouseleave', () => this.handleMouseUp());
+    
+    // 添加全局鼠标事件，确保拖拽状态持续
+    document.addEventListener('mousemove', (e) => {
+      if (this.拖拽的控制点) {
+        this.handleMouseMove(e);
+      }
+    });
+    
+    document.addEventListener('mouseup', () => {
+      if (this.拖拽的控制点) {
+        this.handleMouseUp();
+      }
+    });
   }
   
   // 统一的角度计算函数，确保精度
@@ -407,16 +421,14 @@ class RadiusAndAngleCanvas {
     const 文本X = this.圆心X + 椭圆水平半径 * Math.cos(文本角度);
     const 文本Y = this.圆心Y + 椭圆垂直半径 * Math.sin(文本角度);
     
-    // 绘制弧度文本（多色显示，添加间距）
+    // 绘制弧度文本（多色显示，无单位）
     this.draw多色文本(
-      `弧度：${计算结果.弧度值.toFixed(2)} rad`,
+      `弧度：${计算结果.弧度值.toFixed(2)}`,
       文本X,
       文本Y + 4,
       [
         { 文本: '弧度：', 颜色: this.颜色.标签文本 },
-        { 文本: 计算结果.弧度值.toFixed(2), 颜色: this.颜色.数值文本 },
-        { 文本: ' ', 颜色: this.颜色.数值文本 }, // 2px间距
-        { 文本: 'rad', 颜色: this.颜色.单位文本 }
+        { 文本: 计算结果.弧度值.toFixed(2), 颜色: this.颜色.数值文本 }
       ]
     );
   }
@@ -462,50 +474,74 @@ class RadiusAndAngleCanvas {
     const 计算结果 = this.calculate角度();
     const canvasHeight = this.canvas.height / this.devicePixelRatio;
     const 公式Y = canvasHeight - 60; // 放在Canvas最下方
+    const canvasWidth = this.canvas.width / this.devicePixelRatio;
     
-    // 绘制精简的公式（多色显示，垂直居中）
+    // 计算公式宽度（包括标签）
+    this.ctx.font = `16px ${this.字体}`;
+    const 角度公式文本 = `${计算结果.角度值.toFixed(1)}° = ${计算结果.弧度值.toFixed(2)} × (180° / π)`;
+    const 弧度公式文本 = `${计算结果.弧度值.toFixed(2)} = ${计算结果.角度值.toFixed(1)}° × (π / 180°)`;
+    
+    // 计算包含标签的完整公式宽度
+    const 角度标签宽度 = this.ctx.measureText('角度：').width;
+    const 弧度标签宽度 = this.ctx.measureText('弧度：').width;
+    const 角度公式宽度 = this.ctx.measureText(角度公式文本).width;
+    const 弧度公式宽度 = this.ctx.measureText(弧度公式文本).width;
+    const 角度总宽度 = 角度标签宽度 + 角度公式宽度;
+    const 弧度总宽度 = 弧度标签宽度 + 弧度公式宽度;
+    
+    // 计算整体宽度和起始位置，使两个公式水平居中
+    const 总宽度 = 角度总宽度 + 75 + 弧度总宽度; // 75px间距
+    const 起始X = (canvasWidth - 总宽度) / 2;
+    
+    // 绘制精简的公式（多色显示，水平居中排列）
     this.ctx.font = `bold 16px ${this.字体}`;
     this.ctx.textAlign = 'left';
     
-    // 当前角度的获取公式
+    // 角度公式
     this.draw公式多色文本(
-      `当前角度：${计算结果.角度值.toFixed(1)}° = ${计算结果.弧度值.toFixed(2)} × (180° / π)`,
-      40,
-      公式Y - 20
+      角度公式文本,
+      起始X,
+      公式Y,
+      '角度'
     );
     
-    // 当前弧度的获取公式
+    // 弧度公式
     this.draw公式多色文本(
-      `当前弧度：${计算结果.弧度值.toFixed(2)} = ${计算结果.角度值.toFixed(1)}° × (π / 180°)`,
-      40,
-      公式Y + 20
+      弧度公式文本,
+      起始X + 角度总宽度 + 75, // 第一个公式总宽度（包括标签）+ 75px间距
+      公式Y,
+      '弧度'
     );
   }
   
   // 绘制公式多色文本的辅助函数
-  draw公式多色文本(完整文本, x, y) {
+  draw公式多色文本(完整文本, x, y, 标签文本) {
     this.ctx.font = `16px ${this.字体}`; // 不加粗
     this.ctx.textAlign = 'left';
     
     let 当前X = x;
     
-    // 解析文本并应用不同颜色
-    const 标签 = 完整文本.match(/^(.+：)/)[1];
+    // 在公式前面添加标签
+    this.ctx.font = `16px ${this.字体}`;
     this.ctx.fillStyle = this.颜色.标签文本;
-    this.ctx.fillText(标签, 当前X, y);
-    当前X += this.ctx.measureText(标签).width;
+    this.ctx.fillText(标签文本 + '：', 当前X, y);
+    当前X += this.ctx.measureText(标签文本 + '：').width;
     
-    // 提取数值部分
-    const 数值匹配 = 完整文本.match(/：([0-9.]+)/);
+    // 绘制完整公式文本
+    // 提取第一个数值（角度或弧度值）
+    const 数值匹配 = 完整文本.match(/^([0-9.]+)/);
     if (数值匹配) {
       const 数值 = 数值匹配[1];
+      
+      // 绘制数值
+      this.ctx.font = `16px ${this.字体}`;
       this.ctx.fillStyle = this.颜色.数值文本;
       this.ctx.fillText(数值, 当前X, y);
       当前X += this.ctx.measureText(数值).width;
     }
     
-    // 提取单位部分
-    const 单位匹配 = 完整文本.match(/([°rad])/);
+    // 提取单位部分（只处理角度单位°）
+    const 单位匹配 = 完整文本.match(/([°])/);
     if (单位匹配) {
       const 单位 = 单位匹配[1];
       this.ctx.fillStyle = this.颜色.单位文本;
