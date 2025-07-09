@@ -46,22 +46,26 @@
   align-items: center;
   border-radius: 20px;
 }
+
 table {
+  margin-right: 8%;
   width: 80%;
   height: 80%;
   border-collapse: separate;
-  border-spacing: 10px;
+  border-spacing: 20px;
+  table-layout: fixed
 }
 
 td {
-  width: 2%;
   height: 10%;
   border: solid rgb(184, 177, 177) 0.8px;
   border-radius: 15px;
   text-align: center;
+  background-color: rgba(41, 40, 40, 0.5);
 }
 
 .午休 {
   border: none;
   text-align: center;
 }
+
