@@ -130,14 +130,17 @@ class RadiusAndAngleCanvas {
       角度差 += 2 * Math.PI;
     }
     
-    // 使用更精确的转换公式
-    const 角度值 = (角度差 * 180) / Math.PI;
+    // 先计算弧度值，然后四舍五入到两位小数
+    const 弧度值 = Math.round(角度差 * 100) / 100;
+    
+    // 使用精确的弧度值计算角度值
+    const 角度值 = (弧度值 * 180) / Math.PI;
     
     // 缓存结果
     this.缓存 = {
       角度差: 角度差,
       角度值: 角度值,
-      弧度值: 角度差,
+      弧度值: 弧度值,
       需要更新: false
     };
     
@@ -267,19 +270,12 @@ class RadiusAndAngleCanvas {
     this.ctx.fillStyle = this.颜色.角度区域;
     this.ctx.fill();
     
-    // 绘制角度弧线
-    this.ctx.beginPath();
-    this.ctx.arc(this.圆心X, this.圆心Y, this.半径 * 0.3, this.控制点1角度, this.控制点2角度);
-    this.ctx.strokeStyle = '#ffd54f40'; // 黄色弧线
-    this.ctx.lineWidth = 3;
-    this.ctx.stroke();
-    
-    // 填充圆心到角度弧线之间的区域
+    // 填充圆心到角度弧线之间的区域（去掉边框，只保留填色）
     this.ctx.beginPath();
     this.ctx.moveTo(this.圆心X, this.圆心Y);
     this.ctx.arc(this.圆心X, this.圆心Y, this.半径 * 0.3, this.控制点1角度, this.控制点2角度);
     this.ctx.closePath();
-    this.ctx.fillStyle = 'rgba(255, 213, 79, 0.1)'; // 半透明黄色填充
+    this.ctx.fillStyle = 'rgba(255, 213, 79, 0.25)'; // 半透明黄色填充
     this.ctx.fill();
   }
   

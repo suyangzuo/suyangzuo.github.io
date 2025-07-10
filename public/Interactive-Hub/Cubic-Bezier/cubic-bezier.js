@@ -427,7 +427,7 @@ class CubicBezierEditor {
   }
   
   drawCoordinateLabels(cp1, cp2) {
-    this.ctx.font = '10px "JetBrains Mono", "Consolas", "Monaco", monospace';
+    this.ctx.font = '12px "JetBrains Mono", "Consolas", "Monaco", monospace';
     this.ctx.textAlign = 'left';
     
     const x1 = Math.round(this.controlPoints.x1 * 100) / 100;
@@ -436,7 +436,7 @@ class CubicBezierEditor {
     const y2 = Math.round(this.controlPoints.y2 * 100) / 100;
     
     // 句柄1坐标显示在下方
-    const coord1Text = `(${x1}, ${y1})`;
+    const coord1Text = `${x1}, ${y1}`;
     const coord1Width = this.ctx.measureText(coord1Text).width;
     
     // 绘制背景，增加垂直内边距
@@ -444,19 +444,15 @@ class CubicBezierEditor {
     this.ctx.fillRect(cp1.x + 15, cp1.y + 3, coord1Width + 10, 19);
     
     // 绘制坐标文本
-    this.ctx.fillStyle = '#e2e8f0'; // 白色括号
-    this.ctx.fillText('(', cp1.x + 20, cp1.y + 15);
     this.ctx.fillStyle = '#90cdf4'; // 蓝色数字
-    this.ctx.fillText(x1.toString(), cp1.x + 25, cp1.y + 15);
+    this.ctx.fillText(x1.toString(), cp1.x + 20, cp1.y + 15);
     this.ctx.fillStyle = '#aaaaaa'; // 更亮的灰色逗号
-    this.ctx.fillText(', ', cp1.x + 25 + this.ctx.measureText(x1.toString()).width, cp1.y + 15);
+    this.ctx.fillText(', ', cp1.x + 20 + this.ctx.measureText(x1.toString()).width, cp1.y + 15);
     this.ctx.fillStyle = '#90cdf4'; // 蓝色数字
-    this.ctx.fillText(y1.toString(), cp1.x + 25 + this.ctx.measureText(x1.toString()).width + this.ctx.measureText(', ').width, cp1.y + 15);
-    this.ctx.fillStyle = '#e2e8f0'; // 白色括号
-    this.ctx.fillText(')', cp1.x + 25 + this.ctx.measureText(x1.toString()).width + this.ctx.measureText(', ').width + this.ctx.measureText(y1.toString()).width, cp1.y + 15);
+    this.ctx.fillText(y1.toString(), cp1.x + 20 + this.ctx.measureText(x1.toString()).width + this.ctx.measureText(', ').width, cp1.y + 15);
     
     // 句柄2坐标显示在下方
-    const coord2Text = `(${x2}, ${y2})`;
+    const coord2Text = `${x2}, ${y2}`;
     const coord2Width = this.ctx.measureText(coord2Text).width;
     
     // 绘制背景，增加垂直内边距
@@ -464,16 +460,12 @@ class CubicBezierEditor {
     this.ctx.fillRect(cp2.x + 15, cp2.y + 3, coord2Width + 10, 19);
     
     // 绘制坐标文本
-    this.ctx.fillStyle = '#e2e8f0'; // 白色括号
-    this.ctx.fillText('(', cp2.x + 20, cp2.y + 15);
     this.ctx.fillStyle = '#fbb6ce'; // 粉色数字
-    this.ctx.fillText(x2.toString(), cp2.x + 25, cp2.y + 15);
+    this.ctx.fillText(x2.toString(), cp2.x + 20, cp2.y + 15);
     this.ctx.fillStyle = '#aaaaaa'; // 更亮的灰色逗号
-    this.ctx.fillText(', ', cp2.x + 25 + this.ctx.measureText(x2.toString()).width, cp2.y + 15);
+    this.ctx.fillText(', ', cp2.x + 20 + this.ctx.measureText(x2.toString()).width, cp2.y + 15);
     this.ctx.fillStyle = '#fbb6ce'; // 粉色数字
-    this.ctx.fillText(y2.toString(), cp2.x + 25 + this.ctx.measureText(x2.toString()).width + this.ctx.measureText(', ').width, cp2.y + 15);
-    this.ctx.fillStyle = '#e2e8f0'; // 白色括号
-    this.ctx.fillText(')', cp2.x + 25 + this.ctx.measureText(x2.toString()).width + this.ctx.measureText(', ').width + this.ctx.measureText(y2.toString()).width, cp2.y + 15);
+    this.ctx.fillText(y2.toString(), cp2.x + 20 + this.ctx.measureText(x2.toString()).width + this.ctx.measureText(', ').width, cp2.y + 15);
   }
   
   drawLabels() {
