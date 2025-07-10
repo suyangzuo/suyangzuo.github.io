@@ -10,6 +10,7 @@
   --控制点-默认: #2196f3;
   --控制点-悬停: #42a5f5;
   --控制点-选中: #1976d2;
+  --conic-stop-scale: 1;
 }
 
 .总区 {
@@ -135,7 +136,7 @@ input[type="range"]::-webkit-slider-thumb {
   background-color: var(--色标-默认);
   border: 2px solid white;
   border-radius: 3px;
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   transform: translateX(-50%);
   z-index: 10;
   user-select: none;
@@ -331,7 +332,7 @@ input[type="range"]::-webkit-slider-thumb {
   border-radius: 3px;
 }
 
-/* 锥形渐变控制 */
+/* 角度渐变控制 */
 .conic-controls {
   display: none;
 }
@@ -473,7 +474,7 @@ input[type="range"]::-webkit-slider-thumb {
   background-color: #3498db;
   border: 3px solid white;
   border-radius: 50%;
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   transform: translate(-50%, -50%);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
@@ -509,7 +510,7 @@ input[type="range"]::-webkit-slider-thumb {
   background-color: #e74c3c;
   border: 2px solid white;
   border-radius: 50%;
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   transform: translate(-50%, -50%);
 }
 
@@ -527,39 +528,56 @@ input[type="range"]::-webkit-slider-thumb {
   background-color: #f39c12;
   border: 2px solid white;
   border-radius: 50%;
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   transform: translate(-50%, -50%);
 }
 
 /* 色标样式 */
-.radial-color-stop,
-.conic-color-stop {
+.radial-color-stop {
   position: absolute;
   width: 18px;
   height: 18px;
-  cursor: pointer;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   transform: translate(-50%, -50%);
   user-select: none;
   background: none;
   z-index: 20;
 }
 
-/* 相对颜色的伪元素背景 */
-.radial-color-stop::after,
-.conic-color-stop::after {
+/* 色标主体 - 菱形设计 */
+.radial-color-stop::before {
   content: "";
   position: absolute;
-  top: -4px;
-  left: -4px;
-  width: calc(100% + 8px);
-  height: calc(100% + 8px);
-  background: var(--色标-相对色, #ffffff);
-  clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
-  border-radius: 1px;
-  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--色标-默认);
+  border: 2px solid white;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+  transform: rotate(45deg);
 }
 
-.radial-color-stop::before,
+.radial-color-stop.preview {
+  pointer-events: none;
+  z-index: 25;
+}
+
+/* 角度渐变色标样式 */
+.conic-color-stop {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  transform: translate(-50%, -50%);
+  user-select: none;
+  background: none;
+  z-index: 20;
+}
+
+/* 色标主体 - 菱形设计 */
 .conic-color-stop::before {
   content: "";
   position: absolute;
@@ -568,58 +586,84 @@ input[type="range"]::-webkit-slider-thumb {
   width: 100%;
   height: 100%;
   background: var(--色标-默认);
-  clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
-  border-radius: 1px;
+  border: 2px solid white;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   z-index: 1;
+  transform: rotate(45deg);
 }
 
-.radial-color-stop.upside-down::before,
-.conic-color-stop.upside-down::before {
-  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  z-index: 1;
-}
-
-.radial-color-stop.upside-down::after,
-.conic-color-stop.upside-down::after {
-  content: "";
-  position: absolute;
-  top: -4px;
-  left: -4px;
-  width: calc(100% + 8px);
-  height: calc(100% + 8px);
-  background: var(--色标-相对色, #ffffff);
-  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  border-radius: 1px;
-  z-index: -1;
-}
-
-.radial-color-stop.preview {
+.conic-color-stop.preview {
   pointer-events: none;
   z-index: 25;
 }
 
-.radial-color-stop:hover,
 .conic-color-stop:hover {
-  border-bottom-color: var(--色标-悬停);
-  transform: translate(-50%, -50%) scale(1.2);
+  transform: translate(-50%, -50%) scale(1.25);
 }
 
-.radial-color-stop.selected,
+.conic-color-stop:hover::before {
+  background: var(--色标-悬停);
+}
+
 .conic-color-stop.selected {
-  border-bottom-color: var(--色标-选中);
   box-shadow: 0 0 10px rgba(255, 82, 82, 0.6);
 }
 
-.radial-color-stop.dragging-down,
+.conic-color-stop.selected::before {
+  background: var(--色标-选中);
+}
+
 .conic-color-stop.dragging-down {
   transform: translate(-50%, -50%) scale(1.3);
   opacity: 0.7;
 }
 
-.radial-color-stop.delete-zone,
+.conic-color-stop.dragging-down::before {
+  background: var(--色标-悬停);
+}
+
 .conic-color-stop.delete-zone {
-  border-bottom-color: #e74c3c !important;
-  box-shadow: 0 0 15px rgba(231, 76, 60, 0.8);
+  box-shadow: 0 0 15px rgba(192, 57, 43, 0.9);
+}
+
+.conic-color-stop.delete-zone::before {
+  background: #e74c3c !important;
+}
+
+
+
+.radial-color-stop:hover {
+  transform: translate(-50%, -50%) scale(1.25);
+}
+
+.radial-color-stop:hover::before {
+  background: var(--色标-悬停);
+}
+
+.radial-color-stop.selected {
+  box-shadow: 0 0 10px rgba(255, 82, 82, 0.6);
+}
+
+.radial-color-stop.selected::before {
+  background: var(--色标-选中);
+}
+
+.radial-color-stop.dragging-down {
+  transform: translate(-50%, -50%) scale(1.3);
+  opacity: 0.7;
+}
+
+.radial-color-stop.dragging-down::before {
+  background: var(--色标-悬停);
+}
+
+.radial-color-stop.delete-zone {
+  box-shadow: 0 0 15px rgba(192, 57, 43, 0.9);
+}
+
+.radial-color-stop.delete-zone::before {
+  background: #e74c3c !important;
 }
 
 /* 响应式设计 */
@@ -668,8 +712,6 @@ input[type="range"]::-webkit-slider-thumb {
   width: 320px;
   max-width: 90vw;
   position: absolute;
-  transform: scale(0.8);
-  transition: transform 0.3s ease;
 }
 
 .color-picker-overlay.show .color-picker {

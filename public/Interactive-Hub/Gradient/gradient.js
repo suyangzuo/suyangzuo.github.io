@@ -70,16 +70,20 @@ class GradientTutorial {
       ],
     };
 
-    // 锥形渐变数据
+    // 角度渐变数据
     this.conicData = {
       center: { x: 0.5, y: 0.5 },
-      startAngle: 0,
+      startAngle: 0, // 默认从0°开始，控制点在圆心正上方
       colorStops: [
-        { position: 0, color: "#ff0000" },
-        { position: 100, color: "#0000ff" },
+        { position: 0, color: "#2481db" },
+        { position: 90, color: "#c39b46" },
       ],
       selectedStop: null,
     };
+    
+    // 角度渐变控制点状态
+    this.conicCenterHovered = false;
+    this.conicAngleHandleHovered = false;
 
     this.isDragging = false;
     this.dragTarget = null;
@@ -87,6 +91,8 @@ class GradientTutorial {
     this.lastMouseX = 0;
     this.lastMouseY = 0;
     this.isAdjustingAngle = false; // 角度调整状态
+    this.radialCenterHovered = false; // 圆心悬停状态
+    this.radialSizeHandleHovered = -1; // 尺寸控制点悬停状态，-1表示没有悬停，0-3表示四个方向的控制点
 
     this.init();
   }
@@ -174,7 +180,7 @@ class GradientTutorial {
     // 径向渐变事件
     this.setupRadialEvents();
 
-    // 锥形渐变事件
+    // 角度渐变事件
     this.setupConicEvents();
 
     // 窗口大小改变
@@ -513,6 +519,7 @@ class GradientTutorial {
       // 检查是否悬停在控制点上
       if (this.radialHandles) {
         let isOverControl = false;
+        let wasCenterHovered = this.radialCenterHovered;
 
         // 检查圆心控制点（需要将container坐标转换为Canvas坐标）
         const center = this.radialHandles.center;
@@ -520,18 +527,36 @@ class GradientTutorial {
         if (centerDistance <= center.radius) {
           canvas.style.cursor = "move";
           isOverControl = true;
+          this.radialCenterHovered = true;
+        } else {
+          this.radialCenterHovered = false;
         }
 
         // 检查尺寸控制点
+        let wasSizeHandleHovered = this.radialSizeHandleHovered;
+        this.radialSizeHandleHovered = -1; // 重置悬停状态
+        
         if (!isOverControl) {
-          for (const handle of this.radialHandles.sizeHandles) {
+          for (let i = 0; i < this.radialHandles.sizeHandles.length; i++) {
+            const handle = this.radialHandles.sizeHandles[i];
             const handleDistance = Math.sqrt((x + offsetX - handle.x) ** 2 + (y + offsetY - handle.y) ** 2);
             if (handleDistance <= handle.radius) {
               canvas.style.cursor = "pointer";
               isOverControl = true;
+              this.radialSizeHandleHovered = i; // 设置悬停的控制点索引
               break;
             }
           }
+        }
+        
+        // 如果尺寸控制点悬停状态发生变化，重新渲染控制点
+        if (wasSizeHandleHovered !== this.radialSizeHandleHovered) {
+          this.drawRadialControls();
+        }
+
+        // 如果圆心悬停状态发生变化，重新渲染控制点
+        if (wasCenterHovered !== this.radialCenterHovered) {
+          this.drawRadialControls();
         }
 
         // 如果悬停在控制点上，隐藏预览色标并返回
@@ -573,44 +598,228 @@ class GradientTutorial {
     canvas.addEventListener("mouseleave", () => {
       this.hideRadialPreview();
       canvas.style.cursor = "crosshair";
+      
+      // 重置圆心悬停状态
+      if (this.radialCenterHovered) {
+        this.radialCenterHovered = false;
+        this.drawRadialControls();
+      }
     });
   }
 
   setupConicEvents() {
     const canvas = this.canvases["conic-canvas"];
-    const center = document.getElementById("conic-center");
-    const angleHandle = document.getElementById("conic-angle-handle");
 
-    // 圆心拖拽
-    center.addEventListener("mousedown", (e) => {
-      e.stopPropagation();
-      this.startDrag("conic-center", null, e);
+    // Canvas鼠标移动事件 - 处理悬停效果和预览色标
+    canvas.addEventListener("mousemove", (e) => {
+      if (this.currentType !== "conic") return;
+
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      // 检查是否悬停在控制点上
+      if (this.conicHandles) {
+        let isOverControl = false;
+        let wasCenterHovered = this.conicCenterHovered;
+        let wasAngleHandleHovered = this.conicAngleHandleHovered;
+
+        // 检查圆心控制点
+        const center = this.conicHandles.center;
+        const centerDistance = Math.sqrt((x - center.x) ** 2 + (y - center.y) ** 2);
+        if (centerDistance <= center.radius) {
+          canvas.style.cursor = "move";
+          isOverControl = true;
+          this.conicCenterHovered = true;
+        } else {
+          this.conicCenterHovered = false;
+        }
+
+        // 检查角度控制点
+        if (!isOverControl) {
+          const angleHandle = this.conicHandles.angleHandle;
+          const angleDistance = Math.sqrt((x - angleHandle.x) ** 2 + (y - angleHandle.y) ** 2);
+          if (angleDistance <= angleHandle.radius) {
+            canvas.style.cursor = "pointer";
+            isOverControl = true;
+            this.conicAngleHandleHovered = true;
+          } else {
+            this.conicAngleHandleHovered = false;
+          }
+        }
+
+        // 检查是否悬停在色标上
+        if (!isOverControl && this.conicColorStops) {
+          let wasHoveredStop = this.hoveredConicStop;
+          this.hoveredConicStop = null;
+          
+          for (let i = this.conicColorStops.length - 1; i >= 0; i--) {
+            const stopData = this.conicColorStops[i];
+            const distance = Math.sqrt((x - stopData.x) ** 2 + (y - stopData.y) ** 2);
+            if (distance <= stopData.size) {
+              canvas.style.cursor = "url('/Images/Common/鼠标-指向.cur'), pointer";
+              this.hoveredConicStop = stopData.stop;
+              isOverControl = true;
+              break;
+            }
+          }
+          
+          // 如果悬停状态发生变化，重新渲染
+          if (wasHoveredStop !== this.hoveredConicStop) {
+            this.renderConic();
+          }
+        }
+
+        // 如果悬停状态发生变化，重新渲染
+        if (wasCenterHovered !== this.conicCenterHovered || wasAngleHandleHovered !== this.conicAngleHandleHovered) {
+          this.renderConic();
+        }
+
+        // 如果悬停在控制点或色标上，隐藏预览色标并返回
+        if (isOverControl) {
+          this.hideConicPreview();
+          return;
+        }
+
+        // 检查是否贴近圆边界75px（无论内外）- 使用到边界的距离
+        const radius = this.conicHandles.radius;
+        const distance = Math.sqrt((x - center.x) ** 2 + (y - center.y) ** 2);
+        const distanceToBoundary = Math.abs(distance - radius);
+        
+        if (distanceToBoundary <= 100) {
+          // 计算角度（相对于起始角度）
+          const angle = ((Math.atan2(y - center.y, x - center.x) * 180) / Math.PI + 360) % 360;
+          const relativeAngle = (angle - this.conicData.startAngle + 360) % 360;
+          
+          // 显示预览色标
+          this.showConicPreview(x, y, relativeAngle);
+          canvas.style.cursor = "crosshair";
+        } else {
+          // 隐藏预览色标
+          this.hideConicPreview();
+          canvas.style.cursor = "crosshair";
+        }
+      }
     });
 
-    // 角度控制点拖拽
-    angleHandle.addEventListener("mousedown", (e) => {
-      e.stopPropagation();
-      this.startDrag("conic-angle", null, e);
-    });
-
-    // Canvas鼠标按下事件 - 处理色标添加
+    // Canvas鼠标按下事件 - 处理拖拽和色标添加
     canvas.addEventListener("mousedown", (e) => {
       if (this.currentType !== "conic") return;
 
       const rect = canvas.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const y = (e.clientY - rect.top) / rect.height;
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
 
-      // 计算到圆心的距离和角度
-      const dx = x - this.conicData.center.x;
-      const dy = y - this.conicData.center.y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      const angle = ((Math.atan2(dy, dx) * 180) / Math.PI + 360) % 360;
+      // 检查是否点击在控制点上
+      if (this.conicHandles) {
+        // 检查圆心控制点
+        const center = this.conicHandles.center;
+        const centerDistance = Math.sqrt((x - center.x) ** 2 + (y - center.y) ** 2);
+        if (centerDistance <= center.radius) {
+          e.stopPropagation();
+          this.startDrag("conic-center", null, e);
+          return;
+        }
 
-      // 在圆周上添加色标
-      if (distance > 0.2 && distance < 0.4) {
-        this.addConicColorStop(angle);
+        // 检查角度控制点
+        const angleHandle = this.conicHandles.angleHandle;
+        const angleDistance = Math.sqrt((x - angleHandle.x) ** 2 + (y - angleHandle.y) ** 2);
+        if (angleDistance <= angleHandle.radius) {
+          e.stopPropagation();
+          this.startDrag("conic-angle", null, e);
+          return;
+        }
       }
+
+      // 检查是否点击在Canvas色标上
+      if (this.conicColorStops) {
+        for (let i = this.conicColorStops.length - 1; i >= 0; i--) {
+          const stopData = this.conicColorStops[i];
+          const distance = Math.sqrt((x - stopData.x) ** 2 + (y - stopData.y) ** 2);
+          if (distance <= stopData.size) {
+            e.stopPropagation();
+            // 记录下点击的色标和起始坐标
+            let mouseMoved = false;
+            const mouseDownX = e.clientX;
+            const mouseDownY = e.clientY;
+            const stop = stopData.stop;
+            // 监听mousemove和mouseup
+            const handleMouseMove = (moveEvent) => {
+              if (!mouseMoved) {
+                const dx = moveEvent.clientX - mouseDownX;
+                const dy = moveEvent.clientY - mouseDownY;
+                if (Math.abs(dx) > 4 || Math.abs(dy) > 4) {
+                  mouseMoved = true;
+                  // 进入拖拽
+                  this.startConicColorStopDrag(stop, e);
+                  document.removeEventListener("mousemove", handleMouseMove);
+                  document.removeEventListener("mouseup", handleMouseUp);
+                }
+              }
+            };
+            const handleMouseUp = (upEvent) => {
+              document.removeEventListener("mousemove", handleMouseMove);
+              document.removeEventListener("mouseup", handleMouseUp);
+              if (!mouseMoved) {
+                // 视为点击，弹出拾色器
+                this.selectConicColorStop(stop);
+              }
+            };
+            document.addEventListener("mousemove", handleMouseMove);
+            document.addEventListener("mouseup", handleMouseUp);
+            return;
+          }
+        }
+      }
+
+      // 添加新色标
+      const centerX = this.conicData.center.x * rect.width;
+      const centerY = this.conicData.center.y * rect.height;
+      const radius = this.conicHandles ? this.conicHandles.radius : Math.min(rect.width, rect.height) * 0.4;
+
+      // 计算点击位置到圆心的距离
+      const dx = x - centerX;
+      const dy = y - centerY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      // 检查是否在圆外一定范围内 - 使用到边界的距离
+      const distanceToBoundary = Math.abs(distance - radius);
+      if (distanceToBoundary <= 100) {
+        // 计算角度（相对于起始角度）
+        const angle = ((Math.atan2(dy, dx) * 180) / Math.PI + 360) % 360;
+        // 将角度偏移+90°，使其与显示角度一致
+        const adjustedAngle = (angle + 90 + 360) % 360;
+        const relativeAngle = (adjustedAngle - this.conicData.startAngle + 360) % 360;
+        
+        this.addConicColorStop(relativeAngle);
+      }
+    });
+
+    // Canvas鼠标离开事件
+    canvas.addEventListener("mouseleave", () => {
+      if (this.currentType !== "conic") return;
+
+      canvas.style.cursor = "crosshair";
+      
+      // 重置悬停状态
+      let needsRerender = false;
+      if (this.conicCenterHovered || this.conicAngleHandleHovered) {
+        this.conicCenterHovered = false;
+        this.conicAngleHandleHovered = false;
+        needsRerender = true;
+      }
+      
+      if (this.hoveredConicStop) {
+        this.hoveredConicStop = null;
+        needsRerender = true;
+      }
+      
+      if (needsRerender) {
+        this.renderConic();
+      }
+      
+      // 隐藏预览色标
+      this.hideConicPreview();
     });
   }
 
@@ -630,6 +839,14 @@ class GradientTutorial {
       };
     } else {
       this.dragStartPos = { x: e.clientX, y: e.clientY };
+    }
+
+    // 为角度渐变的控制点添加拖拽时的悬停效果
+    if (type === "conic-center" || type === "conic-angle") {
+      const controlElement = e.target;
+      if (controlElement) {
+        controlElement.style.transform = controlElement.style.transform.replace(/scale\([^)]*\)/, 'scale(1.2)');
+      }
     }
 
     // 使用绑定后的函数引用，确保能正确移除事件监听器
@@ -666,6 +883,15 @@ class GradientTutorial {
   }
 
   stopDrag() {
+    // 为角度渐变的控制点移除拖拽时的悬停效果
+    if (this.dragTarget && (this.dragTarget.type === "conic-center" || this.dragTarget.type === "conic-angle")) {
+      // 这里需要找到对应的控制点元素并恢复其transform
+      // 由于控制点是在Canvas中绘制的，我们需要重新渲染来恢复状态
+      if (this.currentType === "conic") {
+        this.renderConic();
+      }
+    }
+
     this.isDragging = false;
     this.dragTarget = null;
 
@@ -712,7 +938,6 @@ class GradientTutorial {
       this.updateRadialCSS();
     } else if (type === "conic") {
       this.renderConic();
-      this.updateConicColorStops();
       this.updateConicCSS();
     }
   }
@@ -793,29 +1018,26 @@ class GradientTutorial {
     // 根据形状计算新的尺寸
     let newSize;
     if (this.radialData.shape === "circle") {
-      // 圆的尺寸：基于container高度计算
-      const defaultRadius = containerRect.height;
-      newSize = Math.max(5, (distance / defaultRadius) * 100);
+      // 圆的尺寸：基于container的最小尺寸计算，确保圆形
+      const minDimension = Math.min(containerRect.width, containerRect.height);
+      newSize = Math.max(5, (distance / minDimension) * 100);
+      
+      // 对于圆形，x和y尺寸应该相同
+      this.radialData.size.x = newSize;
+      this.radialData.size.y = newSize;
     } else {
       // 椭圆的尺寸：基于container的宽度或高度计算
       if (target === 0 || target === 2) {
         // 上下控制点：基于container高度计算
         const defaultRadius = containerRect.height;
         newSize = Math.max(5, (distance / defaultRadius) * 100);
+        this.radialData.size.y = newSize;
       } else {
         // 左右控制点：基于container宽度计算
         const defaultRadius = containerRect.width;
         newSize = Math.max(5, (distance / defaultRadius) * 100);
+        this.radialData.size.x = newSize;
       }
-    }
-
-    // 根据拖拽的控制点更新对应的尺寸
-    if (target === 0 || target === 2) {
-      // 上下控制点
-      this.radialData.size.y = newSize;
-    } else {
-      // 左右控制点
-      this.radialData.size.x = newSize;
     }
 
     // 手动拖拽尺寸时，取消尺寸关键字选中（因为用户主动改变了尺寸）
@@ -930,7 +1152,7 @@ class GradientTutorial {
     this.openColorPicker(stop);
   }
 
-  // 锥形渐变方法
+  // 角度渐变方法
   updateConicCenter(deltaX, deltaY) {
     const canvas = this.canvases["conic-canvas"];
     const rect = canvas.getBoundingClientRect();
@@ -938,9 +1160,9 @@ class GradientTutorial {
     this.conicData.center.x += deltaX / rect.width;
     this.conicData.center.y += deltaY / rect.height;
 
-    // 限制在Canvas范围内
-    this.conicData.center.x = Math.max(0.1, Math.min(0.9, this.conicData.center.x));
-    this.conicData.center.y = Math.max(0.1, Math.min(0.9, this.conicData.center.y));
+    // 限制在Canvas范围内（允许到边缘）
+    this.conicData.center.x = Math.max(0, Math.min(1, this.conicData.center.x));
+    this.conicData.center.y = Math.max(0, Math.min(1, this.conicData.center.y));
 
     this.renderConic();
     this.updateConicCSS();
@@ -953,11 +1175,21 @@ class GradientTutorial {
     const centerX = this.conicData.center.x * rect.width;
     const centerY = this.conicData.center.y * rect.height;
 
-    const angle = (Math.atan2(deltaY, deltaX) * 180) / Math.PI;
-    this.conicData.startAngle = (this.conicData.startAngle + angle) % 360;
+    // 计算当前鼠标位置相对于圆心的角度
+    const currentMouseX = this.dragStartPos.x + deltaX - rect.left;
+    const currentMouseY = this.dragStartPos.y + deltaY - rect.top;
+    const angle = (Math.atan2(currentMouseY - centerY, currentMouseX - centerX) * 180) / Math.PI;
+    
+    // 将角度偏移+90°，使其与显示角度一致
+    const adjustedAngle = (angle + 90 + 360) % 360;
+    
+    // 更新起始角度（确保在0-360范围内）
+    this.conicData.startAngle = adjustedAngle;
+
+    // 更新拖拽起始位置，用于下一次计算
+    this.dragStartPos = { x: this.dragStartPos.x + deltaX, y: this.dragStartPos.y + deltaY };
 
     this.renderConic();
-    this.updateConicControls();
     this.updateConicCSS();
   }
 
@@ -967,7 +1199,6 @@ class GradientTutorial {
     this.conicData.colorStops.sort((a, b) => a.position - b.position);
 
     this.renderConic();
-    this.updateConicColorStops();
     this.updateConicCSS();
   }
 
@@ -979,59 +1210,12 @@ class GradientTutorial {
     }
     this.conicData.colorStops.splice(index, 1);
     this.renderConic();
-    this.updateConicColorStops();
     this.updateConicCSS();
   }
 
-  updateConicColorStops() {
-    // 只在当前类型为conic时才更新锥形渐变色标
-    if (this.currentType !== "conic") return;
+  // updateConicColorStops方法已删除，现在使用Canvas绘制色标
 
-    const overlay = document.getElementById("conic-overlay");
-    const existingStops = overlay.querySelectorAll(".conic-color-stop");
-    existingStops.forEach((stop) => stop.remove());
-
-    this.conicData.colorStops.forEach((stop, index) => {
-      const stopElement = document.createElement("div");
-      stopElement.className = "conic-color-stop";
-      stopElement.style.setProperty("--色标-默认", stop.color);
-
-      // 计算相对颜色并设置伪元素颜色
-      const contrastColor = this.getContrastColor(stop.color);
-      stopElement.style.setProperty("--色标-相对色", contrastColor);
-
-      // 计算色标位置（在圆周上）
-      const canvas = this.canvases["conic-canvas"];
-      const rect = canvas.getBoundingClientRect();
-      const centerX = this.conicData.center.x * rect.width;
-      const centerY = this.conicData.center.y * rect.height;
-      const radius = Math.min(rect.width, rect.height) * 0.3;
-      const angleRad = (stop.position * Math.PI) / 180;
-
-      const x = centerX + Math.cos(angleRad) * radius;
-      const y = centerY + Math.sin(angleRad) * radius;
-
-      stopElement.style.left = `${x}px`;
-      stopElement.style.top = `${y}px`;
-
-      stopElement.addEventListener("mousedown", (e) => {
-        e.stopPropagation();
-        this.startConicColorStopDrag(stop, e);
-      });
-
-      stopElement.addEventListener("click", (e) => {
-        this.selectConicColorStop(stopElement, stop);
-      });
-
-      overlay.appendChild(stopElement);
-    });
-  }
-
-  selectConicColorStop(stopElement, stop) {
-    document.querySelectorAll(".conic-color-stop").forEach((s) => {
-      s.classList.remove("selected");
-    });
-    stopElement.classList.add("selected");
+  selectConicColorStop(stop) {
     this.conicData.selectedStop = stop;
     this.openColorPicker(stop);
   }
@@ -1360,34 +1544,39 @@ class GradientTutorial {
 
     // 绘制圆心控制点（黑色圆点）
     ctx.save();
-    ctx.fillStyle = "#000000";
-    ctx.strokeStyle = "#ffffff";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, 8, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.stroke();
-    ctx.restore();
-
-    // 绘制尺寸控制点（红色圆点，4个方向）
-    const sizeHandlePositions = [
-      { x: centerX, y: centerY - radiusY }, // 上
-      { x: centerX + radiusX, y: centerY }, // 右
-      { x: centerX, y: centerY + radiusY }, // 下
-      { x: centerX - radiusX, y: centerY }, // 左
-    ];
-
-    ctx.save();
-    ctx.fillStyle = "#e74c3c";
-    ctx.strokeStyle = "#ffffff";
-    ctx.lineWidth = 2;
-
-    sizeHandlePositions.forEach((pos, index) => {
+    
+    // 检查圆心是否被悬停
+    const isCenterHovered = this.radialCenterHovered;
+    
+    if (isCenterHovered) {
+      // 悬停状态：更大的圆点，带阴影效果
+      ctx.shadowColor = "rgba(52, 152, 219, 0.8)";
+      ctx.shadowBlur = 8;
+      ctx.fillStyle = "#3498db"; // 蓝色填充
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 3;
       ctx.beginPath();
-      ctx.arc(pos.x, pos.y, 7.5, 0, 2 * Math.PI); // 半径改为7.5px，直径15px
+      ctx.arc(centerX, centerY, 10, 0, 2 * Math.PI); // 更大的半径
       ctx.fill();
       ctx.stroke();
-    });
+      
+      // 绘制内圈
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = "#2980b9";
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 6, 0, 2 * Math.PI);
+      ctx.fill();
+    } else {
+      // 正常状态
+      ctx.fillStyle = "#000000";
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 8, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.stroke();
+    }
+    
     ctx.restore();
 
     // 绘制90度指示虚线（黑白间隔）
@@ -1412,6 +1601,52 @@ class GradientTutorial {
     ctx.stroke();
     ctx.restore();
 
+    // 绘制尺寸控制点（红色圆点，4个方向）- 最后绘制，确保在最上层
+    const sizeHandlePositions = [
+      { x: centerX, y: centerY - radiusY }, // 上
+      { x: centerX + radiusX, y: centerY }, // 右
+      { x: centerX, y: centerY + radiusY }, // 下
+      { x: centerX - radiusX, y: centerY }, // 左
+    ];
+
+    sizeHandlePositions.forEach((pos, index) => {
+      ctx.save();
+      
+      // 检查是否被悬停
+      const isHovered = this.radialSizeHandleHovered === index;
+      
+      if (isHovered) {
+        // 悬停状态：更大的圆点，带阴影效果
+        ctx.shadowColor = "rgba(231, 76, 60, 0.8)";
+        ctx.shadowBlur = 8;
+        ctx.fillStyle = "#e74c3c";
+        ctx.strokeStyle = "#ffffff";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, 10, 0, 2 * Math.PI); // 更大的半径
+        ctx.fill();
+        ctx.stroke();
+        
+        // 绘制内圈
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = "#c0392b";
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, 6, 0, 2 * Math.PI);
+        ctx.fill();
+      } else {
+        // 正常状态
+        ctx.fillStyle = "#e74c3c";
+        ctx.strokeStyle = "#ffffff";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, 7.5, 0, 2 * Math.PI); // 半径改为7.5px，直径15px
+        ctx.fill();
+        ctx.stroke();
+      }
+      
+      ctx.restore();
+    });
+
     // 保存控制点位置用于交互检测
     this.radialHandles = {
       center: { x: centerX, y: centerY, radius: 8 },
@@ -1425,7 +1660,7 @@ class GradientTutorial {
   }
 
   renderConic() {
-    // 只在当前类型为conic时才渲染锥形渐变
+    // 只在当前类型为conic时才渲染角度渐变
     if (this.currentType !== "conic") return;
 
     const canvas = this.canvases["conic-canvas"];
@@ -1435,32 +1670,331 @@ class GradientTutorial {
 
     ctx.clearRect(0, 0, width, height);
 
-    // 创建锥形渐变（使用Canvas绘制）
+    // 计算圆心和半径
     const centerX = this.conicData.center.x * width;
     const centerY = this.conicData.center.y * height;
     const radius = Math.min(width, height) * 0.4;
 
-    // 绘制锥形渐变
-    for (let angle = 0; angle < 360; angle += 1) {
-      const color = this.getColorAtConicAngle(angle);
-      const angleRad = (angle * Math.PI) / 180;
+    // 1. 绘制整个Canvas的角度渐变
+    // 将角度偏移-90°，使0°指向正上方
+    const adjustedStartAngle = this.conicData.startAngle - 90;
+    const gradient = ctx.createConicGradient(
+      (adjustedStartAngle * Math.PI) / 180,
+      centerX,
+      centerY
+    );
 
+    // 添加色标到渐变
+    this.conicData.colorStops.forEach((stop) => {
+      gradient.addColorStop(stop.position / 360, stop.color);
+    });
+
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, width, height);
+
+    // 2. 绘制参考圆的边界
+    ctx.save();
+    // 先绘制黑色阴影
+    ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
+    ctx.shadowBlur = 4;
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.9)";
+    ctx.lineWidth = 3;
+    ctx.setLineDash([8, 8]);
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+    ctx.stroke();
+    ctx.restore();
+
+    // 3. 绘制起始角度线（七彩色实线）
+    ctx.save();
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    
+    // 将角度偏移-90°，使0°指向正上方
+    const adjustedAngle = this.conicData.startAngle - 90;
+    const startAngleRad = (adjustedAngle * Math.PI) / 180;
+    const endX = centerX + Math.cos(startAngleRad) * radius;
+    const endY = centerY + Math.sin(startAngleRad) * radius;
+    
+    // 绘制七彩色渐变线
+    const colors = ['#ff0000', '#ff8000', '#ffff00', '#00ff00', '#0080ff', '#8000ff', '#ff0080'];
+    const segmentLength = radius / colors.length;
+    
+    for (let i = 0; i < colors.length; i++) {
+      const startDist = i * segmentLength;
+      const endDist = (i + 1) * segmentLength;
+      
+      const startX = centerX + Math.cos(startAngleRad) * startDist;
+      const startY = centerY + Math.sin(startAngleRad) * startDist;
+      const segmentEndX = centerX + Math.cos(startAngleRad) * endDist;
+      const segmentEndY = centerY + Math.sin(startAngleRad) * endDist;
+      
+      // 创建渐变
+      const gradient = ctx.createLinearGradient(startX, startY, segmentEndX, segmentEndY);
+      gradient.addColorStop(0, colors[i]);
+      gradient.addColorStop(1, colors[(i + 1) % colors.length]);
+      
+      ctx.strokeStyle = gradient;
+      ctx.beginPath();
+      ctx.moveTo(startX, startY);
+      ctx.lineTo(segmentEndX, segmentEndY);
+      ctx.stroke();
+    }
+    
+    ctx.restore();
+
+    // 4. 绘制圆心控制点（在彩色线之后绘制，确保在最上层）
+    ctx.save();
+    
+    // 检查圆心是否被悬停
+    const isCenterHovered = this.conicCenterHovered;
+    
+    if (isCenterHovered) {
+      // 悬停状态：更大的圆点，带阴影效果
+      ctx.shadowColor = "rgba(52, 152, 219, 0.8)";
+      ctx.shadowBlur = 8;
+      ctx.fillStyle = "#3498db"; // 蓝色填充
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 10, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.stroke();
+      
+      // 绘制内圈
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = "#2980b9";
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 6, 0, 2 * Math.PI);
+      ctx.fill();
+    } else {
+      // 正常状态
+      ctx.fillStyle = "#000000";
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 8, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.stroke();
+    }
+    
+    ctx.restore();
+
+    // 5. 绘制色标连线（黑白相间虚线）
+    this.conicData.colorStops.forEach((stop) => {
+      // 将角度偏移-90°，使色标位置与显示角度一致
+      const adjustedStopAngle = this.conicData.startAngle + stop.position - 90;
+      const stopAngleRad = (adjustedStopAngle * Math.PI) / 180;
+      const stopX = centerX + Math.cos(stopAngleRad) * (radius + 30); // 色标在圆外30px
+      const stopY = centerY + Math.sin(stopAngleRad) * (radius + 30);
+
+      // 绘制连线（从圆心到色标位置，但只到圆边界）
       ctx.save();
-      ctx.translate(centerX, centerY);
-      ctx.rotate(angleRad);
+      ctx.strokeStyle = "rgba(0, 0, 0, 0.5)";
+      ctx.lineWidth = 1;
+      ctx.setLineDash([8, 8]);
+      ctx.beginPath();
+      ctx.moveTo(centerX, centerY);
+      
+      const lineEndX = centerX + Math.cos(stopAngleRad) * radius;
+      const lineEndY = centerY + Math.sin(stopAngleRad) * radius;
+      ctx.lineTo(lineEndX, lineEndY);
+      ctx.stroke();
 
-      const gradient = ctx.createLinearGradient(0, 0, radius, 0);
-      gradient.addColorStop(0, color);
-      gradient.addColorStop(1, color);
+      // 绘制白色部分
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
+      ctx.setLineDash([8, 8]);
+      ctx.lineDashOffset = 8;
+      ctx.beginPath();
+      ctx.moveTo(centerX, centerY);
+      ctx.lineTo(lineEndX, lineEndY);
+      ctx.stroke();
+      ctx.restore();
+    });
 
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, -1, radius, 2);
+    // 6. 绘制起始角度控制点（最后绘制，确保在最上层）
+    ctx.save();
+    
+    // 检查角度控制点是否被悬停
+    const isAngleHandleHovered = this.conicAngleHandleHovered;
+    
+    if (isAngleHandleHovered) {
+      // 悬停状态
+      ctx.shadowColor = "rgba(255, 107, 107, 0.8)";
+      ctx.shadowBlur = 8;
+      ctx.fillStyle = "#ff6b6b";
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(endX, endY, 10, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.stroke();
+    } else {
+      // 正常状态
+      ctx.fillStyle = "#ff6b6b";
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(endX, endY, 8, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.stroke();
+    }
+    
+    ctx.restore();
 
+    // 7. 绘制色标和角度文本
+    this.conicData.colorStops.forEach((stop, index) => {
+      // 将角度偏移-90°，使色标位置与显示角度一致
+      const adjustedStopAngle = this.conicData.startAngle + stop.position - 90;
+      const stopAngleRad = (adjustedStopAngle * Math.PI) / 180;
+      const stopX = centerX + Math.cos(stopAngleRad) * (radius + 30); // 色标在圆外30px
+      const stopY = centerY + Math.sin(stopAngleRad) * (radius + 30);
+
+      // 检查是否正在拖拽这个色标
+      const isDraggingThisStop = this.isDraggingColorStop && this.dragTarget && 
+                                this.dragTarget.type === "conic-color-stop" && 
+                                this.dragTarget.stop === stop;
+
+      // 绘制色标（菱形）
+      ctx.save();
+      ctx.translate(stopX, stopY);
+      ctx.rotate(stopAngleRad + Math.PI / 2); // 让菱形朝向圆心
+
+      // 设置缩放和透明度
+      let scale = 1;
+      let alpha = 1;
+      if (isDraggingThisStop) {
+        scale = 1.3;
+        alpha = 0.7;
+      } else if (this.hoveredConicStop === stop) {
+        scale = 1.25;
+      }
+      
+      ctx.scale(scale, scale);
+      ctx.globalAlpha = alpha;
+
+      // 绘制菱形
+      const size = 9; // 菱形大小
+      ctx.fillStyle = stop.color;
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 2;
+      ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
+      ctx.shadowBlur = 4;
+      
+      ctx.beginPath();
+      ctx.moveTo(0, -size);
+      ctx.lineTo(size, 0);
+      ctx.lineTo(0, size);
+      ctx.lineTo(-size, 0);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+      
+      ctx.restore();
+
+      // 绘制角度文本
+      ctx.save();
+      ctx.font = "12px Arial";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "bottom";
+      
+      const angleText = `${stop.position.toFixed(1)}°`;
+      const textMetrics = ctx.measureText(angleText);
+      const textWidth = textMetrics.width;
+      const textHeight = 12; // 字体大小
+      
+      // 计算文本背景位置 - 向上5px
+      const textX = stopX;
+      const textY = stopY - 20; // 原来是-15，现在-20（向上5px）
+      
+      // 绘制背景圆角矩形
+      const paddingX = 10;
+      const paddingY = 5;
+      const bgWidth = textWidth + paddingX * 2;
+      const bgHeight = textHeight + paddingY * 2;
+      const bgX = textX - bgWidth / 2;
+      const bgY = textY - textHeight - paddingY;
+      
+      // 绘制背景
+      ctx.save();
+      
+      // 绘制圆角矩形 - 使用更大的圆角（类似CSS的50px效果）
+      const cornerRadius = Math.min(bgWidth, bgHeight) / 2; // 使用宽高较小值的一半，实现类似50px的效果
+      
+      // 绘制背景模糊效果 - 使用阴影模拟背后模糊
+      ctx.shadowColor = "rgba(0, 0, 0, 0.4)";
+      ctx.shadowBlur = 2; // 2px模糊
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 0;
+      ctx.fillStyle = "#0008"; // 背景色
+      
+      ctx.beginPath();
+      ctx.moveTo(bgX + cornerRadius, bgY);
+      ctx.lineTo(bgX + bgWidth - cornerRadius, bgY);
+      ctx.quadraticCurveTo(bgX + bgWidth, bgY, bgX + bgWidth, bgY + cornerRadius);
+      ctx.lineTo(bgX + bgWidth, bgY + bgHeight - cornerRadius);
+      ctx.quadraticCurveTo(bgX + bgWidth, bgY + bgHeight, bgX + bgWidth - cornerRadius, bgY + bgHeight);
+      ctx.lineTo(bgX + cornerRadius, bgY + bgHeight);
+      ctx.quadraticCurveTo(bgX, bgY + bgHeight, bgX, bgY + bgHeight - cornerRadius);
+      ctx.lineTo(bgX, bgY + cornerRadius);
+      ctx.quadraticCurveTo(bgX, bgY, bgX + cornerRadius, bgY);
+      ctx.closePath();
+      ctx.fill();
+      
+      ctx.restore();
+      
+      // 绘制文本
+      ctx.fillStyle = "#ffffff";
+      ctx.fillText(angleText, textX, textY);
+      
+      ctx.restore();
+
+      // 保存色标位置用于交互检测
+      if (!this.conicColorStops) this.conicColorStops = [];
+      this.conicColorStops[index] = {
+        stop: stop,
+        x: stopX,
+        y: stopY,
+        size: size * scale,
+        angle: stopAngleRad
+      };
+    });
+
+    // 绘制预览色标（如果有）
+    if (this.conicPreviewData) {
+      ctx.save();
+      ctx.translate(this.conicPreviewData.x, this.conicPreviewData.y);
+      ctx.rotate(this.conicPreviewData.angle + Math.PI / 2); // 让菱形朝向圆心
+
+      // 设置透明度为35%
+      ctx.globalAlpha = 0.5;
+
+      // 绘制菱形
+      const size = 9; // 菱形大小
+      ctx.fillStyle = this.conicPreviewData.color;
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 2;
+      ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
+      ctx.shadowBlur = 4;
+      
+      ctx.beginPath();
+      ctx.moveTo(0, -size);
+      ctx.lineTo(size, 0);
+      ctx.lineTo(0, size);
+      ctx.lineTo(-size, 0);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+      
       ctx.restore();
     }
 
-    // 更新控制点位置
-    this.updateConicControls();
+    // 保存控制点位置用于交互检测
+    this.conicHandles = {
+      center: { x: centerX, y: centerY, radius: 8 },
+      angleHandle: { x: endX, y: endY, radius: 8 },
+      radius: radius,
+    };
   }
 
   renderAll() {
@@ -1472,7 +2006,6 @@ class GradientTutorial {
     this.updateConicControls();
     this.updateLinearColorStops();
     this.updateRadialColorStops();
-    this.updateConicColorStops();
 
     this.updateLinearCSS();
     this.updateRadialCSS();
@@ -1506,34 +2039,11 @@ class GradientTutorial {
   }
 
   updateConicControls() {
-    // 只在当前类型为conic时才更新锥形渐变控制点
+    // 只在当前类型为conic时才更新角度渐变控制点
     if (this.currentType !== "conic") return;
 
-    const canvas = this.canvases["conic-canvas"];
-    const rect = canvas.getBoundingClientRect();
-    const center = document.getElementById("conic-center");
-    const angleIndicator = document.getElementById("conic-angle-indicator");
-    const angleHandle = document.getElementById("conic-angle-handle");
-
-    const centerX = this.conicData.center.x * rect.width;
-    const centerY = this.conicData.center.y * rect.height;
-    const radius = Math.min(rect.width, rect.height) * 0.3;
-
-    center.style.left = `${centerX}px`;
-    center.style.top = `${centerY}px`;
-
-    const angleRad = (this.conicData.startAngle * Math.PI) / 180;
-    const handleX = centerX + Math.cos(angleRad) * radius;
-    const handleY = centerY + Math.sin(angleRad) * radius;
-
-    angleIndicator.style.left = `${centerX}px`;
-    angleIndicator.style.top = `${centerY}px`;
-    angleIndicator.style.width = `${radius}px`;
-    angleIndicator.style.transform = `rotate(${this.conicData.startAngle}deg)`;
-    angleIndicator.style.transformOrigin = "0 50%";
-
-    angleHandle.style.left = `${handleX}px`;
-    angleHandle.style.top = `${handleY}px`;
+    // 现在控制点直接在Canvas上绘制，不需要更新DOM元素
+    this.renderConic();
   }
 
   updateLinearColorStops() {
@@ -1799,7 +2309,7 @@ class GradientTutorial {
   }
 
   updateConicCSS() {
-    // 只在当前类型为conic时才更新锥形渐变CSS
+    // 只在当前类型为conic时才更新角度渐变CSS
     if (this.currentType !== "conic") return;
 
     const cssElement = document.getElementById("conic-css");
@@ -2131,9 +2641,25 @@ class GradientTutorial {
   }
 
   getColorAtConicAngle(angle) {
-    // 简化的颜色获取，实际应该从Canvas中采样
-    const hue = angle;
-    return `hsl(${hue}, 70%, 50%)`;
+    // 根据角度在色标之间插值计算颜色
+    const stops = this.conicData.colorStops;
+    if (stops.length === 0) return "#000000";
+    if (stops.length === 1) return stops[0].color;
+
+    // 找到角度所在的色标区间
+    for (let i = 0; i < stops.length - 1; i++) {
+      const current = stops[i];
+      const next = stops[i + 1];
+
+      if (angle >= current.position && angle <= next.position) {
+        const ratio = (angle - current.position) / (next.position - current.position);
+        return this.interpolateColor(current.color, next.color, ratio);
+      }
+    }
+
+    // 如果角度超出范围，返回最近的色标颜色
+    if (angle <= stops[0].position) return stops[0].color;
+    return stops[stops.length - 1].color;
   }
 
   openColorPicker(colorStop) {
@@ -2146,15 +2672,12 @@ class GradientTutorial {
   getColorPickerPosition(colorStop) {
     // 使用记忆的位置（相对于视口的百分比）
     const pickerWidth = 320; // 拾色器宽度（未缩放）
-    const pickerHeight = 280; // 拾色器高度（未缩放）
-    const scale = 0.8; // 拾色器的缩放比例
-    const scaledWidth = pickerWidth * scale;
-    const scaledHeight = pickerHeight * scale;
+    const pickerHeight = 575; // 拾色器高度（未缩放）
 
     // 计算基于百分比的位置（让拾色器中心点与屏幕中心点重合）
     // 当 this.colorPickerPosition.x = 50, y = 50 时，拾色器应该完全居中
-    const pickerX = (this.colorPickerPosition.x / 100) * window.innerWidth - scaledWidth / 2;
-    const pickerY = (this.colorPickerPosition.y / 100) * window.innerHeight - scaledHeight / 2;
+    const pickerX = (this.colorPickerPosition.x / 100) * window.innerWidth - pickerWidth / 2;
+    const pickerY = (this.colorPickerPosition.y / 100) * window.innerHeight - pickerHeight / 2;
 
     // 确保不超出屏幕边界，但优先保持居中位置
     let finalPickerX = pickerX;
@@ -2163,14 +2686,14 @@ class GradientTutorial {
     // 只有当拾色器完全超出屏幕边界时才调整位置
     if (pickerX < 0) {
       finalPickerX = 0;
-    } else if (pickerX + scaledWidth > window.innerWidth) {
-      finalPickerX = window.innerWidth - scaledWidth;
+    } else if (pickerX + pickerWidth > window.innerWidth) {
+      finalPickerX = window.innerWidth - pickerWidth;
     }
 
     if (pickerY < 0) {
       finalPickerY = 0;
-    } else if (pickerY + scaledHeight > window.innerHeight) {
-      finalPickerY = window.innerHeight - scaledHeight;
+    } else if (pickerY + pickerHeight > window.innerHeight) {
+      finalPickerY = window.innerHeight - pickerHeight;
     }
 
     return { x: finalPickerX, y: finalPickerY };
@@ -2212,7 +2735,6 @@ class GradientTutorial {
     picker.style.position = "fixed";
     picker.style.left = `${position.x}px`;
     picker.style.top = `${position.y}px`;
-    picker.style.transform = "scale(0.8)";
     picker.style.zIndex = "1001";
 
     // 显示拾色器
@@ -2435,13 +2957,10 @@ class GradientTutorial {
 
       // 保存位置（拾色器中心点相对于屏幕中心点的百分比）
       const pickerRect = picker.getBoundingClientRect();
-      const scale = 0.8; // 拾色器的缩放比例
-      const scaledWidth = 320 * scale; // 拾色器实际显示宽度
-      const scaledHeight = 280 * scale; // 拾色器实际显示高度
 
       // 计算拾色器中心点位置
-      const pickerCenterX = pickerRect.left + scaledWidth / 2;
-      const pickerCenterY = pickerRect.top + scaledHeight / 2;
+      const pickerCenterX = pickerRect.left + pickerRect.width / 2;
+      const pickerCenterY = pickerRect.top + pickerRect.height / 2;
 
       // 计算相对于屏幕中心点的百分比位置
       const xPercent = (pickerCenterX / window.innerWidth) * 100;
@@ -2627,7 +3146,6 @@ class GradientTutorial {
         this.updateRadialCSS();
       } else if (this.currentType === "conic") {
         this.renderConic();
-        this.updateConicColorStops();
         this.updateConicCSS();
       }
     }
@@ -3024,13 +3542,10 @@ class GradientTutorial {
 
   startConicColorStopDrag(stop, e) {
     this.isDraggingColorStop = true; // 设置拖拽状态
+    this.dragTarget = { type: "conic-color-stop", stop: stop }; // 设置拖拽目标
     const canvas = this.canvases["conic-canvas"];
     const rect = canvas.getBoundingClientRect();
-    const stopElement = e.target;
     const startY = e.clientY;
-    const stopRect = stopElement.getBoundingClientRect();
-    const stopTop = stopRect.top;
-    const stopBottom = stopRect.bottom;
     let isDraggingUp = false;
     let isDraggingDown = false;
     let isInDeleteZone = false;
@@ -3039,43 +3554,60 @@ class GradientTutorial {
       const currentY = e.clientY;
       const deltaY = currentY - startY;
 
-      // 检查是否向上或向下拖拽超过50px
-      if (currentY < stopTop - 50) {
-        // 向上拖拽超过50px
-        if (!isDraggingUp) {
-          isDraggingUp = true;
-          stopElement.classList.add("dragging-down");
+      // 计算圆心和半径
+      const centerX = this.conicData.center.x * rect.width;
+      const centerY = this.conicData.center.y * rect.height;
+      const radius = Math.min(rect.width, rect.height) * 0.4;
+
+      // 计算鼠标相对于圆心的位置
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+      const distanceFromCenter = Math.sqrt((mouseX - centerX) ** 2 + (mouseY - centerY) ** 2);
+      const isInsideCircle = distanceFromCenter <= radius;
+
+      // 实时计算色标的当前位置
+      // 根据当前角度计算色标在圆外的位置
+      const adjustedStopAngle = this.conicData.startAngle + stop.position - 90;
+      const stopAngleRad = (adjustedStopAngle * Math.PI) / 180;
+      const stopDistanceFromCenter = radius + 30; // 色标在圆外30px
+      const stopX = centerX + Math.cos(stopAngleRad) * stopDistanceFromCenter;
+      const stopY = centerY + Math.sin(stopAngleRad) * stopDistanceFromCenter;
+      
+      // 计算鼠标到色标中心点的直线距离
+      const distanceFromStop = Math.sqrt((mouseX - stopX) ** 2 + (mouseY - stopY) ** 2);
+
+      // 删除逻辑：如果在圆内部，不删除；如果在圆外部且距离色标50px以上，则删除
+      if (isInsideCircle) {
+        // 在圆内部，移除删除状态
+        if (isInDeleteZone) {
+          isInDeleteZone = false;
         }
-        if (!isInDeleteZone) {
-          isInDeleteZone = true;
-          stopElement.classList.add("delete-zone");
-        }
-      } else if (currentY > stopBottom + 50) {
-        // 向下拖拽超过50px
-        if (!isDraggingDown) {
-          isDraggingDown = true;
-          stopElement.classList.add("dragging-down");
-        }
-        if (!isInDeleteZone) {
-          isInDeleteZone = true;
-          stopElement.classList.add("delete-zone");
-        }
-      } else {
-        // 在50px范围内，移除拖拽和删除状态
         if (isDraggingUp || isDraggingDown) {
           isDraggingUp = false;
           isDraggingDown = false;
-          stopElement.classList.remove("dragging-down");
         }
-        if (isInDeleteZone) {
-          isInDeleteZone = false;
-          stopElement.classList.remove("delete-zone");
+      } else {
+        // 在圆外部
+        if (distanceFromStop > 75) {
+          // 距离色标50px以上，进入删除状态
+          if (!isDraggingDown) {
+            isDraggingDown = true;
+          }
+          if (!isInDeleteZone) {
+            isInDeleteZone = true;
+          }
+        } else {
+          // 距离色标50px以内，移除删除状态
+          if (isDraggingDown) {
+            isDraggingDown = false;
+          }
+          if (isInDeleteZone) {
+            isInDeleteZone = false;
+          }
         }
       }
 
-      // 锥形拖拽调整角度
-      const centerX = this.conicData.center.x * rect.width;
-      const centerY = this.conicData.center.y * rect.height;
+      // 角度拖拽调整位置
       const clickX = e.clientX - rect.left;
       const clickY = e.clientY - rect.top;
 
@@ -3083,11 +3615,15 @@ class GradientTutorial {
       const dy = clickY - centerY;
       const angle = ((Math.atan2(dy, dx) * 180) / Math.PI + 360) % 360;
 
-      stop.position = angle;
+      // 将角度偏移+90°，使其与显示角度一致
+      const adjustedAngle = (angle + 90 + 360) % 360;
+      
+      // 计算相对于起始角度的位置
+      const relativeAngle = (adjustedAngle - this.conicData.startAngle + 360) % 360;
+      stop.position = Math.max(0, Math.min(360, relativeAngle));
 
       this.conicData.colorStops.sort((a, b) => a.position - b.position);
       this.renderConic();
-      this.updateConicColorStops();
       this.updateConicCSS();
     };
 
@@ -3095,11 +3631,12 @@ class GradientTutorial {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
 
-      // 移除拖拽样式
-      stopElement.classList.remove("dragging-down", "delete-zone");
-
       // 清除拖拽状态
       this.isDraggingColorStop = false;
+      this.dragTarget = null;
+      
+      // 重新渲染以确保所有色标都恢复到默认状态
+      this.renderConic();
 
       // 如果在删除区域释放，则删除色标
       if (isInDeleteZone) {
@@ -3165,7 +3702,7 @@ class GradientTutorial {
       const gradientScreenHeight = this.linearGradientRect.height * scaleY;
       warningY = gradientScreenY + gradientScreenHeight + 65;
     } else {
-      // 对于径向和锥形渐变，在Canvas底部显示
+      // 对于径向和角度渐变，在Canvas底部显示
       warningY = height - 95;
     }
 
@@ -3358,6 +3895,51 @@ class GradientTutorial {
     if (this.radialPreview) {
       this.radialPreview.remove();
       this.radialPreview = null;
+    }
+  }
+
+  showConicPreview(x, y, relativeAngle) {
+    // 移除现有预览
+    this.hideConicPreview();
+
+    // 修正角度：将数学坐标系（向右为0°）转换为CSS坐标系（向上为0°）
+    const cssAngle = (relativeAngle + 90) % 360;
+
+    // 获取当前位置的渐变颜色
+    const color = this.getColorAtConicAngle(cssAngle);
+
+    // 计算预览色标位置（在圆外，朝向圆心）
+    const canvas = this.canvases["conic-canvas"];
+    const rect = canvas.getBoundingClientRect();
+    const centerX = this.conicData.center.x * rect.width;
+    const centerY = this.conicData.center.y * rect.height;
+    const radius = Math.min(rect.width, rect.height) * 0.4;
+    
+    // 计算色标角度（相对于起始角度）
+    const totalAngle = this.conicData.startAngle + relativeAngle;
+    const angleRad = (totalAngle * Math.PI) / 180;
+
+    // 色标位置在圆外30px
+    const stopX = centerX + Math.cos(angleRad) * (radius + 30);
+    const stopY = centerY + Math.sin(angleRad) * (radius + 30);
+
+    // 保存预览色标信息，在renderConic中绘制
+    this.conicPreviewData = {
+      x: stopX,
+      y: stopY,
+      color: color,
+      angle: angleRad,
+      relativeAngle: relativeAngle
+    };
+
+    // 重新渲染Canvas以显示预览色标
+    this.renderConic();
+  }
+
+  hideConicPreview() {
+    if (this.conicPreviewData) {
+      this.conicPreviewData = null;
+      this.renderConic();
     }
   }
 
