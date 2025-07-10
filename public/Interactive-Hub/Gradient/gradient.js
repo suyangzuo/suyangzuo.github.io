@@ -174,6 +174,14 @@ class GradientTutorial {
       });
     });
 
+    // 重置按钮事件
+    const 重置按钮 = document.querySelector(".重置按钮");
+    if (重置按钮) {
+      重置按钮.addEventListener("click", () => {
+        this.resetAllGradients();
+      });
+    }
+
     // 线性渐变事件
     this.setupLinearEvents();
 
@@ -3958,6 +3966,115 @@ class GradientTutorial {
       const keywordRadio = document.querySelector(`input[name="radial-size"][value="${this.radialData.sizeKeyword}"]`);
       if (keywordRadio) keywordRadio.checked = true;
     }
+  }
+
+  resetAllGradients() {
+    // 重置线性渐变
+    this.linearData = {
+      angle: 180, // 默认角度
+      colorStops: [
+        { position: 0, color: "#ffffff" },
+        { position: 100, color: "#000000" },
+      ],
+      selectedStop: null,
+    };
+
+    // 重置径向渐变
+    this.radialData = {
+      center: { x: 0.5, y: 0.5 },
+      shape: "ellipse",
+      sizeKeyword: null, // 默认不选中任何关键字
+      size: { x: 50, y: 50 },
+      sizeUnit: "%",
+      colorStops: [
+        { position: 0, color: "#ffffff", isAboveLine: true },
+        { position: 100, color: "#000000", isAboveLine: true },
+      ],
+      selectedStop: null,
+    };
+
+    // 重置椭圆数据
+    this.ellipseData = {
+      center: { x: 0.5, y: 0.5 },
+      size: { x: 50, y: 50 }, // 椭圆：水平半径50%，垂直半径50%
+      sizeUnit: "%",
+      sizeKeyword: null, // 椭圆的尺寸关键字
+      colorStops: [
+        { position: 0, color: "#ffffff", isAboveLine: true },
+        { position: 100, color: "#000000", isAboveLine: true },
+      ],
+    };
+
+    // 重置圆形数据
+    this.circleData = {
+      center: { x: 0.5, y: 0.5 },
+      size: { x: 50, y: 50 }, // 正圆：半径50%
+      sizeUnit: "%",
+      sizeKeyword: null, // 正圆的尺寸关键字
+      colorStops: [
+        { position: 0, color: "#ffffff", isAboveLine: true },
+        { position: 100, color: "#000000", isAboveLine: true },
+      ],
+    };
+
+    // 重置角度渐变
+    this.conicData = {
+      center: { x: 0.5, y: 0.5 },
+      startAngle: 0, // 默认从0°开始，控制点在圆心正上方
+      colorStops: [
+        { position: 0, color: "#2481db" },
+        { position: 90, color: "#c39b46" },
+      ],
+      selectedStop: null,
+    };
+
+    // 重置其他状态（保持当前渐变类型）
+    this.currentColorStop = null;
+    this.selectedColor = "#ff0000";
+    this.isDragging = false;
+    this.isDraggingColorStop = false;
+    this.dragTarget = null;
+    this.dragStartPos = { x: 0, y: 0 };
+    this.lastMouseX = 0;
+    this.lastMouseY = 0;
+    this.isAdjustingAngle = false;
+    this.radialCenterHovered = false;
+    this.radialSizeHandleHovered = -1;
+    this.conicCenterHovered = false;
+    this.conicAngleHandleHovered = false;
+
+    // 重置UI状态
+    this.hideColorPicker();
+    this.hideRadialPreview();
+    this.hideConicPreview();
+
+    // 清理所有现有的色标元素
+    document.querySelectorAll(".canvas-color-stop").forEach((stop) => {
+      stop.remove();
+    });
+    document.querySelectorAll(".radial-color-stop").forEach((stop) => {
+      stop.remove();
+    });
+    document.querySelectorAll(".conic-color-stop").forEach((stop) => {
+      stop.remove();
+    });
+
+    // 重置径向渐变的单选按钮
+    document.querySelectorAll('input[name="radial-shape"]').forEach((radio) => {
+      radio.checked = false;
+    });
+    document.querySelector('input[name="radial-shape"][value="ellipse"]').checked = true;
+
+    document.querySelectorAll('input[name="radial-size"]').forEach((radio) => {
+      radio.checked = false;
+    });
+
+    // 重新初始化并渲染
+    this.initializeRadialDefaults();
+    this.updateRadialControls();
+    this.updateConicControls();
+    this.updateLinearColorStops();
+    this.renderAll();
   }
 }
 

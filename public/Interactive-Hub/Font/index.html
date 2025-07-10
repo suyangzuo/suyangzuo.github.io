@@ -1,14 +1,14 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>字体</title>
+    <link rel="icon" href="/Images/Interactive-Hub/HQ/字体.png" type="image/x-icon" />
     <link
-      rel="icon"
-      href="/Images/Interactive-Hub/HQ/字体.png"
-      type="image/x-icon"
+      href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Ubuntu+Mono&display=swap"
+      rel="stylesheet"
     />
     <link rel="stylesheet" href="/Styles/common.css" />
     <link rel="stylesheet" href="/Styles/top-banner-common.css" />
@@ -22,22 +22,157 @@
   </head>
   <body>
     <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
-    <script
-      src="../../Scripts/html-include.js"
-      target="../../top-banner.html"
-      position="afterbegin"
-    ></script>
+    <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
     <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
 
     <section class="字体总区 总区">
-      <script
-        src="../../Scripts/html-include.js"
-        target="../control.html"
-        position="afterbegin"
-      ></script>
+      <script src="../../Scripts/html-include.js" target="../control.html" position="afterbegin"></script>
       <p class="交互标题">字体</p>
       <figure class="展示区"></figure>
-      <div class="控制区"></div>
+      <div class="控制区">
+        <div class="控制组">
+          <div class="控制标题">
+            <i class="fas fa-font"></i>
+            font-family
+          </div>
+          <div class="font-family控制">
+            <div class="字体输入组" id="fontFamilyInputs">
+              <div class="字体输入分组">
+                <input type="text" class="字体输入框" value="Noto Sans SC" placeholder="输入字体名称" />
+                <button class="删除字体按钮"><i class="fas fa-times"></i></button>
+              </div>
+              <div class="字体输入分组">
+                <input type="text" class="字体输入框" value="微软雅黑" placeholder="输入字体名称" />
+                <button class="删除字体按钮"><i class="fas fa-times"></i></button>
+              </div>
+              <div class="字体输入分组">
+                <input type="text" class="字体输入框" value="Arial" placeholder="输入字体名称" />
+                <button class="删除字体按钮"><i class="fas fa-times"></i></button>
+              </div>
+              <div class="字体输入分组">
+                <input type="text" class="字体输入框" value="Consolas" placeholder="输入字体名称" />
+                <button class="删除字体按钮"><i class="fas fa-times"></i></button>
+              </div>
+              <div class="字体输入分组">
+                <input type="text" class="字体输入框" value="sans-serif" placeholder="输入字体名称" />
+                <button class="删除字体按钮"><i class="fas fa-times"></i></button>
+              </div>
+              <button class="添加字体按钮" id="addFontBtn"><i class="fas fa-plus"></i> 添加字体</button>
+            </div>
+            <div class="字体预览">
+              <div class="字体预览代码" id="fontFamilyPreviewWrap"></div>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 50px">
+          <div class="控制组">
+            <div class="控制标题">
+              <i class="fas fa-text-height"></i>
+              font-size
+            </div>
+            <div class="font-size控制">
+              <div class="数值控制组">
+                <button class="数值按钮" id="decreaseBtn">−</button>
+                <input type="number" class="数值输入" id="fontSizeInput" value="18" min="12" max="100" step="1" />
+                <button class="数值按钮" id="increaseBtn">+</button>
+              </div>
+              <select class="单位选择器" id="fontSizeUnit">
+                <option value="px">px</option>
+                <option value="em">em</option>
+                <option value="rem">rem</option>
+                <option value="ch">ch</option>
+                <option value="vw">vw</option>
+              </select>
+            </div>
+          </div>
+          <div class="控制组">
+            <div class="控制标题">
+              <i class="fas fa-italic"></i>
+              font-style
+            </div>
+            <div class="font-style控制">
+              <div class="单选组">
+                <div class="单选选项">
+                  <input type="radio" name="fontStyle" id="normalStyle" value="normal" checked />
+                  <label for="normalStyle">normal</label>
+                </div>
+                <div class="单选选项">
+                  <input type="radio" name="fontStyle" id="italic" value="italic" />
+                  <label for="italic">italic</label>
+                </div>
+                <div class="单选选项">
+                  <input type="radio" name="fontStyle" id="oblique" value="oblique" />
+                  <label for="oblique">oblique</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="控制组">
+          <div class="控制标题">
+            <i class="fas fa-bold"></i>
+            font-weight
+          </div>
+          <div class="font-weight控制">
+            <div class="单选组">
+              <div class="单选选项">
+                <input type="radio" name="fontWeight" id="lighter" value="lighter" />
+                <label for="lighter">lighter</label>
+              </div>
+              <div class="单选选项">
+                <input type="radio" name="fontWeight" id="normal" value="normal" checked />
+                <label for="normal">normal</label>
+              </div>
+              <div class="单选选项">
+                <input type="radio" name="fontWeight" id="bold" value="bold" />
+                <label for="bold">bold</label>
+              </div>
+              <div class="单选选项">
+                <input type="radio" name="fontWeight" id="bolder" value="bolder" />
+                <label for="bolder">bolder</label>
+              </div>
+            </div>
+            <div class="单选组">
+              <div class="单选选项">
+                <input type="radio" name="fontWeight" id="100" value="100" />
+                <label for="100">100</label>
+              </div>
+              <div class="单选选项">
+                <input type="radio" name="fontWeight" id="200" value="200" />
+                <label for="200">200</label>
+              </div>
+              <div class="单选选项">
+                <input type="radio" name="fontWeight" id="300" value="300" />
+                <label for="300">300</label>
+              </div>
+              <div class="单选选项">
+                <input type="radio" name="fontWeight" id="400" value="400" />
+                <label for="400">400</label>
+              </div>
+              <div class="单选选项">
+                <input type="radio" name="fontWeight" id="500" value="500" />
+                <label for="500">500</label>
+              </div>
+              <div class="单选选项">
+                <input type="radio" name="fontWeight" id="600" value="600" />
+                <label for="600">600</label>
+              </div>
+              <div class="单选选项">
+                <input type="radio" name="fontWeight" id="700" value="700" />
+                <label for="700">700</label>
+              </div>
+              <div class="单选选项">
+                <input type="radio" name="fontWeight" id="800" value="800" />
+                <label for="800">800</label>
+              </div>
+              <div class="单选选项">
+                <input type="radio" name="fontWeight" id="900" value="900" />
+                <label for="900">900</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   </body>
 </html>

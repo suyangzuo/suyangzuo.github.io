@@ -2,5 +2,361 @@
   --进度条颜色-已填充: rgb(41, 126, 78);
   --进度条颜色-未填充: rgba(224, 224, 224, 0.85);
   --拇指宽度: 16px;
+  --深色背景: #1a1a1a;
+  --深色卡片: #2d2d2d;
+  --深色边框: #404040;
+  --深色文字: #e0e0e0;
+  --深色文字次要: #b0b0b0;
+  --深色高亮: #346eb1;
+  --深色成功: #4caf50;
+  --深色警告: #ff9800;
+  --深色错误: #f44336;
 }
 
+.字体总区 {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 30px;
+  min-height: calc(100vh - 165px);
+}
+
+.展示区 {
+  width: 90%;
+  max-width: 1500px;
+  outline: 2px solid var(--深色边框);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.canvas容器 {
+  width: 100%;
+  height: min(500px, 30vh);
+  background: var(--深色背景);
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+#textContainer {
+  width: 100%;
+  height: 100%;
+}
+
+.控制区 {
+  width: 100%;
+  max-width: 1200px;
+  background: var(--深色卡片);
+  border: 2px solid var(--深色边框);
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.控制组 {
+  margin-bottom: 25px;
+}
+
+.控制组:last-child {
+  margin-bottom: 0;
+}
+
+.控制标题 {
+  color: var(--深色文字);
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.控制标题 i {
+  color: var(--深色高亮);
+}
+
+.font-family控制 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.字体输入组 {
+  display: flex;
+  gap: 10px 20px;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.字体输入分组 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 213px;
+}
+
+.字体输入框 {
+  background: var(--深色背景);
+  border: 1px solid var(--深色边框);
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: var(--深色文字);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.字体输入框:focus {
+  outline: none;
+  border-color: var(--深色高亮);
+  box-shadow: 0 0 0 2px rgba(74, 158, 255, 0.2);
+}
+
+.字体输入框::placeholder {
+  color: var(--深色文字次要);
+}
+
+.添加字体按钮 {
+  background: var(--深色高亮);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.添加字体按钮:hover {
+  background: #3a8ce6;
+  transform: translateY(-1px);
+}
+
+.删除字体按钮 {
+  background: var(--深色错误);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+
+.删除字体按钮:hover {
+  background: #d32f2f;
+}
+
+.font-size控制,
+.font-weight控制 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.font-style控制 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.单位选择器 {
+  background: var(--深色背景);
+  border: 1px solid var(--深色边框);
+  border-radius: 6px;
+  padding: 8px 12px 8px 12px;
+  color: var(--深色文字);
+  font-size: 14px;
+  font-family: "JetBrains Mono", monospace;
+  cursor: pointer;
+  padding-right: 35px;
+  position: relative;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.单位选择器:focus {
+  outline: none;
+  border-color: var(--深色高亮);
+}
+
+/* 使用背景图片作为下拉箭头 */
+.单位选择器 {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2374befd' d='M6 8.5L1.5 4L2.5 3L6 6.5L9.5 3L10.5 4L6 8.5Z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px 12px;
+  transition: all 0.2s ease;
+}
+
+.单位选择器:hover {
+  border-color: #357;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2374befd' d='M6 8.5L1.5 4L2.5 3L6 6.5L9.5 3L10.5 4L6 8.5Z'/%3E%3C/svg%3E");
+}
+
+.单位选择器:focus {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23346eb1' d='M6 8.5L1.5 4L2.5 3L6 6.5L9.5 3L10.5 4L6 8.5Z'/%3E%3C/svg%3E");
+}
+
+.单选组 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.单选选项 {
+  position: relative;
+  display: inline-block;
+}
+
+.单选选项 input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.单选选项 label {
+  display: inline-block;
+  padding: 8px 16px;
+  background: var(--深色背景);
+  border: 1px solid var(--深色边框);
+  border-radius: 6px;
+  color: var(--深色文字);
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.单选选项 input[type="radio"]:checked + label {
+  background: var(--深色高亮);
+  color: white;
+  border-color: var(--深色高亮);
+}
+
+.单选选项 label:hover {
+  /* background: var(--深色边框); */
+  border-color: var(--深色高亮);
+}
+
+.单选选项 input[type="radio"]:checked + label:hover {
+  background: #3a8ce6;
+}
+
+.数值输入 {
+  background: var(--深色背景);
+  border: 1px solid var(--深色边框);
+  border-radius: 6px;
+  padding: 8px 6px;
+  color: var(--深色文字);
+  font-size: 14px;
+  width: 60px;
+  text-align: center;
+  font-family: "JetBrains Mono", monospace;
+  transition: 125ms;
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+}
+
+.数值输入::-webkit-outer-spin-button,
+.数值输入::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.数值输入:hover {
+  border-color: #357;
+}
+
+.数值输入:focus {
+  outline: none;
+  border-color: var(--深色高亮);
+  box-shadow: 0 0 0 2px rgba(74, 158, 255, 0.2);
+}
+
+.数值控制组 {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.数值按钮 {
+  background: rgb(23, 70, 136);
+  border-radius: 4px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--深色文字);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.数值按钮:hover {
+  background: rgb(33, 97, 187);
+}
+
+.数值按钮:active {
+  background: var(--深色高亮);
+  color: white;
+}
+
+.字体预览 {
+  margin-top: 15px;
+  padding: 15px;
+  background: var(--深色背景);
+  border-radius: 6px;
+  border-left: 4px solid var(--深色高亮);
+}
+
+.字体预览代码 {
+  font-family: "JetBrains Mono", monospace;
+  color: var(--深色文字);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.字体预览代码 .属性名 {
+  color: var(--深色高亮);
+}
+
+.字体预览代码 .属性值 {
+  color: var(--深色成功);
+}
+
+.字体预览代码 .字符串 {
+  color: var(--深色警告);
+}
+
+/* 字体输入框高亮样式 */
+.字体输入框.应用于中文 {
+  background: rgba(41, 200, 78, 0.25) !important;
+  border-color: rgba(41, 200, 78, 0.5) !important;
+}
+
+.字体输入框.应用于英文 {
+  background: rgba(255, 200, 41, 0.25) !important;
+  border-color: rgba(255, 200, 41, 0.5) !important;
+}
+
+.字体输入框.应用于混合 {
+  background: linear-gradient(to bottom, rgba(41, 200, 78, 0.25) 50%, rgba(255, 200, 41, 0.25) 50%) !important;
+  border-color: rgba(41, 200, 78, 0.5) !important;
+}
+
+.字体输入框.应用于无 {
+  background: var(--深色背景) !important;
+  border-color: var(--深色边框) !important;
+}
