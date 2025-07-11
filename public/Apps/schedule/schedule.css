@@ -47,6 +47,10 @@
   border-radius: 20px;
 }
 
+.科目:hover{
+  border: solid 3px rgb(223, 218, 175);
+}
+
 table {
   margin-right: 8%;
   width: 80%;
@@ -69,3 +73,60 @@ td {
   text-align: center;
 }
 
+@media (max-width: 1080px) {
+  .main {
+    flex-direction: column;
+  }
+
+  .left,
+  .right {
+    width: 100%;
+    height: auto;
+  }
+
+  .科目区 {
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .科目 {
+    width: 30%;
+    height: 50px;
+    margin: 5px;
+  }
+
+  table {
+    width: 100%;
+    height: auto;
+    margin-right: 0;
+  }
+
+  td {
+    height: 50px;
+  }
+}
+
+@media (min-width: 1081px) and (max-width: 1440px) {
+  .科目 {
+    width: 40%;
+    height: 7%;
+  }
+
+  table {
+    width: 90%;
+  }
+}
+
+@media (min-width: 1441px) {
+  .科目 {
+    width: 40%;
+    height: 7%;
+  }
+
+  table {
+    width: 80%;
+  }
+}
