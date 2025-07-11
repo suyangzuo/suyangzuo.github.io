@@ -92,7 +92,7 @@
 }
 
 .控制标题 > span {
-  font-family: consolas;
+  font-family: "JetBrains Mono", monospace;
   color: goldenrod;
 }
 

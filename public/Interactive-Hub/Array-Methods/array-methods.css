@@ -4,3 +4,522 @@
   --拇指宽度: 16px;
 }
 
+/* 展示区样式 */
+.展示区 {
+  position: fixed;
+  top: 50px;
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 50px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 20px 20px;
+  box-sizing: border-box;
+}
+
+/* 主要内容区域 */
+.main-content {
+  display: flex;
+  width: 100%;
+  max-width: 1500px;
+  height: 100%;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* 方法容器 */
+.methods-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+/* 方法行 */
+.method-row {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  border-radius: 12px;
+  padding: 10px;
+  backdrop-filter: blur(10px);
+}
+
+/* 方法列 */
+.method-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.column-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #64b5f6;
+  margin-bottom: 20px;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(100, 181, 246, 0.3);
+}
+
+/* 原始数组样式 */
+.original-array {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 60px;
+  color: #e0e0e0;
+  word-break: break-all;
+  padding: 20px 10px 5px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.array-bracket {
+  color: #ffd54f;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.array-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  position: relative;
+}
+
+.array-item::before {
+  content: attr(data-index);
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #999;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.array-element {
+  color: #81c784;
+  font-size: 18px;
+}
+
+.array-comma {
+  color: #999;
+  font-size: 16px;
+  margin-right: 1ch;
+}
+
+.emoji,
+.result-array.emoji {
+  font-size: 18px;
+}
+
+/* 方法显示样式 */
+.method-display {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  color: #e0e0e0;
+  text-align: center;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.method-name {
+  color: #64b5f6;
+  font-weight: bold;
+}
+
+.method-params {
+  color: #ff8a65;
+}
+
+.method-params-bracket {
+  color: #ffd54f;
+  font-weight: bold;
+}
+
+.lambda-operator {
+  margin: 0 2px;
+}
+
+/* 参数输入框样式 */
+.param-input {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  color: #e0e0e0;
+  padding: 4px 6px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  margin: 0 2px;
+  width: 20ch;
+  transition: all 0.2s ease;
+}
+
+.param-input:focus {
+  outline: none;
+  border-color: #64b5f6;
+  box-shadow: 0 0 5px rgba(100, 181, 246, 0.3);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.param-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* 回调函数参数选择 */
+.callback-params {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+  border-radius: 6px;
+}
+
+.param-checkbox {
+  position: relative;
+  display: inline-block;
+  color: #e0e0e0;
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.param-checkbox:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(100, 181, 246, 0.3);
+}
+
+.param-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.param-checkbox.checked {
+  background: rgba(100, 181, 246, 0.2);
+  border-color: rgba(100, 181, 246, 0.5);
+  color: #64b5f6;
+}
+
+.param-checkbox.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 结果显示样式 */
+.result-display {
+  font-family: "JetBrains Mono", Consolas, Noto Sans SC, 微软雅黑, sans-serif;
+  font-size: 18px;
+  color: #e0e0e0;
+  text-align: center;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  word-break: break-all;
+  padding: 20px 10px 5px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.result-value {
+  color: #81c784;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.result-array-string {
+  color: #ffd54f;
+  font-weight: 500;
+}
+
+.result-emoji-string {
+  font-size: 18px;
+}
+
+.result-array {
+  color: #ffd54f;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.result-comma {
+  color: #999;
+  font-size: 16px;
+  margin-right: 1ch;
+}
+
+.result-array-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  position: relative;
+}
+
+.result-array-item::before {
+  content: attr(data-index);
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #999;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.result-iterator {
+  color: #ff8a65;
+  font-style: italic;
+}
+
+.result-display small {
+  font-size: 12px;
+  opacity: 0.8;
+  margin-top: 4px;
+}
+
+/* 控制区样式 */
+.控制区 {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.method-selector-btn {
+  background: linear-gradient(135deg, #4a90e2, #357abd);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.method-selector-btn:hover {
+  background: linear-gradient(135deg, #357abd, #2d5aa0);
+}
+
+/* 方法选择对话框 */
+.method-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.method-dialog-overlay.show {
+  display: flex;
+}
+
+.method-dialog {
+  background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+  border-radius: 12px;
+  padding: 20px 30px;
+  width: min(75vw, 1200px);
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dialog-title {
+  color: #64b5f6;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.dialog-close {
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.dialog-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #e0e0e0;
+}
+
+.method-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
+  gap: 15px;
+}
+
+.method-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.method-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(100, 181, 246, 0.3);
+}
+
+.method-item input[type="checkbox"] {
+  margin: 0;
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.method-item label {
+  color: #e0e0e0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  cursor: pointer;
+  flex: 1;
+  padding: 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.method-item input[type="checkbox"]:checked + label {
+  background: rgba(100, 181, 246, 0.2);
+  border-color: rgba(100, 181, 246, 0.5);
+  color: #64b5f6;
+}
+
+.method-item:hover label {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(100, 181, 246, 0.3);
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dialog-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dialog-btn.primary {
+  background: #4a90e2;
+  color: white;
+}
+
+.dialog-btn.primary:hover {
+  background: #357abd;
+}
+
+.dialog-btn.secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: #e0e0e0;
+}
+
+.dialog-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.method-dialog .method-params-bracket {
+  color: #ff8a65;
+}
+
+.expression-column .method-name .method-name-bracket {
+  color: #ccc;
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+  .method-row {
+    flex-direction: column;
+    gap: 10px;
+    min-height: auto;
+  }
+
+  .method-column {
+    min-height: 60px;
+  }
+}
+
+@media (max-width: 768px) {
+  .method-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .method-dialog {
+    margin: 20px;
+    max-height: calc(100vh - 40px);
+  }
+
+  .method-row {
+    padding: 15px;
+  }
+
+  .param-input {
+    width: 15ch;
+  }
+}
