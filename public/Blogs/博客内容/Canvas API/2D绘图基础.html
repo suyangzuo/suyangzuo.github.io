@@ -1,0 +1,999 @@
+<article class="专题简介">
+  <h1 class="简介标题">
+    <span><span class="行内专业名词">2D</span>绘图基础</span><span class="原创">原创</span>
+  </h1>
+  <div class="简介信息">
+    <section class="简介信息文本">
+      <p class="作者">
+        <span class="作者前缀 前缀">作者：</span>
+        <span class="作者姓名">苏扬</span>
+      </p>
+      <p class="日期">
+        <span class="日期前缀 前缀">日期：</span>
+        <span class="日期文本">待定</span>
+      </p>
+    </section>
+    <section class="简介信息图像">
+      <img src="/Images/Contributors/Extreme Hunter.jpg" alt="苏扬" />
+    </section>
+  </div>
+  <ul class="联系方式列表">
+    <li class="联系方式项">
+      <a class="联系方式链接" href="mailto:suyangzuo@gmail.com" target="_blank">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://github.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-github"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.deviantart.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-deviantart"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dev.to/suyangzuo" target="_blank"><i class="fa-brands fa-dev"></i></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.freecodecamp.org/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-free-code-camp"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://codepen.io/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-codepen"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dribbble.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-dribbble"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.artstation.com/user-7893655" target="_blank"
+        ><i class="fa-brands fa-artstation"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://codesandbox.io/u/suyangzuo" target="_blank">
+        <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
+      /></a>
+    </li>
+  </ul>
+</article>
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">渲染上下文</h2>
+
+    <h3 class="分区标题 分区3级标题">什么是<span class="行内专业名词">渲染上下文</span></h3>
+    <p class="分区普通文本">
+      在<span class="行内专业名词">Canvas API</span>中，<span class="行内专业名词">渲染上下文</span
+      ><span class="附加说明">Context</span>是<span class="行内专业名词">Canvas</span>对象的属性。<span
+        class="行内专业名词"
+        >渲染上下文</span
+      >对象提供了绘制<span class="行内专业名词">Canvas</span>图形的一整套环境，包括绘图接口，状态，以及各种属性。
+    </p>
+    <p class="分区普通文本"><span class="行内专业名词">渲染上下文</span>包含了多种模式：</p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Canvas API/2D绘图基础/上下文模式.png" alt="Canvas 上下文模式" />
+    </figure>
+    <p class="分区普通文本">
+      其中<span class="行内专业名词">2D</span>是最常用的渲染上下文模式，可以说，<span class="行内专业名词"
+        >Canvas API</span
+      >主要就是用来绘制<span class="行内专业名词">2D</span>图形的。这在<a
+        class="超链接"
+        href="https://developer.mozilla.org/zh-CN/docs/Web/API/Canvas_API"
+        target="_blank"
+        >MDN 文档</a
+      >中有明确的说明：
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Canvas API/2D绘图基础/聚焦2D_MDN.png" alt="Canvas 聚焦2D" />
+    </figure>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        有关<span class="行内专业名词">渲染上下文</span>的权威解释，请参考<a
+          class="超链接"
+          href="https://html.spec.whatwg.org/multipage/canvas.html"
+          target="_blank"
+          >W3C 最新规范</a
+        >。
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">获取<span class="行内专业名词">渲染上下文</span></h3>
+    <p class="分区普通文本">
+      调用<span class="行内专业名词">Canvas</span>对象的<span class="行内代码">getContext()</span>方法即可：
+    </p>
+    <pre>
+      <code class="lang-javascript">
+        // 获取2D渲染上下文
+        // 上下文的英文是"context"，编程中经常简写为"ctx"
+        const ctx = canvas.getContext("2d");
+      </code>
+    </pre>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        绘图的第一步就是获取<span class="行内专业名词">渲染上下文</span>，没有上下文，绘图就无从谈起。
+      </p>
+    </section>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">分辨率缩放</h2>
+
+    <h3 class="分区标题 分区3级标题">什么是<span class="行内专业名词">分辨率缩放</span></h3>
+    <p class="分区普通文本">
+      现在很多显示器的分辨率都很高，尤其是笔记本电脑，比如我的笔记本是<span class="行内专业名词"
+        >Redmi Book Pro 16 2024</span
+      >，其屏幕分辨率为<span class="行内专业名词">3072<span class="次要">✗</span>1920</span>，但是屏幕的尺寸只有<span
+        class="行内专业名词"
+        >16</span
+      >英寸，导致的结果就是屏幕的像素密度很高，如果分辨率缩放设置为<span class="行内专业名词">1</span
+      >，屏幕上所有的图片、文字会非常小，看着很累。因此我将分辨率缩放设置为<span class="行内专业名词">150%</span
+      >，把<span class="行内专业名词">3</span>个像素当作<span class="行内专业名词">2</span
+      >个像素用，这样屏幕上的图片、文字都会放大<span class="行内专业名词">1.5</span>倍。
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Canvas API/2D绘图基础/分辨率缩放_Ubuntu.png" alt="分辨率缩放 Ubuntu" />
+    </figure>
+    <p class="分区普通文本">
+      分辨率缩放设置为<span class="行内专业名词">150%</span>，在代码中，就是<span class="行内代码">1.5</span>。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">获取<span class="行内专业名词">分辨率缩放值</span></h3>
+    <p class="分区普通文本">
+      我这台电脑的分辨率缩放是<span class="行内代码">1.5</span>，那么代码中就直接用<span class="行内代码">1.5</span
+      >吗？当然不行！因为每个人的电脑分辨率缩放都不一样，如果直接用<span class="行内代码">1.5</span>设计<span
+        class="行内专业名词"
+        >Canvas图形</span
+      >，在我的电脑上看起来是正常的，但另一个人的电脑分辨率缩放如果是<span class="行内代码">1</span
+      >，那么在他的电脑上<span class="行内专业名词">Canvas图形</span>看上去就会变得很大。为了让<span
+        class="行内专业名词"
+        >Canvas图形</span
+      >在每个人的电脑上保持一致，代码中就<span class="强调">不能用常数</span>来表示分辨率缩放，而要用变量。<span
+        class="行内代码"
+        >window.devicePixelRatio</span
+      >就是用来获取分辨率缩放的变量。
+    </p>
+    <pre>
+      <code class="lang-javascript">
+        const dpr = window.devicePixelRatio || 1;   //获取分辨率缩放值，无法获取则默认为1
+        console.log(`分辨率缩放值: ${dpr}`);   //打印分辨率缩放值
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Canvas API/2D绘图基础/打印分辨率缩放值.png" alt="打印分辨率缩放值" />
+    </figure>
+    <p class="分区普通文本">
+      <span class="行内专业名词">分辨率缩放值</span>是<span class="行内代码">2</span>。这也是为什么要用<span
+        class="行内代码"
+        >window.devicePixelRatio</span
+      >的另一个原因：你在操作系统中查到的<span class="行内专业名词">分辨率缩放值</span>和<span class="行内代码"
+        >window.devicePixelRatio</span
+      >未必一致。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">应用<span class="行内专业名词">分辨率缩放值</span></h3>
+    <p class="分区普通文本">简单地说就是<span class="行内专业名词">2</span>步：</p>
+    <ol class="分区有序列表">
+      <li class="分区列表项">
+        修改<span class="行内专业名词">Canvas</span>的实际尺寸：<span class="行内专业名词">实际尺寸</span
+        ><span class="次要">=</span><span class="行内专业名词">CSS尺寸</span><span class="次要">✗</span
+        ><span class="行内专业名词">分辨率缩放值</span>。
+        <pre style="margin-bottom: 40px">
+          <code class="lang-javascript">
+            const dpr = window.devicePixelRatio || 1;    //获取分辨率缩放值，无法获取则默认为1
+            canvas.width = canvas.offsetWidth * dpr;     //实际宽度 = CSS宽度 × 分辨率缩放值
+            canvas.height = canvas.offsetHeight * dpr;   //实际高度 = CSS高度 × 分辨率缩放值
+          </code>
+        </pre>
+      </li>
+      <li class="分区列表项">
+        设置<span class="行内专业名词">渲染上下文缩放值</span>：
+        <pre>
+          <code class="lang-javascript">
+            const dpr = window.devicePixelRatio || 1;   //获取分辨率缩放值，无法获取则默认为1
+            ctx.scale(dpr, dpr);   //ctx.scale(水平缩放值, 垂直缩放值)
+          </code>
+        </pre>
+      </li>
+    </ol>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        <span class="行内代码">canvas.width</span>是实际尺寸，<span class="行内代码">canvas.offsetWidth</span
+        >是CSS尺寸。
+      </p>
+      <pre>
+        <code class="lang-html">
+          &lt;!-- 这里的 width 和 height 是实际尺寸 --&gt;
+          &lt;canvas id="canvas" width="500" height="300"&gt;&lt;/canvas&gt;
+        </code>
+      </pre>
+    </section>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">路径绘图</h2>
+
+    <h3 class="分区标题 分区3级标题">新建<span class="行内专业名词">路径</span></h3>
+    <p class="分区普通文本">
+      可以把路径绘图想象成<span class="行内专业名词">Photoshop</span>中的操作，其原理基本一致。我们在<span
+        class="行内专业名词"
+        >Photoshop</span
+      >中想要绘制<span class="行内专业名词">图形</span>，是不是要先新建一个<span class="行内专业名词">路径</span
+      >？在<span class="行内专业名词">Canvas</span>中也是一样的。不管你想要画什么图形，都要先新建路径：
+    </p>
+    <pre>
+      <code class="lang-javascript">
+        ctx.beginPath();   //新建路径
+      </code>
+    </pre>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        和<span class="行内专业名词">Photoshop</span>一样，如果没有调用<span class="行内代码">ctx.beginPath()</span
+        >，绘制图形时会自动新建路径。如果你在一个路径中一口气绘制了好几个图形，中途没有再新建路径，那么在填充、描边时，这些图形会一起被填充、描边。
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">绘制<span class="行内专业名词">直线</span></h3>
+    <p class="分区普通文本">
+      在<span class="行内专业名词">Canvas</span>中，绘制<span class="行内专业名词">直线</span>的方法和<span
+        class="行内专业名词"
+        >Photoshop</span
+      >基本一致：一个起点，一个终点，足矣。但是，光有路径还不够，路径只是一个几何图形的<span class="行内专业名词"
+        >逻辑</span
+      >，本身是看不见的，想要看见这个图形，我们可以给它<span class="行内专业名词">描边</span>。
+    </p>
+    <pre>
+      <code class="lang-javascript">
+        //---------------- ↓ 获取Canvas 获取渲染上下文 ↓ ----------------
+        const canvas = document.getElementById("canvas");   //获取Canvas元素
+        const ctx = canvas.getContext("2d");   //获取渲染上下文
+
+        //---------------- ↓ 设置分辨率缩放 ↓ ----------------
+        const dpr = window.devicePixelRatio || 1;   //获取分辨率缩放值，无法获取则默认为1
+        canvas.width = canvas.offsetWidth * dpr;   //通过分辨率缩放值，修改Canvas的实际宽度
+        canvas.height = canvas.offsetHeight * dpr;   //通过分辨率缩放值，修改Canvas的实际高度
+        ctx.scale(dpr, dpr);   //通过分辨率缩放值，修改上下文绘图的实际大小
+
+        //---------------- ↓ 绘图 ↓ ----------------
+        ctx.beginPath();   //新建路径
+        ctx.moveTo(100, 100);   // ctx.moveTo(x, y);  移动到起点
+        ctx.lineTo(400, 200);   // ctx.lineTo(x, y);  绘制到终点
+        ctx.lineWidth = 2;   //设置描边宽度
+        ctx.strokeStyle = "lightskyblue";   //设置描边颜色
+        ctx.stroke();   //描边
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-0" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <script type="text/javascript">
+      const canvas_0 = document.getElementById("canvas-0");
+      const ctx = canvas_0.getContext("2d");
+      const dpr = window.devicePixelRatio || 1;
+      canvas_0.width = canvas_0.offsetWidth * dpr;
+      canvas_0.height = canvas_0.offsetHeight * dpr;
+      ctx.scale(dpr, dpr);
+      ctx.beginPath();
+      ctx.moveTo(100, 100);
+      ctx.lineTo(400, 200);
+      ctx.strokeStyle = "lightskyblue";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    </script>
+
+    <h3 class="分区标题 分区3级标题">绘制<span class="行内专业名词">矩形</span></h3>
+    <p class="分区普通文本">要绘制矩形，需要知道<span class="行内专业名词">2</span>个必要条件：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        矩形的<span class="行内专业名词">坐标</span>，<span class="强调">注意：</span>
+        <ul class="分区列表">
+          <li class="分区列表项">
+            矩形的<span class="行内专业名词">坐标</span>就是矩形<span class="强调">左上角</span>的坐标。
+          </li>
+          <li class="分区列表项">
+            矩形的<span class="行内专业名词">坐标</span>是相对于<span class="行内专业名词">Canvas</span
+            ><span class="强调">左上角</span>的。
+          </li>
+        </ul>
+      </li>
+      <li class="分区列表项">矩形的<span class="行内专业名词">尺寸</span></li>
+    </ul>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75; background: none">
+      <div class="canvas-1-container" style="width: 100%; height: calc(100% - 42px)">
+        <div class="rect-x-indicator"></div>
+        <canvas id="canvas-1" style="width: 100%; height: 100%; background-color: #222"></canvas>
+        <div class="rect-y-indicator"></div>
+        <div class="canvas-dimension canvas-width"><span class="num">500</span><span class="unit">px</span></div>
+        <div class="canvas-dimension canvas-height"><span class="num">500</span><span class="unit">px</span></div>
+        <div class="canvas-1-introduction">我是<span class="行内代码">Canvas</span></div>
+      </div>
+    </figure>
+    <style>
+      .canvas-1-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 30px 0 0 40px;
+        position: relative;
+        width: fit-content;
+        margin: 0 auto;
+      }
+
+      #canvas-1 {
+        width: 100%;
+        height: 100%;
+        background-color: #222;
+        display: block;
+        position: relative;
+      }
+
+      .canvas-1-introduction {
+        position: absolute;
+        left: 50%;
+        bottom: 10px;
+        translate: calc(-50% + 20px) 0;
+        font-size: 16px;
+        pointer-events: none;
+      }
+
+      .rect-x-indicator {
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 16px;
+        color: lightsteelblue;
+        font-family: monospace;
+        pointer-events: none;
+        user-select: none;
+        z-index: 10;
+        transform: translate(-50%, -100%);
+        /* left/top 由JS动态设置 */
+      }
+      .rect-y-indicator {
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 16px;
+        color: lightsteelblue;
+        font-family: monospace;
+        pointer-events: none;
+        user-select: none;
+        z-index: 10;
+        transform: translate(-100%, -50%);
+        /* left/top 由JS动态设置 */
+      }
+
+      .canvas-dimension {
+        position: absolute;
+        font-size: 18px;
+        font-family: monospace;
+        pointer-events: none;
+        user-select: none;
+        width: fit-content;
+      }
+      .canvas-width {
+        left: 50%;
+        top: 35px;
+        text-align: center;
+      }
+      .canvas-height {
+        left: 45px;
+        top: 50%;
+        text-align: center;
+      }
+      .canvas-dimension .num {
+        color: rgb(50, 164, 143);
+        font-weight: bold;
+        text-shadow: 1px 1px 1px #000a;
+      }
+      .canvas-dimension .unit {
+        color: rgb(182, 121, 61);
+        margin-left: 2px;
+        text-shadow: 1px 1px 1px #000a;
+      }
+    </style>
+    <script>
+      const canvas_1 = document.getElementById("canvas-1");
+      const widthNum = document.querySelector(".canvas-width .num");
+      const heightNum = document.querySelector(".canvas-height .num");
+      if (widthNum) widthNum.textContent = canvas_1.offsetWidth;
+      if (heightNum) heightNum.textContent = canvas_1.offsetHeight;
+      const rectXIndicator = document.querySelector(".rect-x-indicator");
+      const rectYIndicator = document.querySelector(".rect-y-indicator");
+      const dpr_1 = window.devicePixelRatio || 1;
+      canvas_1.width = canvas_1.offsetWidth * dpr_1;
+      canvas_1.height = canvas_1.offsetHeight * dpr_1;
+      const ctx_1 = canvas_1.getContext("2d");
+      ctx_1.setTransform(1, 0, 0, 1, 0, 0); // 重置变换
+      ctx_1.scale(dpr_1, dpr_1);
+
+      const canvas_1_W = canvas_1.offsetWidth;
+      const canvas_1_H = canvas_1.offsetHeight;
+      const RECT_W = 150;
+      const RECT_H = 100;
+
+      let rectX = Math.random() * (canvas_1_W - RECT_W);
+      let rectY = Math.random() * (canvas_1_H - RECT_H);
+      let vx = (((Math.random() - 0.5) * 4) / 3) * 2;
+      let vy = (((Math.random() - 0.5) * 4) / 3) * 2;
+
+      function drawDashedLine(x1, y1, x2, y2) {
+        ctx_1.save();
+        ctx_1.strokeStyle = "rgba(255,255,255,0.5)";
+        ctx_1.setLineDash([8, 6]);
+        ctx_1.lineWidth = 2;
+        ctx_1.beginPath();
+        ctx_1.moveTo(x1, y1);
+        ctx_1.lineTo(x2, y2);
+        ctx_1.stroke();
+        ctx_1.restore();
+      }
+
+      function draw() {
+        ctx_1.clearRect(0, 0, canvas_1_W, canvas_1_H);
+        // 绘制虚线：矩形左上角到上边界
+        drawDashedLine(rectX, rectY, rectX, 0);
+        // 绘制虚线：矩形左上角到左边界
+        drawDashedLine(rectX, rectY, 0, rectY);
+        // 绘制矩形
+        ctx_1.save();
+        ctx_1.fillStyle = "#365";
+        ctx_1.fillRect(rectX, rectY, RECT_W, RECT_H);
+        ctx_1.restore();
+
+        // 在矩形内部靠下方、水平居中绘制“我是矩形”
+        ctx_1.save();
+        ctx_1.font = "14px sans-serif";
+        ctx_1.fillStyle = "#ffa";
+        ctx_1.textAlign = "center";
+        ctx_1.textBaseline = "bottom";
+        ctx_1.fillText("我是矩形", rectX + RECT_W / 2, rectY + RECT_H - 5);
+        ctx_1.restore();
+
+        // 在矩形内部绘制宽度和高度数字
+        ctx_1.save();
+        ctx_1.font = "14px monospace";
+        ctx_1.fillStyle = "white";
+        ctx_1.textAlign = "center";
+        ctx_1.textBaseline = "top";
+        // 宽度数字，顶部居中，距离顶部5px
+        ctx_1.fillText(RECT_W, rectX + RECT_W / 2, rectY + 5);
+        // 高度数字，左侧居中，距离左边5px
+        ctx_1.textAlign = "left";
+        ctx_1.textBaseline = "middle";
+        ctx_1.fillText(RECT_H, rectX + 5, rectY + RECT_H / 2);
+        ctx_1.restore();
+
+        // 更新外部坐标指示器
+        if (rectXIndicator) {
+          rectXIndicator.style.left = `${rectX + canvas_1.offsetLeft}px`;
+          rectXIndicator.style.top = `${canvas_1.offsetTop - 10}px`;
+          rectXIndicator.textContent = Math.round(rectX);
+        }
+        if (rectYIndicator) {
+          rectYIndicator.style.left = `${canvas_1.offsetLeft - 10}px`;
+          rectYIndicator.style.top = `${rectY + canvas_1.offsetTop}px`;
+          rectYIndicator.textContent = Math.round(rectY);
+        }
+      }
+
+      function update() {
+        rectX += vx;
+        rectY += vy;
+        // 碰到边界反弹
+        if (rectX < 0) {
+          rectX = 0;
+          vx = -vx;
+        }
+        if (rectY < 0) {
+          rectY = 0;
+          vy = -vy;
+        }
+        if (rectX > canvas_1_W - RECT_W) {
+          rectX = canvas_1_W - RECT_W;
+          vx = -vx;
+        }
+        if (rectY > canvas_1_H - RECT_H) {
+          rectY = canvas_1_H - RECT_H;
+          vy = -vy;
+        }
+      }
+
+      function animate() {
+        update();
+        draw();
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+    </script>
+    <p class="分区普通文本">
+      如<span class="行内截图序号">· 图6 ·</span>所示，矩形<span class="行内专业名词">宽度</span>为<span
+        class="行内代码"
+        >150</span
+      >，<span class="行内专业名词">高度</span>为<span class="行内代码">100</span>；矩形的坐标就是<span
+        class="行内专业名词"
+        >矩形<span class="强调">左上角</span>的坐标</span
+      >。
+    </p>
+    <p class="分区普通文本">绘制矩形有两种方式：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        绘制<span class="强调">单个</span>矩形：直接用<span class="行内代码">ctx.fillRect()</span>填充，用<span
+          class="行内代码"
+          >ctx.strokeRect()</span
+        >描边
+      </li>
+      <li class="分区列表项">
+        绘制<span class="强调">多个</span>矩形：先用<span class="行内代码">ctx.Rect()</span>绘制矩形路径，再用<span
+          class="行内代码"
+          >ctx.fill()</span
+        >或<span class="行内代码">ctx.stroke()</span>填充或描边
+      </li>
+    </ul>
+    <pre>
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        ctx.fillStyle = "darkgreen";   //设置填充颜色
+        ctx.strokeStyle = "gold";   //设置描边颜色
+
+        //---------------- ↓ 绘制单个矩形 ↓ ----------------
+        // ctx.fillRect(水平坐标, 垂直坐标, 宽度, 高度);
+        ctx.fillRect(200, 300, 150, 100);   //填充单个矩形
+
+        // ctx.strokeRect(水平坐标, 垂直坐标, 宽度, 高度);
+        ctx.strokeRect(200, 300, 150, 100);   //描边单个矩形
+
+        //---------------- ↓ 绘制多个矩形 ↓ ----------------
+        // ctx.Rect(水平坐标, 垂直坐标, 宽度, 高度);
+        ctx.Rect(200, 300, 150, 300);  //绘制矩形路径
+        ctx.Rect(350, 90, 250, 225);   //绘制矩形路径
+        ctx.Rect(50, 410, 75, 240);    //绘制矩形路径
+        ctx.fill();     //填充多个矩形
+        ctx.stroke();   //描边多个矩形
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75; background: none">
+      <canvas id="canvas-2" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <script>
+      const canvas_2 = document.getElementById("canvas-2");
+      const ctx_2 = canvas_2.getContext("2d");
+      const dpr_2 = window.devicePixelRatio || 1;
+      canvas_2.width = canvas_2.offsetWidth * dpr_2;
+      canvas_2.height = canvas_2.offsetHeight * dpr_2;
+      ctx_2.scale(dpr_2, dpr_2);
+      ctx_2.fillStyle = "darkgreen";
+      ctx_2.strokeStyle = "gold";
+      ctx_2.fillRect(265, 100, 250, 200);
+      ctx_2.strokeRect(265, 100, 250, 200);
+    </script>
+
+    <h3 class="分区标题 分区3级标题">绘制<span class="行内专业名词">正圆</span></h3>
+    <p class="分区普通文本">要绘制正圆，需要知道<span class="行内专业名词">4</span>个必要条件：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">圆心坐标</li>
+      <li class="分区列表项">半径</li>
+      <li class="分区列表项">起始弧度</li>
+      <li class="分区列表项">结束弧度</li>
+    </ul>
+    <section class="提醒">
+      <h3 class="提醒标题">小知识</h3>
+      <p class="分区普通文本">
+        <span class="行内专业名词">弧度</span>和<span class="行内专业名词">角度</span
+        >其实是一回事，只是表示方式不同，可以访问<a
+          class="超链接"
+          href="/Interactive-Hub/Radius-And-Angle/"
+          target="_blank"
+          >弧度和角度</a
+        >了解更多。
+      </p>
+      <p class="分区普通文本">
+        简而言之，圆的周长相当于<span class="行内代码">2π</span>弧度，大约等于<span class="行内代码">6.28</span>。
+      </p>
+    </section>
+    <pre>
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        //---------------- ↓ 绘制正圆 ↓ ----------------
+        // ctx.arc(圆心水平坐标, 圆心垂直坐标, 半径, 起始弧度, 结束弧度);
+        ctx.arc(250, 200, 100, 0, 2 * Math.PI);   //绘制正圆路径
+        ctx.fillStyle = "darkgreen";   //设置填充颜色
+        ctx.strokeStyle = "lightskyblue";   //设置描边颜色
+        ctx.fillRect();   //填充路径
+        ctx.stroke();   //描边路径
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75; background: none">
+      <canvas id="canvas-3" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <script>
+      const canvas_3 = document.getElementById("canvas-3");
+      const ctx_3 = canvas_3.getContext("2d");
+      const dpr_3 = window.devicePixelRatio || 1;
+      canvas_3.width = canvas_3.offsetWidth * dpr_3;
+      canvas_3.height = canvas_3.offsetHeight * dpr_3;
+      ctx_3.scale(dpr_3, dpr_3);
+      ctx_3.arc(390, 200, 100, 0, 2 * Math.PI);
+      ctx_3.fillStyle = "darkgreen";
+      ctx_3.strokeStyle = "gold";
+      ctx_3.fill();
+      ctx_3.stroke();
+    </script>
+
+    <h3 class="分区标题 分区3级标题">绘制<span class="行内专业名词">椭圆</span></h3>
+    <p class="分区普通文本">要绘制椭圆，需要知道<span class="行内专业名词">6</span>个必要条件：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">圆心坐标</li>
+      <li class="分区列表项">水平半径</li>
+      <li class="分区列表项">垂直半径</li>
+      <li class="分区列表项">旋转弧度</li>
+      <li class="分区列表项">起始弧度</li>
+      <li class="分区列表项">结束弧度</li>
+    </ul>
+    <pre>
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        //---------------- ↓ 绘制椭圆 ↓ ----------------
+        // ctx.arc(圆心水平坐标, 圆心垂直坐标, 水平半径, 垂直半径, 旋转弧度, 起始弧度, 结束弧度);
+        ctx.ellipse(250, 200, 150, 75, Math.PI / 4, 0, 2 * Math.PI);   //绘制正圆路径
+        ctx.fillStyle = "darkgreen";   //设置填充颜色
+        ctx.strokeStyle = "lightskyblue";   //设置描边颜色
+        ctx.fillRect();   //填充路径
+        ctx.stroke();   //描边路径
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75; background: none">
+      <canvas id="canvas-4" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <script>
+      const canvas_4 = document.getElementById("canvas-4");
+      const ctx_4 = canvas_4.getContext("2d");
+      const dpr_4 = window.devicePixelRatio || 1;
+      canvas_4.width = canvas_4.offsetWidth * dpr_4;
+      canvas_4.height = canvas_4.offsetHeight * dpr_4;
+      ctx_4.scale(dpr_4, dpr_4);
+      ctx_4.ellipse(375, 200, 150, 75, Math.PI / 4, 0, 2 * Math.PI);
+      ctx_4.fillStyle = "darkgreen";
+      ctx_4.strokeStyle = "gold";
+      ctx_4.fill();
+      ctx_4.stroke();
+    </script>
+
+    <h3 class="分区标题 分区3级标题">绘制<span class="行内专业名词">文本</span></h3>
+    <p class="分区普通文本">要绘制文本，需要知道<span class="行内专业名词">2</span>个必要条件：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">文本内容</li>
+      <li class="分区列表项">文本坐标</li>
+    </ul>
+    <p class="分区普通文本">此外，还可以对文本做以下设置：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">字体</li>
+      <li class="分区列表项">文本垂直基线</li>
+      <li class="分区列表项">文本水平对齐</li>
+    </ul>
+    <pre>
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        //---------------- ↓ 绘制文本 ↓ ----------------
+        ctx.font = "bold 30px 'JetBrains Mono', 'Consolas', sans-serif";   //设置字体
+        ctx.fillStyle = "#abc";   //设置填充颜色
+        ctx.strokeStyle = "firebrick";   //设置描边颜色
+        ctx.lineWidth = 1;   //设置描边宽度，不写则默认为1.0
+        ctx.textBaseline = "top";   //设置文本垂直基线
+        ctx.textAlign = "left";   //设置文本水平对齐
+
+        // ctx.fillText(文本内容, 水平坐标, 垂直坐标);
+        ctx.fillText("顶基线；左对齐", 400, 75);   //填充文本
+
+        // ctx.strokeText(文本内容, 水平坐标, 垂直坐标);
+        ctx.strokeText("顶基线；左对齐", 400, 75);   //描边文本
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75; background: none">
+      <canvas id="canvas-text" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <script>
+      const canvas_text = document.getElementById("canvas-text");
+      const ctx_text = canvas_text.getContext("2d");
+      const dpr_text = window.devicePixelRatio || 1;
+      canvas_text.width = canvas_text.offsetWidth * dpr_text;
+      canvas_text.height = canvas_text.offsetHeight * dpr_text;
+      ctx_text.scale(dpr_text, dpr_text);
+      ctx_text.font = "bold 30px 'JetBrains Mono', 'Consolas', sans-serif";
+      ctx_text.fillStyle = "#abc";
+      ctx_text.strokeStyle = "firebrick";
+      ctx_text.lineWidth = 1;
+      ctx_text.textBaseline = "top";
+      ctx_text.textAlign = "left";
+      ctx_text.fillText("顶基线；左对齐", 400, 75);
+      ctx_text.strokeText("顶基线；左对齐", 400, 75);
+      ctx_text.save();
+      ctx_text.beginPath();
+      ctx_text.arc(400, 75, 5, 0, Math.PI * 2);
+      ctx_text.fillStyle = "gold";
+      ctx_text.fill();
+      ctx_text.restore();
+      ctx_text.textBaseline = "middle";
+      ctx_text.textAlign = "center";
+      ctx_text.fillText("中基线；中对齐", 400, 200);
+      ctx_text.strokeText("中基线；中对齐", 400, 200);
+      ctx_text.save();
+      ctx_text.beginPath();
+      ctx_text.arc(400, 200, 5, 0, Math.PI * 2);
+      ctx_text.fillStyle = "gold";
+      ctx_text.fill();
+      ctx_text.restore();
+      ctx_text.textBaseline = "bottom";
+      ctx_text.textAlign = "right";
+      ctx_text.fillText("底基线；右对齐", 400, 325);
+      ctx_text.strokeText("底基线；右对齐", 400, 325);
+      ctx_text.save();
+      ctx_text.beginPath();
+      ctx_text.arc(400, 325, 5, 0, Math.PI * 2);
+      ctx_text.fillStyle = "gold";
+      ctx_text.fill();
+      ctx_text.restore();
+    </script>
+    <p class="分区普通文本">
+      如<span class="行内截图序号">· 图10 ·</span>所示，<span style="color: gold; margin: 0 4px">●</span
+      >代表文本的坐标，可以很清楚地看出，垂直基线和水平对齐是如何影响文本与坐标的关系的。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        垂直基线的默认值是：<span class="行内代码">alphabetic</span>，水平对齐的默认值是：<span class="行内代码"
+          >start</span
+        >。如需更多信息，可访问二者的<span class="行内专业名词">MDN 文档</span>：
+      </p>
+      <ul class="分区列表">
+        <li class="分区列表项">
+          <a
+            class="超链接"
+            href="https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/textBaseline"
+            target="_blank"
+            >垂直基线</a
+          >
+        </li>
+
+        <li class="分区列表项">
+          <a
+            class="超链接"
+            href="https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/textAlign"
+            target="_blank"
+            >水平对齐</a
+          >
+        </li>
+      </ul>
+    </section>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">其余常用操作</h2>
+
+    <h3 class="分区标题 分区3级标题">清空区域</h3>
+    <p class="分区普通文本">
+      清空区域使用<span class="行内代码">ctx.clearRect()</span
+      >方法。清空区域就相当于橡皮擦功能，清空后区域内会变成透明。由于清空的区域是一个矩形，所以它的必要条件和绘制矩形一致：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">矩形的<span class="行内专业名词">坐标</span></li>
+      <li class="分区列表项">矩形的<span class="行内专业名词">尺寸</span></li>
+    </ul>
+    <pre>
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        //---------------- ↓ 绘制正圆 ↓ ----------------
+        const 半径 = 100;
+        const 圆心 = { 
+          x: canvas.offsetWidth / 2, 
+          y: canvas.offsetHeight / 2
+        };
+        const 弧度 = {
+          起始: 0,
+          结束: 2 * Math.PI
+        };
+        ctx.fillStyle = "darkgreen";
+        ctx.strokeStyle = "gold";
+        ctx.arc(圆心.x, 圆心.y, 半径, 弧度.起始, 弧度.结束);
+        ctx.fill();
+        ctx.stroke();
+
+        //---------------- ↓ 清空圆的右下部分 ↓ ----------------
+        ctx.clearRect(圆心.x, 圆心.y, 半径, 半径);
+
+        //如果图形包含描边，则清空区域的尺寸要加上描边
+        ctx.clearRect(圆心.x, 圆心.y, 半径 + 描边宽度, 半径 + 描边宽度);
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75; background: none">
+      <canvas id="canvas-clearRect" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <script>
+      const canvas_clear = document.getElementById("canvas-clearRect");
+      const ctx_clear = canvas_clear.getContext("2d");
+      const dpr_clear = window.devicePixelRatio || 1;
+      canvas_clear.width = canvas_clear.offsetWidth * dpr_clear;
+      canvas_clear.height = canvas_clear.offsetHeight * dpr_clear;
+      ctx_clear.scale(dpr_clear, dpr_clear);
+      ctx_clear.fillStyle = "darkgreen";
+      ctx_clear.strokeStyle = "gold";
+      const 清空演示半径 = 100;
+      const 清空演示圆心 = {
+        x: canvas_clear.offsetWidth / 2,
+        y: canvas_clear.offsetHeight / 2,
+      };
+      ctx_clear.arc(清空演示圆心.x, 清空演示圆心.y, 清空演示半径, 0, 2 * Math.PI);
+      ctx_clear.fill();
+      ctx_clear.stroke();
+      ctx_clear.clearRect(
+        清空演示圆心.x,
+        清空演示圆心.y,
+        清空演示半径 + ctx_clear.lineWidth,
+        清空演示半径 + ctx_clear.lineWidth
+      );
+      ctx_clear.setLineDash([10, 5]);
+      ctx_clear.strokeStyle = "white";
+      ctx_clear.strokeRect(
+        清空演示圆心.x,
+        清空演示圆心.y,
+        清空演示半径 + ctx_clear.lineWidth,
+        清空演示半径 + ctx_clear.lineWidth
+      );
+    </script>
+    <section class="提醒">
+      <h3 class="提醒标题">小知识</h3>
+      <p class="分区普通文本"><span class="行内代码">ctx.clearRect()</span>最常见的用途就是清空整个Canvas：</p>
+      <pre>
+        <code class="lang-javascript">
+          ctx.clearRect(0, 0, canvas.width, canvas.height);   //清空整个Canvas
+        </code>
+      </pre>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">闭合路径</h3>
+    <p class="分区普通文本">
+      闭合路径使用<span class="行内代码">ctx.closePath()</span
+      >，目的是将路径的起点和终点连接起来，形成一个封闭的区域。假如没有闭合，会怎么样呢？
+    </p>
+    <pre>
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        //---------------- ↓ 绘制路径 ↓ ----------------
+        ctx.beginPath();
+        ctx.moveTo(200, 200);   //第1个点，起点
+        ctx.lineTo(350, 100);   //第2个点
+        ctx.lineTo(500, 250);   //第3个点，终点
+        //ctx.closePath();   //不闭合路径；如果闭合，则会将终点和起点连接起来
+        ctx.lineWidth = 2;   //设置描边宽度
+        ctx.fill();    //填充路径
+        ctx.stroke();  //描边路径
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75; background: none">
+      <canvas id="canvas-closePath" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <script>
+      const canvas_closePath = document.getElementById("canvas-closePath");
+      const ctx_closePath = canvas_closePath.getContext("2d");
+      const dpr_closePath = window.devicePixelRatio || 1;
+      canvas_closePath.width = canvas_closePath.offsetWidth * dpr_closePath;
+      canvas_closePath.height = canvas_closePath.offsetHeight * dpr_closePath;
+      ctx_closePath.scale(dpr_closePath, dpr_closePath);
+      ctx_closePath.fillStyle = "darkgreen";
+      ctx_closePath.strokeStyle = "gold";
+      ctx_closePath.beginPath();
+      ctx_closePath.moveTo(200, 200);
+      ctx_closePath.lineTo(350, 100);
+      ctx_closePath.lineTo(500, 250);
+      ctx_closePath.lineWidth = 2;
+      ctx_closePath.fill();
+      ctx_closePath.stroke();
+    </script>
+    <p class="分区普通文本">
+      如<span class="行内截图序号">· 图12 ·</span
+      >所示，没有闭合路径，但是填充时会临时自动闭合，但是描边时不会临时自动闭合。从编程规范性、可扩展性的角度来说，建议显式闭合路径。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">保存与恢复上下文</h3>
+    <p class="分区普通文本">保存与恢复上下文无非就是这么几个问题：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        怎么保存？怎么恢复？
+        <ul class="分区列表">
+          <li class="分区列表项">保存上下文：<span class="行内代码">ctx.save()</span></li>
+          <li class="分区列表项">恢复上下文：<span class="行内代码">ctx.restore()</span></li>
+        </ul>
+      </li>
+      <li class="分区列表项">
+        保存什么？恢复什么？
+        <ul class="分区列表">
+          <li class="分区列表项">当前变换矩阵</li>
+          <li class="分区列表项">当前剪切区域</li>
+          <li class="分区列表项">当前虚线列表</li>
+          <li class="分区列表项">
+            当前各种属性的值：<span class="行内专业名词">填充样式</span>、<span class="行内专业名词">描边样式</span
+            >、<span class="行内专业名词">描边宽度</span>…………，共<span class="行内专业名词">18</span>个属性。
+          </li>
+        </ul>
+      </li>
+      <li class="分区列表项">
+        何时保存？何时恢复？
+        <ul class="分区列表">
+          <li class="分区列表项">当前上下文状态会频繁使用，但有时需要临时修改一下。</li>
+        </ul>
+      </li>
+    </ul>
+    <p class="分区普通文本">
+      让我们举个例子。比如我要绘制<span class="行内专业名词">10</span>个矩形，其中<span class="行内专业名词">5</span
+      >个矩形是黑底白框，其它矩形都是蓝底绿框。正常顺序是：先绘制<span class="行内专业名词">1 - 4</span
+      >蓝底绿框矩形，然后绘制<span class="行内专业名词">第5个</span>黑底白框的矩形，最后绘制<span class="行内专业名词"
+        >6 - 10</span
+      >蓝底绿框矩形。在这段程序中，<span class="行内专业名词">蓝底绿框</span>就是<span class="强调">频繁使用</span
+      >的上下文，<span class="行内专业名词">黑底白框</span>就是<span class="强调">临时使用</span>的上下文。
+    </p>
+    <pre>
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        ctx.fillStyle = "blue";     //蓝底
+        ctx.strokeStyle = "green";  //绿框
+        ctx.fillRect(100, 100, 100, 100);   //绘制蓝底绿框矩形
+
+        ctx.fillStyle = "black";    //黑底
+        ctx.strokeStyle = "white";  //白框
+        ctx.fillRect(100, 100, 100, 100);   //绘制黑底白框矩形
+
+        ctx.fillStyle = "blue";   //蓝底
+        ctx.strokeStyle = "green";   //绿框
+        ctx.fillRect(100, 100, 100, 100);   //绘制蓝底绿框矩形
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      有没有觉得这么写很麻烦？每次绘制完黑底白框后，又要再次设置蓝底绿框，更不用说可能还有别的属性需要设置，既繁琐，又容易出错。因此，我们要转换思路：每次要绘制黑底白框前，<span
+        class="行内专业名词"
+        >先保存</span
+      >上下文，绘制完后<span class="行内专业名词">再恢复</span>上下文。
+    </p>
+    <pre>
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        ctx.fillStyle = "blue";     //蓝底
+        ctx.strokeStyle = "green";  //绿框
+        ctx.fillRect(100, 100, 100, 100);   //绘制蓝底绿框矩形
+
+        ctx.save();   //保存上下文
+        ctx.fillStyle = "black";    //黑底
+        ctx.strokeStyle = "white";  //白框
+        ctx.fillRect(100, 100, 100, 100);   //绘制黑底白框矩形
+        ctx.restore();   //恢复上下文
+
+        ctx.fillRect(100, 100, 100, 100);   //绘制蓝底绿框矩形
+      </code>
+    </pre>
+  </article>
+</div>

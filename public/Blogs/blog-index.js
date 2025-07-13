@@ -279,7 +279,8 @@ async function 设置内容() {
       脚本组?.forEach((脚本) => {
         脚本.type = "text/javascript";
         const 脚本代码 = 脚本.textContent.trim();
-        Function(`'use strict'; return ${脚本代码}`)();
+        //Function(`'use strict'; return ${脚本代码}`)();
+        new Function(脚本代码)();
       });
     });
 
