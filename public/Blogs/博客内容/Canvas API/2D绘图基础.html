@@ -10,11 +10,11 @@
       </p>
       <p class="日期">
         <span class="日期前缀 前缀">日期：</span>
-        <span class="日期文本">待定</span>
+        <span class="日期文本">2025年7月13日</span>
       </p>
     </section>
     <section class="简介信息图像">
-      <img src="/Images/Contributors/Extreme Hunter.jpg" alt="苏扬" />
+      <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
     </section>
   </div>
   <ul class="联系方式列表">
@@ -317,6 +317,13 @@
         <div class="canvas-1-introduction">我是<span class="行内代码">Canvas</span></div>
       </div>
     </figure>
+    <p class="分区普通文本">
+      矩形<span class="行内专业名词">宽度</span>为<span class="行内代码">150</span>，<span class="行内专业名词"
+        >高度</span
+      >为<span class="行内代码">100</span>；矩形的坐标就是<span class="行内专业名词"
+        >矩形<span class="强调">左上角</span>的坐标</span
+      >。
+    </p>
     <style>
       .canvas-1-container {
         display: flex;
@@ -516,15 +523,6 @@
 
       animate();
     </script>
-    <p class="分区普通文本">
-      如<span class="行内截图序号">· 图6 ·</span>所示，矩形<span class="行内专业名词">宽度</span>为<span
-        class="行内代码"
-        >150</span
-      >，<span class="行内专业名词">高度</span>为<span class="行内代码">100</span>；矩形的坐标就是<span
-        class="行内专业名词"
-        >矩形<span class="强调">左上角</span>的坐标</span
-      >。
-    </p>
     <p class="分区普通文本">绘制矩形有两种方式：</p>
     <ul class="分区列表">
       <li class="分区列表项">
@@ -564,7 +562,7 @@
         ctx.stroke();   //描边多个矩形
       </code>
     </pre>
-    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75; background: none">
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75;">
       <canvas id="canvas-2" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
     </figure>
     <script>
@@ -578,6 +576,54 @@
       ctx_2.strokeStyle = "gold";
       ctx_2.fillRect(265, 100, 250, 200);
       ctx_2.strokeRect(265, 100, 250, 200);
+    </script>
+
+    <h3 class="分区标题 分区3级标题">绘制<span class="行内专业名词">圆角矩形</span></h3>
+    <p class="分区普通文本">
+      圆角矩形相比于矩形多了一个必要条件：<span class="行内专业名词">圆角半径</span>。熟悉<span class="行内专业名词"
+        >CSS</span
+      >规则的都知道，圆角半径有<span class="行内专业名词">4</span>种写法，在<span class="行内专业名词">Canvas API</span
+      >中也是一样的，只不过用的是数组的形式。
+    </p>
+    <pre>
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        //---------------- ↓ 绘制圆角矩形 ↓ ----------------
+        // ctx.roundRect(水平坐标, 垂直坐标, 宽度, 高度, 圆角半径数组);
+        ctx.roundRect(250, 200, 300, 200, [20, 40, 80]);   //[20, 40, 80] -> 左上, 右上和左下, 右下
+        ctx.fillStyle = "darkgreen";   //设置填充颜色
+        ctx.strokeStyle = "gold";   //设置描边颜色
+        ctx.fill();   //填充路径
+        ctx.stroke();   //描边路径
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75;">
+      <canvas id="canvas-round-rect" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <p class="分区普通文本">
+      圆角半径数组的写法和<span class="行内专业名词">CSS</span
+      >是一致的，只不过用的是数组的形式，因此两个值之间要用英文逗号。
+    </p>
+    <script>
+      const canvas_round_rect = document.getElementById("canvas-round-rect");
+      const ctx_round_rect = canvas_round_rect.getContext("2d");
+      const dpr_round_rect = window.devicePixelRatio || 1;
+      canvas_round_rect.width = canvas_round_rect.offsetWidth * dpr_round_rect;
+      canvas_round_rect.height = canvas_round_rect.offsetHeight * dpr_round_rect;
+      ctx_round_rect.scale(dpr_round_rect, dpr_round_rect);
+      ctx_round_rect.roundRect(
+        (canvas_round_rect.offsetWidth - 300) / 2,
+        (canvas_round_rect.offsetHeight - 200) / 2,
+        300,
+        200,
+        [20, 40, 80]
+      );
+      ctx_round_rect.fillStyle = "darkgreen";
+      ctx_round_rect.strokeStyle = "gold";
+      ctx_round_rect.fill();
+      ctx_round_rect.stroke();
     </script>
 
     <h3 class="分区标题 分区3级标题">绘制<span class="行内专业名词">正圆</span></h3>
@@ -617,7 +663,7 @@
         ctx.stroke();   //描边路径
       </code>
     </pre>
-    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75; background: none">
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75;">
       <canvas id="canvas-3" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
     </figure>
     <script>
@@ -658,7 +704,7 @@
         ctx.stroke();   //描边路径
       </code>
     </pre>
-    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75; background: none">
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75;">
       <canvas id="canvas-4" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
     </figure>
     <script>
@@ -707,9 +753,13 @@
         ctx.strokeText("顶基线；左对齐", 400, 75);   //描边文本
       </code>
     </pre>
-    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75; background: none">
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75;">
       <canvas id="canvas-text" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
     </figure>
+    <p class="分区普通文本">
+      <span style="color: gold; margin: 0 4px">●</span
+      >代表文本的坐标，可以很清楚地看出，垂直基线和水平对齐是如何影响文本与坐标的关系的。
+    </p>
     <script>
       const canvas_text = document.getElementById("canvas-text");
       const ctx_text = canvas_text.getContext("2d");
@@ -752,10 +802,6 @@
       ctx_text.fill();
       ctx_text.restore();
     </script>
-    <p class="分区普通文本">
-      如<span class="行内截图序号">· 图10 ·</span>所示，<span style="color: gold; margin: 0 4px">●</span
-      >代表文本的坐标，可以很清楚地看出，垂直基线和水平对齐是如何影响文本与坐标的关系的。
-    </p>
     <section class="提醒">
       <h3 class="提醒标题">提醒</h3>
       <p class="分区普通文本">
@@ -786,7 +832,7 @@
   </article>
 
   <article class="正文分区">
-    <h2 class="分区标题 分区2级标题">其余常用操作</h2>
+    <h2 class="分区标题 分区2级标题">其它常用操作</h2>
 
     <h3 class="分区标题 分区3级标题">清空区域</h3>
     <p class="分区普通文本">
@@ -825,7 +871,7 @@
         ctx.clearRect(圆心.x, 圆心.y, 半径 + 描边宽度, 半径 + 描边宽度);
       </code>
     </pre>
-    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75; background: none">
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75;">
       <canvas id="canvas-clearRect" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
     </figure>
     <script>
@@ -891,7 +937,7 @@
         ctx.stroke();  //描边路径
       </code>
     </pre>
-    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75; background: none">
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75;">
       <canvas id="canvas-closePath" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
     </figure>
     <script>

@@ -1633,7 +1633,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   border-radius: 3em;
   margin-right: 0.5em;
   background-color: #222;
-  border: solid 2px #a0a0a0;
+  outline: solid 1px #666;
   color: silver;
   translate: 0 -0.075em;
 }
