@@ -392,7 +392,7 @@
     </script>
     <section class="提醒">
       <h3 class="提醒标题">提醒</h3>
-      <p class="分区普通文本">要从虚线恢复到实现，直接将虚线数组设置为空即可：</p>
+      <p class="分区普通文本">要从虚线恢复到实线，直接将虚线数组设置为空即可：</p>
       <pre>
         <code class="lang-javascript">
           ctx.setLineDash([]);  //将虚线数组设置为空，恢复实线
@@ -1029,7 +1029,7 @@
         style="width: 100%; height: calc(100% - 42px); background-color: #222"
       ></canvas>
     </figure>
-    <p class="分区普通文本">&#128561;&#128561;&#128561; 麦麦麦麦，你怎么了！！！如山的压力把麦麦压扁了！！！</p>
+    <p class="分区普通文本">&#128561;&#128561;&#128561; 麦麦你怎么了！！！如山的压力把麦麦压扁了！！！</p>
     <script>
       const canvas_draw_image_5_params_vertical = document.getElementById("canvas-draw-image-5-params-vertical");
       const ctx_draw_image_5_params_vertical = canvas_draw_image_5_params_vertical.getContext("2d");
@@ -1058,9 +1058,11 @@
         console.warn("图像加载失败:", 源图像_5_params_vertical.src);
       };
     </script>
+
+    <h3 class="分区标题 分区3级标题">处理宽高比</h3>
     <p class="分区普通文本">
-      因此，想要在<span class="行内专业名词">Canvas</span
-      >中处理好图像，不是一件容易的事。我们必须先算出源图像的宽高比，在绘制的时候使用相同的宽高比，才能保证图像的比例不失调。
+      想要在<span class="行内专业名词">Canvas</span
+      >中处理好图像比例，不是一件容易的事。我们必须先算出源图像的宽高比，在绘制的时候使用相同的宽高比，才能保证图像的比例不失调。
     </p>
     <pre>
       <code class="lang-javascript">

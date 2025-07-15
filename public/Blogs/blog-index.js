@@ -455,7 +455,7 @@ function 初始化章节观察器() {
   const 正文区标题组 = document.querySelectorAll(".分区3级标题");
   const 章节区标题组 = document.querySelectorAll(".锚链接-3级标题");
   const 参数 = {
-    rootMargin: "-100px 0px -66.666667% 0px",
+    rootMargin: "-95px 0px -66.666667% 0px",
     threshold: 1,
   };
   const 正文区标题观察器 = new IntersectionObserver((entries) => {
