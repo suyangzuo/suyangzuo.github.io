@@ -72,4 +72,101 @@
     <h3 class="分区标题 分区3级标题">动画的实现</h3>
   </article>
 
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">动画案例</h2>
+
+    <h3 class="分区标题 分区3级标题">无限循环移动动画</h3>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        // 动画参数 - 基于时间的控制
+        let 上次时间 = 0;
+        const 移动速度 = 100; // 单位：像素/秒，确保在不同刷新率下速度一致
+
+        const 矩形宽度 = 100;
+        const 矩形高度 = 100;
+        let 矩形水平坐标 = 0;   //要用let，因为移动需要改变坐标
+        let 矩形垂直坐标 = (canvas.offsetHeight - 矩形高度) / 2;   //要用let，因为移动需要改变坐标
+        
+        function 绘制矩形() {
+          //绘制逻辑
+        }
+
+        function 绘制动画(当前时间) {
+          // 计算时间差（毫秒转换为秒）
+          const 时间差 = (当前时间 - 上次时间) / 1000;
+          上次时间 = 当前时间;
+          
+          // 基于时间计算移动距离
+          const 移动距离 = 移动速度 * 时间差;
+          矩形水平坐标 += 移动距离;
+          
+          if(矩形水平坐标 > canvas.offsetWidth - 矩形宽度) {
+            矩形水平坐标 = 0;   //如果矩形的右边界到达画布的右边界，则矩形回到起点
+          }
+          
+          绘制矩形();
+          requestAnimationFrame(绘制动画);   //自己调用自己：递归调用
+        }
+
+        requestAnimationFrame(绘制动画);
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-move" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <script>
+      const canvas_move = document.getElementById("canvas-move");
+      const ctx_move = canvas_move.getContext("2d");
+      const dpr_move = window.devicePixelRatio || 1;
+      canvas_move.width = canvas_move.offsetWidth * dpr_move;
+      canvas_move.height = canvas_move.offsetHeight * dpr_move;
+      ctx_move.scale(dpr_move, dpr_move);
+
+      // 动画参数
+      let lastTime = 0;
+      const moveSpeed = 300; // 单位：像素/秒，确保在不同刷新率下速度一致
+      
+      const rect_move_width = 100;
+      const rect_move_height = 100;
+      let rect_move_x = 0;
+      const rect_move_y = (canvas_move.offsetHeight - rect_move_height) / 2;
+      const rect_move_fillStyle = "#385";
+      const rect_move_strokeStyle = "gold";
+      ctx_move.lineWidth = 5;
+
+      function rect_move_draw() {
+        ctx_move.clearRect(0, 0, canvas_move.width, canvas_move.height);
+        ctx_move.fillStyle = rect_move_fillStyle;
+        ctx_move.strokeStyle = rect_move_strokeStyle;
+        ctx_move.fillRect(rect_move_x, rect_move_y, rect_move_width, rect_move_height);
+        ctx_move.strokeRect(rect_move_x, rect_move_y, rect_move_width, rect_move_height);
+      }
+
+      function draw_move(currentTime) {
+        // 计算时间差（毫秒转换为秒）
+        const deltaTime = (currentTime - lastTime) / 1000;
+        lastTime = currentTime;
+        
+        // 基于时间计算移动距离
+        const moveDistance = moveSpeed * deltaTime;
+        rect_move_x += moveDistance;
+        
+        // 边界检测
+        if (rect_move_x > canvas_move.offsetWidth - rect_move_width) {
+          rect_move_x = 0;
+        }
+        
+        rect_move_draw();
+        requestAnimationFrame(draw_move);
+      }
+
+      // 启动动画，传入当前时间
+      requestAnimationFrame(draw_move);
+    </script>
+
+    <h3 class="分区标题 分区3级标题">单次移动动画</h3>
+  </article>
 </div>

@@ -75,7 +75,7 @@
         >globalAlpha</span
       >的范围是：<span class="代码">0 <span style="color: darkgoldenrod">-</span> 1</span>。
     </p>
-    <pre>
+    <pre class="line-numbers">
       <code class="lang-javascript">
         //---------------- 获取Canvas 获取渲染上下文 ----------------
         //---------------- 设置分辨率缩放 ----------------
@@ -188,7 +188,7 @@
       <li class="分区列表项"><span class="行内代码">shadowColor</span>：颜色</li>
       <li class="分区列表项"><span class="行内代码">shadowBlur</span>：模糊</li>
     </ul>
-    <pre style="margin-top: 50px">
+    <pre class="line-numbers" style="margin-top: 50px">
       <code class="lang-javascript">
         //---------------- 获取Canvas 获取渲染上下文 ----------------
         //---------------- 设置分辨率缩放 ----------------
@@ -259,7 +259,7 @@
         >，谁在后面，谁就处于更上方。因此描边的阴影在填充的上方。
       </p>
       <p class="分区普通文本">怎么办呢？最简单直接的想法是：<span class="强调">先描边，后填充</span>，我们来试试：</p>
-      <pre>
+      <pre class="line-numbers">
         <code class="lang-javascript">
           //其它代码不变
           ctx.stroke();  //描边在前
@@ -307,7 +307,7 @@
           >阴影仅仅应用到填充</span
         >。
       </p>
-      <pre>
+      <pre class="line-numbers">
         <code class="lang-javascript">
           //其它代码不变
           ctx.save();   //将"没有阴影"的上下文保存起来
@@ -365,7 +365,7 @@
       虚线用<span class="行内代码">setLineDash()</span
       >设置，其要点是：一段实线、一段透明线，交替绘制，我们只需要给出实线的长度和透明线的长度，两个数字用数组形式表示。
     </p>
-    <pre>
+    <pre class="line-numbers">
       <code class="lang-javascript">
         //其它代码
         const 实线长度 = 20;
@@ -412,7 +412,7 @@
       但是，<span class="行内代码">setLineDash()</span>只支持<span class="行内专业名词">不透明-透明</span
       >的模式，想要两段线都不透明，就要自己想想办法了。比较好的办法是：绘制两条虚线，第2条虚线进行位置偏移，然后合并两条虚线：
     </p>
-    <pre>
+    <pre class="line-numbers">
       <code class="lang-javascript">
         //---------------- 获取Canvas 获取渲染上下文 ----------------
         //---------------- 设置分辨率缩放 ----------------
@@ -574,7 +574,7 @@
     </ol>
 
     <h3 class="分区标题 分区3级标题">绘制线性渐变</h3>
-    <pre>
+    <pre class="line-numbers">
       <code class="lang-javascript">
         //---------------- 获取Canvas 获取渲染上下文 ----------------
         //---------------- 设置分辨率缩放 ----------------
@@ -662,7 +662,7 @@
     </section>
 
     <h3 class="分区标题 分区3级标题">绘制径向渐变</h3>
-    <pre>
+    <pre class="line-numbers">
       <code class="lang-javascript">
         //---------------- 获取Canvas 获取渲染上下文 ----------------
         //---------------- 设置分辨率缩放 ----------------
@@ -768,7 +768,7 @@
     </section>
 
     <h3 class="分区标题 分区3级标题">绘制角度渐变</h3>
-    <pre>
+    <pre class="line-numbers">
       <code class="lang-javascript">
         //---------------- 获取Canvas 获取渲染上下文 ----------------
         //---------------- 设置分辨率缩放 ----------------
@@ -781,8 +781,15 @@
 
         //创建角度渐变对象
         const 角度渐变起始弧度 = Math.PI;   //从默认起始角度顺时针旋转180°
-        const 角度渐变圆心 = { x: canvas.offsetWidth / 2, y: canvas.offsetHeight / 2 };
-        const 角度渐变对象 = ctx.createConicGradient(角度渐变起始弧度, 角度渐变圆心.x, 角度渐变圆心.y);
+        const 角度渐变圆心 = { 
+          x: canvas.offsetWidth / 2, 
+          y: canvas.offsetHeight / 2 
+        };
+        const 角度渐变对象 = ctx.createConicGradient(
+          角度渐变起始弧度, 
+          角度渐变圆心.x, 
+          角度渐变圆心.y
+        );
 
         //添加色标
         const 色标1位置 = 0;     //代表 0% 的位置
@@ -886,7 +893,7 @@
       </li>
       <li class="分区列表项">
         <span class="行内专业名词">9</span>个参数：
-        <pre style="margin-top: 30px">
+        <pre class="line-numbers" style="margin-top: 30px">
           <code class="lang-javascript">
             ctx.drawImage(
               源图像, 
@@ -931,7 +938,7 @@
       </pre>
     </section>
     <p class="分区普通文本">为了更好地展示效果，我们选一张尺寸非常大的图像，将其绘制到画布上。</p>
-    <pre>
+    <pre class="line-numbers">
       <code class="lang-javascript">
         //---------------- 获取Canvas 获取渲染上下文 ----------------
         //---------------- 设置分辨率缩放 ----------------
@@ -972,7 +979,7 @@
       };
     </script>
     <p class="分区普通文本">现在，让我们用<span class="行内专业名词">5</span>参数方式指定图形绘制尺寸：</p>
-    <pre>
+    <pre class="line-numbers">
       <code class="lang-javascript">
         //---------------- 获取Canvas 获取渲染上下文 ----------------
         //---------------- 设置分辨率缩放 ----------------
@@ -1064,7 +1071,7 @@
       想要在<span class="行内专业名词">Canvas</span
       >中处理好图像比例，不是一件容易的事。我们必须先算出源图像的宽高比，在绘制的时候使用相同的宽高比，才能保证图像的比例不失调。
     </p>
-    <pre>
+    <pre class="line-numbers">
       <code class="lang-javascript">
         //---------------- 获取Canvas 获取渲染上下文 ----------------
         //---------------- 设置分辨率缩放 ----------------
@@ -1080,7 +1087,8 @@
           const 源图像宽高比 = 源图像宽度 / 源图像高度;
 
           const 画布_宽高中更小值 = 
-            canvas.offsetWidth &lt; canvas.offsetHeight ? canvas.offsetWidth : canvas.offsetHeight;
+            canvas.offsetWidth &lt; canvas.offsetHeight ? 
+            canvas.offsetWidth : canvas.offsetHeight;
 
           const 画布坐标 = {
             x: (canvas.offsetWidth - 画布_宽高中更小值) / 2,   //图像在画布中水平居中
