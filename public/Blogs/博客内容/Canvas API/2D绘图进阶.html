@@ -90,7 +90,7 @@
         //绘制第3个矩形
       </code>
     </pre>
-    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75; background: none">
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
       <canvas id="canvas-global-alpha" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
     </figure>
     <script>
@@ -202,8 +202,7 @@
         ctx.fill();    //填充
         ctx.stroke();  //描边
 
-        //绘制文本代码：省略
-        ctx.shadowColor = "black";  //阴影颜色
+        //为文本设置阴影属性
         ctx.shadowOffsetX = 10;     //水平偏移量
         ctx.shadowOffsetY = 10;     //垂直偏移量
         ctx.shadowBlur = 10;        //模糊
@@ -361,7 +360,7 @@
   <article class="正文分区">
     <h2 class="分区标题 分区2级标题">绘制虚线</h2>
 
-    <h3 class="分区标题 分区3级标题">设置虚线</h3>
+    <h3 class="分区标题 分区3级标题">普通虚线</h3>
     <p class="分区普通文本">
       虚线用<span class="行内代码">setLineDash()</span
       >设置，其要点是：一段实线、一段透明线，交替绘制，我们只需要给出实线的长度和透明线的长度，两个数字用数组形式表示。
@@ -400,6 +399,157 @@
         </code>
       </pre>
     </section>
+
+    <h3 class="分区标题 分区3级标题">双色虚线</h3>
+    <p class="分区普通文本">
+      假设我们绘制这样一段虚线：<span class="行内专业名词">白色-透明</span
+      >，这个虚线在浅色背景下就会看不清；如果改成：<span class="行内专业名词">黑色-透明</span
+      >，在深色背景下又会看不清。怎么样才能在浅色深色背景下都能看得清楚呢？答案很简单：<span class="行内专业名词"
+        >白色-黑色</span
+      >。
+    </p>
+    <p class="分区普通文本">
+      但是，<span class="行内代码">setLineDash()</span>只支持<span class="行内专业名词">不透明-透明</span
+      >的模式，想要两段线都不透明，就要自己想想办法了。比较好的办法是：绘制两条虚线，第2条虚线进行位置偏移，然后合并两条虚线：
+    </p>
+    <pre>
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        //---------------- 绘制矩形 ----------------
+        
+        const 虚线长度 = 20;
+        ctx.setLineDash([虚线长度, 虚线长度]);
+        ctx.strokeStyle = "white";
+        ctx.stroke();   //先绘制白线
+        //不要用 beginPath()，确保白线和黑线绘制在同一个路径上
+        ctx.lineDashOffset = 虚线长度;   //虚线偏移
+        ctx.strokeStyle = "black";
+        ctx.stroke();   //再绘制黑线
+
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-line-dash-double" style="width: 100%; height: calc(100% - 42px)"></canvas>
+    </figure>
+    <script>
+      const canvas_line_dash_double = document.getElementById("canvas-line-dash-double");
+      const ctx_line_dash_double = canvas_line_dash_double.getContext("2d");
+      const dpr_line_dash_double = window.devicePixelRatio || 1;
+      canvas_line_dash_double.width = canvas_line_dash_double.offsetWidth * dpr_line_dash_double;
+      canvas_line_dash_double.height = canvas_line_dash_double.offsetHeight * dpr_line_dash_double;
+      ctx_line_dash_double.scale(dpr_line_dash_double, dpr_line_dash_double);
+
+      // 动画参数
+      let startTime = null;
+      const totalDuration = 5.55; // 总动画时长：0.5 + 0.5 + 0.5 + 0.5 + 0.5 + 0.5 + 2.0 + 0.05 = 5.55秒
+
+      // 矩形参数
+      const dashRectWidth = 250;
+      const dashRectHeight = 250;
+      const centerY = canvas_line_dash_double.offsetHeight / 2 - dashRectHeight / 2;
+      const whiteRectX = canvas_line_dash_double.offsetWidth / 4 - dashRectWidth / 2;
+      const blackRectX = (canvas_line_dash_double.offsetWidth * 3) / 4 - dashRectWidth / 2;
+      const overlapX = (whiteRectX + blackRectX) / 2;
+
+      function animate(currentTime) {
+        if (!startTime) startTime = currentTime;
+        const elapsed = (currentTime - startTime) / 1000; // 转换为秒
+        const cycleTime = elapsed % totalDuration; // 循环时间
+
+        // 重置画布
+        ctx_line_dash_double.fillStyle = "#678";
+        ctx_line_dash_double.fillRect(0, 0, canvas_line_dash_double.offsetWidth, canvas_line_dash_double.offsetHeight);
+
+        // 计算各阶段的进度
+        let whiteAlpha = 0;
+        let blackAlpha = 0;
+        let lineDashOffset = 0;
+        let whiteX = whiteRectX;
+        let blackX = blackRectX;
+
+        if (cycleTime < 0.5) {
+          // 阶段1: 白色矩形淡入 (0-0.5s)
+          whiteAlpha = cycleTime / 0.5;
+        } else if (cycleTime < 1.0) {
+          // 阶段2: 白色矩形保持显示 (0.5-1.0s)
+          whiteAlpha = 1;
+        } else if (cycleTime < 1.5) {
+          // 阶段3: 黑色矩形淡入 (1.0-1.5s)
+          whiteAlpha = 1;
+          blackAlpha = (cycleTime - 1.0) / 0.5;
+        } else if (cycleTime < 2.0) {
+          // 阶段4: 黑色矩形保持显示 (1.5-2.0s)
+          whiteAlpha = 1;
+          blackAlpha = 1;
+        } else if (cycleTime < 2.5) {
+          // 阶段5: lineDashOffset动画 (2.0-2.5s)
+          whiteAlpha = 1;
+          blackAlpha = 1;
+          lineDashOffset = ((cycleTime - 2.0) / 0.5) * 20;
+        } else if (cycleTime < 3.0) {
+          // 阶段6: 等待阶段 (2.5-3.0s) - lineDashOffset完成后等待0.5s
+          whiteAlpha = 1;
+          blackAlpha = 1;
+          lineDashOffset = 20;
+        } else if (cycleTime < 3.5) {
+          // 阶段7: 矩形重合动画 (3.0-3.5s)
+          whiteAlpha = 1;
+          blackAlpha = 1;
+          lineDashOffset = 20;
+          const moveProgress = (cycleTime - 3.0) / 0.5;
+          whiteX = whiteRectX + (overlapX - whiteRectX) * moveProgress;
+          blackX = blackRectX + (overlapX - blackRectX) * moveProgress;
+        } else if (cycleTime < 5.5) {
+          // 阶段8: 重合后等待阶段 (3.5-5.5s) - 等待2秒
+          whiteAlpha = 1;
+          blackAlpha = 1;
+          lineDashOffset = 20;
+          whiteX = overlapX;
+          blackX = overlapX;
+        } else {
+          // 阶段9: 最终等待阶段 (5.5-5.55s)
+          whiteAlpha = 1;
+          blackAlpha = 1;
+          lineDashOffset = 20;
+          whiteX = overlapX;
+          blackX = overlapX;
+        }
+
+        // 绘制白色矩形
+        if (whiteAlpha > 0) {
+          ctx_line_dash_double.save();
+          ctx_line_dash_double.globalAlpha = whiteAlpha;
+          ctx_line_dash_double.strokeStyle = "white";
+          ctx_line_dash_double.lineWidth = 2;
+          ctx_line_dash_double.setLineDash([20, 20]);
+          ctx_line_dash_double.beginPath();
+          ctx_line_dash_double.rect(whiteX, centerY, dashRectWidth, dashRectHeight);
+          ctx_line_dash_double.stroke();
+          ctx_line_dash_double.restore();
+        }
+
+        // 绘制黑色矩形
+        if (blackAlpha > 0) {
+          ctx_line_dash_double.save();
+          ctx_line_dash_double.globalAlpha = blackAlpha;
+          ctx_line_dash_double.strokeStyle = "black";
+          ctx_line_dash_double.lineWidth = 2;
+          ctx_line_dash_double.setLineDash([20, 20]);
+          ctx_line_dash_double.lineDashOffset = lineDashOffset;
+          ctx_line_dash_double.beginPath();
+          ctx_line_dash_double.rect(blackX, centerY, dashRectWidth, dashRectHeight);
+          ctx_line_dash_double.stroke();
+          ctx_line_dash_double.restore();
+        }
+
+        requestAnimationFrame(animate);
+      }
+
+      // 开始动画
+      requestAnimationFrame(animate);
+    </script>
   </article>
 
   <article class="正文分区">
@@ -705,5 +855,316 @@
         >，但却是水平向右的，因此顺时针旋转<span class="行内代码">180°</span>后，起始角度变成水平向左。
       </p>
     </section>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">绘制图像</h2>
+
+    <h3 class="分区标题 分区3级标题">函数语法</h3>
+    <p class="分区普通文本">绘制图像用<span class="行内代码">ctx.drawImage()</span>函数，它有3个重载：</p>
+    <ol class="分区列表 有序列表">
+      <li class="分区列表项">
+        <span class="行内专业名词">3</span>个参数：
+        <pre style="margin-top: 30px">
+          <code class="lang-javascript">
+            ctx.drawImage(源图像, 画布坐标.x, 画布坐标.y);
+          </code>
+        </pre>
+        <p class="分区普通文本">
+          所谓的<span class="行内专业名词">画布</span>就是指<span class="行内代码">Canvas</span
+          >元素，但是这么做会将源图像尺寸原封不动地搬到画布上，如果源图像尺寸过大，就会溢出画布。因此这个重载方式很少使用。
+        </p>
+      </li>
+      <li class="分区列表项">
+        <span class="行内专业名词">5</span>个参数：
+        <pre style="margin-top: 30px">
+          <code class="lang-javascript">
+            ctx.drawImage(源图像, 画布坐标.x, 画布坐标.y, 画布图像宽度, 画布图像高度);
+          </code>
+        </pre>
+        <p class="分区普通文本">这个重载可以指定图像在画布上的尺寸，是最常用的一种重载。</p>
+      </li>
+      <li class="分区列表项">
+        <span class="行内专业名词">9</span>个参数：
+        <pre style="margin-top: 30px">
+          <code class="lang-javascript">
+            ctx.drawImage(
+              源图像, 
+              源图像裁剪坐标.x,
+              源图像裁剪坐标.y,
+              源图像裁剪宽度,
+              源图像裁剪高度,
+              画布坐标.x, 
+              画布坐标.y, 
+              画布图像宽度, 
+              画布图像高度
+            );
+          </code>
+        </pre>
+        <p class="分区普通文本">说简单一点就是：你可以只选取源图像的一部分进行绘制。</p>
+      </li>
+    </ol>
+
+    <h3 class="分区标题 分区3级标题">用法展示</h3>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        图像加载是异步的，意味着一边是图像正在加载中，而另一边，后续的程序不会等待图形的加载。这很有可能导致图像还没有加载完成，<span
+          class="行内代码"
+          >drawImage()</span
+        >就已经开始运行了，导致绘图失败。
+      </p>
+      <p class="分区普通文本">
+        举个例子，假设图像加载需要<span class="行内专业名词">0.01s</span>，可是后续的<span class="行内代码"
+          >drawImage()</span
+        >只需要<span class="行内专业名词">0.000001s</span>，那么，<span class="行内代码">drawImage()</span
+        >就会在图像加载完成之前开始运行，导致绘图失败。
+      </p>
+      <p class="分区普通文本">
+        因此，必须等待图像加载完成，才能运行<span class="行内代码">drawImage()</span
+        >以及任何需要读取图像尺寸的代码。其代码为：
+      </p>
+      <pre>
+        <code class="lang-javascript">
+          图像.onload = 函数(绘图代码, 读取尺寸代码);
+        </code>
+      </pre>
+    </section>
+    <p class="分区普通文本">为了更好地展示效果，我们选一张尺寸非常大的图像，将其绘制到画布上。</p>
+    <pre>
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        //---------------- 绘制图像 ----------------
+        const 源图像 = new Image();   //创建图像对象
+        源图像.src = "/Images/Background-Images/轮播图-09.jpg";   //设置图像源
+        const 画布坐标 = { x: 0, y: 0 };   //设置图像在画布上的坐标
+
+        //重要！！！！！不能直接运行 drawImage()，必须等待图像加载完成！！！！！
+        源图像.onload = function () {
+          ctx.drawImage(源图像, 画布坐标.x, 画布坐标.y);
+        }
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-draw-image" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <p class="分区普通文本">
+      图像从画布左上角开始绘制，由于图像尺寸过大，绝大部分内容都溢出了<span class="行内专业名词">Canvas</span>。
+    </p>
+    <script>
+      const canvas_draw_image = document.getElementById("canvas-draw-image");
+      const ctx_draw_image = canvas_draw_image.getContext("2d");
+      const dpr_draw_image = window.devicePixelRatio || 1;
+      canvas_draw_image.width = canvas_draw_image.offsetWidth * dpr_draw_image;
+      canvas_draw_image.height = canvas_draw_image.offsetHeight * dpr_draw_image;
+      ctx_draw_image.scale(dpr_draw_image, dpr_draw_image);
+
+      const 源图像 = new Image();
+      源图像.src = "/Images/Background-Images/轮播图-09.jpg";
+      const 画布坐标 = { x: 0, y: 0 };
+      源图像.onload = function () {
+        ctx_draw_image.drawImage(源图像, 画布坐标.x, 画布坐标.y);
+      };
+      源图像.onerror = function () {
+        console.warn("图像加载失败:", 源图像.src);
+      };
+    </script>
+    <p class="分区普通文本">现在，让我们用<span class="行内专业名词">5</span>参数方式指定图形绘制尺寸：</p>
+    <pre>
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        //---------------- 绘制图像 ----------------
+        const 源图像 = new Image();   //创建图像对象
+        源图像.src = "/Images/Background-Images/轮播图-09.jpg";   //设置图像源
+        const 画布坐标 = { x: 0, y: 0 };   //设置图像在画布上的坐标
+
+        源图像.onload = function () {
+          ctx.drawImage(源图像, 画布坐标.x, 画布坐标.y, 画布宽度, 画布高度);  //指定宽高
+        }
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas
+        id="canvas-draw-image-5-params"
+        style="width: 100%; height: calc(100% - 42px); background-color: #222"
+      ></canvas>
+    </figure>
+    <p class="分区普通文本">
+      绘制尺寸指定为正好和画布尺寸相同。看起来很完美是不是？这只是巧合！！！因为源图像和画布的宽高比正好差不多，所以图像没有出现比例失调的情况。
+    </p>
+    <script>
+      const canvas_draw_image_5_params = document.getElementById("canvas-draw-image-5-params");
+      const ctx_draw_image_5_params = canvas_draw_image_5_params.getContext("2d");
+      const dpr_draw_image_5_params = window.devicePixelRatio || 1;
+      canvas_draw_image_5_params.width = canvas_draw_image_5_params.offsetWidth * dpr_draw_image_5_params;
+      canvas_draw_image_5_params.height = canvas_draw_image_5_params.offsetHeight * dpr_draw_image_5_params;
+      ctx_draw_image_5_params.scale(dpr_draw_image_5_params, dpr_draw_image_5_params);
+
+      const 源图像_5_params = new Image();
+      源图像_5_params.src = "/Images/Background-Images/轮播图-09.jpg";
+      const 画布坐标_5_params = { x: 0, y: 0 };
+      const 画布图像宽度_5_params = canvas_draw_image_5_params.offsetWidth;
+      const 画布图像高度_5_params = canvas_draw_image_5_params.offsetHeight;
+      源图像_5_params.onload = function () {
+        ctx_draw_image_5_params.drawImage(
+          源图像_5_params,
+          画布坐标_5_params.x,
+          画布坐标_5_params.y,
+          画布图像宽度_5_params,
+          画布图像高度_5_params
+        );
+      };
+      源图像_5_params.onerror = function () {
+        console.warn("图像加载失败:", 源图像_5_params.src);
+      };
+    </script>
+    <p class="分区普通文本">让我们换一张正方形的图像试一试就知道了：</p>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas
+        id="canvas-draw-image-5-params-vertical"
+        style="width: 100%; height: calc(100% - 42px); background-color: #222"
+      ></canvas>
+    </figure>
+    <p class="分区普通文本">&#128561;&#128561;&#128561; 麦麦麦麦，你怎么了！！！如山的压力把麦麦压扁了！！！</p>
+    <script>
+      const canvas_draw_image_5_params_vertical = document.getElementById("canvas-draw-image-5-params-vertical");
+      const ctx_draw_image_5_params_vertical = canvas_draw_image_5_params_vertical.getContext("2d");
+      const dpr_draw_image_5_params_vertical = window.devicePixelRatio || 1;
+      canvas_draw_image_5_params_vertical.width =
+        canvas_draw_image_5_params_vertical.offsetWidth * dpr_draw_image_5_params_vertical;
+      canvas_draw_image_5_params_vertical.height =
+        canvas_draw_image_5_params_vertical.offsetHeight * dpr_draw_image_5_params_vertical;
+      ctx_draw_image_5_params_vertical.scale(dpr_draw_image_5_params_vertical, dpr_draw_image_5_params_vertical);
+
+      const 源图像_5_params_vertical = new Image();
+      源图像_5_params_vertical.src = "/Interactive-Hub/Object-Fit/03.jpg";
+      const 画布坐标_5_params_vertical = { x: 0, y: 0 };
+      const 画布图像宽度_5_params_vertical = canvas_draw_image_5_params_vertical.offsetWidth;
+      const 画布图像高度_5_params_vertical = canvas_draw_image_5_params_vertical.offsetHeight;
+      源图像_5_params_vertical.onload = function () {
+        ctx_draw_image_5_params_vertical.drawImage(
+          源图像_5_params_vertical,
+          画布坐标_5_params_vertical.x,
+          画布坐标_5_params_vertical.y,
+          画布图像宽度_5_params_vertical,
+          画布图像高度_5_params_vertical
+        );
+      };
+      源图像_5_params_vertical.onerror = function () {
+        console.warn("图像加载失败:", 源图像_5_params_vertical.src);
+      };
+    </script>
+    <p class="分区普通文本">
+      因此，想要在<span class="行内专业名词">Canvas</span
+      >中处理好图像，不是一件容易的事。我们必须先算出源图像的宽高比，在绘制的时候使用相同的宽高比，才能保证图像的比例不失调。
+    </p>
+    <pre>
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        //---------------- 绘制图像 ----------------
+        const 源图像 = new Image();   //创建图像对象
+        源图像.src = "/Images/Background-Images/轮播图-09.jpg";   //设置图像源
+
+        源图像.onload = function () {
+          //这些代码都要放在 onload 内部，否则图像还没有加载完成，得到的宽度高度都是 0
+          const 源图像宽度 = 源图像.naturalWidth;
+          const 源图像高度 = 源图像.naturalHeight;
+          const 源图像宽高比 = 源图像宽度 / 源图像高度;
+
+          const 画布_宽高中更小值 = 
+            canvas.offsetWidth &lt; canvas.offsetHeight ? canvas.offsetWidth : canvas.offsetHeight;
+
+          const 画布坐标 = {
+            x: (canvas.offsetWidth - 画布_宽高中更小值) / 2,   //图像在画布中水平居中
+            y: 0
+          };  
+
+          if(画布_宽高中更小值 === canvas.offsetWidth) {
+            ctx.drawImage(
+              源图像, 
+              画布坐标.x, 
+              画布坐标.y, 
+              画布_宽高中更小值,   //绘制宽度
+              画布_宽高中更小值 / 源图像宽高比   //绘制高度
+            );
+          } else {
+            ctx.drawImage(
+              源图像, 
+              画布坐标.x, 
+              画布坐标.y, 
+              画布_宽高中更小值 * 源图像宽高比,   //绘制宽度
+              画布_宽高中更小值   //绘制高度
+            );
+          }
+        }
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas
+        id="canvas-draw-image-5-params-vertical-fixed"
+        style="width: 100%; height: calc(100% - 42px); background-color: #222"
+      ></canvas>
+    </figure>
+    <p class="分区普通文本">&#129401;&#129401;&#129401; 麦麦你终于正常了！！！</p>
+    <script>
+      const canvas_draw_image_5_params_vertical_fixed = document.getElementById(
+        "canvas-draw-image-5-params-vertical-fixed"
+      );
+      const ctx_draw_image_5_params_vertical_fixed = canvas_draw_image_5_params_vertical_fixed.getContext("2d");
+      const dpr_draw_image_5_params_vertical_fixed = window.devicePixelRatio || 1;
+      canvas_draw_image_5_params_vertical_fixed.width =
+        canvas_draw_image_5_params_vertical_fixed.offsetWidth * dpr_draw_image_5_params_vertical_fixed;
+      canvas_draw_image_5_params_vertical_fixed.height =
+        canvas_draw_image_5_params_vertical_fixed.offsetHeight * dpr_draw_image_5_params_vertical_fixed;
+      ctx_draw_image_5_params_vertical_fixed.scale(
+        dpr_draw_image_5_params_vertical_fixed,
+        dpr_draw_image_5_params_vertical_fixed
+      );
+
+      const 源图像_5_params_vertical_fixed = new Image();
+      源图像_5_params_vertical_fixed.src = "/Interactive-Hub/Object-Fit/03.jpg";
+      源图像_5_params_vertical_fixed.onload = function () {
+        const 源图像实际宽度 = 源图像_5_params_vertical_fixed.naturalWidth;
+        const 源图像实际高度 = 源图像_5_params_vertical_fixed.naturalHeight;
+        const 源图像宽高比 = 源图像实际宽度 / 源图像实际高度;
+        const 画布宽高比 =
+          canvas_draw_image_5_params_vertical_fixed.offsetWidth /
+          canvas_draw_image_5_params_vertical_fixed.offsetHeight;
+        let 画布图像宽度_5_params_vertical_fixed = 0;
+        let 画布图像高度_5_params_vertical_fixed = 0;
+        const 画布图像_更小尺寸_5_params_vertical_fixed =
+          canvas_draw_image_5_params_vertical_fixed.offsetWidth < canvas_draw_image_5_params_vertical_fixed.offsetHeight
+            ? canvas_draw_image_5_params_vertical_fixed.offsetWidth
+            : canvas_draw_image_5_params_vertical_fixed.offsetHeight;
+        if (画布图像_更小尺寸_5_params_vertical_fixed === canvas_draw_image_5_params_vertical_fixed.offsetWidth) {
+          画布图像宽度_5_params_vertical_fixed = 画布图像_更小尺寸_5_params_vertical_fixed;
+          画布图像高度_5_params_vertical_fixed = 画布图像_更小尺寸_5_params_vertical_fixed / 源图像宽高比;
+        } else {
+          画布图像高度_5_params_vertical_fixed = 画布图像_更小尺寸_5_params_vertical_fixed;
+          画布图像宽度_5_params_vertical_fixed = 画布图像高度_5_params_vertical_fixed * 源图像宽高比;
+        }
+        const 画布坐标_5_params_vertical_fixed = {
+          x: (canvas_draw_image_5_params_vertical_fixed.offsetWidth - 画布图像_更小尺寸_5_params_vertical_fixed) / 2,
+          y: 0,
+        };
+
+        ctx_draw_image_5_params_vertical_fixed.drawImage(
+          源图像_5_params_vertical_fixed,
+          画布坐标_5_params_vertical_fixed.x,
+          画布坐标_5_params_vertical_fixed.y,
+          画布图像宽度_5_params_vertical_fixed,
+          画布图像高度_5_params_vertical_fixed
+        );
+      };
+      源图像_5_params_vertical_fixed.onerror = function () {
+        console.warn("图像加载失败:", 源图像_5_params_vertical_fixed.src);
+      };
+    </script>
   </article>
 </div>
