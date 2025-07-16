@@ -169,7 +169,7 @@ html {
   text-align: center;
   letter-spacing: 2px;
   text-transform: uppercase;
-  margin-top: 25px;
+  margin: 25px 0;
   animation: subtitleFade 1s ease-out 0.8s forwards;
   opacity: 0;
   transform: translateY(20px);
@@ -303,7 +303,6 @@ html {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  gap: min(25px, 1.25vh);
   padding: 40px 0;
 }
 
