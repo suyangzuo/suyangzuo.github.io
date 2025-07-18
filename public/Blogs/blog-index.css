@@ -1718,6 +1718,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   color: #ccc;
   font-size: 15px;
   padding: 10px 0;
+  font-family: "JetBrains Mono", "Consolas", sans-serif;
 }
 
 .行内截图序号 {

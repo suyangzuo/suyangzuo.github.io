@@ -72,19 +72,26 @@ let 前一专题 = null;
 
 设置侧边栏();
 设置内容()
-  .then(() => 生成章节区())
-  .then(() => 生成章节())
-  .then(() => 初始化章节观察器())
-  .then(() => 更新网址(技术栈名称, 专题名称));
+  .then((发生了回退) => {
+    生成章节区();
+    生成章节();
+    初始化章节观察器();
+    更新网址(技术栈名称, 专题名称);
+  });
 
 window.addEventListener("popstate", () => {
   从网址获取技术栈和专题();
   设置侧边栏();
   设置内容()
-    .then(() => 生成章节区())
-    .then(() => 生成章节())
-    .then(() => 初始化章节观察器())
-    .then(() => 当前专题已被收藏时刷新收藏按钮样式());
+    .then((发生了回退) => {
+      生成章节区();
+      生成章节();
+      初始化章节观察器();
+      当前专题已被收藏时刷新收藏按钮样式();
+      if (发生了回退) {
+        更新网址(技术栈名称, 专题名称);
+      }
+    });
 });
 
 function 更新网址(技术栈, 专题) {
@@ -114,10 +121,12 @@ function 从网址获取技术栈和专题() {
   技术栈.addEventListener("click", 设置侧边栏);
   技术栈.addEventListener("click", () => {
     设置内容()
-      .then(() => 生成章节区())
-      .then(() => 生成章节())
-      .then(() => 初始化章节观察器())
-      .then(() => 更新网址(技术栈名称, 专题名称));
+      .then((发生了回退) => {
+        生成章节区();
+        生成章节();
+        初始化章节观察器();
+        更新网址(技术栈名称, 专题名称);
+      });
   });
   技术栈.addEventListener("click", () => {
     if (技术栈对话框.open) {
@@ -268,13 +277,32 @@ function 设置侧边栏(event) {
 
 async function 设置内容() {
   专题文件路径 = `./博客内容/${技术栈名称}/${专题名称}.html`;
+  let 需要更新侧边栏 = false;
+  let 发生了回退 = false;
 
-  await fetch(专题文件路径)
-    .then((response) => response.text())
-    .then((content) => {
+  try {
+    const response = await fetch(专题文件路径);
+    if (!response.ok) {
+      // 如果文件不存在，回退到首页
+      专题文件路径 = `./博客内容/${技术栈名称}/首页.html`;
+      专题名称 = "首页";
+      sessionStorage.setItem("专题", 专题名称);
+      需要更新侧边栏 = true;
+      发生了回退 = true;
+      
+      const 首页响应 = await fetch(专题文件路径);
+      if (!首页响应.ok) {
+        throw new Error(`无法加载专题文件: ${专题文件路径}`);
+      }
+      const content = await 首页响应.text();
       专题内容区.innerHTML = content;
+    } else {
+      const content = await response.text();
+      专题内容区.innerHTML = content;
+    }
+    
       const parser = new DOMParser();
-      const document = parser.parseFromString(content, "text/html");
+    const document = parser.parseFromString(专题内容区.innerHTML, "text/html");
       const 脚本组 = document.body.querySelectorAll("script");
       脚本组?.forEach((脚本) => {
         脚本.type = "text/javascript";
@@ -282,7 +310,14 @@ async function 设置内容() {
         //Function(`'use strict'; return ${脚本代码}`)();
         new Function(脚本代码)();
       });
-    });
+  } catch (error) {
+    console.error("加载专题内容时出错:", error);
+    // 如果连首页都无法加载，显示错误信息
+    专题内容区.innerHTML = `<div style="padding: 20px; text-align: center; color: #ff6b6b;">
+      <h2>页面加载失败</h2>
+      <p>无法加载专题内容，请检查网络连接或联系管理员。</p>
+    </div>`;
+  }
 
   const 选项卡标题 = document.querySelector("title");
   选项卡标题.textContent = `${技术栈名称}-${专题名称}`;
@@ -294,6 +329,13 @@ async function 设置内容() {
   特殊元素样式补充();
   刷新第三方库();
   插入转载提醒内容();
+  
+  // 如果回退到了首页，需要更新侧边栏选中状态
+  if (需要更新侧边栏) {
+    设置侧边栏();
+  }
+  
+  return 发生了回退;
 }
 
 function 点选技术栈(event) {
@@ -338,10 +380,12 @@ function 修改专题样式(event) {
   sessionStorage.setItem("专题索引记录", JSON.stringify(专题索引记录));
 
   设置内容()
-    .then(() => 生成章节区())
-    .then(() => 生成章节())
-    .then(() => 初始化章节观察器())
-    .then(() => 更新网址(技术栈名称, 专题名称));
+    .then((发生了回退) => {
+      生成章节区();
+      生成章节();
+      初始化章节观察器();
+      更新网址(技术栈名称, 专题名称);
+    });
 }
 
 技术栈选择器.addEventListener("click", 显示技术栈内容);
