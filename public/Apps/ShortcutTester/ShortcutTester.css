@@ -873,18 +873,305 @@ input[type="number"]::-webkit-inner-spin-button {
   background-color: #def1;
   outline: solid 1px #fff4;
   border-radius: 10px;
-  min-width: 800px;
-  min-height: 500px;
-  padding: 20px;
+  min-width: 900px;
+  min-height: 600px;
+  max-width: 95vw;
+  max-height: 90vh;
+  padding: 25px;
   display: flex;
   flex-direction: column;
   opacity: 0;
   pointer-events: none;
   transition: 500ms;
+  overflow: hidden;
 }
 
 .详情层.显示详情 {
   opacity: 1;
   pointer-events: auto;
   translate: -50% -50%;
+}
+
+/* 测试信息区域样式 */
+.测试信息区 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: linear-gradient(135deg, #2a3a4a 0%, #1a2a3a 100%);
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #fff2;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.测试信息区 .值 {
+  color: lightskyblue;
+}
+
+.信息项 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.信息标签 {
+  color: #9ab;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.信息值 {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* 数据表格区域样式 */
+.数据表格区 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.表格标题 {
+  color: #ffd700;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.数据表格 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #1a2a3a 0%, #2a3a4a 100%);
+  border-radius: 8px;
+  border: 1px solid #fff2;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+.表格内容区 {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #4a5a6a #2a3a4a;
+}
+
+.表格内容区::-webkit-scrollbar {
+  width: 8px;
+}
+
+.表格内容区::-webkit-scrollbar-track {
+  background: #2a3a4a;
+}
+
+.表格内容区::-webkit-scrollbar-thumb {
+  background: #4a5a6a;
+  border-radius: 4px;
+}
+
+.表格内容区::-webkit-scrollbar-thumb:hover {
+  background: #5a6a7a;
+}
+
+/* 表格行样式 */
+.表格行 {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.5fr 1.5fr 1.5fr 1.5fr;
+  gap: 1px;
+  min-height: 50px;
+  align-items: center;
+  transition: all 0.125s ease;
+}
+
+.表头行 {
+  background: linear-gradient(135deg, #3a4a5a 0%, #2a3a4a 100%);
+  border-bottom: 2px solid #ffd700a0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.数据行 {
+  background-color: #1a2a3a;
+  border-bottom: 1px solid #fff1;
+}
+
+.数据行:hover {
+  box-shadow: inset 0 0 0 2px #fff2;
+}
+
+.数据行:nth-child(even) {
+  background-color: #0a1a2a;
+}
+
+/* 表格列样式 */
+.表格列 {
+  padding: 12px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  text-align: center;
+  font-size: 14px;
+  position: relative;
+  width: 150px;
+}
+
+.表头列 {
+  color: #ffd700;
+  font-weight: 600;
+  font-size: 15px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.5px;
+}
+
+.功能列 {
+  color: lightblue;
+  font-weight: 600;
+  font-size: 15px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  text-align: left;
+  border-right: 1px solid #fff2;
+}
+
+.数据列 {
+  color: #e0e0e0;
+  font-family: "JetBrains Mono", Consolas, sans-serif;
+  font-size: 14px;
+}
+
+/* 数据值样式 */
+.总次数 {
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  display: block;
+}
+
+.正确次数 {
+  color: #4caf50;
+  font-weight: 500;
+  margin-right: 8px;
+}
+
+.正确符号 {
+  color: #4caf50;
+  font-weight: 600;
+  margin-right: 2px;
+}
+
+.正确数字 {
+  color: #5bf899;
+  font-weight: 500;
+}
+
+.错误次数 {
+  color: #f44336;
+  font-weight: 500;
+}
+
+.错误符号 {
+  color: #f44336;
+  font-weight: 600;
+  margin-right: 2px;
+}
+
+.错误数字 {
+  color: #ff5f5f;
+  font-weight: 500;
+}
+
+.时间值 {
+  color: #81c784;
+  font-weight: 600;
+  margin-right: 2px;
+}
+
+.时间值.最快 {
+  color: #4caf50;
+  font-weight: 700;
+}
+
+.时间值.最慢 {
+  color: #ff9800;
+  font-weight: 700;
+}
+
+.时间单位 {
+  color: #9ab;
+  font-size: 12px;
+  margin-right: 4px;
+}
+
+.无数据 {
+  color: #666;
+  font-style: italic;
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+  .详情层 {
+    min-width: 800px;
+    padding: 20px;
+  }
+
+  .表格行 {
+    grid-template-columns: 1.5fr 1fr 1.2fr 1.2fr 1.2fr 1.2fr;
+  }
+
+  .表格列 {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .表头列 {
+    font-size: 14px;
+  }
+
+  .功能列 {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 900px) {
+  .详情层 {
+    min-width: 700px;
+    padding: 15px;
+  }
+
+  .测试信息区 {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .表格行 {
+    grid-template-columns: 1.2fr 0.8fr 1fr 1fr 1fr 1fr;
+  }
+
+  .表格列 {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .表头列 {
+    font-size: 13px;
+  }
+
+  .功能列 {
+    font-size: 13px;
+  }
+
+  .总次数 {
+    font-size: 14px;
+  }
 }

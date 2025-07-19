@@ -1311,14 +1311,225 @@ function 生成详情() {
   const 详情层 = 结果对话框.querySelector(".详情层");
   详情层.innerHTML = "";
   详情层.classList.remove("显示详情");
+  
+  // 创建标题
   const 结果标题 = document.createElement("h2");
   结果标题.className = "结果标题";
-  结果标题.textContent = "详情";
-
+  结果标题.textContent = "详情分析";
+  
+  // 创建测试信息区域
+  const 测试信息区 = document.createElement("div");
+  测试信息区.className = "测试信息区";
+  
+  const 姓名区 = document.createElement("div");
+  姓名区.className = "信息项";
+  const 姓名标签 = document.createElement("span");
+  姓名标签.className = "信息标签";
+  姓名标签.textContent = "测试者：";
+  const 姓名值 = document.createElement("span");
+  姓名值.className = "信息值";
+  姓名值.textContent = 姓名;
+  姓名区.append(姓名标签, 姓名值);
+  
+  const 时间区 = document.createElement("div");
+  时间区.className = "信息项";
+  const 时间标签 = document.createElement("span");
+  时间标签.className = "信息标签";
+  时间标签.textContent = "测试时间：";
+  const 时间日期 = 获取当前时间();
+  时间区.append(时间标签, 时间日期.日期, 时间日期.时间);
+  
+  const 提示类型区 = document.createElement("div");
+  提示类型区.className = "信息项";
+  const 提示类型标签 = document.createElement("span");
+  提示类型标签.className = "信息标签";
+  提示类型标签.textContent = "提示类型：";
+  const 提示类型值 = document.createElement("span");
+  提示类型值.className = "信息值";
+  提示类型值.textContent = 提示按键单选框.checked ? "按键" : "功能";
+  提示类型区.append(提示类型标签, 提示类型值);
+  
+  测试信息区.append(姓名区, 时间区, 提示类型区);
+  
+  // 创建数据表格
+  const 数据表格区 = document.createElement("div");
+  数据表格区.className = "数据表格区";
+  
+  const 表格标题 = document.createElement("h3");
+  表格标题.className = "表格标题";
+  表格标题.textContent = "功能详细数据";
+  
+  const 数据表格 = document.createElement("div");
+  数据表格.className = "数据表格";
+  
+  // 创建表头
+  const 表头行 = document.createElement("div");
+  表头行.className = "表格行 表头行";
+  
+  const 功能列标题 = document.createElement("div");
+  功能列标题.className = "表格列 表头列";
+  功能列标题.textContent = "功能";
+  
+  const 测试次数列标题 = document.createElement("div");
+  测试次数列标题.className = "表格列 表头列";
+  测试次数列标题.textContent = "测试次数";
+  
+  const 总用时列标题 = document.createElement("div");
+  总用时列标题.className = "表格列 表头列";
+  总用时列标题.textContent = "总用时";
+  
+  const 平均用时列标题 = document.createElement("div");
+  平均用时列标题.className = "表格列 表头列";
+  平均用时列标题.textContent = "平均用时";
+  
+  const 最快用时列标题 = document.createElement("div");
+  最快用时列标题.className = "表格列 表头列";
+  最快用时列标题.textContent = "最快用时";
+  
+  const 最慢用时列标题 = document.createElement("div");
+  最慢用时列标题.className = "表格列 表头列";
+  最慢用时列标题.textContent = "最慢用时";
+  
+  表头行.append(功能列标题, 测试次数列标题, 总用时列标题, 平均用时列标题, 最快用时列标题, 最慢用时列标题);
+  
+  // 生成数据行
+  const 数据行组 = 生成功能数据行();
+  
+  // 创建表格内容区域
+  const 表格内容区 = document.createElement("div");
+  表格内容区.className = "表格内容区";
+  表格内容区.append(...数据行组);
+  
+  数据表格.append(表头行, 表格内容区);
+  数据表格区.append(表格标题, 数据表格);
+  
+  // 创建按钮
   const 显示摘要按钮 = document.getElementById("显示摘要");
   const 关闭对话框按钮_详情层 = document.getElementById("关闭对话框-详情层");
+  
+  详情层.append(结果标题, 测试信息区, 数据表格区, 显示摘要按钮, 关闭对话框按钮_详情层);
+}
 
-  详情层.append(结果标题, 显示摘要按钮, 关闭对话框按钮_详情层);
+function 生成功能数据行() {
+  const 数据行组 = [];
+  
+  // 按功能分组统计数据
+  const 功能分组对象 = Object.groupBy(测试对象组, (测试对象) => 测试对象.usage);
+  
+  for (const 功能 in 功能分组对象) {
+    const 功能数据组 = 功能分组对象[功能];
+    const 正确数据组 = 功能数据组.filter(item => item.passed);
+    const 错误数据组 = 功能数据组.filter(item => !item.passed);
+    
+    const 数据行 = document.createElement("div");
+    数据行.className = "表格行 数据行";
+    
+    // 功能名称
+    const 功能列 = document.createElement("div");
+    功能列.className = "表格列 功能列";
+    功能列.textContent = 功能;
+    
+    // 测试次数
+    const 测试次数列 = document.createElement("div");
+    测试次数列.className = "表格列 数据列";
+    const 总次数 = 功能数据组.length;
+    const 正确次数 = 正确数据组.length;
+    const 错误次数 = 错误数据组.length;
+    
+    // 创建总次数
+    const 总次数span = document.createElement("span");
+    总次数span.className = "总次数";
+    总次数span.textContent = 总次数.toString();
+    
+    // 创建正确次数
+    const 正确次数容器 = document.createElement("span");
+    正确次数容器.className = "正确次数";
+    const 正确符号 = document.createElement("span");
+    正确符号.className = "正确符号";
+    正确符号.textContent = "✓";
+    const 正确数字 = document.createElement("span");
+    正确数字.className = "正确数字";
+    正确数字.textContent = 正确次数.toString();
+    正确次数容器.append(正确符号, 正确数字);
+    
+    // 创建错误次数
+    const 错误次数容器 = document.createElement("span");
+    错误次数容器.className = "错误次数";
+    const 错误符号 = document.createElement("span");
+    错误符号.className = "错误符号";
+    错误符号.textContent = "✗";
+    const 错误数字 = document.createElement("span");
+    错误数字.className = "错误数字";
+    错误数字.textContent = 错误次数.toString();
+    错误次数容器.append(错误符号, 错误数字);
+    
+    测试次数列.append(总次数span, document.createElement("br"), 正确次数容器, 错误次数容器);
+    
+    // 总用时（仅正确次数）
+    const 总用时列 = document.createElement("div");
+    总用时列.className = "表格列 数据列";
+    if (正确次数 > 0) {
+      const 总用时毫秒 = 正确数据组.reduce((sum, item) => sum + item.duration, 0);
+      const 总用时 = 以毫秒算时间(总用时毫秒);
+      if (总用时.分 >= 1) {
+        总用时列.innerHTML = `<span class="时间值">${总用时.分}</span><span class="时间单位">分</span><span class="时间值">${总用时.秒}</span><span class="时间单位">秒</span>`;
+      } else {
+        总用时列.innerHTML = `<span class="时间值">${总用时.秒}</span><span class="时间单位">秒</span>`;
+      }
+    } else {
+      总用时列.innerHTML = '<span class="无数据">-</span>';
+    }
+    
+    // 平均用时（仅正确次数）
+    const 平均用时列 = document.createElement("div");
+    平均用时列.className = "表格列 数据列";
+    if (正确次数 > 0) {
+      const 平均用时毫秒 = 正确数据组.reduce((sum, item) => sum + item.duration, 0) / 正确次数;
+      const 平均用时 = 以毫秒算时间(平均用时毫秒);
+      if (平均用时.分 >= 1) {
+        平均用时列.innerHTML = `<span class="时间值">${平均用时.分}</span><span class="时间单位">分</span><span class="时间值">${平均用时.秒}</span><span class="时间单位">秒</span>`;
+      } else {
+        平均用时列.innerHTML = `<span class="时间值">${平均用时.秒}</span><span class="时间单位">秒</span>`;
+      }
+    } else {
+      平均用时列.innerHTML = '<span class="无数据">-</span>';
+    }
+    
+    // 最快用时（仅正确次数）
+    const 最快用时列 = document.createElement("div");
+    最快用时列.className = "表格列 数据列";
+    if (正确次数 > 0) {
+      const 最快用时毫秒 = Math.min(...正确数据组.map(item => item.duration));
+      const 最快用时 = 以毫秒算时间(最快用时毫秒);
+      if (最快用时.分 >= 1) {
+        最快用时列.innerHTML = `<span class="时间值 最快">${最快用时.分}</span><span class="时间单位">分</span><span class="时间值 最快">${最快用时.秒}</span><span class="时间单位">秒</span>`;
+      } else {
+        最快用时列.innerHTML = `<span class="时间值 最快">${最快用时.秒}</span><span class="时间单位">秒</span>`;
+      }
+    } else {
+      最快用时列.innerHTML = '<span class="无数据">-</span>';
+    }
+    
+    // 最慢用时（仅正确次数）
+    const 最慢用时列 = document.createElement("div");
+    最慢用时列.className = "表格列 数据列";
+    if (正确次数 > 0) {
+      const 最慢用时毫秒 = Math.max(...正确数据组.map(item => item.duration));
+      const 最慢用时 = 以毫秒算时间(最慢用时毫秒);
+      if (最慢用时.分 >= 1) {
+        最慢用时列.innerHTML = `<span class="时间值 最慢">${最慢用时.分}</span><span class="时间单位">分</span><span class="时间值 最慢">${最慢用时.秒}</span><span class="时间单位">秒</span>`;
+      } else {
+        最慢用时列.innerHTML = `<span class="时间值 最慢">${最慢用时.秒}</span><span class="时间单位">秒</span>`;
+      }
+    } else {
+      最慢用时列.innerHTML = '<span class="无数据">-</span>';
+    }
+    
+    数据行.append(功能列, 测试次数列, 总用时列, 平均用时列, 最快用时列, 最慢用时列);
+    数据行组.push(数据行);
+  }
+  
+  return 数据行组;
 }
 
 function 生成对话框按钮() {
