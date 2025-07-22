@@ -1747,7 +1747,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 
 .行内专业名词 {
   color: var(--行内专业名词颜色);
-  margin: 0 0.25ch;
+  margin: 0 0.25em;
 }
 
 .代码 .行内专业名词 {
@@ -1784,6 +1784,11 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 
 *[class*="2级标题"] > .代码 {
   background-color: #678;
+}
+
+.等宽 {
+  font-family: "JetBrains Mono", "Consolas", "Noto Sans SC", sans-serif;
+  font-size: 0.95em;
 }
 
 .行内代码 {
