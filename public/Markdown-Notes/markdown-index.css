@@ -560,14 +560,14 @@
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--主色调), var(--辅助色));
+  background: #37c;
   color: var(--文字主色);
   font-size: 12px;
   text-align: center;
   align-content: center;
   flex-shrink: 0;
   font-weight: 600;
-  box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+  box-shadow: 0 0 10px rgba(36, 81, 157, 0.5);
 }
 
 .链接标题 {

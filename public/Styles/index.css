@@ -329,7 +329,6 @@ html {
   background: rgba(0, 0, 0, 0.3);
   border-radius: 15px;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(0, 0, 0, 0.75);
   animation: fadeInUp 0.8s ease-out 0.2s both;
 }
 

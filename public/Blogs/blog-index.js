@@ -43,25 +43,25 @@ let 技术栈名称 = "经验之谈";
 let 专题索引记录 = [{ 技术栈: "经验之谈", 专题索引: 0 }];
 
 //需要记录多个技术栈的索引，因此将专题索引记录数组转化为'JSON'格式保存在会话中
-if (sessionStorage.getItem("专题索引记录") === null) {
-  sessionStorage.setItem("专题索引记录", JSON.stringify(专题索引记录));
+if (localStorage.getItem("专题索引记录") === null) {
+  localStorage.setItem("专题索引记录", JSON.stringify(专题索引记录));
 } else {
-  专题索引记录 = JSON.parse(sessionStorage.getItem("专题索引记录"));
+  专题索引记录 = JSON.parse(localStorage.getItem("专题索引记录"));
 }
 
-if (sessionStorage.getItem("页面技术栈") === null) {
-  sessionStorage.setItem("页面技术栈", 技术栈名称);
+if (localStorage.getItem("页面技术栈") === null) {
+  localStorage.setItem("页面技术栈", 技术栈名称);
 } else {
-  技术栈名称 = sessionStorage.getItem("页面技术栈");
+  技术栈名称 = localStorage.getItem("页面技术栈");
 }
 
-let index = JSON.parse(sessionStorage.getItem("专题索引记录")).find((记录) => 记录.技术栈 === 技术栈名称).专题索引;
+let index = JSON.parse(localStorage.getItem("专题索引记录")).find((记录) => 记录.技术栈 === 技术栈名称).专题索引;
 
 let 专题名称 = "首页";
-if (sessionStorage.getItem("专题") === null) {
-  sessionStorage.setItem("专题", 专题名称);
+if (localStorage.getItem("专题") === null) {
+  localStorage.setItem("专题", 专题名称);
 } else {
-  专题名称 = sessionStorage.getItem("专题");
+  专题名称 = localStorage.getItem("专题");
 }
 
 let 专题文件路径 = `./博客内容/${技术栈名称}/${专题名称}.html`;
@@ -112,8 +112,8 @@ function 从网址获取技术栈和专题() {
   const 专题 = paramsString.get("article");
   技术栈名称 = 技术栈;
   专题名称 = 专题;
-  sessionStorage.setItem("专题", 专题名称);
-  sessionStorage.setItem("页面技术栈", 技术栈名称);
+  localStorage.setItem("专题", 专题名称);
+  localStorage.setItem("页面技术栈", 技术栈名称);
 }
 
 技术栈组.forEach((技术栈) => {
@@ -194,7 +194,7 @@ function 设置侧边栏(event) {
       专题组 = document.querySelectorAll(".专题");
       专题标记组 = document.querySelectorAll(".专题-标记");
 
-      index = JSON.parse(sessionStorage.getItem("专题索引记录")).find(
+      index = JSON.parse(localStorage.getItem("专题索引记录")).find(
         (记录) => 记录.技术栈 === 技术栈名称
       ).专题索引;
 
@@ -245,12 +245,12 @@ function 设置侧边栏(event) {
       记录.专题索引 = index;
     }
 
-    sessionStorage.setItem("专题索引记录", JSON.stringify(专题索引记录));
+    localStorage.setItem("专题索引记录", JSON.stringify(专题索引记录));
   }
 
   专题标记组 = document.querySelectorAll(".专题-标记");
 
-  index = JSON.parse(sessionStorage.getItem("专题索引记录")).find((记录) => 记录.技术栈 === 技术栈名称).专题索引;
+  index = JSON.parse(localStorage.getItem("专题索引记录")).find((记录) => 记录.技术栈 === 技术栈名称).专题索引;
 
   专题组[index]?.classList.add("当前专题");
   专题组.forEach((专题) => {
@@ -268,7 +268,7 @@ function 设置侧边栏(event) {
   /*专题名称 = 专题组[index]
     ?.getElementsByClassName("专题-内容")[0]
     .textContent.trim();*/
-  sessionStorage.setItem("专题", 专题名称);
+  localStorage.setItem("专题", 专题名称);
 
   const 选项卡图标 = document.querySelector("link[rel='icon']");
   const 技术栈图标 = document.querySelector(".专题名称 > img");
@@ -286,7 +286,7 @@ async function 设置内容() {
       // 如果文件不存在，回退到首页
       专题文件路径 = `./博客内容/${技术栈名称}/首页.html`;
       专题名称 = "首页";
-      sessionStorage.setItem("专题", 专题名称);
+      localStorage.setItem("专题", 专题名称);
       需要更新侧边栏 = true;
       发生了回退 = true;
       
@@ -346,7 +346,7 @@ function 点选技术栈(event) {
   } else if (技术栈名称 === "C#") {
     技术栈名称 = "CSharp";
   }
-  sessionStorage.setItem("页面技术栈", 技术栈名称);
+  localStorage.setItem("页面技术栈", 技术栈名称);
 
   if (!专题索引记录.some((item) => item.技术栈 === 技术栈名称)) {
     专题索引记录.push({ 技术栈: 技术栈名称, 专题索引: 0 });
@@ -355,7 +355,7 @@ function 点选技术栈(event) {
     const 记录 = 专题索引记录.find((记录) => 记录.技术栈 === 技术栈名称);
     index = 记录.专题索引;
   }
-  sessionStorage.setItem("专题索引记录", JSON.stringify(专题索引记录));
+  localStorage.setItem("专题索引记录", JSON.stringify(专题索引记录));
 }
 
 function 修改专题样式(event) {
@@ -368,7 +368,7 @@ function 修改专题样式(event) {
   专题.classList.add("当前专题");
   前一专题 = 专题;
   专题名称 = 专题.getElementsByClassName("专题-内容")[0].innerText;
-  sessionStorage.setItem("专题", 专题名称);
+  localStorage.setItem("专题", 专题名称);
 
   index = Array.from(专题组).indexOf(专题);
   if (!专题索引记录.some((记录) => 记录.技术栈 === 技术栈名称)) {
@@ -377,7 +377,7 @@ function 修改专题样式(event) {
     const 记录 = 专题索引记录.find((记录) => 记录.技术栈 === 技术栈名称);
     记录.专题索引 = index;
   }
-  sessionStorage.setItem("专题索引记录", JSON.stringify(专题索引记录));
+  localStorage.setItem("专题索引记录", JSON.stringify(专题索引记录));
 
   设置内容()
     .then((发生了回退) => {
