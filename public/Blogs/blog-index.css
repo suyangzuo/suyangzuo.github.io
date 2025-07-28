@@ -1747,7 +1747,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 
 .行内专业名词 {
   color: var(--行内专业名词颜色);
-  margin: 0 0.25em;
+  margin: 0 0.25ch;
 }
 
 .代码 .行内专业名词 {
