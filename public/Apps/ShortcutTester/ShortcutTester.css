@@ -983,9 +983,8 @@ input[type="number"]::-webkit-inner-spin-button {
 /* 表格行样式 */
 .表格行 {
   display: grid;
-  grid-template-columns: 2fr 1fr 1.5fr 1.5fr 1.5fr 1.5fr;
+  grid-template-columns: 2fr 1fr 1.5fr 1.8fr 1.8fr 1.8fr;
   gap: 1px;
-  min-height: 50px;
   align-items: center;
   transition: all 0.125s ease;
 }
@@ -1004,8 +1003,9 @@ input[type="number"]::-webkit-inner-spin-button {
   border-bottom: 1px solid #fff1;
 }
 
-.数据行:hover {
-  box-shadow: inset 0 0 0 2px #fff2;
+.数据行:hover,
+.数据行:nth-child(even):hover {
+  box-shadow: inset 0 0 0 2px #fff8;
 }
 
 .数据行:nth-child(even) {
@@ -1033,6 +1033,66 @@ input[type="number"]::-webkit-inner-spin-button {
   letter-spacing: 0.5px;
 }
 
+/* 可排序列样式 */
+.可排序列 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.可排序列 span {
+  color: #ffd700;
+  font-weight: 600;
+  font-size: 15px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.5px;
+}
+
+/* 排序按钮组样式 */
+.排序按钮组 {
+  display: flex;
+  gap: 2px;
+  margin-top: 2px;
+}
+
+/* 排序按钮样式 */
+.排序按钮 {
+  background: linear-gradient(135deg, #3a4a5a 0%, #2a3a4a 100%);
+  border: 1px solid #fff5;
+  color: #9ab;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 3px;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  transition: all 100ms ease;
+  min-width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.排序按钮:hover {
+  filter: brightness(1.5);
+}
+
+.排序按钮.已选中 {
+  filter: brightness(2);
+}
+
+.排序按钮.升序 {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.排序按钮.降序 {
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
 .功能列 {
   color: lightblue;
   font-weight: 600;
@@ -1055,6 +1115,14 @@ input[type="number"]::-webkit-inner-spin-button {
   font-weight: 600;
   font-size: 16px;
   display: block;
+  width: 3ch;
+  text-align: left;
+}
+
+.正确次数,
+.错误次数 {
+  display: flex;
+  align-items: center;
 }
 
 .正确次数 {
@@ -1063,8 +1131,14 @@ input[type="number"]::-webkit-inner-spin-button {
   margin-right: 8px;
 }
 
+.正确数字,
+.错误数字 {
+  width: 3ch;
+  text-align: left;
+}
+
 .正确符号 {
-  color: #4caf50;
+  color: yellowgreen;
   font-weight: 600;
   margin-right: 2px;
 }
@@ -1080,13 +1154,13 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .错误符号 {
-  color: #f44336;
+  color: indianred;
   font-weight: 600;
   margin-right: 2px;
 }
 
 .错误数字 {
-  color: #ff5f5f;
+  color: orangered;
   font-weight: 500;
 }
 
