@@ -897,28 +897,32 @@
     </p>
     <ul class="分区列表">
       <li class="分区列表项">
-        <span
-          >添加<span class="行内代码">mouseup</span>事件侦听器，只要鼠标抬起，则恢复默认的<span class="行内代码"
-            >mousemove</span
-          >事件侦听器。</span
-        >
+        每个图形配套<span class="行内专业名词 等宽">2</span>个<span class="行内专业名词">布尔</span>变量，分别表示
+        <ul class="分区列表">
+          <li class="分区列表项">鼠标是否位于图形内部</li>
+          <li class="分区列表项">图形是否被拖拽</li>
+        </ul>
       </li>
       <li class="分区列表项">
         <span
-          >添加默认的<span class="行内代码">mousemove</span>事件侦听器，判断鼠标是否在图形内部，如果为<span class="强调"
-            >真</span
-          >，则添加<span class="行内代码">mousedown</span>事件侦听器。</span
-        >
+          >添加<span class="行内代码">mousemove</span>事件侦听器，判断鼠标是否在图形内部，如果<span class="强调"
+            >鼠标位于图形内部</span
+          >且<span class="强调">图形被拖拽</span>，则更新形状路径。</span
+        >最后重绘整个<span class="行内专业名词">Canvas</span>。
       </li>
       <li class="分区列表项">
-        <span class="行内专业名词">鼠标按下</span>时，记录<span class="行内专业名词">鼠标坐标</span>与<span
+        添加<span class="行内代码">mousedown</span>事件侦听器，如果<span class="行内专业名词">鼠标位于图形内部</span
+        >，则将<span class="行内专业名词">被拖拽</span>改为<span class="行内代码">true</span>，并记录<span
           class="行内专业名词"
-          >图形基点坐标</span
-        >的<span class="行内专业名词">差值</span>，并更改<span class="行内代码">mousemove</span>事件侦听器。
+          >鼠标坐标</span
+        >与<span class="行内专业名词">图形基点坐标</span>的<span class="行内专业名词">差值</span>。
       </li>
       <li class="分区列表项">
-        <span class="强调">鼠标按住不放且移动</span>时，根据鼠标坐标，用<span class="行内专业名词">差值</span
-        >重新计算图形基点坐标，并重绘矩形。
+        <span
+          >添加<span class="行内代码">mouseup</span>事件侦听器，只要鼠标抬起，则将所有图形的<span class="行内专业名词"
+            >被拖拽</span
+          >改为<span class="行内代码">false</span>。</span
+        >
       </li>
     </ul>
     <p class="分区普通文本">
@@ -941,7 +945,6 @@
             this.canvas.width = this.canvas.offsetWidth * this.dpr;
             this.canvas.height = this.canvas.offsetHeight * this.dpr;
             this.ctx.scale(this.dpr, this.dpr);
-
             this.矩形 = {
               路径: new Path2D(),
               参数: {
@@ -953,7 +956,6 @@
               鼠标位于内部: false,
               拖拽中: false,
             };
-
             this.正圆 = {
               路径: new Path2D(),
               参数: {
@@ -964,14 +966,12 @@
               鼠标位于内部: false,
               拖拽中: false,
             };
-
             this.矩形.路径.rect(
               this.矩形.参数.左上角.x,
               this.矩形.参数.左上角.y,
               this.矩形.参数.宽度,
               this.矩形.参数.高度
             );
-
             this.正圆.路径.arc(
               this.正圆.参数.圆心.x, 
               this.正圆.参数.圆心.y, 
@@ -982,6 +982,7 @@
   
             this.绘制全部();
             this.添加鼠标移动事件();
+            this.添加鼠标按下事件();
             this.添加鼠标抬起事件();
           }
   
@@ -1084,6 +1085,7 @@
             this.ctx.stroke(正圆.路径);
             this.ctx.fill(正圆.路径);
   
+            // 绘制圆之后，再绘制圆心
             if (this.正圆.鼠标位于内部 && 正圆.拖拽中) {
               this.ctx.beginPath();
               this.ctx.arc(正圆.参数.圆心.x, 正圆.参数.圆心.y, 6, 0, 2 * Math.PI);
@@ -1119,25 +1121,17 @@
               + Math.pow(鼠标相对坐标.y - 正圆.参数.圆心.y, 2);
             return 距离平方 <= Math.pow(正圆.参数.半径, 2);
           }
-  
-          删除鼠标移动事件() {
-            this.canvas.onmousemove = null;
-          }
-  
-          删除鼠标按下事件() {
-            this.canvas.onmousedown = null;
-          }
-  
+    
           添加鼠标移动事件() {
             this.canvas.onmousemove = (e) => {
               const 鼠标相对坐标 = this.获取鼠标与Canvas相对坐标(e);
               this.正圆.鼠标位于内部 = this.鼠标位于正圆内部(鼠标相对坐标, this.正圆);
               this.矩形.鼠标位于内部 = this.鼠标位于矩形内部(鼠标相对坐标, this.矩形);
   
-              if (this.正圆.鼠标位于内部 || this.矩形.鼠标位于内部) {
-                this.添加鼠标按下事件();
-              } else {
-                this.删除鼠标按下事件();
+              if (this.正圆.拖拽中 && this.正圆.鼠标位于内部) {
+                this.刷新正圆坐标与路径(this.正圆, 鼠标相对坐标);
+              } else if (this.矩形.拖拽中 && this.矩形.鼠标位于内部) {
+                this.刷新矩形坐标与路径(this.矩形, 鼠标相对坐标);
               }
   
               this.绘制全部();
@@ -1151,25 +1145,12 @@
               this.矩形.鼠标位于内部 = this.鼠标位于矩形内部(鼠标相对坐标, this.矩形);
   
               if (this.正圆.鼠标位于内部) {
+                this.正圆.拖拽中 = true;
                 this.刷新鼠标与正圆差值(鼠标相对坐标);
               } else if (this.矩形.鼠标位于内部) {
+                this.矩形.拖拽中 = true;
                 this.刷新鼠标与矩形差值(鼠标相对坐标);
               }
-              this.添加鼠标按下且移动事件();
-            };
-          }
-  
-          添加鼠标按下且移动事件() {
-            this.canvas.onmousemove = (e) => {
-              this.矩形.拖拽中 = true;
-              this.正圆.拖拽中 = true;
-              const 鼠标相对坐标 = this.获取鼠标与Canvas相对坐标(e);
-              if (this.正圆.鼠标位于内部) {
-                this.刷新正圆坐标与路径(this.正圆, 鼠标相对坐标);
-              } else if (this.矩形.鼠标位于内部) {
-                this.刷新矩形坐标与路径(this.矩形, 鼠标相对坐标);
-              }
-              this.绘制全部();
             };
           }
   
@@ -1177,11 +1158,11 @@
             this.canvas.onmouseup = () => {
               this.矩形.拖拽中 = false;
               this.正圆.拖拽中 = false;
-              this.添加鼠标移动事件();
+              this.绘制全部();
             };
           }
         }
-
+  
         new 拖放图形演示器();
       </code>
     </pre>
@@ -1229,6 +1210,7 @@
 
           this.绘制全部();
           this.添加鼠标移动事件();
+          this.添加鼠标按下事件();
           this.添加鼠标抬起事件();
         }
 
@@ -1331,6 +1313,7 @@
           this.ctx.stroke(正圆.路径);
           this.ctx.fill(正圆.路径);
 
+          // 绘制圆之后，再绘制圆心
           if (this.正圆.鼠标位于内部 && 正圆.拖拽中) {
             this.ctx.beginPath();
             this.ctx.arc(正圆.参数.圆心.x, 正圆.参数.圆心.y, 6, 0, 2 * Math.PI);
@@ -1366,24 +1349,16 @@
           return 距离平方 <= Math.pow(正圆.参数.半径, 2);
         }
 
-        删除鼠标移动事件() {
-          this.canvas.onmousemove = null;
-        }
-
-        删除鼠标按下事件() {
-          this.canvas.onmousedown = null;
-        }
-
         添加鼠标移动事件() {
           this.canvas.onmousemove = (e) => {
             const 鼠标相对坐标 = this.获取鼠标与Canvas相对坐标(e);
             this.正圆.鼠标位于内部 = this.鼠标位于正圆内部(鼠标相对坐标, this.正圆);
             this.矩形.鼠标位于内部 = this.鼠标位于矩形内部(鼠标相对坐标, this.矩形);
 
-            if (this.正圆.鼠标位于内部 || this.矩形.鼠标位于内部) {
-              this.添加鼠标按下事件();
-            } else {
-              this.删除鼠标按下事件();
+            if (this.正圆.拖拽中 && this.正圆.鼠标位于内部) {
+              this.刷新正圆坐标与路径(this.正圆, 鼠标相对坐标);
+            } else if (this.矩形.拖拽中 && this.矩形.鼠标位于内部) {
+              this.刷新矩形坐标与路径(this.矩形, 鼠标相对坐标);
             }
 
             this.绘制全部();
@@ -1397,25 +1372,12 @@
             this.矩形.鼠标位于内部 = this.鼠标位于矩形内部(鼠标相对坐标, this.矩形);
 
             if (this.正圆.鼠标位于内部) {
+              this.正圆.拖拽中 = true;
               this.刷新鼠标与正圆差值(鼠标相对坐标);
             } else if (this.矩形.鼠标位于内部) {
+              this.矩形.拖拽中 = true;
               this.刷新鼠标与矩形差值(鼠标相对坐标);
             }
-            this.添加鼠标按下且移动事件();
-          };
-        }
-
-        添加鼠标按下且移动事件() {
-          this.canvas.onmousemove = (e) => {
-            this.矩形.拖拽中 = true;
-            this.正圆.拖拽中 = true;
-            const 鼠标相对坐标 = this.获取鼠标与Canvas相对坐标(e);
-            if (this.正圆.鼠标位于内部) {
-              this.刷新正圆坐标与路径(this.正圆, 鼠标相对坐标);
-            } else if (this.矩形.鼠标位于内部) {
-              this.刷新矩形坐标与路径(this.矩形, 鼠标相对坐标);
-            }
-            this.绘制全部();
           };
         }
 
@@ -1424,7 +1386,6 @@
             this.矩形.拖拽中 = false;
             this.正圆.拖拽中 = false;
             this.绘制全部();
-            this.添加鼠标移动事件();
           };
         }
       }
@@ -1569,11 +1530,11 @@
 
           // 根据鼠标位置和拖拽状态决定填充色透明度
           if (this.矩形.正在拖拽) {
-            this.ctx.fillStyle = this.矩形.颜色 + "80"; // 拖拽时半透明
+            this.ctx.fillStyle = this.矩形.颜色 + "50"; // 拖拽时半透明
             this.ctx.lineWidth = 3;
             this.ctx.strokeStyle = "#00ff00"; // 拖拽时绿色边框
           } else if (this.矩形.鼠标位于内部) {
-            this.ctx.fillStyle = this.矩形.颜色 + "50"; // 降低透明度
+            this.ctx.fillStyle = this.矩形.颜色 + "a0"; // 悬停时半透明
             this.ctx.lineWidth = 2;
             this.ctx.strokeStyle = "#ffffff";
           } else {
@@ -1593,11 +1554,11 @@
 
           // 根据鼠标位置和拖拽状态决定填充色透明度
           if (this.正圆.正在拖拽) {
-            this.ctx.fillStyle = this.正圆.颜色 + "80"; // 拖拽时半透明
+            this.ctx.fillStyle = this.正圆.颜色 + "50"; // 拖拽时半透明
             this.ctx.lineWidth = 3;
             this.ctx.strokeStyle = "#00ff00"; // 拖拽时绿色边框
           } else if (this.正圆.鼠标位于内部) {
-            this.ctx.fillStyle = this.正圆.颜色 + "50"; // 降低透明度
+            this.ctx.fillStyle = this.正圆.颜色 + "a0"; // 悬停时半透明
             this.ctx.lineWidth = 2;
             this.ctx.strokeStyle = "#ffffff";
           } else {
@@ -1617,11 +1578,11 @@
 
           // 根据鼠标位置和拖拽状态决定填充色透明度
           if (this.五边形.正在拖拽) {
-            this.ctx.fillStyle = this.五边形.颜色 + "80"; // 拖拽时半透明
+            this.ctx.fillStyle = this.五边形.颜色 + "50"; // 拖拽时半透明
             this.ctx.lineWidth = 3;
             this.ctx.strokeStyle = "#00ff00"; // 拖拽时绿色边框
           } else if (this.五边形.鼠标位于内部) {
-            this.ctx.fillStyle = this.五边形.颜色 + "50"; // 降低透明度
+            this.ctx.fillStyle = this.五边形.颜色 + "a0"; // 悬停时半透明
             this.ctx.lineWidth = 2;
             this.ctx.strokeStyle = "#ffffff";
           } else {
@@ -1705,6 +1666,7 @@
           // 鼠标松开事件
           this.canvas.addEventListener("mouseup", (e) => {
             this.结束拖拽();
+            this.绘制全部();
           });
 
           // 鼠标离开画布事件
@@ -1982,11 +1944,11 @@
 
           // 根据鼠标位置和拖拽状态决定填充色透明度
           if (this.矩形.正在拖拽) {
-            this.ctx.fillStyle = this.矩形.颜色 + "80"; // 拖拽时半透明
+            this.ctx.fillStyle = this.矩形.颜色 + "50"; // 拖拽时半透明
             this.ctx.lineWidth = 3;
             this.ctx.strokeStyle = "#00ff00"; // 拖拽时绿色边框
           } else if (this.矩形.鼠标位于内部) {
-            this.ctx.fillStyle = this.矩形.颜色 + "50"; // 降低透明度
+            this.ctx.fillStyle = this.矩形.颜色 + "a0"; // 悬停时半透明
             this.ctx.lineWidth = 2;
             this.ctx.strokeStyle = "#ffffff";
           } else {
@@ -2006,11 +1968,11 @@
 
           // 根据鼠标位置和拖拽状态决定填充色透明度
           if (this.正圆.正在拖拽) {
-            this.ctx.fillStyle = this.正圆.颜色 + "80"; // 拖拽时半透明
+            this.ctx.fillStyle = this.正圆.颜色 + "50"; // 拖拽时半透明
             this.ctx.lineWidth = 3;
             this.ctx.strokeStyle = "#00ff00"; // 拖拽时绿色边框
           } else if (this.正圆.鼠标位于内部) {
-            this.ctx.fillStyle = this.正圆.颜色 + "50"; // 降低透明度
+            this.ctx.fillStyle = this.正圆.颜色 + "a0"; // 悬停时半透明
             this.ctx.lineWidth = 2;
             this.ctx.strokeStyle = "#ffffff";
           } else {
@@ -2030,11 +1992,11 @@
 
           // 根据鼠标位置和拖拽状态决定填充色透明度
           if (this.五边形.正在拖拽) {
-            this.ctx.fillStyle = this.五边形.颜色 + "80"; // 拖拽时半透明
+            this.ctx.fillStyle = this.五边形.颜色 + "50"; // 拖拽时半透明
             this.ctx.lineWidth = 3;
             this.ctx.strokeStyle = "#00ff00"; // 拖拽时绿色边框
           } else if (this.五边形.鼠标位于内部) {
-            this.ctx.fillStyle = this.五边形.颜色 + "50"; // 降低透明度
+            this.ctx.fillStyle = this.五边形.颜色 + "a0"; // 悬停时半透明
             this.ctx.lineWidth = 2;
             this.ctx.strokeStyle = "#ffffff";
           } else {
@@ -2118,6 +2080,7 @@
           // 鼠标松开事件
           this.canvas.addEventListener("mouseup", (e) => {
             this.结束拖拽();
+            this.绘制全部();
           });
 
           // 鼠标离开画布事件
@@ -2368,11 +2331,11 @@
   
             // 根据鼠标位置和拖拽状态决定填充色透明度
             if (图形对象.正在拖拽) {
-              this.ctx.fillStyle = 图形对象.颜色 + "80"; // 拖拽时半透明
+              this.ctx.fillStyle = 图形对象.颜色 + "50"; // 拖拽时半透明
               this.ctx.lineWidth = 3;
               this.ctx.strokeStyle = "#00ff00"; // 拖拽时绿色边框
             } else if (!this.拖拽状态.正在拖拽 && 图形对象.鼠标位于内部) {
-              this.ctx.fillStyle = 图形对象.颜色 + "50"; // 降低透明度
+              this.ctx.fillStyle = 图形对象.颜色 + "a0"; // 悬停时半透明
               this.ctx.lineWidth = 2;
               this.ctx.strokeStyle = "#ffffff";
             } else {
@@ -2464,9 +2427,9 @@
             // 鼠标松开事件
             this.canvas.addEventListener("mouseup", (e) => {
               this.结束拖拽();
+              this.绘制全部();
             });
-  
-            // 鼠标离开画布事件
+
             this.canvas.addEventListener("mouseleave", (e) => {
               this.结束拖拽();
             });
@@ -2673,11 +2636,11 @@
 
           // 根据鼠标位置和拖拽状态决定填充色透明度
           if (图形对象.正在拖拽) {
-            this.ctx.fillStyle = 图形对象.颜色 + "80"; // 拖拽时半透明
+            this.ctx.fillStyle = 图形对象.颜色 + "50"; // 拖拽时半透明
             this.ctx.lineWidth = 3;
             this.ctx.strokeStyle = "#00ff00"; // 拖拽时绿色边框
           } else if (!this.拖拽状态.正在拖拽 && 图形对象.鼠标位于内部) {
-            this.ctx.fillStyle = 图形对象.颜色 + "50"; // 降低透明度
+            this.ctx.fillStyle = 图形对象.颜色 + "a0"; // 降低透明度
             this.ctx.lineWidth = 2;
             this.ctx.strokeStyle = "#ffffff";
           } else {
@@ -2764,9 +2727,9 @@
           // 鼠标松开事件
           this.canvas.addEventListener("mouseup", (e) => {
             this.结束拖拽();
+            this.绘制全部();
           });
 
-          // 鼠标离开画布事件
           this.canvas.addEventListener("mouseleave", (e) => {
             this.结束拖拽();
           });
