@@ -1078,6 +1078,7 @@
 .计算表达式区.无符号 .指数,
 .计算表达式区.有符号正数 .指数 {
   color: var(--指数颜色) !important;
+  font-family: "Ubuntu Mono", monospace;
 }
 
 .计算表达式区.无符号 .运算符,

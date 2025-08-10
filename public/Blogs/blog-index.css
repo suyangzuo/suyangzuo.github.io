@@ -1186,6 +1186,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .超链接 {
+  font-family: "Ubuntu Mono", "Noto Sans SC", sans-serif;
   color: var(--超链接颜色-正文);
   margin: 0 3px;
   text-decoration: underline;
@@ -1733,6 +1734,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   padding: 2px 5px;
   margin: 0 0.25em;
   font-size: 0.925em;
+  font-family: "JetBrains Mono", "Ubuntu Mono", "Noto Sans SC", sans-serif;
 }
 
 .专业名词.亮 {
@@ -1759,7 +1761,6 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .附加说明 .行内专业名词 {
-  /*color: #8bb5f5;*/
   color: #9bc5f5;
 }
 
@@ -1849,6 +1850,13 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   font-size: 0.8em;
   box-shadow: 2px 2px 0.1em 0 #0002;
   translate: 0 0.075em;
+}
+
+sup,
+sub {
+  font-family: "Ubuntu Mono", "Noto Sans SC", sans-serif;
+  color: rgb(134, 194, 224);
+  color: yellowgreen;
 }
 
 .专题正文区 .fa-star {
