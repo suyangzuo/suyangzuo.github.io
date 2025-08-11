@@ -1482,7 +1482,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .标题序号-2级 {
-  font-family: "consolas", monospace;
+  font-family: "Google Sans Code", monospace;
   font-size: 0.65em;
   display: inline-flex;
   justify-content: center;
@@ -1516,7 +1516,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .标题序号-3级 {
-  font-family: "consolas", monospace;
+  font-family: "Google Sans Code", monospace;
   font-size: 0.65em;
   display: inline-flex;
   justify-content: center;
