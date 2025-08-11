@@ -563,6 +563,7 @@
   background: #37c;
   color: var(--文字主色);
   font-size: 12px;
+  font-family: "Google Sans Code", monospace;
   text-align: center;
   align-content: center;
   flex-shrink: 0;

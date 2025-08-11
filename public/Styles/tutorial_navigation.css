@@ -137,7 +137,7 @@ body {
   height: 25px;
   border-radius: 25px;
   font-size: 0.9rem;
-  font-family: Consolas, monospace;
+  font-family: "Google Sans Code", monospace;
 }
 
 .detail i {
