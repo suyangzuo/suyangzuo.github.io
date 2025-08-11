@@ -1146,11 +1146,9 @@ class IntegerVisualizer {
 
   // 更新正数表达式中的数字
   updatePositiveExpressionNumbers() {
-    // 对于正数，只需要更新最终结果
-    const value = this.calculateValue();
-    if (this.domCache.resultElements.length > 0) {
-      this.domCache.resultElements[0].textContent = value;
-    }
+    // 对于正数和无符号，需要重新生成表达式以反映位值变化
+    // 因为位值改变时，表达式的结构可能会改变（某些项消失或出现）
+    this.regenerateCalculationExpression();
   }
 
   // 更新负数表达式中的数字
