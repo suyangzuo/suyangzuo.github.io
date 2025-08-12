@@ -1351,7 +1351,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .日期文本 {
-  font-family: "Noto Sans Mono", "Noto Sans SC", sans-serif;
+  font-family: "Google Sans Code", "Noto Sans SC", sans-serif;
 }
 
 .原文链接 {
