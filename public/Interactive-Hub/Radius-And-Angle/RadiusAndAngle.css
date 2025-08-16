@@ -31,6 +31,60 @@
   cursor: url("/Images/Common/鼠标-默认.cur"), auto;
 }
 
+.坐标系选择区 {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  z-index: 10;
+}
+
+.坐标系选项 {
+  position: relative;
+  display: block;
+  cursor: pointer;
+  padding: 8px 12px;
+  background-color: #1d1d33;
+  border: solid 1px transparent;
+  color: #e0e0e0;
+  text-align: center;
+}
+
+.坐标系选项:hover {
+  background-color: #2d2d44;
+}
+
+.坐标系选项:has(input[type="radio"]:checked) {
+  background-color: #3d3d55;
+  border: solid 1px #6d6d88;
+  z-index: 11;
+}
+
+.坐标系选项 input[type="radio"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.坐标系选项 input[type="radio"]:checked + .选项文本 {
+  color: #64b5f6;
+  text-shadow: 0 0 8px rgba(100, 181, 246, 0.5);
+}
+
+.选项文本 {
+  position: relative;
+  font-weight: 500;
+  font-size: 14px;
+  z-index: 2;
+  pointer-events: none;
+}
+
 .控制区 {
   width: 800px;
   background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
@@ -109,6 +163,21 @@
   .交互标题 {
     font-size: 1.5em;
   }
+
+  .坐标系选择区 {
+    top: 15px;
+    left: 15px;
+    gap: 12px;
+  }
+
+  .坐标系选项 {
+    padding: 6px 10px;
+    min-width: 100px;
+  }
+
+  .选项文本 {
+    font-size: 11px;
+  }
 }
 
 @media (max-width: 600px) {
@@ -118,5 +187,20 @@
 
   .交互标题 {
     font-size: 1.2em;
+  }
+
+  .坐标系选择区 {
+    top: 10px;
+    left: 10px;
+    gap: 8px;
+  }
+
+  .坐标系选项 {
+    padding: 5px 8px;
+    min-width: 80px;
+  }
+
+  .选项文本 {
+    font-size: 10px;
   }
 }

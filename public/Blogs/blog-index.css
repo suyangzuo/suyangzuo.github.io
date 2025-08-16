@@ -1186,7 +1186,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .超链接 {
-  font-family: "Ubuntu Mono", "Noto Sans SC", sans-serif;
+  font-family: "Google Sans Code", "Noto Sans SC", sans-serif;
   color: var(--超链接颜色-正文);
   margin: 0 3px;
   text-decoration: underline;
@@ -1787,7 +1787,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .等宽 {
-  font-family: "JetBrains Mono", "Consolas", "Noto Sans SC", sans-serif;
+  font-family: "Google Sans Code", "Consolas", "Noto Sans SC", sans-serif;
   font-size: 0.95em;
 }
 

@@ -722,6 +722,956 @@
       ctx_4.stroke();
     </script>
 
+    <h3 class="分区标题 分区3级标题">绘制<span class="行内专业名词">正多边形</span></h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词">正多边形</span>的本质就是<span class="行内专业名词 等宽">N</span
+      >个顶点之间的连线，只要知道所有顶点的坐标，就能绘制出正多边形。事实上，正多边形的顶点都分布在同一个正圆上，因此，绘制正多边形需要知道以下条件：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">圆心坐标</li>
+      <li class="分区列表项">半径</li>
+      <li class="分区列表项">顶点数量</li>
+      <li class="分区列表项">起始弧度</li>
+    </ul>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <div style="position: relative; width: 100%; height: calc(100% - 42px)">
+        <canvas id="canvas-正多边形范例" style="width: 100%; height: 100%; background-color: #222"></canvas>
+        <!-- 滑块控制区域 -->
+        <div
+          style="
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 8px;
+            color: #aaa;
+            font-family: 'Google Sans Code', sans-serif;
+            z-index: 1000;
+          "
+        >
+          <style>
+            .滑块标签:hover {
+              cursor: url("/Images/Common/鼠标-默认.cur"), pointer;
+            }
+
+            .滑块:hover {
+              cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+            }
+
+            .滑块::-webkit-slider-thumb {
+              scale: 1.25;
+            }
+
+            #顶点数量显示,
+            #起始弧度显示 {
+              color: darkgoldenrod;
+            }
+          </style>
+          <div style="margin-bottom: 15px">
+            <label class="滑块标签" style="display: block; margin-bottom: 5px; font-size: 16px"
+              >顶点数量: <span id="顶点数量显示">5</span></label
+            >
+            <input
+              class="滑块"
+              type="range"
+              id="顶点数量滑块"
+              min="3"
+              max="10"
+              value="5"
+              style="width: 150px; accent-color: rgb(102, 153, 25)"
+            />
+          </div>
+          <div>
+            <label class="滑块标签" style="display: block; margin-bottom: 5px; font-size: 16px"
+              >起始弧度: <span id="起始弧度显示">-π/2</span></label
+            >
+            <input
+              class="滑块"
+              type="range"
+              id="起始弧度滑块"
+              min="-628"
+              max="628"
+              value="-157"
+              style="width: 150px; accent-color: rgb(102, 153, 25)"
+              list="起始弧度刻度"
+            />
+            <datalist id="起始弧度刻度" style="display: none; opacity: 0">
+              <option value="-628" label="-2π"></option>
+              <option value="-471" label="-3π/2"></option>
+              <option value="-314" label="-π"></option>
+              <option value="-157" label="-π/2"></option>
+              <option value="0" label="0"></option>
+              <option value="157" label="π/2"></option>
+              <option value="314" label="π"></option>
+              <option value="471" label="3π/2"></option>
+              <option value="628" label="2π"></option>
+            </datalist>
+          </div>
+        </div>
+      </div>
+    </figure>
+    <p class="分区普通文本">
+      通过起始弧度，确定每个顶点的坐标，就可以用<span class="行内专业名词">绘制直线</span
+      >的方式，依次连接所有顶点，成为一个正多边形。
+    </p>
+    <script>
+      class 正多边形范例 {
+        constructor() {
+          this.canvas = document.getElementById("canvas-正多边形范例");
+          this.ctx = this.canvas.getContext("2d");
+          this.dpr = window.devicePixelRatio || 1;
+          this.canvas.width = this.canvas.offsetWidth * this.dpr;
+          this.canvas.height = this.canvas.offsetHeight * this.dpr;
+          this.ctx.scale(this.dpr, this.dpr);
+          this.正圆 = {
+            圆心: {
+              x: this.canvas.offsetWidth / 2,
+              y: this.canvas.offsetHeight / 2,
+            },
+            半径: 150,
+            路径: null,
+          };
+          this.正多边形 = {
+            顶点数量: 5,
+            起始弧度: -Math.PI / 2,
+          };
+
+          // 初始化滑块控制
+          this.初始化滑块控制();
+
+          requestAnimationFrame(this.绘制全部.bind(this));
+        }
+
+        绘制正圆() {
+          this.ctx.save();
+          this.ctx.lineWidth = 2;
+          this.ctx.strokeStyle = "#fff3";
+          this.ctx.fillStyle = "#fff1";
+          this.正圆.路径 = new Path2D();
+          this.正圆.路径.arc(this.正圆.圆心.x, this.正圆.圆心.y, this.正圆.半径, 0, 2 * Math.PI);
+          this.ctx.stroke(this.正圆.路径);
+          this.ctx.fill(this.正圆.路径);
+          this.ctx.restore();
+        }
+
+        绘制正多边形() {
+          this.ctx.save();
+          this.ctx.lineWidth = 2;
+          this.ctx.strokeStyle = "lightskyblue";
+          this.ctx.fillStyle = "#87cefa25";
+          this.ctx.beginPath();
+          for (let i = 0; i < this.正多边形.顶点数量; i++) {
+            this.ctx.lineTo(
+              this.正圆.圆心.x +
+                this.正圆.半径 * Math.cos(this.正多边形.起始弧度 + (i * 2 * Math.PI) / this.正多边形.顶点数量),
+              this.正圆.圆心.y +
+                this.正圆.半径 * Math.sin(this.正多边形.起始弧度 + (i * 2 * Math.PI) / this.正多边形.顶点数量)
+            );
+          }
+          this.ctx.closePath();
+          this.ctx.stroke();
+          this.ctx.fill();
+          this.ctx.restore();
+        }
+
+        绘制起始弧度参考线() {
+          this.ctx.save();
+          const 虚线长度 = 10;
+          this.ctx.lineWidth = 2;
+          this.ctx.strokeStyle = "#fff7";
+          this.ctx.setLineDash([虚线长度, 虚线长度]);
+          this.ctx.beginPath();
+          this.ctx.moveTo(this.正圆.圆心.x, this.正圆.圆心.y);
+          this.ctx.lineTo(
+            this.正圆.圆心.x + this.正圆.半径 * Math.cos(this.正多边形.起始弧度),
+            this.正圆.圆心.y + this.正圆.半径 * Math.sin(this.正多边形.起始弧度)
+          );
+          this.ctx.stroke();
+          this.ctx.lineDashOffset = 虚线长度;
+          this.ctx.strokeStyle = "#0007";
+          this.ctx.stroke();
+          this.ctx.restore();
+        }
+
+        绘制圆心() {
+          this.ctx.save();
+          this.ctx.lineWidth = 2;
+          this.ctx.strokeStyle = "#333";
+          this.ctx.fillStyle = "#aaa";
+          this.ctx.beginPath();
+          this.ctx.arc(this.正圆.圆心.x, this.正圆.圆心.y, 7, 0, Math.PI * 2);
+          this.ctx.stroke();
+          this.ctx.fill();
+          this.ctx.restore();
+        }
+
+        绘制正多边形顶点() {
+          this.ctx.save();
+          this.ctx.lineWidth = 2;
+          for (let i = 0; i < this.正多边形.顶点数量; i++) {
+            this.ctx.beginPath();
+            const 顶点弧度 = this.正多边形.起始弧度 + (i * 2 * Math.PI) / this.正多边形.顶点数量;
+            const 顶点坐标 = {
+              x: this.正圆.圆心.x + this.正圆.半径 * Math.cos(顶点弧度),
+              y: this.正圆.圆心.y + this.正圆.半径 * Math.sin(顶点弧度),
+            };
+            this.ctx.arc(顶点坐标.x, 顶点坐标.y, 5, 0, Math.PI * 2);
+            this.ctx.closePath();
+            this.ctx.fillStyle = "gold";
+            this.ctx.fill();
+            this.ctx.strokeStyle = "#fff7";
+            this.ctx.stroke();
+          }
+          this.ctx.restore();
+        }
+
+        绘制顶点索引() {
+          this.ctx.save();
+          this.ctx.font = "14px 'Google Sans Code', sans-serif";
+          this.ctx.fillStyle = "#aaa";
+          this.ctx.textAlign = "center";
+          this.ctx.textBaseline = "middle";
+
+          for (let i = 0; i < this.正多边形.顶点数量; i++) {
+            const 顶点弧度 = this.正多边形.起始弧度 + (i * 2 * Math.PI) / this.正多边形.顶点数量;
+            // 计算索引文本位置（在顶点外侧）
+            const 索引偏移距离 = 20;
+            const 索引坐标 = {
+              x: this.正圆.圆心.x + (this.正圆.半径 + 索引偏移距离) * Math.cos(顶点弧度),
+              y: this.正圆.圆心.y + (this.正圆.半径 + 索引偏移距离) * Math.sin(顶点弧度),
+            };
+
+            // 绘制索引文本
+            this.ctx.fillText(i.toString(), 索引坐标.x, 索引坐标.y);
+          }
+          this.ctx.restore();
+        }
+
+        绘制全部() {
+          this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+          this.绘制正圆();
+          this.绘制正多边形();
+          this.绘制起始弧度参考线();
+          this.绘制圆心();
+          this.绘制正多边形顶点();
+          this.绘制顶点索引();
+        }
+
+        初始化滑块控制() {
+          // 获取滑块元素
+          const 顶点数量滑块 = document.getElementById("顶点数量滑块");
+          const 起始弧度滑块 = document.getElementById("起始弧度滑块");
+          const 顶点数量显示 = document.getElementById("顶点数量显示");
+          const 起始弧度显示 = document.getElementById("起始弧度显示");
+
+          // 顶点数量滑块事件
+          顶点数量滑块.addEventListener("input", (e) => {
+            const 新值 = parseInt(e.target.value);
+            this.正多边形.顶点数量 = 新值;
+            顶点数量显示.textContent = 新值;
+            // 立即更新绘制
+            requestAnimationFrame(this.绘制全部.bind(this));
+          });
+
+          // 起始弧度滑块事件
+          起始弧度滑块.addEventListener("input", (e) => {
+            const 新值 = parseInt(e.target.value) / 100; // 转换为弧度
+            this.正多边形.起始弧度 = 新值;
+            // 更新显示文本
+            if (Math.abs(新值) < 0.01) {
+              起始弧度显示.textContent = "0";
+            } else if (Math.abs(Math.abs(新值) - Math.PI) < 0.01) {
+              起始弧度显示.textContent = 新值 > 0 ? "π" : "-π";
+            } else if (Math.abs(Math.abs(新值) - Math.PI / 2) < 0.01) {
+              起始弧度显示.textContent = 新值 > 0 ? "π/2" : "-π/2";
+            } else if (Math.abs(Math.abs(新值) - Math.PI * 1.5) < 0.01) {
+              起始弧度显示.textContent = 新值 > 0 ? "3π/2" : "-3π/2";
+            } else if (Math.abs(Math.abs(新值) - Math.PI * 2) < 0.01) {
+              起始弧度显示.textContent = 新值 > 0 ? "2π" : "-2π";
+            } else {
+              起始弧度显示.textContent = 新值.toFixed(2);
+            }
+            // 立即更新绘制
+            requestAnimationFrame(this.绘制全部.bind(this));
+          });
+        }
+      }
+
+      new 正多边形范例();
+    </script>
+    <p class="分区普通文本">
+      因此，只剩一个问题：如何通过<span class="行内专业名词">弧度</span>，确定顶点坐标？假设顶点数量为<span
+        class="行内专业名词 等宽"
+        >5</span
+      >，那么两个相邻顶点之间的弧度偏移量为<span class="行内代码">2π / 5</span>，若起始弧度为<span class="行内代码"
+        >-(π / 2)</span
+      >，则每个顶点的弧度分别为：
+    </p>
+    <style>
+      .标点 {
+        color: rgb(158, 158, 158);
+      }
+
+      .圆括号 {
+        color: darkgoldenrod;
+      }
+    </style>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="等宽">顶点<span class="行内专业名词">1</span>：</span>
+        <span class="代码"
+          ><span class="标点">-</span>π <span class="标点">/</span> 2 <span class="标点">+</span>
+          <span class="圆括号">(</span>2π <span class="标点">/</span> 5<span class="圆括号">)</span>
+          <span class="标点">×</span> 0</span
+        >
+      </li>
+      <li class="分区列表项">
+        <span class="等宽">顶点<span class="行内专业名词">2</span>：</span>
+        <span class="代码"
+          ><span class="标点">-</span>π <span class="标点">/</span> 2 <span class="标点">+</span>
+          <span class="圆括号">(</span>2π <span class="标点">/</span> 5<span class="圆括号">)</span>
+          <span class="标点">×</span> 1</span
+        >
+      </li>
+      <li class="分区列表项">
+        <span class="等宽">顶点<span class="行内专业名词">3</span>：</span>
+        <span class="代码"
+          ><span class="标点">-</span>π <span class="标点">/</span> 2 <span class="标点">+</span>
+          <span class="圆括号">(</span>2π <span class="标点">/</span> 5<span class="圆括号">)</span>
+          <span class="标点">×</span> 2</span
+        >
+      </li>
+      <li class="分区列表项">
+        <span class="等宽">顶点<span class="行内专业名词">4</span>：</span>
+        <span class="代码"
+          ><span class="标点">-</span>π <span class="标点">/</span> 2 <span class="标点">+</span>
+          <span class="圆括号">(</span>2π <span class="标点">/</span> 5<span class="圆括号">)</span>
+          <span class="标点">×</span> 3</span
+        >
+      </li>
+      <li class="分区列表项">
+        <span class="等宽">顶点<span class="行内专业名词">5</span>：</span>
+        <span class="代码"
+          ><span class="标点">-</span>π <span class="标点">/</span> 2 <span class="标点">+</span>
+          <span class="圆括号">(</span>2π <span class="标点">/</span> 5<span class="圆括号">)</span>
+          <span class="标点">×</span> 4</span
+        >
+      </li>
+    </ul>
+    <p class="分区普通文本">将其写成公式，就是：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="行内专业名词 等宽"
+          >弧度偏移 <span class="标点">=</span> 2π <span class="标点">/</span> 顶点数量</span
+        >
+      </li>
+      <li class="分区列表项">
+        <span class="行内专业名词 等宽"
+          >顶点弧度 <span class="标点">=</span> 初始弧度 <span class="标点">+</span> 弧度偏移
+          <span class="标点">×</span> 顶点索引</span
+        >
+      </li>
+    </ul>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1">
+      <canvas
+        id="canvas-半径弧度算坐标"
+        style="width: 100%; height: calc(100% - 42px); background-color: #222"
+      ></canvas>
+    </figure>
+    <p class="分区普通文本">
+      <span class="专业名词"
+        >水平偏移 <span class="标点">=</span>
+        <span class="行内专业名词 等宽"
+          ><span class="行内代码" style="margin: 0">Math</span><span class="标点">.</span
+          ><span class="行内代码" style="margin: 0">Cos</span><span class="圆括号">(</span>弧度<span class="圆括号"
+            >)</span
+          >
+          <span class="标点">×</span> 半径</span
+        ></span
+      >
+      ，<span class="专业名词"
+        >垂直偏移 <span class="标点">=</span>
+        <span class="行内专业名词 等宽"
+          ><span class="行内代码" style="margin: 0">Math</span><span class="标点">.</span
+          ><span class="行内代码" style="margin: 0">Sin</span><span class="圆括号">(</span>弧度<span class="圆括号"
+            >)</span
+          >
+          <span class="标点">×</span> 半径</span
+        ></span
+      >，因此，顶点的坐标为：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="行内专业名词">顶点水平坐标</span>：<span class="专业名词"
+          >圆心水平坐标 <span class="标点">+</span> 水平偏移</span
+        >
+      </li>
+      <li class="分区列表项">
+        <span class="行内专业名词">顶点垂直坐标</span>：<span class="专业名词"
+          >圆心垂直坐标 <span class="标点">+</span> 垂直偏移</span
+        >
+      </li>
+    </ul>
+    <script>
+      class 半径弧度算坐标 {
+        constructor() {
+          this.canvas = document.getElementById("canvas-半径弧度算坐标");
+          this.ctx = this.canvas.getContext("2d");
+          this.dpr = window.devicePixelRatio || 1;
+          this.canvas.width = this.canvas.offsetWidth * this.dpr;
+          this.canvas.height = this.canvas.offsetHeight * this.dpr;
+          this.ctx.scale(this.dpr, this.dpr);
+
+          // 初始化参数
+          this.圆心 = {
+            x: this.canvas.offsetWidth / 2,
+            y: this.canvas.offsetHeight / 2,
+          };
+          this.半径 = 275;
+          this.顶点弧度 = 0;
+          this.顶点半径 = 8;
+          this.是否拖拽中 = false;
+          this.鼠标悬停在顶点上 = false;
+          this.最后鼠标位置 = null;
+
+          // 绑定事件
+          this.绑定事件();
+
+          // 开始绘制循环
+          this.绘制();
+        }
+
+        绑定事件() {
+          this.canvas.addEventListener("mousedown", this.鼠标按下.bind(this));
+          this.canvas.addEventListener("mousemove", this.鼠标移动.bind(this));
+          this.canvas.addEventListener("mouseup", this.鼠标松开.bind(this));
+          this.canvas.addEventListener("mouseleave", this.鼠标离开.bind(this));
+        }
+
+        鼠标按下(e) {
+          const rect = this.canvas.getBoundingClientRect();
+          const x = ((e.clientX - rect.left) * this.dpr) / this.dpr;
+          const y = ((e.clientY - rect.top) * this.dpr) / this.dpr;
+
+          // 检查是否点击在顶点上
+          const 顶点坐标 = this.计算顶点坐标();
+          const 距离 = Math.sqrt((x - 顶点坐标.x) ** 2 + (y - 顶点坐标.y) ** 2);
+
+          if (距离 <= this.顶点半径) {
+            this.是否拖拽中 = true;
+          }
+        }
+
+        鼠标移动(e) {
+          const rect = this.canvas.getBoundingClientRect();
+          const x = ((e.clientX - rect.left) * this.dpr) / this.dpr;
+          const y = ((e.clientY - rect.top) * this.dpr) / this.dpr;
+
+          // 记录鼠标位置
+          this.最后鼠标位置 = { x, y };
+
+          // 检查鼠标是否悬停在顶点上
+          const 顶点坐标 = this.计算顶点坐标();
+          const 距离 = Math.sqrt((x - 顶点坐标.x) ** 2 + (y - 顶点坐标.y) ** 2);
+          this.鼠标悬停在顶点上 = 距离 <= this.顶点半径;
+
+          if (this.是否拖拽中) {
+            // 计算新的弧度
+            const dx = x - this.圆心.x;
+            const dy = y - this.圆心.y;
+            this.顶点弧度 = Math.atan2(dy, dx);
+          }
+
+          // 重新绘制
+          this.绘制();
+        }
+
+        鼠标松开() {
+          this.是否拖拽中 = false;
+
+          // 松开鼠标后立即检查鼠标是否还在顶点上
+          const 顶点坐标 = this.计算顶点坐标();
+          const 鼠标位置 = this.获取鼠标位置();
+          if (鼠标位置) {
+            const 距离 = Math.sqrt((鼠标位置.x - 顶点坐标.x) ** 2 + (鼠标位置.y - 顶点坐标.y) ** 2);
+            this.鼠标悬停在顶点上 = 距离 <= this.顶点半径;
+            // 立即重新绘制以更新顶点颜色
+            this.绘制();
+          }
+        }
+
+        鼠标离开() {
+          this.是否拖拽中 = false;
+        }
+
+        计算顶点坐标() {
+          return {
+            x: this.圆心.x + this.半径 * Math.cos(this.顶点弧度),
+            y: this.圆心.y + this.半径 * Math.sin(this.顶点弧度),
+          };
+        }
+
+        获取鼠标位置() {
+          // 返回最后一次记录的鼠标位置
+          return this.最后鼠标位置;
+        }
+
+        绘制圆() {
+          this.ctx.save();
+          this.ctx.lineWidth = 2;
+          this.ctx.strokeStyle = "#5af3";
+          this.ctx.beginPath();
+          this.ctx.arc(this.圆心.x, this.圆心.y, this.半径, 0, 2 * Math.PI);
+          this.ctx.stroke();
+          this.ctx.restore();
+        }
+
+        绘制圆心() {
+          this.ctx.save();
+          this.ctx.beginPath();
+          this.ctx.arc(this.圆心.x, this.圆心.y, 7, 0, 2 * Math.PI);
+          this.ctx.fillStyle = "#aaa";
+          this.ctx.fill();
+          this.ctx.restore();
+        }
+
+        绘制顶点() {
+          this.ctx.save();
+          const 顶点坐标 = this.计算顶点坐标();
+
+          this.ctx.beginPath();
+          this.ctx.arc(顶点坐标.x, 顶点坐标.y, this.顶点半径, 0, 2 * Math.PI);
+          this.ctx.fillStyle = this.鼠标悬停在顶点上 || this.是否拖拽中 ? "gold" : "rgb(134, 94, 0)";
+          this.ctx.fill();
+          this.ctx.strokeStyle = "#fff";
+          this.ctx.lineWidth = 1;
+          this.ctx.stroke();
+          this.ctx.restore();
+        }
+
+        绘制连线() {
+          this.ctx.save();
+          const 顶点坐标 = this.计算顶点坐标();
+
+          // 黑白相间的虚线
+          this.ctx.lineWidth = 1;
+          this.ctx.setLineDash([10, 10]);
+          this.ctx.strokeStyle = "#0008";
+          this.ctx.beginPath();
+          this.ctx.moveTo(this.圆心.x, this.圆心.y);
+          this.ctx.lineTo(顶点坐标.x, 顶点坐标.y);
+          this.ctx.stroke();
+
+          this.ctx.lineDashOffset = 10;
+          this.ctx.strokeStyle = "#fff8";
+          this.ctx.stroke();
+
+          this.ctx.restore();
+        }
+
+        绘制坐标示意线() {
+          this.ctx.save();
+          const 顶点坐标 = this.计算顶点坐标();
+
+          // 横坐标示意线（绿色+透明虚线）
+          this.ctx.lineWidth = 2;
+          this.ctx.setLineDash([5, 5]);
+          this.ctx.strokeStyle = "lightgreen";
+          this.ctx.beginPath();
+          this.ctx.moveTo(this.圆心.x, 顶点坐标.y);
+          this.ctx.lineTo(顶点坐标.x, 顶点坐标.y);
+          this.ctx.stroke();
+
+          // 纵坐标示意线（蓝色+透明虚线）
+          this.ctx.strokeStyle = "lightblue";
+          this.ctx.beginPath();
+          this.ctx.moveTo(this.圆心.x, this.圆心.y);
+          this.ctx.lineTo(this.圆心.x, 顶点坐标.y);
+          this.ctx.stroke();
+
+          this.ctx.restore();
+        }
+
+        绘制公式文本() {
+          this.ctx.save();
+          const 顶点坐标 = this.计算顶点坐标();
+
+          this.ctx.font = "14px 'Google Sans Code', 'Consolas', sans-serif";
+          this.ctx.textAlign = "center";
+          this.ctx.textBaseline = "middle";
+
+          // 根据顶点位置动态调整文本显示位置
+          const 顶点在圆心上方 = 顶点坐标.y <= this.圆心.y;
+          const 横坐标示意线在圆心左方 = 顶点坐标.x <= this.圆心.x;
+
+          // 横坐标公式文本
+          const 横坐标文本 = "Math.Cos(弧度) × 半径";
+          const 横坐标文本Y = 顶点在圆心上方 ? 顶点坐标.y - 30 : 顶点坐标.y + 30;
+          const 横坐标文本X = (this.圆心.x + 顶点坐标.x) / 2;
+
+          // 绘制横坐标文本的圆角矩形底色
+          this.ctx.save();
+          this.ctx.fillStyle = "#ffffff1a";
+          this.ctx.lineWidth = 1;
+
+          // 测量文本尺寸
+          const 横坐标文本尺寸 = this.ctx.measureText(横坐标文本);
+          const 横坐标矩形宽度 = 横坐标文本尺寸.width + 20; // 左右各10px内边距
+          const 横坐标矩形高度 = 横坐标文本尺寸.actualBoundingBoxAscent + 横坐标文本尺寸.actualBoundingBoxDescent + 15; // 上下各5px内边距
+
+          // 绘制圆角矩形
+          this.ctx.beginPath();
+          this.ctx.roundRect(
+            横坐标文本X - 横坐标矩形宽度 / 2,
+            横坐标文本Y - 横坐标矩形高度 / 2,
+            横坐标矩形宽度,
+            横坐标矩形高度,
+            7
+          );
+          this.ctx.fill();
+          this.ctx.restore();
+
+          // 绘制横坐标文本
+          this.ctx.fillStyle = "#90ee90cc";
+          this.ctx.fillText(横坐标文本, 横坐标文本X, 横坐标文本Y);
+
+          // 纵坐标公式文本
+          const 纵坐标文本 = "Math.Sin(弧度) × 半径";
+          const 纵坐标文本X = 横坐标示意线在圆心左方 ? this.圆心.x + 20 : this.圆心.x - 20;
+          const 纵坐标文本Y = (this.圆心.y + 顶点坐标.y) / 2;
+
+          // 绘制纵坐标文本的圆角矩形底色
+          this.ctx.save();
+          this.ctx.fillStyle = "#ffffff1a";
+          this.ctx.lineWidth = 1;
+
+          // 测量文本尺寸
+          const 纵坐标文本尺寸 = this.ctx.measureText(纵坐标文本);
+          const 纵坐标矩形宽度 = 纵坐标文本尺寸.width + 20; // 左右各10px内边距
+          const 纵坐标矩形高度 = 纵坐标文本尺寸.actualBoundingBoxAscent + 纵坐标文本尺寸.actualBoundingBoxDescent + 15; // 上下各5px内边距
+
+          // 绘制圆角矩形
+          this.ctx.beginPath();
+          this.ctx.roundRect(
+            纵坐标文本X - (横坐标示意线在圆心左方 ? 0 : 纵坐标矩形宽度),
+            纵坐标文本Y - 纵坐标矩形高度 / 2,
+            纵坐标矩形宽度,
+            纵坐标矩形高度,
+            7
+          );
+          this.ctx.fill();
+          this.ctx.restore();
+
+          // 绘制纵坐标文本
+          this.ctx.fillStyle = "#add8e6cc";
+          this.ctx.textAlign = 横坐标示意线在圆心左方 ? "left" : "right";
+          this.ctx.fillText(纵坐标文本, 纵坐标文本X + (this.ctx.textAlign === "left" ? 10 : -10), 纵坐标文本Y);
+
+          this.ctx.restore();
+        }
+
+        绘制() {
+          // 清空画布
+          this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+          // 绘制各个元素
+          this.绘制圆();
+          this.绘制连线();
+          this.绘制坐标示意线();
+          this.绘制公式文本();
+          this.绘制顶点();
+          this.绘制圆心();
+        }
+      }
+
+      new 半径弧度算坐标();
+    </script>
+    <p class="分区普通文本">
+      有了计算公式，让我们来做一个正六边形，初始弧度为<span class="行内代码">-π / 2</span>，半径为<span class="行内代码"
+        >150</span
+      >。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        class 正六边形范例 {
+          constructor() {
+            this.canvas = document.getElementById("canvas-正六边形");
+            this.ctx = this.canvas.getContext("2d");
+            this.dpr = window.devicePixelRatio || 1;
+            this.canvas.width = this.canvas.offsetWidth * this.dpr;
+            this.canvas.height = this.canvas.offsetHeight * this.dpr;
+            this.ctx.scale(this.dpr, this.dpr);
+            this.正多边形 = {
+              圆心: {
+                x: this.canvas.offsetWidth / 2,
+                y: this.canvas.offsetHeight / 2,
+              },
+              半径: 150,
+              起始弧度: -Math.PI / 2,
+              顶点数量: 6,
+              // 上面4个属性其实都是为了确定顶点坐标
+              顶点坐标: [],
+            };
+  
+            requestAnimationFrame(this.绘制全部.bind(this));
+          }
+
+          // 最重要的核心函数，确定所有顶点的坐标
+          初始化多边形顶点() {
+            this.正多边形.顶点坐标 = [];
+            const 弧度偏移量 = 2 * Math.PI / this.正多边形.顶点数量;
+            for (let i = 0; i < this.正多边形.顶点数量; i++) {
+              const 顶点弧度 = this.正多边形.起始弧度 + i * 弧度偏移量;
+              const 顶点坐标 = {
+                x: this.正多边形.圆心.x + this.正多边形.半径 * Math.cos(顶点弧度),
+                y: this.正多边形.圆心.y + this.正多边形.半径 * Math.sin(顶点弧度),
+              };
+              this.正多边形.顶点坐标.push(顶点坐标);
+            }
+          }
+  
+          绘制圆周() {
+            this.ctx.save();
+            this.ctx.lineWidth = 2;
+            this.ctx.strokeStyle = "#5af3";
+            this.ctx.beginPath();
+            this.ctx.arc(
+              this.正多边形.圆心.x, 
+              this.正多边形.圆心.y, 
+              this.正多边形.半径, 
+              0, 
+              2 * Math.PI
+            );
+            this.ctx.stroke();
+            this.ctx.restore();
+          }
+  
+          绘制圆心() {
+            this.ctx.save();
+            this.ctx.beginPath();
+            this.ctx.arc(this.正多边形.圆心.x, this.正多边形.圆心.y, 7, 0, 2 * Math.PI);
+            this.ctx.fillStyle = "#aaa";
+            this.ctx.fill();
+            this.ctx.restore();
+          }
+            
+          绘制多边形() {
+            this.ctx.save();
+            this.ctx.lineWidth = 2;
+            this.ctx.strokeStyle = "lightskyblue";
+            this.ctx.fillStyle = "#87cefa25";
+            this.ctx.beginPath();
+  
+            // 移动到第一个顶点
+            this.ctx.moveTo(this.正多边形.顶点坐标[0].x, this.正多边形.顶点坐标[0].y);
+  
+            // 连接所有顶点
+            for (let i = 1; i < this.正多边形.顶点坐标.length; i++) {
+              this.ctx.lineTo(this.正多边形.顶点坐标[i].x, this.正多边形.顶点坐标[i].y);
+            }
+  
+            // 闭合路径
+            this.ctx.closePath();
+            this.ctx.fill();
+            this.ctx.stroke();
+            this.ctx.restore();
+          }
+  
+          绘制顶点() {
+            this.ctx.save();
+            this.ctx.lineWidth = 2;
+  
+            for (let i = 0; i < this.正多边形.顶点坐标.length; i++) {
+              const 顶点 = this.正多边形.顶点坐标[i];
+  
+              this.ctx.beginPath();
+              this.ctx.arc(顶点.x, 顶点.y, 5, 0, Math.PI * 2);
+              this.ctx.fillStyle = "gold";
+              this.ctx.fill();
+              this.ctx.strokeStyle = "#fff";
+              this.ctx.stroke();
+  
+              // 绘制顶点索引
+              this.ctx.font = "14px 'Google Sans Code', 'Consolas', sans-serif";
+              this.ctx.fillStyle = "#fffa";
+              this.ctx.textAlign = "center";
+              this.ctx.textBaseline = "middle";
+  
+              // 计算索引文本位置（在顶点外侧）
+              const 索引偏移距离 = 20;
+              const 索引坐标 = {
+                x:
+                  this.正多边形.圆心.x +
+                  (this.正多边形.半径 + 索引偏移距离) * 
+                  Math.cos(this.正多边形.起始弧度 + (i * 2 * Math.PI) / this.正多边形.顶点数量),
+                y:
+                  this.正多边形.圆心.y +
+                  (this.正多边形.半径 + 索引偏移距离) * 
+                  Math.sin(this.正多边形.起始弧度 + (i * 2 * Math.PI) / this.正多边形.顶点数量),
+              };
+  
+              this.ctx.fillText(i.toString(), 索引坐标.x, 索引坐标.y);
+            }
+  
+            this.ctx.restore();
+          }
+  
+          绘制全部() {
+            // 清空画布
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  
+            // 初始化顶点
+            this.初始化多边形顶点();
+  
+            // 绘制各个元素
+            this.绘制圆周();
+            this.绘制多边形();
+            this.绘制圆心();
+            this.绘制顶点();
+          }
+        }
+  
+        new 正六边形范例();  
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-正六边形" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <script>
+      class 正六边形范例 {
+        constructor() {
+          this.canvas = document.getElementById("canvas-正六边形");
+          this.ctx = this.canvas.getContext("2d");
+          this.dpr = window.devicePixelRatio || 1;
+          this.canvas.width = this.canvas.offsetWidth * this.dpr;
+          this.canvas.height = this.canvas.offsetHeight * this.dpr;
+          this.ctx.scale(this.dpr, this.dpr);
+          this.正多边形 = {
+            圆心: {
+              x: this.canvas.offsetWidth / 2,
+              y: this.canvas.offsetHeight / 2,
+            },
+            半径: 150,
+            起始弧度: -Math.PI / 2,
+            顶点数量: 6,
+            顶点坐标: [],
+          };
+
+          requestAnimationFrame(this.绘制全部.bind(this));
+        }
+
+        绘制圆周() {
+          this.ctx.save();
+          this.ctx.lineWidth = 2;
+          this.ctx.strokeStyle = "#5af3";
+          this.ctx.beginPath();
+          this.ctx.arc(this.正多边形.圆心.x, this.正多边形.圆心.y, this.正多边形.半径, 0, 2 * Math.PI);
+          this.ctx.stroke();
+          this.ctx.restore();
+        }
+
+        绘制圆心() {
+          this.ctx.save();
+          this.ctx.beginPath();
+          this.ctx.arc(this.正多边形.圆心.x, this.正多边形.圆心.y, 7, 0, 2 * Math.PI);
+          this.ctx.fillStyle = "#aaa";
+          this.ctx.fill();
+          this.ctx.restore();
+        }
+
+        初始化多边形顶点() {
+          this.正多边形.顶点坐标 = [];
+          const 弧度偏移量 = 2 * Math.PI / this.正多边形.顶点数量;
+          for (let i = 0; i < this.正多边形.顶点数量; i++) {
+            const 顶点弧度 = this.正多边形.起始弧度 + i * 弧度偏移量;
+            const 顶点坐标 = {
+              x: this.正多边形.圆心.x + this.正多边形.半径 * Math.cos(顶点弧度),
+              y: this.正多边形.圆心.y + this.正多边形.半径 * Math.sin(顶点弧度),
+            };
+            this.正多边形.顶点坐标.push(顶点坐标);
+          }
+        }
+
+        绘制多边形() {
+          this.ctx.save();
+          this.ctx.lineWidth = 2;
+          this.ctx.strokeStyle = "lightskyblue";
+          this.ctx.fillStyle = "#87cefa25";
+          this.ctx.beginPath();
+
+          // 移动到第一个顶点
+          this.ctx.moveTo(this.正多边形.顶点坐标[0].x, this.正多边形.顶点坐标[0].y);
+
+          // 连接所有顶点
+          for (let i = 1; i < this.正多边形.顶点坐标.length; i++) {
+            this.ctx.lineTo(this.正多边形.顶点坐标[i].x, this.正多边形.顶点坐标[i].y);
+          }
+
+          // 闭合路径
+          this.ctx.closePath();
+          this.ctx.fill();
+          this.ctx.stroke();
+          this.ctx.restore();
+        }
+
+        绘制顶点() {
+          this.ctx.save();
+          this.ctx.lineWidth = 2;
+
+          for (let i = 0; i < this.正多边形.顶点坐标.length; i++) {
+            const 顶点 = this.正多边形.顶点坐标[i];
+
+            this.ctx.beginPath();
+            this.ctx.arc(顶点.x, 顶点.y, 5, 0, Math.PI * 2);
+            this.ctx.fillStyle = "gold";
+            this.ctx.fill();
+            this.ctx.strokeStyle = "#fff";
+            this.ctx.stroke();
+
+            // 绘制顶点索引
+            this.ctx.font = "14px 'Google Sans Code', 'Consolas', sans-serif";
+            this.ctx.fillStyle = "#fffa";
+            this.ctx.textAlign = "center";
+            this.ctx.textBaseline = "middle";
+
+            // 计算索引文本位置（在顶点外侧）
+            const 索引偏移距离 = 20;
+            const 索引坐标 = {
+              x:
+                this.正多边形.圆心.x +
+                (this.正多边形.半径 + 索引偏移距离) *
+                  Math.cos(this.正多边形.起始弧度 + (i * 2 * Math.PI) / this.正多边形.顶点数量),
+              y:
+                this.正多边形.圆心.y +
+                (this.正多边形.半径 + 索引偏移距离) *
+                  Math.sin(this.正多边形.起始弧度 + (i * 2 * Math.PI) / this.正多边形.顶点数量),
+            };
+
+            this.ctx.fillText(i.toString(), 索引坐标.x, 索引坐标.y);
+          }
+
+          this.ctx.restore();
+        }
+
+        绘制全部() {
+          // 清空画布
+          this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+          // 初始化顶点
+          this.初始化多边形顶点();
+
+          // 绘制各个元素
+          this.绘制圆周();
+          this.绘制多边形();
+          this.绘制圆心();
+          this.绘制顶点();
+        }
+      }
+
+      new 正六边形范例();
+    </script>
+
     <h3 class="分区标题 分区3级标题">绘制<span class="行内专业名词">文本</span></h3>
     <p class="分区普通文本">要绘制文本，需要知道<span class="行内专业名词">2</span>个必要条件：</p>
     <ul class="分区列表">

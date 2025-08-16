@@ -574,6 +574,15 @@
             break;
         }
 
+        // 绘制步骤指示器
+        ctx_deltaTime.fillStyle = "#666";
+        for (let i = 0; i <= totalSteps; i++) {
+          const x = 50 + i * stepDistance;
+          // 刻度放在两个进度条之间的垂直居中位置
+          const scaleY = (currentTimeBarY_delta + lastTimeBarY_delta + barHeight_delta) / 2;
+          ctx_deltaTime.fillRect(x - 1, scaleY, 2, 10);
+        }
+
         // 绘制currentTime进度条
         ctx_deltaTime.fillStyle = "#4CAF50";
         ctx_deltaTime.fillRect(50, currentTimeBarY_delta, currentTimeBarX_delta - 50, barHeight_delta);
@@ -624,7 +633,7 @@
             // 下方区域：从lastTime进度条下边缘到currentTime进度条上边缘
             ctx_deltaTime.fillRect(
               lastTimeBarX_delta,
-              lastTimeBarY_delta + barHeight_delta,
+              lastTimeBarY_delta,
               currentTimeBarX_delta - lastTimeBarX_delta,
               currentTimeBarY_delta + barHeight_delta - (lastTimeBarY_delta + barHeight_delta)
             );
@@ -646,15 +655,6 @@
         ctx_deltaTime.fillText("currentTime（内置参数）", 14, currentTimeBarY_delta - 13);
         ctx_deltaTime.fillText("lastTime", 14, lastTimeBarY_delta + 30);
 
-        // 绘制步骤指示器
-        ctx_deltaTime.fillStyle = "#666";
-        for (let i = 0; i <= totalSteps; i++) {
-          const x = 50 + i * stepDistance;
-          // 刻度放在两个进度条之间的垂直居中位置
-          const scaleY = (currentTimeBarY_delta + lastTimeBarY_delta + barHeight_delta) / 2;
-          ctx_deltaTime.fillRect(x - 1, scaleY, 2, 10);
-        }
-
         requestAnimationFrame(drawDeltaTimeAnimation);
       }
 
@@ -664,9 +664,9 @@
   </article>
 
   <article class="正文分区">
-    <h2 class="分区标题 分区2级标题">动画案例</h2>
+    <h2 class="分区标题 分区2级标题">动画迭代控制</h2>
 
-    <h3 class="分区标题 分区3级标题">无限循环动画</h3>
+    <h3 class="分区标题 分区3级标题">无限迭代</h3>
     <pre class="line-numbers">
       <code class="lang-javascript">
         //---------------- 获取Canvas 获取渲染上下文 ----------------
@@ -762,13 +762,12 @@
       requestAnimationFrame(draw_move);
     </script>
 
-    <h3 class="分区标题 分区3级标题">添加动画停止条件</h3>
+    <h3 class="分区标题 分区3级标题">单次迭代</h3>
     <p class="分区普通文本">
-      比较常见的做法就是设置一个<span class="行内专业名词">布尔</span>变量，然后把这个布尔变量作为<span class="行内代码"
-        >requestAnimationFrame()</span
-      >的条件。当动画触发停止条件时，将这个<span class="行内专业名词">布尔</span>变量设置为<span class="行内代码"
-        >false</span
-      >即可。
+      如果只想让动画迭代<span class="行内专业名词 等宽">1</span>次，比较常见的做法是设置一个<span class="行内专业名词"
+        >布尔</span
+      >变量，把这个布尔变量作为<span class="行内代码">requestAnimationFrame()</span
+      >的条件。当动画触发停止条件时，修改这个<span class="行内专业名词">布尔</span>变量的值。
     </p>
     <pre class="line-numbers">
       <code class="lang-javascript">
@@ -958,7 +957,7 @@
       requestAnimationFrame(draw_move_stop);
     </script>
 
-    <h3 class="分区标题 分区3级标题">延时动画</h3>
+    <h3 class="分区标题 分区3级标题">延时迭代</h3>
     <p class="分区普通文本">
       核心思想还是用<span class="行内代码">currentTime</span>来计算时间差，当时间差超过<span class="行内专业名词"
         >延时时长</span

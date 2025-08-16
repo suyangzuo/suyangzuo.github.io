@@ -2156,7 +2156,7 @@
 
     <h3 class="分区标题 分区3级标题">使用<span class="行内专业名词">索引</span>处理层叠关系</h3>
     <p class="分区普通文本">
-      让我们仔细思考一下，用<span class="行内专业名词">分支互斥</span>虽然有效，但这种做法好吗？让我们来看看问题所在：
+      仔细思考一下，用<span class="行内专业名词">分支互斥</span>虽然有效，但这种做法好吗？让我们来看看问题所在：
     </p>
     <ul class="分区列表">
       <li class="分区列表项">
@@ -2179,13 +2179,11 @@
     <p class="分区普通文本">我们需要解决上面3个问题，其思路为：</p>
     <ul class="分区列表">
       <li class="分区列表项">
-        将<span class="行内专业名词 等宽">3</span>个图形按照绘制顺序，<span class="行内代码">push</span>到<span
-          class="行内专业名词"
-          >栈</span
+        将<span class="行内专业名词 等宽">3</span>个图形按照绘制顺序，放到<span class="行内专业名词">数组</span
         >中，<span class="行内专业名词">索引</span>就是天然的层叠顺序，越靠后的图形，越在上方。
       </li>
       <li class="分区列表项">
-        鼠标移动时，对<span class="行内专业名词">栈</span>进行<span class="强调">从后往前</span
+        鼠标移动时，对<span class="行内专业名词">图形数组</span>进行<span class="强调">从后往前</span
         >依次检测，当检测到第一个符合条件的图形时，立刻停止检测，这样就能确保只有最上方的图形能触发效果。
       </li>
       <li class="分区列表项">所有图形全部使用<span class="行内代码">isPointInPath</span>检测鼠标是否位于内部。</li>
