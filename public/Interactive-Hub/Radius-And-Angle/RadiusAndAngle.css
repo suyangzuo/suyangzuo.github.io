@@ -73,8 +73,7 @@
 }
 
 .坐标系选项 input[type="radio"]:checked + .选项文本 {
-  color: #64b5f6;
-  text-shadow: 0 0 8px rgba(100, 181, 246, 0.5);
+  color: lightskyblue;
 }
 
 .选项文本 {
