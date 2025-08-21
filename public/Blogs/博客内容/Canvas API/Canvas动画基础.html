@@ -106,209 +106,242 @@
       用代码写动画，就可以在动画播放过程中与动画进行交互，比如实时调整动画播放的速度，这是普通动画无法比拟的。此外，由于动画实际上是纯文本代码，因此占用容量非常小，非常适合部署在网页中运行。
     </p>
     <script>
-      const canvas_speed_control = document.getElementById("canvas-speed-control");
-      const ctx_speed_control = canvas_speed_control.getContext("2d");
-      const dpr_speed_control = window.devicePixelRatio || 1;
-      canvas_speed_control.width = canvas_speed_control.offsetWidth * dpr_speed_control;
-      canvas_speed_control.height = canvas_speed_control.offsetHeight * dpr_speed_control;
-      ctx_speed_control.scale(dpr_speed_control, dpr_speed_control);
+      class SpeedControlAnimation {
+        constructor(canvasId) {
+          this.canvas = document.getElementById(canvasId);
+          this.ctx = this.canvas.getContext("2d");
+          this.dpr = window.devicePixelRatio || 1;
 
-      // 旋转小球动画参数
-      let lastTime_rotation = 0;
-      let rotationAngle = 0;
-      let rotationSpeed = 300; // 度/秒，默认速度
+          // 设置Canvas尺寸
+          this.canvas.width = this.canvas.offsetWidth * this.dpr;
+          this.canvas.height = this.canvas.offsetHeight * this.dpr;
+          this.ctx.scale(this.dpr, this.dpr);
 
-      // 小球参数
-      const ballRadius = 15;
-      const orbitRadius = 80;
-      const centerX = canvas_speed_control.offsetWidth / 2;
-      const centerY = canvas_speed_control.offsetHeight / 2;
+          // 旋转小球动画参数
+          this.lastTime = 0;
+          this.rotationAngle = 0;
+          this.rotationSpeed = 300; // 度/秒，默认速度
 
-      // 滑块参数
-      const sliderWidth = 200;
-      const sliderHeight = 20;
-      const sliderX = 100; // 向右移动40px
-      const sliderY = canvas_speed_control.offsetHeight - 60;
-      const sliderMin = 100;
-      const sliderMax = 1000;
-      const sliderStep = 50;
-      let sliderValue = 300;
-      let isDragging = false;
-      let lastMouseX = 0;
-      let lastMouseY = 0;
+          // 小球参数
+          this.ballRadius = 15;
+          this.orbitRadius = 80;
+          this.centerX = this.canvas.offsetWidth / 2;
+          this.centerY = this.canvas.offsetHeight / 2;
 
-      // 绘制旋转小球
-      function drawRotatingBall() {
-        // 清除画布
-        ctx_speed_control.clearRect(0, 0, canvas_speed_control.offsetWidth, canvas_speed_control.offsetHeight);
+          // 滑块参数
+          this.sliderWidth = 200;
+          this.sliderHeight = 20;
+          this.sliderX = 100;
+          this.sliderY = this.canvas.offsetHeight - 60;
+          this.sliderMin = 100;
+          this.sliderMax = 1000;
+          this.sliderStep = 50;
+          this.sliderValue = 300;
+          this.isDragging = false;
+          this.lastMouseX = 0;
+          this.lastMouseY = 0;
 
-        // 绘制轨道
-        ctx_speed_control.strokeStyle = "#444";
-        ctx_speed_control.lineWidth = 2;
-        ctx_speed_control.beginPath();
-        ctx_speed_control.arc(centerX, centerY, orbitRadius, 0, Math.PI * 2);
-        ctx_speed_control.stroke();
+          // 绑定事件
+          this.bindEvents();
 
-        // 计算小球位置
-        const ballX = centerX + orbitRadius * Math.cos((rotationAngle * Math.PI) / 180);
-        const ballY = centerY + orbitRadius * Math.sin((rotationAngle * Math.PI) / 180);
+          // 启动动画
+          this.start();
+        }
 
-        // 绘制小球
-        ctx_speed_control.fillStyle = "#ff6b6b";
-        ctx_speed_control.beginPath();
-        ctx_speed_control.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
-        ctx_speed_control.fill();
+        // 绘制旋转小球
+        drawRotatingBall() {
+          // 清除画布
+          this.ctx.clearRect(0, 0, this.canvas.offsetWidth, this.canvas.offsetHeight);
 
-        // 绘制小球边框
-        ctx_speed_control.strokeStyle = "#fff";
-        ctx_speed_control.lineWidth = 2;
-        ctx_speed_control.stroke();
+          // 绘制轨道
+          this.ctx.strokeStyle = "#444";
+          this.ctx.lineWidth = 2;
+          this.ctx.beginPath();
+          this.ctx.arc(this.centerX, this.centerY, this.orbitRadius, 0, Math.PI * 2);
+          this.ctx.stroke();
+
+          // 计算小球位置
+          const ballX = this.centerX + this.orbitRadius * Math.cos((this.rotationAngle * Math.PI) / 180);
+          const ballY = this.centerY + this.orbitRadius * Math.sin((this.rotationAngle * Math.PI) / 180);
+
+          // 绘制小球
+          this.ctx.fillStyle = "#ff6b6b";
+          this.ctx.beginPath();
+          this.ctx.arc(ballX, ballY, this.ballRadius, 0, Math.PI * 2);
+          this.ctx.fill();
+
+          // 绘制小球边框
+          this.ctx.strokeStyle = "#fff";
+          this.ctx.lineWidth = 2;
+          this.ctx.stroke();
+        }
+
+        // 绘制滑块
+        drawSlider() {
+          // 绘制"旋转速度"文字
+          this.ctx.fillStyle = "silver";
+          this.ctx.font = "16px sans-serif";
+          this.ctx.textAlign = "right";
+          this.ctx.fillText("旋转速度", this.sliderX - 15, this.sliderY + 15);
+
+          // 绘制滑块轨道
+          this.ctx.fillStyle = "#333";
+          this.ctx.fillRect(this.sliderX, this.sliderY, this.sliderWidth, this.sliderHeight);
+
+          // 计算滑块位置
+          const sliderProgress = (this.sliderValue - this.sliderMin) / (this.sliderMax - this.sliderMin);
+          const sliderPosX = this.sliderX + sliderProgress * this.sliderWidth;
+
+          // 绘制已滑过的部分
+          this.ctx.fillStyle = "#4CAF50";
+          this.ctx.fillRect(this.sliderX, this.sliderY, sliderPosX - this.sliderX, this.sliderHeight);
+
+          // 检查鼠标是否在滑块上
+          const rect = this.canvas.getBoundingClientRect();
+          const mouseX = ((this.lastMouseX - rect.left) * (this.canvas.width / rect.width)) / this.dpr;
+          const mouseY = ((this.lastMouseY - rect.top) * (this.canvas.height / rect.height)) / this.dpr;
+
+          const isHovering =
+            mouseX >= sliderPosX - 5 &&
+            mouseX <= sliderPosX + 5 &&
+            mouseY >= this.sliderY - 5 &&
+            mouseY <= this.sliderY + this.sliderHeight + 5;
+
+          // 绘制滑块（根据悬停状态或拖拽状态改变样式）
+          if (isHovering || this.isDragging) {
+            this.ctx.fillStyle = "#ffd700"; // 悬停或拖拽时变为金色
+            this.ctx.shadowColor = "#ffd700";
+            this.ctx.shadowBlur = 10;
+          } else {
+            this.ctx.fillStyle = "#fff";
+            this.ctx.shadowBlur = 0;
+          }
+
+          this.ctx.fillRect(sliderPosX - 5, this.sliderY - 5, 10, this.sliderHeight + 10);
+          this.ctx.strokeStyle = isHovering || this.isDragging ? "#ffb700" : "#666";
+          this.ctx.lineWidth = isHovering || this.isDragging ? 2 : 1;
+          this.ctx.strokeRect(sliderPosX - 5, this.sliderY - 5, 10, this.sliderHeight + 10);
+
+          // 重置阴影
+          this.ctx.shadowBlur = 0;
+
+          // 绘制数值
+          this.ctx.fillStyle = "lightskyblue";
+          this.ctx.font = "16px 'JetBrains Mono', Consolas, monospace";
+          this.ctx.textAlign = "left";
+          this.ctx.fillText(this.sliderValue, this.sliderX + this.sliderWidth + 15, this.sliderY + 15);
+        }
+
+        // 动画循环
+        animate(currentTime) {
+          // 计算时间差（毫秒转换为秒）
+          const deltaTime = (currentTime - this.lastTime) / 1000;
+          this.lastTime = currentTime;
+
+          // 基于时间计算旋转角度
+          const angleChange = this.rotationSpeed * deltaTime;
+          this.rotationAngle += angleChange;
+
+          // 保持角度在0-360度范围内
+          if (this.rotationAngle >= 360) {
+            this.rotationAngle -= 360;
+          }
+
+          // 绘制动画
+          this.drawRotatingBall();
+          this.drawSlider();
+
+          requestAnimationFrame(this.animate.bind(this));
+        }
+
+        // 处理鼠标按下事件
+        handleMouseDown(e) {
+          const rect = this.canvas.getBoundingClientRect();
+          const x = ((e.clientX - rect.left) * (this.canvas.width / rect.width)) / this.dpr;
+          const y = ((e.clientY - rect.top) * (this.canvas.height / rect.height)) / this.dpr;
+
+          // 检查是否点击在滑块上
+          const sliderProgress = (this.sliderValue - this.sliderMin) / (this.sliderMax - this.sliderMin);
+          const sliderPosX = this.sliderX + sliderProgress * this.sliderWidth;
+
+          if (
+            x >= sliderPosX - 5 &&
+            x <= sliderPosX + 5 &&
+            y >= this.sliderY - 5 &&
+            y <= this.sliderY + this.sliderHeight + 5
+          ) {
+            this.isDragging = true;
+          }
+        }
+
+        // 处理鼠标移动事件
+        handleMouseMove(e) {
+          // 更新鼠标位置
+          this.lastMouseX = e.clientX;
+          this.lastMouseY = e.clientY;
+
+          if (this.isDragging) {
+            const rect = this.canvas.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) * (this.canvas.width / rect.width)) / this.dpr;
+
+            // 计算新的滑块值
+            let newValue = ((x - this.sliderX) / this.sliderWidth) * (this.sliderMax - this.sliderMin) + this.sliderMin;
+            newValue = Math.max(this.sliderMin, Math.min(this.sliderMax, newValue));
+
+            // 按步进值调整
+            this.sliderValue = Math.round(newValue / this.sliderStep) * this.sliderStep;
+
+            // 更新旋转速度
+            this.rotationSpeed = this.sliderValue;
+          }
+
+          // 检查鼠标是否在滑块上并更新鼠标样式
+          const rect = this.canvas.getBoundingClientRect();
+          const mouseX = ((e.clientX - rect.left) * (this.canvas.width / rect.width)) / this.dpr;
+          const mouseY = ((e.clientY - rect.top) * (this.canvas.height / rect.height)) / this.dpr;
+
+          const sliderProgress = (this.sliderValue - this.sliderMin) / (this.sliderMax - this.sliderMin);
+          const sliderPosX = this.sliderX + sliderProgress * this.sliderWidth;
+
+          const isHovering =
+            mouseX >= sliderPosX - 5 &&
+            mouseX <= sliderPosX + 5 &&
+            mouseY >= this.sliderY - 5 &&
+            mouseY <= this.sliderY + this.sliderHeight + 5;
+
+          if (isHovering || this.isDragging) {
+            this.canvas.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
+          } else {
+            this.canvas.style.cursor = "default";
+          }
+        }
+
+        // 处理鼠标松开事件
+        handleMouseUp() {
+          this.isDragging = false;
+        }
+
+        // 处理鼠标离开事件
+        handleMouseLeave() {
+          this.canvas.style.cursor = "default";
+        }
+
+        // 绑定事件
+        bindEvents() {
+          this.canvas.addEventListener("mousedown", this.handleMouseDown.bind(this));
+          this.canvas.addEventListener("mousemove", this.handleMouseMove.bind(this));
+          this.canvas.addEventListener("mouseup", this.handleMouseUp.bind(this));
+          this.canvas.addEventListener("mouseleave", this.handleMouseLeave.bind(this));
+        }
+
+        // 启动动画
+        start() {
+          requestAnimationFrame(this.animate.bind(this));
+        }
       }
 
-      // 绘制滑块
-      function drawSlider() {
-        // 绘制"旋转速度"文字
-        ctx_speed_control.fillStyle = "silver";
-        ctx_speed_control.font = "16px sans-serif";
-        ctx_speed_control.textAlign = "right";
-        ctx_speed_control.fillText("旋转速度", sliderX - 15, sliderY + 15);
-
-        // 绘制滑块轨道
-        ctx_speed_control.fillStyle = "#333";
-        ctx_speed_control.fillRect(sliderX, sliderY, sliderWidth, sliderHeight);
-
-        // 计算滑块位置
-        const sliderProgress = (sliderValue - sliderMin) / (sliderMax - sliderMin);
-        const sliderPosX = sliderX + sliderProgress * sliderWidth;
-
-        // 绘制已滑过的部分
-        ctx_speed_control.fillStyle = "#4CAF50";
-        ctx_speed_control.fillRect(sliderX, sliderY, sliderPosX - sliderX, sliderHeight);
-
-        // 检查鼠标是否在滑块上
-        const rect = canvas_speed_control.getBoundingClientRect();
-        const mouseX = ((lastMouseX - rect.left) * (canvas_speed_control.width / rect.width)) / dpr_speed_control;
-        const mouseY = ((lastMouseY - rect.top) * (canvas_speed_control.height / rect.height)) / dpr_speed_control;
-
-        const isHovering =
-          mouseX >= sliderPosX - 5 &&
-          mouseX <= sliderPosX + 5 &&
-          mouseY >= sliderY - 5 &&
-          mouseY <= sliderY + sliderHeight + 5;
-
-        // 绘制滑块（根据悬停状态或拖拽状态改变样式）
-        if (isHovering || isDragging) {
-          ctx_speed_control.fillStyle = "#ffd700"; // 悬停或拖拽时变为金色
-          ctx_speed_control.shadowColor = "#ffd700";
-          ctx_speed_control.shadowBlur = 10;
-        } else {
-          ctx_speed_control.fillStyle = "#fff";
-          ctx_speed_control.shadowBlur = 0;
-        }
-
-        ctx_speed_control.fillRect(sliderPosX - 5, sliderY - 5, 10, sliderHeight + 10);
-        ctx_speed_control.strokeStyle = isHovering || isDragging ? "#ffb700" : "#666";
-        ctx_speed_control.lineWidth = isHovering || isDragging ? 2 : 1;
-        ctx_speed_control.strokeRect(sliderPosX - 5, sliderY - 5, 10, sliderHeight + 10);
-
-        // 重置阴影
-        ctx_speed_control.shadowBlur = 0;
-
-        // 绘制数值
-        ctx_speed_control.fillStyle = "lightskyblue";
-        ctx_speed_control.font = "16px 'JetBrains Mono', Consolas, monospace";
-        ctx_speed_control.textAlign = "left";
-        ctx_speed_control.fillText(sliderValue, sliderX + sliderWidth + 15, sliderY + 15);
-      }
-
-      // 动画循环
-      function animateRotation(currentTime) {
-        // 计算时间差（毫秒转换为秒）
-        const deltaTime = (currentTime - lastTime_rotation) / 1000;
-        lastTime_rotation = currentTime;
-
-        // 基于时间计算旋转角度
-        const angleChange = rotationSpeed * deltaTime;
-        rotationAngle += angleChange;
-
-        // 保持角度在0-360度范围内
-        if (rotationAngle >= 360) {
-          rotationAngle -= 360;
-        }
-
-        // 绘制动画
-        drawRotatingBall();
-        drawSlider();
-
-        requestAnimationFrame(animateRotation);
-      }
-
-      // 鼠标事件处理
-      canvas_speed_control.addEventListener("mousedown", function (e) {
-        const rect = canvas_speed_control.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) * (canvas_speed_control.width / rect.width)) / dpr_speed_control;
-        const y = ((e.clientY - rect.top) * (canvas_speed_control.height / rect.height)) / dpr_speed_control;
-
-        // 检查是否点击在滑块上
-        const sliderProgress = (sliderValue - sliderMin) / (sliderMax - sliderMin);
-        const sliderPosX = sliderX + sliderProgress * sliderWidth;
-
-        if (x >= sliderPosX - 5 && x <= sliderPosX + 5 && y >= sliderY - 5 && y <= sliderY + sliderHeight + 5) {
-          isDragging = true;
-        }
-      });
-
-      canvas_speed_control.addEventListener("mousemove", function (e) {
-        // 更新鼠标位置
-        lastMouseX = e.clientX;
-        lastMouseY = e.clientY;
-
-        if (isDragging) {
-          const rect = canvas_speed_control.getBoundingClientRect();
-          const x = ((e.clientX - rect.left) * (canvas_speed_control.width / rect.width)) / dpr_speed_control;
-
-          // 计算新的滑块值
-          let newValue = ((x - sliderX) / sliderWidth) * (sliderMax - sliderMin) + sliderMin;
-          newValue = Math.max(sliderMin, Math.min(sliderMax, newValue));
-
-          // 按步进值调整
-          sliderValue = Math.round(newValue / sliderStep) * sliderStep;
-
-          // 更新旋转速度
-          rotationSpeed = sliderValue;
-        }
-
-        // 检查鼠标是否在滑块上并更新鼠标样式
-        const rect = canvas_speed_control.getBoundingClientRect();
-        const mouseX = ((e.clientX - rect.left) * (canvas_speed_control.width / rect.width)) / dpr_speed_control;
-        const mouseY = ((e.clientY - rect.top) * (canvas_speed_control.height / rect.height)) / dpr_speed_control;
-
-        const sliderProgress = (sliderValue - sliderMin) / (sliderMax - sliderMin);
-        const sliderPosX = sliderX + sliderProgress * sliderWidth;
-
-        const isHovering =
-          mouseX >= sliderPosX - 5 &&
-          mouseX <= sliderPosX + 5 &&
-          mouseY >= sliderY - 5 &&
-          mouseY <= sliderY + sliderHeight + 5;
-
-        if (isHovering || isDragging) {
-          canvas_speed_control.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
-        } else {
-          canvas_speed_control.style.cursor = "default";
-        }
-      });
-
-      canvas_speed_control.addEventListener("mouseup", function () {
-        isDragging = false;
-      });
-
-      canvas_speed_control.addEventListener("mouseleave", function () {
-        canvas_speed_control.style.cursor = "default";
-      });
-
-      // 启动动画
-      requestAnimationFrame(animateRotation);
+      // 创建动画实例
+      const speedControlAnimation = new SpeedControlAnimation("canvas-speed-control");
     </script>
     <p class="分区普通文本">
       从<span class="行内专业名词">Canvas API</span>的整体设计来看，它更适合用来做科学、教学、演示这类动画。
@@ -973,6 +1006,626 @@
   <article class="正文分区">
     <h2 class="分区标题 分区2级标题">时间与速度</h2>
 
+    <h3 class="分区标题 分区3级标题">固定速度</h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词">速度</span>是关键，由于动画使用<span class="行内代码">requestAnimationFrame()</span
+      >实现的，最重要的就是计算<span class="行内专业名词">每帧的变化量</span>，因为这个案例是直接设置<span
+        class="行内专业名词"
+        >速度</span
+      >，因此代码简单一些。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        class 固定速度 {
+          constructor(canvasId) {
+            // 构造器代码
+            this.旋转速度 = 300;  // 以速度为基准
+          }
+
+          刷新动画参数与图形(当前时间) {
+            // 计算时间差（毫秒转换为秒）
+            const 时间差 = (当前时间 - this.上次时间) / 1000;
+            this.上次时间 = 当前时间;
+            
+            const 角度变化值 = this.旋转速度 * 时间差;  //用速度算出一帧的变化量
+            this.旋转角度 += 角度变化值;
+            
+            // 保持角度在0-360度范围内
+            if (this.旋转角度 >= 360) {
+              this.旋转角度 -= 360;
+            }
+            
+            // 绘制动画
+            this.绘制轨道与小球();
+            
+            requestAnimationFrame(this.刷新动画参数与图形.bind(this));
+          }
+        }
+
+        new 固定速度("canvas-固定速度");
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-固定速度" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <script>
+      class 固定速度 {
+        constructor(canvasId) {
+          this.canvas = document.getElementById(canvasId);
+          this.ctx = this.canvas.getContext("2d");
+          this.dpr = window.devicePixelRatio || 1;
+
+          // 设置Canvas尺寸
+          this.canvas.width = this.canvas.offsetWidth * this.dpr;
+          this.canvas.height = this.canvas.offsetHeight * this.dpr;
+          this.ctx.scale(this.dpr, this.dpr);
+
+          // 旋转小球动画参数
+          this.lastTime = 0;
+          this.rotationAngle = 0;
+          this.rotationSpeed = 300; // 度/秒，默认速度
+
+          // 小球参数
+          this.ballRadius = 15;
+          this.orbitRadius = 80;
+          this.centerX = this.canvas.offsetWidth / 2;
+          this.centerY = this.canvas.offsetHeight / 2;
+
+          // 滑块参数
+          this.sliderWidth = 200;
+          this.sliderHeight = 20;
+          this.sliderX = 100;
+          this.sliderY = this.canvas.offsetHeight - 60;
+          this.sliderMin = 100;
+          this.sliderMax = 1000;
+          this.sliderStep = 50;
+          this.sliderValue = 300;
+          this.isDragging = false;
+          this.lastMouseX = 0;
+          this.lastMouseY = 0;
+
+          // 绑定事件
+          this.添加鼠标事件();
+
+          // 启动动画
+          this.开始动画();
+        }
+
+        // 绘制旋转小球
+        绘制轨道与小球() {
+          // 清除画布
+          this.ctx.clearRect(0, 0, this.canvas.offsetWidth, this.canvas.offsetHeight);
+
+          // 绘制轨道
+          this.ctx.strokeStyle = "#444";
+          this.ctx.lineWidth = 2;
+          this.ctx.beginPath();
+          this.ctx.arc(this.centerX, this.centerY, this.orbitRadius, 0, Math.PI * 2);
+          this.ctx.stroke();
+
+          // 计算小球位置
+          const ballX = this.centerX + this.orbitRadius * Math.cos((this.rotationAngle * Math.PI) / 180);
+          const ballY = this.centerY + this.orbitRadius * Math.sin((this.rotationAngle * Math.PI) / 180);
+
+          // 绘制小球
+          this.ctx.fillStyle = "#ff6b6b";
+          this.ctx.beginPath();
+          this.ctx.arc(ballX, ballY, this.ballRadius, 0, Math.PI * 2);
+          this.ctx.fill();
+
+          // 绘制小球边框
+          this.ctx.strokeStyle = "#fff";
+          this.ctx.lineWidth = 2;
+          this.ctx.stroke();
+        }
+
+        // 绘制滑块
+        绘制速度滑块() {
+          // 绘制"旋转速度"文字
+          this.ctx.fillStyle = "silver";
+          this.ctx.font = "16px sans-serif";
+          this.ctx.textAlign = "right";
+          this.ctx.fillText("旋转速度", this.sliderX - 15, this.sliderY + 15);
+
+          // 绘制滑块轨道
+          this.ctx.fillStyle = "#333";
+          this.ctx.fillRect(this.sliderX, this.sliderY, this.sliderWidth, this.sliderHeight);
+
+          // 计算滑块位置
+          const sliderProgress = (this.sliderValue - this.sliderMin) / (this.sliderMax - this.sliderMin);
+          const sliderPosX = this.sliderX + sliderProgress * this.sliderWidth;
+
+          // 绘制已滑过的部分
+          this.ctx.fillStyle = "#4CAF50";
+          this.ctx.fillRect(this.sliderX, this.sliderY, sliderPosX - this.sliderX, this.sliderHeight);
+
+          // 检查鼠标是否在滑块上
+          const rect = this.canvas.getBoundingClientRect();
+          const mouseX = ((this.lastMouseX - rect.left) * (this.canvas.width / rect.width)) / this.dpr;
+          const mouseY = ((this.lastMouseY - rect.top) * (this.canvas.height / rect.height)) / this.dpr;
+
+          const isHovering =
+            mouseX >= sliderPosX - 5 &&
+            mouseX <= sliderPosX + 5 &&
+            mouseY >= this.sliderY - 5 &&
+            mouseY <= this.sliderY + this.sliderHeight + 5;
+
+          // 绘制滑块（根据悬停状态或拖拽状态改变样式）
+          if (isHovering || this.isDragging) {
+            this.ctx.fillStyle = "#ffd700"; // 悬停或拖拽时变为金色
+            this.ctx.shadowColor = "#ffd700";
+            this.ctx.shadowBlur = 10;
+          } else {
+            this.ctx.fillStyle = "#fff";
+            this.ctx.shadowBlur = 0;
+          }
+
+          this.ctx.fillRect(sliderPosX - 5, this.sliderY - 5, 10, this.sliderHeight + 10);
+          this.ctx.strokeStyle = isHovering || this.isDragging ? "#ffb700" : "#666";
+          this.ctx.lineWidth = isHovering || this.isDragging ? 2 : 1;
+          this.ctx.strokeRect(sliderPosX - 5, this.sliderY - 5, 10, this.sliderHeight + 10);
+
+          // 重置阴影
+          this.ctx.shadowBlur = 0;
+
+          // 绘制数值
+          this.ctx.fillStyle = "lightskyblue";
+          this.ctx.font = "16px 'JetBrains Mono', Consolas, monospace";
+          this.ctx.textAlign = "left";
+          this.ctx.fillText(this.sliderValue, this.sliderX + this.sliderWidth + 15, this.sliderY + 15);
+
+          // 绘制单位（"°/s"，lightcyan颜色）
+          this.ctx.fillStyle = "lightcyan";
+          this.ctx.fillText(
+            "°/s",
+            this.sliderX + this.sliderWidth + 15 + this.ctx.measureText(this.sliderValue).width + 5,
+            this.sliderY + 15
+          );
+        }
+
+        // 动画循环
+        刷新动画参数与图形(currentTime) {
+          // 计算时间差（毫秒转换为秒）
+          const deltaTime = (currentTime - this.lastTime) / 1000;
+          this.lastTime = currentTime;
+
+          // 基于时间计算旋转角度
+          const angleChange = this.rotationSpeed * deltaTime;
+          this.rotationAngle += angleChange;
+
+          // 保持角度在0-360度范围内
+          if (this.rotationAngle >= 360) {
+            this.rotationAngle -= 360;
+          }
+
+          // 绘制动画
+          this.绘制轨道与小球();
+          this.绘制速度滑块();
+
+          requestAnimationFrame(this.刷新动画参数与图形.bind(this));
+        }
+
+        // 处理鼠标按下事件
+        handleMouseDown(e) {
+          const rect = this.canvas.getBoundingClientRect();
+          const x = ((e.clientX - rect.left) * (this.canvas.width / rect.width)) / this.dpr;
+          const y = ((e.clientY - rect.top) * (this.canvas.height / rect.height)) / this.dpr;
+
+          // 检查是否点击在滑块上
+          const sliderProgress = (this.sliderValue - this.sliderMin) / (this.sliderMax - this.sliderMin);
+          const sliderPosX = this.sliderX + sliderProgress * this.sliderWidth;
+
+          if (
+            x >= sliderPosX - 5 &&
+            x <= sliderPosX + 5 &&
+            y >= this.sliderY - 5 &&
+            y <= this.sliderY + this.sliderHeight + 5
+          ) {
+            this.isDragging = true;
+          }
+        }
+
+        // 处理鼠标移动事件
+        handleMouseMove(e) {
+          // 更新鼠标位置
+          this.lastMouseX = e.clientX;
+          this.lastMouseY = e.clientY;
+
+          if (this.isDragging) {
+            const rect = this.canvas.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) * (this.canvas.width / rect.width)) / this.dpr;
+
+            // 计算新的滑块值
+            let newValue = ((x - this.sliderX) / this.sliderWidth) * (this.sliderMax - this.sliderMin) + this.sliderMin;
+            newValue = Math.max(this.sliderMin, Math.min(this.sliderMax, newValue));
+
+            // 按步进值调整
+            this.sliderValue = Math.round(newValue / this.sliderStep) * this.sliderStep;
+
+            // 更新旋转速度
+            this.rotationSpeed = this.sliderValue;
+          }
+
+          // 检查鼠标是否在滑块上并更新鼠标样式
+          const rect = this.canvas.getBoundingClientRect();
+          const mouseX = ((e.clientX - rect.left) * (this.canvas.width / rect.width)) / this.dpr;
+          const mouseY = ((e.clientY - rect.top) * (this.canvas.height / rect.height)) / this.dpr;
+
+          const sliderProgress = (this.sliderValue - this.sliderMin) / (this.sliderMax - this.sliderMin);
+          const sliderPosX = this.sliderX + sliderProgress * this.sliderWidth;
+
+          const isHovering =
+            mouseX >= sliderPosX - 5 &&
+            mouseX <= sliderPosX + 5 &&
+            mouseY >= this.sliderY - 5 &&
+            mouseY <= this.sliderY + this.sliderHeight + 5;
+
+          if (isHovering || this.isDragging) {
+            this.canvas.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
+          } else {
+            this.canvas.style.cursor = "default";
+          }
+        }
+
+        // 处理鼠标松开事件
+        handleMouseUp() {
+          this.isDragging = false;
+        }
+
+        // 处理鼠标离开事件
+        handleMouseLeave() {
+          this.canvas.style.cursor = "default";
+        }
+
+        // 绑定事件
+        添加鼠标事件() {
+          this.canvas.addEventListener("mousedown", this.handleMouseDown.bind(this));
+          this.canvas.addEventListener("mousemove", this.handleMouseMove.bind(this));
+          this.canvas.addEventListener("mouseup", this.handleMouseUp.bind(this));
+          this.canvas.addEventListener("mouseleave", this.handleMouseLeave.bind(this));
+        }
+
+        // 启动动画
+        开始动画() {
+          requestAnimationFrame(this.刷新动画参数与图形.bind(this));
+        }
+      }
+
+      // 创建动画实例
+      new 固定速度("canvas-固定速度");
+    </script>
+
+    <h3 class="分区标题 分区3级标题">固定时间</h3>
+    <p class="分区普通文本">
+      下面这个案例没有直接设置<span class="行内专业名词">速度</span>，而是改为设置<span class="行内专业名词">时间</span
+      >，因此多了一句代码<span class="附加说明 等宽">第12行</span>，用<span class="行内专业名词">时间</span>计算<span
+        class="行内专业名词"
+        >速度</span
+      >。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        class 固定时间 {
+          constructor(canvasId) {
+            // 构造器代码
+            this.一圈用时 = 1000; // 以时间为基准，默认 1秒/圈
+          }
+
+          刷新动画参数与图形(当前时间) {
+            // 计算时间差（毫秒转换为秒）
+            const 时间差 = (当前时间 - this.上次时间) / 1000;
+            this.上次时间 = 当前时间;
+            
+            const 旋转速度 = 360 / (this.一圈用时 / 1000);  // 多了一句代码，用时间算速度
+
+            const 角度变化值 = 旋转速度 * 时间差; // 关键代码，计算一帧的变化量
+            this.旋转角度 += 角度变化值;
+            
+            // 保持角度在合理范围内
+            if (this.旋转角度 >= 270) {
+              this.旋转角度 -= 360;
+            }
+            
+            // 绘制动画
+            this.绘制轨道与小球();
+            
+            requestAnimationFrame(this.刷新动画参数与图形.bind(this));
+          }
+        }
+
+        new 固定时间("canvas-固定时间");
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-固定时间" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <script>
+      class 固定时间 {
+        constructor(canvasId) {
+          this.canvas = document.getElementById(canvasId);
+          this.ctx = this.canvas.getContext("2d");
+          this.dpr = window.devicePixelRatio || 1;
+
+          // 设置Canvas尺寸
+          this.canvas.width = this.canvas.offsetWidth * this.dpr;
+          this.canvas.height = this.canvas.offsetHeight * this.dpr;
+          this.ctx.scale(this.dpr, this.dpr);
+
+          // 旋转小球动画参数
+          this.lastTime = 0;
+          this.rotationAngle = -90; // 从-90度开始，即正上方
+
+          // 倒计时现在基于小球位置实时计算，不需要额外参数
+
+          // 小球参数
+          this.ballRadius = 15;
+          this.orbitRadius = 80;
+          this.centerX = this.canvas.offsetWidth / 2;
+          this.centerY = this.canvas.offsetHeight / 2;
+
+          // 滑块参数
+          this.sliderWidth = 200;
+          this.sliderHeight = 20;
+          this.sliderX = 100;
+          this.sliderY = this.canvas.offsetHeight - 60;
+          this.sliderMin = 100; // 内部值：100ms = 0.1秒
+          this.sliderMax = 5000; // 内部值：5000ms = 5秒
+          this.sliderStep = 100; // 内部步进：100ms = 0.1秒
+          this.sliderValue = 1000; // 以时间为基准，默认 1秒/圈
+          this.isDragging = false;
+          this.lastMouseX = 0;
+          this.lastMouseY = 0;
+
+          // 绑定事件
+          this.添加鼠标事件();
+
+          // 启动动画
+          this.开始动画();
+        }
+
+        // 绘制旋转小球
+        绘制轨道与小球() {
+          // 清除画布
+          this.ctx.clearRect(0, 0, this.canvas.offsetWidth, this.canvas.offsetHeight);
+
+          // 绘制轨道
+          this.ctx.strokeStyle = "#444";
+          this.ctx.lineWidth = 2;
+          this.ctx.beginPath();
+          this.ctx.arc(this.centerX, this.centerY, this.orbitRadius, 0, Math.PI * 2);
+          this.ctx.stroke();
+
+          // 计算小球位置
+          const ballX = this.centerX + this.orbitRadius * Math.cos((this.rotationAngle * Math.PI) / 180);
+          const ballY = this.centerY + this.orbitRadius * Math.sin((this.rotationAngle * Math.PI) / 180);
+
+          // 绘制小球
+          this.ctx.fillStyle = "#ff6b6b";
+          this.ctx.beginPath();
+          this.ctx.arc(ballX, ballY, this.ballRadius, 0, Math.PI * 2);
+          this.ctx.fill();
+
+          // 绘制小球边框
+          this.ctx.strokeStyle = "#fff";
+          this.ctx.lineWidth = 2;
+          this.ctx.stroke();
+        }
+
+        // 绘制倒计时
+        绘制倒计时() {
+          // 基于小球当前位置计算倒计时
+          // 当小球在正上方(-90度)时，倒计时应该为0
+          // 当小球在其他位置时，倒计时显示到达正上方还需要多少时间
+
+          // 计算小球当前位置相对于正上方(-90度)的角度差
+          let currentAngle = this.rotationAngle;
+          if (currentAngle < -90) {
+            currentAngle += 360; // 确保角度在合理范围内
+          }
+
+          // 计算到正上方(-90度)的角度差
+          let angleToTop = -90 - currentAngle;
+          if (angleToTop <= 0) {
+            angleToTop += 360; // 如果已经过了正上方，计算到下一圈正上方的角度
+          }
+
+          // 根据角度差和旋转速度计算剩余时间
+          const 旋转速度 = 360 / (this.sliderValue / 1000); // 度/秒
+          const remainingTime = Math.max(0, (angleToTop / 旋转速度) * 1000); // 转换为毫秒
+
+          // 设置字体和位置
+          this.ctx.font = "24px 'Google Sans Code', Consolas, monospace";
+          this.ctx.textAlign = "right";
+
+          // 绘制倒计时数字（白色，右对齐）
+          this.ctx.fillStyle = "#ffffff";
+          const timeInSeconds = (remainingTime / 1000).toFixed(2); // 转换为秒数，保留两位小数
+          this.ctx.fillText(timeInSeconds, this.centerX + 20, 50);
+
+          // 绘制"s"单位（蓝色，与数字在同一行）
+          this.ctx.fillStyle = "#4a9eff";
+          this.ctx.font = "24px 'Google Sans Code', Consolas, monospace";
+          this.ctx.textAlign = "left";
+          this.ctx.fillText("s", this.centerX + 25, 50);
+        }
+
+        // 绘制滑块
+        绘制速度滑块() {
+          // 绘制"旋转一圈的用时"文字
+          this.ctx.fillStyle = "silver";
+          this.ctx.font = "16px sans-serif";
+          this.ctx.textAlign = "right";
+          this.ctx.fillText("一圈用时", this.sliderX - 15, this.sliderY + 15);
+
+          // 绘制滑块轨道
+          this.ctx.fillStyle = "#333";
+          this.ctx.fillRect(this.sliderX, this.sliderY, this.sliderWidth, this.sliderHeight);
+
+          // 计算滑块位置
+          const sliderProgress = (this.sliderValue - this.sliderMin) / (this.sliderMax - this.sliderMin);
+          const sliderPosX = this.sliderX + sliderProgress * this.sliderWidth;
+
+          // 绘制已滑过的部分
+          this.ctx.fillStyle = "#4CAF50";
+          this.ctx.fillRect(this.sliderX, this.sliderY, sliderPosX - this.sliderX, this.sliderHeight);
+
+          // 检查鼠标是否在滑块上
+          const rect = this.canvas.getBoundingClientRect();
+          const mouseX = ((this.lastMouseX - rect.left) * (this.canvas.width / rect.width)) / this.dpr;
+          const mouseY = ((this.lastMouseY - rect.top) * (this.canvas.height / rect.height)) / this.dpr;
+
+          const isHovering =
+            mouseX >= sliderPosX - 5 &&
+            mouseX <= sliderPosX + 5 &&
+            mouseY >= this.sliderY - 5 &&
+            mouseY <= this.sliderY + this.sliderHeight + 5;
+
+          // 绘制滑块（根据悬停状态或拖拽状态改变样式）
+          if (isHovering || this.isDragging) {
+            this.ctx.fillStyle = "#ffd700"; // 悬停或拖拽时变为金色
+            this.ctx.shadowColor = "#ffd700";
+            this.ctx.shadowBlur = 10;
+          } else {
+            this.ctx.fillStyle = "#fff";
+            this.ctx.shadowBlur = 0;
+          }
+
+          this.ctx.fillRect(sliderPosX - 5, this.sliderY - 5, 10, this.sliderHeight + 10);
+          this.ctx.strokeStyle = isHovering || this.isDragging ? "#ffb700" : "#666";
+          this.ctx.lineWidth = isHovering || this.isDragging ? 2 : 1;
+          this.ctx.strokeRect(sliderPosX - 5, this.sliderY - 5, 10, this.sliderHeight + 10);
+
+          // 重置阴影
+          this.ctx.shadowBlur = 0;
+
+          // 绘制数值（显示秒数）
+          this.ctx.fillStyle = "lightskyblue";
+          this.ctx.font = "16px 'Google Sans Code', Consolas, monospace";
+          this.ctx.textAlign = "left";
+          const displayValue = (this.sliderValue / 1000).toFixed(1); // 转换为秒数，保留一位小数
+          this.ctx.fillText(displayValue, this.sliderX + this.sliderWidth + 15, this.sliderY + 15);
+
+          // 绘制单位（"°/s"，lightcyan颜色）
+          this.ctx.fillStyle = "lightcyan";
+          this.ctx.fillText(
+            "s",
+            this.sliderX + this.sliderWidth + 15 + this.ctx.measureText(displayValue).width + 5,
+            this.sliderY + 15
+          );
+        }
+
+        // 动画循环
+        刷新动画参数与图形(currentTime) {
+          // 计算时间差（毫秒转换为秒）
+          const deltaTime = (currentTime - this.lastTime) / 1000;
+          this.lastTime = currentTime;
+
+          const 旋转速度 = 360 / (this.sliderValue / 1000); //以时间算速度，单位：度/秒
+          const angleChange = 旋转速度 * deltaTime; // 将ms转换为秒
+          this.rotationAngle += angleChange;
+
+          // 保持角度在合理范围内
+          if (this.rotationAngle >= 270) {
+            this.rotationAngle -= 360;
+          }
+
+          // 绘制动画
+          this.绘制轨道与小球();
+          this.绘制倒计时();
+          this.绘制速度滑块();
+
+          requestAnimationFrame(this.刷新动画参数与图形.bind(this));
+        }
+
+        // 处理鼠标按下事件
+        handleMouseDown(e) {
+          const rect = this.canvas.getBoundingClientRect();
+          const x = ((e.clientX - rect.left) * (this.canvas.width / rect.width)) / this.dpr;
+          const y = ((e.clientY - rect.top) * (this.canvas.height / rect.height)) / this.dpr;
+
+          // 检查是否点击在滑块上
+          const sliderProgress = (this.sliderValue - this.sliderMin) / (this.sliderMax - this.sliderMin);
+          const sliderPosX = this.sliderX + sliderProgress * this.sliderWidth;
+
+          if (
+            x >= sliderPosX - 5 &&
+            x <= sliderPosX + 5 &&
+            y >= this.sliderY - 5 &&
+            y <= this.sliderY + this.sliderHeight + 5
+          ) {
+            this.isDragging = true;
+          }
+        }
+
+        // 处理鼠标移动事件
+        handleMouseMove(e) {
+          // 更新鼠标位置
+          this.lastMouseX = e.clientX;
+          this.lastMouseY = e.clientY;
+
+          if (this.isDragging) {
+            const rect = this.canvas.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) * (this.canvas.width / rect.width)) / this.dpr;
+
+            // 计算新的滑块值
+            let newValue = ((x - this.sliderX) / this.sliderWidth) * (this.sliderMax - this.sliderMin) + this.sliderMin;
+            newValue = Math.max(this.sliderMin, Math.min(this.sliderMax, newValue));
+
+            // 按步进值调整
+            this.sliderValue = Math.round(newValue / this.sliderStep) * this.sliderStep;
+
+            // 倒计时现在基于小球位置实时计算，不需要更新持续时间
+          }
+
+          // 检查鼠标是否在滑块上并更新鼠标样式
+          const rect = this.canvas.getBoundingClientRect();
+          const mouseX = ((e.clientX - rect.left) * (this.canvas.width / rect.width)) / this.dpr;
+          const mouseY = ((e.clientY - rect.top) * (this.canvas.height / rect.height)) / this.dpr;
+
+          const sliderProgress = (this.sliderValue - this.sliderMin) / (this.sliderMax - this.sliderMin);
+          const sliderPosX = this.sliderX + sliderProgress * this.sliderWidth;
+
+          const isHovering =
+            mouseX >= sliderPosX - 5 &&
+            mouseX <= sliderPosX + 5 &&
+            mouseY >= this.sliderY - 5 &&
+            mouseY <= this.sliderY + this.sliderHeight + 5;
+
+          if (isHovering || this.isDragging) {
+            this.canvas.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
+          } else {
+            this.canvas.style.cursor = "default";
+          }
+        }
+
+        // 处理鼠标松开事件
+        handleMouseUp() {
+          this.isDragging = false;
+        }
+
+        // 处理鼠标离开事件
+        handleMouseLeave() {
+          this.canvas.style.cursor = "default";
+        }
+
+        // 绑定事件
+        添加鼠标事件() {
+          this.canvas.addEventListener("mousedown", this.handleMouseDown.bind(this));
+          this.canvas.addEventListener("mousemove", this.handleMouseMove.bind(this));
+          this.canvas.addEventListener("mouseup", this.handleMouseUp.bind(this));
+          this.canvas.addEventListener("mouseleave", this.handleMouseLeave.bind(this));
+        }
+
+        // 启动动画
+        开始动画() {
+          requestAnimationFrame(this.刷新动画参数与图形.bind(this));
+        }
+      }
+
+      // 创建动画实例
+      new 固定时间("canvas-固定时间");
+    </script>
+
     <h3 class="分区标题 分区3级标题">延时动画</h3>
     <p class="分区普通文本">
       核心思想还是用<span class="行内代码">currentTime</span>来计算时间差，当时间差超过<span class="行内专业名词"
@@ -980,41 +1633,41 @@
       >，就开始运行动画。
     </p>
     <pre class="line-numbers">
-      <code class="lang-javascript">
-        const 延时时长 = 2000;
-        const 动画时长 = 2000;
-        let 起始时间 = 0;
-        let 动画已开始 = false;
+  <code class="lang-javascript">
+    const 延时时长 = 2000;
+    const 动画时长 = 2000;
+    let 起始时间 = 0;
+    let 动画已开始 = false;
 
-        function 绘制矩形() {
-          //绘制逻辑
+    function 绘制矩形() {
+      //绘制逻辑
+    }
+          
+    function animate(currentTime) {
+        const 延时已用时 = currentTime - 起始时间;
+                    
+        // 如果经过时间超过2000ms(2秒)且动画未开始，则开始动画
+        if (延时已用时 >= 延时时长 && !动画已开始) {
+            动画已开始 = true;
+            起始时间 = currentTime;  //更新起始时间，用于计算动画已用时
         }
-              
-        function animate(currentTime) {
-            const 延时已用时 = currentTime - 起始时间;
-                        
-            // 如果经过时间超过2000ms(2秒)且动画未开始，则开始动画
-            if (延时已用时 >= 延时时长 && !动画已开始) {
-                动画已开始 = true;
-                起始时间 = currentTime;  //更新起始时间，用于计算动画已用时
-            }
-            
-            if (动画已开始) {
-                const 动画已用时 = currentTime - 起始时间;
-                //这里不要更新"起始时间"，因为这里不是用"两帧之间的移动距离"，而是用"这一帧的整体移动进度"
-                //"两帧之间移动的距离"是独立的，"这一帧的整体移动进度"是累积的
+        
+        if (动画已开始) {
+            const 动画已用时 = currentTime - 起始时间;
+            //这里不要更新"起始时间"，因为这里不是用"两帧之间的移动距离"，而是用"这一帧的整体移动进度"
+            //"两帧之间移动的距离"是独立的，"这一帧的整体移动进度"是累积的
 
-                const 水平移动进度 = Math.min(动画已用时 / 动画时长, 1);  // 进度不能超过1
-                const 当前矩形水平位置 = 水平移动进度 * canvas.width;
-                绘制矩形();
-            }
-            
-            requestAnimationFrame(animate);
+            const 水平移动进度 = Math.min(动画已用时 / 动画时长, 1);  // 进度不能超过1
+            const 当前矩形水平位置 = 水平移动进度 * canvas.width;
+            绘制矩形();
         }
-
+        
         requestAnimationFrame(animate);
-      </code>
-    </pre>
+    }
+
+    requestAnimationFrame(animate);
+  </code>
+</pre>
     <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
       <canvas id="canvas-delay" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
     </figure>
