@@ -1345,13 +1345,23 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .作者姓名,
-.日期文本,
 .译者姓名 {
   color: rgb(134, 162, 249);
 }
 
 .日期文本 {
+  color: rgb(131, 150, 175);
+  /* color: rgb(106, 132, 209); */
   font-family: "Google Sans Code", "Noto Sans SC", sans-serif;
+}
+
+.日期文本-数字 {
+  color: lightblue;
+  margin: 0 2px;
+}
+
+.日期文本-数字:first-child {
+  margin-left: 0;
 }
 
 .原文链接 {
