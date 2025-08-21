@@ -1481,13 +1481,13 @@ function 生成功能数据行() {
     错误次数容器.className = "错误次数";
     const 错误符号 = document.createElement("span");
     错误符号.className = "错误符号";
-    错误符号.textContent = "✗";
+    错误符号.textContent = "✕";
     const 错误数字 = document.createElement("span");
     错误数字.className = "错误数字";
     错误数字.textContent = 错误次数.toString();
     错误次数容器.append(错误符号, 错误数字);
 
-    测试次数列.append(总次数span, document.createElement("br"), 正确次数容器, 错误次数容器);
+    测试次数列.append(总次数span, /* document.createElement("br"),  */正确次数容器, 错误次数容器);
 
     // 总用时（仅正确次数）
     const 总用时列 = document.createElement("div");
@@ -1647,7 +1647,7 @@ function 生成摘要层与详情层() {
   详情层.className = "详情层";
   const 摘要层 = document.createElement("div");
   摘要层.className = "摘要层";
-  结果对话框.append(详情层, 摘要层);
+  结果对话框.append(摘要层, 详情层);
 }
 
 function 添加排序事件监听器() {

@@ -94,7 +94,7 @@
   background-color: #252a2f;
   opacity: 0;
   font-size: 12px;
-  font-family: Consolas, monospace;
+  font-family: "Google Sans Code", monospace;
 }
 
 .快捷键种类:not(.当前种类) .当前种类选中计数 {
@@ -519,7 +519,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .单次测试用时容器 {
-  font-family: Consolas, monospace, "Noto Sans SC", sans-serif;
+  font-family: "Google Sans Code", monospace, "Noto Sans SC", sans-serif;
   display: flex;
   align-items: center;
   gap: 3px;
@@ -560,7 +560,7 @@ input[type="number"]::-webkit-inner-spin-button {
   position: absolute;
   top: 15px;
   left: 10px;
-  font-family: Consolas, monospace, "Noto Sans SC", 微软雅黑, sans-serif;
+  font-family: "Google Sans Code", monospace, "Noto Sans SC", 微软雅黑, sans-serif;
   font-size: 16px;
   display: flex;
   justify-content: center;
@@ -712,7 +712,7 @@ input[type="number"]::-webkit-inner-spin-button {
   left: 50%;
   color: silver;
   overflow: hidden;
-  font-family: Consolas, monospace, "Noto Sans SC", sans-serif;
+  font-family: "Google Sans Code", monospace, "Noto Sans SC", sans-serif;
 }
 
 #结果对话框[open] {
@@ -1105,8 +1105,8 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .数据列 {
   color: #e0e0e0;
-  font-family: "JetBrains Mono", Consolas, sans-serif;
-  font-size: 14px;
+  font-family: "Google Sans Code", Consolas, sans-serif;
+  font-size: 15px;
 }
 
 /* 数据值样式 */
@@ -1177,12 +1177,11 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .时间值.最慢 {
   color: #ff9800;
-  font-weight: 700;
 }
 
 .时间单位 {
   color: #9ab;
-  font-size: 12px;
+  font-size: 14px;
   margin-right: 4px;
 }
 
