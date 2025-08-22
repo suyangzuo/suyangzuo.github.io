@@ -14,7 +14,7 @@
   --光标-手指: url("/Images/Common/鼠标-指向.cur"), pointer;
   --中文字体: "Noto Sans SC", 微软雅黑, sans-serif;
   --代码字体: "JetBrains Mono", Consolas, monospace;
-  --中文代码混合字体: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, monospace, sans-serif;
+  --中文代码混合字体: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 .top-banner,
@@ -282,7 +282,7 @@ ol ol {
 }
 
 .二级目录 {
-  font-size: 13px;
+  font-size: 14px;
   color: #b0b0b0;
   padding: 5px 12px 5px 40px;
   border-left: 2px solid transparent;
@@ -361,13 +361,12 @@ ol ol {
   height: 100%;
   color: silver;
   padding: 0 25px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .笔记信息容器 {
   display: flex;
   flex-direction: column;
-  gap: 15px;
   align-items: flex-end;
   position: sticky;
   top: 75px;
@@ -378,13 +377,13 @@ ol ol {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 8px;
+  gap: 15px;
 }
 
 /* 作者头像容器样式 - 对应原来的作者容器 */
 .作者头像容器 {
-  width: 50px;
-  height: 50px;
+  width: 75px;
+  height: 75px;
   position: relative;
 }
 
@@ -397,7 +396,7 @@ ol ol {
   font-family: var(--中文字体);
   text-decoration: none;
   color: silver;
-  font-size: 14px;
+  font-size: 16px;
   text-align: center;
   white-space: nowrap;
 }
@@ -415,7 +414,7 @@ ol ol {
 .日期子容器 {
   color: white;
   margin: 0 2px;
-  font-family: var(--代码字体);
+  font-family: "Google Sans Code", sans-serif;
 }
 
 table {
