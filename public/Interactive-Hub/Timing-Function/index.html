@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>时间函数</title>
+    <link rel="icon" href="/Images/Interactive-Hub/HQ/三次贝塞尔曲线.png" type="image/x-icon" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Ubuntu+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/Styles/common.css" />
+    <link rel="stylesheet" href="/Styles/top-banner-common.css" />
+    <link rel="stylesheet" href="../control.css" />
+    <link rel="stylesheet" href="../interactive-common.css" />
+    <link rel="stylesheet" href="./timing-function.css" />
+    <script src="/Scripts/top-banner.js" defer></script>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
+    <script src="./timing-function.js" defer></script>
+  </head>
+  <body>
+    <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
+    <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
+    <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
+
+    <section class="三次贝塞尔曲线总区 总区">
+      <script src="../../Scripts/html-include.js" target="../control.html" position="afterbegin"></script>
+      <p class="交互标题">时间函数</p>
+      <div class="展示区">
+        <div class="main-container">
+          <div class="canvas-container">
+            <canvas id="bezierCanvas" width="800" height="800"></canvas>
+          </div>
+          <div class="settings-container">
+            <div class="code-display">
+              <h3>CSS代码</h3>
+              <code id="cubicBezierCode">
+                <span class="function-name">cubic-bezier</span><span class="parentheses">(</span
+                ><span class="number first-point">0.25</span><span class="comma">, </span
+                ><span class="number first-point">0.1</span><span class="comma">, </span
+                ><span class="number second-point">0.25</span><span class="comma">, </span
+                ><span class="number second-point">1</span><span class="parentheses">)</span>
+              </code>
+              <button id="copyCode" class="copy-btn">
+                <i class="fa-solid fa-copy"></i>
+              </button>
+            </div>
+            <div class="animation-controls">
+              <div class="duration-input">
+                <label for="animationDuration">动画时长 (ms):</label>
+                <div class="duration-input-container">
+                  <button id="decreaseDuration" class="duration-btn">-</button>
+                  <input type="number" id="animationDuration" value="1000" min="0" step="100" />
+                  <button id="increaseDuration" class="duration-btn">+</button>
+                </div>
+              </div>
+            </div>
+            <div class="preset-controls">
+              <h3>预设值</h3>
+              <div class="preset-buttons">
+                <button class="preset-btn active" data-preset="ease">
+                  <span class="preset-name">ease</span>
+                  <span class="preset-code">
+                    <span class="function-name">cubic-bezier</span><span class="parentheses">(</span
+                    ><span class="number first-point">0.25</span><span class="comma">, </span><span class="number first-point">0.1</span
+                    ><span class="comma">, </span><span class="number second-point">0.25</span><span class="comma">, </span
+                    ><span class="number second-point">1</span><span class="parentheses">)</span>
+                  </span>
+                </button>
+                <button class="preset-btn" data-preset="linear">
+                  <span class="preset-name">linear</span>
+                  <span class="preset-code">
+                    <span class="function-name">cubic-bezier</span><span class="parentheses">(</span
+                    ><span class="number first-point">0</span><span class="comma">, </span><span class="number first-point">0</span
+                    ><span class="comma">, </span><span class="number second-point">1</span><span class="comma">, </span
+                    ><span class="number second-point">1</span><span class="parentheses">)</span>
+                  </span>
+                </button>
+                <button class="preset-btn" data-preset="ease-in">
+                  <span class="preset-name">ease-in</span>
+                  <span class="preset-code">
+                    <span class="function-name">cubic-bezier</span><span class="parentheses">(</span
+                    ><span class="number first-point">0.42</span><span class="comma">, </span><span class="number first-point">0</span
+                    ><span class="comma">, </span><span class="number second-point">1</span><span class="comma">, </span
+                    ><span class="number second-point">1</span><span class="parentheses">)</span>
+                  </span>
+                </button>
+                <button class="preset-btn" data-preset="ease-out">
+                  <span class="preset-name">ease-out</span>
+                  <span class="preset-code">
+                    <span class="function-name">cubic-bezier</span><span class="parentheses">(</span
+                    ><span class="number first-point">0</span><span class="comma">, </span><span class="number first-point">0</span
+                    ><span class="comma">, </span><span class="number second-point">0.58</span><span class="comma">, </span
+                    ><span class="number second-point">1</span><span class="parentheses">)</span>
+                  </span>
+                </button>
+                <button class="preset-btn" data-preset="ease-in-out">
+                  <span class="preset-name">ease-in-out</span>
+                  <span class="preset-code">
+                    <span class="function-name">cubic-bezier</span><span class="parentheses">(</span
+                    ><span class="number first-point">0.42</span><span class="comma">, </span><span class="number first-point">0</span
+                    ><span class="comma">, </span><span class="number second-point">0.58</span><span class="comma">, </span
+                    ><span class="number second-point">1</span><span class="parentheses">)</span>
+                  </span>
+                </button>
+              </div>
+            </div>
+            <button id="playAnimation" class="play-btn">
+              <i class="fa-solid fa-play"></i>
+              播放动画
+            </button>
+          </div>
+        </div>
+        <div id="animationDemo" class="animation-demo">
+          <div class="demo-element"></div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
