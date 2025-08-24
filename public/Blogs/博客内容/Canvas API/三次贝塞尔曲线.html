@@ -1645,9 +1645,9 @@
     </pre>
     <p class="分区普通文本">当然，仅有两句代码，只能绘制路径，还是无法看见三次贝塞尔曲线，你还需要为其描边。</p>
 
-    <h3 class="分区标题 分区3级标题">判断坐标是否在三次贝塞尔曲线内</h3>
+    <h3 class="分区标题 分区3级标题">三次贝塞尔曲线碰撞检测</h3>
     <p class="分区普通文本">
-      三次贝塞尔曲线只是一个线条，而不是一个封闭的区域，因此它没有填充，只能描边。不是封闭的区域，意味着没有面积，那怎么判断鼠标是否位于三次贝塞尔曲线内呢？
+      三次贝塞尔曲线只是一个线条，而不是一个封闭的区域，怎么判断鼠标是否位于三次贝塞尔曲线上呢？
     </p>
     <p class="分区普通文本">
       其核心原理是：曲线本身是无法检测的，应该检测<span class="强调">曲线上的点</span
@@ -1694,7 +1694,7 @@
       <li class="分区列表项">
         只要找到第一个满足<span class="专业名词 等宽"
           ><span class="强调">距离<span class="行内代码"><=</span>容差</span></span
-        >的采样点，则认为鼠标在贝塞尔曲线内，且结束检测
+        >的采样点，则认为鼠标在贝塞尔曲线上，且结束检测
       </li>
     </ol>
     <pre class="line-numbers">
@@ -1796,19 +1796,19 @@
           };
 
           this.三次贝塞尔曲线坐标 = {
-            p0: {
+            P0: {
               x: 100,
               y: this.cssHeight - 75,
             },
-            p1: {
+            P1: {
               x: this.cssWidth / 2 - 100,
               y: 150,
             },
-            p2: {
+            P2: {
               x: this.cssWidth / 2 + 100,
               y: 100,
             },
-            p3: {
+            P3: {
               x: this.cssWidth - 100,
               y: this.cssHeight - 150,
             },
@@ -1828,14 +1828,14 @@
 
         绘制三次贝塞尔曲线(三次贝塞尔曲线坐标) {
           this.ctx.save();
-          this.ctx.moveTo(三次贝塞尔曲线坐标.p0.x, 三次贝塞尔曲线坐标.p0.y);
+          this.ctx.moveTo(三次贝塞尔曲线坐标.P0.x, 三次贝塞尔曲线坐标.P0.y);
           this.ctx.bezierCurveTo(
-            三次贝塞尔曲线坐标.p1.x,
-            三次贝塞尔曲线坐标.p1.y,
-            三次贝塞尔曲线坐标.p2.x,
-            三次贝塞尔曲线坐标.p2.y,
-            三次贝塞尔曲线坐标.p3.x,
-            三次贝塞尔曲线坐标.p3.y
+            三次贝塞尔曲线坐标.P1.x,
+            三次贝塞尔曲线坐标.P1.y,
+            三次贝塞尔曲线坐标.P2.x,
+            三次贝塞尔曲线坐标.P2.y,
+            三次贝塞尔曲线坐标.P3.x,
+            三次贝塞尔曲线坐标.P3.y
           );
 
           // 检查鼠标是否在曲线内
@@ -1931,12 +1931,12 @@
         }
 
         获取三次贝塞尔曲线采样点坐标(t, 三次贝塞尔曲线坐标) {
-          const { p0, p1, p2, p3 } = 三次贝塞尔曲线坐标;
+          const { P0, P1, P2, P3 } = 三次贝塞尔曲线坐标;
           const mt = 1 - t;
 
           return {
-            x: mt ** 3 * p0.x + 3 * mt ** 2 * t * p1.x + 3 * mt * t ** 2 * p2.x + t ** 3 * p3.x,
-            y: mt ** 3 * p0.y + 3 * mt ** 2 * t * p1.y + 3 * mt * t ** 2 * p2.y + t ** 3 * p3.y,
+            x: mt ** 3 * P0.x + 3 * mt ** 2 * t * P1.x + 3 * mt * t ** 2 * P2.x + t ** 3 * P3.x,
+            y: mt ** 3 * P0.y + 3 * mt ** 2 * t * P1.y + 3 * mt * t ** 2 * P2.y + t ** 3 * P3.y,
           };
         }
 
@@ -2162,13 +2162,60 @@
 
     <h3 class="分区标题 分区3级标题">绘制爱心</h3>
     <p class="分区普通文本">想一想，绘制这样一个爱心，需要多少条三次贝塞尔曲线呢？试着点击爱心，并拖拽控制点吧！</p>
-    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.5">
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.35">
       <canvas
         id="canvas-三次贝塞尔曲线-爱心"
         style="width: 100%; height: calc(100% - 42px); background-color: #222"
       ></canvas>
     </figure>
     <p class="分区普通文本">始终牢记：三次贝塞尔曲线的本质就是<span class="行内专业名词 等宽">4</span>个控制点。</p>
+    <pre class="line-number">
+      <code class="lang-js">
+        爱心坐标组集合: [
+          {
+            p0: { x: this.cssWidth / 2, y: 200, },
+            p1: { x: this.cssWidth / 2 - 75, y: 100, },
+            p2: { x: this.cssWidth / 2 - 175, y: 100, },
+            p3: { x: this.cssWidth / 2 - 200, y: 225, },
+          },
+          {
+            p0: { x: this.cssWidth / 2 - 200, y: 225, },
+            p1: { x: this.cssWidth / 2 - 225, y: 350, },
+            p2: { x: this.cssWidth / 2 - 25, y: 425, },
+            p3: { x: this.cssWidth / 2, y: 450, },
+          },
+          {
+            p0: { x: this.cssWidth / 2, y: 450, },
+            p1: { x: this.cssWidth / 2 + 25, y: 425, },
+            p2: { x: this.cssWidth / 2 + 225, y: 350, },
+            p3: { x: this.cssWidth / 2 + 200, y: 225, },
+          },
+          {
+            p0: { x: this.cssWidth / 2 + 200, y: 225, },
+            p1: { x: this.cssWidth / 2 + 175, y: 100, },
+            p2: { x: this.cssWidth / 2 + 75, y: 100, },
+            p3: { x: this.cssWidth / 2, y: 200, },
+          },
+        ];
+        
+        //只在循环外新建一次路径，保证4条贝塞尔曲线是彼此相连的，可以形成封闭区域
+        this.ctx.beginPath();
+        this.ctx.moveTo(爱心坐标组集合[0].p0.x, 爱心坐标组集合[0].p0.y);
+        for (const 爱心坐标组 of 爱心坐标组集合) {
+          this.ctx.bezierCurveTo(
+            爱心坐标组.p1.x, 
+            爱心坐标组.p1.y, 
+            爱心坐标组.p2.x, 
+            爱心坐标组.p2.y, 
+            爱心坐标组.p3.x, 
+            爱心坐标组.p3.y
+          );
+        }
+        this.ctx.closePath();
+        this.ctx.stroke();
+        this.ctx.fill();
+      </code>
+    </pre>
     <script>
       class 爱心 {
         constructor() {
@@ -2181,10 +2228,13 @@
           this.cssWidth = this.canvas.offsetWidth;
           this.cssHeight = this.canvas.offsetHeight;
 
+          this.当前悬停控制点 = null;
+          this.当前悬停曲线编号 = null;
+
           this.三次贝塞尔曲线描边颜色组 = {
-            普通: "#fff3",
-            悬停: "#fed830a0",
-            选中: "#a0e532a0",
+            普通: "#fff5",
+            悬停: "#fed830c0",
+            选中: "#a0e532c0",
           };
 
           // 拖拽相关状态
@@ -2196,85 +2246,112 @@
             刚刚结束拖拽: false,
           };
 
+          // 复选框配置
+          this.显示控制点序号复选框 = {
+            x: this.cssWidth / 2 - 60,
+            y: this.cssHeight - 25,
+            size: 16,
+            checked: true,
+            hovered: false,
+            label: "显示控制点序号",
+          };
+
+          // 定义爱心的所有控制点，相邻曲线共享端点
+          this.爱心控制点 = {
+            // 第1段曲线的起点（也是第4段曲线的终点）
+            "1-P₀&4-P₃": {
+              x: this.cssWidth / 2,
+              y: 200,
+            },
+            // 第1段曲线的控制点
+            "1-P₁": {
+              x: this.cssWidth / 2 - 75,
+              y: 100,
+            },
+            "1-P₂": {
+              x: this.cssWidth / 2 - 175,
+              y: 100,
+            },
+            // 第1段曲线的终点（也是第2段曲线的起点）
+            "1-P₃&2-P₀": {
+              x: this.cssWidth / 2 - 200,
+              y: 225,
+            },
+            // 第2段曲线的控制点
+            "2-P₁": {
+              x: this.cssWidth / 2 - 225,
+              y: 350,
+            },
+            "2-P₂": {
+              x: this.cssWidth / 2 - 25,
+              y: 425,
+            },
+            // 第2段曲线的终点（也是第3段曲线的起点）
+            "2-P₃&3-P₀": {
+              x: this.cssWidth / 2,
+              y: 450,
+            },
+            // 第3段曲线的控制点
+            "3-P₁": {
+              x: this.cssWidth / 2 + 25,
+              y: 425,
+            },
+            "3-P₂": {
+              x: this.cssWidth / 2 + 225,
+              y: 350,
+            },
+            // 第3段曲线的终点（也是第4段曲线的起点）
+            "3-P₃&4-P₀": {
+              x: this.cssWidth / 2 + 200,
+              y: 225,
+            },
+            // 第4段曲线的控制点
+            "4-P₁": {
+              x: this.cssWidth / 2 + 175,
+              y: 100,
+            },
+            "4-P₂": {
+              x: this.cssWidth / 2 + 75,
+              y: 100,
+            },
+          };
+
+          // 定义4段曲线的绘制信息，每段曲线包含控制点引用
           this.爱心 = {
             三次贝塞尔坐标组: [
               {
-                p0: {
-                  x: this.cssWidth / 2,
-                  y: 200,
-                },
-                p1: {
-                  x: this.cssWidth / 2 - 75,
-                  y: 100,
-                },
-                p2: {
-                  x: this.cssWidth / 2 - 175,
-                  y: 100,
-                },
-                p3: {
-                  x: this.cssWidth / 2 - 200,
-                  y: 225,
-                },
+                // 第1段曲线：从顶部中心到左侧
+                P0: this.爱心控制点["1-P₀&4-P₃"],
+                P1: this.爱心控制点["1-P₁"],
+                P2: this.爱心控制点["1-P₂"],
+                P3: this.爱心控制点["1-P₃&2-P₀"],
                 鼠标悬停: false,
                 已选中: false,
               },
               {
-                p0: {
-                  x: this.cssWidth / 2 - 200,
-                  y: 225,
-                },
-                p1: {
-                  x: this.cssWidth / 2 - 225,
-                  y: 350,
-                },
-                p2: {
-                  x: this.cssWidth / 2 - 25,
-                  y: 425,
-                },
-                p3: {
-                  x: this.cssWidth / 2,
-                  y: 450,
-                },
+                // 第2段曲线：从左侧到底部中心
+                P0: this.爱心控制点["1-P₃&2-P₀"],
+                P1: this.爱心控制点["2-P₁"],
+                P2: this.爱心控制点["2-P₂"],
+                P3: this.爱心控制点["2-P₃&3-P₀"],
                 鼠标悬停: false,
                 已选中: false,
               },
               {
-                p0: {
-                  x: this.cssWidth / 2,
-                  y: 450,
-                },
-                p1: {
-                  x: this.cssWidth / 2 + 25,
-                  y: 425,
-                },
-                p2: {
-                  x: this.cssWidth / 2 + 225,
-                  y: 350,
-                },
-                p3: {
-                  x: this.cssWidth / 2 + 200,
-                  y: 225,
-                },
+                // 第3段曲线：从底部中心到右侧
+                P0: this.爱心控制点["2-P₃&3-P₀"],
+                P1: this.爱心控制点["3-P₁"],
+                P2: this.爱心控制点["3-P₂"],
+                P3: this.爱心控制点["3-P₃&4-P₀"],
                 鼠标悬停: false,
                 已选中: false,
               },
               {
-                p0: {
-                  x: this.cssWidth / 2 + 200,
-                  y: 225,
-                },
-                p1: {
-                  x: this.cssWidth / 2 + 175,
-                  y: 100,
-                },
-                p2: {
-                  x: this.cssWidth / 2 + 75,
-                  y: 100,
-                },
-                p3: {
-                  x: this.cssWidth / 2,
-                  y: 200,
-                },
+                // 第4段曲线：从右侧到顶部中心
+                P0: this.爱心控制点["3-P₃&4-P₀"],
+                P1: this.爱心控制点["4-P₁"],
+                P2: this.爱心控制点["4-P₂"],
+                P3: this.爱心控制点["1-P₀&4-P₃"],
                 鼠标悬停: false,
                 已选中: false,
               },
@@ -2321,26 +2398,33 @@
           let 找到控制点悬停 = false;
 
           // 检查控制点悬停（优先检查已选中的曲线）
-          for (const 三次贝塞尔坐标 of this.爱心.三次贝塞尔坐标组) {
+          for (let i = 0; i < this.爱心.三次贝塞尔坐标组.length; i++) {
+            const 三次贝塞尔坐标 = this.爱心.三次贝塞尔坐标组[i];
             if (三次贝塞尔坐标.已选中) {
               const 悬停的控制点 = this.检查控制点悬停(mouseX, mouseY, 三次贝塞尔坐标);
               if (悬停的控制点) {
                 三次贝塞尔坐标.悬停的控制点 = 悬停的控制点;
+                this.当前悬停控制点 = 悬停的控制点;
+                this.当前悬停曲线编号 = i + 1;
                 找到控制点悬停 = true;
                 break;
               } else {
                 三次贝塞尔坐标.悬停的控制点 = null;
+                this.当前悬停控制点 = null;
+                this.当前悬停曲线编号 = null;
               }
             }
           }
 
-          // 检查曲线悬停（优先检查最上层的曲线）
+          // 只有在没有找到控制点悬停时，才检查曲线悬停
           let 找到的悬停曲线 = null;
-          for (let i = this.爱心.三次贝塞尔坐标组.length - 1; i >= 0; i--) {
-            const 三次贝塞尔坐标 = this.爱心.三次贝塞尔坐标组[i];
-            if (this.坐标位于贝塞尔曲线附近(mouseX, mouseY, 三次贝塞尔坐标)) {
-              找到的悬停曲线 = 三次贝塞尔坐标;
-              break;
+          if (!找到控制点悬停) {
+            for (let i = this.爱心.三次贝塞尔坐标组.length - 1; i >= 0; i--) {
+              const 三次贝塞尔坐标 = this.爱心.三次贝塞尔坐标组[i];
+              if (this.坐标位于贝塞尔曲线附近(mouseX, mouseY, 三次贝塞尔坐标)) {
+                找到的悬停曲线 = 三次贝塞尔坐标;
+                break;
+              }
             }
           }
 
@@ -2353,10 +2437,15 @@
             找到悬停 = true;
           }
 
+          // 检查复选框悬停
+          this.显示控制点序号复选框.hovered = this.鼠标悬停在复选框内(mouseX, mouseY);
+
           // 设置鼠标样式
           if (找到控制点悬停) {
             this.canvas.style.cursor = "grab";
           } else if (找到悬停) {
+            this.canvas.style.cursor = "pointer";
+          } else if (this.显示控制点序号复选框.hovered) {
             this.canvas.style.cursor = "pointer";
           } else {
             this.canvas.style.cursor = "default";
@@ -2397,6 +2486,13 @@
           const rect = this.canvas.getBoundingClientRect();
           const mouseX = e.clientX - rect.left;
           const mouseY = e.clientY - rect.top;
+
+          // 检查是否点击了复选框
+          if (this.鼠标悬停在复选框内(mouseX, mouseY)) {
+            this.显示控制点序号复选框.checked = !this.显示控制点序号复选框.checked;
+            this.绘制全部();
+            return;
+          }
 
           // 找到最上层的曲线（数组中的最后一个）
           for (let i = this.爱心.三次贝塞尔坐标组.length - 1; i >= 0; i--) {
@@ -2450,10 +2546,10 @@
         检查控制点点击(x, y, 三次贝塞尔坐标) {
           const 容差 = 10;
           const 控制点列表 = [
-            { 点: 三次贝塞尔坐标.p0, 名称: "P0" },
-            { 点: 三次贝塞尔坐标.p1, 名称: "P1" },
-            { 点: 三次贝塞尔坐标.p2, 名称: "P2" },
-            { 点: 三次贝塞尔坐标.p3, 名称: "P3" },
+            { 点: 三次贝塞尔坐标.P0, 名称: "P0" },
+            { 点: 三次贝塞尔坐标.P1, 名称: "P1" },
+            { 点: 三次贝塞尔坐标.P2, 名称: "P2" },
+            { 点: 三次贝塞尔坐标.P3, 名称: "P3" },
           ];
 
           for (const 控制点 of 控制点列表) {
@@ -2468,10 +2564,10 @@
         检查控制点悬停(x, y, 三次贝塞尔坐标) {
           const 容差 = 10;
           const 控制点列表 = [
-            { 点: 三次贝塞尔坐标.p0, 名称: "P0" },
-            { 点: 三次贝塞尔坐标.p1, 名称: "P1" },
-            { 点: 三次贝塞尔坐标.p2, 名称: "P2" },
-            { 点: 三次贝塞尔坐标.p3, 名称: "P3" },
+            { 点: 三次贝塞尔坐标.P0, 名称: "P0" },
+            { 点: 三次贝塞尔坐标.P1, 名称: "P1" },
+            { 点: 三次贝塞尔坐标.P2, 名称: "P2" },
+            { 点: 三次贝塞尔坐标.P3, 名称: "P3" },
           ];
 
           for (const 控制点 of 控制点列表) {
@@ -2481,6 +2577,50 @@
             }
           }
           return null;
+        }
+
+        鼠标悬停在复选框内(x, y) {
+          const 复选框 = this.显示控制点序号复选框;
+
+          // 计算文本宽度，用于确定整个可点击区域
+          this.ctx.font = "14px 'Google Sans Code', Consolas, 'Noto Sans SC', sans-serif";
+          const 文本宽度 = this.ctx.measureText(复选框.label).width;
+
+          // 整个可点击区域：从复选框左边到文本右边，包括中间的空隙
+          const 总宽度 = 复选框.size + 8 + 文本宽度; // 8是复选框和文本之间的间距
+
+          return (
+            x >= 复选框.x &&
+            x <= 复选框.x + 总宽度 &&
+            y >= 复选框.y - 复选框.size / 2 &&
+            y <= 复选框.y + 复选框.size / 2
+          );
+        }
+
+        绘制复选框() {
+          const 复选框 = this.显示控制点序号复选框;
+
+          // 绘制复选框边框
+          this.ctx.strokeStyle = 复选框.hovered ? "#aaa" : "#888";
+          this.ctx.lineWidth = 1;
+          this.ctx.strokeRect(复选框.x, 复选框.y - 复选框.size / 2, 复选框.size, 复选框.size);
+
+          // 如果选中，绘制勾选标记
+          if (复选框.checked) {
+            this.ctx.strokeStyle = "yellowgreen";
+            this.ctx.lineWidth = 2;
+            this.ctx.beginPath();
+            this.ctx.moveTo(复选框.x + 4, 复选框.y + 1);
+            this.ctx.lineTo(复选框.x + 复选框.size / 3 + 2, 复选框.y + 复选框.size / 3 - 1);
+            this.ctx.lineTo(复选框.x + 复选框.size - 3, 复选框.y - 复选框.size / 3 + 2);
+            this.ctx.stroke();
+          }
+
+          // 绘制标签文本
+          this.ctx.fillStyle = 复选框.hovered ? "#fff" : "#ccc";
+          this.ctx.font = "14px 'Google Sans Code', Consolas, 'Noto Sans SC', sans-serif";
+          this.ctx.textAlign = "left";
+          this.ctx.fillText(复选框.label, 复选框.x + 复选框.size + 8, 复选框.y + 5);
         }
 
         处理拖拽移动(mouseX, mouseY) {
@@ -2494,20 +2634,20 @@
           // 更新控制点位置
           switch (控制点名称) {
             case "P0":
-              曲线段.p0.x = mouseX;
-              曲线段.p0.y = mouseY;
+              曲线段.P0.x = mouseX;
+              曲线段.P0.y = mouseY;
               break;
             case "P1":
-              曲线段.p1.x = mouseX;
-              曲线段.p1.y = mouseY;
+              曲线段.P1.x = mouseX;
+              曲线段.P1.y = mouseY;
               break;
             case "P2":
-              曲线段.p2.x = mouseX;
-              曲线段.p2.y = mouseY;
+              曲线段.P2.x = mouseX;
+              曲线段.P2.y = mouseY;
               break;
             case "P3":
-              曲线段.p3.x = mouseX;
-              曲线段.p3.y = mouseY;
+              曲线段.P3.x = mouseX;
+              曲线段.P3.y = mouseY;
               break;
           }
 
@@ -2531,12 +2671,12 @@
         }
 
         获取三次贝塞尔曲线采样点坐标(t, 三次贝塞尔坐标) {
-          const { p0, p1, p2, p3 } = 三次贝塞尔坐标;
+          const { P0, P1, P2, P3 } = 三次贝塞尔坐标;
           const mt = 1 - t;
 
           return {
-            x: mt ** 3 * p0.x + 3 * mt ** 2 * t * p1.x + 3 * mt * t ** 2 * p2.x + t ** 3 * p3.x,
-            y: mt ** 3 * p0.y + 3 * mt ** 2 * t * p1.y + 3 * mt * t ** 2 * p2.y + t ** 3 * p3.y,
+            x: mt ** 3 * P0.x + 3 * mt ** 2 * t * P1.x + 3 * mt * t ** 2 * P2.x + t ** 3 * P3.x,
+            y: mt ** 3 * P0.y + 3 * mt ** 2 * t * P1.y + 3 * mt * t ** 2 * P2.y + t ** 3 * P3.y,
           };
         }
 
@@ -2545,11 +2685,69 @@
           this.绘制爱心曲线();
           this.绘制选中段的控制点();
           this.绘制控制点坐标();
+          this.绘制复选框();
         }
 
         绘制爱心曲线() {
+          // 绘制填充的爱心
+          this.ctx.beginPath();
+          this.ctx.moveTo(this.爱心.三次贝塞尔坐标组[0].P0.x, this.爱心.三次贝塞尔坐标组[0].P0.y);
+
+          // 绘制4段彼此相连的三次贝塞尔曲线
           for (const 三次贝塞尔坐标 of this.爱心.三次贝塞尔坐标组) {
-            this.绘制三次贝塞尔曲线(三次贝塞尔坐标);
+            this.ctx.bezierCurveTo(
+              三次贝塞尔坐标.P1.x,
+              三次贝塞尔坐标.P1.y,
+              三次贝塞尔坐标.P2.x,
+              三次贝塞尔坐标.P2.y,
+              三次贝塞尔坐标.P3.x,
+              三次贝塞尔坐标.P3.y
+            );
+          }
+
+          this.ctx.closePath();
+          this.ctx.save();
+          this.ctx.fillStyle = "#f5c4";
+          this.ctx.fill();
+          this.ctx.restore();
+
+          // 为每段贝塞尔曲线单独绘制描边，实现独立高亮
+          for (let i = 0; i < this.爱心.三次贝塞尔坐标组.length; i++) {
+            const 三次贝塞尔坐标 = this.爱心.三次贝塞尔坐标组[i];
+
+            // 根据选中和悬停状态设置样式
+            if (三次贝塞尔坐标.已选中) {
+              this.ctx.lineWidth = 5;
+              this.ctx.strokeStyle = this.三次贝塞尔曲线描边颜色组.选中;
+            } else if (三次贝塞尔坐标.鼠标悬停) {
+              this.ctx.lineWidth = 3;
+              this.ctx.strokeStyle = this.三次贝塞尔曲线描边颜色组.悬停;
+            } else {
+              this.ctx.lineWidth = 3;
+              this.ctx.strokeStyle = this.三次贝塞尔曲线描边颜色组.普通;
+            }
+
+            // 绘制单段贝塞尔曲线
+            this.ctx.beginPath();
+            if (i === 0) {
+              // 第一段曲线从起点开始
+              this.ctx.moveTo(三次贝塞尔坐标.P0.x, 三次贝塞尔坐标.P0.y);
+            } else {
+              // 其他段曲线从前一段的终点开始
+              const 前一段 = this.爱心.三次贝塞尔坐标组[i - 1];
+              this.ctx.moveTo(前一段.P3.x, 前一段.P3.y);
+            }
+
+            this.ctx.bezierCurveTo(
+              三次贝塞尔坐标.P1.x,
+              三次贝塞尔坐标.P1.y,
+              三次贝塞尔坐标.P2.x,
+              三次贝塞尔坐标.P2.y,
+              三次贝塞尔坐标.P3.x,
+              三次贝塞尔坐标.P3.y
+            );
+
+            this.ctx.stroke();
           }
         }
 
@@ -2563,25 +2761,41 @@
 
               // P0 到 P1 的连线
               this.ctx.beginPath();
-              this.ctx.moveTo(三次贝塞尔坐标.p0.x, 三次贝塞尔坐标.p0.y);
-              this.ctx.lineTo(三次贝塞尔坐标.p1.x, 三次贝塞尔坐标.p1.y);
+              this.ctx.moveTo(三次贝塞尔坐标.P0.x, 三次贝塞尔坐标.P0.y);
+              this.ctx.lineTo(三次贝塞尔坐标.P1.x, 三次贝塞尔坐标.P1.y);
               this.ctx.stroke();
 
               // P2 到 P3 的连线
               this.ctx.beginPath();
-              this.ctx.moveTo(三次贝塞尔坐标.p2.x, 三次贝塞尔坐标.p2.y);
-              this.ctx.lineTo(三次贝塞尔坐标.p3.x, 三次贝塞尔坐标.p3.y);
+              this.ctx.moveTo(三次贝塞尔坐标.P2.x, 三次贝塞尔坐标.P2.y);
+              this.ctx.lineTo(三次贝塞尔坐标.P3.x, 三次贝塞尔坐标.P3.y);
               this.ctx.stroke();
 
               // 重置虚线设置
               this.ctx.setLineDash([]);
 
-              this.绘制控制点(三次贝塞尔坐标.p0, "P0", "#7F1B2B", 三次贝塞尔坐标.悬停的控制点 === "P0");
-              this.绘制控制点(三次贝塞尔坐标.p1, "P1", "#0E8D54", 三次贝塞尔坐标.悬停的控制点 === "P1");
-              this.绘制控制点(三次贝塞尔坐标.p2, "P2", "#055771", 三次贝塞尔坐标.悬停的控制点 === "P2");
-              this.绘制控制点(三次贝塞尔坐标.p3, "P3", "#362E64", 三次贝塞尔坐标.悬停的控制点 === "P3");
+              // 根据控制点位置找到对应的标签
+              const p0标签 = this.获取控制点标签(三次贝塞尔坐标.P0);
+              const p1标签 = this.获取控制点标签(三次贝塞尔坐标.P1);
+              const p2标签 = this.获取控制点标签(三次贝塞尔坐标.P2);
+              const p3标签 = this.获取控制点标签(三次贝塞尔坐标.P3);
+
+              this.绘制控制点(三次贝塞尔坐标.P0, p0标签, "#7F1B2B", 三次贝塞尔坐标.悬停的控制点 === "P0");
+              this.绘制控制点(三次贝塞尔坐标.P1, p1标签, "#0E8D54", 三次贝塞尔坐标.悬停的控制点 === "P1");
+              this.绘制控制点(三次贝塞尔坐标.P2, p2标签, "#055771", 三次贝塞尔坐标.悬停的控制点 === "P2");
+              this.绘制控制点(三次贝塞尔坐标.P3, p3标签, "#362E64", 三次贝塞尔坐标.悬停的控制点 === "P3");
             }
           }
+        }
+
+        // 根据控制点位置找到对应的标签
+        获取控制点标签(控制点) {
+          for (const [标签, 点] of Object.entries(this.爱心控制点)) {
+            if (点 === 控制点) {
+              return 标签;
+            }
+          }
+          return "未知";
         }
 
         绘制控制点(point, label, color, 是否悬停 = false) {
@@ -2603,11 +2817,70 @@
           this.ctx.strokeStyle = "#fff";
           this.ctx.stroke();
 
-          // 绘制标签
-          this.ctx.fillStyle = "#fff";
-          this.ctx.font = "14px Google Sans Code, monospace";
-          this.ctx.textAlign = "center";
-          this.ctx.fillText(label, point.x, point.y - 15);
+          // 只有在复选框选中时才绘制标签
+          if (this.显示控制点序号复选框.checked) {
+            // 绘制标签：各个部分分开绘制，使用不同颜色
+            this.ctx.font = "14px Google Sans Code, monospace";
+            this.ctx.textAlign = "center";
+
+            let currentX = point.x;
+            const labelY = point.y - 15;
+
+            // 解析标签并分别绘制
+            if (label.includes("&")) {
+              // 处理包含"&"的标签，如"1-P₀&4-P₃"
+              const parts = label.split("&");
+              const firstPart = parts[0]; // "1-P₀"
+              const secondPart = parts[1]; // "4-P₃"
+
+              // 绘制第一部分
+              currentX = this.绘制标签部分(firstPart, currentX - 40, labelY);
+              currentX += 15;
+
+              // 绘制"&"符号
+              this.ctx.fillStyle = "gray"; // 金色
+              this.ctx.fillText("&", currentX, labelY);
+              currentX += this.ctx.measureText("&").width + 4;
+
+              // 绘制第二部分
+              this.绘制标签部分(secondPart, currentX, labelY);
+            } else {
+              // 处理普通标签，如"1-P₀"
+              this.绘制标签部分(label, currentX - 10, labelY);
+            }
+          }
+        }
+
+        // 绘制标签的各个部分
+        绘制标签部分(labelPart, x, y) {
+          // 解析标签部分，如"1-P₀"
+          const match = labelPart.match(/^(\d+)-(.+)$/);
+          if (match) {
+            const number = match[1]; // "1"
+            const dash = "-"; // "-"
+            const pLabel = match[2]; // "P₀"
+
+            // 绘制数字
+            this.ctx.fillStyle = "lightskyblue";
+            this.ctx.fillText(number, x, y);
+            x += this.ctx.measureText(number).width + 2;
+
+            // 绘制连字符
+            this.ctx.fillStyle = "#FFD700"; // 金色
+            this.ctx.fillText(dash, x, y);
+            x += this.ctx.measureText(dash).width + 6;
+
+            // 绘制P标签
+            this.ctx.fillStyle = "lightblue"; // 青色
+            this.ctx.fillText(pLabel, x, y);
+          } else {
+            // 如果不是预期格式，直接绘制
+            this.ctx.fillStyle = "#fff";
+            this.ctx.fillText(labelPart, x, y);
+          }
+
+          // 返回绘制后的x位置，供调用者使用
+          return x;
         }
 
         获取悬停颜色(原始颜色) {
@@ -2636,17 +2909,16 @@
             this.ctx.strokeStyle = this.三次贝塞尔曲线描边颜色组.普通;
           }
 
-          this.ctx.beginPath();
-          this.ctx.moveTo(三次贝塞尔坐标.p0.x, 三次贝塞尔坐标.p0.y);
+          // 只使用bezierCurveTo，不调用stroke()，因为这是连续路径的一部分
           this.ctx.bezierCurveTo(
-            三次贝塞尔坐标.p1.x,
-            三次贝塞尔坐标.p1.y,
-            三次贝塞尔坐标.p2.x,
-            三次贝塞尔坐标.p2.y,
-            三次贝塞尔坐标.p3.x,
-            三次贝塞尔坐标.p3.y
+            三次贝塞尔坐标.P1.x,
+            三次贝塞尔坐标.P1.y,
+            三次贝塞尔坐标.P2.x,
+            三次贝塞尔坐标.P2.y,
+            三次贝塞尔坐标.P3.x,
+            三次贝塞尔坐标.P3.y
           );
-          this.ctx.stroke();
+
           this.ctx.restore();
         }
 
@@ -2665,62 +2937,87 @@
             return { xPadded, yPadded, xWidth: this.ctx.measureText(xPadded).width };
           };
 
-          // 定义4个角落的配置
-          const 角落配置 = [
-            // 左上角：第1条曲线
+          // 定义4段曲线的显示配置
+          const 曲线配置 = [
+            // 左上角：曲线1
             {
               x: 20,
               y: 30,
               textAlign: "left",
+              曲线编号: 1,
+              控制点: this.爱心.三次贝塞尔坐标组[0],
             },
-            // 左下角：第2条曲线
+            // 左下角：曲线2
             {
               x: 20,
               y: this.cssHeight - 120,
               textAlign: "left",
+              曲线编号: 2,
+              控制点: this.爱心.三次贝塞尔坐标组[1],
             },
-            // 右下角：第3条曲线
+            // 右下角：曲线3
             {
               x: this.cssWidth - 120,
               y: this.cssHeight - 120,
               textAlign: "left",
+              曲线编号: 3,
+              控制点: this.爱心.三次贝塞尔坐标组[2],
             },
-            // 右上角：第4条曲线
+            // 右上角：曲线4
             {
               x: this.cssWidth - 120,
               y: 30,
               textAlign: "left",
+              曲线编号: 4,
+              控制点: this.爱心.三次贝塞尔坐标组[3],
             },
           ];
 
-          // 循环绘制4条曲线
-          for (let i = 0; i < 4; i++) {
-            const 配置 = 角落配置[i];
-            const 曲线 = this.爱心.三次贝塞尔坐标组[i];
-
+          // 循环绘制4段曲线的控制点坐标
+          for (const [index, 配置] of 曲线配置.entries()) {
             // 设置文本对齐方式
             this.ctx.textAlign = 配置.textAlign;
             // 设置字体
             this.ctx.font = "15px 'Google Sans Code', Consolas, 'Noto Sans SC', sans-serif";
 
-            // 绘制曲线标题
+            // 绘制标题："曲线"和数字分开绘制
             this.ctx.fillStyle = "lightsteelblue";
             this.ctx.fillText("曲线", 配置.x, 配置.y);
             this.ctx.fillStyle = "gold";
-            this.ctx.fillText((i + 1).toString(), 配置.x + this.ctx.measureText("曲线").width + 2, 配置.y);
+            this.ctx.fillText(配置.曲线编号.toString(), 配置.x + this.ctx.measureText("曲线").width + 2, 配置.y);
 
-            // 绘制4个控制点坐标
-            const 控制点标签 = ["P₀", "P₁", "P₂", "P₃"];
-            const 控制点属性 = ["p0", "p1", "p2", "p3"];
-
+            // 绘制控制点坐标
             this.ctx.font = "14px 'Google Sans Code', monospace";
+            const 控制点标签 = ["P₀", "P₁", "P₂", "P₃"];
+            const 控制点属性 = ["P0", "P1", "P2", "P3"];
+
             for (let j = 0; j < 4; j++) {
               const y = 配置.y + (j + 1) * 22;
               const 标签 = 控制点标签[j];
               const 属性 = 控制点属性[j];
-              const 点 = 曲线[属性];
+              const 点 = 配置.控制点[属性];
 
-              // 绘制控制点标签（统一颜色）
+              // 检查是否需要高亮：当前悬停的控制点或共享的控制点
+              let 需要高亮 = false;
+              if (this.当前悬停曲线编号 === 配置.曲线编号 && this.当前悬停控制点 === 属性) {
+                需要高亮 = true;
+              } else if (this.当前悬停控制点 && this.当前悬停曲线编号) {
+                // 检查是否是共享控制点
+                const 当前悬停点 = this.爱心.三次贝塞尔坐标组[this.当前悬停曲线编号 - 1][this.当前悬停控制点];
+                if (当前悬停点 === 点) {
+                  需要高亮 = true;
+                }
+              }
+
+              if (需要高亮) {
+                this.ctx.fillStyle = "#0005";
+                this.ctx.strokeStyle = "#afd7";
+                this.ctx.lineWidth = 1;
+                this.ctx.fillRect(配置.x - 10, y - 16, 120, 23);
+                this.ctx.strokeRect(配置.x - 10, y - 16, 120, 23);
+              }
+
+              // 绘制控制点标签
               this.ctx.fillStyle = "#FF6B6B";
               this.ctx.fillText(标签, 配置.x, y);
 
