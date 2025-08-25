@@ -476,228 +476,287 @@
       >，从而计算出<span class="行内专业名词">两帧之间移动的距离</span>。
     </p>
     <script>
-      const canvas_deltaTime = document.getElementById("canvas-deltaTime");
-      const ctx_deltaTime = canvas_deltaTime.getContext("2d");
-      const dpr_deltaTime = window.devicePixelRatio || 1;
-      canvas_deltaTime.width = canvas_deltaTime.offsetWidth * dpr_deltaTime;
-      canvas_deltaTime.height = canvas_deltaTime.offsetHeight * dpr_deltaTime;
-      ctx_deltaTime.scale(dpr_deltaTime, dpr_deltaTime);
+      class DeltaTimeAnimation {
+        constructor(canvasId) {
+          this.canvas = document.getElementById(canvasId);
+          this.ctx = this.canvas.getContext("2d");
+          this.dpr = window.devicePixelRatio || 1;
+          
+          // 设置Canvas尺寸
+          this.canvas.width = this.canvas.offsetWidth * this.dpr;
+          this.canvas.height = this.canvas.offsetHeight * this.dpr;
+          this.ctx.scale(this.dpr, this.dpr);
 
-      // 动画参数
-      let lastTime_delta = 0;
-      let currentTime_delta = 0;
-      let ballX_delta = 50;
-      let currentTimeBarX_delta = 50;
-      let lastTimeBarX_delta = 50;
-      let ballY_delta = canvas_deltaTime.offsetHeight / 2;
-      let currentTimeBarY_delta = ballY_delta - 40;
-      let lastTimeBarY_delta = ballY_delta + 40;
-      let barWidth_delta = 20;
-      let barHeight_delta = 8;
-      let ballRadius_delta = 12;
+          // 动画参数
+          this.lastTime = 0;
+          this.currentTime = 0;
+          this.ballX = 50;
+          this.currentTimeBarX = 50;
+          this.lastTimeBarX = 50;
+          this.ballY = this.canvas.offsetHeight / 2;
+          this.currentTimeBarY = this.ballY - 40;
+          this.lastTimeBarY = this.ballY + 40;
+          this.barWidth = 20;
+          this.barHeight = 8;
+          this.ballRadius = 12;
 
-      // 动画状态控制
-      let animationPhase = 0; // 0: 移动, 1: 停顿, 2: 显示时间差, 3: currentTime进度条移动, 4: 等待下一次移动
-      let phaseStartTime = 0;
-      let moveStep = 0; // 当前移动步数 (0-7)
-      let totalSteps = 8;
-      let stepDistance = (canvas_deltaTime.offsetWidth - 100) / totalSteps;
+          // 动画状态控制
+          this.animationPhase = 0; // 0: 移动, 1: 停顿, 2: 显示时间差, 3: currentTime进度条移动, 4: 等待下一次移动
+          this.phaseStartTime = 0;
+          this.moveStep = 0; // 当前移动步数 (0-7)
+          this.totalSteps = 8;
+          this.stepDistance = (this.canvas.offsetWidth - 100) / this.totalSteps;
 
-      // 时间差显示相关
-      let deltaTimeDisplay = 0;
-      let deltaTimeBarWidth = 0;
-      let lastTimeStartX = 50; // 保存lastTime移动的起始位置
-      let lineGrowthStartTime = 0; // 竖线增长开始时间
-      let lineGrowthProgress = 0; // 竖线增长进度
+          // 时间差显示相关
+          this.deltaTimeDisplay = 0;
+          this.deltaTimeBarWidth = 0;
+          this.lastTimeStartX = 50; // 保存lastTime移动的起始位置
+          this.lineGrowthStartTime = 0; // 竖线增长开始时间
+          this.lineGrowthProgress = 0; // 竖线增长进度
 
-      function drawDeltaTimeAnimation(currentTimestamp) {
-        // 清除画布
-        ctx_deltaTime.clearRect(0, 0, canvas_deltaTime.offsetWidth, canvas_deltaTime.offsetHeight);
+          // 动画控制
+          this.isRunning = true;
 
-        // 更新currentTime
-        currentTime_delta = currentTimestamp;
+          // 启动动画
+          this.start();
+        }
 
-        // 根据动画阶段执行不同逻辑
-        switch (animationPhase) {
-          case 0: // 移动阶段
-            if (currentTimestamp - phaseStartTime > 0) {
-              // 计算350ms内的移动进度
-              const progress = Math.min((currentTimestamp - phaseStartTime) / 350, 1);
-              const startX = 50 + moveStep * stepDistance;
-              const endX = 50 + (moveStep + 1) * stepDistance;
-              ballX_delta = startX + (endX - startX) * progress;
-              currentTimeBarX_delta = ballX_delta;
+        // 动画循环
+        animate(currentTimestamp) {
+          if (!this.isRunning) return;
+          
+          // 清除画布
+          this.ctx.clearRect(0, 0, this.canvas.offsetWidth, this.canvas.offsetHeight);
 
-              // 检查是否到达下一个停顿点
-              if (progress >= 1) {
-                ballX_delta = endX;
-                currentTimeBarX_delta = ballX_delta;
-                moveStep++;
-                // 无论是否是最后一步，都进入停顿阶段显示时间差
-                animationPhase = 1;
-                phaseStartTime = currentTimestamp;
+          // 更新currentTime
+          this.currentTime = currentTimestamp;
+
+          // 根据动画阶段执行不同逻辑
+          this.updateAnimationPhase(currentTimestamp);
+          this.drawAnimation();
+
+          requestAnimationFrame(this.animate.bind(this));
+        }
+
+        // 更新动画阶段
+        updateAnimationPhase(currentTimestamp) {
+          switch (this.animationPhase) {
+            case 0: // 移动阶段
+              if (currentTimestamp - this.phaseStartTime > 0) {
+                // 计算350ms内的移动进度
+                const progress = Math.min((currentTimestamp - this.phaseStartTime) / 350, 1);
+                const startX = 50 + this.moveStep * this.stepDistance;
+                const endX = 50 + (this.moveStep + 1) * this.stepDistance;
+                this.ballX = startX + (endX - startX) * progress;
+                this.currentTimeBarX = this.ballX;
+
+                // 检查是否到达下一个停顿点
+                if (progress >= 1) {
+                  this.ballX = endX;
+                  this.currentTimeBarX = this.ballX;
+                  this.moveStep++;
+                  // 无论是否是最后一步，都进入停顿阶段显示时间差
+                  this.animationPhase = 1;
+                  this.phaseStartTime = currentTimestamp;
+                }
               }
-            }
-            break;
+              break;
 
-          case 1: // 停顿0.15秒
-            if (currentTimestamp - phaseStartTime >= 150) {
-              animationPhase = 2;
-              phaseStartTime = currentTimestamp;
-              // 计算时间差：当前时间减去lastTime更新时的时间
-              deltaTimeDisplay = (currentTime_delta - lastTime_delta) / 1000;
-              deltaTimeBarWidth = Math.min(deltaTimeDisplay * 200, 150); // 将时间差转换为视觉长度
-            }
-            break;
-
-          case 2: // 竖线增长0.25秒 + 显示时间差1.75秒
-            if (lineGrowthStartTime === 0) {
-              lineGrowthStartTime = currentTimestamp;
-            }
-
-            // 计算竖线增长进度
-            const lineGrowthTime = currentTimestamp - lineGrowthStartTime;
-            if (lineGrowthTime < 250) {
-              // 竖线增长阶段
-              lineGrowthProgress = lineGrowthTime / 250;
-            } else {
-              // 竖线增长完成，显示时间差
-              lineGrowthProgress = 1;
-              if (currentTimestamp - phaseStartTime >= 2000) {
-                lastTimeStartX = lastTimeBarX_delta; // 保存起始位置
-                animationPhase = 3;
-                phaseStartTime = currentTimestamp;
-                lineGrowthStartTime = 0; // 重置
-                lineGrowthProgress = 0; // 重置
+            case 1: // 停顿0.15秒
+              if (currentTimestamp - this.phaseStartTime >= 150) {
+                this.animationPhase = 2;
+                this.phaseStartTime = currentTimestamp;
+                // 计算时间差：当前时间减去lastTime更新时的时间
+                this.deltaTimeDisplay = (this.currentTime - this.lastTime) / 1000;
+                this.deltaTimeBarWidth = Math.min(this.deltaTimeDisplay * 200, 150); // 将时间差转换为视觉长度
               }
-            }
-            break;
+              break;
 
-          case 3: // lastTime进度条移动0.35秒
-            if (currentTimestamp - phaseStartTime >= 350) {
-              lastTimeBarX_delta = currentTimeBarX_delta;
-              // 更新lastTime为当前时间，这样下次计算时间差时就是正确的间隔
-              lastTime_delta = currentTime_delta;
-              // 检查是否是最后一步
-              if (moveStep >= totalSteps) {
-                // 最后一步完成，进入重置等待阶段
-                animationPhase = 4;
-                phaseStartTime = currentTimestamp;
+            case 2: // 竖线增长0.25秒 + 显示时间差1.75秒
+              if (this.lineGrowthStartTime === 0) {
+                this.lineGrowthStartTime = currentTimestamp;
+              }
+
+              // 计算竖线增长进度
+              const lineGrowthTime = currentTimestamp - this.lineGrowthStartTime;
+              if (lineGrowthTime < 250) {
+                // 竖线增长阶段
+                this.lineGrowthProgress = lineGrowthTime / 250;
               } else {
-                // 不是最后一步，进入下一次移动等待阶段
-                animationPhase = 4;
-                phaseStartTime = currentTimestamp;
+                // 竖线增长完成，显示时间差
+                this.lineGrowthProgress = 1;
+                if (currentTimestamp - this.phaseStartTime >= 2000) {
+                  this.lastTimeStartX = this.lastTimeBarX; // 保存起始位置
+                  this.animationPhase = 3;
+                  this.phaseStartTime = currentTimestamp;
+                  this.lineGrowthStartTime = 0; // 重置
+                  this.lineGrowthProgress = 0; // 重置
+                }
               }
-            } else {
-              // 计算过渡进度
-              const progress = (currentTimestamp - phaseStartTime) / 350;
-              const endX = currentTimeBarX_delta;
-              lastTimeBarX_delta = lastTimeStartX + (endX - lastTimeStartX) * progress;
-            }
-            break;
+              break;
 
-          case 4: // 等待1秒后开始下一次移动
-            if (currentTimestamp - phaseStartTime >= 1000) {
-              if (moveStep >= totalSteps) {
-                // 重新开始整个循环
-                moveStep = 0;
-                ballX_delta = 50;
-                currentTimeBarX_delta = 50;
-                lastTimeBarX_delta = 50;
-                // lastTime_delta已经在阶段3更新，这里不需要重复更新
+            case 3: // lastTime进度条移动0.35秒
+              if (currentTimestamp - this.phaseStartTime >= 350) {
+                this.lastTimeBarX = this.currentTimeBarX;
+                // 更新lastTime为当前时间，这样下次计算时间差时就是正确的间隔
+                this.lastTime = this.currentTime;
+                // 检查是否是最后一步
+                if (this.moveStep >= this.totalSteps) {
+                  // 最后一步完成，进入重置等待阶段
+                  this.animationPhase = 4;
+                  this.phaseStartTime = currentTimestamp;
+                } else {
+                  // 不是最后一步，进入下一次移动等待阶段
+                  this.animationPhase = 4;
+                  this.phaseStartTime = currentTimestamp;
+                }
+              } else {
+                // 计算过渡进度
+                const progress = (currentTimestamp - this.phaseStartTime) / 350;
+                const endX = this.currentTimeBarX;
+                this.lastTimeBarX = this.lastTimeStartX + (endX - this.lastTimeStartX) * progress;
               }
-              animationPhase = 0;
-              phaseStartTime = currentTimestamp;
-            }
-            break;
-        }
+              break;
 
-        // 绘制步骤指示器
-        ctx_deltaTime.fillStyle = "#666";
-        for (let i = 0; i <= totalSteps; i++) {
-          const x = 50 + i * stepDistance;
-          // 刻度放在两个进度条之间的垂直居中位置
-          const scaleY = (currentTimeBarY_delta + lastTimeBarY_delta + barHeight_delta) / 2;
-          ctx_deltaTime.fillRect(x - 1, scaleY, 2, 10);
-        }
-
-        // 绘制currentTime进度条
-        ctx_deltaTime.fillStyle = "#4CAF50";
-        ctx_deltaTime.fillRect(50, currentTimeBarY_delta, currentTimeBarX_delta - 50, barHeight_delta);
-        ctx_deltaTime.strokeStyle = "#fff";
-        ctx_deltaTime.lineWidth = 1;
-        ctx_deltaTime.strokeRect(50, currentTimeBarY_delta, currentTimeBarX_delta - 50, barHeight_delta);
-
-        // 绘制lastTime进度条
-        ctx_deltaTime.fillStyle = "#2196F3";
-        ctx_deltaTime.fillRect(50, lastTimeBarY_delta, lastTimeBarX_delta - 50, barHeight_delta);
-        ctx_deltaTime.strokeStyle = "#fff";
-        ctx_deltaTime.lineWidth = 1;
-        ctx_deltaTime.strokeRect(50, lastTimeBarY_delta, lastTimeBarX_delta - 50, barHeight_delta);
-
-        // 在阶段2显示时间差
-        if (animationPhase === 2) {
-          // 绘制竖线
-          ctx_deltaTime.strokeStyle = "#fff";
-          ctx_deltaTime.lineWidth = 2;
-
-          // 计算竖线的当前长度
-          const currentTimeLineLength = (lastTimeBarY_delta - currentTimeBarY_delta) * lineGrowthProgress;
-          const lastTimeLineLength = (lastTimeBarY_delta - currentTimeBarY_delta) * lineGrowthProgress;
-
-          // currentTime竖线：从currentTime进度条上边缘向下增长
-          ctx_deltaTime.beginPath();
-          ctx_deltaTime.moveTo(currentTimeBarX_delta, currentTimeBarY_delta);
-          ctx_deltaTime.lineTo(currentTimeBarX_delta, currentTimeBarY_delta + currentTimeLineLength);
-          ctx_deltaTime.stroke();
-
-          // lastTime竖线：从lastTime进度条下边缘向上增长到currentTime进度条下边缘
-          ctx_deltaTime.beginPath();
-          ctx_deltaTime.moveTo(lastTimeBarX_delta, lastTimeBarY_delta + barHeight_delta);
-          ctx_deltaTime.lineTo(lastTimeBarX_delta, lastTimeBarY_delta + barHeight_delta - lastTimeLineLength);
-          ctx_deltaTime.stroke();
-
-          // 只有当竖线增长完成时才显示填充区域和文字
-          if (lineGrowthProgress >= 1) {
-            // 填充区域：两条竖线之间的区域，不覆盖进度条
-            ctx_deltaTime.fillStyle = "rgba(255, 152, 0, 0.25)";
-            // 上方区域：从currentTime进度条下边缘到lastTime进度条上边缘
-            ctx_deltaTime.fillRect(
-              lastTimeBarX_delta,
-              currentTimeBarY_delta + barHeight_delta,
-              currentTimeBarX_delta - lastTimeBarX_delta,
-              lastTimeBarY_delta - (currentTimeBarY_delta + barHeight_delta)
-            );
-            // 下方区域：从lastTime进度条下边缘到currentTime进度条上边缘
-            ctx_deltaTime.fillRect(
-              lastTimeBarX_delta,
-              lastTimeBarY_delta,
-              currentTimeBarX_delta - lastTimeBarX_delta,
-              currentTimeBarY_delta + barHeight_delta - (lastTimeBarY_delta + barHeight_delta)
-            );
-
-            // 绘制时间差文字
-            ctx_deltaTime.fillStyle = "#fff";
-            ctx_deltaTime.font = "14px JetBrains Mono, Consolas, sans-serif";
-            ctx_deltaTime.textAlign = "center";
-            const textX = (currentTimeBarX_delta + lastTimeBarX_delta) / 2;
-            const textY = (currentTimeBarY_delta + lastTimeBarY_delta + barHeight_delta) / 2 + barHeight_delta;
-            ctx_deltaTime.fillText(`${deltaTimeDisplay.toFixed(3)}s`, textX, textY);
+            case 4: // 等待1秒后开始下一次移动
+              if (currentTimestamp - this.phaseStartTime >= 1000) {
+                if (this.moveStep >= this.totalSteps) {
+                  // 重新开始整个循环
+                  this.moveStep = 0;
+                  this.ballX = 50;
+                  this.currentTimeBarX = 50;
+                  this.lastTimeBarX = 50;
+                  // lastTime已经在阶段3更新，这里不需要重复更新
+                }
+                this.animationPhase = 0;
+                this.phaseStartTime = currentTimestamp;
+              }
+              break;
           }
         }
 
-        // 绘制标签
-        ctx_deltaTime.fillStyle = "#fff";
-        ctx_deltaTime.font = "14px JetBrains Mono, Consolas, sans-serif";
-        ctx_deltaTime.textAlign = "left";
-        ctx_deltaTime.fillText("currentTime（内置参数）", 14, currentTimeBarY_delta - 13);
-        ctx_deltaTime.fillText("lastTime", 14, lastTimeBarY_delta + 30);
+        // 绘制动画
+        drawAnimation() {
+          this.drawStepIndicators();
+          this.drawProgressBars();
+          this.drawDeltaTimeLines();
+          this.drawLabels();
+        }
 
-        requestAnimationFrame(drawDeltaTimeAnimation);
+        // 绘制步骤指示器
+        drawStepIndicators() {
+          this.ctx.fillStyle = "#666";
+          for (let i = 0; i <= this.totalSteps; i++) {
+            const x = 50 + i * this.stepDistance;
+            // 刻度放在两个进度条之间的垂直居中位置
+            const scaleY = (this.currentTimeBarY + this.lastTimeBarY + this.barHeight) / 2;
+            this.ctx.fillRect(x - 1, scaleY, 2, 10);
+          }
+        }
+
+        // 绘制进度条
+        drawProgressBars() {
+          // 绘制currentTime进度条
+          this.ctx.fillStyle = "#4CAF50";
+          this.ctx.fillRect(50, this.currentTimeBarY, this.currentTimeBarX - 50, this.barHeight);
+          this.ctx.strokeStyle = "#fff";
+          this.ctx.lineWidth = 1;
+          this.ctx.strokeRect(50, this.currentTimeBarY, this.currentTimeBarX - 50, this.barHeight);
+
+          // 绘制lastTime进度条
+          this.ctx.fillStyle = "#2196F3";
+          this.ctx.fillRect(50, this.lastTimeBarY, this.lastTimeBarX - 50, this.barHeight);
+          this.ctx.strokeStyle = "#fff";
+          this.ctx.lineWidth = 1;
+          this.ctx.strokeRect(50, this.lastTimeBarY, this.lastTimeBarX - 50, this.barHeight);
+        }
+
+        // 绘制时间差竖线和填充区域
+        drawDeltaTimeLines() {
+          if (this.animationPhase === 2) {
+            // 绘制竖线
+            this.ctx.strokeStyle = "#fff";
+            this.ctx.lineWidth = 2;
+
+            // 计算竖线的当前长度
+            const currentTimeLineLength = (this.lastTimeBarY - this.currentTimeBarY) * this.lineGrowthProgress;
+            const lastTimeLineLength = (this.lastTimeBarY - this.currentTimeBarY) * this.lineGrowthProgress;
+
+            // currentTime竖线：从currentTime进度条上边缘向下增长
+            this.ctx.beginPath();
+            this.ctx.moveTo(this.currentTimeBarX, this.currentTimeBarY);
+            this.ctx.lineTo(this.currentTimeBarX, this.currentTimeBarY + currentTimeLineLength);
+            this.ctx.stroke();
+
+            // lastTime竖线：从lastTime进度条下边缘向上增长到currentTime进度条下边缘
+            this.ctx.beginPath();
+            this.ctx.moveTo(this.lastTimeBarX, this.lastTimeBarY + this.barHeight);
+            this.ctx.lineTo(this.lastTimeBarX, this.lastTimeBarY + this.barHeight - lastTimeLineLength);
+            this.ctx.stroke();
+
+            // 只有当竖线增长完成时才显示填充区域和文字
+            if (this.lineGrowthProgress >= 1) {
+              this.drawDeltaTimeFill();
+              this.drawDeltaTimeText();
+            }
+          }
+        }
+
+        // 绘制时间差填充区域
+        drawDeltaTimeFill() {
+          this.ctx.fillStyle = "rgba(255, 152, 0, 0.25)";
+          // 上方区域：从currentTime进度条下边缘到lastTime进度条上边缘
+          this.ctx.fillRect(
+            this.lastTimeBarX,
+            this.currentTimeBarY + this.barHeight,
+            this.currentTimeBarX - this.lastTimeBarX,
+            this.lastTimeBarY - (this.currentTimeBarY + this.barHeight)
+          );
+          // 下方区域：从lastTime进度条下边缘到currentTime进度条上边缘
+          this.ctx.fillRect(
+            this.lastTimeBarX,
+            this.lastTimeBarY,
+            this.currentTimeBarX - this.lastTimeBarX,
+            this.currentTimeBarY + this.barHeight - (this.lastTimeBarY + this.barHeight)
+          );
+        }
+
+        // 绘制时间差文字
+        drawDeltaTimeText() {
+          this.ctx.fillStyle = "#fff";
+          this.ctx.font = "14px JetBrains Mono, Consolas, sans-serif";
+          this.ctx.textAlign = "center";
+          const textX = (this.currentTimeBarX + this.lastTimeBarX) / 2;
+          const textY = (this.currentTimeBarY + this.lastTimeBarY + this.barHeight) / 2 + this.barHeight;
+          this.ctx.fillText(`${this.deltaTimeDisplay.toFixed(3)}s`, textX, textY);
+        }
+
+        // 绘制标签
+        drawLabels() {
+          this.ctx.fillStyle = "#fff";
+          this.ctx.font = "14px JetBrains Mono, Consolas, sans-serif";
+          this.ctx.textAlign = "left";
+          this.ctx.fillText("currentTime（内置参数）", 14, this.currentTimeBarY - 13);
+          this.ctx.fillText("lastTime", 14, this.lastTimeBarY + 30);
+        }
+
+        // 启动动画
+        start() {
+          this.isRunning = true;
+          requestAnimationFrame(this.animate.bind(this));
+        }
+
+        // 停止动画
+        stop() {
+          this.isRunning = false;
+        }
       }
 
-      // 启动动画
-      requestAnimationFrame(drawDeltaTimeAnimation);
+      // 创建动画实例
+      const deltaTimeAnimation = new DeltaTimeAnimation("canvas-deltaTime");
+      
+      // 为交叉观察器提供全局访问
+      window.deltaTimeAnimation = deltaTimeAnimation;
     </script>
   </article>
 
@@ -751,53 +810,82 @@
       >递归调用会一直进行下去，直到页面被关闭。
     </p>
     <script>
-      const canvas_move = document.getElementById("canvas-move");
-      const ctx_move = canvas_move.getContext("2d");
-      const dpr_move = window.devicePixelRatio || 1;
-      canvas_move.width = canvas_move.offsetWidth * dpr_move;
-      canvas_move.height = canvas_move.offsetHeight * dpr_move;
-      ctx_move.scale(dpr_move, dpr_move);
+      class MoveAnimation {
+        constructor(canvasId) {
+          this.canvas = document.getElementById(canvasId);
+          this.ctx = this.canvas.getContext("2d");
+          this.dpr = window.devicePixelRatio || 1;
+          
+          // 设置Canvas尺寸
+          this.canvas.width = this.canvas.offsetWidth * this.dpr;
+          this.canvas.height = this.canvas.offsetHeight * this.dpr;
+          this.ctx.scale(this.dpr, this.dpr);
 
-      // 动画参数
-      let lastTime = 0;
-      const px_per_second = 450;
+          // 动画参数
+          this.lastTime = 0;
+          this.pxPerSecond = 450;
+          this.isRunning = true;
 
-      const rect_move_width = 100;
-      const rect_move_height = 100;
-      let rect_move_x = 0;
-      const rect_move_y = (canvas_move.offsetHeight - rect_move_height) / 2;
-      const rect_move_fillStyle = "#385";
-      const rect_move_strokeStyle = "gold";
-      ctx_move.lineWidth = 5;
+          // 矩形参数
+          this.rectWidth = 100;
+          this.rectHeight = 100;
+          this.rectX = 0;
+          this.rectY = (this.canvas.offsetHeight - this.rectHeight) / 2;
+          this.rectFillStyle = "#385";
+          this.rectStrokeStyle = "gold";
+          this.ctx.lineWidth = 5;
 
-      function rect_move_draw() {
-        ctx_move.clearRect(0, 0, canvas_move.width, canvas_move.height);
-        ctx_move.fillStyle = rect_move_fillStyle;
-        ctx_move.strokeStyle = rect_move_strokeStyle;
-        ctx_move.fillRect(rect_move_x, rect_move_y, rect_move_width, rect_move_height);
-        ctx_move.strokeRect(rect_move_x, rect_move_y, rect_move_width, rect_move_height);
-      }
-
-      function draw_move(currentTime) {
-        // 计算时间差（毫秒转换为秒）
-        const deltaTime = (currentTime - lastTime) / 1000;
-        lastTime = currentTime;
-
-        // 基于时间计算移动距离
-        const moveDistance = px_per_second * deltaTime;
-        rect_move_x += moveDistance;
-
-        // 边界检测
-        if (rect_move_x > canvas_move.offsetWidth - rect_move_width) {
-          rect_move_x = 0;
+          // 启动动画
+          this.start();
         }
 
-        rect_move_draw();
-        requestAnimationFrame(draw_move);
+        // 绘制矩形
+        drawRect() {
+          this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+          this.ctx.fillStyle = this.rectFillStyle;
+          this.ctx.strokeStyle = this.rectStrokeStyle;
+          this.ctx.fillRect(this.rectX, this.rectY, this.rectWidth, this.rectHeight);
+          this.ctx.strokeRect(this.rectX, this.rectY, this.rectWidth, this.rectHeight);
+        }
+
+        // 动画循环
+        animate(currentTime) {
+          if (!this.isRunning) return;
+          
+          // 计算时间差（毫秒转换为秒）
+          const deltaTime = (currentTime - this.lastTime) / 1000;
+          this.lastTime = currentTime;
+
+          // 基于时间计算移动距离
+          const moveDistance = this.pxPerSecond * deltaTime;
+          this.rectX += moveDistance;
+
+          // 边界检测
+          if (this.rectX > this.canvas.offsetWidth - this.rectWidth) {
+            this.rectX = 0;
+          }
+
+          this.drawRect();
+          requestAnimationFrame(this.animate.bind(this));
+        }
+
+        // 启动动画
+        start() {
+          this.isRunning = true;
+          requestAnimationFrame(this.animate.bind(this));
+        }
+
+        // 停止动画
+        stop() {
+          this.isRunning = false;
+        }
       }
 
-      // 启动动画，传入当前时间
-      requestAnimationFrame(draw_move);
+      // 创建动画实例
+      const moveAnimation = new MoveAnimation("canvas-move");
+      
+      // 为交叉观察器提供全局访问
+      window.moveAnimation = moveAnimation;
     </script>
 
     <h3 class="分区标题 分区3级标题">条件迭代</h3>
