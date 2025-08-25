@@ -17,7 +17,7 @@ class 内存Canvas渲染器 {
     this.mousemove监听器 = null;
 
     // 字体设置
-    this.字体 = '12px "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, monospace, sans-serif';
+    this.字体 = '12px "Google Sans Code", Consolas, "Noto Sans SC", sans-serif';
     this.抬头字体 = '10px "Noto Sans SC", 微软雅黑, sans-serif';
 
     this.初始化Canvas();

@@ -381,6 +381,7 @@
   border: solid 1px silver;
   background-color: #222;
   color: white;
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", sans-serif;
   font-size: 14px;
   z-index: 1000;
   box-shadow: 2px 2px 2px 0 #111;
@@ -623,7 +624,7 @@
   width: fit-content;
   display: flex;
   align-items: center;
-  font-family: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑， monospace, sans-serif;
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 .滑块标签[for="内存容量"] {
