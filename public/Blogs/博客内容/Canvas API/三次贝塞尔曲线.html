@@ -858,7 +858,7 @@
       ></canvas>
     </figure>
     <p class="分区普通文本">
-      三次贝塞尔曲线由于拥有4个控制点，因此曲线可以分别朝两个不同方向弯曲，被广泛应用于计算机图形领域。
+      三次贝塞尔曲线拥有<span class="行内专业名词 等宽">4</span>个控制点，因此曲线可以分别朝两个不同方向弯曲，被广泛应用于计算机图形领域。
     </p>
     <script>
       class 三次贝塞尔曲线动画 {
@@ -1816,6 +1816,9 @@
 
           this.添加事件监听器();
           this.绘制全部();
+
+          // 设置默认鼠标样式
+          this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
         }
 
         绘制全部() {
@@ -1978,6 +1981,15 @@
           // 检查复选框悬停
           this.显示t值复选框.hovered = this.鼠标悬停在复选框内(mouseX, mouseY);
 
+          // 根据悬停状态改变鼠标样式
+          if (this.显示t值复选框.hovered) {
+            this.canvas.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
+          } else if (this.采样点滑块.thumbHovered || this.容差滑块.thumbHovered) {
+            this.canvas.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
+          } else {
+            this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
+          }
+
           // 处理拖拽
           if (this.采样点滑块.isDragging) {
             this.更新采样点滑块值(mouseX);
@@ -2036,9 +2048,27 @@
         }
 
         鼠标悬停在复选框内(x, y) {
+          // 计算复选框文本的结束位置
+          const 复选框文本开始x = this.显示t值复选框.x + this.显示t值复选框.size + 10;
+
+          // 保存当前字体状态
+          const 当前字体 = this.ctx.font;
+
+          // 设置字体并测量文字宽度
+          this.ctx.font = "14px 'Noto Sans SC', sans-serif";
+          const 显示文字宽度 = this.ctx.measureText("显示").width;
+          this.ctx.font = "14px 'Google Sans Code', monospace";
+          const t文字宽度 = this.ctx.measureText("t").width;
+
+          // 恢复字体状态
+          this.ctx.font = 当前字体;
+
+          const 复选框文本结束x = 复选框文本开始x + 显示文字宽度 + 3 + t文字宽度;
+
+          // 检查鼠标是否在复选框、文本或空隙范围内
           return (
             x >= this.显示t值复选框.x &&
-            x <= this.显示t值复选框.x + this.显示t值复选框.size &&
+            x <= 复选框文本结束x &&
             y >= this.显示t值复选框.y &&
             y <= this.显示t值复选框.y + this.显示t值复选框.size
           );
@@ -2114,6 +2144,9 @@
         绘制复选框() {
           const 复选框 = this.显示t值复选框;
 
+          // 先清除复选框区域，避免残留内容
+          this.ctx.clearRect(复选框.x, 复选框.y, 复选框.size, 复选框.size);
+
           // 绘制复选框边框 - 使用保存的悬停状态
           this.ctx.strokeStyle = "#FFD700b0";
           this.ctx.lineWidth = 1;
@@ -2161,7 +2194,12 @@
     <h2 class="分区标题 分区2级标题">范例</h2>
 
     <h3 class="分区标题 分区3级标题">绘制爱心</h3>
-    <p class="分区普通文本">想一想，绘制这样一个爱心，需要多少条三次贝塞尔曲线呢？试着点击爱心，并拖拽控制点吧！</p>
+    <p class="分区普通文本">
+      绘制这样一个爱心，需要多少条三次贝塞尔曲线呢？试着点击爱心的描边，并拖拽控制点吧！想要平滑的曲线？没问题，拖拽时按住<span
+        class="行内专业名词 等宽"
+        >Shift</span
+      >试试！
+    </p>
     <figure class="截图容器" style="width: 100%; aspect-ratio: 1.35">
       <canvas
         id="canvas-三次贝塞尔曲线-爱心"
@@ -2244,6 +2282,7 @@
             拖拽的曲线段: null,
             拖拽起始位置: { x: 0, y: 0 },
             刚刚结束拖拽: false,
+            按住Shift键: false,
           };
 
           // 复选框配置
@@ -2381,6 +2420,19 @@
           this.canvas.addEventListener("mouseup", (e) => {
             this.处理鼠标抬起(e);
           });
+
+          // 添加键盘事件监听器
+          document.addEventListener("keydown", (e) => {
+            if (e.key === "Shift") {
+              this.拖拽状态.按住Shift键 = true;
+            }
+          });
+
+          document.addEventListener("keyup", (e) => {
+            if (e.key === "Shift") {
+              this.拖拽状态.按住Shift键 = false;
+            }
+          });
         }
 
         处理鼠标移动(e) {
@@ -2444,11 +2496,11 @@
           if (找到控制点悬停) {
             this.canvas.style.cursor = "grab";
           } else if (找到悬停) {
-            this.canvas.style.cursor = "pointer";
+            this.canvas.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
           } else if (this.显示控制点序号复选框.hovered) {
-            this.canvas.style.cursor = "pointer";
+            this.canvas.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
           } else {
-            this.canvas.style.cursor = "default";
+            this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
           }
 
           this.绘制全部();
@@ -2461,7 +2513,7 @@
             this.拖拽状态.拖拽的控制点 = null;
             this.拖拽状态.拖拽的曲线段 = null;
             this.拖拽状态.刚刚结束拖拽 = true;
-            this.canvas.style.cursor = "default";
+            this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
 
             // 延迟重置刚刚结束拖拽标志
             setTimeout(() => {
@@ -2473,7 +2525,7 @@
             三次贝塞尔坐标.鼠标悬停 = false;
             三次贝塞尔坐标.悬停的控制点 = null;
           }
-          this.canvas.style.cursor = "default";
+          this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
           this.绘制全部();
         }
 
@@ -2534,7 +2586,7 @@
             this.拖拽状态.拖拽的控制点 = null;
             this.拖拽状态.拖拽的曲线段 = null;
             this.拖拽状态.刚刚结束拖拽 = true;
-            this.canvas.style.cursor = "default";
+            this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
 
             // 延迟重置刚刚结束拖拽标志，防止立即触发点击事件
             setTimeout(() => {
@@ -2610,9 +2662,9 @@
             this.ctx.strokeStyle = "yellowgreen";
             this.ctx.lineWidth = 2;
             this.ctx.beginPath();
-            this.ctx.moveTo(复选框.x + 4, 复选框.y + 1);
-            this.ctx.lineTo(复选框.x + 复选框.size / 3 + 2, 复选框.y + 复选框.size / 3 - 1);
-            this.ctx.lineTo(复选框.x + 复选框.size - 3, 复选框.y - 复选框.size / 3 + 2);
+            this.ctx.moveTo(复选框.x + 4, 复选框.y);
+            this.ctx.lineTo(复选框.x + 复选框.size / 3 + 2, 复选框.y + 复选框.size / 3 - 2);
+            this.ctx.lineTo(复选框.x + 复选框.size - 4, 复选框.y - 复选框.size / 3 + 1);
             this.ctx.stroke();
           }
 
@@ -2640,10 +2692,18 @@
             case "P1":
               曲线段.P1.x = mouseX;
               曲线段.P1.y = mouseY;
+              // 如果按住Shift键，自动对齐关联的控制点
+              if (this.拖拽状态.按住Shift键) {
+                this.自动对齐关联控制点(控制点名称, 曲线段, mouseX, mouseY);
+              }
               break;
             case "P2":
               曲线段.P2.x = mouseX;
               曲线段.P2.y = mouseY;
+              // 如果按住Shift键，自动对齐关联的控制点
+              if (this.拖拽状态.按住Shift键) {
+                this.自动对齐关联控制点(控制点名称, 曲线段, mouseX, mouseY);
+              }
               break;
             case "P3":
               曲线段.P3.x = mouseX;
@@ -3047,6 +3107,57 @@
           }
 
           this.ctx.restore();
+        }
+
+        自动对齐关联控制点(控制点名称, 当前曲线段, mouseX, mouseY) {
+          // 找到当前曲线段在数组中的索引
+          const 当前曲线索引 = this.爱心.三次贝塞尔坐标组.indexOf(当前曲线段);
+          if (当前曲线索引 === -1) return;
+
+          let 关联控制点 = null;
+          let 关联曲线段 = null;
+
+          if (控制点名称 === "P1") {
+            // P1控制点：需要找到前一段曲线的P2控制点
+            const 前一段索引 =
+              (当前曲线索引 - 1 + this.爱心.三次贝塞尔坐标组.length) % this.爱心.三次贝塞尔坐标组.length;
+            关联曲线段 = this.爱心.三次贝塞尔坐标组[前一段索引];
+            关联控制点 = 关联曲线段.P2;
+          } else if (控制点名称 === "P2") {
+            // P2控制点：需要找到下一段曲线的P1控制点
+            const 下一段索引 = (当前曲线索引 + 1) % this.爱心.三次贝塞尔坐标组.length;
+            关联曲线段 = this.爱心.三次贝塞尔坐标组[下一段索引];
+            关联控制点 = 关联曲线段.P1;
+          }
+
+          if (关联控制点 && 关联曲线段) {
+            // 计算当前控制点和共享端点的连线方向
+            let 共享端点;
+            if (控制点名称 === "P1") {
+              共享端点 = 当前曲线段.P0;
+            } else {
+              共享端点 = 当前曲线段.P3;
+            }
+
+            // 计算方向向量
+            const dx = mouseX - 共享端点.x;
+            const dy = mouseY - 共享端点.y;
+            const 距离 = Math.sqrt(dx * dx + dy * dy);
+
+            if (距离 > 0) {
+              // 归一化方向向量
+              const 方向x = dx / 距离;
+              const 方向y = dy / 距离;
+
+              // 计算关联控制点应该的位置（保持原有距离）
+              const 关联控制点距离 = Math.sqrt((关联控制点.x - 共享端点.x) ** 2 + (关联控制点.y - 共享端点.y) ** 2);
+
+              // 将关联控制点移动到与当前控制点反方向的位置
+              // 这样两个控制点会在共享端点的两侧，形成平滑的曲线过渡
+              关联控制点.x = 共享端点.x - 方向x * 关联控制点距离;
+              关联控制点.y = 共享端点.y - 方向y * 关联控制点距离;
+            }
+          }
         }
       }
 
