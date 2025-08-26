@@ -574,7 +574,7 @@ class 二叉树可视化 {
 
     const canvas宽度 = this.canvas.width / this.devicePixelRatio;
     const 根节点X = canvas宽度 / 2;
-    const 根节点Y = 150; // 从100改为125，向下移动25像素
+    const 根节点Y = 200;
 
     this.根节点.x = 根节点X;
     this.根节点.y = 根节点Y;

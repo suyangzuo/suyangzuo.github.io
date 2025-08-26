@@ -392,7 +392,10 @@
       <code class="lang-javascript">
         // 编写动画函数
         animate() {
-          // 绘制逻辑
+          ctx.clearRect(0, 0, canvas.width, canvas.height); //先清空画布
+          //然后再绘制
+          绘制这个();
+          绘制那个();
           requestAnimationFrame(animate);  //函数内部递归调用自身
         }
 
@@ -459,6 +462,7 @@
 
           当前距离 += 移动距离;  // 移动物体
 
+          ctx.clearRect(0, 0, canvas.width, canvas.height); //先清空画布
           // 绘制逻辑
           requestAnimationFrame(animate);  //函数内部递归调用自身
         }
@@ -795,6 +799,7 @@
             矩形水平坐标 = 0;   //如果矩形的右边界到达画布的右边界，则矩形回到起点
           }
           
+          ctx.clearRect(0, 0, canvas.width, canvas.height); //先清空画布
           绘制矩形();
           requestAnimationFrame(绘制动画);   //自己调用自己：递归调用
         }
@@ -930,6 +935,7 @@
 
           // 给 requestAnimationFrame() 添加条件
           if (!停止动画) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); //先清空画布
             requestAnimationFrame(绘制动画);   //自己调用自己：递归调用
           }
         }
@@ -1123,6 +1129,7 @@
               this.旋转角度 -= 360;
             }
             
+            ctx.clearRect(0, 0, canvas.width, canvas.height); //先清空画布
             // 绘制动画
             this.绘制轨道与小球();
             
@@ -1414,6 +1421,7 @@
               this.旋转角度 -= 360;
             }
             
+            ctx.clearRect(0, 0, canvas.width, canvas.height); //先清空画布
             // 绘制动画
             this.绘制轨道与小球();
             
@@ -1747,6 +1755,7 @@
 
             const 水平移动进度 = Math.min(动画已用时 / 动画时长, 1);  // 进度不能超过1
             const 当前矩形水平位置 = 水平移动进度 * canvas.width;
+            ctx.clearRect(0, 0, canvas.width, canvas.height); //先清空画布
             绘制矩形();
         }
         
