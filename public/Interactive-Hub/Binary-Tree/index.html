@@ -31,7 +31,43 @@
       <figure class="展示区">
         <canvas id="canvas-二叉树"></canvas>
       </figure>
-      <div class="控制区"></div>
+      <div class="控制区">
+        <div class="控制面板">
+          <div class="控制组">
+            <label>树类型：</label>
+            <div class="radio组">
+              <label class="radio标签">
+                <input type="radio" name="树类型" value="普通二叉树" checked />
+                <span class="radio文本">普通二叉树</span>
+              </label>
+              <label class="radio标签">
+                <input type="radio" name="树类型" value="平衡二叉树" />
+                <span class="radio文本">平衡二叉树</span>
+              </label>
+              <label class="radio标签">
+                <input type="radio" name="树类型" value="完美二叉树" />
+                <span class="radio文本">完美二叉树</span>
+              </label>
+              <label class="radio标签">
+                <input type="radio" name="树类型" value="二叉搜索树" />
+                <span class="radio文本">二叉搜索树</span>
+              </label>
+              <label class="radio标签">
+                <input type="radio" name="树类型" value="AVL树" />
+                <span class="radio文本"><span style="color: lightcyan; margin-right: 2px">AVL</span>树</span>
+              </label>
+            </div>
+          </div>
+          <div class="控制组">
+            <label>删除模式：</label>
+            <label class="checkbox标签">
+              <input type="checkbox" id="递归删除复选框" checked />
+              <span class="checkbox自定义"></span>
+              <span class="checkbox文本">递归删除</span>
+            </label>
+          </div>
+        </div>
+      </div>
     </section>
   </body>
 </html>

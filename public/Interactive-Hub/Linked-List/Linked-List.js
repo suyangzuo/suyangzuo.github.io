@@ -627,9 +627,9 @@ class 链表可视化 {
         this.ctx.moveTo(起点X, 起点Y);
 
         // 控制点
-        const 控制点1X = 起点X + (终点X - 起点X) * 0.3;
+        const 控制点1X = 起点X + (终点X - 起点X) * 0.5;
         const 控制点1Y = 起点Y;
-        const 控制点2X = 终点X - (终点X - 起点X) * 0.3;
+        const 控制点2X = 终点X - (终点X - 起点X) * 0.5;
         const 控制点2Y = 终点Y;
 
         this.ctx.bezierCurveTo(控制点1X, 控制点1Y, 控制点2X, 控制点2Y, 终点X, 终点Y);
@@ -652,9 +652,9 @@ class 链表可视化 {
         this.ctx.moveTo(起点X, 起点Y);
 
         // 控制点
-        const 控制点1X = 起点X - (起点X - 终点X) * 0.3;
+        const 控制点1X = 起点X - (起点X - 终点X) * 0.5;
         const 控制点1Y = 起点Y;
-        const 控制点2X = 终点X + (起点X - 终点X) * 0.3;
+        const 控制点2X = 终点X + (起点X - 终点X) * 0.5;
         const 控制点2Y = 终点Y;
 
         this.ctx.bezierCurveTo(控制点1X, 控制点1Y, 控制点2X, 控制点2Y, 终点X, 终点Y);
