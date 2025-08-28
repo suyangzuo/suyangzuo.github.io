@@ -6,6 +6,7 @@ class 二叉树可视化 {
 
     // 二叉树数据
     this.树类型 = "普通二叉树"; // 默认普通二叉树
+    this.创建模式 = "随机创建"; // 默认随机创建
     this.根节点 = null;
     this.拖拽的节点 = null;
     this.拖拽偏移 = { x: 0, y: 0 };
@@ -53,8 +54,13 @@ class 二叉树可视化 {
     this.初始化Canvas();
     this.设置事件监听();
     this.创建控制区事件绑定();
-    this.创建示例树();
-    this.重新布局树(); // 确保树在正确位置
+
+    // 根据创建模式决定是否创建示例树
+    if (this.创建模式 === "随机创建") {
+      this.创建示例树();
+      this.重新布局树(); // 确保树在正确位置
+    }
+
     this.绘制();
 
     // 监听窗口大小变化
@@ -151,6 +157,13 @@ class 二叉树可视化 {
         this.树类型 = e.target.value;
         this.重新构建树();
         this.绘制();
+      });
+    });
+
+    // 绑定创建模式事件
+    document.querySelectorAll('input[name="创建模式"]').forEach((radio) => {
+      radio.addEventListener("change", (e) => {
+        this.创建模式 = e.target.value;
       });
     });
 
@@ -294,19 +307,23 @@ class 二叉树可视化 {
     this.拖拽的子节点信息 = [];
     this.已确定操作类型 = false;
 
-    if (this.树类型 === "二叉搜索树") {
-      // 对于二叉搜索树，先创建示例树，然后重新构建
-      this.创建示例树();
-      this.重新构建树();
-    } else if (this.树类型 === "普通二叉树") {
-      // 对于普通二叉树，重置时重新生成随机节点值
-      this.创建示例树();
-      this.重新布局树();
-    } else {
-      // 其他树类型直接创建示例树
-      this.创建示例树();
-      this.重新布局树();
+    // 根据创建模式决定是否创建示例树
+    if (this.创建模式 === "随机创建") {
+      if (this.树类型 === "二叉搜索树") {
+        // 对于二叉搜索树，先创建示例树，然后重新构建
+        this.创建示例树();
+        this.重新构建树();
+      } else if (this.树类型 === "普通二叉树") {
+        // 对于普通二叉树，重置时重新生成随机节点值
+        this.创建示例树();
+        this.重新布局树();
+      } else {
+        // 其他树类型直接创建示例树
+        this.创建示例树();
+        this.重新布局树();
+      }
     }
+    // 如果是手动创建模式，不创建任何节点
 
     this.绘制();
   }
@@ -707,8 +724,8 @@ class 二叉树可视化 {
       this.悬停的节点 = null;
       this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
 
-      // 只有当有当前选中节点时才生成预览
-      if (this.当前选中节点) {
+      // 在手动创建模式下，即使没有选中节点也要显示预览
+      if (this.创建模式 === "手动创建" || this.当前选中节点) {
         const 预览信息 = this.获取节点预览信息(x, y);
         if (预览信息) {
           this.预览信息 = 预览信息;
@@ -780,7 +797,11 @@ class 二叉树可视化 {
     const 新节点 = this.创建节点(新值, x, y);
 
     if (!this.根节点) {
+      // 如果没有根节点，创建根节点
       this.根节点 = 新节点;
+      // 设置根节点位置
+      新节点.x = x;
+      新节点.y = y;
     } else {
       // 使用预览信息来确定父节点和节点类型
       if (this.预览信息) {
@@ -844,6 +865,18 @@ class 二叉树可视化 {
   }
 
   获取节点预览信息(x, y) {
+    // 如果没有根节点，显示根节点预览
+    if (!this.根节点) {
+      return {
+        父节点: null,
+        节点类型: "root",
+        x: x,
+        y: y,
+        是根节点: true,
+      };
+    }
+
+    // 如果没有选中节点，不显示预览
     if (!this.当前选中节点) return null;
 
     // 基于当前选中节点生成预览
@@ -934,15 +967,16 @@ class 二叉树可视化 {
     // 清空Canvas
     this.ctx.clearRect(0, 0, this.canvas.width / this.devicePixelRatio, this.canvas.height / this.devicePixelRatio);
 
-    if (!this.根节点) return;
+    // 如果有根节点，绘制树结构
+    if (this.根节点) {
+      // 绘制连线
+      this.绘制连线(this.根节点);
 
-    // 绘制连线
-    this.绘制连线(this.根节点);
+      // 绘制节点
+      this.绘制所有节点(this.根节点);
+    }
 
-    // 绘制节点
-    this.绘制所有节点(this.根节点);
-
-    // 绘制预览节点
+    // 绘制预览节点（无论是否有根节点都要绘制）
     if (this.预览信息) {
       this.绘制预览节点();
     }
@@ -1077,16 +1111,7 @@ class 二叉树可视化 {
     const radius = this.节点配置.圆角;
 
     this.ctx.beginPath();
-    this.ctx.moveTo(x + radius, y);
-    this.ctx.lineTo(x + width - radius, y);
-    this.ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-    this.ctx.lineTo(x + width, y + height - radius);
-    this.ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-    this.ctx.lineTo(x + radius, y + height);
-    this.ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-    this.ctx.lineTo(x, y + radius);
-    this.ctx.quadraticCurveTo(x, y, x + radius, y);
-    this.ctx.closePath();
+    this.ctx.roundRect(x, y, width, height, [radius]);
     this.ctx.fill();
     this.ctx.stroke();
 
@@ -1109,7 +1134,6 @@ class 二叉树可视化 {
     const 字段名称列表 = ["ID：", "left：", "right："];
     const 字段名称宽度 = Math.max(...字段名称列表.map((名称) => this.ctx.measureText(名称).width));
     const 中文冒号宽度 = this.ctx.measureText("：").width;
-    const 内存地址宽度 = this.ctx.measureText(" 0x12345678").width;
 
     // 计算文本起始位置
     const 文本X = x + 15;
@@ -1246,7 +1270,7 @@ class 二叉树可视化 {
   绘制预览节点() {
     if (!this.预览信息) return;
 
-    const { x, y, 父节点, 是左子节点 } = this.预览信息;
+    const { x, y, 父节点, 是左子节点, 是根节点 } = this.预览信息;
 
     // 绘制25%透明度的预览节点
     this.ctx.globalAlpha = 0.25;
@@ -1257,23 +1281,14 @@ class 二叉树可视化 {
     this.ctx.lineWidth = 2;
 
     // 绘制圆角矩形
-    const nodeX = x - this.节点配置.宽度 / 2;
+    const 叶节点宽度 = 120;
+    const nodeX = x - 叶节点宽度 / 2;
     const nodeY = y - this.节点配置.高度 / 2;
-    const width = this.节点配置.宽度;
     const height = this.节点配置.高度;
     const radius = this.节点配置.圆角;
 
     this.ctx.beginPath();
-    this.ctx.moveTo(nodeX + radius, nodeY);
-    this.ctx.lineTo(nodeX + width - radius, nodeY);
-    this.ctx.quadraticCurveTo(nodeX + width, nodeY, nodeX + width, nodeY + radius);
-    this.ctx.lineTo(nodeX + width, nodeY + height - radius);
-    this.ctx.quadraticCurveTo(nodeX + width, nodeY + height, nodeX + width - radius, nodeY + height);
-    this.ctx.lineTo(nodeX + radius, nodeY + height);
-    this.ctx.quadraticCurveTo(nodeX, nodeY + height, nodeX, nodeY + height - radius);
-    this.ctx.lineTo(nodeX, nodeY + radius);
-    this.ctx.quadraticCurveTo(nodeX, nodeY, nodeX + radius, nodeY);
-    this.ctx.closePath();
+    this.ctx.roundRect(nodeX, nodeY, 叶节点宽度, height, [radius]);
     this.ctx.fill();
     this.ctx.stroke();
 
@@ -1283,6 +1298,21 @@ class 二叉树可视化 {
     this.ctx.textAlign = "center";
     this.ctx.textBaseline = "middle";
     this.ctx.fillText("+", x, y);
+
+    // 如果是根节点预览，绘制"root"文本并返回
+    if (是根节点) {
+      // 绘制"root"文本在矩形上方
+      this.ctx.globalAlpha = 0.5;
+      this.ctx.fillStyle = this.颜色.root标签;
+      this.ctx.font = `bold 18px ${this.字体}`;
+      this.ctx.textAlign = "center";
+      this.ctx.textBaseline = "bottom";
+      this.ctx.fillText("root", x, y - this.节点配置.高度 / 2 - 10);
+
+      // 恢复透明度
+      this.ctx.globalAlpha = 1.0;
+      return;
+    }
 
     // 绘制预览连线
     this.ctx.strokeStyle = 是左子节点 ? this.颜色.left指针 : this.颜色.right指针;

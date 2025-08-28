@@ -1186,7 +1186,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .超链接 {
-  font-family: "Google Sans Code", "Noto Sans SC", sans-serif;
+  font-family: "Fira Sans", "Noto Sans SC", sans-serif;
   color: var(--超链接颜色-正文);
   margin: 0 3px;
   text-decoration: underline;
