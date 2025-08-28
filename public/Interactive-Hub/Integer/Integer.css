@@ -646,7 +646,8 @@
 }
 
 .整数类型选项.selected .整数类型标签 .变量类型 {
-  color: var(--选中选项颜色);
+  /* color: var(--选中选项颜色); */
+  color: greenyellow;
 }
 
 .整数类型选项.selected .整数类型标签 .字节数 {
@@ -829,7 +830,7 @@
   border: 2px solid var(--位格子边框);
   border-radius: 6px;
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
-  transition: all 0.2s ease;
+  transition: all 125ms ease-out;
   font-family: "JetBrains Mono", Consolas, monospace;
   font-size: 14px;
   font-weight: bold;
@@ -839,12 +840,10 @@
 
 .极值按钮:hover {
   border-color: var(--选项悬停颜色);
-  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
 }
 
 .极值按钮:active {
   color: white;
-  box-shadow: 0 1px 4px rgba(33, 150, 243, 0.5);
 }
 
 .极值按钮.最大值按钮:active {
@@ -867,12 +866,10 @@
 
 .极值按钮.最大值按钮:hover {
   border-color: #4caf50;
-  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
 }
 
 .极值按钮.最小值按钮:hover {
   border-color: #f44336;
-  box-shadow: 0 2px 8px rgba(244, 67, 54, 0.3);
 }
 
 /* 极值按钮高亮状态 */
@@ -880,21 +877,12 @@
   background: rgba(76, 175, 80, 0.4);
   color: white;
   border-color: #4caf50;
-  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.4);
-  transform: translateY(-1px);
 }
 
 .极值按钮.最小值按钮.highlighted {
   background: rgba(244, 67, 54, 0.4);
   color: white;
   border-color: #f44336;
-  box-shadow: 0 2px 8px rgba(244, 67, 54, 0.4);
-  transform: translateY(-1px);
-}
-
-.极值按钮.highlighted:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 /* 响应式设计 */

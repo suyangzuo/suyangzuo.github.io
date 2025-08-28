@@ -13,6 +13,8 @@ class IntegerVisualizer {
     this.decreaseInterval = null;
     this.intervalDelay = 100; // 初始延迟
     this.minIntervalDelay = 50; // 最小延迟
+    this.increaseTimeout = null; // 增加按钮的延迟超时
+    this.decreaseTimeout = null; // 减少按钮的延迟超时
     
     // DOM元素缓存
     this.domCache = {
@@ -284,7 +286,14 @@ class IntegerVisualizer {
       e.preventDefault(); // 阻止默认行为
       increaseBtn.classList.add("active");
       valueInputGroup.classList.add("button-active");
-      this.startContinuousIncrease();
+      
+      // 立即增加一次值
+      this.increaseValue();
+      
+      // 延迟750ms后开始连续增加，避免误触
+      this.increaseTimeout = setTimeout(() => {
+        this.startContinuousIncrease();
+      }, 750);
     });
 
     increaseBtn.addEventListener("mouseup", (e) => {
@@ -292,6 +301,11 @@ class IntegerVisualizer {
       if (e.button !== 0) return;
       
       increaseBtn.classList.remove("active");
+      // 清除延迟超时
+      if (this.increaseTimeout) {
+        clearTimeout(this.increaseTimeout);
+        this.increaseTimeout = null;
+      }
       this.stopContinuousChange();
       // 检查鼠标是否在数值输入组内
       if (!valueInputGroup.matches(':hover')) {
@@ -301,11 +315,14 @@ class IntegerVisualizer {
 
     increaseBtn.addEventListener("mouseleave", () => {
       increaseBtn.classList.remove("active");
-      this.stopContinuousChange();
-      // 检查鼠标是否在数值输入组内
-      if (!valueInputGroup.matches(':hover')) {
-        valueInputGroup.classList.remove("button-active");
+      // 清除延迟超时
+      if (this.increaseTimeout) {
+        clearTimeout(this.increaseTimeout);
+        this.increaseTimeout = null;
       }
+      this.stopContinuousChange();
+      // 鼠标离开按钮区域时，移除数值输入组的激活样式
+      valueInputGroup.classList.remove("button-active");
     });
 
     // 减少按钮
@@ -316,7 +333,14 @@ class IntegerVisualizer {
       e.preventDefault(); // 阻止默认行为
       decreaseBtn.classList.add("active");
       valueInputGroup.classList.add("button-active");
-      this.startContinuousDecrease();
+      
+      // 立即减少一次值
+      this.decreaseValue();
+      
+      // 延迟750ms后开始连续减少，避免误触
+      this.decreaseTimeout = setTimeout(() => {
+        this.startContinuousDecrease();
+      }, 750);
     });
 
     decreaseBtn.addEventListener("mouseup", (e) => {
@@ -324,6 +348,11 @@ class IntegerVisualizer {
       if (e.button !== 0) return;
       
       decreaseBtn.classList.remove("active");
+      // 清除延迟超时
+      if (this.decreaseTimeout) {
+        clearTimeout(this.decreaseTimeout);
+        this.decreaseTimeout = null;
+      }
       this.stopContinuousChange();
       // 检查鼠标是否在数值输入组内
       if (!valueInputGroup.matches(':hover')) {
@@ -333,11 +362,14 @@ class IntegerVisualizer {
 
     decreaseBtn.addEventListener("mouseleave", () => {
       decreaseBtn.classList.remove("active");
-      this.stopContinuousChange();
-      // 检查鼠标是否在数值输入组内
-      if (!valueInputGroup.matches(':hover')) {
-        valueInputGroup.classList.remove("button-active");
+      // 清除延迟超时
+      if (this.decreaseTimeout) {
+        clearTimeout(this.decreaseTimeout);
+        this.decreaseTimeout = null;
       }
+      this.stopContinuousChange();
+      // 鼠标离开按钮区域时，移除数值输入组的激活样式
+      valueInputGroup.classList.remove("button-active");
     });
 
     // 数值输入组鼠标离开事件
@@ -355,6 +387,17 @@ class IntegerVisualizer {
       
       increaseBtn.classList.remove("active");
       decreaseBtn.classList.remove("active");
+      
+      // 清除延迟超时
+      if (this.increaseTimeout) {
+        clearTimeout(this.increaseTimeout);
+        this.increaseTimeout = null;
+      }
+      if (this.decreaseTimeout) {
+        clearTimeout(this.decreaseTimeout);
+        this.decreaseTimeout = null;
+      }
+      
       this.stopContinuousChange();
       
       // 检查鼠标是否在数值输入组内
@@ -514,6 +557,15 @@ class IntegerVisualizer {
     if (this.decreaseInterval) {
       clearInterval(this.decreaseInterval);
       this.decreaseInterval = null;
+    }
+    // 清除延迟超时
+    if (this.increaseTimeout) {
+      clearTimeout(this.increaseTimeout);
+      this.increaseTimeout = null;
+    }
+    if (this.decreaseTimeout) {
+      clearTimeout(this.decreaseTimeout);
+      this.decreaseTimeout = null;
     }
     this.intervalDelay = 100;
   }
