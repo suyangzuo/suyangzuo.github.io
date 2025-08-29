@@ -280,7 +280,15 @@ class 链表可视化 {
 
     if (指定位置) {
       // 如果指定了位置（鼠标点击位置），以该位置为中心点
-      x = 指定位置.x - this.节点配置.宽度 / 2;
+      // 创建临时节点来计算宽度
+      const 临时节点 = {
+        姓名: "临时",
+        年龄: 0,
+        next: null,
+        previous: null,
+      };
+      const 临时宽度 = this.计算节点宽度(临时节点);
+      x = 指定位置.x - 临时宽度 / 2;
       y = 指定位置.y - 节点高度 / 2;
     } else if (this.节点数组.length === 0) {
       // 第一个节点，放在Canvas偏左上角位置
@@ -289,10 +297,20 @@ class 链表可视化 {
     } else {
       // 获取最后一个节点的位置
       const 最后一个节点 = this.节点数组[this.节点数组.length - 1];
-      const 新节点X = 最后一个节点.x + this.节点配置.间距;
+      const 最后一个节点宽度 = this.计算节点宽度(最后一个节点);
+      const 新节点X = 最后一个节点.x + 最后一个节点宽度 + this.节点配置.间距;
+
+      // 创建临时节点来计算新节点宽度
+      const 临时节点 = {
+        姓名: "临时",
+        年龄: 0,
+        next: null,
+        previous: null,
+      };
+      const 新节点宽度 = this.计算节点宽度(临时节点);
 
       // 检查新节点是否会超出Canvas右边界
-      if (新节点X + this.节点配置.宽度 > canvas宽度 - 50) {
+      if (新节点X + 新节点宽度 > canvas宽度 - 50) {
         // 如果会超出，则换行到下一行
         const 行数 = Math.floor(this.节点数组.length / 3); // 每行最多3个节点
         const 列数 = this.节点数组.length % 3;
@@ -305,7 +323,7 @@ class 链表可视化 {
       }
 
       // 确保节点不会超出Canvas边界
-      x = Math.max(50, Math.min(x, canvas宽度 - this.节点配置.宽度 - 50));
+      x = Math.max(50, Math.min(x, canvas宽度 - 新节点宽度 - 50));
       y = Math.max(50, Math.min(y, canvas高度 - 节点高度 - 50));
     }
 
@@ -405,6 +423,10 @@ class 链表可视化 {
     // 如果点击在空白处且显示添加提示，则添加节点
     if (this.显示添加提示) {
       this.添加节点({ x: x, y: y });
+      // 创建节点后，立即隐藏预览节点并重新检测鼠标位置
+      this.显示添加提示 = false;
+      // 立即重新检测鼠标是否在新创建的节点上
+      this.重新检测鼠标位置(x, y);
     }
   }
 
@@ -435,16 +457,124 @@ class 链表可视化 {
     const 字段数量 = this.链表类型 === "双向链表" ? 3 : 2; // 姓名、年龄、next、previous(双向链表)
     const 节点高度 = 顶部边距 + 字段数量 * 节点行高 + 底部边距;
 
-    return x >= 节点.x && x <= 节点.x + this.节点配置.宽度 && y >= 节点.y && y <= 节点.y + 节点高度;
+    const 节点宽度 = this.计算节点宽度(节点);
+    return x >= 节点.x && x <= 节点.x + 节点宽度 && y >= 节点.y && y <= 节点.y + 节点高度;
   }
 
   点击在删除按钮内(x, y, 节点) {
     const 按钮大小 = 25;
-    const 按钮X = 节点.x + this.节点配置.宽度 - 按钮大小 / 2 - 3; // 顶在右上角，向内5px
+    const 节点宽度 = this.计算节点宽度(节点);
+    const 按钮X = 节点.x + 节点宽度 - 按钮大小 / 2 - 3; // 顶在右上角，向内5px
     const 按钮Y = 节点.y + 按钮大小 / 2 + 3; // 顶在右上角，向下5px
     return (
       x >= 按钮X - 按钮大小 / 2 && x <= 按钮X + 按钮大小 / 2 && y >= 按钮Y - 按钮大小 / 2 && y <= 按钮Y + 按钮大小 / 2
     );
+  }
+
+  鼠标在节点边界附近(x, y, 节点) {
+    // 计算节点高度
+    const 节点行高 = 22;
+    const 顶部边距 = 25;
+    const 底部边距 = 15;
+    const 字段数量 = this.链表类型 === "双向链表" ? 3 : 2; // 姓名、年龄、next、previous(双向链表)
+    const 节点高度 = 顶部边距 + 字段数量 * 节点行高 + 底部边距;
+
+    const 节点宽度 = this.计算节点宽度(节点);
+
+    // 左边界向外10px范围
+    if (x >= 节点.x - 20 && x <= 节点.x) {
+      return true;
+    }
+
+    // 右边界向外10px范围
+    if (x >= 节点.x + 节点宽度 && x <= 节点.x + 节点宽度 + 20) {
+      return true;
+    }
+
+    // 下边界向外20px范围，但只在节点宽度范围内检测
+    if (y >= 节点.y + 节点高度 && y <= 节点.y + 节点高度 + 20) {
+      // 只有在节点水平范围内才认为在边界附近
+      if (x >= 节点.x - 20 && x <= 节点.x + 节点宽度 + 20) {
+        return true;
+      }
+    }
+
+    // 上边界向外80px范围，但只在节点宽度范围内检测
+    if (y >= 节点.y - 90 && y <= 节点.y) {
+      // 只有在节点水平范围内才认为在边界附近
+      if (x >= 节点.x - 20 && x <= 节点.x + 节点宽度 + 20) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  重新检测鼠标位置(x, y) {
+    // 更新鼠标位置
+    this.鼠标位置 = { x, y };
+
+    // 如果鼠标在控制区，不显示添加提示
+    if (this.鼠标在控制区) {
+      this.悬停的节点 = null;
+      this.悬停在删除按钮 = false;
+      this.显示添加提示 = false;
+      this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
+      this.绘制();
+      return;
+    }
+
+    // 检查鼠标是否悬停在删除按钮上
+    let 悬停在删除按钮 = false;
+    this.悬停在删除按钮 = false;
+    for (let i = this.节点数组.length - 1; i >= 0; i--) {
+      const 节点 = this.节点数组[i];
+      if (this.点击在删除按钮内(x, y, 节点)) {
+        this.canvas.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
+        悬停在删除按钮 = true;
+        this.悬停在删除按钮 = true;
+        this.绘制删除按钮(节点);
+        this.悬停的节点 = 节点; // 设置悬停的节点，这样删除按钮会显示
+        this.显示添加提示 = false;
+        break;
+      }
+    }
+
+    // 检查鼠标是否悬停在节点上
+    if (!悬停在删除按钮) {
+      this.悬停的节点 = null;
+      for (let i = this.节点数组.length - 1; i >= 0; i--) {
+        const 节点 = this.节点数组[i];
+        if (this.点击在节点内(x, y, 节点)) {
+          this.悬停的节点 = 节点;
+          this.canvas.style.cursor = "grab";
+          this.显示添加提示 = false;
+          break;
+        }
+      }
+    }
+
+    // 如果既不在删除按钮上也不在节点上，检查是否在节点边界附近
+    if (!悬停在删除按钮 && !this.悬停的节点) {
+      // 检查鼠标是否在节点边界附近
+      let 在节点边界附近 = false;
+      for (let i = 0; i < this.节点数组.length; i++) {
+        const 节点 = this.节点数组[i];
+        if (this.鼠标在节点边界附近(x, y, 节点)) {
+          在节点边界附近 = true;
+          break;
+        }
+      }
+
+      if (!在节点边界附近) {
+        this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
+        this.显示添加提示 = true;
+      } else {
+        this.显示添加提示 = false;
+      }
+    }
+
+    this.绘制();
   }
 
   处理鼠标悬停(e) {
@@ -495,10 +625,24 @@ class 链表可视化 {
       }
     }
 
-    // 如果既不在删除按钮上也不在节点上，显示添加提示
+    // 如果既不在删除按钮上也不在节点上，检查是否在节点边界附近
     if (!悬停在删除按钮 && !this.悬停的节点) {
-      this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
-      this.显示添加提示 = true;
+      // 检查鼠标是否在节点边界附近
+      let 在节点边界附近 = false;
+      for (let i = 0; i < this.节点数组.length; i++) {
+        const 节点 = this.节点数组[i];
+        if (this.鼠标在节点边界附近(x, y, 节点)) {
+          在节点边界附近 = true;
+          break;
+        }
+      }
+
+      if (!在节点边界附近) {
+        this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
+        this.显示添加提示 = true;
+      } else {
+        this.显示添加提示 = false;
+      }
     }
 
     this.绘制();
@@ -525,9 +669,9 @@ class 链表可视化 {
     this.删除动画.过渡动画 = {
       前一个节点: 前一个节点,
       后一个节点: 后一个节点,
-      原始起点: 前一个节点 ? { x: 前一个节点.x + this.节点配置.宽度, y: 前一个节点.y + 节点高度 / 2 } : null,
+      原始起点: 前一个节点 ? { x: 前一个节点.x + this.计算节点宽度(前一个节点), y: 前一个节点.y + 节点高度 / 2 } : null,
       原始终点: 要删除的节点 ? { x: 要删除的节点.x, y: 要删除的节点.y + 节点高度 / 2 } : null,
-      目标起点: 前一个节点 ? { x: 前一个节点.x + this.节点配置.宽度, y: 前一个节点.y + 节点高度 / 2 } : null,
+      目标起点: 前一个节点 ? { x: 前一个节点.x + this.计算节点宽度(前一个节点), y: 前一个节点.y + 节点高度 / 2 } : null,
       目标终点: 后一个节点 ? { x: 后一个节点.x, y: 后一个节点.y + 节点高度 / 2 } : null,
       要删除的节点: 要删除的节点,
     };
@@ -571,18 +715,18 @@ class 链表可视化 {
     // 清空Canvas
     this.ctx.clearRect(0, 0, this.canvas.width / this.devicePixelRatio, this.canvas.height / this.devicePixelRatio);
 
-    // 绘制连线
+    // 绘制预览节点（在最下方，不遮挡其他元素）
+    if (this.显示添加提示) {
+      this.绘制预览节点();
+    }
+
+    // 绘制连线（在预览节点上方）
     this.绘制连线();
 
-    // 绘制节点
+    // 绘制节点（在最上方）
     this.节点数组.forEach((节点, 索引) => {
       this.绘制节点(节点, 索引);
     });
-
-    // 绘制添加提示
-    if (this.显示添加提示) {
-      this.绘制添加提示();
-    }
   }
 
   绘制连线() {
@@ -617,7 +761,7 @@ class 链表可视化 {
       // 绘制next连线
       if (当前节点.next) {
         // 计算连线起点和终点（使用节点中心点）
-        const 起点X = 当前节点.x + this.节点配置.宽度;
+        const 起点X = 当前节点.x + this.计算节点宽度(当前节点);
         const 起点Y = 当前节点.y + 节点高度 / 2;
         const 终点X = 当前节点.next.x;
         const 终点Y = 当前节点.next.y + 节点高度 / 2;
@@ -644,7 +788,7 @@ class 链表可视化 {
         // 计算连线起点和终点（使用节点中心点）
         const 起点X = 当前节点.x;
         const 起点Y = 当前节点.y + 节点高度 / 2;
-        const 终点X = 当前节点.previous.x + this.节点配置.宽度;
+        const 终点X = 当前节点.previous.x + this.计算节点宽度(当前节点.previous);
         const 终点Y = 当前节点.previous.y + 节点高度 / 2;
 
         // 绘制贝塞尔曲线
@@ -737,6 +881,9 @@ class 链表可视化 {
     const 字段数量 = this.链表类型 === "双向链表" ? 3 : 2; // 姓名、年龄、next、previous(双向链表)
     const 节点高度 = 顶部边距 + 字段数量 * 节点行高 + 底部边距;
 
+    // 计算节点宽度
+    const 节点宽度 = this.计算节点宽度(节点);
+
     // 检查是否悬停
     const 鼠标悬停 = this.悬停的节点 === 节点;
     const 背景色 = 鼠标悬停 ? "#2d3a4c" : this.颜色.节点背景;
@@ -749,26 +896,7 @@ class 链表可视化 {
 
     // 绘制圆角矩形
     this.ctx.beginPath();
-    this.ctx.moveTo(节点.x + this.节点配置.圆角, 节点.y);
-    this.ctx.lineTo(节点.x + this.节点配置.宽度 - this.节点配置.圆角, 节点.y);
-    this.ctx.quadraticCurveTo(
-      节点.x + this.节点配置.宽度,
-      节点.y,
-      节点.x + this.节点配置.宽度,
-      节点.y + this.节点配置.圆角
-    );
-    this.ctx.lineTo(节点.x + this.节点配置.宽度, 节点.y + 节点高度 - this.节点配置.圆角);
-    this.ctx.quadraticCurveTo(
-      节点.x + this.节点配置.宽度,
-      节点.y + 节点高度,
-      节点.x + this.节点配置.宽度 - this.节点配置.圆角,
-      节点.y + 节点高度
-    );
-    this.ctx.lineTo(节点.x + this.节点配置.圆角, 节点.y + 节点高度);
-    this.ctx.quadraticCurveTo(节点.x, 节点.y + 节点高度, 节点.x, 节点.y + 节点高度 - this.节点配置.圆角);
-    this.ctx.lineTo(节点.x, 节点.y + this.节点配置.圆角);
-    this.ctx.quadraticCurveTo(节点.x, 节点.y, 节点.x + this.节点配置.圆角, 节点.y);
-    this.ctx.closePath();
+    this.ctx.roundRect(节点.x, 节点.y, 节点宽度, 节点高度, [this.节点配置.圆角]);
     this.ctx.fill();
     this.ctx.stroke();
 
@@ -777,22 +905,47 @@ class 链表可视化 {
     this.ctx.textAlign = "left";
 
     // 计算字段名称的最大宽度
-    const 字段名称列表 = ["姓名：", "年龄：", "next：", "previous："];
+    // const 字段名称列表 = ["姓名：", "年龄：", "next：", "previous："];
     this.ctx.font = `14px ${this.字体}`;
-    const 字段名称宽度 = Math.max(...字段名称列表.map((名称) => this.ctx.measureText(名称).width));
+    // const 字段名称宽度 = Math.max(...字段名称列表.map((名称) => this.ctx.measureText(名称).width));
     const 中文冒号宽度 = this.ctx.measureText("：").width;
-    const 内存地址宽度 = this.ctx.measureText(" 0x12345678").width;
+    // const 内存地址宽度 = this.ctx.measureText(" 0x12345678").width;
 
-    // 计算文本起始位置
-    // const 文本X = 节点.x + 15;
-    const 文本X = this.链表类型 === "双向链表" ? 节点.x + 17 : 节点.x + 2;
+    // 计算文本起始位置，使用动态宽度确保文本居中
+    // 重新计算字段名称宽度，只考虑实际使用的字段
+    const 实际字段名称列表 =
+      this.链表类型 === "双向链表" ? ["姓名：", "年龄：", "next：", "previous："] : ["姓名：", "年龄：", "next："];
+    const 实际字段名称宽度 = Math.max(...实际字段名称列表.map((名称) => this.ctx.measureText(名称).width));
+
+    // 计算所有字段值的最大宽度
+    let 最大宽度 = 0;
+    const 姓名宽度 = this.ctx.measureText(节点.姓名).width;
+    const 年龄宽度 = this.ctx.measureText(节点.年龄.toString()).width;
+    const 下一个节点地址临时 = 节点.next ? 节点.next.内存地址 : "NULL";
+    const next宽度 = this.ctx.measureText(下一个节点地址临时).width;
+    最大宽度 = Math.max(最大宽度, 姓名宽度, 年龄宽度, next宽度);
+
+    if (this.链表类型 === "双向链表") {
+      const 上一个节点地址临时 = 节点.previous ? 节点.previous.内存地址 : "NULL";
+      const previous宽度 = this.ctx.measureText(上一个节点地址临时).width;
+      最大宽度 = Math.max(最大宽度, previous宽度);
+    }
+
+    // 计算文本总宽度：字段名称宽度 + 最大字段值宽度
+    const 文本总宽度 = 实际字段名称宽度 + 最大宽度;
+
+    // 计算左边距，使文本在节点中居中
+    const 左边距 = (节点宽度 - 文本总宽度) / 2;
+    const 文本X = 节点.x + 左边距;
+    const 内存地址垂直偏移 = -15;
+    const 索引垂直偏移 = -35;
 
     // 绘制内存地址（在节点上方，使用和节点内部相同的对齐方式，向下移动2px）
     this.ctx.fillStyle = "lightskyblue";
     this.ctx.textAlign = "right";
-    this.ctx.fillText("内存地址", 文本X + 字段名称宽度 - 中文冒号宽度, 节点.y - 20);
+    this.ctx.fillText("内存地址", 文本X + 实际字段名称宽度 - 中文冒号宽度, 节点.y + 内存地址垂直偏移);
     this.ctx.fillStyle = "gray";
-    this.ctx.fillText("：", 文本X + 字段名称宽度, 节点.y - 20);
+    this.ctx.fillText("：", 文本X + 实际字段名称宽度, 节点.y + 内存地址垂直偏移);
     this.ctx.textAlign = "left";
 
     // 绘制内存地址值，0x部分使用#999颜色
@@ -802,23 +955,23 @@ class 链表可视化 {
 
     // 先绘制0x部分（#999颜色）
     this.ctx.fillStyle = "#999";
-    this.ctx.fillText(零x部分, 文本X + 字段名称宽度, 节点.y - 20);
+    this.ctx.fillText(零x部分, 文本X + 实际字段名称宽度, 节点.y + 内存地址垂直偏移);
 
     // 再绘制地址部分（原来的颜色）
     this.ctx.fillStyle = this.颜色.内存地址值;
     const 零x宽度 = this.ctx.measureText(零x部分).width;
-    this.ctx.fillText(地址部分, 文本X + 字段名称宽度 + 零x宽度 + 1, 节点.y - 20);
+    this.ctx.fillText(地址部分, 文本X + 实际字段名称宽度 + 零x宽度 + 1, 节点.y + 内存地址垂直偏移);
 
     // 绘制索引（与内存地址保持8px间距）
     this.ctx.font = `14px ${this.字体}`;
     this.ctx.textAlign = "right";
     this.ctx.fillStyle = "lightskyblue";
-    this.ctx.fillText("索引", 文本X + 字段名称宽度 - 中文冒号宽度, 节点.y - 44);
+    this.ctx.fillText("索引", 文本X + 实际字段名称宽度 - 中文冒号宽度, 节点.y + 索引垂直偏移);
     this.ctx.fillStyle = "gray";
-    this.ctx.fillText("：", 文本X + 字段名称宽度, 节点.y - 44);
+    this.ctx.fillText("：", 文本X + 实际字段名称宽度, 节点.y + 索引垂直偏移);
     this.ctx.textAlign = "left";
     this.ctx.fillStyle = "greenyellow"; // 使用greenyellow颜色
-    this.ctx.fillText(索引.toString(), 文本X + 字段名称宽度 + 1, 节点.y - 44);
+    this.ctx.fillText(索引.toString(), 文本X + 实际字段名称宽度 + 1, 节点.y + 索引垂直偏移);
 
     // 绘制节点内容
     this.ctx.font = `14px ${this.字体}`;
@@ -830,32 +983,32 @@ class 链表可视化 {
     // 第一行：姓名
     this.ctx.fillStyle = this.颜色.字段名称;
     this.ctx.textAlign = "right";
-    this.ctx.fillText("姓名", 文本X + 字段名称宽度 - 中文冒号宽度, 当前Y);
+    this.ctx.fillText("姓名", 文本X + 实际字段名称宽度 - 中文冒号宽度, 当前Y);
     this.ctx.fillStyle = "gray";
-    this.ctx.fillText("：", 文本X + 字段名称宽度, 当前Y);
+    this.ctx.fillText("：", 文本X + 实际字段名称宽度, 当前Y);
     this.ctx.textAlign = "left";
     this.ctx.fillStyle = this.颜色.姓名值;
-    this.ctx.fillText(节点.姓名, 文本X + 字段名称宽度, 当前Y);
+    this.ctx.fillText(节点.姓名, 文本X + 实际字段名称宽度, 当前Y);
     当前Y += 节点行高;
 
     // 第二行：年龄
     this.ctx.fillStyle = this.颜色.字段名称;
     this.ctx.textAlign = "right";
-    this.ctx.fillText("年龄", 文本X + 字段名称宽度 - 中文冒号宽度, 当前Y);
+    this.ctx.fillText("年龄", 文本X + 实际字段名称宽度 - 中文冒号宽度, 当前Y);
     this.ctx.fillStyle = "gray";
-    this.ctx.fillText("：", 文本X + 字段名称宽度, 当前Y);
+    this.ctx.fillText("：", 文本X + 实际字段名称宽度, 当前Y);
     this.ctx.textAlign = "left";
     this.ctx.fillStyle = this.颜色.年龄值;
-    this.ctx.fillText(节点.年龄.toString(), 文本X + 字段名称宽度, 当前Y);
+    this.ctx.fillText(节点.年龄.toString(), 文本X + 实际字段名称宽度, 当前Y);
     当前Y += 节点行高;
 
     // 第三行：next指针
     const 下一个节点地址 = 节点.next ? 节点.next.内存地址 : "NULL";
     this.ctx.fillStyle = "#60cc60";
     this.ctx.textAlign = "right";
-    this.ctx.fillText("next", 文本X + 字段名称宽度 - 中文冒号宽度, 当前Y);
+    this.ctx.fillText("next", 文本X + 实际字段名称宽度 - 中文冒号宽度, 当前Y);
     this.ctx.fillStyle = "gray";
-    this.ctx.fillText("：", 文本X + 字段名称宽度, 当前Y);
+    this.ctx.fillText("：", 文本X + 实际字段名称宽度, 当前Y);
     this.ctx.textAlign = "left";
 
     // 绘制next值，0x部分使用#999颜色
@@ -865,15 +1018,15 @@ class 链表可视化 {
 
       // 先绘制0x部分（#999颜色）
       this.ctx.fillStyle = "#999";
-      this.ctx.fillText(零x部分, 文本X + 字段名称宽度, 当前Y);
+      this.ctx.fillText(零x部分, 文本X + 实际字段名称宽度, 当前Y);
 
       // 再绘制地址部分（原来的颜色）
       this.ctx.fillStyle = this.颜色.next值;
       const 零x宽度 = this.ctx.measureText(零x部分).width;
-      this.ctx.fillText(地址部分, 文本X + 字段名称宽度 + 零x宽度 + 1, 当前Y);
+      this.ctx.fillText(地址部分, 文本X + 实际字段名称宽度 + 零x宽度 + 1, 当前Y);
     } else {
       this.ctx.fillStyle = this.颜色.next值;
-      this.ctx.fillText(下一个节点地址, 文本X + 字段名称宽度, 当前Y);
+      this.ctx.fillText(下一个节点地址, 文本X + 实际字段名称宽度, 当前Y);
     }
 
     // 如果是双向链表，添加previous字段
@@ -882,9 +1035,9 @@ class 链表可视化 {
       const 上一个节点地址 = 节点.previous ? 节点.previous.内存地址 : "NULL";
       this.ctx.fillStyle = "#60cc60";
       this.ctx.textAlign = "right";
-      this.ctx.fillText("previous", 文本X + 字段名称宽度 - 中文冒号宽度, 当前Y);
+      this.ctx.fillText("previous", 文本X + 实际字段名称宽度 - 中文冒号宽度, 当前Y);
       this.ctx.fillStyle = "gray";
-      this.ctx.fillText("：", 文本X + 字段名称宽度, 当前Y);
+      this.ctx.fillText("：", 文本X + 实际字段名称宽度, 当前Y);
       this.ctx.textAlign = "left";
 
       // 绘制previous值，0x部分使用#999颜色
@@ -894,15 +1047,15 @@ class 链表可视化 {
 
         // 先绘制0x部分（#999颜色）
         this.ctx.fillStyle = "#999";
-        this.ctx.fillText(零x部分, 文本X + 字段名称宽度, 当前Y);
+        this.ctx.fillText(零x部分, 文本X + 实际字段名称宽度, 当前Y);
 
         // 再绘制地址部分（原来的颜色）
         this.ctx.fillStyle = this.颜色.previous值;
         const 零x宽度 = this.ctx.measureText(零x部分).width;
-        this.ctx.fillText(地址部分, 文本X + 字段名称宽度 + 零x宽度 + 1, 当前Y);
+        this.ctx.fillText(地址部分, 文本X + 实际字段名称宽度 + 零x宽度 + 1, 当前Y);
       } else {
         this.ctx.fillStyle = this.颜色.previous值;
-        this.ctx.fillText(上一个节点地址, 文本X + 字段名称宽度, 当前Y);
+        this.ctx.fillText(上一个节点地址, 文本X + 实际字段名称宽度, 当前Y);
       }
     }
 
@@ -911,7 +1064,7 @@ class 链表可视化 {
       this.ctx.fillStyle = this.颜色.head标签;
       this.ctx.font = `bold 16px ${this.字体}`;
       this.ctx.textAlign = "center";
-      this.ctx.fillText("head", 节点.x + this.节点配置.宽度 / 2, 节点.y - 66);
+      this.ctx.fillText("head", 节点.x + 节点宽度 / 2, 节点.y - 60);
     }
 
     // 如果鼠标悬停在节点上，绘制删除按钮
@@ -920,9 +1073,51 @@ class 链表可视化 {
     }
   }
 
+  计算节点宽度(节点) {
+    // 确保字体设置正确
+    this.ctx.font = `14px ${this.字体}`;
+
+    // 单向链表的宽度计算
+    if (this.链表类型 === "单向链表") {
+      const next地址 = 节点.next ? 节点.next.内存地址 : "NULL";
+      return next地址 === "NULL" ? 120 : 160;
+    }
+
+    // 双向链表的宽度计算
+    if (this.链表类型 === "双向链表") {
+      const next地址 = 节点.next ? 节点.next.内存地址 : "NULL";
+      const previous地址 = 节点.previous ? 节点.previous.内存地址 : "NULL";
+
+      // 计算最长文本的宽度
+      let 最长文本 = "";
+
+      if (next地址 === "NULL" && previous地址 === "NULL") {
+        // 情况：next和previous都为NULL
+        最长文本 = "previous：NULL";
+      } else if (next地址 !== "NULL" && previous地址 === "NULL") {
+        // 情况：next不为NULL，previous为NULL（头节点）
+        最长文本 = `next：${next地址}`;
+      } else if (previous地址 !== "NULL") {
+        // 情况：previous不为NULL（包括next为NULL和不为NULL的情况）
+        最长文本 = `previous：${previous地址}`;
+      }
+
+      if (最长文本) {
+        const 文本宽度 = this.ctx.measureText(最长文本).width;
+        // 头节点（next不为NULL，previous为NULL）使用60px边距，其他使用30px边距
+        const 边距 = next地址 !== "NULL" && previous地址 === "NULL" ? 60 : 30;
+        return 文本宽度 + 边距;
+      }
+    }
+
+    // 默认情况，返回原来的固定宽度
+    return this.节点配置.宽度;
+  }
+
   绘制删除按钮(节点) {
     const 按钮大小 = 25;
-    const 按钮X = 节点.x + this.节点配置.宽度 - 按钮大小 / 2 - 3; // 顶在右上角，向内5px
+    const 节点宽度 = this.计算节点宽度(节点);
+    const 按钮X = 节点.x + 节点宽度 - 按钮大小 / 2 - 3; // 顶在右上角，向内5px
     const 按钮Y = 节点.y + 按钮大小 / 2 + 3; // 顶在右上角，向下5px
 
     // 计算删除按钮的圆角
@@ -979,31 +1174,139 @@ class 链表可视化 {
     this.ctx.fillText("×", 按钮X, 按钮Y + 4);
   }
 
-  绘制添加提示() {
+  绘制预览节点() {
     const x = this.鼠标位置.x;
     const y = this.鼠标位置.y;
 
-    // 绘制一个淡蓝色的圆形提示
-    this.ctx.fillStyle = "rgba(74, 144, 226, 0.3)";
-    this.ctx.beginPath();
-    this.ctx.arc(x, y, 20, 0, 2 * Math.PI);
-    this.ctx.fill();
+    // 计算预览节点的高度
+    const 节点行高 = 22;
+    const 顶部边距 = 25;
+    const 底部边距 = 15;
+    const 字段数量 = this.链表类型 === "双向链表" ? 3 : 2; // 姓名、年龄、next、previous(双向链表)
+    const 节点高度 = 顶部边距 + 字段数量 * 节点行高 + 底部边距;
 
-    // 绘制边框
-    this.ctx.strokeStyle = this.颜色.添加提示;
+    // 创建临时节点来计算宽度
+    const 临时节点 = {
+      姓名: "预览",
+      年龄: 0,
+      next: null,
+      previous: null,
+    };
+    const 节点宽度 = this.计算节点宽度(临时节点);
+
+    // 计算预览节点的位置（鼠标位置为中心点）
+    const 预览节点X = x - 节点宽度 / 2;
+    const 预览节点Y = y - 节点高度 / 2;
+    const 不透明度 = 0.33;
+
+    // 绘制预览节点背景（33%不透明度）
+    this.ctx.fillStyle = `rgba(29, 39, 56, ${不透明度})`; // 节点背景色，33%不透明度
+    this.ctx.strokeStyle = `rgba(74, 85, 104, ${不透明度})`; // 节点边框色，33%不透明度
     this.ctx.lineWidth = 2;
+
+    // 绘制圆角矩形
+    this.ctx.beginPath();
+    this.ctx.roundRect(预览节点X, 预览节点Y, 节点宽度, 节点高度, [this.节点配置.圆角]);
+    this.ctx.fill();
     this.ctx.stroke();
 
-    // 绘制加号
-    this.ctx.fillStyle = this.颜色.添加提示;
-    this.ctx.font = `bold 16px ${this.字体}`;
-    this.ctx.textAlign = "center";
-    this.ctx.fillText("+", x, y + 5);
+    // 绘制预览节点的文本内容（33%不透明度）
+    this.ctx.font = `14px ${this.字体}`;
+    this.ctx.textAlign = "left";
 
-    // 绘制提示文字
-    this.ctx.fillStyle = this.颜色.添加提示;
-    this.ctx.font = `12px ${this.字体}`;
-    this.ctx.fillText("点击添加节点", x, y + 35);
+    // 计算字段名称的最大宽度
+    const 字段名称列表 =
+      this.链表类型 === "双向链表" ? ["姓名：", "年龄：", "next：", "previous："] : ["姓名：", "年龄：", "next："];
+    const 字段名称宽度 = Math.max(...字段名称列表.map((名称) => this.ctx.measureText(名称).width));
+    const 中文冒号宽度 = this.ctx.measureText("：").width;
+
+    // 计算文本起始位置，使用动态宽度确保文本居中
+    const 文本总宽度 = 字段名称宽度 + this.ctx.measureText("预览").width;
+    const 左边距 = (节点宽度 - 文本总宽度) / 2;
+    const 文本X = 预览节点X + 左边距;
+    const 内存地址垂直偏移 = -15;
+    const 索引垂直偏移 = -35;
+
+    // 绘制内存地址（在节点上方）
+    this.ctx.fillStyle = `rgba(135, 206, 250, ${不透明度})`; // lightskyblue，33%不透明度
+    this.ctx.textAlign = "right";
+    this.ctx.fillText("内存地址", 文本X + 字段名称宽度 - 中文冒号宽度, 预览节点Y + 内存地址垂直偏移);
+    this.ctx.fillStyle = `rgba(128, 128, 128, ${不透明度})`; // 冒号，33%不透明度
+    this.ctx.fillText("：", 文本X + 字段名称宽度, 预览节点Y + 内存地址垂直偏移);
+    this.ctx.textAlign = "left";
+
+    // 绘制内存地址值，0x部分使用#999颜色
+    const 预览内存地址 = "0x12345678";
+    const 零x部分 = "0x";
+    const 地址部分 = 预览内存地址.substring(2);
+
+    // 先绘制0x部分（#999颜色）
+    this.ctx.fillStyle = `rgba(153, 153, 153, ${不透明度})`; // #999，33%不透明度
+    this.ctx.fillText(零x部分, 文本X + 字段名称宽度, 预览节点Y + 内存地址垂直偏移);
+
+    // 再绘制地址部分（原来的颜色）
+    this.ctx.fillStyle = `rgba(255, 215, 0, ${不透明度})`; // 内存地址值颜色，33%不透明度
+    const 零x宽度 = this.ctx.measureText(零x部分).width;
+    this.ctx.fillText(地址部分, 文本X + 字段名称宽度 + 零x宽度 + 1, 预览节点Y + 内存地址垂直偏移);
+
+    // 绘制索引（与内存地址保持8px间距）
+    this.ctx.font = `14px ${this.字体}`;
+    this.ctx.textAlign = "right";
+    this.ctx.fillStyle = `rgba(135, 206, 250, ${不透明度})`; // lightskyblue，33%不透明度
+    this.ctx.fillText("索引", 文本X + 字段名称宽度 - 中文冒号宽度, 预览节点Y + 索引垂直偏移);
+    this.ctx.fillStyle = `rgba(128, 128, 128, ${不透明度})`; // 冒号，33%不透明度
+    this.ctx.fillText("：", 文本X + 字段名称宽度, 预览节点Y + 索引垂直偏移);
+    this.ctx.textAlign = "left";
+    this.ctx.fillStyle = `rgba(173, 255, 47, ${不透明度})`; // greenyellow，33%不透明度
+    this.ctx.fillText(this.节点数组.length.toString(), 文本X + 字段名称宽度 + 1, 预览节点Y + 索引垂直偏移);
+
+    // 绘制预览节点的内容
+    let 当前Y = 预览节点Y + 25;
+
+    // 第一行：姓名
+    this.ctx.fillStyle = `rgba(160, 174, 192, ${不透明度})`; // 字段名称，33%不透明度
+    this.ctx.textAlign = "right";
+    this.ctx.fillText("姓名", 文本X + 字段名称宽度 - 中文冒号宽度, 当前Y);
+    this.ctx.fillStyle = `rgba(128, 128, 128, ${不透明度})`; // 冒号，33%不透明度
+    this.ctx.fillText("：", 文本X + 字段名称宽度, 当前Y);
+    this.ctx.textAlign = "left";
+    this.ctx.fillStyle = `rgba(255, 255, 255, ${不透明度})`; // 姓名值，33%不透明度
+    this.ctx.fillText("预览", 文本X + 字段名称宽度, 当前Y);
+    当前Y += 节点行高;
+
+    // 第二行：年龄
+    this.ctx.fillStyle = `rgba(160, 174, 192, ${不透明度})`; // 字段名称，33%不透明度
+    this.ctx.textAlign = "right";
+    this.ctx.fillText("年龄", 文本X + 字段名称宽度 - 中文冒号宽度, 当前Y);
+    this.ctx.fillStyle = `rgba(128, 128, 128, ${不透明度})`; // 冒号，33%不透明度
+    this.ctx.fillText("：", 文本X + 字段名称宽度, 当前Y);
+    this.ctx.textAlign = "left";
+    this.ctx.fillStyle = `rgba(255, 255, 255, ${不透明度})`; // 年龄值，33%不透明度
+    this.ctx.fillText("0", 文本X + 字段名称宽度, 当前Y);
+    当前Y += 节点行高;
+
+    // 第三行：next指针
+    this.ctx.fillStyle = `rgba(96, 204, 96, ${不透明度})`; // next字段名，33%不透明度
+    this.ctx.textAlign = "right";
+    this.ctx.fillText("next", 文本X + 字段名称宽度 - 中文冒号宽度, 当前Y);
+    this.ctx.fillStyle = `rgba(128, 128, 128, ${不透明度})`; // 冒号，33%不透明度
+    this.ctx.fillText("：", 文本X + 字段名称宽度, 当前Y);
+    this.ctx.textAlign = "left";
+    this.ctx.fillStyle = `rgba(255, 107, 107, ${不透明度})`; // next值，33%不透明度
+    this.ctx.fillText("NULL", 文本X + 字段名称宽度, 当前Y);
+
+    // 如果是双向链表，添加previous字段
+    if (this.链表类型 === "双向链表") {
+      当前Y += 节点行高;
+      this.ctx.fillStyle = `rgba(96, 204, 96, ${不透明度})`; // previous字段名，33%不透明度
+      this.ctx.textAlign = "right";
+      this.ctx.fillText("previous", 文本X + 字段名称宽度 - 中文冒号宽度, 当前Y);
+      this.ctx.fillStyle = `rgba(128, 128, 128, ${不透明度})`; // 冒号，33%不透明度
+      this.ctx.fillText("：", 文本X + 字段名称宽度, 当前Y);
+      this.ctx.textAlign = "left";
+      this.ctx.fillStyle = `rgba(154, 205, 50, ${不透明度})`; // previous值，33%不透明度
+      this.ctx.fillText("NULL", 文本X + 字段名称宽度, 当前Y);
+    }
   }
 }
 
