@@ -9,6 +9,24 @@ class FloatVisualizer {
     this.value = 0;
     this.specialValue = null; // 记录特殊值
 
+    // 为每个类型保存独立的状态
+    this.typeStates = {
+      float: {
+        value: 0,
+        bits: [],
+        specialValue: null,
+        isMaxSelected: false,
+        isMinSelected: false
+      },
+      double: {
+        value: 0,
+        bits: [],
+        specialValue: null,
+        isMaxSelected: false,
+        isMinSelected: false
+      }
+    };
+
     this.floatTypes = {
       float: {
         name: "float",
@@ -17,7 +35,7 @@ class FloatVisualizer {
         bits: 32,
         expBits: 8,
         fracBits: 23,
-        bias: 127
+        bias: 127,
       },
       double: {
         name: "double",
@@ -26,8 +44,8 @@ class FloatVisualizer {
         bits: 64,
         expBits: 11,
         fracBits: 52,
-        bias: 1023
-      }
+        bias: 1023,
+      },
     };
 
     this.init();
@@ -38,49 +56,58 @@ class FloatVisualizer {
     this.setupEventListeners();
     this.setValue(0);
     this.draw();
+
+    // 初始化输入框的data-previous-value属性
+    const valueInput = document.getElementById("currentValue");
+    if (valueInput) {
+      valueInput.setAttribute("data-previous-value", "0");
+    }
+
+    // 保存初始状态
+    this.saveCurrentTypeState();
   }
 
   setupCanvas() {
     // 获取设备像素比
     const dpr = window.devicePixelRatio || 1;
-    
+
     // 自适应宽度
     const container = this.canvas.parentElement;
     const containerWidth = container.clientWidth;
-    
+
     // 设置Canvas的CSS尺寸
-    this.canvas.style.width = containerWidth + 'px';
-    this.canvas.style.height = 'auto';
-    
+    this.canvas.style.width = containerWidth + "px";
+    this.canvas.style.height = "auto";
+
     // 根据类型计算高度
     const type = this.floatTypes[this.currentType];
     const bitWidth = Math.min(35, (containerWidth - 100) / Math.min(32, type.bits) - 2);
     this.currentBitSize = bitWidth;
-    
+
     // 计算需要的行数
     let rows = 1;
     if (this.currentType === "double") {
       // double类型：符号位+指数位一行，尾数位另起一行
       const signExpBits = 1 + type.expBits; // 符号位 + 指数位
       const fracBits = type.fracBits; // 尾数位
-      
+
       // 计算每行能放多少个格子
       const bitsPerRow = Math.floor((containerWidth - 100) / (bitWidth + 6));
-      
+
       // 符号位+指数位需要一行
       rows = 1;
       // 尾数位需要的行数
       rows += Math.ceil(fracBits / bitsPerRow);
     }
-    
+
     // 计算实际高度
     const actualHeight = rows * (bitWidth + 80) + 50; // 每行高度 + 底部间距
-    
+
     // 设置Canvas的实际尺寸（考虑DPI缩放）
     this.canvas.width = containerWidth * dpr;
     this.canvas.height = actualHeight * dpr;
-    this.canvas.style.height = actualHeight + 'px';
-    
+    this.canvas.style.height = actualHeight + "px";
+
     // 缩放绘图上下文以匹配DPI
     this.ctx.scale(dpr, dpr);
   }
@@ -89,9 +116,18 @@ class FloatVisualizer {
     // 类型切换
     document.querySelectorAll('input[name="floatType"]').forEach((radio) => {
       radio.addEventListener("change", (e) => {
-        this.currentType = e.target.value;
+        // 保存当前类型的状态
+        this.saveCurrentTypeState();
+        
+        // 切换到新类型
+        const newType = e.target.value;
+        this.currentType = newType;
         this.bitSize = this.floatTypes[this.currentType].bits;
-        this.setValue(0);
+        
+        // 恢复新类型的状态
+        this.restoreTypeState(newType);
+        
+        // 重新设置Canvas和绘制
         this.setupCanvas();
         this.draw();
         this.updateTypeSelection();
@@ -101,59 +137,243 @@ class FloatVisualizer {
 
     // 数值输入
     const valueInput = document.getElementById("currentValue");
+
+    // 输入过程中进行严格验证
     valueInput.addEventListener("input", (e) => {
-      let v = parseFloat(e.target.value);
-      if (isNaN(v)) v = 0;
-      this.specialValue = null;
-      this.setValue(v);
-      this.draw();
-    });
-    
-    // 数值输入框失去焦点时重新格式化
-    valueInput.addEventListener("blur", (e) => {
-      let v = parseFloat(e.target.value);
+      const inputValue = e.target.value;
+      const previousValue = e.target.getAttribute("data-previous-value") || "";
+
+      // 1. 检查是否为空字符串
+      if (inputValue === "") {
+        // 空字符串当作0处理
+        this.specialValue = null;
+        this.value = 0;
+        this.updateBitsFromValue();
+        this.draw();
+        // 保存当前值用于下次验证
+        e.target.setAttribute("data-previous-value", inputValue);
+        return;
+      }
+
+      // 2. 检查是否只包含允许的字符 (0-9, -, .)
+      const allowedChars = /^[0-9\-\.]+$/;
+      if (!allowedChars.test(inputValue)) {
+        // 包含不允许的字符，阻止输入，恢复为之前的值
+        // 计算光标应该保持的相对位置
+        const currentLength = inputValue.length;
+        const previousLength = previousValue.length;
+        const cursorPos = e.target.selectionStart;
+
+        // 计算光标相对于前一个值的位置
+        let targetPos;
+        if (currentLength > previousLength) {
+          // 输入了字符，光标应该保持在输入位置
+          targetPos = Math.min(cursorPos - 1, previousLength);
+        } else {
+          // 删除了字符，光标应该保持在当前位置
+          targetPos = Math.min(cursorPos, previousLength);
+        }
+
+        e.target.value = previousValue;
+        // 使用setTimeout确保DOM更新后再设置光标位置
+        setTimeout(() => {
+          e.target.setSelectionRange(targetPos, targetPos);
+        }, 0);
+        return;
+      }
+
+      // 3. 检查"-"的数量（最多只能有一个）
+      const minusCount = (inputValue.match(/-/g) || []).length;
+      if (minusCount > 1) {
+        // 多个"-"，阻止输入，恢复为之前的值
+        // 计算光标应该保持的相对位置
+        const currentLength = inputValue.length;
+        const previousLength = previousValue.length;
+        const cursorPos = e.target.selectionStart;
+
+        // 计算光标相对于前一个值的位置
+        let targetPos;
+        if (currentLength > previousLength) {
+          // 输入了字符，光标应该保持在输入位置
+          targetPos = Math.min(cursorPos - 1, previousLength);
+        } else {
+          // 删除了字符，光标应该保持在当前位置
+          targetPos = Math.min(cursorPos, previousLength);
+        }
+
+        e.target.value = previousValue;
+        // 使用setTimeout确保DOM更新后再设置光标位置
+        setTimeout(() => {
+          e.target.setSelectionRange(targetPos, targetPos);
+        }, 0);
+        return;
+      }
+
+      // 4. 检查"."的数量（最多只能有一个）
+      const dotCount = (inputValue.match(/\./g) || []).length;
+      if (dotCount > 1) {
+        // 多个"."，阻止输入，恢复为之前的值
+        // 计算光标应该保持的相对位置
+        const currentLength = inputValue.length;
+        const previousLength = previousValue.length;
+        const cursorPos = e.target.selectionStart;
+
+        // 计算光标相对于前一个值的位置
+        let targetPos;
+        if (currentLength > previousLength) {
+          // 输入了字符，光标应该保持在输入位置
+          targetPos = Math.min(cursorPos - 1, previousLength);
+        } else {
+          // 删除了字符，光标应该保持在当前位置
+          targetPos = Math.min(cursorPos, previousLength);
+        }
+
+        e.target.value = previousValue;
+        // 使用setTimeout确保DOM更新后再设置光标位置
+        setTimeout(() => {
+          e.target.setSelectionRange(targetPos, targetPos);
+        }, 0);
+        return;
+      }
+
+      // 5. 检查"-"的位置（只能在开头）
+      const hasMinus = inputValue.includes("-");
+      if (hasMinus && !inputValue.startsWith("-")) {
+        // "-"不在开头，阻止输入，恢复为之前的值
+        // 计算光标应该保持的相对位置
+        const currentLength = inputValue.length;
+        const previousLength = previousValue.length;
+        const cursorPos = e.target.selectionStart;
+
+        // 计算光标相对于前一个值的位置
+        let targetPos;
+        if (currentLength > previousLength) {
+          // 输入了字符，光标应该保持在输入位置
+          targetPos = Math.min(cursorPos - 1, previousLength);
+        } else {
+          // 删除了字符，光标应该保持在当前位置
+          targetPos = Math.min(cursorPos, previousLength);
+        }
+
+        e.target.value = previousValue;
+        // 使用setTimeout确保DOM更新后再设置光标位置
+        setTimeout(() => {
+          e.target.setSelectionRange(targetPos, targetPos);
+        }, 0);
+        return;
+      }
+
+      // 6. 检查特殊情况（仅包含"-"或"-."）
+      const onlyMinus = inputValue === "-";
+      const onlyMinusDot = inputValue === "-.";
+      if (onlyMinus || onlyMinusDot) {
+        // 允许继续输入但不更新数值
+        // 保存当前值用于下次验证
+        e.target.setAttribute("data-previous-value", inputValue);
+        return;
+      }
+
+      // 7. 如果格式有效，尝试解析为数字
+      let v = parseFloat(inputValue);
       if (!isNaN(v)) {
-        this.setValue(v);
+        this.specialValue = null;
+        this.value = v;
+        this.updateBitsFromValue();
+        
+        // 检查数值是否为极值，如果不是则取消极值按钮的选中状态
+        this.checkAndUpdateExtremeButtonStates(v);
+        
+        this.draw();
+        // 保存当前值用于下次验证
+        e.target.setAttribute("data-previous-value", inputValue);
+      } else {
+        // 无法解析为有效数字，阻止输入，恢复为之前的值
+        // 计算光标应该保持的相对位置
+        const currentLength = inputValue.length;
+        const previousLength = previousValue.length;
+        const cursorPos = e.target.selectionStart;
+
+        // 计算光标相对于前一个值的位置
+        let targetPos;
+        if (currentLength > previousLength) {
+          // 输入了字符，光标应该保持在输入位置
+          targetPos = Math.min(cursorPos - 1, previousLength);
+        } else {
+          // 删除了字符，光标应该保持在当前位置
+          targetPos = Math.min(cursorPos, previousLength);
+        }
+
+        e.target.value = previousValue;
+        // 使用setTimeout确保DOM更新后再设置光标位置
+        setTimeout(() => {
+          e.target.setSelectionRange(targetPos, targetPos);
+        }, 0);
       }
     });
 
-    // 增减按钮
-    const increaseBtn = document.getElementById("increaseBtn");
-    const decreaseBtn = document.getElementById("decreaseBtn");
-    
-    // 增加按钮
-    this.setupContinuousButton(increaseBtn, () => {
-      this.specialValue = null;
-      const stepInputValue = document.getElementById("stepValue").value;
-      let step = parseFloat(stepInputValue);
-      
-      // 如果无法解析为有效数字，使用默认值0.1
-      if (isNaN(step) || step <= 0) {
-        step = 0.1;
+    // 数值输入框失去焦点时进行格式化和验证
+    valueInput.addEventListener("blur", (e) => {
+      // 检查是否是因为Tab键触发的blur事件
+      if (e.relatedTarget && e.relatedTarget.tagName === "INPUT") {
+        // 如果是Tab键切换到其他输入框，不进行验证
+        return;
       }
-      
-      this.setValue(this.value + step);
-      this.draw();
-    });
-    
-    // 减少按钮
-    this.setupContinuousButton(decreaseBtn, () => {
-      this.specialValue = null;
-      const stepInputValue = document.getElementById("stepValue").value;
-      let step = parseFloat(stepInputValue);
-      
-      // 如果无法解析为有效数字，使用默认值0.1
-      if (isNaN(step) || step <= 0) {
-        step = 0.1;
+
+      let v = parseFloat(e.target.value);
+      if (isNaN(v) || e.target.value === "") {
+        // 如果输入无效或为空，重置为当前值
+        this.setValue(this.value, true);
+      } else {
+        // 如果输入有效，保持原始格式
+        this.setValue(v, true);
       }
-      
-      this.setValue(this.value - step);
-      this.draw();
     });
+
+          // 增减按钮
+      const increaseBtn = document.getElementById("increaseBtn");
+      const decreaseBtn = document.getElementById("decreaseBtn");
+      
+      // 增加按钮
+      this.setupContinuousButton(increaseBtn, () => {
+        this.specialValue = null;
+        this.isMaxSelected = false;
+        this.isMinSelected = false;
+        
+        const stepInputValue = document.getElementById("stepValue").value;
+        let step = parseFloat(stepInputValue);
+        
+        // 如果无法解析为有效数字，使用默认值0.1
+        if (isNaN(step) || step <= 0) {
+          step = 0.1;
+        }
+        
+        this.setValue(this.value + step, true);
+        this.updateExtremeButtonStates();
+        this.draw();
+      });
+      
+      // 减少按钮
+      this.setupContinuousButton(decreaseBtn, () => {
+        this.specialValue = null;
+        this.isMaxSelected = false;
+        this.isMinSelected = false;
+        
+        const stepInputValue = document.getElementById("stepValue").value;
+        let step = parseFloat(stepInputValue);
+        
+        // 如果无法解析为有效数字，使用默认值0.1
+        if (isNaN(step) || step <= 0) {
+          step = 0.1;
+        }
+        
+        this.setValue(this.value - step, true);
+        this.updateExtremeButtonStates();
+        this.draw();
+      });
 
     // 步进输入框
     const stepInput = document.getElementById("stepValue");
-    
+
     // 步进设置区点击聚焦
     const stepSettingArea = document.querySelector(".步进设置区");
     stepSettingArea.addEventListener("click", (e) => {
@@ -162,19 +382,25 @@ class FloatVisualizer {
         stepInput.focus();
       }
     });
-    
+
     // 只在失去焦点时进行验证和格式化，输入过程中完全自由
     stepInput.addEventListener("blur", (e) => {
       const inputValue = e.target.value;
-      
+
       // 如果输入为空或无法解析，使用默认值
-      if (inputValue === "" || inputValue === "." || inputValue === "-" || inputValue === "-." || isNaN(parseFloat(inputValue))) {
+      if (
+        inputValue === "" ||
+        inputValue === "." ||
+        inputValue === "-" ||
+        inputValue === "-." ||
+        isNaN(parseFloat(inputValue))
+      ) {
         e.target.value = 0.1;
         return;
       }
-      
+
       let step = parseFloat(inputValue);
-      
+
       // 限制步进值范围
       if (step <= 0) {
         step = 0.1;
@@ -191,40 +417,36 @@ class FloatVisualizer {
     // 极值按钮
     document.getElementById("maxBtn").addEventListener("click", () => {
       this.specialValue = null;
+      this.isMaxSelected = true;
+      this.isMinSelected = false;
+      
       if (this.currentType === "float") {
-        // float最大规格化数: 0 11111110 11111111111111111111111
-        // 符号位=0, 指数位=254(11111110), 尾数位全1
-        const sign = 0;
-        const expBits = [1, 1, 1, 1, 1, 1, 1, 0]; // 254 = 11111110
-        const fracBits = Array(23).fill(1); // 23位尾数全1
-        this.setBits([sign, ...expBits, ...fracBits]);
+        // float类型：设置最大值为16777216
+        this.setValue(16777216);
       } else {
-        // double最大规格化数: 0 11111111110 1111111111111111111111111111111111111111111111111111
-        // 符号位=0, 指数位=2046(11111111110), 尾数位全1
-        const sign = 0;
-        const expBits = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0]; // 2046 = 11111111110
-        const fracBits = Array(52).fill(1); // 52位尾数全1
-        this.setBits([sign, ...expBits, ...fracBits]);
+        // double类型：设置最大值为9007199254740992
+        this.setValue(9007199254740992);
       }
+      
+      // 更新按钮状态
+      this.updateExtremeButtonStates();
       this.draw();
     });
     document.getElementById("minBtn").addEventListener("click", () => {
       this.specialValue = null;
+      this.isMaxSelected = false;
+      this.isMinSelected = true;
+      
       if (this.currentType === "float") {
-        // float最小负规格化数: 1 11111110 11111111111111111111111
-        // 符号位=1, 指数位=254(11111110), 尾数位全1
-        const sign = 1;
-        const expBits = [1, 1, 1, 1, 1, 1, 1, 0]; // 254 = 11111110
-        const fracBits = Array(23).fill(1); // 23位尾数全1
-        this.setBits([sign, ...expBits, ...fracBits]);
+        // float类型：设置最小值为-16777216
+        this.setValue(-16777216);
       } else {
-        // double最小负规格化数: 1 11111111110 1111111111111111111111111111111111111111111111111111
-        // 符号位=1, 指数位=2046(11111111110), 尾数位全1
-        const sign = 1;
-        const expBits = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0]; // 2046 = 11111111110
-        const fracBits = Array(52).fill(1); // 52位尾数全1
-        this.setBits([sign, ...expBits, ...fracBits]);
+        // double类型：设置最小值为-9007199254740992
+        this.setValue(-9007199254740992);
       }
+      
+      // 更新按钮状态
+      this.updateExtremeButtonStates();
       this.draw();
     });
 
@@ -235,26 +457,6 @@ class FloatVisualizer {
       this.draw();
     });
     this.canvas.addEventListener("click", (e) => this.handleClick(e));
-
-    // 解释原理弹窗
-    document.addEventListener("click", (e) => {
-      if (e.target && e.target.id === "explainBtn") {
-        this.showPrincipleDialog();
-      }
-    });
-    document.getElementById("closeDialogBtn").addEventListener("click", () => {
-      this.hidePrincipleDialog();
-    });
-    document.getElementById("principleDialog").addEventListener("click", (e) => {
-      if (e.target === document.getElementById("principleDialog")) {
-        this.hidePrincipleDialog();
-      }
-    });
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && document.getElementById("principleDialog").classList.contains("show")) {
-        this.hidePrincipleDialog();
-      }
-    });
 
     // 窗口自适应
     window.addEventListener("resize", () => {
@@ -278,7 +480,546 @@ class FloatVisualizer {
     }
   }
 
-  setValue(val) {
+  // 更新位值但不重新格式化输入框（用于输入过程中）
+  updateBitsFromValue() {
+    // 对于float类型，限制输入范围
+    if (this.currentType === "float") {
+      if (this.value > 16777216) {
+        this.value = 16777216;
+      } else if (this.value < -16777216) {
+        this.value = -16777216;
+      }
+    }
+    
+    // 对于double类型，限制输入范围
+    if (this.currentType === "double") {
+      if (this.value > 9007199254740992) {
+        this.value = 9007199254740992;
+      } else if (this.value < -9007199254740992) {
+        this.value = -9007199254740992;
+      }
+    }
+    
+    const type = this.floatTypes[this.currentType];
+    const buf = new ArrayBuffer(type.size);
+    const view = new DataView(buf);
+    if (this.currentType === "float") {
+      view.setFloat32(0, this.value);
+      let bits = [];
+      let intVal = view.getUint32(0);
+      for (let i = type.bits - 1; i >= 0; i--) {
+        bits.push((intVal >> i) & 1);
+      }
+      this.bits = bits;
+    } else {
+      view.setFloat64(0, this.value);
+      let bits = [];
+      // JS没有getUint64，分两部分取
+      let hi = view.getUint32(0);
+      let lo = view.getUint32(4);
+      for (let i = 31; i >= 0; i--) bits.push((hi >> i) & 1);
+      for (let i = 31; i >= 0; i--) bits.push((lo >> i) & 1);
+      this.bits = bits;
+    }
+
+    // 更新科学记数法显示（不更新输入框）
+    this.updateScientificNotation();
+  }
+
+  // 更新数值表示显示
+  updateScientificNotation() {
+    const val = this.value;
+    const type = this.floatTypes[this.currentType];
+
+    // 先生成二进制精确值，获取其实际整数位数
+    const binaryIntegerWidth = this.getBinaryIntegerWidth(val, type);
+
+    // 更新十进制精确值，使用二进制精确值的整数位数作为宽度
+    this.updateDecimalValue(val, type, binaryIntegerWidth);
+
+    // 更新二进制精确值，使用相同的宽度
+    this.updateBinaryValue(val, type, binaryIntegerWidth);
+
+    // 更新二进制科学记数法
+    this.updateBinaryScientificValue(val, type, binaryIntegerWidth);
+  }
+
+  // 保存当前类型的状态
+  saveCurrentTypeState() {
+    this.typeStates[this.currentType] = {
+      value: this.value,
+      bits: [...this.bits],
+      specialValue: this.specialValue,
+      isMaxSelected: this.isMaxSelected || false,
+      isMinSelected: this.isMinSelected || false
+    };
+  }
+
+  // 恢复指定类型的状态
+  restoreTypeState(type) {
+    const state = this.typeStates[type];
+    if (state) {
+      this.value = state.value;
+      this.bits = [...state.bits];
+      this.specialValue = state.specialValue;
+      this.isMaxSelected = state.isMaxSelected || false;
+      this.isMinSelected = state.isMinSelected || false;
+      
+      // 更新输入框显示
+      const valueInput = document.getElementById("currentValue");
+      if (valueInput) {
+        if (this.specialValue === null) {
+          // 正常数值，使用setValue更新显示
+          this.setValue(this.value, true);
+        } else {
+          // 特殊值，直接设置输入框
+          valueInput.value = this.specialValue;
+          valueInput.setAttribute("data-previous-value", this.specialValue);
+        }
+      }
+      
+      // 更新科学记数法显示
+      this.updateScientificNotation();
+      
+      // 更新极值按钮状态
+      this.updateExtremeButtonStates();
+    }
+  }
+
+  // 检查数值是否为极值，如果不是则取消极值按钮的选中状态
+  checkAndUpdateExtremeButtonStates(val) {
+    let shouldBeMaxSelected = false;
+    let shouldBeMinSelected = false;
+    
+    // 检查是否为最大值
+    if (this.currentType === "float") {
+      if (val === 16777216) {
+        shouldBeMaxSelected = true;
+      } else if (val === -16777216) {
+        shouldBeMinSelected = true;
+      }
+    } else if (this.currentType === "double") {
+      if (val === 9007199254740992) {
+        shouldBeMaxSelected = true;
+      } else if (val === -9007199254740992) {
+        shouldBeMinSelected = true;
+      }
+    }
+    
+    // 如果当前状态不正确，则更新
+    if (this.isMaxSelected !== shouldBeMaxSelected || this.isMinSelected !== shouldBeMinSelected) {
+      this.isMaxSelected = shouldBeMaxSelected;
+      this.isMinSelected = shouldBeMinSelected;
+      this.updateExtremeButtonStates();
+    }
+  }
+
+  // 更新极值按钮状态
+  updateExtremeButtonStates() {
+    const maxBtn = document.getElementById("maxBtn");
+    const minBtn = document.getElementById("minBtn");
+    
+    if (maxBtn) {
+      if (this.isMaxSelected) {
+        maxBtn.classList.add("selected");
+      } else {
+        maxBtn.classList.remove("selected");
+      }
+    }
+    
+    if (minBtn) {
+      if (this.isMinSelected) {
+        minBtn.classList.add("selected");
+      } else {
+        minBtn.classList.remove("selected");
+      }
+    }
+  }
+
+  // 获取二进制精确值的实际整数位数（用于设置十进制精确值的宽度）
+  getBinaryIntegerWidth(val, type) {
+    if (isNaN(val) || !isFinite(val)) {
+      return 1; // 对于NaN和∞，使用最小宽度
+    }
+
+    // 使用实际的浮点位数，而不是理论计算
+    const bits = this.bits;
+    const s = bits[0]; // 符号位
+    const eBits = bits.slice(1, 1 + type.expBits); // 指数位
+    const mBits = bits.slice(1 + type.expBits); // 尾数位
+
+    // 计算指数值
+    let eVal = 0;
+    for (let i = 0; i < eBits.length; i++) {
+      eVal = (eVal << 1) | eBits[i];
+    }
+
+    // 检查特殊值
+    if (eVal === 0 && mBits.every(bit => bit === 0)) {
+      // 零值：整数部分为"0"
+      return 1;
+    } else if (eVal === (1 << type.expBits) - 1) {
+      // 无穷大或NaN
+      return 1;
+    } else {
+      // 正常数值
+      const exp = eVal - type.bias; // 实际指数
+      
+      if (eVal === 0) {
+        // 非规格化数：整数部分为0
+        return 1;
+      } else {
+        // 规格化数：需要根据指数计算整数部分
+        if (exp >= 0) {
+          // 正指数：整数部分有多个位
+          // 从隐含的前导1开始，根据指数扩展整数部分
+          let tempVal = 1; // 隐含的前导1
+          let remainingExp = exp;
+          let usedBits = 0;
+          
+          // 构建整数部分
+          while (remainingExp > 0 && usedBits < type.fracBits) {
+            if (mBits[usedBits] === 1) {
+              tempVal = tempVal * 2 + 1;
+            } else {
+              tempVal = tempVal * 2;
+            }
+            remainingExp--;
+            usedBits++;
+          }
+          
+          // 将tempVal转换为二进制字符串，获取实际长度
+          const integerPart = tempVal.toString(2);
+          const sign = val < 0 ? 1 : 0; // 负值需要额外1位宽度
+          return integerPart.length + sign;
+        } else {
+          // 负指数：整数部分为0
+          return 1;
+        }
+      }
+    }
+  }
+
+  // 更新十进制精确值显示
+  updateDecimalValue(val, type, maxIntegerWidth) {
+    let decimalValue = "";
+
+    if (isNaN(val)) {
+      decimalValue = '<span style="color: #f44336;">NaN</span>';
+    } else if (!isFinite(val)) {
+      decimalValue = val > 0 ? '<span style="color: #f44336;">∞</span>' : '<span style="color: #f44336;">-∞</span>';
+    } else {
+      // 根据类型确定有效位数
+      const significantDigits = this.currentType === "float" ? 7 : 16; // float约7位，double约16位十进制有效数字
+
+      // 计算需要显示的小数位数
+      const absVal = Math.abs(val);
+      let decimalPlaces;
+
+      if (absVal === 0) {
+        decimalPlaces = significantDigits;
+      } else if (absVal >= 1) {
+        // 如果绝对值>=1，计算整数部分的位数
+        const integerDigits = Math.floor(Math.log10(absVal)) + 1;
+        // 剩余的小数位数
+        decimalPlaces = Math.max(0, significantDigits - integerDigits);
+      } else {
+        // 如果绝对值<1，计算前导零的个数
+        const leadingZeros = Math.floor(-Math.log10(absVal));
+        // 总的有效位数减去前导零
+        decimalPlaces = significantDigits - 1 + leadingZeros;
+      }
+
+      // 使用toFixed确保显示正确的小数位数
+      const formattedValue = val.toFixed(Math.max(0, decimalPlaces));
+
+      // 分离整数和小数部分，确保小数点对齐
+      const parts = formattedValue.split(".");
+      if (parts.length === 2) {
+        // 有小数点的情况
+        const integerPart = parts[0];
+        const fractionalPart = parts[1];
+        // 使用动态宽度确保对齐
+        const width = Math.max(maxIntegerWidth, integerPart.length);
+        decimalValue = `<span class="整数部分" style="display: inline-block; text-align: right; width: ${width}ch;">${integerPart}</span><span class="小数点">.</span><span class="小数部分">${fractionalPart}</span>`;
+      } else {
+        // 没有小数点的情况（纯整数）
+        const integerPart = formattedValue;
+        // 使用动态宽度确保对齐，并添加虚拟的小数点和小数部分以保持对齐
+        const width = Math.max(maxIntegerWidth, integerPart.length);
+        decimalValue = `<span class="整数部分" style="display: inline-block; text-align: right; width: ${width}ch;">${integerPart}</span><span class="小数点">.</span><span class="小数部分">0</span>`;
+      }
+    }
+
+    const decimalDisplay = document.getElementById("decimalValue");
+    if (decimalDisplay) {
+      decimalDisplay.innerHTML = decimalValue;
+    }
+  }
+
+  // 更新二进制精确值显示
+  updateBinaryValue(val, type, maxIntegerWidth) {
+    let binaryValue = "";
+
+    if (isNaN(val)) {
+      binaryValue = '<span style="color: #f44336;">NaN</span>';
+    } else if (!isFinite(val)) {
+      binaryValue = val > 0 ? '<span style="color: #f44336;">∞</span>' : '<span style="color: #f44336;">-∞</span>';
+    } else {
+      // 使用实际的浮点位数，而不是高精度转换
+      const bits = this.bits;
+      const s = bits[0]; // 符号位
+      const eBits = bits.slice(1, 1 + type.expBits); // 指数位
+      const mBits = bits.slice(1 + type.expBits); // 尾数位
+
+      // 计算指数值
+      let eVal = 0;
+      for (let i = 0; i < eBits.length; i++) {
+        eVal = (eVal << 1) | eBits[i];
+      }
+
+      // 检查特殊值
+      if (eVal === 0 && mBits.every(bit => bit === 0)) {
+        // 零值：显示为 0.00000000000000000000000 (总共24位：1位整数+23位小数)
+        const signPart = s === 0 ? "" : "-";
+        const integerPart = "0";
+        const fullIntegerPart = signPart + integerPart;
+        // 使用与十进制精确值相同的宽度计算逻辑，确保小数点对齐
+        const width = Math.max(maxIntegerWidth, fullIntegerPart.length);
+        binaryValue = `<span class="整数部分" style="display: inline-block; text-align: right; width: ${width}ch;">${fullIntegerPart}</span><span class="小数点">.</span><span class="小数部分">${"0".repeat(type.fracBits)}</span>`;
+      } else if (eVal === (1 << type.expBits) - 1) {
+        if (mBits.every(bit => bit === 0)) {
+          binaryValue = `<span style="color: #f44336;">${s === 0 ? "" : "-"}∞</span>`;
+        } else {
+          binaryValue = '<span style="color: #f44336;">NaN</span>';
+        }
+      } else {
+        // 正常数值
+        const exp = eVal - type.bias; // 实际指数
+        const sign = s === 0 ? "" : "-";
+
+        // 构建二进制表示
+        let integerPart = "";
+        let mantissaStr = "";
+        
+        if (eVal === 0) {
+          // 非规格化数：整数部分为0
+          integerPart = "0";
+          // 尾数部分显示完整的type.fracBits位
+          for (let i = 0; i < type.fracBits; i++) {
+            mantissaStr += mBits[i] || "0";
+          }
+        } else {
+          // 规格化数：需要根据指数计算整数部分
+          if (exp >= 0) {
+            // 正指数：整数部分有多个位
+            // 从隐含的前导1开始，根据指数扩展整数部分
+            let tempVal = 1; // 隐含的前导1
+            let remainingExp = exp;
+            let usedBits = 0;
+            
+            // 构建整数部分
+            while (remainingExp > 0 && usedBits < type.fracBits) {
+              if (mBits[usedBits] === 1) {
+                tempVal = tempVal * 2 + 1;
+              } else {
+                tempVal = tempVal * 2;
+              }
+              remainingExp--;
+              usedBits++;
+            }
+            
+            // 将tempVal转换为二进制字符串
+            integerPart = tempVal.toString(2);
+            
+            // 构建尾数部分：确保总位数不超过限制
+            // 计算剩余可用的尾数位数
+            const remainingBits = type.fracBits - usedBits;
+            for (let i = 0; i < remainingBits; i++) {
+              mantissaStr += mBits[usedBits + i] || "0";
+            }
+          } else {
+            // 负指数：整数部分为0
+            integerPart = "0";
+            // 对于负指数，需要正确显示小数部分
+            // 例如：0.25 = 0.01₂，指数-2，需要1个前导零，然后是1，然后是0
+            const leadingZeros = Math.abs(exp) - 1;
+            mantissaStr = "0".repeat(leadingZeros);
+            
+            // 添加隐含的前导1（对于规格化数）
+            if (eVal > 0) {
+              mantissaStr += "1";
+            }
+            
+            // 添加剩余的尾数位
+            const remainingBits = type.fracBits - mantissaStr.length;
+            for (let i = 0; i < remainingBits; i++) {
+              mantissaStr += mBits[i] || "0";
+            }
+          }
+        }
+
+        // 使用动态宽度确保小数点对齐，考虑符号位和整数部分的组合
+        const fullIntegerPart = sign + integerPart;
+        // 使用与十进制精确值相同的宽度计算逻辑，确保小数点对齐
+        const width = Math.max(maxIntegerWidth, fullIntegerPart.length);
+        binaryValue = `<span class="整数部分" style="display: inline-block; text-align: right; width: ${width}ch;">${fullIntegerPart}</span><span class="小数点">.</span><span class="小数部分">${mantissaStr}</span>`;
+      }
+    }
+
+    const binaryDisplay = document.getElementById("binaryValue");
+    if (binaryDisplay) {
+      binaryDisplay.innerHTML = binaryValue;
+    }
+  }
+
+  // 更新二进制科学记数法显示
+  updateBinaryScientificValue(val, type, maxIntegerWidth) {
+    let binaryScientificValue = "";
+
+    if (isNaN(val)) {
+      binaryScientificValue = '<span style="color: #f44336;">NaN</span>';
+    } else if (!isFinite(val)) {
+      binaryScientificValue =
+        val > 0 ? '<span style="color: #f44336;">∞</span>' : '<span style="color: #f44336;">-∞</span>';
+    } else {
+      // 使用实际的浮点数位值计算
+      const bits = this.bits;
+      const s = bits[0]; // 符号位
+      const eBits = bits.slice(1, 1 + type.expBits); // 指数位
+      const mBits = bits.slice(1 + type.expBits); // 尾数位
+
+      // 计算指数值
+      let eVal = 0;
+      for (let i = 0; i < eBits.length; i++) {
+        eVal = (eVal << 1) | eBits[i];
+      }
+
+      // 计算尾数值
+      let mVal = 0;
+      for (let i = 0; i < mBits.length; i++) {
+        mVal += mBits[i] * Math.pow(2, -(i + 1));
+      }
+
+      // 检查特殊值
+      if (eVal === 0 && mVal === 0) {
+        // 直接左对齐，不使用动态宽度
+        binaryScientificValue = `<span class="整数部分">${s === 0 ? "" : "-"}0</span><span class="小数点">.</span><span class="小数部分">00000000000000000000000</span> <span class="乘号">×</span> <span style="color: #4caf50;">2<sup>0</sup></span>`;
+      } else if (eVal === (1 << type.expBits) - 1) {
+        if (mVal === 0) {
+          binaryScientificValue = `<span style="color: #f44336;">${s === 0 ? "" : "-"}∞</span>`;
+        } else {
+          binaryScientificValue = '<span style="color: #f44336;">NaN</span>';
+        }
+      } else {
+        // 正常数值
+        const exp = eVal - type.bias; // 实际指数
+        const sign = s === 0 ? "" : "-";
+
+        // 从实际的位值构建尾数字符串，确保只有0和1
+        let mantissaStr = "";
+        for (let i = 0; i < Math.min(mBits.length, type.fracBits); i++) {
+          mantissaStr += mBits[i];
+        }
+
+        // 直接左对齐，不使用动态宽度
+        binaryScientificValue = `<span class="整数部分">${sign}1</span><span class="小数点">.</span><span class="小数部分">${mantissaStr}</span> <span class="乘号">×</span> <span style="color: #4caf50;">2<sup>${exp}</sup></span>`;
+      }
+    }
+
+    const binaryScientificDisplay = document.getElementById("binaryScientificValue");
+    if (binaryScientificDisplay) {
+      binaryScientificDisplay.innerHTML = binaryScientificValue;
+    }
+  }
+
+  // 高精度十进制转换
+  toHighPrecisionDecimal(val, precision) {
+    if (val === 0) return "0";
+
+    const absVal = Math.abs(val);
+    const sign = val < 0 ? "-" : "";
+
+    // 使用字符串操作来避免浮点数精度问题
+    let str = absVal.toString();
+
+    // 如果是科学记数法，转换为普通小数
+    if (str.includes("e")) {
+      const [mantissa, exponent] = str.split("e");
+      const exp = parseInt(exponent);
+      const [intPart, fracPart = ""] = mantissa.split(".");
+
+      if (exp >= 0) {
+        str = intPart + fracPart + "0".repeat(exp - fracPart.length);
+        if (exp > fracPart.length) {
+          str = str.substring(0, intPart.length + exp) + "." + str.substring(intPart.length + exp);
+        }
+      } else {
+        str = "0." + "0".repeat(-exp - 1) + intPart + fracPart;
+      }
+    }
+
+    // 确保有足够的小数位数
+    const parts = str.split(".");
+    if (parts.length === 1) {
+      str += ".";
+    }
+
+    const fractionalPart = parts[1] || "";
+    const paddedFractional = fractionalPart.padEnd(precision, "0");
+
+    return sign + parts[0] + "." + paddedFractional.substring(0, precision);
+  }
+
+  // 高精度二进制转换
+  toHighPrecisionBinary(val, precision) {
+    if (val === 0) return "0";
+
+    const absVal = Math.abs(val);
+    const sign = val < 0 ? "-" : "";
+
+    // 分离整数和小数部分
+    const intPart = Math.floor(absVal);
+    const fracPart = absVal - intPart;
+
+    // 转换整数部分
+    let intBinary = intPart.toString(2);
+
+    // 转换小数部分
+    let fracBinary = "";
+    let temp = fracPart;
+    for (let i = 0; i < precision; i++) {
+      temp *= 2;
+      fracBinary += Math.floor(temp).toString();
+      temp -= Math.floor(temp);
+      if (temp === 0) break;
+    }
+
+    // 补齐到指定精度
+    fracBinary = fracBinary.padEnd(precision, "0");
+
+    return sign + intBinary + "." + fracBinary;
+  }
+
+  setValue(val, preserveFormat = false) {
+    // 对于float类型，限制输入范围
+    if (this.currentType === "float") {
+      if (val > 16777216) {
+        val = 16777216;
+      } else if (val < -16777216) {
+        val = -16777216;
+      }
+    }
+    
+    // 对于double类型，限制输入范围
+    if (this.currentType === "double") {
+      if (val > 9007199254740992) {
+        val = 9007199254740992;
+      } else if (val < -9007199254740992) {
+        val = -9007199254740992;
+      }
+    }
+    
     this.value = val;
     // 用DataView写入并读取二进制
     const type = this.floatTypes[this.currentType];
@@ -302,55 +1043,53 @@ class FloatVisualizer {
       for (let i = 31; i >= 0; i--) bits.push((lo >> i) & 1);
       this.bits = bits;
     }
-    
+
     // 根据浮点数类型设置显示精度
     let displayValue;
-    let scientificValue = "";
-    
+
     if (isNaN(val)) {
       displayValue = "NaN";
-      scientificValue = '<span style="color: #f44336;">NaN</span>';
     } else if (!isFinite(val)) {
       displayValue = val > 0 ? "∞" : "-∞";
-      scientificValue = val > 0 ? '<span style="color: #f44336;">∞</span>' : '<span style="color: #f44336;">-∞</span>';
     } else {
-      // float: 6位有效数字，double: 15位有效数字
-      const precision = this.currentType === "float" ? 6 : 15;
-      
-      // 始终显示固定位数的有效数字
-      displayValue = val.toPrecision(precision);
-      
-      // 生成科学记数法表示
-      const absVal = Math.abs(val);
-      if (absVal === 0) {
-        scientificValue = '<span style="color: #aaa;">0.000000</span><span style="color: #ff9800;">e</span><span style="color: #4caf50;">+00</span>';
+      if (preserveFormat) {
+        // 保持原始格式，不进行精度格式化
+        displayValue = val.toString();
       } else {
-        const exponent = Math.floor(Math.log10(absVal));
-        const mantissa = absVal / Math.pow(10, exponent);
-        const sign = val < 0 ? "-" : "";
-        const expSign = exponent >= 0 ? "+" : "";
-        const expStr = Math.abs(exponent).toString().padStart(2, '0');
-        
-        // 根据精度设置尾数位数
-        const mantissaPrecision = this.currentType === "float" ? 5 : 14; // 总位数-1（因为小数点前有1位）
-        const mantissaStr = mantissa.toFixed(mantissaPrecision).replace(/\.?0+$/, '');
-        
-        // 用不同颜色表示不同部分
-        const mantissaColor = "#aaa"; // 尾数部分颜色
-        const eColor = "#ff9800"; // e的颜色
-        const expColor = "#4caf50"; // 指数部分颜色
-        
-        scientificValue = `<span style="color: ${mantissaColor};">${sign}${mantissaStr}</span><span style="color: ${eColor};">e</span><span style="color: ${expColor};">${expSign}${expStr}</span>`;
+        // 特殊处理：如果值为0，直接显示"0"
+        if (val === 0) {
+          displayValue = "0";
+        } else {
+          // 对于float类型，如果是整数且不超过16777216，使用普通数字格式
+          if (this.currentType === "float" && Number.isInteger(val) && Math.abs(val) <= 16777216) {
+            displayValue = val.toString();
+          } else if (this.currentType === "double" && Number.isInteger(val) && Math.abs(val) <= 9007199254740992) {
+            // 对于double类型，如果是整数且不超过9007199254740992，使用普通数字格式
+            displayValue = val.toString();
+          } else {
+            // float: 6位有效数字，double: 15位有效数字
+            const precision = this.currentType === "float" ? 6 : 15;
+            // 始终显示固定位数的有效数字
+            displayValue = val.toPrecision(precision);
+          }
+        }
       }
     }
-    
-    document.getElementById("currentValue").value = displayValue;
+
+    // 检查数值是否为极值，如果不是则取消极值按钮的选中状态
+    this.checkAndUpdateExtremeButtonStates(val);
+
+    const valueInput = document.getElementById("currentValue");
+    valueInput.value = displayValue;
+
+    // 同步更新data-previous-value属性
+    valueInput.setAttribute("data-previous-value", displayValue);
+
+    // 检查数值是否为极值，如果不是则取消极值按钮的选中状态
+    this.checkAndUpdateExtremeButtonStates(this.value);
     
     // 更新科学记数法显示
-    const scientificDisplay = document.getElementById("scientificValue");
-    if (scientificDisplay) {
-      scientificDisplay.innerHTML = scientificValue;
-    }
+    this.updateScientificNotation();
   }
 
   setBits(bits) {
@@ -368,7 +1107,8 @@ class FloatVisualizer {
       view.setUint32(0, intVal);
       this.value = view.getFloat32(0);
     } else {
-      let hi = 0, lo = 0;
+      let hi = 0,
+        lo = 0;
       for (let i = 0; i < 32; i++) hi = (hi << 1) | bits[i];
       for (let i = 32; i < 64; i++) lo = (lo << 1) | bits[i];
       const buf = new ArrayBuffer(8);
@@ -377,55 +1117,42 @@ class FloatVisualizer {
       view.setUint32(4, lo);
       this.value = view.getFloat64(0);
     }
-    
+
     // 根据浮点数类型设置显示精度
     let displayValue;
-    let scientificValue = "";
-    
+
     if (isNaN(this.value)) {
       displayValue = "NaN";
-      scientificValue = '<span style="color: #f44336;">NaN</span>';
     } else if (!isFinite(this.value)) {
       displayValue = this.value > 0 ? "∞" : "-∞";
-      scientificValue = this.value > 0 ? '<span style="color: #f44336;">∞</span>' : '<span style="color: #f44336;">-∞</span>';
     } else {
-      // float: 6位有效数字，double: 15位有效数字
-      const precision = this.currentType === "float" ? 6 : 15;
-      
-      // 始终显示固定位数的有效数字
-      displayValue = this.value.toPrecision(precision);
-      
-      // 生成科学记数法表示
-      const absVal = Math.abs(this.value);
-      if (absVal === 0) {
-        scientificValue = '<span style="color: #aaa;">0.000000</span><span style="color: #ff9800;">e</span><span style="color: #4caf50;">+00</span>';
+      // 特殊处理：如果值为0，直接显示"0"
+      if (this.value === 0) {
+        displayValue = "0";
       } else {
-        const exponent = Math.floor(Math.log10(absVal));
-        const mantissa = absVal / Math.pow(10, exponent);
-        const sign = this.value < 0 ? "-" : "";
-        const expSign = exponent >= 0 ? "+" : "";
-        const expStr = Math.abs(exponent).toString().padStart(2, '0');
-        
-        // 根据精度设置尾数位数
-        const mantissaPrecision = this.currentType === "float" ? 5 : 14; // 总位数-1（因为小数点前有1位）
-        const mantissaStr = mantissa.toFixed(mantissaPrecision).replace(/\.?0+$/, '');
-        
-        // 用不同颜色表示不同部分
-        const mantissaColor = "#aaa"; // 尾数部分颜色
-        const eColor = "#ff9800"; // e的颜色
-        const expColor = "#4caf50"; // 指数部分颜色
-        
-        scientificValue = `<span style="color: ${mantissaColor};">${sign}${mantissaStr}</span><span style="color: ${eColor};">e</span><span style="color: ${expColor};">${expSign}${expStr}</span>`;
+        // 对于float类型，如果是整数且不超过16777216，使用普通数字格式
+        if (this.currentType === "float" && Number.isInteger(this.value) && Math.abs(this.value) <= 16777216) {
+          displayValue = this.value.toString();
+        } else if (this.currentType === "double" && Number.isInteger(this.value) && Math.abs(this.value) <= 9007199254740992) {
+          // 对于double类型，如果是整数且不超过9007199254740992，使用普通数字格式
+          displayValue = this.value.toString();
+        } else {
+          // float: 6位有效数字，double: 15位有效数字
+          const precision = this.currentType === "float" ? 6 : 15;
+          // 始终显示固定位数的有效数字
+          displayValue = this.value.toPrecision(precision);
+        }
       }
     }
-    
-    document.getElementById("currentValue").value = displayValue;
-    
+
+    const valueInput = document.getElementById("currentValue");
+    valueInput.value = displayValue;
+
+    // 同步更新data-previous-value属性
+    valueInput.setAttribute("data-previous-value", displayValue);
+
     // 更新科学记数法显示
-    const scientificDisplay = document.getElementById("scientificValue");
-    if (scientificDisplay) {
-      scientificDisplay.innerHTML = scientificValue;
-    }
+    this.updateScientificNotation();
   }
 
   handleMouseMove(e) {
@@ -443,7 +1170,11 @@ class FloatVisualizer {
     if (this.hoveredBit === -1) return;
     // 切换该位
     this.bits[this.hoveredBit] = this.bits[this.hoveredBit] ? 0 : 1;
+    this.specialValue = null;
+    this.isMaxSelected = false;
+    this.isMinSelected = false;
     this.setBits(this.bits);
+    this.updateExtremeButtonStates();
     this.draw();
   }
 
@@ -453,7 +1184,7 @@ class FloatVisualizer {
     const gap = 6;
     const containerWidth = this.canvas.width / (window.devicePixelRatio || 1);
     const bitsPerRow = Math.floor((containerWidth - 100) / (bitWidth + gap));
-    
+
     if (this.currentType === "float") {
       // float类型：单行显示
       const startX = (containerWidth - (bitWidth + gap) * this.bitSize + gap) / 2;
@@ -468,7 +1199,7 @@ class FloatVisualizer {
       // double类型：多行显示
       const signExpBits = 1 + type.expBits; // 符号位 + 指数位
       const fracBits = type.fracBits; // 尾数位
-      
+
       // 第一行：符号位 + 指数位
       const firstRowStartX = (containerWidth - (bitWidth + gap) * signExpBits + gap) / 2;
       const firstRowY = 50;
@@ -478,7 +1209,7 @@ class FloatVisualizer {
           return i;
         }
       }
-      
+
       // 后续行：尾数位
       let bitIndex = signExpBits;
       let row = 1;
@@ -487,7 +1218,7 @@ class FloatVisualizer {
         const bitsInThisRow = endBit - startBit;
         const rowStartX = (containerWidth - (bitWidth + gap) * bitsInThisRow + gap) / 2;
         const rowY = firstRowY + row * (bitWidth + 80);
-        
+
         for (let i = 0; i < bitsInThisRow; i++) {
           let bx = rowStartX + i * (bitWidth + gap);
           if (x >= bx && x <= bx + bitWidth && y >= rowY && y <= rowY + bitWidth) {
@@ -507,12 +1238,12 @@ class FloatVisualizer {
     const bitWidth = this.currentBitSize;
     const gap = 6;
     const containerWidth = this.canvas.width / (window.devicePixelRatio || 1);
-    
+
     if (this.currentType === "float") {
       // float类型：单行显示
       const startX = (containerWidth - (bitWidth + gap) * this.bitSize + gap) / 2;
       const bitY = 50;
-      
+
       // 绘制每一位
       for (let i = 0; i < this.bitSize; i++) {
         let bx = startX + i * (bitWidth + gap);
@@ -520,7 +1251,7 @@ class FloatVisualizer {
         let bitType = "尾数位";
         if (i === 0) bitType = "符号位";
         else if (i <= type.expBits) bitType = "指数位";
-        
+
         this.drawBit(bx, by, i, bitType);
       }
     } else {
@@ -528,18 +1259,18 @@ class FloatVisualizer {
       const signExpBits = 1 + type.expBits; // 符号位 + 指数位
       const fracBits = type.fracBits; // 尾数位
       const bitsPerRow = Math.floor((containerWidth - 100) / (bitWidth + gap));
-      
+
       // 第一行：符号位 + 指数位
       const firstRowStartX = (containerWidth - (bitWidth + gap) * signExpBits + gap) / 2;
       const firstRowY = 50;
-      
+
       for (let i = 0; i < signExpBits; i++) {
         let bx = firstRowStartX + i * (bitWidth + gap);
         let by = firstRowY;
         let bitType = i === 0 ? "符号位" : "指数位";
         this.drawBit(bx, by, i, bitType);
       }
-      
+
       // 后续行：尾数位
       let bitIndex = signExpBits;
       let row = 1;
@@ -548,7 +1279,7 @@ class FloatVisualizer {
         const bitsInThisRow = endBit - startBit;
         const rowStartX = (containerWidth - (bitWidth + gap) * bitsInThisRow + gap) / 2;
         const rowY = firstRowY + row * (bitWidth + 80);
-        
+
         for (let i = 0; i < bitsInThisRow; i++) {
           let bx = rowStartX + i * (bitWidth + gap);
           let by = rowY;
@@ -558,9 +1289,6 @@ class FloatVisualizer {
         row++;
       }
     }
-    
-    // 绘制表达式区
-    this.updateCalculationExpression();
   }
 
   drawBit(bx, by, bitIndex, bitType) {
@@ -593,19 +1321,19 @@ class FloatVisualizer {
         this.ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue("--尾数位背景"); // 值为1时保持绿色
       }
     }
-    
+
     // 值为0时边框变暗（仅对尾数位）
     if (this.bits[bitIndex] === 0 && bitType === "尾数位") {
       this.ctx.strokeStyle = "#555";
     }
-    
+
     // 悬停时边框变白色
     if (bitIndex === this.hoveredBit) {
       this.ctx.strokeStyle = "#fff";
     }
-    
+
     const bitWidth = this.currentBitSize;
-    
+
     // 绘制外边框（2px，10px圆角）
     this.ctx.lineWidth = 2;
     this.ctx.beginPath();
@@ -620,7 +1348,7 @@ class FloatVisualizer {
     this.ctx.quadraticCurveTo(bx, by, bx + 10, by);
     this.ctx.closePath();
     this.ctx.stroke();
-    
+
     // 绘制内部填充区域（留1px透明边距，8px圆角）
     this.ctx.beginPath();
     this.ctx.moveTo(bx + 10, by + 3);
@@ -634,218 +1362,32 @@ class FloatVisualizer {
     this.ctx.quadraticCurveTo(bx + 3, by + 3, bx + 10, by + 3);
     this.ctx.closePath();
     this.ctx.fill();
-    
+
     // 位值
-    this.ctx.fillStyle = this.bits[bitIndex] ? "#fff" : getComputedStyle(document.documentElement).getPropertyValue("--深色文本");
+    this.ctx.fillStyle = this.bits[bitIndex]
+      ? "#fff"
+      : getComputedStyle(document.documentElement).getPropertyValue("--深色文本");
     this.ctx.font = `${Math.max(12, Math.min(16, bitWidth * 0.4))}px JetBrains Mono, Consolas, monospace`;
     this.ctx.textAlign = "center";
     this.ctx.textBaseline = "middle";
     this.ctx.fillText(this.bits[bitIndex], bx + bitWidth / 2, by + bitWidth / 2);
-    
+
     // 索引 - 向上2px
     this.ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue("--索引文字");
     this.ctx.font = "12px JetBrains Mono, Consolas, monospace";
     this.ctx.fillText(this.bitSize - 1 - bitIndex, bx + bitWidth / 2, by - 12);
-    
+
     // 位类型标签 - 放大2px
     if (bitIndex === 0 || bitIndex === 1 || bitIndex === this.floatTypes[this.currentType].expBits + 1) {
       this.ctx.save();
       this.ctx.font = "14px JetBrains Mono, Consolas, monospace"; // 从12px增加到14px
-      this.ctx.fillStyle = bitType === "符号位" ? "#cc5555" : (bitType === "指数位" ? "#ff9800" : "#4caf50");
-      let label = bitType === "符号位" ? "S" : (bitType === "指数位" ? "E" : "M");
+      this.ctx.fillStyle = bitType === "符号位" ? "#cc5555" : bitType === "指数位" ? "#ff9800" : "#4caf50";
+      let label = bitType === "符号位" ? "S" : bitType === "指数位" ? "E" : "M";
       this.ctx.fillText(label, bx + bitWidth / 2, by + bitWidth + 13); // 从10px增加到13px
       this.ctx.restore();
     }
-    
+
     this.ctx.restore();
-  }
-
-  updateCalculationExpression() {
-    const type = this.floatTypes[this.currentType];
-    const bits = this.bits;
-    
-    // 拆分位
-    const s = bits[0]; // 符号位
-    const eBits = bits.slice(1, 1 + type.expBits); // 指数位
-    const mBits = bits.slice(1 + type.expBits); // 尾数位
-    
-    // 计算指数值
-    let eVal = 0;
-    for (let i = 0; i < eBits.length; i++) {
-      eVal = (eVal << 1) | eBits[i];
-    }
-    
-    // 计算尾数值
-    let mVal = 0;
-    for (let i = 0; i < mBits.length; i++) {
-      mVal += mBits[i] * Math.pow(2, -(i + 1));
-    }
-    
-    // 生成HTML内容
-    let html = '';
-    
-    // 标题
-    html += '<div class="标题">IEEE 754 浮点数计算过程</div>';
-    
-    // 第一步：显示位值
-    html += '<div class="步骤">';
-    html += '<span class="步骤标题">第一步：读取位值</span>';
-    html += '<div class="步骤内容">';
-    html += '<div class="步骤行">S = <span class="数字">' + s + '</span></div>';
-    html += '<div class="步骤行">E = <span class="数字">' + eVal + '</span></div>';
-    html += '<div class="步骤行">M = <span class="数字">' + mVal.toFixed(6) + '</span></div>';
-    html += '</div>';
-    html += '</div>';
-    
-    // 检查特殊值
-    if (eVal === 0 && mVal === 0) {
-      html += '<div class="步骤">';
-      html += '<span class="步骤标题">结果：</span>';
-      html += '<div class="步骤内容">';
-      html += '<div class="步骤行"><span class="结果">' + (s === 0 ? '+0' : '-0') + '</span></div>';
-      html += '</div>';
-      html += '</div>';
-    } else if (eVal === (1 << type.expBits) - 1) {
-      html += '<div class="步骤">';
-      html += '<span class="步骤标题">结果：</span>';
-      html += '<div class="步骤内容">';
-      if (mVal === 0) {
-        html += '<div class="步骤行"><span class="结果">' + (s === 0 ? '+∞' : '-∞') + '</span></div>';
-      } else {
-        html += '<div class="步骤行"><span class="结果">NaN</span></div>';
-      }
-      html += '</div>';
-      html += '</div>';
-    } else {
-      // 正常数值计算
-      const exp = eVal - type.bias; // 实际指数
-      
-      html += '<div class="步骤">';
-      html += '<span class="步骤标题">第二步：计算实际指数</span>';
-      html += '<div class="步骤内容">';
-      html += '<div class="步骤行">实际指数 = <span class="数字">' + eVal + '</span> <span class="运算符">-</span> <span class="数字">' + type.bias + '</span> <span class="运算符">=</span> <span class="数字">' + exp + '</span></div>';
-      html += '</div>';
-      html += '</div>';
-      
-      html += '<div class="步骤">';
-      html += '<span class="步骤标题">第三步：应用公式</span>';
-      html += '<div class="步骤内容">';
-      html += '<div class="公式">数值 = <span class="括号">(</span><span class="运算符">-</span><span class="数字">1</span><span class="括号">)</span><span class="上标"><sup>' + s + '</sup></span> <span class="运算符">×</span> <span class="括号">(</span><span class="数字">1</span> <span class="运算符">+</span> <span class="数字">' + mVal.toFixed(6) + '</span><span class="括号">)</span> <span class="运算符">×</span> <span class="数字">2</span><span class="上标"><sup>' + exp + '</sup></span></div>';
-      html += '</div>';
-      html += '</div>';
-      
-      // 计算最终结果
-      const real = Math.pow(-1, s) * (1 + mVal) * Math.pow(2, exp);
-      
-      html += '<div class="步骤">';
-      html += '<span class="步骤标题">第四步：计算结果</span>';
-      html += '<div class="步骤内容">';
-      html += '<div class="步骤行"><span class="数字">' + Math.pow(-1, s) + '</span> <span class="运算符">×</span> <span class="数字">' + (1 + mVal).toFixed(6) + '</span> <span class="运算符">×</span> <span class="数字">' + Math.pow(2, exp).toFixed(6) + '</span> <span class="运算符">=</span> <span class="结果">' + real + '</span></div>';
-      html += '</div>';
-      html += '</div>';
-    }
-    
-    // 添加解释按钮
-    html += '<button class="解释原理按钮" id="explainBtn" type="button">详细原理</button>';
-    
-    document.getElementById("calculationContent").innerHTML = html;
-  }
-
-  showPrincipleDialog() {
-    const content = document.getElementById("principleContent");
-    content.innerHTML = this.generatePrincipleContent();
-    document.getElementById("principleDialog").classList.add("show");
-    document.body.style.overflow = "hidden";
-  }
-
-  hidePrincipleDialog() {
-    document.getElementById("principleDialog").classList.remove("show");
-    document.body.style.overflow = "";
-  }
-
-  generatePrincipleContent() {
-    const type = this.floatTypes[this.currentType];
-    const bits = this.bits;
-    const s = bits[0];
-    const eBits = bits.slice(1, 1 + type.expBits);
-    const mBits = bits.slice(1 + type.expBits);
-    
-    let eVal = 0;
-    for (let i = 0; i < eBits.length; i++) {
-      eVal = (eVal << 1) | eBits[i];
-    }
-    
-    let mVal = 0;
-    for (let i = 0; i < mBits.length; i++) {
-      mVal += mBits[i] * Math.pow(2, -(i + 1));
-    }
-    
-    return `
-      <h3>浮点数的IEEE 754标准结构</h3>
-      <p>浮点数由三部分组成：<span class="重点">符号位</span>、<span class="重点">指数位</span>、<span class="重点">尾数位</span>（又称有效数字）。</p>
-      <div class="公式">数值 = <span class="括号">(</span><span class="运算符">-</span><span class="数字">1</span><span class="括号">)</span><span class="上标"><sup>S</sup></span> <span class="运算符">×</span> <span class="括号">(</span><span class="数字">1</span> <span class="运算符">+</span> <span class="数字">M</span><span class="括号">)</span> <span class="运算符">×</span> <span class="数字">2</span><span class="上标"><sup>E-bias</sup></span></div>
-      
-      <h3>各部分含义</h3>
-      <ul>
-        <li><span class="重点">S</span>：符号位，0为正数，1为负数</li>
-        <li><span class="重点">E</span>：指数部分的无符号整数</li>
-        <li><span class="重点">bias</span>：偏移量，${type.displayName}为${type.bias}，这样可以用无符号整数表示正负指数</li>
-        <li><span class="重点">M</span>：尾数部分，二进制小数（0 ≤ M < 1）</li>
-      </ul>
-      
-      <h3>当前数值分析</h3>
-      <div class="示例">
-        <p><strong>位值分解：</strong></p>
-        <p>符号位 S = <span class="数字">${s}</span> ${s === 0 ? '（正数）' : '（负数）'}</p>
-        <p>指数位 E = <span class="数字">${eVal}</span> （二进制：${eBits.join('')}）</p>
-        <p>尾数位 M = <span class="数字">${mVal.toFixed(6)}</span> （二进制小数）</p>
-        
-        <p><strong>尾数二进制计算过程：</strong></p>
-        <div class="二进制计算">
-          ${mBits.slice(0, Math.min(10, mBits.length)).map((bit, i) => 
-            `${bit} × 2<sup>-${i + 1}</sup> = ${bit} × ${(1/Math.pow(2, i+1)).toFixed(6)}`
-          ).join('<br>')}
-          ${mBits.length > 10 ? `<br>... (还有${mBits.length - 10}位)` : ''}
-          <br><strong>总和 = <span class="数字">${mVal.toFixed(6)}</span></strong>
-        </div>
-      </div>
-      
-      <h3>特殊值规则</h3>
-      <ul>
-        <li>当E全为0且M全为0时，表示±0（零值）</li>
-        <li>当E全为1且M全为0时，表示±∞（无穷大）</li>
-        <li>当E全为1且M不全为0时，表示NaN（非数字）</li>
-        <li>当E全为0且M不全为0时，表示非规格化数（次正规数）</li>
-      </ul>
-      
-      <h3>偏移量（Bias）的作用</h3>
-      <p>IEEE 754使用偏移量来表示指数，${type.displayName}的偏移量是${type.bias}。</p>
-      <p>偏移量范围：-${type.bias} 到 ${((1 << type.expBits) - 1 - type.bias)}，对应指数位 0 到 ${((1 << type.expBits) - 1)}</p>
-      <p>这样做的好处：</p>
-      <ul>
-        <li>可以用无符号整数表示正负指数</li>
-        <li>简化硬件设计</li>
-        <li>便于比较指数大小</li>
-      </ul>
-      
-      <h3>规格化与非规格化</h3>
-      <p><strong>规格化数：</strong>当指数位不全为0时，尾数部分隐含一个1，即实际尾数为1.M</p>
-      <p><strong>非规格化数：</strong>当指数位全为0时，尾数部分不隐含1，即实际尾数为0.M，用于表示非常接近0的数</p>
-      
-      <h3>精度说明</h3>
-      <p><strong>${type.displayName}：</strong>${type.bits}位，${type.expBits}位指数，${type.fracBits}位尾数</p>
-      <p>有效数字位数：${type.displayName === 'float' ? '6-7' : '15-17'}位十进制数字</p>
-      <p>数值范围：约±${type.displayName === 'float' ? '3.4×10³⁸' : '1.8×10³⁰⁸'}</p>
-      
-      <h3>实际应用举例</h3>
-      <div class="示例">
-        <p>以0.15625的float表示为例：</p>
-        <div class="公式">0 01111100 01000000000000000000000</div>
-        <p>即 S=0, E=124, M=0.25</p>
-        <p>实际指数 = 124 - 127 = -3</p>
-        <p>数值 = 1 × (1+0.25) × 2<sup>-3</sup> = 1.25 × 0.125 = 0.15625</p>
-      </div>
-    `;
   }
 
   // 设置连续增减按钮功能
@@ -853,7 +1395,7 @@ class FloatVisualizer {
     let intervalId = null;
     let timeoutId = null;
     let isPressed = false;
-    
+
     button.addEventListener("mousedown", () => {
       // 先清理可能存在的定时器
       if (timeoutId) {
@@ -864,12 +1406,12 @@ class FloatVisualizer {
         clearInterval(intervalId);
         intervalId = null;
       }
-      
+
       isPressed = true;
-      
+
       // 立即执行一次
       action();
-      
+
       // 0.5秒后开始连续执行（只有在按住状态下）
       timeoutId = setTimeout(() => {
         if (isPressed) {
@@ -884,34 +1426,34 @@ class FloatVisualizer {
         }
       }, 500);
     });
-    
+
     button.addEventListener("mouseup", () => {
       isPressed = false;
       this.clearButtonTimers();
     });
-    
+
     button.addEventListener("mouseleave", () => {
       isPressed = false;
       this.clearButtonTimers();
     });
-    
+
     // 防止拖拽时触发
     button.addEventListener("dragstart", (e) => {
       e.preventDefault();
     });
-    
+
     // 保存定时器引用以便清理
     button.intervalId = intervalId;
     button.timeoutId = timeoutId;
     button.isPressed = isPressed;
   }
-  
+
   // 清理按钮定时器
   clearButtonTimers() {
     const increaseBtn = document.getElementById("increaseBtn");
     const decreaseBtn = document.getElementById("decreaseBtn");
-    
-    [increaseBtn, decreaseBtn].forEach(btn => {
+
+    [increaseBtn, decreaseBtn].forEach((btn) => {
       // 清理定时器
       if (btn.timeoutId) {
         clearTimeout(btn.timeoutId);
@@ -921,7 +1463,7 @@ class FloatVisualizer {
         clearInterval(btn.intervalId);
         btn.intervalId = null;
       }
-      
+
       // 重置状态
       if (btn.isPressed !== undefined) {
         btn.isPressed = false;

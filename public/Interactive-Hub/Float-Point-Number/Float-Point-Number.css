@@ -26,8 +26,7 @@
   --尾数位激活悬停: #1b5e20;
   --字节分隔线: #666;
   --索引文字: #aaa;
-  --计算表达式背景: rgba(45, 45, 45, 0.95);
-  --计算表达式边框: #444;
+
   --数字颜色: #4caf50;
   --次方符号颜色: #ff9800;
   --运算符颜色: #aaa;
@@ -35,7 +34,7 @@
   --括号颜色: #ff9800;
   --上标颜色: #e91e63;
   --结果颜色: #eaeaea;
-  --深色文本: #e0e0e0;
+  --深色文本: #c0c0c0;
   --深色次要文本: #aaa;
   --深色悬停背景: #3a3a3a;
   --选中选项颜色: #4caf50;
@@ -244,9 +243,9 @@
 
 /* 控制区样式 */
 .控制区 {
-  background: var(--计算表达式背景);
+  background: var(--位格子背景);
   border-radius: 12px;
-  border: 2px solid var(--计算表达式边框);
+  border: 2px solid var(--位格子边框);
   padding: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   position: fixed;
@@ -255,6 +254,97 @@
   transform: translateX(-50%);
   z-index: 10000;
   transition: opacity 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 科学记数法显示区样式 */
+.科学记数法显示区 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 15px;
+  background: rgba(45, 45, 45, 0.3);
+  border-radius: 8px;
+  border: 1px solid var(--位格子边框);
+}
+
+.科学记数法标签 {
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 14px;
+  color: var(--深色文本);
+  font-weight: 500;
+  white-space: nowrap;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.数值表示内容 {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.表示项 {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.表示标签 {
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 14px;
+  color: #888;
+  font-weight: 500;
+  width: fit-content;
+}
+
+.表示值 {
+  font-family: "Googole Sans Code", Consolas, monospace;
+  font-size: 18px;
+  font-weight: normal;
+  word-break: break-all;
+  line-height: 1.4;
+}
+
+.表示值,
+.整数部分 {
+  color: rgb(106, 162, 189);
+}
+
+/* 整数部分的特殊样式 */
+.整数部分 {
+  min-width: 1ch; /* 确保至少有1个字符的宽度 */
+  text-align: right; /* 右对齐，确保小数点对齐 */
+}
+
+.表示值 sup {
+  font-size: 0.75em;
+  vertical-align: super;
+  line-height: 0;
+  color: darkgoldenrod;
+}
+
+.小数点 {
+  color: #fff5;
+  font-weight: bold;
+}
+
+.小数部分 {
+  color: rgb(75, 132, 196);
+}
+
+.乘号 {
+  color: lightslategray;
+  font-weight: bold;
+}
+
+/* 二进制科学记数法的整数部分特殊样式 - 左对齐 */
+#binaryScientificValue .整数部分 {
+  display: inline;
+  text-align: left;
+  width: auto;
 }
 
 /* 浮点数类型选择区域 */
@@ -264,7 +354,6 @@
   gap: 10px;
   justify-content: center;
   align-items: center;
-  margin-bottom: 45px;
 }
 
 .浮点数类型选项 {
@@ -312,8 +401,12 @@
 }
 
 .浮点数类型标签 .变量类型 {
-  color: var(--数字颜色);
+  color: var(--深色文本);
   font-weight: bold;
+}
+
+.浮点数类型选项.selected .浮点数类型标签 .变量类型 {
+  color: lightblue;
 }
 
 .浮点数类型标签 .字节数 {
@@ -324,6 +417,7 @@
 
 .浮点数类型标签 .字节数 .数字 {
   color: var(--次方符号颜色);
+  font-family: "Google Sans Code", Consolas, monospace;
   font-weight: bold;
 }
 
@@ -376,17 +470,12 @@
   font-weight: normal;
   text-align: center;
   min-width: 120px;
-  position: absolute;
-  top: -30px;
-  left: 50%;
-  translate: -50% 0;
 }
 
 .数值输入框 {
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", Consolas, monospace;
   font-size: 18px;
   color: var(--数字颜色);
-  font-weight: bold;
   padding: 10px 20px;
   background: transparent;
   border: none;
@@ -476,6 +565,19 @@
   border-color: #f4433630;
 }
 
+/* 极值按钮选中状态 */
+.极值按钮.selected {
+  background: rgba(76, 175, 80, 0.2);
+  border-color: #4caf50;
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+}
+
+.极值按钮.最小值按钮.selected {
+  background: rgba(244, 67, 54, 0.2);
+  border-color: #f44336;
+  box-shadow: 0 0 10px rgba(244, 67, 54, 0.5);
+}
+
 /* 步进设置区域 */
 .步进设置区 {
   display: flex;
@@ -529,449 +631,3 @@
 .步进输入框:focus {
   background: rgba(76, 175, 80, 0.1);
 }
-
-/* 计算表达式区域 */
-.计算表达式区 {
-  background: var(--计算表达式背景);
-  border: 2px solid var(--计算表达式边框);
-  border-radius: 8px;
-  padding: 15px;
-  font-family: "JetBrains Mono", Consolas, monospace;
-  font-size: 16px;
-  line-height: 1.6;
-  color: var(--深色文本);
-  white-space: pre-wrap;
-  word-break: break-all;
-  margin: 0 auto; /* 水平居中 */
-  overflow-x: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  max-height: 60vh; /* 限制最大高度 */
-  overflow-y: auto; /* 内容过多时可滚动 */
-}
-
-/* 视口高度较低时的优化 */
-@media (max-height: 1200px) {
-  .计算表达式区 {
-    max-height: 45vh; /* 减少最大高度 */
-    padding: 12px; /* 减少内边距 */
-    gap: 8px; /* 减少间距 */
-    font-size: 14px; /* 稍微减小字体 */
-    line-height: 1.4; /* 减少行高 */
-  }
-
-  .计算表达式区 .标题 {
-    font-size: 16px; /* 减小标题字体 */
-    margin-bottom: 10px; /* 减少底部间距 */
-    padding-bottom: 8px; /* 减少底部内边距 */
-  }
-
-  .计算表达式区 .步骤 {
-    margin-bottom: 10px; /* 减少步骤间距 */
-    padding: 10px; /* 减少步骤内边距 */
-    gap: 6px; /* 减少步骤内间距 */
-  }
-
-  .计算表达式区 .步骤标题 {
-    font-size: 13px; /* 减小步骤标题字体 */
-    margin-bottom: 6px; /* 减少底部间距 */
-  }
-
-  .计算表达式区 .步骤内容 {
-    gap: 4px; /* 减少内容间距 */
-  }
-
-  .计算表达式区 .步骤行 {
-    gap: 6px; /* 减少行内间距 */
-  }
-
-  .计算表达式区 .公式 {
-    padding: 6px; /* 减少公式内边距 */
-    margin: 6px 0; /* 减少公式外边距 */
-  }
-
-  .计算表达式区 .详细解释 {
-    padding: 8px; /* 减少解释内边距 */
-    margin: 6px 0; /* 减少解释外边距 */
-    font-size: 13px; /* 减小解释字体 */
-  }
-
-  .计算表达式区 .二进制计算 {
-    padding: 8px; /* 减少二进制计算内边距 */
-    margin: 6px 0; /* 减少二进制计算外边距 */
-    font-size: 13px; /* 减小二进制计算字体 */
-  }
-
-  .解释原理按钮 {
-    margin: 15px auto 0; /* 减少按钮上边距 */
-    padding: 10px 20px; /* 减少按钮内边距 */
-    font-size: 13px; /* 减小按钮字体 */
-  }
-}
-
-/* 视口高度更低时的进一步优化 */
-@media (max-height: 900px) {
-  .计算表达式区 {
-    max-height: 35vh; /* 进一步减少最大高度 */
-    padding: 10px; /* 进一步减少内边距 */
-    gap: 6px; /* 进一步减少间距 */
-    font-size: 13px; /* 进一步减小字体 */
-    line-height: 1.3; /* 进一步减少行高 */
-  }
-
-  .计算表达式区 .标题 {
-    font-size: 15px; /* 进一步减小标题字体 */
-    margin-bottom: 8px; /* 进一步减少底部间距 */
-    padding-bottom: 6px; /* 进一步减少底部内边距 */
-  }
-
-  .计算表达式区 .步骤 {
-    margin-bottom: 8px; /* 进一步减少步骤间距 */
-    padding: 8px; /* 进一步减少步骤内边距 */
-    gap: 4px; /* 进一步减少步骤内间距 */
-  }
-
-  .计算表达式区 .步骤标题 {
-    font-size: 12px; /* 进一步减小步骤标题字体 */
-    margin-bottom: 4px; /* 进一步减少底部间距 */
-  }
-
-  .计算表达式区 .步骤内容 {
-    gap: 3px; /* 进一步减少内容间距 */
-  }
-
-  .计算表达式区 .步骤行 {
-    gap: 4px; /* 进一步减少行内间距 */
-  }
-
-  .计算表达式区 .公式 {
-    padding: 5px; /* 进一步减少公式内边距 */
-    margin: 4px 0; /* 进一步减少公式外边距 */
-  }
-
-  .计算表达式区 .详细解释 {
-    padding: 6px; /* 进一步减少解释内边距 */
-    margin: 4px 0; /* 进一步减少解释外边距 */
-    font-size: 12px; /* 进一步减小解释字体 */
-  }
-
-  .计算表达式区 .二进制计算 {
-    padding: 6px; /* 进一步减少二进制计算内边距 */
-    margin: 4px 0; /* 进一步减少二进制计算外边距 */
-    font-size: 12px; /* 进一步减小二进制计算字体 */
-  }
-
-  .解释原理按钮 {
-    margin: 12px auto 0; /* 进一步减少按钮上边距 */
-    padding: 8px 16px; /* 进一步减少按钮内边距 */
-    font-size: 12px; /* 进一步减小按钮字体 */
-  }
-}
-
-/* 视口高度极低时的最小化布局 */
-@media (max-height: 700px) {
-  .计算表达式区 {
-    max-height: 30vh; /* 最小化最大高度 */
-    padding: 8px; /* 最小化内边距 */
-    gap: 4px; /* 最小化间距 */
-    font-size: 12px; /* 最小化字体 */
-    line-height: 1.2; /* 最小化行高 */
-  }
-
-  .计算表达式区 .标题 {
-    font-size: 14px; /* 最小化标题字体 */
-    margin-bottom: 6px; /* 最小化底部间距 */
-    padding-bottom: 4px; /* 最小化底部内边距 */
-  }
-
-  .计算表达式区 .步骤 {
-    margin-bottom: 6px; /* 最小化步骤间距 */
-    padding: 6px; /* 最小化步骤内边距 */
-    gap: 3px; /* 最小化步骤内间距 */
-  }
-
-  .计算表达式区 .步骤标题 {
-    font-size: 11px; /* 最小化步骤标题字体 */
-    margin-bottom: 3px; /* 最小化底部间距 */
-  }
-
-  .计算表达式区 .步骤内容 {
-    gap: 2px; /* 最小化内容间距 */
-  }
-
-  .计算表达式区 .步骤行 {
-    gap: 3px; /* 最小化行内间距 */
-  }
-
-  .计算表达式区 .公式 {
-    padding: 4px; /* 最小化公式内边距 */
-    margin: 3px 0; /* 最小化公式外边距 */
-  }
-
-  .计算表达式区 .详细解释 {
-    padding: 4px; /* 最小化解释内边距 */
-    margin: 3px 0; /* 最小化解释外边距 */
-    font-size: 11px; /* 最小化解释字体 */
-  }
-
-  .计算表达式区 .二进制计算 {
-    padding: 4px; /* 最小化二进制计算内边距 */
-    margin: 3px 0; /* 最小化二进制计算外边距 */
-    font-size: 11px; /* 最小化二进制计算字体 */
-  }
-
-  .解释原理按钮 {
-    margin: 10px auto 0; /* 最小化按钮上边距 */
-    padding: 6px 12px; /* 最小化按钮内边距 */
-    font-size: 11px; /* 最小化按钮字体 */
-  }
-}
-
-/* 计算表达式中的样式类 */
-.计算表达式区 .标题 {
-  font-size: 18px;
-  font-weight: bold;
-  color: var(--选中选项颜色);
-  margin-bottom: 15px;
-  text-align: center;
-  border-bottom: 1px solid var(--计算表达式边框);
-  padding-bottom: 10px;
-}
-
-.计算表达式区 .步骤 {
-  text-align: left;
-  margin-bottom: 15px;
-  padding: 15px;
-  background: rgba(45, 45, 45, 0.3);
-  border-radius: 6px;
-  border-left: 3px solid var(--数字颜色);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.计算表达式区 .步骤标题 {
-  font-weight: bold;
-  color: var(--选中选项颜色);
-  font-size: 14px;
-  display: block;
-  margin-bottom: 8px;
-}
-
-.计算表达式区 .步骤内容 {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.计算表达式区 .步骤行 {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.计算表达式区 .数字 {
-  color: var(--数字颜色);
-  font-weight: bold;
-}
-
-.计算表达式区 .运算符 {
-  color: var(--运算符颜色);
-  font-weight: bold;
-  margin: 0 4px;
-}
-
-.计算表达式区 .括号 {
-  color: var(--括号颜色);
-  font-weight: bold;
-}
-
-.计算表达式区 .上标 {
-  color: var(--上标颜色);
-  font-weight: bold;
-}
-
-.计算表达式区 .结果 {
-  color: var(--等号颜色);
-  font-weight: bold;
-  font-size: 18px;
-}
-
-.计算表达式区 .说明 {
-  color: var(--深色次要文本);
-  font-size: 14px;
-  font-style: italic;
-}
-
-.计算表达式区 .公式 {
-  background: rgba(255, 152, 0, 0.1);
-  border: 1px solid var(--次方符号颜色);
-  padding: 8px;
-  border-radius: 4px;
-  margin: 8px 0;
-  font-weight: bold;
-}
-
-.计算表达式区 .详细解释 {
-  background: rgba(76, 175, 80, 0.1);
-  border-left: 3px solid var(--数字颜色);
-  padding: 10px;
-  margin: 8px 0;
-  border-radius: 4px;
-  font-size: 14px;
-  color: var(--深色次要文本);
-}
-
-.计算表达式区 .二进制计算 {
-  background: rgba(33, 150, 243, 0.1);
-  border-left: 3px solid #2196f3;
-  padding: 10px;
-  margin: 8px 0;
-  border-radius: 4px;
-  font-size: 14px;
-  font-family: "JetBrains Mono", Consolas, monospace;
-}
-
-/* 弹出对话框样式 */
-.原理对话框 {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 99999;
-}
-
-.原理对话框.show {
-  display: flex;
-}
-
-.对话框内容 {
-  background: var(--计算表达式背景);
-  border: 2px solid var(--计算表达式边框);
-  border-radius: 12px;
-  padding: 30px;
-  max-width: 1500px;
-  max-height: 80vh;
-  overflow-y: auto;
-  position: relative;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-}
-
-.对话框标题 {
-  font-size: 24px;
-  font-weight: bold;
-  color: var(--选中选项颜色);
-  margin-bottom: 20px;
-  text-align: center;
-  border-bottom: 2px solid var(--计算表达式边框);
-  padding-bottom: 15px;
-}
-
-.对话框关闭按钮 {
-  width: 30px;
-  height: 30px;
-  text-align: center;
-  align-content: center;
-  position: sticky;
-  top: 0;
-  left: 100%;
-  background: transparent;
-  color: var(--深色文本);
-  font-size: 24px;
-  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
-  border-radius: 4px;
-  outline: solid 2px transparent;
-  transition: all 0.2s ease;
-}
-
-.对话框关闭按钮:hover {
-  background: var(--深色悬停背景);
-  color: var(--选项悬停颜色);
-  outline: solid 2px #fff2;
-}
-
-.原理内容 {
-  font-family: "JetBrains Mono", Consolas, monospace;
-  font-size: 16px;
-  line-height: 1.8;
-  color: var(--深色文本);
-}
-
-.原理内容 h3 {
-  color: var(--选中选项颜色);
-  margin: 25px 0 15px 0;
-  font-size: 18px;
-}
-
-.原理内容 p {
-  margin: 12px 0;
-  text-align: justify;
-}
-
-.原理内容 .重点 {
-  color: var(--数字颜色);
-  font-weight: bold;
-}
-
-.原理内容 .示例 {
-  background: rgba(76, 175, 80, 0.1);
-  border-left: 4px solid var(--数字颜色);
-  padding: 15px;
-  margin: 15px 0;
-  border-radius: 4px;
-}
-
-.原理内容 .公式 {
-  background: rgba(255, 152, 0, 0.1);
-  border: 1px solid var(--次方符号颜色);
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 4px;
-  text-align: center;
-  font-weight: bold;
-}
-
-/* 解释原理按钮样式 */
-.解释原理按钮 {
-  display: block;
-  margin: 20px auto 0;
-  padding: 12px 24px;
-  background: linear-gradient(135deg, #4caf50, #45a049);
-  border: none;
-  border-radius: 8px;
-  color: white;
-  font-family: "JetBrains Mono", Consolas, monospace;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
-  user-select: none;
-}
-
-.解释原理按钮:hover {
-  background: linear-gradient(135deg, #45a049, #3d8b40);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
-}
-
-.解释原理按钮:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
-}
-
-.计算表达式内容 {
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-/* 计算表达式中的样式类 */

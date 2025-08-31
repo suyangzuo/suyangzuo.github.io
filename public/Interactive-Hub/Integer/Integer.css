@@ -23,7 +23,7 @@
   --运算符颜色: #aaa;
   --等号颜色: gold;
   --结果颜色: #eaeaea;
-  --深色文本: #e0e0e0;
+  --深色文本: #c0c0c0;
   --深色次要文本: #aaa;
   --深色悬停背景: #3a3a3a;
   --选中选项颜色: #4caf50;
@@ -647,7 +647,7 @@
 
 .整数类型选项.selected .整数类型标签 .变量类型 {
   /* color: var(--选中选项颜色); */
-  color: greenyellow;
+  color: lightblue;
 }
 
 .整数类型选项.selected .整数类型标签 .字节数 {
@@ -710,7 +710,7 @@
 }
 
 .符号选项.selected .符号标签 {
-  color: lightskyblue;
+  color: lightblue;
 }
 
 /* 数值显示区域 */

@@ -7,7 +7,7 @@
     <title>浮点数</title>
     <link rel="icon" href="/Images/Interactive-Hub/HQ/浮点数.png" type="image/x-icon" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Ubuntu+Mono&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Ubuntu+Mono&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/Styles/common.css" />
@@ -31,22 +31,11 @@
       <figure class="展示区">
         <div class="canvas-container">
           <canvas id="floatCanvas" width="800" height="200"></canvas>
-          <div class="计算表达式区" id="calculationExpression">
-            <div class="计算表达式内容" id="calculationContent">计算表达式将在这里显示...</div>
-          </div>
+        </div>
+        <div class="计算表达式区" id="calculationExpression">
+          <div class="计算表达式内容" id="calculationContent"></div>
         </div>
       </figure>
-
-      <!-- 原理解释对话框 -->
-      <div class="原理对话框" id="principleDialog">
-        <div class="对话框内容">
-          <button class="对话框关闭按钮" id="closeDialogBtn">&times;</button>
-          <div class="对话框标题">浮点数原理详解</div>
-          <div class="原理内容" id="principleContent">
-            <!-- 原理内容将通过JavaScript动态生成 -->
-          </div>
-        </div>
-      </div>
 
       <div class="控制区">
         <div class="浮点数类型选择区">
@@ -66,17 +55,39 @@
           </label>
           <div class="步进设置区">
             <span class="步进标签">步进</span>
-            <input type="number" class="步进输入框" id="stepValue" value="0.1" min="0.000001" max="1000000" step="0.000001" />
+            <input
+              type="number"
+              class="步进输入框"
+              id="stepValue"
+              value="0.1"
+              min="0.000001"
+              max="1000000"
+              step="0.000001"
+            />
           </div>
         </div>
-
+        <div class="科学记数法显示区">
+          <div class="数值表示内容">
+            <div class="表示项">
+              <span class="表示标签">十进制精确值:</span>
+              <div class="表示值" id="decimalValue">0.00000000000000000000000000000000</div>
+            </div>
+            <div class="表示项">
+              <span class="表示标签">二进制精确值:</span>
+              <div class="表示值" id="binaryValue">0.00000000000000000000000000000000</div>
+            </div>
+            <div class="表示项">
+              <span class="表示标签">二进制科学记数法:</span>
+              <div class="表示值" id="binaryScientificValue">0.00000000000000000000000 × 2^0</div>
+            </div>
+          </div>
+        </div>
         <div class="数值显示区">
           <span class="数值标签">当前数值:</span>
           <div class="数值输入组">
             <button class="数值增减按钮 减少按钮" id="decreaseBtn" type="button"></button>
             <div class="数值显示区域">
-              <div class="科学记数法" id="scientificValue">0.000000e+00</div>
-              <input type="number" class="数值输入框" id="currentValue" value="0" step="0.01" />
+              <input type="text" class="数值输入框" id="currentValue" value="0" step="0.01" />
             </div>
             <button class="数值增减按钮 增加按钮" id="increaseBtn" type="button"></button>
           </div>
