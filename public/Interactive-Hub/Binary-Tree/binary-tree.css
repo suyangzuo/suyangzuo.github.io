@@ -40,22 +40,21 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
   min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 45px;
 }
 
 .控制组 {
-  margin-bottom: 30px;
   display: flex;
   flex-direction: column;
   gap: 8px;
   width: fit-content;
 }
 
-.控制组:first-child {
-  margin-bottom: 20px;
-}
-
-.控制组:last-child {
-  margin-bottom: 0;
+.控制组 > label:first-child {
+  user-select: none;
+  color: rgb(137, 157, 178);
 }
 
 .控制组 label {
@@ -127,44 +126,16 @@
   text-wrap: nowrap;
 }
 
-.控制组 button {
-  padding: 10px 16px;
-  background: rgb(73, 93, 100);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  user-select: none;
+/* 复选控制组样式 */
+.复选控制组 {
+  gap: 45px;
+  flex-direction: row;
 }
 
-.控制组 button:hover {
-  background: rgb(91, 116, 125);
-}
-
-.控制组 button:active {
-  background: rgb(108, 137, 147);
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .控制区 {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-  }
-
-  .控制面板 {
-    width: 180px;
-    padding: 15px;
-  }
-
-  .展示区 {
-    top: 50px;
-    height: calc(100vh - 50px);
-  }
+.复选组件 {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 /* 环形复选框样式 */
@@ -180,6 +151,10 @@
 }
 
 .checkbox标签:hover {
+  color: #ddd;
+}
+
+.checkbox标签:has(input[type="checkbox"]:checked) {
   color: #ffffff;
 }
 
@@ -239,4 +214,23 @@
 .checkbox文本 {
   pointer-events: none;
   user-select: none;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .控制区 {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+  }
+
+  .控制面板 {
+    width: 180px;
+    padding: 15px;
+  }
+
+  .展示区 {
+    top: 50px;
+    height: calc(100vh - 50px);
+  }
 }

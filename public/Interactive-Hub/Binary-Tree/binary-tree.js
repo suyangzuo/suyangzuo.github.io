@@ -20,8 +20,8 @@ class 二叉树可视化 {
       节点边框: "#4a5568",
       节点文字: "#ffffff",
       连线: "#a0aec0",
-      left指针: "#ff6b6b",
-      right指针: "#00d4aa",
+      left指针: "#cc5b5b",
+      right指针: "#15a055",
       root标签: "rgb(152, 84, 123)",
       控制区背景: "rgba(40, 40, 40, 0.95)",
       控制区边框: "#555",
@@ -47,6 +47,12 @@ class 二叉树可视化 {
     this.悬停在删除按钮的节点 = null;
     this.预览信息 = null; // 添加预览信息属性
     this.鼠标在控制区 = false; // 添加控制区状态
+
+    // 连线信息列表，用于存储所有连线的圆点绘制信息
+    this.连线信息列表 = [];
+    
+    // 显示节点信息控制
+    this.显示节点信息 = false;
 
     // 字体
     this.字体 = '"Google Sans Code", Consolas, "Noto Sans SC", sans-serif';
@@ -170,6 +176,12 @@ class 二叉树可视化 {
     // 为重置按钮添加功能
     document.querySelector(".重置按钮").addEventListener("click", () => {
       this.重置();
+    });
+    
+    // 为显示节点信息复选框添加功能
+    document.querySelector("#显示节点信息复选框").addEventListener("change", (e) => {
+      this.显示节点信息 = e.target.checked;
+      this.绘制();
     });
   }
 
@@ -967,6 +979,9 @@ class 二叉树可视化 {
     // 清空Canvas
     this.ctx.clearRect(0, 0, this.canvas.width / this.devicePixelRatio, this.canvas.height / this.devicePixelRatio);
 
+    // 清空连线信息列表
+    this.连线信息列表 = [];
+
     // 如果有根节点，绘制树结构
     if (this.根节点) {
       // 绘制连线
@@ -974,6 +989,9 @@ class 二叉树可视化 {
 
       // 绘制节点
       this.绘制所有节点(this.根节点);
+
+      // 在所有节点绘制完成后，绘制连线圆点
+      this.绘制所有连线圆点();
     }
 
     // 绘制预览节点（无论是否有根节点都要绘制）
@@ -1012,7 +1030,10 @@ class 二叉树可视化 {
     const 起点X = 父节点.x + (方向 === "left" ? -父节点宽度 * 0.25 : 父节点宽度 * 0.25);
     const 起点Y = 父节点.y + this.节点配置.高度 / 2;
     const 终点X = 子节点.x;
-    const 终点Y = 子节点.y - this.节点配置.高度 / 2;
+    // 圆点位置保持不变
+    const 圆点Y = 子节点.y - this.节点配置.高度 / 2;
+    // 连线终点Y向上偏移4像素，避免与圆点重叠
+    const 终点Y = 圆点Y - 10;
 
     // 检查这条连线是否在选中路径上
     const 连线在选中路径上 = this.检查连线是否在选中路径上(父节点, 子节点);
@@ -1024,16 +1045,32 @@ class 二叉树可视化 {
     this.ctx.beginPath();
     this.ctx.moveTo(起点X, 起点Y);
 
+    const 曲线回正距离 = 50;
+    const 垂直距离 = 终点Y - 起点Y - 曲线回正距离;
+    const 垂直距离绝对值 = Math.abs(垂直距离);
+
     const 控制点1X = 起点X;
-    const 控制点1Y = 起点Y + (终点Y - 起点Y) * 0.5;
+    const 控制点1Y = 起点Y + Math.min(垂直距离绝对值 * 0.5, 250);
     const 控制点2X = 终点X;
-    const 控制点2Y = 终点Y - (终点Y - 起点Y) * 0.5;
+    const 控制点2Y = 终点Y - Math.min(垂直距离绝对值 * 0.5, 250);
 
     this.ctx.bezierCurveTo(控制点1X, 控制点1Y, 控制点2X, 控制点2Y, 终点X, 终点Y);
+    this.ctx.lineWidth = 连线在选中路径上 ? 3 : 2;
     this.ctx.stroke();
 
     // 绘制箭头
     this.绘制箭头(终点X, 终点Y, 起点X, 起点Y, 控制点1X, 控制点1Y, 控制点2X, 控制点2Y);
+
+    // 收集连线信息用于后续绘制圆点
+    this.连线信息列表.push({
+      起点X,
+      起点Y,
+      终点X,
+      终点Y, // 连线终点Y坐标（用于绘制连线）
+      圆点Y, // 圆点Y坐标（用于绘制圆点）
+      连线在选中路径上,
+      方向,
+    });
 
     // 恢复透明度
     this.ctx.globalAlpha = 1.0;
@@ -1063,6 +1100,52 @@ class 二叉树可视化 {
     this.ctx.moveTo(x, y);
     this.ctx.lineTo(x - 箭头长度 * Math.cos(箭头角度 + Math.PI / 6), y - 箭头长度 * Math.sin(箭头角度 + Math.PI / 6));
     this.ctx.stroke();
+  }
+
+  绘制连线圆点(起点X, 起点Y, 终点X, 终点Y, 圆点Y, 连线在选中路径上, 方向) {
+    const 圆点半径 = 4;
+
+    // 根据方向和选中状态设置圆点颜色
+    const 填充色 = 连线在选中路径上
+      ? 方向 === "left"
+        ? "#aa1b1b"
+        : "#00643a"
+      : 方向 === "left"
+      ? this.颜色.left指针
+      : this.颜色.right指针;
+
+    const 描边色 = 连线在选中路径上 ? "#ffffff" : 方向 === "left" ? this.颜色.left指针 : this.颜色.right指针;
+
+    this.ctx.fillStyle = 填充色;
+    this.ctx.strokeStyle = 描边色;
+    this.ctx.lineWidth = 1;
+
+    // 绘制起点圆点（出点）
+    this.ctx.beginPath();
+    this.ctx.arc(起点X, 起点Y, 圆点半径, 0, 2 * Math.PI);
+    this.ctx.fill();
+    this.ctx.stroke();
+
+    // 绘制终点圆点（入点）
+    this.ctx.beginPath();
+    this.ctx.arc(终点X, 圆点Y, 圆点半径, 0, 2 * Math.PI);
+    this.ctx.fill();
+    this.ctx.stroke();
+  }
+
+  绘制所有连线圆点() {
+    // 遍历所有连线信息，绘制圆点
+    for (const 连线信息 of this.连线信息列表) {
+      this.绘制连线圆点(
+        连线信息.起点X,
+        连线信息.起点Y,
+        连线信息.终点X,
+        连线信息.终点Y,
+        连线信息.圆点Y,
+        连线信息.连线在选中路径上,
+        连线信息.方向
+      );
+    }
   }
 
   绘制所有节点(节点) {
@@ -1138,52 +1221,56 @@ class 二叉树可视化 {
     // 计算文本起始位置
     const 文本X = x + 15;
 
-    // 绘制高度和深度信息（在内存地址上方）
-    const 节点深度 = this.获取节点深度(节点);
-    const 节点高度 = this.获取节点高度(节点);
+    // 根据显示节点信息设置决定是否绘制深度、高度、内存地址信息
+    if (this.显示节点信息) {
+      // 绘制高度和深度信息（在内存地址上方）
+      const 节点深度 = this.获取节点深度(节点);
+      const 节点高度 = this.获取节点高度(节点);
 
-    // 设置字体和颜色
-    this.ctx.font = `12px ${this.字体}`;
-    this.ctx.fillStyle = "lightblue";
+      // 设置字体和颜色
+      this.ctx.font = `14px ${this.字体}`;
+      this.ctx.fillStyle = "lightblue";
 
-    // 绘制"D:深度"（左对齐）
-    this.ctx.textAlign = "left";
-    this.ctx.fillText("深度", 文本X - 6, y - 30);
-    this.ctx.fillStyle = "gray";
-    this.ctx.fillText(":", 文本X + this.ctx.measureText("深度").width - 5, y - 30);
-    this.ctx.fillStyle = "yellowgreen";
-    this.ctx.fillText(节点深度.toString(), 文本X + this.ctx.measureText("深度:").width - 3, y - 30);
+      // 绘制"D:深度"（左对齐）
+      this.ctx.textAlign = "left";
+      this.ctx.fillText("深度", 文本X - 14, y - 35);
+      this.ctx.fillStyle = "gray";
+      this.ctx.fillText(":", 文本X + this.ctx.measureText("深度").width - 13, y - 35);
+      this.ctx.fillStyle = "yellowgreen";
+      this.ctx.fillText(节点深度.toString(), 文本X + this.ctx.measureText("深度:").width - 11, y - 35);
 
-    // 绘制"H:高度"（右对齐）
-    this.ctx.fillStyle = "lightblue";
-    this.ctx.textAlign = "right";
-    this.ctx.fillText("高度", x + width - this.ctx.measureText("高度:").width + 4, y - 30);
-    this.ctx.fillStyle = "gray";
-    this.ctx.fillText(":", x + width - this.ctx.measureText("高度").width + 4, y - 30);
-    this.ctx.fillStyle = "yellowgreen";
-    this.ctx.fillText(节点高度.toString(), x + width - 11, y - 30);
+      // 绘制"H:高度"（右对齐）
+      this.ctx.fillStyle = "lightblue";
+      this.ctx.textAlign = "right";
+      this.ctx.fillText("高度", x + width - this.ctx.measureText("高度:").width + 10, y - 35);
+      this.ctx.fillStyle = "gray";
+      this.ctx.fillText(":", x + width - this.ctx.measureText("高度").width + 10, y - 35);
+      this.ctx.textAlign = "left";
+      this.ctx.fillStyle = "yellowgreen";
+      this.ctx.fillText(节点高度.toString(), x + width - 16, y - 35);
 
-    // 绘制内存地址（在高度深度信息下方）
-    this.ctx.fillStyle = "lightskyblue";
-    this.ctx.textAlign = "right";
-    this.ctx.fillText("内存地址", 文本X + 字段名称宽度 - 中文冒号宽度, y - 15);
-    this.ctx.fillStyle = "gray";
-    this.ctx.fillText(" : ", 文本X + 字段名称宽度 + 3, y - 15);
-    this.ctx.textAlign = "left";
+      // 绘制内存地址（在高度深度信息下方）
+      this.ctx.fillStyle = "lightskyblue";
+      this.ctx.textAlign = "right";
+      this.ctx.fillText("内存地址", 文本X + 字段名称宽度 - 中文冒号宽度, y - 15);
+      this.ctx.fillStyle = "gray";
+      this.ctx.fillText(" : ", 文本X + 字段名称宽度 + 3, y - 15);
+      this.ctx.textAlign = "left";
 
-    // 绘制内存地址值，0x部分使用#999颜色
-    const 内存地址文本 = 节点.内存地址;
-    const 零x部分 = "0x";
-    const 地址部分 = 内存地址文本.substring(2);
+      // 绘制内存地址值，0x部分使用#999颜色
+      const 内存地址文本 = 节点.内存地址;
+      const 零x部分 = "0x";
+      const 地址部分 = 内存地址文本.substring(2);
 
-    // 先绘制0x部分（#999颜色）
-    this.ctx.fillStyle = "#999";
-    this.ctx.fillText(零x部分, 文本X + 字段名称宽度, y - 15);
+      // 先绘制0x部分（#999颜色）
+      this.ctx.fillStyle = "#999";
+      this.ctx.fillText(零x部分, 文本X + 字段名称宽度, y - 15);
 
-    // 再绘制地址部分（原来的颜色）
-    this.ctx.fillStyle = this.颜色.内存地址值;
-    const 零x宽度 = this.ctx.measureText(零x部分).width;
-    this.ctx.fillText(地址部分, 文本X + 字段名称宽度 + 零x宽度 + 1, y - 15);
+      // 再绘制地址部分（原来的颜色）
+      this.ctx.fillStyle = this.颜色.内存地址值;
+      const 零x宽度 = this.ctx.measureText(零x部分).width;
+      this.ctx.fillText(地址部分, 文本X + 字段名称宽度 + 零x宽度 + 1, y - 15);
+    }
 
     // 绘制节点内容
     this.ctx.font = `14px ${this.字体}`;
@@ -1263,7 +1350,7 @@ class 二叉树可视化 {
       this.ctx.fillStyle = this.颜色.root标签;
       this.ctx.font = `bold 18px ${this.字体}`;
       this.ctx.textAlign = "center";
-      this.ctx.fillText("root", 节点.x, y - 50);
+      this.ctx.fillText("root", 节点.x, this.显示节点信息 ? y - 60 : y - 20);
     }
   }
 
