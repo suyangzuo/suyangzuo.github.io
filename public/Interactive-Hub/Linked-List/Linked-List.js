@@ -55,13 +55,14 @@ class 链表可视化 {
     this.显示添加提示 = false;
     this.悬停在删除按钮 = false;
     this.鼠标在控制区 = false;
+    this.启用添加节点 = true;
 
     // 字体
     this.字体 = '"Google Sans Code", Consolas, "Noto Sans SC", sans-serif';
 
     this.初始化Canvas();
     this.设置事件监听();
-    this.创建控制区();
+    this.添加控制区DOM事件侦听器();
     this.绘制();
 
     // 监听窗口大小变化
@@ -148,37 +149,7 @@ class 链表可视化 {
     }
   }
 
-  创建控制区() {
-    const 控制区 = document.querySelector(".控制区");
-    控制区.innerHTML = `
-      <div class="控制面板">
-        <div class="控制组">
-          <label>链表类型：</label>
-          <div class="radio组">
-            <label class="radio标签">
-              <input type="radio" name="链表类型" value="单向链表" checked>
-              <span class="radio文本">单向链表</span>
-            </label>
-            <label class="radio标签">
-              <input type="radio" name="链表类型" value="双向链表">
-              <span class="radio文本">双向链表</span>
-            </label>
-          </div>
-        </div>
-        <div class="控制组">
-          <label class="checkbox标签">
-            <input type="checkbox" id="环形复选框">
-            <span class="checkbox自定义"></span>
-            <span class="checkbox文本">环形</span>
-          </label>
-        </div>
-        <div class="控制组">
-          <button id="添加节点按钮">添加节点</button>
-        </div>
-      </div>
-    `;
-
-    // 绑定事件
+  添加控制区DOM事件侦听器() {
     document.querySelectorAll('input[name="链表类型"]').forEach((radio) => {
       radio.addEventListener("change", (e) => {
         this.链表类型 = e.target.value;
@@ -193,8 +164,13 @@ class 链表可视化 {
       this.绘制();
     });
 
-    document.getElementById("添加节点按钮").addEventListener("click", () => {
-      this.添加节点();
+    document.getElementById("添加节点复选框").addEventListener("change", (e) => {
+      this.启用添加节点 = e.target.checked;
+      // 如果取消选中，隐藏预览节点
+      if (!this.启用添加节点) {
+        this.显示添加提示 = false;
+      }
+      this.绘制();
     });
 
     // 为重置按钮添加功能
@@ -371,16 +347,31 @@ class 链表可视化 {
     // 清空节点数组
     this.节点数组 = [];
     this.环形模式 = false;
+    this.启用添加节点 = true;
 
     // 清理动画状态
     this.删除动画.正在删除 = false;
     this.删除动画.删除的节点 = null;
     this.删除动画.过渡动画 = null;
 
+    // 重置其他状态
+    this.拖拽的节点 = null;
+    this.拖拽偏移 = { x: 0, y: 0 };
+    this.悬停的节点 = null;
+    this.悬停在删除按钮 = false;
+    this.显示添加提示 = false;
+    this.鼠标在控制区 = false;
+
     // 重置环形复选框
     const 环形复选框 = document.getElementById("环形复选框");
     if (环形复选框) {
       环形复选框.checked = false;
+    }
+
+    // 重置添加节点复选框
+    const 添加节点复选框 = document.getElementById("添加节点复选框");
+    if (添加节点复选框) {
+      添加节点复选框.checked = true;
     }
 
     // 重新绘制
@@ -417,7 +408,7 @@ class 链表可视化 {
     }
 
     // 如果点击在空白处且显示添加提示，则添加节点
-    if (this.显示添加提示) {
+    if (this.显示添加提示 && this.启用添加节点) {
       this.添加节点({ x: x, y: y });
       // 创建节点后，立即隐藏预览节点并重新检测鼠标位置
       this.显示添加提示 = false;
@@ -566,7 +557,8 @@ class 链表可视化 {
 
       if (!在节点边界附近) {
         this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
-        this.显示添加提示 = true;
+        // 只有在启用添加节点时才显示预览节点
+        this.显示添加提示 = this.启用添加节点;
       } else {
         this.显示添加提示 = false;
       }
@@ -637,7 +629,8 @@ class 链表可视化 {
 
       if (!在节点边界附近) {
         this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
-        this.显示添加提示 = true;
+        // 只有在启用添加节点时才显示预览节点
+        this.显示添加提示 = this.启用添加节点;
       } else {
         this.显示添加提示 = false;
       }
@@ -801,6 +794,11 @@ class 链表可视化 {
       }
     }
 
+    // 绘制预览节点的连线（如果有节点且显示添加提示）
+    if (this.显示添加提示 && this.节点数组.length > 0) {
+      this.绘制预览节点连线();
+    }
+
     // 绘制删除动画中的过渡连线
     if (this.删除动画.正在删除 && this.删除动画.过渡动画) {
       const 动画 = this.删除动画.过渡动画;
@@ -851,6 +849,162 @@ class 链表可视化 {
         if (this.链表类型 === "双向链表") {
           this.绘制箭头(起点X, 起点Y, 终点X, 终点Y, 控制点1X, 控制点1Y, 控制点2X, 控制点2Y, true);
         }
+      }
+    }
+  }
+
+  绘制预览节点连线() {
+    // 计算节点高度
+    const 节点行高 = 22;
+    const 顶部边距 = 25;
+    const 底部边距 = 15;
+    const 字段数量 = this.链表类型 === "双向链表" ? 3 : 2;
+    const 节点高度 = 顶部边距 + 字段数量 * 节点行高 + 底部边距;
+
+    // 计算预览节点的位置和尺寸
+    const 临时节点 = {
+      姓名: "预览",
+      年龄: 0,
+      next: null,
+      previous: null,
+    };
+    const 预览节点宽度 = this.计算节点宽度(临时节点);
+    const 预览节点X = this.鼠标位置.x - 预览节点宽度 / 2;
+    const 预览节点Y = this.鼠标位置.y - 节点高度 / 2;
+
+    // 找到最后一个节点，绘制从最后一个节点到预览节点的next连线
+    const 最后一个节点 = this.节点数组[this.节点数组.length - 1];
+    if (最后一个节点) {
+      // 计算连线起点和终点
+      const 圆点半径 = 6;
+      const 连线偏移 = 8;
+      const 起点X = 最后一个节点.x + this.计算节点宽度(最后一个节点) + 圆点半径 + 连线偏移;
+      const 起点Y = 最后一个节点.y + 节点高度 / 2;
+      const 终点X = 预览节点X - 圆点半径 - 连线偏移;
+      const 终点Y = 预览节点Y + 节点高度 / 2;
+
+      // 计算水平位置差
+      const 水平位置差 = 终点X - 起点X;
+      const 垂直位置差绝对值 = Math.abs(终点Y - 起点Y);
+
+      // 根据水平位置差动态调整控制点
+      let 控制点1X, 控制点2X;
+      const 调整系数 = 水平位置差 < 50 ? Math.min(20, 6 - 水平位置差 / 50) : Math.max(5, 水平位置差 / 50);
+      let 基础偏移 = Math.min(25, Math.abs(水平位置差 * 4) / 150 + 10);
+      基础偏移 *= Math.min(1, 垂直位置差绝对值 / 250);
+      控制点1X = 起点X + 基础偏移 * 调整系数;
+      控制点2X = 终点X - 基础偏移 * 调整系数;
+
+      const 控制点1Y = 起点Y;
+      const 控制点2Y = 终点Y;
+
+      // 使用半透明颜色绘制预览连线
+      this.ctx.strokeStyle = `rgba(255, 255, 255, 0.1)`; // 20%不透明度的白色
+      this.ctx.lineWidth = 2;
+
+      // 绘制贝塞尔曲线
+      this.ctx.beginPath();
+      this.ctx.moveTo(起点X, 起点Y);
+      this.ctx.bezierCurveTo(控制点1X, 控制点1Y, 控制点2X, 控制点2Y, 终点X, 终点Y);
+      this.ctx.stroke();
+
+      // 绘制箭头（使用半透明颜色）
+      this.ctx.strokeStyle = `rgba(57, 153, 221, 0.2)`; // 20%不透明度的箭头颜色
+      this.ctx.lineWidth = 2;
+
+      // 计算箭头方向
+      const t = 0.97;
+      const 切线X =
+        3 * Math.pow(1 - t, 2) * (控制点1X - 起点X) +
+        6 * (1 - t) * t * (控制点2X - 控制点1X) +
+        3 * Math.pow(t, 2) * (终点X - 控制点2X);
+      const 切线Y =
+        3 * Math.pow(1 - t, 2) * (控制点1Y - 起点Y) +
+        6 * (1 - t) * t * (控制点2Y - 控制点1Y) +
+        3 * Math.pow(t, 2) * (终点Y - 控制点2Y);
+
+      const 箭头长度 = 10;
+      const 箭头角度 = Math.atan2(切线Y, 切线X);
+
+      // 绘制箭头
+      this.ctx.beginPath();
+      this.ctx.moveTo(终点X, 终点Y);
+      this.ctx.lineTo(
+        终点X - 箭头长度 * Math.cos(箭头角度 - Math.PI / 6),
+        终点Y - 箭头长度 * Math.sin(箭头角度 - Math.PI / 6)
+      );
+      this.ctx.moveTo(终点X, 终点Y);
+      this.ctx.lineTo(
+        终点X - 箭头长度 * Math.cos(箭头角度 + Math.PI / 6),
+        终点Y - 箭头长度 * Math.sin(箭头角度 + Math.PI / 6)
+      );
+      this.ctx.stroke();
+
+      // 恢复原来的连线颜色
+      this.ctx.strokeStyle = this.颜色.连线;
+    }
+
+    // 如果是双向链表，为前面的连线添加起点箭头
+    if (this.链表类型 === "双向链表" && this.节点数组.length > 0) {
+      const 最后一个节点 = this.节点数组[this.节点数组.length - 1];
+      if (最后一个节点) {
+        // 计算连线起点和终点（与上面的连线计算保持一致）
+        const 圆点半径 = 6;
+        const 连线偏移 = 8;
+        const 起点X = 最后一个节点.x + this.计算节点宽度(最后一个节点) + 圆点半径 + 连线偏移;
+        const 起点Y = 最后一个节点.y + 节点高度 / 2;
+        const 终点X = 预览节点X - 圆点半径 - 连线偏移;
+        const 终点Y = 预览节点Y + 节点高度 / 2;
+
+        // 计算水平位置差
+        const 水平位置差 = 终点X - 起点X;
+        const 垂直位置差绝对值 = Math.abs(终点Y - 起点Y);
+
+        // 根据水平位置差动态调整控制点
+        let 控制点1X, 控制点2X;
+        const 调整系数 = 水平位置差 < 50 ? Math.min(20, 6 - 水平位置差 / 50) : Math.max(5, 水平位置差 / 50);
+        let 基础偏移 = Math.min(25, Math.abs(水平位置差 * 4) / 150 + 10);
+        基础偏移 *= Math.min(1, 垂直位置差绝对值 / 250);
+        控制点1X = 起点X + 基础偏移 * 调整系数;
+        控制点2X = 终点X - 基础偏移 * 调整系数;
+
+        const 控制点1Y = 起点Y;
+        const 控制点2Y = 终点Y;
+
+        // 绘制起点箭头（从最后一个节点指向预览节点）
+        this.ctx.strokeStyle = `rgba(57, 153, 221, 0.2)`; // 20%不透明度的next箭头颜色
+        this.ctx.lineWidth = 2;
+
+        // 计算起点箭头方向（正向箭头）
+        const t = 0.97;
+        const 切线X =
+          3 * Math.pow(1 - t, 2) * (控制点1X - 起点X) +
+          6 * (1 - t) * t * (控制点2X - 控制点1X) +
+          3 * Math.pow(t, 2) * (终点X - 控制点2X);
+        const 切线Y =
+          3 * Math.pow(1 - t, 2) * (控制点1Y - 起点Y) +
+          6 * (1 - t) * t * (控制点2Y - 控制点1Y) +
+          3 * Math.pow(t, 2) * (终点Y - 控制点2Y);
+
+        const 箭头长度 = 10;
+        const 箭头角度 = Math.atan2(切线Y, 切线X);
+
+        // 绘制起点箭头
+        this.ctx.beginPath();
+        this.ctx.moveTo(起点X, 起点Y);
+        this.ctx.lineTo(
+          起点X + 箭头长度 * Math.cos(箭头角度 - Math.PI / 6),
+          起点Y + 箭头长度 * Math.sin(箭头角度 - Math.PI / 6)
+        );
+        this.ctx.moveTo(起点X, 起点Y);
+        this.ctx.lineTo(
+          起点X + 箭头长度 * Math.cos(箭头角度 + Math.PI / 6),
+          起点Y + 箭头长度 * Math.sin(箭头角度 + Math.PI / 6)
+        );
+        this.ctx.stroke();
+
+        // 恢复原来的连线颜色
+        this.ctx.strokeStyle = this.颜色.连线;
       }
     }
   }

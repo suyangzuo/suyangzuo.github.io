@@ -50,7 +50,7 @@ class 二叉树可视化 {
 
     // 连线信息列表，用于存储所有连线的圆点绘制信息
     this.连线信息列表 = [];
-    
+
     // 显示节点信息控制
     this.显示节点信息 = false;
 
@@ -177,7 +177,7 @@ class 二叉树可视化 {
     document.querySelector(".重置按钮").addEventListener("click", () => {
       this.重置();
     });
-    
+
     // 为显示节点信息复选框添加功能
     document.querySelector("#显示节点信息复选框").addEventListener("change", (e) => {
       this.显示节点信息 = e.target.checked;
@@ -982,6 +982,11 @@ class 二叉树可视化 {
     // 清空连线信息列表
     this.连线信息列表 = [];
 
+    // 绘制预览节点（无论是否有根节点都要绘制）
+    if (this.预览信息) {
+      this.绘制预览节点();
+    }
+
     // 如果有根节点，绘制树结构
     if (this.根节点) {
       // 绘制连线
@@ -992,11 +997,6 @@ class 二叉树可视化 {
 
       // 在所有节点绘制完成后，绘制连线圆点
       this.绘制所有连线圆点();
-    }
-
-    // 绘制预览节点（无论是否有根节点都要绘制）
-    if (this.预览信息) {
-      this.绘制预览节点();
     }
   }
 
@@ -1050,9 +1050,9 @@ class 二叉树可视化 {
     const 垂直距离绝对值 = Math.abs(垂直距离);
 
     const 控制点1X = 起点X;
-    const 控制点1Y = 起点Y + Math.min(垂直距离绝对值 * 0.5, 250);
+    const 控制点1Y = 起点Y + Math.min(Math.max(垂直距离绝对值 * 0.5, 35), 250);
     const 控制点2X = 终点X;
-    const 控制点2Y = 终点Y - Math.min(垂直距离绝对值 * 0.5, 250);
+    const 控制点2Y = 终点Y - Math.min(Math.max(垂直距离绝对值 * 0.5, 35), 250);
 
     this.ctx.bezierCurveTo(控制点1X, 控制点1Y, 控制点2X, 控制点2Y, 终点X, 终点Y);
     this.ctx.lineWidth = 连线在选中路径上 ? 3 : 2;
@@ -1232,22 +1232,30 @@ class 二叉树可视化 {
       this.ctx.fillStyle = "lightblue";
 
       // 绘制"D:深度"（左对齐）
+      const 英文冒号文本宽度 = this.ctx.measureText(":").width;
+      const 单数字文本宽度 = this.ctx.measureText("1").width;
+      const 深度文本水平偏移 = 14;
+      const 深度文本垂直偏移 = 35;
       this.ctx.textAlign = "left";
-      this.ctx.fillText("深度", 文本X - 14, y - 35);
+      this.ctx.fillText("深度", 文本X - 深度文本水平偏移, y - 深度文本垂直偏移);
       this.ctx.fillStyle = "gray";
-      this.ctx.fillText(":", 文本X + this.ctx.measureText("深度").width - 13, y - 35);
+      this.ctx.fillText(":", 文本X + this.ctx.measureText("深度").width - (深度文本水平偏移 - 1), y - 深度文本垂直偏移);
       this.ctx.fillStyle = "yellowgreen";
-      this.ctx.fillText(节点深度.toString(), 文本X + this.ctx.measureText("深度:").width - 11, y - 35);
+      this.ctx.fillText(
+        节点深度.toString(),
+        文本X + this.ctx.measureText("深度:").width - (深度文本水平偏移 - 3),
+        y - 深度文本垂直偏移
+      );
 
       // 绘制"H:高度"（右对齐）
       this.ctx.fillStyle = "lightblue";
       this.ctx.textAlign = "right";
-      this.ctx.fillText("高度", x + width - this.ctx.measureText("高度:").width + 10, y - 35);
+      this.ctx.fillText("高度", x + width - 英文冒号文本宽度 - 单数字文本宽度 - 6, y - 深度文本垂直偏移);
       this.ctx.fillStyle = "gray";
-      this.ctx.fillText(":", x + width - this.ctx.measureText("高度").width + 10, y - 35);
+      this.ctx.fillText(":", x + width - 单数字文本宽度 - 5, y - 深度文本垂直偏移);
       this.ctx.textAlign = "left";
       this.ctx.fillStyle = "yellowgreen";
-      this.ctx.fillText(节点高度.toString(), x + width - 16, y - 35);
+      this.ctx.fillText(节点高度.toString(), x + width - 单数字文本宽度 - 3, y - 深度文本垂直偏移);
 
       // 绘制内存地址（在高度深度信息下方）
       this.ctx.fillStyle = "lightskyblue";
@@ -1421,10 +1429,14 @@ class 二叉树可视化 {
     this.ctx.beginPath();
     this.ctx.moveTo(起点X, 起点Y);
 
+    const 曲线回正距离 = 50;
+    const 垂直距离 = 终点Y - 起点Y - 曲线回正距离;
+    const 垂直距离绝对值 = Math.abs(垂直距离);
+
     const 控制点1X = 起点X;
-    const 控制点1Y = 起点Y + (终点Y - 起点Y) * 0.3;
+    const 控制点1Y = 起点Y + Math.min(Math.max(垂直距离绝对值 * 0.5, 35), 250);
     const 控制点2X = 终点X;
-    const 控制点2Y = 终点Y - (终点Y - 起点Y) * 0.3;
+    const 控制点2Y = 终点Y - Math.min(Math.max(垂直距离绝对值 * 0.5, 35), 250);
 
     this.ctx.bezierCurveTo(控制点1X, 控制点1Y, 控制点2X, 控制点2Y, 终点X, 终点Y);
     this.ctx.stroke();

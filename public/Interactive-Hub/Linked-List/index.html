@@ -31,7 +31,35 @@
       <figure class="展示区">
         <canvas></canvas>
       </figure>
-      <div class="控制区"></div>
+      <div class="控制区">
+        <div class="控制面板">
+          <div class="控制组">
+            <label>链表类型：</label>
+            <div class="radio组">
+              <label class="radio标签">
+                <input type="radio" name="链表类型" value="单向链表" checked />
+                <span class="radio文本">单向链表</span>
+              </label>
+              <label class="radio标签">
+                <input type="radio" name="链表类型" value="双向链表" />
+                <span class="radio文本">双向链表</span>
+              </label>
+            </div>
+          </div>
+          <div class="控制组">
+            <label class="checkbox标签">
+              <input type="checkbox" id="添加节点复选框" checked />
+              <span class="checkbox自定义"></span>
+              <span class="checkbox文本">添加节点</span>
+            </label>
+            <label class="checkbox标签">
+              <input type="checkbox" id="环形复选框" />
+              <span class="checkbox自定义"></span>
+              <span class="checkbox文本">环形</span>
+            </label>
+          </div>
+        </div>
+      </div>
     </section>
   </body>
 </html>
