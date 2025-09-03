@@ -1801,6 +1801,10 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   font-size: 0.95em;
 }
 
+.专题内名词.等宽 {
+  font-family: "Google Sans Code", "Fira Sans", "Noto Sans SC", sans-serif;
+}
+
 .行内代码 {
   font-family: "JetBrains Mono", "Segoe UI Emoji", "Noto Sans SC", monospace;
   color: var(--行内代码颜色);

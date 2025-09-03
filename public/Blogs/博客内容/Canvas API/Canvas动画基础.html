@@ -485,7 +485,7 @@
           this.canvas = document.getElementById(canvasId);
           this.ctx = this.canvas.getContext("2d");
           this.dpr = window.devicePixelRatio || 1;
-          
+
           // 设置Canvas尺寸
           this.canvas.width = this.canvas.offsetWidth * this.dpr;
           this.canvas.height = this.canvas.offsetHeight * this.dpr;
@@ -528,7 +528,7 @@
         // 动画循环
         animate(currentTimestamp) {
           if (!this.isRunning) return;
-          
+
           // 清除画布
           this.ctx.clearRect(0, 0, this.canvas.offsetWidth, this.canvas.offsetHeight);
 
@@ -758,7 +758,7 @@
 
       // 创建动画实例
       const deltaTimeAnimation = new DeltaTimeAnimation("canvas-deltaTime");
-      
+
       // 为交叉观察器提供全局访问
       window.deltaTimeAnimation = deltaTimeAnimation;
     </script>
@@ -820,7 +820,7 @@
           this.canvas = document.getElementById(canvasId);
           this.ctx = this.canvas.getContext("2d");
           this.dpr = window.devicePixelRatio || 1;
-          
+
           // 设置Canvas尺寸
           this.canvas.width = this.canvas.offsetWidth * this.dpr;
           this.canvas.height = this.canvas.offsetHeight * this.dpr;
@@ -856,7 +856,7 @@
         // 动画循环
         animate(currentTime) {
           if (!this.isRunning) return;
-          
+
           // 计算时间差（毫秒转换为秒）
           const deltaTime = (currentTime - this.lastTime) / 1000;
           this.lastTime = currentTime;
@@ -888,7 +888,7 @@
 
       // 创建动画实例
       const moveAnimation = new MoveAnimation("canvas-move");
-      
+
       // 为交叉观察器提供全局访问
       window.moveAnimation = moveAnimation;
     </script>

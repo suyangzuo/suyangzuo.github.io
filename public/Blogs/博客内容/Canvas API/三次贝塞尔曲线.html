@@ -1797,6 +1797,24 @@
             label: "显示t",
           };
 
+          this.显示采样点复选框 = {
+            x: 20,
+            y: 170,
+            size: 16,
+            checked: true,
+            hovered: false,
+            label: "显示采样点",
+          };
+
+          this.显示有效采样范围复选框 = {
+            x: 20,
+            y: 200,
+            size: 16,
+            checked: false,
+            hovered: false,
+            label: "显示有效采样范围",
+          };
+
           this.三次贝塞尔曲线坐标 = {
             P0: {
               x: 100,
@@ -1912,23 +1930,33 @@
             }
             const 点 = this.获取三次贝塞尔曲线采样点坐标(t, this.三次贝塞尔曲线坐标);
 
-            // 绘制采样点
-            this.ctx.fillStyle = "#FF6B6B";
-            this.ctx.beginPath();
-            this.ctx.arc(点.x, 点.y, 4, 0, Math.PI * 2);
-            this.ctx.fill();
+            // 绘制采样区域（根据复选框状态决定是否显示）
+            if (this.显示有效采样范围复选框.checked) {
+              this.ctx.fillStyle = "rgba(255, 107, 107, 0.2)";
+              this.ctx.beginPath();
+              this.ctx.arc(点.x, 点.y, this.容差, 0, Math.PI * 2);
+              this.ctx.fill();
+            }
 
-            // 绘制采样点边框
-            this.ctx.strokeStyle = "#fff";
-            this.ctx.lineWidth = 1;
-            this.ctx.stroke();
+            // 绘制采样点（根据复选框状态决定是否显示）
+            if (this.显示采样点复选框.checked) {
+              this.ctx.fillStyle = "#FF6B6B";
+              this.ctx.beginPath();
+              this.ctx.arc(点.x, 点.y, 4, 0, Math.PI * 2);
+              this.ctx.fill();
+
+              // 绘制采样点边框
+              this.ctx.strokeStyle = "#fff";
+              this.ctx.lineWidth = 1;
+              this.ctx.stroke();
+            }
 
             // 绘制t值标签（根据复选框状态决定是否显示）
             if (this.显示t值复选框.checked) {
               this.ctx.fillStyle = "#fff";
               this.ctx.font = "12px Google Sans Code, monospace";
               this.ctx.textAlign = "center";
-              this.ctx.fillText(t.toFixed(2), 点.x, 点.y - 10);
+              this.ctx.fillText(this.格式化t值(t), 点.x, 点.y - 10);
             }
           }
 
@@ -1943,6 +1971,23 @@
             x: mt ** 3 * P0.x + 3 * mt ** 2 * t * P1.x + 3 * mt * t ** 2 * P2.x + t ** 3 * P3.x,
             y: mt ** 3 * P0.y + 3 * mt ** 2 * t * P1.y + 3 * mt * t ** 2 * P2.y + t ** 3 * P3.y,
           };
+        }
+
+        格式化t值(t) {
+          // 如果t是整数，直接返回整数形式
+          if (Number.isInteger(t)) {
+            return t.toString();
+          }
+          
+          // 如果是小数，去掉末尾的0
+          const 格式化后 = t.toFixed(2);
+          if (格式化后.endsWith('.00')) {
+            return 格式化后.slice(0, -3); // 去掉.00
+          } else if (格式化后.endsWith('0')) {
+            return 格式化后.slice(0, -1); // 去掉末尾的0
+          }
+          
+          return 格式化后;
         }
 
         添加事件监听器() {
@@ -1962,8 +2007,14 @@
           } else if (this.鼠标悬停在滑块thumb内(mouseX, mouseY, this.容差滑块)) {
             this.容差滑块.isDragging = true;
             this.更新容差滑块值(mouseX);
-          } else if (this.鼠标悬停在复选框内(mouseX, mouseY)) {
+          } else if (this.鼠标悬停在复选框内(mouseX, mouseY, this.显示t值复选框)) {
             this.显示t值复选框.checked = !this.显示t值复选框.checked;
+            this.绘制全部();
+          } else if (this.鼠标悬停在复选框内(mouseX, mouseY, this.显示采样点复选框)) {
+            this.显示采样点复选框.checked = !this.显示采样点复选框.checked;
+            this.绘制全部();
+          } else if (this.鼠标悬停在复选框内(mouseX, mouseY, this.显示有效采样范围复选框)) {
+            this.显示有效采样范围复选框.checked = !this.显示有效采样范围复选框.checked;
             this.绘制全部();
           }
         }
@@ -1981,10 +2032,12 @@
           this.容差滑块.thumbHovered = this.鼠标悬停在滑块thumb内(mouseX, mouseY, this.容差滑块);
 
           // 检查复选框悬停
-          this.显示t值复选框.hovered = this.鼠标悬停在复选框内(mouseX, mouseY);
+          this.显示t值复选框.hovered = this.鼠标悬停在复选框内(mouseX, mouseY, this.显示t值复选框);
+          this.显示采样点复选框.hovered = this.鼠标悬停在复选框内(mouseX, mouseY, this.显示采样点复选框);
+          this.显示有效采样范围复选框.hovered = this.鼠标悬停在复选框内(mouseX, mouseY, this.显示有效采样范围复选框);
 
           // 根据悬停状态改变鼠标样式
-          if (this.显示t值复选框.hovered) {
+          if (this.显示t值复选框.hovered || this.显示采样点复选框.hovered || this.显示有效采样范围复选框.hovered) {
             this.canvas.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
           } else if (this.采样点滑块.thumbHovered || this.容差滑块.thumbHovered) {
             this.canvas.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
@@ -2049,9 +2102,9 @@
           this.容差 = this.容差滑块.value;
         }
 
-        鼠标悬停在复选框内(x, y) {
+        鼠标悬停在复选框内(x, y, 复选框) {
           // 计算复选框文本的结束位置
-          const 复选框文本开始x = this.显示t值复选框.x + this.显示t值复选框.size + 10;
+          const 复选框文本开始x = 复选框.x + 复选框.size + 10;
 
           // 保存当前字体状态
           const 当前字体 = this.ctx.font;
@@ -2059,20 +2112,30 @@
           // 设置字体并测量文字宽度
           this.ctx.font = "14px 'Noto Sans SC', sans-serif";
           const 显示文字宽度 = this.ctx.measureText("显示").width;
-          this.ctx.font = "14px 'Google Sans Code', monospace";
-          const t文字宽度 = this.ctx.measureText("t").width;
+          
+          let 后续文字宽度 = 0;
+          if (复选框.label === "显示t") {
+            this.ctx.font = "14px 'Google Sans Code', monospace";
+            后续文字宽度 = this.ctx.measureText("t").width;
+          } else if (复选框.label === "显示采样点") {
+            this.ctx.font = "14px 'Noto Sans SC', sans-serif";
+            后续文字宽度 = this.ctx.measureText("采样点").width;
+          } else if (复选框.label === "显示有效采样范围") {
+            this.ctx.font = "14px 'Noto Sans SC', sans-serif";
+            后续文字宽度 = this.ctx.measureText("有效采样范围").width;
+          }
 
           // 恢复字体状态
           this.ctx.font = 当前字体;
 
-          const 复选框文本结束x = 复选框文本开始x + 显示文字宽度 + 3 + t文字宽度;
+          const 复选框文本结束x = 复选框文本开始x + 显示文字宽度 + 3 + 后续文字宽度;
 
           // 检查鼠标是否在复选框、文本或空隙范围内
           return (
-            x >= this.显示t值复选框.x &&
+            x >= 复选框.x &&
             x <= 复选框文本结束x &&
-            y >= this.显示t值复选框.y &&
-            y <= this.显示t值复选框.y + this.显示t值复选框.size
+            y >= 复选框.y &&
+            y <= 复选框.y + 复选框.size
           );
         }
 
@@ -2144,8 +2207,13 @@
         }
 
         绘制复选框() {
-          const 复选框 = this.显示t值复选框;
+          // 绘制所有复选框
+          this.绘制单个复选框(this.显示t值复选框);
+          this.绘制单个复选框(this.显示采样点复选框);
+          this.绘制单个复选框(this.显示有效采样范围复选框);
+        }
 
+        绘制单个复选框(复选框) {
           // 先清除复选框区域，避免残留内容
           this.ctx.clearRect(复选框.x, 复选框.y, 复选框.size, 复选框.size);
 
@@ -2172,19 +2240,28 @@
             this.ctx.fillRect(复选框.x, 复选框.y, 复选框.size, 复选框.size);
           }
 
-          // 绘制标签文字 - 分开绘制"显示"和"t"
-          this.ctx.fillStyle = "#fff";
+          // 绘制标签文字 - 分开绘制"显示"和后面的文字
+          this.ctx.fillStyle = "#aaa";
           this.ctx.font = "14px 'Noto Sans SC', sans-serif";
           this.ctx.textAlign = "left";
 
           // 先绘制"显示"
           this.ctx.fillText("显示", 复选框.x + 复选框.size + 10, 复选框.y + 复选框.size / 2 + 5);
 
-          // 计算"显示"的宽度，然后绘制"t"
+          // 计算"显示"的宽度，然后绘制后面的文字
           const 显示文字宽度 = this.ctx.measureText("显示").width;
           this.ctx.fillStyle = "lightblue";
-          this.ctx.font = "14px 'Google Sans Code', monospace";
-          this.ctx.fillText("t", 复选框.x + 复选框.size + 10 + 显示文字宽度 + 3, 复选框.y + 复选框.size / 2 + 5);
+          // 根据复选框类型设置不同的颜色和字体
+          if (复选框.label === "显示t") {
+            this.ctx.font = "14px 'Google Sans Code', monospace";
+            this.ctx.fillText("t", 复选框.x + 复选框.size + 10 + 显示文字宽度 + 3, 复选框.y + 复选框.size / 2 + 5);
+          } else if (复选框.label === "显示采样点") {
+            this.ctx.font = "14px 'Noto Sans SC', sans-serif";
+            this.ctx.fillText("采样点", 复选框.x + 复选框.size + 10 + 显示文字宽度 + 3, 复选框.y + 复选框.size / 2 + 5);
+          } else if (复选框.label === "显示有效采样范围") {
+            this.ctx.font = "14px 'Noto Sans SC', sans-serif";
+            this.ctx.fillText("有效采样范围", 复选框.x + 复选框.size + 10 + 显示文字宽度 + 3, 复选框.y + 复选框.size / 2 + 5);
+          }
         }
       }
 
@@ -2908,7 +2985,13 @@
             this.ctx.textAlign = "center";
 
             let currentX = point.x;
-            const labelY = point.y - 15;
+            // 为特定标签设置不同的Y位置
+            let labelY;
+            if (label === "2-P₁" || label === "2-P₂" || label === "3-P₁" || label === "3-P₂" || label === "1-P₀&4-P₃") {
+              labelY = point.y + 25; // 显示在点的下方
+            } else {
+              labelY = point.y - 15; // 其他标签显示在点的上方
+            }
 
             // 解析标签并分别绘制
             if (label.includes("&")) {

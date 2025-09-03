@@ -10,7 +10,12 @@
       </p>
       <p class="日期">
         <span class="日期前缀 前缀">日期：</span>
-        <span class="日期文本"><span class="日期文本-数字 日期文本-年">2025</span>年<span class="日期文本-数字 日期文本-月">7</span>月<span class="日期文本-数字 日期文本-日">13</span>日</span>
+        <span class="日期文本"
+          ><span class="日期文本-数字 日期文本-年">2025</span>年<span class="日期文本-数字 日期文本-月">7</span>月<span
+            class="日期文本-数字 日期文本-日"
+            >13</span
+          >日</span
+        >
       </p>
     </section>
     <section class="简介信息图像">
@@ -754,20 +759,151 @@
       </code>
     </pre>
     <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
-      <canvas id="canvas-4" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+      <canvas id="canvas-椭圆" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
     </figure>
     <script>
-      const canvas_4 = document.getElementById("canvas-4");
-      const ctx_4 = canvas_4.getContext("2d");
-      const dpr_4 = window.devicePixelRatio || 1;
-      canvas_4.width = canvas_4.offsetWidth * dpr_4;
-      canvas_4.height = canvas_4.offsetHeight * dpr_4;
-      ctx_4.scale(dpr_4, dpr_4);
-      ctx_4.ellipse(375, 200, 150, 75, Math.PI / 4, 0, 2 * Math.PI);
-      ctx_4.fillStyle = "darkgreen";
-      ctx_4.strokeStyle = "gold";
-      ctx_4.fill();
-      ctx_4.stroke();
+      class EllipseCanvas {
+        constructor(canvasId) {
+          this.canvas = document.getElementById(canvasId);
+          this.ctx = this.canvas.getContext("2d");
+          this.dpr = window.devicePixelRatio || 1;
+          this.rotationAngle = 0; // 默认旋转角度为0
+
+          // 滑块相关属性
+          this.slider = {
+            x: 0,
+            y: 0,
+            width: 150,
+            height: 8,
+            thumbRadius: 10,
+            isDragging: false,
+            minValue: 0,
+            maxValue: 2 * Math.PI,
+            value: 0, // 默认值为0
+          };
+
+          this.init();
+          this.setupEventListeners();
+          this.draw();
+        }
+
+        init() {
+          this.canvas.width = this.canvas.offsetWidth * this.dpr;
+          this.canvas.height = this.canvas.offsetHeight * this.dpr;
+          this.ctx.scale(this.dpr, this.dpr);
+
+          // 设置滑块位置（右上角）
+          this.slider.x = this.canvas.offsetWidth - this.slider.width - 20;
+          this.slider.y = 40;
+        }
+
+        setupEventListeners() {
+          this.canvas.addEventListener("mousedown", (e) => this.handleMouseDown(e));
+          this.canvas.addEventListener("mousemove", (e) => this.handleMouseMove(e));
+          this.canvas.addEventListener("mouseup", () => this.handleMouseUp());
+          this.canvas.addEventListener("mouseleave", () => this.handleMouseUp());
+        }
+
+        handleMouseDown(e) {
+          const rect = this.canvas.getBoundingClientRect();
+          const x = (e.clientX - rect.left) * (this.canvas.offsetWidth / rect.width);
+          const y = (e.clientY - rect.top) * (this.canvas.offsetHeight / rect.height);
+
+          const thumbX = this.slider.x + (this.slider.value / this.slider.maxValue) * this.slider.width;
+          const thumbY = this.slider.y + this.slider.height / 2;
+
+          const distance = Math.sqrt((x - thumbX) ** 2 + (y - thumbY) ** 2);
+
+          if (distance <= this.slider.thumbRadius) {
+            this.slider.isDragging = true;
+          }
+        }
+
+        handleMouseMove(e) {
+          if (!this.slider.isDragging) return;
+
+          const rect = this.canvas.getBoundingClientRect();
+          const x = (e.clientX - rect.left) * (this.canvas.offsetWidth / rect.width);
+
+          // 计算滑块值
+          const relativeX = Math.max(0, Math.min(this.slider.width, x - this.slider.x));
+          this.slider.value = (relativeX / this.slider.width) * this.slider.maxValue;
+          this.rotationAngle = this.slider.value;
+
+          this.draw();
+        }
+
+        handleMouseUp() {
+          this.slider.isDragging = false;
+        }
+
+        drawSlider() {
+          // 绘制滑块轨道（未滑过部分）
+          this.ctx.fillStyle = "#444";
+          this.ctx.fillRect(this.slider.x, this.slider.y, this.slider.width, this.slider.height);
+
+          // 绘制已滑过部分
+          const progressWidth = (this.slider.value / this.slider.maxValue) * this.slider.width;
+          this.ctx.fillStyle = "#669919";
+          this.ctx.fillRect(this.slider.x, this.slider.y, progressWidth, this.slider.height);
+
+          // 绘制滑块拇指
+          const thumbX = this.slider.x + (this.slider.value / this.slider.maxValue) * this.slider.width;
+          const thumbY = this.slider.y + this.slider.height / 2;
+
+          this.ctx.fillStyle = "#669919";
+          this.ctx.beginPath();
+          this.ctx.arc(thumbX, thumbY, this.slider.thumbRadius, 0, 2 * Math.PI);
+          this.ctx.fill();
+
+          // 绘制当前值标签（跟随thumb移动）
+          this.ctx.fillStyle = "lightskyblue";
+          this.ctx.font = "14px 'Google Sans Code', sans-serif";
+          this.ctx.textAlign = "center";
+
+          let valueText = "";
+          if (Math.abs(this.slider.value - 0) < 0.01) {
+            valueText = "0";
+          } else if (Math.abs(this.slider.value - Math.PI / 2) < 0.01) {
+            valueText = "0.5π";
+          } else if (Math.abs(this.slider.value - Math.PI) < 0.01) {
+            valueText = "π";
+          } else if (Math.abs(this.slider.value - (3 * Math.PI) / 2) < 0.01) {
+            valueText = "1.5π";
+          } else if (Math.abs(this.slider.value - 2 * Math.PI) < 0.01) {
+            valueText = "2π";
+          } else {
+            valueText = this.slider.value.toFixed(2);
+          }
+
+          this.ctx.fillText(valueText, thumbX, this.slider.y - 12);
+
+          // 绘制标签标题
+          this.ctx.fillStyle = "#aaa";
+          this.ctx.font = "14px 'Google Sans Code', sans-serif";
+          this.ctx.textAlign = "left";
+          this.ctx.fillText("旋转弧度", this.slider.x, this.slider.y + this.slider.height + 25);
+        }
+
+        draw() {
+          // 清除画布
+          this.ctx.clearRect(0, 0, this.canvas.offsetWidth, this.canvas.offsetHeight);
+
+          // 绘制椭圆
+          this.ctx.beginPath();
+          this.ctx.ellipse(375, 200, 150, 75, this.rotationAngle, 0, 2 * Math.PI);
+          this.ctx.fillStyle = "darkgreen";
+          this.ctx.strokeStyle = "gold";
+          this.ctx.fill();
+          this.ctx.stroke();
+
+          // 绘制滑块
+          this.drawSlider();
+        }
+      }
+
+      // 初始化椭圆canvas
+      new EllipseCanvas("canvas-椭圆");
     </script>
 
     <h3 class="分区标题 分区3级标题">绘制<span class="行内专业名词">正多边形</span></h3>
