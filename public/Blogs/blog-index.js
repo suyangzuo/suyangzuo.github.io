@@ -71,27 +71,25 @@ let 前一专题 = null;
 从网址获取技术栈和专题();
 
 设置侧边栏();
-设置内容()
-  .then((发生了回退) => {
-    生成章节区();
-    生成章节();
-    初始化章节观察器();
-    更新网址(技术栈名称, 专题名称);
-  });
+设置内容().then((发生了回退) => {
+  生成章节区();
+  生成章节();
+  初始化章节观察器();
+  更新网址(技术栈名称, 专题名称);
+});
 
 window.addEventListener("popstate", () => {
   从网址获取技术栈和专题();
   设置侧边栏();
-  设置内容()
-    .then((发生了回退) => {
-      生成章节区();
-      生成章节();
-      初始化章节观察器();
-      当前专题已被收藏时刷新收藏按钮样式();
-      if (发生了回退) {
-        更新网址(技术栈名称, 专题名称);
-      }
-    });
+  设置内容().then((发生了回退) => {
+    生成章节区();
+    生成章节();
+    初始化章节观察器();
+    当前专题已被收藏时刷新收藏按钮样式();
+    if (发生了回退) {
+      更新网址(技术栈名称, 专题名称);
+    }
+  });
 });
 
 function 更新网址(技术栈, 专题) {
@@ -120,13 +118,12 @@ function 从网址获取技术栈和专题() {
   技术栈.addEventListener("click", 点选技术栈);
   技术栈.addEventListener("click", 设置侧边栏);
   技术栈.addEventListener("click", () => {
-    设置内容()
-      .then((发生了回退) => {
-        生成章节区();
-        生成章节();
-        初始化章节观察器();
-        更新网址(技术栈名称, 专题名称);
-      });
+    设置内容().then((发生了回退) => {
+      生成章节区();
+      生成章节();
+      初始化章节观察器();
+      更新网址(技术栈名称, 专题名称);
+    });
   });
   技术栈.addEventListener("click", () => {
     if (技术栈对话框.open) {
@@ -289,7 +286,7 @@ async function 设置内容() {
       localStorage.setItem("专题", 专题名称);
       需要更新侧边栏 = true;
       发生了回退 = true;
-      
+
       const 首页响应 = await fetch(专题文件路径);
       if (!首页响应.ok) {
         throw new Error(`无法加载专题文件: ${专题文件路径}`);
@@ -300,16 +297,16 @@ async function 设置内容() {
       const content = await response.text();
       专题内容区.innerHTML = content;
     }
-    
-      const parser = new DOMParser();
+
+    const parser = new DOMParser();
     const document = parser.parseFromString(专题内容区.innerHTML, "text/html");
-      const 脚本组 = document.body.querySelectorAll("script");
-      脚本组?.forEach((脚本) => {
-        脚本.type = "text/javascript";
-        const 脚本代码 = 脚本.textContent.trim();
-        //Function(`'use strict'; return ${脚本代码}`)();
-        new Function(脚本代码)();
-      });
+    const 脚本组 = document.body.querySelectorAll("script");
+    脚本组?.forEach((脚本) => {
+      脚本.type = "text/javascript";
+      const 脚本代码 = 脚本.textContent.trim();
+      //Function(`'use strict'; return ${脚本代码}`)();
+      new Function(脚本代码)();
+    });
   } catch (error) {
     console.error("加载专题内容时出错:", error);
     // 如果连首页都无法加载，显示错误信息
@@ -329,12 +326,12 @@ async function 设置内容() {
   特殊元素样式补充();
   刷新第三方库();
   插入转载提醒内容();
-  
+
   // 如果回退到了首页，需要更新侧边栏选中状态
   if (需要更新侧边栏) {
     设置侧边栏();
   }
-  
+
   return 发生了回退;
 }
 
@@ -379,13 +376,12 @@ function 修改专题样式(event) {
   }
   localStorage.setItem("专题索引记录", JSON.stringify(专题索引记录));
 
-  设置内容()
-    .then((发生了回退) => {
-      生成章节区();
-      生成章节();
-      初始化章节观察器();
-      更新网址(技术栈名称, 专题名称);
-    });
+  设置内容().then((发生了回退) => {
+    生成章节区();
+    生成章节();
+    初始化章节观察器();
+    更新网址(技术栈名称, 专题名称);
+  });
 }
 
 技术栈选择器.addEventListener("click", 显示技术栈内容);
@@ -564,7 +560,7 @@ function 特殊元素样式补充() {
     下属3级标题组.forEach((下属3级标题, 下属索引) => {
       const 下属序号 = document.createElement("span");
       下属序号.className = "标题序号-3级";
-      下属序号.textContent = `${索引 + 1}-${下属索引 + 1}`;
+      下属序号.innerHTML = `${索引 + 1}<span class="次要">-</span>${下属索引 + 1}`;
       下属3级标题.prepend(下属序号);
     });
   });

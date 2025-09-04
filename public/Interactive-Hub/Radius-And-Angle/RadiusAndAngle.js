@@ -753,13 +753,15 @@ class RadiusAndAngleCanvas {
       当前X += this.ctx.measureText(数值).width;
     }
 
-    // 提取单位部分（只处理角度单位°）
-    const 单位匹配 = 完整文本.match(/([°])/);
-    if (单位匹配) {
-      const 单位 = 单位匹配[1];
-      this.ctx.fillStyle = this.颜色.单位文本;
-      this.ctx.fillText(单位, 当前X, y);
-      当前X += this.ctx.measureText(单位).width;
+    // 提取单位部分（只在角度公式中处理角度单位°）
+    if (标签文本 === "角度") {
+      const 单位匹配 = 完整文本.match(/([°])/);
+      if (单位匹配) {
+        const 单位 = 单位匹配[1];
+        this.ctx.fillStyle = this.颜色.单位文本;
+        this.ctx.fillText(单位, 当前X, y);
+        当前X += this.ctx.measureText(单位).width;
+      }
     }
 
     // 等号前添加较小间距

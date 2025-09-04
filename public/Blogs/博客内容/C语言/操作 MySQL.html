@@ -463,7 +463,7 @@
       >包含了很多语言的默认执行命令，找到 C语言 的：
     </p>
     <pre class="line-numbers">
-      <code class="lang-coderunner">
+      <code class="lang-llvm">
         "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
       </code>
     </pre>
@@ -478,7 +478,7 @@
       >节<span class="行内专业名词">GCC</span>编译的额外参数加进去就好了：
     </p>
     <pre class="line-numbers">
-      <code class="lang-coderunner">
+      <code class="lang-llvm">
         "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt -I 'C:/Program Files/MySQL/MySQL Server 8.0/include' -L './' -l libmysql && $dir$fileNameWithoutExt"
       </code>
     </pre>

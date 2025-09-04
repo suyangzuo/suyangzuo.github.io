@@ -56,9 +56,9 @@ const 知识库 = {
         标题: "Fcitx 输入法",
         作者: "",
         时间: {
-          年: 2025,
-          月: 5,
-          日: 10,
+          年: 0,
+          月: 0,
+          日: 0,
         },
       },
       {
@@ -133,6 +133,20 @@ const 知识库 = {
   },
   包管理器: { 图标: "/Images/Page-Logos/包管理器.png", 笔记: [] },
   Blender: { 图标: "/Images/Page-Logos/3D/Blender.png", 笔记: [] },
+  Kdenlive: {
+    图标: "/Images/SVG/Kdenlive.svg",
+    笔记: [
+      {
+        标题: "快捷键",
+        作者: "",
+        时间: {
+          年: 0,
+          月: 0,
+          日: 0,
+        },
+      },
+    ],
+  },
 };
 
 const 二级目录区 = document.querySelector(".二级目录区");

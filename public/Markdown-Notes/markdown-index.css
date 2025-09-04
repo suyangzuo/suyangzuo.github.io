@@ -438,7 +438,7 @@
 }
 
 .目录:not(.当前目录):hover .目录链接 {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
   background: rgba(255, 255, 255, 0.15);
   border-color: rgba(255, 255, 255, 0.1);
   box-shadow: 0 3px 12px rgba(255, 255, 255, 0.075);
@@ -479,11 +479,15 @@
   object-fit: contain;
 }
 
+.目录.当前目录 .目录标题 {
+  color: var(--文字主色);
+}
+
 .目录标题 {
   flex-grow: 1;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
-  color: var(--文字主色);
+  color: #bbb;
   letter-spacing: 0.5px;
 }
 
