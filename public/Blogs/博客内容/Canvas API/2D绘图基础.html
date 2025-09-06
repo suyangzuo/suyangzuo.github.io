@@ -115,6 +115,9 @@
     </p>
     <pre>
       <code class="lang-javascript">
+        // 先获取canvas元素
+        const canvas = document.getElementById("canvas的id");
+        
         // 获取2D渲染上下文
         // 上下文的英文是"context"，编程中经常简写为"ctx"
         const ctx = canvas.getContext("2d");
@@ -705,33 +708,199 @@
       </code>
     </pre>
     <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
-      <canvas id="canvas-3" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+      <canvas id="canvas-circle" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
     </figure>
     <script>
-      const canvas_3 = document.getElementById("canvas-3");
-      const ctx_3 = canvas_3.getContext("2d");
-      const dpr_3 = window.devicePixelRatio || 1;
-      canvas_3.width = canvas_3.offsetWidth * dpr_3;
-      canvas_3.height = canvas_3.offsetHeight * dpr_3;
-      ctx_3.scale(dpr_3, dpr_3);
-      ctx_3.arc(390, 200, 100, 0, 2 * Math.PI);
-      ctx_3.fillStyle = "darkgreen";
-      ctx_3.strokeStyle = "gold";
-      ctx_3.fill();
-      ctx_3.stroke();
+      class CircleDemo {
+        constructor(canvasId) {
+          this.canvas = document.getElementById(canvasId);
+          this.ctx = this.canvas.getContext("2d");
+          this.dpr = window.devicePixelRatio || 1;
 
-      ctx_3.beginPath();
-      ctx_3.arc(390, 200, 5, 0, 2 * Math.PI);
-      ctx_3.fillStyle = "black";
-      ctx_3.strokeStyle = "white";
-      ctx_3.fill();
-      ctx_3.stroke();
+          // 滑块相关属性
+          this.sliderX = 20;
+          this.sliderY = 40;
+          this.sliderWidth = 200;
+          this.sliderHeight = 6;
+          this.thumbSize = 16;
+          this.endAngle = 2 * Math.PI; // 默认值
+          this.minValue = 0;
+          this.maxValue = 2 * Math.PI;
+          this.step = 0.01;
+          this.isDragging = false;
+          this.isHovered = false;
 
-      ctx_3.font = "16px 'Google Sans Code', 'Consolas', sans-serif";
-      ctx_3.textAlign = "center";
-      ctx_3.textBaseline = "middle";
-      ctx_3.fillStyle = "white";
-      ctx_3.fillText("坐标：(390, 200)", 390, 175);
+          this.initCanvas();
+          this.bindEvents();
+          this.draw();
+        }
+
+        initCanvas() {
+          this.canvas.width = this.canvas.offsetWidth * this.dpr;
+          this.canvas.height = this.canvas.offsetHeight * this.dpr;
+          this.ctx.scale(this.dpr, this.dpr);
+        }
+
+        bindEvents() {
+          this.canvas.addEventListener("mousedown", (e) => this.handleMouseDown(e));
+          this.canvas.addEventListener("mousemove", (e) => this.handleMouseMove(e));
+          this.canvas.addEventListener("mouseup", () => this.handleMouseUp());
+          this.canvas.addEventListener("mouseleave", () => this.handleMouseLeave());
+        }
+
+        handleMouseDown(e) {
+          const rect = this.canvas.getBoundingClientRect();
+          const x = ((e.clientX - rect.left) * (this.canvas.width / rect.width)) / this.dpr;
+          const y = ((e.clientY - rect.top) * (this.canvas.height / rect.height)) / this.dpr;
+
+          const thumbX = this.getThumbPosition();
+          const thumbY = this.sliderY + this.sliderHeight / 2;
+
+          // 检查是否点击在thumb上
+          if (Math.abs(x - thumbX) <= this.thumbSize / 2 && Math.abs(y - thumbY) <= this.thumbSize / 2) {
+            this.isDragging = true;
+          }
+        }
+
+        handleMouseMove(e) {
+          const rect = this.canvas.getBoundingClientRect();
+          const x = ((e.clientX - rect.left) * (this.canvas.width / rect.width)) / this.dpr;
+          const y = ((e.clientY - rect.top) * (this.canvas.height / rect.height)) / this.dpr;
+
+          if (this.isDragging) {
+            // 更新滑块值
+            const newValue = ((x - this.sliderX) / this.sliderWidth) * (this.maxValue - this.minValue) + this.minValue;
+            this.endAngle = Math.max(this.minValue, Math.min(this.maxValue, newValue));
+            this.draw();
+          } else {
+            // 检查悬停状态
+            const thumbX = this.getThumbPosition();
+            const thumbY = this.sliderY + this.sliderHeight / 2;
+            const wasHovered = this.isHovered;
+            this.isHovered = Math.abs(x - thumbX) <= this.thumbSize / 2 && Math.abs(y - thumbY) <= this.thumbSize / 2;
+
+            if (wasHovered !== this.isHovered) {
+              this.draw();
+            }
+          }
+        }
+
+        handleMouseUp() {
+          this.isDragging = false;
+        }
+
+        handleMouseLeave() {
+          this.isDragging = false;
+          if (this.isHovered) {
+            this.isHovered = false;
+            this.draw();
+          }
+        }
+
+        getThumbPosition() {
+          const ratio = (this.endAngle - this.minValue) / (this.maxValue - this.minValue);
+          return this.sliderX + ratio * this.sliderWidth;
+        }
+
+        formatAngle(angle) {
+          const pi = Math.PI;
+          if (Math.abs(angle - pi / 2) < 0.01) return { text: "0.5π", number: "0.5" };
+          if (Math.abs(angle - pi) < 0.01) return { text: "π", number: "1" };
+          if (Math.abs(angle - 1.5 * pi) < 0.01) return { text: "1.5π", number: "1.5" };
+          if (Math.abs(angle - 2 * pi) < 0.01) return { text: "2π", number: "2" };
+          
+          // 格式化普通数字，去掉不必要的尾随零
+          const formatted = parseFloat(angle.toFixed(2)).toString();
+          return { text: formatted, number: formatted };
+        }
+
+        draw() {
+          // 清除画布
+          this.ctx.clearRect(0, 0, this.canvas.width / this.dpr, this.canvas.height / this.dpr);
+
+          // 绘制滑块
+          this.drawSlider();
+
+          // 绘制圆形
+          this.ctx.beginPath();
+          this.ctx.arc(390, 200, 100, 0, this.endAngle);
+          this.ctx.fillStyle = "darkgreen";
+          this.ctx.strokeStyle = "gold";
+          this.ctx.fill();
+          this.ctx.stroke();
+
+          // 绘制中心点
+          this.ctx.beginPath();
+          this.ctx.arc(390, 200, 5, 0, 2 * Math.PI);
+          this.ctx.fillStyle = "black";
+          this.ctx.strokeStyle = "white";
+          this.ctx.fill();
+          this.ctx.stroke();
+
+          // 绘制坐标文字
+          this.ctx.font = "16px 'Google Sans Code', 'Consolas', sans-serif";
+          this.ctx.textAlign = "center";
+          this.ctx.textBaseline = "middle";
+          this.ctx.fillStyle = "white";
+          this.ctx.fillText("坐标：(390, 200)", 390, 175);
+        }
+
+        drawSlider() {
+          this.ctx.save();
+
+          // 绘制滑块轨道背景
+          this.ctx.fillStyle = "#333";
+          this.ctx.fillRect(this.sliderX, this.sliderY, this.sliderWidth, this.sliderHeight);
+
+          // 绘制已滑过的部分
+          const thumbX = this.getThumbPosition();
+          this.ctx.fillStyle = "#4CAF50";
+          this.ctx.fillRect(this.sliderX, this.sliderY, thumbX - this.sliderX, this.sliderHeight);
+
+          // 绘制滑块轨道边框
+          this.ctx.strokeStyle = "#666";
+          this.ctx.lineWidth = 1;
+          this.ctx.strokeRect(this.sliderX, this.sliderY, this.sliderWidth, this.sliderHeight);
+
+          // 绘制thumb
+          const thumbY = this.sliderY + this.sliderHeight / 2;
+          this.ctx.beginPath();
+          this.ctx.arc(thumbX, thumbY, 10, 0, 2 * Math.PI);
+
+          if (this.isHovered || this.isDragging) {
+            this.ctx.fillStyle = "#2C8F30";
+          } else {
+            this.ctx.fillStyle = "#4CAF50";
+          }
+
+          this.ctx.fill();
+
+          // 绘制角度值
+          this.ctx.font = "16px 'Google Sans Code', sans-serif";
+          this.ctx.textAlign = "left";
+          this.ctx.textBaseline = "bottom"; // 明确设置文本基线
+          
+          const angleInfo = this.formatAngle(this.endAngle);
+          const labelText = "结束弧度: ";
+          const numberText = angleInfo.text;
+          
+          // 绘制标签文字（白色）
+          this.ctx.fillStyle = "#aaa";
+          this.ctx.fillText(labelText, this.sliderX, this.sliderY - 10);
+          
+          // 计算数字文字的起始位置
+          const labelWidth = this.ctx.measureText(labelText).width;
+          
+          // 绘制数字（黄色）
+          this.ctx.fillStyle = "#FFD700"; // 金黄色
+          this.ctx.fillText(numberText, this.sliderX + labelWidth, this.sliderY - 10);
+
+          this.ctx.restore();
+        }
+      }
+
+      // 创建实例
+      new CircleDemo("canvas-circle");
     </script>
 
     <h3 class="分区标题 分区3级标题">绘制<span class="行内专业名词">椭圆</span></h3>
@@ -2421,21 +2590,197 @@
       <canvas id="canvas-closePath" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
     </figure>
     <script>
-      const canvas_closePath = document.getElementById("canvas-closePath");
-      const ctx_closePath = canvas_closePath.getContext("2d");
-      const dpr_closePath = window.devicePixelRatio || 1;
-      canvas_closePath.width = canvas_closePath.offsetWidth * dpr_closePath;
-      canvas_closePath.height = canvas_closePath.offsetHeight * dpr_closePath;
-      ctx_closePath.scale(dpr_closePath, dpr_closePath);
-      ctx_closePath.fillStyle = "darkgreen";
-      ctx_closePath.strokeStyle = "gold";
-      ctx_closePath.beginPath();
-      ctx_closePath.moveTo(200, 200);
-      ctx_closePath.lineTo(350, 100);
-      ctx_closePath.lineTo(500, 250);
-      ctx_closePath.lineWidth = 2;
-      ctx_closePath.fill();
-      ctx_closePath.stroke();
+      class ClosePathDemo {
+        constructor(canvasId) {
+          this.canvas = document.getElementById(canvasId);
+          this.ctx = this.canvas.getContext("2d");
+          this.dpr = window.devicePixelRatio || 1;
+          this.isClosePathEnabled = true;
+
+          this.initCanvas();
+          this.createCheckbox();
+          this.draw();
+        }
+
+        initCanvas() {
+          this.canvas.width = this.canvas.offsetWidth * this.dpr;
+          this.canvas.height = this.canvas.offsetHeight * this.dpr;
+          this.ctx.scale(this.dpr, this.dpr);
+        }
+
+        createCheckbox() {
+          // 设置复选框的位置和尺寸
+          this.checkboxX = 10;
+          this.checkboxY = 10;
+          this.checkboxSize = 16;
+          this.checkboxPadding = 8;
+          this.isHovered = false;
+
+          // 绑定鼠标点击事件
+          this.canvas.addEventListener("click", (e) => {
+            const rect = this.canvas.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) * (this.canvas.width / rect.width)) / this.dpr;
+            const y = ((e.clientY - rect.top) * (this.canvas.height / rect.height)) / this.dpr;
+
+            // 检查是否点击在复选框区域
+            const checkboxAreaWidth = this.checkboxSize + this.checkboxPadding * 2 + 60; // 60是文字宽度估算
+            const checkboxAreaHeight = this.checkboxSize + this.checkboxPadding * 2;
+
+            if (
+              x >= this.checkboxX &&
+              x <= this.checkboxX + checkboxAreaWidth &&
+              y >= this.checkboxY &&
+              y <= this.checkboxY + checkboxAreaHeight
+            ) {
+              this.isClosePathEnabled = !this.isClosePathEnabled;
+              this.draw();
+            }
+          });
+
+          // 绑定鼠标移动事件来检测悬停
+          this.canvas.addEventListener("mousemove", (e) => {
+            const rect = this.canvas.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) * (this.canvas.width / rect.width)) / this.dpr;
+            const y = ((e.clientY - rect.top) * (this.canvas.height / rect.height)) / this.dpr;
+
+            // 检查是否悬停在复选框区域
+            const checkboxAreaWidth = this.checkboxSize + this.checkboxPadding * 2 + 60;
+            const checkboxAreaHeight = this.checkboxSize + this.checkboxPadding * 2;
+
+            const wasHovered = this.isHovered;
+            this.isHovered =
+              x >= this.checkboxX &&
+              x <= this.checkboxX + checkboxAreaWidth &&
+              y >= this.checkboxY &&
+              y <= this.checkboxY + checkboxAreaHeight;
+
+            // 如果悬停状态改变，重新绘制
+            if (wasHovered !== this.isHovered) {
+              this.draw();
+            }
+          });
+
+          // 绑定鼠标离开事件
+          this.canvas.addEventListener("mouseleave", () => {
+            if (this.isHovered) {
+              this.isHovered = false;
+              this.draw();
+            }
+          });
+        }
+
+        draw() {
+          // 清除画布
+          this.ctx.clearRect(0, 0, this.canvas.width / this.dpr, this.canvas.height / this.dpr);
+
+          // 绘制复选框
+          this.drawCheckbox();
+
+          // 设置样式
+          this.ctx.fillStyle = "darkgreen";
+          this.ctx.strokeStyle = "gold";
+          this.ctx.lineWidth = 2;
+
+          // 开始路径
+          this.ctx.beginPath();
+          this.ctx.moveTo(200, 200);
+          this.ctx.lineTo(350, 100);
+          this.ctx.lineTo(500, 250);
+
+          // 根据复选框状态决定是否闭合路径
+          if (this.isClosePathEnabled) {
+            this.ctx.closePath();
+          }
+
+          // 填充和描边
+          this.ctx.fill();
+          this.ctx.stroke();
+        }
+
+        drawCheckbox() {
+          // 保存当前状态
+          this.ctx.save();
+
+          // 根据状态确定颜色
+          let fillColor, strokeColor;
+
+          if (this.isClosePathEnabled) {
+            // 选中状态
+            if (this.isHovered) {
+              fillColor = "#3E8D42"; // 悬停时的绿色填充
+              strokeColor = "#3E8D42"; // 悬停时的深绿色边框
+            } else {
+              fillColor = "#2E7D32"; // 选中时的绿色填充
+              strokeColor = "#2E7D32"; // 选中时的深绿色边框
+            }
+          } else {
+            // 未选中状态
+            if (this.isHovered) {
+              fillColor = "#fff2"; // 悬停时的浅灰色填充
+              strokeColor = "#aaa"; // 悬停时的灰色边框
+            } else {
+              fillColor = "transparent"; // 未选中时透明填充
+              strokeColor = "#888"; // 未选中时的灰色边框
+            }
+          }
+
+          // 绘制复选框填充
+          if (fillColor !== "transparent") {
+            this.ctx.fillStyle = fillColor;
+            this.ctx.fillRect(
+              this.checkboxX + this.checkboxPadding,
+              this.checkboxY + this.checkboxPadding,
+              this.checkboxSize,
+              this.checkboxSize
+            );
+          }
+
+          // 绘制复选框边框
+          this.ctx.strokeStyle = strokeColor;
+          this.ctx.lineWidth = 1;
+          this.ctx.strokeRect(
+            this.checkboxX + this.checkboxPadding,
+            this.checkboxY + this.checkboxPadding,
+            this.checkboxSize,
+            this.checkboxSize
+          );
+
+          // 如果选中，绘制对勾
+          if (this.isClosePathEnabled) {
+            this.ctx.strokeStyle = "white";
+            this.ctx.lineWidth = 2;
+            this.ctx.beginPath();
+            this.ctx.moveTo(
+              this.checkboxX + this.checkboxPadding + 3,
+              this.checkboxY + this.checkboxPadding + this.checkboxSize / 2
+            );
+            this.ctx.lineTo(
+              this.checkboxX + this.checkboxPadding + this.checkboxSize / 2,
+              this.checkboxY + this.checkboxPadding + this.checkboxSize - 3
+            );
+            this.ctx.lineTo(
+              this.checkboxX + this.checkboxPadding + this.checkboxSize - 3,
+              this.checkboxY + this.checkboxPadding + 3
+            );
+            this.ctx.stroke();
+          }
+
+          // 绘制文字
+          this.ctx.fillStyle = "white";
+          this.ctx.font = "16px sans-serif";
+          this.ctx.fillText(
+            "闭合路径",
+            this.checkboxX + this.checkboxPadding + this.checkboxSize + 8,
+            this.checkboxY + this.checkboxPadding + this.checkboxSize - 2
+          );
+
+          // 恢复状态
+          this.ctx.restore();
+        }
+      }
+
+      // 创建实例
+      new ClosePathDemo("canvas-closePath");
     </script>
     <p class="分区普通文本">
       如<span class="行内截图序号">· 图12 ·</span
@@ -2446,28 +2791,28 @@
     <p class="分区普通文本">保存与恢复上下文无非就是这么几个问题：</p>
     <ul class="分区列表">
       <li class="分区列表项">
-        怎么保存？怎么恢复？
+        何时保存？何时恢复？
         <ul class="分区列表">
-          <li class="分区列表项">保存上下文：<span class="行内代码">ctx.save()</span></li>
-          <li class="分区列表项">恢复上下文：<span class="行内代码">ctx.restore()</span></li>
+          <li class="分区列表项">当前上下文状态会频繁使用，但有时需要临时修改一下。</li>
         </ul>
       </li>
       <li class="分区列表项">
         保存什么？恢复什么？
         <ul class="分区列表">
-          <li class="分区列表项">当前变换矩阵</li>
-          <li class="分区列表项">当前裁剪区域</li>
-          <li class="分区列表项">当前虚线列表</li>
           <li class="分区列表项">
             当前各种属性的值：<span class="行内专业名词">填充样式</span>、<span class="行内专业名词">描边样式</span
             >、<span class="行内专业名词">描边宽度</span>…………，共<span class="行内专业名词">18</span>个属性。
           </li>
+          <li class="分区列表项">当前变换矩阵</li>
+          <li class="分区列表项">当前裁剪区域</li>
+          <li class="分区列表项">当前虚线列表</li>
         </ul>
       </li>
       <li class="分区列表项">
-        何时保存？何时恢复？
+        怎么保存？怎么恢复？
         <ul class="分区列表">
-          <li class="分区列表项">当前上下文状态会频繁使用，但有时需要临时修改一下。</li>
+          <li class="分区列表项">保存上下文：<span class="行内代码">ctx.save()</span></li>
+          <li class="分区列表项">恢复上下文：<span class="行内代码">ctx.restore()</span></li>
         </ul>
       </li>
     </ul>
