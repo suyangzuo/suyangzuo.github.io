@@ -1,0 +1,233 @@
+/* 五子棋游戏样式 - 开发中版本 */
+
+/* 背景图片样式 */
+.背景图片 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.背景图片 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: opacity(75%);
+}
+
+/* 控制区域样式 */
+.控制区域 {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100vw;
+  height: 150px;
+  padding: 0 50px;
+  position: relative;
+  z-index: 10;
+}
+
+.控制区域 > div {
+  width: 75px;
+  height: 75px;
+  font-size: 1.25rem;
+  border-radius: 10px;
+  border-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.控制区域 > .重置游戏:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.控制区域 > div img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.重置游戏 {
+  position: relative;
+}
+
+.重置游戏 > img {
+  width: 70%;
+  height: 70%;
+}
+
+.重置游戏:hover > img {
+  animation: 重置旋转 1s infinite linear;
+}
+
+@keyframes 重置旋转 {
+  from {
+    transform: rotateZ(0);
+  }
+  50% {
+    transform: rotateZ(180deg);
+  }
+  to {
+    transform: rotateZ(360deg);
+  }
+}
+
+.返回导航器 {
+  background-color: transparent;
+}
+
+.重置游戏,
+.返回导航器 {
+  filter: drop-shadow(1px 1px 2px #000a);
+}
+
+.返回导航器 > a {
+  width: 100%;
+  height: 100%;
+}
+
+.返回导航器 img {
+  width: 100%;
+  height: 100%;
+  transition: 0.5s;
+}
+
+.返回导航器:hover img {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  animation: 返回缩放 0.75s infinite linear;
+}
+
+@keyframes 返回缩放 {
+  from {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* 游戏区域样式 */
+.游戏区域 {
+  position: relative;
+  height: calc(100vh - 210px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+/* 开发中提示样式 */
+.开发中提示 {
+  text-align: center;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 60px 80px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  animation: 浮动 3s ease-in-out infinite;
+}
+
+@keyframes 浮动 {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.开发中标题 {
+  font-size: 3em;
+  color: #ffd700;
+  margin: 0 0 20px 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  font-weight: bold;
+}
+
+.开发中说明 {
+  font-size: 1.5em;
+  color: #ffffff;
+  margin: 0 0 30px 0;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif;
+}
+
+.开发中图标 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: 旋转 2s linear infinite;
+}
+
+@keyframes 旋转 {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 响应式设计 */
+@media screen and (max-width: 1000px) {
+  .控制区域 {
+    height: 70px;
+    padding: 0 20px;
+  }
+
+  .控制区域 > div {
+    width: 65px;
+    height: 65px;
+    font-size: 1.25em;
+  }
+
+  .游戏区域 {
+    height: calc(100vh - 140px);
+    padding: 0 20px;
+  }
+
+  .开发中提示 {
+    padding: 40px 50px;
+  }
+
+  .开发中标题 {
+    font-size: 2.5em;
+  }
+
+  .开发中说明 {
+    font-size: 1.2em;
+  }
+
+  .开发中图标 {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .开发中提示 {
+    padding: 30px 40px;
+  }
+
+  .开发中标题 {
+    font-size: 2em;
+  }
+
+  .开发中说明 {
+    font-size: 1em;
+  }
+
+  .开发中图标 {
+    width: 60px;
+    height: 60px;
+  }
+}
