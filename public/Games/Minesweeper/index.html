@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>经典扫雷</title>
+    <link rel="icon" href="/Games/Mario-Run.gif" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Noto+Sans+Mono&family=Noto+Sans+SC&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="../game-common.css" />
+    <link rel="stylesheet" type="text/css" href="./Minesweeper.css" />
+    <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
+    <link rel="stylesheet" type="text/css" href="/Styles/top-banner-common.css" />
+    <script src="/Scripts/d0483e3bd3.js" crossorigin="anonymous"></script>
+    <script src="/Scripts/top-banner.js" defer></script>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+  </head>
+  <body>
+    <script src="/Scripts/html-include.js" target="/top-banner.html" position="afterbegin"></script>
+
+    <div class="背景图片">
+      <img src="../Images-Common/Game-Background-03.jpg" alt="游戏背景墙" />
+    </div>
+    <div class="控制区域">
+      <div class="返回导航器">
+        <a href="../" title="返回游戏大厅">
+          <img src="../后退.png" alt="后退" />
+        </a>
+      </div>
+      <div class="重置游戏">
+        <img src="../重置.png" alt="重置游戏" title="重置" />
+      </div>
+    </div>
+    <div class="游戏区域">
+      <div id="游戏信息">
+        <div id="难度选择器">
+          <label for="难度">难度选择：</label>
+          <select id="难度">
+            <option value="简单">简单 (9×9, 10雷)</option>
+            <option value="中等" selected>中等 (16×16, 40雷)</option>
+            <option value="困难">困难 (16×30, 99雷)</option>
+          </select>
+        </div>
+        <p class="数据统计区">
+          <span class="数据统计 剩余雷数统计"
+            ><span class="统计标题 剩余雷数标题">剩余雷数</span><span id="剩余雷数"></span
+          ></span>
+          <span class="数据统计 游戏时间统计"
+            ><span class="统计标题 游戏时间标题">游戏时间</span><span id="游戏时间"></span
+          ></span>
+          <span class="数据统计 点击次数统计"
+            ><span class="统计标题 点击次数标题">点击次数</span><span id="点击次数"></span
+          ></span>
+        </p>
+        <div class="游戏状态区">
+          <span class="游戏状态标题">游戏状态</span>
+          <span class="游戏状态" id="游戏状态">准备开始</span>
+        </div>
+      </div>
+      <div id="雷区容器">
+        <div id="雷区"></div>
+      </div>
+    </div>
+    <script src="./Minesweeper.js"></script>
+  </body>
+</html>
