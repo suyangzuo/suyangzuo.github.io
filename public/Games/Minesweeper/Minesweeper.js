@@ -31,6 +31,11 @@ class 扫雷游戏 {
     this.点击次数显示 = document.getElementById('点击次数');
     this.游戏状态显示 = document.getElementById('游戏状态');
     this.重置按钮 = document.querySelector('.重置游戏');
+    
+    // 确保重置按钮存在
+    if (!this.重置按钮) {
+      console.error('重置按钮未找到');
+    }
   }
   
   绑定事件() {
@@ -39,12 +44,18 @@ class 扫雷游戏 {
       this.重置游戏();
     });
     
-    this.重置按钮.addEventListener('click', () => {
-      this.重置游戏();
-    });
+    if (this.重置按钮) {
+      this.重置按钮.addEventListener('click', () => {
+        console.log('重置按钮被点击');
+        this.重置游戏();
+      });
+    } else {
+      console.error('重置按钮未找到，无法绑定事件');
+    }
   }
   
   重置游戏() {
+    console.log('重置游戏开始');
     this.游戏状态 = 'ready';
     this.首次点击 = true;
     this.游戏时间 = 0;
@@ -58,6 +69,9 @@ class 扫雷游戏 {
     this.创建雷区(配置.行数, 配置.列数);
     this.更新显示();
     this.停止计时器();
+    this.更新游戏状态显示();
+    
+    console.log('重置游戏完成');
   }
   
   创建雷区(行数, 列数) {
@@ -91,6 +105,7 @@ class 扫雷游戏 {
     if (this.首次点击) {
       this.首次点击 = false;
       this.游戏状态 = 'playing';
+      this.更新游戏状态显示();
       this.放置地雷(行, 列);
       this.开始计时器();
     }
@@ -210,16 +225,14 @@ class 扫雷游戏 {
     this.游戏状态 = 'lost';
     this.停止计时器();
     this.显示所有地雷();
-    this.游戏状态显示.textContent = '游戏失败';
-    this.游戏状态显示.style.color = '#FF4444';
+    this.更新游戏状态显示();
     播放爆炸音效();
   }
   
   游戏胜利() {
     this.游戏状态 = 'won';
     this.停止计时器();
-    this.游戏状态显示.textContent = '游戏胜利';
-    this.游戏状态显示.style.color = '#44FF44';
+    this.更新游戏状态显示();
   }
   
   显示所有地雷() {
@@ -266,6 +279,31 @@ class 扫雷游戏 {
     this.剩余雷数显示.textContent = this.剩余雷数;
     this.游戏时间显示.textContent = this.游戏时间;
     this.点击次数显示.textContent = this.点击次数;
+  }
+  
+  // 更新游戏状态显示
+  更新游戏状态显示() {
+    switch (this.游戏状态) {
+      case 'ready':
+        this.游戏状态显示.textContent = '准备开始';
+        this.游戏状态显示.style.color = '#ffffff';
+        break;
+      case 'playing':
+        this.游戏状态显示.textContent = '游戏进行中';
+        this.游戏状态显示.style.color = '#FFD700';
+        break;
+      case 'won':
+        this.游戏状态显示.textContent = '游戏胜利';
+        this.游戏状态显示.style.color = '#44FF44';
+        break;
+      case 'lost':
+        this.游戏状态显示.textContent = '游戏失败';
+        this.游戏状态显示.style.color = '#FF4444';
+        break;
+      default:
+        this.游戏状态显示.textContent = '未知状态';
+        this.游戏状态显示.style.color = '#ffffff';
+    }
   }
 }
 
