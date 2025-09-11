@@ -1,0 +1,343 @@
+/* 扫雷游戏样式 */
+.游戏区域 {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+}
+
+/* 背景图片样式 */
+.背景图片 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+.背景图片 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: opacity(75%);
+}
+
+/* 控制区域样式 */
+.控制区域 {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100vw;
+  height: 150px;
+  padding: 0 50px;
+  position: relative;
+}
+
+.控制区域 > div {
+  width: 75px;
+  height: 75px;
+  font-size: 1.25rem;
+  border-radius: 10px;
+  border-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.控制区域 > .重置游戏:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.控制区域 > div img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.重置游戏 {
+  position: relative;
+}
+
+.重置游戏 > img {
+  width: 70%;
+  height: 70%;
+}
+
+.重置游戏:hover > img {
+  animation: 重置旋转 1s infinite linear;
+}
+
+@keyframes 重置旋转 {
+  from {
+    transform: rotateZ(0);
+  }
+  50% {
+    transform: rotateZ(180deg);
+  }
+  to {
+    transform: rotateZ(360deg);
+  }
+}
+
+.返回导航器 {
+  background-color: transparent;
+}
+
+.重置游戏,
+.返回导航器 {
+  filter: drop-shadow(1px 1px 2px #000a);
+}
+
+.返回导航器 > a {
+  width: 100%;
+  height: 100%;
+}
+
+.返回导航器 img {
+  width: 100%;
+  height: 100%;
+  transition: 0.5s;
+}
+
+.返回导航器:hover img {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  animation: 返回缩放 0.75s infinite linear;
+}
+
+@keyframes 返回缩放 {
+  from {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+#游戏信息 {
+  width: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+#难度选择器 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+#难度选择器 label {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: rgb(223, 207, 71);
+}
+
+#难度 {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+#难度:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.数据统计区 {
+  font-size: 1.8em;
+  color: rgb(223, 207, 71);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.数据统计 {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.统计标题 {
+  font-weight: bold;
+}
+
+#剩余雷数,
+#游戏时间,
+#点击次数 {
+  color: rgb(252, 252, 252);
+  width: 5ch;
+  font-family: "JetBrains Mono", Consolas, monospace;
+  text-align: center;
+}
+
+.游戏状态区 {
+  font-size: 1.8em;
+  font-family: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, monospace, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.游戏状态标题 {
+  font-weight: bold;
+  color: rgb(106, 223, 71);
+}
+
+#游戏状态 {
+  color: rgb(255, 215, 0);
+  font-weight: bold;
+  text-align: center;
+  min-width: 8ch;
+}
+
+#雷区容器 {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+#雷区 {
+  display: grid;
+  gap: 2px;
+  background: #8B4513;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.格子 {
+  width: 30px;
+  height: 30px;
+  background: #C0C0C0;
+  border: 2px outset #C0C0C0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  user-select: none;
+  transition: all 0.1s ease;
+}
+
+.格子:hover {
+  background: #D3D3D3;
+}
+
+.格子.已揭示 {
+  background: #E0E0E0;
+  border: 1px inset #C0C0C0;
+  cursor: default;
+}
+
+.格子.已揭示:hover {
+  background: #E0E0E0;
+}
+
+.格子.已标记 {
+  background: #FFB6C1;
+  border: 2px outset #FFB6C1;
+}
+
+.格子.已标记:hover {
+  background: #FFA0B4;
+}
+
+.格子.地雷 {
+  background: #FF4444;
+  border: 1px inset #CC0000;
+}
+
+.格子.地雷爆炸 {
+  background: #FF0000;
+  border: 1px inset #CC0000;
+  animation: 爆炸 0.3s ease-out;
+}
+
+@keyframes 爆炸 {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* 数字颜色 */
+.格子.数字1 { color: #0000FF; }
+.格子.数字2 { color: #008000; }
+.格子.数字3 { color: #FF0000; }
+.格子.数字4 { color: #800080; }
+.格子.数字5 { color: #800000; }
+.格子.数字6 { color: #008080; }
+.格子.数字7 { color: #000000; }
+.格子.数字8 { color: #808080; }
+
+/* 响应式设计 */
+@media screen and (max-width: 1000px) {
+  .游戏区域 {
+    height: 100vh;
+  }
+
+  #游戏信息 {
+    margin: 10px 0;
+    width: 100vw;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  #难度选择器 label {
+    font-size: 1.2em;
+  }
+
+  #难度 {
+    font-size: 0.9em;
+    padding: 6px 10px;
+  }
+
+  .数据统计区 {
+    font-size: 1.4em;
+  }
+
+  .游戏状态区 {
+    font-size: 1.4em;
+  }
+
+  #雷区容器 {
+    padding: 10px;
+    margin: 0 10px;
+  }
+
+  .格子 {
+    width: 25px;
+    height: 25px;
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .格子 {
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+  }
+  
+  #雷区 {
+    gap: 1px;
+    padding: 5px;
+  }
+}
