@@ -281,21 +281,36 @@
       </code>
     </pre>
     <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
-      <canvas id="canvas-0" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+      <canvas id="canvas-直线" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
     </figure>
     <script type="text/javascript">
-      const canvas_0 = document.getElementById("canvas-0");
-      const ctx = canvas_0.getContext("2d");
-      const dpr = window.devicePixelRatio || 1;
-      canvas_0.width = canvas_0.offsetWidth * dpr;
-      canvas_0.height = canvas_0.offsetHeight * dpr;
-      ctx.scale(dpr, dpr);
-      ctx.beginPath();
-      ctx.moveTo(100, 100);
-      ctx.lineTo(400, 200);
-      ctx.strokeStyle = "lightskyblue";
-      ctx.lineWidth = 2;
-      ctx.stroke();
+      class CanvasDrawer {
+        constructor(canvasId) {
+          this.canvas = document.getElementById(canvasId);
+          this.ctx = this.canvas.getContext("2d");
+          this.dpr = window.devicePixelRatio || 1;
+          this.setupCanvas();
+          this.drawLine(100, 100, 400, 200);
+        }
+
+        setupCanvas() {
+          this.canvas.width = this.canvas.offsetWidth * this.dpr;
+          this.canvas.height = this.canvas.offsetHeight * this.dpr;
+          this.ctx.scale(this.dpr, this.dpr);
+        }
+
+        drawLine(startX, startY, endX, endY, strokeStyle = "lightskyblue", lineWidth = 2) {
+          this.ctx.beginPath();
+          this.ctx.moveTo(startX, startY);
+          this.ctx.lineTo(endX, endY);
+          this.ctx.strokeStyle = strokeStyle;
+          this.ctx.lineWidth = lineWidth;
+          this.ctx.stroke();
+        }
+      }
+
+      // 创建Canvas绘制器实例并绘制直线
+      new CanvasDrawer("canvas-直线");
     </script>
 
     <h3 class="分区标题 分区3级标题">绘制<span class="行内专业名词">矩形</span></h3>
@@ -316,13 +331,13 @@
       <li class="分区列表项">矩形的<span class="行内专业名词">尺寸</span></li>
     </ul>
     <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75; background: none">
-      <div class="canvas-1-container" style="width: 100%; height: calc(100% - 42px)">
+      <div class="canvas-矩形说明-container" style="width: 100%; height: calc(100% - 42px)">
         <div class="rect-x-indicator"></div>
-        <canvas id="canvas-1" style="width: 100%; height: 100%; background-color: #222"></canvas>
+        <canvas id="canvas-矩形说明" style="width: 100%; height: 100%; background-color: #222"></canvas>
         <div class="rect-y-indicator"></div>
         <div class="canvas-dimension canvas-width"><span class="num">500</span><span class="unit">px</span></div>
         <div class="canvas-dimension canvas-height"><span class="num">500</span><span class="unit">px</span></div>
-        <div class="canvas-1-introduction">我是<span class="行内代码">Canvas</span></div>
+        <div class="canvas-矩形说明-introduction">我是<span class="行内代码">Canvas</span></div>
       </div>
     </figure>
     <p class="分区普通文本">
@@ -333,7 +348,7 @@
       >。
     </p>
     <style>
-      .canvas-1-container {
+      .canvas-矩形说明-container {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -343,7 +358,7 @@
         margin: 0 auto;
       }
 
-      #canvas-1 {
+      #canvas-矩形说明 {
         width: 100%;
         height: 100%;
         background-color: #222;
@@ -351,7 +366,7 @@
         position: relative;
       }
 
-      .canvas-1-introduction {
+      .canvas-矩形说明-introduction {
         position: absolute;
         left: 50%;
         bottom: 10px;
@@ -416,27 +431,27 @@
       }
     </style>
     <script>
-      const canvas_1 = document.getElementById("canvas-1");
+      const canvas_矩形说明 = document.getElementById("canvas-矩形说明");
       const widthNum = document.querySelector(".canvas-width .num");
       const heightNum = document.querySelector(".canvas-height .num");
-      if (widthNum) widthNum.textContent = canvas_1.offsetWidth;
-      if (heightNum) heightNum.textContent = canvas_1.offsetHeight;
+      if (widthNum) widthNum.textContent = canvas_矩形说明.offsetWidth;
+      if (heightNum) heightNum.textContent = canvas_矩形说明.offsetHeight;
       const rectXIndicator = document.querySelector(".rect-x-indicator");
       const rectYIndicator = document.querySelector(".rect-y-indicator");
       const dpr_1 = window.devicePixelRatio || 1;
-      canvas_1.width = canvas_1.offsetWidth * dpr_1;
-      canvas_1.height = canvas_1.offsetHeight * dpr_1;
-      const ctx_1 = canvas_1.getContext("2d");
+      canvas_矩形说明.width = canvas_矩形说明.offsetWidth * dpr_1;
+      canvas_矩形说明.height = canvas_矩形说明.offsetHeight * dpr_1;
+      const ctx_1 = canvas_矩形说明.getContext("2d");
       ctx_1.setTransform(1, 0, 0, 1, 0, 0); // 重置变换
       ctx_1.scale(dpr_1, dpr_1);
 
-      const canvas_1_W = canvas_1.offsetWidth;
-      const canvas_1_H = canvas_1.offsetHeight;
+      const canvas_矩形说明_W = canvas_矩形说明.offsetWidth;
+      const canvas_矩形说明_H = canvas_矩形说明.offsetHeight;
       const RECT_W = 150;
       const RECT_H = 100;
 
-      let rectX = Math.random() * (canvas_1_W - RECT_W);
-      let rectY = Math.random() * (canvas_1_H - RECT_H);
+      let rectX = Math.random() * (canvas_矩形说明_W - RECT_W);
+      let rectY = Math.random() * (canvas_矩形说明_H - RECT_H);
       let vx = (((Math.random() - 0.5) * 4) / 3) * 2;
       let vy = (((Math.random() - 0.5) * 4) / 3) * 2;
 
@@ -453,7 +468,7 @@
       }
 
       function draw() {
-        ctx_1.clearRect(0, 0, canvas_1_W, canvas_1_H);
+        ctx_1.clearRect(0, 0, canvas_矩形说明_W, canvas_矩形说明_H);
         // 绘制虚线：矩形左上角到上边界
         drawDashedLine(rectX, rectY, rectX, 0);
         // 绘制虚线：矩形左上角到左边界
@@ -489,13 +504,13 @@
 
         // 更新外部坐标指示器
         if (rectXIndicator) {
-          rectXIndicator.style.left = `${rectX + canvas_1.offsetLeft}px`;
-          rectXIndicator.style.top = `${canvas_1.offsetTop - 10}px`;
+          rectXIndicator.style.left = `${rectX + canvas_矩形说明.offsetLeft}px`;
+          rectXIndicator.style.top = `${canvas_矩形说明.offsetTop - 10}px`;
           rectXIndicator.textContent = Math.round(rectX);
         }
         if (rectYIndicator) {
-          rectYIndicator.style.left = `${canvas_1.offsetLeft - 10}px`;
-          rectYIndicator.style.top = `${rectY + canvas_1.offsetTop}px`;
+          rectYIndicator.style.left = `${canvas_矩形说明.offsetLeft - 10}px`;
+          rectYIndicator.style.top = `${rectY + canvas_矩形说明.offsetTop}px`;
           rectYIndicator.textContent = Math.round(rectY);
         }
       }
@@ -512,12 +527,12 @@
           rectY = 0;
           vy = -vy;
         }
-        if (rectX > canvas_1_W - RECT_W) {
-          rectX = canvas_1_W - RECT_W;
+        if (rectX > canvas_矩形说明_W - RECT_W) {
+          rectX = canvas_矩形说明_W - RECT_W;
           vx = -vx;
         }
-        if (rectY > canvas_1_H - RECT_H) {
-          rectY = canvas_1_H - RECT_H;
+        if (rectY > canvas_矩形说明_H - RECT_H) {
+          rectY = canvas_矩形说明_H - RECT_H;
           vy = -vy;
         }
       }
@@ -918,10 +933,11 @@
         //---------------- 设置分辨率缩放 ----------------
 
         //---------------- ↓ 绘制椭圆 ↓ ----------------
-        // ctx.arc(圆心水平坐标, 圆心垂直坐标, 水平半径, 垂直半径, 旋转弧度, 起始弧度, 结束弧度);
+        // ctx.ellipse(圆心水平坐标, 圆心垂直坐标, 水平半径, 垂直半径, 旋转弧度, 起始弧度, 结束弧度);
         ctx.ellipse(250, 200, 150, 75, Math.PI / 4, 0, 2 * Math.PI);   //绘制正圆路径
         ctx.fillStyle = "darkgreen";   //设置填充颜色
         ctx.strokeStyle = "lightskyblue";   //设置描边颜色
+        ctx.lineWidth = 2;   //设置描边宽度
         ctx.fill();   //填充路径
         ctx.stroke();   //描边路径
       </code>
@@ -1062,6 +1078,7 @@
           this.ctx.ellipse(375, 200, 150, 75, this.rotationAngle, 0, 2 * Math.PI);
           this.ctx.fillStyle = "darkgreen";
           this.ctx.strokeStyle = "gold";
+          this.ctx.lineWidth = 2;
           this.ctx.fill();
           this.ctx.stroke();
 
