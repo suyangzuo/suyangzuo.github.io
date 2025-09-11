@@ -212,6 +212,7 @@ class 扫雷游戏 {
     this.显示所有地雷();
     this.游戏状态显示.textContent = '游戏失败';
     this.游戏状态显示.style.color = '#FF4444';
+    播放爆炸音效();
   }
   
   游戏胜利() {
@@ -268,9 +269,19 @@ class 扫雷游戏 {
   }
 }
 
-// 初始化游戏
+// 初始化一下
 let 扫雷游戏实例 = null;
 
+//如果输了
 document.addEventListener('DOMContentLoaded', () => {
   扫雷游戏实例 = new 扫雷游戏();
 });
+
+// 地雷爆炸的声音
+const 爆炸音效 = new Audio('/Games/Minesweeper/Audios/bomb.wav');
+
+// 在游戏失败时播放音效
+function 播放爆炸音效() {
+  爆炸音效.currentTime = 0; // 重置音频进度
+  爆炸音效.play();
+}
