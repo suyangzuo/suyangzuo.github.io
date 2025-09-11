@@ -366,7 +366,7 @@
         top: 0;
         font-size: 16px;
         color: lightsteelblue;
-        font-family: monospace;
+        font-family: "Google Sans Code", monospace;
         pointer-events: none;
         user-select: none;
         z-index: 10;
@@ -379,7 +379,7 @@
         top: 0;
         font-size: 16px;
         color: lightsteelblue;
-        font-family: monospace;
+        font-family: "Google Sans Code", monospace;
         pointer-events: none;
         user-select: none;
         z-index: 10;
@@ -389,8 +389,8 @@
 
       .canvas-dimension {
         position: absolute;
-        font-size: 18px;
-        font-family: monospace;
+        font-size: 16px;
+        font-family: "Google Sans Code", monospace;
         pointer-events: none;
         user-select: none;
         width: fit-content;
@@ -407,7 +407,6 @@
       }
       .canvas-dimension .num {
         color: rgb(50, 164, 143);
-        font-weight: bold;
         text-shadow: 1px 1px 1px #000a;
       }
       .canvas-dimension .unit {
@@ -467,7 +466,7 @@
 
         // 在矩形内部靠下方、水平居中绘制"我是矩形"
         ctx_1.save();
-        ctx_1.font = "14px sans-serif";
+        ctx_1.font = "14px 'Noto Sans SC', sans-serif";
         ctx_1.fillStyle = "#ffa";
         ctx_1.textAlign = "center";
         ctx_1.textBaseline = "bottom";
@@ -476,7 +475,7 @@
 
         // 在矩形内部绘制宽度和高度数字
         ctx_1.save();
-        ctx_1.font = "14px monospace";
+        ctx_1.font = "14px 'Google Sans Code', monospace";
         ctx_1.fillStyle = "white";
         ctx_1.textAlign = "center";
         ctx_1.textBaseline = "top";
