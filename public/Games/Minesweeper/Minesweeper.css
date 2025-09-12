@@ -1,11 +1,11 @@
 /* 扫雷游戏样式 */
 .游戏区域 {
   width: 100%;
+  height: calc(100vh - 150px);
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 100px;
   position: relative;
 }
 
@@ -121,10 +121,15 @@
 }
 
 #游戏信息 {
-  width: 1200px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: center;
+  gap: 75px;
+  padding: 25px 50px;
+  border-radius: 10px;
+  background-color: #0007;
+  backdrop-filter: blur(10px);
 }
 
 #难度选择器 {
@@ -149,6 +154,7 @@
   font-weight: bold;
   cursor: pointer;
   font-size: 1em;
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 #难度:hover {
@@ -177,14 +183,14 @@
 #游戏时间,
 #点击次数 {
   color: rgb(252, 252, 252);
-  width: 5ch;
-  font-family: "JetBrains Mono", Consolas, monospace;
-  text-align: center;
+  width: 4ch;
+  font-family: "Google Sans Code", Consolas, monospace;
+  text-align: right;
 }
 
 .游戏状态区 {
   font-size: 1.8em;
-  font-family: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, monospace, sans-serif;
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -201,6 +207,27 @@
   font-weight: bold;
   text-align: center;
   min-width: 8ch;
+}
+
+.标签,
+.标签标题.复选框 {
+  user-select: none;
+}
+
+.标签标题 {
+  margin-right: 5px;
+}
+
+.复选标签 {
+  padding: 10px 15px;
+}
+
+.复选标签:hover {
+  background-color: #ffffff1a;
+}
+
+.复选框 {
+  scale: 1.2;
 }
 
 #雷区容器 {
@@ -221,43 +248,32 @@
 }
 
 .格子 {
-  width: 30px;
-  height: 30px;
-  background: #c0c0c0;
-  border-top: 2px solid #ffffff; /*上边框 亮面*/
-  border-left: 2px solid #ffffff; /*左边框 亮面*/
-  border-right: 2px solid #808080; /*右边框 暗面*/
-  border-bottom: 2px solid #808080; /*下边框 暗面*/
+  aspect-ratio: 1;
+  height: clamp(30px, 3.5vh, 40px);
+  background: #b0b0b0;
+  border: 1px solid #000a;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
   font-size: 14px;
+  font-family: "Google Sans Code", Consolas, monospace;
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   user-select: none;
   transition: all 0.1s ease;
 }
 
 .格子:hover {
-  background: #d3d3d3;
+  background: lightcyan;
 }
 
 .格子.已揭示 {
   background: #e0e0e0;
-  border: 1px inset #c0c0c0;
   cursor: default;
-}
-
-.格子.已揭示:hover {
-  background: #e0e0e0;
 }
 
 .格子.已标记 {
   background: #ffb6c1;
-  border-top: 2px solid #ffffff;
-  border-left: 2px solid #ffffff;
-  border-right: 2px solid #808080;
-  border-bottom: 2px solid #808080;
 }
 
 .格子.已标记:hover {
@@ -266,18 +282,10 @@
 
 .格子.地雷 {
   background: #ff4444;
-  border-top: 1px solid #808080;
-  border-left: 1px solid #808080;
-  border-right: 1px solid #ffffff;
-  border-bottom: 1px solid #ffffff;
 }
 
 .格子.地雷爆炸 {
   background: #ff0000;
-  border-top: 1px solid #808080;
-  border-left: 1px solid #808080;
-  border-right: 1px solid #ffffff;
-  border-bottom: 1px solid #ffffff;
   animation: 爆炸 0.3s ease-out;
 }
 

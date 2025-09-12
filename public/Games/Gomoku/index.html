@@ -43,18 +43,18 @@
             <h1 class="游戏标题文字">五子连珠</h1>
           </div>
           <div class="棋盘容器">
-            <canvas id="gameBoard" width="550" height="550"></canvas>
+            <canvas id="gameBoard"></canvas>
           </div>
         </div>
         <div class="游戏右侧">
           <div class="游戏信息面板">
             <div class="当前玩家信息">
               <span class="玩家标签">当前玩家：</span>
-              <span class="玩家名称" id="currentPlayer">黑棋</span>
+              <span class="玩家名称 白棋" id="currentPlayer">黑棋</span>
             </div>
             <div class="游戏状态" id="gameStatus">游戏进行中</div>
           </div>
-          <div class="游戏结果" id="gameResult" style="display: none;">
+          <div class="游戏结果" id="gameResult" style="display: none">
             <div class="结果内容" id="resultContent"></div>
           </div>
           <div class="游戏说明">
@@ -62,7 +62,7 @@
               <span class="按钮文字">游戏说明</span>
               <span class="按钮图标">▼</span>
             </button>
-            <div class="说明内容" id="instructionsContent" style="display: none;">
+            <div class="说明内容" id="instructionsContent" style="display: none">
               <button class="关闭按钮" id="closeInstructions">×</button>
               <div class="说明部分">
                 <p><strong>游戏规则：</strong></p>
@@ -85,7 +85,22 @@
           <div class="游戏控制面板">
             <button class="游戏按钮" id="resetGame">重新开始</button>
             <button class="游戏按钮" id="undoMove">悔棋</button>
-            <button class="游戏按钮" id="aiMode">AI模式</button>
+            <div class="模式区">
+              <label for="AI" class="标签 单选标签">
+                <span class="标签标题">AI</span>
+                <input type="radio" id="AI" class="单选框" name="模式" checked />
+              </label>
+              <label for="人类" class="标签 单选标签">
+                <span class="标签标题">人类</span>
+                <input type="radio" id="人类" class="单选框" name="模式" />
+              </label>
+            </div>
+            <div class="辅助效果区">
+              <label for="音效" class="标签 复选标签">
+                <span class="标签标题">音效</span>
+                <input type="checkbox" id="音效" class="复选框" checked />
+              </label>
+            </div>
           </div>
         </div>
       </div>
