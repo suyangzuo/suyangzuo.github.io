@@ -317,7 +317,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // 地雷爆炸的声音
-const 爆炸音效 = new Audio("/Games/Minesweeper/Audios/bomb.wav");
+const 爆炸音效 = new Audio("./Audios/bomb.wav");
 
 // 在游戏失败时播放音效
 function 播放爆炸音效() {
