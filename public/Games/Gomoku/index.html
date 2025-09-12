@@ -37,16 +37,56 @@
       </div>
     </div>
     <div class="游戏区域">
-      <div class="开发中提示">
-        <h1 class="开发中标题">五子连珠</h1>
-        <p class="开发中说明">游戏开发中，敬请期待...</p>
-        <div class="开发中图标">
-          <lord-icon
-            src="https://cdn.lordicon.com/ymrqtsej.json"
-            trigger="loop"
-            colors="primary:#ffffff,secondary:#ffd700"
-            style="width:100px;height:100px">
-          </lord-icon>
+      <div class="游戏容器">
+        <div class="游戏左侧">
+          <div class="游戏标题">
+            <h1 class="游戏标题文字">五子连珠</h1>
+          </div>
+          <div class="棋盘容器">
+            <canvas id="gameBoard" width="550" height="550"></canvas>
+          </div>
+        </div>
+        <div class="游戏右侧">
+          <div class="游戏信息面板">
+            <div class="当前玩家信息">
+              <span class="玩家标签">当前玩家：</span>
+              <span class="玩家名称" id="currentPlayer">黑棋</span>
+            </div>
+            <div class="游戏状态" id="gameStatus">游戏进行中</div>
+          </div>
+          <div class="游戏结果" id="gameResult" style="display: none;">
+            <div class="结果内容" id="resultContent"></div>
+          </div>
+          <div class="游戏说明">
+            <button class="说明按钮" id="toggleInstructions">
+              <span class="按钮文字">游戏说明</span>
+              <span class="按钮图标">▼</span>
+            </button>
+            <div class="说明内容" id="instructionsContent" style="display: none;">
+              <button class="关闭按钮" id="closeInstructions">×</button>
+              <div class="说明部分">
+                <p><strong>游戏规则：</strong></p>
+                <p>• 黑棋先手，双方轮流下棋</p>
+                <p>• 率先在横、竖、斜任意方向连成五子者获胜</p>
+                <p>• 点击棋盘交叉点下棋</p>
+                <p>• 支持悔棋功能</p>
+                <p>• 可切换AI模式进行人机对战</p>
+              </div>
+              <div class="算法说明">
+                <p><strong>AI算法：</strong></p>
+                <p>• 参考了 <a href="https://github.com/itlwei/Wuzi" target="_blank">itlwei/Wuzi项目</a> 的算法思路</p>
+                <p>• 使用启发式评估 + 贪心策略</p>
+                <p>• 优先获胜和防守，其次选择最佳位置</p>
+                <p>• <span class="算法限制">当前缺乏深度搜索（Minimax/Alpha-Beta剪枝）</span></p>
+                <p>by 杜宗远 <a href="mailto:keaidang@gmail.com" title="作者：杜宗远">keaidang@gmail.com</a></p>
+              </div>
+            </div>
+          </div>
+          <div class="游戏控制面板">
+            <button class="游戏按钮" id="resetGame">重新开始</button>
+            <button class="游戏按钮" id="undoMove">悔棋</button>
+            <button class="游戏按钮" id="aiMode">AI模式</button>
+          </div>
         </div>
       </div>
     </div>

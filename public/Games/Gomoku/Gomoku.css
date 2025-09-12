@@ -123,58 +123,323 @@
   z-index: 5;
 }
 
-/* 开发中提示样式 */
-.开发中提示 {
-  text-align: center;
+/* 游戏容器样式 */
+.游戏容器 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 30px;
   background: rgba(0, 0, 0, 0.7);
-  padding: 60px 80px;
+  padding: 30px;
   border-radius: 20px;
   backdrop-filter: blur(10px);
   border: 2px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  animation: 浮动 3s ease-in-out infinite;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-@keyframes 浮动 {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+/* 游戏左侧样式 */
+.游戏左侧 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.开发中标题 {
-  font-size: 3em;
+/* 游戏右侧样式 */
+.游戏右侧 {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 250px;
+}
+
+/* 游戏标题样式 */
+.游戏标题 {
+  margin-bottom: 20px;
+}
+
+.游戏标题文字 {
+  font-size: 2.5em;
   color: #ffd700;
-  margin: 0 0 20px 0;
+  margin: 0;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif;
   font-weight: bold;
 }
 
-.开发中说明 {
-  font-size: 1.5em;
+/* 游戏信息面板样式 */
+.游戏信息面板 {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.当前玩家信息 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.玩家标签 {
   color: #ffffff;
-  margin: 0 0 30px 0;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  font-size: 1.1em;
   font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif;
 }
 
-.开发中图标 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  animation: 旋转 2s linear infinite;
+.玩家名称 {
+  color: #ffd700;
+  font-size: 1.2em;
+  font-weight: bold;
+  font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-@keyframes 旋转 {
+.游戏状态 {
+  color: #ffffff;
+  font-size: 1.1em;
+  font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* 游戏结果样式 */
+.游戏结果 {
+  padding: 20px;
+  background: rgba(255, 215, 0, 0.2);
+  border-radius: 10px;
+  border: 2px solid #ffd700;
+  text-align: center;
+}
+
+.结果内容 {
+  font-size: 1.5em;
+  color: #ffd700;
+  font-weight: bold;
+  font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* 游戏说明样式 */
+.游戏说明 {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  overflow: hidden;
+}
+
+/* 说明按钮样式 */
+.说明按钮 {
+  width: 100%;
+  padding: 15px 20px;
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  color: #ffffff;
+  border: none;
+  border-radius: 0;
+  font-size: 1.1em;
+  font-weight: bold;
+  font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.说明按钮:hover {
+  background: linear-gradient(135deg, #45a049, #4CAF50);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+.说明按钮:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(76, 175, 80, 0.3);
+}
+
+.按钮文字 {
+  font-size: 1.1em;
+}
+
+.按钮图标 {
+  font-size: 0.9em;
+  transition: transform 0.3s ease;
+}
+
+.说明按钮.展开 .按钮图标 {
+  transform: rotate(180deg);
+}
+
+.说明内容 {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 600px;
+  max-height: 70vh;
+  padding: 30px;
+  background: rgba(0, 0, 0, 0.9);
+  border-radius: 15px;
+  border: 2px solid #ffd700;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  overflow-y: auto;
+  animation: popupShow 0.3s ease-out;
+}
+
+@keyframes popupShow {
   from {
-    transform: rotate(0deg);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
   }
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
   }
+}
+
+/* 遮罩层 */
+.说明内容::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+
+/* 关闭按钮样式 */
+.关闭按钮 {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 30px;
+  height: 30px;
+  background: rgba(255, 0, 0, 0.8);
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+}
+
+.关闭按钮:hover {
+  background: rgba(255, 0, 0, 1);
+  transform: scale(1.1);
+  box-shadow: 0 2px 10px rgba(255, 0, 0, 0.3);
+}
+
+.关闭按钮:active {
+  transform: scale(0.95);
+}
+
+.说明部分,
+.算法说明 {
+  color: #ffffff;
+  font-size: 0.9em;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.说明部分 p,
+.算法说明 p {
+  margin: 5px 0;
+}
+
+.说明内容 strong,
+.算法说明 strong {
+  color: #ffd700;
+  font-weight: bold;
+}
+
+.算法说明 a {
+  color: #4CAF50;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.算法说明 a:hover {
+  color: #66BB6A;
+  text-decoration: underline;
+}
+
+.算法限制 {
+  color: #ff9800;
+  font-style: italic;
+  background: rgba(255, 152, 0, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 152, 0, 0.3);
+}
+
+/* 棋盘容器样式 */
+.棋盘容器 {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+#gameBoard {
+  display: block;
+  background: #8B4513;
+  cursor: crosshair;
+}
+
+/* 游戏控制面板样式 */
+.游戏控制面板 {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.游戏按钮 {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #ffd700, #ffed4e);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  font-weight: bold;
+  font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+  text-shadow: none;
+}
+
+.游戏按钮:hover {
+  background: linear-gradient(135deg, #ffed4e, #ffd700);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+}
+
+.游戏按钮:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+}
+
+.游戏按钮:disabled {
+  background: #666;
+  color: #999;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 /* 响应式设计 */
@@ -195,39 +460,100 @@
     padding: 0 20px;
   }
 
-  .开发中提示 {
-    padding: 40px 50px;
+  .游戏容器 {
+    flex-direction: column;
+    padding: 20px;
+    max-width: 600px;
   }
 
-  .开发中标题 {
-    font-size: 2.5em;
+  .游戏右侧 {
+    min-width: auto;
+    width: 100%;
   }
 
-  .开发中说明 {
-    font-size: 1.2em;
+  .游戏标题文字 {
+    font-size: 2em;
   }
 
-  .开发中图标 {
-    width: 80px;
-    height: 80px;
+  #gameBoard {
+    width: 500px;
+    height: 500px;
+  }
+
+  .游戏控制面板 {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .说明按钮 {
+    padding: 12px 15px;
+    font-size: 1em;
+  }
+
+  .说明内容 {
+    padding: 15px;
+  }
+
+  .说明部分,
+  .算法说明 {
+    font-size: 0.85em;
+  }
+
+  .说明内容 {
+    width: 90%;
+    max-width: 500px;
+    padding: 20px;
   }
 }
 
 @media screen and (max-width: 600px) {
-  .开发中提示 {
-    padding: 30px 40px;
+  .游戏容器 {
+    padding: 15px;
   }
 
-  .开发中标题 {
-    font-size: 2em;
+  .游戏标题文字 {
+    font-size: 1.8em;
   }
 
-  .开发中说明 {
+  #gameBoard {
+    width: 400px;
+    height: 400px;
+  }
+
+  .游戏信息面板 {
+    max-width: 400px;
+    padding: 10px 15px;
+  }
+
+  .玩家标签,
+  .玩家名称,
+  .游戏状态 {
     font-size: 1em;
   }
 
-  .开发中图标 {
-    width: 60px;
-    height: 60px;
+  .游戏按钮 {
+    padding: 10px 20px;
+    font-size: 0.9em;
+  }
+
+  .游戏控制面板 {
+    gap: 10px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #gameBoard {
+    width: 350px;
+    height: 350px;
+  }
+
+  .游戏信息面板 {
+    max-width: 350px;
+  }
+
+  .游戏按钮 {
+    padding: 8px 16px;
+    font-size: 0.8em;
   }
 }

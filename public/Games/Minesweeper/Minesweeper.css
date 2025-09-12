@@ -214,8 +214,7 @@
 
 #雷区 {
   display: grid;
-  gap: 2px;
-  background: #8B4513;
+  background: #8b4513;
   padding: 10px;
   border-radius: 8px;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -224,8 +223,11 @@
 .格子 {
   width: 30px;
   height: 30px;
-  background: #C0C0C0;
-  border: 2px outset #C0C0C0;
+  background: #c0c0c0;
+  border-top: 2px solid #ffffff; /*上边框 亮面*/
+  border-left: 2px solid #ffffff; /*左边框 亮面*/
+  border-right: 2px solid #808080; /*右边框 暗面*/
+  border-bottom: 2px solid #808080; /*下边框 暗面*/
   display: flex;
   align-items: center;
   justify-content: center;
@@ -237,54 +239,85 @@
 }
 
 .格子:hover {
-  background: #D3D3D3;
+  background: #d3d3d3;
 }
 
 .格子.已揭示 {
-  background: #E0E0E0;
-  border: 1px inset #C0C0C0;
+  background: #e0e0e0;
+  border: 1px inset #c0c0c0;
   cursor: default;
 }
 
 .格子.已揭示:hover {
-  background: #E0E0E0;
+  background: #e0e0e0;
 }
 
 .格子.已标记 {
-  background: #FFB6C1;
-  border: 2px outset #FFB6C1;
+  background: #ffb6c1;
+  border-top: 2px solid #ffffff;
+  border-left: 2px solid #ffffff;
+  border-right: 2px solid #808080;
+  border-bottom: 2px solid #808080;
 }
 
 .格子.已标记:hover {
-  background: #FFA0B4;
+  background: #ffa0b4;
 }
 
 .格子.地雷 {
-  background: #FF4444;
-  border: 1px inset #CC0000;
+  background: #ff4444;
+  border-top: 1px solid #808080;
+  border-left: 1px solid #808080;
+  border-right: 1px solid #ffffff;
+  border-bottom: 1px solid #ffffff;
 }
 
 .格子.地雷爆炸 {
-  background: #FF0000;
-  border: 1px inset #CC0000;
+  background: #ff0000;
+  border-top: 1px solid #808080;
+  border-left: 1px solid #808080;
+  border-right: 1px solid #ffffff;
+  border-bottom: 1px solid #ffffff;
   animation: 爆炸 0.3s ease-out;
 }
 
 @keyframes 爆炸 {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* 数字颜色 */
-.格子.数字1 { color: #0000FF; }
-.格子.数字2 { color: #008000; }
-.格子.数字3 { color: #FF0000; }
-.格子.数字4 { color: #800080; }
-.格子.数字5 { color: #800000; }
-.格子.数字6 { color: #008080; }
-.格子.数字7 { color: #000000; }
-.格子.数字8 { color: #808080; }
+.格子.数字1 {
+  color: #0000ff;
+}
+.格子.数字2 {
+  color: #008000;
+}
+.格子.数字3 {
+  color: #ff0000;
+}
+.格子.数字4 {
+  color: #800080;
+}
+.格子.数字5 {
+  color: #800000;
+}
+.格子.数字6 {
+  color: #008080;
+}
+.格子.数字7 {
+  color: #000000;
+}
+.格子.数字8 {
+  color: #808080;
+}
 
 /* 响应式设计 */
 @media screen and (max-width: 1000px) {
@@ -335,7 +368,7 @@
     height: 20px;
     font-size: 10px;
   }
-  
+
   #雷区 {
     gap: 1px;
     padding: 5px;
