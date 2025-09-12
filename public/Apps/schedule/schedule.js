@@ -1,4 +1,5 @@
 const 科目区 = document.querySelector(".科目区");
+const 重置按钮 = document.getElementById("重置按钮");
 const 科目数组 = ["语文", "数学", "英语", "物理", "化学", "生物", "地理", "政治", "历史"];
 const 老师数组 = ["Leon", "Chris", "Carlos", "Eason", "Krauser", "Wesker", "Billy", "Ada", "Jill"];
 const 科目背景色数组 = [
@@ -110,5 +111,13 @@ for (let i = 0; i < 表格单元格.length; i++) {
     老师名称Span.textContent = 当前被拖拽的老师;
     item.style.backgroundColor = 当前被拖拽的科目背景;
     item.classList.add("已经放置");
+  });
+});
+
+重置按钮.addEventListener("click", () => {
+  const 所有单元格 = document.querySelectorAll("td");
+  所有单元格.forEach((item) => {
+    item.style.backgroundColor = "rgba(41, 40, 40, 0.5)";
+    单元格.classList.remove("已经放置");
   });
 });

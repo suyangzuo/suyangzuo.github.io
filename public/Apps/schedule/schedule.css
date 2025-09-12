@@ -6,6 +6,28 @@
   box-sizing: border-box;
 }
 
+#重置按钮 {
+  position: fixed;
+  top: 8vh;
+  right: 3vw;
+  width: 120px;
+  height: 65px;
+  background-color: rgb(216, 214, 212);
+  border-radius: 20px;
+  transition: background-color 0.4s ease;
+  font-size: 19px;
+  color: rgb(37, 37, 36);
+}
+
+#重置按钮:hover{
+  background-color: rgb(71, 70, 70, 0.3);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+}
+
+#重置按钮:hover p{
+  color:  rgb(201, 236, 161);
+}
+
 .main {
   width: 100vw;
   height: 100vh;
@@ -47,7 +69,7 @@
   border-radius: 20px;
 }
 
-.科目:hover{
+.科目:hover {
   border: solid 3px rgb(223, 218, 175);
 }
 
@@ -57,7 +79,7 @@ table {
   height: 80%;
   border-collapse: separate;
   border-spacing: 20px;
-  table-layout: fixed
+  table-layout: fixed;
 }
 
 td {
