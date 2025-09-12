@@ -234,6 +234,7 @@ class 扫雷游戏 {
     this.游戏状态 = "won";
     this.停止计时器();
     this.更新游戏状态显示();
+    播放胜利音效();
   }
 
   显示所有地雷() {
@@ -317,12 +318,19 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // 地雷爆炸的声音
-const 爆炸音效 = new Audio("/Games/Minesweeper/Audios/bomb.wav");
+const 爆炸音效 = new Audio("./Audios/bomb.wav");
+
+// 预加载音频文件
+爆炸音效.preload = "auto";
 
 // 在游戏失败时播放音效
 function 播放爆炸音效() {
   爆炸音效.currentTime = 0; // 重置音频进度
-  if (音效复选框.checked) {
-    爆炸音效.play();
+  // 获取音效复选框元素
+  const 音效复选框 = document.getElementById("音效");
+  if (音效复选框 && 音效复选框.checked) {
+    爆炸音效.play().catch((error) => {
+      console.log("爆炸音效播放失败:", error);
+    });
   }
 }
