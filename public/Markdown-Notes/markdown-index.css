@@ -485,6 +485,7 @@
 
 .目录标题 {
   flex-grow: 1;
+  font-family: "Noto Sans SC", 微软雅黑, sans-serif;
   font-size: 16px;
   font-weight: 500;
   color: #bbb;
@@ -499,7 +500,7 @@
   flex-wrap: wrap;
   align-content: flex-start;
   gap: 20px;
-  font-family: var(--中文代码混合字体);
+  font-family: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
   background: var(--卡片背景);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
