@@ -226,6 +226,27 @@ body:has(.说明按钮.展开) .背景图片 {
   font-size: 1.1em;
   font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+/* 游戏进行中状态样式 */
+.游戏状态.游戏进行中状态 {
+  color: #4CAF50;
+  font-weight: bold;
+  animation: 呼吸效果 2s ease-in-out infinite;
+  text-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+}
+
+@keyframes 呼吸效果 {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
 }
 
 /* 游戏结果样式 */

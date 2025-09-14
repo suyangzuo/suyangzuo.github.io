@@ -9,6 +9,40 @@
   position: relative;
 }
 
+/* 胜利提示覆盖层 */
+#胜利提示 {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20000;
+  pointer-events: none;
+}
+
+.胜利提示内容 {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 22px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+
+.胜利图标 {
+  font-size: 28px;
+}
+
+.胜利文本 {
+  color: #ffd700;
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
 /* 背景图片样式 */
 .背景图片 {
   position: absolute;

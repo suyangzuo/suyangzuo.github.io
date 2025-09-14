@@ -138,7 +138,8 @@ class GomokuGame {
     const ai思考提示 = document.getElementById('aiThinking');
     const 游戏状态 = document.getElementById('gameStatus');
     if (ai思考提示 && 游戏状态) {
-      游戏状态.style.display = 'none';
+      // 保持游戏状态显示，不隐藏
+      // 游戏状态.style.display = 'none';
       ai思考提示.style.display = 'flex';
       
       // 将提示移到body，避免受父元素影响
@@ -173,7 +174,8 @@ class GomokuGame {
     const 游戏状态 = document.getElementById('gameStatus');
     if (ai思考提示 && 游戏状态) {
       ai思考提示.style.display = 'none';
-      游戏状态.style.display = this.moveHistory.length > 0 ? 'block' : 'none';
+      // 游戏状态保持原有显示状态，不需要重新设置
+      // 游戏状态.style.display = this.moveHistory.length > 0 ? 'block' : 'none';
       
       // 复位到原父节点
       if (this.aiThinkingOriginalParent && this.aiThinkingPlaceholder) {
@@ -420,6 +422,8 @@ class GomokuGame {
       this.gameOver = true;
       this.updateUI();
       this.showGameResult(this.currentPlayer);
+      // 游戏结束时恢复棋盘点击
+      this.canvas.style.pointerEvents = "auto";
       return true;
     }
 
@@ -428,6 +432,8 @@ class GomokuGame {
       this.gameOver = true;
       this.updateUI();
       this.showGameResult(0); // 0表示平局
+      // 游戏结束时恢复棋盘点击
+      this.canvas.style.pointerEvents = "auto";
       return true;
     }
 
@@ -437,6 +443,9 @@ class GomokuGame {
 
     // AI模式下的AI移动
     if (this.aiMode && this.currentPlayer === this.aiPlayer && !this.gameOver) {
+      // 立即禁用棋盘点击，防止人类玩家在AI思考时继续下棋
+      this.canvas.style.pointerEvents = "none";
+      
       setTimeout(() => {
         // 多重检查游戏状态，确保游戏还在进行中
         if (!this.gameOver && this.aiMode && this.currentPlayer === this.aiPlayer) {
@@ -769,10 +778,16 @@ class GomokuGame {
       const bestMove = this.getBestMoveAdvanced();
       if (bestMove && !this.gameOver && this.aiMode && this.currentPlayer === this.aiPlayer) {
         this.makeMove(bestMove[0], bestMove[1]);
+        // AI下完棋后，如果游戏还在进行且轮到人类玩家，恢复棋盘点击
+        if (!this.gameOver && this.currentPlayer !== this.aiPlayer) {
+          this.canvas.style.pointerEvents = "auto";
+        }
+      } else {
+        // 如果AI没有下棋（游戏结束等），也要恢复棋盘点击
+        this.canvas.style.pointerEvents = "auto";
       }
       // 隐藏AI思考提示
       this.hideAIThinking();
-      this.canvas.style.pointerEvents = "auto"; // 恢复棋盘点击
       this.aiThinkingTimer = null;
     }, 300 + this.difficulty * 200); // 根据难度调整思考时间
   }
@@ -1043,14 +1058,15 @@ class GomokuGame {
     if (this.moveHistory.length === 0 && !this.gameOver) {
       gameStatusElement.style.display = "none";
       gameStatusElement.textContent = "";
+      gameStatusElement.classList.remove("游戏进行中状态");
     } else if (this.gameOver) {
       gameStatusElement.style.display = "block";
       gameStatusElement.textContent = "游戏结束";
+      gameStatusElement.classList.remove("游戏进行中状态");
     } else {
       gameStatusElement.style.display = "block";
-      if (gameStatusElement.textContent !== "游戏进行中") {
-        gameStatusElement.textContent = "游戏进行中";
-      }
+      gameStatusElement.textContent = "游戏进行中";
+      gameStatusElement.classList.add("游戏进行中状态");
     }
 
     currentPlayerElement.classList.toggle("黑棋");

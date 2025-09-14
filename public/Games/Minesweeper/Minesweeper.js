@@ -72,6 +72,13 @@ class 扫雷游戏 {
     this.停止计时器();
     this.更新游戏状态显示();
 
+    // 关闭胜利提示覆盖层
+    const overlay = document.getElementById("胜利提示");
+    if (overlay) {
+      overlay.style.display = "none";
+      overlay.style.opacity = "1";
+    }
+
     console.log("重置游戏完成");
   }
 
@@ -116,6 +123,11 @@ class 扫雷游戏 {
     if (this.已标记格子.includes(`${行}-${列}`)) return;
 
     this.揭示格子(行, 列);
+    // 如果这一步已经导致失败，直接返回，避免错误触发胜利判断
+    if (this.游戏状态 === "lost") {
+      this.更新显示();
+      return;
+    }
     this.更新显示();
     this.检查游戏结束();
   }
@@ -142,6 +154,10 @@ class 扫雷游戏 {
     }
 
     this.更新显示();
+    // 经典规则下，旗子不直接决定胜负，但如果所有非雷格子都已打开，则此处也能触发胜利
+    if (this.游戏状态 === "playing") {
+      this.检查游戏结束();
+    }
   }
 
   放置地雷(首次点击行, 首次点击列) {
@@ -197,6 +213,7 @@ class 扫雷游戏 {
 
     if (行 < 0 || 行 >= 配置.行数 || 列 < 0 || 列 >= 配置.列数) return;
     if (this.已揭示格子.includes(格子标识)) return;
+    if (this.已标记格子.includes(格子标识)) return; // 标记旗子的格子不可揭示（经典规则）
 
     this.已揭示格子.push(格子标识);
     const 格子元素 = this.雷区容器.children[行 * 配置.列数 + 列];
@@ -207,6 +224,7 @@ class 扫雷游戏 {
       格子元素.classList.add("地雷爆炸");
       格子元素.textContent = "💣";
       this.游戏失败();
+      return; // 失败后立即停止后续逻辑
     } else if (this.雷区[行][列] === 0) {
       // 空白格子，递归揭示周围
       格子元素.textContent = "";
@@ -235,6 +253,21 @@ class 扫雷游戏 {
     this.停止计时器();
     this.更新游戏状态显示();
     播放胜利音效();
+
+    // 显示明显的胜利提示覆盖层
+    const overlay = document.getElementById("胜利提示");
+    if (overlay) {
+      overlay.style.display = "block";
+      overlay.style.opacity = "1";
+      overlay.style.transition = "opacity 600ms ease";
+      setTimeout(() => {
+        overlay.style.opacity = "0";
+        setTimeout(() => {
+          overlay.style.display = "none";
+          overlay.style.opacity = "1";
+        }, 700);
+      }, 1800);
+    }
   }
 
   显示所有地雷() {
@@ -255,10 +288,18 @@ class 扫雷游戏 {
 
   检查游戏结束() {
     const 配置 = this.游戏配置[this.当前难度];
-    const 总格子数 = 配置.行数 * 配置.列数;
-    const 已揭示格子数 = this.已揭示格子.length;
+    const 总需要揭示的非雷格子数 = 配置.行数 * 配置.列数 - 配置.雷数;
 
-    if (已揭示格子数 === 总格子数 - 配置.雷数) {
+    // 统计已揭示的非雷格子数（旗子不参与胜负判断，踩雷不计入）
+    let 已揭示非雷格子数 = 0;
+    for (const 标识 of this.已揭示格子) {
+      const [rStr, cStr] = 标识.split("-");
+      const r = parseInt(rStr, 10);
+      const c = parseInt(cStr, 10);
+      if (this.雷区[r] && this.雷区[r][c] !== -1) 已揭示非雷格子数++;
+    }
+
+    if (已揭示非雷格子数 === 总需要揭示的非雷格子数) {
       this.游戏胜利();
     }
   }
