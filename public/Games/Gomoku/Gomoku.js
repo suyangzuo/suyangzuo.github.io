@@ -1,4 +1,4 @@
-// 五子棋游戏 - 基于参考项目的算法实现
+// 五子棋游戏 - 高级AI算法实现
 class GomokuGame {
   constructor() {
     this.boardSize = 15; // 15x15棋盘
@@ -8,6 +8,13 @@ class GomokuGame {
     this.moveHistory = []; // 移动历史，用于悔棋
     this.aiMode = true; // AI模式
     this.aiPlayer = 2; // AI玩家（白棋）
+    this.aiFirst = false; // AI是否先手
+    this.difficulty = 4; // AI难度 (1-6)
+    
+    // AI算法相关
+    this.cache = new Map(); // 缓存
+    this.zobristTable = []; // Zobrist哈希表
+    this.initZobristTable();
 
     this.canvas = null;
     this.ctx = null;
@@ -38,11 +45,30 @@ class GomokuGame {
     this.音效复选框 = document.getElementById("音效");
     const ai模式单选框 = document.getElementById("AI");
     const 人类模式单选框 = document.getElementById("人类");
+    const ai先手单选框 = document.getElementById("AI先手");
+    const 人类先手单选框 = document.getElementById("人类先手");
+    const 难度滑块 = document.getElementById("难度");
+    const 难度数值 = document.getElementById("难度数值");
+    
     ai模式单选框.addEventListener("change", () => {
       this.toggleAIMode();
     });
     人类模式单选框.addEventListener("change", () => {
       this.toggleAIMode();
+    });
+    
+    ai先手单选框.addEventListener("change", () => {
+      this.setAIFirst(true);
+      this.updateFirstMoveButtons();
+    });
+    人类先手单选框.addEventListener("change", () => {
+      this.setAIFirst(false);
+      this.updateFirstMoveButtons();
+    });
+    
+    难度滑块.addEventListener("input", (e) => {
+      this.difficulty = parseInt(e.target.value);
+      难度数值.textContent = this.difficulty;
     });
 
     // 初始化棋盘
@@ -53,6 +79,73 @@ class GomokuGame {
 
     // 绘制棋盘
     this.drawBoard();
+    
+    // 初始化AI设置区显示状态
+    this.updateAISettingsVisibility();
+  }
+
+  // 初始化Zobrist哈希表
+  initZobristTable() {
+    this.zobristTable = [];
+    for (let i = 0; i < this.boardSize; i++) {
+      this.zobristTable[i] = [];
+      for (let j = 0; j < this.boardSize; j++) {
+        this.zobristTable[i][j] = [];
+        this.zobristTable[i][j][0] = Math.floor(Math.random() * 4294967296);
+        this.zobristTable[i][j][1] = Math.floor(Math.random() * 4294967296);
+      }
+    }
+  }
+
+  // 设置AI先手
+  setAIFirst(isFirst) {
+    this.aiFirst = isFirst;
+    this.aiPlayer = isFirst ? 1 : 2;
+    this.resetBoard();
+  }
+
+  // 更新先手选择按钮样式
+  updateFirstMoveButtons() {
+    const ai先手标签 = document.querySelector('label[for="AI先手"]');
+    const 人类先手标签 = document.querySelector('label[for="人类先手"]');
+    
+    if (this.aiFirst) {
+      ai先手标签.classList.add('选中');
+      人类先手标签.classList.remove('选中');
+    } else {
+      ai先手标签.classList.remove('选中');
+      人类先手标签.classList.add('选中');
+    }
+  }
+
+  // 更新AI设置区显示状态
+  updateAISettingsVisibility() {
+    const ai设置区 = document.querySelector('.AI设置区');
+    if (this.aiMode) {
+      ai设置区.classList.add('显示');
+    } else {
+      ai设置区.classList.remove('显示');
+    }
+  }
+
+  // 显示AI思考提示
+  showAIThinking() {
+    const ai思考提示 = document.getElementById('aiThinking');
+    const 游戏状态 = document.getElementById('gameStatus');
+    if (ai思考提示 && 游戏状态) {
+      游戏状态.style.display = 'none';
+      ai思考提示.style.display = 'flex';
+    }
+  }
+
+  // 隐藏AI思考提示
+  hideAIThinking() {
+    const ai思考提示 = document.getElementById('aiThinking');
+    const 游戏状态 = document.getElementById('gameStatus');
+    if (ai思考提示 && 游戏状态) {
+      ai思考提示.style.display = 'none';
+      游戏状态.style.display = 'block';
+    }
   }
 
   resetBoard() {
@@ -66,6 +159,7 @@ class GomokuGame {
     this.currentPlayer = 1;
     this.gameOver = false;
     this.moveHistory = [];
+    this.cache.clear(); // 清空缓存
 
     // 清除预览棋子
     this.预览行 = undefined;
@@ -78,6 +172,14 @@ class GomokuGame {
     }
 
     this.updateUI();
+    this.updateFirstMoveButtons();
+    
+    // 如果AI先手，自动下第一步
+    if (this.aiMode && this.aiFirst && this.currentPlayer === this.aiPlayer) {
+      setTimeout(() => {
+        this.aiMove();
+      }, 500);
+    }
   }
 
   bindEvents() {
@@ -486,22 +588,35 @@ class GomokuGame {
 
   toggleAIMode() {
     this.aiMode = !this.aiMode;
+    
+    // 控制AI设置区的显示/隐藏
+    this.updateAISettingsVisibility();
+    
     if (this.aiMode && this.currentPlayer === this.aiPlayer && !this.gameOver) {
       this.aiMove();
     }
   }
 
-  // AI算法 - 基于参考项目的简化版本
+  // AI算法 - 高级Minimax算法
   aiMove() {
     if (this.gameOver) return;
 
-    let bestMove = this.getBestMove();
-    if (bestMove) {
-      this.makeMove(bestMove.row, bestMove.col);
-    }
+    // 显示AI思考提示
+    this.showAIThinking();
+
+    // 使用setTimeout模拟AI思考时间，让用户看到思考过程
+    setTimeout(() => {
+      const bestMove = this.getBestMoveAdvanced();
+      if (bestMove) {
+        this.makeMove(bestMove[0], bestMove[1]);
+      }
+      // 隐藏AI思考提示
+      this.hideAIThinking();
+    }, 300 + this.difficulty * 200); // 根据难度调整思考时间
   }
 
-  getBestMove() {
+  // 高级AI算法 - 获取最佳移动
+  getBestMoveAdvanced() {
     // 首先检查AI是否能直接获胜
     for (let i = 0; i < this.boardSize; i++) {
       for (let j = 0; j < this.boardSize; j++) {
@@ -509,7 +624,7 @@ class GomokuGame {
           this.board[i][j] = this.aiPlayer;
           if (this.checkWin(i, j, this.aiPlayer)) {
             this.board[i][j] = 0;
-            return { row: i, col: j };
+            return [i, j];
           }
           this.board[i][j] = 0;
         }
@@ -517,40 +632,135 @@ class GomokuGame {
     }
 
     // 检查是否需要阻止玩家获胜
+    const humanPlayer = this.aiPlayer === 1 ? 2 : 1;
     for (let i = 0; i < this.boardSize; i++) {
       for (let j = 0; j < this.boardSize; j++) {
         if (this.board[i][j] === 0) {
-          this.board[i][j] = this.currentPlayer;
-          if (this.checkWin(i, j, this.currentPlayer)) {
+          this.board[i][j] = humanPlayer;
+          if (this.checkWin(i, j, humanPlayer)) {
             this.board[i][j] = 0;
-            return { row: i, col: j };
+            return [i, j];
           }
           this.board[i][j] = 0;
         }
       }
     }
 
-    // 使用评估函数选择最佳位置
-    let bestScore = -Infinity;
+    // 使用Minimax算法
+    const [score, move] = this.minimax(this.board, this.aiPlayer, this.difficulty);
+    return move;
+  }
+
+  // Minimax算法实现
+  minimax(board, role, depth, alpha = -Infinity, beta = Infinity, isMaximizing = true) {
+    if (depth === 0) {
+      return [this.evaluateBoard(board, role), null];
+    }
+
+    // 检查游戏结束
+    const winner = this.checkWinner(board);
+    if (winner !== 0) {
+      return [winner === role ? 1000000 : -1000000, null];
+    }
+
+    const moves = this.getValuableMoves(board, isMaximizing ? role : (role === 1 ? 2 : 1));
+    
+    if (moves.length === 0) {
+      return [this.evaluateBoard(board, role), null];
+    }
+
     let bestMove = null;
+    let bestScore = isMaximizing ? -Infinity : Infinity;
+
+    for (let [i, j, score] of moves) {
+      // 模拟落子
+      board[i][j] = isMaximizing ? role : (role === 1 ? 2 : 1);
+      
+      const [currentScore] = this.minimax(board, role, depth - 1, alpha, beta, !isMaximizing);
+      
+      // 撤销落子
+      board[i][j] = 0;
+
+      if (isMaximizing) {
+        if (currentScore > bestScore) {
+          bestScore = currentScore;
+          bestMove = [i, j];
+        }
+        alpha = Math.max(alpha, currentScore);
+      } else {
+        if (currentScore < bestScore) {
+          bestScore = currentScore;
+          bestMove = [i, j];
+        }
+        beta = Math.min(beta, currentScore);
+      }
+
+      // Alpha-Beta剪枝
+      if (beta <= alpha) {
+        break;
+      }
+    }
+
+    return [bestScore, bestMove];
+  }
+
+  // 获取有价值的落点
+  getValuableMoves(board, role) {
+    const moves = [];
+    const opponent = role === 1 ? 2 : 1;
 
     for (let i = 0; i < this.boardSize; i++) {
       for (let j = 0; j < this.boardSize; j++) {
-        if (this.board[i][j] === 0) {
-          const score = this.evaluatePosition(i, j);
-          if (score > bestScore) {
-            bestScore = score;
-            bestMove = { row: i, col: j };
+        if (board[i][j] === 0) {
+          // 检查周围是否有棋子
+          let hasNeighbor = false;
+          for (let di = -2; di <= 2; di++) {
+            for (let dj = -2; dj <= 2; dj++) {
+              const ni = i + di;
+              const nj = j + dj;
+              if (ni >= 0 && ni < this.boardSize && nj >= 0 && nj < this.boardSize && board[ni][nj] !== 0) {
+                hasNeighbor = true;
+                break;
+              }
+            }
+            if (hasNeighbor) break;
+          }
+
+          if (hasNeighbor || this.moveHistory.length < 3) { // 前几步考虑中心位置
+            const score = this.evaluatePosition(board, i, j, role);
+            moves.push([i, j, score]);
           }
         }
       }
     }
 
-    return bestMove;
+    // 按分数排序
+    moves.sort((a, b) => b[2] - a[2]);
+    return moves.slice(0, 20); // 限制搜索节点数
   }
 
-  evaluatePosition(row, col) {
+  // 评估棋盘状态
+  evaluateBoard(board, role) {
     let score = 0;
+    const opponent = role === 1 ? 2 : 1;
+
+    for (let i = 0; i < this.boardSize; i++) {
+      for (let j = 0; j < this.boardSize; j++) {
+        if (board[i][j] === role) {
+          score += this.evaluatePosition(board, i, j, role);
+        } else if (board[i][j] === opponent) {
+          score -= this.evaluatePosition(board, i, j, opponent);
+        }
+      }
+    }
+
+    return score;
+  }
+
+  // 评估单个位置
+  evaluatePosition(board, row, col, role) {
+    let score = 0;
+    const opponent = role === 1 ? 2 : 1;
 
     // 中心位置加分
     const centerRow = Math.floor(this.boardSize / 2);
@@ -558,47 +768,109 @@ class GomokuGame {
     const distanceFromCenter = Math.abs(row - centerRow) + Math.abs(col - centerCol);
     score += (this.boardSize - distanceFromCenter) * 2;
 
-    // 检查周围棋子的影响
-    const directions = [
-      [0, 1],
-      [1, 0],
-      [1, 1],
-      [1, -1],
-    ];
+    // 检查四个方向的棋型
+    const directions = [[1, 0], [0, 1], [1, 1], [1, -1]];
 
     for (let [dx, dy] of directions) {
-      let aiCount = 0;
-      let playerCount = 0;
-      let emptyCount = 0;
-
-      // 检查这个方向上的棋子
-      for (let i = -4; i <= 4; i++) {
-        if (i === 0) continue;
-
-        const newRow = row + i * dx;
-        const newCol = col + i * dy;
-
-        if (newRow >= 0 && newRow < this.boardSize && newCol >= 0 && newCol < this.boardSize) {
-          if (this.board[newRow][newCol] === this.aiPlayer) {
-            aiCount++;
-          } else if (this.board[newRow][newCol] === (this.aiPlayer === 1 ? 2 : 1)) {
-            playerCount++;
-          } else {
-            emptyCount++;
-          }
-        }
-      }
-
-      // 根据棋子数量给分
-      if (aiCount > 0) {
-        score += aiCount * 10;
-      }
-      if (playerCount > 0) {
-        score += playerCount * 8;
-      }
+      const shape = this.getShape(board, row, col, dx, dy, role);
+      score += this.getShapeScore(shape);
     }
 
     return score;
+  }
+
+  // 获取棋型
+  getShape(board, x, y, offsetX, offsetY, role) {
+    const opponent = role === 1 ? 2 : 1;
+    let emptyCount = 0;
+    let selfCount = 1;
+    let opponentCount = 0;
+
+    // 检查四个方向
+    for (let i = 1; i <= 4; i++) {
+      const newX = x + i * offsetX;
+      const newY = y + i * offsetY;
+      
+      if (newX >= 0 && newX < this.boardSize && newY >= 0 && newY < this.boardSize) {
+        if (board[newX][newY] === role) {
+          selfCount++;
+        } else if (board[newX][newY] === opponent) {
+          opponentCount++;
+          break;
+        } else {
+          emptyCount++;
+        }
+      } else {
+        opponentCount++;
+        break;
+      }
+    }
+
+    for (let i = 1; i <= 4; i++) {
+      const newX = x - i * offsetX;
+      const newY = y - i * offsetY;
+      
+      if (newX >= 0 && newX < this.boardSize && newY >= 0 && newY < this.boardSize) {
+        if (board[newX][newY] === role) {
+          selfCount++;
+        } else if (board[newX][newY] === opponent) {
+          opponentCount++;
+          break;
+        } else {
+          emptyCount++;
+        }
+      } else {
+        opponentCount++;
+        break;
+      }
+    }
+
+    // 根据棋型给分
+    if (selfCount >= 5) {
+      return 1000000; // 连五
+    } else if (selfCount === 4 && emptyCount > 0) {
+      return opponentCount === 0 ? 100000 : 1500; // 活四 : 冲四
+    } else if (selfCount === 3 && emptyCount >= 2) {
+      return opponentCount === 0 ? 1000 : 150; // 活三 : 眠三
+    } else if (selfCount === 2 && emptyCount >= 3) {
+      return opponentCount === 0 ? 100 : 15; // 活二 : 眠二
+    }
+
+    return 0;
+  }
+
+  // 获取棋型分数
+  getShapeScore(shape) {
+    return shape;
+  }
+
+  // 检查获胜者
+  checkWinner(board) {
+    const directions = [[1, 0], [0, 1], [1, 1], [1, -1]];
+
+    for (let i = 0; i < this.boardSize; i++) {
+      for (let j = 0; j < this.boardSize; j++) {
+        if (board[i][j] !== 0) {
+          for (let [dx, dy] of directions) {
+            let count = 1;
+            let x = i + dx;
+            let y = j + dy;
+
+            while (x >= 0 && x < this.boardSize && y >= 0 && y < this.boardSize && board[x][y] === board[i][j]) {
+              count++;
+              x += dx;
+              y += dy;
+            }
+
+            if (count >= 5) {
+              return board[i][j];
+            }
+          }
+        }
+      }
+    }
+
+    return 0;
   }
 
   updateUI() {
