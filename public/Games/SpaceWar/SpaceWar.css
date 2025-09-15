@@ -1,0 +1,19 @@
+.game-area {
+  position: relative;
+  height: calc(100vh - 210px);
+  font-family: "JetBrains Mono", Consolas, "Noto Sans SC", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.画板区 {
+  height: clamp(600px, 100%, 1200px);
+  aspect-ratio: 0.6666666666667;
+  outline: solid 1px #bcd;
+}
+
+#画板 {
+  width: 100%;
+  height: 100%;
+}
