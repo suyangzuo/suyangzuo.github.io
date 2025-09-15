@@ -118,6 +118,14 @@ for (let i = 0; i < 表格单元格.length; i++) {
   const 所有单元格 = document.querySelectorAll("td");
   所有单元格.forEach((item) => {
     item.style.backgroundColor = "rgba(41, 40, 40, 0.5)";
-    单元格.classList.remove("已经放置");
+    item.classList.remove("已经放置");
+    const 科目名称区 = item.querySelector(".科目名称区");
+    const 老师区 = item.querySelector(".老师区");
+    if (科目名称区) {
+      科目名称区.textContent = "";
+    }
+    if (老师区) {
+      老师区.textContent = "";
+    }
   });
 });
