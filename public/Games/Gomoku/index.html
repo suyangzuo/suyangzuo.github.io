@@ -53,6 +53,10 @@
               <span class="玩家名称 白棋" id="currentPlayer">黑棋</span>
             </div>
             <div class="游戏状态" id="gameStatus">游戏进行中</div>
+            <div class="AI思考提示" id="aiThinking" style="display: none">
+              <span class="思考动画">●</span>
+              <span class="思考文本">AI思考中</span>
+            </div>
           </div>
           <div class="游戏结果" id="gameResult" style="display: none">
             <div class="结果内容" id="resultContent"></div>
@@ -66,18 +70,28 @@
               <button class="关闭按钮" id="closeInstructions">×</button>
               <div class="说明部分">
                 <p><strong>游戏规则：</strong></p>
-                <p>• 黑棋先手，双方轮流下棋</p>
+                <p>• 黑棋先手，双方轮流在棋盘交叉点下棋</p>
                 <p>• 率先在横、竖、斜任意方向连成五子者获胜</p>
-                <p>• 点击棋盘交叉点下棋</p>
-                <p>• 支持悔棋功能</p>
+                <p>• 支持悔棋功能，可撤销上一步操作</p>
                 <p>• 可切换AI模式进行人机对战</p>
+                <p>• AI难度可调节，搜索深度越深棋力越强</p>
+                <p>• 支持AI先手/后手选择</p>
               </div>
               <div class="算法说明">
                 <p><strong>AI算法：</strong></p>
-                <p>• 参考了 <a href="https://github.com/itlwei/Wuzi" target="_blank">itlwei/Wuzi项目</a> 的算法思路</p>
-                <p>• 使用启发式评估 + 贪心策略</p>
-                <p>• 优先获胜和防守，其次选择最佳位置</p>
-                <p>• <span class="算法限制">当前缺乏深度搜索（Minimax/Alpha-Beta剪枝）</span></p>
+                <p>• 基于 <a href="https://github.com/lihongxun945/gobang" target="_blank">lihongxun945/gobang项目</a> 的算法实现</p>
+                <p>• 使用 <span class="算法升级">极小化极大算法 + Alpha-Beta剪枝</span></p>
+                <p>• 智能棋型识别和启发式评估函数</p>
+                <p>• Zobrist哈希缓存和搜索深度控制</p>
+                <p>• 支持必胜/必防策略和迭代加深</p>
+                <p>• AI思考时间会根据难度和硬件性能变化</p>
+              </div>
+              <div class="性能说明">
+                <p><strong>性能说明：</strong></p>
+                <p>• AI算法完全依赖本地计算，性能越强,速度越快</p>
+                <p>• 难度越高，搜索深度越深，耗时越长</p>
+                <p>• 如感觉AI走棋过慢，可适当调整难度</p>
+                <p>• 本AI未使用神经网络，基于传统博弈算法</p>
                 <p>by 杜宗远 <a href="mailto:keaidang@gmail.com" title="作者：杜宗远">keaidang@gmail.com</a></p>
               </div>
             </div>
@@ -94,6 +108,25 @@
                 <span class="标签标题">人类</span>
                 <input type="radio" id="人类" class="单选框" name="模式" />
               </label>
+            </div>
+            <div class="AI设置区">
+              <div class="先手设置">
+                <label for="AI先手" class="标签 单选标签">
+                  <span class="标签标题">AI先手</span>
+                  <input type="radio" id="AI先手" class="单选框 AI先手" name="先手" />
+                </label>
+                <label for="人类先手" class="标签 单选标签">
+                  <span class="标签标题">人类先手</span>
+                  <input type="radio" id="人类先手" class="单选框 人类先手" name="先手" checked />
+                </label>
+              </div>
+              <div class="难度设置">
+                <label for="难度" class="标签 滑块标签">
+                  <span class="标签标题">AI难度</span>
+                  <input type="range" id="难度" class="滑块" min="1" max="6" value="4" />
+                  <span class="滑块数值" id="难度数值">4</span>
+                </label>
+              </div>
             </div>
             <div class="辅助效果区">
               <label for="音效" class="标签 复选标签">
