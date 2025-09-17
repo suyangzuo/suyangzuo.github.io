@@ -9,7 +9,7 @@
 
 .画板区 {
   height: clamp(600px, 100%, 1200px);
-  aspect-ratio: 0.6666666666667;
+  aspect-ratio: 0.75;
   outline: solid 2px #678;
   backdrop-filter: blur(10px) brightness(0.5);
 }

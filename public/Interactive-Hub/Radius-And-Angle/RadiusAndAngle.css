@@ -148,6 +148,13 @@
 }
 
 /* 响应式设计 */
+@media (max-height: 1100px) {
+  .弧度和角度总区 {
+    padding-top: 150px;
+    height: fit-content;
+  }
+}
+
 @media (max-width: 900px) {
   .展示区,
   .控制区 {

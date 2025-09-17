@@ -32,7 +32,7 @@ class SpaceWar {
       ],
       坐标: {
         x: this.中心点.x,
-        y: this.css高度 - 150,
+        y: this.css高度 * 0.8,
       },
       尺寸: {
         宽度: this.css宽度 * 0.1,
@@ -49,7 +49,7 @@ class SpaceWar {
       {
         等级: 0,
         速度: [2000, 2200, 2400, 2600],
-        宽度: [10, 15, 20, 25],
+        宽度: [10, 12, 14, 16],
         高度: [20, 25, 30, 35],
       },
       {
@@ -109,6 +109,7 @@ class SpaceWar {
       m: false,
     };
     this.添加键盘事件();
+    this.初始化ResizeObserver();
     this.玩家配置.图像.src = this.当前机型.图像源;
     this.玩家配置.图像.onload = () => {
       this.玩家配置.图像宽高比 = this.玩家配置.图像.naturalWidth / this.玩家配置.图像.naturalHeight;
@@ -378,6 +379,85 @@ class SpaceWar {
 
   清空画布() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
+  初始化ResizeObserver() {
+    this.resizeObserver = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        this.resizeCanvas();
+      }
+    });
+    this.resizeObserver.observe(this.canvas);
+  }
+
+  resizeCanvas() {
+    // 保存尺寸变化前的相对位置比例
+    const 玩家X比例 = this.玩家配置.坐标.x / this.css宽度;
+    const 玩家Y比例 = this.玩家配置.坐标.y / this.css高度;
+    
+    // 保存子弹增强道具的相对位置比例
+    let 道具X比例 = 0;
+    let 道具Y比例 = 0;
+    if (this.子弹等级道具.已生成) {
+      道具X比例 = this.子弹等级道具.坐标.x / this.css宽度;
+      道具Y比例 = this.子弹等级道具.坐标.y / this.css高度;
+    }
+    
+    // 重新计算CSS尺寸
+    this.css宽度 = this.canvas.offsetWidth;
+    this.css高度 = this.canvas.offsetHeight;
+    
+    // 重新设置canvas的实际尺寸
+    this.canvas.width = this.css宽度 * this.dpr;
+    this.canvas.height = this.css高度 * this.dpr;
+    this.ctx.scale(this.dpr, this.dpr);
+    
+    // 重新计算中心点
+    this.中心点 = { x: this.canvas.offsetWidth / 2, y: this.canvas.offsetHeight / 2 };
+    
+    // 重新计算玩家尺寸
+    this.玩家配置.尺寸.宽度 = this.css宽度 * 0.1;
+    if (this.玩家配置.图像宽高比) {
+      this.玩家配置.尺寸.高度 = this.玩家配置.尺寸.宽度 / this.玩家配置.图像宽高比;
+    }
+    
+    // 根据比例重新计算玩家坐标，并确保不超出边界
+    this.玩家配置.坐标.x = 玩家X比例 * this.css宽度;
+    this.玩家配置.坐标.x = Math.min(this.玩家配置.坐标.x, this.canvas.offsetWidth - this.玩家配置.尺寸.宽度 / 2);
+    this.玩家配置.坐标.x = Math.max(this.玩家配置.坐标.x, this.玩家配置.尺寸.宽度 / 2);
+    
+    this.玩家配置.坐标.y = 玩家Y比例 * this.css高度;
+    this.玩家配置.坐标.y = Math.min(this.玩家配置.坐标.y, this.canvas.offsetHeight - this.玩家配置.尺寸.高度);
+    this.玩家配置.坐标.y = Math.max(this.玩家配置.坐标.y, 0);
+    
+    // 更新子弹起始坐标
+    this.玩家配置.子弹起始坐标.x = this.玩家配置.坐标.x;
+    this.玩家配置.子弹起始坐标.y = this.玩家配置.坐标.y;
+    
+    // 重新计算子弹增强道具尺寸
+    this.子弹等级道具.尺寸.宽度 = Math.round(50 * 新子弹尺寸比例 / 子弹尺寸比例);
+    if (this.子弹等级道具.图像.naturalWidth && this.子弹等级道具.图像.naturalHeight) {
+      const 子弹等级道具图像宽高比 = this.子弹等级道具.图像.naturalWidth / this.子弹等级道具.图像.naturalHeight;
+      this.子弹等级道具.尺寸.高度 = this.子弹等级道具.尺寸.宽度 / 子弹等级道具图像宽高比;
+    }
+    
+    // 如果道具已生成，根据比例重新计算其位置
+    if (this.子弹等级道具.已生成) {
+      this.子弹等级道具.坐标.x = 道具X比例 * this.css宽度;
+      this.子弹等级道具.坐标.y = 道具Y比例 * this.css高度;
+      
+      // 确保道具不超出边界
+      this.子弹等级道具.坐标.x = Math.min(this.子弹等级道具.坐标.x, this.canvas.offsetWidth - this.子弹等级道具.尺寸.宽度);
+      this.子弹等级道具.坐标.x = Math.max(this.子弹等级道具.坐标.x, 0);
+      this.子弹等级道具.坐标.y = Math.min(this.子弹等级道具.坐标.y, this.canvas.offsetHeight - this.子弹等级道具.尺寸.高度);
+      this.子弹等级道具.坐标.y = Math.max(this.子弹等级道具.坐标.y, 0);
+    }
+    
+    // 更新已存在子弹的尺寸
+    for (const 子弹 of this.玩家子弹组) {
+      子弹.width = Math.round(子弹.width * 新子弹尺寸比例 / 子弹尺寸比例);
+      子弹.height = Math.round(子弹.height * 新子弹尺寸比例 / 子弹尺寸比例);
+    }
   }
 }
 
