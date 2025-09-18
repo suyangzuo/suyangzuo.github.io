@@ -20,7 +20,6 @@ body {
   margin: 3px;
   position: relative;
   overflow: hidden;
-  transition: 250ms;
 }
 
 .game-grid.none {

@@ -6,7 +6,7 @@
   --secondary-color: #4a90e2;
   --background-color: #1a1a1a;
   --panel-bg: rgba(255, 255, 255, 0.05);
-  --border-color: rgba(255, 255, 255, 0.2);
+  --border-color: rgba(255, 255, 255, 0.125);
   --text-color: #ffffff;
   --text-secondary: #cccccc;
 }
@@ -251,10 +251,10 @@
 }
 
 .preset-btn {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.075);
   color: var(--text-color);
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
   padding: 10px 12px;
   font-size: 12px;
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
@@ -267,14 +267,13 @@
 }
 
 .preset-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
   border-color: var(--primary-color);
 }
 
 .preset-btn.active {
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(42, 151, 140, 0.3);
-  background: rgba(42, 151, 140, 0.1);
+  background: rgba(42, 151, 140, 0.2);
 }
 
 .preset-btn .preset-name {
@@ -284,7 +283,7 @@
 }
 
 .preset-btn .preset-code {
-  font-family: "JetBrains Mono", "Consolas", "Monaco", monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", "Consolas", "Monaco", monospace;
   font-size: 14px;
   color: var(--text-secondary);
   opacity: 0.8;
@@ -292,6 +291,7 @@
 
 .preset-btn .preset-code .function-name {
   color: #68d391;
+  font-family: "JetBrains Mono", "Consolas", "Monaco", monospace;
 }
 
 .preset-btn .preset-code .parentheses {

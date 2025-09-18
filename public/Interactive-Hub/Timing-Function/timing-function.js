@@ -160,7 +160,9 @@ class CubicBezierEditor {
 
     this.draw();
     this.updateCode();
-    this.updatePresetHighlight();
+    if (!this.isAnimating) {
+      this.updatePresetHighlight();
+    }
 
     if (progress >= 1) {
       this.isAnimating = false;
@@ -307,8 +309,8 @@ class CubicBezierEditor {
     this.drawGrid();
     this.drawAxes();
     this.drawBezierCurve();
-    this.drawControlPoints();
     this.drawLabels();
+    this.drawControlPoints();
   }
 
   drawGrid() {
@@ -438,7 +440,7 @@ class CubicBezierEditor {
     const coord1Width = this.ctx.measureText(coord1Text).width;
 
     // 绘制背景，增加垂直内边距
-    this.ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
+    this.ctx.fillStyle = "rgb(20, 20, 20)";
     this.ctx.fillRect(cp1.x + 15, cp1.y + 3, coord1Width + 10, 19);
 
     // 绘制坐标文本
@@ -458,7 +460,7 @@ class CubicBezierEditor {
     const coord2Width = this.ctx.measureText(coord2Text).width;
 
     // 绘制背景，增加垂直内边距
-    this.ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
+    this.ctx.fillStyle = "rgb(20, 20, 20)";
     this.ctx.fillRect(cp2.x + 15, cp2.y + 3, coord2Width + 10, 19);
 
     // 绘制坐标文本
