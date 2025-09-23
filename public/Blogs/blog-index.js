@@ -769,6 +769,17 @@ function 特殊元素样式补充() {
       表格.style.marginBottom = "50px";
     }
   });
+
+  const 分区列表项组 = document.querySelectorAll(".分区列表项");
+  分区列表项组?.forEach((分区列表项) => {
+    if (
+      分区列表项.hasChildNodes() &&
+      分区列表项.firstChild.nodeType === Node.TEXT_NODE &&
+      分区列表项.firstChild.textContent.trim().length === 0
+    ) {
+      分区列表项.firstChild.textContent = "";
+    }
+  });
 }
 
 //---------------------- ↑ 对内容中的特殊元素补充样式 ----------------------

@@ -1646,7 +1646,7 @@
     </pre>
     <p class="分区普通文本">当然，仅有两句代码，只能绘制路径，还是无法看见三次贝塞尔曲线，你还需要为其描边。</p>
 
-    <h3 class="分区标题 分区3级标题">三次贝塞尔曲线碰撞检测</h3>
+    <h3 class="分区标题 分区3级标题">碰撞检测</h3>
     <p class="分区普通文本">
       三次贝塞尔曲线只是一个线条，而不是一个封闭的区域，怎么判断鼠标是否位于三次贝塞尔曲线上呢？
     </p>
@@ -1678,24 +1678,30 @@
     </p>
     <p class="分区普通文本">大致来说，检测过程分为以下几步：</p>
     <ol class="分区列表 有序列表">
-      <li class="分区列表项">设置采样点数量</li>
-      <li class="分区列表项">设置容差</li>
+      <li class="分区列表项"><span>设置采样点数量</span></li>
+      <li class="分区列表项"><span>设置容差</span></li>
       <li class="分区列表项">
-        根据采样点数量和<span class="强调"
-          ><span class="专业名词 等宽"
-            ><span style="color: lightsteelblue">[</span>0 - 1<span style="color: lightsteelblue">]</span></span
-          >平均分布</span
-        >原则，计算每个采样点的<span class="行内代码">t</span>
+        <span
+          >根据采样点数量和<span class="强调"
+            ><span class="专业名词 等宽"
+              ><span style="color: lightsteelblue">[</span>0 - 1<span style="color: lightsteelblue">]</span></span
+            >平均分布</span
+          >原则，计算每个采样点的<span class="行内代码">t</span></span
+        >
       </li>
       <li class="分区列表项">
-        根据<span class="行内代码">t</span>和<span class="行内专业名词">三次贝塞尔曲线的坐标</span
-        >，计算每个采样点的坐标
+        <span
+          >根据<span class="行内代码">t</span>和<span class="行内专业名词">三次贝塞尔曲线的坐标</span
+          >，计算每个采样点的坐标</span
+        >
       </li>
-      <li class="分区列表项">依次计算鼠标与每个采样点的距离</li>
+      <li class="分区列表项"><span>依次计算鼠标与每个采样点的距离</span></li>
       <li class="分区列表项">
-        只要找到第一个满足<span class="专业名词 等宽"
-          ><span class="强调">距离<span class="行内代码"><=</span>容差</span></span
-        >的采样点，则认为鼠标在贝塞尔曲线上，且结束检测
+        <span
+          >只要找到第一个满足<span class="专业名词 等宽"
+            ><span class="强调">距离<span class="行内代码"><=</span>容差</span></span
+          >的采样点，则认为鼠标在贝塞尔曲线上，且结束检测</span
+        >
       </li>
     </ol>
     <pre class="line-numbers">
@@ -1978,15 +1984,15 @@
           if (Number.isInteger(t)) {
             return t.toString();
           }
-          
+
           // 如果是小数，去掉末尾的0
           const 格式化后 = t.toFixed(2);
-          if (格式化后.endsWith('.00')) {
+          if (格式化后.endsWith(".00")) {
             return 格式化后.slice(0, -3); // 去掉.00
-          } else if (格式化后.endsWith('0')) {
+          } else if (格式化后.endsWith("0")) {
             return 格式化后.slice(0, -1); // 去掉末尾的0
           }
-          
+
           return 格式化后;
         }
 
@@ -2112,7 +2118,7 @@
           // 设置字体并测量文字宽度
           this.ctx.font = "14px 'Noto Sans SC', sans-serif";
           const 显示文字宽度 = this.ctx.measureText("显示").width;
-          
+
           let 后续文字宽度 = 0;
           if (复选框.label === "显示t") {
             this.ctx.font = "14px 'Google Sans Code', monospace";
@@ -2131,12 +2137,7 @@
           const 复选框文本结束x = 复选框文本开始x + 显示文字宽度 + 3 + 后续文字宽度;
 
           // 检查鼠标是否在复选框、文本或空隙范围内
-          return (
-            x >= 复选框.x &&
-            x <= 复选框文本结束x &&
-            y >= 复选框.y &&
-            y <= 复选框.y + 复选框.size
-          );
+          return x >= 复选框.x && x <= 复选框文本结束x && y >= 复选框.y && y <= 复选框.y + 复选框.size;
         }
 
         绘制滑块() {
@@ -2260,7 +2261,11 @@
             this.ctx.fillText("采样点", 复选框.x + 复选框.size + 10 + 显示文字宽度 + 3, 复选框.y + 复选框.size / 2 + 5);
           } else if (复选框.label === "显示有效采样范围") {
             this.ctx.font = "14px 'Noto Sans SC', sans-serif";
-            this.ctx.fillText("有效采样范围", 复选框.x + 复选框.size + 10 + 显示文字宽度 + 3, 复选框.y + 复选框.size / 2 + 5);
+            this.ctx.fillText(
+              "有效采样范围",
+              复选框.x + 复选框.size + 10 + 显示文字宽度 + 3,
+              复选框.y + 复选框.size / 2 + 5
+            );
           }
         }
       }
