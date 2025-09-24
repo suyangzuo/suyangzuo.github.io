@@ -42,7 +42,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .code {
-  font-family: "JetBrains Mono", Consolas, monospace, 微软雅黑;
+  font-family: "JetBrains Mono", Consolas, 微软雅黑;
 }
 
 input:hover {
@@ -212,7 +212,7 @@ label span {
 .标题行号 {
   margin: 0 5px;
   color: cornflowerblue;
-  font-family: "JetBrains Mono", Consolas, monospace, 微软雅黑;
+  font-family: "JetBrains Mono", Consolas, 微软雅黑;
 }
 
 .弹性数据 {
@@ -224,7 +224,7 @@ label span {
 .弹性数据数值 {
   color: lightseagreen;
   margin-right: 2px;
-  font-family: "JetBrains Mono", Consolas, monospace, 微软雅黑;
+  font-family: "JetBrains Mono", Consolas, 微软雅黑;
 }
 
 .弹性数据单位 {
@@ -254,7 +254,7 @@ label span {
   justify-content: center;
   align-items: center;
   gap: 2px;
-  font-family: "JetBrains Mono", Consolas, monospace, 微软雅黑;
+  font-family: "JetBrains Mono", Consolas, 微软雅黑;
 }
 
 .弹性项高度数值 {
@@ -268,7 +268,7 @@ label span {
 }
 
 label span {
-  font-family: "JetBrains Mono", Consolas, monospace, 微软雅黑;
+  font-family: "JetBrains Mono", Consolas, 微软雅黑;
 }
 
 .操纵区 {
@@ -346,7 +346,7 @@ label span {
 #盒子数量文本 {
   width: 25px;
   text-align: left;
-  font-family: "JetBrains Mono", Consolas, monospace, 微软雅黑;
+  font-family: "JetBrains Mono", Consolas, 微软雅黑;
 }
 
 #盒子尺寸操纵区 .操纵区标题 {
@@ -431,7 +431,7 @@ label:hover :is(#盒子透明复选框, #行透明复选框) {
 }
 
 .操纵区标题 {
-  font-family: "JetBrains Mono", Consolas, monospace, 微软雅黑;
+  font-family: "JetBrains Mono", Consolas, 微软雅黑;
   color: rgb(223, 115, 53);
   width: 140px;
   user-select: none;

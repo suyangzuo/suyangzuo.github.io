@@ -69,7 +69,7 @@
 
 .得分区 {
   font-size: 2.25em;
-  font-family: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑， monospace, sans-serif;
+  font-family: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑， sans-serif;
   display: flex;
   align-items: center;
   gap: 15px;

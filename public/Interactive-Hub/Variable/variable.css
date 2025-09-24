@@ -9,7 +9,7 @@
   --光标-手指: url("/Images/Common/鼠标-指向.cur"), pointer;
   --中文字体: "Noto Sans SC", 微软雅黑，sans-serif;
   --代码字体: "JetBrains Mono", Consolas, monospace;
-  --中文代码混合字体: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, monospace, sans-serif;
+  --中文代码混合字体: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 .变量总区 {
@@ -304,7 +304,7 @@
 
 .文本框 {
   width: 0;
-  font-family: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑， monospace, sans-serif;
+  font-family: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑， sans-serif;
   padding: 3px 4px;
   background-color: #20252a;
   outline: solid 1px #60656a;

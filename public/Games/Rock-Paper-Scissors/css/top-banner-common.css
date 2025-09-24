@@ -235,7 +235,7 @@
   padding: 0 10px 0 45px;
   font-size: 16px;
   color: #ddd;
-  font-family: "JetBrains Mono", "Noto Sans SC", monospace, sans-serif;
+  font-family: "JetBrains Mono", "Noto Sans SC", sans-serif;
   outline: solid 2px transparent;
   transition: 125ms;
 }
@@ -249,7 +249,7 @@
 }
 
 #搜索框::placeholder {
-  font-family: "JetBrains Mono", "Noto Sans SC", monospace, sans-serif;
+  font-family: "JetBrains Mono", "Noto Sans SC", sans-serif;
   color: #aaa;
   transition: 125ms;
 }
@@ -259,7 +259,7 @@
 }
 
 #搜索框::-moz-placeholder {
-  font-family: "JetBrains Mono", "Noto Sans SC", monospace, sans-serif;
+  font-family: "JetBrains Mono", "Noto Sans SC", sans-serif;
   color: #aaa;
 }
 

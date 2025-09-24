@@ -182,7 +182,7 @@ body {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  font-family: Consolas, monospace, "Noto Sans SC", sans-serif;
+  font-family: Consolas, "Noto Sans SC", sans-serif;
 }
 
 .奖品设置项 {
@@ -456,7 +456,7 @@ body {
   border-radius: 999px;
   background-color: #151821;
   font-size: 12px;
-  font-family: Consolas, monospace, "Noto Sans SC", sans-serif;
+  font-family: Consolas, "Noto Sans SC", sans-serif;
 }
 
 .奖品文本 {
@@ -464,5 +464,5 @@ body {
   writing-mode: vertical-lr;
   text-align: center;
   align-content: center;
-  font-family: Consolas, monospace, "Noto Sans SC", sans-serif;
+  font-family: Consolas, "Noto Sans SC", sans-serif;
 }
