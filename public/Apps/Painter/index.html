@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>随心绘</title>
+    <link rel="icon" href="/Images/Apps/笔刷.png" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Titillium+Web&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Roboto+Mono&family=M+PLUS+Code+Latin&family=Ubuntu+Mono&family=M+PLUS+1+Code:wght@100..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
+    <link rel="stylesheet" type="text/css" href="/Styles/top-banner-common.css" />
+    <link rel="stylesheet" href="../apps-common-control.css" />
+    <link rel="stylesheet" href="./painter.css" />
+    <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <script src="/Scripts/top-banner.js" defer></script>
+    <script src="./Painter.js" defer></script>
+  </head>
+  <body>
+    <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
+    <script src="/Scripts/html-include.js" target="../apps-common-control.html" position="afterbegin"></script>
+    <div id="总区">
+      <div id="设置区">
+        <div class="基础形状区">
+          <div class="基础形状分区 矩形区" 形状="矩形">
+            <label class="形状符号" for="矩形"><i class="fa-regular fa-square"></i></label>
+            <input type="radio" name="基础形状" value="矩形" class="单选框 基础形状单选框" id="矩形"/>
+          </div>
+          <div class="基础形状分区 圆形区" 形状="圆">
+            <label class="形状符号" for="圆"><i class="fa-regular fa-circle"></i></label>
+            <input type="radio" name="基础形状" value="圆" class="单选框 基础形状单选框" id="圆"/>
+          </div>
+          <div class="基础形状分区 多边形区" 形状="多边形">
+            <label class="形状符号" for="多边形">&#11040;</label>
+            <input type="radio" name="基础形状" value="多边形" class="单选框 基础形状单选框" id="多边形"/>
+          </div>
+        </div>
+      </div>
+      <div id="绘图区">
+        <canvas id="画布"></canvas>
+      </div>
+    </div>
+  </body>
+</html>

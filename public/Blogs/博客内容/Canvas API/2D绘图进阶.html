@@ -10,7 +10,12 @@
       </p>
       <p class="日期">
         <span class="日期前缀 前缀">日期：</span>
-        <span class="日期文本"><span class="日期文本-数字 日期文本-年">2025</span>年<span class="日期文本-数字 日期文本-月">7</span>月<span class="日期文本-数字 日期文本-日">14</span>日</span>
+        <span class="日期文本"
+          ><span class="日期文本-数字 日期文本-年">2025</span>年<span class="日期文本-数字 日期文本-月">7</span>月<span
+            class="日期文本-数字 日期文本-日"
+            >14</span
+          >日</span
+        >
       </p>
     </section>
     <section class="简介信息图像">
@@ -1098,94 +1103,69 @@
           const 源图像高度 = 源图像.naturalHeight;
           const 源图像宽高比 = 源图像宽度 / 源图像高度;
 
-          const 画布_宽高中更小值 = 
-            canvas.offsetWidth &lt; canvas.offsetHeight ? 
-            canvas.offsetWidth : canvas.offsetHeight;
+          const 画布宽高比 = canvas.offsetWidth / canvas.offsetHeight;
 
           const 画布坐标 = {
-            x: (canvas.offsetWidth - 画布_宽高中更小值) / 2,   //图像在画布中水平居中
+            x: 0,
             y: 0
-          };  
+          };
+          let 绘制宽度 = 0;
+          let 绘制高度 = 0;
 
-          if (画布_宽高中更小值 === canvas.offsetWidth) {
-            ctx.drawImage(
-              源图像, 
-              画布坐标.x, 
-              画布坐标.y, 
-              画布_宽高中更小值,   //绘制宽度
-              画布_宽高中更小值 / 源图像宽高比   //绘制高度
-            );
+          if (画布宽高比 > 源图像宽高比) {
+            绘制高度 = canvas.offsetHeight;   //定高
+            绘制宽度 = 绘制高度 * 源图像宽高比;  //算宽
+            画布坐标.x = (canvas.offsetWidth - 绘制宽度) / 2;
           } else {
-            ctx.drawImage(
-              源图像, 
-              画布坐标.x, 
-              画布坐标.y, 
-              画布_宽高中更小值 * 源图像宽高比,   //绘制宽度
-              画布_宽高中更小值   //绘制高度
-            );
+            绘制宽度 = canvas.offsetWidth;    //定宽
+            绘制高度 = 绘制宽度 / 源图像宽高比;  //算高
+            画布坐标.y = (canvas.offsetHeight - 绘制高度) / 2;
           }
+
+          ctx.drawImage(源图像, 画布坐标.x, 画布坐标.y, 绘制宽度, 绘制高度);
         }
       </code>
     </pre>
     <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
-      <canvas
-        id="canvas-draw-image-5-params-vertical-fixed"
-        style="width: 100%; height: calc(100% - 42px); background-color: #222"
-      ></canvas>
+      <canvas id="canvas-ratio" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
     </figure>
     <p class="分区普通文本">&#129401;&#129401;&#129401; 麦麦你终于正常了！！！</p>
     <script>
-      const canvas_draw_image_5_params_vertical_fixed = document.getElementById(
-        "canvas-draw-image-5-params-vertical-fixed"
-      );
-      const ctx_draw_image_5_params_vertical_fixed = canvas_draw_image_5_params_vertical_fixed.getContext("2d");
-      const dpr_draw_image_5_params_vertical_fixed = window.devicePixelRatio || 1;
-      canvas_draw_image_5_params_vertical_fixed.width =
-        canvas_draw_image_5_params_vertical_fixed.offsetWidth * dpr_draw_image_5_params_vertical_fixed;
-      canvas_draw_image_5_params_vertical_fixed.height =
-        canvas_draw_image_5_params_vertical_fixed.offsetHeight * dpr_draw_image_5_params_vertical_fixed;
-      ctx_draw_image_5_params_vertical_fixed.scale(
-        dpr_draw_image_5_params_vertical_fixed,
-        dpr_draw_image_5_params_vertical_fixed
-      );
+      const canvas_ratio = document.getElementById("canvas-ratio");
+      const ctx_draw_image_5_ratio = canvas_ratio.getContext("2d");
+      const dpr_draw_image_5_ratio = window.devicePixelRatio || 1;
+      canvas_ratio.width = canvas_ratio.offsetWidth * dpr_draw_image_5_ratio;
+      canvas_ratio.height = canvas_ratio.offsetHeight * dpr_draw_image_5_ratio;
+      ctx_draw_image_5_ratio.scale(dpr_draw_image_5_ratio, dpr_draw_image_5_ratio);
 
-      const 源图像_5_params_vertical_fixed = new Image();
-      源图像_5_params_vertical_fixed.src = "/Interactive-Hub/Object-Fit/03.jpg";
-      源图像_5_params_vertical_fixed.onload = function () {
-        const 源图像实际宽度 = 源图像_5_params_vertical_fixed.naturalWidth;
-        const 源图像实际高度 = 源图像_5_params_vertical_fixed.naturalHeight;
+      const 源图像_5_ratio = new Image();
+      源图像_5_ratio.src = "/Interactive-Hub/Object-Fit/03.jpg";
+      源图像_5_ratio.onload = function () {
+        const 源图像实际宽度 = 源图像_5_ratio.naturalWidth;
+        const 源图像实际高度 = 源图像_5_ratio.naturalHeight;
         const 源图像宽高比 = 源图像实际宽度 / 源图像实际高度;
-        const 画布宽高比 =
-          canvas_draw_image_5_params_vertical_fixed.offsetWidth /
-          canvas_draw_image_5_params_vertical_fixed.offsetHeight;
-        let 画布图像宽度_5_params_vertical_fixed = 0;
-        let 画布图像高度_5_params_vertical_fixed = 0;
-        const 画布图像_更小尺寸_5_params_vertical_fixed =
-          canvas_draw_image_5_params_vertical_fixed.offsetWidth < canvas_draw_image_5_params_vertical_fixed.offsetHeight
-            ? canvas_draw_image_5_params_vertical_fixed.offsetWidth
-            : canvas_draw_image_5_params_vertical_fixed.offsetHeight;
-        if (画布图像_更小尺寸_5_params_vertical_fixed === canvas_draw_image_5_params_vertical_fixed.offsetWidth) {
-          画布图像宽度_5_params_vertical_fixed = 画布图像_更小尺寸_5_params_vertical_fixed;
-          画布图像高度_5_params_vertical_fixed = 画布图像_更小尺寸_5_params_vertical_fixed / 源图像宽高比;
-        } else {
-          画布图像高度_5_params_vertical_fixed = 画布图像_更小尺寸_5_params_vertical_fixed;
-          画布图像宽度_5_params_vertical_fixed = 画布图像高度_5_params_vertical_fixed * 源图像宽高比;
-        }
-        const 画布坐标_5_params_vertical_fixed = {
-          x: (canvas_draw_image_5_params_vertical_fixed.offsetWidth - 画布图像_更小尺寸_5_params_vertical_fixed) / 2,
+        const 画布宽高比 = canvas_ratio.offsetWidth / canvas_ratio.offsetHeight;
+        const 画布坐标_5_ratio = {
+          x: 0,
           y: 0,
         };
+        let 绘制宽度 = 0;
+        let 绘制高度 = 0;
 
-        ctx_draw_image_5_params_vertical_fixed.drawImage(
-          源图像_5_params_vertical_fixed,
-          画布坐标_5_params_vertical_fixed.x,
-          画布坐标_5_params_vertical_fixed.y,
-          画布图像宽度_5_params_vertical_fixed,
-          画布图像高度_5_params_vertical_fixed
-        );
+        if (画布宽高比 > 源图像宽高比) {
+          绘制高度 = canvas_ratio.offsetHeight;
+          绘制宽度 = 绘制高度 * 源图像宽高比;
+          画布坐标_5_ratio.x = (canvas_ratio.offsetWidth - 绘制宽度) / 2;
+        } else {
+          绘制宽度 = canvas_ratio.offsetWidth;
+          绘制高度 = 绘制宽度 / 源图像宽高比;
+          画布坐标_5_ratio.y = (canvas_ratio.offsetHeight - 绘制高度) / 2;
+        }
+
+        ctx_draw_image_5_ratio.drawImage(源图像_5_ratio, 画布坐标_5_ratio.x, 画布坐标_5_ratio.y, 绘制宽度, 绘制高度);
       };
-      源图像_5_params_vertical_fixed.onerror = function () {
-        console.warn("图像加载失败:", 源图像_5_params_vertical_fixed.src);
+      源图像_5_ratio.onerror = function () {
+        console.warn("图像加载失败:", 源图像_5_ratio.src);
       };
     </script>
   </article>
