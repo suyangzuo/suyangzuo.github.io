@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>图片编解码 · BASE64在线加解密</title>
+    <link rel="icon" href="/Images/Index-Images/APP.png" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
+    <link rel="stylesheet" type="text/css" href="../apps-common-control.css" />
+    <link rel="stylesheet" type="text/css" href="./base64.css" />
+    <script src="/Scripts/lordicon.js" defer></script>
+  </head>
+  <body>
+    <script src="../../Scripts/html-include.js" target="../../Apps/apps-common-control.html" position="afterbegin"></script>
+
+    <main class="base64-app">
+      <h1>图片编解码（base64）</h1>
+      <section class="tool-tabs">
+        <button class="tab-btn active" data-tab="text">文本</button>
+        <button class="tab-btn" data-tab="image">图片</button>
+      </section>
+
+      <section class="panel panel-text active" data-panel="text">
+        <div class="panel-row">
+          <div class="panel-col">
+            <div class="panel-header">
+              <h2>原始文本</h2>
+              <div class="actions">
+                <button id="text-clear">清空</button>
+                <button id="text-paste">粘贴</button>
+              </div>
+            </div>
+            <textarea id="text-input" placeholder="在此输入需要编码/解码的文本，支持 UTF-8 字符及表情"></textarea>
+            <div class="options">
+              <label><input type="checkbox" id="urlsafe" /> URL-Safe</label>
+            </div>
+            <div class="button-row">
+              <button id="encode-text" class="primary">编码 →</button>
+              <button id="decode-text" class="secondary">← 解码</button>
+            </div>
+          </div>
+          <div class="panel-col">
+            <div class="panel-header">
+              <h2>结果</h2>
+              <div class="actions">
+                <button id="text-copy">复制</button>
+                <button id="text-download">下载.txt</button>
+              </div>
+            </div>
+            <textarea id="text-output" readonly placeholder="这里显示编码或解码后的结果"></textarea>
+            <div class="meta" id="text-meta"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel panel-image" data-panel="image">
+        <div class="panel-row">
+          <div class="panel-col">
+            <div class="panel-header">
+              <h2>图片来源</h2>
+              <div class="actions">
+                <button id="img-clear">清空</button>
+              </div>
+            </div>
+            <div class="dropzone" id="img-dropzone">
+              <input type="file" id="img-file" accept="image/*" hidden />
+              <p>拖拽图片到此处，或 <button id="img-browse" class="link-btn" type="button">点击选择</button></p>
+              <p class="hint">也支持在此区域粘贴图片</p>
+            </div>
+            <div class="preview" id="img-preview">
+              <img id="img-preview-img" alt="预览" />
+            </div>
+            <div class="button-row">
+              <button id="encode-image" class="primary">图片转 BASE64</button>
+            </div>
+          </div>
+          <div class="panel-col">
+            <div class="panel-header">
+              <h2>BASE64 数据</h2>
+              <div class="actions">
+                <button id="img-paste">粘贴</button>
+                <button id="img-copy">复制</button>
+                <button id="img-download">下载.txt</button>
+              </div>
+            </div>
+            <textarea id="img-output" placeholder="在此粘贴或编辑 data URL（data:image/...;base64,....）"></textarea>
+            <div class="meta" id="img-meta"></div>
+            <div class="button-row">
+              <button id="decode-image" class="secondary">从 BASE64 还原图片</button>
+              <button id="download-image" class="secondary">下载图片</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="./base64.js"></script>
+  </body>
+  </html>
+
