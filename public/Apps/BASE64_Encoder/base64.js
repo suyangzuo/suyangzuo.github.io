@@ -137,6 +137,34 @@ document.addEventListener('DOMContentLoaded', () => {
     return new Blob([arr], { type: mime });
   }
 
+  function base64ToBytes(b64) {
+    const bin = atob(b64);
+    const arr = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    return arr;
+  }
+
+  function guessMimeFromBytes(bytes) {
+    if (bytes.length >= 8 && bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4E && bytes[3] === 0x47) return 'image/png';
+    if (bytes.length >= 3 && bytes[0] === 0xFF && bytes[1] === 0xD8 && bytes[2] === 0xFF) return 'image/jpeg';
+    if (bytes.length >= 4 && bytes[0] === 0x47 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x38) return 'image/gif';
+    if (bytes.length >= 12 && bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46 && bytes[8] === 0x57 && bytes[9] === 0x45 && bytes[10] === 0x42 && bytes[11] === 0x50) return 'image/webp';
+    if (bytes.length >= 2 && bytes[0] === 0x42 && bytes[1] === 0x4D) return 'image/bmp';
+    // 简单 SVG 判定：以 '<' 开头并包含 'svg'
+    if (bytes.length >= 4) {
+      const head = String.fromCharCode(bytes[0], bytes[1], bytes[2], bytes[3]).toLowerCase();
+      if (head.includes('<')) return 'image/svg+xml';
+    }
+    return 'application/octet-stream';
+  }
+
+  function looksLikeBase64(str) {
+    const s = str.trim();
+    if (!s) return false;
+    // 允许 URL-safe 字符
+    return /^[A-Za-z0-9+/_=-]+$/.test(s) && s.length >= 8;
+  }
+
   function handleFiles(files) {
     if (!files || !files.length) return;
     const file = files[0];
@@ -199,14 +227,35 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.getElementById('decode-image').addEventListener('click', () => {
-    const dataUrl = imgOutput.value.trim();
-    if (!/^data:image\/.+;base64,/.test(dataUrl)) { alert('请输入合法的 data:image/...;base64,... 字符串'); return; }
-    try {
-      const blob = dataURLtoBlob(dataUrl);
-      const url = URL.createObjectURL(blob);
-      previewImg.src = url;
-      setImgMeta({ size: blob.size, type: blob.type }, dataUrl);
-    } catch { alert('解码失败，请检查输入'); }
+    const input = (imgOutput.value || '').trim();
+    if (!input) { alert('请输入 Base64 或 data:image/...;base64,...'); return; }
+
+    // 情况1：data URL，直接解码
+    if (/^data:image\/.+;base64,/.test(input)) {
+      try {
+        const blob = dataURLtoBlob(input);
+        const url = URL.createObjectURL(blob);
+        previewImg.src = url;
+        setImgMeta({ size: blob.size, type: blob.type }, input);
+      } catch { alert('解码失败，请检查输入'); }
+      return;
+    }
+
+    // 情况2：纯 Base64，无前缀，尝试 URL-safe 还原并解码
+    if (looksLikeBase64(input)) {
+      try {
+        const normalized = fromUrlSafe ? fromUrlSafe(input) : input;
+        const bytes = base64ToBytes(normalized);
+        const mime = guessMimeFromBytes(bytes);
+        const blob = new Blob([bytes], { type: mime });
+        const url = URL.createObjectURL(blob);
+        previewImg.src = url;
+        setImgMeta({ size: blob.size, type: blob.type }, `base64(${normalized.length})`);
+      } catch { alert('纯Base64解析失败，请检查是否为有效的Base64字符串'); }
+      return;
+    }
+
+    alert('无法识别的输入格式：请粘贴 data:image/...;base64,... 或纯Base64字符串');
   });
 
   document.getElementById('download-image').addEventListener('click', () => {
