@@ -10,7 +10,7 @@ class GomokuGame {
     this.aiPlayer = 2; // AI玩家（白棋）
     this.aiFirst = false; // AI是否先手
     this.difficulty = 4; // AI难度 (1-6)
-    
+
     // AI算法相关
     this.cache = new Map(); // 缓存
     this.zobristTable = []; // Zobrist哈希表
@@ -54,14 +54,14 @@ class GomokuGame {
     const 人类先手单选框 = document.getElementById("人类先手");
     const 难度滑块 = document.getElementById("难度");
     const 难度数值 = document.getElementById("难度数值");
-    
+
     ai模式单选框.addEventListener("change", () => {
       this.toggleAIMode();
     });
     人类模式单选框.addEventListener("change", () => {
       this.toggleAIMode();
     });
-    
+
     ai先手单选框.addEventListener("change", () => {
       this.setAIFirst(true);
       this.updateFirstMoveButtons();
@@ -70,10 +70,11 @@ class GomokuGame {
       this.setAIFirst(false);
       this.updateFirstMoveButtons();
     });
-    
+
     难度滑块.addEventListener("input", (e) => {
       this.difficulty = parseInt(e.target.value);
       难度数值.textContent = this.difficulty;
+      this.updateSliderTrack(e.target); // << 新增：实时更新滑块样式
     });
 
     // 初始化棋盘
@@ -84,9 +85,23 @@ class GomokuGame {
 
     // 绘制棋盘
     this.drawBoard();
-    
+
     // 初始化AI设置区显示状态
     this.updateAISettingsVisibility();
+
+    this.updateSliderTrack(难度滑块); // << 新增：页面加载时设置初始样式
+  }
+
+  /**
+   * 更新滑块轨道的填充颜色
+   * @param {HTMLInputElement} slider - a range input element
+   */
+  updateSliderTrack(slider) {
+    const min = slider.min;
+    const max = slider.max;
+    const value = slider.value;
+    const progress = ((value - min) / (max - min)) * 100;
+    slider.style.setProperty("--slider-progress", `${progress}%`);
   }
 
   // 初始化Zobrist哈希表
@@ -113,84 +128,84 @@ class GomokuGame {
   updateFirstMoveButtons() {
     const ai先手标签 = document.querySelector('label[for="AI先手"]');
     const 人类先手标签 = document.querySelector('label[for="人类先手"]');
-    
+
     if (this.aiFirst) {
-      ai先手标签.classList.add('选中');
-      人类先手标签.classList.remove('选中');
+      ai先手标签.classList.add("选中");
+      人类先手标签.classList.remove("选中");
     } else {
-      ai先手标签.classList.remove('选中');
-      人类先手标签.classList.add('选中');
+      ai先手标签.classList.remove("选中");
+      人类先手标签.classList.add("选中");
     }
   }
 
   // 更新AI设置区显示状态
   updateAISettingsVisibility() {
-    const ai设置区 = document.querySelector('.AI设置区');
+    const ai设置区 = document.querySelector(".AI设置区");
     if (this.aiMode) {
-      ai设置区.classList.add('显示');
+      ai设置区.classList.add("显示");
     } else {
-      ai设置区.classList.remove('显示');
+      ai设置区.classList.remove("显示");
     }
   }
 
   // 显示AI思考提示
   showAIThinking() {
-    const ai思考提示 = document.getElementById('aiThinking');
-    const 游戏状态 = document.getElementById('gameStatus');
+    const ai思考提示 = document.getElementById("aiThinking");
+    const 游戏状态 = document.getElementById("gameStatus");
     if (ai思考提示 && 游戏状态) {
       // 保持游戏状态显示，不隐藏
       // 游戏状态.style.display = 'none';
-      ai思考提示.style.display = 'flex';
-      
+      ai思考提示.style.display = "flex";
+
       // 将提示移到body，避免受父元素影响
       if (!this.aiThinkingOriginalParent) {
         this.aiThinkingOriginalParent = ai思考提示.parentElement;
-        this.aiThinkingPlaceholder = document.createElement('span');
-        this.aiThinkingPlaceholder.style.display = 'none';
+        this.aiThinkingPlaceholder = document.createElement("span");
+        this.aiThinkingPlaceholder.style.display = "none";
         this.aiThinkingOriginalParent.insertBefore(this.aiThinkingPlaceholder, ai思考提示);
       }
       document.body.appendChild(ai思考提示);
-      
+
       // 将提示定位到棋盘中心，浮于上方
       const canvasRect = this.canvas.getBoundingClientRect();
       const centerX = canvasRect.left + canvasRect.width / 2;
       const centerY = canvasRect.top + canvasRect.height / 2;
-      
+
       // 使用CSS transform居中，直接设置中心点坐标
-      ai思考提示.style.position = 'fixed';
-      ai思考提示.style.left = centerX + 'px';
-      ai思考提示.style.top = centerY + 'px';
-      ai思考提示.style.transform = 'translate(-50%, -50%)';
-      ai思考提示.style.zIndex = '10000';
-      
+      ai思考提示.style.position = "fixed";
+      ai思考提示.style.left = centerX + "px";
+      ai思考提示.style.top = centerY + "px";
+      ai思考提示.style.transform = "translate(-50%, -50%)";
+      ai思考提示.style.zIndex = "10000";
+
       // 隐藏鼠标箭头
-      document.body.style.cursor = 'none';
+      document.body.style.cursor = "none";
     }
   }
 
   // 隐藏AI思考提示
   hideAIThinking() {
-    const ai思考提示 = document.getElementById('aiThinking');
-    const 游戏状态 = document.getElementById('gameStatus');
+    const ai思考提示 = document.getElementById("aiThinking");
+    const 游戏状态 = document.getElementById("gameStatus");
     if (ai思考提示 && 游戏状态) {
-      ai思考提示.style.display = 'none';
+      ai思考提示.style.display = "none";
       // 游戏状态保持原有显示状态，不需要重新设置
       // 游戏状态.style.display = this.moveHistory.length > 0 ? 'block' : 'none';
-      
+
       // 复位到原父节点
       if (this.aiThinkingOriginalParent && this.aiThinkingPlaceholder) {
         this.aiThinkingOriginalParent.insertBefore(ai思考提示, this.aiThinkingPlaceholder);
       }
-      
+
       // 重置样式
-      ai思考提示.style.position = '';
-      ai思考提示.style.left = '';
-      ai思考提示.style.top = '';
-      ai思考提示.style.transform = '';
-      ai思考提示.style.zIndex = '';
-      
+      ai思考提示.style.position = "";
+      ai思考提示.style.left = "";
+      ai思考提示.style.top = "";
+      ai思考提示.style.transform = "";
+      ai思考提示.style.zIndex = "";
+
       // 恢复鼠标箭头
-      document.body.style.cursor = 'default';
+      document.body.style.cursor = "default";
     }
   }
 
@@ -200,18 +215,18 @@ class GomokuGame {
       clearTimeout(this.aiThinkingTimer);
       this.aiThinkingTimer = null;
     }
-    
+
     // 清除所有可能的定时器（包括延迟的AI移动）
     for (let i = 1; i < 10000; i++) {
       clearTimeout(i);
     }
-    
+
     // 隐藏AI思考提示
     this.hideAIThinking();
-    
+
     // 恢复棋盘点击
     this.canvas.style.pointerEvents = "auto";
-    
+
     // 完全重置游戏状态
     this.board = [];
     for (let i = 0; i < this.boardSize; i++) {
@@ -237,17 +252,18 @@ class GomokuGame {
 
     // 重新绘制棋盘
     this.drawBoard();
-    
+
     // 延迟重置游戏状态，确保所有异步操作完成
     setTimeout(() => {
       this.gameOver = false; // 重新开始游戏
       this.updateUI();
       this.updateFirstMoveButtons();
-      
+
       // 如果AI先手，自动下第一步
       if (this.aiMode && this.aiFirst && this.currentPlayer === this.aiPlayer) {
         setTimeout(() => {
-          if (!this.gameOver && this.aiMode && this.currentPlayer === this.aiPlayer) { // 再次检查游戏状态
+          if (!this.gameOver && this.aiMode && this.currentPlayer === this.aiPlayer) {
+            // 再次检查游戏状态
             this.aiMove();
           }
         }, 500);
@@ -262,23 +278,23 @@ class GomokuGame {
       clearTimeout(this.aiThinkingTimer);
       this.aiThinkingTimer = null;
     }
-    
+
     // 清除所有可能的定时器
     for (let i = 1; i < 10000; i++) {
       clearTimeout(i);
     }
-    
+
     // 隐藏AI思考提示
     this.hideAIThinking();
-    
+
     // 恢复棋盘点击
     this.canvas.style.pointerEvents = "auto";
-    
+
     // 保存当前设置
     const currentAIMode = this.aiMode;
     const currentAIFirst = this.aiFirst;
     const currentDifficulty = this.difficulty;
-    
+
     // 完全重新初始化游戏对象
     this.board = [];
     for (let i = 0; i < this.boardSize; i++) {
@@ -293,12 +309,12 @@ class GomokuGame {
     this.cache.clear();
     this.预览行 = undefined;
     this.预览列 = undefined;
-    
+
     // 恢复设置
     this.aiMode = currentAIMode;
     this.aiFirst = currentAIFirst;
     this.difficulty = currentDifficulty;
-    
+
     // 隐藏游戏结果
     const gameResult = document.getElementById("gameResult");
     if (gameResult) {
@@ -309,7 +325,7 @@ class GomokuGame {
     this.drawBoard();
     this.updateUI();
     this.updateFirstMoveButtons();
-    
+
     // 如果AI先手，自动下第一步
     if (this.aiMode && this.aiFirst && this.currentPlayer === this.aiPlayer) {
       setTimeout(() => {
@@ -445,7 +461,7 @@ class GomokuGame {
     if (this.aiMode && this.currentPlayer === this.aiPlayer && !this.gameOver) {
       // 立即禁用棋盘点击，防止人类玩家在AI思考时继续下棋
       this.canvas.style.pointerEvents = "none";
-      
+
       setTimeout(() => {
         // 多重检查游戏状态，确保游戏还在进行中
         if (!this.gameOver && this.aiMode && this.currentPlayer === this.aiPlayer) {
@@ -741,12 +757,12 @@ class GomokuGame {
       // 恢复棋盘点击
       this.canvas.style.pointerEvents = "auto";
     }
-    
+
     this.aiMode = !this.aiMode;
-    
+
     // 控制AI设置区的显示/隐藏
     this.updateAISettingsVisibility();
-    
+
     if (this.aiMode && this.currentPlayer === this.aiPlayer && !this.gameOver) {
       this.aiMove();
     }
@@ -774,7 +790,7 @@ class GomokuGame {
         this.aiThinkingTimer = null;
         return;
       }
-      
+
       const bestMove = this.getBestMoveAdvanced();
       if (bestMove && !this.gameOver && this.aiMode && this.currentPlayer === this.aiPlayer) {
         this.makeMove(bestMove[0], bestMove[1]);
@@ -840,8 +856,8 @@ class GomokuGame {
       return [winner === role ? 1000000 : -1000000, null];
     }
 
-    const moves = this.getValuableMoves(board, isMaximizing ? role : (role === 1 ? 2 : 1));
-    
+    const moves = this.getValuableMoves(board, isMaximizing ? role : role === 1 ? 2 : 1);
+
     if (moves.length === 0) {
       return [this.evaluateBoard(board, role), null];
     }
@@ -851,10 +867,10 @@ class GomokuGame {
 
     for (let [i, j, score] of moves) {
       // 模拟落子
-      board[i][j] = isMaximizing ? role : (role === 1 ? 2 : 1);
-      
+      board[i][j] = isMaximizing ? role : role === 1 ? 2 : 1;
+
       const [currentScore] = this.minimax(board, role, depth - 1, alpha, beta, !isMaximizing);
-      
+
       // 撤销落子
       board[i][j] = 0;
 
@@ -903,7 +919,8 @@ class GomokuGame {
             if (hasNeighbor) break;
           }
 
-          if (hasNeighbor || this.moveHistory.length < 3) { // 前几步考虑中心位置
+          if (hasNeighbor || this.moveHistory.length < 3) {
+            // 前几步考虑中心位置
             const score = this.evaluatePosition(board, i, j, role);
             moves.push([i, j, score]);
           }
@@ -946,7 +963,12 @@ class GomokuGame {
     score += (this.boardSize - distanceFromCenter) * 2;
 
     // 检查四个方向的棋型
-    const directions = [[1, 0], [0, 1], [1, 1], [1, -1]];
+    const directions = [
+      [1, 0],
+      [0, 1],
+      [1, 1],
+      [1, -1],
+    ];
 
     for (let [dx, dy] of directions) {
       const shape = this.getShape(board, row, col, dx, dy, role);
@@ -967,7 +989,7 @@ class GomokuGame {
     for (let i = 1; i <= 4; i++) {
       const newX = x + i * offsetX;
       const newY = y + i * offsetY;
-      
+
       if (newX >= 0 && newX < this.boardSize && newY >= 0 && newY < this.boardSize) {
         if (board[newX][newY] === role) {
           selfCount++;
@@ -986,7 +1008,7 @@ class GomokuGame {
     for (let i = 1; i <= 4; i++) {
       const newX = x - i * offsetX;
       const newY = y - i * offsetY;
-      
+
       if (newX >= 0 && newX < this.boardSize && newY >= 0 && newY < this.boardSize) {
         if (board[newX][newY] === role) {
           selfCount++;
@@ -1023,7 +1045,12 @@ class GomokuGame {
 
   // 检查获胜者
   checkWinner(board) {
-    const directions = [[1, 0], [0, 1], [1, 1], [1, -1]];
+    const directions = [
+      [1, 0],
+      [0, 1],
+      [1, 1],
+      [1, -1],
+    ];
 
     for (let i = 0; i < this.boardSize; i++) {
       for (let j = 0; j < this.boardSize; j++) {
