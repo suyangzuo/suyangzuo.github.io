@@ -9,9 +9,59 @@
 
 #设置区 {
   width: 100%;
-  height: clamp(75px, 15%, 150px);
+  height: 150px;
   background-color: #ffffff08;
   padding: 10px 20px;
+  display: flex;
+  gap: 50px;
+}
+
+.标题 {
+  color: #89a;
+}
+
+.辅助区 {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.辅助列表.列表 {
+  padding: 0;
+}
+
+.辅助视觉效果区 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.辅助复选区 {
+  position: relative;
+  padding: 4px 15px;
+}
+
+.辅助复选区:hover {
+  box-shadow: inset 0 0 0 1px #285;
+}
+
+.辅助复选区:has(.复选框:checked) {
+  background-color: #164;
+}
+
+.标签 {
+  text-wrap: nowrap;
+  user-select: none;
+  font-size: 14px;
+}
+
+.复选框 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
 }
 
 #绘图区 {
@@ -25,29 +75,76 @@
   height: 100%;
 }
 
+.基础形状区 {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: calc(30px * 4 + 4px);
+  height: 100%;
+}
+
+.列表 {
+  background-color: #0005;
+  box-shadow: inset 0 0 1px 1px #000a;
+  flex-grow: 1;
+  padding: 2px;
+}
+
+.形状列表 {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+}
+
 .基础形状分区 {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 30px;
   height: 30px;
-  padding: 8px;
+  padding: 1px;
   border-radius: 4px;
   position: relative;
 }
 
-.基础形状分区:has(.基础形状单选框:checked) {
-  background-color: #fff3;
+.基础形状分区:has(.基础形状单选框:checked) .形状符号 {
+  background-color: #5af8;
 }
 
 .基础形状分区:hover {
-  background-color: #fff2;
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
+.基础形状分区:hover .形状符号 {
+  background-color: #5af3;
+  box-shadow: inset 0 0 1px 1px #5af;
+}
+
+.基础形状分区:has(.基础形状单选框:checked) .示意符号 {
+  filter: invert(1);
+}
+
+label {
+  user-select: none;
+}
+
 .形状符号 {
+  width: 100%;
+  height: 100%;
+  padding: 5px;
   font-size: 16px;
   pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+}
+
+.示意符号 {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: invert(0.8);
 }
 
 .基础形状单选框 {
@@ -57,6 +154,7 @@
   opacity: 0;
 }
 
-.基础形状单选框:hover {
+.单选框:hover,
+.复选框:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }

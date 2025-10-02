@@ -82,8 +82,7 @@ body {
 
 .app {
   position: relative;
-  width: max(17.5%, 200px);
-  width: 18%;
+  width: max(18%, 250px);
   aspect-ratio: 0.8;
   flex-shrink: 0;
   display: flex;

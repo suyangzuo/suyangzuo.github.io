@@ -22,25 +22,72 @@
     <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
     <script src="/Scripts/top-banner.js" defer></script>
-    <script src="./Painter.js" defer></script>
+    <script src="./painter.js" defer></script>
   </head>
   <body>
     <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
     <script src="/Scripts/html-include.js" target="../apps-common-control.html" position="afterbegin"></script>
     <div id="总区">
       <div id="设置区">
+        <div class="辅助区">
+          <h5 class="标题">辅助效果</h5>
+          <div class="辅助列表 列表">
+            <div class="辅助视觉效果区 辅助复选区">
+              <label for="辅助视觉效果" class="标签">辅助视觉效果</label>
+              <input
+                class="复选框"
+                type="checkbox"
+                name="辅助视觉效果"
+                id="辅助视觉效果"
+                title="辅助视觉效果"
+                checked
+              />
+            </div>
+          </div>
+        </div>
         <div class="基础形状区">
-          <div class="基础形状分区 矩形区" 形状="矩形">
-            <label class="形状符号" for="矩形"><i class="fa-regular fa-square"></i></label>
-            <input type="radio" name="基础形状" value="矩形" class="单选框 基础形状单选框" id="矩形"/>
-          </div>
-          <div class="基础形状分区 圆形区" 形状="圆">
-            <label class="形状符号" for="圆"><i class="fa-regular fa-circle"></i></label>
-            <input type="radio" name="基础形状" value="圆" class="单选框 基础形状单选框" id="圆"/>
-          </div>
-          <div class="基础形状分区 多边形区" 形状="多边形">
-            <label class="形状符号" for="多边形">&#11040;</label>
-            <input type="radio" name="基础形状" value="多边形" class="单选框 基础形状单选框" id="多边形"/>
+          <h5 class="标题">基础形状</h5>
+          <div class="形状列表 列表">
+            <div class="基础形状分区 矩形区" 形状="矩形">
+              <label class="形状符号" for="矩形"
+                ><img class="示意符号" src="./Images/rectangle.svg" alt="矩形"
+              /></label>
+              <input type="radio" name="基础形状" value="矩形" class="单选框 基础形状单选框" id="矩形" title="矩形" />
+            </div>
+            <div class="基础形状分区 圆形区" 形状="圆">
+              <label class="形状符号" for="圆"><img class="示意符号" src="./Images/circle.svg" alt="矩形" /></label>
+              <input type="radio" name="基础形状" value="圆" class="单选框 基础形状单选框" id="圆" title="圆" />
+            </div>
+            <div class="基础形状分区 多边形区" 形状="正多边形">
+              <label class="形状符号" for="正多边形"
+                ><img class="示意符号" src="./Images/pentagon.svg" alt="矩形"
+              /></label>
+              <input
+                type="radio"
+                name="基础形状"
+                value="正多边形"
+                class="单选框 基础形状单选框"
+                id="正多边形"
+                title="正多边形"
+              />
+            </div>
+            <div class="基础形状分区 多边形区" 形状="正多角星">
+              <label class="形状符号" for="正多角星"
+                ><img class="示意符号" src="./Images/pentagram.svg" alt="正多角星"
+              /></label>
+              <input
+                type="radio"
+                name="基础形状"
+                value="正多角星"
+                class="单选框 基础形状单选框"
+                id="正多角星"
+                title="正多角星"
+              />
+            </div>
+            <div class="基础形状分区 直线区" 形状="直线">
+              <label class="形状符号" for="直线"><img class="示意符号" src="./Images/line.svg" alt="直线" /></label>
+              <input type="radio" name="基础形状" value="直线" class="单选框 基础形状单选框" id="直线" title="直线" />
+            </div>
           </div>
         </div>
       </div>
