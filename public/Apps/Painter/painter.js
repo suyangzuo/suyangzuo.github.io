@@ -71,6 +71,7 @@ class 随心绘 {
       "]": false,
     };
 
+    this.添加清空画布按钮点击事件();
     this.处理辅助效果选项();
     this.添加键盘事件();
     this.添加canvas点击事件();
@@ -295,6 +296,7 @@ class 随心绘 {
       this.全局属性.左键按下时间 = null;
       this.全局属性.拖拽时间 = null;
       this.全局标志.手动调整内半径 = false;
+      this.全局属性.正多边形边数 = 5;
       if (this.全局属性.已选中基础形状) {
         this.数据集.基础形状对象组.push(structuredClone(this.全局属性.当前形状对象));
       }
@@ -333,6 +335,7 @@ class 随心绘 {
         this.全局属性.点击坐标 = null;
         this.全局属性.左键按下时间 = null;
         this.全局属性.拖拽时间 = null;
+        this.全局属性.正多边形边数 = 5;
         this.全局属性.当前形状对象 = {
           形状: null,
           坐标: { x: null, y: null },
@@ -668,6 +671,14 @@ class 随心绘 {
     this.ctx.clearRect(0, 0, this.canvas.offsetWidth, this.canvas.offsetHeight);
   }
 
+  添加清空画布按钮点击事件() {
+    const 清空画布按钮 = document.getElementById("清空画布按钮");
+    清空画布按钮.addEventListener("click", () => {
+      this.清空画布();
+      this.数据集.基础形状对象组 = [];
+    });
+  }
+
   绘制基础形状对象组() {
     if (this.数据集.基础形状对象组.length <= 0) return;
     for (const 形状对象 of this.数据集.基础形状对象组) {
@@ -685,6 +696,8 @@ class 随心绘 {
         );
       } else if (形状对象.形状 === "正多边形") {
         this.绘制正多边形(形状对象.顶点坐标组);
+      } else if (形状对象.形状 === "正多角星") {
+        this.绘制正多角星(形状对象.外顶点坐标组, 形状对象.内顶点坐标组);
       }
     }
   }

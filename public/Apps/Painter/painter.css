@@ -13,7 +13,7 @@
   background-color: #ffffff08;
   padding: 10px 20px;
   display: flex;
-  gap: 50px;
+  gap: 30px;
 }
 
 .标题 {
@@ -43,6 +43,7 @@
 
 .辅助复选区:hover {
   box-shadow: inset 0 0 0 1px #285;
+  background-color: #2853;
 }
 
 .辅助复选区:has(.复选框:checked) {
@@ -157,4 +158,33 @@ label {
 .单选框:hover,
 .复选框:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.清空画布区 {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+#清空画布按钮 {
+  flex-grow: 1;
+  width: 75px;
+  background-color: #26a5;
+  color: #fff;
+}
+
+#清空画布按钮 > img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+#清空画布按钮:hover {
+  box-shadow: inset 0 0 1px 1px #fffa;
+  background-color: #26aa;
+}
+
+#清空画布按钮:active {
+  box-shadow: inset 0 0 1px 1px #fff;
+  background-color: #26a;
 }
