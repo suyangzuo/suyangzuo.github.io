@@ -137,6 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return new Blob([arr], { type: mime });
   }
 
+<<<<<<< HEAD
   function base64ToBytes(b64) {
     const bin = atob(b64);
     const arr = new Uint8Array(bin.length);
@@ -165,6 +166,8 @@ document.addEventListener('DOMContentLoaded', () => {
     return /^[A-Za-z0-9+/_=-]+$/.test(s) && s.length >= 8;
   }
 
+=======
+>>>>>>> dab43946 (增加一个web应用 图片编解码)
   function handleFiles(files) {
     if (!files || !files.length) return;
     const file = files[0];
@@ -227,6 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.getElementById('decode-image').addEventListener('click', () => {
+<<<<<<< HEAD
     const input = (imgOutput.value || '').trim();
     if (!input) { alert('请输入 Base64 或 data:image/...;base64,...'); return; }
 
@@ -256,6 +260,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     alert('无法识别的输入格式：请粘贴 data:image/...;base64,... 或纯Base64字符串');
+=======
+    const dataUrl = imgOutput.value.trim();
+    if (!/^data:image\/.+;base64,/.test(dataUrl)) { alert('请输入合法的 data:image/...;base64,... 字符串'); return; }
+    try {
+      const blob = dataURLtoBlob(dataUrl);
+      const url = URL.createObjectURL(blob);
+      previewImg.src = url;
+      setImgMeta({ size: blob.size, type: blob.type }, dataUrl);
+    } catch { alert('解码失败，请检查输入'); }
+>>>>>>> dab43946 (增加一个web应用 图片编解码)
   });
 
   document.getElementById('download-image').addEventListener('click', () => {

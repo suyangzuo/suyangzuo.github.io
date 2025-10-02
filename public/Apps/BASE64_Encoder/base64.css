@@ -1,7 +1,11 @@
 .编解码应用 {
   margin: 0 auto;
   width: min(1200px, 92vw);
+<<<<<<< HEAD
   padding: 100px 0 120px;
+=======
+  padding: 40px 0 120px;
+>>>>>>> dab43946 (增加一个web应用 图片编解码)
 }
 
 .编解码应用 > h1 {
@@ -13,7 +17,11 @@
 .工具页签 {
   display: flex;
   gap: 8px;
+<<<<<<< HEAD
   margin: 8px 0 20px;
+=======
+  margin-bottom: 16px;
+>>>>>>> dab43946 (增加一个web应用 图片编解码)
 }
 
 .工具页签 .页签按钮 {
@@ -40,14 +48,22 @@
 .面板行 {
   display: grid;
   grid-template-columns: 1fr 1fr;
+<<<<<<< HEAD
   gap: 20px;
+=======
+  gap: 16px;
+>>>>>>> dab43946 (增加一个web应用 图片编解码)
 }
 
 .面板列 {
   background: #0f1113;
   border: 1px solid #ffffff20;
   border-radius: 10px;
+<<<<<<< HEAD
   padding: 16px;
+=======
+  padding: 14px;
+>>>>>>> dab43946 (增加一个web应用 图片编解码)
 }
 
 .面板标题栏 {
