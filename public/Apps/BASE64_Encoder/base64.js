@@ -1,14 +1,14 @@
 // BASE64 编解码与图片编解码逻辑（纯前端）
 document.addEventListener('DOMContentLoaded', () => {
-  // 切换 Tab
-  const tabs = document.querySelectorAll('.tab-btn');
-  const panels = document.querySelectorAll('.panel');
+  // 切换 页签
+  const tabs = document.querySelectorAll('.页签按钮');
+  const panels = document.querySelectorAll('.面板');
   tabs.forEach(btn => {
     btn.addEventListener('click', () => {
       tabs.forEach(b => b.classList.remove('active'));
       panels.forEach(p => p.classList.remove('active'));
       btn.classList.add('active');
-      const panel = document.querySelector(`.panel[data-panel="${btn.dataset.tab}"]`);
+      const panel = document.querySelector(`.面板[data-panel="${btn.dataset.tab}"]`);
       if (panel) panel.classList.add('active');
     });
   });

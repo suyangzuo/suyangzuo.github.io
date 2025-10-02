@@ -1,22 +1,22 @@
-.base64-app {
+.编解码应用 {
   margin: 0 auto;
   width: min(1200px, 92vw);
   padding: 40px 0 120px;
 }
 
-.base64-app > h1 {
+.编解码应用 > h1 {
   font-size: 2rem;
   margin-bottom: 20px;
   color: #9ab;
 }
 
-.tool-tabs {
+.工具页签 {
   display: flex;
   gap: 8px;
   margin-bottom: 16px;
 }
 
-.tool-tabs .tab-btn {
+.工具页签 .页签按钮 {
   padding: 8px 14px;
   border: 1px solid #ffffff2a;
   background: #0f1113;
@@ -24,50 +24,50 @@
   border-radius: 6px;
 }
 
-.tool-tabs .tab-btn.active {
+.工具页签 .页签按钮.active {
   background: #192027;
   border-color: #7aa2f7aa;
   color: #dbe6f3;
 }
 
-.panel {
+.面板 {
   display: none;
 }
-.panel.active {
+.面板.active {
   display: block;
 }
 
-.panel-row {
+.面板行 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
 
-.panel-col {
+.面板列 {
   background: #0f1113;
   border: 1px solid #ffffff20;
   border-radius: 10px;
   padding: 14px;
 }
 
-.panel-header {
+.面板标题栏 {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 8px;
 }
 
-.panel-header h2 {
+.面板标题栏 h2 {
   font-size: 1.1rem;
   color: #9ab;
 }
 
-.actions {
+.操作区 {
   display: flex;
   gap: 8px;
 }
 
-.actions > button {
+.操作区 > button {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -79,12 +79,12 @@
   color: #d2deec;
 }
 
-.actions > button:hover {
+.操作区 > button:hover {
   border-color: #3d5368;
   filter: brightness(1.05);
 }
 
-.actions > button:active {
+.操作区 > button:active {
   transform: translateY(1px);
 }
 
@@ -99,7 +99,7 @@ textarea {
   resize: vertical;
 }
 
-.options {
+.选项区 {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -107,13 +107,13 @@ textarea {
   color: #aab7c5;
 }
 
-.button-row {
+.按钮行 {
   display: flex;
   gap: 10px;
   margin-top: 10px;
 }
 
-button.primary {
+button.主按钮 {
   background: #2b5fd9;
   color: #fff;
   border: 1px solid #2b5fd9;
@@ -121,7 +121,7 @@ button.primary {
   border-radius: 8px;
 }
 
-button.secondary {
+button.次按钮 {
   background: #1a232c;
   color: #c8d3e0;
   border: 1px solid #314152;
@@ -129,13 +129,13 @@ button.secondary {
   border-radius: 8px;
 }
 
-.link-btn {
+.链接按钮 {
   background: transparent;
   color: #7aa2f7;
   text-decoration: underline;
 }
 
-.dropzone {
+.拖拽区 {
   display: grid;
   place-content: center;
   text-align: center;
@@ -147,17 +147,17 @@ button.secondary {
   background: #0b0f14;
 }
 
-.dropzone.dragover {
+.拖拽区.dragover {
   background: #122030;
   border-color: #7aa2f7;
 }
 
-.hint {
+.提示文本 {
   color: #7f8b99;
   font-size: 0.9rem;
 }
 
-.preview {
+.预览区 {
   margin-top: 10px;
   display: grid;
   place-content: center;
@@ -167,20 +167,20 @@ button.secondary {
   min-height: 220px;
 }
 
-.preview img {
+.预览区 img {
   max-width: 100%;
   max-height: 360px;
   object-fit: contain;
 }
 
-.meta {
+.元信息 {
   margin-top: 8px;
   color: #8fa3b8;
   font-size: 0.9rem;
 }
 
 @media (max-width: 900px) {
-  .panel-row {
+  .面板行 {
     grid-template-columns: 1fr;
   }
 }
