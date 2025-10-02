@@ -1,0 +1,203 @@
+.编解码应用 {
+  margin: 0 auto;
+  width: min(1200px, 92vw);
+<<<<<<< HEAD
+  padding: 100px 0 120px;
+=======
+  padding: 40px 0 120px;
+>>>>>>> dab43946 (增加一个web应用 图片编解码)
+}
+
+.编解码应用 > h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #9ab;
+}
+
+.工具页签 {
+  display: flex;
+  gap: 8px;
+<<<<<<< HEAD
+  margin: 8px 0 20px;
+=======
+  margin-bottom: 16px;
+>>>>>>> dab43946 (增加一个web应用 图片编解码)
+}
+
+.工具页签 .页签按钮 {
+  padding: 8px 14px;
+  border: 1px solid #ffffff2a;
+  background: #0f1113;
+  color: #c8d3e0;
+  border-radius: 6px;
+}
+
+.工具页签 .页签按钮.active {
+  background: #192027;
+  border-color: #7aa2f7aa;
+  color: #dbe6f3;
+}
+
+.面板 {
+  display: none;
+}
+.面板.active {
+  display: block;
+}
+
+.面板行 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+<<<<<<< HEAD
+  gap: 20px;
+=======
+  gap: 16px;
+>>>>>>> dab43946 (增加一个web应用 图片编解码)
+}
+
+.面板列 {
+  background: #0f1113;
+  border: 1px solid #ffffff20;
+  border-radius: 10px;
+<<<<<<< HEAD
+  padding: 16px;
+=======
+  padding: 14px;
+>>>>>>> dab43946 (增加一个web应用 图片编解码)
+}
+
+.面板标题栏 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.面板标题栏 h2 {
+  font-size: 1.1rem;
+  color: #9ab;
+}
+
+.操作区 {
+  display: flex;
+  gap: 8px;
+}
+
+.操作区 > button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 6px;
+  border: 1px solid #2a3948;
+  background: linear-gradient(180deg, #1a232c, #141b22);
+  color: #d2deec;
+}
+
+.操作区 > button:hover {
+  border-color: #3d5368;
+  filter: brightness(1.05);
+}
+
+.操作区 > button:active {
+  transform: translateY(1px);
+}
+
+textarea {
+  width: 100%;
+  min-height: 220px;
+  background: #0b0d0f;
+  border: 1px solid #ffffff14;
+  color: #d7e2ef;
+  border-radius: 8px;
+  padding: 10px 12px;
+  resize: vertical;
+}
+
+.选项区 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0;
+  color: #aab7c5;
+}
+
+.按钮行 {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+button.主按钮 {
+  background: #2b5fd9;
+  color: #fff;
+  border: 1px solid #2b5fd9;
+  padding: 8px 14px;
+  border-radius: 8px;
+}
+
+button.次按钮 {
+  background: #1a232c;
+  color: #c8d3e0;
+  border: 1px solid #314152;
+  padding: 8px 14px;
+  border-radius: 8px;
+}
+
+.链接按钮 {
+  background: transparent;
+  color: #7aa2f7;
+  text-decoration: underline;
+}
+
+.拖拽区 {
+  display: grid;
+  place-content: center;
+  text-align: center;
+  border: 1px dashed #2a3a4a;
+  color: #9ab;
+  border-radius: 10px;
+  min-height: 120px;
+  padding: 12px;
+  background: #0b0f14;
+}
+
+.拖拽区.dragover {
+  background: #122030;
+  border-color: #7aa2f7;
+}
+
+.提示文本 {
+  color: #7f8b99;
+  font-size: 0.9rem;
+}
+
+.预览区 {
+  margin-top: 10px;
+  display: grid;
+  place-content: center;
+  background: #0b0d0f;
+  border: 1px solid #ffffff14;
+  border-radius: 8px;
+  min-height: 220px;
+}
+
+.预览区 img {
+  max-width: 100%;
+  max-height: 360px;
+  object-fit: contain;
+}
+
+.元信息 {
+  margin-top: 8px;
+  color: #8fa3b8;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 900px) {
+  .面板行 {
+    grid-template-columns: 1fr;
+  }
+}
+
