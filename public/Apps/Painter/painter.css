@@ -3,11 +3,32 @@
   box-shadow: 0 0 0 1px #def5, 0 0.15em 1.5em 0 rgba(0, 0, 0, 0.1), 0 0 1em 0 rgba(0, 0, 0, 0.03) !important;
 }
 
+.pcr-app[data-theme="monolith"] {
+  width: 15em;
+}
+
 .pcr-interaction > input[type="text"].pcr-result,
 .pcr-interaction input.pcr-type {
   background: #111;
   color: white;
   outline: solid 1px #fff4;
+  font-family: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+}
+
+.pcr-app .pcr-interaction > input[type="text"].pcr-result {
+  width: 100%;
+  flex: auto;
+  color: white;
+}
+
+.pcr-app .pcr-interaction > input.pcr-type {
+  width: calc(50% - 0.4em);
+  color: silver;
+}
+
+.pcr-app .pcr-interaction > input.pcr-type.active {
+  color: white;
+  background-color: #3174e3;
 }
 
 .禁用 {
@@ -28,6 +49,7 @@
 #设置区 {
   width: 100%;
   height: 150px;
+  flex-shrink: 0;
   background-color: #ffffff08;
   padding: 10px 20px;
   display: flex;
