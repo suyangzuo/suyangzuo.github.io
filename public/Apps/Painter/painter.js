@@ -470,7 +470,7 @@ class 随心绘 {
         }
       } else if (this.全局属性.已选中基础形状 === "直线") {
         this.全局属性.当前形状对象.形状 = "直线";
-        if (this.全局标志.辅助视觉效果) {
+        if (this.全局标志.辅助视觉效果 && this.全局属性.当前形状对象.顶点坐标组.length > 0) {
           this.绘制操作说明();
         }
         if (this.全局属性.当前形状对象.顶点坐标组.length >= 2) {
@@ -500,7 +500,8 @@ class 随心绘 {
   }
 
   添加canvas点击事件() {
-    this.canvas.addEventListener("mousedown", () => {
+    this.canvas.addEventListener("mousedown", (e) => {
+      if (e.button !== 0) return;
       this.全局标志.左键已按下 = true;
       this.全局标志.手动调整内半径 = false;
       this.全局属性.点击坐标 = this.全局属性.鼠标坐标;
@@ -511,6 +512,9 @@ class 随心绘 {
         this.全局属性.当前形状对象.旋转弧度 = 0;
       } else if (this.全局属性.已选中基础形状 === "直线") {
         this.清空画布();
+        if (this.全局标志.辅助视觉效果) {
+          this.绘制操作说明();
+        }
         this.绘制基础形状对象组();
         this.全局属性.当前形状对象.形状 === "直线";
         if (this.全局属性.当前形状对象.顶点坐标组.length === 0) {
