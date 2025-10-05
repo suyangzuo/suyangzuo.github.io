@@ -18,8 +18,9 @@
     <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
     <link rel="stylesheet" type="text/css" href="/Styles/top-banner-common.css" />
     <link rel="stylesheet" href="../apps-common-control.css" />
+    <link rel="stylesheet" href="./pickr/monolith.min.css" />
     <link rel="stylesheet" href="./painter.css" />
-    <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
+    <script src="/Scripts/d0483e3bd3.js" crossorigin="anonymous"></script>
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
     <script src="/Scripts/top-banner.js" defer></script>
     <script src="./painter.js" defer></script>
@@ -88,18 +89,69 @@
               <label class="形状符号" for="直线"><img class="示意符号" src="./Images/line.svg" alt="直线" /></label>
               <input type="radio" name="基础形状" value="直线" class="单选框 基础形状单选框" id="直线" title="直线" />
             </div>
+            <div class="基础形状分区 曲线区 禁用" 形状="三次贝塞尔曲线">
+              <label class="形状符号" for="三次贝塞尔曲线"
+                ><img class="示意符号" src="./Images/curve.svg" alt="三次贝塞尔曲线"
+              /></label>
+              <input
+                type="radio"
+                name="基础形状"
+                value="三次贝塞尔曲线"
+                class="单选框 基础形状单选框"
+                id="三次贝塞尔曲线"
+                title="三次贝塞尔曲线"
+              />
+            </div>
           </div>
         </div>
         <div class="清空画布区">
           <h5 class="标题">清空画布</h5>
-          <button class="按钮" id="清空画布按钮">
-            <img class="示意符号" src="./Images/clear.svg" alt="清空画布" title="清空画布" />
+          <button class="按钮" id="清空画布按钮" title="清空画布">
+            <img class="示意符号" src="./Images/clear.svg" alt="清空画布" />
           </button>
+        </div>
+        <div class="常用操作区">
+          <h5 class="标题">常用操作</h5>
+          <div class="常用操作列表 列表">
+            <button class="按钮" id="撤销" title="撤销">
+              <img class="示意符号" src="./Images/reverse.svg" alt="撤销" />
+            </button>
+          </div>
+        </div>
+        <div class="颜色区">
+          <h5 class="标题">颜色</h5>
+          <div class="颜色列表 列表">
+            <div class="颜色分区">
+              <label for="描边" class="标签">描边</label>
+              <input class="颜色框" type="color" name="描边" id="描边" title="描边" />
+            </div>
+            <div class="颜色分区">
+              <label for="填充" class="标签">填充</label>
+              <input class="颜色框" type="color" name="填充" id="填充" title="填充" />
+            </div>
+          </div>
+        </div>
+        <div class="描边宽度区">
+          <h5 class="标题">描边宽度</h5>
+          <div class="描边宽度容器">
+            <input
+              class="范围滑块"
+              type="range"
+              min="0"
+              max="50"
+              value="2"
+              name="描边宽度"
+              id="描边宽度"
+              title="描边宽度"
+            />
+            <label for="描边宽度" class="标签">2</label>
+          </div>
         </div>
       </div>
       <div id="绘图区">
         <canvas id="画布"></canvas>
       </div>
     </div>
+    <script src="./pickr/pickr.min.js"></script>
   </body>
 </html>

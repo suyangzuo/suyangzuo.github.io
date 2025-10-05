@@ -26,16 +26,16 @@ class 随心绘 {
       正多边形边数可增减: true,
       正多边形可旋转: true,
       手动调整内半径: false,
+      辅助视觉效果: this.辅助.视觉效果复选框.checked,
     };
 
     this.全局属性 = {
-      辅助视觉效果: this.辅助.视觉效果复选框.checked,
       已选中基础形状: null,
       填充色: "transparent",
-      描边色: "#aaa",
+      描边色: "rgba(170, 170, 170, 0.75)",
       辅助外框描边色: "#aaccee12",
       辅助线段描边色: "#a81",
-      当前描边宽度: 2,
+      描边宽度: 2,
       正多边形边数: 5,
       鼠标坐标: null,
       点击坐标: null,
@@ -48,9 +48,13 @@ class 随心绘 {
       当前形状对象: {
         形状: null,
         坐标: { x: null, y: null },
+        顶点坐标组: [],
+        外顶点坐标组: [],
+        内顶点坐标组: [],
         尺寸: null,
         描边色: "transparent",
         填充色: "transparent",
+        描边宽度: 2,
       },
     };
 
@@ -66,18 +70,138 @@ class 随心绘 {
       ArrowDown: false,
       ArrowLeft: false,
       ArrowRight: false,
+      Enter: false,
       Escape: false,
       "[": false,
       "]": false,
+      z: false,
     };
 
+    this.添加颜色拾取器();
+    this.添加颜色拾取器事件();
+    this.添加描边宽度滑块事件();
     this.添加清空画布按钮点击事件();
+    this.添加撤销按钮点击事件();
     this.处理辅助效果选项();
     this.添加键盘事件();
     this.添加canvas点击事件();
     this.添加canvas鼠标抬起事件();
     this.添加canvas鼠标移动事件();
     this.添加基础形状分区点击事件();
+  }
+
+  添加颜色拾取器() {
+    this.描边颜色拾取器 = Pickr.create({
+      el: ".颜色框",
+      theme: "monolith", // or 'monolith', or 'nano'
+      default: "rgba(170, 170, 170, 0.75)",
+
+      swatches: [
+        "rgba(170, 170, 170, 0.75)",
+        "rgba(244, 67, 54, 1)",
+        "rgba(233, 30, 99, 0.95)",
+        "rgba(156, 39, 176, 0.9)",
+        "rgba(103, 58, 183, 0.85)",
+        "rgba(63, 81, 181, 0.8)",
+        "rgba(33, 150, 243, 0.75)",
+        "rgba(0, 188, 212, 0.7)",
+        "rgba(0, 150, 136, 0.75)",
+        "rgba(76, 175, 80, 0.8)",
+        "rgba(139, 195, 74, 0.85)",
+        "rgba(255, 235, 59, 0.95)",
+        "rgba(255, 193, 7, 1)",
+      ],
+
+      components: {
+        // Main components
+        preview: true,
+        opacity: true,
+        hue: true,
+
+        // Input / output Options
+        interaction: {
+          hex: true,
+          rgba: true,
+          input: true,
+          clear: true,
+          save: true,
+        },
+      },
+    });
+
+    this.填充颜色拾取器 = Pickr.create({
+      el: ".颜色框",
+      theme: "monolith", // or 'monolith', or 'nano'
+      default: "rgba(0, 0, 0, 0)",
+
+      swatches: [
+        "rgba(0, 0, 0, 0)",
+        "rgba(244, 67, 54, 1)",
+        "rgba(233, 30, 99, 0.95)",
+        "rgba(156, 39, 176, 0.9)",
+        "rgba(103, 58, 183, 0.85)",
+        "rgba(63, 81, 181, 0.8)",
+        "rgba(33, 150, 243, 0.75)",
+        "rgba(0, 188, 212, 0.7)",
+        "rgba(0, 150, 136, 0.75)",
+        "rgba(76, 175, 80, 0.8)",
+        "rgba(139, 195, 74, 0.85)",
+        "rgba(255, 235, 59, 0.95)",
+        "rgba(255, 193, 7, 1)",
+      ],
+
+      components: {
+        // Main components
+        preview: true,
+        opacity: true,
+        hue: true,
+
+        // Input / output Options
+        interaction: {
+          hex: true,
+          rgba: true,
+          input: true,
+          clear: true,
+          save: true,
+        },
+      },
+    });
+  }
+
+  添加颜色拾取器事件() {
+    this.描边颜色拾取器.on("changestop", () => {
+      this.描边颜色拾取器.applyColor(true);
+    });
+
+    this.填充颜色拾取器.on("changestop", () => {
+      this.填充颜色拾取器.applyColor(true);
+    });
+
+    this.描边颜色拾取器.on("change", (color) => {
+      this.全局属性.描边色 = color.toRGBA().toString();
+    });
+
+    this.填充颜色拾取器.on("change", (color) => {
+      this.全局属性.填充色 = color.toRGBA().toString();
+    });
+
+    this.描边颜色拾取器.on("swatchselect", (color) => {
+      this.描边颜色拾取器.applyColor(true);
+      this.全局属性.描边色 = color.toRGBA().toString();
+    });
+
+    this.填充颜色拾取器.on("swatchselect", (color) => {
+      this.填充颜色拾取器.applyColor(true);
+      this.全局属性.填充色 = color.toRGBA().toString();
+    });
+  }
+
+  添加描边宽度滑块事件() {
+    const 描边宽度滑块 = document.getElementById("描边宽度");
+    描边宽度滑块.addEventListener("input", () => {
+      this.全局属性.描边宽度 = parseInt(描边宽度滑块.value, 10);
+      描边宽度滑块.nextElementSibling.textContent = 描边宽度滑块.value;
+    });
   }
 
   添加基础形状分区点击事件() {
@@ -91,7 +215,7 @@ class 随心绘 {
   添加canvas鼠标移动事件() {
     this.canvas.addEventListener("mousemove", (e) => {
       this.全局属性.鼠标坐标 = this.获取鼠标坐标(e);
-      if (!this.全局标志.左键已按下) return;
+      if (!this.全局标志.左键已按下 && this.全局属性.已选中基础形状 !== "直线") return;
       this.清空画布();
       this.判断鼠标与点击坐标位置关系();
       this.绘制基础形状对象组();
@@ -130,9 +254,12 @@ class 随心绘 {
           this.全局属性.当前形状对象.坐标.x,
           this.全局属性.当前形状对象.坐标.y,
           this.全局属性.当前形状对象.尺寸.宽,
-          this.全局属性.当前形状对象.尺寸.高
+          this.全局属性.当前形状对象.尺寸.高,
+          this.全局属性.描边色,
+          this.全局属性.填充色,
+          this.全局属性.描边宽度
         );
-        if (this.全局属性.辅助视觉效果) {
+        if (this.全局标志.辅助视觉效果) {
           const 辅助半径 = 5;
           this.ctx.save();
           this.ctx.beginPath();
@@ -164,9 +291,12 @@ class 随心绘 {
             this.全局属性.点击坐标.y,
             this.全局属性.当前形状对象.尺寸.水平半径,
             this.全局属性.当前形状对象.尺寸.垂直半径,
-            this.全局属性.当前形状对象.旋转弧度
+            this.全局属性.当前形状对象.旋转弧度,
+            this.全局属性.描边色,
+            this.全局属性.填充色,
+            this.全局属性.描边宽度
           );
-          if (this.全局属性.辅助视觉效果) {
+          if (this.全局标志.辅助视觉效果) {
             const 偏移x = Math.cos(this.全局属性.当前形状对象.旋转弧度) * this.全局属性.当前形状对象.尺寸.水平半径;
             const 偏移y = Math.sin(this.全局属性.当前形状对象.旋转弧度) * this.全局属性.当前形状对象.尺寸.水平半径;
             const 终点坐标 = {
@@ -186,7 +316,14 @@ class 随心绘 {
           };
           this.全局属性.当前形状对象.坐标.x = this.全局属性.点击坐标.x;
           this.全局属性.当前形状对象.坐标.y = this.全局属性.点击坐标.y;
-          this.绘制正圆(this.全局属性.点击坐标.x, this.全局属性.点击坐标.y, this.全局属性.当前形状对象.尺寸.半径);
+          this.绘制正圆(
+            this.全局属性.点击坐标.x,
+            this.全局属性.点击坐标.y,
+            this.全局属性.当前形状对象.尺寸.半径,
+            this.全局属性.描边色,
+            this.全局属性.填充色,
+            this.全局属性.描边宽度
+          );
         }
       } else if (this.全局属性.已选中基础形状 === "正多边形") {
         this.全局属性.当前形状对象.形状 = "正多边形";
@@ -209,8 +346,13 @@ class 随心绘 {
           this.全局属性.当前形状对象.边数,
           this.全局属性.当前形状对象.起始弧度
         );
-        this.绘制正多边形(this.全局属性.当前形状对象.顶点坐标组);
-        if (this.全局属性.辅助视觉效果) {
+        this.绘制正多边形(
+          this.全局属性.当前形状对象.顶点坐标组,
+          this.全局属性.描边色,
+          this.全局属性.填充色,
+          this.全局属性.描边宽度
+        );
+        if (this.全局标志.辅助视觉效果) {
           this.绘制辅助虚线(
             this.全局属性.点击坐标.x,
             this.全局属性.点击坐标.y,
@@ -257,8 +399,14 @@ class 随心绘 {
             ? this.全局属性.当前形状对象.起始弧度 + Math.PI - Math.PI / 边数
             : this.全局属性.当前形状对象.起始弧度 + Math.PI
         );
-        this.绘制正多角星(this.全局属性.当前形状对象.外顶点坐标组, this.全局属性.当前形状对象.内顶点坐标组);
-        if (this.全局属性.辅助视觉效果) {
+        this.绘制正多角星(
+          this.全局属性.当前形状对象.外顶点坐标组,
+          this.全局属性.当前形状对象.内顶点坐标组,
+          this.全局属性.描边色,
+          this.全局属性.填充色,
+          this.全局属性.描边宽度
+        );
+        if (this.全局标志.辅助视觉效果) {
           this.绘制辅助虚线(
             this.全局属性.点击坐标.x,
             this.全局属性.点击坐标.y,
@@ -268,8 +416,29 @@ class 随心绘 {
           this.描边辅助正圆(this.全局属性.点击坐标.x, this.全局属性.点击坐标.y, this.全局属性.当前形状对象.尺寸.外半径);
           this.描边辅助正圆(this.全局属性.点击坐标.x, this.全局属性.点击坐标.y, this.全局属性.当前形状对象.尺寸.内半径);
         }
+      } else if (this.全局属性.已选中基础形状 === "直线") {
+        this.全局属性.当前形状对象.形状 = "直线";
+        if (this.全局属性.当前形状对象.顶点坐标组.length >= 2) {
+          this.绘制直线(this.全局属性.当前形状对象.顶点坐标组, this.全局属性.描边色, this.全局属性.描边宽度);
+        }
+        if (this.全局属性.当前形状对象.顶点坐标组.length >= 1) {
+          const 最后坐标 = this.全局属性.当前形状对象.顶点坐标组[this.全局属性.当前形状对象.顶点坐标组.length - 1];
+          if (this.全局标志.辅助视觉效果) {
+            this.绘制辅助虚线(最后坐标.x, 最后坐标.y, this.全局属性.鼠标坐标.x, this.全局属性.鼠标坐标.y);
+          }
+        }
+        if (this.全局标志.辅助视觉效果) {
+          for (const 坐标 of this.全局属性.当前形状对象.顶点坐标组) {
+            this.绘制辅助点(坐标.x, 坐标.y);
+          }
+        }
       }
-      if (this.全局属性.辅助视觉效果 && this.全局属性.已选中基础形状 && this.全局属性.已选中基础形状 !== "矩形") {
+      if (
+        this.全局标志.辅助视觉效果 &&
+        this.全局属性.已选中基础形状 &&
+        this.全局属性.已选中基础形状 !== "矩形" &&
+        this.全局属性.已选中基础形状 !== "直线"
+      ) {
         this.绘制辅助点(this.全局属性.点击坐标.x, this.全局属性.点击坐标.y);
       }
     });
@@ -280,10 +449,27 @@ class 随心绘 {
       this.全局标志.左键已按下 = true;
       this.全局标志.手动调整内半径 = false;
       this.全局属性.点击坐标 = this.全局属性.鼠标坐标;
+      this.全局属性.当前形状对象.描边宽度 = this.全局属性.描边宽度;
       if (this.全局属性.已选中基础形状 === "正多边形" || this.全局属性.已选中基础形状 === "正多角星") {
         this.全局属性.当前形状对象.起始弧度 = -Math.PI / 2;
       } else if (this.全局属性.已选中基础形状 === "圆" && !this.键盘状态.Shift) {
         this.全局属性.当前形状对象.旋转弧度 = 0;
+      } else if (this.全局属性.已选中基础形状 === "直线") {
+        this.清空画布();
+        this.绘制基础形状对象组();
+        this.全局属性.当前形状对象.形状 === "直线";
+        if (this.全局属性.当前形状对象.顶点坐标组.length === 0) {
+          this.ctx.moveTo(this.全局属性.点击坐标.x, this.全局属性.点击坐标.y);
+        } else {
+          this.ctx.lineTo(this.全局属性.点击坐标.x, this.全局属性.点击坐标.y);
+        }
+        this.全局属性.当前形状对象.顶点坐标组.push(this.全局属性.点击坐标);
+        this.绘制直线(this.全局属性.当前形状对象.顶点坐标组, this.全局属性.描边色, this.全局属性.描边宽度);
+        if (this.全局标志.辅助视觉效果) {
+          for (const 坐标 of this.全局属性.当前形状对象.顶点坐标组) {
+            this.绘制辅助点(坐标.x, 坐标.y);
+          }
+        }
       }
     });
   }
@@ -292,20 +478,22 @@ class 随心绘 {
     this.canvas.addEventListener("mouseup", () => {
       this.全局标志.左键已按下 = false;
       this.全局属性.拖拽中 = false;
-      this.全局属性.点击坐标 = null;
       this.全局属性.左键按下时间 = null;
       this.全局属性.拖拽时间 = null;
       this.全局标志.手动调整内半径 = false;
       this.全局属性.正多边形边数 = 5;
-      if (this.全局属性.已选中基础形状) {
+      if (this.全局属性.已选中基础形状 && this.全局属性.已选中基础形状 !== "直线") {
         this.数据集.基础形状对象组.push(structuredClone(this.全局属性.当前形状对象));
+        this.清空画布();
+        this.绘制基础形状对象组();
+        this.全局属性.点击坐标 = null;
+        this.全局属性.当前形状对象.顶点坐标组 = [];
       }
-      this.清空画布();
-      this.绘制基础形状对象组();
     });
   }
 
   判断鼠标与点击坐标位置关系() {
+    if (!this.全局属性.点击坐标 || !this.全局属性.鼠标坐标) return;
     if (this.全局属性.鼠标坐标.x === this.全局属性.点击坐标.x) {
       this.全局属性.鼠标与点击坐标位置关系.左 = null;
     } else {
@@ -329,22 +517,27 @@ class 随心绘 {
     document.addEventListener("keydown", (e) => {
       if (!Object.hasOwn(this.键盘状态, e.key)) return;
       this.键盘状态[e.key] = true;
-      if (e.key === "Escape" && this.全局标志.左键已按下) {
+      if (e.key === "z" && this.键盘状态.Control) {
+        this.撤销();
+        return;
+      }
+      if (e.key === "Enter") {
+        if (this.全局属性.已选中基础形状 === "直线") {
+          this.数据集.基础形状对象组.push(structuredClone(this.全局属性.当前形状对象));
+        }
+      }
+      if (e.key === "Escape" || e.key === "Enter") {
         this.全局标志.左键已按下 = false;
         this.全局属性.拖拽中 = false;
         this.全局属性.点击坐标 = null;
         this.全局属性.左键按下时间 = null;
         this.全局属性.拖拽时间 = null;
         this.全局属性.正多边形边数 = 5;
-        this.全局属性.当前形状对象 = {
-          形状: null,
-          坐标: { x: null, y: null },
-          尺寸: null,
-          描边色: "transparent",
-          填充色: "transparent",
-        };
+        this.重置当前形状对象();
         this.清空画布();
         this.绘制基础形状对象组();
+      }
+      if (e.key === "Escape") {
         return;
       }
       if (this.全局标志.左键已按下 && !this.键盘状态.Shift && this.全局属性.已选中基础形状 === "圆") {
@@ -367,9 +560,12 @@ class 随心绘 {
           this.全局属性.点击坐标.y,
           this.全局属性.当前形状对象.尺寸.水平半径,
           this.全局属性.当前形状对象.尺寸.垂直半径,
-          this.全局属性.当前形状对象.旋转弧度
+          this.全局属性.当前形状对象.旋转弧度,
+          this.全局属性.描边色,
+          this.全局属性.填充色,
+          this.全局属性.描边宽度
         );
-        if (this.全局属性.辅助视觉效果) {
+        if (this.全局标志.辅助视觉效果) {
           const 偏移x = Math.cos(this.全局属性.当前形状对象.旋转弧度) * this.全局属性.当前形状对象.尺寸.水平半径;
           const 偏移y = Math.sin(this.全局属性.当前形状对象.旋转弧度) * this.全局属性.当前形状对象.尺寸.水平半径;
           const 终点坐标 = {
@@ -422,8 +618,13 @@ class 随心绘 {
           this.全局属性.当前形状对象.起始弧度
         );
         this.绘制基础形状对象组();
-        this.绘制正多边形(this.全局属性.当前形状对象.顶点坐标组);
-        if (this.全局属性.辅助视觉效果) {
+        this.绘制正多边形(
+          this.全局属性.当前形状对象.顶点坐标组,
+          this.全局属性.描边色,
+          this.全局属性.填充色,
+          this.全局属性.描边宽度
+        );
+        if (this.全局标志.辅助视觉效果) {
           this.绘制辅助虚线(
             this.全局属性.点击坐标.x,
             this.全局属性.点击坐标.y,
@@ -492,8 +693,14 @@ class 随心绘 {
             : this.全局属性.当前形状对象.起始弧度 + Math.PI
         );
         this.绘制基础形状对象组();
-        this.绘制正多角星(this.全局属性.当前形状对象.外顶点坐标组, this.全局属性.当前形状对象.内顶点坐标组);
-        if (this.全局属性.辅助视觉效果) {
+        this.绘制正多角星(
+          this.全局属性.当前形状对象.外顶点坐标组,
+          this.全局属性.当前形状对象.内顶点坐标组,
+          this.全局属性.描边色,
+          this.全局属性.填充色,
+          this.全局属性.描边宽度
+        );
+        if (this.全局标志.辅助视觉效果) {
           this.绘制辅助虚线(
             this.全局属性.点击坐标.x,
             this.全局属性.点击坐标.y,
@@ -517,57 +724,69 @@ class 随心绘 {
 
   处理辅助效果选项() {
     this.辅助.视觉效果复选框.addEventListener("change", () => {
-      this.全局属性.辅助视觉效果 = this.辅助.视觉效果复选框.checked;
+      this.全局标志.辅助视觉效果 = this.辅助.视觉效果复选框.checked;
     });
   }
 
-  绘制矩形(x, y, 宽, 高) {
+  绘制矩形(x, y, 宽, 高, 描边色, 填充色, 描边宽度) {
     this.ctx.save();
     this.ctx.beginPath();
     this.ctx.rect(x, y, 宽, 高);
-    this.ctx.strokeStyle = this.全局属性.描边色;
-    this.ctx.fillStyle = this.全局属性.填充色;
+    this.ctx.strokeStyle = 描边色;
+    this.ctx.fillStyle = 填充色;
+    this.ctx.lineWidth = 描边宽度;
     this.ctx.stroke();
     this.ctx.fill();
     this.ctx.restore();
     return {
+      描边宽度: 描边宽度,
+      描边色: 描边色,
+      填充色: 填充色,
       坐标: { x: x, y: y },
       尺寸: { 宽: 宽, 高: 高 },
     };
   }
 
-  绘制正圆(x, y, 半径) {
+  绘制正圆(x, y, 半径, 描边色, 填充色, 描边宽度) {
     this.ctx.save();
     this.ctx.beginPath();
     this.ctx.arc(x, y, 半径, 0, 2 * Math.PI);
-    this.ctx.strokeStyle = this.全局属性.描边色;
-    this.ctx.fillStyle = this.全局属性.填充色;
+    this.ctx.strokeStyle = 描边色;
+    this.ctx.fillStyle = 填充色;
+    this.ctx.lineWidth = 描边宽度;
     this.ctx.stroke();
     this.ctx.fill();
     this.ctx.restore();
     return {
+      描边宽度: 描边宽度,
+      描边色: 描边色,
+      填充色: 填充色,
       坐标: { x: x, y: y },
       尺寸: { 半径: 半径 },
     };
   }
 
-  绘制椭圆(x, y, 水平半径, 垂直半径, 旋转弧度) {
+  绘制椭圆(x, y, 水平半径, 垂直半径, 旋转弧度, 描边色, 填充色, 描边宽度) {
     this.ctx.save();
     this.ctx.beginPath();
     this.ctx.ellipse(x, y, 水平半径, 垂直半径, 旋转弧度, 0, 2 * Math.PI);
-    this.ctx.strokeStyle = this.全局属性.描边色;
-    this.ctx.fillStyle = this.全局属性.填充色;
+    this.ctx.strokeStyle = 描边色;
+    this.ctx.fillStyle = 填充色;
+    this.ctx.lineWidth = 描边宽度;
     this.ctx.stroke();
     this.ctx.fill();
     this.ctx.restore();
     return {
+      描边宽度: 描边宽度,
+      描边色: 描边色,
+      填充色: 填充色,
       坐标: { x: x, y: y },
       尺寸: { 水平半径: 水平半径, 垂直半径: 垂直半径 },
       旋转弧度: 旋转弧度,
     };
   }
 
-  绘制正多边形(顶点坐标组) {
+  绘制正多边形(顶点坐标组, 描边色, 填充色, 描边宽度) {
     if (顶点坐标组.length < 3) return;
     this.ctx.save();
     this.ctx.beginPath();
@@ -576,17 +795,21 @@ class 随心绘 {
       this.ctx.lineTo(顶点坐标组[i].x, 顶点坐标组[i].y);
     }
     this.ctx.closePath();
-    this.ctx.strokeStyle = this.全局属性.描边色;
-    this.ctx.fillStyle = this.全局属性.填充色;
+    this.ctx.strokeStyle = 描边色;
+    this.ctx.fillStyle = 填充色;
+    this.ctx.lineWidth = 描边宽度;
     this.ctx.stroke();
     this.ctx.fill();
     this.ctx.restore();
     return {
+      描边宽度: 描边宽度,
+      描边色: 描边色,
+      填充色: 填充色,
       顶点坐标组: 顶点坐标组,
     };
   }
 
-  绘制正多角星(外顶点坐标组, 内顶点坐标组) {
+  绘制正多角星(外顶点坐标组, 内顶点坐标组, 描边色, 填充色, 描边宽度) {
     if (外顶点坐标组.length < 3 || 内顶点坐标组.length < 3) return;
     const 边数 = 外顶点坐标组.length;
     this.ctx.save();
@@ -601,14 +824,40 @@ class 随心绘 {
       this.ctx.lineTo(内顶点坐标组[内索引].x, 内顶点坐标组[内索引].y);
     }
     this.ctx.closePath();
-    this.ctx.strokeStyle = this.全局属性.描边色;
-    this.ctx.fillStyle = this.全局属性.填充色;
+    this.ctx.strokeStyle = 描边色;
+    this.ctx.fillStyle = 填充色;
+    this.ctx.lineWidth = 描边宽度;
     this.ctx.stroke();
     this.ctx.fill();
     this.ctx.restore();
     return {
+      描边宽度: 描边宽度,
+      描边色: 描边色,
+      填充色: 填充色,
       外顶点坐标组: 外顶点坐标组,
       内顶点坐标组: 内顶点坐标组,
+    };
+  }
+
+  绘制直线(顶点坐标组, 描边色, 描边宽度) {
+    if (顶点坐标组.length < 2) return;
+    this.ctx.save();
+    this.ctx.beginPath();
+    this.ctx.strokeStyle = 描边色;
+    this.ctx.lineWidth = 描边宽度;
+    for (let i = 0; i < 顶点坐标组.length; i++) {
+      if (i === 0) {
+        this.ctx.moveTo(顶点坐标组[i].x, 顶点坐标组[i].y);
+      } else {
+        this.ctx.lineTo(顶点坐标组[i].x, 顶点坐标组[i].y);
+      }
+    }
+    this.ctx.stroke();
+    this.ctx.restore();
+    return {
+      描边宽度: 描边宽度,
+      描边色: 描边色,
+      顶点坐标组: 顶点坐标组,
     };
   }
 
@@ -676,28 +925,115 @@ class 随心绘 {
     清空画布按钮.addEventListener("click", () => {
       this.清空画布();
       this.数据集.基础形状对象组 = [];
+      this.全局属性.当前形状对象.顶点坐标组 = [];
+      this.全局属性.当前形状对象.外顶点坐标组 = [];
+      this.全局属性.当前形状对象.内顶点坐标组 = [];
     });
+  }
+
+  添加撤销按钮点击事件() {
+    const 撤销按钮 = document.getElementById("撤销");
+    撤销按钮.addEventListener("click", this.撤销.bind(this));
+  }
+
+  撤销() {
+    if (
+      this.数据集.基础形状对象组.length <= 0 &&
+      !(this.全局属性.当前形状对象.形状 === "直线" && this.全局属性.当前形状对象.顶点坐标组.length > 0)
+    ) {
+      return;
+    }
+    const 最后记录 = this.数据集.基础形状对象组[this.数据集.基础形状对象组.length - 1];
+    if (this.全局属性.当前形状对象.形状 === "直线" && this.全局属性.当前形状对象.顶点坐标组.length >= 1) {
+      this.全局属性.当前形状对象.顶点坐标组.pop();
+      this.清空画布();
+      this.绘制基础形状对象组();
+      if (this.全局属性.当前形状对象.顶点坐标组.length >= 2) {
+        this.绘制直线(this.全局属性.当前形状对象.顶点坐标组, this.全局属性.描边色, this.全局属性.描边宽度);
+      }
+      if (this.全局属性.当前形状对象.顶点坐标组.length >= 1) {
+        if (this.全局标志.辅助视觉效果) {
+          const 最后坐标 = this.全局属性.当前形状对象.顶点坐标组[this.全局属性.当前形状对象.顶点坐标组.length - 1];
+          if (this.全局标志.辅助视觉效果) {
+            this.绘制辅助虚线(最后坐标.x, 最后坐标.y, this.全局属性.鼠标坐标.x, this.全局属性.鼠标坐标.y);
+          }
+          for (const 坐标 of this.全局属性.当前形状对象.顶点坐标组) {
+            this.绘制辅助点(坐标.x, 坐标.y);
+          }
+        }
+      }
+      return;
+    } else if (!this.全局属性.当前形状对象.形状 || this.全局属性.当前形状对象.顶点坐标组.length <= 0) {
+      if (最后记录.形状 === "直线") {
+        最后记录.顶点坐标组.pop();
+        if (最后记录.顶点坐标组.length <= 1) {
+          this.数据集.基础形状对象组.pop();
+        }
+      } else {
+        this.数据集.基础形状对象组.pop();
+      }
+    }
+    this.清空画布();
+    this.绘制基础形状对象组();
+  }
+
+  重置当前形状对象() {
+    this.全局属性.当前形状对象 = {
+      形状: null,
+      坐标: { x: null, y: null },
+      顶点坐标组: [],
+      尺寸: null,
+      描边色: "transparent",
+      填充色: "transparent",
+      描边宽度: this.全局属性.描边宽度,
+    };
   }
 
   绘制基础形状对象组() {
     if (this.数据集.基础形状对象组.length <= 0) return;
     for (const 形状对象 of this.数据集.基础形状对象组) {
       if (形状对象.形状 === "矩形") {
-        this.绘制矩形(形状对象.坐标.x, 形状对象.坐标.y, 形状对象.尺寸.宽, 形状对象.尺寸.高);
+        this.绘制矩形(
+          形状对象.坐标.x,
+          形状对象.坐标.y,
+          形状对象.尺寸.宽,
+          形状对象.尺寸.高,
+          形状对象.描边色,
+          形状对象.填充色,
+          形状对象.描边宽度
+        );
       } else if (形状对象.形状 === "正圆") {
-        this.绘制正圆(形状对象.坐标.x, 形状对象.坐标.y, 形状对象.尺寸.半径);
+        this.绘制正圆(
+          形状对象.坐标.x,
+          形状对象.坐标.y,
+          形状对象.尺寸.半径,
+          形状对象.描边色,
+          形状对象.填充色,
+          形状对象.描边宽度
+        );
       } else if (形状对象.形状 === "椭圆") {
         this.绘制椭圆(
           形状对象.坐标.x,
           形状对象.坐标.y,
           形状对象.尺寸.水平半径,
           形状对象.尺寸.垂直半径,
-          形状对象.旋转弧度
+          形状对象.旋转弧度,
+          形状对象.描边色,
+          形状对象.填充色,
+          形状对象.描边宽度
         );
       } else if (形状对象.形状 === "正多边形") {
-        this.绘制正多边形(形状对象.顶点坐标组);
+        this.绘制正多边形(形状对象.顶点坐标组, 形状对象.描边色, 形状对象.填充色, 形状对象.描边宽度);
       } else if (形状对象.形状 === "正多角星") {
-        this.绘制正多角星(形状对象.外顶点坐标组, 形状对象.内顶点坐标组);
+        this.绘制正多角星(
+          形状对象.外顶点坐标组,
+          形状对象.内顶点坐标组,
+          形状对象.描边色,
+          形状对象.填充色,
+          形状对象.描边宽度
+        );
+      } else if (形状对象.形状 === "直线") {
+        this.绘制直线(形状对象.顶点坐标组, 形状对象.描边色, 形状对象.描边宽度);
       }
     }
   }
