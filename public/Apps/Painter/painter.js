@@ -29,7 +29,12 @@ class 随心绘 {
       椭圆: ["按住 Shift 绘制正圆", "按 ← 或 → 精细调整旋转弧度", "按 ↑ 或 ↓ 快速调整旋转弧度"],
       正圆: [],
       正多边形: ["按 ↑ 或 ↓ 快速调整边数", "按 ← 或 → 精细调整起始弧度", "按住 Shift 同时按 ← 或 → 快速调整起始弧度"],
-      正多角星: ["按 ↑ 或 ↓ 快速调整角数", "按 ← 或 → 精细调整起始弧度", "按住 Shift 同时按 ← 或 → 快速调整起始弧度"],
+      正多角星: [
+        "按 ↑ 或 ↓ 快速调整角数",
+        "按 ← 或 → 精细调整起始弧度",
+        "按住 Shift 同时按 ← 或 → 快速调整起始弧度",
+        "按 [ 或 ] 调整内半径",
+      ],
       直线: ["按 Enter 确认", "按 ESC 取消"],
     };
 
@@ -444,9 +449,7 @@ class 随心绘 {
           this.全局属性.点击坐标.y,
           this.全局属性.当前形状对象.尺寸.内半径,
           this.全局属性.当前形状对象.边数,
-          边数 % 2 === 0
-            ? this.全局属性.当前形状对象.起始弧度 + Math.PI - Math.PI / 边数
-            : this.全局属性.当前形状对象.起始弧度 + Math.PI
+          this.全局属性.当前形状对象.起始弧度 + Math.PI / 边数
         );
         if (this.全局标志.辅助视觉效果) {
           this.绘制操作说明();
@@ -535,13 +538,17 @@ class 随心绘 {
 
   添加canvas鼠标抬起事件() {
     this.canvas.addEventListener("mouseup", () => {
+      const 移动距离 = Math.sqrt(
+        Math.abs(this.全局属性.鼠标坐标.x - this.全局属性.点击坐标.x) ** 2 +
+          Math.abs(this.全局属性.鼠标坐标.y - this.全局属性.点击坐标.y) ** 2
+      );
       this.全局标志.左键已按下 = false;
       this.全局属性.拖拽中 = false;
       this.全局属性.左键按下时间 = null;
       this.全局属性.拖拽时间 = null;
       this.全局标志.手动调整内半径 = false;
       this.全局属性.正多边形边数 = 5;
-      if (this.全局属性.已选中基础形状 && this.全局属性.已选中基础形状 !== "直线") {
+      if (this.全局属性.已选中基础形状 && this.全局属性.已选中基础形状 !== "直线" && 移动距离 > 0) {
         this.数据集.基础形状对象组.push(structuredClone(this.全局属性.当前形状对象));
         this.清空画布();
         this.绘制基础形状对象组();
@@ -706,7 +713,7 @@ class 随心绘 {
         this.全局属性.已选中基础形状 === "正多角星"
       ) {
         if (this.键盘状态.ArrowUp) {
-          if (this.全局属性.正多边形边数 < 50) {
+          if (this.全局属性.正多边形边数 < 100) {
             this.全局属性.正多边形边数++;
           }
         }
@@ -753,9 +760,7 @@ class 随心绘 {
           this.全局属性.点击坐标.y,
           this.全局属性.当前形状对象.尺寸.内半径,
           this.全局属性.当前形状对象.边数,
-          this.全局属性.当前形状对象.边数 % 2 === 0
-            ? this.全局属性.当前形状对象.起始弧度 + Math.PI - Math.PI / this.全局属性.当前形状对象.边数
-            : this.全局属性.当前形状对象.起始弧度 + Math.PI
+          this.全局属性.当前形状对象.起始弧度 + Math.PI / this.全局属性.当前形状对象.边数
         );
         if (this.全局标志.辅助视觉效果) {
           this.绘制操作说明();
@@ -883,13 +888,12 @@ class 随心绘 {
     this.ctx.save();
     this.ctx.beginPath();
     for (let i = 0; i < 边数; i++) {
-      const 内索引 = i <= Math.floor(边数 / 2) ? Math.floor(边数 / 2) - i : 边数 - (i - Math.floor(边数 / 2));
       if (i === 0) {
         this.ctx.moveTo(外顶点坐标组[i].x, 外顶点坐标组[i].y);
       } else {
-        this.ctx.lineTo(外顶点坐标组[边数 - i].x, 外顶点坐标组[边数 - i].y);
+        this.ctx.lineTo(外顶点坐标组[i].x, 外顶点坐标组[i].y);
       }
-      this.ctx.lineTo(内顶点坐标组[内索引].x, 内顶点坐标组[内索引].y);
+      this.ctx.lineTo(内顶点坐标组[i].x, 内顶点坐标组[i].y);
     }
     this.ctx.closePath();
     this.ctx.strokeStyle = 描边色;
@@ -1108,6 +1112,7 @@ class 随心绘 {
 
   绘制操作说明() {
     if (this.全局属性.当前形状对象.形状 === null) return;
+    const 特殊名词组 = ["↑", "↓", "←", "→", "[", "]", "Shift", "Enter", "ESC"];
     const 上距离 = 20;
     const 右距离 = 20;
     const 起始坐标 = {
@@ -1118,11 +1123,22 @@ class 随心绘 {
     this.ctx.beginPath();
     this.ctx.textAlign = "right";
     this.ctx.textBaseline = "top";
-    this.ctx.fillStyle = "#fffa";
     this.ctx.font = "14px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+    const 段间距 = 5;
     const 操作说明组 = this.操作说明[this.全局属性.当前形状对象.形状];
     for (const 操作说明 of 操作说明组) {
-      this.ctx.fillText(操作说明, 起始坐标.x, 起始坐标.y);
+      const 说明分段集合 = 操作说明.split(" ");
+      起始坐标.x = this.canvas.offsetWidth - 右距离;
+      for (let i = 说明分段集合.length - 1; i >= 0; i--) {
+        const 本段宽度 = this.ctx.measureText(说明分段集合[i]).width;
+        if (特殊名词组.includes(说明分段集合[i])) {
+          this.ctx.fillStyle = "lightskyblue";
+        } else {
+          this.ctx.fillStyle = "#fffa";
+        }
+        this.ctx.fillText(说明分段集合[i], 起始坐标.x, 起始坐标.y);
+        起始坐标.x -= 本段宽度 + 段间距;
+      }
       起始坐标.y += 25;
     }
     this.ctx.closePath();

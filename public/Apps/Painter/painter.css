@@ -1,3 +1,7 @@
+:root {
+  --标题下间距: 5px;
+}
+
 .pcr-app {
   background: #222 !important;
   box-shadow: 0 0 0 1px #def5, 0 0.15em 1.5em 0 rgba(0, 0, 0, 0.1), 0 0 1em 0 rgba(0, 0, 0, 0.03) !important;
@@ -64,7 +68,7 @@
 .辅助区 {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: var(--标题下间距);
 }
 
 .辅助列表.列表 {
@@ -120,7 +124,7 @@
 .基础形状区 {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: var(--标题下间距);
   width: calc(30px * 4 + 4px);
   height: 100%;
 }
@@ -204,7 +208,7 @@ label {
 .清空画布区 {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: var(--标题下间距);
 }
 
 #清空画布按钮 {
@@ -234,7 +238,7 @@ label {
 .常用操作区 {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: var(--标题下间距);
 }
 
 .常用操作列表 {
@@ -268,7 +272,7 @@ label {
 .颜色区 {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: var(--标题下间距);
 }
 
 .颜色分区 {
@@ -288,7 +292,7 @@ label {
 .描边宽度区 {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: var(--标题下间距);
 
   .描边宽度容器 {
     display: flex;
