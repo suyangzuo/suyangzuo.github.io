@@ -938,20 +938,32 @@ class 随心绘 {
     this.ctx.beginPath();
     this.ctx.strokeStyle = 描边色;
     this.ctx.lineWidth = 描边宽度;
-    for (let i = 0; i < 顶点坐标组.length; i++) {
-      if (i === 0) {
-        this.ctx.moveTo(顶点坐标组[i].x, 顶点坐标组[i].y);
-      } else {
-        this.ctx.lineTo(顶点坐标组[i].x, 顶点坐标组[i].y);
+    this.ctx.lineCap = "round";
+    this.ctx.lineJoin = "round";
+
+    if (顶点坐标组.length === 2) {
+      this.ctx.moveTo(顶点坐标组[0].x, 顶点坐标组[0].y);
+      this.ctx.lineTo(顶点坐标组[1].x, 顶点坐标组[1].y);
+    } else {
+      this.ctx.moveTo(顶点坐标组[0].x, 顶点坐标组[0].y);
+
+      for (let i = 1; i < 顶点坐标组.length - 1; i++) {
+        const 中间点x = (顶点坐标组[i].x + 顶点坐标组[i + 1].x) / 2;
+        const 中间点y = (顶点坐标组[i].y + 顶点坐标组[i + 1].y) / 2;
+        this.ctx.quadraticCurveTo(顶点坐标组[i].x, 顶点坐标组[i].y, 中间点x, 中间点y);
       }
+
+      const lastIndex = 顶点坐标组.length - 1;
+      this.ctx.quadraticCurveTo(
+        顶点坐标组[lastIndex - 1].x,
+        顶点坐标组[lastIndex - 1].y,
+        顶点坐标组[lastIndex].x,
+        顶点坐标组[lastIndex].y
+      );
     }
+
     this.ctx.stroke();
     this.ctx.restore();
-    return {
-      描边宽度: 描边宽度,
-      描边色: 描边色,
-      顶点坐标组: 顶点坐标组,
-    };
   }
 
   绘制辅助点(x, y) {

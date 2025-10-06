@@ -106,8 +106,12 @@ body {
   color: rgb(53, 61, 69);
 }
 
-.app.开发中:hover :where(.app-名称, .图片区, .app-access) {
-  filter: brightness(35%);
+.app.开发中 {
+  pointer-events: none;
+}
+
+.app.开发中 * {
+  filter: brightness(25%);
 }
 
 .app.开发中::before {
@@ -124,12 +128,8 @@ body {
   color: white;
   background-color: #000;
   font-size: 20px;
-  opacity: 0;
-  z-index: 1;
-}
-
-.app.开发中:hover::before {
   opacity: 1;
+  z-index: 1;
 }
 
 .图片区 {
@@ -138,6 +138,7 @@ body {
   width: 90%;
   overflow: hidden;
   filter: drop-shadow(2px 2px 2px #000a);
+  user-select: none;
 }
 
 .图片区 > img {
@@ -157,6 +158,7 @@ body {
   color: #9ab;
   font-weight: bold;
   text-wrap: nowrap;
+  user-select: none;
 }
 
 .app-access {
@@ -169,6 +171,7 @@ body {
   border-radius: 5px;
   overflow: hidden;
   transition: 125ms;
+  user-select: none;
 }
 
 .app:hover .app-access {
