@@ -453,6 +453,10 @@ class 随心绘 {
             this.绘制辅助点(坐标.x, 坐标.y);
           }
         }
+      } else if (this.全局属性.已选中基础形状 === "自由") {
+        this.全局属性.当前形状对象.形状 = "自由";
+        this.全局属性.当前形状对象.顶点坐标组.push(this.全局属性.鼠标坐标);
+        this.绘制自由路径(this.全局属性.当前形状对象.顶点坐标组, this.全局属性.描边色, this.全局属性.描边宽度);
       }
       if (
         this.全局标志.辅助视觉效果 &&
@@ -497,6 +501,8 @@ class 随心绘 {
             this.绘制辅助点(坐标.x, 坐标.y);
           }
         }
+      } else if (this.全局属性.已选中基础形状 === "自由") {
+        this.全局属性.当前形状对象.顶点坐标组.push(this.全局属性.点击坐标);
       }
     });
   }
@@ -558,7 +564,7 @@ class 随心绘 {
           this.数据集.基础形状对象组.push(structuredClone(this.全局属性.当前形状对象));
         }
       }
-      if (e.key === "Escape" || e.key === "Enter") {
+      if (e.key === "Escape" || (e.key === "Enter" && this.全局属性.已选中基础形状 === "直线")) {
         this.全局标志.左键已按下 = false;
         this.全局属性.拖拽中 = false;
         this.全局属性.点击坐标 = null;
@@ -926,6 +932,28 @@ class 随心绘 {
     };
   }
 
+  绘制自由路径(顶点坐标组, 描边色, 描边宽度) {
+    if (顶点坐标组.length < 2) return;
+    this.ctx.save();
+    this.ctx.beginPath();
+    this.ctx.strokeStyle = 描边色;
+    this.ctx.lineWidth = 描边宽度;
+    for (let i = 0; i < 顶点坐标组.length; i++) {
+      if (i === 0) {
+        this.ctx.moveTo(顶点坐标组[i].x, 顶点坐标组[i].y);
+      } else {
+        this.ctx.lineTo(顶点坐标组[i].x, 顶点坐标组[i].y);
+      }
+    }
+    this.ctx.stroke();
+    this.ctx.restore();
+    return {
+      描边宽度: 描边宽度,
+      描边色: 描边色,
+      顶点坐标组: 顶点坐标组,
+    };
+  }
+
   绘制辅助点(x, y) {
     this.ctx.save();
     this.ctx.beginPath();
@@ -1101,6 +1129,8 @@ class 随心绘 {
         );
       } else if (形状对象.形状 === "直线") {
         this.绘制直线(形状对象.顶点坐标组, 形状对象.描边色, 形状对象.描边宽度);
+      } else if (形状对象.形状 === "自由") {
+        this.绘制自由路径(形状对象.顶点坐标组, 形状对象.描边色, 形状对象.描边宽度);
       }
     }
   }
