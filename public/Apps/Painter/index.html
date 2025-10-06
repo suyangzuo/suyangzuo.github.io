@@ -30,7 +30,7 @@
     <script src="/Scripts/html-include.js" target="../apps-common-control.html" position="afterbegin"></script>
     <div id="总区">
       <div id="设置区">
-        <div class="辅助区">
+        <div class="辅助区 设置分区">
           <h5 class="标题">辅助效果</h5>
           <div class="辅助列表 列表">
             <div class="辅助视觉效果区 辅助复选区">
@@ -46,7 +46,7 @@
             </div>
           </div>
         </div>
-        <div class="基础形状区">
+        <div class="基础形状区 设置分区">
           <h5 class="标题">基础形状</h5>
           <div class="形状列表 列表">
             <div class="基础形状分区 矩形区" 形状="矩形">
@@ -102,15 +102,41 @@
                 title="三次贝塞尔曲线"
               />
             </div>
+            <div class="基础形状分区 自由区 禁用" 形状="自由">
+              <label class="形状符号" for="自由"
+                ><img class="示意符号" src="./Images/brush.svg" alt="自由画笔"
+              /></label>
+              <input
+                type="radio"
+                name="基础形状"
+                value="自由"
+                class="单选框 基础形状单选框"
+                id="自由"
+                title="自由画笔"
+              />
+            </div>
+            <div class="基础形状分区 文本区 禁用" 形状="文本">
+              <label class="形状符号" for="文本"
+                ><img class="示意符号" src="./Images/text.svg" alt="文本"
+              /></label>
+              <input
+                type="radio"
+                name="基础形状"
+                value="文本"
+                class="单选框 基础形状单选框"
+                id="文本"
+                title="文本"
+              />
+            </div>
           </div>
         </div>
-        <div class="清空画布区">
+        <div class="清空画布区 设置分区">
           <h5 class="标题">清空画布</h5>
           <button class="按钮" id="清空画布按钮" title="清空画布">
             <img class="示意符号" src="./Images/clear.svg" alt="清空画布" />
           </button>
         </div>
-        <div class="常用操作区">
+        <div class="常用操作区 设置分区">
           <h5 class="标题">常用操作</h5>
           <div class="常用操作列表 列表">
             <button class="按钮" id="撤销" title="撤销">
@@ -118,7 +144,7 @@
             </button>
           </div>
         </div>
-        <div class="颜色区">
+        <div class="颜色区 设置分区">
           <h5 class="标题">颜色</h5>
           <div class="颜色列表 列表">
             <div class="颜色分区">
@@ -131,7 +157,7 @@
             </div>
           </div>
         </div>
-        <div class="描边宽度区">
+        <div class="描边宽度区 设置分区">
           <h5 class="标题">描边宽度</h5>
           <div class="描边宽度容器">
             <input

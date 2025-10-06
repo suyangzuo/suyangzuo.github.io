@@ -60,15 +60,15 @@
   gap: 30px;
 }
 
-.标题 {
-  color: #89a;
-  padding-left: 2px;
-}
-
-.辅助区 {
+.设置分区 {
   display: flex;
   flex-direction: column;
   gap: var(--标题下间距);
+}
+
+.标题 {
+  color: #89a;
+  padding-left: 2px;
 }
 
 .辅助列表.列表 {
@@ -122,9 +122,6 @@
 }
 
 .基础形状区 {
-  display: flex;
-  flex-direction: column;
-  gap: var(--标题下间距);
   width: calc(30px * 4 + 4px);
   height: 100%;
 }
@@ -205,16 +202,10 @@ label {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
-.清空画布区 {
-  display: flex;
-  flex-direction: column;
-  gap: var(--标题下间距);
-}
-
 #清空画布按钮 {
   flex-grow: 1;
   width: 75px;
-  background-color: #26a5;
+  background-color: #722222;
   color: #fff;
   box-shadow: inset 0 0 1px 1px #fff3;
 }
@@ -227,18 +218,12 @@ label {
 
 #清空画布按钮:hover {
   box-shadow: inset 0 0 1px 1px #fffa;
-  background-color: #26aa;
+  background-color: #922222;
 }
 
 #清空画布按钮:active {
   box-shadow: inset 0 0 1px 1px #fff;
-  background-color: #26a;
-}
-
-.常用操作区 {
-  display: flex;
-  flex-direction: column;
-  gap: var(--标题下间距);
+  background-color: #b22222;
 }
 
 .常用操作列表 {
@@ -247,9 +232,9 @@ label {
 }
 
 .常用操作列表 > .按钮 {
-  width: 50px;
-  height: 50%;
-  background-color: #26a5;
+  width: 30px;
+  height: 30px;
+  background-color: #26a7;
   box-shadow: inset 0 0 1px 1px #fff3;
 }
 
@@ -257,6 +242,12 @@ label {
   width: 50%;
   height: 50%;
   object-fit: contain;
+}
+
+.按钮 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .按钮:hover {
@@ -267,12 +258,6 @@ label {
 .按钮:active {
   box-shadow: inset 0 0 1px 1px #fff;
   background-color: #26a;
-}
-
-.颜色区 {
-  display: flex;
-  flex-direction: column;
-  gap: var(--标题下间距);
 }
 
 .颜色分区 {
@@ -290,10 +275,6 @@ label {
 }
 
 .描边宽度区 {
-  display: flex;
-  flex-direction: column;
-  gap: var(--标题下间距);
-
   .描边宽度容器 {
     display: flex;
     align-items: center;

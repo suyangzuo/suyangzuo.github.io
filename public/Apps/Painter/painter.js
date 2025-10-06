@@ -11,13 +11,13 @@ class 随心绘 {
     this.画布边界矩形 = this.canvas.getBoundingClientRect();
     window.addEventListener("resize", () => {
       this.画布边界矩形 = this.canvas.getBoundingClientRect();
+      this.canvas.width = this.canvas.offsetWidth * this.dpr;
+      this.canvas.height = this.canvas.offsetHeight * this.dpr;
+      this.ctx.scale(this.dpr, this.dpr);
+      this.绘制基础形状对象组();
     });
     document.addEventListener("scroll", () => {
       this.画布边界矩形 = this.canvas.getBoundingClientRect();
-    });
-    this.canvas.addEventListener("resize", () => {
-      this.canvas.width = this.canvas.offsetWidth * this.dpr;
-      this.canvas.height = this.canvas.offsetHeight * this.dpr;
     });
 
     this.辅助 = {
@@ -25,12 +25,12 @@ class 随心绘 {
     };
 
     this.操作说明 = {
-      矩形: ["按住 Shift 绘制正方形"],
+      矩形: ["按住 Shift 绘制正方形", "按 ↑ 或 ↓ 调整圆角"],
       椭圆: ["按住 Shift 绘制正圆", "按 ← 或 → 精细调整旋转弧度", "按 ↑ 或 ↓ 快速调整旋转弧度"],
       正圆: [],
-      正多边形: ["按 ↑ 或 ↓ 快速调整边数", "按 ← 或 → 精细调整起始弧度", "按住 Shift 同时按 ← 或 → 快速调整起始弧度"],
+      正多边形: ["按 ↑ 或 ↓ 调整边数", "按 ← 或 → 精细调整起始弧度", "按住 Shift 同时按 ← 或 → 快速调整起始弧度"],
       正多角星: [
-        "按 ↑ 或 ↓ 快速调整角数",
+        "按 ↑ 或 ↓ 调整角数",
         "按 ← 或 → 精细调整起始弧度",
         "按住 Shift 同时按 ← 或 → 快速调整起始弧度",
         "按 [ 或 ] 调整内半径",
@@ -70,6 +70,7 @@ class 随心绘 {
         外顶点坐标组: [],
         内顶点坐标组: [],
         尺寸: null,
+        圆角: 0,
         描边色: "transparent",
         填充色: "transparent",
         描边宽度: 2,
@@ -276,51 +277,13 @@ class 随心绘 {
           this.全局属性.当前形状对象.坐标.y,
           this.全局属性.当前形状对象.尺寸.宽,
           this.全局属性.当前形状对象.尺寸.高,
+          this.全局属性.当前形状对象.圆角,
           this.全局属性.描边色,
           this.全局属性.填充色,
           this.全局属性.描边宽度
         );
         if (this.全局标志.辅助视觉效果) {
-          const 辅助半径 = 5;
-          this.ctx.save();
-          this.ctx.beginPath();
-          if (!this.全局属性.鼠标与点击坐标位置关系.左 && !this.全局属性.鼠标与点击坐标位置关系.上) {
-            this.ctx.arc(this.全局属性.点击坐标.x, this.全局属性.点击坐标.y, 辅助半径, 0, 2 * Math.PI);
-          } else if (this.全局属性.鼠标与点击坐标位置关系.左 && this.全局属性.鼠标与点击坐标位置关系.上) {
-            this.ctx.arc(
-              this.全局属性.鼠标坐标.x,
-              this.键盘状态.Shift
-                ? this.全局属性.点击坐标.y - this.全局属性.当前形状对象.尺寸.高
-                : this.全局属性.鼠标坐标.y,
-              辅助半径,
-              0,
-              2 * Math.PI
-            );
-          } else if (this.全局属性.鼠标与点击坐标位置关系.左 && !this.全局属性.鼠标与点击坐标位置关系.上) {
-            this.ctx.arc(
-              this.键盘状态.Shift
-                ? this.全局属性.点击坐标.x - this.全局属性.当前形状对象.尺寸.宽
-                : this.全局属性.鼠标坐标.x,
-              this.全局属性.点击坐标.y,
-              辅助半径,
-              0,
-              2 * Math.PI
-            );
-          } else if (!this.全局属性.鼠标与点击坐标位置关系.左 && this.全局属性.鼠标与点击坐标位置关系.上) {
-            this.ctx.arc(
-              this.全局属性.点击坐标.x,
-              this.键盘状态.Shift
-                ? this.全局属性.点击坐标.y - this.全局属性.当前形状对象.尺寸.高
-                : this.全局属性.鼠标坐标.y,
-              辅助半径,
-              0,
-              2 * Math.PI
-            );
-          }
-          this.ctx.closePath();
-          this.ctx.fillStyle = "yellowgreen";
-          this.ctx.fill();
-          this.ctx.restore();
+          this.绘制辅助点(this.全局属性.当前形状对象.坐标.x, this.全局属性.当前形状对象.坐标.y);
         }
       } else if (this.全局属性.已选中基础形状 === "圆") {
         if (!this.键盘状态.Shift) {
@@ -509,7 +472,9 @@ class 随心绘 {
       this.全局标志.手动调整内半径 = false;
       this.全局属性.点击坐标 = this.全局属性.鼠标坐标;
       this.全局属性.当前形状对象.描边宽度 = this.全局属性.描边宽度;
-      if (this.全局属性.已选中基础形状 === "正多边形" || this.全局属性.已选中基础形状 === "正多角星") {
+      if (this.全局属性.已选中基础形状 === "矩形") {
+        this.全局属性.当前形状对象.圆角 = 0;
+      } else if (this.全局属性.已选中基础形状 === "正多边形" || this.全局属性.已选中基础形状 === "正多角星") {
         this.全局属性.当前形状对象.起始弧度 = -Math.PI / 2;
       } else if (this.全局属性.已选中基础形状 === "圆" && !this.键盘状态.Shift) {
         this.全局属性.当前形状对象.旋转弧度 = 0;
@@ -538,6 +503,7 @@ class 随心绘 {
 
   添加canvas鼠标抬起事件() {
     this.canvas.addEventListener("mouseup", () => {
+      if (!this.全局属性.点击坐标) return;
       const 移动距离 = Math.sqrt(
         Math.abs(this.全局属性.鼠标坐标.x - this.全局属性.点击坐标.x) ** 2 +
           Math.abs(this.全局属性.鼠标坐标.y - this.全局属性.点击坐标.y) ** 2
@@ -606,7 +572,33 @@ class 随心绘 {
       if (e.key === "Escape") {
         return;
       }
-      if (this.全局标志.左键已按下 && !this.键盘状态.Shift && this.全局属性.已选中基础形状 === "圆") {
+      if (this.全局标志.左键已按下 && this.全局属性.已选中基础形状 === "矩形") {
+        const 短边 = Math.min(this.全局属性.当前形状对象.尺寸.宽, this.全局属性.当前形状对象.尺寸.高);
+        if (this.键盘状态.ArrowUp && this.全局属性.当前形状对象.圆角 < 短边 / 2) {
+          this.全局属性.当前形状对象.圆角 += 1;
+        }
+        if (this.键盘状态.ArrowDown && this.全局属性.当前形状对象.圆角 >= 1) {
+          this.全局属性.当前形状对象.圆角 -= 1;
+        }
+        this.清空画布();
+        if (this.全局标志.辅助视觉效果) {
+          this.绘制操作说明();
+        }
+        this.绘制基础形状对象组();
+        this.绘制矩形(
+          this.全局属性.当前形状对象.坐标.x,
+          this.全局属性.当前形状对象.坐标.y,
+          this.全局属性.当前形状对象.尺寸.宽,
+          this.全局属性.当前形状对象.尺寸.高,
+          this.全局属性.当前形状对象.圆角,
+          this.全局属性.描边色,
+          this.全局属性.填充色,
+          this.全局属性.描边宽度
+        );
+        if (this.全局标志.辅助视觉效果) {
+          this.绘制辅助点(this.全局属性.当前形状对象.坐标.x, this.全局属性.当前形状对象.坐标.y);
+        }
+      } else if (this.全局标志.左键已按下 && !this.键盘状态.Shift && this.全局属性.已选中基础形状 === "圆") {
         if (this.键盘状态.ArrowLeft) {
           this.全局属性.当前形状对象.旋转弧度 -= 0.01;
         }
@@ -801,10 +793,10 @@ class 随心绘 {
     });
   }
 
-  绘制矩形(x, y, 宽, 高, 描边色, 填充色, 描边宽度) {
+  绘制矩形(x, y, 宽, 高, 圆角, 描边色, 填充色, 描边宽度) {
     this.ctx.save();
     this.ctx.beginPath();
-    this.ctx.rect(x, y, 宽, 高);
+    this.ctx.roundRect(x, y, 宽, 高, [圆角]);
     this.ctx.strokeStyle = 描边色;
     this.ctx.fillStyle = 填充色;
     this.ctx.lineWidth = 描边宽度;
@@ -817,6 +809,7 @@ class 随心绘 {
       填充色: 填充色,
       坐标: { x: x, y: y },
       尺寸: { 宽: 宽, 高: 高 },
+      圆角: 圆角,
     };
   }
 
@@ -1055,6 +1048,7 @@ class 随心绘 {
       坐标: { x: null, y: null },
       顶点坐标组: [],
       尺寸: null,
+      圆角: 0,
       描边色: "transparent",
       填充色: "transparent",
       描边宽度: this.全局属性.描边宽度,
@@ -1070,6 +1064,7 @@ class 随心绘 {
           形状对象.坐标.y,
           形状对象.尺寸.宽,
           形状对象.尺寸.高,
+          形状对象.圆角,
           形状对象.描边色,
           形状对象.填充色,
           形状对象.描边宽度
