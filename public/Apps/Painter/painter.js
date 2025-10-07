@@ -431,6 +431,30 @@ class 随心绘 {
             this.全局属性.当前形状对象.外顶点坐标组[0].x,
             this.全局属性.当前形状对象.外顶点坐标组[0].y
           );
+          this.绘制辅助虚线(
+            this.全局属性.点击坐标.x,
+            this.全局属性.点击坐标.y,
+            this.全局属性.当前形状对象.内顶点坐标组[0].x,
+            this.全局属性.当前形状对象.内顶点坐标组[0].y
+          );
+          this.绘制正多边形顶点索引(
+            this.全局属性.点击坐标.x,
+            this.全局属性.点击坐标.y,
+            this.全局属性.当前形状对象.尺寸.外半径,
+            20,
+            this.全局属性.当前形状对象.边数,
+            this.全局属性.当前形状对象.起始弧度,
+            "lightskyblue"
+          );
+          this.绘制正多边形顶点索引(
+            this.全局属性.点击坐标.x,
+            this.全局属性.点击坐标.y,
+            this.全局属性.当前形状对象.尺寸.内半径,
+            -20,
+            this.全局属性.当前形状对象.边数,
+            this.全局属性.当前形状对象.起始弧度 + Math.PI / this.全局属性.当前形状对象.边数,
+            "yellowgreen"
+          );
           this.描边辅助正圆(this.全局属性.点击坐标.x, this.全局属性.点击坐标.y, this.全局属性.当前形状对象.尺寸.外半径);
           this.描边辅助正圆(this.全局属性.点击坐标.x, this.全局属性.点击坐标.y, this.全局属性.当前形状对象.尺寸.内半径);
         }
@@ -778,6 +802,30 @@ class 随心绘 {
             this.全局属性.当前形状对象.外顶点坐标组[0].x,
             this.全局属性.当前形状对象.外顶点坐标组[0].y
           );
+          this.绘制辅助虚线(
+            this.全局属性.点击坐标.x,
+            this.全局属性.点击坐标.y,
+            this.全局属性.当前形状对象.内顶点坐标组[0].x,
+            this.全局属性.当前形状对象.内顶点坐标组[0].y
+          );
+          this.绘制正多边形顶点索引(
+            this.全局属性.点击坐标.x,
+            this.全局属性.点击坐标.y,
+            this.全局属性.当前形状对象.尺寸.外半径,
+            20,
+            this.全局属性.当前形状对象.边数,
+            this.全局属性.当前形状对象.起始弧度,
+            "lightskyblue"
+          );
+          this.绘制正多边形顶点索引(
+            this.全局属性.点击坐标.x,
+            this.全局属性.点击坐标.y,
+            this.全局属性.当前形状对象.尺寸.内半径,
+            -20,
+            this.全局属性.当前形状对象.边数,
+            this.全局属性.当前形状对象.起始弧度 + Math.PI / this.全局属性.当前形状对象.边数,
+            "yellowgreen"
+          );
           this.绘制辅助点(this.全局属性.点击坐标.x, this.全局属性.点击坐标.y);
           this.描边辅助正圆(this.全局属性.点击坐标.x, this.全局属性.点击坐标.y, this.全局属性.当前形状对象.尺寸.外半径);
           this.描边辅助正圆(this.全局属性.点击坐标.x, this.全局属性.点击坐标.y, this.全局属性.当前形状对象.尺寸.内半径);
@@ -996,6 +1044,29 @@ class 随心绘 {
     this.ctx.strokeStyle = this.全局属性.辅助外框描边色;
     this.ctx.lineWidth = 3;
     this.ctx.stroke();
+    this.ctx.restore();
+  }
+
+  绘制正多边形顶点索引(x, y, 半径, 索引偏移, 边数, 起始弧度, 填充色) {
+    this.ctx.save();
+    this.ctx.textAlign = "center";
+    this.ctx.textBaseline = "middle";
+    this.ctx.font = "13px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+    const 索引半径 = 半径 + 索引偏移;
+    const 弧度偏移 = (2 * Math.PI) / 边数;
+    for (let i = 0; i < 边数; i++) {
+      const 顶点弧度 = 起始弧度 + i * 弧度偏移;
+      const 顶点水平偏移 = 索引半径 * Math.cos(顶点弧度);
+      const 顶点垂直偏移 = 索引半径 * Math.sin(顶点弧度);
+      const 索引x = x + 顶点水平偏移;
+      const 索引y = y + 顶点垂直偏移;
+      this.ctx.fillStyle = "#0007";
+      this.ctx.beginPath();
+      this.ctx.arc(索引x, 索引y, 15, 0, 2 * Math.PI);
+      this.ctx.fill();
+      this.ctx.fillStyle = 填充色;
+      this.ctx.fillText(i.toString(), 索引x, 索引y);
+    }
     this.ctx.restore();
   }
 
