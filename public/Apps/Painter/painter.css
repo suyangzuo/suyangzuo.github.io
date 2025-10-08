@@ -42,7 +42,7 @@
 }
 
 #总区 {
-  width: clamp(800px, 97.5vw, 1500px);
+  width: clamp(800px, 97.5vw, 2400px);
   height: clamp(600px, calc(100vh - 100px), 1200px);
   margin: 75px auto 0;
   display: flex;
@@ -259,11 +259,25 @@ label {
   object-fit: contain;
 }
 
+.按钮容器 {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1px;
+  border-radius: 4px;
+}
+
 .按钮 {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: transparent;
   user-select: none;
+  border-radius: 4px;
+  padding: 4px;
 }
 
 .按钮:hover {
@@ -274,6 +288,19 @@ label {
 .按钮:active {
   box-shadow: inset 0 0 1px 1px #5af;
   background-color: #5af7;
+}
+
+.基础形状分区.选框区 > .形状符号 {
+  padding: 4px;
+}
+
+.基础形状分区.选框区:has(.单选框:checked) .形状符号 {
+  background-color: #5af8;
+}
+
+.基础形状分区.选框区:hover .形状符号 {
+  background-color: #5af3;
+  box-shadow: inset 0 0 1px 1px #5af;
 }
 
 .颜色分区 {

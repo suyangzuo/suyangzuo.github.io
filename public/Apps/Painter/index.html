@@ -131,20 +131,45 @@
           <h5 class="标题">常用操作</h5>
           <div class="操作列表组">
             <div class="常用操作列表 列表">
-              <button class="按钮" id="撤销" title="撤销">
-                <img class="示意符号" src="./Images/reverse.svg" alt="撤销" />
-              </button>
+              <div class="基础形状分区 选择路径区" 形状="选择路径">
+                <label class="形状符号" for="选择路径"
+                  ><img class="示意符号" src="./Images/select-path.svg" alt="选择路径"
+                /></label>
+                <input
+                  type="radio"
+                  name="基础形状"
+                  value="选择路径"
+                  class="单选框 基础形状单选框"
+                  id="选择路径"
+                  title="选择路径"
+                />
+              </div>
+              <div class="基础形状分区 选框区" 形状="选框">
+                <label class="形状符号" for="选框"><img class="示意符号" src="./Images/select.svg" alt="选框" /></label>
+                <input type="radio" name="基础形状" value="选框" class="单选框 基础形状单选框" id="选框" title="选框" />
+              </div>
+              <div class="按钮容器">
+                <button class="按钮" id="撤销" title="撤销">
+                  <img class="示意符号" src="./Images/reverse.svg" alt="撤销" />
+                </button>
+              </div>
             </div>
             <div class="形状交互列表 列表">
-              <button class="按钮 禁用" id="交集" title="交集">
-                <img class="示意符号" src="./Images/intersection.svg" alt="交集" />
-              </button>
-              <button class="按钮 禁用" id="差集" title="差集">
-                <img class="示意符号" src="./Images/difference.svg" alt="差集" />
-              </button>
-              <button class="按钮 禁用" id="并集" title="并集">
-                <img class="示意符号" src="./Images/union.svg" alt="并集" />
-              </button>
+              <div class="按钮容器 禁用">
+                <button class="按钮" id="交集" title="交集">
+                  <img class="示意符号" src="./Images/intersection.svg" alt="交集" />
+                </button>
+              </div>
+              <div class="按钮容器 禁用">
+                <button class="按钮" id="差集" title="差集">
+                  <img class="示意符号" src="./Images/difference.svg" alt="差集" />
+                </button>
+              </div>
+              <div class="按钮容器 禁用">
+                <button class="按钮" id="并集" title="并集">
+                  <img class="示意符号" src="./Images/union.svg" alt="并集" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
