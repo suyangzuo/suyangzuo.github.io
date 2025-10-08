@@ -116,17 +116,8 @@
               />
             </div>
             <div class="基础形状分区 文本区 禁用" 形状="文本">
-              <label class="形状符号" for="文本"
-                ><img class="示意符号" src="./Images/text.svg" alt="文本"
-              /></label>
-              <input
-                type="radio"
-                name="基础形状"
-                value="文本"
-                class="单选框 基础形状单选框"
-                id="文本"
-                title="文本"
-              />
+              <label class="形状符号" for="文本"><img class="示意符号" src="./Images/text.svg" alt="文本" /></label>
+              <input type="radio" name="基础形状" value="文本" class="单选框 基础形状单选框" id="文本" title="文本" />
             </div>
           </div>
         </div>
@@ -138,10 +129,23 @@
         </div>
         <div class="常用操作区 设置分区">
           <h5 class="标题">常用操作</h5>
-          <div class="常用操作列表 列表">
-            <button class="按钮" id="撤销" title="撤销">
-              <img class="示意符号" src="./Images/reverse.svg" alt="撤销" />
-            </button>
+          <div class="操作列表组">
+            <div class="常用操作列表 列表">
+              <button class="按钮" id="撤销" title="撤销">
+                <img class="示意符号" src="./Images/reverse.svg" alt="撤销" />
+              </button>
+            </div>
+            <div class="形状交互列表 列表">
+              <button class="按钮 禁用" id="交集" title="交集">
+                <img class="示意符号" src="./Images/intersection.svg" alt="交集" />
+              </button>
+              <button class="按钮 禁用" id="差集" title="差集">
+                <img class="示意符号" src="./Images/difference.svg" alt="差集" />
+              </button>
+              <button class="按钮 禁用" id="并集" title="并集">
+                <img class="示意符号" src="./Images/union.svg" alt="并集" />
+              </button>
+            </div>
           </div>
         </div>
         <div class="颜色区 设置分区">
