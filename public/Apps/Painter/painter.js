@@ -401,7 +401,8 @@ class 随心绘 {
           鼠标位于交互框边界 = this.鼠标位于交互框边界();
         }
         this.全局属性.悬停形状 = this.鼠标位于形状内();
-        if (鼠标位于交互框内 && this.全局标志.左键已按下) {
+        if (this.全局属性.拖拽中) {
+          this.canvas.style.cursor = 'url("/Images/Common/鼠标-移动.cur"), pointer';
           if (
             this.全局属性.选中形状.形状 !== "直线" &&
             this.全局属性.选中形状.形状 !== "自由" &&
@@ -422,20 +423,16 @@ class 随心绘 {
           this.更新路径(this.全局属性.选中形状);
         } else if (鼠标位于交互框边界) {
           if ((鼠标位于交互框边界.上 && 鼠标位于交互框边界.左) || (鼠标位于交互框边界.下 && 鼠标位于交互框边界.右)) {
-            this.canvas.style.cursor = "nwse-resize";
+            this.canvas.style.cursor = 'url("/Images/Common/鼠标-西北-东南.cur"), pointer';
           } else if (
             (鼠标位于交互框边界.上 && 鼠标位于交互框边界.右) ||
             (鼠标位于交互框边界.下 && 鼠标位于交互框边界.左)
           ) {
-            this.canvas.style.cursor = "nesw-resize";
-          } else if (鼠标位于交互框边界.上) {
-            this.canvas.style.cursor = "ns-resize";
-          } else if (鼠标位于交互框边界.下) {
-            this.canvas.style.cursor = "ns-resize";
-          } else if (鼠标位于交互框边界.左) {
-            this.canvas.style.cursor = "ew-resize";
-          } else if (鼠标位于交互框边界.右) {
-            this.canvas.style.cursor = "ew-resize";
+            this.canvas.style.cursor = 'url("/Images/Common/鼠标-东北-西南.cur"), pointer';
+          } else if (鼠标位于交互框边界.上 || 鼠标位于交互框边界.下) {
+            this.canvas.style.cursor = 'url("/Images/Common/鼠标-南北.cur"), pointer';
+          } else if (鼠标位于交互框边界.左 || 鼠标位于交互框边界.右) {
+            this.canvas.style.cursor = 'url("/Images/Common/鼠标-东西.cur"), pointer';
           } else {
             this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), pointer';
           }
@@ -742,8 +739,8 @@ class 随心绘 {
           }
           this.清空画布();
           this.绘制基础形状对象组();
-          return;
         } else {
+          this.全局属性.拖拽中 = true;
           if (this.全局属性.选中形状.形状 !== "直线" && this.全局属性.选中形状.形状 !== "自由") {
             this.全局属性.偏移量 = {
               x: this.全局属性.选中形状.坐标.x - this.全局属性.点击坐标.x,
@@ -814,6 +811,8 @@ class 随心绘 {
 
   添加canvas鼠标抬起事件() {
     this.canvas.addEventListener("mouseup", () => {
+      this.全局属性.拖拽中 = false;
+      this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), pointer';
       if (!this.全局属性.点击坐标) return;
       const 移动距离 = Math.sqrt(
         Math.abs(this.全局属性.鼠标坐标.x - this.全局属性.点击坐标.x) ** 2 +
@@ -1666,7 +1665,7 @@ class 随心绘 {
     if (!形状对象) return;
     this.ctx.save();
     this.ctx.beginPath();
-    const 外边距 = 28;
+    const 外边距 = 10 + 形状对象.描边宽度 * 0.5;
     const 坐标 = {
       x: 0,
       y: 0,
@@ -1676,30 +1675,30 @@ class 随心绘 {
       height: 0,
     };
     if (形状对象.形状 === "矩形") {
-      坐标.x = 形状对象.坐标.x - 外边距 / 2;
-      坐标.y = 形状对象.坐标.y - 外边距 / 2;
-      尺寸.width = 形状对象.尺寸.宽 + 外边距;
-      尺寸.height = 形状对象.尺寸.高 + 外边距;
+      坐标.x = 形状对象.坐标.x - 外边距;
+      坐标.y = 形状对象.坐标.y - 外边距;
+      尺寸.width = 形状对象.尺寸.宽 + 外边距 * 2;
+      尺寸.height = 形状对象.尺寸.高 + 外边距 * 2;
     } else if (形状对象.形状 === "正圆") {
-      坐标.x = 形状对象.坐标.x - 形状对象.尺寸.半径 - 外边距 / 2;
-      坐标.y = 形状对象.坐标.y - 形状对象.尺寸.半径 - 外边距 / 2;
-      尺寸.width = 形状对象.尺寸.半径 * 2 + 外边距;
-      尺寸.height = 形状对象.尺寸.半径 * 2 + 外边距;
+      坐标.x = 形状对象.坐标.x - 形状对象.尺寸.半径 - 外边距;
+      坐标.y = 形状对象.坐标.y - 形状对象.尺寸.半径 - 外边距;
+      尺寸.width = 形状对象.尺寸.半径 * 2 + 外边距 * 2;
+      尺寸.height = 形状对象.尺寸.半径 * 2 + 外边距 * 2;
     } else if (形状对象.形状 === "椭圆") {
-      坐标.x = 形状对象.坐标.x - 形状对象.尺寸.水平半径 - 外边距 / 2;
-      坐标.y = 形状对象.坐标.y - 形状对象.尺寸.垂直半径 - 外边距 / 2;
-      尺寸.width = 形状对象.尺寸.水平半径 * 2 + 外边距;
-      尺寸.height = 形状对象.尺寸.垂直半径 * 2 + 外边距;
+      坐标.x = 形状对象.坐标.x - 形状对象.尺寸.水平半径 - 外边距;
+      坐标.y = 形状对象.坐标.y - 形状对象.尺寸.垂直半径 - 外边距;
+      尺寸.width = 形状对象.尺寸.水平半径 * 2 + 外边距 * 2;
+      尺寸.height = 形状对象.尺寸.垂直半径 * 2 + 外边距 * 2;
     } else if (形状对象.形状 === "正多边形") {
-      坐标.x = 形状对象.坐标.x - 形状对象.尺寸.半径 - 外边距 / 2;
-      坐标.y = 形状对象.坐标.y - 形状对象.尺寸.半径 - 外边距 / 2;
-      尺寸.width = 形状对象.尺寸.半径 * 2 + 外边距;
-      尺寸.height = 形状对象.尺寸.半径 * 2 + 外边距;
+      坐标.x = 形状对象.坐标.x - 形状对象.尺寸.半径 - 外边距;
+      坐标.y = 形状对象.坐标.y - 形状对象.尺寸.半径 - 外边距;
+      尺寸.width = 形状对象.尺寸.半径 * 2 + 外边距 * 2;
+      尺寸.height = 形状对象.尺寸.半径 * 2 + 外边距 * 2;
     } else if (形状对象.形状 === "正多角星") {
-      坐标.x = 形状对象.坐标.x - 形状对象.尺寸.外半径 - 外边距 / 2;
-      坐标.y = 形状对象.坐标.y - 形状对象.尺寸.外半径 - 外边距 / 2;
-      尺寸.width = 形状对象.尺寸.外半径 * 2 + 外边距;
-      尺寸.height = 形状对象.尺寸.外半径 * 2 + 外边距;
+      坐标.x = 形状对象.坐标.x - 形状对象.尺寸.外半径 - 外边距;
+      坐标.y = 形状对象.坐标.y - 形状对象.尺寸.外半径 - 外边距;
+      尺寸.width = 形状对象.尺寸.外半径 * 2 + 外边距 * 2;
+      尺寸.height = 形状对象.尺寸.外半径 * 2 + 外边距 * 2;
     } else if (形状对象.形状 === "直线" || 形状对象.形状 === "自由") {
       let 最左 = 形状对象.顶点坐标组[0].x;
       let 最右 = 形状对象.顶点坐标组[0].x;
@@ -1721,15 +1720,17 @@ class 随心绘 {
       }
       const 宽度 = 最右 - 最左;
       const 高度 = 最下 - 最上;
-      坐标.x = 最左 - 外边距 / 2;
-      坐标.y = 最上 - 外边距 / 2;
-      尺寸.width = 宽度 + 外边距;
-      尺寸.height = 高度 + 外边距;
+      坐标.x = 最左 - 外边距;
+      坐标.y = 最上 - 外边距;
+      尺寸.width = 宽度 + 外边距 * 2;
+      尺寸.height = 高度 + 外边距 * 2;
     }
     this.交互框 = {
       坐标: 坐标,
       尺寸: 尺寸,
       交互形状: 形状对象,
+      容差: 10,
+      外边距: 外边距,
     };
     const 虚线长度 = 10;
     this.ctx.lineWidth = 1;
