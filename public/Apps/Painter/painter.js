@@ -24,6 +24,7 @@ class 随心绘 {
       视觉效果复选框: document.getElementById("辅助视觉效果"),
       按钮音效复选框: document.getElementById("按钮音效"),
       点击音效对象: new Audio("/Audios/Click.mp3"),
+      清空音效: new Audio("/Audios/Clear.mp3"),
     };
 
     this.基础形状单选框组 = {
@@ -1597,6 +1598,12 @@ class 随心绘 {
   添加清空画布按钮点击事件() {
     const 清空画布按钮 = document.getElementById("清空画布按钮");
     清空画布按钮.addEventListener("click", () => {
+      if (this.全局标志.按钮音效) {
+        this.辅助.清空音效.currentTime = 0;
+        this.辅助.清空音效.play().catch((e) => {
+          console.log("按钮音效播放失败:", e);
+        });
+      }
       this.清空画布();
       this.数据集.基础形状对象组 = [];
       this.当前形状对象.顶点坐标组 = [];
@@ -1614,8 +1621,8 @@ class 随心绘 {
           console.log("按钮音效播放失败:", e);
         });
       }
+      this.撤销();
     });
-    撤销按钮.addEventListener("click", this.撤销.bind(this));
   }
 
   撤销() {
