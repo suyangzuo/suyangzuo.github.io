@@ -75,6 +75,9 @@
 
 .辅助列表.列表 {
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
 .辅助视觉效果区 {

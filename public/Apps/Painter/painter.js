@@ -22,6 +22,8 @@ class 随心绘 {
 
     this.辅助 = {
       视觉效果复选框: document.getElementById("辅助视觉效果"),
+      按钮音效复选框: document.getElementById("按钮音效"),
+      点击音效对象: new Audio("/Audios/Click.mp3"),
     };
 
     this.基础形状单选框组 = {
@@ -59,6 +61,7 @@ class 随心绘 {
       正多边形可旋转: true,
       手动调整内半径: false,
       辅助视觉效果: this.辅助.视觉效果复选框.checked,
+      按钮音效: this.辅助.按钮音效复选框.checked,
     };
 
     this.全局属性 = {
@@ -346,8 +349,8 @@ class 随心绘 {
         if (形状.已悬停) {
           if (this.全局属性.悬停形状 && this.全局属性.悬停形状 !== 形状) {
             this.全局属性.悬停形状.已悬停 = false;
-            this.全局属性.悬停形状 = 形状;
           }
+          this.全局属性.悬停形状 = 形状;
           return 形状;
         }
       }
@@ -901,6 +904,21 @@ class 随心绘 {
         this.基础形状单选框组[this.快捷键映射[e.key]].checked = true;
         this.基础形状单选框组.当前基础形状单选框 = this.基础形状单选框组[this.快捷键映射[e.key]];
         this.全局属性.已选中基础形状 = this.快捷键映射[e.key];
+        if (this.基础形状单选框组["选择路径"].checked) {
+          const 悬停形状 = this.鼠标位于形状内();
+          if (悬停形状) {
+            悬停形状.已悬停 = true;
+            this.清空画布();
+            this.绘制基础形状对象组();
+          }
+        } else {
+          if (this.全局属性.悬停形状) {
+            this.全局属性.悬停形状.已悬停 = false;
+            this.全局属性.悬停形状 = null;
+            this.清空画布();
+            this.绘制基础形状对象组();
+          }
+        }
       }
       if (this.全局标志.左键已按下 && this.全局属性.已选中基础形状 === "矩形") {
         const 短边 = Math.min(this.当前形状对象.尺寸.宽, this.当前形状对象.尺寸.高);
@@ -1144,6 +1162,9 @@ class 随心绘 {
   处理辅助效果选项() {
     this.辅助.视觉效果复选框.addEventListener("change", () => {
       this.全局标志.辅助视觉效果 = this.辅助.视觉效果复选框.checked;
+    });
+    this.辅助.按钮音效复选框.addEventListener("change", () => {
+      this.全局标志.按钮音效 = this.辅助.按钮音效复选框.checked;
     });
   }
 
@@ -1586,6 +1607,14 @@ class 随心绘 {
 
   添加撤销按钮点击事件() {
     const 撤销按钮 = document.getElementById("撤销");
+    撤销按钮.addEventListener("click", () => {
+      if (this.全局标志.按钮音效) {
+        this.辅助.点击音效对象.currentTime = 0;
+        this.辅助.点击音效对象.play().catch((e) => {
+          console.log("按钮音效播放失败:", e);
+        });
+      }
+    });
     撤销按钮.addEventListener("click", this.撤销.bind(this));
   }
 
