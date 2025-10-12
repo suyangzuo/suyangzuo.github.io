@@ -74,10 +74,8 @@
 }
 
 .辅助列表.列表 {
-  padding: 0;
+  padding: 0 2px;
   display: flex;
-  flex-direction: column;
-  gap: 5px;
 }
 
 .辅助视觉效果区 {
@@ -88,22 +86,53 @@
 
 .辅助复选区 {
   position: relative;
-  padding: 4px 15px;
+  padding: 1px;
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  display: flex;
 }
 
-.辅助复选区:hover {
-  box-shadow: inset 0 0 0 1px #285;
-  background-color: #2853;
+.辅助复选区:hover > .标签 {
+  box-shadow: inset 0 0 0 1px #d7a;
+  background-color: #d7a2;
 }
 
-.辅助复选区:has(.复选框:checked) {
-  background-color: #164;
+.辅助视觉效果区 > .标签::before {
+  background: center/70% no-repeat url("./Images/visual-effects-off.svg");
+  filter: invert(1) brightness(1);
+}
+
+.辅助视觉效果区:has(.复选框:checked) .标签::before {
+  background: center/70% no-repeat url("./Images/visual-effects-on.svg");
+  filter: invert(0) brightness(2);
+}
+
+.按钮音效效果区 > .标签::before {
+  background: center/60% no-repeat url("./Images/audio-off.svg");
+  filter: invert(1);
+}
+
+.按钮音效效果区:has(.复选框:checked) .标签::before {
+  background: center/60% no-repeat url("./Images/audio-on.svg");
 }
 
 .标签 {
   text-wrap: nowrap;
   user-select: none;
-  font-size: 14px;
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  position: relative;
+}
+
+.标签::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
 }
 
 .复选框 {
@@ -239,7 +268,8 @@ label {
 }
 
 .常用操作列表,
-.形状交互列表 {
+.形状交互列表,
+.形状操纵列表 {
   display: flex;
   background-color: transparent;
   box-shadow: none;

@@ -20,12 +20,24 @@ class 随心绘 {
       this.画布边界矩形 = this.canvas.getBoundingClientRect();
     });
 
+    this.本地存储池 = {
+      播放音效:
+        JSON.parse(localStorage.getItem("播放音效")) === null ? true : JSON.parse(localStorage.getItem("播放音效")),
+      辅助视觉效果:
+        JSON.parse(localStorage.getItem("辅助视觉效果")) === null
+          ? true
+          : JSON.parse(localStorage.getItem("辅助视觉效果")),
+    };
+
     this.辅助 = {
       视觉效果复选框: document.getElementById("辅助视觉效果"),
       按钮音效复选框: document.getElementById("按钮音效"),
       点击音效对象: new Audio("/Audios/Click.mp3"),
       清空音效: new Audio("/Audios/Clear.mp3"),
     };
+
+    this.辅助.视觉效果复选框.checked = this.本地存储池.辅助视觉效果;
+    this.辅助.按钮音效复选框.checked = this.本地存储池.播放音效;
 
     this.基础形状单选框组 = {
       矩形: document.getElementById("矩形"),
@@ -870,6 +882,12 @@ class 随心绘 {
       if (!Object.hasOwn(this.键盘状态, e.key)) return;
       this.键盘状态[e.key] = true;
       if (e.key === "z" && this.键盘状态.Control) {
+        if (this.全局标志.按钮音效) {
+          this.辅助.点击音效对象.currentTime = 0;
+          this.辅助.点击音效对象.play().catch((e) => {
+            console.log("按钮音效播放失败:", e);
+          });
+        }
         this.撤销();
         return;
       }
@@ -1163,9 +1181,11 @@ class 随心绘 {
   处理辅助效果选项() {
     this.辅助.视觉效果复选框.addEventListener("change", () => {
       this.全局标志.辅助视觉效果 = this.辅助.视觉效果复选框.checked;
+      localStorage.setItem("辅助视觉效果", this.辅助.视觉效果复选框.checked);
     });
     this.辅助.按钮音效复选框.addEventListener("change", () => {
       this.全局标志.按钮音效 = this.辅助.按钮音效复选框.checked;
+      localStorage.setItem("播放音效", this.辅助.按钮音效复选框.checked);
     });
   }
 
