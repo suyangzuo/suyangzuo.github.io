@@ -124,9 +124,12 @@
   height: 100%;
   border-radius: 4px;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.标签::before {
+.辅助列表 .标签::before {
   position: absolute;
   content: "";
   width: 100%;
