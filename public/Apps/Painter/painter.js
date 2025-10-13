@@ -1772,7 +1772,7 @@ class 随心绘 {
     this.ctx.save();
     this.ctx.beginPath();
     let 旋转弧度 = 0;
-    const 外边距 = 10 + 形状对象.描边宽度 * (形状对象.形状 === "直线" || 形状对象.形状 === "自由" ? 0.5 : 1);
+    const 外边距 = 10 + 形状对象.描边宽度 * (形状对象.形状 === "多边形" || 形状对象.形状 === "多角星" ? 1 : 0.5);
     const 坐标 = {
       x: 0,
       y: 0,
@@ -1839,8 +1839,8 @@ class 随心绘 {
       this.ctx.rotate(this.交互框.旋转弧度);
     }
     this.ctx.rect(
-      -this.交互框.尺寸.width / 2,
-      -this.交互框.尺寸.height / 2,
+      形状对象.形状 === "圆" ? -this.交互框.尺寸.width / 2 : this.交互框.坐标.x,
+      形状对象.形状 === "圆" ? -this.交互框.尺寸.height / 2 : this.交互框.坐标.y,
       this.交互框.尺寸.width,
       this.交互框.尺寸.height,
     );
@@ -1858,27 +1858,33 @@ class 随心绘 {
     const 句柄路径组 = [new Path2D(), new Path2D(), new Path2D(), new Path2D()];
     for (let i = 0; i < 句柄路径组.length; i++) {
       if (i === 0) {
-        句柄路径组[i].arc(-this.交互框.尺寸.width / 2, -this.交互框.尺寸.height / 2, 句柄半径, 0, 2 * Math.PI);
+        句柄路径组[i].arc(
+          形状对象.形状 === "圆" ? -this.交互框.尺寸.width / 2 : this.交互框.坐标.x,
+          形状对象.形状 === "圆" ? -this.交互框.尺寸.height / 2 : this.交互框.坐标.y,
+          句柄半径,
+          0,
+          2 * Math.PI,
+        );
       } else if (i === 1) {
         句柄路径组[i].arc(
-          -this.交互框.尺寸.width / 2 + this.交互框.尺寸.width,
-          -this.交互框.尺寸.height / 2,
+          this.交互框.尺寸.width + (形状对象.形状 === "圆" ? -this.交互框.尺寸.width / 2 : this.交互框.坐标.x),
+          形状对象.形状 === "圆" ? -this.交互框.尺寸.height / 2 : this.交互框.坐标.y,
           句柄半径,
           0,
           2 * Math.PI,
         );
       } else if (i === 2) {
         句柄路径组[i].arc(
-          -this.交互框.尺寸.width / 2 + this.交互框.尺寸.width,
-          -this.交互框.尺寸.height / 2 + this.交互框.尺寸.height,
+          this.交互框.尺寸.width + (形状对象.形状 === "圆" ? -this.交互框.尺寸.width / 2 : this.交互框.坐标.x),
+          this.交互框.尺寸.height + (形状对象.形状 === "圆" ? -this.交互框.尺寸.height / 2 : this.交互框.坐标.y),
           句柄半径,
           0,
           2 * Math.PI,
         );
       } else {
         句柄路径组[i].arc(
-          -this.交互框.尺寸.width / 2,
-          -this.交互框.尺寸.height / 2 + this.交互框.尺寸.height,
+          形状对象.形状 === "圆" ? -this.交互框.尺寸.width / 2 : this.交互框.坐标.x,
+          this.交互框.尺寸.height + (形状对象.形状 === "圆" ? -this.交互框.尺寸.height / 2 : this.交互框.坐标.y),
           句柄半径,
           0,
           2 * Math.PI,
