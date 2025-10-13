@@ -39,6 +39,13 @@ class 随心绘 {
     this.辅助.视觉效果复选框.checked = this.本地存储池.辅助视觉效果;
     this.辅助.按钮音效复选框.checked = this.本地存储池.播放音效;
 
+    this.形状处理按钮组 = {
+      向上一层: document.getElementById("向上一层"),
+      向下一层: document.getElementById("向下一层"),
+      置于顶层: document.getElementById("置于顶层"),
+      置于底层: document.getElementById("置于底层"),
+    };
+
     this.基础形状单选框组 = {
       矩形: document.getElementById("矩形"),
       圆: document.getElementById("圆"),
@@ -120,6 +127,7 @@ class 随心绘 {
     };
 
     this.数据集 = {
+      操作记录: [],
       基础形状对象组: [],
     };
 
@@ -168,6 +176,7 @@ class 随心绘 {
     this.添加canvas鼠标抬起事件();
     this.添加canvas鼠标移动事件();
     this.添加基础形状分区点击事件();
+    this.添加修改形状图层按钮点击事件();
   }
 
   添加颜色拾取器() {
@@ -307,6 +316,100 @@ class 随心绘 {
         this.全局属性.描边宽度 = 宽度;
       }
     });
+  }
+
+  添加修改形状图层按钮点击事件() {
+    const 向上一层按钮 = document.getElementById("向上一层");
+    const 向下一层按钮 = document.getElementById("向下一层");
+    const 置于顶层按钮 = document.getElementById("置于顶层");
+    const 置于底层按钮 = document.getElementById("置于底层");
+    向上一层按钮.addEventListener("click", () => {
+      if (!this.全局属性.选中形状 || this.数据集.基础形状对象组.length <= 1) return;
+      const 选中索引 = this.数据集.基础形状对象组.indexOf(this.全局属性.选中形状);
+      if (选中索引 === this.数据集.基础形状对象组.length - 1) return;
+      [this.数据集.基础形状对象组[选中索引], this.数据集.基础形状对象组[选中索引 + 1]] = [
+        this.数据集.基础形状对象组[选中索引 + 1],
+        this.数据集.基础形状对象组[选中索引],
+      ];
+      this.数据集.操作记录.push({
+        操作类型: "交换图层",
+        操作数据: [选中索引, 选中索引 + 1],
+      });
+      this.根据选中形状索引修改处理按钮状态();
+      this.清空画布();
+      this.绘制基础形状对象组();
+    });
+
+    向下一层按钮.addEventListener("click", () => {
+      if (!this.全局属性.选中形状 || this.数据集.基础形状对象组.length <= 1) return;
+      const 选中索引 = this.数据集.基础形状对象组.indexOf(this.全局属性.选中形状);
+      if (选中索引 === 0) return;
+      [this.数据集.基础形状对象组[选中索引], this.数据集.基础形状对象组[选中索引 - 1]] = [
+        this.数据集.基础形状对象组[选中索引 - 1],
+        this.数据集.基础形状对象组[选中索引],
+      ];
+      this.数据集.操作记录.push({
+        操作类型: "交换图层",
+        操作数据: [选中索引, 选中索引 - 1],
+      });
+      this.根据选中形状索引修改处理按钮状态();
+      this.清空画布();
+      this.绘制基础形状对象组();
+    });
+
+    置于顶层按钮.addEventListener("click", () => {
+      if (!this.全局属性.选中形状 || this.数据集.基础形状对象组.length <= 1) return;
+      const 选中索引 = this.数据集.基础形状对象组.indexOf(this.全局属性.选中形状);
+      if (选中索引 === this.数据集.基础形状对象组.length - 1) return;
+      [this.数据集.基础形状对象组[选中索引], this.数据集.基础形状对象组[this.数据集.基础形状对象组.length - 1]] = [
+        this.数据集.基础形状对象组[this.数据集.基础形状对象组.length - 1],
+        this.数据集.基础形状对象组[选中索引],
+      ];
+      this.数据集.操作记录.push({
+        操作类型: "交换图层",
+        操作数据: [选中索引, this.数据集.基础形状对象组.length - 1],
+      });
+      this.根据选中形状索引修改处理按钮状态();
+      this.清空画布();
+      this.绘制基础形状对象组();
+    });
+
+    置于底层按钮.addEventListener("click", () => {
+      if (!this.全局属性.选中形状 || this.数据集.基础形状对象组.length <= 1) return;
+      const 选中索引 = this.数据集.基础形状对象组.indexOf(this.全局属性.选中形状);
+      if (选中索引 === 0) return;
+      [this.数据集.基础形状对象组[选中索引], this.数据集.基础形状对象组[0]] = [
+        this.数据集.基础形状对象组[0],
+        this.数据集.基础形状对象组[选中索引],
+      ];
+      this.数据集.操作记录.push({
+        操作类型: "交换图层",
+        操作数据: [选中索引, 0],
+      });
+      this.根据选中形状索引修改处理按钮状态();
+      this.清空画布();
+      this.绘制基础形状对象组();
+    });
+  }
+
+  根据选中形状索引修改处理按钮状态() {
+    const 选中索引 = this.数据集.基础形状对象组.indexOf(this.全局属性.选中形状);
+    if (选中索引 <= 0) {
+      this.形状处理按钮组.向下一层.parentElement.classList.add("禁用");
+      this.形状处理按钮组.置于底层.parentElement.classList.add("禁用");
+      this.形状处理按钮组.向上一层.parentElement.classList.remove("禁用");
+      this.形状处理按钮组.置于顶层.parentElement.classList.remove("禁用");
+    } else if (选中索引 >= this.数据集.基础形状对象组.length - 1) {
+      this.形状处理按钮组.向上一层.parentElement.classList.add("禁用");
+      this.形状处理按钮组.置于顶层.parentElement.classList.add("禁用");
+      this.形状处理按钮组.向下一层.parentElement.classList.remove("禁用");
+      this.形状处理按钮组.置于底层.parentElement.classList.remove("禁用");
+    } else {
+      this.形状处理按钮组.向上一层.parentElement.classList.remove("禁用");
+      this.形状处理按钮组.向下一层.parentElement.classList.remove("禁用");
+      this.形状处理按钮组.置于底层.parentElement.classList.remove("禁用");
+      this.形状处理按钮组.置于顶层.parentElement.classList.remove("禁用");
+    }
   }
 
   添加基础形状分区点击事件() {
@@ -835,6 +938,7 @@ class 随心绘 {
           this.清空画布();
           this.绘制基础形状对象组();
         }
+        this.根据选中形状索引修改处理按钮状态();
       }
     });
   }
@@ -861,6 +965,9 @@ class 随心绘 {
           const 克隆 = structuredClone(this.当前形状对象);
           克隆.路径 = path;
           this.数据集.基础形状对象组.push(克隆);
+          this.数据集.操作记录.push({
+            操作类型: "添加基础形状",
+          });
         }
         this.清空画布();
         this.绘制基础形状对象组();
@@ -913,6 +1020,9 @@ class 随心绘 {
             const 克隆 = structuredClone(this.当前形状对象);
             克隆.路径 = path;
             this.数据集.基础形状对象组.push(克隆);
+            this.数据集.操作记录.push({
+              操作类型: "添加基础形状",
+            });
           }
         }
       }
@@ -1679,6 +1789,7 @@ class 随心绘 {
       this.当前形状对象.顶点坐标组 = [];
       this.当前形状对象.外顶点坐标组 = [];
       this.当前形状对象.内顶点坐标组 = [];
+      this.数据集.操作记录 = [];
     });
   }
 
@@ -1697,12 +1808,18 @@ class 随心绘 {
 
   撤销() {
     if (
+      this.数据集.操作记录.length <= 0 &&
+      this.当前形状对象.形状 === "直线" &&
+      this.当前形状对象.顶点坐标组.length <= 0
+    )
+      return;
+    if (
       this.数据集.基础形状对象组.length <= 0 &&
       !(this.当前形状对象.形状 === "直线" && this.当前形状对象.顶点坐标组.length > 0)
     ) {
       return;
     }
-    const 最后记录 = this.数据集.基础形状对象组[this.数据集.基础形状对象组.length - 1];
+
     if (this.当前形状对象.形状 === "直线" && this.当前形状对象.顶点坐标组.length >= 1) {
       this.当前形状对象.顶点坐标组.pop();
       this.清空画布();
@@ -1722,16 +1839,33 @@ class 随心绘 {
         }
       }
       return;
-    } else if (!this.当前形状对象.形状 || this.当前形状对象.顶点坐标组.length <= 0) {
-      if (最后记录.形状 === "直线") {
-        最后记录.顶点坐标组.pop();
-        if (最后记录.顶点坐标组.length <= 1) {
+    }
+
+    const 最后操作 = this.数据集.操作记录[this.数据集.操作记录.length - 1];
+    const 最后形状 = this.数据集.基础形状对象组[this.数据集.基础形状对象组.length - 1];
+    if (最后操作.操作类型 === "添加基础形状") {
+      if (!this.当前形状对象.形状 || this.当前形状对象.顶点坐标组.length <= 0) {
+        if (最后形状.形状 === "直线") {
+          最后形状.顶点坐标组.pop();
+          if (最后形状.顶点坐标组.length <= 1) {
+            this.数据集.基础形状对象组.pop();
+            this.数据集.操作记录.pop();
+          }
+          this.更新路径(最后形状);
+          this.清空画布();
+          this.绘制基础形状对象组();
+          return;
+        } else {
           this.数据集.基础形状对象组.pop();
         }
-      } else {
-        this.数据集.基础形状对象组.pop();
       }
+    } else if (最后操作.操作类型 === "交换图层") {
+      [this.数据集.基础形状对象组[最后操作.操作数据[0]], this.数据集.基础形状对象组[最后操作.操作数据[1]]] = [
+        this.数据集.基础形状对象组[最后操作.操作数据[1]],
+        this.数据集.基础形状对象组[最后操作.操作数据[0]],
+      ];
     }
+    this.数据集.操作记录.pop();
     this.清空画布();
     this.绘制基础形状对象组();
   }
