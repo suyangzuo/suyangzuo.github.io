@@ -155,6 +155,7 @@ class 随心绘 {
       ArrowRight: false,
       Enter: false,
       Escape: false,
+      Delete: false,
       "[": false,
       "]": false,
       z: false,
@@ -184,6 +185,7 @@ class 随心绘 {
     this.添加描边宽度滑块事件();
     this.添加清空画布按钮点击事件();
     this.添加撤销按钮点击事件();
+    this.添加删除按钮点击事件();
     this.处理辅助效果选项();
     this.添加键盘事件();
     this.添加canvas按下左键事件();
@@ -415,6 +417,13 @@ class 随心绘 {
   }
 
   根据选中形状索引修改处理按钮状态() {
+    if (!this.全局属性.选中形状) {
+      this.形状处理按钮组.向上一层.parentElement.classList.add("禁用");
+      this.形状处理按钮组.向下一层.parentElement.classList.add("禁用");
+      this.形状处理按钮组.置于底层.parentElement.classList.add("禁用");
+      this.形状处理按钮组.置于顶层.parentElement.classList.add("禁用");
+      return;
+    }
     const 选中索引 = this.数据集.基础形状对象组.indexOf(this.全局属性.选中形状);
     if (选中索引 <= 0) {
       this.形状处理按钮组.向下一层.parentElement.classList.add("禁用");
@@ -1032,6 +1041,10 @@ class 随心绘 {
           });
         }
         this.撤销();
+        return;
+      }
+      if (this.全局属性.选中形状 && e.key === "Delete") {
+        this.删除形状(this.全局属性.选中形状);
         return;
       }
       if (e.key === "Enter") {
@@ -1817,6 +1830,15 @@ class 随心绘 {
     });
   }
 
+  添加删除按钮点击事件() {
+    const 删除按钮 = document.getElementById("删除");
+    删除按钮.addEventListener("click", () => {
+      if (this.全局属性.选中形状) {
+        this.删除形状(this.全局属性.选中形状);
+      }
+    });
+  }
+
   添加撤销按钮点击事件() {
     const 撤销按钮 = document.getElementById("撤销");
     撤销按钮.addEventListener("click", () => {
@@ -1839,7 +1861,8 @@ class 随心绘 {
       return;
     if (
       this.数据集.基础形状对象组.length <= 0 &&
-      !(this.当前形状对象.形状 === "直线" && this.当前形状对象.顶点坐标组.length > 0)
+      !(this.当前形状对象.形状 === "直线" && this.当前形状对象.顶点坐标组.length > 0) &&
+      this.数据集.操作记录.length <= 0
     ) {
       return;
     }
@@ -1897,6 +1920,14 @@ class 随心绘 {
       const 置换元素 = this.数据集.基础形状对象组.shift();
       this.数据集.基础形状对象组.splice(最后操作.操作数据, 0, 置换元素);
       this.根据选中形状索引修改处理按钮状态();
+    } else if (最后操作.操作类型 === "删除基础形状") {
+      this.数据集.基础形状对象组.splice(最后操作.操作数据, 0, 最后操作.被删除形状对象);
+      最后操作.被删除形状对象.已悬停 = false;
+      最后操作.被删除形状对象.已选中 = false;
+      const 悬停形状 = this.鼠标位于形状内();
+      if (悬停形状) {
+        悬停形状.已悬停 = true;
+      }
     }
     this.数据集.操作记录.pop();
     this.清空画布();
@@ -1915,6 +1946,24 @@ class 随心绘 {
       描边宽度: this.全局属性.描边宽度,
       路径: null,
     };
+  }
+
+  删除形状(形状对象) {
+    if (!形状对象) return;
+    const 选中索引 = this.数据集.基础形状对象组.indexOf(形状对象);
+    this.数据集.基础形状对象组.splice(选中索引, 1);
+    this.数据集.操作记录.push({
+      操作类型: "删除基础形状",
+      操作数据: 选中索引,
+      被删除形状对象: 形状对象,
+    });
+    if (形状对象 === this.全局属性.选中形状) {
+      this.全局属性.选中形状 = null;
+      this.重置当前形状对象();
+      this.根据选中形状索引修改处理按钮状态();
+    }
+    this.清空画布();
+    this.绘制基础形状对象组();
   }
 
   绘制基础形状对象组() {
