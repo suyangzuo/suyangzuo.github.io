@@ -21,7 +21,7 @@ class 随心绘 {
     });
 
     this.本地存储池 = {
-      播放音效:
+      按钮音效:
         JSON.parse(localStorage.getItem("随心绘存储池")) === null
           ? true
           : JSON.parse(localStorage.getItem("随心绘存储池")).按钮音效,
@@ -51,7 +51,7 @@ class 随心绘 {
     };
 
     this.辅助.视觉效果复选框.checked = this.本地存储池.辅助视觉效果;
-    this.辅助.按钮音效复选框.checked = this.本地存储池.播放音效;
+    this.辅助.按钮音效复选框.checked = this.本地存储池.按钮音效;
 
     this.形状处理按钮组 = {
       向上一层: document.getElementById("向上一层"),
