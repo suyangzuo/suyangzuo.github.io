@@ -22,11 +22,25 @@ class 随心绘 {
 
     this.本地存储池 = {
       播放音效:
-        JSON.parse(localStorage.getItem("播放音效")) === null ? true : JSON.parse(localStorage.getItem("播放音效")),
-      辅助视觉效果:
-        JSON.parse(localStorage.getItem("辅助视觉效果")) === null
+        JSON.parse(localStorage.getItem("随心绘存储池")) === null
           ? true
-          : JSON.parse(localStorage.getItem("辅助视觉效果")),
+          : JSON.parse(localStorage.getItem("随心绘存储池")).按钮音效,
+      辅助视觉效果:
+        JSON.parse(localStorage.getItem("随心绘存储池")) === null
+          ? true
+          : JSON.parse(localStorage.getItem("随心绘存储池")).辅助视觉效果,
+      描边色:
+        localStorage.getItem("随心绘存储池") === null
+          ? "rgba(128, 128, 128, 1)"
+          : JSON.parse(localStorage.getItem("随心绘存储池")).描边色,
+      填充色:
+        localStorage.getItem("随心绘存储池") === null
+          ? "transparent"
+          : JSON.parse(localStorage.getItem("随心绘存储池")).填充色,
+      描边宽度:
+        localStorage.getItem("随心绘存储池") === null
+          ? 2
+          : Number(JSON.parse(localStorage.getItem("随心绘存储池")).描边宽度),
     };
 
     this.辅助 = {
@@ -85,13 +99,13 @@ class 随心绘 {
 
     this.全局属性 = {
       已选中基础形状: null,
-      填充色: "transparent",
-      描边色: "rgba(128, 128, 128, 1)",
+      填充色: this.本地存储池.填充色,
+      描边色: this.本地存储池.描边色,
       辅助外框描边色: "#aaccee12",
       辅助线段描边色: "#a81",
       选框描边色: "#555",
       选框描边宽度: 1,
-      描边宽度: 2,
+      描边宽度: this.本地存储池.描边宽度,
       悬停描边色: "darkgoldenrod",
       悬停描边宽度: 4,
       多边形边数: 5,
@@ -183,7 +197,7 @@ class 随心绘 {
     this.描边颜色拾取器 = Pickr.create({
       el: ".颜色框",
       theme: "monolith", // or 'monolith', or 'nano'
-      default: "rgba(128, 128, 128, 1)",
+      default: this.全局属性.描边色,
 
       swatches: [
         "rgba(128, 128, 128, 1)",
@@ -224,7 +238,7 @@ class 随心绘 {
     this.填充颜色拾取器 = Pickr.create({
       el: ".颜色框",
       theme: "monolith", // or 'monolith', or 'nano'
-      default: "rgba(0, 0, 0, 0)",
+      default: this.全局属性.填充色,
 
       swatches: [
         "transparent",
@@ -279,6 +293,8 @@ class 随心绘 {
         this.绘制基础形状对象组();
       } else {
         this.全局属性.描边色 = color.toRGBA().toString();
+        this.本地存储池.描边色 = this.全局属性.描边色;
+        localStorage.setItem("随心绘存储池", JSON.stringify(this.本地存储池));
       }
     });
 
@@ -289,22 +305,30 @@ class 随心绘 {
         this.绘制基础形状对象组();
       } else {
         this.全局属性.填充色 = color.toRGBA().toString();
+        this.本地存储池.填充色 = this.全局属性.填充色;
+        localStorage.setItem("随心绘存储池", JSON.stringify(this.本地存储池));
       }
     });
 
     this.描边颜色拾取器.on("swatchselect", (color) => {
       this.描边颜色拾取器.applyColor(true);
       this.全局属性.描边色 = color.toRGBA().toString();
+      this.本地存储池.描边色 = this.全局属性.描边色;
+      localStorage.setItem("随心绘存储池", JSON.stringify(this.本地存储池));
     });
 
     this.填充颜色拾取器.on("swatchselect", (color) => {
       this.填充颜色拾取器.applyColor(true);
       this.全局属性.填充色 = color.toRGBA().toString();
+      this.本地存储池.填充色 = this.全局属性.填充色;
+      localStorage.setItem("随心绘存储池", JSON.stringify(this.本地存储池));
     });
   }
 
   添加描边宽度滑块事件() {
     const 描边宽度滑块 = document.getElementById("描边宽度");
+    描边宽度滑块.value = this.本地存储池.描边宽度;
+    描边宽度滑块.nextElementSibling.textContent = 描边宽度滑块.value;
     描边宽度滑块.addEventListener("input", () => {
       const 宽度 = parseInt(描边宽度滑块.value, 10);
       描边宽度滑块.nextElementSibling.textContent = 描边宽度滑块.value;
@@ -314,6 +338,8 @@ class 随心绘 {
         this.绘制基础形状对象组();
       } else {
         this.全局属性.描边宽度 = 宽度;
+        this.本地存储池.描边宽度 = this.全局属性.描边宽度;
+        localStorage.setItem("随心绘存储池", JSON.stringify(this.本地存储池));
       }
     });
   }
@@ -361,13 +387,11 @@ class 随心绘 {
       if (!this.全局属性.选中形状 || this.数据集.基础形状对象组.length <= 1) return;
       const 选中索引 = this.数据集.基础形状对象组.indexOf(this.全局属性.选中形状);
       if (选中索引 === this.数据集.基础形状对象组.length - 1) return;
-      [this.数据集.基础形状对象组[选中索引], this.数据集.基础形状对象组[this.数据集.基础形状对象组.length - 1]] = [
-        this.数据集.基础形状对象组[this.数据集.基础形状对象组.length - 1],
-        this.数据集.基础形状对象组[选中索引],
-      ];
+      const 置换元素 = this.数据集.基础形状对象组.splice(选中索引, 1)[0];
+      this.数据集.基础形状对象组.push(置换元素);
       this.数据集.操作记录.push({
-        操作类型: "交换图层",
-        操作数据: [选中索引, this.数据集.基础形状对象组.length - 1],
+        操作类型: "置于顶层",
+        操作数据: 选中索引,
       });
       this.根据选中形状索引修改处理按钮状态();
       this.清空画布();
@@ -378,13 +402,11 @@ class 随心绘 {
       if (!this.全局属性.选中形状 || this.数据集.基础形状对象组.length <= 1) return;
       const 选中索引 = this.数据集.基础形状对象组.indexOf(this.全局属性.选中形状);
       if (选中索引 === 0) return;
-      [this.数据集.基础形状对象组[选中索引], this.数据集.基础形状对象组[0]] = [
-        this.数据集.基础形状对象组[0],
-        this.数据集.基础形状对象组[选中索引],
-      ];
+      const 置换元素 = this.数据集.基础形状对象组.splice(选中索引, 1)[0];
+      this.数据集.基础形状对象组.unshift(置换元素);
       this.数据集.操作记录.push({
-        操作类型: "交换图层",
-        操作数据: [选中索引, 0],
+        操作类型: "置于底层",
+        操作数据: 选中索引,
       });
       this.根据选中形状索引修改处理按钮状态();
       this.清空画布();
@@ -1336,11 +1358,13 @@ class 随心绘 {
   处理辅助效果选项() {
     this.辅助.视觉效果复选框.addEventListener("change", () => {
       this.全局标志.辅助视觉效果 = this.辅助.视觉效果复选框.checked;
-      localStorage.setItem("辅助视觉效果", this.辅助.视觉效果复选框.checked);
+      this.本地存储池.辅助视觉效果 = this.全局标志.辅助视觉效果;
+      localStorage.setItem("随心绘存储池", JSON.stringify(this.本地存储池));
     });
     this.辅助.按钮音效复选框.addEventListener("change", () => {
       this.全局标志.按钮音效 = this.辅助.按钮音效复选框.checked;
-      localStorage.setItem("播放音效", this.辅助.按钮音效复选框.checked);
+      this.本地存储池.按钮音效 = this.全局标志.按钮音效;
+      localStorage.setItem("随心绘存储池", JSON.stringify(this.本地存储池));
     });
   }
 
@@ -1864,6 +1888,15 @@ class 随心绘 {
         this.数据集.基础形状对象组[最后操作.操作数据[1]],
         this.数据集.基础形状对象组[最后操作.操作数据[0]],
       ];
+      this.根据选中形状索引修改处理按钮状态();
+    } else if (最后操作.操作类型 === "置于顶层") {
+      const 置换元素 = this.数据集.基础形状对象组.pop();
+      this.数据集.基础形状对象组.splice(最后操作.操作数据, 0, 置换元素);
+      this.根据选中形状索引修改处理按钮状态();
+    } else if (最后操作.操作类型 === "置于底层") {
+      const 置换元素 = this.数据集.基础形状对象组.shift();
+      this.数据集.基础形状对象组.splice(最后操作.操作数据, 0, 置换元素);
+      this.根据选中形状索引修改处理按钮状态();
     }
     this.数据集.操作记录.pop();
     this.清空画布();
