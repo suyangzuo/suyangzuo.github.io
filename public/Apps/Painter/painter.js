@@ -53,7 +53,7 @@ class 随心绘 {
     this.辅助.视觉效果复选框.checked = this.本地存储池.辅助视觉效果;
     this.辅助.按钮音效复选框.checked = this.本地存储池.按钮音效;
 
-    this.形状处理按钮组 = {
+    this.图层处理按钮组 = {
       向上一层: document.getElementById("向上一层"),
       向下一层: document.getElementById("向下一层"),
       置于顶层: document.getElementById("置于顶层"),
@@ -418,28 +418,28 @@ class 随心绘 {
 
   根据选中形状索引修改处理按钮状态() {
     if (!this.全局属性.选中形状) {
-      this.形状处理按钮组.向上一层.parentElement.classList.add("禁用");
-      this.形状处理按钮组.向下一层.parentElement.classList.add("禁用");
-      this.形状处理按钮组.置于底层.parentElement.classList.add("禁用");
-      this.形状处理按钮组.置于顶层.parentElement.classList.add("禁用");
+      this.图层处理按钮组.向上一层.parentElement.classList.add("禁用");
+      this.图层处理按钮组.向下一层.parentElement.classList.add("禁用");
+      this.图层处理按钮组.置于底层.parentElement.classList.add("禁用");
+      this.图层处理按钮组.置于顶层.parentElement.classList.add("禁用");
       return;
     }
     const 选中索引 = this.数据集.基础形状对象组.indexOf(this.全局属性.选中形状);
     if (选中索引 <= 0) {
-      this.形状处理按钮组.向下一层.parentElement.classList.add("禁用");
-      this.形状处理按钮组.置于底层.parentElement.classList.add("禁用");
-      this.形状处理按钮组.向上一层.parentElement.classList.remove("禁用");
-      this.形状处理按钮组.置于顶层.parentElement.classList.remove("禁用");
+      this.图层处理按钮组.向下一层.parentElement.classList.add("禁用");
+      this.图层处理按钮组.置于底层.parentElement.classList.add("禁用");
+      this.图层处理按钮组.向上一层.parentElement.classList.remove("禁用");
+      this.图层处理按钮组.置于顶层.parentElement.classList.remove("禁用");
     } else if (选中索引 >= this.数据集.基础形状对象组.length - 1) {
-      this.形状处理按钮组.向上一层.parentElement.classList.add("禁用");
-      this.形状处理按钮组.置于顶层.parentElement.classList.add("禁用");
-      this.形状处理按钮组.向下一层.parentElement.classList.remove("禁用");
-      this.形状处理按钮组.置于底层.parentElement.classList.remove("禁用");
+      this.图层处理按钮组.向上一层.parentElement.classList.add("禁用");
+      this.图层处理按钮组.置于顶层.parentElement.classList.add("禁用");
+      this.图层处理按钮组.向下一层.parentElement.classList.remove("禁用");
+      this.图层处理按钮组.置于底层.parentElement.classList.remove("禁用");
     } else {
-      this.形状处理按钮组.向上一层.parentElement.classList.remove("禁用");
-      this.形状处理按钮组.向下一层.parentElement.classList.remove("禁用");
-      this.形状处理按钮组.置于底层.parentElement.classList.remove("禁用");
-      this.形状处理按钮组.置于顶层.parentElement.classList.remove("禁用");
+      this.图层处理按钮组.向上一层.parentElement.classList.remove("禁用");
+      this.图层处理按钮组.向下一层.parentElement.classList.remove("禁用");
+      this.图层处理按钮组.置于底层.parentElement.classList.remove("禁用");
+      this.图层处理按钮组.置于顶层.parentElement.classList.remove("禁用");
     }
   }
 
@@ -457,9 +457,9 @@ class 随心绘 {
       const 形状 = this.数据集.基础形状对象组[i];
       if (!形状.路径) continue;
       if (this.交互框) {
-        const 鼠标位于交互框内 = this.鼠标位于交互框内();
-        this.全局属性.选中形状.已悬停 = 鼠标位于交互框内;
-        if (鼠标位于交互框内) {
+        this.交互框.鼠标位于内部 = this.鼠标位于交互框内();
+        this.全局属性.选中形状.已悬停 = this.交互框.鼠标位于内部;
+        if (this.交互框.鼠标位于内部) {
           if (this.全局属性.悬停形状 && this.全局属性.悬停形状 !== this.全局属性.选中形状) {
             this.全局属性.悬停形状.已悬停 = false;
           }
@@ -491,7 +491,7 @@ class 随心绘 {
         形状.已悬停 = this.ctx.isPointInPath(
           形状.路径,
           this.全局属性.鼠标坐标.x * this.dpr,
-          this.全局属性.鼠标坐标.y * this.dpr,
+          this.全局属性.鼠标坐标.y * this.dpr
         );
         if (形状.已悬停) {
           if (this.全局属性.悬停形状 && this.全局属性.悬停形状 !== 形状) {
@@ -544,52 +544,53 @@ class 随心绘 {
       )
         return;
       if (this.全局属性.已选中基础形状 === "选择路径") {
-        let 鼠标位于交互框内 = false;
-        let 鼠标位于交互框边界 = null;
         if (this.交互框) {
-          鼠标位于交互框内 = this.鼠标位于交互框内();
-          鼠标位于交互框边界 = this.鼠标位于交互框边界();
-        }
-        this.全局属性.悬停形状 = this.鼠标位于形状内();
-        if (this.全局属性.拖拽中) {
-          this.canvas.style.cursor = 'url("/Images/Common/鼠标-移动.cur"), pointer';
-          if (
-            this.全局属性.选中形状.形状 !== "直线" &&
-            this.全局属性.选中形状.形状 !== "自由" &&
-            this.全局属性.偏移量
-          ) {
-            this.全局属性.选中形状.坐标.x = this.全局属性.鼠标坐标.x + this.全局属性.偏移量.x;
-            this.全局属性.选中形状.坐标.y = this.全局属性.鼠标坐标.y + this.全局属性.偏移量.y;
-          } else {
-            const 偏移量 = {
-              x: this.全局属性.鼠标坐标.x - this.全局属性.点击坐标.x,
-              y: this.全局属性.鼠标坐标.y - this.全局属性.点击坐标.y,
-            };
-            for (let i = 0; i < this.全局属性.选中形状.顶点坐标组.length; i++) {
-              this.全局属性.选中形状.顶点坐标组[i].x = this.初始坐标组[i].x + 偏移量.x;
-              this.全局属性.选中形状.顶点坐标组[i].y = this.初始坐标组[i].y + 偏移量.y;
+          this.交互框.鼠标位于内部 = this.鼠标位于交互框内();
+          this.交互框.鼠标位于边界 = this.鼠标位于交互框边界();
+          if (this.全局属性.拖拽中) {
+            this.canvas.style.cursor = 'url("/Images/Common/鼠标-移动.cur"), pointer';
+            if (
+              this.全局属性.选中形状.形状 !== "直线" &&
+              this.全局属性.选中形状.形状 !== "自由" &&
+              this.全局属性.偏移量
+            ) {
+              this.全局属性.选中形状.坐标.x = this.全局属性.鼠标坐标.x + this.全局属性.偏移量.x;
+              this.全局属性.选中形状.坐标.y = this.全局属性.鼠标坐标.y + this.全局属性.偏移量.y;
+            } else {
+              const 偏移量 = {
+                x: this.全局属性.鼠标坐标.x - this.全局属性.点击坐标.x,
+                y: this.全局属性.鼠标坐标.y - this.全局属性.点击坐标.y,
+              };
+              for (let i = 0; i < this.全局属性.选中形状.顶点坐标组.length; i++) {
+                this.全局属性.选中形状.顶点坐标组[i].x = this.初始坐标组[i].x + 偏移量.x;
+                this.全局属性.选中形状.顶点坐标组[i].y = this.初始坐标组[i].y + 偏移量.y;
+              }
+            }
+            if (this.全局属性.选中形状.形状 === "多边形" || this.全局属性.选中形状.形状 === "多角星") {
+              this.全局属性.选中形状.极值坐标 = this.获取极值坐标(this.全局属性.选中形状);
+            }
+            this.更新路径(this.全局属性.选中形状);
+          } else if (this.交互框.鼠标位于边界) {
+            if (
+              (this.交互框.鼠标位于边界.上 && this.交互框.鼠标位于边界.左) ||
+              (this.交互框.鼠标位于边界.下 && this.交互框.鼠标位于边界.右)
+            ) {
+              this.canvas.style.cursor = 'url("/Images/Common/鼠标-西北-东南.cur"), pointer';
+            } else if (
+              (this.交互框.鼠标位于边界.上 && this.交互框.鼠标位于边界.右) ||
+              (this.交互框.鼠标位于边界.下 && this.交互框.鼠标位于边界.左)
+            ) {
+              this.canvas.style.cursor = 'url("/Images/Common/鼠标-东北-西南.cur"), pointer';
+            } else if (this.交互框.鼠标位于边界.上 || this.交互框.鼠标位于边界.下) {
+              this.canvas.style.cursor = 'url("/Images/Common/鼠标-南北.cur"), pointer';
+            } else if (this.交互框.鼠标位于边界.左 || this.交互框.鼠标位于边界.右) {
+              this.canvas.style.cursor = 'url("/Images/Common/鼠标-东西.cur"), pointer';
+            } else {
+              this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), pointer';
             }
           }
-          if (this.全局属性.选中形状.形状 === "多边形" || this.全局属性.选中形状.形状 === "多角星") {
-            this.全局属性.选中形状.极值坐标 = this.获取极值坐标(this.全局属性.选中形状);
-          }
-          this.更新路径(this.全局属性.选中形状);
-        } else if (鼠标位于交互框边界) {
-          if ((鼠标位于交互框边界.上 && 鼠标位于交互框边界.左) || (鼠标位于交互框边界.下 && 鼠标位于交互框边界.右)) {
-            this.canvas.style.cursor = 'url("/Images/Common/鼠标-西北-东南.cur"), pointer';
-          } else if (
-            (鼠标位于交互框边界.上 && 鼠标位于交互框边界.右) ||
-            (鼠标位于交互框边界.下 && 鼠标位于交互框边界.左)
-          ) {
-            this.canvas.style.cursor = 'url("/Images/Common/鼠标-东北-西南.cur"), pointer';
-          } else if (鼠标位于交互框边界.上 || 鼠标位于交互框边界.下) {
-            this.canvas.style.cursor = 'url("/Images/Common/鼠标-南北.cur"), pointer';
-          } else if (鼠标位于交互框边界.左 || 鼠标位于交互框边界.右) {
-            this.canvas.style.cursor = 'url("/Images/Common/鼠标-东西.cur"), pointer';
-          } else {
-            this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), pointer';
-          }
         }
+        this.全局属性.悬停形状 = this.鼠标位于形状内();
         this.清空画布();
         this.绘制基础形状对象组();
         return;
@@ -643,13 +644,13 @@ class 随心绘 {
                 this.当前形状对象.圆角,
                 this.全局属性.描边色,
                 this.全局属性.填充色,
-                this.全局属性.描边宽度,
+                this.全局属性.描边宽度
               ).路径
             : this.绘制选框(
                 this.当前形状对象.坐标.x,
                 this.当前形状对象.坐标.y,
                 this.当前形状对象.尺寸.宽,
-                this.当前形状对象.尺寸.高,
+                this.当前形状对象.尺寸.高
               ).路径;
         if (this.全局标志.辅助视觉效果 && this.当前形状对象.形状 === "矩形") {
           this.绘制辅助点(this.当前形状对象.坐标.x, this.当前形状对象.坐标.y);
@@ -676,7 +677,7 @@ class 随心绘 {
           this.当前形状对象.旋转弧度,
           this.全局属性.描边色,
           this.全局属性.填充色,
-          this.全局属性.描边宽度,
+          this.全局属性.描边宽度
         ).路径;
         if (this.全局标志.辅助视觉效果 && !this.键盘状态.Shift) {
           const 偏移x = Math.cos(this.当前形状对象.旋转弧度) * this.当前形状对象.尺寸.水平半径;
@@ -696,7 +697,7 @@ class 随心绘 {
           this.全局属性.点击坐标.x,
           this.全局属性.点击坐标.y,
           this.全局属性.鼠标坐标.x,
-          this.全局属性.鼠标坐标.y,
+          this.全局属性.鼠标坐标.y
         );
         this.当前形状对象.尺寸 = {
           水平半径: 半径.水平,
@@ -712,7 +713,7 @@ class 随心绘 {
           this.当前形状对象.尺寸.水平半径,
           this.当前形状对象.尺寸.垂直半径,
           this.当前形状对象.边数,
-          this.当前形状对象.起始弧度,
+          this.当前形状对象.起始弧度
         );
         this.当前形状对象.极值坐标 = this.获取极值坐标(this.当前形状对象);
         if (this.全局标志.辅助视觉效果) {
@@ -722,14 +723,14 @@ class 随心绘 {
           this.当前形状对象.顶点坐标组,
           this.全局属性.描边色,
           this.全局属性.填充色,
-          this.全局属性.描边宽度,
+          this.全局属性.描边宽度
         ).路径;
         if (this.全局标志.辅助视觉效果) {
           this.绘制辅助虚线(
             this.全局属性.点击坐标.x,
             this.全局属性.点击坐标.y,
             this.当前形状对象.顶点坐标组[0].x,
-            this.当前形状对象.顶点坐标组[0].y,
+            this.当前形状对象.顶点坐标组[0].y
           );
           this.描边辅助圆(this.全局属性.点击坐标.x, this.全局属性.点击坐标.y, 更大半径, 更大半径);
         }
@@ -741,7 +742,7 @@ class 随心绘 {
           this.全局属性.点击坐标.x,
           this.全局属性.点击坐标.y,
           this.全局属性.鼠标坐标.x,
-          this.全局属性.鼠标坐标.y,
+          this.全局属性.鼠标坐标.y
         );
         if (!this.当前形状对象.尺寸 || !this.当前形状对象.尺寸.外半径 || !this.当前形状对象.尺寸.内半径) {
           this.当前形状对象.尺寸 = {
@@ -771,7 +772,7 @@ class 随心绘 {
           this.当前形状对象.尺寸.外半径.水平,
           this.当前形状对象.尺寸.外半径.垂直,
           this.当前形状对象.边数,
-          this.当前形状对象.起始弧度,
+          this.当前形状对象.起始弧度
         );
         this.当前形状对象.内顶点坐标组 = this.获取多边形顶点坐标组(
           this.全局属性.点击坐标.x,
@@ -779,7 +780,7 @@ class 随心绘 {
           this.当前形状对象.尺寸.内半径.水平,
           this.当前形状对象.尺寸.内半径.垂直,
           this.当前形状对象.边数,
-          this.当前形状对象.起始弧度 + Math.PI / 边数,
+          this.当前形状对象.起始弧度 + Math.PI / 边数
         );
         this.当前形状对象.极值坐标 = this.获取极值坐标(this.当前形状对象);
         if (this.全局标志.辅助视觉效果) {
@@ -790,20 +791,20 @@ class 随心绘 {
           this.当前形状对象.内顶点坐标组,
           this.全局属性.描边色,
           this.全局属性.填充色,
-          this.全局属性.描边宽度,
+          this.全局属性.描边宽度
         ).路径;
         if (this.全局标志.辅助视觉效果) {
           this.绘制辅助虚线(
             this.全局属性.点击坐标.x,
             this.全局属性.点击坐标.y,
             this.当前形状对象.外顶点坐标组[0].x,
-            this.当前形状对象.外顶点坐标组[0].y,
+            this.当前形状对象.外顶点坐标组[0].y
           );
           this.绘制辅助虚线(
             this.全局属性.点击坐标.x,
             this.全局属性.点击坐标.y,
             this.当前形状对象.内顶点坐标组[0].x,
-            this.当前形状对象.内顶点坐标组[0].y,
+            this.当前形状对象.内顶点坐标组[0].y
           );
           this.绘制多边形顶点索引(
             this.全局属性.点击坐标.x,
@@ -813,7 +814,7 @@ class 随心绘 {
             20,
             this.当前形状对象.边数,
             this.当前形状对象.起始弧度,
-            "lightskyblue",
+            "lightskyblue"
           );
           this.绘制多边形顶点索引(
             this.全局属性.点击坐标.x,
@@ -823,19 +824,19 @@ class 随心绘 {
             -20,
             this.当前形状对象.边数,
             this.当前形状对象.起始弧度 + Math.PI / this.当前形状对象.边数,
-            "yellowgreen",
+            "yellowgreen"
           );
           this.描边辅助圆(
             this.全局属性.点击坐标.x,
             this.全局属性.点击坐标.y,
             this.当前形状对象.尺寸.外半径.水平,
-            this.当前形状对象.尺寸.外半径.垂直,
+            this.当前形状对象.尺寸.外半径.垂直
           );
           this.描边辅助圆(
             this.全局属性.点击坐标.x,
             this.全局属性.点击坐标.y,
             this.当前形状对象.尺寸.内半径.水平,
-            this.当前形状对象.尺寸.内半径.垂直,
+            this.当前形状对象.尺寸.内半径.垂直
           );
         }
       } else if (this.全局属性.已选中基础形状 === "直线") {
@@ -847,7 +848,7 @@ class 随心绘 {
           this.当前形状对象.路径 = this.绘制直线(
             this.当前形状对象.顶点坐标组,
             this.全局属性.描边色,
-            this.全局属性.描边宽度,
+            this.全局属性.描边宽度
           ).路径;
         }
         if (this.当前形状对象.顶点坐标组.length >= 1) {
@@ -867,7 +868,7 @@ class 随心绘 {
         this.当前形状对象.路径 = this.绘制自由路径(
           this.当前形状对象.顶点坐标组,
           this.全局属性.描边色,
-          this.全局属性.描边宽度,
+          this.全局属性.描边宽度
         ).路径;
       }
       if (
@@ -891,8 +892,8 @@ class 随心绘 {
       this.全局属性.点击坐标 = this.全局属性.鼠标坐标;
       this.当前形状对象.描边宽度 = this.全局属性.描边宽度;
       if (this.全局属性.选中形状) {
-        const 鼠标位于交互框内 = this.鼠标位于交互框内();
-        if (!鼠标位于交互框内) {
+        this.交互框.鼠标位于内部 = this.鼠标位于交互框内();
+        if (!this.交互框.鼠标位于内部) {
           this.全局属性.选中形状.已选中 = false;
           if (!this.全局属性.悬停形状) {
             this.全局属性.选中形状 = null;
@@ -947,7 +948,7 @@ class 随心绘 {
         this.当前形状对象.路径 = this.绘制直线(
           this.当前形状对象.顶点坐标组,
           this.全局属性.描边色,
-          this.全局属性.描边宽度,
+          this.全局属性.描边宽度
         )?.路径;
         if (this.全局标志.辅助视觉效果) {
           for (const 坐标 of this.当前形状对象.顶点坐标组) {
@@ -981,7 +982,7 @@ class 随心绘 {
       if (!this.全局属性.点击坐标) return;
       const 移动距离 = Math.sqrt(
         Math.abs(this.全局属性.鼠标坐标.x - this.全局属性.点击坐标.x) ** 2 +
-          Math.abs(this.全局属性.鼠标坐标.y - this.全局属性.点击坐标.y) ** 2,
+          Math.abs(this.全局属性.鼠标坐标.y - this.全局属性.点击坐标.y) ** 2
       );
       this.全局标志.左键已按下 = false;
       this.全局属性.拖拽中 = false;
@@ -1119,7 +1120,7 @@ class 随心绘 {
           this.当前形状对象.圆角,
           this.全局属性.描边色,
           this.全局属性.填充色,
-          this.全局属性.描边宽度,
+          this.全局属性.描边宽度
         ).路径;
         if (this.全局标志.辅助视觉效果) {
           this.绘制辅助点(this.当前形状对象.坐标.x, this.当前形状对象.坐标.y);
@@ -1150,7 +1151,7 @@ class 随心绘 {
           this.当前形状对象.旋转弧度,
           this.全局属性.描边色,
           this.全局属性.填充色,
-          this.全局属性.描边宽度,
+          this.全局属性.描边宽度
         ).路径;
         if (this.全局标志.辅助视觉效果) {
           const 偏移x = Math.cos(this.当前形状对象.旋转弧度) * this.当前形状对象.尺寸.水平半径;
@@ -1191,7 +1192,7 @@ class 随心绘 {
           this.全局属性.点击坐标.x,
           this.全局属性.点击坐标.y,
           this.全局属性.鼠标坐标.x,
-          this.全局属性.鼠标坐标.y,
+          this.全局属性.鼠标坐标.y
         );
         const 更大半径 = Math.max(半径.水平, 半径.垂直);
         this.当前形状对象.尺寸 = {
@@ -1205,7 +1206,7 @@ class 随心绘 {
           this.当前形状对象.尺寸.水平半径,
           this.当前形状对象.尺寸.垂直半径,
           this.当前形状对象.边数,
-          this.当前形状对象.起始弧度,
+          this.当前形状对象.起始弧度
         );
         this.当前形状对象.极值坐标 = this.获取极值坐标(this.当前形状对象);
         if (this.全局标志.辅助视觉效果) {
@@ -1216,21 +1217,21 @@ class 随心绘 {
           this.当前形状对象.顶点坐标组,
           this.全局属性.描边色,
           this.全局属性.填充色,
-          this.全局属性.描边宽度,
+          this.全局属性.描边宽度
         ).路径;
         if (this.全局标志.辅助视觉效果) {
           this.绘制辅助虚线(
             this.全局属性.点击坐标.x,
             this.全局属性.点击坐标.y,
             this.当前形状对象.顶点坐标组[0].x,
-            this.当前形状对象.顶点坐标组[0].y,
+            this.当前形状对象.顶点坐标组[0].y
           );
           this.绘制辅助点(this.全局属性.点击坐标.x, this.全局属性.点击坐标.y);
           this.描边辅助圆(
             this.全局属性.点击坐标.x,
             this.全局属性.点击坐标.y,
             this.当前形状对象.尺寸.水平半径,
-            this.当前形状对象.尺寸.垂直半径,
+            this.当前形状对象.尺寸.垂直半径
           );
         }
       } else if (
@@ -1276,7 +1277,7 @@ class 随心绘 {
           this.全局属性.点击坐标.x,
           this.全局属性.点击坐标.y,
           this.全局属性.鼠标坐标.x,
-          this.全局属性.鼠标坐标.y,
+          this.全局属性.鼠标坐标.y
         );
         const 更大半径 = Math.max(this.当前形状对象.尺寸.外半径.水平, this.当前形状对象.尺寸.外半径.垂直);
         this.当前形状对象.尺寸.外半径.水平 = 更大半径;
@@ -1288,7 +1289,7 @@ class 随心绘 {
           this.当前形状对象.尺寸.外半径.水平,
           this.当前形状对象.尺寸.外半径.垂直,
           this.当前形状对象.边数,
-          this.当前形状对象.起始弧度,
+          this.当前形状对象.起始弧度
         );
         this.当前形状对象.极值坐标 = this.获取极值坐标(this.当前形状对象);
         this.当前形状对象.内顶点坐标组 = this.获取多边形顶点坐标组(
@@ -1297,7 +1298,7 @@ class 随心绘 {
           this.当前形状对象.尺寸.内半径.水平,
           this.当前形状对象.尺寸.内半径.垂直,
           this.当前形状对象.边数,
-          this.当前形状对象.起始弧度 + Math.PI / this.当前形状对象.边数,
+          this.当前形状对象.起始弧度 + Math.PI / this.当前形状对象.边数
         );
         if (this.全局标志.辅助视觉效果) {
           this.绘制操作说明();
@@ -1308,20 +1309,20 @@ class 随心绘 {
           this.当前形状对象.内顶点坐标组,
           this.全局属性.描边色,
           this.全局属性.填充色,
-          this.全局属性.描边宽度,
+          this.全局属性.描边宽度
         ).路径;
         if (this.全局标志.辅助视觉效果) {
           this.绘制辅助虚线(
             this.全局属性.点击坐标.x,
             this.全局属性.点击坐标.y,
             this.当前形状对象.外顶点坐标组[0].x,
-            this.当前形状对象.外顶点坐标组[0].y,
+            this.当前形状对象.外顶点坐标组[0].y
           );
           this.绘制辅助虚线(
             this.全局属性.点击坐标.x,
             this.全局属性.点击坐标.y,
             this.当前形状对象.内顶点坐标组[0].x,
-            this.当前形状对象.内顶点坐标组[0].y,
+            this.当前形状对象.内顶点坐标组[0].y
           );
           this.绘制多边形顶点索引(
             this.全局属性.点击坐标.x,
@@ -1331,7 +1332,7 @@ class 随心绘 {
             20,
             this.当前形状对象.边数,
             this.当前形状对象.起始弧度,
-            "lightskyblue",
+            "lightskyblue"
           );
           this.绘制多边形顶点索引(
             this.全局属性.点击坐标.x,
@@ -1341,20 +1342,20 @@ class 随心绘 {
             -20,
             this.当前形状对象.边数,
             this.当前形状对象.起始弧度 + Math.PI / this.当前形状对象.边数,
-            "yellowgreen",
+            "yellowgreen"
           );
           this.绘制辅助点(this.全局属性.点击坐标.x, this.全局属性.点击坐标.y);
           this.描边辅助圆(
             this.全局属性.点击坐标.x,
             this.全局属性.点击坐标.y,
             this.当前形状对象.尺寸.外半径.水平,
-            this.当前形状对象.尺寸.外半径.垂直,
+            this.当前形状对象.尺寸.外半径.垂直
           );
           this.描边辅助圆(
             this.全局属性.点击坐标.x,
             this.全局属性.点击坐标.y,
             this.当前形状对象.尺寸.内半径.水平,
-            this.当前形状对象.尺寸.内半径.垂直,
+            this.当前形状对象.尺寸.内半径.垂直
           );
         }
       }
@@ -1395,7 +1396,7 @@ class 随心绘 {
       椭圆对象.尺寸.垂直半径,
       椭圆对象.旋转弧度,
       0,
-      2 * Math.PI,
+      2 * Math.PI
     );
   }
 
@@ -1408,7 +1409,7 @@ class 随心绘 {
       多边形对象.尺寸.水平半径,
       多边形对象.尺寸.垂直半径,
       多边形对象.边数,
-      多边形对象.起始弧度,
+      多边形对象.起始弧度
     );
     多边形对象.路径.moveTo(多边形对象.顶点坐标组[0].x, 多边形对象.顶点坐标组[0].y);
     for (let i = 1; i < 多边形对象.顶点坐标组.length; i++) {
@@ -1427,7 +1428,7 @@ class 随心绘 {
       多角星对象.尺寸.外半径.水平,
       多角星对象.尺寸.外半径.垂直,
       边数,
-      多角星对象.起始弧度,
+      多角星对象.起始弧度
     );
     多角星对象.内顶点坐标组 = this.获取多边形顶点坐标组(
       多角星对象.坐标.x,
@@ -1435,7 +1436,7 @@ class 随心绘 {
       多角星对象.尺寸.内半径.水平,
       多角星对象.尺寸.内半径.垂直,
       边数,
-      多角星对象.起始弧度 + Math.PI / 边数,
+      多角星对象.起始弧度 + Math.PI / 边数
     );
     for (let i = 0; i < 边数; i++) {
       if (i === 0) {
@@ -1477,7 +1478,7 @@ class 随心绘 {
           自由路径对象.顶点坐标组[i].x,
           自由路径对象.顶点坐标组[i].y,
           中间点x,
-          中间点y,
+          中间点y
         );
       }
 
@@ -1486,7 +1487,7 @@ class 随心绘 {
         自由路径对象.顶点坐标组[lastIndex - 1].x,
         自由路径对象.顶点坐标组[lastIndex - 1].y,
         自由路径对象.顶点坐标组[lastIndex].x,
-        自由路径对象.顶点坐标组[lastIndex].y,
+        自由路径对象.顶点坐标组[lastIndex].y
       );
     }
   }
@@ -1680,7 +1681,7 @@ class 随心绘 {
         顶点坐标组[lastIndex - 1].x,
         顶点坐标组[lastIndex - 1].y,
         顶点坐标组[lastIndex].x,
-        顶点坐标组[lastIndex].y,
+        顶点坐标组[lastIndex].y
       );
     }
 
@@ -1822,6 +1823,13 @@ class 随心绘 {
         });
       }
       this.清空画布();
+      this.图层处理按钮组.向上一层.parentElement.classList.add("禁用");
+      this.图层处理按钮组.向下一层.parentElement.classList.add("禁用");
+      this.图层处理按钮组.置于底层.parentElement.classList.add("禁用");
+      this.图层处理按钮组.置于顶层.parentElement.classList.add("禁用");
+      this.全局属性.选中形状 = null;
+      this.全局属性.悬停形状 = null;
+      this.重置当前形状对象();
       this.数据集.基础形状对象组 = [];
       this.当前形状对象.顶点坐标组 = [];
       this.当前形状对象.外顶点坐标组 = [];
@@ -1899,10 +1907,15 @@ class 随心绘 {
             this.数据集.操作记录.pop();
           }
           this.更新路径(最后形状);
+          this.全局属性.选中形状 = null;
           this.清空画布();
           this.绘制基础形状对象组();
           return;
         } else {
+          if (最后形状 === this.全局属性.选中形状) {
+            this.全局属性.选中形状 = null;
+            this.重置当前形状对象();
+          }
           this.数据集.基础形状对象组.pop();
         }
       }
@@ -1924,6 +1937,7 @@ class 随心绘 {
       this.数据集.基础形状对象组.splice(最后操作.操作数据, 0, 最后操作.被删除形状对象);
       最后操作.被删除形状对象.已悬停 = false;
       最后操作.被删除形状对象.已选中 = false;
+      this.全局属性.选中形状 = null;
       const 悬停形状 = this.鼠标位于形状内();
       if (悬停形状) {
         悬停形状.已悬停 = true;
@@ -1932,6 +1946,12 @@ class 随心绘 {
     this.数据集.操作记录.pop();
     this.清空画布();
     this.绘制基础形状对象组();
+    if (!this.全局属性.选中形状) {
+      this.图层处理按钮组.向上一层.parentElement.classList.add("禁用");
+      this.图层处理按钮组.向下一层.parentElement.classList.add("禁用");
+      this.图层处理按钮组.置于底层.parentElement.classList.add("禁用");
+      this.图层处理按钮组.置于顶层.parentElement.classList.add("禁用");
+    }
   }
 
   重置当前形状对象() {
@@ -1988,7 +2008,7 @@ class 随心绘 {
     this.ctx.save();
     this.ctx.beginPath();
     let 旋转弧度 = 0;
-    const 外边距 = 10 + 形状对象.描边宽度 * (形状对象.形状 === "多边形" || 形状对象.形状 === "多角星" ? 1 : 0.5);
+    const 外边距 = 10 + 形状对象.描边宽度 * (形状对象.形状 === "多角星" ? 1 : 0.5);
     const 坐标 = {
       x: 0,
       y: 0,
@@ -2046,6 +2066,13 @@ class 随心绘 {
       容差: 10,
       外边距: 外边距,
       旋转弧度: 旋转弧度,
+      鼠标位于内部: true,
+      鼠标位于边界: {
+        上: false,
+        下: false,
+        左: false,
+        右: false,
+      },
     };
     const 虚线长度 = 10;
     this.ctx.lineWidth = 1;
@@ -2058,7 +2085,7 @@ class 随心绘 {
       形状对象.形状 === "圆" ? -this.交互框.尺寸.width / 2 : this.交互框.坐标.x,
       形状对象.形状 === "圆" ? -this.交互框.尺寸.height / 2 : this.交互框.坐标.y,
       this.交互框.尺寸.width,
-      this.交互框.尺寸.height,
+      this.交互框.尺寸.height
     );
     this.ctx.strokeStyle = "greenyellow";
     this.ctx.stroke();
@@ -2079,7 +2106,7 @@ class 随心绘 {
           形状对象.形状 === "圆" ? -this.交互框.尺寸.height / 2 : this.交互框.坐标.y,
           句柄半径,
           0,
-          2 * Math.PI,
+          2 * Math.PI
         );
       } else if (i === 1) {
         句柄路径组[i].arc(
@@ -2087,7 +2114,7 @@ class 随心绘 {
           形状对象.形状 === "圆" ? -this.交互框.尺寸.height / 2 : this.交互框.坐标.y,
           句柄半径,
           0,
-          2 * Math.PI,
+          2 * Math.PI
         );
       } else if (i === 2) {
         句柄路径组[i].arc(
@@ -2095,7 +2122,7 @@ class 随心绘 {
           this.交互框.尺寸.height + (形状对象.形状 === "圆" ? -this.交互框.尺寸.height / 2 : this.交互框.坐标.y),
           句柄半径,
           0,
-          2 * Math.PI,
+          2 * Math.PI
         );
       } else {
         句柄路径组[i].arc(
@@ -2103,7 +2130,7 @@ class 随心绘 {
           this.交互框.尺寸.height + (形状对象.形状 === "圆" ? -this.交互框.尺寸.height / 2 : this.交互框.坐标.y),
           句柄半径,
           0,
-          2 * Math.PI,
+          2 * Math.PI
         );
       }
 
