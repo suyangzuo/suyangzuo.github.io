@@ -417,7 +417,7 @@ class 随心绘 {
   }
 
   根据选中形状索引修改处理按钮状态() {
-    if (!this.全局属性.选中形状) {
+    if (!this.全局属性.选中形状 || this.数据集.基础形状对象组.length <= 1) {
       this.图层处理按钮组.向上一层.parentElement.classList.add("禁用");
       this.图层处理按钮组.向下一层.parentElement.classList.add("禁用");
       this.图层处理按钮组.置于底层.parentElement.classList.add("禁用");
@@ -1917,6 +1917,12 @@ class 随心绘 {
             this.重置当前形状对象();
           }
           this.数据集.基础形状对象组.pop();
+        }
+        if (this.数据集.基础形状对象组.length <= 1) {
+          this.图层处理按钮组.向上一层.parentElement.classList.add("禁用");
+          this.图层处理按钮组.向下一层.parentElement.classList.add("禁用");
+          this.图层处理按钮组.置于底层.parentElement.classList.add("禁用");
+          this.图层处理按钮组.置于顶层.parentElement.classList.add("禁用");
         }
       }
     } else if (最后操作.操作类型 === "交换图层") {
