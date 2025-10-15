@@ -456,8 +456,8 @@ class 随心绘 {
     for (let i = this.数据集.基础形状对象组.length - 1; i >= 0; i--) {
       const 形状 = this.数据集.基础形状对象组[i];
       if (!形状.路径) continue;
-      if (this.交互框) {
-        this.交互框.鼠标位于内部 = this.鼠标位于交互框内();
+      if (this.交互框 && 形状 === this.全局属性.选中形状) {
+        this.交互框.鼠标位于内部 = this.鼠标位于交互框内() || Object.values(this.鼠标位于交互框边界()).includes(true);
         this.全局属性.选中形状.已悬停 = this.交互框.鼠标位于内部;
         if (this.交互框.鼠标位于内部) {
           if (this.全局属性.悬停形状 && this.全局属性.悬停形状 !== this.全局属性.选中形状) {
