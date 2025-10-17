@@ -521,19 +521,37 @@ class 随心绘 {
   鼠标位于交互框边界() {
     if (!this.交互框) return null;
     const 容差 = 10;
+    const 鼠标位于左边界内 = this.全局属性.鼠标坐标.x >= this.交互框.坐标.x - 容差;
+    const 鼠标位于右边界内 = this.全局属性.鼠标坐标.x <= this.交互框.坐标.x + this.交互框.尺寸.width + 容差;
+    const 鼠标位于上边界内 = this.全局属性.鼠标坐标.y >= this.交互框.坐标.y - 容差;
+    const 鼠标位于下边界内 = this.全局属性.鼠标坐标.y <= this.交互框.坐标.y + this.交互框.尺寸.height + 容差;
+    const 鼠标位于水平范围内 = 鼠标位于左边界内 && 鼠标位于右边界内;
+    const 鼠标位于垂直范围内 = 鼠标位于上边界内 && 鼠标位于下边界内;
     const 边界位置 = {
-      上:
-        this.全局属性.鼠标坐标.y >= this.交互框.坐标.y - 容差 && this.全局属性.鼠标坐标.y <= this.交互框.坐标.y + 容差,
+      上: 鼠标位于水平范围内 && 鼠标位于上边界内 && this.全局属性.鼠标坐标.y <= this.交互框.坐标.y + 容差,
       下:
+        鼠标位于水平范围内 &&
         this.全局属性.鼠标坐标.y >= this.交互框.坐标.y + this.交互框.尺寸.height - 容差 &&
-        this.全局属性.鼠标坐标.y <= this.交互框.坐标.y + this.交互框.尺寸.height + 容差,
-      左:
-        this.全局属性.鼠标坐标.x >= this.交互框.坐标.x - 容差 && this.全局属性.鼠标坐标.x <= this.交互框.坐标.x + 容差,
+        鼠标位于下边界内,
+      左: 鼠标位于垂直范围内 && 鼠标位于左边界内 && this.全局属性.鼠标坐标.x <= this.交互框.坐标.x + 容差,
       右:
+        鼠标位于垂直范围内 &&
         this.全局属性.鼠标坐标.x >= this.交互框.坐标.x + this.交互框.尺寸.width - 容差 &&
-        this.全局属性.鼠标坐标.x <= this.交互框.坐标.x + this.交互框.尺寸.width + 容差,
+        鼠标位于右边界内,
     };
     return 边界位置;
+  }
+
+  设置旋转变换矩阵(x, y, 旋转弧度) {
+    const a = Math.cos(旋转弧度) * this.dpr;
+    const b = Math.sin(旋转弧度) * this.dpr;
+    const c = -b;
+    const d = a;
+    const cx = x;
+    const cy = y;
+    const e = cx * this.dpr;
+    const f = cy * this.dpr;
+    this.ctx.setTransform(a, b, c, d, e, f);
   }
 
   添加canvas鼠标移动事件() {
@@ -577,12 +595,16 @@ class 随心绘 {
               (this.交互框.鼠标位于边界.上 && this.交互框.鼠标位于边界.左) ||
               (this.交互框.鼠标位于边界.下 && this.交互框.鼠标位于边界.右)
             ) {
-              this.canvas.style.cursor = 'url("/Images/Common/鼠标-西北-东南.cur"), pointer';
+              this.canvas.style.cursor = this.键盘状态.Control
+                ? 'url("/Images/Common/busy.png") 10 10, pointer'
+                : 'url("/Images/Common/鼠标-西北-东南.cur"), pointer';
             } else if (
               (this.交互框.鼠标位于边界.上 && this.交互框.鼠标位于边界.右) ||
               (this.交互框.鼠标位于边界.下 && this.交互框.鼠标位于边界.左)
             ) {
-              this.canvas.style.cursor = 'url("/Images/Common/鼠标-东北-西南.cur"), pointer';
+              this.canvas.style.cursor = this.键盘状态.Control
+                ? 'url("/Images/Common/busy.png") 10 10, pointer'
+                : 'url("/Images/Common/鼠标-东北-西南.cur"), pointer';
             } else if (this.交互框.鼠标位于边界.上 || this.交互框.鼠标位于边界.下) {
               this.canvas.style.cursor = 'url("/Images/Common/鼠标-南北.cur"), pointer';
             } else if (this.交互框.鼠标位于边界.左 || this.交互框.鼠标位于边界.右) {
@@ -1120,6 +1142,26 @@ class 随心绘 {
         this.删除形状(this.全局属性.选中形状);
         return;
       }
+      if (this.交互框 && e.key === "Control") {
+        this.交互框.鼠标位于边界 = this.鼠标位于交互框边界();
+        if (this.交互框.鼠标位于边界) {
+          if (
+            (this.交互框.鼠标位于边界.上 && this.交互框.鼠标位于边界.左) ||
+            (this.交互框.鼠标位于边界.下 && this.交互框.鼠标位于边界.右)
+          ) {
+            this.canvas.style.cursor = this.键盘状态.Control
+              ? 'url("/Images/Common/busy.png") 10 10, pointer'
+              : 'url("/Images/Common/鼠标-西北-东南.cur"), pointer';
+          } else if (
+            (this.交互框.鼠标位于边界.上 && this.交互框.鼠标位于边界.右) ||
+            (this.交互框.鼠标位于边界.下 && this.交互框.鼠标位于边界.左)
+          ) {
+            this.canvas.style.cursor = this.键盘状态.Control
+              ? 'url("/Images/Common/busy.png") 10 10, pointer'
+              : 'url("/Images/Common/鼠标-东北-西南.cur"), pointer';
+          }
+        }
+      }
       if (e.key === "Enter") {
         if (this.全局属性.已选中基础形状 === "直线") {
           if (this.当前形状对象.顶点坐标组.length >= 2) {
@@ -1438,6 +1480,23 @@ class 随心绘 {
       this.键盘状态[e.key] = false;
       this.全局标志.多边形边数可增减 = true;
       this.全局标志.多边形可旋转 = true;
+
+      if (this.交互框 && e.key === "Control") {
+        this.交互框.鼠标位于边界 = this.鼠标位于交互框边界();
+        if (this.交互框.鼠标位于边界) {
+          if (
+            (this.交互框.鼠标位于边界.上 && this.交互框.鼠标位于边界.左) ||
+            (this.交互框.鼠标位于边界.下 && this.交互框.鼠标位于边界.右)
+          ) {
+            this.canvas.style.cursor = 'url("/Images/Common/鼠标-西北-东南.cur"), pointer';
+          } else if (
+            (this.交互框.鼠标位于边界.上 && this.交互框.鼠标位于边界.右) ||
+            (this.交互框.鼠标位于边界.下 && this.交互框.鼠标位于边界.左)
+          ) {
+            this.canvas.style.cursor = 'url("/Images/Common/鼠标-东北-西南.cur"), pointer';
+          }
+        }
+      }
     });
   }
 
@@ -2199,12 +2258,15 @@ class 随心绘 {
     this.ctx.lineWidth = 1;
     this.ctx.setLineDash([虚线长度, 虚线长度]);
     if (形状对象.形状 === "圆") {
-      this.ctx.translate(形状对象.坐标.x, 形状对象.坐标.y);
-      this.ctx.rotate(this.交互框.旋转弧度);
+      /*this.ctx.translate(形状对象.坐标.x, 形状对象.坐标.y);
+      this.ctx.rotate(this.交互框.旋转弧度);*/
+      this.设置旋转变换矩阵(形状对象.坐标.x, 形状对象.坐标.y, 旋转弧度);
     }
     this.ctx.rect(
       形状对象.形状 === "圆" ? -this.交互框.尺寸.width / 2 : this.交互框.坐标.x,
       形状对象.形状 === "圆" ? -this.交互框.尺寸.height / 2 : this.交互框.坐标.y,
+      /* this.交互框.坐标.x,
+      this.交互框.坐标.y, */
       this.交互框.尺寸.width,
       this.交互框.尺寸.height
     );
