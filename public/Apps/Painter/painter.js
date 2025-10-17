@@ -510,34 +510,70 @@ class 随心绘 {
   鼠标位于交互框内() {
     if (!this.交互框) return null;
     const 容差 = 10;
+    
+    // 计算交互框中心点
+    const 中心X = this.交互框.坐标.x + this.交互框.尺寸.width / 2;
+    const 中心Y = this.交互框.坐标.y + this.交互框.尺寸.height / 2;
+    
+    // 获取旋转弧度
+    const 旋转弧度 = this.交互框.旋转弧度 || 0;
+    
+    // 将鼠标坐标转换到交互框的局部坐标系（逆变换）
+    const dx = this.全局属性.鼠标坐标.x - 中心X;
+    const dy = this.全局属性.鼠标坐标.y - 中心Y;
+    const cos = Math.cos(-旋转弧度);
+    const sin = Math.sin(-旋转弧度);
+    const 局部X = dx * cos - dy * sin;
+    const 局部Y = dx * sin + dy * cos;
+    
+    // 在局部坐标系中判断（局部坐标系中心在原点）
+    const 半宽 = this.交互框.尺寸.width / 2;
+    const 半高 = this.交互框.尺寸.height / 2;
+    
     return (
-      this.全局属性.鼠标坐标.x >= this.交互框.坐标.x + 容差 &&
-      this.全局属性.鼠标坐标.x <= this.交互框.坐标.x + this.交互框.尺寸.width - 容差 &&
-      this.全局属性.鼠标坐标.y >= this.交互框.坐标.y + 容差 &&
-      this.全局属性.鼠标坐标.y <= this.交互框.坐标.y + this.交互框.尺寸.height - 容差
+      局部X >= -半宽 + 容差 &&
+      局部X <= 半宽 - 容差 &&
+      局部Y >= -半高 + 容差 &&
+      局部Y <= 半高 - 容差
     );
   }
 
   鼠标位于交互框边界() {
     if (!this.交互框) return null;
     const 容差 = 10;
-    const 鼠标位于左边界内 = this.全局属性.鼠标坐标.x >= this.交互框.坐标.x - 容差;
-    const 鼠标位于右边界内 = this.全局属性.鼠标坐标.x <= this.交互框.坐标.x + this.交互框.尺寸.width + 容差;
-    const 鼠标位于上边界内 = this.全局属性.鼠标坐标.y >= this.交互框.坐标.y - 容差;
-    const 鼠标位于下边界内 = this.全局属性.鼠标坐标.y <= this.交互框.坐标.y + this.交互框.尺寸.height + 容差;
+    
+    // 计算交互框中心点
+    const 中心X = this.交互框.坐标.x + this.交互框.尺寸.width / 2;
+    const 中心Y = this.交互框.坐标.y + this.交互框.尺寸.height / 2;
+    
+    // 获取旋转弧度
+    const 旋转弧度 = this.交互框.旋转弧度 || 0;
+    
+    // 将鼠标坐标转换到交互框的局部坐标系（逆变换）
+    const dx = this.全局属性.鼠标坐标.x - 中心X;
+    const dy = this.全局属性.鼠标坐标.y - 中心Y;
+    const cos = Math.cos(-旋转弧度);
+    const sin = Math.sin(-旋转弧度);
+    const 局部X = dx * cos - dy * sin;
+    const 局部Y = dx * sin + dy * cos;
+    
+    // 在局部坐标系中判断（局部坐标系中心在原点）
+    const 半宽 = this.交互框.尺寸.width / 2;
+    const 半高 = this.交互框.尺寸.height / 2;
+    
+    // 判断是否在扩展的边界范围内
+    const 鼠标位于左边界内 = 局部X >= -半宽 - 容差;
+    const 鼠标位于右边界内 = 局部X <= 半宽 + 容差;
+    const 鼠标位于上边界内 = 局部Y >= -半高 - 容差;
+    const 鼠标位于下边界内 = 局部Y <= 半高 + 容差;
     const 鼠标位于水平范围内 = 鼠标位于左边界内 && 鼠标位于右边界内;
     const 鼠标位于垂直范围内 = 鼠标位于上边界内 && 鼠标位于下边界内;
+    
     const 边界位置 = {
-      上: 鼠标位于水平范围内 && 鼠标位于上边界内 && this.全局属性.鼠标坐标.y <= this.交互框.坐标.y + 容差,
-      下:
-        鼠标位于水平范围内 &&
-        this.全局属性.鼠标坐标.y >= this.交互框.坐标.y + this.交互框.尺寸.height - 容差 &&
-        鼠标位于下边界内,
-      左: 鼠标位于垂直范围内 && 鼠标位于左边界内 && this.全局属性.鼠标坐标.x <= this.交互框.坐标.x + 容差,
-      右:
-        鼠标位于垂直范围内 &&
-        this.全局属性.鼠标坐标.x >= this.交互框.坐标.x + this.交互框.尺寸.width - 容差 &&
-        鼠标位于右边界内,
+      上: 鼠标位于水平范围内 && 鼠标位于上边界内 && 局部Y <= -半高 + 容差,
+      下: 鼠标位于水平范围内 && 局部Y >= 半高 - 容差 && 鼠标位于下边界内,
+      左: 鼠标位于垂直范围内 && 鼠标位于左边界内 && 局部X <= -半宽 + 容差,
+      右: 鼠标位于垂直范围内 && 局部X >= 半宽 - 容差 && 鼠标位于右边界内,
     };
     return 边界位置;
   }
