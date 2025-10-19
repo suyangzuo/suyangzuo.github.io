@@ -650,7 +650,7 @@ class 随心绘 {
               ) {
                 锚点 = this.全局属性.选中形状.坐标;
               } else {
-                锚点 = this.全局属性.选中形状.极值坐标.中心;
+                锚点 = this.全局属性.选中形状.点击时锚点;
               }
               const 弧度差 = this.获取弧度差(
                 锚点.x,
@@ -1046,10 +1046,16 @@ class 随心绘 {
               this.全局属性.选中形状.点击时旋转弧度 = this.全局属性.选中形状.旋转弧度;
             } else if (this.全局属性.选中形状.形状 === "多边形" || this.全局属性.选中形状.形状 === "多角星") {
               this.全局属性.选中形状.点击时起始弧度 = this.全局属性.选中形状.起始弧度;
-            } else if (this.全局属性.选中形状.形状 === "直线" || this.全局属性.选中形状.形状 === "自由") {
+            } else if (
+              this.全局属性.选中形状.形状 === "直线" ||
+              this.全局属性.选中形状.形状 === "自由" ||
+              this.全局属性.选中形状.形状 === "矩形"
+            ) {
               this.全局属性.选中形状.点击时顶点坐标组 = this.全局属性.选中形状.顶点坐标组.map((坐标) => ({ ...坐标 }));
-            } else if (this.全局属性.选中形状.形状 === "矩形") {
-              this.全局属性.选中形状.点击时顶点坐标组 = this.全局属性.选中形状.顶点坐标组.map((坐标) => ({ ...坐标 }));
+              this.全局属性.选中形状.点击时锚点 = {
+                x: this.全局属性.选中形状.极值坐标.中心.x,
+                y: this.全局属性.选中形状.极值坐标.中心.y,
+              };
             }
             this.全局属性.选中形状.累积旋转弧度 = 0;
             return;
@@ -1170,6 +1176,7 @@ class 随心绘 {
             this.绘制辅助点(坐标.x, 坐标.y);
           }
         }
+        this.撤销按钮.classList.remove("禁用");
       } else if (this.全局属性.已选中基础形状 === "自由") {
         this.当前形状对象.顶点坐标组.push(this.全局属性.点击坐标);
       } else if (this.全局属性.已选中基础形状 === "选框") {
@@ -1289,6 +1296,10 @@ class 随心绘 {
         this.全局属性.选中形状.点击时锚点 = null;
         this.全局属性.选中形状.累积旋转弧度 = 0;
       }
+
+      if (this.数据集.操作记录.length > 0) {
+        this.撤销按钮.classList.remove("禁用");
+      }
     });
   }
 
@@ -1328,6 +1339,12 @@ class 随心绘 {
         return;
       }
       if (this.全局属性.选中形状 && e.key === "Delete") {
+        if (this.全局标志.按钮音效) {
+          this.辅助.清空音效.currentTime = 0;
+          this.辅助.清空音效.play().catch((e) => {
+            console.log("按钮音效播放失败:", e);
+          });
+        }
         this.删除形状(this.全局属性.选中形状);
         return;
       }
@@ -1377,6 +1394,9 @@ class 随心绘 {
         this.绘制基础形状对象组();
       }
       if (e.key === "Escape") {
+        if (this.数据集.操作记录.length <= 0) {
+          this.撤销按钮.classList.add("禁用");
+        }
         return;
       }
       if (!this.全局标志.左键已按下 && Object.hasOwn(this.快捷键映射, e.key)) {
@@ -2260,7 +2280,12 @@ class 随心绘 {
       右: null,
       中心: null,
     };
-    if (形状对象.形状 === "多边形" || 形状对象.形状 === "直线" || 形状对象.形状 === "自由") {
+    if (
+      形状对象.形状 === "多边形" ||
+      形状对象.形状 === "直线" ||
+      形状对象.形状 === "自由" ||
+      形状对象.形状 === "矩形"
+    ) {
       极值坐标.上 = Math.min(...形状对象.顶点坐标组.map((item) => item.y));
       极值坐标.下 = Math.max(...形状对象.顶点坐标组.map((item) => item.y));
       极值坐标.左 = Math.min(...形状对象.顶点坐标组.map((item) => item.x));
@@ -2274,15 +2299,6 @@ class 随心绘 {
       极值坐标.下 = Math.max(...形状对象.外顶点坐标组.map((item) => item.y));
       极值坐标.左 = Math.min(...形状对象.外顶点坐标组.map((item) => item.x));
       极值坐标.右 = Math.max(...形状对象.外顶点坐标组.map((item) => item.x));
-      极值坐标.中心 = {
-        x: (极值坐标.左 + 极值坐标.右) / 2,
-        y: (极值坐标.上 + 极值坐标.下) / 2,
-      };
-    } else if (形状对象.形状 === "矩形") {
-      极值坐标.上 = Math.min(...形状对象.顶点坐标组.map((item) => item.y));
-      极值坐标.下 = Math.max(...形状对象.顶点坐标组.map((item) => item.y));
-      极值坐标.左 = Math.min(...形状对象.顶点坐标组.map((item) => item.x));
-      极值坐标.右 = Math.max(...形状对象.顶点坐标组.map((item) => item.x));
       极值坐标.中心 = {
         x: (极值坐标.左 + 极值坐标.右) / 2,
         y: (极值坐标.上 + 极值坐标.下) / 2,
@@ -2328,8 +2344,8 @@ class 随心绘 {
   旋转坐标(坐标, 锚点, 弧度) {
     const 水平偏移 = 坐标.x - 锚点.x;
     const 垂直偏移 = 坐标.y - 锚点.y;
-    const 新x = 水平偏移 * Math.cos(弧度) + 垂直偏移 * Math.sin(弧度) + 锚点.x;
-    const 新y = -水平偏移 * Math.sin(弧度) + 垂直偏移 * Math.cos(弧度) + 锚点.y;
+    const 新x = 水平偏移 * Math.cos(弧度) - 垂直偏移 * Math.sin(弧度) + 锚点.x;
+    const 新y = 水平偏移 * Math.sin(弧度) + 垂直偏移 * Math.cos(弧度) + 锚点.y;
     return {
       x: 新x,
       y: 新y,
@@ -2371,6 +2387,12 @@ class 随心绘 {
     const 删除按钮 = document.getElementById("删除");
     删除按钮.addEventListener("click", () => {
       if (this.全局属性.选中形状) {
+        if (this.全局标志.按钮音效) {
+          this.辅助.清空音效.currentTime = 0;
+          this.辅助.清空音效.play().catch((e) => {
+            console.log("按钮音效播放失败:", e);
+          });
+        }
         this.删除形状(this.全局属性.选中形状);
       }
     });
@@ -2422,6 +2444,9 @@ class 随心绘 {
           }
         }
       }
+      if (this.当前形状对象.顶点坐标组.length <= 0) {
+        this.撤销按钮.classList.add("禁用");
+      }
       return;
     }
 
@@ -2439,6 +2464,9 @@ class 随心绘 {
           this.全局属性.选中形状 = null;
           this.清空画布();
           this.绘制基础形状对象组();
+          if (this.数据集.操作记录.length <= 0) {
+            this.撤销按钮.classList.add("禁用");
+          }
           return;
         } else {
           if (最后形状 === this.全局属性.选中形状) {
@@ -2472,7 +2500,9 @@ class 随心绘 {
       this.数据集.基础形状对象组.splice(最后操作.操作数据, 0, 最后操作.被删除形状对象);
       最后操作.被删除形状对象.已悬停 = false;
       最后操作.被删除形状对象.已选中 = false;
-      this.全局属性.选中形状 = null;
+      if (this.全局属性.选中形状 === 最后操作.被删除形状对象) {
+        this.全局属性.选中形状 = null;
+      }
       const 悬停形状 = this.鼠标位于形状内();
       if (悬停形状) {
         悬停形状.已悬停 = true;
@@ -2564,6 +2594,9 @@ class 随心绘 {
       this.更新路径(形状);
     }
     this.数据集.操作记录.pop();
+    if (this.数据集.操作记录.length <= 0) {
+      this.撤销按钮.classList.add("禁用");
+    }
     if (this.数据集.基础形状对象组.length <= 0 || !this.全局属性.选中形状) {
       this.删除按钮.classList.add("禁用");
     }

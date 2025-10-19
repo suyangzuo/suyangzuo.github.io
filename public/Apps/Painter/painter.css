@@ -36,6 +36,10 @@
   background-color: #3174e3;
 }
 
+.pickr .pcr-button::before {
+  opacity: 0;
+}
+
 .禁用 {
   filter: brightness(0.25);
   pointer-events: none;
