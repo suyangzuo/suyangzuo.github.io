@@ -1,6 +1,7 @@
 :root {
   --标题下间距: 5px;
   --列表左右内边距: 4px;
+  --顶部控件偏移: 60px;
 }
 
 .pcr-app {
@@ -37,7 +38,13 @@
 }
 
 .pickr .pcr-button::before {
-  border-radius: .2em;
+  border-radius: 0.2em;
+}
+
+.pickr .pcr-button::after {
+  left: 50%;
+  translate: -50% 0;
+  width: 103%;
 }
 
 .禁用 {
@@ -46,29 +53,30 @@
 }
 
 #总区 {
-  width: clamp(800px, 97.5vw, 2400px);
-  height: clamp(600px, calc(100vh - 100px), 3200px);
-  margin: 75px auto 0;
-  display: flex;
-  flex-direction: column;
-  outline: solid 2px #fff2;
+  position: relative;
+  width: clamp(800px, 100vw, 2400px);
+  height: clamp(600px, calc(100vh - 5px), 3200px);
+  margin: 0 auto;
+  padding: 50px 0 0 0;
   font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 #设置区 {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 138px;
-  flex-shrink: 0;
+  height: 100%;
   background-color: #ffffff08;
-  padding: 10px 20px;
-  display: flex;
-  gap: 30px;
+  pointer-events: none;
 }
 
 .设置分区 {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: var(--标题下间距);
+  pointer-events: auto;
+  height: fit-content;
 }
 
 .标题 {
@@ -77,9 +85,16 @@
   user-select: none;
 }
 
+.辅助区 {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+}
+
 .辅助列表.列表 {
   padding: 2px var(--列表左右内边距);
   display: flex;
+  padding: 5px 15px;
 }
 
 .辅助视觉效果区 {
@@ -129,9 +144,9 @@
   height: 100%;
   border-radius: 4px;
   position: relative;
-  display: flex;
+  /* display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
 }
 
 .辅助列表 .标签::before {
@@ -154,7 +169,7 @@
 
 #绘图区 {
   width: 100%;
-  flex-grow: 1;
+  height: 100%;
   background-color: #00000025;
 }
 
@@ -164,23 +179,26 @@
 }
 
 .基础形状区 {
-  width: calc(30px * 4 + var(--列表左右内边距) * 2);
-  height: 100%;
+  width: calc(30px * 8 + var(--列表左右内边距) * 2 + 15px * 2);
+  height: fit-content;
+  position: absolute;
+  top: var(--顶部控件偏移);
+  left: 50%;
+  translate: -50% 0;
 }
 
 .列表,
 .操作列表组 {
-  background-color: #0005;
-  box-shadow: inset 0 0 1px 1px #000a;
+  background-color: #bdf1;
+  box-shadow: inset 0 0 1px 1px #fff1;
   flex-grow: 1;
   padding: 2px var(--列表左右内边距);
+  border-radius: 100px;
 }
 
 .形状列表 {
-  min-width: 128px;
   display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
+  padding: 5px 15px;
 }
 
 .基础形状分区 {
@@ -246,23 +264,29 @@ label {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
+.清空画布区 {
+  position: absolute;
+  top: var(--顶部控件偏移);
+  left: 50%;
+  translate: 400px 0;
+}
+
 #清空画布按钮 {
   flex-grow: 1;
-  width: 75px;
-  background-color: #722222;
+  width: fit-content;
+  height: 40px;
   color: #fff;
-  box-shadow: inset 0 0 1px 1px #fff3;
 }
 
 #清空画布按钮 > img {
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   object-fit: contain;
 }
 
 #清空画布按钮:hover {
   box-shadow: inset 0 0 1px 1px #fffa;
-  background-color: #922222;
+  background-color: #822222;
 }
 
 #清空画布按钮:active {
@@ -279,7 +303,6 @@ label {
 .常用操作列表,
 .形状交互列表,
 .形状操纵列表 {
-  display: flex;
   background-color: transparent;
   box-shadow: none;
   flex-grow: 0;
@@ -299,6 +322,17 @@ label {
   width: 75%;
   height: 75%;
   object-fit: contain;
+}
+
+.常用操作区 {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  translate: 0 -50%;
+
+  .操作列表组 {
+    padding: 15px 5px;
+  }
 }
 
 .按钮容器 {
@@ -345,21 +379,40 @@ label {
   box-shadow: inset 0 0 1px 1px #5af;
 }
 
-.颜色分区 {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  height: 50%;
-  padding: 0 10px;
+.颜色区 {
+  position: absolute;
+  top: var(--顶部控件偏移);
+  left: 50%;
+  translate: 175px 0;
 
-  .复选框 {
-    position: static;
-    opacity: 1;
-    width: 100px;
+  .颜色列表 {
+    display: flex;
+    padding: calc(5px + (30px - 26.67px) / 2) 15px;
+
+    .颜色分区 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      height: 50%;
+      padding: 0 10px;
+
+      .复选框 {
+        position: static;
+        opacity: 1;
+        width: 100px;
+      }
+    }
   }
 }
 
 .描边宽度区 {
+  position: absolute;
+  top: var(--顶部控件偏移);
+  left: 50%;
+  translate: -400px 0;
+  height: 40px;
+  gap: 10px;
+
   .描边宽度容器 {
     display: flex;
     align-items: center;
