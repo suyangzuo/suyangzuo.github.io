@@ -37,6 +37,10 @@
   background-color: #3174e3;
 }
 
+.pickr button:focus {
+  box-shadow: 0 0 0 1px rgb(255, 255, 255, 0.85), 0 0 0 1px var(--pcr-color);
+}
+
 .pickr .pcr-button::before {
   border-radius: 0.2em;
 }
