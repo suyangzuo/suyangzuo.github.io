@@ -1038,14 +1038,14 @@ class 随心绘 {
   添加canvas鼠标移动事件() {
     this.canvas.addEventListener("mousemove", (e) => {
       this.全局属性.鼠标坐标 = this.获取鼠标坐标(e);
-      
+
       // Alt+拖拽复制中：更新预览形状位置并绘制
       if (this.全局标志.Alt拖拽复制中 && this.全局属性.复制预览形状) {
         const 偏移量 = {
           x: this.全局属性.鼠标坐标.x - this.全局属性.复制预览形状.初始鼠标位置.x,
           y: this.全局属性.鼠标坐标.y - this.全局属性.复制预览形状.初始鼠标位置.y,
         };
-        
+
         // 根据形状类型更新位置
         const 源形状 = this.全局属性.复制源形状;
         if (源形状.形状 === "圆") {
@@ -1110,34 +1110,62 @@ class 随心绘 {
             y: 源形状.中心.y + 偏移量.y,
           };
         }
-        
+
         // 更新极值坐标和路径
         this.全局属性.复制预览形状.极值坐标 = this.获取极值坐标(this.全局属性.复制预览形状);
         this.更新路径(this.全局属性.复制预览形状);
-        
+
         // 重新绘制画布，包括预览形状（透明度33%）
         this.清空画布();
         this.绘制基础形状对象组();
-        
-        // 保存当前透明度并设置为33%
+
         const 原透明度 = this.ctx.globalAlpha;
         this.ctx.globalAlpha = 0.25;
-        
-        // 绘制预览形状
+
         this.绘制单个形状(this.全局属性.复制预览形状);
-        
-        // 恢复透明度
+
         this.ctx.globalAlpha = 原透明度;
-        
         return;
       }
-      
+
+      if (this.键盘状态.Alt && !this.全局标志.左键已按下) {
+        const 悬停形状 = this.鼠标位于形状内();
+        
+        // 清除所有形状的Alt预览状态
+        for (const 形状 of this.数据集.基础形状对象组) {
+          if (形状.Alt预览中) {
+            形状.Alt预览中 = false;
+          }
+        }
+        
+        if (悬停形状) {
+          this.canvas.style.cursor = 'url("/Images/Common/copy.cur"), pointer';
+          
+          // 如果形状未被选中，设置Alt预览状态并绘制预览交互框
+          if (!悬停形状.已选中) {
+            悬停形状.Alt预览中 = true;
+            
+            // 重新绘制画布以显示预览交互框
+            this.清空画布();
+            this.绘制基础形状对象组();
+          }
+          
+          return; // 不需要继续后续处理
+        } else {
+          this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), pointer';
+          
+          // 重新绘制以清除预览交互框
+          this.清空画布();
+          this.绘制基础形状对象组();
+        }
+      }
+
       // 如果不是左键按下状态，且不是直线或选择路径工具，则不处理
       // 但Alt拖拽复制时也需要阻止后续逻辑
       if (
         (!this.全局标志.左键已按下 &&
-        this.全局属性.已选中基础形状 !== "直线" &&
-        this.全局属性.已选中基础形状 !== "选择路径") ||
+          this.全局属性.已选中基础形状 !== "直线" &&
+          this.全局属性.已选中基础形状 !== "选择路径") ||
         this.全局标志.Alt拖拽复制中
       )
         return;
@@ -1687,7 +1715,7 @@ class 随心绘 {
         if (悬停形状) {
           this.全局标志.Alt拖拽复制中 = true;
           this.全局属性.复制源形状 = 悬停形状;
-          
+
           // 创建预览形状（深度克隆）
           if (悬停形状.形状 === "图像") {
             // 图像类型：手动创建快照
@@ -1703,6 +1731,7 @@ class 随心绘 {
               旋转弧度: 悬停形状.旋转弧度,
               已选中: false,
               已悬停: false,
+              Alt预览中: false,
               顶点坐标组: 悬停形状.顶点坐标组.map((v) => ({ x: v.x, y: v.y })),
               描边色: 悬停形状.描边色,
               填充色: 悬停形状.填充色,
@@ -1718,32 +1747,33 @@ class 随心绘 {
             this.全局属性.复制预览形状.路径 = null;
             this.全局属性.复制预览形状.已选中 = false;
             this.全局属性.复制预览形状.已悬停 = false;
+            this.全局属性.复制预览形状.Alt预览中 = false;
           }
-          
+
           // 记录初始鼠标位置
           this.全局属性.复制预览形状.初始鼠标位置 = {
             x: this.全局属性.点击坐标.x,
             y: this.全局属性.点击坐标.y,
           };
-          
+
           // 初始化预览形状的路径
           this.全局属性.复制预览形状.极值坐标 = this.获取极值坐标(this.全局属性.复制预览形状);
           this.更新路径(this.全局属性.复制预览形状);
-          
-          // 清除所有形状的悬停状态，避免与预览形状冲突
+
+          // 清除所有形状的悬停状态和Alt预览状态，避免与预览形状冲突
           for (const 形状 of this.数据集.基础形状对象组) {
             形状.已悬停 = false;
+            形状.Alt预览中 = false;
           }
-          
+
           // 立即绘制预览形状
           this.清空画布();
           this.绘制基础形状对象组();
-          
+
           const 原透明度 = this.ctx.globalAlpha;
           this.ctx.globalAlpha = 0.33;
           this.绘制单个形状(this.全局属性.复制预览形状);
           this.ctx.globalAlpha = 原透明度;
-          
           return; // 阻止其他事件处理
         }
       }
@@ -1949,46 +1979,46 @@ class 随心绘 {
       if (this.全局标志.Alt拖拽复制中 && this.全局属性.复制预览形状) {
         // 清除初始鼠标位置属性
         delete this.全局属性.复制预览形状.初始鼠标位置;
-        
+
         // 添加复制的形状到形状组
         const 新形状索引 = this.数据集.基础形状对象组.length;
         this.数据集.基础形状对象组.push(this.全局属性.复制预览形状);
-        
+
         // 记录操作以便撤销
         this.数据集.操作记录.push({
           操作类型: "复制形状",
           原形状: this.全局属性.复制源形状,
           新形状索引: 新形状索引,
         });
-        
+
         // 重置状态
         this.全局标志.Alt拖拽复制中 = false;
         this.全局标志.左键已按下 = false;
         this.全局属性.复制预览形状 = null;
         this.全局属性.复制源形状 = null;
         this.全局属性.点击坐标 = null;
-        
+
         // 重新绘制
         this.清空画布();
         this.绘制基础形状对象组();
-        
+
         // 启用撤销按钮
         this.撤销按钮.classList.remove("禁用");
-        
+
         return;
       }
-      
+
       // 如果Alt拖拽复制被中断（没有完成），清理状态
       if (this.全局标志.Alt拖拽复制中) {
         this.全局标志.Alt拖拽复制中 = false;
         this.全局属性.复制预览形状 = null;
         this.全局属性.复制源形状 = null;
-        
+
         // 重新绘制以移除预览
         this.清空画布();
         this.绘制基础形状对象组();
       }
-      
+
       // 在重置缩放标志之前，检查是否需要规范化矩形和图像的顶点顺序
       if (
         this.全局标志.缩放中 &&
@@ -2157,6 +2187,30 @@ class 随心绘 {
       this.键盘状态[e.key] = true;
       if (e.key === "Alt") {
         e.preventDefault();
+        // 检测鼠标是否悬停在形状上，如果是则立即改变光标并显示预览交互框
+        if (!this.全局标志.左键已按下 && !this.全局标志.Alt拖拽复制中) {
+          const 悬停形状 = this.鼠标位于形状内();
+          
+          // 清除所有形状的Alt预览状态
+          for (const 形状 of this.数据集.基础形状对象组) {
+            if (形状.Alt预览中) {
+              形状.Alt预览中 = false;
+            }
+          }
+          
+          if (悬停形状) {
+            this.canvas.style.cursor = 'url("/Images/Common/copy.cur"), pointer';
+            
+            // 如果形状未被选中，设置Alt预览状态并绘制预览交互框
+            if (!悬停形状.已选中) {
+              悬停形状.Alt预览中 = true;
+              
+              // 立即绘制预览交互框
+              this.清空画布();
+              this.绘制基础形状对象组();
+            }
+          }
+        }
       }
       if (e.key === "z" && this.键盘状态.Control) {
         if (this.全局标志.按钮音效) {
@@ -2276,7 +2330,12 @@ class 随心绘 {
         if (this.全局标志.辅助视觉效果) {
           this.绘制辅助点(this.当前形状对象.坐标.x, this.当前形状对象.坐标.y);
         }
-      } else if (this.全局标志.左键已按下 && !this.键盘状态.Shift && this.全局属性.已选中基础形状 === "圆" && !this.全局标志.Alt拖拽复制中) {
+      } else if (
+        this.全局标志.左键已按下 &&
+        !this.键盘状态.Shift &&
+        this.全局属性.已选中基础形状 === "圆" &&
+        !this.全局标志.Alt拖拽复制中
+      ) {
         if (this.键盘状态.ArrowLeft) {
           this.当前形状对象.旋转弧度 -= 0.01;
         }
@@ -2519,6 +2578,33 @@ class 随心绘 {
       this.键盘状态[e.key] = false;
       this.全局标志.多边形边数可增减 = true;
       this.全局标志.多边形可旋转 = true;
+
+      // Alt键释放时恢复光标并清除预览交互框（如果不在拖拽复制中）
+      if (e.key === "Alt" && !this.全局标志.Alt拖拽复制中) {
+        this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), pointer';
+        
+        // 清除所有形状的Alt预览状态，如果不是选择路径工具也清除悬停状态
+        let 需要重绘 = false;
+        const 是选择路径工具 = this.全局属性.已选中基础形状 === "选择路径";
+        
+        for (const 形状 of this.数据集.基础形状对象组) {
+          if (形状.Alt预览中) {
+            形状.Alt预览中 = false;
+            需要重绘 = true;
+          }
+          // 如果不是选择路径工具，也清除悬停状态
+          if (!是选择路径工具 && 形状.已悬停) {
+            形状.已悬停 = false;
+            需要重绘 = true;
+          }
+        }
+        
+        // 如果有形状处于预览状态，重新绘制以清除预览交互框
+        if (需要重绘) {
+          this.清空画布();
+          this.绘制基础形状对象组();
+        }
+      }
 
       if (this.交互框 && e.key === "Control") {
         this.全局标志.旋转中 = false;
@@ -5599,7 +5685,7 @@ class 随心绘 {
 
   绘制单个形状(形状对象) {
     if (!形状对象) return;
-    
+
     // 特殊处理：图像类型直接绘制图像（图像不依赖路径）
     if (形状对象.形状 === "图像" && 形状对象.图像对象) {
       this.ctx.save();
@@ -5660,10 +5746,12 @@ class 随心绘 {
       }
     }
 
-    // 选中时绘制完整交互框，悬停时绘制半透明无句柄交互框
+    // 选中时绘制完整交互框，悬停时绘制半透明无句柄交互框，Alt预览时也绘制半透明交互框
     if (形状对象.已选中) {
       this.绘制交互框(形状对象, 1.0, true);
     } else if (形状对象.已悬停) {
+      this.绘制交互框(形状对象, 0.4, false);
+    } else if (形状对象.Alt预览中) {
       this.绘制交互框(形状对象, 0.4, false);
     }
   }
