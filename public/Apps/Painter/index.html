@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
@@ -135,9 +135,18 @@
               <label class="形状符号" for="文本"><img class="示意符号" src="./Images/text.svg" alt="文本" /></label>
               <input type="radio" name="基础形状" value="文本" class="单选框 基础形状单选框" id="文本" title="文本" />
             </div>
-            <div class="基础形状分区 图像区 禁用" 形状="图像">
+            <div class="基础形状分区 图像区" 形状="图像">
               <label class="形状符号" for="图像"><img class="示意符号" src="./Images/image.svg" alt="图像" /></label>
-              <input type="file" name="基础形状" value="图像" class="单选框 基础形状单选框" id="图像" title="图像" />
+              <input
+                type="file"
+                name="基础形状"
+                value="图像"
+                class="单选框 基础形状单选框"
+                id="图像"
+                title="图像"
+                accept="image/*"
+                multiple
+              />
             </div>
           </div>
         </div>
@@ -162,17 +171,6 @@
                   title="选择路径 - A"
                 />
               </div>
-              <!-- <div class="基础形状分区 选框区" 形状="选框">
-                <label class="形状符号" for="选框"><img class="示意符号" src="./Images/select.svg" alt="选框" /></label>
-                <input
-                  type="radio"
-                  name="基础形状"
-                  value="选框"
-                  class="单选框 基础形状单选框"
-                  id="选框"
-                  title="选框 - S"
-                />
-              </div> -->
               <div class="按钮容器">
                 <button class="按钮 禁用" id="撤销" title="撤销 - Ctrl+Z">
                   <img class="示意符号" src="./Images/reverse.svg" alt="撤销" />
@@ -245,6 +243,11 @@
               <div class="按钮容器 禁用">
                 <button class="按钮" id="复制" title="复制">
                   <img class="示意符号" src="./Images/copy.svg" alt="复制" />
+                </button>
+              </div>
+              <div class="按钮容器 禁用">
+                <button class="按钮" id="组合" title="组合">
+                  <img class="示意符号" src="./Images/group.svg" alt="组合" />
                 </button>
               </div>
             </div>

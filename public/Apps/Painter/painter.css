@@ -240,7 +240,7 @@ label {
 .形状符号 {
   width: 100%;
   height: 100%;
-  padding: 5px;
+  padding: 4px;
   font-size: 16px;
   pointer-events: none;
   display: flex;
@@ -368,19 +368,6 @@ label {
 .按钮:active {
   box-shadow: inset 0 0 1px 1px #5af;
   background-color: #5af7;
-}
-
-.基础形状分区.选框区 > .形状符号 {
-  padding: 4px;
-}
-
-.基础形状分区.选框区:has(.单选框:checked) .形状符号 {
-  background-color: #5af8;
-}
-
-.基础形状分区.选框区:hover .形状符号 {
-  background-color: #5af3;
-  box-shadow: inset 0 0 1px 1px #5af;
 }
 
 .颜色区 {
