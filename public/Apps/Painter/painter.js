@@ -270,26 +270,49 @@ class 随心绘 {
 
       // 先加载所有图像并计算尺寸
       const 图像信息组 = [];
+      const 失败文件组 = [];
       for (const 文件 of 文件组) {
-        const 数据Url = await this.获取图像Url(文件);
-        const 图像对象 = await this.加载图像(数据Url);
+        try {
+          const 数据Url = await this.获取图像Url(文件);
+          const 图像对象 = await this.加载图像(数据Url);
 
-        let 宽 = 图像对象.naturalWidth;
-        let 高 = 图像对象.naturalHeight;
-        const 宽高比 = 宽 / 高;
-        if (宽高比 >= 1) {
-          宽 = this.全局属性.图像初始最大宽度;
-          高 = 宽 / 宽高比;
-        } else {
-          高 = this.全局属性.图像初始最大高度;
-          宽 = 高 * 宽高比;
+          let 宽 = 图像对象.naturalWidth;
+          let 高 = 图像对象.naturalHeight;
+          const 宽高比 = 宽 / 高;
+          if (宽高比 >= 1) {
+            宽 = this.全局属性.图像初始最大宽度;
+            高 = 宽 / 宽高比;
+          } else {
+            高 = this.全局属性.图像初始最大高度;
+            宽 = 高 * 宽高比;
+          }
+
+          图像信息组.push({
+            图像对象: 图像对象,
+            宽: 宽,
+            高: 高,
+          });
+        } catch (error) {
+          // 记录加载失败的文件
+          失败文件组.push(文件.name);
+          console.error(`图像加载失败: ${文件.name}`, error);
         }
+      }
 
-        图像信息组.push({
-          图像对象: 图像对象,
-          宽: 宽,
-          高: 高,
-        });
+      // 如果所有文件都加载失败，显示错误提示并返回
+      if (图像信息组.length === 0) {
+        alert(
+          `所有图像加载失败！\n\n失败的文件：\n${失败文件组.join(
+            "\n"
+          )}\n\n可能原因：\n- 浏览器不支持该图像格式（如 .tif、.bmp 等）\n- 文件已损坏\n\n建议：请使用常见的图像格式（.jpg、.png、.gif、.webp 等）`
+        );
+        this.基础形状单选框组.图像.value = "";
+        return;
+      }
+
+      // 如果部分文件加载失败，显示警告
+      if (失败文件组.length > 0) {
+        alert(`部分图像加载失败：\n${失败文件组.join("\n")}\n\n其他图像将正常加载。`);
       }
 
       // 计算布局：智能多行布局，支持自动换行
@@ -1130,30 +1153,30 @@ class 随心绘 {
 
       if (this.键盘状态.Alt && !this.全局标志.左键已按下) {
         const 悬停形状 = this.鼠标位于形状内();
-        
+
         // 清除所有形状的Alt预览状态
         for (const 形状 of this.数据集.基础形状对象组) {
           if (形状.Alt预览中) {
             形状.Alt预览中 = false;
           }
         }
-        
+
         if (悬停形状) {
           this.canvas.style.cursor = 'url("/Images/Common/copy.cur"), pointer';
-          
+
           // 如果形状未被选中，设置Alt预览状态并绘制预览交互框
           if (!悬停形状.已选中) {
             悬停形状.Alt预览中 = true;
-            
+
             // 重新绘制画布以显示预览交互框
             this.清空画布();
             this.绘制基础形状对象组();
           }
-          
+
           return; // 不需要继续后续处理
         } else {
           this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), pointer';
-          
+
           // 重新绘制以清除预览交互框
           this.清空画布();
           this.绘制基础形状对象组();
@@ -2190,21 +2213,21 @@ class 随心绘 {
         // 检测鼠标是否悬停在形状上，如果是则立即改变光标并显示预览交互框
         if (!this.全局标志.左键已按下 && !this.全局标志.Alt拖拽复制中) {
           const 悬停形状 = this.鼠标位于形状内();
-          
+
           // 清除所有形状的Alt预览状态
           for (const 形状 of this.数据集.基础形状对象组) {
             if (形状.Alt预览中) {
               形状.Alt预览中 = false;
             }
           }
-          
+
           if (悬停形状) {
             this.canvas.style.cursor = 'url("/Images/Common/copy.cur"), pointer';
-            
+
             // 如果形状未被选中，设置Alt预览状态并绘制预览交互框
             if (!悬停形状.已选中) {
               悬停形状.Alt预览中 = true;
-              
+
               // 立即绘制预览交互框
               this.清空画布();
               this.绘制基础形状对象组();
@@ -2582,11 +2605,11 @@ class 随心绘 {
       // Alt键释放时恢复光标并清除预览交互框（如果不在拖拽复制中）
       if (e.key === "Alt" && !this.全局标志.Alt拖拽复制中) {
         this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), pointer';
-        
+
         // 清除所有形状的Alt预览状态，如果不是选择路径工具也清除悬停状态
         let 需要重绘 = false;
         const 是选择路径工具 = this.全局属性.已选中基础形状 === "选择路径";
-        
+
         for (const 形状 of this.数据集.基础形状对象组) {
           if (形状.Alt预览中) {
             形状.Alt预览中 = false;
@@ -2598,7 +2621,7 @@ class 随心绘 {
             需要重绘 = true;
           }
         }
-        
+
         // 如果有形状处于预览状态，重新绘制以清除预览交互框
         if (需要重绘) {
           this.清空画布();
