@@ -197,12 +197,13 @@
   box-shadow: inset 0 0 1px 1px #fff1;
   flex-grow: 1;
   padding: 2px var(--列表左右内边距);
-  border-radius: 100px;
+  border-radius: 10px;
 }
 
 .形状列表 {
   display: flex;
   padding: 5px 15px;
+  border-radius: 100px;
 }
 
 .基础形状分区 {
@@ -311,6 +312,9 @@ label {
   box-shadow: none;
   flex-grow: 0;
   padding: 0;
+  display: flex;
+  width: 60px;
+  flex-wrap: wrap;
 }
 
 .常用操作列表 > .按钮,
@@ -335,7 +339,7 @@ label {
   translate: 0 -50%;
 
   .操作列表组 {
-    padding: 15px 5px;
+    padding: 8px 5px;
   }
 }
 
@@ -379,6 +383,7 @@ label {
   .颜色列表 {
     display: flex;
     padding: calc(5px + (30px - 26.67px) / 2) 15px;
+    border-radius: 100px;
 
     .颜色分区 {
       display: flex;

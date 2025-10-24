@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg width="800px" height="800px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="48" height="48" fill="white" fill-opacity="0.01"/>
+<mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="48" height="48">
+<rect width="48" height="48" fill="white"/>
+</mask>
+<g mask="url(#mask0)">
+<rect x="38" y="30" width="28" height="12" transform="rotate(180 38 30)" fill="#2F88FF" stroke="#000000" stroke-width="4" stroke-linejoin="round"/>
+<path d="M42 40H6" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M42 8L6 8" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</svg>
