@@ -82,6 +82,9 @@
   gap: var(--标题下间距);
   pointer-events: auto;
   height: fit-content;
+  backdrop-filter: blur(10px);
+  border-radius: 100px;
+  overflow: hidden;
 }
 
 .标题 {
@@ -272,6 +275,7 @@ label {
   top: var(--顶部控件偏移);
   left: 50%;
   translate: calc((var(--基础形状数量) / 2 + 9) * 30px) 0;
+  border-radius: 4px;
 }
 
 #清空画布按钮 {
@@ -335,6 +339,7 @@ label {
   top: 50%;
   left: 20px;
   translate: 0 -50%;
+  border-radius: 10px;
 
   .操作列表组 {
     padding: 8px 5px;
@@ -406,6 +411,7 @@ label {
   translate: -400px 0;
   height: 40px;
   gap: 10px;
+  padding: 0 10px;
 
   .描边宽度容器 {
     display: flex;
