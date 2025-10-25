@@ -2,6 +2,7 @@
   --标题下间距: 5px;
   --列表左右内边距: 4px;
   --顶部控件偏移: 60px;
+  --基础形状数量: 9;
 }
 
 .pcr-app {
@@ -148,9 +149,6 @@
   height: 100%;
   border-radius: 4px;
   position: relative;
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
 }
 
 .辅助列表 .标签::before {
@@ -183,7 +181,7 @@
 }
 
 .基础形状区 {
-  width: calc(30px * 8 + var(--列表左右内边距) * 2 + 15px * 2);
+  width: calc(30px * var(--基础形状数量) + 15px * 2);
   height: fit-content;
   position: absolute;
   top: var(--顶部控件偏移);
@@ -273,7 +271,7 @@ label {
   position: absolute;
   top: var(--顶部控件偏移);
   left: 50%;
-  translate: 400px 0;
+  translate: calc((var(--基础形状数量) / 2 + 9) * 30px) 0;
 }
 
 #清空画布按钮 {
@@ -378,7 +376,7 @@ label {
   position: absolute;
   top: var(--顶部控件偏移);
   left: 50%;
-  translate: 175px 0;
+  translate: calc((var(--基础形状数量) / 2 + 1.5) * 30px) 0;
 
   .颜色列表 {
     display: flex;
