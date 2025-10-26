@@ -29,6 +29,9 @@
     <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
     <script src="/Scripts/html-include.js" target="../apps-common-control.html" position="afterbegin"></script>
     <div id="总区">
+      <div id="绘图区">
+        <canvas id="画布"></canvas>
+      </div>
       <div id="设置区">
         <div class="辅助区 设置分区">
           <div class="辅助列表 列表">
@@ -119,10 +122,19 @@
               />
             </div>
             <div class="基础形状分区 箭头区" 形状="箭头">
-              <label class="形状符号" for="箭头"><img class="示意符号" src="./Images/arrow-left.svg" alt="箭头" /></label>
-              <input type="radio" name="基础形状" value="箭头" class="单选框 基础形状单选框" id="箭头" title="箭头 - V" />
+              <label class="形状符号" for="箭头"
+                ><img class="示意符号" src="./Images/arrow-left.svg" alt="箭头"
+              /></label>
+              <input
+                type="radio"
+                name="基础形状"
+                value="箭头"
+                class="单选框 基础形状单选框"
+                id="箭头"
+                title="箭头 - V"
+              />
             </div>
-            <div class="基础形状分区 文本区 禁用" 形状="文本">
+            <div class="基础形状分区 文本区" 形状="文本">
               <label class="形状符号" for="文本"><img class="示意符号" src="./Images/text.svg" alt="文本" /></label>
               <input type="radio" name="基础形状" value="文本" class="单选框 基础形状单选框" id="文本" title="文本" />
             </div>
@@ -292,9 +304,6 @@
             <label for="描边宽度" class="标签">2</label>
           </div>
         </div>
-      </div>
-      <div id="绘图区">
-        <canvas id="画布"></canvas>
       </div>
     </div>
     <script src="./pickr/pickr.min.js"></script>

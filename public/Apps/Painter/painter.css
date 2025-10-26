@@ -176,6 +176,7 @@
   width: 100%;
   height: 100%;
   background-color: #00000025;
+  position: relative;
 }
 
 #画布 {
@@ -419,6 +420,7 @@ label {
 
     #描边宽度 {
       accent-color: #49e;
+      height: 6px;
     }
 
     #描边宽度::-webkit-slider-thumb {
@@ -431,4 +433,20 @@ label {
       color: lightsteelblue;
     }
   }
+}
+
+#文本输入容器 {
+  position: absolute;
+}
+
+#文本输入 {
+  font-family: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+  color: white;
+  padding: 8px;
+  min-width: 150px;
+  border-radius: 5px;
+  background-color: #111;
+  border: solid 2px #fff4;
+  outline: none;
+  line-height: normal;
 }
