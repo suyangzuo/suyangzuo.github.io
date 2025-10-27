@@ -445,8 +445,21 @@ label {
   padding: 8px;
   min-width: 150px;
   border-radius: 5px;
-  background-color: #111;
-  border: solid 2px #fff4;
+  background: #222;
+  border: solid 2px #678;
   outline: none;
   line-height: normal;
+  box-shadow: 0 3px 3px 0 #0005;
+}
+
+.文本操作提示 {
+  position: absolute;
+  top: -25px;
+  left: 3px;
+  font-size: 14px;
+  color: silver;
+}
+
+.文本提示按键 {
+  color: lightskyblue;
 }

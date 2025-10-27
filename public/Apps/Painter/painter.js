@@ -4007,7 +4007,18 @@ class 随心绘 {
       输入框.style.width = "50px";
     }
 
-    容器.appendChild(输入框);
+    const 文本操作提示 = document.createElement("div");
+    文本操作提示.className = "文本操作提示";
+    const 文本提示前缀 = document.createElement("span");
+    文本提示前缀.textContent = "按 ";
+    const 文本提示后缀 = document.createElement("span");
+    文本提示后缀.textContent = " 确认";
+    const 文本提示按键 = document.createElement("span");
+    文本提示按键.className = "文本提示按键";
+    文本提示按键.textContent = "ESC";
+    文本操作提示.append(文本提示前缀, 文本提示按键, 文本提示后缀);
+
+    容器.append(输入框, 文本操作提示);
     this.绘图区.appendChild(容器);
 
     this.全局属性.文本输入容器 = 容器;
