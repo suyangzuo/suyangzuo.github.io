@@ -3776,10 +3776,9 @@ class 随心绘 {
     const path = new Path2D();
     this.ctx.save();
     path.rect(x, y, 宽, 高);
-    this.ctx.strokeStyle = this.全局属性.选框描边色;
-    this.ctx.fillStyle = "transparent";
+    this.ctx.strokeStyle = "#5af";
+    this.ctx.fillStyle = "#5af1";
     this.ctx.lineWidth = this.全局属性.选框描边宽度;
-    this.ctx.setLineDash([10, 10]);
     this.ctx.stroke(path);
     this.ctx.fill(path);
     this.ctx.restore();
