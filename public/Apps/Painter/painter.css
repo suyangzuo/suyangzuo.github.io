@@ -196,7 +196,9 @@
 .列表,
 .操作列表组 {
   background-color: #bdf1;
+  /* background-color: #0005; */
   box-shadow: inset 0 0 1px 1px #fff1;
+  /* box-shadow: inset 0 0 1px 1px #fff3; */
   flex-grow: 1;
   padding: 2px var(--列表左右内边距);
   border-radius: 10px;
