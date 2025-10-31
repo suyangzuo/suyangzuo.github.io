@@ -465,3 +465,7 @@ label {
 .文本提示按键 {
   color: lightskyblue;
 }
+
+.按钮容器:has(#编组:checked) {
+  background-color: #5af8;
+}
