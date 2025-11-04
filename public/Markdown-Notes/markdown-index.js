@@ -169,7 +169,8 @@ const 笔记区目录组 = [];
 const 笔记目录区标题组 = [];
 
 // 添加 URL 处理函数
-function 更新URL(技术栈, 笔记文件名) {
+function 更新URL(技术栈, 笔记文件名, { shouldPush = true } = {}) {
+  if (!shouldPush) return;
   const url = new URL(window.location.href);
   url.searchParams.set("技术栈", 技术栈);
   if (笔记文件名) {
@@ -180,7 +181,8 @@ function 更新URL(技术栈, 笔记文件名) {
   window.history.pushState({}, "", url);
 }
 
-function 清除URL参数() {
+function 清除URL参数({ shouldPush = true } = {}) {
+  if (!shouldPush) return;
   const url = new URL(window.location.href);
   url.searchParams.delete("技术栈");
   url.searchParams.delete("笔记");
@@ -194,24 +196,34 @@ function 从URL获取笔记信息() {
   return { 技术栈, 笔记 };
 }
 
-// 修改关闭对话框按钮的事件处理
-关闭对话框按钮.addEventListener("click", () => {
+function 标准化技术栈名称(名称) {
+  if (!名称) return null;
+  const 技术栈键组 = Object.keys(知识库);
+  const 匹配键 = 技术栈键组.find((键) => 键.toLowerCase() === 名称.toLowerCase());
+  return 匹配键 || null;
+}
+
+function 关闭笔记对话框({ 更新历史 = true } = {}) {
   // 如果图片对话框是打开的，先关闭图片对话框
   if (图片对话框 && 图片对话框.open) {
     关闭图片对话框();
   }
 
-  笔记对话框.close();
+  if (笔记对话框.open) {
+    笔记对话框.close();
+  }
 
   // 清除URL中的锚点（#及其后面的部分）
   history.replaceState(null, "", window.location.pathname + window.location.search);
 
   // 获取当前目录，只保留一级目录参数
   const 笔记状态 = JSON.parse(localStorage.getItem("笔记状态") || "null");
-  if (笔记状态?.当前目录) {
-    更新URL(笔记状态.当前目录, null); // 只设置技术栈，不设置笔记
-  } else {
-    清除URL参数();
+  if (更新历史) {
+    if (笔记状态?.当前目录) {
+      更新URL(笔记状态.当前目录, null); // 只设置技术栈，不设置笔记
+    } else {
+      清除URL参数();
+    }
   }
 
   // 清除所有高亮状态
@@ -231,101 +243,77 @@ function 从URL获取笔记信息() {
   } else {
     document.title = "知识库";
   }
+}
+
+// 修改关闭对话框按钮的事件处理
+关闭对话框按钮.addEventListener("click", () => {
+  关闭笔记对话框();
 });
 
 // 添加页面加载时的状态恢复
 document.addEventListener("DOMContentLoaded", () => {
-  // 获取URL参数和localStorage状态
   const URL参数 = 从URL获取笔记信息();
   const 笔记状态 = JSON.parse(localStorage.getItem("笔记状态") || "null");
+  const 技术栈列表 = Object.keys(知识库);
+  const 默认目录 = 技术栈列表[0];
 
-  // 生成所有一级目录
-  for (const 键 in 知识库) {
+  for (const 键 of 技术栈列表) {
     生成一级目录(键);
   }
 
-  // 确定要显示的目录
   let 目标目录 = null;
-  let 要打开的笔记 = null;
-
-  // 优先级：URL参数 > localStorage > 默认第一个目录
   if (URL参数.技术栈) {
-    // 验证URL参数中的技术栈名称是否存在于知识库中（不区分大小写）
-    const 知识库键名 = Object.keys(知识库);
-    const 匹配的键名 = 知识库键名.find((键名) => 键名.toLowerCase() === URL参数.技术栈.toLowerCase());
-
-    if (匹配的键名) {
-      // 如果找到匹配的键名，使用知识库中的原始键名（保持正确的大小写）
-      目标目录 = 匹配的键名;
-      要打开的笔记 = URL参数.笔记;
-    } else {
-      // 如果没有找到匹配的键名，使用localStorage或默认值
+    const 匹配目录 = 标准化技术栈名称(URL参数.技术栈);
+    if (匹配目录) {
+      目标目录 = 匹配目录;
+    } else if (笔记状态?.当前目录) {
       console.warn(`未找到匹配的技术栈: ${URL参数.技术栈}`);
-      if (笔记状态?.当前目录) {
-        目标目录 = 笔记状态.当前目录;
-        if (笔记状态?.技术栈 && 笔记状态?.笔记文件名) {
-          要打开的笔记 = 笔记状态.笔记文件名;
-        }
-      } else {
-        目标目录 = Object.keys(知识库)[0];
-      }
+      目标目录 = 笔记状态.当前目录;
+    } else {
+      目标目录 = 默认目录;
     }
   } else if (笔记状态?.当前目录) {
-    // 如果有localStorage记录，使用localStorage
     目标目录 = 笔记状态.当前目录;
-    if (笔记状态?.技术栈 && 笔记状态?.笔记文件名) {
-      要打开的笔记 = 笔记状态.笔记文件名;
-    }
   } else {
-    // 默认使用第一个目录
-    目标目录 = Object.keys(知识库)[0];
+    目标目录 = 默认目录;
   }
 
-  // 设置当前目录的高亮状态
-  const 当前目录元素 = Array.from(目录区.children).find(
-    (目录) => 目录.querySelector(".目录标题").textContent === 目标目录
-  );
-  if (当前目录元素) {
-    当前目录元素.classList.add("当前目录");
-    // 设置初始页面标题
-    document.title = `知识库 - ${目标目录}`;
-  }
+  切换目录(目标目录, { 更新历史: false });
 
-  // 生成二级目录
-  if (知识库[目标目录] && 知识库[目标目录].笔记.length > 0) {
-    生成二级目录(目标目录);
-  }
+  const 目录数据 = 知识库[目标目录];
+  const 要打开的笔记 =
+    URL参数.技术栈 &&
+    URL参数.笔记 &&
+    目录数据?.笔记.some((笔记) => 笔记.标题.replaceAll(" ", "") === URL参数.笔记)
+      ? URL参数.笔记
+      : null;
 
-  // 如果有要打开的笔记，自动打开
-  if (要打开的笔记 && URL参数.技术栈 && URL参数.笔记) {
-    // 只有在URL参数存在时才自动打开笔记对话框
-    const 笔记条目 = Array.from(二级目录区.children).find((条目) => {
-      const 标题元素 = 条目.querySelector(".链接标题");
-      return 标题元素 && 标题元素.textContent.replaceAll(" ", "") === 要打开的笔记;
+  if (要打开的笔记) {
+    加载并展示笔记(目标目录, 要打开的笔记, { 更新历史: false }).catch(() => {
+      if (笔记对话框.open) {
+        关闭笔记对话框({ 更新历史: false });
+      }
     });
-
-    if (笔记条目) {
-      笔记条目.click();
+  } else if (!URL参数.技术栈) {
+    更新URL(目标目录, null);
+  } else if (URL参数.技术栈 && !URL参数.笔记) {
+    const 标准URL技术栈 = 标准化技术栈名称(URL参数.技术栈);
+    if (标准URL技术栈 !== 目标目录) {
+      更新URL(目标目录, null);
     }
   }
 
-  // 无论来源如何，都更新localStorage中的当前目录
   const 新笔记状态 = 笔记状态 || {};
   新笔记状态.当前目录 = 目标目录;
   localStorage.setItem("笔记状态", JSON.stringify(新笔记状态));
 
-  // 确保URL包含技术栈参数（无论是从URL参数、localStorage还是默认值获取的）
-  if (!URL参数.技术栈) {
-    更新URL(目标目录, null);
-  } else if (URL参数.技术栈 && !URL参数.笔记) {
-    // 如果URL中有技术栈参数但没有笔记参数，确保URL正确
-    更新URL(目标目录, null);
-  }
+  window.addEventListener("popstate", 处理浏览器历史导航);
 });
 
 function 生成一级目录(键) {
   const 目录 = document.createElement("div");
   目录.className = "目录";
+  目录.dataset.技术栈 = 键;
   目录区.appendChild(目录);
 
   const 目录链接 = document.createElement("div");
@@ -347,31 +335,47 @@ function 生成一级目录(键) {
   目录链接.append(目录Logo容器, 目录标题);
 
   目录.addEventListener("click", () => {
-    二级目录区.innerHTML = "";
-    const 当前目录 = 目录区.querySelector(".当前目录");
-    if (当前目录) {
-      当前目录.classList.remove("当前目录");
-    }
-    目录.classList.add("当前目录");
-
-    // 保存当前目录状态（无论是否有笔记都要保存）
-    const 笔记状态 = JSON.parse(localStorage.getItem("笔记状态") || "null") || {};
-    笔记状态.当前目录 = 键;
-    localStorage.setItem("笔记状态", JSON.stringify(笔记状态));
-
-    // 更新URL只包含一级目录参数
-    更新URL(键, null);
-
-    if (知识库[键].笔记.length === 0) {
-      // 即使没有笔记，也要更新页面标题
-      document.title = `知识库 - ${键}`;
-      return;
-    }
-    生成二级目录(键);
-
-    // 更新页面标题为技术栈名称
-    document.title = `知识库 - ${键}`;
+    切换目录(键);
   });
+}
+
+function 切换目录(键, { 更新历史 = true } = {}) {
+  const 标准键 = 标准化技术栈名称(键) || 键;
+  if (!知识库[标准键]) return;
+
+  // 清空二级目录
+  二级目录区.innerHTML = "";
+
+  // 更新一级目录的高亮状态
+  const 当前目录 = 目录区.querySelector(".当前目录");
+  if (当前目录) {
+    当前目录.classList.remove("当前目录");
+  }
+
+  const 目标目录元素 =
+    Array.from(目录区.children).find((目录元素) => 目录元素.dataset?.技术栈 === 标准键) ||
+    Array.from(目录区.children).find(
+      (目录元素) => 目录元素.querySelector(".目录标题")?.textContent === 标准键
+    );
+
+  if (目标目录元素) {
+    目标目录元素.classList.add("当前目录");
+  }
+
+  // 保存当前目录状态
+  const 笔记状态 = JSON.parse(localStorage.getItem("笔记状态") || "null") || {};
+  笔记状态.当前目录 = 标准键;
+  localStorage.setItem("笔记状态", JSON.stringify(笔记状态));
+
+  if (更新历史) {
+    更新URL(标准键, null);
+  }
+
+  if (知识库[标准键].笔记.length > 0) {
+    生成二级目录(标准键);
+  }
+
+  document.title = `知识库 - ${标准键}`;
 }
 
 function 生成二级目录(键) {
@@ -414,17 +418,64 @@ function 生成二级目录(键) {
     条目链接旋转容器.append(链接序号与标题, 作者与时间);
 
     const 笔记文件名 = 笔记对象.标题.replaceAll(" ", "");
+    条目链接.dataset.技术栈 = 键;
+    条目链接.dataset.笔记文件名 = 笔记文件名;
     条目链接.addEventListener("click", () => {
-      fetch(`./${键}/${笔记文件名}/${笔记文件名}.md`)
-        .then((response) => response.text())
-        .then((text) => 生成笔记区内容(键, 笔记文件名, text))
-        .then(() => 生成笔记目录区内容())
-        .then(() => 生成作者和日期(键, 笔记文件名));
+      加载并展示笔记(键, 笔记文件名);
     });
   }
 }
 
-function 生成笔记区内容(技术栈, 笔记文件名, 文本) {
+function 加载并展示笔记(技术栈, 笔记文件名, { 更新历史 = true } = {}) {
+  const 标准技术栈 = 标准化技术栈名称(技术栈) || 技术栈;
+  const 路径 = `./${标准技术栈}/${笔记文件名}/${笔记文件名}.md`;
+
+  return fetch(路径)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`无法加载笔记：${路径}`);
+      }
+      return response.text();
+    })
+    .then((text) => 生成笔记区内容(标准技术栈, 笔记文件名, text, { 更新历史 }))
+    .then(() => 生成笔记目录区内容())
+    .then(() => 生成作者和日期(标准技术栈, 笔记文件名))
+    .catch((error) => {
+      console.error(error);
+      throw error;
+    });
+}
+
+function 处理浏览器历史导航() {
+  const { 技术栈, 笔记 } = 从URL获取笔记信息();
+  const 默认目录 = Object.keys(知识库)[0];
+  const 笔记状态 = JSON.parse(localStorage.getItem("笔记状态") || "null");
+
+  let 目标目录 = 标准化技术栈名称(技术栈);
+  if (!目标目录) {
+    if (技术栈) {
+      console.warn(`未找到匹配的技术栈: ${技术栈}`);
+    }
+    目标目录 = 笔记状态?.当前目录 || 默认目录;
+  }
+
+  切换目录(目标目录, { 更新历史: false });
+
+  const 目录数据 = 知识库[目标目录];
+  const 笔记存在 = 笔记 && 目录数据?.笔记.some((项) => 项.标题.replaceAll(" ", "") === 笔记);
+
+  if (笔记存在) {
+    加载并展示笔记(目标目录, 笔记, { 更新历史: false }).catch(() => {
+      if (笔记对话框.open) {
+        关闭笔记对话框({ 更新历史: false });
+      }
+    });
+  } else if (笔记对话框.open) {
+    关闭笔记对话框({ 更新历史: false });
+  }
+}
+
+function 生成笔记区内容(技术栈, 笔记文件名, 文本, { 更新历史 = true } = {}) {
   笔记区.innerHTML = marked.parse(文本);
   const images = 笔记区.querySelectorAll("img");
   for (const img of images) {
@@ -448,7 +499,9 @@ function 生成笔记区内容(技术栈, 笔记文件名, 文本) {
   hljs.highlightAll();
   笔记对话框.showModal();
   笔记对话框.scrollTop = 0;
-  更新URL(技术栈, 笔记文件名);
+  if (更新历史) {
+    更新URL(技术栈, 笔记文件名);
+  }
 
   // 重置滚动状态
   当前高亮索引 = -1;
