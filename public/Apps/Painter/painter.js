@@ -41,6 +41,10 @@ class 随心绘 {
         localStorage.getItem("随心绘存储池") === null
           ? 2
           : Number(JSON.parse(localStorage.getItem("随心绘存储池")).描边宽度),
+      字体默认尺寸:
+        localStorage.getItem("随心绘存储池") === null
+          ? 16
+          : Number(JSON.parse(localStorage.getItem("随心绘存储池")).字体默认尺寸),
       文本描边色:
         localStorage.getItem("随心绘存储池") === null
           ? "rgba(128, 128, 128, 1)"
@@ -209,7 +213,7 @@ class 随心绘 {
       复制源组: null, // 正在被复制的源组（形状数组）
       文本输入容器: null, // 文本输入容器DOM元素
       当前编辑文本形状: null, // 当前正在编辑的文本形状
-      文本字号: 16, // 文本字号
+      文本字号: this.本地存储池.字体默认尺寸, // 文本字号
       文本字体: '"JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif', // 文本字体
     };
 
@@ -287,6 +291,7 @@ class 随心绘 {
     this.添加颜色拾取器();
     this.添加颜色拾取器事件();
     this.添加描边宽度滑块事件();
+    this.添加字体默认尺寸滑块事件();
     this.添加清空画布按钮点击事件();
     this.添加撤销按钮点击事件();
     this.添加删除按钮点击事件();
@@ -944,6 +949,19 @@ class 随心绘 {
         this.本地存储池.描边宽度 = this.全局属性.描边宽度;
         localStorage.setItem("随心绘存储池", JSON.stringify(this.本地存储池));
       }
+    });
+  }
+
+  添加字体默认尺寸滑块事件() {
+    const 字体默认尺寸滑块 = document.getElementById("字体默认尺寸");
+    字体默认尺寸滑块.value = this.本地存储池.字体默认尺寸;
+    字体默认尺寸滑块.nextElementSibling.textContent = 字体默认尺寸滑块.value;
+    字体默认尺寸滑块.addEventListener("input", () => {
+      const 尺寸 = parseInt(字体默认尺寸滑块.value, 10);
+      字体默认尺寸滑块.nextElementSibling.textContent = 字体默认尺寸滑块.value;
+      this.全局属性.文本字号 = 尺寸;
+      this.本地存储池.字体默认尺寸 = 尺寸;
+      localStorage.setItem("随心绘存储池", JSON.stringify(this.本地存储池));
     });
   }
 
@@ -9180,13 +9198,16 @@ class 随心绘 {
     // 保存原始锚点
     this.全局属性.多选缩放原始锚点 = 原始锚点;
 
+    // 检查是否有任何形状旋转过
+    const 有旋转 = this.检查多选形状是否有旋转();
+
     // 根据Alt键和初始拖拽类型设置锚点和模式
     if (this.键盘状态.Alt) {
       // 按住Alt键 - 使用中心点作为锚点
       this.全局属性.多选缩放锚点 = { x: centerX, y: centerY };
       if (this.全局属性.多选缩放初始拖拽类型 === "handle") {
-        // Alt + 句柄 = 从中心自由缩放，Shift控制等比
-        this.全局属性.缩放模式 = this.键盘状态.Shift ? "proportional" : "free";
+        // Alt + 句柄：如果有旋转，强制等比缩放；否则根据Shift键决定
+        this.全局属性.缩放模式 = 有旋转 || this.键盘状态.Shift ? "proportional" : "free";
       } else if (this.全局属性.多选缩放初始拖拽类型 === "vertical") {
         this.全局属性.缩放模式 = "vertical";
       } else if (this.全局属性.多选缩放初始拖拽类型 === "horizontal") {
@@ -9196,8 +9217,8 @@ class 随心绘 {
       // 没有按Alt键 - 使用原始锚点
       this.全局属性.多选缩放锚点 = 原始锚点;
       if (this.全局属性.多选缩放初始拖拽类型 === "handle") {
-        // 根据Shift键决定等比缩放
-        this.全局属性.缩放模式 = this.键盘状态.Shift ? "proportional" : "free";
+        // 句柄缩放：如果有旋转，强制等比缩放；否则根据Shift键决定
+        this.全局属性.缩放模式 = 有旋转 || this.键盘状态.Shift ? "proportional" : "free";
       } else if (this.全局属性.多选缩放初始拖拽类型 === "vertical") {
         this.全局属性.缩放模式 = "vertical";
       } else if (this.全局属性.多选缩放初始拖拽类型 === "horizontal") {
@@ -9213,13 +9234,16 @@ class 随心绘 {
     const 边界 = this.全局属性.多选缩放初始边界;
     const { centerX, centerY } = 边界;
 
+    // 检查是否有任何形状旋转过
+    const 有旋转 = this.检查多选形状是否有旋转();
+
     // 根据Alt键更新锚点和模式
     if (this.键盘状态.Alt) {
       // 按住Alt键 - 使用中心点作为锚点
       this.全局属性.多选缩放锚点 = { x: centerX, y: centerY };
       if (this.全局属性.多选缩放初始拖拽类型 === "handle") {
-        // Alt + 句柄 = 从中心自由缩放，Shift控制等比
-        this.全局属性.缩放模式 = this.键盘状态.Shift ? "proportional" : "free";
+        // Alt + 句柄：如果有旋转，强制等比缩放；否则根据Shift键决定
+        this.全局属性.缩放模式 = 有旋转 || this.键盘状态.Shift ? "proportional" : "free";
       } else if (this.全局属性.多选缩放初始拖拽类型 === "vertical") {
         this.全局属性.缩放模式 = "vertical";
       } else if (this.全局属性.多选缩放初始拖拽类型 === "horizontal") {
@@ -9229,8 +9253,8 @@ class 随心绘 {
       // 没有按Alt键 - 恢复原始锚点
       this.全局属性.多选缩放锚点 = this.全局属性.多选缩放原始锚点;
       if (this.全局属性.多选缩放初始拖拽类型 === "handle") {
-        // 句柄缩放：只根据Shift更新模式
-        this.全局属性.缩放模式 = this.键盘状态.Shift ? "proportional" : "free";
+        // 句柄缩放：如果有旋转，强制等比缩放；否则根据Shift键决定
+        this.全局属性.缩放模式 = 有旋转 || this.键盘状态.Shift ? "proportional" : "free";
       } else if (this.全局属性.多选缩放初始拖拽类型 === "vertical") {
         // 垂直缩放：保持垂直模式
         this.全局属性.缩放模式 = "vertical";
@@ -9251,28 +9275,47 @@ class 随心绘 {
     const 点击坐标 = this.全局属性.点击坐标;
     const 鼠标坐标 = this.全局属性.鼠标坐标;
 
-    // 多选和编组情况下，强制使用等比缩放（即使没有按住Shift）
+    // 检查是否有任何形状旋转过
+    const 有旋转 = this.检查多选形状是否有旋转();
+
+    // 根据是否有旋转和缩放模式决定缩放方式
+    // 如果所有形状都未旋转，且缩放模式为"free"，则允许自由缩放
+    // 否则强制使用等比缩放
+    const 强制等比缩放 = 有旋转 || this.全局属性.缩放模式 === "proportional";
+
     // 计算缩放比例
     let 水平缩放比例 = 1;
     let 垂直缩放比例 = 1;
     const 阈值 = 0.01;
 
-    // 等比缩放
-    const 初始距离 = Math.sqrt(Math.pow(点击坐标.x - 缩放锚点.x, 2) + Math.pow(点击坐标.y - 缩放锚点.y, 2));
-    const 当前距离 = Math.sqrt(Math.pow(鼠标坐标.x - 缩放锚点.x, 2) + Math.pow(鼠标坐标.y - 缩放锚点.y, 2));
-    const 缩放比例 = 初始距离 > 阈值 ? 当前距离 / 初始距离 : 1;
+    if (强制等比缩放) {
+      // 等比缩放
+      const 初始距离 = Math.sqrt(Math.pow(点击坐标.x - 缩放锚点.x, 2) + Math.pow(点击坐标.y - 缩放锚点.y, 2));
+      const 当前距离 = Math.sqrt(Math.pow(鼠标坐标.x - 缩放锚点.x, 2) + Math.pow(鼠标坐标.y - 缩放锚点.y, 2));
+      const 缩放比例 = 初始距离 > 阈值 ? 当前距离 / 初始距离 : 1;
 
-    // 检测水平和垂直方向是否发生翻转
-    const 初始水平距离 = 点击坐标.x - 缩放锚点.x;
-    const 初始垂直距离 = 点击坐标.y - 缩放锚点.y;
-    const 当前水平距离 = 鼠标坐标.x - 缩放锚点.x;
-    const 当前垂直距离 = 鼠标坐标.y - 缩放锚点.y;
+      // 检测水平和垂直方向是否发生翻转
+      const 初始水平距离 = 点击坐标.x - 缩放锚点.x;
+      const 初始垂直距离 = 点击坐标.y - 缩放锚点.y;
+      const 当前水平距离 = 鼠标坐标.x - 缩放锚点.x;
+      const 当前垂直距离 = 鼠标坐标.y - 缩放锚点.y;
 
-    const 水平翻转 = 初始水平距离 * 当前水平距离 < 0;
-    const 垂直翻转 = 初始垂直距离 * 当前垂直距离 < 0;
+      const 水平翻转 = 初始水平距离 * 当前水平距离 < 0;
+      const 垂直翻转 = 初始垂直距离 * 当前垂直距离 < 0;
 
-    水平缩放比例 = 水平翻转 ? -缩放比例 : 缩放比例;
-    垂直缩放比例 = 垂直翻转 ? -缩放比例 : 缩放比例;
+      水平缩放比例 = 水平翻转 ? -缩放比例 : 缩放比例;
+      垂直缩放比例 = 垂直翻转 ? -缩放比例 : 缩放比例;
+    } else {
+      // 自由缩放（所有形状都未旋转，且缩放模式为"free"）
+      const 初始水平距离 = 点击坐标.x - 缩放锚点.x;
+      const 初始垂直距离 = 点击坐标.y - 缩放锚点.y;
+      const 当前水平距离 = 鼠标坐标.x - 缩放锚点.x;
+      const 当前垂直距离 = 鼠标坐标.y - 缩放锚点.y;
+
+      // 计算水平和垂直方向的缩放比例
+      水平缩放比例 = Math.abs(初始水平距离) > 阈值 ? 当前水平距离 / 初始水平距离 : 1;
+      垂直缩放比例 = Math.abs(初始垂直距离) > 阈值 ? 当前垂直距离 / 初始垂直距离 : 1;
+    }
 
     // 对每个形状应用相同的缩放比例
     this.全局属性.多选缩放初始位置组.forEach((初始位置) => {
@@ -9326,6 +9369,35 @@ class 随心绘 {
     if (形状.形状 === "文本") {
       this.更新文本形状(形状);
     }
+  }
+
+  // 检查多选形状组中是否有任何形状旋转过
+  检查多选形状是否有旋转() {
+    if (!this.全局属性.多选形状组 || this.全局属性.多选形状组.length === 0) {
+      return false;
+    }
+
+    // 检查每个形状是否旋转过
+    for (const 形状 of this.全局属性.多选形状组) {
+      let 旋转弧度 = 形状.旋转弧度;
+
+      // 对于矩形和图像，如果旋转弧度未显式设置，需要计算
+      if ((形状.形状 === "矩形" || 形状.形状 === "图像") && 旋转弧度 === undefined) {
+        旋转弧度 = this.计算矩形旋转角度(形状);
+      }
+
+      // 如果旋转弧度不为0（或接近0），则认为已旋转
+      if (旋转弧度 !== undefined && 旋转弧度 !== null) {
+        // 使用小的阈值来避免浮点数精度问题
+        const 旋转阈值 = 0.0001;
+        const 归一化角度 = ((旋转弧度 % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+        if (归一化角度 > 旋转阈值 && Math.abs(归一化角度 - Math.PI * 2) > 旋转阈值) {
+          return true; // 发现旋转过的形状
+        }
+      }
+    }
+
+    return false; // 所有形状都未旋转
   }
 
   // ========== 多选缩放相关函数结束 ==========

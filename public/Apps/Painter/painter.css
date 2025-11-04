@@ -1,7 +1,7 @@
 :root {
   --标题下间距: 5px;
   --列表左右内边距: 4px;
-  --顶部控件偏移: 60px;
+  --顶部控件偏移: 65px;
   --基础形状数量: 9;
 }
 
@@ -407,25 +407,33 @@ label {
   }
 }
 
-.描边宽度区 {
+.滑块组 {
   position: absolute;
-  top: var(--顶部控件偏移);
+  top: 60px;
   left: 50%;
-  translate: -400px 0;
-  height: 40px;
+  translate: -450px 0;
+}
+
+.滑块组 > .设置分区 {
+  height: 25px;
   gap: 10px;
   padding: 0 10px;
 
-  .描边宽度容器 {
+  .标题 {
+    width: 82px;
+    text-align: right;
+  }
+
+  .滑块容器 {
     display: flex;
     align-items: center;
 
-    #描边宽度 {
+    input[type="range"] {
       accent-color: #49e;
       height: 6px;
     }
 
-    #描边宽度::-webkit-slider-thumb {
+    input[type="range"]::-webkit-slider-thumb {
       scale: 1.25;
     }
 
