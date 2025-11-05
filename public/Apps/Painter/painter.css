@@ -415,12 +415,12 @@ label {
 }
 
 .滑块组 > .设置分区 {
+  justify-content: flex-end;
   height: 25px;
   gap: 10px;
   padding: 0 10px;
 
   .标题 {
-    width: 82px;
     text-align: right;
   }
 
