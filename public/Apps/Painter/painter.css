@@ -144,6 +144,16 @@
   background: center/60% no-repeat url("./Images/audio-on.svg");
 }
 
+.模式复选区 > .标签::before {
+  background: center/75% no-repeat url("./Images/switch-off.svg");
+  filter: invert(0);
+}
+
+.模式复选区:has(.复选框:checked) .标签::before {
+  background: center/75% no-repeat url("./Images/switch-on.svg");
+  filter: invert(0);
+}
+
 .标签 {
   text-wrap: nowrap;
   font-size: 14px;

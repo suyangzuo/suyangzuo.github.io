@@ -29,6 +29,10 @@ class 随心绘 {
         JSON.parse(localStorage.getItem("随心绘存储池")) === null
           ? true
           : JSON.parse(localStorage.getItem("随心绘存储池")).辅助视觉效果,
+      模式:
+        JSON.parse(localStorage.getItem("随心绘存储池")) === null
+          ? true
+          : JSON.parse(localStorage.getItem("随心绘存储池")).模式,
       描边色:
         localStorage.getItem("随心绘存储池") === null
           ? "rgba(128, 128, 128, 1)"
@@ -66,12 +70,14 @@ class 随心绘 {
     this.辅助 = {
       视觉效果复选框: document.getElementById("辅助视觉效果"),
       按钮音效复选框: document.getElementById("按钮音效"),
+      模式复选框: document.getElementById("模式"),
       点击音效对象: new Audio("/Audios/Click.mp3"),
       清空音效: new Audio("/Audios/Clear.mp3"),
     };
 
     this.辅助.视觉效果复选框.checked = this.本地存储池.辅助视觉效果;
     this.辅助.按钮音效复选框.checked = this.本地存储池.按钮音效;
+    this.辅助.模式复选框.checked = this.本地存储池.模式;
 
     this.图层处理按钮组 = {
       向上一层: document.getElementById("向上一层"),
@@ -150,6 +156,7 @@ class 随心绘 {
       手动调整内半径: false,
       辅助视觉效果: this.辅助.视觉效果复选框.checked,
       按钮音效: this.辅助.按钮音效复选框.checked,
+      模式: this.辅助.模式复选框.checked,
       Alt拖拽复制中: false,
       文本编辑中: false, // 是否处于文本编辑状态
       正在恢复颜色: false, // 是否正在恢复拾色器颜色（用于防止触发change事件）
@@ -361,6 +368,53 @@ class 随心绘 {
     this.图形组合按钮组.垂直居中对齐.parentElement.classList.remove("禁用");
     this.图形组合按钮组.水平均匀分布.parentElement.classList.remove("禁用");
     this.图形组合按钮组.垂直均匀分布.parentElement.classList.remove("禁用");
+  }
+
+  切换到选择路径工具() {
+    const 选择路径单选框 = document.getElementById("选择路径");
+    if (选择路径单选框) {
+      // 直接手动更新状态，避免触发点击事件清空多选组
+      const 旧选中的工具 = this.全局属性.已选中基础形状;
+      const 描边宽度滑块 = document.getElementById("描边宽度");
+
+      // 保存当前工具的描边宽度
+      if (旧选中的工具 === "箭头") {
+        this.全局属性.箭头工具描边宽度 = this.全局属性.描边宽度;
+      } else if (旧选中的工具 !== null && 旧选中的工具 !== "文本") {
+        this.本地存储池.描边宽度 = this.全局属性.描边宽度;
+        localStorage.setItem("随心绘存储池", JSON.stringify(this.本地存储池));
+      }
+
+      // 更新单选框状态
+      if (this.基础形状单选框组.当前基础形状单选框) {
+        this.基础形状单选框组.当前基础形状单选框.checked = false;
+      }
+      选择路径单选框.checked = true;
+      this.基础形状单选框组.当前基础形状单选框 = 选择路径单选框;
+
+      // 更新全局状态
+      this.全局属性.已选中基础形状 = "选择路径";
+
+      // 恢复描边宽度（如果之前不是箭头工具）
+      if (旧选中的工具 !== "箭头") {
+        描边宽度滑块.max = 20;
+        this.全局属性.描边宽度 = this.本地存储池.描边宽度;
+        描边宽度滑块.value = this.本地存储池.描边宽度;
+        描边宽度滑块.nextElementSibling.textContent = this.本地存储池.描边宽度;
+      }
+
+      // 恢复拾色器颜色（从文本工具或箭头工具切换时）
+      if (旧选中的工具 === "文本" || 旧选中的工具 === "箭头") {
+        if (this.全局属性.选中形状) {
+          this.应用选中形状的颜色到拾色器(this.全局属性.选中形状);
+        } else {
+          this.全局标志.正在恢复颜色 = true;
+          this.描边颜色拾取器.setColor(this.全局属性.描边色);
+          this.填充颜色拾取器.setColor(this.全局属性.填充色);
+          this.全局标志.正在恢复颜色 = false;
+        }
+      }
+    }
   }
 
   添加图像上传事件() {
@@ -589,6 +643,11 @@ class 随心绘 {
         });
 
         this.撤销按钮.classList.remove("禁用");
+        
+        // 如果模式为false，添加图像后自动切换到"选择路径"工具
+        if (!this.全局标志.模式) {
+          this.切换到选择路径工具();
+        }
       }
 
       // 重新绘制画布
@@ -5133,14 +5192,19 @@ class 随心绘 {
             this.全局属性.选中形状.形状 !== "直线" &&
             this.全局属性.选中形状.形状 !== "自由" &&
             this.全局属性.选中形状.形状 !== "矩形" &&
-            this.全局属性.选中形状.形状 !== "图像"
+            this.全局属性.选中形状.形状 !== "图像" &&
+            this.全局属性.选中形状.形状 !== "箭头" &&
+            this.全局属性.选中形状.形状 !== "文本"
           ) {
             this.全局属性.偏移量 = {
               x: this.全局属性.选中形状.坐标.x - this.全局属性.点击坐标.x,
               y: this.全局属性.选中形状.坐标.y - this.全局属性.点击坐标.y,
             };
           } else {
-            this.初始坐标组 = this.全局属性.选中形状.顶点坐标组.map((坐标) => ({ ...坐标 }));
+            // 对于箭头、文本、直线、自由、矩形、图像，使用顶点坐标组
+            if (this.全局属性.选中形状.顶点坐标组 && this.全局属性.选中形状.顶点坐标组.length > 0) {
+              this.初始坐标组 = this.全局属性.选中形状.顶点坐标组.map((坐标) => ({ ...坐标 }));
+            }
           }
           this.全局属性.选中形状.按下时坐标 = structuredClone(this.全局属性.选中形状.坐标);
           this.全局属性.选中形状.按下时顶点坐标组 = structuredClone(this.全局属性.选中形状.顶点坐标组);
@@ -6033,6 +6097,11 @@ class 随心绘 {
           this.数据集.操作记录.push({
             操作类型: "添加基础形状",
           });
+          
+          // 如果模式为false，绘制完成后自动切换到"选择路径"工具
+          if (!this.全局标志.模式) {
+            this.切换到选择路径工具();
+          }
         }
         this.清空画布();
         this.绘制基础形状对象组();
@@ -6318,6 +6387,11 @@ class 随心绘 {
         this.数据集.基础形状对象组.push(克隆);
         this.撤销按钮.classList.remove("禁用");
         this.当前形状对象.顶点坐标组 = [];
+        
+        // 如果模式为false，绘制完成后自动切换到"选择路径"工具
+        if (!this.全局标志.模式) {
+          this.切换到选择路径工具();
+        }
       }
     }
 
@@ -6717,6 +6791,11 @@ class 随心绘 {
             this.数据集.操作记录.push({
               操作类型: "添加基础形状",
             });
+            
+            // 如果模式为false，绘制完成后自动切换到"选择路径"工具
+            if (!this.全局标志.模式) {
+              this.切换到选择路径工具();
+            }
           }
         }
       }
@@ -7258,6 +7337,12 @@ class 随心绘 {
     this.辅助.按钮音效复选框.addEventListener("change", () => {
       this.全局标志.按钮音效 = this.辅助.按钮音效复选框.checked;
       this.本地存储池.按钮音效 = this.全局标志.按钮音效;
+      localStorage.setItem("随心绘存储池", JSON.stringify(this.本地存储池));
+    });
+    this.辅助.模式复选框.addEventListener("change", () => {
+      this.辅助.模式复选框.title = this.辅助.模式复选框.checked ? "连续绘制" : "即绘即选";
+      this.全局标志.模式 = this.辅助.模式复选框.checked;
+      this.本地存储池.模式 = this.全局标志.模式;
       localStorage.setItem("随心绘存储池", JSON.stringify(this.本地存储池));
     });
   }
@@ -8717,6 +8802,11 @@ class 随心绘 {
               操作类型: "添加基础形状",
             });
             this.撤销按钮.classList.remove("禁用");
+            
+            // 如果模式为false，绘制完成后自动切换到"选择路径"工具
+            if (!this.全局标志.模式) {
+              this.切换到选择路径工具();
+            }
           }
 
           // 清除ESC按下时间
@@ -8810,6 +8900,11 @@ class 随心绘 {
         操作类型: "添加基础形状",
       });
       this.撤销按钮.classList.remove("禁用");
+      
+      // 如果模式为false，绘制完成后自动切换到"选择路径"工具
+      if (!this.全局标志.模式) {
+        this.切换到选择路径工具();
+      }
     }
 
     return 文本形状;
