@@ -115,6 +115,15 @@ const 知识库 = {
           日: 12,
         },
       },
+      {
+        标题: "Vim 编辑器",
+        作者: "杜宗远",
+        时间: {
+          年: 2025,
+          月: 11,
+          日: 9,
+        },
+      },
     ],
   },
   JetBrains: {
@@ -554,7 +563,9 @@ function 生成笔记目录区内容() {
     目录区_一级目录.className = "一级目录";
     目录区_一级目录.innerHTML = 一级目录.innerHTML;
     目录分级容器.appendChild(目录区_一级目录);
-    目录区_一级目录.addEventListener("click", () => {
+    目录区_一级目录.addEventListener("click", (event) => {
+      event.preventDefault();
+      滚动到标题(一级目录);
       // 记录点击目标
       const 目标索引 = 笔记目录区标题组.indexOf(目录区_一级目录);
       点击目标索引 = 目标索引;
@@ -581,7 +592,9 @@ function 生成笔记目录区内容() {
       const 前缀符号 = 目录区_二级目录.querySelector(".前缀符号");
       前缀符号?.remove();
       目录分级容器.appendChild(目录区_二级目录);
-      目录区_二级目录.addEventListener("click", () => {
+      目录区_二级目录.addEventListener("click", (event) => {
+        event.preventDefault();
+        滚动到标题(二级目录);
         // 记录点击目标
         const 目标索引 = 笔记目录区标题组.indexOf(目录区_二级目录);
         点击目标索引 = 目标索引;
@@ -618,6 +631,20 @@ function 获取笔记作者(技术栈, 笔记文件名) {
 function 获取笔记日期(技术栈, 笔记文件名) {
   const 匹配笔记 = 知识库[技术栈].笔记.find((笔记) => 笔记.标题.replaceAll(" ", "") === 笔记文件名);
   return 匹配笔记.时间;
+}
+
+function 滚动到标题(目标标题) {
+  if (!目标标题) return;
+  const 滚动容器 = 笔记对话框;
+  const 容器位置 = 滚动容器.getBoundingClientRect().top;
+  const 标题位置 = 目标标题.getBoundingClientRect().top;
+  const 偏移 = 标题位置 - 容器位置 - 20; // 保留视觉留白
+  const 目标滚动位置 = Math.max(滚动容器.scrollTop + 偏移, 0);
+
+  滚动容器.scrollTo({
+    top: 目标滚动位置,
+    behavior: "smooth",
+  });
 }
 
 function 生成作者和日期(技术栈, 笔记文件名) {
