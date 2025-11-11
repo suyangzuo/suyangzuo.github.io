@@ -27,7 +27,7 @@
         <header class="对话顶栏">
           <div>
             <p class="提示字">Web应用实验室 · 实验性 LLM 在线对话</p>
-            <h1>虚拟女友·小D</h1>
+            <h1>虚拟女友·</h1>
             <p class="简介段落">
               通过纯前端接入的 LLM 能力，与智能体展开实时对话，并流式输出思维链和。
             </p>
@@ -59,7 +59,11 @@
 
         <form class="输入区域" id="chatForm">
           <label for="userMessage">输入消息</label>
-          <textarea id="userMessage" rows="3" placeholder="和我说点什么吧，支持多行输入。"></textarea>
+          <textarea
+            id="userMessage"
+            rows="3"
+            placeholder="和我说点什么吧，支持多行输入（Ctrl/Cmd + Enter 快速发送）。"
+          ></textarea>
           <div class="输入动作">
             <label class="切换控件">
               <input type="checkbox" id="includeReasoning" checked />
@@ -88,6 +92,8 @@
       </article>
     </template>
 
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
     <script type="module" src="./VirtualGirlfriend.js"></script>
   </body>
 </html>

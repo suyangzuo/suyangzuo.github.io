@@ -47,24 +47,32 @@ const normalizeContent = (raw) => {
   return "";
 };
 
-const createParagraphNodes = (text) => {
-  const fragment = document.createDocumentFragment();
-  const paragraphs = text.split(/\n{2,}/).map((chunk) => chunk.trim()).filter(Boolean);
+let markedConfigured = false;
 
-  if (paragraphs.length === 0) {
-    const fallback = document.createElement("p");
-    fallback.textContent = text.trim();
-    fragment.appendChild(fallback);
-    return fragment;
+const ensureMarkedOptions = () => {
+  if (markedConfigured) return;
+  if (typeof window !== "undefined" && window.marked) {
+    window.marked.setOptions({
+      breaks: true,
+      gfm: true,
+    });
+    markedConfigured = true;
   }
+};
 
-  paragraphs.forEach((chunk) => {
-    const p = document.createElement("p");
-    p.textContent = chunk.replace(/\n/g, " ");
-    fragment.appendChild(p);
-  });
-
-  return fragment;
+const renderMarkdownInto = (target, markdown, fallback = "（无内容）") => {
+  if (!target) return;
+  const content = markdown && markdown.trim() ? markdown : fallback;
+  if (typeof window !== "undefined" && window.marked && window.DOMPurify) {
+    ensureMarkedOptions();
+    const rawHtml = window.marked.parse(content);
+    const safeHtml = window.DOMPurify.sanitize(rawHtml);
+    target.innerHTML = safeHtml;
+    target.classList.add("markdown-body");
+  } else {
+    target.textContent = content;
+    target.classList.remove("markdown-body");
+  }
 };
 
 const appendMessage = ({ role, content, reasoning }, options = {}) => {
@@ -88,8 +96,7 @@ const appendMessage = ({ role, content, reasoning }, options = {}) => {
   nameEl.textContent = role === "user" ? "你" : "虚拟女友";
 
   timestampEl.textContent = formatTimestamp();
-  contentEl.innerHTML = "";
-  contentEl.appendChild(createParagraphNodes(content || "[无内容]"));
+  renderMarkdownInto(contentEl, content || "[无内容]");
 
   if (role !== "assistant" || !reasoning || !reasoning.trim()) {
     toggleButton?.remove();
@@ -123,8 +130,7 @@ const updateAssistantMessage = (article, { content, reasoning, forceReasoningVis
   const reasoningContent = article.querySelector(".推理内容");
 
   if (contentEl && content !== undefined) {
-    contentEl.innerHTML = "";
-    contentEl.appendChild(createParagraphNodes(content || "（模型未返回内容）"));
+    renderMarkdownInto(contentEl, content || "（模型未返回内容）");
   }
 
   if (!reasoningBlock || !reasoningContent || !toggleButton) {
@@ -333,9 +339,7 @@ const handleSubmit = async (event) => {
     };
 
     const updateContentText = (text) => {
-      if (contentEl) {
-        contentEl.textContent = text || "正在整理回答……";
-      }
+      renderMarkdownInto(contentEl, text && text.trim() ? text : "正在整理回答……", "正在整理回答……");
     };
 
     let reasoningBuffer = "";
@@ -388,5 +392,11 @@ const handleSubmit = async (event) => {
 chatForm?.addEventListener("submit", handleSubmit);
 resetButton?.addEventListener("click", resetConversation);
 includeReasoningCheckbox?.addEventListener("change", syncReasoningVisibility);
+userMessageInput?.addEventListener("keydown", (event) => {
+  if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
+    event.preventDefault();
+    chatForm?.requestSubmit();
+  }
+});
 
 syncReasoningVisibility();

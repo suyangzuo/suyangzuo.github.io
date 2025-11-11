@@ -200,8 +200,52 @@ body {
   line-height: 1.7;
 }
 
-.消息卡片 .正文 p {
+.markdown-body {
+  font-size: 0.98rem;
+  line-height: 1.75;
+}
+
+.markdown-body p {
   margin: 0 0 0.8rem;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  margin: 0.2rem 0 0.8rem 1.3rem;
+  padding-left: 1rem;
+}
+
+.markdown-body li {
+  margin-bottom: 0.3rem;
+}
+
+.markdown-body code {
+  font-family: "JetBrains Mono", "Noto Sans Mono", monospace;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.15rem 0.45rem;
+  border-radius: 8px;
+  font-size: 0.95em;
+}
+
+.markdown-body pre {
+  font-family: "JetBrains Mono", "Noto Sans Mono", monospace;
+  background: rgba(10, 13, 28, 0.8);
+  border-radius: 12px;
+  padding: 1rem;
+  overflow-x: auto;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 1rem;
+}
+
+.markdown-body pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.markdown-body hr {
+  border: none;
+  border-top: 1px dashed rgba(255, 255, 255, 0.15);
+  margin: 1.2rem 0;
 }
 
 .推理切换按钮 {
