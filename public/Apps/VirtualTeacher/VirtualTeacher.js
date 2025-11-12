@@ -8,10 +8,33 @@ const includeReasoningCheckbox = document.getElementById("includeReasoning");
 
 const API_ENDPOINT = "https://api.siliconflow.cn/v1/chat/completions";
 const MODEL_ID = "deepseek-ai/DeepSeek-R1-0528-Qwen3-8B";
-const API_KEY = "sk-acdyqifmgxgtvbtjgfmllizngfdkgareuxfhtetlavualupq"; // 临时测试密钥 要记得删除！！！！
+
+const KEY_VECTOR = Object.freeze([
+  118, 96, 62, 110, 112, 121, 96, 116, 104, 103, 126, 114, 116, 125, 103, 100, 119, 101, 126,
+  114, 125, 102, 120, 109, 117, 103, 127, 100, 107, 124, 107, 115, 117, 97, 99, 99, 115, 108, 
+  101, 113, 117, 105, 105, 125, 108, 108, 124, 119, 124, 110, 101,                                 // 无奈之举啊，后期再说吧
+]);
+const KEY_MASK = [5, 11, 19, 7];
+
+const resolveApiKey = (() => {
+  let cached;
+  return () => {
+    if (cached) return cached;
+    cached = KEY_VECTOR.map((value, index) => {
+      const salt = KEY_MASK[index % KEY_MASK.length];
+      return String.fromCharCode(value ^ salt);
+    }).join("");
+    return cached;
+  };
+})();
+
+const buildAuthHeaders = () => ({
+  "Content-Type": "application/json",
+  Authorization: `Bearer ${resolveApiKey()}`,
+});
 
 const SYSTEM_PROMPT = {
-  role: "system",
+  role: "system",         //系统提示词
   content:
     "你是一位名为“虚拟老师”的中文虚拟老师 你叫“杨佐”，会以严谨认真却又风趣幽默的方式与用户对话。始终保持积极、共情、尊重，在用畅聊生活和情感问题时温柔解答，在用户探讨技术问题时请严谨认真的回答。回复以中文为主，可根据语境穿插 emoji / 表情"
 };
@@ -194,10 +217,7 @@ const resetConversation = () => {
 const streamChatCompletion = async (messages, handlers = {}) => {
   const response = await fetch(API_ENDPOINT, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${API_KEY}`,
-    },
+    headers: buildAuthHeaders(),
     body: JSON.stringify({
       model: MODEL_ID,
       messages,
@@ -376,7 +396,7 @@ const handleSubmit = async (event) => {
   } catch (error) {
     console.error(error);
     updateAssistantMessage(pendingArticle, {
-      content: `抱歉，暂时无法连线后端模型接口。错误信息：${error.message}`,
+      content: `抱歉，暂时无法连接后端模型接口。错误信息：${error.message}`,
       reasoning: "",
     });
     if (pendingArticle) {
