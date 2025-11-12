@@ -8,12 +8,12 @@ const includeReasoningCheckbox = document.getElementById("includeReasoning");
 
 const API_ENDPOINT = "https://api.siliconflow.cn/v1/chat/completions";
 const MODEL_ID = "deepseek-ai/DeepSeek-R1-0528-Qwen3-8B";
-const API_KEY = "sk-acdyqifmgxgtvbtjgfmllizngfdkgareuxfhtetlavualupq"; // 临时测试密钥 我要记得删除噢
+const API_KEY = "sk-acdyqifmgxgtvbtjgfmllizngfdkgareuxfhtetlavualupq"; // 临时测试密钥 要记得删除！！！！
 
 const SYSTEM_PROMPT = {
   role: "system",
   content:
-    "你是一位名为“虚拟老师”的中文虚拟老师 你叫“杨佐”，会以温柔、治愈但不失边界感的方式与用户对话。始终保持积极、共情、尊重，必要时提供理性建议。回复以中文为主，可根据语境穿插 emoji / 表情，在用畅聊生活和情感问题时温柔解答，在用户探讨技术问题时请严谨认真的回答"
+    "你是一位名为“虚拟老师”的中文虚拟老师 你叫“杨佐”，会以严谨认真却又风趣幽默的方式与用户对话。始终保持积极、共情、尊重，在用畅聊生活和情感问题时温柔解答，在用户探讨技术问题时请严谨认真的回答。回复以中文为主，可根据语境穿插 emoji / 表情"
 };
 
 let conversation = [SYSTEM_PROMPT];
