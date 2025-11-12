@@ -19,7 +19,7 @@ body {
   color: var(--og-text);
 }
 
-.虚拟女友布局 {
+.虚拟老师布局 {
   min-height: calc(100vh - 80px);
   display: flex;
   justify-content: center;
@@ -93,6 +93,58 @@ body {
   color: var(--og-text);
   text-align: left;
   width: 100%;
+}
+
+.模型信息 {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.模型名称 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--og-text);
+  transition: letter-spacing 0.2s ease;
+}
+
+.模型副标题 {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  color: rgba(248, 245, 239, 0.85);
+}
+
+.模型副标题::before {
+  content: "";
+  display: inline-block;
+  width: 32px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.模型提示 {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 0.2rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  background: rgba(255, 119, 185, 0.12);
+  border: 1px solid rgba(255, 119, 185, 0.35);
+  color: #ffc5e4;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .模型名称 {
+    background: linear-gradient(120deg, #ff77b9, #ffd18c);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 }
 
 .工具动作 {
