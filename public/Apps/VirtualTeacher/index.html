@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="虚拟老师 · Web 应用实验室项目。" />
+    <title>虚拟老师 · Web应用实验室</title>
+    <link rel="icon" href="./Images/虚拟老师.png" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
+    <link rel="stylesheet" type="text/css" href="/Styles/top-banner-common.css" />
+    <link rel="stylesheet" href="../apps-common-control.css" />
+    <link rel="stylesheet" href="./VirtualTeacher.css" />
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <script src="/Scripts/top-banner.js" defer></script>
+  </head>
+  <body>
+    <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
+    <script src="/Scripts/html-include.js" target="../apps-common-control.html" position="afterbegin"></script>
+
+    <main class="虚拟老师布局">
+      <section class="对话面板">
+        <header class="对话顶栏">
+          <div>
+            <p class="提示字">Web应用实验室 · 实验性 LLM 在线对话</p>
+            <h1>虚拟老师·杨佐</h1>
+            <p class="简介段落">
+              通过纯前端接入的 LLM 能力，与智能体展开实时对话，并流式输出思维链和内容。
+            </p>
+          </div>
+          <div class="工具动作">
+            <div class="模型标识">
+              <span>模型</span>
+              <strong class="模型信息">
+                <span class="模型名称">DeepSeek-R1 · 0528</span>
+                <span class="模型副标题">思维链蒸馏版 · Qwen3</span>
+                <span class="模型提示">更多模型和视觉功能等待解锁中</span>
+              </strong>
+            </div>
+            <span class="状态徽章" id="sessionStatus">待命</span>
+            <button type="button" class="次按钮" id="resetChat">重置会话</button>
+          </div>
+        </header>
+
+        <div class="对话记录" id="chatLog" aria-live="polite">
+          <article class="消息卡片" data-role="assistant">
+            <header>
+              <div>
+                <p class="名称">杨佐</p>
+                <p class="时间戳">欢迎使用 · V1.0.1</p>
+              </div>
+            </header>
+            <p>
+              你好，我是你的 AI 虚拟老师杨佐。请告诉我想聊的话题或探讨技术问题，我会尽力为你解答任何问题。
+            </p>
+          </article>
+        </div>
+
+        <form class="输入区域" id="chatForm">
+          <label for="userMessage">输入消息</label>
+          <textarea
+            id="userMessage"
+            rows="3"
+            placeholder="和我说点什么吧，支持多行输入（Ctrl/Cmd + Enter 快速发送）。"
+          ></textarea>
+          <div class="输入动作">
+            <label class="切换控件">
+              <input type="checkbox" id="includeReasoning" checked />
+              <span>展示思维链</span>
+            </label>
+            <button type="submit" class="主按钮">发送</button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <template id="messageTemplate">
+      <article class="消息卡片">
+        <header>
+          <div>
+            <p class="名称"></p>
+            <p class="时间戳"></p>
+          </div>
+          <button class="推理切换按钮" type="button"></button>
+        </header>
+        <div class="正文"></div>
+        <details class="推理块">
+          <summary>查看思维链</summary>
+          <div class="推理内容"></div>
+        </details>
+      </article>
+    </template>
+
+    <script src="./marked.min.js"></script>
+    <script src="./purify.min.js"></script>
+    <script type="module" src="./VirtualTeacher.js"></script>
+  </body>
+</html>
