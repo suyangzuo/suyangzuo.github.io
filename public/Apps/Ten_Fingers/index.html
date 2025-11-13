@@ -7,12 +7,12 @@
       content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>十指禅 - 专业打字练习</title>
+    <title>十指禅</title>
     <link rel="icon" href="/Images/Apps/十指禅.png" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Titillium+Web&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Roboto+Mono&family=M+PLUS+Code+Latin&family=Ubuntu+Mono&family=M+PLUS+1+Code:wght@100..700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Titillium+Web&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Roboto+Mono&family=M+PLUS+Code+Latin&family=Ubuntu+Mono&family=M+PLUS+1+Code:wght@100..700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
@@ -28,7 +28,49 @@
   <body>
     <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
     <script src="/Scripts/html-include.js" target="../apps-common-control.html" position="afterbegin"></script>
-    
-    <!-- 应用将在这里动态生成 -->
+    <div class="总区">
+      <div class="设置区">
+        <div class="设置子区 文章设置子区">
+          <div class="文件夹列表区"></div>
+          <div class="文章列表区"></div>
+          <button class="按钮" id="选择文章">选择文章</button>
+        </div>
+        <div class="设置子区 定时设置子区">
+          <h4 class="定时标题 标题">
+            <label class="标签" for="定时复选框"
+              ><span>定时</span><input type="checkbox" id="定时复选框" class="复选框"
+            /></label>
+          </h4>
+          <div class="子区内容 定时子区内容">
+            <div class="分钟区 定时区">
+              <div class="数值区 分钟数值区">
+                <input type="range" id="分钟" value="0" class="数值滑块" min="0" max="59" list="分钟刻度" />
+                <datalist id="分钟刻度">
+                  <option value="15"></option>
+                  <option value="30"></option>
+                  <option value="45"></option>
+                </datalist>
+                <span class="数值显示" id="分钟显示">0</span>
+              </div>
+              <span class="单位">分</span>
+            </div>
+            <div class="秒区 定时区">
+              <div class="数值区 秒数值区">
+                <input type="range" id="秒" value="30" class="数值滑块" min="0" max="59" list="秒刻度" />
+                <datalist id="秒刻度">
+                  <option value="15"></option>
+                  <option value="30"></option>
+                  <option value="45"></option>
+                </datalist>
+                <span class="数值显示" id="秒显示">30</span>
+              </div>
+              <span class="单位">秒</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="输入区"></div>
+      <div class="结果区"></div>
+    </div>
   </body>
 </html>

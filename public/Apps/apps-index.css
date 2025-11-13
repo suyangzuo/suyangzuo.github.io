@@ -106,8 +106,8 @@ body {
   color: rgb(53, 61, 69);
 }
 
-.app.开发中 {
-  pointer-events: none;
+.app.开发中:hover {
+  background-color: transparent;
 }
 
 .app.开发中 * {
