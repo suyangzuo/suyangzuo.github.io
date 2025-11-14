@@ -4,7 +4,6 @@ const 文章列表区 = document.querySelector(".文章列表区");
 const 分钟输入框 = document.querySelector("#分钟");
 const 秒输入框 = document.querySelector("#秒");
 const 姓名输入框 = document.querySelector("#姓名");
-let 当前文件夹 = "General";
 let 当前文章 = "";
 let 测试者姓名 = "测试者";
 let 错误字符集合 = {};
@@ -40,7 +39,10 @@ const Storage_Keys = {
   定时器秒: "TenFingers_定时器_秒",
   已设置定时: "TenFingers_已设置定时",
   姓名: "TenFingers_姓名",
+  当前文件夹: "TenFingers_当前文件夹",
 };
+
+let 当前文件夹 = 从本地存储读取(Storage_Keys.当前文件夹, "General");
 
 function 从本地存储读取(键名, 默认值) {
   const 存储值 = localStorage.getItem(键名);
@@ -104,8 +106,8 @@ async function 初始化文章列表() {
     event.stopPropagation();
     关闭文章列表();
 
-    // 使用和点击文章列表外侧一样的逻辑
-    if (隐藏输入框 && document.activeElement !== 隐藏输入框) {
+    // 关闭文章列表后，如果隐藏输入框已启用，则让它获得焦点
+    if (隐藏输入框 && !隐藏输入框.disabled && document.activeElement !== 隐藏输入框) {
       隐藏输入框.focus();
     }
   });
@@ -168,7 +170,9 @@ async function 初始化文章列表() {
       (async () => {
         try {
           const 文件路径 = 文章容器.dataset.文件路径;
-          const 文章内容 = await fetch(文件路径).then((response) => response.text());
+          const 文章内容 = await fetch(文件路径)
+            .then((response) => response.text())
+            .then((内容) => 内容.replace(/\n/g, " "));
           const 处理后的内容 = 在英文中文间添加空格(文章内容);
           const 字符数 = 处理后的内容.length;
           字符数量元素.textContent = `${字符数}`;
@@ -187,7 +191,9 @@ async function 初始化文章列表() {
 
         if (文章容器.classList.contains("激活")) {
           const 文件路径 = 文章容器.dataset.文件路径;
-          const 文章内容 = await fetch(文件路径).then((response) => response.text());
+          const 文章内容 = await fetch(文件路径)
+            .then((response) => response.text())
+            .then((内容) => 内容.replace(/\n/g, " "));
           await 初始化输入容器(文章内容);
         }
       });
@@ -213,9 +219,18 @@ async function 初始化文章列表() {
   if (文章列表区.classList.toggle("显示")) {
     更新文章列表(当前文件夹);
     暂停倒计时();
+    // 文章列表显示时，禁用隐藏输入框
+    if (隐藏输入框) {
+      隐藏输入框.blur();
+      隐藏输入框.disabled = true;
+    }
   } else {
     if (测试结束状态 === false && 已输入字符数 > 0) {
       恢复倒计时();
+    }
+    // 文章列表隐藏时，启用隐藏输入框
+    if (隐藏输入框) {
+      隐藏输入框.disabled = false;
     }
   }
   文件夹列表区.classList.toggle("显示");
@@ -253,16 +268,15 @@ document.addEventListener("click", (event) => {
   const 点击关闭按钮 = event.target.closest(".文章列表关闭按钮");
 
   if (点击文章列表 || 点击文件夹列表) {
-    if (隐藏输入框 && document.activeElement !== 隐藏输入框) {
-      隐藏输入框.focus();
-    }
+    // 文章列表显示时，不操作隐藏输入框
     return;
   }
 
   if (!点击选择文章按钮) {
     关闭文章列表();
 
-    if (!点击关闭按钮 && 隐藏输入框 && document.activeElement !== 隐藏输入框) {
+    // 关闭文章列表后，如果隐藏输入框已启用，则让它获得焦点
+    if (!点击关闭按钮 && 隐藏输入框 && !隐藏输入框.disabled && document.activeElement !== 隐藏输入框) {
       隐藏输入框.focus();
     }
   }
@@ -298,6 +312,7 @@ function 更新文章列表(文件夹名) {
     新文件夹项.classList.add("激活");
   }
   当前文件夹 = 文件夹名;
+  保存到本地存储(Storage_Keys.当前文件夹, 文件夹名);
   文章列表区.style.width = 新文章列表.style.width;
 }
 
@@ -307,6 +322,10 @@ function 关闭文章列表() {
   const 当前文章列表 = document.querySelector(`ul[data-文件夹名="${当前文件夹}"]`);
   if (当前文章列表) {
     当前文章列表.classList.remove("显示");
+  }
+  // 文章列表关闭时，启用隐藏输入框
+  if (隐藏输入框) {
+    隐藏输入框.disabled = false;
   }
 }
 
@@ -656,24 +675,6 @@ function 进入测试结束状态(原因) {
     const 查看详情按钮 = document.createElement("button");
     查看详情按钮.textContent = "查看详情";
     查看详情按钮.className = "查看详情按钮";
-    查看详情按钮.style.cssText = `
-      padding: 15px 40px;
-      font-size: 24px;
-      font-weight: bold;
-      color: #fff;
-      background-color: #4caf50;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-family: "Noto Sans SC", 微软雅黑, sans-serif;
-      transition: background-color 0.3s;
-    `;
-    查看详情按钮.addEventListener("mouseenter", () => {
-      查看详情按钮.style.backgroundColor = "#45a049";
-    });
-    查看详情按钮.addEventListener("mouseleave", () => {
-      查看详情按钮.style.backgroundColor = "#4caf50";
-    });
     查看详情按钮.addEventListener("click", () => {
       显示结果区();
     });
@@ -875,12 +876,14 @@ async function 初始化输入容器(文章内容) {
   隐藏输入框.style.width = "1px";
   隐藏输入框.style.height = "1px";
   隐藏输入框.style.left = "-9999px";
-  隐藏输入框.disabled = false;
+  // 如果文章列表正在显示，则禁用隐藏输入框；否则启用
+  隐藏输入框.disabled = 文章列表区.classList.contains("显示");
   输入区.appendChild(隐藏输入框);
 
   更新当前字符高亮();
 
-  if (隐藏输入框) {
+  // 只有在隐藏输入框未禁用时才让它获得焦点
+  if (隐藏输入框 && !隐藏输入框.disabled) {
     隐藏输入框.focus();
   }
 
@@ -985,8 +988,10 @@ function 滚动到当前字符() {
   const 可见区域顶部 = 容器滚动顶部 + 边距;
   const 可见区域底部 = 容器滚动底部 - 边距;
 
+  const 容器上内边距 = 20;
+
   if (字符相对顶部 < 可见区域顶部) {
-    const 目标滚动位置 = 字符相对顶部 - 容器高度 * 0.3;
+    const 目标滚动位置 = 字符相对顶部 - 容器上内边距;
     输入容器.scrollTo({
       top: Math.max(0, 目标滚动位置),
       behavior: "smooth",
@@ -1121,7 +1126,9 @@ function 初始化开始按钮() {
       const 激活的文章容器 = 文章列表区.querySelector(".文章容器.激活");
       if (激活的文章容器) {
         const 文件路径 = 激活的文章容器.dataset.文件路径;
-        const 文章内容 = await fetch(文件路径).then((response) => response.text());
+        const 文章内容 = await fetch(文件路径)
+          .then((response) => response.text())
+          .then((内容) => 内容.replace(/\n/g, " "));
         await 初始化输入容器(文章内容);
       }
     });
@@ -1634,6 +1641,7 @@ function 更新速度分析图表() {
         name: "输入速度",
         type: "line",
         smooth: true,
+        showSymbol: false,
         data: 时间数据.map((时间, 索引) => [时间, 速度数据[索引]]),
         lineStyle: {
           color: "#4caf50",

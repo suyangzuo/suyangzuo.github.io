@@ -293,6 +293,10 @@ body:has(.文章列表区.显示) #选择文章 {
   border-radius: 100px;
 }
 
+.文章容器.激活 .文章字符数 {
+  box-shadow: 2px 2px 2px 0 #0007;
+}
+
 .定时设置子区 {
   display: flex;
   align-items: center;
@@ -454,7 +458,7 @@ input[type="text"]:hover {
   justify-content: center;
   align-items: center;
   margin: auto;
-  translate: 0 -50px;
+  translate: 0 -75px;
 }
 
 .输入容器 {
@@ -788,7 +792,7 @@ input[type="text"]:hover {
 .进度百分比 {
   position: relative;
   z-index: 1;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   font-family: "Google Sans Code", "JetBrains Mono", "Google Sans Code", monospace;
   display: flex;
@@ -940,4 +944,21 @@ input[type="text"]:hover {
 
 .详情按钮:active {
   background-color: #56c15a;
+}
+
+.查看详情按钮 {
+  padding: 15px 40px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  background-color: rgb(43, 95, 45);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: "Noto Sans SC", 微软雅黑, sans-serif;
+  transition: background-color 0.25s;
+}
+
+.查看详情按钮:hover {
+  background-color: #45a049;
 }
