@@ -18,7 +18,7 @@ body:has(.文章列表区.显示)::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.75);
   z-index: 9998;
   pointer-events: auto; /* 允许点击遮罩层来关闭 */
 }
@@ -42,6 +42,9 @@ body:has(.文章列表区.显示) #选择文章 {
   width: 100%;
   height: clamp(600px, 100vh, 3200px);
   padding-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .设置区 {
@@ -54,13 +57,16 @@ body:has(.文章列表区.显示) #选择文章 {
 .设置子区 {
   background-image: linear-gradient(35deg, #ffffff15, #ffffff06);
   border-radius: 10px;
-  padding: 15px;
+  padding: 10px 15px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
 }
 
 .按钮 {
   padding: 5px 15px;
-  height: fit-content;
+  width: 100%;
+  height: 100%;
   background-color: var(--按钮背景色);
   border: none;
   color: var(--按钮字体色);
@@ -70,19 +76,52 @@ body:has(.文章列表区.显示) #选择文章 {
   font-size: 16px;
 }
 
-.按钮:hover {
+.按钮:not(#选择文章, #开始):hover {
   background-color: var(--按钮悬停背景色);
   color: var(--按钮悬停字体色);
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
-.按钮:active {
+.按钮:not(#选择文章, #开始):active {
   background-color: var(--按钮按下背景色);
 }
 
 .文章设置子区 {
   position: relative;
   display: flex;
+  align-items: center;
+  padding: 0;
+  background-image: linear-gradient(35deg, #d0c55f, #8b854a);
+}
+
+.文章设置子区:has(#选择文章:hover) {
+  background-image: linear-gradient(35deg, #f0e68c, #a69f63);
+}
+
+.文章设置子区:has(#选择文章:active) {
+  background-image: linear-gradient(35deg, #f0e68c, #a69f63);
+}
+
+.开始设置子区 {
+  background-image: linear-gradient(35deg, rgb(42, 82, 42), rgb(10, 69, 66));
+  padding: 0;
+}
+
+.开始设置子区:has(#开始:hover) {
+  background-image: linear-gradient(35deg, rgb(53, 102, 53), rgb(14, 89, 85));
+}
+
+.开始设置子区:has(#开始:active) {
+  background-image: linear-gradient(35deg, rgb(63, 121, 63), rgb(19, 111, 107));
+}
+
+#开始 {
+  padding: 10px 15px;
+}
+
+#选择文章 {
+  color: black;
+  font-weight: 500;
 }
 
 .关闭按钮 {
@@ -133,6 +172,7 @@ body:has(.文章列表区.显示) #选择文章 {
   z-index: 9999;
   border-radius: 10px;
   background-image: linear-gradient(35deg, #ffffff15, #ffffff06);
+  backdrop-filter: blur(15px);
   transition: 250ms;
 }
 
@@ -146,10 +186,11 @@ body:has(.文章列表区.显示) #选择文章 {
 
 .文件夹列表 {
   position: absolute;
-  padding-top: 15px;
+  padding: 15px;
   left: 50%;
   translate: -50% 0;
   display: flex;
+  backdrop-filter: blur(15px);
 }
 
 .文件夹项 {
@@ -245,24 +286,22 @@ body:has(.文章列表区.显示) #选择文章 {
 
 .定时设置子区 {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 15px;
+  gap: 35px;
   background-image: linear-gradient(35deg, #ffffff15, #ffffff06);
   border-radius: 10px;
 }
 
 .定时子区内容 {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
 }
 
 .定时区 {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 8px;
 }
 
 .定时区 .按钮 {
@@ -281,16 +320,18 @@ body:has(.文章列表区.显示) #选择文章 {
 }
 
 .数值框 {
-  width: 5ch;
+  width: 3ch;
   height: 25px;
   -moz-appearance: textfield;
   appearance: textfield;
-  font-family: "Google Sans Code", "JetBrains Mono", "Noto Sans SC", 微软雅黑, sans-serif;
+  font-family: "Doto", "Google Sans Code", "JetBrains Mono", "Noto Sans SC", 微软雅黑, sans-serif;
+  font-size: 24px;
+  font-weight: 600;
   padding: 0 0.5ch;
-  background-color: #234;
+  background-color: #123;
   color: white;
   border: none;
-  outline: solid 2px #aaa;
+  outline: solid 2px #666;
   border-radius: 3px;
 }
 
@@ -302,88 +343,12 @@ body:has(.文章列表区.显示) #选择文章 {
 }
 
 .数值框:hover {
-  outline: solid 2px #ddd;
+  outline: solid 2px #999;
 }
 
 .数值框:focus {
-  outline: solid 2px #eee;
-  background-color: #456;
-}
-
-.数值滑块 {
-  width: 150px;
-  height: 6px;
-  -webkit-appearance: none;
-  appearance: none;
-  background: linear-gradient(
-    to right,
-    #4a8 0%,
-    #4a8 var(--fill, 0%),
-    var(--滑块底色) var(--fill, 0%),
-    var(--滑块底色) 100%
-  );
-  outline: none;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-.数值滑块::-webkit-slider-track {
-  width: 100%;
-  height: 6px;
-  background: linear-gradient(
-    to right,
-    #4a8 0%,
-    #4a8 var(--fill, 0%),
-    var(--滑块底色) var(--fill, 0%),
-    var(--滑块底色) 100%
-  );
-  border-radius: 3px;
-}
-
-.数值滑块::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  background: #4a8;
-  border-radius: 50%;
-  cursor: pointer;
-  translate: 0 -8px;
-  transition: background 0.2s;
-}
-
-.数值滑块::-webkit-slider-thumb:hover {
-  background: #5b9;
-}
-
-.数值滑块::-moz-range-track {
-  width: 100%;
-  height: 6px;
-  background: linear-gradient(to right, #4a8 0%, #4a8 var(--fill, 0%), #234 var(--fill, 0%), #234 100%);
-  border-radius: 3px;
-}
-
-.数值滑块::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
-  background: #4a8;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.数值滑块::-moz-range-thumb:hover {
-  background: #5b9;
-}
-
-.数值显示 {
-  min-width: 2ch;
-  font-family: "Google Sans Code", "JetBrains Mono", "Noto Sans SC", 微软雅黑, sans-serif;
-  font-size: 14px;
-  color: white;
-  border-radius: 3px;
-  text-align: right;
+  outline: solid 2px #bbb;
+  background-color: #234;
 }
 
 .单位 {
@@ -405,10 +370,17 @@ body:has(.文章列表区.显示) #选择文章 {
   user-select: none;
 }
 
+.标签 > span {
+  color: var(--按钮字体色);
+  transition: 125ms;
+}
+
+.标签:hover > span {
+  color: white;
+}
+
 .标签:hover,
-input[type="checkbox"]:hover,
-input[type="range"]:hover,
-input[type="range"]::-webkit-slider-thumb:hover {
+input[type="checkbox"]:hover {
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
@@ -451,13 +423,301 @@ input[type="range"]::-webkit-slider-thumb:hover {
   border-radius: 1px;
 }
 
-.数值区 datalist {
+input[type="text"] {
+  font-size: 16px;
+  padding: 6px 5px;
+  background-color: #123;
+  color: #8cc2f0;
+  border: none;
+  outline: solid 2px #666;
+  border-radius: 5px;
+}
+
+label:hover input[type="text"],
+input[type="text"]:focus,
+input[type="text"]:hover {
+  background-color: #234;
+}
+
+.输入区 {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  translate: 0 -50px;
+}
+
+.输入容器 {
+  position: relative;
+  width: clamp(500px, 60vw, 2560px);
+  height: 500px;
+  overflow-y: auto;
+  overflow-x: visible;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 50px;
+  align-items: flex-start;
+  padding: 20px;
+  font-size: 24px;
+  line-height: 1.2;
+  font-family: "Google Sans Code", "JetBrains Mono", "Noto Sans SC", 微软雅黑, sans-serif;
+  cursor: text;
+  /* 隐藏滚动条但保持滚动功能 */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 和 Edge */
+}
+
+/* 隐藏 WebKit 浏览器的滚动条（Chrome, Safari, Edge） */
+.输入容器::-webkit-scrollbar {
+  display: none;
+}
+
+.测试结束覆盖层 {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  font-size: 72px;
+  font-weight: bold;
+  color: #fff;
+  font-family: "Noto Sans SC", 微软雅黑, sans-serif;
   pointer-events: none;
-  opacity: 0;
-  z-index: -1;
+}
+
+.原始字符 {
+  display: inline-block;
+  width: auto;
+  height: 50px;
+  color: gray;
+  align-content: center;
+}
+
+.原始字符.换行符 {
+  width: 100%;
+  height: 0;
+  display: block;
+}
+
+.原始字符.空格 {
+  position: relative;
+  width: 1ch;
+}
+
+.原始字符.正确 {
+  color: #38a86a;
+}
+
+.原始字符.错误 {
+  color: #f44;
+}
+
+.输入区:has(.隐藏输入框:focus) .原始字符.当前 {
+  background: linear-gradient(
+    to top,
+    transparent,
+    rgba(255, 255, 255, 0.2) 25%,
+    rgba(255, 255, 255, 0.2) 75%,
+    transparent
+  );
+  color: #fff;
+}
+
+.信息展示区 {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 1000;
+}
+
+.信息项 {
+  background: #ffffff0d;
+  border-radius: 10px;
+  padding: 15px;
+  min-width: 194px;
+  backdrop-filter: blur(10px);
+}
+
+.信息标题 {
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.字符统计标题 {
+  margin-top: 25px;
+}
+
+.时间显示 {
+  font-size: 20px;
+  font-family: "Google Sans Code", "JetBrains Mono", "Google Sans Code", monospace;
+  text-align: center;
+  font-weight: 500;
+}
+
+.时间显示 .小时 {
+  color: lightseagreen;
+}
+
+.时间显示 .分钟 {
+  color: #2196f3;
+}
+
+.时间显示 .秒 {
+  color: #ffa500;
+}
+
+.时间显示 .冒号 {
+  color: #888;
+}
+
+.进度圆环 {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  position: relative;
+  margin: 0 auto;
+  background: conic-gradient(
+    from 0deg,
+    #4caf50 0deg,
+    #4caf50 var(--进度角度, 0deg),
+    #555 var(--进度角度, 0deg),
+    #555 360deg
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.进度圆环::before {
+  content: "";
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: rgb(25, 25, 25);
+}
+
+.进度百分比 {
+  position: relative;
+  z-index: 1;
+  font-size: 18px;
+  font-weight: 600;
+  font-family: "Google Sans Code", "JetBrains Mono", "Google Sans Code", monospace;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.进度数字 {
+  color: #fff;
+}
+
+.进度百分号 {
+  color: #888;
+}
+
+.字符数显示 {
+  font-size: 20px;
+  text-align: center;
+  font-family: "Google Sans Code", "JetBrains Mono", "Google Sans Code", monospace;
+  color: #678;
+}
+
+.已输入字符数 {
+  color: #4caf50;
+}
+
+.总字符数 {
+  color: #abc;
+}
+
+.错误数据显示 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 16px;
+  font-family: "Google Sans Code", "JetBrains Mono", "Google Sans Code", monospace;
+}
+
+.错误数据项 {
+  display: flex;
+  align-items: center;
+}
+
+.错误数据标签 {
+  color: #8ac;
+  width: 80px;
+  text-align: right;
+  text-wrap: nowrap;
+}
+
+.错误字符数 {
+  color: #f44;
+}
+
+.退格次数 {
+  color: #ffa500;
+}
+
+.正确率 {
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.正确率数字 {
+  color: #38a86a;
+}
+
+.正确率 .小数点 {
+  color: #888;
+}
+
+.正确率小数 {
+  color: #38a86a;
+}
+
+.正确率 {
+  color: #888;
+}
+
+.斜杠 {
+  margin: 0 4px;
+}
+
+.百分号,
+.进度百分号 {
+  color: lightsteelblue;
+  margin-left: 2px;
+}
+
+.速度显示 {
+  display: inline-flex;
+  align-items: baseline;
+  width: 84px;
+}
+
+.速度字符数 {
+  color: #4caf50;
+}
+
+.速度斜杠 {
+  color: #888;
+  margin: 0 2px;
+}
+
+.速度分钟 {
+  color: #abc;
 }

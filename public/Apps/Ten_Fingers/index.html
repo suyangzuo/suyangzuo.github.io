@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Titillium+Web&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Roboto+Mono&family=M+PLUS+Code+Latin&family=Ubuntu+Mono&family=M+PLUS+1+Code:wght@100..700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Doto:wght,ROND@100..900,0..100&family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Titillium+Web&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Roboto+Mono&family=M+PLUS+Code+Latin&family=Ubuntu+Mono&family=M+PLUS+1+Code:wght@100..700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
@@ -33,7 +33,7 @@
         <div class="设置子区 文章设置子区">
           <div class="文件夹列表区"></div>
           <div class="文章列表区"></div>
-          <button class="按钮" id="选择文章">选择文章</button>
+          <button class="按钮" id="选择文章">选择文本</button>
         </div>
         <div class="设置子区 定时设置子区">
           <h4 class="定时标题 标题">
@@ -44,32 +44,78 @@
           <div class="子区内容 定时子区内容">
             <div class="分钟区 定时区">
               <div class="数值区 分钟数值区">
-                <input type="range" id="分钟" value="0" class="数值滑块" min="0" max="59" list="分钟刻度" />
-                <datalist id="分钟刻度">
-                  <option value="15"></option>
-                  <option value="30"></option>
-                  <option value="45"></option>
-                </datalist>
-                <span class="数值显示" id="分钟显示">0</span>
+                <input type="number" id="分钟" value="0" class="数值框" min="0" max="59" />
               </div>
               <span class="单位">分</span>
             </div>
             <div class="秒区 定时区">
               <div class="数值区 秒数值区">
-                <input type="range" id="秒" value="30" class="数值滑块" min="0" max="59" list="秒刻度" />
-                <datalist id="秒刻度">
-                  <option value="15"></option>
-                  <option value="30"></option>
-                  <option value="45"></option>
-                </datalist>
-                <span class="数值显示" id="秒显示">30</span>
+                <input type="number" id="秒" value="30" class="数值框" min="0" max="59" />
               </div>
               <span class="单位">秒</span>
             </div>
           </div>
         </div>
+        <div class="设置子区 个人信息设置子区">
+          <label class="个人信息标签 姓名标签 标签">
+            <span class="标签">姓名：</span>
+            <input type="text" id="姓名" class="输入框" placeholder="输入姓名" value="测试者" />
+          </label>
+        </div>
+        <div class="设置子区 开始设置子区">
+          <button class="按钮" id="开始" title="开始">
+            <img src="./Images/Go.svg" alt="开始" style="width: 50px; height: 50px; object-fit: contain" />
+          </button>
+        </div>
       </div>
       <div class="输入区"></div>
+      <div class="信息展示区">
+        <div class="信息项 已用时间">
+          <div class="信息标题">已用时间</div>
+          <div class="时间显示" id="已用时间显示">
+            <span class="小时">00</span><span class="冒号">:</span><span class="分钟">00</span
+            ><span class="冒号">:</span><span class="秒">00</span>
+          </div>
+        </div>
+        <div class="信息项 输入进度">
+          <div class="信息标题">输入进度</div>
+          <div class="进度圆环" id="进度圆环">
+            <div class="进度百分比" id="进度百分比">
+              <span class="进度数字">0</span><span class="进度百分号">%</span>
+            </div>
+          </div>
+          <div class="信息标题 字符统计标题">字符进度</div>
+          <div class="字符数显示" id="字符数显示">
+            <span class="已输入字符数">0</span><span class="斜杠">/</span><span class="总字符数">0</span>
+          </div>
+        </div>
+        <div class="信息项 数据统计">
+          <div class="信息标题">数据统计</div>
+          <div class="错误数据显示" id="错误数据显示">
+            <div class="错误数据项">
+              <span class="错误数据标签">错误次数：</span>
+              <span class="错误字符数">0</span>
+            </div>
+            <div class="错误数据项">
+              <span class="错误数据标签">退格次数：</span>
+              <span class="退格次数">0</span>
+            </div>
+            <div class="错误数据项">
+              <span class="错误数据标签">正确概率：</span>
+              <span class="正确率">
+                <span class="正确率数字">0</span><span class="小数点">.</span><span class="正确率小数">00</span
+                ><span class="百分号">%</span>
+              </span>
+            </div>
+            <div class="错误数据项">
+              <span class="错误数据标签">输入速度：</span>
+              <span class="速度显示">
+                <span class="速度字符数">0</span><span class="速度斜杠">/</span><span class="速度分钟">分钟</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="结果区"></div>
     </div>
   </body>

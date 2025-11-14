@@ -37,24 +37,11 @@ function 扫描文本文件() {
   // 生成 JSON 文件
   const jsonPath = path.join(textsDir, 'file-list.json');
   fs.writeFileSync(jsonPath, JSON.stringify(文件夹结构, null, 2) + '\n', 'utf8');
-  
-  console.log('✅ 扫描完成！文件列表：\n');
   let 总文件数 = 0;
   for (const [文件夹名, 文件列表] of Object.entries(文件夹结构)) {
     const 文件数量 = 文件列表.length;
     总文件数 += 文件数量;
-    if (文件数量 > 0) {
-      console.log(`📁 ${文件夹名} (${文件数量} 个文件):`);
-      文件列表.forEach((file, index) => {
-        console.log(`   ${index + 1}. ${file}`);
-      });
-    } else {
-      console.log(`📁 ${文件夹名} (空文件夹，已跳过)`);
-    }
-    console.log('');
   }
-  console.log(`📝 总计: ${总文件数} 个文本文件`);
-  console.log(`\n💾 文件列表已保存到: ${jsonPath}`);
 }
 
 // 执行扫描

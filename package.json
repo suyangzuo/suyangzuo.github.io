@@ -4,6 +4,9 @@
     "express": "^4.18.2",
     "reload": "^3.2.1"
   },
+  "scripts": {
+    "generate-file-list": "node public/Apps/Ten_Fingers/generate-file-list.js"
+  },
   "live": "nodemon app.js",
   "nodemonConfig": {
     "ext": "*.*"
