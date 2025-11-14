@@ -29,8 +29,13 @@ let 倒计时暂停时剩余时间 = 0;
 let 测试结束状态 = false;
 let 统计数据数组 = [];
 let 统计定时器ID = null;
+let 结果区元素 = null;
+let 错误分析图表 = null;
+let 速度分析图表 = null;
+let 测试开始时间 = null;
+let 测试结束时间 = null;
 
-const STORAGE_KEYS = {
+const Storage_Keys = {
   定时器分: "TenFingers_定时器_分",
   定时器秒: "TenFingers_定时器_秒",
   已设置定时: "TenFingers_已设置定时",
@@ -44,7 +49,12 @@ function 从本地存储读取(键名, 默认值) {
       return 存储值 === "true";
     }
     if (typeof 默认值 === "number") {
-      return parseFloat(存储值) || 默认值;
+      const 数值 = parseFloat(存储值);
+      // 检查是否为有效数字，包括0
+      if (!isNaN(数值)) {
+        return 数值;
+      }
+      return 默认值;
     }
     return 存储值;
   }
@@ -68,10 +78,10 @@ function 保存到会话存储(键名, 值) {
 }
 
 const 定时器 = {
-  分: 从本地存储读取(STORAGE_KEYS.定时器分, 0),
-  秒: 从本地存储读取(STORAGE_KEYS.定时器秒, 0),
+  分: 从本地存储读取(Storage_Keys.定时器分, 0),
+  秒: 从本地存储读取(Storage_Keys.定时器秒, 0),
 };
-let 已设置定时 = 从本地存储读取(STORAGE_KEYS.已设置定时, false);
+let 已设置定时 = 从本地存储读取(Storage_Keys.已设置定时, false);
 
 async function 获取文本文件列表() {
   const response = await fetch("./Texts/file-list.json");
@@ -94,9 +104,9 @@ async function 初始化文章列表() {
     event.stopPropagation();
     关闭文章列表();
 
-    if (隐藏输入框 && document.activeElement === 隐藏输入框) {
-      隐藏输入框.blur();
-      暂停计时();
+    // 使用和点击文章列表外侧一样的逻辑
+    if (隐藏输入框 && document.activeElement !== 隐藏输入框) {
+      隐藏输入框.focus();
     }
   });
 
@@ -147,8 +157,25 @@ async function 初始化文章列表() {
       文章标题.className = "文章标题";
       文章标题.textContent = 文件名.split("_")[1].split(".")[0];
 
-      文章容器.append(文章序号, 文章标题);
+      const 字符数量元素 = document.createElement("span");
+      字符数量元素.className = "文章字符数";
+      字符数量元素.textContent = "";
+
+      文章容器.append(文章序号, 文章标题, 字符数量元素);
       文章列表.appendChild(文章容器);
+
+      // 异步加载文章内容以获取字符数量
+      (async () => {
+        try {
+          const 文件路径 = 文章容器.dataset.文件路径;
+          const 文章内容 = await fetch(文件路径).then((response) => response.text());
+          const 处理后的内容 = 在英文中文间添加空格(文章内容);
+          const 字符数 = 处理后的内容.length;
+          字符数量元素.textContent = `${字符数}`;
+        } catch (error) {
+          字符数量元素.textContent = "未知";
+        }
+      })();
 
       文章容器.addEventListener("click", async () => {
         const 已激活文章容器 = 文章列表区.querySelector(".文章容器.激活");
@@ -291,8 +318,8 @@ function 更新关闭文章列表按钮位置() {
 }
 
 function 初始化定时器设置() {
-  const 分钟值 = 从本地存储读取(STORAGE_KEYS.定时器分, 0);
-  const 秒值 = 从本地存储读取(STORAGE_KEYS.定时器秒, 30);
+  const 分钟值 = 从本地存储读取(Storage_Keys.定时器分, 0);
+  const 秒值 = 从本地存储读取(Storage_Keys.定时器秒, 30);
 
   分钟输入框.value = 分钟值;
   秒输入框.value = 秒值;
@@ -309,8 +336,9 @@ function 初始化定时器设置() {
     if (秒值 < 0) 秒值 = 0;
     if (秒值 > 59) 秒值 = 59;
 
-    if (是否强制验证 && 分钟值 === 0 && 秒值 < 10) {
-      秒值 = 10;
+    // 当分钟为0时，秒数最低为5
+    if (分钟值 === 0 && 秒值 < 5) {
+      秒值 = 5;
     }
 
     分钟输入框.value = 分钟值;
@@ -319,8 +347,8 @@ function 初始化定时器设置() {
     定时器.分 = 分钟值;
     定时器.秒 = 秒值;
 
-    保存到本地存储(STORAGE_KEYS.定时器分, 定时器.分);
-    保存到本地存储(STORAGE_KEYS.定时器秒, 定时器.秒);
+    保存到本地存储(Storage_Keys.定时器分, 定时器.分);
+    保存到本地存储(Storage_Keys.定时器秒, 定时器.秒);
   }
 
   分钟输入框.addEventListener("input", () => {
@@ -357,26 +385,26 @@ function 初始化定时复选框() {
   const 定时复选框 = document.querySelector("#定时复选框");
 
   if (定时复选框) {
-    已设置定时 = 从本地存储读取(STORAGE_KEYS.已设置定时, false);
+    已设置定时 = 从本地存储读取(Storage_Keys.已设置定时, false);
     定时复选框.checked = 已设置定时;
 
     定时复选框.addEventListener("change", (event) => {
       已设置定时 = event.target.checked;
-      保存到本地存储(STORAGE_KEYS.已设置定时, 已设置定时);
+      保存到本地存储(Storage_Keys.已设置定时, 已设置定时);
     });
   }
 }
 
 function 初始化姓名输入框() {
   if (姓名输入框) {
-    const 存储的姓名 = 从会话存储读取(STORAGE_KEYS.姓名, "测试者");
+    const 存储的姓名 = 从会话存储读取(Storage_Keys.姓名, "测试者");
     测试者姓名 = 存储的姓名;
     姓名输入框.value = 测试者姓名;
 
     姓名输入框.addEventListener("input", (event) => {
       const 输入的姓名 = event.target.value;
       测试者姓名 = 输入的姓名;
-      保存到会话存储(STORAGE_KEYS.姓名, 输入的姓名);
+      保存到会话存储(Storage_Keys.姓名, 输入的姓名);
     });
   }
 }
@@ -438,6 +466,7 @@ function 记录统计数据() {
   const 统计数据 = {
     本地时间: 本地时间对象,
     测试时间: 测试时间数据,
+    测试时间毫秒: 当前测试时间, // 保存精确的毫秒数
     速度: 速度,
   };
 
@@ -498,6 +527,11 @@ function 开始计时() {
 
   正在计时 = true;
   计时器开始时间 = Date.now();
+
+  // 记录测试开始时间（第一次开始计时时）
+  if (测试开始时间 === null) {
+    测试开始时间 = new Date();
+  }
 
   function 更新计时() {
     if (正在计时) {
@@ -600,12 +634,53 @@ function 进入测试结束状态(原因) {
   暂停计时();
   停止统计数据收集();
 
+  // 记录测试结束时间
+  测试结束时间 = new Date();
+
   if (隐藏输入框) {
     隐藏输入框.blur();
     隐藏输入框.disabled = true;
   }
 
   if (测试结束覆盖层 && 输入容器) {
+    测试结束覆盖层.innerHTML = "";
+
+    const 覆盖层内容 = document.createElement("div");
+    覆盖层内容.className = "覆盖层内容容器";
+    覆盖层内容.style.cssText = "display: flex; flex-direction: column; align-items: center; pointer-events: auto;";
+
+    const 文本元素 = document.createElement("div");
+    文本元素.textContent = "测试结束";
+    文本元素.style.cssText = "font-size: 72px; font-weight: bold; color: #fff; margin-bottom: 30px;";
+
+    const 查看详情按钮 = document.createElement("button");
+    查看详情按钮.textContent = "查看详情";
+    查看详情按钮.className = "查看详情按钮";
+    查看详情按钮.style.cssText = `
+      padding: 15px 40px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #fff;
+      background-color: #4caf50;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: "Noto Sans SC", 微软雅黑, sans-serif;
+      transition: background-color 0.3s;
+    `;
+    查看详情按钮.addEventListener("mouseenter", () => {
+      查看详情按钮.style.backgroundColor = "#45a049";
+    });
+    查看详情按钮.addEventListener("mouseleave", () => {
+      查看详情按钮.style.backgroundColor = "#4caf50";
+    });
+    查看详情按钮.addEventListener("click", () => {
+      显示结果区();
+    });
+
+    覆盖层内容.appendChild(文本元素);
+    覆盖层内容.appendChild(查看详情按钮);
+    测试结束覆盖层.appendChild(覆盖层内容);
     测试结束覆盖层.style.display = "flex";
   }
 }
@@ -657,8 +732,8 @@ function 更新统计信息() {
     if (错误字符数元素) 错误字符数元素.textContent = 实际错误字符数;
     if (退格次数元素) 退格次数元素.textContent = 退格次数;
 
-    if (总字符数 > 0 && 正确率数字元素) {
-      const 正确率 = (正确字符数 / 总字符数) * 100;
+    if (当前输入索引 > 0 && 正确率数字元素) {
+      const 正确率 = (正确字符数 / 当前输入索引) * 100;
       const 格式化结果 = 格式化百分比(正确率);
 
       正确率数字元素.textContent = 格式化结果.整数部分;
@@ -727,6 +802,8 @@ async function 初始化输入容器(文章内容) {
   退格次数 = 0;
   正在合成 = false;
   测试结束状态 = false;
+  测试开始时间 = null;
+  测试结束时间 = null;
 
   总字符数 = 文章内容.length;
   已输入字符数 = 0;
@@ -741,10 +818,13 @@ async function 初始化输入容器(文章内容) {
   统计数据数组 = [];
   倒计时暂停时剩余时间 = 0;
 
+  // 隐藏结果区
+  隐藏结果区();
+
   const 定时复选框 = document.querySelector("#定时复选框");
   if (定时复选框 && 定时复选框.checked) {
-    const 初始分钟值 = 从本地存储读取(STORAGE_KEYS.定时器分, 0);
-    const 初始秒值 = 从本地存储读取(STORAGE_KEYS.定时器秒, 30);
+    const 初始分钟值 = 从本地存储读取(Storage_Keys.定时器分, 0);
+    const 初始秒值 = 从本地存储读取(Storage_Keys.定时器秒, 30);
     if (分钟输入框) 分钟输入框.value = 初始分钟值;
     if (秒输入框) 秒输入框.value = 初始秒值;
   }
@@ -1048,14 +1128,559 @@ function 初始化开始按钮() {
   }
 }
 
+function 初始化终止和详情按钮() {
+  const 终止按钮 = document.querySelector("#终止按钮");
+  if (终止按钮) {
+    终止按钮.addEventListener("click", () => {
+      进入测试结束状态("用户主动终止");
+    });
+  }
+
+  const 详情按钮 = document.querySelector("#详情按钮");
+  if (详情按钮) {
+    详情按钮.addEventListener("click", () => {
+      // 如果测试已结束且有结果区内容，则显示结果区
+      if (测试结束状态 && 结果区元素) {
+        显示结果区();
+      }
+    });
+  }
+}
+
+// 结果区相关函数
+function 显示结果区() {
+  if (!结果区元素) {
+    初始化结果区();
+  }
+
+  if (测试结束覆盖层) {
+    测试结束覆盖层.style.display = "none";
+  }
+
+  if (结果区元素) {
+    结果区元素.style.display = "block";
+    更新结果区头部信息();
+    更新结果区图表();
+  }
+}
+
+function 隐藏结果区() {
+  if (结果区元素) {
+    结果区元素.style.display = "none";
+  }
+}
+
+function 初始化结果区() {
+  const 结果区 = document.querySelector(".结果区");
+  if (!结果区) return;
+
+  结果区元素 = 结果区;
+
+  // 创建结果区内容
+  结果区.innerHTML = `
+    <button class="关闭结果区按钮" id="关闭结果区">×</button>
+    <div class="结果区头部">
+      <div class="结果区头部内容">
+        <div class="结果区头部行">
+          <div class="结果区头部项">
+            <span class="结果区头部标签">测试者：</span><span class="结果区头部值" id="结果区测试者姓名"></span>
+          </div>
+        </div>
+        <div class="结果区头部行">
+          <div class="结果区头部项">
+            <span class="结果区头部标签">测试起始时间：</span><span class="结果区头部值" id="结果区起始时间"></span>
+          </div>
+          <div class="结果区头部项">
+            <span class="结果区头部标签">测试结束时间：</span><span class="结果区头部值" id="结果区结束时间"></span>
+          </div>
+          <div class="结果区头部项">
+            <span class="结果区头部标签">测试用时：</span><span class="结果区头部值" id="结果区测试用时"></span>
+          </div>
+        </div>
+        <div class="结果区头部行">
+          <div class="结果区头部项">
+            <span class="结果区头部标签">正确率：</span><span class="结果区头部值" id="结果区正确率"></span>
+          </div>
+          <div class="结果区头部项">
+            <span class="结果区头部标签">退格次数：</span><span class="结果区头部值" id="结果区退格次数"></span>
+          </div>
+          <div class="结果区头部项">
+            <span class="结果区头部标签">速度：</span><span class="结果区头部值" id="结果区速度"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="结果区内容">
+      <div class="结果区部分">
+        <h3 class="结果区部分标题">错误数据分析</h3>
+        <div id="错误分析图表" style="width: 100%; height: 400px;"></div>
+      </div>
+      <div class="结果区部分">
+        <h3 class="结果区部分标题">输入速度分析</h3>
+        <div id="速度分析图表" style="width: 100%; height: 400px;"></div>
+      </div>
+    </div>
+  `;
+
+  // 绑定关闭按钮
+  const 关闭按钮 = 结果区.querySelector("#关闭结果区");
+  if (关闭按钮) {
+    关闭按钮.addEventListener("click", 隐藏结果区);
+  }
+
+  // 初始化图表
+  初始化错误分析图表();
+  初始化速度分析图表();
+}
+
+function 初始化错误分析图表() {
+  const 图表容器 = document.getElementById("错误分析图表");
+  if (!图表容器) return;
+
+  错误分析图表 = echarts.init(图表容器);
+}
+
+function 初始化速度分析图表() {
+  const 图表容器 = document.getElementById("速度分析图表");
+  if (!图表容器) return;
+
+  速度分析图表 = echarts.init(图表容器);
+}
+
+// 格式化日期时间为年月日时分秒（带颜色标签）
+function 格式化日期时间(日期对象) {
+  if (!日期对象) return "未知";
+
+  const 年 = String(日期对象.getFullYear());
+  const 月 = String(日期对象.getMonth() + 1).padStart(2, "0");
+  const 日 = String(日期对象.getDate()).padStart(2, "0");
+  const 时 = String(日期对象.getHours()).padStart(2, "0");
+  const 分 = String(日期对象.getMinutes()).padStart(2, "0");
+  const 秒 = String(日期对象.getSeconds()).padStart(2, "0");
+
+  return `<span class="时间数字">${年}</span><span class="时间单位">年</span><span class="时间数字">${月}</span><span class="时间单位">月</span><span class="时间数字">${日}</span><span class="时间单位">日</span> <span class="时间数字">${时}</span><span class="时间冒号">:</span><span class="时间数字">${分}</span><span class="时间冒号">:</span><span class="时间数字">${秒}</span>`;
+}
+
+// 格式化测试用时（带颜色标签）
+function 格式化测试用时(毫秒) {
+  if (!毫秒 || 毫秒 <= 0) return `<span class="时间数字">0</span><span class="用时秒">秒</span>`;
+
+  const 总秒数 = Math.floor(毫秒 / 1000);
+  const 小时 = Math.floor(总秒数 / 3600);
+  const 分钟 = Math.floor((总秒数 % 3600) / 60);
+  const 秒 = 总秒数 % 60;
+
+  let 结果 = "";
+  if (小时 > 0) {
+    结果 += `<span class="时间数字">${小时}</span><span class="用时小时">小时</span>`;
+  }
+  if (分钟 > 0) {
+    结果 += `<span class="时间数字">${分钟}</span><span class="用时分钟">分钟</span>`;
+  }
+  if (秒 > 0 || 结果 === "") {
+    结果 += `<span class="时间数字">${秒}</span><span class="用时秒">秒</span>`;
+  }
+
+  return 结果;
+}
+
+function 更新结果区头部信息() {
+  if (!结果区元素) return;
+
+  // 更新测试者姓名
+  const 测试者姓名元素 = 结果区元素.querySelector("#结果区测试者姓名");
+  if (测试者姓名元素) {
+    测试者姓名元素.textContent = 测试者姓名 || "未知";
+  }
+
+  // 更新测试起始时间
+  const 起始时间元素 = 结果区元素.querySelector("#结果区起始时间");
+  if (起始时间元素) {
+    起始时间元素.innerHTML = 格式化日期时间(测试开始时间);
+  }
+
+  // 更新测试结束时间
+  const 结束时间元素 = 结果区元素.querySelector("#结果区结束时间");
+  if (结束时间元素) {
+    结束时间元素.innerHTML = 格式化日期时间(测试结束时间);
+  }
+
+  // 更新测试用时
+  const 测试用时元素 = 结果区元素.querySelector("#结果区测试用时");
+  if (测试用时元素 && 测试开始时间 && 测试结束时间) {
+    const 用时毫秒 = 测试结束时间.getTime() - 测试开始时间.getTime();
+    测试用时元素.innerHTML = 格式化测试用时(用时毫秒);
+  } else if (测试用时元素) {
+    // 如果没有结束时间，使用累计已用时间
+    const 当前测试时间 = 正在计时 ? Date.now() - 计时器开始时间 + 累计已用时间 : 累计已用时间;
+    测试用时元素.innerHTML = 格式化测试用时(当前测试时间);
+  }
+
+  // 更新正确率
+  const 正确率元素 = 结果区元素.querySelector("#结果区正确率");
+  if (正确率元素) {
+    if (当前输入索引 > 0) {
+      const 正确率 = (正确字符数 / 当前输入索引) * 100;
+      const 格式化结果 = 格式化百分比(正确率);
+      if (格式化结果.需要显示小数点) {
+        正确率元素.innerHTML = `<span class="时间数字">${格式化结果.整数部分}.${格式化结果.小数部分}</span><span class="正确率百分号">%</span>`;
+      } else {
+        正确率元素.innerHTML = `<span class="时间数字">${格式化结果.整数部分}</span><span class="正确率百分号">%</span>`;
+      }
+    } else {
+      正确率元素.innerHTML = `<span class="时间数字">0</span><span class="正确率百分号">%</span>`;
+    }
+  }
+
+  // 更新退格次数
+  const 退格次数元素 = 结果区元素.querySelector("#结果区退格次数");
+  if (退格次数元素) {
+    退格次数元素.textContent = 退格次数 || 0;
+  }
+
+  // 更新速度（使用最后一个统计数据的速度，或计算最终速度）
+  const 速度元素 = 结果区元素.querySelector("#结果区速度");
+  if (速度元素) {
+    let 最终速度 = 0;
+    if (统计数据数组 && 统计数据数组.length > 0) {
+      // 使用最后一个统计数据的速度
+      最终速度 = Math.round(统计数据数组[统计数据数组.length - 1].速度);
+    } else {
+      // 计算最终速度
+      const 当前测试时间 = 正在计时 ? Date.now() - 计时器开始时间 + 累计已用时间 : 累计已用时间;
+      if (当前测试时间 > 0) {
+        最终速度 = Math.round((已输入字符数 / 当前测试时间) * 60000);
+      }
+    }
+    速度元素.innerHTML = `<span class="速度数字">${最终速度}</span><span class="速度斜杠">/</span><span class="速度单位">分钟</span>`;
+  }
+}
+
+function 更新结果区图表() {
+  更新错误分析图表();
+  更新速度分析图表();
+}
+
+function 更新错误分析图表() {
+  if (!错误分析图表) return;
+
+  // 分析错误字符集合
+  const 错误统计 = {};
+
+  // 遍历错误字符集合，按原始字符汇总
+  for (const 索引 in 错误字符集合) {
+    const 错误记录 = 错误字符集合[索引];
+    const 原始字符 = 错误记录.原始字符;
+    const 实际输入字符 = 错误记录.实际输入字符;
+
+    if (!错误统计[原始字符]) {
+      错误统计[原始字符] = {
+        总次数: 0,
+        实际输入分组: {},
+      };
+    }
+
+    错误统计[原始字符].总次数++;
+
+    if (!错误统计[原始字符].实际输入分组[实际输入字符]) {
+      错误统计[原始字符].实际输入分组[实际输入字符] = 0;
+    }
+    错误统计[原始字符].实际输入分组[实际输入字符]++;
+  }
+
+  // 如果没有错误数据，显示空图表
+  const 原始字符列表 = Object.keys(错误统计);
+  if (原始字符列表.length === 0) {
+    错误分析图表.setOption({
+      textStyle: {
+        fontFamily: '"Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif',
+      },
+      title: {
+        text: "错误字符分析",
+        left: "center",
+        textStyle: { color: "#fff" },
+      },
+      graphic: {
+        type: "text",
+        left: "center",
+        top: "middle",
+        style: {
+          text: "暂无错误数据",
+          fontSize: 20,
+          fill: "#999",
+        },
+      },
+    });
+    return;
+  }
+
+  // 转换为ECharts数据格式
+  原始字符列表.sort();
+  const 系列数据 = [];
+  const 实际输入字符集合 = new Set();
+
+  // 收集所有实际输入字符
+  原始字符列表.forEach((原始字符) => {
+    Object.keys(错误统计[原始字符].实际输入分组).forEach((实际字符) => {
+      实际输入字符集合.add(实际字符);
+    });
+  });
+
+  const 实际输入字符列表 = Array.from(实际输入字符集合);
+
+  // 为每个实际输入字符创建一个系列
+  实际输入字符列表.forEach((实际字符) => {
+    const 数据 = 原始字符列表.map((原始字符) => {
+      return 错误统计[原始字符].实际输入分组[实际字符] || 0;
+    });
+
+    系列数据.push({
+      name: `误输入为"${实际字符 === " " ? "(空格)" : 实际字符}"`,
+      type: "bar",
+      stack: "错误",
+      data: 数据,
+    });
+  });
+
+  const 选项 = {
+    textStyle: {
+      fontFamily: '"Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif',
+    },
+    title: {
+      text: "错误字符分析",
+      left: "center",
+      textStyle: {
+        color: "#fff",
+      },
+    },
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        type: "shadow",
+      },
+    },
+    legend: {
+      data: 实际输入字符列表.map((字符) => `误输入为"${字符 === " " ? "(空格)" : 字符}"`),
+      top: 40,
+      textStyle: {
+        color: "#fff",
+      },
+    },
+    grid: {
+      left: "3%",
+      right: "4%",
+      bottom: "3%",
+      top: "20%",
+      containLabel: true,
+    },
+    xAxis: {
+      type: "category",
+      data: 原始字符列表.map((字符) => (字符 === " " ? "(空格)" : 字符)),
+      axisLabel: {
+        color: "#fff",
+      },
+      axisLine: {
+        lineStyle: {
+          color: "#666",
+        },
+      },
+    },
+    yAxis: {
+      type: "value",
+      name: "错误次数",
+      nameTextStyle: {
+        color: "#fff",
+      },
+      axisLabel: {
+        color: "#fff",
+      },
+      axisLine: {
+        lineStyle: {
+          color: "#666",
+        },
+      },
+      splitLine: {
+        lineStyle: {
+          color: "#333",
+        },
+      },
+    },
+    series: 系列数据,
+  };
+
+  错误分析图表.setOption(选项);
+
+  // 响应式调整
+  setTimeout(() => {
+    错误分析图表?.resize();
+  }, 100);
+}
+
+function 更新速度分析图表() {
+  if (!速度分析图表 || !统计数据数组 || 统计数据数组.length === 0) {
+    if (速度分析图表) {
+      速度分析图表.setOption({
+        textStyle: {
+          fontFamily: '"Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif',
+        },
+        title: {
+          text: "输入速度变化",
+          left: "center",
+          textStyle: { color: "#fff" },
+        },
+        graphic: {
+          type: "text",
+          left: "center",
+          top: "middle",
+          style: {
+            text: "暂无速度数据",
+            fontSize: 20,
+            fill: "#999",
+          },
+        },
+      });
+    }
+    return;
+  }
+
+  // 提取时间和速度数据
+  const 时间数据 = [];
+  const 速度数据 = [];
+
+  统计数据数组.forEach((统计) => {
+    // 直接使用保存的毫秒数转换为秒数，保留小数精度
+    const 总秒数 = (统计.测试时间毫秒 || 0) / 1000;
+
+    时间数据.push(总秒数);
+    速度数据.push(Math.round(统计.速度));
+  });
+
+  const 选项 = {
+    textStyle: {
+      fontFamily: '"Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif',
+    },
+    title: {
+      text: "输入速度变化",
+      left: "center",
+      textStyle: {
+        color: "#fff",
+      },
+    },
+    tooltip: {
+      trigger: "axis",
+      formatter: function (params) {
+        const 数据 = params[0];
+        const 秒数 = 数据.value[0];
+        const 速度 = 数据.value[1];
+        const 分钟 = Math.floor(秒数 / 60);
+        const 剩余秒 = 秒数 % 60;
+        return `时间: ${分钟}分${剩余秒}秒<br/>速度: ${速度} 字符/分钟`;
+      },
+    },
+    grid: {
+      left: "3%",
+      right: "4%",
+      bottom: "3%",
+      top: "15%",
+      containLabel: true,
+    },
+    xAxis: {
+      type: "value",
+      name: "测试时间（秒）",
+      nameTextStyle: {
+        color: "#fff",
+      },
+      axisLabel: {
+        color: "#fff",
+        formatter: function (value) {
+          const 分钟 = Math.floor(value / 60);
+          const 秒 = value % 60;
+          return `${分钟}分${秒}秒`;
+        },
+      },
+      axisLine: {
+        lineStyle: {
+          color: "#666",
+        },
+      },
+      splitLine: {
+        lineStyle: {
+          color: "#333",
+        },
+      },
+    },
+    yAxis: {
+      type: "value",
+      name: "速度（字符/分钟）",
+      nameTextStyle: {
+        color: "#fff",
+      },
+      axisLabel: {
+        color: "#fff",
+      },
+      axisLine: {
+        lineStyle: {
+          color: "#666",
+        },
+      },
+      splitLine: {
+        lineStyle: {
+          color: "#333",
+        },
+      },
+    },
+    series: [
+      {
+        name: "输入速度",
+        type: "line",
+        smooth: true,
+        data: 时间数据.map((时间, 索引) => [时间, 速度数据[索引]]),
+        lineStyle: {
+          color: "#4caf50",
+          width: 2,
+        },
+        itemStyle: {
+          color: "#4caf50",
+        },
+        areaStyle: {
+          color: {
+            type: "linear",
+            x: 0,
+            y: 0,
+            x2: 0,
+            y2: 1,
+            colorStops: [
+              { offset: 0, color: "rgba(76, 175, 80, 0.3)" },
+              { offset: 1, color: "rgba(76, 175, 80, 0.1)" },
+            ],
+          },
+        },
+      },
+    ],
+  };
+
+  速度分析图表.setOption(选项);
+
+  setTimeout(() => {
+    速度分析图表?.resize();
+  }, 100);
+}
+
+window.addEventListener("resize", () => {
+  错误分析图表?.resize();
+  速度分析图表?.resize();
+});
+
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", 初始化定时器设置);
   document.addEventListener("DOMContentLoaded", 初始化定时复选框);
   document.addEventListener("DOMContentLoaded", 初始化姓名输入框);
   document.addEventListener("DOMContentLoaded", 初始化开始按钮);
+  document.addEventListener("DOMContentLoaded", 初始化终止和详情按钮);
 } else {
   初始化定时器设置();
   初始化定时复选框();
   初始化姓名输入框();
   初始化开始按钮();
+  初始化终止和详情按钮();
 }

@@ -76,13 +76,13 @@ body:has(.文章列表区.显示) #选择文章 {
   font-size: 16px;
 }
 
-.按钮:not(#选择文章, #开始):hover {
+.按钮:not(#选择文章, #开始, #终止按钮, #详情按钮):hover {
   background-color: var(--按钮悬停背景色);
   color: var(--按钮悬停字体色);
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
-.按钮:not(#选择文章, #开始):active {
+.按钮:not(#选择文章, #开始, #终止按钮, #详情按钮):active {
   background-color: var(--按钮按下背景色);
 }
 
@@ -153,7 +153,7 @@ body:has(.文章列表区.显示) #选择文章 {
   position: fixed;
   top: 50%;
   left: 50%;
-  translate: -50% calc(-50% + 250px);
+  translate: -50% calc(-50% + 260px);
   visibility: hidden;
   opacity: 0;
   z-index: 9999;
@@ -165,7 +165,7 @@ body:has(.文章列表区.显示) #选择文章 {
   top: 50%;
   left: 50%;
   translate: -50% -50%;
-  height: 500px;
+  height: 527px;
   width: fit-content;
   visibility: hidden;
   opacity: 0;
@@ -225,6 +225,7 @@ body:has(.文章列表区.显示) #选择文章 {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+  align-content: center;
   list-style: none;
   overflow: hidden;
   border-radius: 10px;
@@ -284,6 +285,14 @@ body:has(.文章列表区.显示) #选择文章 {
   color: silver;
 }
 
+.文章字符数 {
+  font-size: 12px;
+  color: white;
+  background-color: #345;
+  padding: 4px 8px;
+  border-radius: 100px;
+}
+
 .定时设置子区 {
   display: flex;
   align-items: center;
@@ -327,7 +336,7 @@ body:has(.文章列表区.显示) #选择文章 {
   font-family: "Doto", "Google Sans Code", "JetBrains Mono", "Noto Sans SC", 微软雅黑, sans-serif;
   font-size: 24px;
   font-weight: 600;
-  padding: 0 0.5ch;
+  padding: 1ch 0.5ch;
   background-color: #123;
   color: white;
   border: none;
@@ -479,7 +488,7 @@ input[type="text"]:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(20, 20, 20, 0.7);
   backdrop-filter: blur(5px);
   display: flex;
   justify-content: center;
@@ -487,9 +496,171 @@ input[type="text"]:hover {
   z-index: 1000;
   font-size: 72px;
   font-weight: bold;
-  color: #fff;
+  color: silver;
   font-family: "Noto Sans SC", 微软雅黑, sans-serif;
   pointer-events: none;
+}
+
+.测试结束覆盖层 .覆盖层内容容器 {
+  pointer-events: auto;
+}
+
+.结果区 {
+  display: none;
+  padding-top: 75px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.95);
+  z-index: 2000;
+  overflow-y: auto;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+}
+
+.关闭结果区按钮 {
+  position: fixed;
+  top: 70px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  font-size: 30px;
+  line-height: 1;
+  color: silver;
+  background-color: transparent;
+  border: 2px solid gray;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.关闭结果区按钮:hover {
+  background-color: #fff;
+  border: 2px solid #fff;
+  color: #000;
+}
+
+.结果区头部 {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px 40px;
+  z-index: 10;
+}
+
+.结果区头部内容 {
+  padding: 30px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: rgba(30, 30, 30, 0.95);
+  border-bottom: 2px solid #4caf50;
+}
+
+.结果区头部行 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  align-items: center;
+}
+
+.结果区头部项 {
+  display: flex;
+  align-items: center;
+}
+
+.结果区头部标签 {
+  color: #888;
+  font-size: 16px;
+}
+
+.结果区头部值 {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.结果区头部值 .时间数字 {
+  color: #4caf50;
+}
+
+.结果区头部值 .时间单位 {
+  color: #abc;
+  margin: 0 2px;
+}
+
+.结果区头部值 .时间冒号 {
+  color: #666;
+}
+
+.结果区头部值 .用时小时 {
+  color: #abc;
+  margin: 0 2px;
+}
+
+.结果区头部值 .用时分钟 {
+  color: #abc;
+  margin: 0 2px;
+}
+
+.结果区头部值 .用时秒 {
+  color: #abc;
+  margin-left: 2px;
+}
+
+.结果区头部值 .正确率百分号 {
+  color: #abc;
+  margin-left: 2px;
+}
+
+.结果区头部值 .速度数字 {
+  color: #4caf50;
+}
+
+.结果区头部值 .速度斜杠 {
+  color: #888;
+}
+
+.结果区头部值 .速度单位 {
+  color: #abc;
+}
+
+.结果区标题 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.结果区内容 {
+  padding: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.结果区部分 {
+  margin-bottom: 60px;
+  background-color: rgba(40, 40, 40, 0.8);
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.结果区部分标题 {
+  margin: 0 0 20px 0;
+  font-size: 24px;
+  font-weight: bold;
+  color: #4caf50;
+  border-bottom: 2px solid #4caf50;
+  padding-bottom: 10px;
 }
 
 .原始字符 {
@@ -509,6 +680,10 @@ input[type="text"]:hover {
 .原始字符.空格 {
   position: relative;
   width: 1ch;
+}
+
+.原始字符.空格.错误 {
+  background-image: linear-gradient(to bottom, transparent 25%, #f44 25%, #f44 75%, transparent 75%);
 }
 
 .原始字符.正确 {
@@ -552,12 +727,12 @@ input[type="text"]:hover {
 .信息标题 {
   font-size: 14px;
   color: #aaa;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   text-align: center;
 }
 
 .字符统计标题 {
-  margin-top: 25px;
+  margin-top: 30px;
 }
 
 .时间显示 {
@@ -630,7 +805,7 @@ input[type="text"]:hover {
 }
 
 .字符数显示 {
-  font-size: 20px;
+  font-size: 16px;
   text-align: center;
   font-family: "Google Sans Code", "JetBrains Mono", "Google Sans Code", monospace;
   color: #678;
@@ -720,4 +895,49 @@ input[type="text"]:hover {
 
 .速度分钟 {
   color: #abc;
+}
+
+.操作按钮组 {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.终止按钮,
+.详情按钮 {
+  flex: 1;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: none;
+  font-family: "Noto Sans SC", 微软雅黑, sans-serif;
+}
+
+.终止按钮 {
+  background-color: #8a221a;
+  color: #fff;
+}
+
+.终止按钮:hover {
+  background-color: #a72a21;
+}
+
+.终止按钮:active {
+  background-color: #d73c31;
+}
+
+.详情按钮 {
+  background-color: #2b662d;
+  color: #fff;
+}
+
+.详情按钮:hover {
+  background-color: #39873c;
+}
+
+.详情按钮:active {
+  background-color: #56c15a;
 }

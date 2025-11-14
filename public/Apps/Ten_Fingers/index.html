@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="./Ten_Fingers.css" />
     <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <script src="./echarts.min.js"></script>
     <script src="/Scripts/top-banner.js" defer></script>
     <script src="./Ten_Fingers.js" defer></script>
   </head>
@@ -44,13 +45,13 @@
           <div class="子区内容 定时子区内容">
             <div class="分钟区 定时区">
               <div class="数值区 分钟数值区">
-                <input type="number" id="分钟" value="0" class="数值框" min="0" max="59" />
+                <input type="number" id="分钟" value="1" class="数值框" min="0" max="59" />
               </div>
               <span class="单位">分</span>
             </div>
             <div class="秒区 定时区">
               <div class="数值区 秒数值区">
-                <input type="number" id="秒" value="30" class="数值框" min="0" max="59" />
+                <input type="number" id="秒" value="0" class="数值框" min="0" max="59" />
               </div>
               <span class="单位">秒</span>
             </div>
@@ -113,6 +114,13 @@
                 <span class="速度字符数">0</span><span class="速度斜杠">/</span><span class="速度分钟">分钟</span>
               </span>
             </div>
+          </div>
+        </div>
+        <div class="信息项 终止和详情">
+          <div class="信息标题">操作</div>
+          <div class="操作按钮组">
+            <button class="按钮 终止按钮" id="终止按钮">终止</button>
+            <button class="按钮 详情按钮" id="详情按钮">详情</button>
           </div>
         </div>
       </div>
