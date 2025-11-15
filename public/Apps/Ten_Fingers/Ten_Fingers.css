@@ -124,6 +124,11 @@ body:has(.文章列表区.显示) #选择文章 {
   font-weight: 500;
 }
 
+#选择文章:disabled {
+  filter: brightness(50%);
+  pointer-events: none;
+}
+
 .关闭按钮 {
   position: absolute;
   z-index: 1;
@@ -194,20 +199,55 @@ body:has(.文章列表区.显示) #选择文章 {
 }
 
 .文件夹项 {
+  position: relative;
   width: 50px;
   height: 50px;
-  padding: 12px;
+  padding: 10px;
   border-radius: 5px;
   border: solid 1px transparent;
+  user-select: none;
+  --本体尺寸: 50px;
+  --四角线框尺寸: 8px;
+  --四角线框间隙: -2px;
+  --四角线框厚度: 2px;
+  --四角线框偏移: calc(10px / 4);
+}
+
+.文件夹项::before {
+  position: absolute;
+  content: "";
+  left: var(--四角线框偏移);
+  top: var(--四角线框偏移);
+  width: calc(var(--本体尺寸) + var(--四角线框间隙) * 2);
+  height: calc(var(--本体尺寸) + var(--四角线框间隙) * 2);
+  border: solid var(--四角线框厚度) lightseagreen;
+  pointer-events: none;
+  mask: conic-gradient(at var(--四角线框尺寸) var(--四角线框尺寸), transparent 75%, white 75%) 0 0 /
+    calc(100% - var(--四角线框尺寸)) calc(100% - var(--四角线框尺寸)) repeat;
+  transition: 175ms;
+  opacity: 0;
+  scale: 0.5;
 }
 
 .文件夹项:not(.激活):hover {
-  background-color: #4f81;
+  background-color: #4bf3;
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
-.文件夹项.激活 {
-  border: solid 1px #4f8a;
+.文件夹项.激活::before {
+  opacity: 1;
+  scale: 1;
+}
+
+.文件夹项::after {
+  position: absolute;
+  content: attr(data-序号);
+  top: calc(100% + 5px);
+  left: 50%;
+  translate: -50% 0;
+  color: silver;
+  font-size: 14px;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 .文件夹图标 {

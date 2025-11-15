@@ -42,7 +42,7 @@ const Storage_Keys = {
   当前文件夹: "TenFingers_当前文件夹",
 };
 
-let 当前文件夹 = 从本地存储读取(Storage_Keys.当前文件夹, "General");
+let 当前文件夹 = 从本地存储读取(Storage_Keys.当前文件夹, "Computer");
 
 function 从本地存储读取(键名, 默认值) {
   const 存储值 = localStorage.getItem(键名);
@@ -126,7 +126,7 @@ async function 初始化文章列表() {
     const 文件夹项 = document.createElement("li");
     文件夹项.className = "文件夹项";
     文件夹项.dataset.文件夹名 = 文件夹名;
-    文件夹项.title = 文件夹名 === "General" ? "计算机" : 文件夹名;
+    文件夹项.title = 文件夹名;
     const 文件夹图标 = document.createElement("img");
     文件夹图标.className = "文件夹图标";
     文件夹图标.src = `/Apps/Ten_Fingers/SVG/${文件夹名}.svg`;
@@ -144,12 +144,14 @@ async function 初始化文章列表() {
     文章列表.dataset.文件夹名 = 文件夹名;
     文章列表区.appendChild(文章列表);
 
-    for (const 文件名 of 文件列表) {
+    for (const 文件信息 of 文件列表) {
+      const 文件名 = 文件信息.文件名 || 文件信息; // 兼容旧格式（字符串）和新格式（对象）
       const 文件路径 = `./Texts/${文件夹名}/${文件名}`;
       const 文章容器 = document.createElement("li");
       文章容器.className = "文章容器";
 
       文章容器.dataset.文件路径 = 文件路径;
+      文章容器.dataset.序号 = 文件名.split("_")[0];
 
       const 文章序号 = document.createElement("span");
       文章序号.className = "文章序号";
@@ -161,25 +163,16 @@ async function 初始化文章列表() {
 
       const 字符数量元素 = document.createElement("span");
       字符数量元素.className = "文章字符数";
-      字符数量元素.textContent = "";
+      // 直接从 JSON 中读取字符数
+      const 字符数 = 文件信息.字符数;
+      if (字符数 !== null && 字符数 !== undefined) {
+        字符数量元素.textContent = `${字符数}`;
+      } else {
+        字符数量元素.textContent = "未知";
+      }
 
       文章容器.append(文章序号, 文章标题, 字符数量元素);
       文章列表.appendChild(文章容器);
-
-      // 异步加载文章内容以获取字符数量
-      (async () => {
-        try {
-          const 文件路径 = 文章容器.dataset.文件路径;
-          const 文章内容 = await fetch(文件路径)
-            .then((response) => response.text())
-            .then((内容) => 内容.replace(/\n/g, " "));
-          const 处理后的内容 = 在英文中文间添加空格(文章内容);
-          const 字符数 = 处理后的内容.length;
-          字符数量元素.textContent = `${字符数}`;
-        } catch (error) {
-          字符数量元素.textContent = "未知";
-        }
-      })();
 
       文章容器.addEventListener("click", async () => {
         const 已激活文章容器 = 文章列表区.querySelector(".文章容器.激活");
@@ -187,6 +180,9 @@ async function 初始化文章列表() {
           已激活文章容器.classList.remove("激活");
         }
         文章容器.classList.toggle("激活");
+        const 已选择文章文件夹 = 文件夹列表.querySelector(".文件夹项[data-序号]");
+        已选择文章文件夹?.removeAttribute("data-序号");
+        文件夹项.dataset.序号 = 文章容器.dataset.序号;
         当前文章 = `${文章序号.textContent.trim()}_${文章标题.textContent.trim()}`;
 
         if (文章容器.classList.contains("激活")) {
@@ -207,6 +203,7 @@ async function 初始化文章列表() {
     文章列表.style.width = `${
       lastArticleContainer.offsetLeft + lastArticleContainer.offsetWidth + 内边距 * 2 - firstArticleContainer.offsetLeft
     }px`;
+    选择文章按钮.removeAttribute("disabled");
   }
 
   阻止文章列表点击冒泡();
