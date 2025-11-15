@@ -1451,8 +1451,9 @@ function 更新错误分析图表() {
       fontFamily: '"Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif',
     },
     title: {
-      text: "错误字符分析",
+      text: `错误次数：${错误字符数}`,
       left: "center",
+      top: 10,
       textStyle: {
         color: "#fff",
       },
@@ -1559,13 +1560,17 @@ function 更新速度分析图表() {
     速度数据.push(Math.round(统计.速度));
   });
 
+  // 计算平均速度 - 使用已有的统计数据
+  const 平均速度 = Math.round(统计数据数组[统计数据数组.length - 1].速度);
+
   const 选项 = {
     textStyle: {
       fontFamily: '"Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif',
     },
     title: {
-      text: "输入速度变化",
+      text: `平均速度：${平均速度} 字符 / 分钟`,
       left: "center",
+      top: 10,
       textStyle: {
         color: "#fff",
       },
