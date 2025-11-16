@@ -3,9 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>画中寻名</title>
+    <title>2048</title>
     <link rel="icon" href="/Games/Mario-Run.gif" type="image/x-icon" />
-    <link rel="stylesheet" href="./Rules.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -18,12 +17,14 @@
     <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
     <script src="/Scripts/top-banner.js" defer></script>
     <script src="https://cdn.lordicon.com/bhenfmcm.js"></script>
+    <link rel="stylesheet" href="./game-2048.css" />
+    <script src="./game-2048.js" defer></script>
   </head>
   <body>
     <script src="/Scripts/html-include.js" target="/top-banner.html" position="afterbegin"></script>
     <div class="control-area">
       <div class="back-to-navigator">
-        <a href="../" title="返回游戏大厅">
+        <a href="../index.html" title="返回游戏大厅">
           <img src="../后退.png" alt="后退" />
         </a>
       </div>
@@ -31,5 +32,6 @@
         <img src="../重置.png" alt="重置游戏" title="重置" />
       </div>
     </div>
+    <div class="main"></div>
   </body>
 </html>
