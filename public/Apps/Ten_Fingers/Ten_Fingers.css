@@ -1008,3 +1008,9 @@ input[type="text"]:hover {
 .查看详情按钮:hover {
   background-color: #45a049;
 }
+
+@media screen and (max-height: 1000px) {
+  .输入容器 {
+    translate: 0 50px;
+  }
+}
