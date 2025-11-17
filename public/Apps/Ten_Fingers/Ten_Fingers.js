@@ -1412,6 +1412,10 @@ function 更新错误分析图表() {
         },
       },
     });
+    // 响应式调整，确保canvas正确计算宽度
+    requestAnimationFrame(() => {
+      错误分析图表?.resize();
+    });
     return;
   }
 
@@ -1511,9 +1515,9 @@ function 更新错误分析图表() {
   错误分析图表.setOption(选项);
 
   // 响应式调整
-  setTimeout(() => {
+  requestAnimationFrame(() => {
     错误分析图表?.resize();
-  }, 100);
+  });
 }
 
 function 更新速度分析图表() {
@@ -1538,6 +1542,10 @@ function 更新速度分析图表() {
             fill: "#999",
           },
         },
+      });
+      // 响应式调整，确保canvas正确计算宽度
+      requestAnimationFrame(() => {
+        速度分析图表?.resize();
       });
     }
     return;
@@ -1666,9 +1674,9 @@ function 更新速度分析图表() {
 
   速度分析图表.setOption(选项);
 
-  setTimeout(() => {
+  requestAnimationFrame(() => {
     速度分析图表?.resize();
-  }, 100);
+  });
 }
 
 window.addEventListener("resize", () => {
