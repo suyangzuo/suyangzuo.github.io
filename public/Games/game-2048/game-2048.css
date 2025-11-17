@@ -1,0 +1,283 @@
+*,::after,::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* 2048游戏样式 */
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+  position: relative;
+  font-family: 'Google Sans Code', 'Noto Sans SC', sans-serif;
+}
+
+/* 分数显示样式 */
+.score-container {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  padding: 20px 40px;
+  margin-bottom: 30px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.score-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.score-label {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 18px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 500;
+}
+
+.score-value {
+  color: white;
+  font-size: 48px;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+/* 棋盘样式 */
+.game-board {
+  position: relative;
+  width: 450px;
+  height: 450px;
+  background:
+    radial-gradient(120% 120% at 15% 15%, rgba(255,255,255,0.06) 0%, transparent 60%),
+    radial-gradient(120% 120% at 85% 85%, rgba(255,255,255,0.03) 0%, transparent 60%),
+    linear-gradient(135deg, #334155 0%, #1e293b 60%, #0f172a 100%);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -1px 0 rgba(255,255,255,0.03), 0 24px 60px rgba(0, 0, 0, 0.45);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.game-board:hover {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(255,255,255,0.05), 0 28px 70px rgba(0, 0, 0, 0.55);
+}
+
+.game-board::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+}
+
+.game-board::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 40%;
+  border-radius: 18px 18px 0 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0));
+}
+
+/* 网格单元格样式 */
+.grid-cell {
+  position: absolute;
+  width: 25%;
+  height: 25%;
+  margin: 0;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  box-sizing: border-box;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), inset 0 10px 20px rgba(255,255,255,0.02);
+  transition: all 0.2s ease;
+}
+
+/* 定位网格单元格 */
+.grid-cell:nth-child(1) { top: 0; left: 0; }
+.grid-cell:nth-child(2) { top: 0; left: 25%; }
+.grid-cell:nth-child(3) { top: 0; left: 50%; }
+.grid-cell:nth-child(4) { top: 0; left: 75%; }
+.grid-cell:nth-child(5) { top: 25%; left: 0; }
+.grid-cell:nth-child(6) { top: 25%; left: 25%; }
+.grid-cell:nth-child(7) { top: 25%; left: 50%; }
+.grid-cell:nth-child(8) { top: 25%; left: 75%; }
+.grid-cell:nth-child(9) { top: 50%; left: 0; }
+.grid-cell:nth-child(10) { top: 50%; left: 25%; }
+.grid-cell:nth-child(11) { top: 50%; left: 50%; }
+.grid-cell:nth-child(12) { top: 50%; left: 75%; }
+.grid-cell:nth-child(13) { top: 75%; left: 0; }
+.grid-cell:nth-child(14) { top: 75%; left: 25%; }
+.grid-cell:nth-child(15) { top: 75%; left: 50%; }
+.grid-cell:nth-child(16) { top: 75%; left: 75%; }
+
+/* 数字方块样式 */
+.number-cell {
+  position: absolute;
+  width: 21%;
+  height: 21%;
+  margin: 2%;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  font-weight: bold;
+  color: white;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+  z-index: 10;
+  transition: top 0.3s ease, left 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+
+/* 移动动画相关样式 */
+.number-cell.moving {
+  z-index: 20;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.55);
+  transition: top 0.3s ease, left 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 合并动画相关样式已简化 */
+.number-cell.merging {
+  z-index: 30;
+}
+
+/* 粒子效果相关样式已移至JavaScript动态创建 */
+/* 保留这个注释以便将来参考 */
+/* 不同数字的渐变色 */
+.value-2 { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); color: #666; }
+.value-4 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+.value-8 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+.value-16 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: #333; }
+.value-32 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: #333; }
+.value-64 { background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%); color: #333; }
+.value-128 { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #333; font-size: 28px; }
+.value-256 { background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%); color: #333; font-size: 28px; }
+.value-512 { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); color: #333; font-size: 28px; }
+.value-1024 { background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); font-size: 22px; }
+.value-2048 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); font-size: 22px; }
+
+/* 游戏状态层样式 */
+.game-status {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  z-index: 100;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.status-message {
+  color: white;
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  animation: scaleIn 0.3s ease;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 按钮样式 */
+.restart-button,
+.continue-button {
+  padding: 15px 40px;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.restart-button:hover,
+.continue-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #768eea 0%, #865bc2 100%);
+}
+
+.restart-button:active,
+.continue-button:active {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* 响应式设计 */
+@media (max-width: 500px) {
+  .game-board {
+    width: 90vw;
+    height: 90vw;
+  }
+  
+  .number-cell {
+    font-size: 24px;
+  }
+  
+  .value-128, .value-256, .value-512 {
+    font-size: 20px;
+  }
+  
+  .value-1024, .value-2048 {
+    font-size: 16px;
+  }
+  
+  .score-value {
+    font-size: 36px;
+  }
+  
+  .status-message {
+    font-size: 36px;
+  }
+}
+
+/* 重置按钮悬停效果 */
+.reset-game img:hover {
+  transform: rotate(180deg);
+  transition: transform 0.5s ease;
+}
+
+.reset-game img {
+  transition: transform 0.5s ease;
+}
