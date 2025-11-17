@@ -110,7 +110,7 @@ body {
 }
 
 .tutorials .tutorial-card .intro .card-text:hover {
-  cursor: url(/Images/Common/鼠标-指向.png), pointer;
+  cursor: url(/Images/Common/鼠标-指向.cur), pointer;
   transform: scale(1.04);
   /* text-decoration: underline;
   text-underline-offset: 0.2em;
@@ -149,22 +149,21 @@ body {
   position: fixed;
   width: 100px;
   height: 50px;
-  bottom: 1.5%;
-  right: 1%;
+  bottom: 25px;
+  right: 25px;
   border-radius: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 1.75rem;
   outline: solid 1.5px #fffa;
-  background-color: #111;
-  filter: brightness(3);
+  background-color: #24345d;
   z-index: 1;
+  backdrop-filter: blur(10px);
 }
 
 .返回:hover {
-  background-color: #fffa;
-  filter: contrast(2);
+  background-color: #3d5697;
 }
 
 /* -------------------------------- ↓ 响应式设计 ----------------------------------- */

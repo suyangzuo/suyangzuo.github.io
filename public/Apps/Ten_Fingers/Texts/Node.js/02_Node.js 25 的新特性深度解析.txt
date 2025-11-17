@@ -1,0 +1,14 @@
+Node.js v25, released in October 2025, marks a significant milestone in the runtime's evolution. This version introduces a host of new features and improvements that enhance performance, security, and developer experience.
+Enhanced V8 Engine
+Node.js v25 ships with V8 14.1, delivering substantial performance improvements. Notably, JSON.stringify operations are now significantly faster, benefiting applications that heavily rely on JSON data processing. Additionally, built-in Uint8Array base64/hex conversion streamlines binary data handling.
+Secure-by-Default Applications
+Security remains a top priority. The new permission model introduces --allow-net flags, enabling developers to restrict network access explicitly. Web Storage is now enabled by default, and ErrorEvent is exposed globally, enhancing error handling capabilities.
+WebAssembly and JIT Optimizations
+Node.js v25 doubles down on WebAssembly support, offering improved runtime performance and Just-In-Time (JIT) compilation optimizations. These enhancements make Node.js a more attractive platform for compute-intensive applications.
+Native Test Runner and Profiling
+The built-in test runner is now stable, reducing reliance on external testing frameworks. Additionally, performance profiling tools are integrated directly into the runtime, simplifying performance analysis and optimization.
+Portable Compile Cache
+A new portable compile cache improves startup times by caching compiled JavaScript code. This feature is particularly beneficial for serverless environments where fast cold starts are crucial.
+Removed Deprecated APIs
+To maintain a clean and efficient API surface, long-deprecated features like SlowBuffer have been removed. This streamlining reduces complexity and encourages developers to adopt modern alternatives.
+In summary, Node.js v25 represents a significant leap forward, offering developers a more secure, performant, and feature-rich environment for building modern applications.
