@@ -1,4 +1,4 @@
-const 选择文章按钮 = document.querySelector("#选择文章");
+const 选择文章按钮 = document.querySelector("#选择文章"); // 选择文章按钮
 const 文件夹列表区 = document.querySelector(".文件夹列表区");
 const 文章列表区 = document.querySelector(".文章列表区");
 const 分钟输入框 = document.querySelector("#分钟");
@@ -80,7 +80,7 @@ function 保存到会话存储(键名, 值) {
 }
 
 const 定时器 = {
-  分: 从本地存储读取(Storage_Keys.定时器分, 0),
+  分: 从本地存储读取(Storage_Keys.定时器分, 1),
   秒: 从本地存储读取(Storage_Keys.定时器秒, 0),
 };
 let 已设置定时 = 从本地存储读取(Storage_Keys.已设置定时, false);
@@ -159,7 +159,7 @@ async function 初始化文章列表() {
 
       const 文章标题 = document.createElement("h3");
       文章标题.className = "文章标题";
-      文章标题.textContent = 文件名.split("_")[1].split(".")[0];
+      文章标题.textContent = 文件名.split("_")[1].replace(/\.txt$/i, "");
 
       const 字符数量元素 = document.createElement("span");
       字符数量元素.className = "文章字符数";
@@ -189,7 +189,7 @@ async function 初始化文章列表() {
           const 文件路径 = 文章容器.dataset.文件路径;
           const 文章内容 = await fetch(文件路径)
             .then((response) => response.text())
-            .then((内容) => 内容.replace(/\n/g, " "));
+            .then((内容) => 内容.trim().replace(/\n/g, " "));
           await 初始化输入容器(文章内容);
         }
       });
@@ -334,8 +334,8 @@ function 更新关闭文章列表按钮位置() {
 }
 
 function 初始化定时器设置() {
-  const 分钟值 = 从本地存储读取(Storage_Keys.定时器分, 0);
-  const 秒值 = 从本地存储读取(Storage_Keys.定时器秒, 30);
+  const 分钟值 = 从本地存储读取(Storage_Keys.定时器分, 1);
+  const 秒值 = 从本地存储读取(Storage_Keys.定时器秒, 0);
 
   分钟输入框.value = 分钟值;
   秒输入框.value = 秒值;
@@ -821,8 +821,8 @@ async function 初始化输入容器(文章内容) {
 
   const 定时复选框 = document.querySelector("#定时复选框");
   if (定时复选框 && 定时复选框.checked) {
-    const 初始分钟值 = 从本地存储读取(Storage_Keys.定时器分, 0);
-    const 初始秒值 = 从本地存储读取(Storage_Keys.定时器秒, 30);
+    const 初始分钟值 = 从本地存储读取(Storage_Keys.定时器分, 1);
+    const 初始秒值 = 从本地存储读取(Storage_Keys.定时器秒, 0);
     if (分钟输入框) 分钟输入框.value = 初始分钟值;
     if (秒输入框) 秒输入框.value = 初始秒值;
   }
@@ -1125,7 +1125,7 @@ function 初始化开始按钮() {
         const 文件路径 = 激活的文章容器.dataset.文件路径;
         const 文章内容 = await fetch(文件路径)
           .then((response) => response.text())
-          .then((内容) => 内容.replace(/\n/g, " "));
+          .then((内容) => 内容.trim().replace(/\n/g, " "));
         await 初始化输入容器(文章内容);
       }
     });
@@ -1368,10 +1368,8 @@ function 更新结果区图表() {
 function 更新错误分析图表() {
   if (!错误分析图表) return;
 
-  // 分析错误字符集合
   const 错误统计 = {};
 
-  // 遍历错误字符集合，按原始字符汇总
   for (const 索引 in 错误字符集合) {
     const 错误记录 = 错误字符集合[索引];
     const 原始字符 = 错误记录.原始字符;
@@ -1392,7 +1390,6 @@ function 更新错误分析图表() {
     错误统计[原始字符].实际输入分组[实际输入字符]++;
   }
 
-  // 如果没有错误数据，显示空图表
   const 原始字符列表 = Object.keys(错误统计);
   if (原始字符列表.length === 0) {
     错误分析图表.setOption({
@@ -1423,7 +1420,6 @@ function 更新错误分析图表() {
   const 系列数据 = [];
   const 实际输入字符集合 = new Set();
 
-  // 收集所有实际输入字符
   原始字符列表.forEach((原始字符) => {
     Object.keys(错误统计[原始字符].实际输入分组).forEach((实际字符) => {
       实际输入字符集合.add(实际字符);
@@ -1432,7 +1428,6 @@ function 更新错误分析图表() {
 
   const 实际输入字符列表 = Array.from(实际输入字符集合);
 
-  // 为每个实际输入字符创建一个系列
   实际输入字符列表.forEach((实际字符) => {
     const 数据 = 原始字符列表.map((原始字符) => {
       return 错误统计[原始字符].实际输入分组[实际字符] || 0;

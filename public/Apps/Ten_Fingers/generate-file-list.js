@@ -10,8 +10,8 @@ function 在英文中文间添加空格(文本) {
 function 计算字符数(文件路径) {
   try {
     const 文件内容 = fs.readFileSync(文件路径, 'utf8');
-    // 将换行替换为空格
-    const 处理后的内容 = 文件内容.replace(/\n/g, " ");
+    // 先去除前后空白字符，再将换行替换为空格
+    const 处理后的内容 = 文件内容.trim().replace(/\n/g, " ");
     // 在英文中文间添加空格
     const 最终内容 = 在英文中文间添加空格(处理后的内容);
     return 最终内容.length;

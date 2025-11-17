@@ -752,12 +752,14 @@ input[type="text"]:hover {
 .信息展示区 {
   position: fixed;
   right: 20px;
-  top: 50%;
+  top: max(10px, 47.5%);
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   gap: 20px;
   z-index: 1000;
+  --侧边数据统计字符颜色: #6e9fde;
+  --侧边数据统计单位颜色: lightblue;
 }
 
 .信息项 {
@@ -766,12 +768,13 @@ input[type="text"]:hover {
   padding: 15px;
   min-width: 194px;
   backdrop-filter: blur(10px);
+  font-size: 16px;
 }
 
 .信息标题 {
   font-size: 14px;
   color: #aaa;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   text-align: center;
 }
 
@@ -780,7 +783,6 @@ input[type="text"]:hover {
 }
 
 .时间显示 {
-  font-size: 20px;
   font-family: "Google Sans Code", "JetBrains Mono", "Google Sans Code", monospace;
   text-align: center;
   font-weight: 500;
@@ -803,8 +805,8 @@ input[type="text"]:hover {
 }
 
 .进度圆环 {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   position: relative;
   margin: 0 auto;
@@ -823,8 +825,8 @@ input[type="text"]:hover {
 .进度圆环::before {
   content: "";
   position: absolute;
-  width: 90px;
-  height: 90px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   background: rgb(25, 25, 25);
 }
@@ -832,7 +834,7 @@ input[type="text"]:hover {
 .进度百分比 {
   position: relative;
   z-index: 1;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   font-family: "Google Sans Code", "JetBrains Mono", "Google Sans Code", monospace;
   display: flex;
@@ -849,7 +851,7 @@ input[type="text"]:hover {
 }
 
 .字符数显示 {
-  font-size: 16px;
+  font-size: 14px;
   text-align: center;
   font-family: "Google Sans Code", "JetBrains Mono", "Google Sans Code", monospace;
   color: #678;
@@ -867,7 +869,7 @@ input[type="text"]:hover {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  font-size: 16px;
+  font-size: 14px;
   font-family: "Google Sans Code", "JetBrains Mono", "Google Sans Code", monospace;
 }
 
@@ -877,18 +879,18 @@ input[type="text"]:hover {
 }
 
 .错误数据标签 {
-  color: #8ac;
+  color: #c6c6c6;
   width: 80px;
   text-align: right;
   text-wrap: nowrap;
 }
 
 .错误字符数 {
-  color: #f44;
+  color: var(--侧边数据统计字符颜色);
 }
 
 .退格次数 {
-  color: #ffa500;
+  color: var(--侧边数据统计字符颜色);
 }
 
 .正确率 {
@@ -897,23 +899,27 @@ input[type="text"]:hover {
 }
 
 .正确率数字 {
-  color: #38a86a;
+  color: var(--侧边数据统计字符颜色);
 }
 
 .正确率 .小数点 {
-  color: #888;
+  color: gray;
 }
 
 .正确率小数 {
-  color: #38a86a;
+  color: var(--侧边数据统计字符颜色);
 }
 
 .正确率 {
-  color: #888;
+  color: gray;
 }
 
 .斜杠 {
   margin: 0 4px;
+}
+
+.冒号 {
+  color: gray;
 }
 
 .百分号,
@@ -929,16 +935,16 @@ input[type="text"]:hover {
 }
 
 .速度字符数 {
-  color: #4caf50;
+  color: var(--侧边数据统计字符颜色);
 }
 
 .速度斜杠 {
-  color: #888;
+  color: gray;
   margin: 0 2px;
 }
 
 .速度分钟 {
-  color: #abc;
+  color: lightsteelblue;
 }
 
 .操作按钮组 {
@@ -951,7 +957,7 @@ input[type="text"]:hover {
 .详情按钮 {
   flex: 1;
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   border-radius: 6px;
   cursor: pointer;
