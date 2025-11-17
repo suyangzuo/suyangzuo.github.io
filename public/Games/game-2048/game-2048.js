@@ -272,6 +272,8 @@ let 游戏结束 = false;
 let 游戏胜利 = false;
  
 let 最近移动方向 = null;
+let 延迟生成计时器 = null;
+let 动画进行中 = false;
 
 // 渲染棋盘到页面
 function 渲染棋盘(棋盘) {
@@ -438,7 +440,7 @@ function 重置游戏() {
 
 // 处理键盘事件
 function 处理键盘事件(event) {
-  if (游戏结束) return;
+  if (游戏结束 || 动画进行中) return;
   
   let 移动发生 = false;
   const k = (event.key || '').toLowerCase();
@@ -468,14 +470,17 @@ function 处理键盘事件(event) {
   }
   
   if (移动发生) {
+    动画进行中 = true;
     // 先渲染移动动画
     渲染棋盘(棋盘);
     
     // 移动动画完成后（350ms）延迟50ms再生成新数字并重新渲染
-    setTimeout(() => {
+    if (延迟生成计时器) clearTimeout(延迟生成计时器);
+    延迟生成计时器 = setTimeout(() => {
       每次移动后随机生成一个数字(棋盘);
       最近移动方向 = null;
       渲染棋盘(棋盘);
+      动画进行中 = false;
     }, 400); // 350ms动画时间 + 50ms延迟
   }
   
