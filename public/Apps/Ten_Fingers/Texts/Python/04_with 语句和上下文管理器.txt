@@ -1,8 +1,6 @@
 Managing resources like files, network connections, or locks is a critical part of programming. Traditionally, you had to remember to explicitly close or release these resources, which could lead to leaks if an exception occurred. Python's with statement elegantly solves this problem.
-
 The with statement is used for resource management and ensures that clean-up code is executed, even if an error is raised. The most common example is file handling. Instead of writing file = open('file.txt') and then later file.close(), you write:
 with open('file.txt') as file:
 data = file.read()
 When the block of code under the with statement is exited, the file is automatically closed, no matter what. This is not just syntactic sugar; it's a safer and more robust way to handle resources.
-
 The magic behind the with statement is the context manager. A context manager is an object that defines the methods __enter__() and __exit__(). When the with statement is executed, __enter__() is called, and the object it returns is assigned to the variable after as. After the block is finished, __exit__() is called to handle any clean-up. You can create your own context managers using the contextlib module or by defining a class with these two methods, allowing you to bring this clean, safe pattern to your own resources.
