@@ -749,6 +749,16 @@ input[type="text"]:hover {
   color: #fff;
 }
 
+.输入区:has(.隐藏输入框:focus) .原始字符.空格.当前 {
+  background: linear-gradient(
+    to top,
+    transparent,
+    rgba(255, 255, 255, 0.5) 50%,
+    transparent
+  );
+  color: #fff;
+}
+
 .信息展示区 {
   position: fixed;
   right: 20px;
