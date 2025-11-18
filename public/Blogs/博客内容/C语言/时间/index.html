@@ -1,0 +1,433 @@
+<article class="专题简介">
+  <h1 class="简介标题">时间<span class="原创">原创</span></h1>
+  <div class="简介信息">
+    <section class="简介信息文本">
+      <p class="作者">
+        <span class="作者前缀 前缀">作者：</span>
+        <span class="作者姓名">苏扬</span>
+      </p>
+      <p class="日期">
+        <span class="日期前缀 前缀">日期：</span>
+        <span class="日期文本"><span class="日期文本-数字 日期文本-年">2024</span>年<span class="日期文本-数字 日期文本-月">3</span>月<span class="日期文本-数字 日期文本-日">26</span>日</span>
+      </p>
+    </section>
+    <section class="简介信息图像">
+      <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+    </section>
+  </div>
+  <ul class="联系方式列表">
+    <li class="联系方式项">
+      <a class="联系方式链接" href="mailto:suyangzuo@gmail.com" target="_blank">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://github.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-github"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.deviantart.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-deviantart"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dev.to/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-dev"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.freecodecamp.org/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-free-code-camp"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://codepen.io/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-codepen"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://dribbble.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-dribbble"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.artstation.com/user-7893655"
+        target="_blank"
+        ><i class="fa-brands fa-artstation"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://codesandbox.io/u/suyangzuo"
+        target="_blank"
+      >
+        <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
+      /></a>
+    </li>
+  </ul>
+</article>
+
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">时间概念</h2>
+
+    <h3 class="分区标题 分区3级标题">
+      协调世界时<span class="附加说明">UTC</span>
+    </h3>
+    <p class="分区普通文本">
+      协调世界时<span class="附加说明">UTC</span
+      >是最主要的世界时间标准，其以原子时的秒长为基础，在时刻上尽量接近于格林威治标准时间，是世界上调节时钟和时间的主要时间标准。详细信息请参阅<a
+        class="超链接"
+        target="_blank"
+        href="https://zh.wikipedia.org/wiki/协调世界时"
+        >维基百科</a
+      >。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      日历时间<span class="附加说明">Calendar Time</span>
+    </h3>
+    <p class="分区普通文本">
+      可以理解为从时间起点到时间终点所经过的时间，因此日历时间<span class="强调"
+        >是</span
+      ><span class="行内专业名词">时间段</span>，而<span class="强调">不是</span
+      ><span class="行内专业名词">时间点</span>。
+    </p>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">
+      <span class="行内代码">time.h</span>标准库
+    </h2>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内代码">time.h</span>用途
+    </h3>
+    <p class="分区普通文本">
+      <span class="行内代码">time.h</span
+      >是C语言用来处理时间和日期的标准库，提供了多个数据类型、宏、函数。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内代码">time.h</span>库数据类型
+    </h3>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="代码">clock_t</span>：存储日历时间，单位为处理器时钟数
+      </li>
+      <li class="分区列表项">
+        <span class="代码">time_t</span>：存储日历时间，单位为秒数
+      </li>
+      <li class="分区列表项">
+        <span class="代码">struct tm</span>：结构体，包含了多个时间与日期成员
+        <pre class="line-numbers">
+          <code class="lang-c">
+            struct tm {
+                int tm_hour;  /* 小时，范围：0-23 */
+                int tm_min;   /* 分钟，范围：0-59 */
+                int tm_sec;   /* 秒，范围：0-59 */
+                int tm_year;  /* 年，从 1900 至今的数字 */
+                int tm_mon;   /* 月，范围：0-11 */
+                int tm_mday;  /* 日，范围：0-31 */
+                int tm_wday;  /* 工作日，范围：0-6 */
+                int tm_yday;  /* 一年中的第几天，范围：0-365 */
+                int tm_isdst; /* 夏令时 */
+            }
+          </code>
+        </pre>
+      </li>
+    </ul>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内代码">time.h</span>库宏
+    </h3>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="代码">CLOCKS_PER_SEC</span>：定义了 1
+        秒内的处理器时钟数，一般为<span class="行内专业名词">1000</span>
+      </li>
+      <li class="分区列表项">
+        <span class="代码">CLK_TCK</span>：<span class="行内代码"
+          >CLOCKS_PER_SEC</span
+        >的别名
+      </li>
+    </ul>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内代码">time.h</span>库函数
+    </h3>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="代码">char* asctime(const struct tm* time_ptr)</span>
+        <p class="分区普通文本">
+          将<span class="行内代码">结构体</span
+          >形式的时间参数，转换为字符串形式，格式为<span class="专业名词"
+            >工作日 月 日 时:分:秒 年</span
+          >。
+        </p>
+      </li>
+      <li class="分区列表项">
+        <span class="代码">clock_t clock(void)</span>
+        <p class="分区普通文本">
+          返回从进程开始后使用的<span class="行内专业名词">CPU 时钟数</span>。
+        </p>
+      </li>
+      <li class="分区列表项">
+        <span class="代码">char* ctime(const time_t* timer)</span>
+        <p class="分区普通文本">
+          将<span class="行内代码"
+            >time_t<span class="附加说明"
+              ><span class="行内代码">long long int</span></span
+            ></span
+          >形式的秒数，转换为字符串形式，格式为<span class="专业名词"
+            >工作日 月 日 时:分:秒 年</span
+          >。
+        </p>
+      </li>
+      <li class="分区列表项">
+        <span class="代码">double difftime(time_t time1, time_t time2)</span>
+        <p class="分区普通文本">
+          以秒为单位，返回<span class="行内代码">time1</span>和<span
+            class="行内代码"
+            >time2</span
+          >的时间差。
+        </p>
+      </li>
+      <li class="分区列表项">
+        <span class="代码">struct tm* gmtime(const time_t* timer)</span>
+        <p class="分区普通文本">
+          将<span class="行内代码">time_t</span>类型转换为<span class="行内代码"
+            >struct tm</span
+          >类型的<span class="行内专业名词">UTC 时间</span>。
+        </p>
+      </li>
+      <li class="分区列表项">
+        <span class="代码">struct tm* localtime(const time_t* timer)</span>
+        <p class="分区普通文本">
+          将<span class="行内代码">time_t</span>类型转换为<span class="行内代码"
+            >struct tm</span
+          >类型的<span class="行内专业名词">本地时间</span>。
+        </p>
+      </li>
+      <li class="分区列表项">
+        <span class="代码">time_t mktime(struct tm* timeptr)</span>
+        <p class="分区普通文本">
+          根据本地时区，将<span class="行内代码">struct tm</span>类型转换为<span
+            class="行内代码"
+            >time_t</span
+          >类型。
+        </p>
+      </li>
+      <li class="分区列表项">
+        <span class="代码"
+          >size_t strftime(char* str, size_t maxsize, const char* format, const
+          struct tm* timeptr)</span
+        >
+        <p class="分区普通文本">
+          根据指定格式<span class="行内代码">format</span>，将<span
+            class="行内代码"
+            >struct tm</span
+          >类型转换为<span class="行内专业名词">字符串</span>类型，并存储到<span
+            class="行内代码"
+            >str</span
+          >。
+        </p>
+      </li>
+      <li class="分区列表项">
+        <span class="代码">time_t time(time_t* timer)</span>
+        <p class="分区普通文本">
+          返回自<span class="行内专业名词">1970年1月1日00点00分00秒 UTC</span
+          >以来经过的日历时间，并转换为<span class="行内专业名词">秒</span>。
+        </p>
+      </li>
+    </ul>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">
+      <span class="行内代码">time()</span>函数
+    </h2>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内代码">time()</span>定义
+    </h3>
+    <p class="分区普通文本">
+      <span class="代码">time()</span>函数返回自<span class="行内专业名词"
+        >1970年1月1日00点00分00秒 UTC</span
+      >以来经过的日历时间，以<span class="行内专业名词">秒</span>为单位。
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="专业名词">参数</span
+        >：用来保存时间的对象的指针，可以为<span class="行内代码">NULL</span>。
+      </li>
+      <li class="分区列表项">
+        <span class="专业名词">返回值</span>：返回日历时间，类型为<span
+          class="代码"
+          >time_t</span
+        >，本质上是<span class="代码">long long int</span>。
+      </li>
+    </ul>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        <span class="行内代码">time()</span>的返回值是<span class="行内专业名词"
+          >秒</span
+        >的数量，这是一个非常庞大的数字，<span class="行内专业名词"
+          >4 字节的<span class="行内代码">int</span></span
+        >类型可能装不下<span class="附加说明"
+          >虽然在写这篇博客时依然能够装下</span
+        >，因此设计为使用<span class="行内专业名词"
+          >8 字节的<span class="行内代码">long long int</span
+          ><span class="附加说明"
+            >也就是<span class="行内代码">time_t</span></span
+          ></span
+        >类型来存放秒数，可以存放从<span class="行内专业名词">1970</span
+        >年往后<span class="行内代码">292471208678</span>年的秒数。
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内代码">time()</span>调用
+    </h3>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        #include &lt;stdio.h&gt;
+        #include &lt;time.h&gt;
+
+        int main(void) {
+            time_t calendar_time = time(NULL);
+
+            // time_t 是 long long int，对应的格式说明符是 %lld
+            printf("自 \"1970年1月1日-00时00分00秒-UTC\" 至今，已经经过了：%lld 秒\n",
+                    calendar_time);
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/C语言/时间/time()-范例.webp" alt="time()-范例" />
+    </figure>
+    <p class="分区普通文本">
+      两次运行结果之间相差 2 秒，因为每次运行都会计算到<span
+        class="行内专业名词"
+        >至今</span
+      >为止，精确到秒。
+    </p>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">当前时间</h2>
+
+    <h3 class="分区标题 分区3级标题">获取当前时间</h3>
+    <p class="分区普通文本">
+      <span class="强调">思路</span>：获取日历时间<span class="附加说明"
+        >单位为秒</span
+      ><i class="fa-solid fa-right-long" style="color: gold; margin: 0 5px"></i
+      >将秒转换为结构体。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        #include &lt;stdio.h&gt;
+        #include &lt;time.h&gt;
+        
+        int main(void) {
+            time_t calendar_time = time(NULL); //获取日历时间（秒）
+
+            //gmtime()不会转换为本地时区
+            struct tm* time_f_now = gmtime(&calendar_time);
+            printf("%s\n", asctime(time_f_now)); //asctime()将时间转换为字符串格式
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/时间/获取当前日期_gmtime.webp"
+        alt="获取当前日期_gmtime"
+      />
+    </figure>
+    <p class="分区普通文本">
+      输出结果为：<span class="行内代码">Tue</span
+      ><span class="附加说明">星期二</span>；<span class="行内代码">Mar</span
+      ><span class="附加说明">三月</span>；<span class="行内代码">26日</span
+      >；<span class="行内代码">04时58分47秒</span>；<span class="行内代码"
+        >2024年</span
+      >。如果仔细观察的话，会发现一个问题：右下角的时钟显示时间是<span
+        class="行内专业名词"
+        >12:58</span
+      >，为什么程序显示<span class="行内专业名词">04:58</span>？这是因为<span
+        class="行内代码"
+        >gmtime()</span
+      >转换后的时间为<span class="专业名词">UTC 标准时间</span
+      >，这比中国的标准时间提前了 8 小时；中国的时区为<span class="专业名词"
+        >UTC + 8</span
+      >。如果要按照中国的时区进行显示，我们就要用<span class="行内代码"
+        >localtime()</span
+      >函数。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        #include &lt;stdio.h&gt;
+        #include &lt;time.h&gt;
+        
+        int main(void) {
+            time_t calendar_time = time(NULL); //获取日历时间（秒）
+
+            //localtime()会转换为本地时区
+            struct tm* time_f_now = localtime(&calendar_time);
+            printf("%s\n", asctime(time_f_now)); //asctime()将时间转换为字符串格式
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/时间/获取当前日期_localtime.webp"
+        alt="获取当前日期_localtime"
+      />
+    </figure>
+    <p class="分区普通文本">
+      使用<span class="行内代码">localtime()</span
+      >后，日历时间会被转换为根据本地时区调整后的结构体，因此显示的时间与右下角的时钟是一致的。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">调用时间结构体成员</h3>
+    <p class="分区普通文本">
+      如果直接调用时间结构体成员，其数值往往无法满足业务需求：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/时间/直接调用结构体成员.png"
+        alt="直接调用结构体成员"
+      />
+    </figure>
+    <p class="分区普通文本">
+      由于年份是从 1900 年开始算起，因此数值只有 124。而月份的范围是 0-11，因此
+      3 月被计算为 2月。因此，我们需要自己对相关数值进行处理：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/时间/调用结构体成员后再调整.png"
+        alt="调用结构体成员后再调整"
+      />
+    </figure>
+    <p class="分区普通文本">经过简单处理后，所得数值与实际日期一致。</p>
+  </article>
+</div>

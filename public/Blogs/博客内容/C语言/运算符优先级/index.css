@@ -1,0 +1,23 @@
+td:has(i) {
+          text-align: center;
+        }
+
+        td > i {
+          color: goldenrod;
+          font-size: 2em;
+        }
+
+        tr:nth-child(even) > td:not(td[rowspan]) {
+          background-color: #234;
+        }
+
+        .表身区 td:not(td[span]) {
+          padding: 5px 15px;
+        }
+
+        .代码 {
+          font-size: 0.95em;
+          font-family: "Red Hat Mono", "Segoe UI Emoji", "Noto Sans SC",
+            monospace;
+          padding: 1px 5px;
+        }

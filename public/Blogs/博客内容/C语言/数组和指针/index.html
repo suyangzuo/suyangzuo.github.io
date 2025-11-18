@@ -1,0 +1,371 @@
+<article class="专题简介">
+  <h1 class="简介标题">
+    <span>数组<span class="次要">和</span>指针</span
+    ><span class="原创">原创</span>
+  </h1>
+  <div class="简介信息">
+    <section class="简介信息文本">
+      <p class="作者">
+        <span class="作者前缀 前缀">作者：</span>
+        <span class="作者姓名">苏扬</span>
+      </p>
+      <p class="日期">
+        <span class="日期前缀 前缀">日期：</span>
+        <span class="日期文本"><span class="日期文本-数字 日期文本-年">2024</span>年<span class="日期文本-数字 日期文本-月">4</span>月<span class="日期文本-数字 日期文本-日">9</span>日</span>
+      </p>
+    </section>
+    <section class="简介信息图像">
+      <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+    </section>
+  </div>
+  <ul class="联系方式列表">
+    <li class="联系方式项">
+      <a class="联系方式链接" href="mailto:suyangzuo@gmail.com" target="_blank">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://github.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-github"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.deviantart.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-deviantart"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dev.to/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-dev"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.freecodecamp.org/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-free-code-camp"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://codepen.io/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-codepen"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://dribbble.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-dribbble"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.artstation.com/user-7893655"
+        target="_blank"
+        ><i class="fa-brands fa-artstation"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://codesandbox.io/u/suyangzuo"
+        target="_blank"
+      >
+        <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
+      /></a>
+    </li>
+  </ul>
+</article>
+
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">
+      <span class="行内专业名词">数组</span>和<span class="行内专业名词"
+        >指针</span
+      >的关系
+    </h2>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">数组</span>类型特征
+    </h3>
+    <p class="分区普通文本">
+      在 C语言
+      中，数组和指针之间的关系一直是让初学者头大的问题，因此，我们有必要先搞清楚相关的概念。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        //整数数组，名称：array，长度：5
+        int array[5] = {1, 2, 3, 4, 5};
+      </code>
+    </pre>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="行内代码">array</span>是数组的名称，代表整个数组
+      </li>
+      <li class="分区列表项">
+        <span class="行内代码">array</span>可以<span class="强调">当作</span
+        ><span class="行内代码"
+          >array<span style="color: palevioletred">[</span
+          ><span style="color: #bbb">0</span
+          ><span style="color: palevioletred">]</span></span
+        >的指针，但<span class="强调">不是</span>指针类型
+        <ul class="分区列表">
+          <li class="分区列表项">
+            <span class="专业名词">可以<span class="强调">当作</span>指针</span
+            >：
+            <pre class="line-numbers">
+              <code class="lang-c">
+                array == &array[0]    <span style="color:lightgreen">✓</span> //数组的名称可以当作第一个元素的指针
+                array == &array       <span style="color:lightgreen">✓</span> //数组的地址也是数组第一个元素的地址
+                *array == array[0]    <span style="color:lightgreen">✓</span> //解开第一个元素的地址，得到第一个元素的值
+                int* ptr = array      <span style="color:lightgreen">✓</span> //可以将第一个元素的地址传递给其它指针变量
+                sizeof(array) == sizeof(int) * 5    <span style="color:lightgreen">✓</span> //数组名称是数组类型变量，代表数组本身
+              </code>
+            </pre>
+          </li>
+          <li class="分区列表项">
+            <span class="专业名词"
+              ><span class="强调" style="padding-left: 2px">不是</span
+              >指针类型</span
+            >：
+            <pre class="line-numbers">
+              <code class="lang-c">
+                array++   <span style="color:tomato">✖</span> //array是数组，不是指针，不能修改自己的值
+                array = {9, 8, 7, 6, 5}   <span style="color:tomato">✖</span> //数组不能重新赋值
+              </code>
+            </pre>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/数组和指针/修改数组名称值-报错.png"
+        alt="修改数组名称值"
+      />
+    </figure>
+    <p class="分区普通文本">
+      试图修改数组名称的值，无论编辑器还是编译器均报错，因为数组名称的值不可修改。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">总结</h3>
+      <p class="分区普通文本">
+        数组的<span class="行内专业名词">名称</span
+        ><span class="强调">可以</span>用<span class="附加说明">读</span>，<span
+          class="强调"
+          >不能</span
+        >改<span class="附加说明">写</span>。<br />数组的<span
+          class="行内专业名词"
+          >名称</span
+        >就代表数组<span class="行内专业名词">本身</span>，因此<span
+          class="行内专业名词"
+          >数组名称</span
+        >和<span class="行内专业名词">数组</span>是一体的。
+      </p>
+    </section>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/数组和指针/数组类型的各种地址.png"
+        alt="数组类型的各种地址"
+      />
+    </figure>
+    <p class="分区普通文本">
+      三个地址完全一致，证明了<span class="强调"
+        >数组名称就是数组本身，同时也是数组第一个元素的地址。</span
+      >
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">指针</span>类型特征
+    </h3>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        int* ptr_array = (int*)malloc(sizeof(int) * 5);
+      </code>
+    </pre>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="行内代码">ptr_array</span>是数组的指针
+      </li>
+      <li class="分区列表项">
+        <span class="行内代码">ptr_array</span><span class="强调">就是</span
+        ><span class="行内代码"
+          >ptr_array<span style="color: palevioletred">[</span
+          ><span style="color: #bbb">0</span
+          ><span style="color: palevioletred">]</span></span
+        >的指针，<span class="强调">是</span>指针类型的变量
+        <ul class="分区列表">
+          <li class="分区列表项">
+            <span class="专业名词"
+              ><span class="强调" style="padding-left: 2px">就是</span
+              >指针类型</span
+            >：
+            <pre class="line-numbers">
+              <code class="lang-c">
+                ptr_array == &ptr_array[0]    <span style="color:lightgreen">✓</span> //指针保存着第一个元素的地址
+                *ptr_array == ptr_array[0]    <span style="color:lightgreen">✓</span> //解开第一个元素的地址，得到第一个元素的值
+                int* ptr = ptr_array          <span style="color:lightgreen">✓</span> //可以将第一个元素的地址传递给其它指针变量
+                ptr_array++                   <span style="color:lightgreen">✓</span> //array是指针，可以修改自己的值
+                ptr_array = {0}               <span style="color:lightgreen">✓</span> //指针可以重新赋值
+              </code>
+            </pre>
+          </li>
+          <li class="分区列表项">
+            <span class="专业名词"
+              ><span class="强调" style="padding-left: 2px">不是</span
+              >数组类型</span
+            >：
+            <pre class="line-numbers">
+              <code class="lang-c">
+                &ptr_array != ptr_array    <span style="color:lightgreen">✓</span> //指针自身和指针所指数组，位于内存的不同区域
+                sizeof(ptr_array) != sizeof(int) * 5    <span style="color:lightgreen">✓</span> //指针和数组是独立的，占用不同的内存空间
+              </code>
+            </pre>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/数组和指针/指针和所指数组的占用空间.png"
+        alt="指针和所指数组的占用空间"
+      />
+    </figure>
+    <p class="分区普通文本">
+      因为是<span class="行内专业名词">64位</span>的程序<span class="附加说明"
+        >8位 <span style="color: #bbb">/</span> 字节</span
+      >，因此指针占用 8 字节。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">总结</h3>
+      <p class="分区普通文本">
+        指针变量<span class="强调">可以</span>用<span class="附加说明">读</span
+        >，<span class="强调">也可以</span>改<span class="附加说明">写</span
+        >。<br />指针变量<span class="行内专业名词">指向</span>数组<span
+          class="附加说明"
+          >保存着数组的内存地址</span
+        >，但<span class="强调">不是</span>数组本身，因此<span
+          class="行内专业名词"
+          >指针变量</span
+        >和<span class="行内专业名词">数组</span>是分离的。
+      </p>
+    </section>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/数组和指针/指针型数组的各种地址.png"
+        alt="指针型数组的各种地址"
+      />
+    </figure>
+    <p class="分区普通文本">
+      指针变量<span class="行内专业名词">自己的地址</span>和<span
+        class="行内专业名词"
+        >保存的地址<span class="附加说明">数组的地址</span></span
+      >不同，证明了<span class="强调">指针变量和数组是分离的</span>。
+    </p>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">
+      <span class="行内专业名词">数组</span>退化为<span class="行内专业名词"
+        >指针</span
+      >
+    </h2>
+
+    <h3 class="分区标题 分区3级标题">什么是类型退化？</h3>
+    <p class="分区普通文本">
+      类型退化，指<span class="行内专业名词">潜在的类型转换</span>导致<span
+        class="行内专业名词"
+        >失去原始类型的特性</span
+      >。比如：当一个函数的参数中包含数组时，这个数组会退化为指针，这会导致<span
+        class="行内专业名词"
+        >失去数组的长度</span
+      >。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        //方式1：将"int型数组"作为参数，array会退化为指针，因此"方式1"和"方式2"是一样的
+        int sum_1(int array[]) {}
+
+        //方式2：将"int型指针"作为参数
+        int sum_2(int* array) {}
+
+        //两种方式都无法获取数组的长度
+      </code>
+    </pre>
+
+    <h3 class="分区标题 分区3级标题">类型退化的优点和缺点</h3>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="专业名词">优点</span
+        >：退化后的类型往往更小、更快。比如：数组占用的内存空间通常很大，而指针只需要
+        8 字节。因此，传递指针不仅节省空间，而且更快。
+      </li>
+      <li class="分区列表项">
+        <span class="专业名词">缺点</span
+        >：会丢失原类型的一些功能。比如：数组是有长度的，因此知道从哪儿开始，到哪儿结束。而指针只是一个变量，通常指向数组开始的地址，而不知道到哪里结束。
+        <section class="提醒">
+          <h3 class="提醒标题">提醒</h3>
+          <p class="分区普通文本">
+            假设参数是<span class="代码">int *p</span>，这个<span
+              class="行内代码"
+              >p</span
+            >可能指向一个整数数组，也可能就只是指向一个整数，函数是无法自动识别的。
+          </p>
+        </section>
+      </li>
+    </ul>
+
+    <h3 class="分区标题 分区3级标题">解决类型退化的缺点</h3>
+    <p class="分区普通文本">
+      函数无法识别<span class="代码">int *p</span
+      >指针所指的是数组还是一个变量，这意味着假设<span class="代码">int *p</span
+      >指向的是数组，函数只能知道<span class="专业名词"
+        >从<span class="行内代码">p</span>开始</span
+      >，却不知道该在哪里结束。因此，我们必须手动将数组的长度传递到函数中，这意味着需要再添加一个参数，用来表示数组长度。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        #include &lt;stdio.h&gt;
+        #include &lt;windows.h&gt;
+        
+        #define LENGTH 10 //定义数组长度
+
+        //第2个参数"length"表示数组长度
+        int sum_array(int array[], int length) {
+            int sum = 0;
+            for (int i = 0; i < length; i++) {
+                sum += array[i];
+            }
+            return sum;
+        }
+        
+        int main(void) {
+            SetConsoleOutputCP(CP_UTF8);
+            
+            int array[LENGTH] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+            int sum = sum_array(array, LENGTH);
+            printf("数组之和：%d\n", sum);
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/数组和指针/将数组长度作为第2个参数.png"
+        alt="将数组长度作为第2个参数"
+      />
+    </figure>
+    <p class="分区普通文本">通过第 2 个参数传递数组长度。</p>
+  </article>
+</div>

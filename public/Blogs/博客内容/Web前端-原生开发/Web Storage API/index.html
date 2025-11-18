@@ -1,0 +1,668 @@
+<article class="专题简介">
+  <h1 class="简介标题">Web Storage API<span class="原创">原创</span></h1>
+  <div class="简介信息">
+    <section class="简介信息文本">
+      <p class="作者">
+        <span class="作者前缀 前缀">作者：</span>
+        <span class="作者姓名">苏扬</span>
+      </p>
+      <p class="日期">
+        <span class="日期前缀 前缀">日期：</span>
+        <span class="日期文本"><span class="日期文本-数字 日期文本-年">2024</span>年<span class="日期文本-数字 日期文本-月">6</span>月<span class="日期文本-数字 日期文本-日">9</span>日</span>
+      </p>
+    </section>
+    <section class="简介信息图像">
+      <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+    </section>
+  </div>
+  <ul class="联系方式列表">
+    <li class="联系方式项">
+      <a class="联系方式链接" href="mailto:suyangzuo@gmail.com" target="_blank">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://github.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-github"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.deviantart.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-deviantart"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dev.to/suyangzuo" target="_blank"><i class="fa-brands fa-dev"></i></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.freecodecamp.org/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-free-code-camp"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://codepen.io/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-codepen"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dribbble.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-dribbble"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.artstation.com/user-7893655" target="_blank"
+        ><i class="fa-brands fa-artstation"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://codesandbox.io/u/suyangzuo" target="_blank">
+        <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
+      /></a>
+    </li>
+  </ul>
+</article>
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题"><span class="行内专业名词">Web Storage API</span>基本概念</h2>
+
+    <h3 class="分区标题 分区3级标题">用途</h3>
+    <p class="分区普通文本">
+      浏览器可以通过<span class="行内专业名词">Web Storage API</span>存取<span class="行内专业名词">键值对</span
+      >类型的<span class="行内专业名词">本地数据</span>。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题"><span class="行内专业名词">键值对</span>是什么？</h3>
+      <p class="分区普通文本">
+        <span class="行内专业名词">键值对</span>是一种常见的数据表示形式，顾名思义，一<span class="行内专业名词"
+          >键</span
+        >一<span class="行内专业名词">值</span>成对出现。绝大多数<span class="行内专业名词">面向对象</span
+        >的编程语言都支持<span class="行内专业名词">键值对</span>。我们经常在<span class="行内专业名词">JavaScript</span
+        >中用<span class="行内专业名词">键值对集合</span>的方式创建<span class="行内专业名词">对象</span>：
+      </p>
+      <pre class="line-numbers">
+        <code class="lang-css">
+          const 员工 = {
+            姓名: "张三",
+            年龄: 45,
+            性别: "男",
+          }
+        </code>
+      </pre>
+      <table class="表格" id="键值对范例表">
+        
+        <caption class="表格标题">
+          键值对
+        </caption>
+        <thead class="表头区">
+          <tr>
+            <th>
+              键<span
+                class="附加说明"
+                style="box-shadow: inset 0 0 1px 1px #fff5; font-family: 'JetBrains Mono', Consolas, monospace"
+                >key</span
+              >
+            </th>
+            <th>
+              值<span
+                class="附加说明"
+                style="box-shadow: inset 0 0 1px 1px #fff5; font-family: 'JetBrains Mono', Consolas, monospace"
+                >value</span
+              >
+            </th>
+          </tr>
+        </thead>
+        <tbody class="表身区">
+          <tr>
+            <th>姓名</th>
+            <td>"张三"</td>
+          </tr>
+          <tr>
+            <th>年龄</th>
+            <td>45</td>
+          </tr>
+          <tr>
+            <th>性别</th>
+            <td>"男"</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">Web Storage</span>与<span class="行内专业名词">Cookie</span>的区别
+    </h3>
+    <table class="表格" id="Web-Storage-Cookie-比较表">
+      <caption class="表格标题">
+        <span class="行内专业名词" style="text-shadow: 2px 2px 2px black">Web Storage</span>
+        vs
+        <span class="行内专业名词">Cookie</span>
+      </caption>
+      <thead class="表头区">
+        <tr>
+          <th></th>
+          <th>
+            <div class="单元格弹性区">
+              <img src="/Images/Blogs/Web前端-原生开发/Web Storage API/Local-Storage-Logo.png" alt="Local Storage" />
+              <span>Local Storage</span>
+            </div>
+          </th>
+          <th>
+            <div class="单元格弹性区">
+              <img
+                src="/Images/Blogs/Web前端-原生开发/Web Storage API/Session-Storage-Logo.png"
+                alt="Session Storage"
+              />
+              <span>Session Storage</span>
+            </div>
+          </th>
+          <th>
+            <div class="单元格弹性区">
+              <img src="/Images/Blogs/Web前端-原生开发/Web Storage API/Cookie-Logo.png" alt="Cookie" />
+              <span>Cookie</span>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody class="表身区">
+        
+        <tr>
+          <th>存储容量</th>
+          <td>5-10 MB</td>
+          <td>5-10 MB</td>
+          <td>4 KB</td>
+        </tr>
+        <tr>
+          <th>数据持久性</th>
+          <td>永久，除非手动删除</td>
+          <td>浏览器会话结束</td>
+          <td>指定过期时间</td>
+        </tr>
+        <tr>
+          <th>自动过期</th>
+          <td>
+            <i style="color: darkgoldenrod" class="fa-solid fa-circle-xmark"></i>
+          </td>
+          <td>
+            <i style="color: darkseagreen" class="fa-solid fa-circle-check"></i>
+          </td>
+          <td>
+            <i style="color: darkseagreen" class="fa-solid fa-circle-check"></i>
+          </td>
+        </tr>
+        <tr>
+          <th>服务端访问性</th>
+          <td>
+            <i style="color: darkgoldenrod" class="fa-solid fa-circle-xmark"></i>
+          </td>
+          <td>
+            <i style="color: darkgoldenrod" class="fa-solid fa-circle-xmark"></i>
+          </td>
+          <td>
+            <i style="color: darkseagreen" class="fa-solid fa-circle-check"></i>
+          </td>
+        </tr>
+        <tr>
+          <th>HTTP 请求</th>
+          <td>
+            <i style="color: darkgoldenrod" class="fa-solid fa-circle-xmark"></i>
+          </td>
+          <td>
+            <i style="color: darkgoldenrod" class="fa-solid fa-circle-xmark"></i>
+          </td>
+          <td>
+            <i style="color: darkseagreen" class="fa-solid fa-circle-check"></i>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot class="表脚区">
+        <tr>
+          <th colspan="4">
+            本表格转载自<a
+              class="超链接"
+              target="_blank"
+              href="https://www.loginradius.com/blog/engineering/guest-post/local-storage-vs-session-storage-vs-cookies/"
+              >LoginRadius</a
+            >
+          </th>
+        </tr>
+      </tfoot>
+    </table>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题"><span class="行内专业名词">Web Storage API</span>的使用</h2>
+
+    <h3 class="分区标题 分区3级标题">为什么要存储本地数据？</h3>
+    <p class="分区普通文本">
+      假设你设计的网页内有一个滑块，可以让用户调节页面的宽度。一般来说，用户肯定希望修改后的宽度可以一直保持下去。但是，滑块的默认行为是刷新即恢复到初始值：
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Web前端-原生开发/Web Storage API/刷新页面导致会话更新.webp" alt="刷新页面导致会话更新" />
+    </figure>
+    <p class="分区普通文本">浏览器<span class="行内专业名词">记不住</span>滑块的值，刷新会导致数据重置。</p>
+    <p class="分区普通文本">
+      我们的目的很简单：希望浏览器<span class="行内专业名词">记住</span>数据。这种记忆分为两个级别：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="行内专业名词">本地级别</span>，使用<span class="行内代码">localStorage</span
+        >；只要用同一台电脑，数据就会保持
+      </li>
+      <li class="分区列表项">
+        <span class="行内专业名词">会话级别</span>，使用<span class="行内代码">sessionStorage</span
+        >；只要不关闭标签页、不关闭浏览器，数据就会保持
+        <section class="提醒">
+          <h3 class="提醒标题"><span class="行内专业名词">会话</span>在什么时机关闭？</h3>
+          <ul class="分区列表">
+            <li class="分区列表项">关闭浏览器</li>
+            <li class="分区列表项">关闭标签页</li>
+          </ul>
+        </section>
+      </li>
+    </ul>
+    <p class="分区普通文本">
+      <span class="行内代码">sessionStorage</span>和<span class="行内代码">localStorage</span
+      >的用法几乎一模一样，任何用<span class="行内代码">sessionStorage</span>调用的函数，也能用在<span class="行内代码"
+        >localStorage</span
+      >上。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      查看<span class="行内专业名词">会话存储</span>和<span class="行内专业名词">本地存储</span>
+    </h3>
+    <p class="分区普通文本">
+      浏览器都会内置<span class="行内专业名词">开发工具</span>，帮助开发人员对应用进行监控、调试，我用<span
+        class="行内专业名词"
+        >Edge</span
+      >浏览器的开发工具作为范例，其它浏览器过程相似：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/Web Storage API/浏览器开发工具-应用程序菜单.png"
+        alt="浏览器开发工具-应用程序菜单"
+      />
+    </figure>
+    <p class="分区普通文本">在开发工具中点击<span class="行内专业名词">应用程序</span>，打开对应界面：</p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Web前端-原生开发/Web Storage API/浏览器开发工具-存储.png" alt="浏览器开发工具-存储" />
+    </figure>
+    <p class="分区普通文本">
+      在<span class="行内专业名词">应用程序</span>界面，有<span class="行内专业名词">本地存储</span>和<span
+        class="行内专业名词"
+        >会话存储</span
+      >两个选项卡，里面罗列了当前网站地址；点击网站地址，右边就会出现此网站存储的数据。因为我还没有进行任何存储，因此数据目前是空的。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">保存数据</h3>
+    <p class="分区普通文本">
+      让我们为滑块添加事件侦听器，以便修改滑块值时，把滑块值存储到<span class="行内专业名词">会话存储</span
+      >。想要保存数据，使用<span class="行内代码">setItem</span>函数：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        // 语法：
+        sessionStorage.setItem(键, 值);
+
+        // 代码：
+        宽度滑块.addEventListener("input", () => {
+          sessionStorage.setItem("页面宽度", 宽度滑块.value);
+        });
+      </code>
+    </pre>
+    <p class="分区普通文本">让我们拖动滑块，看看有没有用：</p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Web前端-原生开发/Web Storage API/保存数据-会话存储.webp" alt="保存数据-会话存储" />
+    </figure>
+    <p class="分区普通文本">
+      <span class="行内专业名词">会话存储</span>对应的网站内，出现了键值对数据，并且随着滑块的拖动，值也在同步更新。
+    </p>
+    <p class="分区普通文本">
+      <span class="强调">注意：</span>此数据保存在<span class="行内专业名词">会话存储</span
+      >内，意味着只要关闭标签页或者关闭浏览器，数据就会丢失。想要更持久地保存数据，将<span class="行内代码"
+        >sessionStorage</span
+      >换成<span class="行内代码">localStorage</span>即可。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">读取数据</h3>
+    <p class="分区普通文本">要读取数据，使用<span class="行内代码">getItem</span>函数：</p>
+    <pre>
+      <code class="lang-js">
+        // 语法：
+        sessionStorage.getItem(键); //此函数返回该键对应的值
+
+        // 代码：
+        let 页面宽度 = sessionStorage.getItem("页面宽度");
+        console.log(`页面宽度：${页面宽度}`);
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Web前端-原生开发/Web Storage API/读取数据-会话存储.png" alt="读取数据-会话存储" />
+    </figure>
+    <p class="分区普通文本">
+      如果把读取到的数据，重新设置到滑块值上，这样即使刷新页面，滑块值也能保持在上一次的状态了。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        宽度滑块.value = sessionStorage.getItem("页面宽度");
+        if (宽度滑块.value === null) 宽度滑块.value = 50;
+        宽度数据.textContent = 宽度滑块.value;
+        
+        宽度滑块.addEventListener("input", () => {
+          sessionStorage.setItem("页面宽度", 宽度滑块.value);
+          宽度数据.textContent = 宽度滑块.value;
+        });
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/Web Storage API/会话存储-读取以保持同步.webp"
+        alt="会话存储-读取以保持同步"
+      />
+    </figure>
+    <p class="分区普通文本">
+      此时刷新页面，滑块的数据不会再重置了。第<span class="行内专业名词">2</span>行代码非常重要，读取的数据可能为<span
+        class="行内专业名词"
+        >空</span
+      >，相关讨论请看<span class="代码">2-5</span><span class="专业名词">数据为空</span>。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">数据为空</h3>
+    <p class="分区普通文本">
+      基本原则是，数据要<span class="强调">先存储</span>、<span class="强调">后读取</span
+      >。这很好理解，你没有存钱，怎么取钱呢？因此在运行<span class="行内代码">getItem</span>之前，至少要运行一次<span
+        class="行内代码"
+        >setItem</span
+      >。然而，有时代码的顺序并不是这样，很有可能<span class="行内代码">getItem</span
+      >写在前面。先来看看，假设读取了空数据，并且打印到控制台，会出现什么结果。
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Web前端-原生开发/Web Storage API/会话存储-没有显卡价格.png" alt="会话存储-没有显卡价格" />
+    </figure>
+    <p class="分区普通文本">我们来读取一个会话存储中不存在的<span class="行内专业名词">显卡价格</span>试试：</p>
+    <pre>
+      <code class="lang-js">
+        let 显卡价格 = sessionStorage.getItem("显卡价格");
+        console.log(`显卡价格：${显卡价格}`);
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Web前端-原生开发/Web Storage API/显卡价格-null.png" alt="显卡价格-null" />
+    </figure>
+    <p class="分区普通文本">
+      读取空数据，会返回<span class="行内代码">null</span
+      >，如果不管不顾，直接把这个数据用到程序的各种业务中，就会发生很多错误！解决方法是什么呢？基本的思路是：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="行内专业名词">会话存储中<span class="强调">有</span>显卡价格数据：</span
+        >使用这个价格数据，并存储到会话中
+      </li>
+      <li class="分区列表项">
+        <span class="行内专业名词">会话存储中<span class="强调">没有</span>显卡价格数据：</span>设置为默认值
+      </li>
+    </ul>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        // 思路：
+        如果 (读取的数据是 null)
+          数据设置为默认值;
+          保存数据;
+        否则
+          正常读取;
+        
+        // 代码：
+        let 显卡价格 = sessionStorage.getItem("显卡价格");
+        
+        if (显卡价格 === null) {
+          显卡价格 = 5000;
+          sessionStorage.setItem("显卡价格", 显卡价格);
+        } else {
+          显卡价格 = sessionStorage.getItem("显卡价格");
+        }
+        
+        console.log(`显卡价格：${显卡价格}`);
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Web前端-原生开发/Web Storage API/会话存储-显卡价格.png" alt="会话存储-显卡价格" />
+      <img
+        src="/Images/Blogs/Web前端-原生开发/Web Storage API/控制台-显卡价格.png"
+        alt="控制台-显卡价格"
+        style="margin-top: 50px"
+      />
+    </figure>
+    <p class="分区普通文本">控制台能够正常显示显卡价格，并且会话存储中也存储了显卡价格数据。</p>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题"><span class="行内专业名词">Web Storage</span>数据格式</h2>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">Web Storage</span>存储<span class="行内专业名词">字符串</span>
+    </h3>
+    <p class="分区普通文本">
+      假设<span class="行内专业名词">会话存储</span>中的<span class="行内专业名词">页面宽度</span>为<span
+        class="行内代码"
+        >150</span
+      >：
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Web前端-原生开发/Web Storage API/会话存储-页面宽度-150.png" alt="会话存储-页面宽度-150" />
+    </figure>
+    <p class="分区普通文本">我们读取此值，并且再<span class="行内代码">+100</span>，打印到控制台，看看是什么结果？</p>
+    <pre>
+      <code class="lang-js">
+        const 页面宽度 = sessionStorage.getItem("页面宽度");
+        console.log(`页面宽度：${页面宽度 + 100}`);
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/Web Storage API/会话存储-读取数字-进行运算.png"
+        alt="会话存储-读取数字-进行运算"
+      />
+    </figure>
+    <p class="分区普通文本">
+      照理应该是<span class="行内代码">250</span>，结果却是<span class="行内代码">150100</span>，说明<span
+        class="行内代码"
+        >getItem</span
+      >读取的值均为<span class="行内专业名词">字符串</span>格式。
+    </p>
+    <p class="分区普通文本"></p>
+
+    <h3 class="分区标题 分区3级标题">处理<span class="行内专业名词">数字</span>类型</h3>
+    <p class="分区普通文本"><span class="行内专业名词">JavaScript</span>提供了丰富的函数，可以将字符串转换为数字。</p>
+    <pre>
+      <code class="lang-js">
+        // parseInt 用来将字符串转换为整数，语法：parseInt(字符串, 进制)
+        // 第2个参数：10，代表转换为10进制整数
+        const 页面宽度 = parseInt(sessionStorage.getItem("页面宽度"), 10);
+        console.log(`页面宽度：${页面宽度 + 100}`);
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/Web Storage API/会话存储-字符串转换为整数.png"
+        alt="会话存储-字符串转换为整数"
+      />
+    </figure>
+    <p class="分区普通文本">这回得到了正常的结果：<span class="行内代码">150 + 100 = 250</span>。</p>
+
+    <h3 class="分区标题 分区3级标题">处理<span class="行内专业名词">布尔</span>类型</h3>
+    <p class="分区普通文本">
+      布尔类型只有两个值：<span class="行内代码">true</span>和<span class="行内代码">false</span
+      >，它们在会话存储中会被转换成字符串类型的<span class="行内代码">"true"</span>和<span class="行内代码"
+        >"false"</span
+      >。
+    </p>
+    <pre>
+      <code class="lang-js">
+        const 显示时间复选框 = document.getElementById("显示时间");
+        显示时间复选框.addEventListener("input", () => {
+          sessionStorage.setItem("显示时间", 显示时间复选框.checked);
+        });
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/Web Storage API/会话存储-保存布尔类型.webp"
+        alt="会话存储-保存布尔类型"
+      />
+    </figure>
+    <p class="分区普通文本">
+      尽管看起来都是<span class="行内代码">true</span>，但实际上存储的是<span class="行内专业名词">字符串</span
+      >。但是，有的时候可以直接使用：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        let 显示时间 = sessionStorage.getItem("显示时间");
+        console.log(`显示时间的类型是：${typeof 显示时间}`);
+        if (显示时间) {
+          console.log("请注意时间！");
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/Web Storage API/会话存储-布尔类型-直接使用.png"
+        alt="会话存储-布尔类型-直接使用.png"
+      />
+    </figure>
+    <p class="分区普通文本">
+      尽管类型是字符串，但是放到<span class="行内代码">if</span>的括号内却可以使用。因为<span class="行内专业名词"
+        >JavaScript</span
+      >是动态类型语言，它会根据需要自动转换数据类型，也就是说，第<span class="行内专业名词">3</span>行的<span
+        class="行内专业名词"
+        >显示时间</span
+      >在使用时被<span class="行内专业名词">临时自动转换</span>成了<span class="行内专业名词">布尔</span
+      >类型。听起来很方便是不是？实际上这非常危险！这种<span class="行内专业名词">动态类型转换</span
+      >会造成很多隐藏极深的潜在问题，现在不出事不代表以后不出事！因此，强烈建议转换成真正的<span class="行内专业名词"
+        >布尔</span
+      >后再使用。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        // JSON.parse 会解析字符串，转换成对应类型
+        let 显示时间 = JSON.parse(sessionStorage.getItem("显示时间"));
+        console.log(`显示时间的类型是：${typeof 显示时间}`);
+        if (显示时间) {
+          console.log("请注意时间！");
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/Web Storage API/会话存储-布尔类型-转换后再使用.png"
+        alt="会话存储-布尔类型-转换后再使用"
+      />
+    </figure>
+    <p class="分区普通文本">
+      转换后，<span class="行内专业名词">显示时间</span>成为了真正的<span class="行内专业名词">布尔类型</span>。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">处理<span class="行内专业名词">对象</span>类型</h3>
+    <p class="分区普通文本">对象类型不能直接存储：</p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        const 角色 = {
+          姓名: "苏扬",
+          等级: 30,
+          位于安全区: true,
+        };
+        
+        const 存储角色按钮 = document.getElementById("存储角色");
+        存储角色按钮.addEventListener("click", () => {
+          sessionStorage.setItem("角色", 角色);
+        });
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/Web Storage API/会话存储-直接存储对象.webp"
+        alt="会话存储-直接存储对象"
+      />
+    </figure>
+    <p class="分区普通文本">
+      直接存储对象，无法看到对象的属性和值，这不是我们想要的结果。要正确存储对象，首先要将对象转换为<span
+        class="行内专业名词"
+        >JSON</span
+      ><span class="附加说明">JavaScript Object Notation = JavaScript对象表示法</span>格式。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        const 角色 = {
+          姓名: "苏扬",
+          等级: 30,
+          位于安全区: true,
+        };
+        
+        const 存储角色按钮 = document.getElementById("存储角色");
+        存储角色按钮.addEventListener("click", () => {
+          // JSON.stringify 可以将对象转换为 JSON 格式
+          sessionStorage.setItem("角色", JSON.stringify(角色));
+        });
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/Web Storage API/会话存储-转换后存储对象.webp"
+        alt="会话存储-转换后存储对象"
+      />
+    </figure>
+    <p class="分区普通文本">
+      成功存储了对象。<span class="强调">注意：</span>此时<span class="行内专业名词">sessionStorage</span>中存储的<span
+        class="强调"
+        >是</span
+      ><span class="行内专业名词">JSON</span>格式数据，<span class="强调">不是</span
+      ><span class="行内专业名词">对象</span>格式。因此，读取时，需要反过来，再次将<span class="行内专业名词">JSON</span
+      >转换为<span class="行内专业名词">对象</span>。
+    </p>
+    <p class="分区普通文本">假设我们读取了<span class="行内专业名词">JSON</span>格式数据后不转换，直接使用：</p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        let 读取的角色 = sessionStorage.getItem("角色");
+        console.log(`类型：${typeof 读取的角色}\n`, 读取的角色);
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/Web Storage API/会话存储-读取JSON对象后直接使用.png"
+        alt="会话存储-读取JSON对象后直接使用"
+      />
+    </figure>
+    <p class="分区普通文本">
+      这样做只是简单粗暴地将数据当成字符串读取出来，没有解析为对象。调用<span class="行内代码">JSON.parse</span
+      >函数进行解析：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        let 读取的角色 = JSON.parse(sessionStorage.getItem("角色"));
+        console.log(`${typeof 读取的角色}\n`, 读取的角色);
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/Web Storage API/会话存储-读取JSON后转换为对象.png"
+        alt="会话存储-读取JSON后转换为对象"
+      />
+    </figure>
+    <p class="分区普通文本">
+      <span class="行内专业名词">JSON格式</span>的字符串经过解析之后，得到了真正的<span class="行内专业名词"
+        >JavaScript 对象</span
+      >类型。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">序列化<span class="次要">与</span>反序列化</h3>
+      <ul class="分区列表">
+        <li class="分区列表项">
+          <span class="专业名词">序列化</span>：<span class="行内专业名词">各种数据类型</span> →
+          <span class="行内专业名词">JSON格式字符串</span>
+        </li>
+        <li class="分区列表项">
+          <span class="专业名词">反序列化</span>：<span class="行内专业名词">JSON格式字符串</span> →
+          <span class="行内专业名词">各种数据类型</span>
+        </li>
+      </ul>
+    </section>
+  </article>
+</div>

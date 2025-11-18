@@ -1,0 +1,775 @@
+<article class="专题简介">
+  <h1 class="简介标题">
+    <span><span class="行内专业名词">2D</span>绘图进阶</span><span class="原创">原创</span>
+  </h1>
+  <div class="简介信息">
+    <section class="简介信息文本">
+      <p class="作者">
+        <span class="作者前缀 前缀">作者：</span>
+        <span class="作者姓名">苏扬</span>
+      </p>
+      <p class="日期">
+        <span class="日期前缀 前缀">日期：</span>
+        <span class="日期文本"
+          ><span class="日期文本-数字 日期文本-年">2025</span>年<span class="日期文本-数字 日期文本-月">7</span>月<span
+            class="日期文本-数字 日期文本-日"
+            >14</span
+          >日</span
+        >
+      </p>
+    </section>
+    <section class="简介信息图像">
+      <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+    </section>
+  </div>
+  <ul class="联系方式列表">
+    <li class="联系方式项">
+      <a class="联系方式链接" href="mailto:suyangzuo@gmail.com" target="_blank">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://github.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-github"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.deviantart.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-deviantart"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dev.to/suyangzuo" target="_blank"><i class="fa-brands fa-dev"></i></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.freecodecamp.org/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-free-code-camp"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://codepen.io/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-codepen"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dribbble.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-dribbble"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.artstation.com/user-7893655" target="_blank"
+        ><i class="fa-brands fa-artstation"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://codesandbox.io/u/suyangzuo" target="_blank">
+        <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
+      /></a>
+    </li>
+  </ul>
+</article>
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">透明度<span class="次要">和</span>阴影</h2>
+
+    <h3 class="分区标题 分区3级标题">全局<span class="行内专业名词">透明度</span></h3>
+    <p class="分区普通文本">
+      透明度属性是<span class="行内代码">globalAlpha</span>，从名称就可以看出，<span class="行内代码">global</span
+      >是<span class="行内专业名词">全局</span>的意思，也就是说，所有绘制的图形都会受到透明度的影响。<span
+        class="行内代码"
+        >globalAlpha</span
+      >的范围是：<span class="代码">0 <span style="color: darkgoldenrod">-</span> 1</span>。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        //默认 globalAlpha 的值为 1.0
+        //绘制第1个矩形
+        
+        ctx.globalAlpha = 0.25;
+        //绘制第2个矩形
+
+        ctx.globalAlpha = 0.05;
+        //绘制第3个矩形
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-global-alpha" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    
+
+    <h3 class="分区标题 分区3级标题">绘制<span class="行内专业名词">阴影</span></h3>
+    <p class="分区普通文本">
+      想一想，在<span class="行内专业名词">CSS</span>中的各种阴影，<span class="行内代码">box-shadow</span>、<span
+        class="行内代码"
+        >drop-shadow</span
+      >、<span class="行内代码">text-shadow</span>，它们有哪些共同的属性？
+    </p>
+    <ul class="分区无序列表">
+      <li class="分区列表项"><span class="行内专业名词">偏移量</span>：水平、垂直</li>
+      <li class="分区列表项"><span class="行内专业名词">颜色</span></li>
+      <li class="分区列表项"><span class="行内专业名词">模糊</span></li>
+    </ul>
+    <p class="分区普通文本">没错，在<span class="行内专业名词">Canvas</span>中，阴影的属性也是一样的：</p>
+    <ul class="分区无序列表">
+      <li class="分区列表项"><span class="行内代码">shadowOffsetX</span>：水平偏移量</li>
+      <li class="分区列表项"><span class="行内代码">shadowOffsetY</span>：垂直偏移量</li>
+      <li class="分区列表项"><span class="行内代码">shadowColor</span>：颜色</li>
+      <li class="分区列表项"><span class="行内代码">shadowBlur</span>：模糊</li>
+    </ul>
+    <pre class="line-numbers" style="margin-top: 50px">
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        ctx.shadowColor = "black";  //阴影颜色
+        ctx.shadowOffsetX = 50;     //水平偏移量
+        ctx.shadowOffsetY = 50;     //垂直偏移量
+        ctx.shadowBlur = 20;        //模糊
+
+        //绘制矩形代码：省略
+        ctx.fill();    //填充
+        ctx.stroke();  //描边
+
+        //为文本设置阴影属性
+        ctx.shadowOffsetX = 10;     //水平偏移量
+        ctx.shadowOffsetY = 10;     //垂直偏移量
+        ctx.shadowBlur = 10;        //模糊
+
+        //---------------- 填充文本 ----------------
+        ctx.fillText("阴影", x + rectWidth / 2, y + rectHeight / 2);
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-shadow" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        细心的同学肯定发现了：<span class="行内专业名词">描边</span>的阴影<span class="强调">覆盖了</span
+        ><span class="行内专业名词">填充</span>的阴影。为什么会这样呢？因为代码中是<span class="行内专业名词"
+          >先填充，后描边</span
+        >，谁在后面，谁就处于更上方。因此描边的阴影在填充的上方。
+      </p>
+      <p class="分区普通文本">怎么办呢？最简单直接的想法是：<span class="强调">先描边，后填充</span>，我们来试试：</p>
+      <pre class="line-numbers">
+        <code class="lang-javascript">
+          //其它代码不变
+          ctx.stroke();  //描边在前
+          ctx.fill();    //填充在后
+          //其它代码不变
+        </code>
+      </pre>
+      <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+        <canvas
+          id="canvas-shadow-stroke-before"
+          style="width: 100%; height: calc(100% - 42px); background-color: #222"
+        ></canvas>
+      </figure>
+      <p class="分区普通文本">
+        还是有问题！描边又被填充的阴影覆盖了！因为描边在前，填充在后，因此填充的阴影处于描边的上方。
+      </p>
+      
+      <p class="分区普通文本">
+        仔细思考一下，到底应该怎么办？此时比较好的办法是：放弃描边的阴影，只保留填充的阴影。但是，阴影的设置代码会同时应用到填充和描边。因此，我们要将<span
+          class="强调"
+          >阴影仅仅应用到填充</span
+        >。
+      </p>
+      <pre class="line-numbers">
+        <code class="lang-javascript">
+          //其它代码不变
+          ctx.save();   //将"没有阴影"的上下文保存起来
+          ctx.shadowColor = "black";  //阴影颜色
+          ctx.shadowOffsetX = 50;     //水平偏移量
+          ctx.shadowOffsetY = 50;     //垂直偏移量
+          ctx.shadowBlur = 20;        //模糊
+          ctx.fill();    //填充
+          ctx.restore(); //恢复"没有阴影"的上下文
+
+          ctx.stroke();  //现在描边就不会有阴影了，且描边在后，所以不会被填充的阴影挡住
+        </code>
+      </pre>
+      <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+        <canvas
+          id="canvas-shadow-stroke-after"
+          style="width: 100%; height: calc(100% - 42px); background-color: #222"
+        ></canvas>
+      </figure>
+      <p class="分区普通文本">这回看上去正常了。虽然失去了描边的阴影，但不影响整体的视觉效果。</p>
+      
+    </section>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">绘制虚线</h2>
+
+    <h3 class="分区标题 分区3级标题">普通虚线</h3>
+    <p class="分区普通文本">
+      虚线用<span class="行内代码">setLineDash()</span
+      >设置，其要点是：一段实线、一段透明线，交替绘制，我们只需要给出实线的长度和透明线的长度，两个数字用数组形式表示。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        //其它代码
+        const 实线长度 = 20;
+        const 透明线长度 = 10;
+        ctx.setLineDash([实线长度, 透明线长度]);   //设置虚线
+        ctx.stroke();  //描边
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-line-dash" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">要从虚线恢复到实线，直接将虚线数组设置为空即可：</p>
+      <pre>
+        <code class="lang-javascript">
+          ctx.setLineDash([]);  //将虚线数组设置为空，恢复实线
+        </code>
+      </pre>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">双色虚线</h3>
+    <p class="分区普通文本">
+      假设我们绘制这样一段虚线：<span class="行内专业名词">白色-透明</span
+      >，这个虚线在浅色背景下就会看不清；如果改成：<span class="行内专业名词">黑色-透明</span
+      >，在深色背景下又会看不清。怎么样才能在浅色深色背景下都能看得清楚呢？答案很简单：<span class="行内专业名词"
+        >白色-黑色</span
+      >。
+    </p>
+    <p class="分区普通文本">
+      但是，<span class="行内代码">setLineDash()</span>只支持<span class="行内专业名词">不透明-透明</span
+      >的模式，想要两段线都不透明，就要自己想想办法了。比较好的办法是：绘制两条虚线，第2条虚线进行位置偏移，然后合并两条虚线：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        //---------------- 绘制矩形 ----------------
+        
+        const 虚线长度 = 20;
+        ctx.setLineDash([虚线长度, 虚线长度]);
+        ctx.strokeStyle = "white";
+        ctx.stroke();   //先绘制白线
+        //不要用 beginPath()，确保白线和黑线绘制在同一个路径上
+        ctx.lineDashOffset = 虚线长度;   //虚线偏移
+        ctx.strokeStyle = "black";
+        ctx.stroke();   //再绘制黑线
+
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-line-dash-double" style="width: 100%; height: calc(100% - 42px)"></canvas>
+    </figure>
+    
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">绘制渐变</h2>
+
+    <h3 class="分区标题 分区3级标题"><span class="行内代码">CanvasGradient</span>对象</h3>
+    <p class="分区普通文本">我们可以将使用渐变的步骤分解为<span class="行内专业名词">3</span>步：</p>
+    <ol class="分区列表 有序列表">
+      <li class="分区列表项">
+        <span class="行内专业名词">创建渐变对象</span>：参数为<span class="行内专业名词">渐变起始坐标</span>和<span
+          class="行内专业名词"
+          >渐变结束坐标</span
+        >
+      </li>
+      <li class="分区列表项">
+        <span class="行内专业名词">添加色标</span>：参数为<span class="行内专业名词">位置</span>和<span
+          class="行内专业名词"
+          >颜色</span
+        >
+      </li>
+      <li class="分区列表项"><span class="行内专业名词">将填充和描边设置为渐变对象</span></li>
+    </ol>
+
+    <h3 class="分区标题 分区3级标题">绘制线性渐变</h3>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        //---------------- 绘制矩形 ----------------
+        const 矩形宽度 = 400;
+        const 矩形高度 = 200;
+        const 矩形起始坐标 = { x: 200, y: 100 };
+        ctx.rect(矩形起始坐标.x, 矩形起始坐标.y, 矩形宽度, 矩形高度);
+
+        //创建渐变对象
+        const 渐变起始坐标 = { x: 0, y: 100 };
+        const 渐变结束坐标 = { x: canvas.offsetWidth, y: 100 };
+        const 渐变对象 = ctx.createLinearGradient(
+          渐变起始坐标.x, 
+          渐变起始坐标.y, 
+          渐变结束坐标.x, 
+          渐变结束坐标.y
+        );
+
+        //添加色标
+        const 色标1位置 = 0;    //代表 0% 的位置
+        const 色标1颜色 = "blue";
+        const 色标2位置 = 0.5;  //代表 50% 的位置
+        const 色标2颜色 = "green";
+        const 色标3位置 = 1;    //代表 100% 的位置
+        const 色标3颜色 = "red";
+        渐变对象.addColorStop(色标1位置, 色标1颜色);   //添加色标1
+        渐变对象.addColorStop(色标2位置, 色标2颜色);   //添加色标2
+        渐变对象.addColorStop(色标3位置, 色标3颜色);   //添加色标3
+
+        //将填充设置为渐变对象
+        ctx.fillStyle = 渐变对象;
+        //绘制矩形
+        ctx.fill();  //填充
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas
+        id="canvas-linear-gradient"
+        style="width: 100%; height: calc(100% - 42px); background-color: #222"
+      ></canvas>
+    </figure>
+    
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        你是否感觉这个渐变两端的颜色没有完全展现出来？没错，渐变对象的应用范围<span class="强调">是</span
+        ><span class="行内专业名词">整个Canvas</span>，<span class="强调">不是</span
+        ><span class="行内专业名词">某个路径</span>。
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">绘制径向渐变</h3>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        //---------------- 绘制矩形 ----------------
+        const 矩形宽度 = 500;
+        const 矩形高度 = 300;
+        const 矩形起始坐标 = { x: 150, y: 50 };
+        ctx.rect(矩形起始坐标.x, 矩形起始坐标.y, 矩形宽度, 矩形高度);
+
+        //创建径向渐变对象
+        const 渐变起始圆心 = { 
+          x: 矩形起始坐标.x + 矩形宽度 / 2,
+          y: 矩形起始坐标.y + 矩形高度 / 2
+        };
+        const 渐变起始圆半径 = 50;
+
+        const 渐变结束圆心 = {
+          x: 矩形起始坐标.x + 矩形宽度 / 2,
+          y: 矩形起始坐标.y + 矩形高度 / 2
+        };
+        const 渐变结束圆半径 = 矩形宽度 < 矩形高度 ? 矩形宽度 / 2 : 矩形高度 / 2;
+
+        const 渐变对象 = ctx.createRadialGradient(
+          渐变起始圆心.x,
+          渐变起始圆心.y,
+          渐变起始圆半径,
+          渐变结束圆心.x,
+          渐变结束圆心.y,
+          渐变结束圆半径
+        );
+
+        //添加色标
+        const 色标1位置 = 0;    //代表 0% 的位置
+        const 色标1颜色 = "darkgoldenrod";
+        const 色标2位置 = 0.5;  //代表 50% 的位置
+        const 色标2颜色 = "green";
+        const 色标3位置 = 1;    //代表 100% 的位置
+        const 色标3颜色 = "silver";
+        渐变对象.addColorStop(色标1位置, 色标1颜色);   //添加色标1
+        渐变对象.addColorStop(色标2位置, 色标2颜色);   //添加色标2
+        渐变对象.addColorStop(色标3位置, 色标3颜色);   //添加色标3
+
+        //将填充设置为渐变对象
+        ctx.fillStyle = 渐变对象;
+        //绘制矩形
+        ctx.fill();  //填充
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas
+        id="canvas-radial-gradient"
+        style="width: 100%; height: calc(100% - 42px); background-color: #222"
+      ></canvas>
+    </figure>
+    
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本"><span class="行内专业名词">Canvas</span>径向渐变目前只能为正圆，不能为椭圆。</p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">绘制角度渐变</h3>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        //---------------- 绘制矩形 ----------------
+        const 矩形宽度 = canvas.offsetWidth;
+        const 矩形高度 = canvas.offsetHeight;
+        const 矩形起始坐标 = { x: 0, y: 0 };
+        ctx.rect(矩形起始坐标.x, 矩形起始坐标.y, 矩形宽度, 矩形高度);
+
+        //创建角度渐变对象
+        const 角度渐变起始弧度 = Math.PI;   //从默认起始角度顺时针旋转180°
+        const 角度渐变圆心 = { 
+          x: canvas.offsetWidth / 2, 
+          y: canvas.offsetHeight / 2 
+        };
+        const 角度渐变对象 = ctx.createConicGradient(
+          角度渐变起始弧度, 
+          角度渐变圆心.x, 
+          角度渐变圆心.y
+        );
+
+        //添加色标
+        const 色标1位置 = 0;     //代表 0% 的位置
+        const 色标1颜色 = "blue";
+        const 色标2位置 = 0.25;  //代表 50% 的位置
+        const 色标2颜色 = "orange";
+        const 色标3位置 = 0.5;   //代表 50% 的位置
+        const 色标3颜色 = "green";
+        const 色标4位置 = 0.75;  //代表 75% 的位置
+        const 色标4颜色 = "yellow";
+        const 色标5位置 = 1;     //代表 100% 的位置
+        const 色标5颜色 = "purple";
+        角度渐变对象.addColorStop(色标1位置, 色标1颜色);   //添加色标1
+        角度渐变对象.addColorStop(色标2位置, 色标2颜色);   //添加色标2
+        角度渐变对象.addColorStop(色标3位置, 色标3颜色);   //添加色标3
+        角度渐变对象.addColorStop(色标4位置, 色标4颜色);   //添加色标4
+        角度渐变对象.addColorStop(色标5位置, 色标5颜色);   //添加色标5
+
+        //将填充设置为角度渐变对象
+        ctx.fillStyle = 角度渐变对象;
+        //绘制矩形
+        ctx.fill();  //填充
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas
+        id="canvas-conic-gradient"
+        style="width: 100%; height: calc(100% - 42px); background-color: #222"
+      ></canvas>
+    </figure>
+    
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        <span class="行内专业名词">Canvas</span>角度渐变默认起始弧度为<span class="行内专业名词 等宽">0</span
+        >，但却是水平向右的，因此顺时针旋转<span class="行内专业名词 等宽">180°</span>后，起始角度变成水平向左。
+      </p>
+      <p class="分区普通文本">
+        为什么<span class="行内专业名词 等宽">0°</span>是水平向右呢？因为在计算机图形学坐标系中，<span
+          class="行内专业名词 等宽"
+          >0°</span
+        >的定义就是水平向右的。但是，在<span class="行内专业名词">CSS 角度渐变</span>中，<span class="行内专业名词 等宽"
+          >0°</span
+        >采用的是导航、地理方向上常用的垂直向上。
+      </p>
+    </section>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">绘制图像</h2>
+
+    <h3 class="分区标题 分区3级标题">函数语法</h3>
+    <p class="分区普通文本">绘制图像用<span class="行内代码">ctx.drawImage()</span>函数，它有3个重载：</p>
+    <ol class="分区列表 有序列表">
+      <li class="分区列表项">
+        <span class="行内专业名词">3</span>个参数：
+        <pre style="margin-top: 30px">
+          <code class="lang-javascript">
+            ctx.drawImage(源图像, 画布坐标.x, 画布坐标.y);
+          </code>
+        </pre>
+        <p class="分区普通文本">
+          所谓的<span class="行内专业名词">画布</span>就是指<span class="行内代码">Canvas</span
+          >元素，但是这么做会将源图像尺寸原封不动地搬到画布上，如果源图像尺寸过大，就会溢出画布。因此这个重载方式很少使用。
+        </p>
+      </li>
+      <li class="分区列表项">
+        <span class="行内专业名词">5</span>个参数：
+        <pre style="margin-top: 30px">
+          <code class="lang-javascript">
+            ctx.drawImage(源图像, 画布坐标.x, 画布坐标.y, 画布图像宽度, 画布图像高度);
+          </code>
+        </pre>
+        <p class="分区普通文本">
+          这个重载可以指定图像在画布上的尺寸，是<span class="行内专业名词">最常用</span>的一种重载。
+        </p>
+      </li>
+      <li class="分区列表项">
+        <span class="行内专业名词">9</span>个参数：
+        <pre class="line-numbers" style="margin-top: 30px">
+          <code class="lang-javascript">
+            ctx.drawImage(
+              源图像,
+              源图像裁剪坐标.x,
+              源图像裁剪坐标.y,
+              源图像裁剪宽度,
+              源图像裁剪高度,
+              画布坐标.x,
+              画布坐标.y,
+              画布图像宽度,
+              画布图像高度
+            );
+          </code>
+        </pre>
+        <p class="分区普通文本">说简单一点就是：你可以只选取源图像的一部分进行绘制。</p>
+      </li>
+    </ol>
+
+    <h3 class="分区标题 分区3级标题">用法展示</h3>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        图像加载是<span class="行内专业名词">异步</span
+        >的，意味着一边是图像正在加载中，而另一边，后续的程序不会等待图形的加载。这很有可能导致图像还没有加载完成，<span
+          class="行内代码"
+          >drawImage()</span
+        >就已经开始运行了，导致绘图失败。
+      </p>
+      <p class="分区普通文本">
+        举个例子，假设图像加载需要<span class="行内专业名词 等宽">0.01s</span>，可是后续的<span class="行内代码"
+          >drawImage()</span
+        >只需要<span class="行内专业名词 等宽">0.000001s</span>，那么，<span class="行内代码">drawImage()</span
+        >就会在图像加载完成之前开始运行，导致绘图失败。
+      </p>
+      <p class="分区普通文本">
+        因此，必须等待图像加载完成，才能运行<span class="行内代码">drawImage()</span>以及任何需要读取图像尺寸的代码：
+      </p>
+      <pre>
+        <code class="lang-javascript">
+          图像.onload = 图像函数;
+          // 或者
+          图像.addEventListener("load", 图像函数);
+        </code>
+      </pre>
+    </section>
+    <p class="分区普通文本">为了更好地展示效果，我们选一张尺寸非常大的图像，将其绘制到画布上。</p>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        //---------------- 绘制图像 ----------------
+        const 源图像 = new Image();   //创建图像对象
+        源图像.src = "/Images/Background-Images/轮播图-09.jpg";   //设置图像源
+        const 画布坐标 = { x: 0, y: 0 };   //设置图像在画布上的坐标
+
+        //重要！！！！！不能直接运行 drawImage()，必须等待图像加载完成！！！！！
+        源图像.onload = function () {
+          ctx.drawImage(源图像, 画布坐标.x, 画布坐标.y);
+        }
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-draw-image" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <p class="分区普通文本">
+      图像从画布左上角开始绘制，由于图像尺寸过大，绝大部分内容都溢出了<span class="行内专业名词">Canvas</span>。
+    </p>
+    
+    <p class="分区普通文本">现在，让我们用<span class="行内专业名词">5</span>参数方式指定图形绘制尺寸：</p>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        //---------------- 绘制图像 ----------------
+        const 源图像 = new Image();   //创建图像对象
+        源图像.src = "/Images/Background-Images/轮播图-09.jpg";   //设置图像源
+        const 画布坐标 = { x: 0, y: 0 };   //设置图像在画布上的坐标
+
+        源图像.onload = function () {
+          ctx.drawImage(源图像, 画布坐标.x, 画布坐标.y, 画布宽度, 画布高度);  //指定宽高
+        }
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas
+        id="canvas-draw-image-5-params"
+        style="width: 100%; height: calc(100% - 42px); background-color: #222"
+      ></canvas>
+    </figure>
+    <p class="分区普通文本">
+      绘制尺寸指定为正好和画布尺寸相同。看起来很完美是不是？这只是巧合！！！因为源图像和画布的宽高比正好差不多，所以图像没有出现比例失调的情况。
+    </p>
+    
+    <p class="分区普通文本">让我们换一张正方形的图像试一试就知道了：</p>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas
+        id="canvas-draw-image-5-params-vertical"
+        style="width: 100%; height: calc(100% - 42px); background-color: #222"
+      ></canvas>
+    </figure>
+    <p class="分区普通文本">&#128561;&#128561;&#128561; 麦麦你怎么了！！！如山的压力把麦麦压扁了！！！</p>
+    
+
+    <h3 class="分区标题 分区3级标题">处理宽高比</h3>
+    <p class="分区普通文本">
+      想要在<span class="行内专业名词">Canvas</span
+      >中处理好图像比例，不是一件容易的事。我们必须先算出源图像的宽高比，在绘制的时候使用相同的宽高比，才能保证图像的比例不失调。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        //---------------- 绘制图像 ----------------
+        const 源图像 = new Image();   //创建图像对象
+        源图像.src = "/Images/Background-Images/轮播图-09.jpg";   //设置图像源
+
+        源图像.onload = function () {
+          //这些代码都要放在 onload 内部，否则图像还没有加载完成，得到的宽度高度都是 0
+          const 源图像宽度 = 源图像.naturalWidth;
+          const 源图像高度 = 源图像.naturalHeight;
+          const 源图像宽高比 = 源图像宽度 / 源图像高度;
+
+          const 画布宽高比 = canvas.offsetWidth / canvas.offsetHeight;
+
+          const 画布坐标 = {
+            x: 0,
+            y: 0
+          };
+          let 绘制宽度 = 0;
+          let 绘制高度 = 0;
+
+          if (画布宽高比 > 源图像宽高比) {
+            绘制高度 = canvas.offsetHeight;   //定高
+            绘制宽度 = 绘制高度 * 源图像宽高比;  //算宽
+            画布坐标.x = (canvas.offsetWidth - 绘制宽度) / 2;
+          } else {
+            绘制宽度 = canvas.offsetWidth;    //定宽
+            绘制高度 = 绘制宽度 / 源图像宽高比;  //算高
+            画布坐标.y = (canvas.offsetHeight - 绘制高度) / 2;
+          }
+
+          ctx.drawImage(源图像, 画布坐标.x, 画布坐标.y, 绘制宽度, 绘制高度);
+        }
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-ratio" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <p class="分区普通文本">&#129401;&#129401;&#129401; 麦麦你终于正常了！！！</p>
+    
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题"><span class="行内专业名词 等宽">Path2D</span>路径对象</h2>
+
+    <h3 class="分区标题 分区3级标题">使用场景与范例</h3>
+    <p class="分区普通文本">
+      如果一条路径需要被反复使用，那最好的办法就是将其存储在<span class="行内专业名词 等宽">Path2D</span
+      >路径对象中，这样就不用每次都重新绘制。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        const 常用路径 = new Path2D();
+        常用路径.rect(0, 0, 100, 100);  //在常用路径中绘制矩形
+        ctx.fill(常用路径);    //填充常用路径
+        ctx.stroke(常用路径);  //描边常用路径
+      </code>
+    </pre>
+    <section class="提醒">
+      <h3 class="提醒标题">小知识</h3>
+      <p class="分区普通文本">
+        有关<span class="行内专业名词 等宽">Path2D</span>路径对象的其它实例方法，请参考<a
+          class="超链接"
+          href="https://developer.mozilla.org/zh-CN/docs/Web/API/Path2D"
+          target="_blank"
+          >MDN 文档</a
+        >。
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">封装多个路径</h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词 等宽">Path2D</span>路径对象的强大之处，在于可以使用<span class="行内代码">addPath</span
+      >向其添加多个路径。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        const 常用路径 = new Path2D();
+
+        const 矩形 = new Path2D();
+        矩形.rect(0, 0, 100, 100);
+        const 正圆 = new Path2D();
+        正圆.arc(150, 150, 100, 0, 2 * Math.PI);
+
+        常用路径.addPath(矩形);  //将矩形路径添加到常用路径中
+        常用路径.addPath(正圆);  //将圆形路径添加到常用路径中
+        ctx.fill(常用路径);     //一次性渲染矩形和正圆
+        ctx.stroke(常用路径);   //一次性描边矩形和正圆
+      </code>
+    </pre>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">裁剪路径</h2>
+
+    <h3 class="分区标题 分区3级标题">使用场景与范例</h3>
+    <p class="分区普通文本">
+      在<span class="行内专业名词">Canvas</span>中，<span class="行内专业名词">裁剪路径</span
+      >常用于限制图像的绘制范围，从而实现一些特殊效果。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        //---------------- 绘制正圆 ----------------
+        ctx.save();  //强烈建议，否则裁剪路径无法撤销
+        ctx.clip();  //用当前路径裁剪，也就是正圆
+        //---------------- 绘制图像，此时图像只会在正圆范围内绘制 ----------------
+        ctx.restore();  //撤销裁剪路径
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-clip-path" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    
+
+    <h3 class="分区标题 分区3级标题">叠加裁剪范围</h3>
+    <p class="分区普通文本">
+      如果在一个路径中绘制了多个形状，这裁剪的范围是这些形状的<span class="行内专业名词">并集</span>。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        const 正圆路径 = new Path2D();
+        正圆路径.arc(正圆水平坐标, 正圆垂直坐标, 半径, 起始弧度, 结束弧度);
+        const 矩形路径 = new Path2D();
+        矩形路径.rect(矩形水平坐标, 矩形垂直坐标, 宽度, 高度);
+
+        const 裁剪路径 = new Path2D();
+        裁剪路径.addPath(正圆路径);
+        裁剪路径.addPath(矩形路径);
+        
+        ctx.save();
+        ctx.strokeStyle = "white";  // 为整个"裁剪路径"统一设置描边样式
+        ctx.lineWidth = 2;          // 为整个"裁剪路径"统一设置描边宽度
+        ctx.stroke(裁剪路径);        // 为整个"裁剪路径"统一描边
+        ctx.clip(裁剪路径);          // 将绘制范围限制在"裁剪路径"中
+        //---------------- 绘制图像 ----------------
+        ctx.restore();
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-clip-multi" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    
+  </article>
+</div>

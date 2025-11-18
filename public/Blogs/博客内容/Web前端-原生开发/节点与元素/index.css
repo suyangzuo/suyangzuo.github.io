@@ -1,0 +1,33 @@
+#节点类型表 {
+          margin-bottom: 25px;
+        }
+
+        #节点类型表 .表身区 > tr:nth-child(odd) {
+          background-color: var(--表身区-奇数行背景色);
+        }
+
+        #节点类型表 .表身区 th {
+          width: 50%;
+          text-align: left;
+          padding-left: 5%;
+        }
+
+        #节点类型表 .表身区 td:nth-child(2) {
+          padding: 10px 15px 10px 5%;
+        }
+
+        #节点类型表 .表身区 td:nth-child(3) {
+          text-align: center;
+        }
+
+        span[废弃节点] {
+          position: relative;
+        }
+
+        span[废弃节点] > .附加说明 {
+          position: absolute;
+          left: 105%;
+          top: 50%;
+          translate: 0 -50%;
+          width: max-content;
+        }

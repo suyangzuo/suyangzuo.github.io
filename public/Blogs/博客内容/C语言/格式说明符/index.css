@@ -1,0 +1,25 @@
+#格式说明符表格 {
+          .表身区 > tr:nth-child(even) {
+            background-color: #234;
+          }
+
+          .表身区 > tr > td {
+            padding: 10px 15px;
+          }
+
+          .表身区 > tr > th {
+            width: 20%;
+            font-family: "JetBrains Mono", sans-serif;
+          }
+
+          .表身区 > tr > th > span {
+            color: yellowgreen;
+            margin-right: 2px;
+          }
+
+          .表身区 > tr > td:nth-child(3) {
+            text-align: center;
+            width: 35%;
+            font-family: "JetBrains Mono", sans-serif;
+          }
+        }

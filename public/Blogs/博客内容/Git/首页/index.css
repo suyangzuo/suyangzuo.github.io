@@ -1,0 +1,16 @@
+.超链接 {
+          text-decoration: none;
+        }
+
+        .超链接 img {
+          border-radius: 10px;
+          max-width: 100%;
+        }
+
+        .超链接:hover span {
+          text-decoration: underline;
+        }
+
+        .超链接:hover img {
+          outline: solid 5px tomato;
+        }

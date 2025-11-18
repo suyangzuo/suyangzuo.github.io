@@ -1,0 +1,58 @@
+#编译流程表 tbody > tr > td:nth-child(3) {
+          text-align: center;
+        }
+
+        #编译流程表 tbody > tr {
+          position: relative;
+        }
+
+        #编译流程表 .截图容器 {
+          position: absolute;
+          background-color: #385;
+          border: solid 5px #385;
+          visibility: hidden;
+          opacity: 0;
+          z-index: 10;
+          top: -15px;
+          right: 0;
+          box-shadow: 0 10px 25px 0 #000;
+          width: 645px;
+          transition: 500ms;
+          translate: 0 100px;
+        }
+
+        #编译流程表 .截图序号 {
+          color: white;
+        }
+
+        #编译流程表 tbody > tr > td:nth-child(2):hover {
+          cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+          background-color: #fffa;
+          color: black;
+        }
+
+        #编译流程表
+          tbody
+          > tr:has(> td:nth-child(2):hover)
+          > td:nth-child(4)
+          > .截图容器 {
+          visibility: visible;
+          opacity: 1;
+          translate: 0;
+        }
+
+#GCC常用文件类型表 .表身区 tr:nth-child(odd) {
+          background-color: var(--表身区-奇数行背景色);
+        }
+
+        #GCC常用文件类型表 td {
+          padding: 15px;
+        }
+
+tbody > tr > td:nth-child(3) > .行内代码 {
+          margin: 0;
+        }
+
+        #GCC编译参数表 td {
+          padding: 15px;
+        }

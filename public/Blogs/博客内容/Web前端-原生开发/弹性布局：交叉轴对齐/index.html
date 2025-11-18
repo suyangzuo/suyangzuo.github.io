@@ -1,0 +1,625 @@
+<article class="专题简介">
+  <h1 class="简介标题">弹性布局：交叉轴对齐<span class="原创">原创</span></h1>
+  <div class="简介信息">
+    <section class="简介信息文本">
+      <p class="作者">
+        <span class="作者前缀 前缀">作者：</span>
+        <span class="作者姓名">苏扬</span>
+      </p>
+      <p class="日期">
+        <span class="日期前缀 前缀">日期：</span>
+        <span class="日期文本"><span class="日期文本-数字 日期文本-年">2024</span>年<span class="日期文本-数字 日期文本-月">6</span>月<span class="日期文本-数字 日期文本-日">29</span>日</span>
+      </p>
+    </section>
+    <section class="简介信息图像">
+      <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+    </section>
+  </div>
+  <ul class="联系方式列表">
+    <li class="联系方式项">
+      <a class="联系方式链接" href="mailto:suyangzuo@gmail.com" target="_blank">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://github.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-github"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.deviantart.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-deviantart"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dev.to/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-dev"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.freecodecamp.org/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-free-code-camp"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://codepen.io/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-codepen"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://dribbble.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-dribbble"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.artstation.com/user-7893655"
+        target="_blank"
+        ><i class="fa-brands fa-artstation"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://codesandbox.io/u/suyangzuo"
+        target="_blank"
+      >
+        <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
+      /></a>
+    </li>
+  </ul>
+</article>
+<div class="专题正文区">
+  <article class="正文分区">
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        在<span class="专业名词">弹性布局</span>和<span class="专业名词"
+          >网格布局</span
+        >中，<span class="行内专业名词">交叉轴</span
+        >的含义有所不同；本专题讨论的是<span class="专业名词">弹性布局</span
+        >中的<span class="行内专业名词">交叉轴</span>。
+      </p>
+      <p>
+        欢迎访问本站<a
+          class="超链接"
+          target="_blank"
+          href="/Interactive-Hub/"
+          >交互式学习中心</a
+        >的<a
+          class="超链接"
+          target="_blank"
+          href="/Interactive-Hub/Flex/Flex-Align/"
+          >弹性布局：交叉轴对齐</a
+        >以获得更好的交互式体验。
+      </p>
+    </section>
+
+    <h2 class="分区标题 分区2级标题">
+      <span class="行内专业名词">交叉轴</span>简介
+    </h2>
+
+    <h3 class="分区标题 分区3级标题">
+      什么是<span class="行内专业名词">交叉轴</span>？
+    </h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词">主轴</span>与<span class="行内专业名词"
+        >弹性方向</span
+      ><span class="强调">平行</span>；<span class="行内专业名词">交叉轴</span
+      >与<span class="行内专业名词">弹性方向</span
+      ><span class="强调">垂直</span>。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/更改弹性方向.webp"
+        alt="更改弹性方向"
+      />
+    </figure>
+    <p class="分区普通文本">
+      <span class="行内专业名词">弹性方向</span>决定了<span class="行内专业名词"
+        >主轴</span
+      >与<span class="行内专业名词">交叉轴</span>的方向。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        本专题将以<span class="行内专业名词">默认</span
+        >的弹性方向为基础，即<span class="行内专业名词">主轴</span>为<span
+          class="强调"
+          >行</span
+        >，<span class="行内专业名词">交叉轴</span>为<span class="强调">列</span
+        >。
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">
+      为什么要单独讨论<span class="行内专业名词">交叉轴</span>？
+    </h3>
+    <p class="分区普通文本">
+      在<span class="行内专业名词">交叉轴</span>方向，有时会出现多个<span
+        class="专业名词"
+        >行</span
+      >；行本身、行内部的元素如何布局，分别对应<span class="行内代码"
+        >align-content</span
+      >和<span class="行内代码">align-items</span
+      >，这是很多人初学弹性布局最困惑的地方。因此，本专题将专门讨论<span
+        class="行内专业名词"
+        >交叉轴</span
+      >的对齐方式。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">弹性</span>如何体现？
+    </h3>
+    <p class="分区普通文本">
+      一个元素如果使用了<span class="行内专业名词">弹性布局</span
+      >，其内部的<span class="行内专业名词">直接子元素</span>会成为一个<span
+        class="行内专业名词"
+        >弹簧</span
+      >，意味着可以<span class="行内专业名词">收缩</span>和<span
+        class="行内专业名词"
+        >膨胀</span
+      >；区别在于：默认状态下<span class="强调">会收缩</span>而<span
+        class="强调"
+        >不会膨胀</span
+      >。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/弹性布局-nowrap-增加盒子.webp"
+        alt="flex-wrap: nowrap - 增加盒子"
+      />
+    </figure>
+    <p class="分区普通文本">
+      不管增加多少元素，它们都会尽可能地收缩在弹性容器内部，就像很多弹簧被压缩着挤在一个盒子里，这就是默认状态下<span
+        class="强调"
+        >会收缩</span
+      >的特性。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      维持<span class="行内专业名词">弹簧</span>原本的尺寸
+    </h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词">弹性布局</span
+      >内部的直接子元素默认会收缩。如果希望维持它们原本的尺寸，该怎么做呢？方法有两种：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span
+          >设置<span class="行内专业名词">弹性收缩</span>为<span
+            class="行内代码"
+            >0</span
+          ></span
+        >
+        <pre>
+          <code class="lang-css">
+            弹性容器的直接子元素 {
+              /* flex-shrink 默认为 1 */
+              flex-shrink: 0;
+            }
+          </code>
+        </pre>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/弹性布局-弹性收缩-0-增加盒子.webp"
+            alt="flex-shrink: 0 - 增加盒子"
+          />
+        </figure>
+        <p class="分区普通文本">
+          设置了<span class="行内代码">flex-shrink: 0</span
+          >后，弹性容器的直接子元素不会再收缩，而是维持原本的大小。不过，这种方式有时会导致子元素溢出容器。
+        </p>
+      </li>
+      <li class="分区列表项">
+        <span>允许换行，一行放不下就放到下一行</span>
+        <pre>
+          <code class="lang-css">
+            弹性容器 {
+              /* flex-wrap 默认为 nowrap */
+              flex-wrap: wrap;
+            }
+          </code>
+        </pre>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/弹性布局-flex-wrap-wrap-增加盒子.webp"
+            alt="flex-wrap: wrap - 增加盒子"
+          />
+        </figure>
+        <p class="分区普通文本">
+          设置了<span class="行内代码">flex-wrap: wrap</span
+          >后，一行放不下的元素，会自动放到下一行，这就是<span
+            class="行内专业名词"
+            >多行</span
+          >的由来。可以看出，这几行是<span class="行内专业名词">从上往下</span
+          >生成的，意味着<span class="强调">多行生成于交叉轴</span>。
+        </p>
+      </li>
+    </ul>
+    <p class="分区普通文本">
+      从以上方法可以看出，只有设置<span class="行内代码">flex-wrap: wrap</span
+      >，交叉轴才会出现多行的情况。省略<span class="行内代码">flex-wrap</span
+      >或者设置为<span class="行内代码">flex-wrap: nowrap</span
+      >，交叉轴就只有一行。
+    </p>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">
+      <span class="行内专业名词">交叉轴</span>对齐
+    </h2>
+
+    <h3 class="分区标题 分区3级标题">单行<span class="次要">还是</span>多行</h3>
+    <p class="分区普通文本">让我们再次回顾并强调一下：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="代码">flex-wrap: nowrap</span>：<span class="强调"
+          >单行</span
+        >
+        <ul class="分区列表">
+          <li class="分区列表项">
+            <span class="行内代码">align-items</span>：<i
+              class="fa-solid fa-circle-check"
+              style="color: lightseagreen"
+            ></i
+            ><span style="margin-left: 10px">有效</span>
+          </li>
+          <li class="分区列表项">
+            <span class="行内代码">align-content</span>：<i
+              class="fa-solid fa-ban"
+              style="color: firebrick"
+            ></i
+            ><span style="margin-left: 10px">无效</span>
+          </li>
+        </ul>
+      </li>
+      <li class="分区列表项">
+        <span class="代码">flex-wrap: wrap</span>：<span class="强调"
+          >多行</span
+        >
+        <ul class="分区列表">
+          <li class="分区列表项">
+            <span class="行内代码">align-items</span>：<i
+              class="fa-solid fa-circle-check"
+              style="color: lightseagreen"
+            ></i
+            ><span style="margin-left: 10px">有效</span>
+          </li>
+          <li class="分区列表项">
+            <span class="行内代码">align-content</span>：<i
+              class="fa-solid fa-circle-check"
+              style="color: lightseagreen"
+            ></i
+            ><span style="margin-left: 10px">有效</span>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3 class="分区标题 分区3级标题">单行行高</h3>
+    <p class="分区普通文本">
+      我们为一个正方形设置了<span class="行内代码"
+        >800<span style="color: #9bd">px</span> × 800<span style="color: #9bd"
+          >px</span
+        ></span
+      >的尺寸，并且设置其为<span class="行内专业名词">弹性布局</span>：
+    </p>
+    <pre>
+      <code class="lang-css">
+        正方形 {
+          display: flex;
+          flex-wrap: nowrap; //此行写与不写效果相同，默认即为 nowrap
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/单行默认行高.png"
+        alt="单行默认行高"
+      />
+    </figure>
+    <p class="分区普通文本">
+      由于<span class="行内代码">flex-wrap: nowrap</span
+      >，因此整个方块内只有一行，<span class="行内代码">align-content</span
+      >不起作用。这种情况下，一行会<span class="行内专业名词"
+        >占满整个弹性容器的高度</span
+      >，即<span class="行内专业名词">行高</span
+      ><span style="color: darkgoldenrod">=</span
+      ><span class="行内代码">800<span style="color: #9bd">px</span></span
+      >。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">多行默认行高</h3>
+    <p class="分区普通文本">
+      只有设置<span class="行内代码">flex-wrap: wrap</span>才会产生多行：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/多行默认行高.png"
+        alt="多行默认行高"
+      />
+    </figure>
+    <p class="分区普通文本">
+      所有的行高加起来，正好占满整个弹性容器高度，这是多行的默认模式；多行模式正是由<span
+        class="行内代码"
+        >align-content</span
+      >控制的。让我们到<a
+        class="超链接"
+        target="_blank"
+        href="https://www.w3.org/TR/2023/WD-css-align-3-20230217/"
+        >W3C 工作草案</a
+      >页面上看看相关的描述。
+    </p>
+    <p class="分区普通文本">
+      首先是<a
+        class="超链接"
+        target="_blank"
+        href="https://www.w3.org/TR/2023/WD-css-align-3-20230217/#align-justify-content"
+        >关于 <span class="行内代码">align-content</span> 的描述</a
+      >：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/W3C-工作草案-align-content-默认值.png"
+        alt="W3C-工作草案-align-content-默认值"
+      />
+    </figure>
+    <p class="分区普通文本">
+      草案中规定，<span class="行内代码">align-content</span>的默认模式是<span
+        class="行内代码"
+        >normal</span
+      >。
+    </p>
+    <p class="分区普通文本">
+      再来看看<a
+        class="超链接"
+        target="_blank"
+        href="https://www.w3.org/TR/2023/WD-css-align-3-20230217/#distribution-flex"
+        >弹性容器 <span class="行内代码">normal</span> 的描述</a
+      >：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/W3C-工作草案-align-content-normal.png"
+        alt="W3C-工作草案-align-content-normal"
+      />
+    </figure>
+    <p class="分区普通文本">
+      草案中规定，在弹性容器中，<span class="行内代码">normal</span
+      >的效果等同于<span class="行内代码">stretch</span>。
+    </p>
+    <p class="分区普通文本">
+      再到<a
+        class="超链接"
+        target="_blank"
+        href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/align-content"
+        >MDN Web Docs</a
+      >上看看对于<span class="行内代码">stretch</span>的描述：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/MDN-Web-Docs-stretch.png"
+        alt="MDN-Web-Docs-stretch"
+      />
+    </figure>
+    <p class="分区普通文本">
+      谜团解开了：在默认的<span class="行内代码">normal</span
+      ><span class="附加说明">等同于<span class="行内代码">stretch</span></span
+      >模式下，所有的行会被拉伸，以填满整个弹性容器空间。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">多行固有行高</h3>
+    <p class="分区普通文本">
+      虽说所有的行都会被拉伸，但在<span class="行内专业名词">图6</span
+      >中，三行行高各不相同，说明<span class="强调">行高不是平均分配</span
+      >的。那么这些行高是怎么来的呢？
+    </p>
+    <p class="分区普通文本">
+      为了搞清楚这个问题，我们首先要更改多行模式，使得行不再被拉伸。因此需要将<span
+        class="行内代码"
+        >align-content</span
+      >更改为<span class="强调">除了</span
+      ><span class="行内代码">normal</span>和<span class="行内代码"
+        >stretch</span
+      ><span class="强调">以外</span>的模式：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/多行固有行高.webp"
+        alt="MDN-Web-Docs-stretch"
+      />
+    </figure>
+    <p class="分区普通文本">
+      更改模式后，行高会变回<span class="行内专业名词">原本应有</span
+      >的高度，这个高度是怎么产生的，图中一目了然：<span class="强调"
+        >行高就是该行内最高元素的高度。</span
+      >
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      拉伸：平分<span class="强调">剩余</span>空间
+    </h3>
+    <p class="分区普通文本">
+      了解<span class="行内专业名词">固有行高</span>后，再来看看<a
+        class="超链接"
+        target="_blank"
+        href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/align-content"
+        >MDN Web Docs</a
+      >上看看对于<span class="行内代码">stretch</span>的描述：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/MDN-Web-Docs-stretch.png"
+        alt="MDN-Web-Docs-stretch"
+      />
+    </figure>
+    <p class="分区普通文本">
+      关键就在于：<span class="强调">剩余空间</span
+      >平均分给每一行，而不是整个空间平均分给每一行：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/交叉轴剩余空间分配.png"
+        alt="交叉轴剩余空间分配"
+      />
+    </figure>
+    <p class="分区普通文本">
+      这体现了交叉轴的特点：<span class="专业名词">拉伸即平分剩余空间</span>。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内代码">align-content</span>
+    </h3>
+    <p class="分区普通文本">
+      <span class="行内代码">align-content</span>和<span class="行内代码"
+        >align-items</span
+      >的区别，是很多人初学弹性布局时最困惑的地方。如果你仔细阅读了前面的内容，<span
+        class="行内代码"
+        >align-content</span
+      >的作用其实很简单：它控制所有的行<span class="附加说明"
+        >而非行内的元素</span
+      >在弹性容器内如何对齐：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/更改-align-content.webp"
+        alt="更改-align-content"
+      />
+    </figure>
+    <p class="分区普通文本">
+      更改<span class="行内代码">align-content</span
+      >，每一行的布局方式随之更改，但行内的元素相对于行的位置没有变化。我们可以隐藏所有的元素，更直观地感受一下什么是<span
+        class="行内代码"
+        >align-content</span
+      >：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/更改-align-content-隐藏元素.webp"
+        alt="更改-align-content-隐藏元素"
+      />
+    </figure>
+    <p class="分区普通文本">
+      <span class="行内代码">align-content</span
+      >影响的是行，而不是行内的元素。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内代码">align-items</span>
+    </h3>
+    <p>
+      <span class="行内代码">align-items</span>控制行内的元素在该行内如何对齐。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/更改-align-items.webp"
+        alt="更改-align-items"
+      />
+    </figure>
+    <p class="分区普通文本">
+      更改<span class="行内代码">align-items</span
+      >，影响的是行内的元素，对行本身无效。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">行内拉伸</h3>
+    <p class="分区普通文本">
+      仔细观察会发现，<span class="行内代码">align-items</span>也有<span
+        class="行内代码"
+        >normal</span
+      >和<span class="行内代码">stretch</span>选项：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/normal和stretch.png"
+        alt="normal 和 stretch"
+      />
+    </figure>
+    <p class="分区普通文本">
+      <span class="行内代码">align-items</span>的默认模式也是<span
+        class="行内代码"
+        >normal</span
+      >，并且其效果也等同于<span class="行内代码">stretch</span>，这在<a
+        class="超链接"
+        target="_blank"
+        href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/align-items"
+        >MDN Web Docs</a
+      >中有明确的描述：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/align-items-normal-描述.png"
+        alt="align-items-normal-描述"
+      />
+    </figure>
+    <p class="分区普通文本">
+      在<span class="行内代码">normal</span>的效果等同于<span class="行内代码"
+        >stretch</span
+      >这一点上，<span class="行内代码">align-content</span>和<span
+        class="行内代码"
+        >align-items</span
+      >是相同的。但是，我们观察<span class="行内专业名词">图15</span
+      >时，发现元素并没有被拉伸并填满整行。这是因为<span class="行内代码"
+        >align-items: stretch</span
+      >的作用方式略有不同：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/align-items-stretch解释.png"
+        alt="align-items-stretch-解释"
+      />
+    </figure>
+    <p class="分区普通文本">
+      只有<span class="行内专业名词">自动调整大小</span
+      >的元素，才会在行内拉伸。因此，要使元素高度拉伸，必须设置<span
+        class="行内代码"
+        >height: auto</span
+      >：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/弹性布局：交叉轴对齐/align-items-stretch-height-auto.webp"
+        alt="align-items: stretch 配合 height: auto"
+      />
+    </figure>
+    <p class="分区普通文本">
+      只有高度设置为<span class="行内代码">auto</span
+      >的元素才会拉伸。换言之，<span class="行内代码"
+        >align-items: stretch<span class="附加说明"
+          >或<span class="行内代码">normal</span></span
+        ></span
+      >必须和<span class="行内代码"
+        >height<span class="附加说明"
+          >或<span class="行内代码">width</span></span
+        >: auto</span
+      >配合使用，方能达到拉伸一行内元素的效果。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        事实上，弹性容器内的元素尺寸很少会设置为<span class="行内代码"
+          >auto</span
+        >，因此，绝大部分情况下，<span class="行内代码">align-items</span
+        >设置为<span class="行内代码">normal</span>、<span class="行内代码"
+          >stretch</span
+        >、<span class="行内代码">start</span>，效果都是一样的。
+      </p>
+    </section>
+  </article>
+</div>

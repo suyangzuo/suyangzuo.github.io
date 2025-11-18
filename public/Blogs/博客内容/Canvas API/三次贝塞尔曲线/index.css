@@ -1,0 +1,20 @@
+.圆括号 {
+      color: greenyellow;
+    }
+
+    .运算符 {
+      color: #888;
+    }
+
+    .上标 {
+      color: orange;
+    }
+
+    .下标 {
+      color: lightskyblue;
+    }
+
+    .参数 {
+      font-size: 0.8em;
+      color: lightsteelblue;
+    }

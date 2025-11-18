@@ -1,0 +1,534 @@
+<article class="专题简介">
+  <h1 class="简介标题">
+    <span>节点<span class="次要">与</span>元素</span>
+    <span class="原创">原创</span>
+  </h1>
+  <div class="简介信息">
+    <section class="简介信息文本">
+      <p class="作者">
+        <span class="作者前缀 前缀">作者：</span>
+        <span class="作者姓名">苏扬</span>
+      </p>
+      <p class="日期">
+        <span class="日期前缀 前缀">日期：</span>
+        <span class="日期文本"><span class="日期文本-数字 日期文本-年">2024</span>年<span class="日期文本-数字 日期文本-月">2</span>月<span class="日期文本-数字 日期文本-日">6</span>日</span>
+      </p>
+    </section>
+    <section class="简介信息图像">
+      <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+    </section>
+  </div>
+  <ul class="联系方式列表">
+    <li class="联系方式项">
+      <a class="联系方式链接" href="mailto:suyangzuo@gmail.com" target="_blank">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://github.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-github"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.deviantart.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-deviantart"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dev.to/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-dev"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.freecodecamp.org/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-free-code-camp"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://codepen.io/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-codepen"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://dribbble.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-dribbble"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.artstation.com/user-7893655"
+        target="_blank"
+        ><i class="fa-brands fa-artstation"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://codesandbox.io/u/suyangzuo"
+        target="_blank"
+      >
+        <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
+      /></a>
+    </li>
+  </ul>
+</article>
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">联系与区别</h2>
+
+    <h3 class="分区标题 分区3级标题">节点<span class="专业名词">Node</span></h3>
+    <p class="分区普通文本">
+      节点是一个接口，一个抽象基类；从中派生出的所有子类都是节点。节点接口有一个只读属性：<span
+        class="代码"
+        >Node.nodeType</span
+      >，可以读取当前节点的类型，返回的是一个<span class="行内专业名词"
+        >无符号短整型</span
+      >。所有类型如下表：
+    </p>
+    <table class="表格" id="节点类型表">
+      
+      <caption class="表格标题">
+        节点类型
+      </caption>
+      <thead class="表头区">
+        <tr>
+          <th>节点类型名称</th>
+          <th>解释</th>
+          <th>值</th>
+        </tr>
+      </thead>
+      <tbody class="表身区">
+        <tr>
+          <th>ELEMENT_NODE</th>
+          <td>元素节点</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <th>ATTRIBUTE_NODE</th>
+          <td>
+            <span 废弃节点>属性节点<span class="附加说明">已废弃</span></span>
+          </td>
+          <td>2</td>
+        </tr>
+        <tr>
+          <th>TEXT_NODE</th>
+          <td>文本节点</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <th>CDATA_SECTION_NODE</th>
+          <td>CDATA 片段节点</td>
+          <td>4</td>
+        </tr>
+        <tr>
+          <th>ENTITY_REFERENCE_NODE</th>
+          <td>
+            <span 废弃节点
+              >实体引用节点<span class="附加说明">已废弃</span></span
+            >
+          </td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <th>ENTITY_NODE</th>
+          <td>
+            <span 废弃节点>实体节点<span class="附加说明">已废弃</span></span>
+          </td>
+          <td>6</td>
+        </tr>
+        <tr>
+          <th>PROCESSING_INSTRUCTION_NODE</th>
+          <td>XML 处理指令节点</td>
+          <td>7</td>
+        </tr>
+        <tr>
+          <th>COMMENT_NODE</th>
+          <td>注释节点</td>
+          <td>8</td>
+        </tr>
+        <tr>
+          <th>DOCUMENT_NODE</th>
+          <td>文档节点</td>
+          <td>9</td>
+        </tr>
+        <tr>
+          <th>DOCUMENT_TYPE_NODE</th>
+          <td>文档类型节点</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <th>DOCUMENT_FRAGMENT_NODE</th>
+          <td>文档片段节点</td>
+          <td>11</td>
+        </tr>
+        <tr>
+          <th>NOTATION_NODE</th>
+          <td>
+            <span 废弃节点>符号节点<span class="附加说明">已废弃</span></span>
+          </td>
+          <td>12</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="分区普通文本">
+      除去已废弃的节点类型，可用类型中最常见的就是<span class="专业名词"
+        >1 -<span class="行内专业名词">元素节点</span></span
+      ><span class="专业名词"
+        >3 -<span class="行内专业名词">文本节点</span></span
+      ><span class="专业名词"
+        >8 -<span class="行内专业名词">注释节点</span></span
+      >。从表中也可看出，<span class="行内专业名词">元素</span>是<span
+        class="行内专业名词"
+        >节点</span
+      >的一个种类。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      元素<span class="专业名词">Element</span>
+    </h3>
+    <p class="分区普通文本">
+      <a
+        class="超链接"
+        target="_blank"
+        href="https://developer.mozilla.org/zh-CN/docs/Web/API/Element"
+        >MDN 元素接口文档</a
+      >很直观地说明了<span class="行内专业名词">节点</span>和<span
+        class="行内专业名词"
+        >元素</span
+      >之间的关系：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/节点与元素/节点与元素的关系.png"
+        alt="节点与元素的关系"
+      />
+    </figure>
+    <p class="分区普通文本">
+      二者之间的关系可以简述为：<span class="行内专业名词">节点</span
+      ><span class="强调">不一定是</span
+      ><span class="行内专业名词">元素</span>，但<span class="行内专业名词"
+        >元素</span
+      ><span class="强调">一定是</span><span class="行内专业名词">节点</span>。
+    </p>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">
+      调用<span class="行内专业名词">节点</span>和<span class="行内专业名词"
+        >元素</span
+      >
+    </h2>
+
+    <h3 class="分区标题 分区3级标题">案例样本</h3>
+    <p class="分区普通文本">假设有这样一段代码：</p>
+    <pre class="line-numbers">
+      <code class="lang-html">
+        &lt;div id="测试"&gt;用百度&lt;span class="联机"&gt;查一查&lt;/span&gt;今天的&lt;section class="查询"&gt;天气&lt;/section&gt;怎么样&lt;/div&gt;
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      整个元素是一个<span class="代码">div</span>，<span class="行内代码"
+        >id</span
+      >为<span class="行内代码">测试</span>。现在我们希望获取这个<span
+        class="行内专业名词"
+        >元素</span
+      ><span class="附加说明">也是节点</span>，并观察其<span class="专业名词"
+        >内部</span
+      >。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/节点与元素/测试div内部.png"
+        alt="测试元素内部"
+      />
+    </figure>
+    <p class="分区普通文本">
+      测试元素的<span class="行内专业名词">内部</span
+      >用绿框标注出来了。获取该元素以便访问它：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        // 首先需要获取 "测试" 元素
+        const 测试 = document.querySelector("#测试");
+      </code>
+    </pre>
+
+    <h3 class="分区标题 分区3级标题">
+      调用内部<span class="行内专业名词">节点</span>
+    </h3>
+    <p class="分区普通文本">
+      <span class="代码">Node: childNodes</span>可以获取某个节点的所有子节点：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        // 首先需要获取 "测试" 元素
+        const 测试 = document.querySelector("#测试");
+        console.log(测试.childNodes);
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/节点与元素/Node.childNodes.png"
+        alt="Node.childNodes"
+      />
+    </figure>
+    <p class="分区普通文本">
+      <span class="代码">&ltdiv id="测试"&gt;&lt;/div&gt;</span>内包含 5
+      个节点，因为返回的是一个类数组对象，因此 5 个节点都拥有<span
+        class="专业名词"
+        >索引</span
+      >。其中，索引<span class="代码">0</span>、<span class="代码">2</span
+      >、<span class="代码">4</span>是<span class="行内专业名词">文本节点</span
+      >，索引<span class="代码">1</span>、<span class="代码">3</span>是<span
+        class="行内专业名词"
+        >元素节点</span
+      >。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/节点与元素/内部节点示意图.png"
+        alt="内部节点示意图"
+      />
+    </figure>
+    <p class="分区普通文本">
+      规律很明显：<span class="强调">未使用标签</span>的，都是<span
+        class="行内专业名词"
+        >文本</span
+      >节点；<span class="强调">使用标签</span>的，都是<span
+        class="行内专业名词"
+        >元素</span
+      >节点。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">注意文本节点</h3>
+      <p>
+        很多时候，<span class="行内专业名词">html</span
+        >代码太长，我们会分成几行来写：
+      </p>
+      <figure class="截图容器">
+        <img
+          src="/Images/Blogs/Web前端-原生开发/节点与元素/测试元素格式化.gif"
+          alt="测试元素格式化"
+        />
+      </figure>
+      <p class="分区普通文本">
+        使用了代码格式化功能，代码被自动分布到多行，此时的代码如下：
+      </p>
+      <pre class="line-numbers">
+        <code class="lang-html">
+          &lt;div id="测试"&gt;
+            用百度&lt;span class="联机"&gt;查一查&lt;/span&gt;今天的
+            &lt;section class="查询"&gt;天气&lt;/section&gt;
+            怎么样
+          &lt;/div&gt;
+        </code>
+      </pre>
+      <p>
+        这样的代码所呈现的页面效果，跟写在一行里是一模一样的。但是，其内部节点却有区别。我们再次使用<span
+          class="代码"
+          >测试.childNodes</span
+        >来访问其内部节点：
+      </p>
+      <figure class="截图容器">
+        <img
+          src="/Images/Blogs/Web前端-原生开发/节点与元素/格式化后首节点.png"
+          alt="格式化后首节点"
+        />
+      </figure>
+      <p class="分区普通文本">
+        节点还是 5 个，但当我们展开首节点<span class="附加说明">文本节点</span
+        >后，却发现该节点的值是<span class="行内代码"
+          >"\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用百度"</span
+        >，除了<span class="行内代码">"用百度"</span>3 个字外，还有 1 个换行符 +
+        6 个空格。
+      </p>
+      <figure class="截图容器">
+        <img
+          src="/Images/Blogs/Web前端-原生开发/节点与元素/测试元素-格式化说明.png"
+          alt="测试元素-格式化说明"
+        />
+      </figure>
+      <p class="分区普通文本">
+        文本节点的换行、空格，虽然不会呈现在页面上，却存在于节点值中！在处理文本节点的代码中，这一点要特别注意。建议使用<span
+          class="代码"
+          >String.prototype.trim()</span
+        >来删除字符串前后两端的所有空白字符。
+      </p>
+      <pre class="line-numbers">
+        <code class="lang-js">
+          const 测试 = document.querySelector("#测试");
+          const 首文本节点 = 测试.childNodes[0];
+          console.log(首文本节点.nodeValue); //不删除空白字符
+          console.log(首文本节点.nodeValue.trim()); //删除空白字符
+        </code>
+      </pre>
+      <figure class="截图容器">
+        <img
+          src="/Images/Blogs/Web前端-原生开发/节点与元素/文本节点-删除空白字符.png"
+          alt="文本节点-删除空白字符"
+        />
+      </figure>
+      <p class="分区普通文本">
+        删除空白字符前，<span class="行内代码">用百度</span>3 个字处于第 2
+        行，并且前面有明显的空格。删除空白字符后，只有<span class="行内代码"
+          >用百度</span
+        >3 个字了。
+      </p>
+      <p>
+        除了换行符和空格，还有一些字符也属于<a
+          class="超链接"
+          target="_blank"
+          href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Lexical_grammar#空白符"
+          >空白字符</a
+        >，用<span class="代码">String.prototype.trim()</span>也会一起删除。
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">
+      调用内部<span class="行内专业名词">元素</span>
+    </h3>
+    <p class="分区普通文本">
+      <span class="代码">Element.children</span>可以获取某个节点的所有子元素。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        // 首先需要获取 "测试" 元素
+        const 测试 = document.querySelector("#测试");
+        console.log(测试.children);
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/节点与元素/获取子元素.png"
+        alt="获取子元素"
+      />
+    </figure>
+    <p class="分区普通文本">
+      同样的内容，获取的节点有 5 个，而获取的元素只有 2 个。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/节点与元素/内部元素示意图.png"
+        alt="内部元素示意图"
+      />
+    </figure>
+    <p class="分区普通文本">规则没有变：只有被标签包裹的才是元素。</p>
+
+    <h3 class="分区标题 分区3级标题">陷阱</h3>
+    <p class="分区普通文本">
+      使用 JavaScript
+      处理节点时，可能会遇到一些非常难以察觉的问题。假设有如下代码：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-html">
+        &lt;div id="测试"&gt;&lt;span&gt;谢谢&lt;/span&gt;&lt;/div&gt;
+      </code>
+    </pre>
+    <p class="分区普通文本">试问：测试元素内部，有几个节点？有几个元素？</p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/节点与元素/单元素换行前-节点元素数量.png"
+        alt="单元素换行前-节点元素数量"
+      />
+    </figure>
+    <p class="分区普通文本">
+      正确答案是：1 个节点，1 个元素。<span class="代码"
+        >&lt;span&gt;谢谢&lt;/span&gt;</span
+      >既是 1 个元素节点，也是 1 个元素。我们分别访问<span class="代码"
+        >&lt;div id="测试"&gt;&lt;/div&gt;</span
+      >内的第 1 个节点和第 1 个元素：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/节点与元素/单元素换行前-首节点元素.png"
+        alt="单元素换行前-首节点元素"
+      />
+    </figure>
+    <p class="分区普通文本">
+      在这种情况下，第 1 个节点和第 1 个元素都是<span class="代码">span</span
+      >元素，二者完全一样。
+    </p>
+    <p class="分区普通文本">但是，如果代码变成了下面这种写法呢？</p>
+    <pre class="line-numbers">
+      <code class="lang-html">
+        &lt;div id="测试"&gt;
+          &lt;span&gt;谢谢&lt;/span&gt;
+        &lt;/div&gt;
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      很多时候，并非程序员刻意这样写代码，而是由代码格式化功能导致的结果。现在还是同样的问题：测试元素内部，有几个节点？几个元素？
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/节点与元素/单元素换行后-节点元素数量.png"
+        alt="单元素换行后-节点元素数量"
+      />
+    </figure>
+    <p class="分区普通文本">
+      正确答案是：3 个节点，1 个元素。突然就多出了 2
+      个节点！这是很多不明就里的初学者摸不着头脑的地方。让我们看看多出来的 2
+      个节点都是什么：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/节点与元素/单元素换行后-文本节点值.png"
+        alt="单元素换行后-文本节点值"
+      />
+    </figure>
+    <p class="分区普通文本">
+      多出的都是文本节点，值都是换行符加上几个空格。如果你理解了<span
+        class="代码"
+        >2-2</span
+      >的内容，那么应该明白是怎么回事了。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/节点与元素/单元素换行后-格式化说明.png"
+        alt="单元素换行后-格式化说明"
+      />
+    </figure>
+    <p class="分区普通文本">
+      多出来的 2 个文本节点，就是因为格式化后换行而产生的。每个文本节点包含 1
+      个换行符 + 若干空格。
+    </p>
+    <p class="分区普通文本">
+      此时，我们再次访问<span class="代码"
+        >&lt;div id="测试"&gt;&lt;/div&gt;</span
+      >内的第 1 个节点和第 1 个元素：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/节点与元素/单元素换行后-首节点元素.png"
+        alt="单元素换行后-首节点元素"
+      />
+    </figure>
+    <p class="分区普通文本">
+      在这种情况下，第 1 个节点是文本节点，而第 1 个元素是<span class="代码"
+        >span</span
+      >元素。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p>
+        通过上述内容，我们了解到：处理节点相关的数据，尤其是节点数量、节点顺序时，一定要当心，因为换行或其它空白字符会导致节点数量、顺序都产生变化。而换行很多时候不在预料之中，而是由代码格式化功能导致的。
+      </p>
+    </section>
+  </article>
+</div>

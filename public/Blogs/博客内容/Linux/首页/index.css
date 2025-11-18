@@ -1,0 +1,72 @@
+#linux-distribution-container {
+        background: #151520;
+        width: 100%;
+        height: calc(100% - 42px);
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .distribution-family {
+        width: 100%;
+        height: calc(100% / 3);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .distribution-list {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        padding: 2px;
+        gap: 1px;
+        flex-grow: 1;
+      }
+
+      .distribution-item {
+        position: relative;
+        border: 2px solid transparent;
+        cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+        width: calc(100% / 3 - 1px);
+        background: rgba(155, 205, 255, 0.15);
+        padding: 10px;
+        text-decoration: none;
+        color: white;
+        transition: all 0.125s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .distribution-item > img {
+        aspect-ratio: 1;
+        height: 60px;
+        object-fit: contain;
+        pointer-events: none;
+      }
+
+      .distribution-item > div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .distribution-item > div > span:nth-child(1) {
+        font-weight: bold;
+        margin-bottom: 2px;
+      }
+
+      .distribution-item > div > span:nth-child(2) {
+        font-size: 13px;
+        opacity: 0.8;
+      }
+
+      .distribution-item:hover {
+        background: #6496ff40;
+        border: 2px solid #6496ff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }

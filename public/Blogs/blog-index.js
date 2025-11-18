@@ -64,7 +64,7 @@ if (localStorage.getItem("专题") === null) {
   专题名称 = localStorage.getItem("专题");
 }
 
-let 专题文件路径 = `./博客内容/${技术栈名称}/${专题名称}.html`;
+let 专题文件路径 = `./博客内容/${技术栈名称}/${专题名称}/index.html`;
 
 let 前一专题 = null;
 
@@ -272,16 +272,120 @@ function 设置侧边栏(event) {
   选项卡图标.href = 技术栈图标.src;
 }
 
+// 从 JS 代码中提取全局变量/类/函数名
+function 提取全局声明(代码内容) {
+  const 声明列表 = [];
+  // 匹配 class 声明: class ClassName { 或 class ClassName extends
+  const classRegex = /^\s*class\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/gm;
+  let match;
+  while ((match = classRegex.exec(代码内容)) !== null) {
+    声明列表.push(match[1]);
+  }
+  // 匹配 function 声明: function functionName( 或 function functionName {
+  const functionRegex = /^\s*function\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*[({]/gm;
+  while ((match = functionRegex.exec(代码内容)) !== null) {
+    声明列表.push(match[1]);
+  }
+  // 匹配 const/let/var 声明（全局作用域）: const/let/var variableName =
+  const varRegex = /^\s*(?:const|let|var)\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*=/gm;
+  while ((match = varRegex.exec(代码内容)) !== null) {
+    声明列表.push(match[1]);
+  }
+  return 声明列表;
+}
+
+// 清理之前专题加载的外部资源（JS 和 CSS）
+function 清理专题外部资源() {
+  // 清理之前专题的 JS 文件
+  const 之前专题JS = document.querySelectorAll('script[data-专题资源="true"]');
+  之前专题JS.forEach((脚本) => 脚本.remove());
+
+  // 清理之前专题的 CSS 文件
+  const 之前专题CSS = document.querySelectorAll('link[data-专题资源="true"]');
+  之前专题CSS.forEach((样式) => 样式.remove());
+}
+
+// 清理全局作用域中的变量（避免重复声明错误）
+function 清理全局变量(变量名列表) {
+  变量名列表.forEach((变量名) => {
+    try {
+      // 尝试从 window 对象删除（适用于 class、function、var 声明的变量）
+      if (window.hasOwnProperty(变量名)) {
+        delete window[变量名];
+      }
+      // 对于 const/let 声明的变量，它们不在 window 对象上
+      // 但我们可以尝试通过 eval 来删除（虽然不推荐，但这是唯一的方法）
+      // 实际上，const/let 声明的变量无法删除，但我们可以通过重新声明来覆盖
+      // 由于我们会在执行新代码前清理，所以重复声明错误会在执行时发生
+      // 但通过 delete window[变量名] 已经可以处理大部分情况（class、function）
+    } catch (error) {
+      // 某些变量可能无法删除，忽略错误
+    }
+  });
+}
+
+// 加载专题的外部 JS 文件（如果存在）
+async function 加载专题JS文件(技术栈名称, 专题名称) {
+  const JS文件路径 = `./博客内容/${技术栈名称}/${专题名称}/index.js`;
+  try {
+    const response = await fetch(JS文件路径);
+    if (response.ok) {
+      // 获取 JS 代码内容
+      const 代码内容 = await response.text();
+      if (代码内容.trim()) {
+        // 提取代码中声明的全局变量/类/函数
+        const 全局声明列表 = 提取全局声明(代码内容);
+        // 清理这些全局变量，避免重复声明错误
+        清理全局变量(全局声明列表);
+
+        // 使用 new Function 执行代码
+        try {
+          new Function(代码内容)();
+        } catch (执行错误) {
+          console.error(`执行专题 JS 文件时出错 (${JS文件路径}):`, 执行错误);
+        }
+      }
+      return true;
+    }
+  } catch (error) {
+    // 文件不存在或加载失败，忽略错误
+  }
+  return false;
+}
+
+// 加载专题的外部 CSS 文件（如果存在）
+async function 加载专题CSS文件(技术栈名称, 专题名称) {
+  const CSS文件路径 = `./博客内容/${技术栈名称}/${专题名称}/index.css`;
+  try {
+    const response = await fetch(CSS文件路径);
+    if (response.ok) {
+      const 样式元素 = document.createElement("link");
+      样式元素.rel = "stylesheet";
+      样式元素.type = "text/css";
+      样式元素.href = CSS文件路径;
+      样式元素.setAttribute("data-专题资源", "true");
+      document.head.appendChild(样式元素);
+      return true;
+    }
+  } catch (error) {
+    // 文件不存在或加载失败，忽略错误
+  }
+  return false;
+}
+
 async function 设置内容() {
-  专题文件路径 = `./博客内容/${技术栈名称}/${专题名称}.html`;
+  专题文件路径 = `./博客内容/${技术栈名称}/${专题名称}/index.html`;
   let 需要更新侧边栏 = false;
   let 发生了回退 = false;
+
+  // 清理之前专题的外部资源
+  清理专题外部资源();
 
   try {
     const response = await fetch(专题文件路径);
     if (!response.ok) {
       // 如果文件不存在，回退到首页
-      专题文件路径 = `./博客内容/${技术栈名称}/首页.html`;
+      专题文件路径 = `./博客内容/${技术栈名称}/首页/index.html`;
       专题名称 = "首页";
       localStorage.setItem("专题", 专题名称);
       需要更新侧边栏 = true;
@@ -298,14 +402,21 @@ async function 设置内容() {
       专题内容区.innerHTML = content;
     }
 
+    // 加载专题的外部 JS 和 CSS 文件（如果存在）
+    await 加载专题CSS文件(技术栈名称, 专题名称);
+    await 加载专题JS文件(技术栈名称, 专题名称);
+
+    // 处理 HTML 内联的 script 标签（保持向后兼容，虽然重构后应该不会有）
     const parser = new DOMParser();
     const document = parser.parseFromString(专题内容区.innerHTML, "text/html");
     const 脚本组 = document.body.querySelectorAll("script");
     脚本组?.forEach((脚本) => {
       脚本.type = "text/javascript";
       const 脚本代码 = 脚本.textContent.trim();
-      //Function(`'use strict'; return ${脚本代码}`)();
-      new Function(脚本代码)();
+      if (脚本代码) {
+        //Function(`'use strict'; return ${脚本代码}`)();
+        new Function(脚本代码)();
+      }
     });
   } catch (error) {
     console.error("加载专题内容时出错:", error);

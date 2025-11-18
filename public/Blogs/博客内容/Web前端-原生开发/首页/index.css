@@ -1,0 +1,9 @@
+.表身区 tr:nth-child(odd) {
+            background-color: #234;
+          }
+
+          .表身区 td {
+            text-align: center;
+            font-family: Jetbrains Mono;
+            padding: 15px;
+          }

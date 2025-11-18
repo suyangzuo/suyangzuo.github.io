@@ -1,0 +1,310 @@
+<article class="专题简介">
+  <h1 class="简介标题">自定义滚动条<span class="原创">原创</span></h1>
+  <div class="简介信息">
+    <section class="简介信息文本">
+      <p class="作者">
+        <span class="作者前缀 前缀">作者：</span>
+        <span class="作者姓名">苏扬</span>
+      </p>
+      <p class="日期">
+        <span class="日期前缀 前缀">日期：</span>
+        <span class="日期文本"><span class="日期文本-数字 日期文本-年">2024</span>年<span class="日期文本-数字 日期文本-月">6</span>月<span class="日期文本-数字 日期文本-日">17</span>日</span>
+      </p>
+    </section>
+    <section class="简介信息图像">
+      <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+    </section>
+  </div>
+  <ul class="联系方式列表">
+    <li class="联系方式项">
+      <a class="联系方式链接" href="mailto:suyangzuo@gmail.com" target="_blank">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://github.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-github"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.deviantart.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-deviantart"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dev.to/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-dev"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.freecodecamp.org/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-free-code-camp"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://codepen.io/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-codepen"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://dribbble.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-dribbble"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.artstation.com/user-7893655"
+        target="_blank"
+        ><i class="fa-brands fa-artstation"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://codesandbox.io/u/suyangzuo"
+        target="_blank"
+      >
+        <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
+      /></a>
+    </li>
+  </ul>
+</article>
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">滚动条元素</h2>
+
+    <h3 class="分区标题 分区3级标题">为什么要自定义？</h3>
+    <p class="分区普通文本">
+      一切都是为了<span class="行内专业名词">用户体验</span
+      >，可能是默认的滚动条太细，选起来不方便；也可能是滚动条的样式和网站的整体色调不一致，感觉很突兀，比如：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/自定义滚动条/pixiv-滚动栏.png"
+        alt="pixiv-滚动栏"
+      />
+    </figure>
+    <p class="分区普通文本">
+      网站整体色调接近黑色，滚动栏却是白色，显得非常刺眼；因此，我们经常需要定制滚动条的样式，以符合网站的整体风格。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">滚动条元素</h3>
+    <p class="分区普通文本">
+      滚动条在<span class="行内专业名词">DOM树</span>中实际上是<span
+        class="行内专业名词"
+        >伪元素</span
+      >，分为几个部分：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="行内代码">::-webkit-scrollbar</span
+        >：滚动条本身。如忽略，则其它部分设置无效
+      </li>
+      <li class="分区列表项">
+        <span class="行内代码">::-webkit-scrollbar-track</span>：滚动条轨道
+      </li>
+      <li class="分区列表项">
+        <span class="行内代码">::-webkit-scrollbar-thumb</span>：滚动条滑块
+      </li>
+      <li class="分区列表项">
+        <span class="行内代码">::-webkit-scrollbar-button</span
+        >：滚动条两端的箭头
+      </li>
+    </ul>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        <span class="行内代码">webkit</span>代表的是源于<span
+          class="行内专业名词"
+          >webkit</span
+        >核心打造的浏览器，主要代表有<span class="行内专业名词">Chrome</span
+        >、<span class="行内专业名词">Edge</span>、<span class="行内专业名词"
+          >Safari</span
+        >，因此这些伪元素对于<span class="行内专业名词">FireFox</span
+        >浏览器是<span class="强调">无效</span>的。
+      </p>
+      <p class="分区普通文本">
+        其次，这些伪元素是<span class="强调">非标准</span>的，<a
+          class="超链接"
+          target="_blank"
+          href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/::-webkit-scrollbar"
+          >MDN Web Docs 相关页面</a
+        >明确提出<span class="强调">尽量不要在生产环境中使用</span
+        >。简单地说就是公司的正规项目里不要用这些伪元素。
+      </p>
+      <figure class="截图容器">
+        <img
+          src="/Images/Blogs/Web前端-原生开发/自定义滚动条/滚动条伪元素非标准提示.png"
+          alt="滚动条伪元素非标准提示"
+        />
+      </figure>
+      <p class="分区普通文本">尽量不要在正式项目里使用这些伪元素。</p>
+    </section>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">自定义滚动条样式</h2>
+
+    <h3 class="分区标题 分区3级标题">滚动条</h3>
+    <p class="分区普通文本">滚动条可以修改宽度和背景：</p>
+    <pre class="line-numbers">
+      <code class="lang-css">
+        body::-webkit-scrollbar {
+          width: 35px;
+          background-color: darkgoldenrod;
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/自定义滚动条/自定义滚动条.png"
+        alt="自定义滚动条"
+      />
+    </figure>
+    <p class="分区普通文本">滚动条的宽度和背景已改变。</p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        <span class="行内代码">::-webkit-scrollbar</span
+        >的宽度和背景色至少要写一个，其它的伪元素才能起作用。
+      </p>
+    </section>
+    <p class="分区普通文本">滚动条的背景不仅能用颜色，也能用渐变：</p>
+    <pre class="line-numbers">
+      <code class="lang-css">
+        body::-webkit-scrollbar {
+          width: 25px;
+          background-image: linear-gradient(seagreen 10%, lightskyblue 90%);
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/自定义滚动条/自定义滚动条背景-渐变.png"
+        alt="自定义滚动条背景-渐变"
+      />
+    </figure>
+
+    <h3 class="分区标题 分区3级标题">滚动条轨道</h3>
+    <p class="分区普通文本">
+      滚动条轨道主要是修改背景，<span class="强调">注意：</span
+      >滚动条轨道的背景会覆盖滚动条的背景：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-css">
+        body::-webkit-scrollbar {
+          width: 25px;
+          background-image: linear-gradient(seagreen 10%, lightskyblue 90%); /* 被第7行覆盖 */
+        }
+        
+        body::-webkit-scrollbar-track {
+          background-color: rgb(170, 87, 115); /* 此样式会覆盖第3行 */
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/自定义滚动条/自定义滚动条轨道.png"
+        alt="自定义滚动条轨道"
+      />
+    </figure>
+    <p class="分区普通文本">
+      <span class="行内代码">::-webkit-scrollbar-track</span>的背景会覆盖<span
+        class="行内代码"
+        >::-webkit-scrollbar</span
+      >的背景。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">滚动条滑块</h3>
+    <p class="分区普通文本">
+      现在在滚动条上还看不到滑块，不是没了，而是修改了<span class="行内代码"
+        >::-webkit-scrollbar</span
+      >后，滑块会自动变成透明。因此我们需要为滑块手动添加样式代码：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-css">
+        /* 滚动条 */
+        body::-webkit-scrollbar {
+          width: 25px;
+        }
+
+        /* 轨道 */
+        body::-webkit-scrollbar-track {
+          background-color: rgb(71, 71, 71);
+        }
+
+        /* 滑块 */
+        body::-webkit-scrollbar-thumb {
+          background-color: rgb(58, 151, 115);
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/自定义滚动条/自定义滑块-背景.png"
+        alt="自定义滑块-背景"
+      />
+    </figure>
+    <p class="分区普通文本">
+      修改背景之后就能看到滑块了。我们还可以进一步定制其样式：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-css">
+        body::-webkit-scrollbar-thumb {
+          background-color: rgb(58, 151, 115);
+          border-radius: 999px; /* 边框圆角 */
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/自定义滚动条/自定义滑块-圆角.png"
+        alt="自定义滑块-圆角"
+      />
+    </figure>
+    <p class="分区普通文本">
+      两端改成圆角也没有问题。再为滑块的<span class="行内代码">:hover</span
+      >和<span class="行内代码">:active</span>伪类添加不同的样式：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-css">
+        body::-webkit-scrollbar-thumb {
+          background-color: seagreen;
+          border-radius: 999px;
+        }
+
+        body::-webkit-scrollbar-thumb:hover {
+          background-color: rgb(96, 207, 166);
+        }
+
+        /* :active 表示鼠标按住滑块不放 */
+        body::-webkit-scrollbar-thumb:active {
+          background-color: rgb(159, 207, 249);
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/自定义滚动条/自定义滚动条-伪类.webp"
+        alt="自定义滚动条-伪类"
+      />
+    </figure>
+    <p class="分区普通文本">这样一个自定义的滚动条就算是基本完成了。</p>
+  </article>
+</div>

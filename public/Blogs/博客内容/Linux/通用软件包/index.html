@@ -1,0 +1,621 @@
+<article class="专题简介">
+  <h1 class="简介标题"><span>通用软件包</span><span class="原创">原创</span></h1>
+  <div class="简介信息">
+    <section class="简介信息文本">
+      <p class="作者">
+        <span class="作者前缀 前缀">作者：</span>
+        <span class="作者姓名">苏扬</span>
+      </p>
+      <p class="日期">
+        <span class="日期前缀 前缀">日期：</span>
+        <span class="日期文本"
+          ><span class="日期文本-数字 日期文本-年">2025</span>年<span class="日期文本-数字 日期文本-月">7</span>月<span
+            class="日期文本-数字 日期文本-日"
+            >22</span
+          >日</span
+        >
+      </p>
+    </section>
+    <section class="简介信息图像">
+      <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+    </section>
+  </div>
+  <ul class="联系方式列表">
+    <li class="联系方式项">
+      <a class="联系方式链接" href="mailto:suyangzuo@gmail.com" target="_blank">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://github.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-github"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.deviantart.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-deviantart"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dev.to/suyangzuo" target="_blank"><i class="fa-brands fa-dev"></i></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.freecodecamp.org/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-free-code-camp"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://codepen.io/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-codepen"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dribbble.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-dribbble"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.artstation.com/user-7893655" target="_blank"
+        ><i class="fa-brands fa-artstation"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://codesandbox.io/u/suyangzuo" target="_blank">
+        <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
+      /></a>
+    </li>
+  </ul>
+</article>
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">Linux 软件生态</h2>
+    <h3 class="分区标题 分区3级标题">派系之争</h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词">开放、自由</span>是<span class="行内专业名词">Linux</span
+      >的核心特征，也是一把双刃剑。它既给了用户最大的自由与选择权，也导致了生态的碎片化，这一点在软件包领域体现得尤为明显。
+    </p>
+    <p class="分区普通文本">例如，三大派系分别有自己的包管理器：</p>
+    <table class="表格" id="门派表格" style="backdrop-filter: blur(10px); margin: 20px 0">
+      <thead class="表头区">
+        <tr>
+          <th>派系</th>
+          <th>底层工具</th>
+          <th>包管理器</th>
+          <th>包格式</th>
+          <th>依赖解决</th>
+        </tr>
+      </thead>
+      <tbody class="表身区">
+        <tr style="background-color: rgba(255, 165, 0, 0.2)">
+          <td><span class="行内专业名词" style="color: orange">Debian</span></td>
+          <td><span class="行内代码">dpkg</span></td>
+          <td><span class="代码">apt</span></td>
+          <td><span class="代码">.deb</span></td>
+          <td>自动</td>
+        </tr>
+        <tr style="background-color: rgba(228, 51, 51, 0.2)">
+          <td><span class="行内专业名词" style="color: rgb(228, 51, 51)">红帽</span></td>
+          <td><span class="行内代码">rpm</span></td>
+          <td><span class="代码">dnf</span></td>
+          <td><span class="代码">.rpm</span></td>
+          <td>自动</td>
+        </tr>
+        <tr style="background-color: rgba(17, 131, 230, 0.2)">
+          <td><span class="行内专业名词" style="color: rgb(17, 131, 230)">Arch</span></td>
+          <td><span class="行内代码">pacman</span></td>
+          <td><span class="代码">pacman</span></td>
+          <td><span class="代码">.pkg.tar.zst</span></td>
+          <td>自动</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="分区普通文本">
+      一个派系下的包管理器，无法在另一个派系下使用<span class="附加说明">真要用也有办法，但是很麻烦</span
+      >，这种分裂的生态，导致用户的学习成本与迁移成本都大幅增加。为了解决这个问题，各个社区、公司都在研究通用软件包格式。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">通用软件包格式</h3>
+    <p class="分区普通文本">戏剧性的是，通用软件包格式依然有派系之争！每个派系都希望自己说了算，真是让人心累呀！</p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Linux/通用软件包/没完了.gif" alt="没完了" />
+    </figure>
+    <table class="表格" id="通用包格式历史表" style="backdrop-filter: blur(10px); margin: 20px 0">
+      <thead class="表头区">
+        <tr>
+          <th>通用包格式</th>
+          <th>开发人员</th>
+          <th>所属派系</th>
+        </tr>
+      </thead>
+      <tbody class="表身区">
+        <tr style="background-color: rgba(255, 255, 255, 0.1)">
+          <td><span class="行内代码" style="color: rgb(255, 255, 255)">AppImage</span></td>
+          <td>
+            <span class="行内专业名词"
+              ><a
+                class="超链接"
+                href="https://github.com/probonopd"
+                target="_blank"
+                style="text-decoration: underline; text-decoration-color: rgba(154, 205, 50, 0.65)"
+                >Simon Peter</a
+              ></span
+            >
+          </td>
+          <td><span class="代码">无</span></td>
+        </tr>
+        <tr style="background-color: rgba(228, 51, 51, 0.2)">
+          <td><span class="行内代码" style="color: rgb(228, 51, 51)">Flatpak</span></td>
+          <td>
+            <a
+              class="超链接"
+              href="https://www.redhat.com/zh-cn/authors/alexander-larsson"
+              target="_blank"
+              style="text-decoration: underline; text-decoration-color: rgba(154, 205, 50, 0.65)"
+              >Alexander Larsson</a
+            >
+          </td>
+          <td><span class="行内代码" style="color: rgb(228, 51, 51)">红帽</span></td>
+        </tr>
+        <tr style="background-color: rgba(255, 165, 0, 0.2)">
+          <td><span class="行内代码" style="color: orange">Snap</span></td>
+          <td>
+            <a
+              class="超链接"
+              href="https://canonical.com/"
+              target="_blank"
+              style="text-decoration: underline; text-decoration-color: rgba(154, 205, 50, 0.65)"
+              >Canonical 公司</a
+            >
+          </td>
+          <td><span class="行内代码" style="color: rgb(255, 165, 0)">Debian</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="分区普通文本">
+      定睛一看，竟然还有一个无派系的！没错，<span class="行内代码">AppImage</span
+      >也是我个人最喜欢的包格式。但是，这些通用包格式依然区分派系的结果就是：没有哪个包格式能够一统天下。
+    </p>
+    <p class="分区普通文本">通用包格式虽然也有派系之争，但是这些包格式在所有的发行版中都可以正常安装、使用。</p>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题"><span class="等宽">AppImage</span></h2>
+
+    <h3 class="分区标题 分区3级标题">
+      安装<span class="专业名词 等宽">libfuse<span class="行内代码">2</span></span>
+    </h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词 等宽">AppImage</span>文件需要<span class="行内专业名词 等宽">root</span
+      >用户权限进行挂载，而<span class="专业名词 等宽">libfuse<span class="行内代码">2</span></span
+      >允许非<span class="行内专业名词 等宽">root</span>用户进行挂载。
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Linux/通用软件包/libfuse2.png" alt="libfuse2" />
+    </figure>
+    <p class="分区普通文本">在有的系统上，包名称可能叫<span class="专业名词 等宽">libfuse2t64</span>。</p>
+
+    <h3 class="分区标题 分区3级标题">下载运行<span class="行内专业名词 等宽">AppImage</span></h3>
+    <p class="分区普通文本">
+      <span class="行内代码">AppImage</span>是我最喜欢的通用包格式，它最大的优势在于<span class="强调"
+        >单文件、全依赖包含</span
+      >，因此下载<span class="行内专业名词 等宽">AppImage</span>是最简单的事情。
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Linux/通用软件包/Krita-下载.png" alt="Krita-下载" />
+    </figure>
+    <p class="分区普通文本">
+      很多设计类软件都将<span class="行内代码">AppImage</span>作为首选软件包格式。点击即可下载。
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Linux/通用软件包/Krita-AppImage-文件名.png" alt="Krita-文件名" />
+    </figure>
+    <p class="分区普通文本">
+      整个软件只有一个扩展名为<span class="代码">.AppImage</span>的文件，非常方便。注意：<span class="行内代码"
+        >AppImage</span
+      >下载后，默认是不具备<span class="行内专业名词">执行</span>权限的，必须手动赋予权限方可运行：
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Linux/通用软件包/AppImage-赋予运行权限.png" alt="AppImage-赋予执行权限" />
+    </figure>
+    <p class="分区普通文本">
+      赋予<span class="行内专业名词">执行</span>权限后，双击<span class="行内代码">AppImage</span>即可运行软件。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">添加快捷方式</h3>
+    <p class="分区普通文本">
+      由于<span class="行内代码">AppImage</span>是单文件，直接双击就运行程序了，没有<span class="行内专业名词"
+        >安装</span
+      >过程，因此往往不会自动添加<span class="行内专业名词">快捷方式</span
+      >，如果想方便地访问软件，必须手动添加快捷方式，<span class="行内专业名词">Linux</span>的快捷方式扩展名为<span
+        class="行内代码"
+        >.desktop</span
+      >。
+    </p>
+    <p class="分区普通文本"><span class="行内专业名词">Linux</span>的快捷方式主要存在于两个目录：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="行内专业名词">系统级：</span>
+        <span class="代码">/usr/share/applications</span>
+      </li>
+      <li class="分区列表项">
+        <span class="行内专业名词">用户级：</span>
+        <span class="代码">~/.local/share/applications</span>
+      </li>
+    </ul>
+    <p class="分区普通文本">
+      下面用<span class="行内专业名词">用户级</span>目录为例：访问<span class="代码">~/.local/share/applications</span
+      >目录，新建<span class="行内代码">.desktop</span>扩展名的文件：
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Linux/通用软件包/用户级快捷方式路径.png" alt="用户级快捷方式路径" />
+    </figure>
+    <p class="分区普通文本">用任意文本编辑器，打开<span class="行内代码">.desktop</span>文件，编写如下内容：</p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Linux/通用软件包/快捷方式文本.png" alt="快捷方式文本" />
+    </figure>
+    <p class="分区普通文本">
+      其实只有前<span class="行内专业名词">3</span>行是必要的，其它的可以省略。其中的<span class="专业名词"
+        >分类;子分类</span
+      >，请参考<a
+        class="超链接"
+        target="_blank"
+        href="https://specifications.freedesktop.org/menu-spec/latest/category-registry.html"
+        >freedesktop.org 桌面菜单规范</a
+      >。写完之后保存，然后你就能在应用列表中看到快捷方式了！
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Linux/通用软件包/应用列表-Krita.png" alt="应用列表-Krita" />
+    </figure>
+    <p class="分区普通文本"><span class="行内专业名词">Krita</span>的快捷方式已经出现在应用列表中！</p>
+
+    <h3 class="分区标题 分区3级标题">更新<span class="行内专业名词 等宽">AppImage</span></h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词 等宽">AppImage</span>没有部署在包管理器中，你只能到官网下载新的<span
+        class="行内专业名词 等宽"
+        >AppImage</span
+      >文件，覆盖旧的即可。
+    </p>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题"><span class="等宽">Flatpak</span></h2>
+
+    <h3 class="分区标题 分区3级标题">安装<span class="行内专业名词 等宽">Flatpak</span></h3>
+    <p class="分区普通文本">
+      要使用<span class="行内专业名词">Flatpak</span>软件包，需要先安装<span class="行内专业名词">Flatpak</span
+      >自身。可以访问<a class="超链接" href="https://flatpak.org/setup/" target="_blank">Flatpak 官方网站</a
+      >查看安装方法。
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Linux/通用软件包/安装Flatpak.png" alt="安装 Flatpak" />
+    </figure>
+    <p class="分区普通文本">
+      不同发行版的安装方式各有不同。只有先安装<span class="行内专业名词">Flatpak</span>自身，才能安装<span
+        class="行内专业名词"
+        >Flatpak</span
+      >软件包。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">添加<span class="行内专业名词 等宽">Flathub</span>软件仓库</h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词">Flatpak</span>软件仓库是一个很长的<span class="行内专业名词">URL</span
+      >地址，因此需要给这些<span class="行内专业名词">URL</span>起一个别名。目前最流行的仓库就是<a
+        class="超链接"
+        href="https://flathub.org/zh-Hans"
+        target="_blank"
+        >Flathub</a
+      >。
+    </p>
+    <pre>
+      <code class="lang-bash">
+        //flatpak 添加远程仓库 如果已经存在就算了 别名 URL地址
+        flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+      </code>
+    </pre>
+
+    <h3 class="分区标题 分区3级标题">修改<span class="行内专业名词 等宽">Flathub</span>软件仓库</h3>
+    <p class="分区普通文本">
+      默认情况下，<span class="行内专业名词">Flathub</span>仓库的<span class="行内专业名词">URL</span
+      >地址是国外的，从国内访问速度很慢，因此需要修改为国内的镜像地址。
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span>上海交通大学</span>：<a class="超链接" href="https://mirror.sjtu.edu.cn/docs/flathub" target="_blank"
+          >https://mirror.sjtu.edu.cn/flathub</a
+        >
+      </li>
+      <li class="分区列表项">
+        <span>中国科学技术大学</span>：<a
+          class="超链接"
+          href="https://mirrors.ustc.edu.cn/help/flathub.html"
+          target="_blank"
+          >https://mirrors.ustc.edu.cn/flathub</a
+        >
+      </li>
+    </ul>
+    <pre>
+      <code class="lang-bash">
+        //sudo flatpak 修改远程仓库 别名 --url=URL地址
+        sudo flatpak remote-modify flathub --url=https://mirrors.ustc.edu.cn/flathub
+      </code>
+    </pre>
+
+    <h3 class="分区标题 分区3级标题">查看<span class="行内专业名词 等宽">Flathub</span>软件仓库</h3>
+    <pre>
+      <code class="lang-bash">
+        //查看远程仓库别名
+        flatpak remotes
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Linux/通用软件包/查看Flatpak远程仓库别名.png" alt="查看Flatpak远程仓库别名" />
+    </figure>
+    <p class="分区普通文本">
+      <span class="代码">flatpak remotes</span>可以查看仓库别名，我只有一个仓库，别名为<span class="行内代码"
+        >flathub</span
+      >。但是这个命令看不到仓库的<span class="行内专业名词">URL</span>地址，我们需要加一个<span class="行内代码"
+        >-d</span
+      >参数。
+    </p>
+    <pre>
+      <code class="lang-bash">
+        //查看远程仓库详细信息
+        flatpak remotes -d
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Linux/通用软件包/查看Flatpak远程仓库详细信息.png" alt="查看Flatpak远程仓库详细信息" />
+    </figure>
+
+    <h3 class="分区标题 分区3级标题">搜索<span class="行内专业名词 等宽">Flatpak</span>软件包</h3>
+    <p class="分区普通文本">
+      想要安装<span class="行内代码">Flatpak</span>软件包，需要知道这个软件包的<span class="行内代码">ID</span>。
+    </p>
+    <pre>
+      <code class="lang-bash">
+        //flatpak 搜索 软件名称
+        flatpak search krita
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Linux/通用软件包/搜索Flatpak软件包.png" alt="搜索Flatpak软件包" />
+    </figure>
+    <p class="分区普通文本">
+      <span class="行内专业名词">Krita</span>的<span class="行内代码">ID</span>是<span class="行内代码"
+        >org.kde.krita</span
+      >。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">安装<span class="行内专业名词 等宽">Flatpak</span>软件包</h3>
+    <p class="分区普通文本">有了<span class="行内代码">ID</span>，就可以进行安装了。</p>
+    <pre>
+      <code class="lang-bash">
+        //flatpak 安装 仓库别名 软件ID
+        flatpak install flathub org.kde.krita
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Linux/通用软件包/Flatpak-安装Krita.png" alt="Flatpak-安装Krita" />
+    </figure>
+    <p class="分区普通文本">
+      安装过程中会询问<span class="行内专业名词">继续对系统安装进行这些更改吗？</span>输入<span class="行内代码">y</span
+      >，回车，耐心等待安装完成。完成后就可以在应用列表里看到<span class="行内专业名词">Krita</span>了。
+    </p>
+    <p class="分区普通文本">
+      除了用命令搜索软件包ID，还可以访问<a class="超链接" href="https://flathub.org/zh-Hans" target="_blank"
+        >Flathub 官方网站</a
+      >直接获取安装命令。
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Linux/通用软件包/Flathub官网安装提示.png" alt="Flathub官网安装提示" />
+    </figure>
+    <p class="分区普通文本">
+      在软件包的页面中，点击<span class="行内专业名词">安装旁边的倒三角</span
+      >，就可以看到写好的安装命令，直接复制到终端执行即可。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">查看<span class="行内专业名词 等宽">Flatpak</span>可更新的软件包</h3>
+    <p class="分区普通文本">
+      想查看已安装且有更新的<span class="行内代码">Flatpak</span>软件包，用<span class="代码"
+        >flatpak remote-ls --updates</span
+      >命令。
+    </p>
+    <pre>
+      <code class="lang-bash">
+        //flatpak 远程-列表 --有更新
+        flatpak remote-ls --updates
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Linux/通用软件包/flatpak-remote-ls-updates.png" alt="flatpak remote-ls --updates" />
+    </figure>
+    <p class="分区普通文本">命令运行后列出的就是已经安装且可更新的软件包。</p>
+
+    <h3 class="分区标题 分区3级标题">更新<span class="行内专业名词 等宽">Flatpak</span>软件包</h3>
+    <p class="分区普通文本">
+      想一口气更新所有的<span class="行内代码">Flatpak</span>软件包，用<span class="代码">flatpak update</span>命令。
+    </p>
+    <pre>
+      <code class="lang-bash">
+        //flatpak 更新
+        flatpak update
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Linux/通用软件包/flatpak-update.png" alt="flatpak update" />
+    </figure>
+    <p class="分区普通文本">
+      <span class="行内专业名词">无事可做</span
+      >说明所有软件都是最新的，不需要更新。如果想更新某个特定软件，给命令加上<span class="行内代码">ID</span>即可：
+    </p>
+    <pre>
+      <code class="lang-bash">
+        //flatpak 更新 软件ID 
+        flatpak update org.kde.krita
+      </code>
+    </pre>
+
+    <h3 class="分区标题 分区3级标题">查看<span class="行内专业名词 等宽">Flatpak</span>已安装的软件包</h3>
+    <p class="分区普通文本">
+      想知道自己用<span class="行内代码">Flatpak</span>安装了哪些软件？用<span class="代码">flatpak list</span>即可！
+    </p>
+    <pre>
+      <code class="lang-bash">
+        //flatpak 列表
+        flatpak list
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Linux/通用软件包/flatpak-list.png" alt="flatpak list" />
+    </figure>
+    <p class="分区普通文本">很多软件都会附带其它的包，因此会列出很多很多个软件包。</p>
+
+    <h3 class="分区标题 分区3级标题">卸载<span class="行内专业名词 等宽">Flatpak</span>软件包</h3>
+    <p class="分区普通文本">
+      卸载<span class="行内代码">Flatpak</span>软件包，同样要用到<span class="行内代码">ID</span>。
+    </p>
+    <pre>
+      <code class="lang-bash">
+        //flatpak 卸载 软件ID
+        flatpak uninstall org.kde.krita
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Linux/通用软件包/Flatpak-卸载Krita.png" alt="Flatpak-卸载Krita" />
+    </figure>
+    <p class="分区普通文本">
+      卸载过程中会询问<span class="行内专业名词">继续对系统安装进行这些更改吗？</span>输入<span class="行内代码">y</span
+      >，回车，耐心等待卸载完成。
+    </p>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题"><span class="等宽">Snap</span></h2>
+
+    <h3 class="分区标题 分区3级标题">安装<span class="行内专业名词 等宽">snapd</span>守护进程</h3>
+    <p class="分区普通文本">
+      要使用<span class="行内代码">Snap</span>软件包，需要先安装<span class="行内专业名词">snapd 守护进程</span
+      >。部分<span class="行内专业名词">Linux发行版</span>已经预装了<span class="行内专业名词">snapd</span>。可以访问<a
+        class="超链接"
+        href="https://snapcraft.io/docs/installing-snapd"
+        target="_blank"
+        >Canonical Snapcraft 官方文档</a
+      >查看安装方法。
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Linux/通用软件包/安装Snap.png" alt="安装 Snap" />
+    </figure>
+    <p class="分区普通文本">
+      部分<span class="行内专业名词">Linux发行版</span>已经预装了<span class="行内专业名词">snapd</span
+      >，其它发行版的安装方式各有不同。只有先安装<span class="行内专业名词">snapd</span>守护进程，才能使用<span
+        class="行内专业名词"
+        >snap</span
+      >软件包。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">搜索<span class="行内专业名词 等宽">Snap</span>软件包</h3>
+    <p class="分区普通文本">
+      想要安装<span class="行内代码">Snap</span>软件包，需要知道这个软件包的<span class="行内专业名词">名称</span>。
+    </p>
+    <pre>
+      <code class="lang-bash">
+        //snap 寻找 软件名称
+        snap find krita
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Linux/通用软件包/Snap寻找Krita.png" alt="Snap寻找Krita" />
+    </figure>
+    <p class="分区普通文本">
+      <span class="强调">注意：</span>名称不能想当然！<span class="行内专业名词">Krita</span>的名称就叫<span
+        class="行内专业名词"
+        >Krita</span
+      >，但不是每个软件都这么简单直接，比如<span class="行内专业名词">Visual Studio Code</span>的名称是<span
+        class="行内专业名词"
+        >code</span
+      >。因此，<span class="行内专业名词">名称</span>要以搜索结果为准，不能凭想象。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">安装<span class="行内专业名词 等宽">Snap</span>软件包</h3>
+    <p class="分区普通文本">有了<span class="行内代码">软件名称</span>，就可以进行安装了。</p>
+    <pre>
+      <code class="lang-bash">
+        //snap 安装 软件名称
+        snap install krita //无论加不加 sudo，都会让你输入密码，只不过输入的界面不同
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Linux/通用软件包/sudo-snap-install.png" alt="sudo snap install" />
+    </figure>
+
+    <h3 class="分区标题 分区3级标题">查看<span class="行内专业名词 等宽">Snap</span>已安装的软件包</h3>
+    <p class="分区普通文本">
+      想知道自己用<span class="行内代码">Snap</span>安装了哪些软件？用<span class="代码">snap list</span>即可！
+    </p>
+    <pre>
+      <code class="lang-bash">
+        //snap 列表
+        snap list
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Linux/通用软件包/snap-list.png" alt="snap list" />
+    </figure>
+
+    <h3 class="分区标题 分区3级标题">查看<span class="行内专业名词 等宽">Snap</span>可更新的软件包</h3>
+    <p class="分区普通文本">
+      想查看已安装且有更新的<span class="行内代码">Snap</span>软件包，用<span class="代码">snap refresh --list</span
+      >命令。
+    </p>
+    <pre>
+      <code class="lang-bash">
+        //snap 刷新 --列表
+        snap refresh --list
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Linux/通用软件包/snap-refresh-list.png" alt="snap refresh --list" />
+    </figure>
+    <p class="分区普通文本">命令运行后列出的就是已经安装且可更新的软件包。</p>
+
+    <h3 class="分区标题 分区3级标题">更新<span class="行内专业名词 等宽">Snap</span>软件包</h3>
+    <p class="分区普通文本">
+      想一口气更新所有的<span class="行内代码">Snap</span>软件包，用<span class="代码">snap refresh</span>命令。
+    </p>
+    <pre>
+      <code class="lang-bash">
+        //snap 刷新
+        snap refresh
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Linux/通用软件包/snap-refresh.png" alt="snap refresh" />
+    </figure>
+    <p class="分区普通文本">
+      想更新特定的<span class="行内代码">Snap</span>软件包，给命令加上<span class="行内代码">软件名称</span>即可。
+    </p>
+    <pre>
+      <code class="lang-bash">
+        //snap 刷新 软件包名称
+        snap refresh krita
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Linux/通用软件包/snap-refresh-krita.png" alt="snap refresh krita" />
+    </figure>
+
+    <h3 class="分区标题 分区3级标题">卸载<span class="行内专业名词 等宽">Snap</span>软件包</h3>
+    <p class="分区普通文本">
+      卸载<span class="行内代码">Flatpak</span>软件包，同样要用到<span class="行内代码">软件名称</span>。
+    </p>
+    <pre>
+      <code class="lang-bash">
+        //snap 移除 软件名称
+        snap remove krita
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Linux/通用软件包/snap-remove.png" alt="snap remove" />
+    </figure>
+  </article>
+</div>

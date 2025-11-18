@@ -1,0 +1,106 @@
+.canvas-矩形说明-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 30px 0 0 40px;
+        position: relative;
+        width: fit-content;
+        margin: 0 auto;
+      }
+
+      #canvas-矩形说明 {
+        width: 100%;
+        height: 100%;
+        background-color: #222;
+        display: block;
+        position: relative;
+      }
+
+      .canvas-矩形说明-introduction {
+        position: absolute;
+        left: 50%;
+        bottom: 10px;
+        translate: calc(-50% + 20px) 0;
+        font-size: 16px;
+        pointer-events: none;
+      }
+
+      .rect-x-indicator {
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 16px;
+        color: lightsteelblue;
+        font-family: "Google Sans Code", monospace;
+        pointer-events: none;
+        user-select: none;
+        z-index: 10;
+        transform: translate(-50%, -100%);
+        /* left/top 由JS动态设置 */
+      }
+      .rect-y-indicator {
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 16px;
+        color: lightsteelblue;
+        font-family: "Google Sans Code", monospace;
+        pointer-events: none;
+        user-select: none;
+        z-index: 10;
+        transform: translate(-100%, -50%);
+        /* left/top 由JS动态设置 */
+      }
+
+      .canvas-dimension {
+        position: absolute;
+        font-size: 16px;
+        font-family: "Google Sans Code", monospace;
+        pointer-events: none;
+        user-select: none;
+        width: fit-content;
+      }
+      .canvas-width {
+        left: 50%;
+        top: 35px;
+        text-align: center;
+      }
+      .canvas-height {
+        left: 45px;
+        top: 50%;
+        text-align: center;
+      }
+      .canvas-dimension .num {
+        color: rgb(50, 164, 143);
+        text-shadow: 1px 1px 1px #000a;
+      }
+      .canvas-dimension .unit {
+        color: rgb(182, 121, 61);
+        margin-left: 2px;
+        text-shadow: 1px 1px 1px #000a;
+      }
+
+.滑块标签:hover {
+              cursor: url("/Images/Common/鼠标-默认.cur"), pointer;
+            }
+
+            .滑块:hover {
+              cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+            }
+
+            .滑块::-webkit-slider-thumb {
+              scale: 1.25;
+            }
+
+            #顶点数量显示,
+            #起始弧度显示 {
+              color: darkgoldenrod;
+            }
+
+.标点 {
+        color: rgb(158, 158, 158);
+      }
+
+      .圆括号 {
+        color: darkgoldenrod;
+      }

@@ -1,0 +1,232 @@
+<article class="专题简介">
+  <h1 class="简介标题">编辑环境变量<span class="原创">原创</span></h1>
+  <div class="简介信息">
+    <section class="简介信息文本">
+      <p class="作者">
+        <span class="作者前缀 前缀">作者：</span>
+        <span class="作者姓名">苏扬</span>
+      </p>
+      <p class="日期">
+        <span class="日期前缀 前缀">日期：</span>
+        <span class="日期文本"><span class="日期文本-数字 日期文本-年">2024</span>年<span class="日期文本-数字 日期文本-月">2</span>月<span class="日期文本-数字 日期文本-日">28</span>日</span>
+      </p>
+    </section>
+    <section class="简介信息图像">
+      <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+    </section>
+  </div>
+  <ul class="联系方式列表">
+    <li class="联系方式项">
+      <a class="联系方式链接" href="mailto:suyangzuo@gmail.com" target="_blank">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://github.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-github"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.deviantart.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-deviantart"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dev.to/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-dev"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.freecodecamp.org/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-free-code-camp"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://codepen.io/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-codepen"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://dribbble.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-dribbble"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.artstation.com/user-7893655"
+        target="_blank"
+        ><i class="fa-brands fa-artstation"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://codesandbox.io/u/suyangzuo"
+        target="_blank"
+      >
+        <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
+      /></a>
+    </li>
+  </ul>
+</article>
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">环境变量</h2>
+
+    <h3 class="分区标题 分区3级标题">
+      什么是<span class="行内专业名词">环境变量</span>
+    </h3>
+    <p class="分区普通文本">
+      简而言之，环境变量是描述应用程序和程序运行环境的变量。各种程序都使用环境变量来回答类似以下问题：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">运行该程序的计算机的名称是什么？</li>
+      <li class="分区列表项">运行该程序的用户帐户是什么？</li>
+      <li class="分区列表项">运行程序当前的工作目录是什么？</li>
+      <li class="分区列表项">Windows安装在哪里？</li>
+      <li class="分区列表项">这台计算机上的临时文件存储在哪里？</li>
+      <li class="分区列表项">该程序的可执行文件在哪里？</li>
+    </ul>
+    <p class="分区普通文本">
+      诸如此类。将这些问题的答案，在<span class="行内专业名词">环境变量</span
+      >统一设置好，就不用为应用程序单独写配置了。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">环境变量</span>有何用途
+    </h3>
+    <p class="分区普通文本">
+      最常用的环境变量，就是<span class="代码"
+        >Path<span class="附加说明">路径</span></span
+      >，这个变量是专门用来回答<span class="专业名词">该程序在什么地方？</span
+      >的。如果不将程序路径加入此变量，则每次都要先转到程序所在路径，才能运行程序；加入环境变量后，在任何地方都能运行程序，因为程序会自动从环境变量中搜索自己的路径。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/经验之谈/编辑环境变量/环境变量-环境变量对话框.png"
+        alt="环境变量对话框"
+      />
+    </figure>
+    <p class="分区普通文本">
+      编辑<span class="行内专业名词">Path</span>，添加路径，确定后即可生效。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">环境变量</span>作用域
+    </h3>
+    <p class="分区普通文本">环境变量有 2 个作用域：</p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/经验之谈/编辑环境变量/环境变量-作用域.png"
+        alt="环境变量作用域"
+      />
+    </figure>
+    <p class="分区普通文本">
+      用户作用域只对当前用户生效；系统作用域对所有用户都生效。
+    </p>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">访问环境变量</h2>
+
+    <h3 class="分区标题 分区3级标题">鼠标点击方式</h3>
+    <ol class="分区列表 有序列表">
+      <li class="分区列表项">
+        右击开始菜单，点击<span class="行内专业名词">系统</span>：
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/经验之谈/编辑环境变量/环境变量-系统菜单.png"
+            alt="右击开始菜单-系统"
+          />
+        </figure>
+      </li>
+      <li class="分区列表项">
+        点击<span class="行内专业名词">高级系统设置</span>：
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/经验之谈/编辑环境变量/环境变量-系统信息对话框.png"
+            alt="系统信息-高级系统设置"
+          />
+        </figure>
+      </li>
+      <li class="分区列表项">
+        点击<span class="行内专业名词">环境变量</span>：
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/经验之谈/编辑环境变量/环境变量-系统属性对话框.png"
+            alt="系统属性-环境变量"
+          />
+        </figure>
+      </li>
+    </ol>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p>
+        <span class="行内专业名词">图1</span>和<span class="行内专业名词"
+          >图2</span
+        >都是<span class="行内专业名词">Windows 11</span>的操作方式，如果是<span
+          class="行内专业名词"
+          >Windows 7</span
+        >或<span class="行内专业名词">Windows 10</span
+        >，操作方式有一定区别。如果希望用统一的方式访问环境变量，请参阅<span
+          class="行内专业名词"
+          ><span class="代码">2-2</span>输入命令方式</span
+        >。
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">输入命令方式</h3>
+    <ol class="分区列表 有序列表">
+      <li class="分区列表项">
+        右击开始菜单，点击<span class="行内专业名词">运行</span>：
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/经验之谈/编辑环境变量/环境变量-点击运行菜单.png"
+            alt="右击开始菜单-运行"
+          />
+        </figure>
+      </li>
+      <li class="分区列表项">
+        输入<span class="行内专业名词">sysdm.cpl</span>并回车<span
+          class="附加说明"
+          >或点击<span class="行内专业名词">确定</span></span
+        >：
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/经验之谈/编辑环境变量/环境变量-运行对话框.png"
+            alt="运行对话框内输入命令"
+          />
+        </figure>
+      </li>
+      <li class="分区列表项">
+        点击<span class="行内专业名词">高级</span>选项卡，再点击<span
+          class="行内专业名词"
+          >环境变量</span
+        >：
+        <figure class="截图容器 系统属性初始选项卡">
+          
+          <img
+            src="/Images/Blogs/经验之谈/编辑环境变量/环境变量-系统属性对话框.png"
+            alt="环境变量-系统属性对话框"
+          />
+        </figure>
+      </li>
+    </ol>
+  </article>
+</div>

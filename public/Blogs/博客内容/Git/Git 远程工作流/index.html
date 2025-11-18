@@ -1,0 +1,843 @@
+<article class="专题简介">
+  <h1 class="简介标题">
+    <span><span class="简介标题内名词 左">Git</span>远程工作流</span
+    ><span class="原创">原创</span>
+  </h1>
+  <div class="简介信息">
+    <section class="简介信息文本">
+      <p class="作者">
+        <span class="作者前缀 前缀">作者：</span>
+        <span class="作者姓名">苏扬</span>
+      </p>
+      <p class="日期">
+        <span class="日期前缀 前缀">日期：</span>
+        <span class="日期文本"><span class="日期文本-数字 日期文本-年">2024</span>年<span class="日期文本-数字 日期文本-月">1</span>月<span class="日期文本-数字 日期文本-日">29</span>日</span>
+      </p>
+    </section>
+    <section class="简介信息图像">
+      <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+    </section>
+  </div>
+  <ul class="联系方式列表">
+    <li class="联系方式项">
+      <a class="联系方式链接" href="mailto:suyangzuo@gmail.com" target="_blank">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://github.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-github"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.deviantart.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-deviantart"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dev.to/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-dev"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.freecodecamp.org/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-free-code-camp"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://codepen.io/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-codepen"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://dribbble.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-dribbble"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.artstation.com/user-7893655"
+        target="_blank"
+        ><i class="fa-brands fa-artstation"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://codesandbox.io/u/suyangzuo"
+        target="_blank"
+      >
+        <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
+      /></a>
+    </li>
+  </ul>
+</article>
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">
+      <span class="行内专业名词">Git</span>远程工作流简介
+    </h2>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">Git</span>远程工作流示意图
+    </h3>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 远程工作流/Git 远程工作流.gif"
+        alt="Git 远程工作流"
+      />
+    </figure>
+    <p class="分区普通文本">
+      <span class="行内专业名词">远程工作流</span
+      >，主要涉及本地仓库和远程仓库<span class="附加说明">往往就是 GitHub</span
+      >之间的数据传输。只有将代码推送到远程仓库，才能实现真正意义上的远程多人协作开发。
+    </p>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">创建远程仓库</h2>
+
+    <h3 class="分区标题 分区3级标题">
+      访问<span class="行内专业名词">我的仓库</span>页面
+    </h3>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 远程工作流/GitHub-个人菜单.png"
+        alt="GitHub 个人菜单"
+      />
+    </figure>
+    <p class="分区普通文本">
+      在<span class="行内专业名词">GitHub</span>主页点击右上角的头像，选择<span
+        class="专业名词"
+        >Your repositories</span
+      >，进入自己的远程仓库页面：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 远程工作流/GitHub-我的仓库.png"
+        alt="GitHub 我的仓库"
+      />
+    </figure>
+    <p class="分区普通文本">在这个页面可以查看、管理你的所有远程仓库。</p>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">新建</span>远程仓库
+    </h3>
+    <p class="分区普通文本">
+      点击远程仓库页面右上角的<span class="专业名词">New</span
+      >，就可以新建远程仓库：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 远程工作流/GitHub-创建仓库.png"
+        alt="GitHub 新建远程仓库"
+      />
+    </figure>
+    <p class="分区普通文本">新建仓库时，有几个选项需要注意：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="专业名词">仓库名称</span
+        >：不要用中文，不要出现空格，不要以数字开头。
+      </li>
+      <li class="分区列表项">
+        <span class="专业名词">仓库描述</span>：可选，对仓库的简单描述。
+      </li>
+      <li class="分区列表项">
+        <span class="专业名词">公开</span> /
+        <span class="专业名词">私有</span
+        >：私有就只有自己能看到；如果仓库是为了合作开发而存在，就要公开。
+      </li>
+      <li class="分区列表项">
+        <span class="专业名词">自述文档</span
+        >：对仓库的整体架构、功能、基本用法的介绍文档。自述文档事实上已经成为远程仓库的标准，必须用<span
+          class="行内专业名词"
+          >Markdown</span
+        ><span class="附加说明"
+          >扩展名为<span class="行内专业名词">.md</span></span
+        >文档，文件名必须是<span class="行内专业名词">README</span>。GitHub
+        会自动将<span class="行内专业名词">README.md</span
+        >的内容以格式化的形式呈现在仓库页面。
+      </li>
+      <li class="分区列表项">
+        <span class="专业名词">Git 忽略列表</span>：文件名是<span
+          class="行内专业名词"
+          >.gitignore</span
+        >，没有扩展名。 Git
+        追踪的文件夹或文件，通常是调试时的临时文件或者编辑器的配置文件。
+      </li>
+      <li class="分区列表项">
+        <span class="专业名词">许可证</span>：一个文本文件<span class="附加说明"
+          >不用自己写，在选择许可证后由托管网站自动生成</span
+        >，规定了别人可以如何使用你的远程仓库。里面是一些复杂的规范、条文，这里暂时不做详细介绍。
+      </li>
+    </ul>
+    <p class="分区普通文本">
+      本示例没有选择任何文件，点击右下角的<span class="专业名词"
+        >Create repository</span
+      >，就可以创建一个没有任何提交记录的空仓库。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 远程工作流/GitHub-新空仓库.png"
+        alt="GitHub 新空仓库"
+      />
+    </figure>
+    <p class="分区普通文本">
+      这是刚刚创建好的空仓库，没有任何文件。<span class="附加说明"
+        >实际上有个隐藏的<span class="行内专业名词">.git</span>文件夹</span
+      >。只有空仓库才会看到图中这样大量的命令，提示你后续步骤<span
+        class="附加说明"
+        >但我们并不按照它推荐的步骤来</span
+      >。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">
+        避免<span class="行内专业名词">无关的提交历史</span>
+      </h3>
+      <p>
+        <span class="专业名词">自述文档</span>、<span class="专业名词"
+          >Git 忽略列表</span
+        >、<span class="专业名词">许可证</span>，3 者只要选了 1
+        个，创建的新仓库就会<span class="强调">存在文件</span>，并且会<span
+          class="强调"
+          >自动生成</span
+        >一个<span class="强调">初始提交</span
+        >。如果都不选，新仓库就是一个没有任何提交记录的<span class="强调"
+          >空仓库</span
+        >。那么到底该不该选呢？
+      </p>
+      <ul class="分区列表">
+        <li class="分区列表项">
+          <span class="专业名词">本地为空</span>：可选可不选。
+          <ul class="分区列表">
+            <li class="分区列表项">
+              <span class="行内专业名词">不选</span
+              >，既可以先克隆此仓库到本地，再于本地更改、提交；也可以在本地新建同名文件夹，更改提交后推送到远程仓库。
+            </li>
+            <li class="分区列表项">
+              <span class="行内专业名词">选了</span
+              >，应该克隆此仓库到本地，再从本地进行更改、提交。
+            </li>
+          </ul>
+        </li>
+        <li class="分区列表项">
+          <span class="专业名词">本地已有项目文件夹，且已有本地提交记录</span
+          >：强烈建议不要选，否则远程提交记录和本地提交记录会产生冲突，成为<span
+            class="行内专业名词"
+            >历史不相关</span
+          >的提交；这意味着远程提交记录和本地提交记录，不是从同一个祖先提交记录继承而来，要尽量避免这种情况！
+        </li>
+      </ul>
+      <p><span class="强调">总结</span>：</p>
+      <ul class="分区列表" style="margin-top: 0">
+        <li class="分区列表项">
+          项目一开始就从远程仓库建立，然后克隆到本地进行开发
+        </li>
+        <li class="分区列表项">
+          如果项目一开始是从本地开发的，创建远程仓库时，自述文档、Git忽略列表、许可证都不要选，保证新建时是空仓库
+        </li>
+      </ul>
+    </section>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">
+      <span class="行内专业名词">推送</span>与<span class="行内专业名词"
+        >拉取</span
+      >
+    </h2>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">克隆</span>远程仓库
+    </h3>
+    <p class="分区普通文本">
+      如果你的电脑上没有相应的本地仓库，那就要先克隆远程仓库；如果已有相应的本地仓库，则只需要拉取即可。首先要得到远程仓库的地址：
+    </p>
+    <p class="分区普通文本">想要克隆远程仓库，首先要得到远程仓库的地址：</p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 远程工作流/GitHub-远程仓库地址.png"
+        alt="GitHub 远程仓库地址"
+      />
+    </figure>
+    <p class="分区普通文本">
+      我们会在终端中使用<span class="专业名词">HTTPS</span
+      >地址进行克隆。点击右侧红框中的复制按钮，或者手动复制仓库地址。在电脑上选择一个路径用来存放这个项目仓库，在此路径中打开终端，运行<span
+        class="代码"
+        >Git 克隆</span
+      >命令：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 远程工作流/Git-克隆.gif"
+        alt="git clone"
+      />
+    </figure>
+    <p class="分区普通文本">
+      运行命令之后，一个叫<span class="专业名词">test</span
+      >的文件夹出现了，这就是我们的远程仓库，现在它被克隆到了本地，成为一个本地仓库。仔细观察的话，命令运行之后，出现了一句警告：<span
+        class="强调"
+        >You appear to have cloned an empty repository.</span
+      ><span class="附加说明">你似乎克隆了一个空仓库。</span
+      >没错！我克隆的正是空仓库。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">
+        <span class="专业名词">克隆</span>和<span class="专业名词">下载</span
+        >的区别
+      </h3>
+      <p>
+        空仓库是没有<span class="行内专业名词">下载</span
+        >按钮的。如果我们访问一个有内容的仓库，在点击<span class="代码"
+          >Code</span
+        >按钮后，会弹出一个对话框，里面有克隆所需要的地址，还有一个<span
+          class="行内专业名词"
+          >下载</span
+        >选项。到底应该克隆还是下载呢？二者有何区别？
+      </p>
+      <figure class="截图容器">
+        <img
+          src="/Images/Blogs/Git/Git 远程工作流/GitHub-克隆与下载.png"
+          alt="克隆与下载"
+        />
+      </figure>
+      <p class="分区普通文本">
+        克隆与下载，区别在哪？其核心区别就是：是否下载了<span class="专业名词"
+          >Git 相关记录</span
+        >。
+      </p>
+      <ul class="分区列表">
+        <li class="分区列表项">
+          <span class="专业名词">下载</span>：仅仅下载项目文件夹，<span
+            class="强调"
+            >不包含</span
+          >Git 记录<span class="附加说明"
+            >隐藏的<span class="行内专业名词">.git</span>文件夹</span
+          >。这就意味着，你下载下来的只是一个普通的文件夹，而不是<span
+            class="行内专业名词"
+            >Git 仓库</span
+          >。
+          <figure class="截图容器">
+            <img
+              src="/Images/Blogs/Git/Git 远程工作流/GitHub-下载结果.png"
+              alt="远程仓库下载结果"
+            />
+          </figure>
+          <span class="分区普通文本"
+            >通过下载得到的文件夹中没有<span class="行内专业名词">.git</span
+            >子文件夹。</span
+          >
+        </li>
+        <li style="margin: 25px 0" class="分区列表项">
+          <span class="专业名词">克隆</span>：不仅下载项目文件夹，<span
+            class="强调"
+            >也下载</span
+          >Git 记录<span class="附加说明"
+            >隐藏的<span class="行内专业名词">.git</span>文件夹</span
+          >。这就意味着，你下载下来的是一个<span class="行内专业名词"
+            >Git 仓库</span
+          >，而不是普通的文件夹。
+          <figure class="截图容器">
+            <img
+              src="/Images/Blogs/Git/Git 远程工作流/GitHub-克隆结果.png"
+              alt="远程仓库克隆结果"
+            />
+          </figure>
+          <span class="分区普通文本"
+            >通过克隆得到的文件夹中有隐藏的<span class="行内专业名词">.git</span
+            >子文件夹。</span
+          >
+        </li>
+      </ul>
+      <p>
+        如果只是对一个 GitHub
+        项目好奇，想自己研究研究，下载即可。如果想要正式参与此项目的开发，就必须克隆。
+      </p>
+    </section>
+    <p class="分区普通文本">
+      克隆之后，使用<span class="代码">git log</span>和<span class="代码"
+        >git status</span
+      >进行检查。
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Git/Git 远程工作流/git-log.gif" alt="git log" />
+    </figure>
+    <p class="分区普通文本">
+      出现提示：<span class="行内专业名词"
+        >当前的<span class="专业名词">main</span>分支没有任何提交</span
+      >，证明了这是一个空仓库，也说明现在 GitHub 使用<span class="行内专业名词"
+        >main<span class="附加说明"
+          >以前是<span class="行内专业名词">master</span></span
+        ></span
+      >作为默认的主分支名称。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 远程工作流/git-status.gif"
+        alt="git status"
+      />
+    </figure>
+    <p class="分区普通文本">
+      出现提示：<span class="行内专业名词"
+        >在<span class="专业名词">main</span
+        >分支上，没有任何提交，也没有什么可提交的。</span
+      >说明工作区也是空的。接下来我们就要往工作区添加一些文件。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      进入<span class="行内专业名词">本地工作流</span>
+    </h3>
+    <p class="分区普通文本">
+      既然远程仓库被克隆到了本地，接下来就是在本地进行更改、暂存、提交了<span
+        class="附加说明"
+        >具体内容可查看<span class="行内专业名词">Git 本地工作流</span></span
+      >。这就是<span class="专业名词">分布式</span
+      >版本控制系统的强大之处：每个人在各自的电脑上处理自己的本地更改<span
+        class="附加说明"
+        >本地工作流完全无需联网</span
+      >，再将自己的更改推送到统一的远程仓库。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 远程工作流/Git-本地初始提交.png"
+        alt="Git 初始提交"
+      />
+    </figure>
+    <p class="分区普通文本">
+      在本地新增了 3 个文件，包含一个名为<span class="行内专业名词"
+        >README.md</span
+      >的<span class="专业名词">Markdown</span
+      >文档。并将这些更改进行了提交，这是本地仓库的第 1
+      次提交，因此附加信息写了<span class="行内专业名词">初始提交</span>。
+    </p>
+    <p class="分区普通文本">
+      完成本地工作后，就要将本地提交推送到远程仓库；推送之前，我们还要做一些准备工作。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">推送<span class="代码">push</span></span
+      ><span class="附加说明" style="font-size: 0.75em"
+        >本地
+        <i style="color: gold" class="fa-solid fa-angles-right"></i> 远程</span
+      >
+    </h3>
+    <section class="提醒">
+      <h3 class="提醒标题">何时需要推送 ？</h3>
+      <p>
+        推送的目的：<span class="行内专业名词">推送</span>是为了<span
+          class="强调"
+          >保证远程仓库和本地仓库是一致的</span
+        >。
+      </p>
+      <p>
+        本地仓库的提交，要推送到远程仓库，方可保持一致。当然，可以多次提交后再推送。
+      </p>
+    </section>
+    <ol class="分区列表 有序列表">
+      <li class="分区列表项">
+        为远程仓库添加<span class="专业名词">别名</span>
+        <div class="有序列表项缩进区">
+          <p class="分区普通文本">
+            这是远程仓库的 https 地址：<span class="行内专业名词"
+              >https://github.com/suyangzuo/test.git</span
+            >，每次推送都要用到，但是这个网址太长太难记，写起来也很不方便，因此，我们要为远程仓库地址添加别名。
+          </p>
+          <figure class="截图容器">
+            <img
+              src="/Images/Blogs/Git/Git 远程工作流/Git-添加远程仓库别名.gif"
+              alt="Git 添加远程仓库别名"
+            />
+          </figure>
+          <p class="分区普通文本">
+            为远程仓库地址添加了别名：<span class="专业名词">origin</span
+            >。这个名称可以起自己喜欢的，只是<span class="行内专业名词"
+              >origin</span
+            >用得比较广泛。
+          </p>
+          <p class="分区普通文本">
+            仔细观察截图，会发现添加别名后给了一条提示：<span class="代码"
+              >错误：远程<span class="行内专业名词">origin</span>已存在</span
+            >。为什么会出现这个错误？因为你的仓库是从远程仓库<span
+              class="行内专业名词"
+              >克隆</span
+            >过来的，而远程仓库在创建时，会自动把别名也添加好<span
+              class="附加说明"
+              >就叫<span class="行内专业名词">origin</span></span
+            >。
+          </p>
+          <section class="提醒">
+            <h3 class="提醒标题">何时需要为远程仓库地址添加别名？</h3>
+            <ul class="分区列表">
+              <li class="分区列表项">
+                <span class="行内专业名词">仓库是从远程创建的</span
+                >：不用添加别名，因为远程仓库创建时已经添加好了。
+              </li>
+              <li class="分区列表项">
+                <span class="行内专业名词">仓库是从本地创建的</span
+                >：需要添加别名。
+              </li>
+            </ul>
+          </section>
+          <p class="分区普通文本">
+            可以添加<span class="代码">-v</span
+            >参数来查看远程别名和远程地址的对应关系：
+          </p>
+          <figure class="截图容器">
+            <img
+              src="/Images/Blogs/Git/Git 远程工作流/Git-远程别名和远程仓库地址.gif"
+              alt="Git 远程仓库别名和地址"
+            />
+          </figure>
+          <p class="分区普通文本">哪个别名对应哪个地址，清清楚楚。</p>
+        </div>
+      </li>
+      <li class="分区列表项">
+        查看本地分支与远程分支的对应关系
+        <div class="有序列表项缩进区">
+          <p class="分区普通文本">
+            Git 最强大的功能莫过于<span class="专业名词"
+              >分支<span class="附加说明"
+                >详情请看<span class="行内专业名词">Git 分支</span></span
+              ></span
+            >。虽然目前只有一个分支<span class="行内专业名词">main</span
+            >，但依然要确定本地分支和远程分支的对应关系，也就是本地的哪个分支对应远程的哪个分支。
+          </p>
+          <p class="分区普通文本">
+            <span class="代码">git branch</span
+            >命令可以处理与分支有关的操作，加上<span class="代码">-vv</span
+            >参数就能查看本地和远程的对应关系。
+          </p>
+          <figure class="截图容器">
+            <img
+              src="/Images/Blogs/Git/Git 远程工作流/git-branch-vv.gif"
+              alt="git branch -vv"
+            />
+          </figure>
+          <p class="分区普通文本">
+            绿色的<span class="专业名词">main</span>代表本地<span
+              class="行内专业名词"
+              >main</span
+            >分支，深蓝色的<span class="专业名词">origin/main</span
+            >代表远程仓库的<span class="行内专业名词">main</span
+            >分支。这样的对应关系是正确的。
+          </p>
+          <section class="提醒">
+            <h3 class="提醒标题">提醒</h3>
+            <p>
+              本地分支和对应的远程分支名称能否不同？应该可以，但强烈建议别这么做，这会引起巨大的歧义和麻烦，尤其是多人合作背景下，名称不同更是兵家大忌。
+            </p>
+            <p>
+              <span class="强调">注意</span
+              >：如果是从远程克隆过来的仓库，会自动将<span class="专业名词"
+                >本地<span class="行内专业名词">main</span></span
+              >和<span class="专业名词"
+                >远程<span class="行内专业名词">main</span></span
+              >对应好。<span class="强调">但是</span
+              >：如果是直接在本地创建的仓库，就需要手动添加对应关系了，只需要在第一次推送时添加几个额外参数就行。
+            </p>
+          </section>
+        </div>
+      </li>
+      <li class="分区列表项">
+        <span class="行内专业名词">推送</span
+        ><span class="附加说明"
+          >本地仓库
+          <i style="color: gold" class="fa-solid fa-angles-right"></i>
+          远程仓库</span
+        >
+        <div class="有序列表项缩进区">
+          <ul class="分区列表">
+            <li class="分区列表项">
+              <span class="行内专业名词"
+                >本地与远程关系<span class="强调">已</span>对应</span
+              >：<span class="代码">git push</span>
+            </li>
+            <li class="分区列表项">
+              <span class="行内专业名词"
+                >本地与远程关系<span class="强调">未</span>对应</span
+              >：<span class="代码">git push -u origin main</span>
+            </li>
+          </ul>
+          <section class="提醒">
+            <h3 class="提醒标题">提醒</h3>
+            <ul class="分区列表">
+              <li class="分区列表项">
+                本地远程关系是否已对应，用<span class="代码"
+                  >git branch -vv</span
+                >进行查看。
+              </li>
+              <li class="分区列表项">
+                只要运行 1 次<span class="代码">git push -u origin main</span
+                >，<span class="行内专业名词">本地 main 分支</span>就会和<span
+                  class="行内专业名词"
+                  >远程 main 分支</span
+                >对应，以后的推送只需要<span class="代码">git push</span>即可。
+              </li>
+              <li class="分区列表项">
+                即使本地远程关系已对应，再次运行<span class="代码"
+                  >git push -u origin main</span
+                >也无伤大雅。
+              </li>
+              <li class="分区列表项">
+                假如本地添加了新分支，那<span class="代码">-u</span
+                >参数就必须再用 1 次。比如：本地添加了<span class="专业名词"
+                  >dev</span
+                >分支，初次推送此分支，必须使用<span class="代码"
+                  >git push -u origin dev</span
+                >。
+              </li>
+            </ul>
+          </section>
+          <figure class="截图容器">
+            <img
+              src="/Images/Blogs/Git/Git 远程工作流/git-push-u.gif"
+              alt="git push -u origin main"
+            />
+          </figure>
+          <p class="分区普通文本">
+            运行命令后，会看到类似的文本。这就表示推送成功了！
+          </p>
+          <p class="分区普通文本">
+            如果<span class="强调">失败</span>，会看到些许不同的信息：
+          </p>
+          <figure class="截图容器">
+            <img
+              src="/Images/Blogs/Git/Git 远程工作流/GitHub-推送失败.png"
+              alt="GitHub 推送失败"
+            />
+          </figure>
+          <p class="分区普通文本">
+            红框中的错误信息，说明推送时跟远程服务器失去了连接，此时就要再次推送。
+          </p>
+        </div>
+      </li>
+      <li class="分区列表项">
+        刷新远程仓库页面
+        <div class="有序列表项缩进区">
+          <figure class="截图容器">
+            <img
+              src="/Images/Blogs/Git/Git 远程工作流/GitHub-推送成功.png"
+              alt="git 有内容的仓库主页面"
+            />
+          </figure>
+          <p class="分区普通文本">
+            远程仓库页面焕然一新，上方是项目文件列表，下方则是由 GitHub
+            自动解析的 README.md 文档内容。
+          </p>
+        </div>
+      </li>
+    </ol>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">拉取<span class="代码">pull</span></span
+      ><span class="附加说明" style="font-size: 0.75em"
+        >本地
+        <i style="color: gold" class="fa-solid fa-angles-left"></i> 远程</span
+      >
+    </h3>
+    <section class="提醒">
+      <h3 class="提醒标题">何时需要拉取 ？</h3>
+      <p>
+        首先要明白拉取的目的是什么。拉取是为了<span class="强调"
+          >保证远程仓库和本地仓库<span class="附加说明"
+            ><span class="强调"
+              >或者项目主持人与贡献者之间的远程仓库</span
+            ></span
+          >是一致的</span
+        >，合理地拉取可以避免很多难缠的冲突。
+      </p>
+      <p>下面是 3 种最常见的需要拉取的场景：</p>
+      <ul class="分区列表">
+        <li class="分区列表项">
+          你作为贡献者合作开发项目。你在本地做了更改，推送到了自己的远程仓库，希望主持人将自己的更改同步到主持人远程仓库。<span
+            class="附加说明"
+            >这时就需要<span class="专业名词">主持人</span
+            ><span class="行内专业名词">拉取</span
+            >你的更改了，而主持人并不知道你的远程仓库已经更新了，因此需要你向主持人发起一个<span
+              class="专业名词"
+              >拉取请求<span class="附加说明">Pull request</span></span
+            ></span
+          >
+        </li>
+        <li class="分区列表项">
+          你作为贡献者合作开发项目。每次开始本地工作前、每次准备推送本地更改前。
+        </li>
+        <li class="分区列表项">
+          你有多台电脑，在一台电脑上做了更改并且推送到了远程仓库，在另一台电脑想接着进度继续工作。
+        </li>
+      </ul>
+    </section>
+    <p class="分区普通文本">
+      <span class="行内专业名词">拉取</span>可以 1 步到位，也可以分 2 步完成。
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="专业名词">拉取</span><span class="代码">pull</span>：<span
+          class="行内专业名词"
+          >远程仓库</span
+        ><i
+          style="margin: 0 5px; color: gold; font-size: 0.8em"
+          class="fa-regular fa-arrow-right"
+        ></i
+        ><span class="行内专业名词">本地仓库</span
+        ><i
+          style="margin: 0 5px; color: gold; font-size: 0.8em"
+          class="fa-regular fa-arrow-right"
+        ></i
+        ><span class="行内专业名词">工作区</span>，1 步完成。
+      </li>
+      <li class="分区列表项">
+        <span class="专业名词">提取</span>+<span class="专业名词">合并</span
+        ><span class="附加说明">推荐</span>：
+        <ul class="分区列表">
+          <li class="分区列表项">
+            <span class="专业名词">提取</span
+            ><span class="代码">fetch</span>：<span class="行内专业名词"
+              >远程仓库</span
+            ><i
+              style="margin: 0 5px; color: gold; font-size: 0.8em"
+              class="fa-regular fa-arrow-right"
+            ></i
+            ><span class="行内专业名词">本地仓库</span>
+          </li>
+          <li class="分区列表项">
+            <span class="专业名词">合并</span
+            ><span class="代码">merge</span>：<span class="行内专业名词"
+              >本地仓库</span
+            ><i
+              style="margin: 0 5px; color: gold; font-size: 0.8em"
+              class="fa-regular fa-arrow-right"
+            ></i
+            ><span class="行内专业名词">工作区</span>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p class="分区普通文本">
+      简而言之，<span class="专业名词">拉取</span><span class="代码">pull</span
+      ><i
+        style="margin: 0 5px; color: gold; font-size: 0.8em"
+        class="fa-solid fa-equals"
+      ></i
+      ><span class="专业名词">提取</span><span class="代码">fetch</span
+      ><i
+        style="margin: 0 5px; color: gold; font-size: 0.8em"
+        class="fa-solid fa-plus"
+      ></i
+      ><span class="专业名词">合并</span
+      ><span class="代码">merge</span>。个人推荐分 2
+      步的做法。无论如何，描述整个过程时，一般都统称为<span class="行内专业名词"
+        >拉取</span
+      >。
+    </p>
+    <p class="分区普通文本">
+      既然我们建议将拉取分为 2 步，那么第 1 步就是<span class="行内专业名词"
+        >提取</span
+      >，用<span class="代码">git fetch</span>实现：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 远程工作流/git-fetch-空.gif"
+        alt="git fetch origin 一致"
+      />
+    </figure>
+    <p class="分区普通文本">
+      运行之后结果为空，说明远程和本地是一致的<span class="附加说明"
+        >这是因为我们刚推送就拉取了，本地在推送之后没有做任何更改</span
+      >。这样就不需要第 2 步<span class="行内专业名词">合并</span>了。
+    </p>
+    <p class="分区普通文本">现在，让我们直接在远程仓库上添加一个文件：</p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 远程工作流/GitHub-远程添加文件.png"
+        alt="GitHub 远程添加文件"
+      />
+    </figure>
+    <p class="分区普通文本">可以直接在 GitHub 添加文件，甚至是写代码。</p>
+    <p class="分区普通文本">添加之后直接在 GitHub 进行提交：</p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 远程工作流/GitHub-远程提交.png"
+        alt="GitHub 远程提交"
+      />
+    </figure>
+    <p class="分区普通文本">
+      点击<span class="行内专业名词">Commit Changes</span
+      >按钮，就可以在远程仓库提交到<span class="行内专业名词">main</span>分支。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 远程工作流/GitHub-远程仓库-第2次提交后状态.png"
+        alt="GitHub 远程仓库第2次提交"
+      />
+    </figure>
+    <p class="分区普通文本">
+      此时远程仓库的状态是：有 2 次提交，最后 1 次提交的信息是<span
+        class="行内专业名词"
+        >创建了 script.js</span
+      >。这个提交现在仅仅存在于远程仓库，如果我们要在本地继续工作，必须先把这次提交拉取到本地，先运行拉取的第
+      1 步：<span class="行内专业名词">提取</span>：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 远程工作流/git-fetch-origin.gif"
+        alt="git fetch origin"
+      />
+    </figure>
+    <p class="分区普通文本">
+      这一次结果不再是空的了，刚刚远程仓库的提交被提取到了本地仓库，但是并没有合并到工作区，因此你的文件夹不会产生任何变化<span
+        class="附加说明"
+        >这是一种安全操作，合并之前可以先观察远程仓库到底更新了什么</span
+      >。
+    </p>
+    <p class="分区普通文本">
+      现在，进行第 2 步：<span class="行内专业名词">合并</span>，用<span
+        class="代码"
+        >git merge</span
+      >将本地仓库的提交记录<span class="附加说明">提取自远程仓库</span
+      >合并到工作区：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 远程工作流/git-merge-origin-main.gif"
+        alt="git merge origin/main"
+      />
+    </figure>
+    <p class="分区普通文本">
+      合并之后，<span class="行内专业名词">script.js</span
+      >文件也被合并到了工作区；此时，本地和远程是完全一致的。我们运行<span
+        class="代码"
+        >git log</span
+      >检查一下本地提交记录：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 远程工作流/git-log-第2次提交.png"
+        alt="git log 查看第2次提交"
+      />
+    </figure>
+    <p class="分区普通文本">
+      远程仓库的提交记录，被合并到了本地，现在本地也有 2
+      次提交记录，并且当前分支的最后一次提交记录指向了<span class="专业名词"
+        >创建了 script.js</span
+      >。
+    </p>
+    <p class="分区普通文本">现在，你可以放心地开始本地工作了。</p>
+  </article>
+</div>

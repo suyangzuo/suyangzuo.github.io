@@ -1,0 +1,1462 @@
+<article class="专题简介">
+  <h1 class="简介标题">
+    <span>操作<span class="简介标题内名词 右">MySQL</span></span
+    ><span class="原创">原创</span>
+  </h1>
+  <div class="简介信息">
+    <section class="简介信息文本">
+      <p class="作者">
+        <span class="作者前缀 前缀">作者：</span>
+        <span class="作者姓名">苏扬</span>
+      </p>
+      <p class="日期">
+        <span class="日期前缀 前缀">日期：</span>
+        <span class="日期文本"><span class="日期文本-数字 日期文本-年">2024</span>年<span class="日期文本-数字 日期文本-月">4</span>月<span class="日期文本-数字 日期文本-日">16</span>日</span>
+      </p>
+    </section>
+    <section class="简介信息图像">
+      <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+    </section>
+  </div>
+  <ul class="联系方式列表">
+    <li class="联系方式项">
+      <a class="联系方式链接" href="mailto:suyangzuo@gmail.com" target="_blank">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://github.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-github"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.deviantart.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-deviantart"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dev.to/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-dev"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.freecodecamp.org/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-free-code-camp"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://codepen.io/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-codepen"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://dribbble.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-dribbble"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.artstation.com/user-7893655"
+        target="_blank"
+        ><i class="fa-brands fa-artstation"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://codesandbox.io/u/suyangzuo"
+        target="_blank"
+      >
+        <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
+      /></a>
+    </li>
+  </ul>
+</article>
+
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">准备工作</h2>
+
+    <h3 class="分区标题 分区3级标题">
+      安装<span class="行内专业名词">MySQL</span>
+    </h3>
+    <p class="分区普通文本">
+      相关操作请查阅<a
+        class="超链接"
+        target="_blank"
+        href="/Blogs/index.html?tech=MySQL&article=下载与安装"
+        ><span class="行内专业名词">MySQL</span> 下载与安装</a
+      >。安装<span class="行内专业名词">MySQL</span>主要有 3 个目的：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        确保<span class="行内专业名词">MySQL</span>服务已启动
+      </li>
+      <li class="分区列表项">需要<span class="代码">mysql.h</span>头文件</li>
+      <li class="分区列表项">
+        需要<span class="代码">libmysql.dll</span>动态链接库
+      </li>
+    </ul>
+    <figure class="截图容器">
+      <img
+        style="background-color: #1a1a1a"
+        src="/Images/Blogs/C语言/操作 MySQL/mysql.h-libmysql.dll-作用.webp"
+        alt="mysql.h 和 libmysql.dll 的作用"
+      />
+    </figure>
+
+    <h3 class="分区标题 分区3级标题">
+      包含<span class="行内专业名词">mysql.h</span>
+    </h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词">MySQL</span>为我们提供了大量的官方<span
+        class="行内专业名词"
+        >API</span
+      >，以便在 C语言 中访问<span class="行内专业名词">MySQL 数据库</span
+      >。这些<span class="行内专业名词">API</span
+      >的定义都写在各种头文件中。其中最常用的头文件就是<span
+        class="行内专业名词"
+        >mysql.h</span
+      >。
+    </p>
+    <figure class="截图容器">
+      <img
+        style="background-color: #1a1a1a"
+        src="/Images/Blogs/C语言/操作 MySQL/include-mysql.h-错误.png"
+        alt="#include <mysql.h> 错误"
+      />
+    </figure>
+    <p class="分区普通文本">
+      直接在代码中包含<span class="行内专业名词">mysql.h</span>会报错，因为<span
+        class="行内专业名词"
+        >mysql.h</span
+      >不是标准库，编辑器无法直接识别它的路径，因此，我们要手动将其路径添加到<span
+        class="行内专业名词"
+        >C/C++ 属性配置文件</span
+      >中。
+    </p>
+    <p class="分区普通文本">
+      <span class="行内专业名词">C/C++ 属性配置文件</span>的文件名是<span
+        class="专业名词"
+        >c_cpp_properties.json</span
+      >。如果没有这个文件，可用<span class="专业名词">Ctrl + Shift + P</span
+      >快捷键弹出命令，输入<span class="行内代码">c/c++</span
+      >即可过滤出相关命令：
+    </p>
+    <figure class="截图容器">
+      <img
+        style="background-color: #1a1a1a"
+        src="/Images/Blogs/C语言/操作 MySQL/命令对话框显示C-Cpp编辑配置.png"
+        alt="命令对话框 显示C-Cpp编辑配置"
+      />
+    </figure>
+    <p class="分区普通文本">
+      <span class="行内专业名词">编辑配置</span>有<span class="专业名词"
+        >UI</span
+      >和<span class="专业名词">JSON</span>两种选择：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="专业名词">UI</span>：图形化用户界面进行配置
+      </li>
+      <li class="分区列表项">
+        <span class="专业名词">JSON</span>：手写代码进行配置
+      </li>
+    </ul>
+    <figure class="截图容器">
+      <img
+        style="background-color: #1a1a1a"
+        src="/Images/Blogs/C语言/操作 MySQL/C-Cpp-配置-UI-JSON.png"
+        alt="C/C++ 配置：UI 和 JSON"
+      />
+    </figure>
+    <p class="分区普通文本">
+      左边是<span class="专业名词">UI</span>，右边是<span class="专业名词"
+        >JSON</span
+      >。仔细观察会发现二者的作用其实是一样的。在<span class="行内专业名词"
+        >UI</span
+      >中设置选项，就会自动在<span class="行内专业名词">JSON</span
+      >中生成对应的配置代码。喜欢用哪种方式完全取决于自身喜好。不过，<span
+        class="行内专业名词"
+        >UI</span
+      >有时不会提供全部的选项，部分选项只能用<span class="行内专业名词"
+        >JSON</span
+      >编写。
+    </p>
+    <p class="分区普通文本">
+      我们需要把<span class="行内专业名词">mysql.h</span>的路径，添加到<span
+        class="行内专业名词"
+        >c_cpp_properties.json</span
+      >的<span class="行内专业名词"
+        >包含路径<span class="附加说明"
+          ><span class="行内代码">includePath</span></span
+        ></span
+      >中。<span class="行内专业名词">mysql.h</span>的路径默认为：<span
+        class="专业名词"
+        >MySQL安装路径/MySQL Server 8.0/include</span
+      >：
+    </p>
+    <figure class="截图容器">
+      <img
+        style="background-color: #1a1a1a"
+        src="/Images/Blogs/C语言/操作 MySQL/mysql.h-路径.png"
+        alt="mysql 路径"
+      />
+    </figure>
+    <p class="分区普通文本">
+      在我的电脑上，<span class="行内专业名词">mysql.h</span>的路径为：<span
+        class="专业名词"
+        >C:\Program Files\MySQL\MySQL Server 8.0\include</span
+      >，将此路径复制并粘贴到<span class="行内专业名词">UI</span>的<span
+        class="行内专业名词"
+        >包含路径</span
+      >：
+    </p>
+    <figure class="截图容器">
+      <img
+        style="background-color: #1a1a1a"
+        src="/Images/Blogs/C语言/操作 MySQL/包含mysql.h路径-UI.png"
+        alt="包含mysql.h路径 UI"
+      />
+    </figure>
+    <p class="分区普通文本">
+      按照<span class="行内专业名词">UI</span
+      >的提示：每行一个包含路径，进行复制粘贴。粘贴完成后，你会发现在<span
+        class="行内专业名词"
+        >c_cpp_properties.json</span
+      >文件内自动添加了第 7 行：
+    </p>
+    <figure class="截图容器">
+      <img
+        style="background-color: #1a1a1a"
+        src="/Images/Blogs/C语言/操作 MySQL/包含mysql.h路径-JSON.png"
+        alt="包含mysql.h路径 JSON"
+      />
+    </figure>
+    <p class="分区普通文本">
+      第 7 行代码是自动添加的，再次说明在<span class="行内专业名词">UI</span
+      >内添加配置，等同于在<span class="行内专业名词"
+        >c_cpp_properties.json</span
+      >文件里直接写代码。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        <span class="行内专业名词">UI</span>的语法和<span class="行内专业名词"
+          >c_cpp_properties.json</span
+        >文件略有区别。<span class="行内专业名词">UI</span>可以直接粘贴<span
+          class="行内专业名词"
+          >windows 风格</span
+        >的路径，包含<span class="代码">\</span>。但是在<span
+          class="行内专业名词"
+          >JSON</span
+        >文件的代码里，必须写成<span class="代码">\\</span>或者<span
+          class="代码"
+          >/</span
+        >，这一点要注意。
+      </p>
+    </section>
+    <p class="分区普通文本">
+      添加路径之后，回到源代码文件，你会发现<span class="代码"
+        >#include "mysql.h"</span
+      >的错误已经消失。
+    </p>
+    <figure class="截图容器">
+      <img
+        style="background-color: #1a1a1a"
+        src="/Images/Blogs/C语言/操作 MySQL/include-mysql.h-正确.png"
+        alt="#include mysql.h 正确"
+      />
+    </figure>
+    <p class="分区普通文本">
+      现在可以正常地包含<span class="行内专业名词">mysql.h</span>头文件了。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      复制<span class="行内专业名词">libmysql.dll</span>
+    </h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词">libmysql.dll</span>的默认路径是：<span
+        class="专业名词"
+        >MySQL安装路径/MySQL Server 8.0/lib</span
+      >：
+    </p>
+    <figure class="截图容器">
+      <img
+        style="background-color: #1a1a1a"
+        src="/Images/Blogs/C语言/操作 MySQL/libmysql.dll-路径.png"
+        alt="libmysql.dll 路径"
+      />
+    </figure>
+    <p class="分区普通文本">
+      在我的电脑上，<span class="行内专业名词">libmysql.dll</span
+      >的路径为：<span class="专业名词"
+        >C:\Program Files\MySQL\MySQL Server 8.0\lib</span
+      >。
+    </p>
+    <p class="分区普通文本">
+      <span class="行内专业名词">libmysql.dll</span
+      >是运行时动态链接库。每次运行程序，<span class="行内专业名词"
+        >Windows</span
+      >系统都要解决一个问题：<span class="行内专业名词"
+        >动态链接库文件在哪儿</span
+      >？<span class="行内专业名词">Windows</span
+      ><a
+        class="超链接"
+        target="_blank"
+        style="margin-left: 0"
+        href="https://learn.microsoft.com/zh-cn/windows/win32/dlls/dynamic-link-library-search-order"
+        >用以下顺序搜索动态链接库</a
+      >：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项" style="list-style-type: decimal">
+        &nbsp;加载应用程序的文件夹
+      </li>
+      <li class="分区列表项" style="list-style-type: decimal">
+        &nbsp;系统文件夹，例如：<span class="专业名词"
+          >C:\Windows\System32</span
+        >
+      </li>
+      <li class="分区列表项" style="list-style-type: decimal">
+        &nbsp;16位系统文件夹
+      </li>
+      <li class="分区列表项" style="list-style-type: decimal">
+        &nbsp;Windows文件夹，例如：<span class="专业名词">C:\Windows</span>
+      </li>
+      <li class="分区列表项" style="list-style-type: decimal">
+        &nbsp;当前文件夹
+      </li>
+      <li class="分区列表项" style="list-style-type: decimal">
+        &nbsp;环境变量中列出的<span class="专业名词">PATH</span>目录
+      </li>
+    </ul>
+    <p class="分区普通文本">
+      将<span class="行内专业名词">libmysql.dll</span>放在以上 6
+      个位置中的任意一个都可以。我选择将其放在<span class="行内专业名词"
+        >加载应用程序的文件夹</span
+      >，这意味着可执行文件在哪里，<span class="行内专业名词">libmysql.dll</span
+      >就在哪里。
+    </p>
+    <figure class="截图容器">
+      <img
+        style="background-color: #1a1a1a"
+        src="/Images/Blogs/C语言/操作 MySQL/libmysql.dll-存放路径.png"
+        alt="libmysql.dll 存放路径"
+      />
+    </figure>
+    <p class="分区普通文本">
+      我将<span class="行内专业名词">libmysql.dll</span>存放在<span
+        class="专业名词"
+        >加载应用程序的文件夹</span
+      >下，生成的可执行文件也存放到这里。
+    </p>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">
+      编译<span class="次要">-</span>运行<span class="次要">-</span>调试
+    </h2>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">GCC</span>手动编译运行
+    </h3>
+    <p class="分区普通文本">
+      这次的编译和以往不同，除了源文件，还要包含非标准库的头文件以及动态链接库，其语法如下：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-bash">
+        gcc 源文件 -o 输出文件名 -I "头文件包含路径" -L "动态链接库路径" -l 动态链接库文件名
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/gcc-头文件目录-库目录.webp"
+        alt="GCC 编译：包含头文件目录、库目录、库文件名"
+      />
+    </figure>
+    <p class="分区普通文本">经过编译之后，成功生成了可执行文件。</p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        <span class="行内专业名词">2-1</span>、<span class="行内专业名词"
+          >2-2</span
+        >、<span class="行内专业名词">2-3</span>的本质都是添加<span
+          class="专业名词"
+          >GCC 编译选项</span
+        >。因此，<span class="行内专业名词">2-1</span
+        >的手动写法虽然麻烦，却是必须掌握的根基，是最重要的一环，切勿跳过！
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">
+      使用<span class="专业名词">Code Runner</span>自动化编译运行
+    </h3>
+    <p class="分区普通文本">
+      <span class="专业名词">Code Runner</span
+      >的优点是可以用快捷键代替手动输入编译指令。但是，<span class="专业名词"
+        >Code Runner</span
+      >的默认设置只能完成最基本的编译，没有<span class="行内代码">-I</span
+      >、<span class="行内代码">-L</span>等参数。我们可以手动在<span
+        class="专业名词"
+        >Code Runner</span
+      >的设置里添加参数，但这会覆盖默认设置。如果希望添加参数的同时保留默认设置，该怎么办呢？答案是：使用<span
+        class="行内专业名词"
+        >工作区设置</span
+      >。
+    </p>
+    <p class="分区普通文本">
+      默认的设置保存在<span class="行内专业名词">用户设置</span>里，对<span
+        class="行内专业名词"
+        >用户</span
+      >生效。而<span class="行内专业名词">工作区设置</span>只对<span
+        class="行内专业名词"
+        >工作区</span
+      >生效。打开设置选项卡，切换到<span class="专业名词">工作区</span
+      >，输入<span class="代码">code runner</span>过滤选项：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/工作区设置-Code-Runner-Executor-Map.png"
+        alt="工作区设置 Code-Runner Executor Map"
+      />
+    </figure>
+    <p class="分区普通文本">
+      点击<span class="专业名词"
+        >在<span class="行内专业名词">settings.json</span>中编辑</span
+      >。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/工作区-Code-Runner-Executor-Map-文件.webp"
+        alt="工作区设置 Code-Runner Executor Map 文件"
+      />
+    </figure>
+    <p class="分区普通文本">
+      点击之后，会发现项目文件夹下的<span class="专业名词">.vscode</span
+      >文件夹下多了一个<span class="专业名词">settings.json</span
+      >文件，这就是<span class="行内专业名词">工作区设置</span>文件。<span
+        class="行内专业名词"
+        >工作区设置</span
+      >里的相应配置，会覆盖<span class="行内专业名词">用户设置</span
+      >的相应配置。
+    </p>
+    <p class="分区普通文本">
+      <span class="专业名词">Code Runner</span>设置里的<span class="代码"
+        >code-runner.executorMap</span
+      >包含了很多语言的默认执行命令，找到 C语言 的：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-llvm">
+        "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
+      </code>
+    </pre>
+
+    <p class="分区普通文本">
+      这就是默认的执行命令，仔细看一下，命令的意思是：用<span
+        class="行内专业名词"
+        >GCC</span
+      >编译<span class="行内专业名词">当前源文件</span
+      >，并执行生成的可执行文件。我们只需要把<span class="行内专业名词"
+        >2-1</span
+      >节<span class="行内专业名词">GCC</span>编译的额外参数加进去就好了：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-llvm">
+        "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt -I 'C:/Program Files/MySQL/MySQL Server 8.0/include' -L './' -l libmysql && $dir$fileNameWithoutExt"
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      <span class="强调">注意</span>：双引号内部不能再用双引号，必须用单引号。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/Code-Runner-Executor-Map-C语言-修改后.png"
+        alt="工作区设置 Code-Runner Executor Map C语言 修改后"
+      />
+    </figure>
+    <p class="分区普通文本">
+      执行命令修改完成后，我们就可以用快捷键调用<span class="专业名词"
+        >Code Runner</span
+      >来自动编译、运行了，非常方便。快捷键默认是<span class="专业名词"
+        >Ctrl + Alt + N</span
+      >：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/Code-Runner-自动编译运行.webp"
+        alt="Code-Runner 自动编译运行"
+      />
+    </figure>
+    <p class="分区普通文本">
+      实际上就和手动编译、手动执行一样，只不过现在只需要用快捷键就行了，省时省力。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">VSCode</span>生成和调试
+    </h3>
+    <p class="分区普通文本">
+      如果既不想手动输入<span class="行内专业名词">GCC</span
+      >调试命令，也不想用<span class="行内专业名词">Code Runner</span
+      >，我们还可以用<span class="行内专业名词">VSCode</span>内置的<span
+        class="行内专业名词"
+        >运行或调试</span
+      >功能。选择<span class="专业名词">.c 源文件</span>，此时右上角会出现<span
+        class="专业名词"
+        >&#9655;<i
+          style="margin-left: 4px; font-size: 0.9em"
+          class="fa-solid fa-angle-down"
+        ></i></span
+      >图标，点击<span class="专业名词"
+        ><i style="font-size: 0.9em" class="fa-solid fa-angle-down"></i></span
+      >：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/源文件-运行选项.png"
+        alt="源文件 运行选项"
+      />
+    </figure>
+    <p class="分区普通文本">
+      点击<span class="专业名词">运行 C/C++ 文件</span>，弹出调试配置：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/选择调试配置.png"
+        alt="选择调试配置"
+      />
+    </figure>
+    <p class="分区普通文本">
+      每个电脑上弹出的调试配置可能不一样，选择带有<span class="行内专业名词"
+        >gcc.exe</span
+      >的选项。点击之后，<span class="行内专业名词">VSCode</span>会在<span
+        class="行内专业名词"
+        >.vscode</span
+      >目录内生成一个叫<span class="行内专业名词">task.json</span
+      >的文件，里面主要是编译的各种设置，<span class="行内专业名词">VSCode</span
+      >使用这些选项编译、生成、运行、调试。如果代码里只包含了标准库，应该就能正常运行了；但是，我的代码里包含了非标准库<span
+        class="行内专业名词"
+        >mysql.h</span
+      >，编译时还需要链接<span class="行内专业名词">libmysql.dll</span
+      >，因此会产生错误，因为默认选项无法识别<span class="行内专业名词"
+        >mysql.h</span
+      >和<span class="行内专业名词">libmysql.dll</span>的路径。
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/C语言/操作 MySQL/调试错误.png" alt="调试错误" />
+    </figure>
+    <p class="分区普通文本">
+      终端显示的结果里用红字标识了错误，点击<span class="行内专业名词"
+        >中止</span
+      >。当然，你也可以点击<span class="行内专业名词">显示错误</span>，<span
+        class="行内专业名词"
+        >VSCode</span
+      >会跳转到<span class="行内专业名词">问题</span>选项卡：
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/C语言/操作 MySQL/问题.png" alt="问题" />
+    </figure>
+    <p class="分区普通文本">
+      其实还是老问题，默认的调试选项无法识别<span class="行内专业名词"
+        >mysql.h</span
+      >的路径。因此，我们需要打开<span class="行内专业名词">task.json</span
+      >，自己添加相关的编译参数和选项。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/task.json-自定义GCC编译选项.png"
+        alt="task.json 自定义GCC编译选项"
+      />
+    </figure>
+    <p class="分区普通文本">
+      红框内就是添加的编译选项。<span class="强调">注意格式</span
+      >：除了最后一行，每行后面都要加逗号。搞定后，再次回到源代码文件，点击<span
+        class="专业名词"
+        >&#9655;</span
+      >运行：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/运行C-Cpp文件.webp"
+        alt="运行 C/C++ 文件"
+      />
+    </figure>
+    <p class="分区普通文本">这次可以顺利编译、运行了。</p>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">VSCode</span>自定义运行和调试
+    </h3>
+    <p class="分区普通文本">
+      我们还可以通过<span class="行内专业名词">运行和调试</span
+      >选项卡，添加<span class="行内专业名词">launch.json</span
+      >配置文件，来详细定制调试的各种选项。首先点击<span class="行内专业名词"
+        >VSCode</span
+      >左侧边栏的<span class="行内专业名词">运行和调试</span>选项卡：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/运行和调试选项卡.png"
+        alt="运行和调试选项卡"
+      />
+    </figure>
+    <p class="分区普通文本">
+      如果直接点击<span class="行内专业名词">运行和调试</span>，那就还是用<span
+        class="行内专业名词"
+        >task.json</span
+      >里的设置进行默认的运行调试。如果要自定义运行和调试的详细选项，就要点击<span
+        class="行内专业名词"
+        >创建 launch.json 文件</span
+      >：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/选择调试器.png"
+        alt="选择调试器"
+      />
+    </figure>
+    <p class="分区普通文本">
+      此时会弹出<span class="行内专业名词">选择调试器</span
+      >对话框。为了配合<span class="行内专业名词">GCC 编译器</span
+      >，我们当然是选择配套的<span class="行内专业名词">GDB 调试器</span
+      >，因此点击<span class="行内专业名词">C++ (GDB/LLDB)</span>。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        需要先安装<span class="行内专业名词">GDB 调试器</span
+        >，这里才会出现对应的选项。安装过程请参阅<a
+          class="超链接"
+          target="_blank"
+          href="/Blogs/index.html?tech=C语言&article=安装 GCC 编译器"
+          >安装 <span class="行内专业名词">GCC</span> 编译器</a
+        >的<span class="行内专业名词">3-4</span>。
+      </p>
+    </section>
+    <p class="分区普通文本">
+      <span class="行内专业名词">VSCode</span>会自动在<span class="行内专业名词"
+        >.vscode</span
+      >目录生成名为<span>launch.json</span>的文件：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/launch.json初始内容.png"
+        alt="launch.json 无配置"
+      />
+    </figure>
+    <p class="分区普通文本">
+      此时<span class="行内专业名词">launch.json</span>的配置是空的，点击<span
+        class="行内专业名词"
+        >添加配置</span
+      >：
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/C语言/操作 MySQL/添加配置.png" alt="添加配置" />
+    </figure>
+    <p class="分区普通文本">
+      有很多配置可选。因为要用<span class="专业名词">GDB 调试器</span
+      >，所以我们选择<span class="专业名词">C/C++: (gdb)启动</span>。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/gdb启动初始内容.png"
+        alt="gdb启动-初始内容"
+      />
+    </figure>
+    <p class="分区普通文本">
+      <span class="专业名词">C/C++: (gdb)启动</span>的配置已经自动添加到<span
+        class="行内专业名词"
+        >launch.json</span
+      >中。不过，部分选项要进行修改：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="行内代码">program</span
+        >：要改成程序可执行文件的完整路径。可以用<span class="行内代码"
+          >${workspaceFolder}</span
+        >表示<span class="行内专业名词">项目文件夹</span>
+      </li>
+      <li class="分区列表项" style="margin-top: 0">
+        <span class="行内代码">miDebuggerPath</span>：要改成<span
+          class="行内专业名词"
+          >gdb.exe</span
+        >的完整路径
+        <p class="分区普通文本">
+          如果你也是用<span class="行内专业名词">MSYS2</span>安装的<span
+            class="行内专业名词"
+            >GDB</span
+          >，那么它的路径默认为：
+        </p>
+        <figure class="截图容器">
+          <img
+            src="/Images/Blogs/C语言/操作 MySQL/gdb.exe-路径.png"
+            alt="gdb.exe 路径"
+          />
+        </figure>
+        <p class="分区普通文本">
+          将<span class="行内专业名词">gdb.exe</span>的完整路径，复制到<span
+            class="行内专业名词"
+            >launch.json</span
+          >的<span class="行内代码">miDebuggerPath</span>选项里。
+        </p>
+      </li>
+    </ul>
+    <p class="分区普通文本">两个路径改好之后，可以参考下图：</p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/设置好程序可执行文件和调试器路径.png"
+        alt="设置好程序可执行文件和调试器路径"
+      />
+    </figure>
+    <p class="分区普通文本">
+      此时可以点击<span class="行内专业名词">运行和调试</span>选项卡里的<span
+        class="专业名词"
+        >&#9655;</span
+      >开始调试程序。也可以用快捷键：按<span class="专业名词">F5</span
+      >调试程序，按<span class="专业名词">Ctrl + F5</span>运行程序。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/无task调试.webp"
+        alt="无preLaunchTask调试"
+      />
+    </figure>
+    <p class="分区普通文本">
+      <span class="强调">注意</span>：<span class="行内专业名词"
+        >launch.json</span
+      >只管运行和调试，不管编译。假设你修改了源代码，接着直接按<span
+        class="专业名词"
+        >F5</span
+      >，运行的还是旧程序，修改后的代码会不起作用：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/未编译就开始调试.png"
+        alt="未编译就开始调试"
+      />
+    </figure>
+    <p class="分区普通文本">
+      源代码第 30 行已经修改，但是运行的结果还是修改前的，因为<span class="强调"
+        >没有编译生成新的</span
+      >可执行文件。因此，我们要在<span class="行内专业名词">launch.json</span
+      >里添加一个配置选项：<span class="行内代码">preLaunchTask</span
+      >，其实就是在<span class="行内专业名词">launch.json</span>之前先运行<span
+        class="行内专业名词"
+        >task.json</span
+      >进行编译。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/设置preLaunchTask.png"
+        alt="设置 preLaunchTask"
+      />
+    </figure>
+    <p class="分区普通文本">
+      <span class="强调">注意</span>：<span class="行内专业名词"
+        >launch.json</span
+      >的<span class="行内代码">preLaunchTask</span>的值，必须和<span
+        class="行内专业名词"
+        >task.json</span
+      >的<span class="行内代码">label</span>的值<span class="强调"
+        >完全一致</span
+      >。此时再按<span class="专业名词">F5</span>，就会先用<span
+        class="行内专业名词"
+        >task.json</span
+      >的配置进行编译，生成新的可执行文件，再用<span class="行内专业名词"
+        >launch.json</span
+      >的配置运行和调试。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/设置preLaunchTask后再调试.png"
+        alt="设置 preLaunchTask"
+      />
+    </figure>
+    <p class="分区普通文本">运行结果与源代码一致。</p>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">
+      操作<span class="行内专业名词">MySQL</span>
+    </h2>
+
+    <h3 class="分区标题 分区3级标题">
+      范例：数据库<span class="次要">和</span>数据表
+    </h3>
+    <p class="分区普通文本">
+      为了演示程序的运作过程，我们使用了名为<span class="行内代码">test_db</span
+      >的数据库，里面有一张<span class="行内代码">t_info</span
+      >数据表，结构如下：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/数据表结构.png"
+        alt="数据表结构"
+      />
+    </figure>
+    <p class="分区普通文本">
+      一共 5 个字段，<span class="行内代码">e_id</span>是<span
+        class="行内专业名词"
+        >主键</span
+      >，<span class="行内代码">gender</span>是<span class="行内专业名词"
+        >枚举</span
+      >。表数据如下：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/数据表范例.png"
+        alt="数据表范例"
+      />
+    </figure>
+    <p class="分区普通文本">表中共包含 3 条记录。</p>
+
+    <h3 class="分区标题 分区3级标题">
+      初始化<span class="行内专业名词">MySQL</span>对象
+    </h3>
+    <p class="分区普通文本">
+      调用<span class="行内代码">mysql_init()</span>函数，对<span
+        class="行内专业名词"
+        >MySQL</span
+      >对象进行初始化。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        MYSQL* mysql_init(MYSQL *mysql) //函数定义
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      <span class="行内代码">mysql_init()</span>函数说明：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="专业名词">参数</span>：<span class="行内代码">MYSQL</span
+        >对象的指针
+      </li>
+      <li class="分区列表项">
+        <span class="专业名词">返回值</span>：经过初始化的<span class="行内代码"
+          >MYSQL</span
+        >对象的指针；如果没有足够的内存，会返回<span class="行内专业名词"
+          >NULL</span
+        >
+      </li>
+      <li class="分区列表项">
+        当使用<span class="行内代码">mysql_close()</span>关闭连接时，会释放<span
+          class="行内专业名词"
+          >MYSQL</span
+        >对象管理的内存。
+      </li>
+    </ul>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        #include &lt;stdio.h&gt;
+        #include &lt;windows.h&gt;
+        #include "mysql.h"
+        int main() {
+            SetConsoleOutputCP(CP_UTF8);
+            MYSQL mysql; //声明 MySQL对象
+            mysql_init(&mysql); //初始化 MySQL对象
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/MYSQL对象初始化.webp"
+        alt="MYSQL对象初始化"
+      />
+    </figure>
+
+    <h3 class="分区标题 分区3级标题">
+      连接<span class="行内专业名词">MySQL</span>数据库
+    </h3>
+    <p class="分区普通文本">
+      调用<span class="行内代码">mysql_real_connect()</span>函数，连接<span
+        class="行内专业名词"
+        >MySQL</span
+      >数据库。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        //函数定义
+        MYSQL* mysql_real_connect(MYSQL* mysql,
+                                  const char* host,
+                                  const char* user,
+                                  const char* passwd,
+                                  const char* db,
+                                  unsigned int port,
+                                  const char* unix_socket,
+                                  unsigned long client_flag)
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      <span class="行内代码">mysql_real_connect()</span>函数说明：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="专业名词">参数</span>：
+        <ul class="分区列表">
+          <li class="分区列表项">
+            <span class="代码">host</span>：主机名，<span class="专业名词"
+              >字符串</span
+            >
+          </li>
+          <li class="分区列表项">
+            <span class="代码">user</span>：用户名，<span class="专业名词"
+              >字符串</span
+            >
+          </li>
+          <li class="分区列表项">
+            <span class="代码">passwd</span>：密码，<span class="专业名词"
+              >字符串</span
+            >
+          </li>
+          <li class="分区列表项">
+            <span class="代码">db</span>：数据库名，<span class="专业名词"
+              >字符串</span
+            >
+          </li>
+          <li class="分区列表项" style="margin-top: 0">
+            <span class="代码">port</span>：端口号，<span class="专业名词"
+              >无符号整数</span
+            >
+            <section class="提醒">
+              <h3 class="提醒标题">提醒</h3>
+              <p class="分区普通文本">
+                端口号可在<span class="行内专业名词">MySQL</span>环境下用<span
+                  class="行内代码"
+                  >show</span
+                >命令查询：
+              </p>
+              <pre class="line-numbers">
+                <code class="lang-sql">
+                  show global variables like "port";
+                </code>
+              </pre>
+              <figure class="截图容器">
+                <img
+                  src="/Images/Blogs/C语言/操作 MySQL/显示MySQL端口.png"
+                  alt="显示MySQL端口"
+                />
+              </figure>
+              <p class="分区普通文本">
+                端口号为<span class="行内代码">3306</span>。
+              </p>
+            </section>
+          </li>
+          <li class="分区列表项" style="margin-top: 0">
+            <span class="代码">unix_socket</span>：<span class="行内专业名词"
+              >Windows</span
+            >系统上没啥用，<span class="专业名词">字符串</span>
+          </li>
+          <li class="分区列表项">
+            <span class="代码">client_flag</span>：客户端标识，<span
+              class="专业名词"
+              >无符号整数</span
+            >
+          </li>
+        </ul>
+      </li>
+      <li class="分区列表项">
+        <span class="专业名词">返回值</span>：<span class="行内代码">MYSQL</span
+        >对象的指针；如果连接失败，会返回<span class="行内专业名词">NULL</span>
+      </li>
+    </ul>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        #include &lt;stdio.h&gt;
+        #include &lt;windows.h&gt;
+        #include "mysql.h"
+
+        #define HOST "localhost"       //主机名
+        #define USER "suyang"          //用户名
+        #define PASSWORD "ntzzxxdl318" //密码
+        #define DATABASE "test_db"     //数据库名
+        #define PORT 3306              //端口号
+        #define UNIX_SOCKET NULL       //平时不用可指定为NULL
+        #define CLIENT_FLAG 0          //通常为0
+
+        int main() {
+            SetConsoleOutputCP(CP_UTF8);
+
+            MYSQL mysql;
+            mysql_init(&mysql);
+
+            if (!(&mysql)) {
+                printf("没有足够的内存，初始化失败！");
+                return 1;
+            }
+
+            //连接失败返回NULL指针
+            if (!mysql_real_connect(&mysql, HOST, USER, PASSWORD, DATABASE, PORT,
+                                    UNIX_SOCKET, CLIENT_FLAG)) {
+                printf("数据库连接失败！");
+                return 1;
+            }
+
+            printf("数据库连接成功！");
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/数据库连接成功.webp"
+        alt="连接 MySQL 数据库"
+      />
+    </figure>
+    <p class="分区普通文本">
+      <span class="行内代码">mysql_real_connect()</span>需要提供 7 个参数。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">小知识</h3>
+      <p class="分区普通文本">
+        <span class="行内代码">mysql_real_connect()</span
+        >的名称不禁让人有此一问：<span class="强调">真</span
+        >连接？莫非还有假链接？其实是因为很久以前<span class="行内专业名词"
+          >MySQL</span
+        >用的是<a
+          class="超链接"
+          target="_blank"
+          href="https://dev.mysql.com/doc/c-api/5.7/en/mysql-connect.html"
+          ><span class="行内代码">mysql_connect()</span></a
+        >，如今此函数已被废弃。为了区分名称，新的函数叫<span class="行内代码"
+          >mysql_real_connect()</span
+        >。
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">MySQL</span>查询
+    </h3>
+    <p class="分区普通文本">查询函数有两种：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="行内代码">mysql_query()</span>：不支持查询二进制数据
+      </li>
+      <li class="分区列表项">
+        <span class="行内代码">mysql_real_query()</span>：支持查询二进制数据
+      </li>
+    </ul>
+    <p class="分区普通文本">
+      如果字段内容只是数字、文本，不包含二进制数据，用<span class="行内代码"
+        >mysql_query()</span
+      >即可。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        //函数定义
+        int mysql_query(MYSQL *mysql, const char *stmt_str)
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      <span class="行内代码">mysql_query()</span>函数说明：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="专业名词">参数</span>：
+        <ul class="分区列表">
+          <li class="分区列表项">
+            <span class="行内代码">mysql</span>：<span class="行内专业名词"
+              >MYSQL</span
+            >对象的指针
+          </li>
+          <li class="分区列表项">
+            <span class="行内代码">stmt_str</span>：查询语句
+          </li>
+        </ul>
+      </li>
+      <li class="分区列表项">
+        <span class="专业名词">返回值</span>：查询<span class="行内专业名词"
+          >成功</span
+        >返回<span class="行内代码">0</span>；查询<span class="行内专业名词"
+          >失败</span
+        >返回<span class="行内代码">非0</span>
+      </li>
+    </ul>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        #include &lt;stdio.h&gt;
+        #include &lt;windows.h&gt;
+        #include "mysql.h"
+
+        int main() {
+            SetConsoleOutputCP(CP_UTF8);
+
+            MYSQL mysql;
+            mysql_init(&mysql);
+
+            if (!mysql_real_connect(&mysql, "localhost", "suyang", "ntzzxxdl318",
+                                    "test_db", 3306, NULL, 0)) {
+                printf("连接失败");
+                return 1;
+            }
+
+            //查询范例
+            if (mysql_query(&mysql, "select * from t_info limit 10")) {
+                printf("查询失败！");
+                return 1;
+            }
+
+            printf("查询成功！");
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/mysql_query-查询成功.png"
+        alt="mysql_query 查询成功"
+      />
+    </figure>
+    <p class="分区普通文本">
+      返回<span class="行内代码">0</span>代表查询成功。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">保存结果集</h3>
+    <section class="提醒">
+      <h3 class="提醒标题">结果集<span class="次要">和</span>受影响行</h3>
+      <p class="分区普通文本">
+        执行<span class="行内专业名词">MySQL</span>语句的结果大致有两种：
+      </p>
+      <ul class="分区列表">
+        <li class="分区列表项">
+          <span class="行内专业名词">结果集</span>：<span class="行内代码"
+            >select</span
+          >
+        </li>
+        <li class="分区列表项">
+          <span class="行内专业名词">受影响行</span>：<span class="行内代码"
+            >insert</span
+          >、<span class="行内代码">update</span>、<span class="行内代码"
+            >delete</span
+          >
+        </li>
+      </ul>
+    </section>
+    <p class="分区普通文本">
+      每次用<span class="行内代码">mysql_query()</span>查询后，<span
+        class="行内专业名词"
+        >MYSQL</span
+      >对象中都会保存着查询的结果集，我们要用<span class="行内代码"
+        >mysql_store_result()</span
+      >将结果集一次性保存到内存中以备取用。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        //函数定义
+        MYSQL_RES *mysql_store_result(MYSQL *mysql)
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      <span class="行内代码">mysql_init()</span>函数说明：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="专业名词">参数</span>：<span class="行内专业名词"
+          >MYSQL</span
+        >对象的指针
+      </li>
+      <li class="分区列表项">
+        <span class="专业名词">返回值</span>：
+        <ul class="分区列表">
+          <li class="分区列表项">
+            <span class="专业名词"><span class="行内代码">NULL</span></span
+            >：没有返回结果集，或者发生了错误
+          </li>
+          <li class="分区列表项">
+            <span class="专业名词"
+              ><span class="行内代码">MYSQL_RES</span>对象的指针</span
+            >：成功返回结果集
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        #include &lt;stdio.h&gt;
+        #include &lt;windows.h&gt;
+        #include "mysql.h"
+
+        int main() {
+            SetConsoleOutputCP(CP_UTF8);
+
+            MYSQL mysql;
+            mysql_init(&mysql);
+
+            if (!mysql_real_connect(&mysql, "localhost", "suyang", "ntzzxxdl318",
+                                    "test_db", 3306, NULL, 0)) {
+                printf("连接失败");
+                return 1;
+            }
+
+            if (mysql_query(&mysql, "select * from t_info limit 10")) {
+                printf("查询失败！");
+                return 1;
+            }
+            
+            MYSQL_RES* result = mysql_store_result(&mysql); //保存查询结果集
+            if (!result) {
+                printf("查询结果集保存失败！");
+                return 1;
+            }
+
+            printf("查询结果集保存成功！");
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/结果集保存成功.png"
+        alt="结果集保存成功"
+      />
+    </figure>
+    <p class="分区普通文本">
+      只要返回值不是<span class="行内代码">NULL</span>，就表示成功返回了结果集。
+    </p>
+    <p class="分区普通文本">
+      可以用<span class="行内代码">mysql_num_rows()</span>获取结果集包含的行数。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        #include &lt;stdio.h&gt;
+        #include &lt;windows.h&gt;
+        #include "mysql.h"
+
+        int main() {
+            //已成功初始化
+            //已成功连接
+            //已成功查询
+            //已成功获取结果集
+            int rows_count = mysql_num_rows(result);
+            printf("结果集包含 %d 行\n", rows_count);
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/获取结果集行数.png"
+        alt="获取结果集行数"
+      />
+    </figure>
+    <p class="分区普通文本">结果集包含 3 行。</p>
+
+    <h3 class="分区标题 分区3级标题">检索数据行</h3>
+    <p class="分区普通文本">
+      要从结果集中检索结果，可用<span class="行内代码">mysql_fetch_row()</span
+      >函数。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        MYSQL_ROW mysql_fetch_row(MYSQL_RES *result) //函数定义
+      </code>
+    </pre>
+    <p class="分区普通文本"></p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="专业名词">参数</span>：<span class="行内专业名词"
+          >MYSQL_RES</span
+        >结果集
+      </li>
+      <li class="分区列表项">
+        <span class="专业名词">返回值</span>：
+        <ul class="分区列表">
+          <li class="分区列表项">
+            <span class="专业名词"><span class="行内代码">NULL</span></span
+            >：不存在下一行，或者发生了错误
+          </li>
+          <li class="分区列表项">
+            <span class="专业名词"
+              ><span class="行内代码">MYSQL_ROW</span>数据行结构体</span
+            >：成功检索到下一行
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p class="分区普通文本">
+      从<span class="行内代码">mysql_fetch_row()</span
+      >的定义可以看出，每次检索一行。如果我们想检索结果集中的所有行，就需要用循环一行行检索过去。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        #include &lt;stdio.h&gt;
+        #include &lt;windows.h&gt;
+        #include "mysql.h"
+
+        int main() {
+            //已成功初始化
+            //已成功连接
+            //已成功查询
+
+            MYSQL_RES* result = mysql_store_result(&mysql);
+            if (!result) {
+                printf("查询结果集保存失败！");
+                return 1;
+            }
+
+            MYSQL_ROW row;
+            while (row = mysql_fetch_row(result)) {
+                printf("成功检索到一行！\n");
+            }
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/成功检索每一行.png"
+        alt="成功检索每一行"
+      />
+    </figure>
+    <p class="分区普通文本">成功检索到 3 行数据记录。</p>
+
+    <h3 class="分区标题 分区3级标题">从数据行提取数据</h3>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        <span class="行内代码">MYSQL_ROW</span>表示<span class="行内专业名词"
+          >一行数据记录</span
+        >，这一行里每一个字段值的数据类型都是<span class="行内专业名词"
+          >以字节数量表示的字符串</span
+        >。听起来有点拗口，啥意思？因为我们平时用的字符串是<span
+          class="行内专业名词"
+          >以<span class="行内代码"
+            >null<span class="附加说明"
+              >转义字符为：<span class="行内代码">'\0'</span></span
+            ></span
+          >结束的字符串</span
+        >，但是在<span class="行内代码">MYSQL_ROW</span
+        >的字段数据里，你不能把<span class="行内代码">null</span
+        >当做结束标志，因为某个字段的值可能包含<span class="行内专业名词"
+          >二进制数据</span
+        >，内部可能包含<span class="行内代码">null</span
+        >字节，而这并不表示结束。
+      </p>
+      <p class="分区普通文本">
+        这也意味着我们不能直接用<span class="行内代码">%s</span
+        >作为格式说明符，因为这样会导致遇到<span class="行内代码">null</span
+        >就停止读取。如果是二进制数据的话，<span class="行内代码">null</span
+        >的后面可能还有其它数据。
+      </p>
+      <p class="分区普通文本">
+        因此，我们需要手动获取每个字段的真实数据长度，并且用<span
+          class="行内代码"
+          >%.*s</span
+        >格式说明符，以便我们手动指定字符串的读取长度。
+      </p>
+      <p class="分区普通文本">
+        由于<span class="行内专业名词">字符</span
+        ><span class="附加说明"><span class="行内代码">char</span></span
+        >的占用空间为<span class="行内专业名词">1 字节</span>，因此<span
+          class="行内代码"
+          >MYSQL_ROW</span
+        >内的字段值的<span class="专业名词"
+          ><span class="行内专业名词">长度</span>=<span class="行内专业名词"
+            >占用的内存空间</span
+          ></span
+        >。
+      </p>
+    </section>
+    <p class="分区普通文本">
+      要从一条数据行中提取每一个数据，需要先取得以下信息：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        字段数量：<span class="行内代码">mysql_num_fields()</span>
+      </li>
+      <li class="分区列表项">
+        本行每个字段的数据长度：<span class="行内代码"
+          >mysql_fetch_lengths()</span
+        >
+      </li>
+    </ul>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        #include &lt;stdio.h&gt;
+        #include &lt;windows.h&gt;
+        #include "mysql.h"
+
+        int main() {
+            //已成功初始化
+            //已成功连接
+            //已成功查询
+            //已成功保存结果集
+
+            int fields_count = mysql_num_fields(result); //获取字段数量
+        
+            MYSQL_ROW row;
+        
+            //while循环检索每一行，直到不存在下一行
+            while (row = mysql_fetch_row(result)) {
+                //获取当前行每一个字段的值的实际长度，单位为字节
+                unsigned long* fields_length = mysql_fetch_lengths(result);
+                
+                //按照实际长度打印每一个字段的值，并显示长度
+                for (int i = 0; i < fields_count; i++) {
+                    printf("%.*s，长度：%zu\n", fields_length[i], row[i],
+                           fields_length[i]);
+                }
+
+                printf("------------------------------\n");
+            }
+        }
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/C语言/操作 MySQL/输出每一个字段值.png"
+        alt="输出每一个字段值"
+      />
+    </figure>
+    <p class="分区普通文本">
+      每个字母和数字占用 1 字节，每个中文字符占用 3 字节。因为<span
+        class="行内专业名词"
+        >MySQL</span
+      >默认采用<span class="行内专业名词">utf8mb4</span>编码，中文占用 3 字节。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">释放结果集</h3>
+    <p class="分区普通文本">结果集使用完毕后，我们要释放结果集占用的内存。</p>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        #include &lt;stdio.h&gt;
+        #include &lt;windows.h&gt;
+        #include "mysql.h"
+
+        int main() {
+            //所有需要结果集的操作已经结束
+            mysql_free_result(result);
+            //释放之后不要再用result指针访问内存
+        }
+      </code>
+    </pre>
+
+    <h3 class="分区标题 分区3级标题">关闭数据库连接</h3>
+    <p class="分区普通文本">
+      当整个数据库连接对应的工作都执行完毕时，我们需要手动关闭连接。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-c">
+        #include &lt;stdio.h&gt;
+        #include &lt;windows.h&gt;
+        #include "mysql.h"
+
+        int main() {
+            //所有数据库相关工作已执行完毕
+            mysql_close(&mysql);
+            //释放之后不要再使用mysql
+        }
+      </code>
+    </pre>
+  </article>
+</div>

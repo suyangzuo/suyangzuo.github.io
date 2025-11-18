@@ -1,0 +1,238 @@
+<article class="专题简介">
+  <h1 class="简介标题">获取光标相对位置<span class="原创">原创</span></h1>
+  <div class="简介信息">
+    <section class="简介信息文本">
+      <p class="作者">
+        <span class="作者前缀 前缀">作者：</span>
+        <span class="作者姓名">苏扬</span>
+      </p>
+      <p class="日期">
+        <span class="日期前缀 前缀">日期：</span>
+        <span class="日期文本"><span class="日期文本-数字 日期文本-年">2024</span>年<span class="日期文本-数字 日期文本-月">2</span>月<span class="日期文本-数字 日期文本-日">7</span>日</span>
+      </p>
+    </section>
+    <section class="简介信息图像">
+      <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+    </section>
+  </div>
+  <ul class="联系方式列表">
+    <li class="联系方式项">
+      <a class="联系方式链接" href="mailto:suyangzuo@gmail.com" target="_blank">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://github.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-github"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.deviantart.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-deviantart"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dev.to/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-dev"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.freecodecamp.org/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-free-code-camp"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://codepen.io/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-codepen"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://dribbble.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-dribbble"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.artstation.com/user-7893655"
+        target="_blank"
+        ><i class="fa-brands fa-artstation"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://codesandbox.io/u/suyangzuo"
+        target="_blank">
+        <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
+      /></a>
+    </li>
+  </ul>
+</article>
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">光标位置概念</h2>
+
+    <h3 class="分区标题 分区3级标题">
+      光标在<span class="行内专业名词">元素内</span>的相对位置
+    </h3>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/获取光标相对位置/光标相对位置示意图.gif"
+        alt="光标在元素内的相对位置" />
+    </figure>
+    <p class="分区普通文本">
+      显示了光标在某个元素内部的相对位置，在很多应用中都需要使用这个位置，尤其是跟随鼠标的特效。然而，无论是
+      CSS 还是
+      JavaScript，都没有提供能够直接获取此位置的属性或方法。我们只能使用间接的方式来获取光标位置。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">获取光标相对位置思路</h3>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/获取光标相对位置/三距离示意图.png"
+        alt="获取光标相对位置示意图" />
+    </figure>
+    <p class="分区普通文本">
+      白色线条是<span class="行内专业名词">光标在视口内的位置</span
+      >，绿色线条为<span class="行内专业名词">元素距离视口边界的距离</span>，这
+      2 个属性都可以用 JavaScript
+      直接获取，二者相减就可以得到我们想要的相对位置。
+    </p>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">获取光标位置</h2>
+
+    <h3 class="分区标题 分区3级标题">
+      光标在<span class="行内专业名词">视口内</span>的位置
+    </h3>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/获取光标相对位置/光标位置示意图.gif"
+        alt="光标在视口内的位置" />
+    </figure>
+    <p class="分区普通文本">
+      <span class="代码">MouseEvent.clientX</span
+      >属性，可以获取跟鼠标事件有关的<span class="专业名词"
+        >光标在视口内的位置</span
+      >。因为需要在鼠标移动的同时，实时获取当前位置，因此对应的鼠标事件为：<span
+        class="代码"
+        >mousemove</span
+      >。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        const 元素 = document.querySelector("#内部");
+        元素.addEventListener("mousemove", (event) =&gt; {
+          const 光标视口位置_X = event.clientX; //白色横线
+          const 光标视口位置_Y = event.clientY; //白色竖线
+        });
+      </code>
+    </pre>
+
+    <h3 class="分区标题 分区3级标题">元素边界到视口边界的距离</h3>
+    <p class="分区普通文本">
+      元素边界到视口边界的距离，这在<a
+        class="超链接"
+        target="_blank"
+        href="https://developer.mozilla.org/zh-CN/docs/Web/API/Element/getBoundingClientRect"
+        >MDN Web Docs</a
+      >相关页面有清晰的图示：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/获取光标相对位置/边界矩形示意图.png"
+        alt="边界矩形示意图" />
+    </figure>
+    <p class="分区普通文本">
+      元素无法直接获取与视口的边界距离，必须先得到元素的<span class="专业名词"
+        >边界矩形</span
+      >。因为边界距离不会随着鼠标的移动而改变，因此相关代码不需要与<span
+        class="代码"
+        >mousemove</span
+      >事件绑定。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        const 元素 = document.querySelector("#内部");
+        const 元素边界矩形 = 元素.getBoundingClientRect();
+        const 边界左距离 = 元素边界矩形.left; //绿色横线 → 467px
+        const 边界顶距离 = 元素边界矩形.top; //绿色竖线 → 299px
+        
+        元素.addEventListener("mousemove", (event) =&gt; {
+          const 光标视口位置_X = event.clientX; //白色横线
+          const 光标视口位置_Y = event.clientY; //白色竖线
+        });
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/获取光标相对位置/边界矩形外部距离.png"
+        alt="边界矩形距离" />
+    </figure>
+    <p class="分区普通文本">我们只需要左距离和顶距离即可。</p>
+
+    <h3 class="分区标题 分区3级标题">
+      光标相对位置<span class="附加说明"
+        >光标视口位置<span style="color: gold; margin: 0 5px"
+          ><i class="fa-solid fa-minus"></i></span
+        >边界距离</span
+      >
+    </h3>
+    <p class="分区普通文本">只要得到前 2 项数据：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">光标在视口内的位置</li>
+      <li class="分区列表项">元素边界矩形距离</li>
+    </ul>
+    <p class="分区普通文本">
+      将二者相减，即可得到我们想要的<span class="行内专业名词"
+        >光标在元素内的相对位置</span
+      >。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/获取光标相对位置/减法得到相对距离.gif"
+        alt="光标相对位置 = 光标视口位置 - 元素边界距离" />
+    </figure>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        const 元素 = document.querySelector("#内部");
+        const 元素边界矩形 = 元素.getBoundingClientRect();
+        const 边界左距离 = 元素边界矩形.left; //绿色横线 → 467px
+        const 边界顶距离 = 元素边界矩形.top; //绿色竖线 → 299px
+        
+        元素.addEventListener("mousemove", (event) =&gt; {
+          const 光标视口位置_X = event.clientX; //白色横线
+          const 光标视口位置_Y = event.clientY; //白色竖线
+          const 光标相对位置_X = 光标视口位置_X - 边界左距离; //得到结果
+          const 光标相对位置_Y = 光标视口位置_Y - 边界顶距离; //得到结果
+        });
+      </code>
+    </pre>
+    <p class="分区普通文本">看看下图的效果，现在会做了吗？</p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/获取光标相对位置/Follow-Cursor.webp"
+        alt="光标跟随动图" />
+    </figure>
+    <p class="分区普通文本">
+      获取鼠标相对位置的方法，最常见的应用场景就是鼠标跟随。
+    </p>
+  </article>
+</div>

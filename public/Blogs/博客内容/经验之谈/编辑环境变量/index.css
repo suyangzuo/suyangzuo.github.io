@@ -1,0 +1,13 @@
+.系统属性初始选项卡 {
+              position: relative;
+            }
+
+            .系统属性初始选项卡::before {
+              width: 12%;
+              height: 6%;
+              border: solid 5px red;
+              content: "";
+              position: absolute;
+              top: 5%;
+              left: 20%;
+            }

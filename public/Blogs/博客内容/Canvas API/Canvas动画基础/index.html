@@ -1,0 +1,513 @@
+<article class="专题简介">
+  <h1 class="简介标题">
+    <span><span class="行内专业名词">Canvas</span>动画基础</span><span class="原创">原创</span>
+  </h1>
+  <div class="简介信息">
+    <section class="简介信息文本">
+      <p class="作者">
+        <span class="作者前缀 前缀">作者：</span>
+        <span class="作者姓名">苏扬</span>
+      </p>
+      <p class="日期">
+        <span class="日期前缀 前缀">日期：</span>
+        <span class="日期文本"
+          ><span class="日期文本-数字 日期文本-年">2025</span>年<span class="日期文本-数字 日期文本-月">7</span>月<span
+            class="日期文本-数字 日期文本-日"
+            >16</span
+          >日</span
+        >
+      </p>
+    </section>
+    <section class="简介信息图像">
+      <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+    </section>
+  </div>
+  <ul class="联系方式列表">
+    <li class="联系方式项">
+      <a class="联系方式链接" href="mailto:suyangzuo@gmail.com" target="_blank">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://github.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-github"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.deviantart.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-deviantart"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dev.to/suyangzuo" target="_blank"><i class="fa-brands fa-dev"></i></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.freecodecamp.org/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-free-code-camp"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://codepen.io/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-codepen"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dribbble.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-dribbble"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.artstation.com/user-7893655" target="_blank"
+        ><i class="fa-brands fa-artstation"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://codesandbox.io/u/suyangzuo" target="_blank">
+        <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
+      /></a>
+    </li>
+  </ul>
+</article>
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">动画概念</h2>
+
+    <h3 class="分区标题 分区3级标题">动画的本质</h3>
+    <p class="分区普通文本">
+      看过电影、动画的人都知道，里面有个概念叫<span class="行内专业名词">帧率</span>，比如电影的帧率一般是<span
+        class="行内专业名词"
+        >24</span
+      >。玩游戏的时候，我们也很关注<span class="行内专业名词">帧率</span>，帧率越高，游戏越流畅。<span
+        class="行内专业名词"
+        >帧率</span
+      >就是<span class="行内专业名词">每秒播放的静态图像数量</span>，简称<span class="行内专业名词">FPS</span
+      ><span class="附加说明">Frames Per Second</span
+      >。因此，动画的本质就是一个个的静态图像，将这些图像以很快的速度播放，给人的感觉就像图像动了起来。
+    </p>
+    <p class="分区普通文本">
+      <span class="行内专业名词">Canvas 动画</span
+      >也是一样，将上一幅图像擦掉，然后快速画出下一幅，不断重复，形成了动画。只是，和<span class="行内专业名词"
+        >Adobe Animate</span
+      >这类动画设计软件不同，<span class="行内专业名词">Canvas 动画</span>是纯粹用代码写出来的，<span
+        class="行内专业名词"
+        >Canvas API</span
+      >不提供任何图形界面，因此，<span class="行内专业名词">Canvas API</span>不适合用来做过于复杂的动画<span
+        class="附加说明"
+        >如平时看的动漫</span
+      >。
+    </p>
+    <p class="分区普通文本">
+      用代码写动画有什么好处？当然有，用代码做动画，动画实际上就是一段程序，而程序中的变量是可以在运行时进行修改的。
+    </p>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-speed-control" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <p class="分区普通文本">
+      用代码写动画，就可以在动画播放过程中与动画进行交互，比如实时调整动画播放的速度，这是普通动画无法比拟的。此外，由于动画实际上是纯文本代码，因此占用容量非常小，非常适合部署在网页中运行。
+    </p>
+    
+    <p class="分区普通文本">
+      从<span class="行内专业名词">Canvas API</span>的整体设计来看，它更适合用来做科学、教学、演示这类动画。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">动画的实现</h3>
+    <p class="分区普通文本">
+      如之前所说，动画的本质就是<span class="行内专业名词">不断更新的静态图像</span
+      >，因此我们的代码的整体逻辑就是：<span class="强调"
+        >擦除<span class="次要">→</span>绘图<span class="次要">→</span>擦除<span class="次要">→</span>绘图<span
+          class="次要"
+          >→</span
+        >擦除<span class="次要">→</span>绘图<span class="次要">………</span></span
+      >，如此循环往复。可以看出，每一个<span class="专业名词">擦除<span class="次要">→</span>绘图</span
+      >为一次完整操作。<br />简而言之，<span class="强调">每隔一段时间</span>进行一次<span class="专业名词"
+        >擦除<span class="次要">→</span>绘图</span
+      >操作。
+    </p>
+    <p class="分区普通文本">
+      问题来了，<span class="强调">每隔一段时间</span>进行一次操作，你想到了什么？<span class="行内专业名词">循环</span
+      >？还算可以；<span class="行内代码">setInterval()</span>？不错不错！但这些方法都不是专门为<span
+        class="行内专业名词"
+        >Canvas 动画</span
+      >设计的。今天，我们介绍一种专门为<span class="行内专业名词">Canvas 动画</span>设计的动画方法：<span
+        class="行内代码"
+        >requestAnimationFrame()</span
+      >。
+    </p>
+    <p class="分区普通文本">
+      <span class="行内代码">requestAnimationFrame()</span
+      >会告诉浏览器，尽量按照显示器刷新率来执行动画。比如显示器刷新率为<span class="行内专业名词">60Hz</span>，那么<span
+        class="行内代码"
+        >requestAnimationFrame()</span
+      >就是每秒钟运行<span class="行内专业名词">60次</span>。从编程语法上讲，<span class="行内代码"
+        >requestAnimationFrame()</span
+      >往往采用<span class="行内专业名词">递归调用</span>的方式，也就是<span class="强调"
+        >在动画函数内部，用<span class="行内代码"
+          >requestAnimationFrame(<span class="行内专业名词">函数自身</span>)</span
+        >的方式，像套娃一样不断自己调用自己</span
+      >。
+    </p>
+    <p class="分区普通文本">
+      <span class="强调"
+        >递归调用<span class="行内代码">requestAnimationFrame(<span class="行内专业名词">函数自身</span>)</span></span
+      >，就是<span class="行内专业名词">Canvas 动画</span>的标准写法。
+    </p>
+    <pre>
+      <code class="lang-javascript">
+        // 编写动画函数
+        animate() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height); //先清空画布
+          //然后再绘制
+          绘制这个();
+          绘制那个();
+          requestAnimationFrame(animate);  //函数内部递归调用自身
+        }
+
+        // 启动动画
+        requestAnimationFrame(animate);
+      </code>
+    </pre>
+
+    <h3 class="分区标题 分区3级标题">帧率问题</h3>
+    <p class="分区普通文本">
+      之前说过，<span class="行内代码">requestAnimationFrame()</span
+      >会按照显示器刷新率来更新动画，但是，不同的显示器刷新率不一样，以前绝大部分显示器刷新率都是<span
+        class="行内专业名词"
+        >60Hz</span
+      >，但现在出现了很多高刷新率的显示器，它们的刷新率可以到达<span class="行内专业名词">120Hz</span
+      >以上，最夸张的甚至能到<span class="行内专业名词">600Hz</span>。假设动画中设置了每次向右偏移<span
+        class="行内专业名词"
+        >2px</span
+      >，在<span class="行内专业名词">60Hz</span>刷新率上，每秒就会偏移<span class="行内专业名词">120px</span
+      >，而在<span class="行内专业名词">144Hz</span>的显示器上，每秒会偏移<span class="行内专业名词">288px</span
+      >！！！这肯定是不符合业务需求的，动画的速度应该在不同刷新率的显示器上一致。
+    </p>
+    <p class="分区普通文本">
+      为了达到<span class="强调">刷新率不同，速度一致</span>的目标，我们的设计思路是：设定好<span class="行内专业名词"
+        >每秒移动的距离</span
+      >，然后获取<span class="行内专业名词">每两帧之间的时间差</span>，用<span class="专业名词"
+        >两帧之间时间差<span class="次要" style="color: silver">×</span>每秒移动距离<span
+          class="次要"
+          style="color: silver; margin: 0 4px"
+          >=</span
+        >两帧之间移动距离</span
+      >这个公式来判定每次动画应该移动的距离。这也是<a
+        class="超链接"
+        href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestAnimationFrame"
+        target="_blank"
+        >MDN 文档</a
+      >着重强调的写法：
+    </p>
+    <figure class="截图容器" style="width: 100%">
+      <img src="/Images/Blogs/Canvas API/Canvas动画/requestAnimationFrame_推荐距离算法.png" alt="推荐距离算法" />
+    </figure>
+    <p class="分区普通文本">这不是建议，而是<span class="强调">警告</span>，说明这种写法是必要的，而不是可选的。</p>
+    <p class="分区普通文本">
+      为了计算出<span class="行内专业名词">每两帧之间的时间差</span>，我们需要一个非常重要的参数：<span
+        class="行内专业名词"
+        >当前时间</span
+      >。每渲染一帧，我们就要知道<span class="行内专业名词">这一帧的当前时间</span>，然后减去<span class="行内专业名词"
+        >上一帧的当前时间</span
+      >，就得到了时间差。万幸的是，<span class="行内代码">JavaScript</span>内置了这个参数：可以叫<span class="行内代码"
+        >currentTime</span
+      >或者<span class="行内代码">timestamp</span
+      >，这个参数的意思是：从页面加载，到运行到这一帧时，一共经过了多长时间，单位为<span class="行内专业名词">毫秒</span
+      >。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        let lastTime = 0;  // 初始化"上一帧经过时间"为0
+        const 每秒移动距离 = 300;  // 数字越大，速度越快
+
+        animate(currentTime) {  // currentTime参数为内置，无需事先初始化
+          const 时间差 = (currentTime - lastTime) / 1000;  // 将毫秒转换为秒
+          const 移动距离 = 每秒移动距离 * 时间差;
+          lastTime = currentTime;  // 更新上一帧经过时间
+
+          当前距离 += 移动距离;  // 移动物体
+
+          ctx.clearRect(0, 0, canvas.width, canvas.height); //先清空画布
+          // 绘制逻辑
+          requestAnimationFrame(animate);  //函数内部递归调用自身
+        }
+
+        // 启动动画
+        requestAnimationFrame(animate);
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-deltaTime" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <p class="分区普通文本">
+      利用内置的<span class="行内代码">currentTime</span>，我们就可以精确计算出<span class="行内专业名词"
+        >两帧之间的时间差</span
+      >，从而计算出<span class="行内专业名词">两帧之间移动的距离</span>。
+    </p>
+    
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">迭代控制</h2>
+
+    <h3 class="分区标题 分区3级标题">无限迭代</h3>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        // 动画参数 - 基于时间的控制
+        let 上次时间 = 0;
+        const 每秒移动距离 = 450; // 单位：像素/秒，数字越大速度越快
+
+        const 矩形宽度 = 100;
+        const 矩形高度 = 100;
+        let 矩形水平坐标 = 0;   //要用let，因为移动需要改变坐标
+        let 矩形垂直坐标 = (canvas.offsetHeight - 矩形高度) / 2;   //要用let，因为移动需要改变坐标
+        
+        function 绘制矩形() {
+          //绘制逻辑
+        }
+
+        function 绘制动画(当前时间) {
+          // 计算时间差（毫秒转换为秒）
+          const 时间差 = (当前时间 - 上次时间) / 1000;
+          上次时间 = 当前时间;
+          
+          // 基于时间计算移动距离
+          const 移动距离 = 每秒移动距离 * 时间差;
+          矩形水平坐标 += 移动距离;
+          
+          if (矩形水平坐标 > canvas.offsetWidth - 矩形宽度) {
+            矩形水平坐标 = 0;   //如果矩形的右边界到达画布的右边界，则矩形回到起点
+          }
+          
+          ctx.clearRect(0, 0, canvas.width, canvas.height); //先清空画布
+          绘制矩形();
+          requestAnimationFrame(绘制动画);   //自己调用自己：递归调用
+        }
+
+        requestAnimationFrame(绘制动画);
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-move" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <p class="分区普通文本">
+      由于没有动画停止条件，所以<span class="行内代码">requestAnimationFrame()</span
+      >递归调用会一直进行下去，直到页面被关闭。
+    </p>
+    
+
+    <h3 class="分区标题 分区3级标题">条件迭代</h3>
+    <p class="分区普通文本">
+      如果希望满足某个条件才触发动画，常见的做法是设置一个<span class="行内专业名词">布尔</span
+      >变量，把这个布尔变量作为<span class="行内代码">requestAnimationFrame()</span
+      >的条件。当动画触发停止条件时，修改这个<span class="行内专业名词">布尔</span>变量的值。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        // 动画参数 - 基于时间的控制
+        let 停止动画 = true;  //布尔变量，用于动画播放的条件
+        let 上次时间 = 0;
+        const 每秒移动距离 = 600; // 单位：像素/秒，数字越大速度越快
+
+        const 矩形宽度 = 100;
+        const 矩形高度 = 100;
+        let 矩形水平坐标 = 0;   //要用let，因为移动需要改变坐标
+        let 矩形垂直坐标 = (canvas.offsetHeight - 矩形高度) / 2;   //要用let，因为移动需要改变坐标
+        
+        function 绘制矩形() {
+          //绘制逻辑
+        }
+
+        function 绘制动画(当前时间) {
+          // 计算时间差（毫秒转换为秒）
+          const 时间差 = (当前时间 - 上次时间) / 1000;
+          上次时间 = 当前时间;
+          
+          // 基于时间计算移动距离
+          const 移动距离 = 每秒移动距离 * 时间差;
+          矩形水平坐标 += 移动距离;
+          
+          if (矩形水平坐标 > canvas.offsetWidth - 矩形宽度) {
+            停止动画 = true;   //如果矩形的右边界到达画布的右边界，停止动画
+          }
+          
+          绘制矩形();
+
+          // 给 requestAnimationFrame() 添加条件
+          if (!停止动画) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); //先清空画布
+            requestAnimationFrame(绘制动画);   //自己调用自己：递归调用
+          }
+        }
+
+        播放按钮.addEventListener("click", () => {
+          if (停止动画) {
+            停止动画 = false;
+            requestAnimationFrame(绘制动画);  
+          }
+        });
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-move_stop" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <p class="分区普通文本">
+      我们用了<span class="行内代码">停止动画</span>这个<span class="行内专业名词">布尔</span>变量作为<span
+        class="行内代码"
+        >requestAnimationFrame()</span
+      >的条件。当点击播放按钮时，将<span class="行内代码">停止动画</span>设置为<span class="行内代码">false</span
+      >，并开始播放动画；当矩形到达右边界时，将<span class="行内代码">停止动画</span>设置为<span class="行内代码"
+        >true</span
+      >，从而停止动画。
+    </p>
+    
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">时间与速度</h2>
+
+    <h3 class="分区标题 分区3级标题">固定速度</h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词">速度</span>是关键，由于动画使用<span class="行内代码">requestAnimationFrame()</span
+      >实现的，最重要的就是计算<span class="行内专业名词">每帧的变化量</span>，因为这个案例是直接设置<span
+        class="行内专业名词"
+        >速度</span
+      >，因此代码简单一些。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        class 固定速度 {
+          constructor(canvasId) {
+            // 构造器代码
+            this.旋转速度 = 300;  // 以速度为基准
+          }
+
+          刷新动画参数与图形(当前时间) {
+            // 计算时间差（毫秒转换为秒）
+            const 时间差 = (当前时间 - this.上次时间) / 1000;
+            this.上次时间 = 当前时间;
+            
+            const 角度变化值 = this.旋转速度 * 时间差;  //用速度算出一帧的变化量
+            this.旋转角度 += 角度变化值;
+            
+            // 保持角度在0-360度范围内
+            if (this.旋转角度 >= 360) {
+              this.旋转角度 -= 360;
+            }
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height); //先清空画布
+            // 绘制动画
+            this.绘制轨道与小球();
+            
+            requestAnimationFrame(this.刷新动画参数与图形.bind(this));
+          }
+        }
+
+        new 固定速度("canvas-固定速度");
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-固定速度" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    
+
+    <h3 class="分区标题 分区3级标题">固定时间</h3>
+    <p class="分区普通文本">
+      下面这个案例没有直接设置<span class="行内专业名词">速度</span>，而是改为设置<span class="行内专业名词">时间</span
+      >，因此多了一句代码<span class="附加说明 等宽">第12行</span>，用<span class="行内专业名词">时间</span>计算<span
+        class="行内专业名词"
+        >速度</span
+      >。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        class 固定时间 {
+          constructor(canvasId) {
+            // 构造器代码
+            this.一圈用时 = 1000; // 以时间为基准，默认 1秒/圈
+          }
+
+          刷新动画参数与图形(当前时间) {
+            // 计算时间差（毫秒转换为秒）
+            const 时间差 = (当前时间 - this.上次时间) / 1000;
+            this.上次时间 = 当前时间;
+            
+            const 旋转速度 = 360 / (this.一圈用时 / 1000);  // 多了一句代码，用时间算速度
+
+            const 角度变化值 = 旋转速度 * 时间差; // 关键代码，计算一帧的变化量
+            this.旋转角度 += 角度变化值;
+            
+            // 保持角度在合理范围内
+            if (this.旋转角度 >= 270) {
+              this.旋转角度 -= 360;
+            }
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height); //先清空画布
+            // 绘制动画
+            this.绘制轨道与小球();
+            
+            requestAnimationFrame(this.刷新动画参数与图形.bind(this));
+          }
+        }
+
+        new 固定时间("canvas-固定时间");
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-固定时间" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    
+
+    <h3 class="分区标题 分区3级标题">延时动画</h3>
+    <p class="分区普通文本">
+      核心思想还是用<span class="行内代码">currentTime</span>来计算时间差，当时间差超过<span class="行内专业名词"
+        >延时时长</span
+      >，就开始运行动画。
+    </p>
+    <pre class="line-numbers">
+  <code class="lang-javascript">
+    const 延时时长 = 2000;
+    const 动画时长 = 2000;
+    let 起始时间 = 0;
+    let 动画已开始 = false;
+
+    function 绘制矩形() {
+      //绘制逻辑
+    }
+          
+    function animate(currentTime) {
+        const 延时已用时 = currentTime - 起始时间;
+                    
+        // 如果经过时间超过2000ms(2秒)且动画未开始，则开始动画
+        if (延时已用时 >= 延时时长 && !动画已开始) {
+            动画已开始 = true;
+            起始时间 = currentTime;  //更新起始时间，用于计算动画已用时
+        }
+        
+        if (动画已开始) {
+            const 动画已用时 = currentTime - 起始时间;
+            //这里不要更新"起始时间"，因为这里不是用"两帧之间的移动距离"，而是用"这一帧的整体移动进度"
+            //"两帧之间移动的距离"是独立的，"这一帧的整体移动进度"是累积的
+
+            const 水平移动进度 = Math.min(动画已用时 / 动画时长, 1);  // 进度不能超过1
+            const 当前矩形水平位置 = 水平移动进度 * canvas.width;
+            ctx.clearRect(0, 0, canvas.width, canvas.height); //先清空画布
+            绘制矩形();
+        }
+        
+        requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(animate);
+  </code>
+</pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-delay" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    
+  </article>
+</div>

@@ -1,0 +1,380 @@
+<article class="专题简介">
+  <h1 class="简介标题"><span>三次贝塞尔曲线</span><span class="原创">原创</span></h1>
+  <div class="简介信息">
+    <section class="简介信息文本">
+      <p class="作者">
+        <span class="作者前缀 前缀">作者：</span>
+        <span class="作者姓名">苏扬</span>
+      </p>
+      <p class="日期">
+        <span class="日期前缀 前缀">日期：</span>
+        <span class="日期文本"
+          ><span class="日期文本-数字 日期文本-年">2025</span>年<span class="日期文本-数字 日期文本-月">8</span>月<span
+            class="日期文本-数字 日期文本-日"
+            >24</span
+          >日</span
+        >
+      </p>
+    </section>
+    <section class="简介信息图像">
+      <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+    </section>
+  </div>
+  <ul class="联系方式列表">
+    <li class="联系方式项">
+      <a class="联系方式链接" href="mailto:suyangzuo@gmail.com" target="_blank">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://github.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-github"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.deviantart.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-deviantart"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dev.to/suyangzuo" target="_blank"><i class="fa-brands fa-dev"></i></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.freecodecamp.org/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-free-code-camp"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://codepen.io/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-codepen"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dribbble.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-dribbble"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.artstation.com/user-7893655" target="_blank"
+        ><i class="fa-brands fa-artstation"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://codesandbox.io/u/suyangzuo" target="_blank">
+        <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
+      /></a>
+    </li>
+  </ul>
+</article>
+<div class="专题正文区">
+  
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">贝塞尔曲线</h2>
+
+    <h3 class="分区标题 分区3级标题">
+      历史<span class="次要" style="color: rgb(158, 158, 158); font-size: 0.95em">与</span>原理
+    </h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词">贝塞尔曲线</span>实际上是一种<span class="行内专业名词">数学算法</span>，由法国工程师<a
+        class="超链接"
+        href="https://zh.wikipedia.org/zh-hans/貝茲曲線"
+        target="_blank"
+        >皮埃尔·贝塞尔</a
+      >于<span class="行内专业名词">1962</span
+      >年发表，最初用于汽车车身设计。时至今日，贝塞尔曲线已经成为工业领域不可或缺的重要工具。
+    </p>
+    <figure class="截图容器" style="width: 100%">
+      <video
+        src="/Images/Blogs/Canvas API/贝塞尔曲线/贝塞尔曲线的历史.mkv"
+        controls
+        muted
+        width="100%"
+        poster="/Images/Blogs/Canvas API/贝塞尔曲线/poster.png"
+      ></video>
+    </figure>
+    <p class="分区普通文本">有了贝塞尔曲线算法，我们就可以画出任何不规则的曲线。</p>
+
+    <h3 class="分区标题 分区3级标题">二次贝塞尔曲线</h3>
+    <p class="分区普通文本">
+      二次贝塞尔曲线的特点是：一共包含<span class="行内专业名词 等宽">3</span>个控制点：<span class="专业名词 等宽"
+        >P<span class="下标">₀</span></span
+      >、<span class="专业名词 等宽">P<span class="下标">₁</span></span
+      >、<span class="专业名词 等宽">P<span class="下标">₂</span></span
+      >，根据运动进度<span class="专业名词 等宽">t</span>，计算出贝塞尔曲线的当前坐标：<span class="专业名词 等宽"
+        >P<span class="圆括号">(</span><span class="参数">t</span><span class="圆括号">)</span></span
+      >。其计算公式为：
+    </p>
+    <p class="分区普通文本">
+      <span class="代码" style="font-size: 16px"
+        >P<span class="圆括号">(</span><span class="参数">t</span><span class="圆括号">)</span>
+        <span class="运算符">=</span> <span class="圆括号">(</span>1 <span class="运算符">-</span> t<span class="圆括号"
+          >)</span
+        ><span class="上标">²</span> <span class="运算符">×</span> P<span class="下标">₀</span>
+        <span class="运算符">+</span> 2<span class="圆括号">(</span>1 <span class="运算符">-</span> t<span
+          class="圆括号"
+          >)</span
+        >t <span class="运算符">×</span> P<span class="下标">₁</span> <span class="运算符">+</span> t<span class="上标"
+          >²</span
+        >
+        <span class="运算符">×</span> P<span class="下标">₂</span></span
+      >
+    </p>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas
+        id="canvas-二次贝塞尔曲线-动画"
+        style="width: 100%; height: calc(100% - 42px); background-color: #222"
+      ></canvas>
+    </figure>
+    <p class="分区普通文本">二次贝塞尔曲线的局限性在于：它的曲线只能向一侧弯曲，无法绘制更加复杂的曲线。</p>
+    
+
+    <h3 class="分区标题 分区3级标题">三次贝塞尔曲线</h3>
+    <p class="分区普通文本">
+      三次贝塞尔曲线的特点是：一共包含<span class="行内专业名词 等宽">4</span>个控制点：<span class="专业名词 等宽"
+        >P<span class="下标">₀</span></span
+      >、<span class="专业名词 等宽">P<span class="下标">₁</span></span
+      >、<span class="专业名词 等宽">P<span class="下标">₂</span></span
+      >、<span class="专业名词 等宽">P<span class="下标">₃</span></span
+      >，根据运动进度<span class="专业名词 等宽">t</span>，计算出贝塞尔曲线的当前坐标：<span class="专业名词 等宽"
+        >P<span class="圆括号">(</span><span class="参数">t</span><span class="圆括号">)</span></span
+      >。其计算公式为：
+    </p>
+    <p class="分区普通文本">
+      <span class="代码" style="font-size: 16px"
+        >P<span class="圆括号">(</span><span class="参数">t</span><span class="圆括号">)</span>
+        <span class="运算符">=</span> <span class="圆括号">(</span>1 <span class="运算符">-</span> t<span class="圆括号"
+          >)</span
+        ><span class="上标">³</span> <span class="运算符">×</span> P<span class="下标">₀</span>
+        <span class="运算符">+</span> 3<span class="圆括号">(</span>1 <span class="运算符">-</span> t<span
+          class="圆括号"
+          >)</span
+        ><span class="上标">²</span>t <span class="运算符">×</span> P<span class="下标">₁</span>
+        <span class="运算符">+</span> 3<span class="圆括号">(</span>1 <span class="运算符">-</span> t<span
+          class="圆括号"
+          >)</span
+        ><span class="上标">²</span>t <span class="运算符">×</span> P<span class="下标">₂</span>
+        <span class="运算符">+</span> t<span class="上标">³</span> <span class="运算符">×</span> P<span class="下标"
+          >₃</span
+        ></span
+      >
+    </p>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.25">
+      <canvas
+        id="canvas-三次贝塞尔曲线-动画"
+        style="width: 100%; height: calc(100% - 42px); background-color: #222"
+      ></canvas>
+    </figure>
+    <p class="分区普通文本">
+      三次贝塞尔曲线拥有<span class="行内专业名词 等宽">4</span
+      >个控制点，因此曲线可以分别朝两个不同方向弯曲，被广泛应用于计算机图形领域。
+    </p>
+    
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">绘制<span class="次要">与</span>交互</h2>
+
+    <h3 class="分区标题 分区3级标题">绘制三次贝塞尔曲线</h3>
+    <p class="分区普通文本">
+      是不是被前面的公式吓到了？其实用<span class="行内专业名词 等宽">Canvas</span
+      >绘制三次贝塞尔曲线是一件非常简单的事情，你只要做<span class="行内专业名词 等宽">2</span>步：
+    </p>
+    <pre>
+      <code class="lang-js">
+        // 只需两句代码，就能绘制出三次贝塞尔曲线的路径啦！
+        ctx.moveTo(P₀.x, P₀.y);
+        ctx.bezierCurveTo(P₁.x, P₁.y, P₂.x, P₂.y, P₃.x, P₃.y);
+
+        // 可以适当包装一下
+        function 绘制三次贝塞尔曲线(P₀, P₁, P₂, P₃) {
+          ctx.save();
+          ctx.moveTo(P₀.x, P₀.y);
+          ctx.bezierCurveTo(P₁.x, P₁.y, P₂.x, P₂.y, P₃.x, P₃.y);
+          ctx.stroke(); //描边
+          ctx.restore();
+        }
+      </code>
+    </pre>
+    <p class="分区普通文本">当然，仅有两句代码，只能绘制路径，还是无法看见三次贝塞尔曲线，你还需要为其描边。</p>
+
+    <h3 class="分区标题 分区3级标题">碰撞检测</h3>
+    <p class="分区普通文本">
+      三次贝塞尔曲线只是一个线条，而不是一个封闭的区域，怎么判断鼠标是否位于三次贝塞尔曲线上呢？
+    </p>
+    <p class="分区普通文本">
+      其核心原理是：曲线本身是无法检测的，应该检测<span class="强调">曲线上的点</span
+      >。三次贝塞尔曲线上的点，是可以用前面的公式算出来的，然后判断<span class="强调">鼠标坐标是否与点重合</span>。
+    </p>
+    <p class="分区普通文本">
+      为了计算三次贝塞尔上某个点的坐标，需要知道<span class="行内专业名词 等宽">t</span>的值。假设我在曲线上放了<span
+        class="行内专业名词 等宽"
+        >2</span
+      >个采样点，平均分布，那么第一个应该位于<span class="行内代码">0%</span
+      ><span class="附加说明">即<span class="行内专业名词 等宽">0</span></span
+      >的位置，第二个位于<span class="行内代码">100%</span
+      ><span class="附加说明">即<span class="行内专业名词 等宽">1</span></span
+      >的位置，这其实就是<span class="行内专业名词 等宽">t</span>的值。
+    </p>
+    <p class="分区普通文本">
+      另外，我们还要为检测设置<span class="行内专业名词">容差</span>，如果不设置，相当于<span class="行内专业名词"
+        >容差</span
+      >为<span class="行内代码">0</span>，这会导致无论鼠标怎么移动，都无法和采样点重合；因为采样点实际上只是一个<span
+        class="行内专业名词"
+        >坐标</span
+      >，它是<span class="强调">没有体积</span>的，至少需要为其设置<span class="代码"
+        ><span class="行内代码">1</span>像素</span
+      >的体积，才能够检测到它的存在。因此，<span class="行内专业名词">容差</span>至少要设置为<span class="行内代码"
+        >1</span
+      >。
+    </p>
+    <p class="分区普通文本">大致来说，检测过程分为以下几步：</p>
+    <ol class="分区列表 有序列表">
+      <li class="分区列表项"><span>设置采样点数量</span></li>
+      <li class="分区列表项"><span>设置容差</span></li>
+      <li class="分区列表项">
+        <span
+          >根据采样点数量和<span class="强调"
+            ><span class="专业名词 等宽"
+              ><span style="color: lightsteelblue">[</span>0 - 1<span style="color: lightsteelblue">]</span></span
+            >平均分布</span
+          >原则，计算每个采样点的<span class="行内代码">t</span></span
+        >
+      </li>
+      <li class="分区列表项">
+        <span
+          >根据<span class="行内代码">t</span>和<span class="行内专业名词">三次贝塞尔曲线的坐标</span
+          >，计算每个采样点的坐标</span
+        >
+      </li>
+      <li class="分区列表项"><span>依次计算鼠标与每个采样点的距离</span></li>
+      <li class="分区列表项">
+        <span
+          >只要找到第一个满足<span class="专业名词 等宽"
+            ><span class="强调">距离<span class="行内代码"><=</span>容差</span></span
+          >的采样点，则认为鼠标在贝塞尔曲线上，且结束检测</span
+        >
+      </li>
+    </ol>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        获取三次贝塞尔曲线采样点坐标(t, 三次贝塞尔曲线坐标) {
+          const { p0, p1, p2, p3 } = 三次贝塞尔曲线坐标;  //将坐标对象解构为4个坐标常量
+          const mt = 1 - t;  //公式中 (1 - t) 很常用，用变量代替
+
+          //乘方，用 mt**3 替换 Math.pow(mt, 3)，**运算符速度更快
+          return {
+            x: mt ** 3 * p0.x + 3 * mt ** 2 * t * p1.x + 
+                3 * mt * t ** 2 * p2.x + t ** 3 * p3.x,
+            y: mt ** 3 * p0.y + 3 * mt ** 2 * t * p1.y + 
+                3 * mt * t ** 2 * p2.y + t ** 3 * p3.y,
+          };
+        }
+
+        坐标位于贝塞尔曲线附近(x, y, 三次贝塞尔曲线坐标) {
+          const 容差 = 10;
+          const 容差平方 = 容差 ** 2;  //使用容差平方，后面与距离平方比较，避免对距离平方进行开方运算
+          const 采样点数量 = 5;  //采样点数量需要根据实际情况设置合适的值
+
+          for (let i = 0; i < 采样点数量; i++) {
+            //采样点在曲线上平均分布；如果只有一个采样点，就放在 0.5 的位置
+            const t = 采样点数量 === 1 ? 0.5 : i / (采样点数量 - 1);
+
+            //关键算法，获取采样点坐标
+            const 采样点 = this.获取三次贝塞尔曲线采样点坐标(t, 三次贝塞尔曲线坐标);
+            
+            const 鼠标与采样点距离平方 = (x - 采样点.x) ** 2 + (y - 采样点.y) ** 2;
+            if (鼠标与采样点距离平方 < 容差平方) {
+              return true; //找到第一个就不用再往下找了
+            }
+          }
+          return false;
+        }
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.5">
+      <canvas id="canvas-采样点" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <p class="分区普通文本">
+      相信你通过实验已经发现，采样点数量越少，越难被检测到，因此需要设置适合的采样点数量。而<span class="行内专业名词"
+        >容差</span
+      >太大也不好，这会导致鼠标离采样点还很远的时候，就已经被检测到了。总的来说，<span class="行内专业名词"
+        >采样点数量</span
+      >和<span class="行内专业名词">容差</span>都要找一个合适的值。
+    </p>
+    
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">范例</h2>
+
+    <h3 class="分区标题 分区3级标题">绘制爱心</h3>
+    <p class="分区普通文本">
+      绘制这样一个爱心，需要多少条三次贝塞尔曲线呢？试着点击爱心的描边，并拖拽控制点吧！想要平滑的曲线？没问题，拖拽时按住<span
+        class="行内专业名词 等宽"
+        >Shift</span
+      >；希望控制点两侧的曲线平滑度一致？拖拽时按住<span class="行内专业名词 等宽">Ctrl</span>试试！
+    </p>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.35">
+      <canvas
+        id="canvas-三次贝塞尔曲线-爱心"
+        style="width: 100%; height: calc(100% - 42px); background-color: #222"
+      ></canvas>
+    </figure>
+    <p class="分区普通文本">始终牢记：三次贝塞尔曲线的本质就是<span class="行内专业名词 等宽">4</span>个控制点。</p>
+    <pre class="line-number">
+      <code class="lang-js">
+        爱心共享坐标组: {
+          l1p3_l2p0: { x: this.cssWidth / 2 - 200, y: 225 },
+          l2p3_l3p0: { x: this.cssWidth / 2, y: 450 },
+          l3p3_l4p0: { x: this.cssWidth / 2 + 200, y: 225 },
+          l4p3_l1p0: { x: this.cssWidth / 2, y: 200 },
+        }
+
+        爱心坐标组集合: [
+          {
+            p0: 爱心共享坐标组.l4p3_l1p0,
+            p1: { x: this.cssWidth / 2 - 75, y: 100, },
+            p2: { x: this.cssWidth / 2 - 175, y: 100, },
+            p3: 爱心共享坐标组.l1p3_l2p0,
+          },
+          {
+            p0: 爱心共享坐标组.l1p3_l2p0,
+            p1: { x: this.cssWidth / 2 - 225, y: 350, },
+            p2: { x: this.cssWidth / 2 - 25, y: 425, },
+            p3: 爱心共享坐标组.l2p3_l3p0,
+          },
+          {
+            p0: 爱心共享坐标组.l2p3_l3p0,
+            p1: { x: this.cssWidth / 2 + 25, y: 425, },
+            p2: { x: this.cssWidth / 2 + 225, y: 350, },
+            p3: 爱心共享坐标组.l3p3_l4p0,
+          },
+          {
+            p0: 爱心共享坐标组.l3p3_l4p0,
+            p1: { x: this.cssWidth / 2 + 175, y: 100, },
+            p2: { x: this.cssWidth / 2 + 75, y: 100, },
+            p3: 爱心共享坐标组.l4p3_l1p0,
+          },
+        ];
+        
+        //只在循环外新建一次路径，保证4条贝塞尔曲线是彼此相连的，可以形成封闭区域
+        this.ctx.beginPath();
+        this.ctx.moveTo(爱心坐标组集合[0].p0.x, 爱心坐标组集合[0].p0.y);
+        for (const 爱心坐标组 of 爱心坐标组集合) {
+          this.ctx.bezierCurveTo(
+            爱心坐标组.p1.x, 
+            爱心坐标组.p1.y, 
+            爱心坐标组.p2.x, 
+            爱心坐标组.p2.y, 
+            爱心坐标组.p3.x, 
+            爱心坐标组.p3.y
+          );
+        }
+        this.ctx.closePath();
+        this.ctx.stroke();
+        this.ctx.fill();
+      </code>
+    </pre>
+    
+  </article>
+</div>

@@ -1,0 +1,47 @@
+#键值对范例表 .表头区 > tr > th {
+            padding: 20px 10px;
+          }
+
+          #键值对范例表 td {
+            padding: 15px;
+          }
+
+          .表身区 td {
+            text-align: center;
+          }
+
+          .表身区 td > .fa-solid {
+            font-size: 1.25em;
+          }
+
+.表头区 > tr > th {
+            padding: 25px 10px;
+          }
+
+          .表头区 .单元格弹性区 {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+          }
+
+          .表头区 .单元格弹性区 img {
+            width: 50%;
+            height: 100px;
+            object-fit: contain;
+          }
+
+          .表身区 td {
+            text-align: center;
+          }
+
+          .表身区 td > .fa-solid {
+            font-size: 1.25em;
+          }
+
+          .表脚区 {
+            color: lightseagreen;
+          }

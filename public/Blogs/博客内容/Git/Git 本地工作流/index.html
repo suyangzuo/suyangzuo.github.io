@@ -1,0 +1,506 @@
+<article class="专题简介">
+  <h1 class="简介标题">
+    <span><span class="简介标题内名词 左">Git</span>本地工作流</span
+    ><span class="原创">原创</span>
+  </h1>
+  <div class="简介信息">
+    <section class="简介信息文本">
+      <p class="作者">
+        <span class="作者前缀 前缀">作者：</span>
+        <span class="作者姓名">苏扬</span>
+      </p>
+      <p class="日期">
+        <span class="日期前缀 前缀">日期：</span>
+        <span class="日期文本"><span class="日期文本-数字 日期文本-年">2023</span>年<span class="日期文本-数字 日期文本-月">7</span>月<span class="日期文本-数字 日期文本-日">7</span>日</span>
+      </p>
+    </section>
+    <section class="简介信息图像">
+      <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+    </section>
+  </div>
+  <ul class="联系方式列表">
+    <li class="联系方式项">
+      <a class="联系方式链接" href="mailto:suyangzuo@gmail.com" target="_blank">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://github.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-github"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.deviantart.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-deviantart"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dev.to/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-dev"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.freecodecamp.org/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-free-code-camp"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://codepen.io/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-codepen"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://dribbble.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-dribbble"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.artstation.com/user-7893655"
+        target="_blank"
+        ><i class="fa-brands fa-artstation"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://codesandbox.io/u/suyangzuo"
+        target="_blank"
+      >
+        <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
+      /></a>
+    </li>
+  </ul>
+</article>
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">
+      <span class="行内专业名词">Git</span>本地工作流简介
+    </h2>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">Git</span>管理本地文件更改的 3 个区域
+    </h3>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 本地工作流/Git工作流-本地.png"
+        alt="Git 本地工作3区域"
+      />
+    </figure>
+    <p class="分区普通文本">Git 将管理本地文件的更改分为 3 个区域：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="专业名词">工作区</span>：也就是项目文件夹
+      </li>
+      <li class="分区列表项">
+        <span class="专业名词">暂存区</span
+        ><span class="附加说明">索引</span>：<span class="代码"
+          >项目文件夹/.git/index</span
+        >，一个很小的文件，持续追踪并存放<span class="行内专业名词">工作区</span
+        >、<span class="行内专业名词">暂存区</span>、<span class="行内专业名词"
+          >本地仓库</span
+        >的文件关键信息。暂存区可以说是工作区和本地仓库的桥梁，通过暂存区的信息更新，能极快地追踪工作区和本地仓库中<span
+          class="行内专业名词"
+          >文件的更改</span
+        >。
+      </li>
+      <li class="分区列表项">
+        <span class="专业名词">本地仓库</span>：提交的记录就存放在此，包括<span
+          class="行内专业名词"
+          >HEAD</span
+        >指针<span class="附加说明">指向某个分支指针的指针</span>。
+      </li>
+    </ul>
+    <section class="提醒">
+      <h3 class="提醒标题">小知识</h3>
+      <p>
+        <span class="专业名词">文件的更改</span>主要指 3 个方面：<span
+          class="行内专业名词"
+          >添加文件</span
+        >、<span class="行内专业名词">删除文件</span>、<span
+          class="行内专业名词"
+          >修改文件内容</span
+        >。
+      </p>
+      <p>
+        <span class="强调">注意</span>：<span class="行内专业名词">删除</span
+        >也是一种更改，这种更改同样可以<span class="行内专业名词">添加</span
+        >到暂存区并提交到本地仓库。
+      </p>
+    </section>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">
+      <span class="行内专业名词">Git</span>本地工作流 - 常规步骤
+    </h2>
+
+    <h3 class="分区标题 分区3级标题">
+      初始化<span class="行内专业名词">Git</span>仓库
+    </h3>
+    <p class="分区普通文本">将终端的路径定位到项目文件夹，运行命令：</p>
+    <pre><code class="lang-bash">git init</code></pre>
+    <p class="分区普通文本">
+      这个命令会在项目文件夹中，生成一个名为<span class="行内代码">.git</span
+      >的子文件夹。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 本地工作流/dot-git.png"
+        alt=".git 文件夹"
+      />
+    </figure>
+    <p class="分区普通文本">
+      这个文件夹默认是隐藏的。<span class="强调">千万不要删！</span
+      >否则你会丢失所有的 Git 记录。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">查看状态</h3>
+    <p class="分区普通文本">将终端的路径定位到项目文件夹，运行命令：</p>
+    <pre><code class="lang-bash">git status</code></pre>
+    <p class="分区普通文本">
+      这是一个非常常用的命令，会显示当前 Git
+      仓库的状态，包括：添加了哪些文件、删除了哪些文件、修改了哪些文件、以及这些更改是否已暂存、已提交。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 本地工作流/git-status-未暂存.png"
+        alt="git status 未暂存"
+      />
+    </figure>
+    <p class="分区普通文本">
+      <span class="代码">git status</span>非常清楚地表明：
+    </p>
+    <ol class="分区列表 有序列表">
+      <li class="分区列表项">
+        目前处于<span class="代码">master</span>分支。<span class="附加说明"
+          >On branch master</span
+        >
+      </li>
+      <li class="分区列表项">
+        尚未进行任何提交。<span class="附加说明">No commits yet</span>
+      </li>
+      <li class="分区列表项">
+        有 2 个未追踪文件：<span class="代码">index.css</span>、<span
+          class="代码"
+          >index.css</span
+        >
+      </li>
+    </ol>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p>
+        <span class="强调">未追踪文件</span
+        ><span class="附加说明">Untracked files</span>，意味着<span
+          class="专业名词"
+          >暂存区</span
+        ><span class="附加说明">索引</span>
+        没有关于这些文件的记录，这样的文件如果被误删，Git 是<span class="强调"
+          >无法恢复</span
+        >的！
+      </p>
+      <p>
+        作者的项目文件夹在初始化之前就已经存在 2
+        个文件了。如果你是在空文件夹初始化的，可以在初始化之后，新建 2
+        个文件，再运行<span class="代码">git status</span
+        >命令，即可达到相同效果。
+      </p>
+      <p>
+        作者安装了<span class="专业名词">Oh My Posh</span
+        >，因此在终端的命令提示符上，能够直接显示出当前分支为<span
+          class="行内专业名词"
+          >master</span
+        >，并且有 2
+        个未追踪文件。这在一定程度上可以减轻程序员的负担，不用输入复杂的命令也能快速查看一些基本信息。
+      </p>
+      <p>
+        有关<span class="专业名词">Oh My Posh</span>的安装和使用，可以参考<a
+          class="超链接"
+          target="_blank"
+          href="/Blogs/index.html?tech=经验之谈&article=打造优雅舒适的终端"
+          >美化终端</a
+        >专题。
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">暂存</h3>
+    <p class="分区普通文本">将终端的路径定位到项目文件夹，运行命令：</p>
+    <pre><code class="lang-bash">git add .</code></pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Git/Git 本地工作流/git-add.gif" alt="git add" />
+    </figure>
+    <p class="分区普通文本">
+      命令中的<span class="代码">.</span
+      >表示将工作区的所有文件更改全部记录到暂存区。再次使用<span class="代码"
+        >git status</span
+      >查看状态：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 本地工作流/git-status-已暂存.png"
+        alt="git status 已暂存"
+      />
+    </figure>
+    <p class="分区普通文本">
+      Git 状态发生了改变，原来的<span class="专业名词">未追踪文件</span
+      >变成了<span class="专业名词">待提交的更改</span
+      ><span class="附加说明">Changes to be committed</span>。这意味着<span
+        class="行内专业名词"
+        >文件的更改</span
+      >从<span class="行内专业名词">工作区</span>记录到了<span
+        class="行内专业名词"
+        >暂存区</span
+      >。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">提交</h3>
+    <p class="分区普通文本">将终端的路径定位到项目文件夹，运行命令：</p>
+    <pre
+      style="margin: 0"
+    ><code class="lang-bash">git commit -m "初始提交"</code></pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 本地工作流/git-commit.gif"
+        alt="git commit"
+      />
+    </figure>
+    <p class="分区普通文本">
+      这样就完成了一次<span class="行内专业名词">提交</span>。<span
+        class="行内专业名词"
+        >提交</span
+      >是 Git 本地工作流
+      <span class="强调">最重要</span
+      >的操作，每次提交就会产生一条记录，包含了本次提交的时间、作者用户名、作者邮箱、提交的内容快照等等。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p>
+        提交时，必须写一条简短的说明，简述本次提交的主要内容，这就是<span
+          class="代码"
+          >-m</span
+        >参数的作用，紧跟其后的字符串就是简短说明；这是提交时必须遵守的规范。
+      </p>
+      <p>
+        仓库的第一次提交，简短说明一般都写<span class="专业名词">初始提交</span
+        >。
+      </p>
+    </section>
+    <p class="分区普通文本">
+      再次使用<span class="代码">git status</span>查看状态：
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 本地工作流/git-status-已提交.png"
+        alt="git status 已提交"
+      />
+    </figure>
+    <p class="分区普通文本">
+      所有的文件更改，都从<span class="行内专业名词">暂存区</span>提交到了<span
+        class="行内专业名词"
+        >本地仓库</span
+      >。信息再次发生改变，由于刚刚完成提交，还没做任何新的更改，因此信息很少：在<span
+        class="行内专业名词"
+        >master</span
+      >分支上，没有任何更改需要提交<span class="附加说明"
+        >nothing to commit</span
+      >，工作树很干净<span class="附加说明">working tree clean</span>。<br />
+    </p>
+
+    <h3 class="分区标题 分区3级标题">查看提交记录</h3>
+    <p class="分区普通文本">
+      只要有过 1 次提交，就可以用以下命令查看提交的历史记录：
+    </p>
+    <pre><code class="lang-bash">git log</code></pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Git/Git 本地工作流/git-log.png" alt="git log" />
+    </figure>
+    <p class="分区普通文本">
+      <span class="代码">git log</span>命令列出了提交的主要信息，<span
+        class="代码"
+        >HEAD</span
+      >代表当前分支<span class="附加说明"
+        >实际上是指向分支指针的指针，此处<span class="行内代码">HEAD</span
+        >指针<span class="行内专业名词">指向</span>了<span class="行内代码"
+          >master</span
+        >指针，因此<span class="行内代码">master</span>就是当前分支</span
+      >，按照图中显示，当前分支是<span class="专业名词">master</span>。那段长达
+      50 位的字符串是本次提交的校验码。
+    </p>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">
+      <span class="行内专业名词">Git</span>本地工作流 - 撤销
+    </h2>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p>
+        对于<span class="强调">未追踪文件</span>，Git
+        <span class="强调">无法</span>对其进行<span class="强调"
+          >恢复和删除</span
+        >操作！新文件至少要<span class="强调">添加到暂存区</span>1 次，才可以被
+        Git 追踪，追踪之后 Git 才能对该文件进行恢复、删除等操作。
+      </p>
+      <p>可以用<span class="代码">git status</span>查看是否存在未追踪文件。</p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">
+      撤销<span class="行内专业名词">初始提交</span>
+    </h3>
+    <p class="分区普通文本">
+      一般情况下，<span class="行内专业名词">撤销</span
+      >指的是回到上一次提交的状态。然而初始提交<span class="行内专业名词"
+        >没有上一次</span
+      >，因此需要输入一个特殊的命令：
+    </p>
+    <pre
+      style="margin: 0"
+    ><code class="lang-bash">git update-ref -d HEAD</code></pre>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Git/Git 本地工作流/撤销初始提交.gif"
+        alt="撤销初始提交"
+      />
+    </figure>
+    <p class="分区普通文本">
+      运行此命令后，用<span class="代码">git log</span
+      >查看，发现当前分支下已经没有任何提交记录了，因为指向提交记录的<span
+        class="代码"
+        >HEAD</span
+      >指针已经被删除了。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p>
+        <span class="强调"
+          >谨慎使用<span class="代码">git update-ref -d HEAD</span
+          >！！！！！</span
+        >
+      </p>
+      <p>
+        绝大多数情况下，你只是想撤销本次提交，回到上一次提交<span
+          class="附加说明"
+          >实际上就是在移动<span class="代码">HEAD</span
+          >指针，将其指向上一次提交</span
+        >。而此命令会<span class="强调">直接删除</span
+        ><span class="代码">HEAD</span>指针！这会导致你无法定位提交记录！<span
+          class="附加说明"
+          >虽然也有办法恢复，但仍然存在风险，不要惹没必要的麻烦</span
+        >
+      </p>
+      <p>请仅仅在<span class="强调">撤销初始提交</span>的情况下使用此命令！</p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">
+      撤销<span class="行内专业名词">未暂存</span>更改
+    </h3>
+    <p class="分区普通文本">
+      对于<span class="行内专业名词">未暂存</span>的更改，可以输入如下命令撤销：
+    </p>
+    <pre
+      style="margin: 0"
+    ><code class="lang-bash">git restore 文件名</code></pre>
+    <p class="分区普通文本">
+      如果需要撤销所有的更改，直接输入<span class="代码">git restore .</span
+      >即可。此命令会撤销所有的内容修改、恢复被删除的文件。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p><span class="代码">git restore</span>无法删除新增的文件。</p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">
+      撤销<span class="行内专业名词">已暂存</span>更改
+    </h3>
+    <p class="分区普通文本">
+      对于<span class="专业名词">已暂存</span>的更改，我们要分成两步：
+    </p>
+    <ol class="分区列表 有序列表">
+      <li class="分区列表项">
+        <span
+          >将更改记录从<span class="专业名词">暂存区</span>移出，变为<span
+            class="专业名词"
+            >未暂存</span
+          ></span
+        >
+        <pre><code class="lang-bash">git reset 文件名</code></pre>
+      </li>
+      <li class="分区列表项">
+        <span>恢复被删除和被修改的文件</span>
+        <pre><code class="lang-bash">git restore 文件名</code></pre>
+      </li>
+    </ol>
+
+    <h3 class="分区标题 分区3级标题">
+      撤销<span class="行内专业名词">提交</span>记录
+    </h3>
+    <p class="分区普通文本">
+      撤销提交记录，其实就是退回到上一次的提交状态，使用命令：<span class="代码"
+        >git reset HEAD~1</span
+      >。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p>
+        <span class="代码">~1</span>表示<span class="代码">HEAD</span
+        >指针向前移动一次，回退 1 次提交。当然也可以<span class="代码"
+          >~2、~10</span
+        >……，但不建议这么做<span class="附加说明"
+          >除非绝对必要，并且你清楚地知道会造成什么后果</span
+        >。
+      </p>
+      <p>
+        另外，初始提交是无法用这个命令撤销的，因为<span class="行内专业名词"
+          >初始提交不存在上一次</span
+        >。
+      </p>
+    </section>
+    <p class="分区普通文本">
+      根据不同需求，有 3 种模式可选，分别对应 3 个不同参数：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项" style="margin-top: 50px">
+        撤销当前提交，自上次提交以来的所有更改变为<span class="行内专业名词"
+          >已暂存</span
+        ><span class="附加说明">待提交</span>状态
+        <pre><code class="lang-bash">git reset --soft HEAD~1</code></pre>
+      </li>
+      <li class="分区列表项" style="margin-top: 50px">
+        撤销当前提交，自上次提交以来的所有更改变为<span class="行内专业名词"
+          >未暂存</span
+        >状态<span class="附加说明">默认模式</span>
+        <pre><code class="lang-bash">git reset --mixed HEAD~1</code></pre>
+        <section class="提醒">
+          <h3 class="提醒标题">提醒</h3>
+          <p>
+            <span class="代码">--mixed</span
+            >是默认模式，可以省略，因此代码可以简写为：
+          </p>
+          <pre><code class="lang-bash">git reset HEAD~1</code></pre>
+        </section>
+      </li>
+      <li class="分区列表项" style="margin-top: 50px">
+        撤销当前提交，自上次提交以来的所有更改全部丢弃。<span class="强调"
+          >三思！慎用！</span
+        >
+        <pre><code class="lang-bash">git reset --hard HEAD~1</code></pre>
+      </li>
+    </ul>
+  </article>
+</div>

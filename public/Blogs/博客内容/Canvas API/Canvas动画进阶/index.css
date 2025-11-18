@@ -1,0 +1,34 @@
+#phase-demo-容器 .coord {
+        font-family: "Google Sans Code", "Consolas", monospace;
+        font-size: 14px;
+        gap: 0;
+      }
+
+      #phase-demo-容器 .coord-value {
+        color: lightseagreen;
+        font-size: 16px;
+      }
+
+      #phase-demo-容器 .coord-colon {
+        color: gray;
+        margin: 0 2px;
+      }
+
+      #phase-demo-容器 .coord-x {
+        position: absolute;
+        bottom: 101%; /* 放在canvas上方 */
+        left: 0;
+        transform: translateX(-50%);
+        text-align: center;
+        width: 60px;
+        margin-top: 5px;
+      }
+
+      #phase-demo-容器 .coord-y {
+        position: absolute;
+        right: 101%; /* 放在canvas左侧 */
+        top: 0;
+        transform: translateY(-50%);
+        margin-right: 5px;
+        white-space: nowrap;
+      }

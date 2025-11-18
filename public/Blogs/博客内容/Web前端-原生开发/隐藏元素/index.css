@@ -1,0 +1,7 @@
+.表身区 td:has(.fa-solid) {
+            text-align: center;
+            font-size: 1.25em;
+          }
+
+          .表身区 tr:nth-child(odd) {
+          }

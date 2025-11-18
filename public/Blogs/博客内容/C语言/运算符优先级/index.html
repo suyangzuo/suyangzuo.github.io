@@ -1,0 +1,304 @@
+<article class="专题简介">
+  <h1 class="简介标题">运算符优先级<span class="转载">转载</span></h1>
+  <div class="简介信息">
+    <section class="简介信息文本">
+      <p class="作者">
+        <span class="作者前缀 前缀">作者：</span>
+        <span class="作者姓名">cppreference.com</span>
+      </p>
+      <p class="译者">
+        <span class="译者前缀 前缀">译者：</span>
+        <span class="译者姓名">苏扬</span>
+      </p>
+      <p class="原文">
+        <span class="原文前缀 前缀">原文：</span>
+        <span class="原文链接"
+          ><a
+            class="超链接"
+            target="_blank"
+            href="https://zh.cppreference.com/w/c/language/operator_precedence"
+            >https://zh.cppreference.com/w/c/language/operator_precedence</a
+          ></span
+        >
+      </p>
+      <p class="日期">
+        <span class="日期前缀 前缀">日期：</span>
+        <span class="日期文本"><span class="日期文本-数字 日期文本-年">2024</span>年<span class="日期文本-数字 日期文本-月">1</span>月<span class="日期文本-数字 日期文本-日">19</span>日</span>
+      </p>
+    </section>
+    <section class="简介信息图像">
+      <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+    </section>
+  </div>
+  <ul class="联系方式列表">
+    <li class="联系方式项">
+      <a class="联系方式链接" href="mailto:suyangzuo@gmail.com" target="_blank">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://github.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-github"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.deviantart.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-deviantart"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dev.to/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-dev"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.freecodecamp.org/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-free-code-camp"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://codepen.io/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-codepen"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://dribbble.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-dribbble"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.artstation.com/user-7893655"
+        target="_blank"
+        ><i class="fa-brands fa-artstation"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://codesandbox.io/u/suyangzuo"
+        target="_blank"
+      >
+        <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
+      /></a>
+    </li>
+  </ul>
+</article>
+
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">
+      <span class="行内专业名词">C语言</span>运算符优先级
+    </h2>
+
+    <h3 class="分区标题 分区3级标题">参照表</h3>
+    <table class="表格">
+      
+      <caption class="表格标题">
+        <span class="行内专业名词">C语言</span
+        >运算符优先级 参照表
+      </caption>
+      <thead class="表头区">
+        <tr>
+          <th>优先级</th>
+          <th>运算符</th>
+          <th>描述</th>
+          <th>结合性</th>
+        </tr>
+      </thead>
+      <tbody class="表身区">
+        <tr>
+          <th rowspan="6">1</th>
+          <td><span class="代码">++</span><span class="代码">--</span></td>
+          <td>后缀自增1、后缀自减1</td>
+          <td rowspan="6">
+            <i class="fa-solid fa-right-long"></i>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="代码">()</span></td>
+          <td>函数调用</td>
+        </tr>
+        <tr>
+          <td><span class="代码">[]</span></td>
+          <td>数组下标</td>
+        </tr>
+        <tr>
+          <td><span class="代码">.</span></td>
+          <td>结构体与联合体成员访问</td>
+        </tr>
+        <tr>
+          <td><span class="代码">-></span></td>
+          <td>结构体与联合体成员通过指针访问</td>
+        </tr>
+        <tr>
+          <td><span class="代码">(type){list}</span></td>
+          <td>复合字面量<span class="附加说明">C99</span></td>
+        </tr>
+
+        <tr>
+          <th rowspan="8">2</th>
+          <td><span class="代码">++</span><span class="代码">--</span></td>
+          <td>前缀自增1、前缀自减1</td>
+          <td rowspan="8">
+            <i class="fa-solid fa-left-long"></i>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="代码">+</span><span class="代码">-</span></td>
+          <td>一元加与减</td>
+        </tr>
+        <tr>
+          <td><span class="代码">!</span><span class="代码">~</span></td>
+          <td>逻辑非与按位非</td>
+        </tr>
+        <tr>
+          <td><span class="代码">(type)</span></td>
+          <td>转型</td>
+        </tr>
+        <tr>
+          <td><span class="代码">*</span></td>
+          <td>解引用</td>
+        </tr>
+        <tr>
+          <td><span class="代码">&</span></td>
+          <td>取地址</td>
+        </tr>
+        <tr>
+          <td><span class="代码">sizeof</span></td>
+          <td>取占用空间</td>
+        </tr>
+        <tr>
+          <td><span class="代码">_Alignof</span></td>
+          <td>对齐要求<span class="附加说明">C11</span></td>
+        </tr>
+
+        <tr>
+          <th>3</th>
+          <td>
+            <span class="代码">*</span><span class="代码">/</span
+            ><span class="代码">%</span>
+          </td>
+          <td>乘法、除法、余数</td>
+          <td rowspan="11">
+            <i class="fa-solid fa-right-long"></i>
+          </td>
+        </tr>
+        <tr>
+          <th>4</th>
+          <td><span class="代码">+</span><span class="代码">-</span></td>
+          <td>加法、减法</td>
+        </tr>
+        <tr>
+          <th>5</th>
+          <td>
+            <span class="代码">&lt;&lt;</span><span class="代码">&gt;&gt;</span>
+          </td>
+          <td>左位移、右位移</td>
+        </tr>
+        <tr>
+          <th rowspan="2">6</th>
+          <td><span class="代码">&lt;</span><span class="代码">&lt;=</span></td>
+          <td>小于、小于或等于</td>
+        </tr>
+        <tr>
+          <td><span class="代码">&gt;</span><span class="代码">&gt;=</span></td>
+          <td>大于、大于或等于</td>
+        </tr>
+        <tr>
+          <th>7</th>
+          <td><span class="代码">==</span><span class="代码">!=</span></td>
+          <td>等于、不等于</td>
+        </tr>
+        <tr>
+          <th>8</th>
+          <td><span class="代码">&</span></td>
+          <td>按位与</td>
+        </tr>
+        <tr>
+          <th>9</th>
+          <td><span class="代码">^</span></td>
+          <td>按位异或</td>
+        </tr>
+        <tr>
+          <th>10</th>
+          <td><span class="代码">|</span></td>
+          <td>按位或</td>
+        </tr>
+        <tr>
+          <th>11</th>
+          <td><span class="代码">&&</span></td>
+          <td>逻辑与</td>
+        </tr>
+        <tr>
+          <th>12</th>
+          <td><span class="代码">||</span></td>
+          <td>逻辑或</td>
+        </tr>
+        <tr>
+          <th>13</th>
+          <td><span class="代码">?:</span></td>
+          <td>三元条件</td>
+          <td rowspan="1">
+            <i class="fa-solid fa-left-long"></i>
+          </td>
+        </tr>
+        <tr>
+          <th rowspan="5">14</th>
+          <td><span class="代码">=</span></td>
+          <td>赋值</td>
+        </tr>
+        <tr>
+          <td><span class="代码">+=</span><span class="代码">-=</span></td>
+          <td>自增、自减</td>
+        </tr>
+        <tr>
+          <td>
+            <span class="代码">*=</span><span class="代码">/=</span
+            ><span class="代码">%=</span>
+          </td>
+          <td>自乘、自除、商赋值</td>
+        </tr>
+        <tr>
+          <td>
+            <span class="代码">&lt;&lt;=</span
+            ><span class="代码">&gt;&gt;=</span>
+          </td>
+          <td>自左移赋值、自右移赋值</td>
+        </tr>
+        <tr>
+          <td>
+            <span class="代码">&=</span><span class="代码">^=</span
+            ><span class="代码">|=</span>
+          </td>
+          <td>自按位与、自按位异或、自按位或</td>
+        </tr>
+
+        <tr>
+          <th>15</th>
+          <td><span class="代码">,</span></td>
+          <td>逗号</td>
+          <td rowspan="1">
+            <i class="fa-solid fa-right-long"></i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </article>
+</div>

@@ -1,0 +1,1050 @@
+<article class="专题简介">
+  <h1 class="简介标题">
+    <span><span class="行内专业名词">2D</span>绘图基础</span><span class="原创">原创</span>
+  </h1>
+  <div class="简介信息">
+    <section class="简介信息文本">
+      <p class="作者">
+        <span class="作者前缀 前缀">作者：</span>
+        <span class="作者姓名">苏扬</span>
+      </p>
+      <p class="日期">
+        <span class="日期前缀 前缀">日期：</span>
+        <span class="日期文本"
+          ><span class="日期文本-数字 日期文本-年">2025</span>年<span class="日期文本-数字 日期文本-月">7</span>月<span
+            class="日期文本-数字 日期文本-日"
+            >13</span
+          >日</span
+        >
+      </p>
+    </section>
+    <section class="简介信息图像">
+      <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+    </section>
+  </div>
+  <ul class="联系方式列表">
+    <li class="联系方式项">
+      <a class="联系方式链接" href="mailto:suyangzuo@gmail.com" target="_blank">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://github.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-github"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.deviantart.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-deviantart"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dev.to/suyangzuo" target="_blank"><i class="fa-brands fa-dev"></i></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.freecodecamp.org/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-free-code-camp"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://codepen.io/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-codepen"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dribbble.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-dribbble"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.artstation.com/user-7893655" target="_blank"
+        ><i class="fa-brands fa-artstation"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://codesandbox.io/u/suyangzuo" target="_blank">
+        <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
+      /></a>
+    </li>
+  </ul>
+</article>
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">渲染上下文</h2>
+
+    <h3 class="分区标题 分区3级标题">什么是<span class="行内专业名词">渲染上下文</span></h3>
+    <p class="分区普通文本">
+      在<span class="行内专业名词">Canvas API</span>中，<span class="行内专业名词">渲染上下文</span
+      ><span class="附加说明">Context</span>是<span class="行内专业名词">Canvas</span>对象的属性。<span
+        class="行内专业名词"
+        >渲染上下文</span
+      >对象提供了绘制<span class="行内专业名词">Canvas</span>图形的一整套环境，包括绘图接口，状态，以及各种属性。
+    </p>
+    <p class="分区普通文本"><span class="行内专业名词">渲染上下文</span>包含了多种模式：</p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Canvas API/2D绘图基础/上下文模式.png" alt="Canvas 上下文模式" />
+    </figure>
+    <p class="分区普通文本">
+      其中<span class="行内专业名词">2D</span>是最常用的渲染上下文模式，可以说，<span class="行内专业名词"
+        >Canvas API</span
+      >主要就是用来绘制<span class="行内专业名词">2D</span>图形的。这在<a
+        class="超链接"
+        href="https://developer.mozilla.org/zh-CN/docs/Web/API/Canvas_API"
+        target="_blank"
+        >MDN 文档</a
+      >中有明确的说明：
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Canvas API/2D绘图基础/聚焦2D_MDN.png" alt="Canvas 聚焦2D" />
+    </figure>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        有关<span class="行内专业名词">渲染上下文</span>的权威解释，请参考<a
+          class="超链接"
+          href="https://html.spec.whatwg.org/multipage/canvas.html"
+          target="_blank"
+          >W3C 最新规范</a
+        >。
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">获取<span class="行内专业名词">渲染上下文</span></h3>
+    <p class="分区普通文本">
+      调用<span class="行内专业名词">Canvas</span>对象的<span class="行内代码">getContext()</span>方法即可：
+    </p>
+    <pre>
+      <code class="lang-javascript">
+        // 先获取canvas元素
+        const canvas = document.getElementById("canvas的id");
+        
+        // 获取2D渲染上下文
+        // 上下文的英文是"context"，编程中经常简写为"ctx"
+        const ctx = canvas.getContext("2d");
+      </code>
+    </pre>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        绘图的第一步就是获取<span class="行内专业名词">渲染上下文</span>，没有上下文，绘图就无从谈起。
+      </p>
+    </section>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">分辨率缩放</h2>
+
+    <h3 class="分区标题 分区3级标题">什么是<span class="行内专业名词">分辨率缩放</span></h3>
+    <p class="分区普通文本">
+      现在很多显示器的分辨率都很高，尤其是笔记本电脑，比如我的笔记本是<span class="行内专业名词"
+        >Redmi Book Pro 16 2024</span
+      >，其屏幕分辨率为<span class="行内专业名词">3072<span class="次要">✗</span>1920</span>，但是屏幕的尺寸只有<span
+        class="行内专业名词"
+        >16</span
+      >英寸，导致的结果就是屏幕的像素密度很高，如果分辨率缩放设置为<span class="行内专业名词">1</span
+      >，屏幕上所有的图片、文字会非常小，看着很累。因此我将分辨率缩放设置为<span class="行内专业名词">150%</span
+      >，把<span class="行内专业名词">3</span>个像素当作<span class="行内专业名词">2</span
+      >个像素用，这样屏幕上的图片、文字都会放大<span class="行内专业名词">1.5</span>倍。
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Canvas API/2D绘图基础/分辨率缩放_Ubuntu.png" alt="分辨率缩放 Ubuntu" />
+    </figure>
+    <p class="分区普通文本">
+      分辨率缩放设置为<span class="行内专业名词">150%</span>，在代码中，就是<span class="行内代码">1.5</span>。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">获取<span class="行内专业名词">分辨率缩放值</span></h3>
+    <p class="分区普通文本">
+      我这台电脑的分辨率缩放是<span class="行内代码">1.5</span>，那么代码中就直接用<span class="行内代码">1.5</span
+      >吗？当然不行！因为每个人的电脑分辨率缩放都不一样，如果直接用<span class="行内代码">1.5</span>设计<span
+        class="行内专业名词"
+        >Canvas图形</span
+      >，在我的电脑上看起来是正常的，但另一个人的电脑分辨率缩放如果是<span class="行内代码">1</span
+      >，那么在他的电脑上<span class="行内专业名词">Canvas图形</span>看上去就会变得很大。为了让<span
+        class="行内专业名词"
+        >Canvas图形</span
+      >在每个人的电脑上保持一致，代码中就<span class="强调">不能用常数</span>来表示分辨率缩放，而要用变量。<span
+        class="行内代码"
+        >window.devicePixelRatio</span
+      >就是用来获取分辨率缩放的变量。
+    </p>
+    <pre>
+      <code class="lang-javascript">
+        const dpr = window.devicePixelRatio || 1;   //获取分辨率缩放值，无法获取则默认为1
+        console.log(`分辨率缩放值: ${dpr}`);   //打印分辨率缩放值
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Canvas API/2D绘图基础/打印分辨率缩放值.png" alt="打印分辨率缩放值" />
+    </figure>
+    <p class="分区普通文本">
+      <span class="行内专业名词">分辨率缩放值</span>是<span class="行内代码">2</span>。这也是为什么要用<span
+        class="行内代码"
+        >window.devicePixelRatio</span
+      >的另一个原因：你在操作系统中查到的<span class="行内专业名词">分辨率缩放值</span>和<span class="行内代码"
+        >window.devicePixelRatio</span
+      >未必一致。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">应用<span class="行内专业名词">分辨率缩放值</span></h3>
+    <p class="分区普通文本">简单地说就是<span class="行内专业名词">2</span>步：</p>
+    <ol class="分区有序列表">
+      <li class="分区列表项">
+        修改<span class="行内专业名词">Canvas</span>的实际尺寸：<span class="行内专业名词">实际尺寸</span
+        ><span class="次要">=</span><span class="行内专业名词">CSS尺寸</span><span class="次要">✗</span
+        ><span class="行内专业名词">分辨率缩放值</span>。
+        <pre style="margin-bottom: 40px">
+          <code class="lang-javascript">
+            const dpr = window.devicePixelRatio || 1;    //获取分辨率缩放值，无法获取则默认为1
+            canvas.width = canvas.offsetWidth * dpr;     //实际宽度 = CSS宽度 × 分辨率缩放值
+            canvas.height = canvas.offsetHeight * dpr;   //实际高度 = CSS高度 × 分辨率缩放值
+          </code>
+        </pre>
+      </li>
+      <li class="分区列表项">
+        设置<span class="行内专业名词">渲染上下文缩放值</span>：
+        <pre>
+          <code class="lang-javascript">
+            const dpr = window.devicePixelRatio || 1;   //获取分辨率缩放值，无法获取则默认为1
+            ctx.scale(dpr, dpr);   //ctx.scale(水平缩放值, 垂直缩放值)
+          </code>
+        </pre>
+      </li>
+    </ol>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        <span class="行内代码">canvas.width</span>是实际尺寸，<span class="行内代码">HTMLElement.offsetWidth</span
+        >、<span class="行内代码">DOMRect.width</span>都是<span class="行内专业名词 等宽">CSS</span>尺寸。
+      </p>
+      <pre>
+        <code class="lang-html">
+          &lt;!-- 这里的 width 和 height 是实际尺寸 --&gt;
+          &lt;canvas id="canvas" width="500" height="300"&gt;&lt;/canvas&gt;
+        </code>
+      </pre>
+    </section>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">基础绘图</h2>
+
+    <h3 class="分区标题 分区3级标题">新建<span class="行内专业名词">路径</span></h3>
+    <p class="分区普通文本">
+      可以把路径绘图想象成<span class="行内专业名词">Photoshop</span>中的操作，其原理基本一致。我们在<span
+        class="行内专业名词"
+        >Photoshop</span
+      >中想要绘制<span class="行内专业名词">图形</span>，是不是要先新建一个<span class="行内专业名词">路径</span
+      >？在<span class="行内专业名词">Canvas</span>中也是一样的。不管你想要画什么图形，都要先新建路径：
+    </p>
+    <pre>
+      <code class="lang-javascript">
+        ctx.beginPath();   //新建路径
+      </code>
+    </pre>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        和<span class="行内专业名词">Photoshop</span>一样，如果没有调用<span class="行内代码">ctx.beginPath()</span
+        >，绘制图形时会自动新建路径。如果你在一个路径中一口气绘制了好几个图形，中途没有再新建路径，那么在填充、描边时，这些图形会一起被填充、描边。
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">绘制<span class="行内专业名词">直线</span></h3>
+    <p class="分区普通文本">
+      在<span class="行内专业名词">Canvas</span>中，绘制<span class="行内专业名词">直线</span>的方法和<span
+        class="行内专业名词"
+        >Photoshop</span
+      >基本一致：一个起点，一个终点，足矣。但是，光有路径还不够，路径只是一个几何图形的<span class="行内专业名词"
+        >逻辑</span
+      >，本身是看不见的，想要看见这个图形，我们可以给它<span class="行内专业名词">描边</span>。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        //---------------- ↓ 获取Canvas 获取渲染上下文 ↓ ----------------
+        const canvas = document.getElementById("canvas");   //获取Canvas元素
+        const ctx = canvas.getContext("2d");   //获取渲染上下文
+
+        //---------------- ↓ 设置分辨率缩放 ↓ ----------------
+        const dpr = window.devicePixelRatio || 1;   //获取分辨率缩放值，无法获取则默认为1
+        canvas.width = canvas.offsetWidth * dpr;   //通过分辨率缩放值，修改Canvas的实际宽度
+        canvas.height = canvas.offsetHeight * dpr;   //通过分辨率缩放值，修改Canvas的实际高度
+        ctx.scale(dpr, dpr);   //通过分辨率缩放值，修改上下文绘图的实际大小
+
+        //---------------- ↓ 绘图 ↓ ----------------
+        ctx.beginPath();   //新建路径
+        ctx.moveTo(100, 100);   // ctx.moveTo(x, y);  移动到起点
+        ctx.lineTo(400, 200);   // ctx.lineTo(x, y);  绘制到终点
+        ctx.lineWidth = 2;   //设置描边宽度
+        ctx.strokeStyle = "lightskyblue";   //设置描边颜色
+        ctx.stroke();   //描边
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-直线" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    
+
+    <h3 class="分区标题 分区3级标题">绘制<span class="行内专业名词">矩形</span></h3>
+    <p class="分区普通文本">要绘制矩形，需要知道<span class="行内专业名词">2</span>个必要条件：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        矩形的<span class="行内专业名词">坐标</span>，<span class="强调">注意：</span>
+        <ul class="分区列表">
+          <li class="分区列表项">
+            矩形的<span class="行内专业名词">坐标</span>就是矩形<span class="强调">左上角</span>的坐标。
+          </li>
+          <li class="分区列表项">
+            矩形的<span class="行内专业名词">坐标</span>是相对于<span class="行内专业名词">Canvas</span
+            ><span class="强调">左上角</span>的。
+          </li>
+        </ul>
+      </li>
+      <li class="分区列表项">矩形的<span class="行内专业名词">尺寸</span></li>
+    </ul>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75; background: none">
+      <div class="canvas-矩形说明-container" style="width: 100%; height: calc(100% - 42px)">
+        <div class="rect-x-indicator"></div>
+        <canvas id="canvas-矩形说明" style="width: 100%; height: 100%; background-color: #222"></canvas>
+        <div class="rect-y-indicator"></div>
+        <div class="canvas-dimension canvas-width"><span class="num">500</span><span class="unit">px</span></div>
+        <div class="canvas-dimension canvas-height"><span class="num">500</span><span class="unit">px</span></div>
+        <div class="canvas-矩形说明-introduction">我是<span class="行内代码">Canvas</span></div>
+      </div>
+    </figure>
+    <p class="分区普通文本">
+      矩形<span class="行内专业名词">宽度</span>为<span class="行内代码">150</span>，<span class="行内专业名词"
+        >高度</span
+      >为<span class="行内代码">100</span>；矩形的坐标就是<span class="行内专业名词"
+        >矩形<span class="强调">左上角</span>的坐标</span
+      >。
+    </p>
+    
+    
+    <p class="分区普通文本">绘制矩形有两种方式：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        绘制<span class="强调">单个</span>矩形：直接用<span class="行内代码">ctx.fillRect()</span>填充，用<span
+          class="行内代码"
+          >ctx.strokeRect()</span
+        >描边
+      </li>
+      <li class="分区列表项">
+        绘制<span class="强调">多个</span>矩形：先用<span class="行内代码">ctx.Rect()</span>绘制矩形路径，再用<span
+          class="行内代码"
+          >ctx.fill()</span
+        >或<span class="行内代码">ctx.stroke()</span>填充或描边
+      </li>
+    </ul>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        ctx.fillStyle = "darkgreen";   //设置填充颜色
+        ctx.strokeStyle = "gold";   //设置描边颜色
+
+        //---------------- ↓ 绘制单个矩形 ↓ ----------------
+        // ctx.fillRect(水平坐标, 垂直坐标, 宽度, 高度);
+        ctx.fillRect(265, 100, 150, 100);   //填充单个矩形
+
+        // ctx.strokeRect(水平坐标, 垂直坐标, 宽度, 高度);
+        ctx.strokeRect(265, 100, 150, 100);   //描边单个矩形
+
+        //---------------- ↓ 绘制多个矩形 ↓ ----------------
+        // ctx.rect(水平坐标, 垂直坐标, 宽度, 高度);
+        ctx.rect(200, 300, 150, 300);  //绘制矩形路径
+        ctx.rect(350, 90, 250, 225);   //绘制矩形路径
+        ctx.rect(50, 410, 75, 240);    //绘制矩形路径
+        ctx.fill();     //填充多个矩形
+        ctx.stroke();   //描边多个矩形
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-2" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    
+
+    <h3 class="分区标题 分区3级标题">绘制<span class="行内专业名词">圆角矩形</span></h3>
+    <p class="分区普通文本">
+      圆角矩形相比于矩形多了一个必要条件：<span class="行内专业名词">圆角半径</span>。熟悉<span class="行内专业名词"
+        >CSS</span
+      >规则的都知道，圆角半径有<span class="行内专业名词">4</span>种写法，在<span class="行内专业名词">Canvas API</span
+      >中也是一样的，只不过用的是数组的形式。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        //---------------- ↓ 绘制圆角矩形 ↓ ----------------
+        // ctx.roundRect(水平坐标, 垂直坐标, 宽度, 高度, 圆角半径数组);
+        //[20, 40, 80] -> 左上, 右上和左下, 右下
+        ctx.roundRect(250, 200, 300, 200, [20, 40, 80]);
+        ctx.fillStyle = "darkgreen";   //设置填充颜色
+        ctx.strokeStyle = "gold";   //设置描边颜色
+        ctx.fill();   //填充路径
+        ctx.stroke();   //描边路径
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-round-rect" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <p class="分区普通文本">
+      圆角半径数组的写法和<span class="行内专业名词">CSS</span
+      >是一致的，只不过用的是数组的形式，因此两个值之间要用英文逗号。
+    </p>
+    
+
+    <h3 class="分区标题 分区3级标题">绘制<span class="行内专业名词">正圆</span></h3>
+    <p class="分区普通文本">要绘制正圆，需要知道<span class="行内专业名词">4</span>个必要条件：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">圆心坐标</li>
+      <li class="分区列表项">半径</li>
+      <li class="分区列表项">起始弧度</li>
+      <li class="分区列表项">结束弧度</li>
+    </ul>
+    <section class="提醒">
+      <h3 class="提醒标题">小知识</h3>
+      <p class="分区普通文本">
+        <span class="行内专业名词">弧度</span>和<span class="行内专业名词">角度</span
+        >其实是一回事，只是表示方式不同，可以访问<a
+          class="超链接"
+          href="/Interactive-Hub/Radius-And-Angle/"
+          target="_blank"
+          >弧度和角度</a
+        >了解更多。
+      </p>
+      <p class="分区普通文本">
+        简而言之，圆的周长相当于<span class="行内代码">2π</span>弧度，大约等于<span class="行内代码">6.28</span>。
+      </p>
+    </section>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        //---------------- ↓ 绘制正圆 ↓ ----------------
+        // ctx.arc(圆心水平坐标, 圆心垂直坐标, 半径, 起始弧度, 结束弧度);
+        ctx.arc(390, 200, 100, 0, 2 * Math.PI);   //绘制正圆路径
+        ctx.fillStyle = "darkgreen";   //设置填充颜色
+        ctx.strokeStyle = "lightskyblue";   //设置描边颜色
+        ctx.fill();   //填充路径
+        ctx.stroke();   //描边路径
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-circle" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    
+
+    <h3 class="分区标题 分区3级标题">绘制<span class="行内专业名词">椭圆</span></h3>
+    <p class="分区普通文本">要绘制椭圆，需要知道<span class="行内专业名词">6</span>个必要条件：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">圆心坐标</li>
+      <li class="分区列表项">水平半径</li>
+      <li class="分区列表项">垂直半径</li>
+      <li class="分区列表项">旋转弧度</li>
+      <li class="分区列表项">起始弧度</li>
+      <li class="分区列表项">结束弧度</li>
+    </ul>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        //---------------- ↓ 绘制椭圆 ↓ ----------------
+        // ctx.ellipse(圆心水平坐标, 圆心垂直坐标, 水平半径, 垂直半径, 旋转弧度, 起始弧度, 结束弧度);
+        ctx.ellipse(250, 200, 150, 75, Math.PI / 4, 0, 2 * Math.PI);   //绘制正圆路径
+        ctx.fillStyle = "darkgreen";   //设置填充颜色
+        ctx.strokeStyle = "lightskyblue";   //设置描边颜色
+        ctx.lineWidth = 2;   //设置描边宽度
+        ctx.fill();   //填充路径
+        ctx.stroke();   //描边路径
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-椭圆" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    
+
+    <h3 class="分区标题 分区3级标题">绘制<span class="行内专业名词">正多边形</span></h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词">正多边形</span>的本质就是<span class="行内专业名词 等宽">N</span
+      >个顶点之间的连线，只要知道所有顶点的坐标，就能绘制出正多边形。事实上，正多边形的顶点都分布在同一个正圆上，因此，绘制正多边形需要知道以下条件：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">圆心坐标</li>
+      <li class="分区列表项">半径</li>
+      <li class="分区列表项">顶点数量</li>
+      <li class="分区列表项">起始弧度</li>
+    </ul>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <div style="position: relative; width: 100%; height: calc(100% - 42px)">
+        <canvas id="canvas-正多边形范例" style="width: 100%; height: 100%; background-color: #222"></canvas>
+        <!-- 滑块控制区域 -->
+        <div
+          style="
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 8px;
+            color: #aaa;
+            font-family: 'Google Sans Code', sans-serif;
+            z-index: 1000;
+          "
+        >
+          
+          <div style="margin-bottom: 15px">
+            <label class="滑块标签" style="display: block; margin-bottom: 5px; font-size: 16px"
+              >顶点数量: <span id="顶点数量显示">5</span></label
+            >
+            <input
+              class="滑块"
+              type="range"
+              id="顶点数量滑块"
+              min="3"
+              max="10"
+              value="5"
+              style="width: 150px; accent-color: rgb(102, 153, 25)"
+            />
+          </div>
+          <div>
+            <label class="滑块标签" style="display: block; margin-bottom: 5px; font-size: 16px"
+              >起始弧度: <span id="起始弧度显示">-π/2</span></label
+            >
+            <input
+              class="滑块"
+              type="range"
+              id="起始弧度滑块"
+              min="-628"
+              max="628"
+              value="-157"
+              style="width: 150px; accent-color: rgb(102, 153, 25)"
+              list="起始弧度刻度"
+            />
+            <datalist id="起始弧度刻度" style="display: none; opacity: 0">
+              <option value="-628" label="-2π"></option>
+              <option value="-471" label="-3π/2"></option>
+              <option value="-314" label="-π"></option>
+              <option value="-157" label="-π/2"></option>
+              <option value="0" label="0"></option>
+              <option value="157" label="π/2"></option>
+              <option value="314" label="π"></option>
+              <option value="471" label="3π/2"></option>
+              <option value="628" label="2π"></option>
+            </datalist>
+          </div>
+        </div>
+      </div>
+    </figure>
+    <p class="分区普通文本">
+      通过起始弧度，确定每个顶点的坐标，就可以用<span class="行内专业名词">绘制直线</span
+      >的方式，依次连接所有顶点，成为一个正多边形。
+    </p>
+    
+    <p class="分区普通文本">
+      因此，只剩一个问题：如何通过<span class="行内专业名词">弧度</span>，确定顶点坐标？假设顶点数量为<span
+        class="行内专业名词 等宽"
+        >5</span
+      >，那么两个相邻顶点之间的弧度偏移量为<span class="行内代码">2π / 5</span>，若起始弧度为<span class="行内代码"
+        >-(π / 2)</span
+      >，则每个顶点的弧度分别为：
+    </p>
+    
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="等宽">顶点<span class="行内专业名词">1</span>：</span>
+        <span class="代码"
+          ><span class="标点">-</span>π <span class="标点">/</span> 2 <span class="标点">+</span>
+          <span class="圆括号">(</span>2π <span class="标点">/</span> 5<span class="圆括号">)</span>
+          <span class="标点">×</span> 0</span
+        >
+      </li>
+      <li class="分区列表项">
+        <span class="等宽">顶点<span class="行内专业名词">2</span>：</span>
+        <span class="代码"
+          ><span class="标点">-</span>π <span class="标点">/</span> 2 <span class="标点">+</span>
+          <span class="圆括号">(</span>2π <span class="标点">/</span> 5<span class="圆括号">)</span>
+          <span class="标点">×</span> 1</span
+        >
+      </li>
+      <li class="分区列表项">
+        <span class="等宽">顶点<span class="行内专业名词">3</span>：</span>
+        <span class="代码"
+          ><span class="标点">-</span>π <span class="标点">/</span> 2 <span class="标点">+</span>
+          <span class="圆括号">(</span>2π <span class="标点">/</span> 5<span class="圆括号">)</span>
+          <span class="标点">×</span> 2</span
+        >
+      </li>
+      <li class="分区列表项">
+        <span class="等宽">顶点<span class="行内专业名词">4</span>：</span>
+        <span class="代码"
+          ><span class="标点">-</span>π <span class="标点">/</span> 2 <span class="标点">+</span>
+          <span class="圆括号">(</span>2π <span class="标点">/</span> 5<span class="圆括号">)</span>
+          <span class="标点">×</span> 3</span
+        >
+      </li>
+      <li class="分区列表项">
+        <span class="等宽">顶点<span class="行内专业名词">5</span>：</span>
+        <span class="代码"
+          ><span class="标点">-</span>π <span class="标点">/</span> 2 <span class="标点">+</span>
+          <span class="圆括号">(</span>2π <span class="标点">/</span> 5<span class="圆括号">)</span>
+          <span class="标点">×</span> 4</span
+        >
+      </li>
+    </ul>
+    <p class="分区普通文本">将其写成公式，就是：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="行内专业名词 等宽"
+          >弧度偏移 <span class="标点">=</span> 2π <span class="标点">/</span> 顶点数量</span
+        >
+      </li>
+      <li class="分区列表项">
+        <span class="行内专业名词 等宽"
+          >顶点弧度 <span class="标点">=</span> 初始弧度 <span class="标点">+</span> 弧度偏移
+          <span class="标点">×</span> 顶点索引</span
+        >
+      </li>
+    </ul>
+    <p class="分区普通文本">
+      有了<span class="行内专业名词">半径</span>和<span class="行内专业名词">顶点弧度</span>，我们就可以计算出<span
+        class="强调"
+        >顶点和圆心之间</span
+      >的<span class="行内专业名词">水平偏移</span>和<span class="行内专业名词">垂直偏移</span>，从而得到<span
+        class="行内专业名词"
+        >顶点坐标</span
+      >。
+    </p>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1">
+      <canvas
+        id="canvas-半径弧度算坐标"
+        style="width: 100%; height: calc(100% - 42px); background-color: #222"
+      ></canvas>
+    </figure>
+    <p class="分区普通文本">
+      <span class="专业名词"
+        >水平偏移 <span class="标点">=</span>
+        <span class="行内专业名词 等宽"
+          ><span class="行内代码" style="margin: 0">Math</span><span class="标点">.</span
+          ><span class="行内代码" style="margin: 0">Cos</span><span class="圆括号">(</span>弧度<span class="圆括号"
+            >)</span
+          >
+          <span class="标点">×</span> 半径</span
+        ></span
+      >
+      ，<span class="专业名词"
+        >垂直偏移 <span class="标点">=</span>
+        <span class="行内专业名词 等宽"
+          ><span class="行内代码" style="margin: 0">Math</span><span class="标点">.</span
+          ><span class="行内代码" style="margin: 0">Sin</span><span class="圆括号">(</span>弧度<span class="圆括号"
+            >)</span
+          >
+          <span class="标点">×</span> 半径</span
+        ></span
+      >，因此，顶点的坐标为：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="行内专业名词">顶点水平坐标</span>：<span class="专业名词"
+          >圆心水平坐标 <span class="标点">+</span> 水平偏移</span
+        >
+      </li>
+      <li class="分区列表项">
+        <span class="行内专业名词">顶点垂直坐标</span>：<span class="专业名词"
+          >圆心垂直坐标 <span class="标点">+</span> 垂直偏移</span
+        >
+      </li>
+    </ul>
+    
+    <p class="分区普通文本">
+      有了计算公式，让我们来做一个正六边形，初始弧度为<span class="行内代码">-π / 2</span>，半径为<span class="行内代码"
+        >150</span
+      >。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        class 正六边形范例 {
+          constructor() {
+            this.canvas = document.getElementById("canvas-正六边形");
+            this.ctx = this.canvas.getContext("2d");
+            this.dpr = window.devicePixelRatio || 1;
+            this.canvas.width = this.canvas.offsetWidth * this.dpr;
+            this.canvas.height = this.canvas.offsetHeight * this.dpr;
+            this.ctx.scale(this.dpr, this.dpr);
+            this.正多边形 = {
+              圆心: {
+                x: this.canvas.offsetWidth / 2,
+                y: this.canvas.offsetHeight / 2,
+              },
+              半径: 150,
+              起始弧度: -Math.PI / 2,
+              顶点数量: 6,
+              // 上面4个属性其实都是为了确定顶点坐标
+              顶点坐标组: [],
+            };
+  
+            requestAnimationFrame(this.绘制全部.bind(this));
+          }
+
+          // 最重要的核心函数，确定所有顶点的坐标
+          生成正多边形顶点坐标() {
+            this.正多边形.顶点坐标组 = []; //先清空顶点坐标组，否则后续的坐标会不停叠加到组中
+            const 弧度偏移量 = 2 * Math.PI / this.正多边形.顶点数量;
+            for (let i = 0; i < this.正多边形.顶点数量; i++) {
+              const 顶点弧度 = this.正多边形.起始弧度 + i * 弧度偏移量;
+              const 顶点坐标 = {
+                x: this.正多边形.圆心.x + this.正多边形.半径 * Math.cos(顶点弧度),
+                y: this.正多边形.圆心.y + this.正多边形.半径 * Math.sin(顶点弧度),
+              };
+              this.正多边形.顶点坐标组.push(顶点坐标);
+            }
+          }
+  
+          绘制圆周() {
+            this.ctx.save();
+            this.ctx.lineWidth = 2;
+            this.ctx.strokeStyle = "#5af3";
+            this.ctx.beginPath();
+            this.ctx.arc(
+              this.正多边形.圆心.x, 
+              this.正多边形.圆心.y, 
+              this.正多边形.半径, 
+              0, 
+              2 * Math.PI
+            );
+            this.ctx.stroke();
+            this.ctx.restore();
+          }
+  
+          绘制圆心() {
+            this.ctx.save();
+            this.ctx.beginPath();
+            this.ctx.arc(this.正多边形.圆心.x, this.正多边形.圆心.y, 7, 0, 2 * Math.PI);
+            this.ctx.fillStyle = "#aaa";
+            this.ctx.fill();
+            this.ctx.restore();
+          }
+            
+          绘制多边形() {
+            this.ctx.save();
+            this.ctx.lineWidth = 2;
+            this.ctx.strokeStyle = "lightskyblue";
+            this.ctx.fillStyle = "#87cefa25";
+            this.ctx.beginPath();
+  
+            // 移动到第一个顶点
+            this.ctx.moveTo(this.正多边形.顶点坐标组[0].x, this.正多边形.顶点坐标组[0].y);
+  
+            // 连接所有顶点
+            for (let i = 1; i < this.正多边形.顶点坐标组.length; i++) {
+              this.ctx.lineTo(this.正多边形.顶点坐标组[i].x, this.正多边形.顶点坐标组[i].y);
+            }
+  
+            // 闭合路径
+            this.ctx.closePath();
+            this.ctx.fill();
+            this.ctx.stroke();
+            this.ctx.restore();
+          }
+  
+          绘制顶点() {
+            this.ctx.save();
+            this.ctx.lineWidth = 2;
+  
+            for (let i = 0; i < this.正多边形.顶点坐标组.length; i++) {
+              const 顶点坐标 = this.正多边形.顶点坐标组[i];
+  
+              this.ctx.beginPath();
+              this.ctx.arc(顶点坐标.x, 顶点坐标.y, 5, 0, Math.PI * 2);
+              this.ctx.fillStyle = "gold";
+              this.ctx.fill();
+              this.ctx.strokeStyle = "#fff";
+              this.ctx.stroke();
+  
+              // 绘制顶点索引
+              this.ctx.font = "14px 'Google Sans Code', 'Consolas', sans-serif";
+              this.ctx.fillStyle = "#fffa";
+              this.ctx.textAlign = "center";
+              this.ctx.textBaseline = "middle";
+
+              this.绘制索引(i);
+            }
+  
+            this.ctx.restore();
+          }
+
+          绘制索引(i) {
+            const 索引偏移距离 = 20;
+            const 弧度偏移量 = (2 * Math.PI) / this.正多边形.顶点数量;
+            const 顶点弧度 = this.正多边形.起始弧度 + i * 弧度偏移量;
+            const 水平偏移 = Math.cos(顶点弧度) * (this.正多边形.半径 + 索引偏移距离);
+            const 垂直偏移 = Math.sin(顶点弧度) * (this.正多边形.半径 + 索引偏移距离);
+            const 索引坐标 = {
+              x: this.正多边形.圆心.x + 水平偏移,
+              y: this.正多边形.圆心.y + 垂直偏移,
+            };
+  
+            this.ctx.fillText(i.toString(), 索引坐标.x, 索引坐标.y);
+          }
+  
+          绘制全部() {
+            // 清空画布
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  
+            // 初始化顶点
+            this.生成正多边形顶点坐标();
+  
+            // 绘制各个元素
+            this.绘制圆周();
+            this.绘制多边形();
+            this.绘制圆心();
+            this.绘制顶点();
+          }
+        }
+  
+        new 正六边形范例();  
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-正六边形" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    
+
+    <h3 class="分区标题 分区3级标题">绘制<span class="行内专业名词">文本</span></h3>
+    <p class="分区普通文本">要绘制文本，需要知道<span class="行内专业名词">2</span>个必要条件：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">文本内容</li>
+      <li class="分区列表项">文本坐标</li>
+    </ul>
+    <p class="分区普通文本">此外，还可以对文本做以下设置：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">字体</li>
+      <li class="分区列表项">文本垂直基线</li>
+      <li class="分区列表项">文本水平对齐</li>
+    </ul>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        //---------------- ↓ 绘制文本 ↓ ----------------
+        ctx.font = "bold 30px 'JetBrains Mono', 'Consolas', sans-serif";   //设置字体
+        ctx.fillStyle = "#abc";   //设置填充颜色
+        ctx.strokeStyle = "firebrick";   //设置描边颜色
+        ctx.lineWidth = 1;   //设置描边宽度，不写则默认为1.0
+        ctx.textBaseline = "alphabetic";   //设置文本垂直基线
+        ctx.textAlign = "start";   //设置文本水平对齐
+
+        // ctx.fillText(文本内容, 水平坐标, 垂直坐标);
+        ctx.fillText("ABgfjpyZ-水平与垂直", ctx.宽度 / 2, ctx.高度 / 2);   //填充文本
+
+        // ctx.strokeText(文本内容, 水平坐标, 垂直坐标);
+        ctx.strokeText("ABgfjpyZ-水平与垂直", ctx.宽度 / 2, ctx.高度 / 2);   //描边文本
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-text" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <p class="分区普通文本">
+      <span style="color: gold; margin: 0 4px">●</span
+      >代表文本的坐标，可以很清楚地看出，垂直基线和水平对齐是如何影响文本与坐标的关系的。
+    </p>
+    
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        垂直基线的默认值是：<span class="行内代码">alphabetic</span>，水平对齐的默认值是：<span class="行内代码"
+          >start</span
+        >。如需更多信息，可访问二者的<span class="行内专业名词">MDN 文档</span>：
+      </p>
+      <ul class="分区列表">
+        <li class="分区列表项">
+          <a
+            class="超链接"
+            href="https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/textBaseline"
+            target="_blank"
+            >垂直基线</a
+          >
+        </li>
+
+        <li class="分区列表项">
+          <a
+            class="超链接"
+            href="https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/textAlign"
+            target="_blank"
+            >水平对齐</a
+          >
+        </li>
+      </ul>
+    </section>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">其它常用操作</h2>
+
+    <h3 class="分区标题 分区3级标题">清空区域</h3>
+    <p class="分区普通文本">
+      清空区域使用<span class="行内代码">ctx.clearRect()</span
+      >方法。清空区域就相当于橡皮擦功能，清空后区域内会变成透明。由于清空的区域是一个矩形，所以它的必要条件和绘制矩形一致：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">矩形的<span class="行内专业名词">坐标</span></li>
+      <li class="分区列表项">矩形的<span class="行内专业名词">尺寸</span></li>
+    </ul>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        //---------------- ↓ 绘制正圆 ↓ ----------------
+        const 半径 = 100;
+        const 圆心 = { 
+          x: canvas.offsetWidth / 2, 
+          y: canvas.offsetHeight / 2
+        };
+        const 弧度 = {
+          起始: 0,
+          结束: 2 * Math.PI
+        };
+        ctx.fillStyle = "darkgreen";
+        ctx.strokeStyle = "gold";
+        ctx.arc(圆心.x, 圆心.y, 半径, 弧度.起始, 弧度.结束);
+        ctx.fill();
+        ctx.stroke();
+
+        //---------------- ↓ 清空圆的右下部分 ↓ ----------------
+        ctx.clearRect(圆心.x, 圆心.y, 半径, 半径);
+
+        //如果图形包含描边，则清空区域的尺寸要加上描边
+        ctx.clearRect(圆心.x, 圆心.y, 半径 + 描边宽度, 半径 + 描边宽度);
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-clearRect" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    
+    <section class="提醒">
+      <h3 class="提醒标题">小知识</h3>
+      <p class="分区普通文本"><span class="行内代码">ctx.clearRect()</span>最常见的用途就是清空整个Canvas：</p>
+      <pre>
+        <code class="lang-javascript">
+          ctx.clearRect(0, 0, canvas.width, canvas.height);   //清空整个Canvas
+        </code>
+      </pre>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">闭合路径</h3>
+    <p class="分区普通文本">
+      闭合路径使用<span class="行内代码">ctx.closePath()</span
+      >，目的是将路径的起点和终点连接起来，形成一个封闭的区域。假如没有闭合，会怎么样呢？
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        //---------------- ↓ 绘制路径 ↓ ----------------
+        ctx.beginPath();
+        ctx.moveTo(200, 200);   //第1个点，起点
+        ctx.lineTo(350, 100);   //第2个点
+        ctx.lineTo(500, 250);   //第3个点，终点
+        //ctx.closePath();   //不闭合路径；如果闭合，则会将终点和起点连接起来
+        ctx.lineWidth = 2;   //设置描边宽度
+        ctx.fill();    //填充路径
+        ctx.stroke();  //描边路径
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+      <canvas id="canvas-closePath" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    
+    <p class="分区普通文本">
+      如<span class="行内截图序号">· 图12 ·</span
+      >所示，如果没有闭合路径，填充时会临时自动闭合，但是描边时不会临时自动闭合。从编程规范性、可扩展性的角度来说，建议显式闭合路径。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">保存与恢复上下文</h3>
+    <p class="分区普通文本">保存与恢复上下文无非就是这么几个问题：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        何时保存？何时恢复？
+        <ul class="分区列表">
+          <li class="分区列表项">当前上下文状态会频繁使用，但有时需要临时修改一下。</li>
+        </ul>
+      </li>
+      <li class="分区列表项">
+        保存什么？恢复什么？
+        <ul class="分区列表">
+          <li class="分区列表项">
+            当前各种属性的值：<span class="行内专业名词">填充样式</span>、<span class="行内专业名词">描边样式</span
+            >、<span class="行内专业名词">描边宽度</span>…………，共<span class="行内专业名词">18</span>个属性。
+          </li>
+          <li class="分区列表项">当前变换矩阵</li>
+          <li class="分区列表项">当前裁剪区域</li>
+          <li class="分区列表项">当前虚线列表</li>
+        </ul>
+      </li>
+      <li class="分区列表项">
+        怎么保存？怎么恢复？
+        <ul class="分区列表">
+          <li class="分区列表项">保存上下文：<span class="行内代码">ctx.save()</span></li>
+          <li class="分区列表项">恢复上下文：<span class="行内代码">ctx.restore()</span></li>
+        </ul>
+      </li>
+    </ul>
+    <p class="分区普通文本">
+      让我们举个例子。比如我要绘制<span class="行内专业名词">10</span>个矩形，其中<span class="行内专业名词">第5个</span
+      >矩形是黑底白框，其它矩形都是蓝底绿框。正常顺序是：先绘制<span class="行内专业名词">1 - 4</span
+      >蓝底绿框矩形，然后绘制<span class="行内专业名词">第5个</span>黑底白框的矩形，最后绘制<span class="行内专业名词"
+        >6 - 10</span
+      >蓝底绿框矩形。在这段程序中，<span class="行内专业名词">蓝底绿框</span>就是<span class="强调">频繁使用</span
+      >的上下文，<span class="行内专业名词">黑底白框</span>就是<span class="强调">临时使用</span>的上下文。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        ctx.fillStyle = "blue";     //蓝底
+        ctx.strokeStyle = "green";  //绿框
+        ctx.fillRect(100, 100, 100, 100);   //绘制蓝底绿框矩形
+
+        ctx.fillStyle = "black";    //黑底
+        ctx.strokeStyle = "white";  //白框
+        ctx.fillRect(100, 100, 100, 100);   //绘制黑底白框矩形
+
+        ctx.fillStyle = "blue";   //蓝底
+        ctx.strokeStyle = "green";   //绿框
+        ctx.fillRect(100, 100, 100, 100);   //绘制蓝底绿框矩形
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      有没有觉得这么写很麻烦？每次绘制完黑底白框后，又要再次设置蓝底绿框，更不用说可能还有别的属性需要设置，既繁琐，又容易出错。因此，我们要转换思路：每次要绘制黑底白框前，<span
+        class="行内专业名词"
+        >先保存</span
+      >上下文，绘制完后<span class="行内专业名词">再恢复</span>上下文。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        //---------------- 获取Canvas 获取渲染上下文 ----------------
+        //---------------- 设置分辨率缩放 ----------------
+
+        ctx.fillStyle = "blue";     //蓝底
+        ctx.strokeStyle = "green";  //绿框
+        ctx.fillRect(100, 100, 100, 100);   //绘制蓝底绿框矩形
+
+        ctx.save();   //保存上下文
+        ctx.fillStyle = "black";    //黑底
+        ctx.strokeStyle = "white";  //白框
+        ctx.fillRect(100, 100, 100, 100);   //绘制黑底白框矩形
+        ctx.restore();   //恢复上下文
+
+        ctx.fillRect(100, 100, 100, 100);   //绘制蓝底绿框矩形
+      </code>
+    </pre>
+  </article>
+</div>

@@ -1,0 +1,570 @@
+<article class="专题简介">
+  <h1 class="简介标题">循环</h1>
+  <div class="简介信息">
+    <section class="简介信息文本">
+      <p class="作者">
+        <span class="作者前缀 前缀">作者：</span>
+        <span class="作者姓名">苏扬</span>
+      </p>
+      <p class="日期">
+        <span class="日期前缀 前缀">日期：</span>
+        <span class="日期文本"><span class="日期文本-数字 日期文本-年">2024</span>年<span class="日期文本-数字 日期文本-月">11</span>月<span class="日期文本-数字 日期文本-日">27</span>日</span>
+      </p>
+    </section>
+    <section class="简介信息图像">
+      <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+    </section>
+  </div>
+  <ul class="联系方式列表">
+    <li class="联系方式项">
+      <a class="联系方式链接" href="mailto:suyangzuo@gmail.com" target="_blank">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://github.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-github"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.deviantart.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-deviantart"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dev.to/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-dev"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.freecodecamp.org/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-free-code-camp"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://codepen.io/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-codepen"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://dribbble.com/suyangzuo"
+        target="_blank"
+        ><i class="fa-brands fa-dribbble"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://www.artstation.com/user-7893655"
+        target="_blank"
+        ><i class="fa-brands fa-artstation"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a
+        class="联系方式链接"
+        href="https://codesandbox.io/u/suyangzuo"
+        target="_blank"
+      >
+        <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
+      /></a>
+    </li>
+  </ul>
+</article>
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">
+      <span class="行内代码">JavaScript</span>循环
+    </h2>
+
+    <h3 class="分区标题 分区3级标题"><span class="行内代码">for</span>语句</h3>
+    <p class="分区普通文本">
+      最通用、最传统的循环语法，配合<span class="行内专业名词">循环三要素</span
+      >进行使用，每个要素是一个表达式。语法范例：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        for (let i = 1; i <= 10; i++){
+          console.log(`第${i}次迭代`};
+        }
+      </code>
+    </pre>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内代码">for...of</span>语句
+    </h3>
+    <p class="分区普通文本">
+      用来处理<span class="行内专业名词">可迭代对象序列</span
+      >的循环语法，类似于<span class="行内专业名词">C#</span>的<span
+        class="行内代码"
+        >foreach</span
+      >。语法范例：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        for (const 对象 of 可迭代对象序列) {
+          console.log(对象);
+        }
+      </code>
+    </pre>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内代码">forEach</span>实例方法
+    </h3>
+    <p class="分区普通文本">只能用于数组。语法范例：</p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        数组.forEach((元素) => {
+          console.log(元素);
+        });
+      </code>
+    </pre>
+    <section class="提醒">
+      <h3 class="提醒标题">
+        <span class="行内专业名词">语句</span> vs
+        <span class="行内专业名词">实例方法</span>
+      </h3>
+      <p class="分区普通文本">
+        相信细心的读者已经发现了<span class="行内代码">forEach</span
+        >的特殊之处。<span class="行内代码">for</span>和<span class="行内代码"
+          >for...of</span
+        >都是<span class="行内专业名词">语句</span>，而<span class="行内代码"
+          >forEach</span
+        >是<span class="行内专业名词">实例方法</span>。因此，<span
+          class="行内代码"
+          >for</span
+        >和<span class="行内代码">for...of</span>都是<span class="行内代码"
+          >for</span
+        >开头，而<span class="行内代码">forEach</span>由调用方开头，即：
+      </p>
+      <pre class="line-numbers">
+        <code class="lang-js">
+          调用方.forEach((元素) => {
+            console.log(元素);
+          });
+        </code>
+      </pre>
+      <p class="分区普通文本">
+        很难说<span class="行内专业名词">语句</span>和<span class="行内专业名词"
+          >方法</span
+        >哪个更好，就我自己而言，我会更多地使用<span class="行内代码"
+          >for...of</span
+        >，它的用途更广泛一点。
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">后续范例解释</h3>
+    <p class="分区普通文本">
+      为了更好地阐释3种循环语句的用法，我们在<span class="行内专业名词"
+        >HTML</span
+      >文件中添加如下元素：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-html">
+        &lt;div class="元素"&gt;元素 1&lt;/div&gt;
+        &lt;div class="元素"&gt;元素 2&lt;/div&gt;
+        &lt;div class="元素"&gt;元素 3&lt;/div&gt;
+        &lt;div class="元素"&gt;元素 4&lt;/div&gt;
+        &lt;div class="元素"&gt;元素 5&lt;/div&gt;
+      </code>
+    </pre>
+    <p class="分区普通文本">后续的代码就是用循环依次迭代这5个元素。</p>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">
+      <span class="行内代码" style="margin-left: 0">for</span>语句
+    </h2>
+
+    <h3 class="分区标题 分区3级标题">语法</h3>
+    <p class="分区普通文本">
+      <span class="行内代码">for</span
+      >语法就是使用传统的循环三要素来控制迭代范围：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        for (let 索引 = 0; 索引 <= 10; 索引++){
+          //内部逻辑;
+        }
+      </code>
+    </pre>
+
+    <h3 class="分区标题 分区3级标题">范例</h3>
+    <p class="分区普通文本">
+      下面的代码用<span class="行内代码">for</span
+      >循环语句，依次迭代每一个元素；采用方框移动的视觉效果来展现迭代的过程：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        const 执行循环按钮 = document.getElementById("执行循环");
+        const 可迭代元素序列 = document.querySelectorAll(".元素");
+
+        执行循环按钮.addEventListener("click", () => {
+          for (let 索引 = 0; 索引 < 可迭代元素序列.length; 索引++) {
+            /* 循环内部逻辑 */
+          }
+        });
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      这段代码的重点是第<span class="行内专业名词">5</span>行，<span
+        class="行内代码"
+        >for</span
+      >后面的圆括号内就是我们常说的<span class="行内专业名词">循环三要素</span
+      >。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/循环/for循环效果.webp"
+        alt="for循环效果"
+      />
+    </figure>
+    <p class="分区普通文本">实现了5个元素的依次迭代，整个过程就是循环。</p>
+
+    <h3 class="分区标题 分区3级标题">优缺点</h3>
+    <section class="提醒">
+      <h3 class="提醒标题"><span class="行内代码">for</span>语法的优缺点</h3>
+      <ul class="分区列表">
+        <li class="分区列表项">
+          <span class="行内专业名词">优点：</span>
+          <ul class="分区列表">
+            <li class="分区列表项">
+              语法通用，几乎所有语言都有类似的语法，可谓一通百通。
+            </li>
+            <li class="分区列表项">拥有索引，循环内部经常会用到</li>
+            <li class="分区列表项">
+              使用循环三要素，可以非常方便地控制迭代的范围
+            </li>
+            <li class="分区列表项">性能最优</li>
+          </ul>
+        </li>
+        <li class="分区列表项">
+          <span class="行内专业名词">缺点：</span>
+          <ul class="分区列表">
+            <li class="分区列表项">三要素的语法显得比较繁琐，有时容易出错。</li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">
+      <span class="行内代码">for...of</span>语句
+    </h2>
+
+    <h3 class="分区标题 分区3级标题">语法</h3>
+    <p class="分区普通文本">
+      <span class="行内代码">for...of</span
+      >语法无需使用循环三要素，特别适合遍历所有元素，当然，内部可以使用<span
+        class="行内代码"
+        >break</span
+      >跳出循环。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        for (const 对象 of 可迭代对象序列){
+          //内部逻辑;
+        }
+      </code>
+    </pre>
+
+    <h3 class="分区标题 分区3级标题">范例</h3>
+    <p class="分区普通文本">
+      下面的代码用<span class="行内代码">for...of</span
+      >循环语句，依次迭代每一个元素；采用方框移动的视觉效果来展现迭代的过程：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        const 执行循环按钮 = document.getElementById("执行循环");
+        const 可迭代元素序列 = document.querySelectorAll(".元素");
+
+        执行循环按钮.addEventListener("click", () => {
+          for (const 元素 of 可迭代元素序列) { /* "元素"这个名称可以自己随便起 */
+            /* 循环内部逻辑 */
+          }
+        });
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      问题来了，这种语法内<span class="强调"
+        >没有<span class="行内专业名词">索引</span></span
+      >，这导致我们无法控制白色方框的偏移距离。改进方案如下：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        const 执行循环按钮 = document.getElementById("执行循环");
+        const 可迭代元素序列 = document.querySelectorAll(".元素");
+
+        执行循环按钮.addEventListener("click", () => {
+          for (const [索引, 元素] of 可迭代元素序列.entries()) {
+            /* 循环内部逻辑 */
+          }
+        });
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      此方案的核心就在第<span class="行内专业名词">5</span>行，使用<span
+        class="行内代码"
+        >entries()</span
+      >函数，将可迭代对象转换成一组<span class="行内专业名词">键值对</span
+      >，其中的<span class="行内专业名词">键</span>就是<span
+        class="行内专业名词"
+        >索引</span
+      >。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/循环/for循环效果.webp"
+        alt="for...of循环效果"
+      />
+    </figure>
+
+    <h3 class="分区标题 分区3级标题">优缺点</h3>
+    <section class="提醒">
+      <h3 class="提醒标题">
+        <span class="行内代码">for...of</span>语法的优缺点
+      </h3>
+      <ul class="分区列表">
+        <li class="分区列表项">
+          <span class="行内专业名词">优点：</span>
+          <ul class="分区列表">
+            <li class="分区列表项">无需考虑循环三要素</li>
+            <li class="分区列表项">
+              可用<span class="行内代码">break</span>退出整个循环、用<span
+                class="行内代码"
+                >continue</span
+              >跳过本次循环
+            </li>
+          </ul>
+        </li>
+        <li class="分区列表项">
+          <span class="行内专业名词">缺点：</span>
+          <ul class="分区列表">
+            <li class="分区列表项">
+              性能略低于<span class="行内代码">for</span>语句
+            </li>
+            <li class="分区列表项">
+              缺少<span class="行内专业名词">索引</span>，虽然可用<span
+                class="行内代码"
+                >entries()</span
+              >函数获得索引，但会降低性能
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">
+      <span class="行内代码">forEach</span>实例方法
+    </h2>
+
+    <h3 class="分区标题 分区3级标题">语法</h3>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        数组.forEach(回调函数);
+      </code>
+    </pre>
+    <section class="提醒">
+      <h3 class="提醒标题">回调函数</h3>
+      <p class="分区普通文本">
+        <span class="行内代码">forEach</span>使用的回调函数有3个参数可供使用，<a
+          class="超链接"
+          target="_blank"
+          href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach"
+          >MDN 有详细说明</a
+        >：
+      </p>
+      <figure class="截图容器">
+        <img
+          src="/Images/Blogs/Web前端-原生开发/循环/forEach_回调函数_参数.png"
+          alt="forEach 回调函数的参数"
+        />
+      </figure>
+      <p class="分区普通文本">3个参数并非都要使用，可根据实际情况进行选用。</p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">范例</h3>
+    <p class="分区普通文本">
+      下面的代码用<span class="行内代码">forEach</span
+      >循环语句，依次迭代每一个元素；采用方框移动的视觉效果来展现迭代的过程：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        const 执行循环按钮 = document.getElementById("执行循环");
+        const 可迭代元素序列 = document.querySelectorAll(".元素");
+
+        执行循环按钮.addEventListener("click", () => {
+          可迭代元素序列.forEach((元素) => {
+            /* 本次迭代内部逻辑 */
+          });
+        });
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      又是相同的问题，没有<span class="行内专业名词">索引</span
+      >导致我们无法控制白色方框的偏移距离。幸好，JavaScript
+      为这里的回调函数提供了多个参数，让我们引入第2个参数 ——
+      <span class="行内专业名词">索引</span>：
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        const 执行循环按钮 = document.getElementById("执行循环");
+        const 可迭代元素序列 = document.querySelectorAll(".元素");
+
+        执行循环按钮.addEventListener("click", () => {
+          可迭代元素序列.forEach((元素, 索引) => {
+            /* 本次迭代内部逻辑 */
+          });
+        });
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      回调函数最多可传入3个参数，其中一个就是<span class="行内专业名词"
+        >索引</span
+      >。
+    </p>
+    <figure class="截图容器">
+      <img
+        src="/Images/Blogs/Web前端-原生开发/循环/for循环效果.webp"
+        alt="forEach循环效果"
+      />
+    </figure>
+    <p class="分区普通文本">
+      <span class="行内代码">forEach</span>亦能完成同样的任务。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">谁能调用<span class="行内代码">forEach</span>？</h3>
+      <p class="分区普通文本">假设我们将代码做如下修改：</p>
+      <pre class="line-numbers">
+        <code class="lang-js">
+          const 执行循环按钮 = document.getElementById("执行循环");
+          /* const 可迭代元素序列 = document.querySelectorAll(".元素"); 这句代码改成第3行 */
+          const 可迭代元素序列 = document.getElementsByClassName("元素");
+
+          执行循环按钮.addEventListener("click", () => {
+            可迭代元素序列.forEach((元素, 索引) => {
+              /* 本次迭代内部逻辑 */
+            });
+          });
+        </code>
+      </pre>
+      <p class="分区普通文本">运行之后，你会在浏览器控制台中看到如下错误：</p>
+      <figure class="截图容器">
+        <img
+          src="/Images/Blogs/Web前端-原生开发/循环/HTMLCollection_forEach_error.png"
+          alt="HTMLCollection_forEach_error"
+        />
+      </figure>
+      <p class="分区普通文本">
+        将此错误翻译成中文：<span
+          style="
+            padding: 3px 0 3px 5px;
+            margin-right: 5px;
+            background-color: #4e3534;
+            border-radius: 5px;
+            box-shadow: 1px 1px 1px 0 #0005;
+          "
+          ><span
+            style="
+              font-family: &quot;Jetbrains Mono&quot;, Consolas,
+                &quot;Noto Sans SC&quot;, monospace;
+            "
+            >可迭代元素序列.forEach</span
+          >
+          不是一个方法。</span
+        >这是怎么回事？让我们回顾<span class="行内代码">forEach</span
+        >的定义，看看<a
+          class="超链接"
+          href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach"
+          target="_blank"
+          >MDN 是怎么说的</a
+        >：
+      </p>
+      <figure class="截图容器">
+        <img
+          src="/Images/Blogs/Web前端-原生开发/循环/forEach_MDN.png"
+          alt="forEach MDN界面"
+        />
+      </figure>
+      <p class="分区普通文本">
+        答案很直观：<span class="行内代码">forEach</span>必须由<span
+          class="行内专业名词"
+          >数组</span
+        >调用。那么，<span class="行内代码">getElementsByClassName</span
+        >返回的是什么呢？是一个实时的<span class="行内代码">HTMLCollection</span
+        >，也就是元素的集合，<a
+          class="超链接"
+          href="https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLCollection"
+          target="_blank"
+          >它只包含两个实例方法</a
+        >：
+      </p>
+      <figure class="截图容器">
+        <img
+          src="/Images/Blogs/Web前端-原生开发/循环/HTMLCollection-实例方法.png"
+          alt="HTMLCollection-实例方法"
+        />
+      </figure>
+      <p class="分区普通文本">
+        <span class="行内代码">HTMLCollection</span>并未包含<span
+          class="行内代码"
+          >forEach</span
+        >方法。那就没办法了吗？当然不是。毕竟<span class="行内代码"
+          >HTMLCollection</span
+        >是一个集合，集合转数组可以说是必备功能：
+      </p>
+      <pre class="line-numbers">
+        <code class="lang-js">
+          const 执行循环按钮 = document.getElementById("执行循环");
+          const 可迭代元素序列 = document.getElementsByClassName("元素");
+          
+          执行循环按钮.addEventListener("click", () => {
+            //用 Array.from 将其转换成数组，即可顺利运行代码
+            Array.from(可迭代元素序列).forEach((元素, 索引) => {
+              /* 本次迭代内部逻辑 */
+            });
+          });
+        </code>
+      </pre>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">优缺点</h3>
+    <section class="提醒">
+      <h3 class="提醒标题">
+        <span class="行内代码">forEach</span>回调函数的优缺点
+      </h3>
+      <ul class="分区列表">
+        <li class="分区列表项">
+          <span class="行内专业名词">优点：</span>
+          <ul class="分区列表">
+            <li class="分区列表项">多个参数可供选用，非常灵活</li>
+          </ul>
+        </li>
+        <li class="分区列表项">
+          <span class="行内专业名词">缺点：</span>
+          <ul class="分区列表">
+            <li class="分区列表项">无法中途退出 ，一定会从头到尾全部迭代</li>
+            <li class="分区列表项">性能相对较差</li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+  </article>
+</div>
