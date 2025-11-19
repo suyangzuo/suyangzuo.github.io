@@ -5,6 +5,7 @@
   --按钮字体色: silver;
   --按钮悬停字体色: white;
   --滑块底色: #345;
+  --文件夹列表区垂直偏移: calc(-50% + 260px);
 }
 
 body {
@@ -158,7 +159,7 @@ body:has(.文章列表区.显示) #选择文章 {
   position: fixed;
   top: 50%;
   left: 50%;
-  translate: -50% calc(-50% + 260px);
+  translate: -50% var(--文件夹列表区垂直偏移);
   visibility: hidden;
   opacity: 0;
   z-index: 9999;
@@ -170,7 +171,7 @@ body:has(.文章列表区.显示) #选择文章 {
   top: 50%;
   left: 50%;
   translate: -50% -50%;
-  height: 527px;
+  /* height: 527px; */
   width: fit-content;
   visibility: hidden;
   opacity: 0;
@@ -207,7 +208,7 @@ body:has(.文章列表区.显示) #选择文章 {
   border: solid 1px transparent;
   user-select: none;
   --本体尺寸: 50px;
-  --四角线框尺寸: 8px;
+  --四角线框尺寸: 10px;
   --四角线框间隙: -2px;
   --四角线框厚度: 2px;
   --四角线框偏移: calc(10px / 4);

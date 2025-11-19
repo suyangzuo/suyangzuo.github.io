@@ -1,0 +1,13 @@
+Memory leaks in Electron cause slowdowns or crashes, as apps run continuously (unlike web apps, which refresh). Leaks occur in the main process (unclosed handles, unused listeners) or renderer process (detached DOM, unremoved IPC listeners).​
+Detect leaks with built-in tools. For the renderer process, use Chrome DevTools’ Memory tab: take a baseline snapshot on app startup, then another after actions like opening/closing a window. Compare snapshots—if memory increases and doesn’t drop after garbage collection, a leak exists. Look for retained objects like detached DOM elements.​
+For the main process, use Node.js’s --inspect flag: start the app with electron --inspect=9229 main.js, then connect Chrome DevTools via chrome://inspect. Take heap snapshots to spot leaked objects (e.g., BrowserWindow instances from unclosed windows). The Performance tab also helps: record profiles during repeated actions—steady memory growth indicates a leak.​
+Fix renderer process leaks:​
+Detached DOM: Remove references to elements when unused (e.g., set React state refs to null in useEffect cleanup).​
+Framework state: Use cleanup methods (React’s useEffect cleanup, Vue’s onUnmounted) to cancel subscriptions or listeners.​
+IPC listeners: Remove ipcRenderer.on() calls with removeListener() or removeAllListeners() when components unmount.​
+Fix main process leaks:​
+BrowserWindow instances: Call window.destroy() when windows close (not just window.close()), and clean up listeners/files in the closed event.​
+Unremoved listeners: Use removeListener() for global objects (e.g., app or ipcMain) after events are no longer needed.​
+Node.js handles: Close file descriptors (via fs.close()) or network sockets when done—use process.getActiveHandles() to check for unused handles.​
+Prevent leaks with proactive steps: avoid global variables in the main process, use weak references for non-critical objects, and test leaks during development with regular snapshot checks.​
+In short, detecting leaks with DevTools and fixing them by cleaning up references/listeners ensures your Electron app runs efficiently. Prioritize leak checks early to avoid performance issues in production.

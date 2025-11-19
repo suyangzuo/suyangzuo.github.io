@@ -115,7 +115,7 @@ async function 初始化文章列表() {
   const 文件夹列表 = document.createElement("ul");
   文件夹列表.className = "文件夹列表";
   文件夹列表区.appendChild(文件夹列表);
-
+  let 文章容器高度 = null;
   for (const [文件夹名, 文件列表] of Object.entries(文件夹结构)) {
     if (!文件列表 || 文件列表.length === 0) {
       continue;
@@ -193,13 +193,19 @@ async function 初始化文章列表() {
           await 初始化输入容器(文章内容);
         }
       });
-
+      if (!文章容器高度) {
+        文章容器高度 = 文章容器.offsetHeight;
+      }
       fileIndex++;
     }
 
     const firstArticleContainer = 文章列表.querySelector(".文章容器:first-child");
     const lastArticleContainer = 文章列表.querySelector(".文章容器:last-child");
     const 内边距 = 50;
+    const 文章列表区高度 = 文章容器高度 * 10 + 100;
+    文章列表区.style.height = `${文章列表区高度}px`;
+    const root = document.querySelector(":root");
+    root.style.setProperty("--文件夹列表区垂直偏移", `${文章列表区高度 / 2}px`);
     文章列表.style.width = `${
       lastArticleContainer.offsetLeft + lastArticleContainer.offsetWidth + 内边距 * 2 - firstArticleContainer.offsetLeft
     }px`;
@@ -1392,6 +1398,11 @@ function 更新错误分析图表() {
 
   const 原始字符列表 = Object.keys(错误统计);
   if (原始字符列表.length === 0) {
+    // 重置图表容器高度为默认值
+    const 图表容器 = document.getElementById("错误分析图表");
+    if (图表容器) {
+      图表容器.style.height = "400px";
+    }
     错误分析图表.setOption({
       textStyle: {
         fontFamily: '"Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif',
@@ -1445,6 +1456,17 @@ function 更新错误分析图表() {
     });
   });
 
+  // 根据legend数量动态调整图表容器高度
+  const 图表容器 = document.getElementById("错误分析图表");
+  if (图表容器) {
+    // 基础高度400px，每行legend约40px高度，假设每行约8个legend项目
+    const legend行数 = Math.ceil(实际输入字符列表.length / 8);
+    const 基础高度 = 400;
+    const 每行高度 = 40;
+    const 新高度 = 基础高度 + legend行数 * 每行高度;
+    图表容器.style.height = `${新高度}px`;
+  }
+
   const 选项 = {
     textStyle: {
       fontFamily: '"Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif',
@@ -1465,16 +1487,20 @@ function 更新错误分析图表() {
     },
     legend: {
       data: 实际输入字符列表.map((字符) => `误输入为"${字符 === " " ? "(空格)" : 字符}"`),
-      top: 40,
+      bottom: 10,
       textStyle: {
         color: "#fff",
       },
+      // legend项目较多时会自动换行
     },
     grid: {
       left: "3%",
       right: "4%",
-      bottom: "3%",
-      top: "20%",
+      // 根据legend项目数量动态计算底部空间
+      // 假设每行约8个legend项目，每行约30-35px高度
+      // 计算需要的行数，每行按8%空间计算，最小15%，最大不超过35%
+      bottom: `${Math.min(25, Math.max(15, Math.ceil(实际输入字符列表.length / 8) * 8))}%`, // 为底部legend留出空间（减小以缩小与legend的距离）
+      top: "10%", // 为顶部title留出空间（减小以增大Y轴高度）
       containLabel: true,
     },
     xAxis: {
