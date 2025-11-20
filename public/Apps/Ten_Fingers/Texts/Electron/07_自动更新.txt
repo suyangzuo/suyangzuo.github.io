@@ -1,12 +1,12 @@
 Automatic updates keep Electron apps secure and feature-rich, avoiding the hassle of manual downloads. electron-updater simplifies this process, handling update checks, background downloads, and installation prompts.​
 Start by setting up electron-updater: install it as a production dependency with npm install electron-updater --save. Configure the update server—GitHub Releases is the most common choice. Add a publish property to package.json pointing to your repo: "publish": { "provider": "github", "owner": "your-username", "repo": "your-app-repo" }. For AWS S3 or custom servers, adjust the provider and add details like bucket or url.​
 Add update logic to the main process. Import autoUpdater from electron-updater, then configure event listeners:​
-autoUpdater.checkForUpdates(): Trigger on app startup or via a “Check for Updates” button.​
+autoUpdater.checkForUpdates(): Trigger on app startup or via a "Check for Updates" button.​
 update-available: Show a notification that an update is downloading.​
 download-progress: Send progress data (percent, speed) to the renderer process via IPC to display a progress bar.​
 update-downloaded: Use dialog.showMessageBox() to prompt users to restart. Call autoUpdater.quitAndInstall() if they agree.​
 Handle edge cases: catch error events (e.g., offline) to show user-friendly messages. electron-updater automatically resumes interrupted downloads. For enterprise apps, use autoUpdater.setFeedURL() to point to internal servers.​
-Test thoroughly with two app versions: publish a “new” version (e.g., 1.0.1) to your server, install the “old” version (1.0.0), and verify update detection, download, and installation. Test offline mode and user cancellation to ensure reliability.​
+Test thoroughly with two app versions: publish a "new" version (e.g., 1.0.1) to your server, install the "old" version (1.0.0), and verify update detection, download, and installation. Test offline mode and user cancellation to ensure reliability.​
 Customize the experience with a branded UI in the renderer process (e.g., a React progress bar) instead of default dialogs. Use IPC to sync progress and trigger restarts.​
 Security is key: sign app packages with a code-signing certificate to let electron-updater verify updates. Host updates on HTTPS to prevent tampering. Communicate update details (changelogs, critical fixes) to encourage users to update—make security updates mandatory if needed.​
 In summary, electron-updater streamlines automatic updates. Configure the server, handle events, test rigorously, and prioritize security to keep users on the latest version.

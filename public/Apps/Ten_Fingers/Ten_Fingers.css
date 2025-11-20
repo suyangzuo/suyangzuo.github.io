@@ -257,6 +257,10 @@ body:has(.文章列表区.显示) #选择文章 {
   object-fit: contain;
 }
 
+.文件夹图标[src="/Apps/Ten_Fingers/SVG/MySQL.svg"] {
+  filter: brightness(2);
+}
+
 .文章列表 {
   padding: 50px;
   height: 100%;
@@ -751,12 +755,7 @@ input[type="text"]:hover {
 }
 
 .输入区:has(.隐藏输入框:focus) .原始字符.空格.当前 {
-  background: linear-gradient(
-    to top,
-    transparent,
-    rgba(255, 255, 255, 0.5) 50%,
-    transparent
-  );
+  background: linear-gradient(to top, transparent, rgba(255, 255, 255, 0.5) 50%, transparent);
   color: #fff;
 }
 

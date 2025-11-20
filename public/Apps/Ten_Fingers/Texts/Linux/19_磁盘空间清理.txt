@@ -7,6 +7,6 @@ Temporary files stored in /tmp and /var/tmp are designed to be short-lived, but 
 Unused applications and large user files (like old downloads, backups, or duplicate documents) are other targets for cleanup. Use sudo apt remove packagename (Debian) or sudo dnf remove packagename (RHEL) to uninstall apps you no longer use (e.g., old text editors or games). For user files, check your Downloads, Documents, and Pictures folders—delete duplicate files (use tools like fdupes if needed) or move large files to an external hard drive to free up space on your main disk.​
 Common disk cleanup scenarios include:​
 Freeing space to install a new app: If df -h shows low free space, run apt autoremove and apt clean (or equivalent for RHEL) to quickly reclaim space.​
-Resolving a “disk full” error: Delete old logs and temporary files first, then uninstall unused apps or move large user files to external storage.​
+Resolving a "disk full" error: Delete old logs and temporary files first, then uninstall unused apps or move large user files to external storage.​
 Routine maintenance: Schedule a monthly cleanup (using Cron) to run apt autoremove, apt clean, and delete old logs—preventing space issues before they occur.​
 In short, regular disk space cleanup is essential for Linux system health. By using df and du to identify space hogs, and safely deleting cached packages, old logs, temporary files, and unused apps, you can keep your system's storage efficient and avoid performance issues caused by low disk space.
