@@ -627,7 +627,7 @@ input[type="text"]:hover {
 }
 
 .结果区头部标签 {
-  color: #888;
+  color: #aaa;
   font-size: 16px;
 }
 
@@ -635,6 +635,7 @@ input[type="text"]:hover {
   color: #fff;
   font-size: 16px;
   font-weight: 500;
+  --单位: #678;
 }
 
 .结果区头部值 .时间数字 {
@@ -642,7 +643,7 @@ input[type="text"]:hover {
 }
 
 .结果区头部值 .时间单位 {
-  color: #abc;
+  color: var(--单位);
   margin: 0 2px;
 }
 
@@ -651,22 +652,23 @@ input[type="text"]:hover {
 }
 
 .结果区头部值 .用时小时 {
-  color: #abc;
+  color: var(--单位);
   margin: 0 2px;
 }
 
 .结果区头部值 .用时分钟 {
-  color: #abc;
+  color: var(--单位);
   margin: 0 2px;
 }
 
 .结果区头部值 .用时秒 {
-  color: #abc;
+  color: var(--单位);
   margin-left: 2px;
 }
 
-.结果区头部值 .正确率百分号 {
-  color: #abc;
+.结果区头部值 .正确率百分号,
+.结果区头部值 .完成率百分号 {
+  color: var(--单位);
   margin-left: 2px;
 }
 
@@ -679,7 +681,7 @@ input[type="text"]:hover {
 }
 
 .结果区头部值 .速度单位 {
-  color: #abc;
+  color: var(--单位);
 }
 
 .结果区标题 {

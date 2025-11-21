@@ -1198,6 +1198,20 @@ function 初始化结果区() {
         </div>
         <div class="结果区头部行">
           <div class="结果区头部项">
+            <span class="结果区头部标签">主题：</span><span class="结果区头部值" id="结果区主题"></span>
+          </div>
+          <div class="结果区头部项">
+            <span class="结果区头部标签">文章：</span><span class="结果区头部值" id="结果区文章"></span>
+          </div>
+          <div class="结果区头部项">
+            <span class="结果区头部标签">字符数量：</span><span class="结果区头部值" id="结果区字符数量"></span>
+          </div>
+          <div class="结果区头部项">
+            <span class="结果区头部标签">完成率：</span><span class="结果区头部值" id="结果区完成率"></span>
+          </div>
+        </div>
+        <div class="结果区头部行">
+          <div class="结果区头部项">
             <span class="结果区头部标签">测试起始时间：</span><span class="结果区头部值" id="结果区起始时间"></span>
           </div>
           <div class="结果区头部项">
@@ -1301,6 +1315,40 @@ function 更新结果区头部信息() {
   const 测试者姓名元素 = 结果区元素.querySelector("#结果区测试者姓名");
   if (测试者姓名元素) {
     测试者姓名元素.textContent = 测试者姓名 || "未知";
+  }
+
+  // 更新主题（文件夹名称）
+  const 主题元素 = 结果区元素.querySelector("#结果区主题");
+  if (主题元素) {
+    主题元素.textContent = 当前文件夹 || "未知";
+  }
+
+  // 更新文章文件名
+  const 文章元素 = 结果区元素.querySelector("#结果区文章");
+  if (文章元素) {
+    文章元素.textContent = (当前文章 || "未知").replace(/_/g, " ");
+  }
+
+  // 更新字符数量
+  const 字符数量元素 = 结果区元素.querySelector("#结果区字符数量");
+  if (字符数量元素) {
+    字符数量元素.textContent = 总字符数 || 0;
+  }
+
+  // 更新完成率
+  const 完成率元素 = 结果区元素.querySelector("#结果区完成率");
+  if (完成率元素) {
+    if (总字符数 > 0) {
+      const 进度 = (当前输入索引 / 总字符数) * 100;
+      const 格式化结果 = 格式化百分比(进度);
+      let 进度文本 = 格式化结果.整数部分;
+      if (格式化结果.需要显示小数点 && 格式化结果.小数部分 !== null) {
+        进度文本 += "." + 格式化结果.小数部分;
+      }
+      完成率元素.innerHTML = `<span class="完成率数字">${进度文本}</span><span class="完成率百分号">%</span>`;
+    } else {
+      完成率元素.innerHTML = `<span class="完成率数字">0</span><span class="完成率百分号">%</span>`;
+    }
   }
 
   // 更新测试起始时间
@@ -1484,6 +1532,19 @@ function 更新错误分析图表() {
       axisPointer: {
         type: "shadow",
       },
+      formatter: function(params) {
+        let result = `${params[0].axisValueLabel}<br/>`;
+        let hasNonZero = false;
+
+        params.forEach(function(item) {
+          if (item.value > 0) {
+            result += `${item.marker}${item.seriesName}: ${item.value}<br/>`;
+            hasNonZero = true;
+          }
+        });
+
+        return hasNonZero ? result : `${params[0].axisValueLabel}<br/>无错误输入`;
+      }
     },
     legend: {
       data: 实际输入字符列表.map((字符) => `误输入为"${字符 === " " ? "(空格)" : 字符}"`),
