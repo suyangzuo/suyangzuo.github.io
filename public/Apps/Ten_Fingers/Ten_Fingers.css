@@ -795,7 +795,7 @@ input[type="text"]:hover {
 }
 
 .时间显示 {
-  font-family: "Google Sans Code", "JetBrains Mono", "Google Sans Code", monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
   text-align: center;
   font-weight: 500;
 }
@@ -848,7 +848,7 @@ input[type="text"]:hover {
   z-index: 1;
   font-size: 14px;
   font-weight: 600;
-  font-family: "Google Sans Code", "JetBrains Mono", "Google Sans Code", monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
   display: flex;
   align-items: baseline;
   justify-content: center;
@@ -865,7 +865,7 @@ input[type="text"]:hover {
 .字符数显示 {
   font-size: 14px;
   text-align: center;
-  font-family: "Google Sans Code", "JetBrains Mono", "Google Sans Code", monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
   color: #678;
 }
 
@@ -882,7 +882,7 @@ input[type="text"]:hover {
   flex-direction: column;
   gap: 10px;
   font-size: 14px;
-  font-family: "Google Sans Code", "JetBrains Mono", "Google Sans Code", monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 .错误数据项 {
