@@ -41,6 +41,7 @@ class 坐标系教程 {
       缩放角: null,
       缩放锚点: { x: 0, y: 0 }, // 局部坐标系中的锚点位置
       Alt键按下: false, // Alt键状态
+      鼠标已悬停: false,
     };
 
     // 显示选项
@@ -54,7 +55,7 @@ class 坐标系教程 {
 
     // 从sessionStorage加载复选框状态
     this.从SessionStorage加载复选框状态();
-    
+
     // 设置复选框的初始状态
     this.复选框.坐标参考线.checked = this.显示选项.坐标参考线;
     this.复选框.坐标信息.checked = this.显示选项.坐标信息;
@@ -116,7 +117,7 @@ class 坐标系教程 {
       this.绘制场景();
     });
   }
-  
+
   // 从sessionStorage加载复选框状态
   从SessionStorage加载复选框状态() {
     try {
@@ -139,7 +140,7 @@ class 坐标系教程 {
       // 如果出错，保持默认值true
     }
   }
-  
+
   // 保存复选框状态到sessionStorage
   保存复选框状态到SessionStorage() {
     try {
@@ -312,6 +313,7 @@ class 坐标系教程 {
       const 半高 = 矩形.高度 / 2;
       const 边界阈值 = 10;
 
+      this.交互状态.鼠标已悬停 = false;
       // 检查是否在旋转句柄上
       if (Math.abs(局部X) < 边界阈值 && Math.abs(局部Y + 半高 + 20) < 边界阈值) {
         this.canvas.style.cursor = "grab";
@@ -345,6 +347,7 @@ class 坐标系教程 {
       // 检查是否在矩形内部
       else if (Math.abs(局部X) <= 半宽 && Math.abs(局部Y) <= 半高) {
         this.canvas.style.cursor = "grab";
+        this.交互状态.鼠标已悬停 = true;
       } else {
         this.canvas.style.cursor = "default";
       }
@@ -653,7 +656,7 @@ class 坐标系教程 {
     this.ctx.rotate((矩形.旋转角度 * Math.PI) / 180);
 
     // 绘制矩形
-    this.ctx.fillStyle = "rgba(79, 195, 247, 0.15)";
+    this.ctx.fillStyle = this.交互状态.鼠标已悬停 ? "rgba(79, 195, 247, 0.2)" : "rgba(79, 195, 247, 0.075)";
     this.ctx.strokeStyle = "#4fc3f7";
     this.ctx.lineWidth = 2;
     this.ctx.fillRect(-矩形.宽度 / 2, -矩形.高度 / 2, 矩形.宽度, 矩形.高度);
@@ -1023,7 +1026,7 @@ class 坐标系教程 {
       高度: 200,
       旋转角度: 0,
     };
-    
+
     // 重置交互状态
     this.交互状态 = {
       正在拖动: false,
@@ -1038,13 +1041,13 @@ class 坐标系教程 {
       缩放锚点: { x: 0, y: 0 },
       Alt键按下: false,
     };
-    
+
     // 重置鼠标坐标
     this.鼠标坐标 = {
       x: null,
       y: null,
     };
-    
+
     // 重新绘制场景
     this.绘制场景();
   }
