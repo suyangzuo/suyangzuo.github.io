@@ -6,6 +6,8 @@ class 坐标系教程 {
     this.canvas.width = this.canvas.offsetWidth * this.dpr;
     this.canvas.height = this.canvas.offsetHeight * this.dpr;
     this.ctx.scale(this.dpr, this.dpr);
+    this.重置按钮 = document.querySelector(".重置按钮");
+    this.重置按钮.addEventListener("click", () => this.重置());
     this.复选框 = {
       坐标参考线: document.getElementById("坐标参考线"),
       坐标信息: document.getElementById("坐标信息"),
@@ -50,6 +52,14 @@ class 坐标系教程 {
       坐标背景: true,
     };
 
+    // 从sessionStorage加载复选框状态
+    this.从SessionStorage加载复选框状态();
+    
+    // 设置复选框的初始状态
+    this.复选框.坐标参考线.checked = this.显示选项.坐标参考线;
+    this.复选框.坐标信息.checked = this.显示选项.坐标信息;
+    this.复选框.坐标背景.checked = this.显示选项.坐标背景;
+
     // 初始绘制
     this.绘制场景();
 
@@ -89,19 +99,59 @@ class 坐标系教程 {
       this.交互状态.Alt键按下 = false;
     });
 
-    // 监听复选框状态变化，重新绘制场景
+    // 监听复选框状态变化，重新绘制场景并保存到sessionStorage
     this.复选框.坐标参考线.addEventListener("change", () => {
       this.显示选项.坐标参考线 = this.复选框.坐标参考线.checked;
+      this.保存复选框状态到SessionStorage();
       this.绘制场景();
     });
     this.复选框.坐标信息.addEventListener("change", () => {
       this.显示选项.坐标信息 = this.复选框.坐标信息.checked;
+      this.保存复选框状态到SessionStorage();
       this.绘制场景();
     });
     this.复选框.坐标背景.addEventListener("change", () => {
       this.显示选项.坐标背景 = this.复选框.坐标背景.checked;
+      this.保存复选框状态到SessionStorage();
       this.绘制场景();
     });
+  }
+  
+  // 从sessionStorage加载复选框状态
+  从SessionStorage加载复选框状态() {
+    try {
+      const 保存的状态 = sessionStorage.getItem("canvasCoordinateCheckboxStates");
+      if (保存的状态) {
+        const 解析状态 = JSON.parse(保存的状态);
+        // 只更新存在的字段，使用默认值true
+        if (解析状态.坐标参考线 !== undefined) {
+          this.显示选项.坐标参考线 = 解析状态.坐标参考线;
+        }
+        if (解析状态.坐标信息 !== undefined) {
+          this.显示选项.坐标信息 = 解析状态.坐标信息;
+        }
+        if (解析状态.坐标背景 !== undefined) {
+          this.显示选项.坐标背景 = 解析状态.坐标背景;
+        }
+      }
+    } catch (e) {
+      console.error("加载sessionStorage状态失败:", e);
+      // 如果出错，保持默认值true
+    }
+  }
+  
+  // 保存复选框状态到sessionStorage
+  保存复选框状态到SessionStorage() {
+    try {
+      const 要保存的状态 = {
+        坐标参考线: this.显示选项.坐标参考线,
+        坐标信息: this.显示选项.坐标信息,
+        坐标背景: this.显示选项.坐标背景,
+      };
+      sessionStorage.setItem("canvasCoordinateCheckboxStates", JSON.stringify(要保存的状态));
+    } catch (e) {
+      console.error("保存到sessionStorage失败:", e);
+    }
   }
 
   获取鼠标坐标(e) {
@@ -397,13 +447,17 @@ class 坐标系教程 {
             this.矩形.宽度 = Math.max(50, Math.abs(被拖拽点局部X) * 2);
           } else {
             // 正常模式：以相对边中点为锚点
+            // 计算锚点的世界坐标
             const 锚点世界X = 缩放起始.矩形中心X + 锚点.x * Math.cos(角度) - 锚点.y * Math.sin(角度);
             const 锚点世界Y = 缩放起始.矩形中心Y + 锚点.x * Math.sin(角度) + 锚点.y * Math.cos(角度);
-            const 被拖拽点世界X = 缩放起始.矩形中心X + 被拖拽点局部X * Math.cos(角度) - 被拖拽点局部Y * Math.sin(角度);
-            const 被拖拽点世界Y = 缩放起始.矩形中心Y + 被拖拽点局部X * Math.sin(角度) + 被拖拽点局部Y * Math.cos(角度);
-            // 新中心是世界坐标系中锚点和被拖拽点的中点，但Y坐标保持不变
-            this.矩形.x = (锚点世界X + 被拖拽点世界X) / 2;
-            this.矩形.y = 缩放起始.矩形中心Y; // Y坐标保持不变
+
+            // 计算新的中心点：基于锚点位置偏移一半宽度（考虑方向）
+            const 新的中心到锚点向量X = ((this.交互状态.缩放边 === "右" ? 1 : -1) * 新宽度) / 2;
+            const 新的中心到锚点向量Y = 0;
+
+            // 将局部向量转换为世界坐标系
+            this.矩形.x = 锚点世界X + 新的中心到锚点向量X * Math.cos(角度) - 新的中心到锚点向量Y * Math.sin(角度);
+            this.矩形.y = 锚点世界Y + 新的中心到锚点向量X * Math.sin(角度) + 新的中心到锚点向量Y * Math.cos(角度);
             this.矩形.宽度 = 新宽度;
           }
         } else {
@@ -415,13 +469,17 @@ class 坐标系教程 {
             this.矩形.高度 = Math.max(50, Math.abs(被拖拽点局部Y) * 2);
           } else {
             // 正常模式：以相对边中点为锚点
+            // 计算锚点的世界坐标
             const 锚点世界X = 缩放起始.矩形中心X + 锚点.x * Math.cos(角度) - 锚点.y * Math.sin(角度);
             const 锚点世界Y = 缩放起始.矩形中心Y + 锚点.x * Math.sin(角度) + 锚点.y * Math.cos(角度);
-            const 被拖拽点世界X = 缩放起始.矩形中心X + 被拖拽点局部X * Math.cos(角度) - 被拖拽点局部Y * Math.sin(角度);
-            const 被拖拽点世界Y = 缩放起始.矩形中心Y + 被拖拽点局部X * Math.sin(角度) + 被拖拽点局部Y * Math.cos(角度);
-            // 新中心是世界坐标系中锚点和被拖拽点的中点，但X坐标保持不变
-            this.矩形.x = 缩放起始.矩形中心X; // X坐标保持不变
-            this.矩形.y = (锚点世界Y + 被拖拽点世界Y) / 2;
+
+            // 计算新的中心点：基于锚点位置偏移一半高度（考虑方向）
+            const 新的中心到锚点向量X = 0;
+            const 新的中心到锚点向量Y = ((this.交互状态.缩放边 === "下" ? 1 : -1) * 新高度) / 2;
+
+            // 将局部向量转换为世界坐标系
+            this.矩形.x = 锚点世界X + 新的中心到锚点向量X * Math.cos(角度) - 新的中心到锚点向量Y * Math.sin(角度);
+            this.矩形.y = 锚点世界Y + 新的中心到锚点向量X * Math.sin(角度) + 新的中心到锚点向量Y * Math.cos(角度);
             this.矩形.高度 = 新高度;
           }
         }
@@ -954,6 +1012,41 @@ class 坐标系教程 {
 
   清空画布() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
+  重置() {
+    // 恢复矩形初始状态
+    this.矩形 = {
+      x: this.canvas.offsetWidth / 2,
+      y: this.canvas.offsetHeight / 2,
+      宽度: 300,
+      高度: 200,
+      旋转角度: 0,
+    };
+    
+    // 重置交互状态
+    this.交互状态 = {
+      正在拖动: false,
+      正在缩放: false,
+      正在旋转: false,
+      拖动偏移: { x: 0, y: 0 },
+      缩放起始: { 宽度: 0, 高度: 0, x: 0, y: 0, 矩形中心X: 0, 矩形中心Y: 0 },
+      旋转起始: { 角度: 0, x: 0, y: 0 },
+      鼠标位置: { x: 0, y: 0 },
+      缩放边: null,
+      缩放角: null,
+      缩放锚点: { x: 0, y: 0 },
+      Alt键按下: false,
+    };
+    
+    // 重置鼠标坐标
+    this.鼠标坐标 = {
+      x: null,
+      y: null,
+    };
+    
+    // 重新绘制场景
+    this.绘制场景();
   }
 }
 
