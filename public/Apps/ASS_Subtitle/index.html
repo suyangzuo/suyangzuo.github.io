@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>ASS 字幕解析器</title>
+    <link rel="icon" href="/Images/Apps/ASS字幕.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Titillium+Web&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Roboto+Mono&family=M+PLUS+Code+Latin&family=Ubuntu+Mono&family=M+PLUS+1+Code:wght@100..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./Pickr/monolith.min.css" />
+    <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
+    <link rel="stylesheet" type="text/css" href="/Styles/top-banner-common.css" />
+    <link rel="stylesheet" href="../apps-common-control.css" />
+    <link rel="stylesheet" href="./ASS_Subtitle.css" />
+    <script src="./Pickr/pickr.min.js"></script>
+    <script src="/Scripts/d0483e3bd3.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <script src="/Scripts/top-banner.js" defer></script>
+    <script src="./ASS_Subtitle.js" defer></script>
+  </head>
+  <body>
+    <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
+    <script src="/Scripts/html-include.js" target="../apps-common-control.html" position="afterbegin"></script>
+    <div id="总区">
+      <div id="文件操作区">
+        <label class="文件选择标签">
+          <input type="file" id="文件选择" accept=".ass" />
+          <span class="文件选择按钮">打开文件</span>
+        </label>
+        <div class="文件名显示区">
+          <span id="文件名">未打开文件</span>
+        </div>
+        <label class="自动保存标签">
+          <input type="checkbox" id="自动保存复选框" />
+          <span>自动保存</span>
+        </label>
+        <button id="保存按钮" class="保存按钮">保存</button>
+      </div>
+      <div id="ASS区"></div>
+    </div>
+  </body>
+</html>
