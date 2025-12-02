@@ -3,10 +3,9 @@
 }
 
 .禁用 {
-  filter: brightness(0.25);
+  filter: brightness(0.35);
   pointer-events: none;
   cursor: not-allowed;
-  opacity: 0.5;
 }
 
 #总区 {
@@ -22,7 +21,6 @@
   color: #e0e0e0;
 }
 
-/* 文件操作区 */
 #文件操作区 {
   width: 250px;
   height: max(500px, calc(100vh - 85px));
@@ -51,7 +49,7 @@
 .文件选择按钮 {
   display: block;
   padding: 12px 20px;
-  background: linear-gradient(135deg, #4a8a, #397);
+  background: linear-gradient(135deg, rgba(53, 132, 105, 0.667), rgb(36, 114, 88));
   color: white;
   border-radius: 6px;
   text-align: center;
@@ -61,7 +59,7 @@
 }
 
 .文件选择标签:hover .文件选择按钮 {
-  background: linear-gradient(135deg, #5a9a, #4a8);
+  background: linear-gradient(135deg, rgba(76, 152, 137, 0.667), rgb(59, 147, 118));
   box-shadow: 0 0 12px rgba(74, 168, 136, 0.4);
 }
 
@@ -94,7 +92,7 @@
   display: block;
   width: 100%;
   padding: 12px 20px;
-  background: linear-gradient(135deg, #4a8a, #397);
+  background: linear-gradient(135deg, rgba(53, 132, 105, 0.667), rgb(36, 114, 88));
   color: white;
   border: none;
   border-radius: 6px;
@@ -107,7 +105,7 @@
 }
 
 .保存按钮:hover:not(.禁用) {
-  background: linear-gradient(135deg, #5a9a, #4a8);
+  background: linear-gradient(135deg, rgba(76, 152, 137, 0.667), rgb(59, 147, 118));
   box-shadow: 0 0 12px rgba(74, 168, 136, 0.4);
 }
 
@@ -131,7 +129,7 @@
 }
 
 #自动保存复选框:checked {
-  background: linear-gradient(135deg, #4a8 0%, #397 100%);
+  background: linear-gradient(135deg, rgb(39, 99, 79) 0%, rgb(28, 90, 69) 100%);
   border-color: #4a8;
   box-shadow: 0 0 12px rgba(74, 168, 136, 0.5);
 }
@@ -149,11 +147,10 @@
   border-radius: 1px;
 }
 
-/* ASS区 */
 #ASS区 {
   flex: 1;
   overflow-y: auto;
-  padding: 0 100px 0 0;
+  padding: 0 25px 0 0;
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -161,7 +158,11 @@
 
 .部分区 {
   border-radius: 10px;
-  padding: 20px;
+  padding: 20px 20px 20px 0;
+}
+
+.部分区-V4-Styles {
+  overflow-x: auto;
 }
 
 .部分标题 {
@@ -171,6 +172,8 @@
   margin-bottom: 20px;
   padding-bottom: 10px;
   border-bottom: 2px solid rgba(74, 168, 136, 0.3);
+  position: sticky;
+  left: 0;
 }
 
 .属性组 {
@@ -214,7 +217,6 @@
   gap: 10px;
 }
 
-/* 文本框 */
 .属性文本框 {
   flex: 1;
   padding: 8px 12px;
@@ -239,7 +241,6 @@
   box-shadow: 0 0 8px rgba(74, 168, 136, 0.75);
 }
 
-/* 数字框 */
 .数字框容器 {
   position: relative;
   display: flex;
@@ -299,7 +300,6 @@
   background-color: rgba(74, 168, 136, 0.5);
 }
 
-/* 单选框组 */
 .单选框组 {
   display: flex;
   flex-wrap: wrap;
@@ -361,7 +361,6 @@
   cursor: pointer;
 }
 
-/* 滚动条样式 */
 #ASS区::-webkit-scrollbar {
   width: 8px;
 }
@@ -380,27 +379,42 @@
   background: rgba(74, 168, 136, 0.7);
 }
 
-.样式表格容器::-webkit-scrollbar {
+.部分区::-webkit-scrollbar {
   height: 6px;
 }
 
-/* 样式表格 */
+.部分区::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 5px;
+}
+
 .样式表格容器 {
-  overflow-x: auto;
   margin-top: 10px;
   width: fit-content;
-  border-radius: 6px 6px 0 0;
-  outline: solid 1px #fff5;
+  border: solid 1px #fff5;
 }
 
 .样式表格 {
   border-collapse: collapse;
   border-radius: 6px 6px 0 0;
-  overflow: hidden;
 }
 
 .表头行 {
-  background-color: rgba(74, 168, 136, 0.225);
+  background-color: rgb(52, 81, 68);
+}
+
+.表头行 > .单元格:first-child {
+  background-color: rgb(52, 81, 68);
+}
+
+.数据行.奇数行 > .单元格:first-child {
+  background-color: #2a2a2a;
+  z-index: 1001;
+}
+
+.数据行.偶数行 > .单元格:first-child {
+  background-color: #121212;
+  z-index: 1001;
 }
 
 .单元格 {
@@ -409,8 +423,11 @@
   user-select: none;
 }
 
-.数据行 > .单元格:first-child {
+.数据行 > .单元格:first-child,
+.表头行 > .单元格:first-child {
   border-right: 2px solid rgba(74, 168, 136, 0.5);
+  position: sticky;
+  left: 0;
 }
 
 .单元格 input {
@@ -458,6 +475,10 @@
   background-color: rgb(16, 51, 91) !important;
 }
 
+.数据行:hover > .单元格:first-child {
+  background-color: rgb(16, 51, 91);
+}
+
 .数据单元格 {
   border-right: 1px solid rgba(255, 255, 255, 0.2);
   vertical-align: middle;
@@ -467,7 +488,6 @@
   border-right: none;
 }
 
-/* 表格输入框 */
 .表格输入框包装 {
   width: 100%;
   height: 100%;
@@ -502,7 +522,6 @@
   z-index: 1000;
 }
 
-/* 表格数字框 */
 .表格数字框包装 {
   width: 100%;
   height: 100%;
@@ -576,7 +595,6 @@
   position: relative;
 }
 
-/* 隐藏Pickr按钮，不占用布局 */
 .pickr {
   position: absolute !important;
   width: 0 !important;
@@ -590,7 +608,6 @@
   display: none !important;
 }
 
-/* 颜色选择按钮样式 */
 .颜色选择按钮 {
   position: absolute;
   width: 0;
@@ -602,7 +619,6 @@
   pointer-events: none;
 }
 
-/* Pickr颜色选择器面板样式 */
 .pcr-app {
   position: fixed !important;
   z-index: 10001 !important;
@@ -646,7 +662,6 @@
   box-shadow: 0 0 0 1px rgb(255, 255, 255, 0.85), 0 0 0 1px var(--pcr-color);
 }
 
-/* 颜色选择器遮罩层容器 */
 .颜色选择器遮罩容器 {
   position: fixed;
   top: 0;
@@ -657,7 +672,6 @@
   pointer-events: none;
 }
 
-/* 颜色选择器遮罩层 */
 .颜色选择器遮罩 {
   position: fixed;
   background-color: rgba(0, 0, 0, 0.65);
@@ -666,7 +680,6 @@
   transition: opacity 0.3s ease;
 }
 
-/* 单元格遮罩层（透明，用于阻止交互） */
 .单元格遮罩 {
   position: fixed;
   background-color: transparent;
