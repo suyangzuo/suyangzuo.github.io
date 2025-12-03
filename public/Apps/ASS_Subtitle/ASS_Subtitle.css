@@ -2,7 +2,7 @@
   --高亮行列色: rgb(16, 51, 91);
 }
 
-body:has(.pcr-app) {
+body:has(.pcr-app.visible) {
   overflow: hidden;
 }
 
