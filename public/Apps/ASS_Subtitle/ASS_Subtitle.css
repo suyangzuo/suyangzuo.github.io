@@ -1,5 +1,9 @@
-* {
-  box-sizing: border-box;
+:root {
+  --高亮行列色: rgb(16, 51, 91);
+}
+
+body:has(.pcr-app) {
+  overflow: hidden;
 }
 
 .禁用 {
@@ -8,34 +12,51 @@
   cursor: not-allowed;
 }
 
+.隐藏 {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
 #总区 {
   position: relative;
   width: clamp(800px, 100vw, 2400px);
-  height: clamp(600px, calc(100vh - 5px), 3200px);
+  min-height: 100vh;
   margin: 0 auto;
-  padding: 65px 0 50px 0;
+  padding: 65px 0 160px 0;
   font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
   display: flex;
   gap: 20px;
-  background-color: #1a1a1a;
+
   color: #e0e0e0;
 }
 
 #文件操作区 {
-  width: 250px;
-  height: max(500px, calc(100vh - 85px));
+  position: fixed;
+  z-index: 99999;
+  bottom: 15px;
+  left: 50%;
+  translate: -50% 0;
   flex-shrink: 0;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  border-radius: 1000px;
+  backdrop-filter: blur(10px);
   gap: 20px;
-  padding: 20px;
-  border-right: solid 1px #fff3;
+  padding: 8px;
+  background-color: #000c;
 }
 
 .文件选择标签 {
   position: relative;
-  display: block;
+  display: flex;
   cursor: pointer;
+}
+
+#文件操作区 button,
+#文件操作区 label {
+  border-radius: 999px;
+  overflow: hidden;
 }
 
 #文件选择 {
@@ -49,34 +70,38 @@
 .文件选择按钮 {
   display: block;
   padding: 12px 20px;
-  background: linear-gradient(135deg, rgba(53, 132, 105, 0.667), rgb(36, 114, 88));
+  /* background: linear-gradient(135deg, rgba(53, 132, 105, 0.667), rgb(36, 114, 88)); */
+  background: linear-gradient(135deg, rgba(53, 106, 132, 0.667), rgb(36, 72, 114));
   color: white;
-  border-radius: 6px;
   text-align: center;
-  font-size: 16px;
+  font-size: 14px;
   transition: all 0.2s ease;
   user-select: none;
 }
 
 .文件选择标签:hover .文件选择按钮 {
-  background: linear-gradient(135deg, rgba(76, 152, 137, 0.667), rgb(59, 147, 118));
+  background: linear-gradient(135deg, rgba(76, 108, 152, 0.667), rgb(59, 81, 147));
   box-shadow: 0 0 12px rgba(74, 168, 136, 0.4);
 }
 
 .文件名显示区 {
-  padding: 12px;
-  background-color: rgba(255, 255, 255, 0.05);
+  position: fixed;
+  bottom: calc(100vh - 110px);
+  left: 50%;
+  translate: -50% 0;
+  padding: 5px 10px;
+  backdrop-filter: blur(10px);
+  background-color: rgba(215, 215, 215, 0.9);
   border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  min-height: 50px;
   display: flex;
   align-items: center;
 }
 
 #文件名 {
   font-size: 14px;
-  color: #b0b0b0;
+  color: black;
   word-break: break-all;
+  text-wrap: nowrap;
 }
 
 .自动保存标签 {
@@ -85,19 +110,18 @@
   gap: 10px;
   cursor: pointer;
   user-select: none;
-  font-size: 16px;
+  font-size: 14px;
+  padding: 0 10px;
 }
 
 .保存按钮 {
   display: block;
-  width: 100%;
   padding: 12px 20px;
   background: linear-gradient(135deg, rgba(53, 132, 105, 0.667), rgb(36, 114, 88));
   color: white;
   border: none;
-  border-radius: 6px;
   text-align: center;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
   transition: all 0.2s ease;
   user-select: none;
@@ -107,6 +131,24 @@
 .保存按钮:hover:not(.禁用) {
   background: linear-gradient(135deg, rgba(76, 152, 137, 0.667), rgb(59, 147, 118));
   box-shadow: 0 0 12px rgba(74, 168, 136, 0.4);
+}
+
+.关闭文件按钮 {
+  display: block;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, rgba(244, 67, 54, 0.667), rgb(198, 40, 40));
+  color: white;
+  border: none;
+  text-align: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.关闭文件按钮:hover {
+  background: linear-gradient(135deg, rgba(255, 87, 68, 0.667), rgb(229, 57, 53));
+  box-shadow: 0 0 12px rgba(244, 67, 54, 0.4);
 }
 
 #自动保存复选框 {
@@ -150,7 +192,7 @@
 #ASS区 {
   flex: 1;
   overflow-y: auto;
-  padding: 0 25px 0 0;
+  padding: 0 25px;
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -209,6 +251,11 @@
   font-size: 12px;
   color: #888;
   font-family: JetBrains Mono, Consolas, HarmonyOS Sans SC, 微软雅黑, sans-serif;
+}
+
+.部分区:not(.部分区-V4-Styles) .属性英文,
+.部分区:not(.部分区-V4-Styles) input {
+  font-family: Google Sans Code, Consolas, HarmonyOS Sans SC, 微软雅黑, sans-serif;
 }
 
 .属性值区 {
@@ -301,11 +348,15 @@
 }
 
 .单选框组 {
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
+  padding: 8px;
 }
 
 .单选框项 {
+  flex: 1;
+  min-width: fit-content;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -355,10 +406,11 @@
 }
 
 .单选框项 label {
-  padding-left: 8px;
+  padding-left: 6px;
   font-size: 14px;
   color: #e0e0e0;
   cursor: pointer;
+  margin-left: 6px;
 }
 
 #ASS区::-webkit-scrollbar {
@@ -472,11 +524,11 @@
 }
 
 .数据行:hover {
-  background-color: rgb(16, 51, 91) !important;
+  background-color: var(--高亮行列色);
 }
 
 .数据行:hover > .单元格:first-child {
-  background-color: rgb(16, 51, 91);
+  background-color: var(--高亮行列色);
 }
 
 .数据单元格 {
@@ -510,6 +562,7 @@
   color: transparent;
 }
 
+.表格输入框包装:hover,
 .颜色选择器包装:hover,
 .颜色选择器包装.当前,
 .表格输入框:hover,
@@ -572,7 +625,7 @@
   background-color: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #e0e0e0;
-  font-size: 9px;
+  font-size: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -686,4 +739,115 @@
   z-index: 10001;
   pointer-events: auto;
   cursor: default;
+}
+
+.表格下拉框 {
+  width: fit-content;
+  padding: 12px 28px 12px 8px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: #e0e0e0;
+  font-size: 14px;
+  font-family: JetBrains Mono, Consolas, HarmonyOS Sans SC, 微软雅黑, sans-serif;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23e0e0e0' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 12px;
+}
+
+.表格下拉框-hover,
+.表格下拉框-focus {
+  background-color: #1a1a1a;
+  box-shadow: 0 0 0 1px rgba(74, 168, 136, 0.75);
+}
+
+.表格下拉框:focus {
+  outline: none;
+}
+
+.表格下拉框 option {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+}
+
+.表格滑块容器 {
+  width: 75px;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+}
+
+.表格滑块容器-边框样式 {
+  width: 115px;
+}
+
+.表格滑块轨道 {
+  width: 100%;
+  height: 28px;
+  border-radius: 14px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  user-select: none;
+}
+
+.表格滑块轨道-关闭 {
+  background-color: #af3229;
+}
+
+.表格滑块轨道-开启 {
+  background-color: #3a873d;
+}
+
+.表格滑块按钮 {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    rgba(80, 90, 100, 0.95) 0%,
+    rgba(40, 50, 60, 0.9) 50%,
+    rgba(20, 30, 40, 0.95) 100%
+  );
+  position: absolute;
+  top: 2px;
+  transition: left 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(120, 130, 140, 0.4);
+  pointer-events: none;
+}
+
+.表格滑块按钮-关闭 {
+  left: 2px;
+}
+
+.表格滑块按钮-开启 {
+  left: calc(100% - 26px);
+}
+
+.表格滑块标签 {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: #fff;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+.表格滑块标签-关闭 {
+  left: calc(11px + 50%);
+  transform: translate(-50%, -50%);
+}
+
+.表格滑块标签-开启 {
+  left: calc(50% - 11px);
+  transform: translate(-50%, -50%);
 }

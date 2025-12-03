@@ -15,6 +15,7 @@ class ASSParser {
     const 文件选择按钮 = document.querySelector(".文件选择按钮");
     const 自动保存复选框 = document.getElementById("自动保存复选框");
     const 保存按钮 = document.getElementById("保存按钮");
+    const 关闭文件按钮 = document.getElementById("关闭文件按钮");
 
     保存按钮.classList.add("禁用");
 
@@ -44,10 +45,16 @@ class ASSParser {
     });
     保存按钮.addEventListener("click", async () => {
       if (!保存按钮.classList.contains("禁用")) {
-        await this.执行保存();
-        this.文件已修改 = false;
+        const 保存成功 = await this.执行保存();
+        if (保存成功) {
+          this.文件已修改 = false;
+        }
         this.更新保存按钮状态();
       }
+    });
+
+    关闭文件按钮.addEventListener("click", () => {
+      this.关闭文件();
     });
   }
 
@@ -107,6 +114,15 @@ class ASSParser {
   解析ASS文件(内容) {
     this.原始文件内容 = 内容;
     this.文件已修改 = false;
+
+    const 文件名显示区 = document.querySelector(".文件名显示区");
+    if (文件名显示区) {
+      文件名显示区.classList.remove("隐藏");
+    }
+    const 关闭文件按钮 = document.getElementById("关闭文件按钮");
+    if (关闭文件按钮) {
+      关闭文件按钮.classList.remove("禁用");
+    }
 
     const 行 = 内容.split(/\r?\n/);
     const 部分 = {};
@@ -318,25 +334,37 @@ class ASSParser {
       Encoding: "编码",
     };
 
-    const 数字字段 = new Set([
-      "Fontsize",
-      "Bold",
-      "Italic",
-      "Underline",
-      "StrikeOut",
-      "ScaleX",
-      "ScaleY",
-      "Spacing",
-      "Angle",
-      "BorderStyle",
-      "Outline",
-      "Shadow",
-      "Alignment",
-      "MarginL",
-      "MarginR",
-      "MarginV",
-      "Encoding",
-    ]);
+    const 浮点数字段 = new Set(["Spacing", "Angle", "Outline", "Shadow"]);
+
+    const 整数字段 = new Set(["Fontsize", "ScaleX", "ScaleY", "MarginL", "MarginR", "MarginV"]);
+
+    const 选项字段 = {
+      Bold: { 选项: ["0", "-1"], 标签: ["关闭", "开启"] },
+      Italic: { 选项: ["0", "-1"], 标签: ["关闭", "开启"] },
+      Underline: { 选项: ["0", "-1"], 标签: ["关闭", "开启"] },
+      StrikeOut: { 选项: ["0", "-1"], 标签: ["关闭", "开启"] },
+      BorderStyle: { 选项: ["1", "3"], 标签: ["正常边框", "不透明背景"] },
+      Alignment: {
+        选项: ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
+        标签: ["左下", "中下", "右下", "左中", "中中", "右中", "左上", "中上", "右上"],
+      },
+      Encoding: {
+        选项: ["0", "1", "2", "3", "77", "128", "129", "130", "134", "136", "255"],
+        标签: [
+          "ANSI",
+          "默认",
+          "符号",
+          "Shift JIS",
+          "Hangeul",
+          "GB2312",
+          "中文简体",
+          "中文繁体",
+          "中文繁体",
+          "中文繁体",
+          "OEM",
+        ],
+      },
+    };
 
     const 样式数据 = [];
     for (let i = 0; i < 样式行.length; i++) {
@@ -400,13 +428,14 @@ class ASSParser {
           字段 === "BackColour"
         ) {
           this.创建颜色选择器占位(单元格, 字段, 值, i, j);
+        } else if (选项字段[字段]) {
+          this.创建表格选项控件(单元格, 字段, 值, i, j, 选项字段[字段]);
+        } else if (浮点数字段.has(字段)) {
+          this.创建表格数字框(单元格, 字段, 值, i, j, 0.1);
+        } else if (整数字段.has(字段)) {
+          this.创建表格数字框(单元格, 字段, 值, i, j, 1);
         } else {
-          const 是数字 = 数字字段.has(字段);
-          if (是数字) {
-            this.创建表格数字框(单元格, 字段, 值, i, j);
-          } else {
-            this.创建表格文本框(单元格, 字段, 值, i, j);
-          }
+          this.创建表格文本框(单元格, 字段, 值, i, j);
         }
 
         数据行.appendChild(单元格);
@@ -634,6 +663,7 @@ class ASSParser {
           const 视口宽度 = window.innerWidth;
           const 视口高度 = window.innerHeight;
           const 间距 = 10;
+          const 底部预留空间 = 75;
 
           let 新Left = 单元格Rect.right + 间距;
           let 新Top = 单元格Rect.top;
@@ -647,17 +677,21 @@ class ASSParser {
             }
           }
 
-          if (新Top + 面板Rect.height > 视口高度 - 间距) {
-            const 上方位置 = 单元格Rect.bottom - 面板Rect.height - 间距;
-            if (上方位置 >= 间距) {
-              新Top = 上方位置;
-            } else {
-              新Top = Math.max(间距, 视口高度 - 面板Rect.height - 间距);
+          const 需要显示在上方 = 新Top + 面板Rect.height > 视口高度 - 底部预留空间;
+
+          if (需要显示在上方) {
+            新Top = 单元格Rect.bottom - 面板Rect.height;
+            if (新Top < 间距) {
+              新Top = 间距;
             }
           }
 
           新Left = Math.max(间距, Math.min(新Left, 视口宽度 - 面板Rect.width - 间距));
-          新Top = Math.max(间距, Math.min(新Top, 视口高度 - 面板Rect.height - 间距));
+          if (需要显示在上方) {
+            新Top = Math.max(间距, 单元格Rect.bottom - 面板Rect.height);
+          } else {
+            新Top = Math.max(间距, Math.min(新Top, 视口高度 - 面板Rect.height - 底部预留空间));
+          }
 
           面板.style.position = "fixed";
           面板.style.left = `${新Left}px`;
@@ -826,7 +860,7 @@ class ASSParser {
     return `&H${AA}${BB}${GG}${RR}`;
   }
 
-  创建表格数字框(容器, 字段, 值, 样式索引, 字段索引) {
+  创建表格数字框(容器, 字段, 值, 样式索引, 字段索引, 步进值 = 1) {
     const 包装div = document.createElement("div");
     包装div.className = "表格数字框包装";
 
@@ -840,6 +874,7 @@ class ASSParser {
     可编辑div.dataset.字段 = 字段;
     可编辑div.dataset.样式索引 = 样式索引;
     可编辑div.dataset.字段索引 = 字段索引;
+    可编辑div.dataset.步进值 = 步进值.toString();
 
     const 按钮组 = document.createElement("div");
     按钮组.className = "表格数字增减按钮组";
@@ -849,7 +884,10 @@ class ASSParser {
     增加按钮.textContent = "+";
     增加按钮.addEventListener("click", () => {
       const 当前值 = parseFloat(可编辑div.textContent) || 0;
-      可编辑div.textContent = 当前值 + 1;
+      const 新值 = 当前值 + 步进值;
+
+      const 显示值 = 步进值 >= 1 ? Math.round(新值) : parseFloat(新值.toFixed(1));
+      可编辑div.textContent = 显示值.toString();
       this.更新样式单元格("[V4+ Styles]", 样式索引, 字段索引, 可编辑div.textContent);
       if (this.自动保存) {
         this.保存文件();
@@ -861,7 +899,10 @@ class ASSParser {
     减少按钮.textContent = "-";
     减少按钮.addEventListener("click", () => {
       const 当前值 = parseFloat(可编辑div.textContent) || 0;
-      可编辑div.textContent = 当前值 - 1;
+      const 新值 = 当前值 - 步进值;
+
+      const 显示值 = 步进值 >= 1 ? Math.round(新值) : parseFloat(新值.toFixed(1));
+      可编辑div.textContent = 显示值.toString();
       this.更新样式单元格("[V4+ Styles]", 样式索引, 字段索引, 可编辑div.textContent);
       if (this.自动保存) {
         this.保存文件();
@@ -870,7 +911,18 @@ class ASSParser {
 
     const 处理输入 = () => {
       let 文本内容 = 可编辑div.textContent || "";
-      文本内容 = 文本内容.replace(/[^\d-]/g, "");
+
+      if (步进值 < 1) {
+        文本内容 = 文本内容.replace(/[^\d.-]/g, "");
+
+        const 小数点索引 = 文本内容.indexOf(".");
+        if (小数点索引 !== -1) {
+          文本内容 = 文本内容.substring(0, 小数点索引 + 1) + 文本内容.substring(小数点索引 + 1).replace(/\./g, "");
+        }
+      } else {
+        文本内容 = 文本内容.replace(/[^\d-]/g, "");
+      }
+
       if (文本内容.includes("-")) {
         const 负号位置 = 文本内容.indexOf("-");
         if (负号位置 !== 0) {
@@ -901,7 +953,19 @@ class ASSParser {
     可编辑div.addEventListener("paste", (e) => {
       e.preventDefault();
       const 文本 = (e.clipboardData || window.clipboardData).getData("text");
-      let 数字文本 = 文本.replace(/[^\d-]/g, "");
+
+      let 数字文本;
+      if (步进值 < 1) {
+        数字文本 = 文本.replace(/[^\d.-]/g, "");
+
+        const 小数点索引 = 数字文本.indexOf(".");
+        if (小数点索引 !== -1) {
+          数字文本 = 数字文本.substring(0, 小数点索引 + 1) + 数字文本.substring(小数点索引 + 1).replace(/\./g, "");
+        }
+      } else {
+        数字文本 = 文本.replace(/[^\d-]/g, "");
+      }
+
       if (数字文本.includes("-")) {
         const 负号位置 = 数字文本.indexOf("-");
         if (负号位置 !== 0) {
@@ -940,6 +1004,15 @@ class ASSParser {
         return;
       }
 
+      if (步进值 < 1 && e.key === ".") {
+        const 当前文本 = 可编辑div.textContent || "";
+        if (!当前文本.includes(".")) {
+          return;
+        }
+        e.preventDefault();
+        return;
+      }
+
       if (e.key === "-") {
         const 当前文本 = 可编辑div.textContent || "";
         const 选择 = window.getSelection();
@@ -975,6 +1048,182 @@ class ASSParser {
     数字框容器.appendChild(可编辑div);
     数字框容器.appendChild(按钮组);
     包装div.appendChild(数字框容器);
+    容器.appendChild(包装div);
+  }
+
+  创建表格选项控件(容器, 字段, 值, 样式索引, 字段索引, 选项配置) {
+    const 包装div = document.createElement("div");
+    包装div.className = "表格输入框包装";
+
+    const { 选项, 标签 } = 选项配置;
+    const 当前值 = 值.trim();
+
+    const 是开关类型 =
+      选项.length === 2 &&
+      选项.includes("0") &&
+      选项.includes("-1") &&
+      标签 &&
+      标签.includes("关闭") &&
+      标签.includes("开启");
+
+    const 是边框样式类型 = 选项.length === 2 && 选项.includes("1") && 选项.includes("3") && 字段 === "BorderStyle";
+
+    const 使用滑块 = 是开关类型 || 是边框样式类型;
+
+    if (选项.length > 2) {
+      const 下拉框 = document.createElement("select");
+      下拉框.className = "表格下拉框";
+      下拉框.dataset.字段 = 字段;
+      下拉框.dataset.样式索引 = 样式索引;
+      下拉框.dataset.字段索引 = 字段索引;
+
+      for (let i = 0; i < 选项.length; i++) {
+        const 选项值 = 选项[i];
+        const 选项标签 = 标签 && 标签[i] ? 标签[i] : 选项值;
+        const option元素 = document.createElement("option");
+        option元素.value = 选项值;
+        option元素.textContent = `${选项值} (${选项标签})`;
+        if (当前值 === 选项值) {
+          option元素.selected = true;
+        }
+        下拉框.appendChild(option元素);
+      }
+
+      下拉框.addEventListener("change", () => {
+        const 选中值 = 下拉框.value;
+        this.更新样式单元格("[V4+ Styles]", 样式索引, 字段索引, 选中值);
+        if (this.自动保存) {
+          this.保存文件();
+        }
+      });
+
+      下拉框.addEventListener("mouseenter", () => {
+        下拉框.classList.add("表格下拉框-hover");
+      });
+
+      下拉框.addEventListener("mouseleave", () => {
+        if (document.activeElement !== 下拉框) {
+          下拉框.classList.remove("表格下拉框-hover");
+        }
+      });
+
+      下拉框.addEventListener("focus", () => {
+        下拉框.classList.add("表格下拉框-focus");
+      });
+
+      下拉框.addEventListener("blur", () => {
+        下拉框.classList.remove("表格下拉框-focus", "表格下拉框-hover");
+      });
+
+      包装div.appendChild(下拉框);
+    } else if (使用滑块) {
+      const 滑块容器 = document.createElement("div");
+      滑块容器.className = 是边框样式类型 ? "表格滑块容器 表格滑块容器-边框样式" : "表格滑块容器";
+
+      const 滑块轨道 = document.createElement("div");
+      滑块轨道.className = "表格滑块轨道";
+
+      let 关闭值, 开启值;
+      if (是开关类型) {
+        关闭值 = "0";
+        开启值 = "-1";
+      } else if (是边框样式类型) {
+        关闭值 = "1";
+        开启值 = "3";
+      }
+      let 开启 = 当前值 === 开启值;
+
+      const 滑块按钮 = document.createElement("div");
+      滑块按钮.className = "表格滑块按钮";
+
+      const 状态标签 = document.createElement("span");
+      状态标签.className = "表格滑块标签";
+
+      const 更新滑块状态 = (新状态) => {
+        开启 = 新状态;
+
+        if (开启) {
+          滑块轨道.classList.add("表格滑块轨道-开启");
+          滑块轨道.classList.remove("表格滑块轨道-关闭");
+          滑块按钮.classList.add("表格滑块按钮-开启");
+          滑块按钮.classList.remove("表格滑块按钮-关闭");
+          状态标签.classList.add("表格滑块标签-开启");
+          状态标签.classList.remove("表格滑块标签-关闭");
+        } else {
+          滑块轨道.classList.add("表格滑块轨道-关闭");
+          滑块轨道.classList.remove("表格滑块轨道-开启");
+          滑块按钮.classList.add("表格滑块按钮-关闭");
+          滑块按钮.classList.remove("表格滑块按钮-开启");
+          状态标签.classList.add("表格滑块标签-关闭");
+          状态标签.classList.remove("表格滑块标签-开启");
+        }
+
+        if (是开关类型) {
+          状态标签.textContent = 开启 ? "ON" : "OFF";
+        } else if (是边框样式类型) {
+          const 当前值 = 开启 ? "3" : "1";
+          const 当前值索引 = 选项.indexOf(当前值);
+          状态标签.textContent = 标签 && 标签[当前值索引] ? 标签[当前值索引] : 当前值;
+        }
+      };
+
+      更新滑块状态(当前值 === 开启值);
+
+      滑块轨道.appendChild(状态标签);
+      滑块轨道.appendChild(滑块按钮);
+
+      滑块轨道.addEventListener("click", () => {
+        const 新状态 = !开启;
+        更新滑块状态(新状态);
+        const 新值 = 新状态 ? 开启值 : 关闭值;
+        this.更新样式单元格("[V4+ Styles]", 样式索引, 字段索引, 新值);
+        if (this.自动保存) {
+          this.保存文件();
+        }
+      });
+
+      滑块容器.appendChild(滑块轨道);
+      包装div.appendChild(滑块容器);
+    } else {
+      const 选项组 = document.createElement("div");
+      选项组.className = "单选框组";
+
+      for (let i = 0; i < 选项.length; i++) {
+        const 选项值 = 选项[i];
+        const 选项标签 = 标签 && 标签[i] ? 标签[i] : 选项值;
+
+        const 选项项 = document.createElement("div");
+        选项项.className = "单选框项";
+
+        const 单选框 = document.createElement("input");
+        单选框.type = "radio";
+        单选框.name = `样式${样式索引}_${字段}`;
+        单选框.value = 选项值;
+        单选框.checked = 当前值 === 选项值;
+        单选框.dataset.字段 = 字段;
+        单选框.dataset.样式索引 = 样式索引;
+        单选框.dataset.字段索引 = 字段索引;
+
+        单选框.addEventListener("change", () => {
+          if (单选框.checked) {
+            this.更新样式单元格("[V4+ Styles]", 样式索引, 字段索引, 选项值);
+            if (this.自动保存) {
+              this.保存文件();
+            }
+          }
+        });
+
+        const 标签元素 = document.createElement("label");
+        标签元素.textContent = 选项标签;
+
+        选项项.appendChild(单选框);
+        选项项.appendChild(标签元素);
+        选项组.appendChild(选项项);
+      }
+
+      包装div.appendChild(选项组);
+    }
+
     容器.appendChild(包装div);
   }
 
@@ -1244,7 +1493,7 @@ class ASSParser {
   }
 
   async 执行保存() {
-    if (!this.当前文件 || !this.文件数据) return;
+    if (!this.当前文件 || !this.文件数据) return false;
 
     let 内容 = "";
     const 部分顺序 = ["[Script Info]", "[Aegisub Project Garbage]", "[V4+ Styles]", "[Events]"];
@@ -1264,19 +1513,90 @@ class ASSParser {
         const 可写流 = await this.文件句柄.createWritable();
         await 可写流.write(内容);
         await 可写流.close();
-        return;
+        return true;
       } catch (error) {
+        if (error.name === "AbortError") {
+          return false;
+        }
         console.error("写入文件失败:", error);
+        return false;
       }
     }
 
-    const blob = new Blob([内容], { type: "text/plain;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = this.当前文件.name;
-    a.click();
-    URL.revokeObjectURL(url);
+    if (window.showSaveFilePicker) {
+      try {
+        const 文件句柄 = await window.showSaveFilePicker({
+          suggestedName: this.当前文件.name,
+          types: [
+            {
+              description: "ASS字幕文件",
+              accept: {
+                "text/plain": [".ass"],
+              },
+            },
+          ],
+        });
+        const 可写流 = await 文件句柄.createWritable();
+        await 可写流.write(内容);
+        await 可写流.close();
+        this.文件句柄 = 文件句柄;
+        this.当前文件 = await 文件句柄.getFile();
+        document.getElementById("文件名").textContent = this.当前文件.name;
+        return true;
+      } catch (error) {
+        if (error.name === "AbortError") {
+          return false;
+        }
+        console.error("保存文件失败:", error);
+        const blob = new Blob([内容], { type: "text/plain;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = this.当前文件.name;
+        a.click();
+        URL.revokeObjectURL(url);
+        return true;
+      }
+    } else {
+      const blob = new Blob([内容], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = this.当前文件.name;
+      a.click();
+      URL.revokeObjectURL(url);
+      return true;
+    }
+  }
+
+  关闭文件() {
+    this.当前文件 = null;
+    this.文件句柄 = null;
+    this.文件数据 = null;
+    this.原始文件内容 = null;
+    this.文件已修改 = false;
+
+    const ASS区 = document.getElementById("ASS区");
+    if (ASS区) {
+      ASS区.innerHTML = "";
+    }
+
+    const 文件名显示区 = document.querySelector(".文件名显示区");
+    if (文件名显示区) {
+      文件名显示区.classList.add("隐藏");
+    }
+
+    const 关闭文件按钮 = document.getElementById("关闭文件按钮");
+    if (关闭文件按钮) {
+      关闭文件按钮.classList.add("禁用");
+    }
+
+    const 文件选择 = document.getElementById("文件选择");
+    if (文件选择) {
+      文件选择.value = "";
+    }
+
+    this.更新保存按钮状态();
   }
 }
 
