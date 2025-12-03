@@ -70,8 +70,9 @@ body:has(.pcr-app.visible) {
 .文件选择按钮 {
   display: block;
   padding: 12px 20px;
-  /* background: linear-gradient(135deg, rgba(53, 132, 105, 0.667), rgb(36, 114, 88)); */
-  background: linear-gradient(135deg, rgba(53, 106, 132, 0.667), rgb(36, 72, 114));
+  border: solid 2px #444;
+  border-radius: 999px;
+  background-color: #222;
   color: white;
   text-align: center;
   font-size: 14px;
@@ -80,13 +81,12 @@ body:has(.pcr-app.visible) {
 }
 
 .文件选择标签:hover .文件选择按钮 {
-  background: linear-gradient(135deg, rgba(76, 108, 152, 0.667), rgb(59, 81, 147));
-  box-shadow: 0 0 12px rgba(74, 168, 136, 0.4);
+  background-color: #444;
 }
 
 .文件名显示区 {
   position: fixed;
-  bottom: calc(100vh - 110px);
+  bottom: calc(100vh - 105px);
   left: 50%;
   translate: -50% 0;
   padding: 5px 10px;
@@ -351,7 +351,6 @@ body:has(.pcr-app.visible) {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  padding: 8px;
 }
 
 .单选框项 {
@@ -361,7 +360,7 @@ body:has(.pcr-app.visible) {
   align-items: center;
   cursor: pointer;
   user-select: none;
-  padding: 7px 10px;
+  padding: 8px 10px;
   border-radius: 5px;
 }
 
@@ -570,8 +569,14 @@ body:has(.pcr-app.visible) {
 .表格数字框:hover,
 .表格数字框:focus,
 .表格数字框:has(~ .表格数字增减按钮组:hover) {
-  background-color: #1a1a1a;
-  box-shadow: 0 0 0 1px rgba(74, 168, 136, 0.75);
+  /* background: radial-gradient(circle at 20% 30%, rgb(79, 1, 47) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgb(0, 58, 74) 0%, transparent 50%),
+    radial-gradient(circle at 50% 20%, rgb(88, 69, 0) 0%, transparent 50%),
+    radial-gradient(circle at 30% 80%, rgb(43, 74, 0) 0%, transparent 50%),
+    radial-gradient(circle at 70% 40%, rgb(63, 0, 81) 0%, transparent 50%),
+    radial-gradient(circle at 10% 60%, rgb(0, 13, 77) 0%, transparent 50%),
+    radial-gradient(circle at 90% 10%, rgb(68, 27, 0) 0%, transparent 50%); */
+  box-shadow: 0 0 0 1px rgb(0, 209, 139);
   z-index: 1000;
 }
 
@@ -646,6 +651,10 @@ body:has(.pcr-app.visible) {
   height: 100%;
   padding: 12px 6px;
   position: relative;
+}
+
+.颜色显示文本 {
+  text-align: center;
 }
 
 .pickr {
@@ -791,7 +800,7 @@ body:has(.pcr-app.visible) {
 
 .表格滑块轨道 {
   width: 100%;
-  height: 28px;
+  height: 25px;
   border-radius: 14px;
   position: relative;
   cursor: pointer;
@@ -808,8 +817,8 @@ body:has(.pcr-app.visible) {
 }
 
 .表格滑块按钮 {
-  width: 24px;
-  height: 24px;
+  width: 21px;
+  height: 21px;
   border-radius: 50%;
   background: linear-gradient(
     135deg,
@@ -829,7 +838,7 @@ body:has(.pcr-app.visible) {
 }
 
 .表格滑块按钮-开启 {
-  left: calc(100% - 26px);
+  left: calc(100% - 23px);
 }
 
 .表格滑块标签 {
