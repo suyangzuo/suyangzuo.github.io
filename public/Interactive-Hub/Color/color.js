@@ -1,5 +1,3 @@
-import chroma from "/node_modules/chroma-js/index.js";
-
 document.addEventListener("DOMContentLoaded", () => {
   Coloris({
     themeMode: "dark",

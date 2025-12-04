@@ -14,7 +14,7 @@
     "generate-file-list": "node public/Apps/Ten_Fingers/generate-file-list.js"
   },
   "dependencies": {
-    "chroma-js": "^3.1.2",
+    "chroma-js": "^3.2.0",
     "express": "^5.1.0",
     "reload": "^3.4.2"
   },
@@ -23,7 +23,10 @@
   },
   "nodemonConfig": {
     "ext": "js,json,html,css",
-    "ignore": ["node_modules/", "public/"],
+    "ignore": [
+      "node_modules/",
+      "public/"
+    ],
     "delay": 500
   },
   "prettier": {
