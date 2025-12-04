@@ -4,6 +4,7 @@ class ASSParser {
     this.文件句柄 = null;
     this.文件数据 = null;
     this.原始文件内容 = null;
+    this.原始文件数据 = null;
     this.自动保存 = false;
     this.保存定时器 = null;
     this.文件已修改 = false;
@@ -15,9 +16,11 @@ class ASSParser {
     const 文件选择按钮 = document.querySelector(".文件选择按钮");
     const 自动保存复选框 = document.getElementById("自动保存复选框");
     const 保存按钮 = document.getElementById("保存按钮");
+    const 全部撤销按钮 = document.getElementById("全部撤销按钮");
     const 关闭文件按钮 = document.getElementById("关闭文件按钮");
 
     保存按钮.classList.add("禁用");
+    全部撤销按钮.classList.add("禁用");
 
     const 保存的自动保存状态 = localStorage.getItem("ASS_Subtitle_自动保存");
     if (保存的自动保存状态 !== null) {
@@ -47,6 +50,7 @@ class ASSParser {
       if (!保存按钮.classList.contains("禁用")) {
         const 保存成功 = await this.执行保存();
         if (保存成功) {
+          this.原始文件数据 = this.深拷贝文件数据(this.文件数据);
           this.文件已修改 = false;
         }
         this.更新保存按钮状态();
@@ -55,6 +59,10 @@ class ASSParser {
 
     关闭文件按钮.addEventListener("click", () => {
       this.关闭文件();
+    });
+
+    全部撤销按钮.addEventListener("click", () => {
+      this.全部撤销();
     });
   }
 
@@ -155,6 +163,7 @@ class ASSParser {
     }
 
     this.文件数据 = 部分;
+    this.原始文件数据 = this.深拷贝文件数据(部分);
     this.渲染UI();
     this.更新保存按钮状态();
   }
@@ -448,6 +457,7 @@ class ASSParser {
     部分区.appendChild(表格容器);
     容器.appendChild(部分区);
 
+    this.初始化表头固定(表格);
     this.初始化列高亮(表格);
 
     setTimeout(() => {
@@ -460,36 +470,230 @@ class ASSParser {
     const 高亮背景色 = "rgb(16, 51, 91)";
     const 表头行 = 表格.querySelector(".表头行");
 
+    const 表格容器 = 表格.closest(".样式表格容器");
+    const 固定表头行 = 表格容器 ? 表格容器.querySelector(".固定表头行") : null;
+    const 高亮表头单元格 = (表头单元格) => {
+      if (表头单元格) {
+        if (!表头单元格.dataset.原始背景色已保存) {
+          const 计算样式 = window.getComputedStyle(表头单元格);
+          const 原始背景色 = 计算样式.backgroundColor;
+          表头单元格.dataset.原始背景色 = 原始背景色;
+          表头单元格.dataset.原始背景色已保存 = "true";
+        }
+        表头单元格.style.backgroundColor = 高亮背景色;
+      }
+    };
+
+    const 取消高亮表头单元格 = (表头单元格) => {
+      if (表头单元格 && 表头单元格.dataset.原始背景色已保存) {
+        const 原始背景色 = 表头单元格.dataset.原始背景色;
+        if (原始背景色 === "rgba(0, 0, 0, 0)" || 原始背景色 === "transparent") {
+          表头单元格.style.backgroundColor = "";
+        } else {
+          表头单元格.style.backgroundColor = 原始背景色;
+        }
+      }
+    };
+
     所有单元格.forEach((单元格) => {
       单元格.addEventListener("mouseenter", () => {
         const 单元格索引 = Array.from(单元格.parentElement.children).indexOf(单元格);
-        const 表头单元格 = 表头行.children[单元格索引];
+        const 原始表头单元格 = 表头行.children[单元格索引];
+        const 固定表头单元格 = 固定表头行 ? 固定表头行.children[单元格索引] : null;
 
-        if (表头单元格) {
-          if (!表头单元格.dataset.原始背景色已保存) {
-            const 计算样式 = window.getComputedStyle(表头单元格);
-            const 原始背景色 = 计算样式.backgroundColor;
-            表头单元格.dataset.原始背景色 = 原始背景色;
-            表头单元格.dataset.原始背景色已保存 = "true";
-          }
-          表头单元格.style.backgroundColor = 高亮背景色;
+        高亮表头单元格(原始表头单元格);
+
+        if (固定表头单元格) {
+          高亮表头单元格(固定表头单元格);
         }
       });
 
       单元格.addEventListener("mouseleave", () => {
         const 单元格索引 = Array.from(单元格.parentElement.children).indexOf(单元格);
-        const 表头单元格 = 表头行.children[单元格索引];
+        const 原始表头单元格 = 表头行.children[单元格索引];
+        const 固定表头单元格 = 固定表头行 ? 固定表头行.children[单元格索引] : null;
 
-        if (表头单元格 && 表头单元格.dataset.原始背景色已保存) {
-          const 原始背景色 = 表头单元格.dataset.原始背景色;
-          if (原始背景色 === "rgba(0, 0, 0, 0)" || 原始背景色 === "transparent") {
-            表头单元格.style.backgroundColor = "";
-          } else {
-            表头单元格.style.backgroundColor = 原始背景色;
-          }
+        取消高亮表头单元格(原始表头单元格);
+
+        if (固定表头单元格) {
+          取消高亮表头单元格(固定表头单元格);
         }
       });
     });
+  }
+
+  初始化表头固定(表格) {
+    const 表头行 = 表格.querySelector(".表头行");
+    if (!表头行) return;
+
+    const 表格容器 = 表格.closest(".样式表格容器");
+    if (!表格容器) return;
+
+    const 固定表头容器 = document.createElement("div");
+    固定表头容器.className = "固定表头容器";
+    固定表头容器.style.display = "none";
+    表格容器.appendChild(固定表头容器);
+
+    const 固定表格 = document.createElement("table");
+    固定表格.className = "样式表格 固定表头表格";
+    固定表头容器.appendChild(固定表格);
+
+    const 固定表头行 = 表头行.cloneNode(true);
+    固定表头行.className = "表头行 固定表头行";
+    固定表格.appendChild(固定表头行);
+
+    const 第一个单元格 = 固定表头行.querySelector(".单元格:first-child");
+    
+    const 固定第一个单元格Div = document.createElement("div");
+    固定第一个单元格Div.className = "固定表头第一格";
+    if (第一个单元格) {
+      固定第一个单元格Div.innerHTML = 第一个单元格.innerHTML;
+      const 计算样式 = window.getComputedStyle(第一个单元格);
+      const 样式属性 = [
+        "padding", "textAlign", "fontSize", "fontWeight", "color",
+        "backgroundColor", "borderRight", "whiteSpace", "display",
+        "flexDirection", "alignItems", "justifyContent", "gap"
+      ];
+      样式属性.forEach(属性 => {
+        const 值 = 计算样式.getPropertyValue(属性);
+        if (值) {
+          固定第一个单元格Div.style.setProperty(属性, 值);
+        }
+      });
+      固定第一个单元格Div.style.position = "absolute";
+      固定第一个单元格Div.style.top = "0";
+      固定第一个单元格Div.style.left = "0";
+      固定第一个单元格Div.style.zIndex = "1004";
+    }
+    固定表头容器.appendChild(固定第一个单元格Div);
+    const 固定表头数据 = {
+      容器: 固定表头容器,
+      表格: 固定表格,
+      表头行: 固定表头行,
+      原始表头行: 表头行,
+      表格容器: 表格容器,
+      固定距离: 50,
+      固定第一个单元格Div: 固定第一个单元格Div,
+    };
+
+    const 同步宽度 = () => {
+      const 原始单元格 = 固定表头数据.原始表头行.querySelectorAll(".单元格");
+      const 固定单元格 = 固定表头数据.表头行.querySelectorAll(".单元格");
+
+      原始单元格.forEach((原始单元格, 索引) => {
+        if (固定单元格[索引]) {
+          const 宽度 = 原始单元格.getBoundingClientRect().width;
+          固定单元格[索引].style.width = `${宽度}px`;
+          固定单元格[索引].style.minWidth = `${宽度}px`;
+          固定单元格[索引].style.maxWidth = `${宽度}px`;
+        }
+      });
+
+      if (固定表头数据.固定第一个单元格Div && 原始单元格[0]) {
+        const 第一个单元格宽度 = 原始单元格[0].getBoundingClientRect().width;
+        const 第一个单元格高度 = 原始单元格[0].getBoundingClientRect().height;
+        固定表头数据.固定第一个单元格Div.style.width = `${第一个单元格宽度}px`;
+        固定表头数据.固定第一个单元格Div.style.height = `${第一个单元格高度}px`;
+        固定表头数据.固定第一个单元格Div.innerHTML = 原始单元格[0].innerHTML;
+      }
+
+      const 表格实际宽度 = 固定表头数据.表格容器.scrollWidth - 13;
+      固定表头数据.容器.style.width = `${表格实际宽度}px`;
+    };
+
+    const 部分区 = 表格容器.closest(".部分区-V4-Styles");
+
+    let 初始表格容器Left = null;
+
+    const 处理滚动 = () => {
+      const 原始表头Rect = 固定表头数据.原始表头行.getBoundingClientRect();
+      const 表格容器Rect = 固定表头数据.表格容器.getBoundingClientRect();
+
+      if (初始表格容器Left === null && 部分区) {
+        const 当前滚动位置 = 部分区.scrollLeft;
+        部分区.scrollLeft = 0;
+        const 临时Rect = 固定表头数据.表格容器.getBoundingClientRect();
+        初始表格容器Left = 临时Rect.left;
+        部分区.scrollLeft = 当前滚动位置;
+      }
+
+      if (原始表头Rect.top <= 固定表头数据.固定距离) {
+        if (固定表头数据.容器.style.display === "none") {
+          固定表头数据.容器.style.display = "block";
+          同步宽度();
+          初始表格容器Left = null;
+        }
+
+        const 横向滚动距离 = 部分区 ? 部分区.scrollLeft : 0;
+
+        if (初始表格容器Left === null) {
+          初始表格容器Left = 表格容器Rect.left + 横向滚动距离;
+        }
+
+        固定表头数据.容器.style.position = "fixed";
+        固定表头数据.容器.style.top = `${固定表头数据.固定距离}px`;
+        固定表头数据.容器.style.left = `${初始表格容器Left}px`;
+        固定表头数据.容器.style.zIndex = "1003";
+
+        固定表头数据.表头行.style.transform = `translateX(-${横向滚动距离}px)`;
+
+        同步宽度();
+      } else {
+        if (固定表头数据.容器.style.display !== "none") {
+          固定表头数据.容器.style.display = "none";
+        }
+        初始表格容器Left = null;
+      }
+
+      const 文件名显示区 = document.querySelector(".文件名显示区");
+      if (文件名显示区) {
+        const 表格容器顶部距离 = 表格容器Rect.top;
+        if (表格容器顶部距离 <= 90) {
+          文件名显示区.classList.add("隐藏");
+        } else {
+          文件名显示区.classList.remove("隐藏");
+        }
+      }
+    };
+
+    let 滚动定时器 = null;
+    const 防抖处理滚动 = () => {
+      if (滚动定时器) {
+        cancelAnimationFrame(滚动定时器);
+      }
+      滚动定时器 = requestAnimationFrame(() => {
+        处理滚动();
+      });
+    };
+
+    window.addEventListener("scroll", 防抖处理滚动, { passive: true });
+    window.addEventListener("resize", 防抖处理滚动, { passive: true });
+
+    if (部分区) {
+      部分区.addEventListener(
+        "scroll",
+        () => {
+          if (固定表头数据.容器.style.display !== "none") {
+            const 横向滚动距离 = 部分区.scrollLeft;
+            固定表头数据.表头行.style.transform = `translateX(-${横向滚动距离}px)`;
+          }
+        },
+        { passive: true }
+      );
+    }
+
+    处理滚动();
+    if (!this.表头固定清理函数) {
+      this.表头固定清理函数 = [];
+    }
+    const 清理函数 = () => {
+      window.removeEventListener("scroll", 防抖处理滚动);
+      window.removeEventListener("resize", 防抖处理滚动);
+      if (滚动定时器) {
+        cancelAnimationFrame(滚动定时器);
+      }
+    };
+    this.表头固定清理函数.push(清理函数);
   }
 
   初始化所有颜色选择器(表格) {
@@ -1254,12 +1458,54 @@ class ASSParser {
         const 当前字段 = this.V4Styles字段列表[字段索引];
         if (当前字段 && 当前字段 !== "Name") {
           if (!this.自动保存) {
-            this.文件已修改 = true;
-            this.更新保存按钮状态();
+            this.检查文件是否已修改();
           }
         }
       }
     }
+  }
+
+  深拷贝文件数据(文件数据) {
+    const 副本 = {};
+    for (const [键, 值] of Object.entries(文件数据)) {
+      副本[键] = Array.isArray(值) ? [...值] : 值;
+    }
+    return 副本;
+  }
+
+  检查文件是否已修改() {
+    const 已修改 = !this.文件数据是否相同(this.文件数据, this.原始文件数据);
+    if (this.文件已修改 !== 已修改) {
+      this.文件已修改 = 已修改;
+      this.更新保存按钮状态();
+    }
+  }
+
+  文件数据是否相同(数据1, 数据2) {
+    if (!数据1 || !数据2) return 数据1 === 数据2;
+
+    const 键1 = Object.keys(数据1).sort();
+    const 键2 = Object.keys(数据2).sort();
+
+    if (键1.length !== 键2.length) return false;
+
+    for (const 键 of 键1) {
+      if (!键2.includes(键)) return false;
+
+      const 值1 = 数据1[键];
+      const 值2 = 数据2[键];
+
+      if (Array.isArray(值1) && Array.isArray(值2)) {
+        if (值1.length !== 值2.length) return false;
+        for (let i = 0; i < 值1.length; i++) {
+          if (值1[i] !== 值2[i]) return false;
+        }
+      } else if (值1 !== 值2) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   解析部分属性(行数组) {
@@ -1450,8 +1696,7 @@ class ASSParser {
 
     if (部分名 !== "[V4+ Styles]") {
       if (!this.自动保存) {
-        this.文件已修改 = true;
-        this.更新保存按钮状态();
+        this.检查文件是否已修改();
       }
     }
   }
@@ -1469,10 +1714,13 @@ class ASSParser {
       clearTimeout(this.保存定时器);
     }
 
-    this.保存定时器 = setTimeout(() => {
-      this.执行保存();
-      this.文件已修改 = false;
-      this.更新保存按钮状态();
+    this.保存定时器 = setTimeout(async () => {
+      const 保存成功 = await this.执行保存();
+      if (保存成功) {
+        this.原始文件数据 = this.深拷贝文件数据(this.文件数据);
+        this.文件已修改 = false;
+        this.更新保存按钮状态();
+      }
     }, 500);
   }
 
@@ -1490,6 +1738,27 @@ class ASSParser {
     } else {
       保存按钮.classList.add("禁用");
     }
+
+    // 更新全部撤销按钮状态
+    const 全部撤销按钮 = document.getElementById("全部撤销按钮");
+    if (全部撤销按钮) {
+      if (this.文件已修改) {
+        全部撤销按钮.classList.remove("禁用");
+      } else {
+        全部撤销按钮.classList.add("禁用");
+      }
+    }
+  }
+
+  全部撤销() {
+    if (!this.原始文件数据 || !this.文件数据) return;
+
+    this.文件数据 = this.深拷贝文件数据(this.原始文件数据);
+
+    this.渲染UI();
+
+    this.文件已修改 = false;
+    this.更新保存按钮状态();
   }
 
   async 执行保存() {
@@ -1570,10 +1839,16 @@ class ASSParser {
   }
 
   关闭文件() {
+    if (this.表头固定清理函数) {
+      this.表头固定清理函数.forEach((清理函数) => 清理函数());
+      this.表头固定清理函数 = [];
+    }
+
     this.当前文件 = null;
     this.文件句柄 = null;
     this.文件数据 = null;
     this.原始文件内容 = null;
+    this.原始文件数据 = null;
     this.文件已修改 = false;
 
     const ASS区 = document.getElementById("ASS区");

@@ -133,6 +133,25 @@ body:has(.pcr-app.visible) {
   box-shadow: 0 0 12px rgba(74, 168, 136, 0.4);
 }
 
+.全部撤销按钮 {
+  display: block;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, rgba(128, 128, 128, 0.667), rgb(96, 96, 96));
+  color: white;
+  border: none;
+  text-align: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  font-family: inherit;
+}
+
+.全部撤销按钮:hover:not(.禁用) {
+  background: linear-gradient(135deg, rgba(160, 160, 160, 0.667), rgb(128, 128, 128));
+  box-shadow: 0 0 12px rgba(128, 128, 128, 0.4);
+}
+
 .关闭文件按钮 {
   display: block;
   padding: 12px 20px;
@@ -205,6 +224,34 @@ body:has(.pcr-app.visible) {
 
 .部分区-V4-Styles {
   overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(74, 168, 136, 0.3) transparent;
+}
+.部分区-V4-Styles::-webkit-scrollbar {
+  height: 8px;
+}
+
+.部分区-V4-Styles::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 4px;
+}
+
+.部分区-V4-Styles::-webkit-scrollbar-thumb {
+  background: rgba(74, 168, 136, 0.2);
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.部分区-V4-Styles::-webkit-scrollbar-thumb:hover {
+  background: rgba(74, 168, 136, 0.4);
+}
+
+.部分区-V4-Styles::-webkit-scrollbar-thumb:active {
+  background: rgba(74, 168, 136, 0.5);
+}
+
+.部分区-V4-Styles:not(:hover)::-webkit-scrollbar-thumb {
+  background: rgba(74, 168, 136, 0.1);
 }
 
 .部分标题 {
@@ -365,7 +412,7 @@ body:has(.pcr-app.visible) {
 }
 
 .单选框项:hover {
-  background-color: #0005;
+  background-color: #fff2;
 }
 
 .单选框项 input[type="radio"] {
@@ -409,7 +456,6 @@ body:has(.pcr-app.visible) {
   font-size: 14px;
   color: #e0e0e0;
   cursor: pointer;
-  margin-left: 6px;
 }
 
 #ASS区::-webkit-scrollbar {
@@ -443,6 +489,7 @@ body:has(.pcr-app.visible) {
   margin-top: 10px;
   width: fit-content;
   border: solid 1px #fff5;
+  position: relative;
 }
 
 .样式表格 {
@@ -450,8 +497,47 @@ body:has(.pcr-app.visible) {
   border-radius: 6px 6px 0 0;
 }
 
+.固定表头容器 {
+  position: fixed;
+  z-index: 1003;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.固定表头第一格 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1004;
+  background-color: rgb(52, 81, 68);
+  border-right: 2px solid rgba(74, 168, 136, 0.5);
+  pointer-events: auto;
+  text-align: center;
+}
+
+.固定表头容器 .固定表头表格 {
+  border-collapse: collapse;
+  border-radius: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  position: relative;
+}
+
+.固定表头容器 .固定表头行 {
+  background-color: rgb(52, 81, 68);
+  pointer-events: auto;
+}
+
+.固定表头容器 .固定表头行 > .单元格:first-child {
+  background-color: rgb(52, 81, 68);
+  border-right: 2px solid rgba(74, 168, 136, 0.5);
+  position: sticky;
+  left: 0;
+}
+
 .表头行 {
   background-color: rgb(52, 81, 68);
+  z-index: 1002;
 }
 
 .表头行 > .单元格:first-child {
@@ -491,6 +577,10 @@ body:has(.pcr-app.visible) {
   text-align: center;
   border-right: 1px solid rgba(255, 255, 255, 0.2);
   white-space: nowrap;
+}
+
+.固定表头行 .表头单元格 {
+  border-right: 1px solid #777;
 }
 
 .表头单元格:last-child {
@@ -569,13 +659,6 @@ body:has(.pcr-app.visible) {
 .表格数字框:hover,
 .表格数字框:focus,
 .表格数字框:has(~ .表格数字增减按钮组:hover) {
-  /* background: radial-gradient(circle at 20% 30%, rgb(79, 1, 47) 0%, transparent 50%),
-    radial-gradient(circle at 80% 70%, rgb(0, 58, 74) 0%, transparent 50%),
-    radial-gradient(circle at 50% 20%, rgb(88, 69, 0) 0%, transparent 50%),
-    radial-gradient(circle at 30% 80%, rgb(43, 74, 0) 0%, transparent 50%),
-    radial-gradient(circle at 70% 40%, rgb(63, 0, 81) 0%, transparent 50%),
-    radial-gradient(circle at 10% 60%, rgb(0, 13, 77) 0%, transparent 50%),
-    radial-gradient(circle at 90% 10%, rgb(68, 27, 0) 0%, transparent 50%); */
   box-shadow: 0 0 0 1px rgb(0, 209, 139);
   z-index: 1000;
 }
@@ -847,8 +930,11 @@ body:has(.pcr-app.visible) {
   transform: translateY(-50%);
   font-size: 12px;
   color: #fff;
-  font-weight: bold;
   pointer-events: none;
+}
+
+.表格滑块容器-边框样式 .表格滑块标签 {
+  translate: 0 -7.5%;
 }
 
 .表格滑块标签-关闭 {
