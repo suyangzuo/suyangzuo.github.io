@@ -1,17 +1,40 @@
 {
+  "name": "suyangzuo.github.io",
+  "version": "1.0.0",
+  "description": "永恒 - 下一代自学服务平台",
+  "main": "app.js",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=24.0.0",
+    "npm": ">=10.0.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "generate-file-list": "node public/Apps/Ten_Fingers/generate-file-list.js"
+  },
   "dependencies": {
     "chroma-js": "^3.1.2",
     "express": "^5.1.0",
     "reload": "^3.4.2"
   },
-  "scripts": {
-    "generate-file-list": "node public/Apps/Ten_Fingers/generate-file-list.js"
+  "devDependencies": {
+    "nodemon": "^3.1.0"
   },
-  "live": "nodemon app.js",
   "nodemonConfig": {
-    "ext": "*.*"
+    "ext": "js,json,html,css",
+    "ignore": ["node_modules/", "public/"],
+    "delay": 500
   },
   "prettier": {
     "printWidth": 120
-  }
+  },
+  "keywords": [
+    "education",
+    "learning-platform",
+    "tutorial",
+    "interactive-learning"
+  ],
+  "author": "杨佐",
+  "license": "MIT"
 }
