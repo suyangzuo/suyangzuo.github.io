@@ -11,9 +11,6 @@ const publicPath = path.join(__dirname, "public");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/node_modules", express.static(path.join(__dirname, "node_modules")));
-app.use(express.static(publicPath));
-
 async function 读取HTML文件(文件路径) {
   try {
     const 完整路径 = path.join(publicPath, 文件路径);
@@ -90,6 +87,9 @@ app.use(async (req, res, next) => {
     next();
   }
 });
+
+app.use("/node_modules", express.static(path.join(__dirname, "node_modules")));
+app.use(express.static(publicPath));
 
 app.use((req, res, next) => {
   res.status(404).send(`
