@@ -33,6 +33,10 @@ let 错误分析图表 = null;
 let 速度分析图表 = null;
 let 测试开始时间 = null;
 let 测试结束时间 = null;
+let 历史数据图表 = null;
+let 当前显示数据类型 = "速度"; // 默认显示速度
+let 当前页码 = 1; // 当前页码
+const 每页记录数 = 30; // 每页显示的记录数
 
 const Storage_Keys = {
   定时器分: "TenFingers_定时器_分",
@@ -659,6 +663,9 @@ function 进入测试结束状态(原因) {
   // 记录测试结束时间
   测试结束时间 = new Date();
 
+  // 保存测试记录到 IndexedDB
+  保存测试记录();
+
   if (隐藏输入框) {
     隐藏输入框.blur();
     隐藏输入框.disabled = true;
@@ -1000,7 +1007,8 @@ function 滚动到当前字符() {
       behavior: "smooth",
     });
   } else if (字符相对底部 > 可见区域底部) {
-    const 目标滚动位置 = 字符相对顶部 - 容器高度 * 0.3;
+    // 让新行滚动到容器顶部，与最开始的第一行保持相同的垂直位置
+    const 目标滚动位置 = 字符相对顶部 - 容器上内边距;
     输入容器.scrollTo({
       top: Math.max(0, 目标滚动位置),
       behavior: "smooth",
@@ -1149,10 +1157,8 @@ function 初始化终止和详情按钮() {
   const 详情按钮 = document.querySelector("#详情按钮");
   if (详情按钮) {
     详情按钮.addEventListener("click", () => {
-      // 如果测试已结束且有结果区内容，则显示结果区
-      if (测试结束状态 && 结果区元素) {
-        显示结果区();
-      }
+      // 允许在任何时候打开结果区
+      显示结果区();
     });
   }
 }
@@ -1169,8 +1175,44 @@ function 显示结果区() {
 
   if (结果区元素) {
     结果区元素.style.display = "block";
+
+    // 检查是否已开始测试
+    const 已开始测试 = 测试开始时间 !== null || 测试结束状态;
+
+    // 根据测试状态控制各个部分的显示/隐藏
+    控制结果区显示(已开始测试);
+
     更新结果区头部信息();
     更新结果区图表();
+  }
+}
+
+// 控制结果区各个部分的显示/隐藏
+function 控制结果区显示(已开始测试) {
+  if (!结果区元素) return;
+
+  // 结果区头部 - 只有已开始测试时才显示
+  const 结果区头部 = 结果区元素.querySelector(".结果区头部");
+  if (结果区头部) {
+    结果区头部.style.display = 已开始测试 ? "block" : "none";
+  }
+
+  // 错误数据分析部分 - 只有已开始测试时才显示
+  const 错误分析部分 = 结果区元素.querySelector(".错误分析部分");
+  if (错误分析部分) {
+    错误分析部分.style.display = 已开始测试 ? "block" : "none";
+  }
+
+  // 输入速度分析部分 - 只有已开始测试时才显示
+  const 速度分析部分 = 结果区元素.querySelector(".速度分析部分");
+  if (速度分析部分) {
+    速度分析部分.style.display = 已开始测试 ? "block" : "none";
+  }
+
+  // 历史数据对比部分 - 始终显示
+  const 历史数据部分 = 结果区元素.querySelector(".历史数据部分");
+  if (历史数据部分) {
+    历史数据部分.style.display = "block";
   }
 }
 
@@ -1189,7 +1231,13 @@ function 初始化结果区() {
   // 创建结果区内容
   结果区.innerHTML = `
     <button class="关闭结果区按钮" id="关闭结果区">×</button>
-    <div class="结果区头部">
+    <div class="结果区锚链接容器">
+      <a href="#结果区头部锚点" class="结果区锚链接"><span class="锚链接图标">📋</span>信息</a>
+      <a href="#错误分析锚点" class="结果区锚链接"><span class="锚链接图标">❌</span>错误</a>
+      <a href="#速度分析锚点" class="结果区锚链接"><span class="锚链接图标">⚡</span>速度</a>
+      <a href="#历史数据锚点" class="结果区锚链接"><span class="锚链接图标">📊</span>排行</a>
+    </div>
+    <div class="结果区头部" id="结果区头部锚点">
       <div class="结果区头部内容">
         <div class="结果区头部行">
           <div class="结果区头部项">
@@ -1235,16 +1283,89 @@ function 初始化结果区() {
       </div>
     </div>
     <div class="结果区内容">
-      <div class="结果区部分">
+      <div class="结果区部分 错误分析部分" id="错误分析锚点">
         <h3 class="结果区部分标题">错误数据分析</h3>
         <div id="错误分析图表" style="width: 100%; height: 400px;"></div>
       </div>
-      <div class="结果区部分">
+      <div class="结果区部分 速度分析部分" id="速度分析锚点">
         <h3 class="结果区部分标题">输入速度分析</h3>
         <div id="速度分析图表" style="width: 100%; height: 400px;"></div>
       </div>
+      <div class="结果区部分 历史数据部分" id="历史数据锚点">
+        <h3 class="结果区部分标题">历史数据对比</h3>
+        <div class="数据切换按钮组">
+          <div class="数据切换按钮左侧组">
+            <button class="数据切换按钮 激活" data-type="速度">速度</button>
+            <button class="数据切换按钮" data-type="正确率">正确率</button>
+            <button class="数据切换按钮" data-type="错误次数">错误次数</button>
+            <button class="数据切换按钮" data-type="退格次数">退格次数</button>
+          </div>
+          <button class="清空记录按钮" id="清空记录按钮" title="清空所有历史记录">清空记录</button>
+        </div>
+        <div id="历史数据图表" style="width: 100%; height: 500px;"></div>
+        <div class="分页控件" id="分页控件" style="display: none;">
+          <button class="分页按钮" id="上一页按钮" disabled>上一页</button>
+          <span class="页码显示" id="页码显示">第 1 页 / 共 1 页</span>
+          <button class="分页按钮" id="下一页按钮" disabled>下一页</button>
+        </div>
+      </div>
     </div>
   `;
+
+  // 初始化历史数据图表
+  const 历史数据图表容器 = document.getElementById("历史数据图表");
+  if (历史数据图表容器) {
+    历史数据图表 = echarts.init(历史数据图表容器);
+    // 立即更新一次历史数据图表
+    更新历史数据图表();
+  }
+
+  // 绑定数据切换按钮
+  const 数据切换按钮组 = 结果区.querySelectorAll(".数据切换按钮");
+  数据切换按钮组.forEach((按钮) => {
+    按钮.addEventListener("click", () => {
+      // 移除所有激活状态
+      数据切换按钮组.forEach((btn) => btn.classList.remove("激活"));
+      // 添加激活状态到当前按钮
+      按钮.classList.add("激活");
+      当前显示数据类型 = 按钮.getAttribute("data-type");
+      当前页码 = 1; // 切换数据类型时重置到第一页
+      更新历史数据图表();
+    });
+  });
+
+  // 绑定分页按钮
+  const 上一页按钮 = 结果区.querySelector("#上一页按钮");
+  const 下一页按钮 = 结果区.querySelector("#下一页按钮");
+  if (上一页按钮) {
+    上一页按钮.addEventListener("click", () => {
+      if (当前页码 > 1) {
+        当前页码--;
+        更新历史数据图表();
+      }
+    });
+  }
+  if (下一页按钮) {
+    下一页按钮.addEventListener("click", () => {
+      更新历史数据图表(); // 在更新函数中检查是否可以翻页
+    });
+  }
+
+  // 绑定清空记录按钮
+  const 清空记录按钮 = 结果区.querySelector("#清空记录按钮");
+  if (清空记录按钮) {
+    清空记录按钮.addEventListener("click", async () => {
+      await 清空所有记录();
+      当前页码 = 1; // 重置到第一页
+      await 更新历史数据图表();
+      // 强制刷新图表
+      if (历史数据图表) {
+        requestAnimationFrame(() => {
+          历史数据图表?.resize();
+        });
+      }
+    });
+  }
 
   // 绑定关闭按钮
   const 关闭按钮 = 结果区.querySelector("#关闭结果区");
@@ -1417,6 +1538,7 @@ function 更新结果区头部信息() {
 function 更新结果区图表() {
   更新错误分析图表();
   更新速度分析图表();
+  更新历史数据图表();
 }
 
 function 更新错误分析图表() {
@@ -1519,6 +1641,7 @@ function 更新错误分析图表() {
     textStyle: {
       fontFamily: '"Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif',
     },
+    graphic: [], // 清除"暂无数据"提示
     title: {
       text: `错误次数：${错误字符数}`,
       left: "center",
@@ -1532,11 +1655,11 @@ function 更新错误分析图表() {
       axisPointer: {
         type: "shadow",
       },
-      formatter: function(params) {
+      formatter: function (params) {
         let result = `${params[0].axisValueLabel}<br/>`;
         let hasNonZero = false;
 
-        params.forEach(function(item) {
+        params.forEach(function (item) {
           if (item.value > 0) {
             result += `${item.marker}${item.seriesName}: ${item.value}<br/>`;
             hasNonZero = true;
@@ -1544,7 +1667,7 @@ function 更新错误分析图表() {
         });
 
         return hasNonZero ? result : `${params[0].axisValueLabel}<br/>无错误输入`;
-      }
+      },
     },
     legend: {
       data: 实际输入字符列表.map((字符) => `误输入为"${字符 === " " ? "(空格)" : 字符}"`),
@@ -1657,6 +1780,7 @@ function 更新速度分析图表() {
     textStyle: {
       fontFamily: '"Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif',
     },
+    graphic: [], // 清除"暂无数据"提示
     title: {
       text: `平均速度：${平均速度} 字符 / 分钟`,
       left: "center",
@@ -1769,7 +1893,643 @@ function 更新速度分析图表() {
 window.addEventListener("resize", () => {
   错误分析图表?.resize();
   速度分析图表?.resize();
+  历史数据图表?.resize();
 });
+
+// ==================== IndexedDB 相关函数 ====================
+
+const DB_NAME = "TenFingersDB";
+const DB_VERSION = 1;
+const STORE_NAME = "testRecords";
+
+// 初始化 IndexedDB
+function 初始化数据库() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+    request.onerror = () => {
+      console.error("IndexedDB 打开失败:", request.error);
+      reject(request.error);
+    };
+
+    request.onsuccess = () => {
+      resolve(request.result);
+    };
+
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        const objectStore = db.createObjectStore(STORE_NAME, {
+          keyPath: "id",
+          autoIncrement: true,
+        });
+        objectStore.createIndex("姓名", "姓名", { unique: false });
+        objectStore.createIndex("时间", "时间", { unique: false });
+      }
+    };
+  });
+}
+
+// 保存测试记录到 IndexedDB
+async function 保存测试记录() {
+  // 检查是否真的开始了测试（有开始时间或有输入）
+  if (!测试开始时间 && 已输入字符数 === 0) {
+    console.log("未开始测试，不保存记录");
+    return;
+  }
+
+  try {
+    const db = await 初始化数据库();
+    const transaction = db.transaction([STORE_NAME], "readwrite");
+    const store = transaction.objectStore(STORE_NAME);
+
+    // 计算最终数据
+    const 实际错误字符数 = Object.keys(错误字符集合).length;
+    let 最终速度 = 0;
+    let 最终正确率 = 0;
+
+    if (统计数据数组 && 统计数据数组.length > 0) {
+      最终速度 = Math.round(统计数据数组[统计数据数组.length - 1].速度);
+    } else {
+      const 当前测试时间 = 累计已用时间;
+      if (当前测试时间 > 0) {
+        最终速度 = Math.round((已输入字符数 / 当前测试时间) * 60000);
+      }
+    }
+
+    if (当前输入索引 > 0) {
+      最终正确率 = (正确字符数 / 当前输入索引) * 100;
+    }
+
+    // 格式化测试开始时间（年、月、日、时、分、秒分开存储）
+    let 测试开始时间对象 = null;
+    if (测试开始时间) {
+      const 开始时间 = new Date(测试开始时间);
+      测试开始时间对象 = {
+        年: String(开始时间.getFullYear()),
+        月: String(开始时间.getMonth() + 1).padStart(2, "0"),
+        日: String(开始时间.getDate()).padStart(2, "0"),
+        时: String(开始时间.getHours()).padStart(2, "0"),
+        分: String(开始时间.getMinutes()).padStart(2, "0"),
+        秒: String(开始时间.getSeconds()).padStart(2, "0"),
+        时间戳: 开始时间.getTime(), // 保留时间戳用于排序
+      };
+    }
+
+    // 格式化测试结束时间（年、月、日、时、分、秒分开存储）
+    let 测试结束时间对象 = null;
+    if (测试结束时间) {
+      const 结束时间 = new Date(测试结束时间);
+      测试结束时间对象 = {
+        年: String(结束时间.getFullYear()),
+        月: String(结束时间.getMonth() + 1).padStart(2, "0"),
+        日: String(结束时间.getDate()).padStart(2, "0"),
+        时: String(结束时间.getHours()).padStart(2, "0"),
+        分: String(结束时间.getMinutes()).padStart(2, "0"),
+        秒: String(结束时间.getSeconds()).padStart(2, "0"),
+        时间戳: 结束时间.getTime(), // 保留时间戳用于排序
+      };
+    }
+
+    const 记录 = {
+      姓名: 测试者姓名 || "未知",
+      速度: 最终速度,
+      正确率: Math.round(最终正确率 * 100) / 100, // 保留两位小数
+      错误次数: 实际错误字符数,
+      退格次数: 退格次数,
+      时间: 测试结束时间 ? 测试结束时间.getTime() : Date.now(),
+      测试开始时间: 测试开始时间对象,
+      测试结束时间: 测试结束时间对象,
+      测试用时: 测试结束时间 && 测试开始时间 ? 测试结束时间.getTime() - 测试开始时间.getTime() : 累计已用时间,
+      字符数: 总字符数,
+      已输入字符数: 已输入字符数,
+    };
+
+    await new Promise((resolve, reject) => {
+      const request = store.add(记录);
+      request.onsuccess = () => resolve();
+      request.onerror = () => reject(request.error);
+    });
+
+    console.log("测试记录已保存到 IndexedDB");
+  } catch (error) {
+    console.error("保存测试记录失败:", error);
+  }
+}
+
+// 从 IndexedDB 获取所有测试记录
+async function 获取所有测试记录() {
+  try {
+    const db = await 初始化数据库();
+    const transaction = db.transaction([STORE_NAME], "readonly");
+    const store = transaction.objectStore(STORE_NAME);
+
+    return new Promise((resolve, reject) => {
+      const request = store.getAll();
+      request.onsuccess = () => {
+        resolve(request.result);
+      };
+      request.onerror = () => {
+        reject(request.error);
+      };
+    });
+  } catch (error) {
+    console.error("获取测试记录失败:", error);
+    return [];
+  }
+}
+
+// 清空所有测试记录
+async function 清空所有记录() {
+  try {
+    const db = await 初始化数据库();
+    const transaction = db.transaction([STORE_NAME], "readwrite");
+    const store = transaction.objectStore(STORE_NAME);
+
+    return new Promise((resolve, reject) => {
+      const request = store.clear();
+      request.onsuccess = () => {
+        console.log("所有测试记录已清空");
+        resolve();
+      };
+      request.onerror = () => {
+        console.error("清空测试记录失败:", request.error);
+        reject(request.error);
+      };
+    });
+  } catch (error) {
+    console.error("清空测试记录失败:", error);
+    throw error;
+  }
+}
+
+// 删除单条测试记录
+async function 删除单条记录(记录ID) {
+  try {
+    const db = await 初始化数据库();
+    const transaction = db.transaction([STORE_NAME], "readwrite");
+    const store = transaction.objectStore(STORE_NAME);
+
+    return new Promise((resolve, reject) => {
+      const request = store.delete(记录ID);
+      request.onsuccess = () => {
+        console.log("测试记录已删除:", 记录ID);
+        resolve();
+      };
+      request.onerror = () => {
+        console.error("删除测试记录失败:", request.error);
+        reject(request.error);
+      };
+    });
+  } catch (error) {
+    console.error("删除测试记录失败:", error);
+    throw error;
+  }
+}
+
+// 更新历史数据图表
+async function 更新历史数据图表() {
+  if (!历史数据图表) return;
+
+  try {
+    const 所有记录 = await 获取所有测试记录();
+
+    if (所有记录.length === 0) {
+      // 清空图表并显示空状态
+      历史数据图表.clear();
+      历史数据图表.setOption(
+        {
+          textStyle: {
+            fontFamily: '"Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif',
+          },
+          title: {
+            text: "历史数据对比",
+            left: "center",
+            textStyle: { color: "#fff" },
+          },
+          graphic: {
+            type: "text",
+            left: "center",
+            top: "middle",
+            style: {
+              text: "暂无历史数据",
+              fontSize: 20,
+              fill: "#999",
+            },
+          },
+        },
+        true
+      ); // 使用 notMerge: true 完全替换配置
+
+      // 隐藏分页控件
+      const 分页控件 = document.getElementById("分页控件");
+      if (分页控件) 分页控件.style.display = "none";
+
+      requestAnimationFrame(() => {
+        历史数据图表?.resize();
+      });
+      return;
+    }
+
+    // 每条记录独立显示，按时间排序（最新的在前）
+    所有记录.sort((a, b) => (b.时间 || 0) - (a.时间 || 0));
+
+    // 为每条记录生成显示数据（Y轴只显示姓名，不显示序号）
+    const 记录显示数据 = 所有记录.map((记录) => {
+      const 姓名 = 记录.姓名 || "未知";
+
+      return {
+        姓名: 姓名,
+        原始记录: 记录,
+        速度: 记录.速度 || 0,
+        正确率: 记录.正确率 || 0,
+        错误次数: 记录.错误次数 || 0,
+        退格次数: 记录.退格次数 || 0,
+      };
+    });
+
+    // 根据当前显示的数据类型进行排序
+    let 排序后的数据 = [...记录显示数据];
+    if (当前显示数据类型 === "速度" || 当前显示数据类型 === "正确率") {
+      // 速度、正确率降序排列
+      排序后的数据.sort((a, b) => b[当前显示数据类型] - a[当前显示数据类型]);
+    } else {
+      // 错误次数、退格次数升序排列
+      排序后的数据.sort((a, b) => a[当前显示数据类型] - b[当前显示数据类型]);
+    }
+
+    // 分页处理
+    const 总记录数 = 排序后的数据.length;
+    const 总页数 = Math.ceil(总记录数 / 每页记录数);
+
+    // 确保当前页码在有效范围内
+    if (当前页码 > 总页数) {
+      当前页码 = Math.max(1, 总页数);
+    }
+    if (当前页码 < 1) {
+      当前页码 = 1;
+    }
+
+    // 计算当前页的数据范围
+    const 起始索引 = (当前页码 - 1) * 每页记录数;
+    const 结束索引 = Math.min(起始索引 + 每页记录数, 总记录数);
+    const 当前页数据 = 排序后的数据.slice(起始索引, 结束索引);
+
+    // 准备图表数据（只显示当前页的数据）
+    const 姓名列表 = 当前页数据.map((item) => item.姓名);
+
+    // 生成随机颜色的函数
+    function 生成随机颜色() {
+      // 生成适中饱和度和亮度的颜色，确保在深色背景下可见但不会太亮
+      const 色相 = Math.floor(Math.random() * 360); // 0-360度
+      const 饱和度 = 40 + Math.floor(Math.random() * 30); // 40-70%，适中的饱和度
+      const 亮度 = 25 + Math.floor(Math.random() * 30); // 45-65%，适中的亮度
+      return `hsl(${色相}, ${饱和度}%, ${亮度}%)`;
+    }
+
+    // 为每个数据项生成带颜色的数据
+    const 数据值 = 当前页数据.map((item) => ({
+      value: item[当前显示数据类型],
+      itemStyle: {
+        color: 生成随机颜色(),
+      },
+    }));
+
+    // 更新分页控件
+    const 分页控件 = document.getElementById("分页控件");
+    const 页码显示 = document.getElementById("页码显示");
+    const 上一页按钮 = document.getElementById("上一页按钮");
+    const 下一页按钮 = document.getElementById("下一页按钮");
+
+    if (总记录数 > 每页记录数) {
+      // 显示分页控件
+      if (分页控件) 分页控件.style.display = "flex";
+      if (页码显示) 页码显示.textContent = `第 ${当前页码} 页 / 共 ${总页数} 页`;
+      if (上一页按钮) 上一页按钮.disabled = 当前页码 <= 1;
+      if (下一页按钮) 下一页按钮.disabled = 当前页码 >= 总页数;
+
+      // 更新下一页按钮的点击事件
+      if (下一页按钮) {
+        下一页按钮.onclick = () => {
+          if (当前页码 < 总页数) {
+            当前页码++;
+            更新历史数据图表();
+          }
+        };
+      }
+    } else {
+      // 隐藏分页控件
+      if (分页控件) 分页控件.style.display = "none";
+    }
+
+    // 确定 X 轴标签和单位
+    let xAxisName = "";
+    let 数据单位 = "";
+    let 显示单位 = true; // 是否在X轴标签上显示单位
+    if (当前显示数据类型 === "速度") {
+      xAxisName = "速度（字符/分钟）";
+      数据单位 = " 字符/分钟";
+      显示单位 = false; // 速度只显示数字
+    } else if (当前显示数据类型 === "正确率") {
+      xAxisName = "正确率（%）";
+      数据单位 = "%";
+    } else if (当前显示数据类型 === "错误次数") {
+      xAxisName = "错误次数";
+      数据单位 = " 次";
+    } else if (当前显示数据类型 === "退格次数") {
+      xAxisName = "退格次数";
+      数据单位 = " 次";
+    }
+
+    const 选项 = {
+      textStyle: {
+        fontFamily: '"Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif',
+      },
+      graphic: [], // 清除"暂无数据"提示
+      title: {
+        text: `历史数据对比 - ${当前显示数据类型}`,
+        left: "center",
+        top: 10,
+        textStyle: {
+          color: "#fff",
+        },
+      },
+      tooltip: {
+        trigger: "axis",
+        axisPointer: {
+          type: "shadow",
+        },
+        backgroundColor: "rgba(40, 40, 40, 0.95)",
+        borderColor: "lightsteelblue",
+        boxShadow: "0 0 5px 2px rgba(0, 0, 0, 0.75)",
+        borderWidth: 1,
+        textStyle: {
+          color: "#fff",
+        },
+        formatter: function (params) {
+          const 数据项 = params[0];
+          const 姓名 = 数据项.name;
+          // 处理新的数据格式（可能是对象，包含value和itemStyle）
+          const 值 = typeof 数据项.value === "object" ? 数据项.value.value : 数据项.value;
+          
+          // 使用数据项在series中的索引来查找对应的记录（最准确的方法）
+          // ECharts的bar chart中，params[0].dataIndex 对应Y轴数据的索引
+          const 数据索引 = 数据项.dataIndex;
+          let 数据项对象 = null;
+          
+          if (数据索引 >= 0 && 数据索引 < 当前页数据.length) {
+            数据项对象 = 当前页数据[数据索引];
+          } else {
+            // 如果索引查找失败，使用find方法作为备选
+            数据项对象 = 当前页数据.find((item) => item.姓名 === 姓名);
+            console.warn(`使用find方法查找数据项: ${姓名}, 索引: ${数据索引}`, { 当前页数据长度: 当前页数据.length });
+          }
+
+          if (!数据项对象) {
+            console.warn(`未找到数据项: ${姓名}`, { 数据索引, 姓名列表, 当前页数据 });
+            return `${姓名}<br/>${当前显示数据类型}: ${值}${数据单位}`;
+          }
+
+          const 记录 = 数据项对象.原始记录;
+          
+          // 调试：检查记录数据
+          if (!记录) {
+            console.warn(`数据项 ${姓名} 没有原始记录`, 数据项对象);
+          }
+          let 提示文本 = `${姓名}<br/>${当前显示数据类型}: ${值}${数据单位}`;
+
+          // 添加起始时间和结束时间
+          if (记录 && 记录.测试开始时间 && 记录.测试结束时间) {
+            // 如果时间是以对象形式存储的（年、月、日、时、分、秒分开）
+            if (typeof 记录.测试开始时间 === 'object' && 记录.测试开始时间 !== null && 记录.测试开始时间.年) {
+              const 开始时间对象 = 记录.测试开始时间;
+              const 结束时间对象 = 记录.测试结束时间;
+              
+              // 调试：检查时间对象
+              console.log(`记录 ${姓名} 的时间:`, {
+                开始: 开始时间对象,
+                结束: 结束时间对象
+              });
+              
+              const 格式化开始时间 = `<span class="时间数字">${开始时间对象.年}</span><span class="时间单位">年</span><span class="时间数字">${开始时间对象.月}</span><span class="时间单位">月</span><span class="时间数字">${开始时间对象.日}</span><span class="时间单位">日</span> <span class="时间数字">${开始时间对象.时}</span><span class="时间冒号">:</span><span class="时间数字">${开始时间对象.分}</span><span class="时间冒号">:</span><span class="时间数字">${开始时间对象.秒}</span>`;
+              const 格式化结束时间 = `<span class="时间数字">${结束时间对象.年}</span><span class="时间单位">年</span><span class="时间数字">${结束时间对象.月}</span><span class="时间单位">月</span><span class="时间数字">${结束时间对象.日}</span><span class="时间单位">日</span> <span class="时间数字">${结束时间对象.时}</span><span class="时间冒号">:</span><span class="时间数字">${结束时间对象.分}</span><span class="时间冒号">:</span><span class="时间数字">${结束时间对象.秒}</span>`;
+              
+              提示文本 += `<br/>起始时间: ${格式化开始时间}`;
+              提示文本 += `<br/>结束时间: ${格式化结束时间}`;
+            } else {
+              // 兼容旧格式（时间戳）
+              const 开始时间戳 = typeof 记录.测试开始时间 === 'number' ? 记录.测试开始时间 : (记录.测试开始时间?.时间戳 || 记录.测试开始时间);
+              const 结束时间戳 = typeof 记录.测试结束时间 === 'number' ? 记录.测试结束时间 : (记录.测试结束时间?.时间戳 || 记录.测试结束时间);
+              
+              if (开始时间戳 && 结束时间戳) {
+                const 开始时间 = new Date(开始时间戳);
+                const 结束时间 = new Date(结束时间戳);
+                const 格式化开始时间 = 格式化日期时间(开始时间);
+                const 格式化结束时间 = 格式化日期时间(结束时间);
+                提示文本 += `<br/>起始时间: ${格式化开始时间}`;
+                提示文本 += `<br/>结束时间: ${格式化结束时间}`;
+              }
+            }
+          } else {
+            // 调试：检查为什么没有时间数据
+            console.warn(`记录 ${姓名} 缺少时间数据:`, {
+              记录: 记录,
+              测试开始时间: 记录?.测试开始时间,
+              测试结束时间: 记录?.测试结束时间
+            });
+          }
+
+          return 提示文本;
+        },
+      },
+      grid: {
+        left: "15%",
+        right: "10%",
+        bottom: "10%",
+        top: "15%",
+        containLabel: false,
+      },
+      xAxis: {
+        type: "value",
+        name: xAxisName,
+        nameGap: 45,
+        nameTextStyle: {
+          color: "#999",
+        },
+        axisLabel: {
+          color: "#fff",
+          formatter: function (value) {
+            return 显示单位 ? value + 数据单位 : value;
+          },
+        },
+        axisLine: {
+          lineStyle: {
+            color: "#666",
+          },
+        },
+        splitLine: {
+          lineStyle: {
+            color: "#333",
+          },
+        },
+      },
+      yAxis: {
+        type: "category",
+        data: 姓名列表,
+        axisLabel: {
+          color: "lightblue",
+          fontSize: 14,
+        },
+        axisLine: {
+          lineStyle: {
+            color: "#666",
+          },
+        },
+      },
+      series: [
+        {
+          name: 当前显示数据类型,
+          type: "bar",
+          data: 数据值,
+          label: {
+            show: true,
+            position: "right",
+            color: "#fff",
+            formatter: function (params) {
+              const 值 = typeof params.value === "object" ? params.value.value : params.value;
+              return 显示单位 ? 值 + 数据单位 : 值;
+            },
+          },
+        },
+      ],
+    };
+
+    历史数据图表.setOption(选项);
+
+    // 绑定右键菜单事件
+    绑定图表右键菜单(当前页数据);
+
+    requestAnimationFrame(() => {
+      历史数据图表?.resize();
+    });
+  } catch (error) {
+    console.error("更新历史数据图表失败:", error);
+  }
+}
+
+// 存储当前页数据，供右键菜单使用
+let 当前右键菜单数据 = null;
+
+// 绑定图表右键菜单
+function 绑定图表右键菜单(当前页数据) {
+  if (!历史数据图表) return;
+
+  // 保存当前页数据供右键菜单使用
+  当前右键菜单数据 = 当前页数据;
+
+  const 图表容器 = 历史数据图表.getDom();
+  if (!图表容器) return;
+
+  // 移除旧的事件监听器
+  图表容器.removeEventListener('contextmenu', 处理图表右键点击);
+
+  // 添加右键点击事件监听
+  图表容器.addEventListener('contextmenu', 处理图表右键点击);
+}
+
+// 处理图表右键点击事件
+function 处理图表右键点击(event) {
+  event.preventDefault();
+
+  if (!当前右键菜单数据 || !历史数据图表) return;
+
+  // 获取点击位置相对于图表容器的坐标
+  const 图表容器 = 历史数据图表.getDom();
+  const 容器矩形 = 图表容器.getBoundingClientRect();
+  const 点击X = event.clientX - 容器矩形.left;
+  const 点击Y = event.clientY - 容器矩形.top;
+
+  // 对于横向柱状图，使用convertFromPixel获取Y轴索引
+  // 横向柱状图的坐标系统：[x值, y索引]
+  try {
+    const 图表坐标 = 历史数据图表.convertFromPixel('grid', [点击X, 点击Y]);
+    
+    if (图表坐标 && 图表坐标.length >= 2) {
+      // 对于横向柱状图，图表坐标是 [x值, y索引]
+      // 注意：横向柱状图的Y轴是category类型，索引对应数据数组的索引
+      const [值, 索引] = 图表坐标;
+      
+      // 检查是否点击在柱子上（索引应该是有效的）
+      // 由于是横向柱状图，索引应该对应Y轴的category索引
+      if (索引 !== null && 索引 !== undefined && 索引 >= 0 && 索引 < 当前右键菜单数据.length) {
+        const 数据项 = 当前右键菜单数据[索引];
+        const 记录 = 数据项?.原始记录;
+        
+        if (记录 && 记录.id) {
+          显示右键菜单(event.clientX, event.clientY, 记录);
+          return;
+        }
+      }
+    }
+  } catch (error) {
+    console.warn("转换图表坐标失败:", error);
+  }
+}
+
+// 显示右键菜单
+function 显示右键菜单(x, y, 记录) {
+  // 移除旧的菜单
+  const 旧菜单 = document.getElementById('历史数据右键菜单');
+  if (旧菜单) {
+    旧菜单.remove();
+  }
+
+  // 创建菜单
+  const 菜单 = document.createElement('div');
+  菜单.id = '历史数据右键菜单';
+  菜单.className = '历史数据右键菜单';
+  菜单.style.left = `${x}px`;
+  菜单.style.top = `${y}px`;
+
+  // 创建删除选项
+  const 删除选项 = document.createElement('div');
+  删除选项.className = '右键菜单项';
+  删除选项.textContent = '删除该条记录';
+  删除选项.addEventListener('click', async () => {
+    try {
+      await 删除单条记录(记录.id);
+      await 更新历史数据图表();
+      隐藏右键菜单();
+    } catch (error) {
+      console.error("删除记录失败:", error);
+      alert("删除记录失败，请重试");
+    }
+  });
+
+  菜单.appendChild(删除选项);
+  document.body.appendChild(菜单);
+
+  // 点击其他地方时隐藏菜单
+  const 隐藏菜单 = (e) => {
+    if (!菜单.contains(e.target)) {
+      隐藏右键菜单();
+      document.removeEventListener('click', 隐藏菜单);
+    }
+  };
+  
+  // 延迟添加事件监听，避免立即触发
+  setTimeout(() => {
+    document.addEventListener('click', 隐藏菜单);
+  }, 0);
+}
+
+// 隐藏右键菜单
+function 隐藏右键菜单() {
+  const 菜单 = document.getElementById('历史数据右键菜单');
+  if (菜单) {
+    菜单.remove();
+  }
+}
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", 初始化定时器设置);

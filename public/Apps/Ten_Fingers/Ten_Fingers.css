@@ -453,7 +453,7 @@ input[type="checkbox"]:hover {
   border: 2px solid #4a8a;
   border-radius: 4px;
   background-color: transparent;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   flex-shrink: 0;
 }
 
@@ -568,6 +568,51 @@ input[type="text"]:hover {
   font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
+.结果区锚链接容器 {
+  position: fixed;
+  left: 20px;
+  top: 95px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 2001;
+}
+
+.结果区锚链接 {
+  padding: 10px 15px 10px 10px;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  background-color: #333;
+  border: 2px solid #333;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: '"Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif';
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.锚链接图标 {
+  font-size: 16px;
+  display: inline-block;
+}
+
+.结果区锚链接:hover {
+  border-color: rgb(132, 149, 171);
+  color: white;
+}
+
+.结果区锚链接:active,
+.结果区锚链接:focus {
+  outline: none;
+  background-color: rgb(77, 89, 103);
+  border-color: rgb(77, 89, 103);
+  color: #fff;
+}
+
 .关闭结果区按钮 {
   position: fixed;
   top: 70px;
@@ -581,7 +626,7 @@ input[type="text"]:hover {
   border: 2px solid gray;
   border-radius: 50%;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -709,9 +754,120 @@ input[type="text"]:hover {
   margin: 0 0 20px 0;
   font-size: 24px;
   font-weight: bold;
-  color: #4caf50;
-  border-bottom: 2px solid #4caf50;
+  color: #316833;
+  border-bottom: 2px solid #2d662f;
   padding-bottom: 10px;
+}
+
+.数据切换按钮组 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.数据切换按钮左侧组 {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.数据切换按钮 {
+  padding: 8px 16px;
+  background-color: #333;
+  border: 2px solid #333;
+  border-radius: 6px;
+  color: #ccc;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: '"Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif';
+  transition: all 0.1s ease;
+}
+
+.数据切换按钮:hover {
+  background-color: rgb(71, 82, 96);
+  border-color: rgb(71, 82, 96);
+}
+
+.数据切换按钮.激活 {
+  background-color: #2a642c;
+  border-color: #2a642c;
+  color: #fff;
+  font-weight: 600;
+}
+
+.历史数据标题行 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.历史数据标题行 .结果区部分标题 {
+  margin: 0;
+  flex: 1;
+}
+
+.清空记录按钮 {
+  padding: 8px 16px;
+  background-color: rgb(139, 49, 43);
+  border: 2px solid rgb(139, 49, 43);
+  border-radius: 6px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  font-family: '"Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif';
+  white-space: nowrap;
+}
+
+.清空记录按钮:hover {
+  background-color: rgb(181, 66, 58);
+  border-color: rgb(181, 66, 58);
+}
+
+.分页控件 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.分页按钮 {
+  padding: 8px 16px;
+  background-color: rgba(60, 60, 60, 0.8);
+  border: 2px solid #666;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: '"Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif';
+}
+
+.分页按钮:hover:not(:disabled) {
+  background-color: rgba(80, 80, 80, 0.9);
+  border-color: #4caf50;
+  color: #4caf50;
+}
+
+.分页按钮:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.页码显示 {
+  color: #fff;
+  font-size: 14px;
+  font-family: '"Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif';
 }
 
 .原始字符 {
@@ -973,7 +1129,7 @@ input[type="text"]:hover {
   font-weight: 500;
   border-radius: 6px;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.2s;
   border: none;
   font-family: "Noto Sans SC", 微软雅黑, sans-serif;
 }
@@ -1025,4 +1181,26 @@ input[type="text"]:hover {
   .输入容器 {
     translate: 0 50px;
   }
+}
+
+.历史数据右键菜单 {
+  position: fixed;
+  overflow: hidden;
+  border-radius: 6px;
+  box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+  font-family: '"Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif';
+}
+
+.右键菜单项 {
+  background-color: rgb(220, 220, 220);
+  padding: 8px 16px;
+  color: black;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.右键菜单项:hover {
+  background-color: rgb(148, 61, 61);
+  color: #fff;
 }
