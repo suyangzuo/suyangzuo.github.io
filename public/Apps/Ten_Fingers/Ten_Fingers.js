@@ -979,17 +979,46 @@ function 滚动到当前字符() {
   if (!输入容器) return;
 
   const 所有字符元素 = 输入容器.querySelectorAll(".原始字符");
-  if (当前输入索引 >= 所有字符元素.length) return;
+  if (当前输入索引 === 0) return; // 还没有输入任何字符，不滚动
 
-  const 当前字符元素 = 所有字符元素[当前输入索引];
-  if (!当前字符元素) return;
+  // 检查刚刚输入的字符（当前输入索引 - 1），而不是下一个要输入的字符
+  const 刚刚输入的字符索引 = 当前输入索引 - 1;
+  if (刚刚输入的字符索引 < 0 || 刚刚输入的字符索引 >= 所有字符元素.length) return;
+
+  const 刚刚输入的字符元素 = 所有字符元素[刚刚输入的字符索引];
+  if (!刚刚输入的字符元素) return;
+
+  // 找到刚刚输入的字符所在行的最后一个字符
+  const 刚刚输入的字符矩形 = 刚刚输入的字符元素.getBoundingClientRect();
+  const 当前行顶部 = 刚刚输入的字符矩形.top;
+  const 行容差 = 2; // 允许2px的误差，因为字符可能有轻微的高度差异
+  
+  let 当前行最后一个字符索引 = 刚刚输入的字符索引;
+  
+  // 向后查找，找到第一个不在同一行的字符
+  for (let i = 刚刚输入的字符索引 + 1; i < 所有字符元素.length; i++) {
+    const 下一个字符元素 = 所有字符元素[i];
+    if (!下一个字符元素) break;
+    
+    const 下一个字符矩形 = 下一个字符元素.getBoundingClientRect();
+    // 如果下一个字符的top位置与当前字符的top位置差异超过容差，说明不在同一行
+    if (Math.abs(下一个字符矩形.top - 当前行顶部) > 行容差) {
+      break;
+    }
+    当前行最后一个字符索引 = i;
+  }
+
+  // 只有当刚刚输入的字符是它所在行的最后一个字符时，才检查是否需要滚动
+  if (刚刚输入的字符索引 !== 当前行最后一个字符索引) {
+    return; // 不是行尾，不滚动
+  }
 
   const 容器高度 = 输入容器.clientHeight;
   const 容器滚动顶部 = 输入容器.scrollTop;
   const 容器滚动底部 = 容器滚动顶部 + 容器高度;
 
   const 容器矩形 = 输入容器.getBoundingClientRect();
-  const 字符矩形 = 当前字符元素.getBoundingClientRect();
+  const 字符矩形 = 刚刚输入的字符元素.getBoundingClientRect();
 
   const 字符相对顶部 = 字符矩形.top - 容器矩形.top + 容器滚动顶部;
   const 字符相对底部 = 字符矩形.bottom - 容器矩形.top + 容器滚动顶部;
