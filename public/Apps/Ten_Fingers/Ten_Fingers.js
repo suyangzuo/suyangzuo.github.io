@@ -193,7 +193,7 @@ async function 初始化文章列表() {
           const 文件路径 = 文章容器.dataset.文件路径;
           const 文章内容 = await fetch(文件路径)
             .then((response) => response.text())
-            .then((内容) => 内容.trim().replace(/\n/g, " "));
+            .then((内容) => 内容.trim().replace(/[\r\n]+/g, " "));
           await 初始化输入容器(文章内容);
         }
       });
@@ -1168,7 +1168,7 @@ function 初始化开始按钮() {
         const 文件路径 = 激活的文章容器.dataset.文件路径;
         const 文章内容 = await fetch(文件路径)
           .then((response) => response.text())
-          .then((内容) => 内容.trim().replace(/\n/g, " "));
+          .then((内容) => 内容.trim().replace(/[\r\n]+/g, " "));
         await 初始化输入容器(文章内容);
       }
     });
