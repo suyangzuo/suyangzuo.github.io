@@ -59,7 +59,7 @@ clangd --version
 
 ---
 
-## 🛠 使用 clangd（项目配置）
+## 🛠️ 使用 clangd（项目配置）
 
 📁 创建 .clangd 文件
 
