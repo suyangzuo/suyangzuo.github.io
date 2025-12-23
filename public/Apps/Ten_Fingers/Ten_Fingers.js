@@ -703,7 +703,8 @@ function 进入测试结束状态(原因) {
     const 查看详情按钮 = document.createElement("button");
     查看详情按钮.textContent = "查看详情";
     查看详情按钮.className = "查看详情按钮";
-    查看详情按钮.addEventListener("click", () => {
+    查看详情按钮.addEventListener("click", (event) => {
+      event.stopPropagation();
       显示结果区();
     });
 
@@ -798,22 +799,37 @@ function 更新统计信息() {
 
     const 格式化结果 = 格式化百分比(进度);
     const 进度数字元素 = 进度百分比.querySelector(".进度数字");
+    const 进度小数点元素 = 进度百分比.querySelector(".进度小数点");
+    const 进度小数元素 = 进度百分比.querySelector(".进度小数");
     const 进度百分号元素 = 进度百分比.querySelector(".进度百分号");
 
     if (进度数字元素) {
-      let 进度文本 = 格式化结果.整数部分;
+      进度数字元素.textContent = 格式化结果.整数部分;
+    }
       if (格式化结果.需要显示小数点 && 格式化结果.小数部分 !== null) {
-        进度文本 += "." + 格式化结果.小数部分;
+      if (进度小数点元素) {
+        进度小数点元素.style.display = "inline";
+        进度小数点元素.textContent = ".";
       }
-      进度数字元素.textContent = 进度文本;
+      if (进度小数元素) {
+        进度小数元素.style.display = "inline";
+        进度小数元素.textContent = 格式化结果.小数部分;
+      }
+    } else {
+      if (进度小数点元素) 进度小数点元素.style.display = "none";
+      if (进度小数元素) 进度小数元素.style.display = "none";
     }
     if (进度百分号元素) {
       进度百分号元素.textContent = "%";
     }
   } else if (进度百分比) {
     const 进度数字元素 = 进度百分比.querySelector(".进度数字");
+    const 进度小数点元素 = 进度百分比.querySelector(".进度小数点");
+    const 进度小数元素 = 进度百分比.querySelector(".进度小数");
     const 进度百分号元素 = 进度百分比.querySelector(".进度百分号");
     if (进度数字元素) 进度数字元素.textContent = "0";
+    if (进度小数点元素) 进度小数点元素.style.display = "none";
+    if (进度小数元素) 进度小数元素.style.display = "none";
     if (进度百分号元素) 进度百分号元素.textContent = "%";
     if (进度圆环) 进度圆环.style.setProperty("--进度角度", "0deg");
   }
@@ -1316,7 +1332,7 @@ function 初始化开始按钮() {
         文件名 = 随机文章.文件名;
       } else {
         // 使用当前激活的文章
-        const 激活的文章容器 = 文章列表区.querySelector(".文章容器.激活");
+      const 激活的文章容器 = 文章列表区.querySelector(".文章容器.激活");
         if (!激活的文章容器) {
           return; // 没有激活的文章
         }
@@ -1327,12 +1343,12 @@ function 初始化开始按钮() {
         文件夹名 = 路径部分[路径部分.length - 2];
       }
 
-      const 文章内容 = await fetch(文件路径)
-        .then((response) => response.text())
+        const 文章内容 = await fetch(文件路径)
+          .then((response) => response.text())
         .then((内容) => 内容.trim().replace(/[\r\n]+/g, " "));
       // 更新文章标题显示
       更新文章标题显示(文件夹名, 文件名);
-      await 初始化输入容器(文章内容);
+        await 初始化输入容器(文章内容);
     });
   }
 }
@@ -1349,7 +1365,7 @@ function 初始化终止和详情按钮() {
   if (详情按钮) {
     详情按钮.addEventListener("click", () => {
       // 允许在任何时候打开结果区
-      显示结果区();
+        显示结果区();
     });
   }
 }
@@ -1367,8 +1383,8 @@ function 显示结果区() {
   if (结果区元素) {
     结果区元素.style.display = "block";
 
-    // 检查是否已开始测试
-    const 已开始测试 = 测试开始时间 !== null || 测试结束状态;
+    // 检查是否已开始测试（包括测试结束的情况）
+    const 已开始测试 = 测试开始时间 !== null || 测试结束状态 || 已输入字符数 > 0;
 
     // 根据测试状态控制各个部分的显示/隐藏
     控制结果区显示(已开始测试);
@@ -1563,6 +1579,31 @@ function 初始化结果区() {
   if (关闭按钮) {
     关闭按钮.addEventListener("click", 隐藏结果区);
   }
+
+  // 绑定锚链接点击事件，实现平滑滚动
+  const 锚链接列表 = 结果区.querySelectorAll(".结果区锚链接");
+  锚链接列表.forEach((锚链接) => {
+    锚链接.addEventListener("click", (event) => {
+      event.preventDefault();
+      const href = 锚链接.getAttribute("href");
+      if (href && href.startsWith("#")) {
+        const 锚点ID = href.substring(1);
+        const 目标元素 = document.getElementById(锚点ID);
+        if (目标元素 && 结果区元素) {
+          // 计算目标元素相对于结果区的位置
+          const 结果区矩形 = 结果区元素.getBoundingClientRect();
+          const 目标元素矩形 = 目标元素.getBoundingClientRect();
+          const 目标位置 = 结果区元素.scrollTop + (目标元素矩形.top - 结果区矩形.top) - 65;
+          
+          // 平滑滚动到目标位置
+          结果区元素.scrollTo({
+            top: Math.max(0, 目标位置),
+            behavior: "smooth",
+          });
+        }
+      }
+    });
+  });
 
   // 初始化图表
   初始化错误分析图表();

@@ -199,6 +199,15 @@ body:has(.文章列表区.显示) #选择文章 {
   opacity: 0;
   z-index: 9999;
   transition: 250ms;
+  pointer-events: none;
+}
+
+.文件夹列表区:not(.显示) {
+  pointer-events: none;
+}
+
+.文件夹列表区:not(.显示) * {
+  pointer-events: none;
 }
 
 .文章列表区 {
@@ -215,6 +224,15 @@ body:has(.文章列表区.显示) #选择文章 {
   background-image: linear-gradient(35deg, #ffffff15, #ffffff06);
   backdrop-filter: blur(15px);
   transition: 250ms;
+  pointer-events: none;
+}
+
+.文章列表区:not(.显示) {
+  pointer-events: none;
+}
+
+.文章列表区:not(.显示) * {
+  pointer-events: none;
 }
 
 .文章列表区.显示,
@@ -1047,7 +1065,6 @@ input[type="text"]:hover {
   position: relative;
   z-index: 1;
   font-size: 14px;
-  font-weight: 600;
   font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
   display: flex;
   align-items: baseline;
@@ -1056,6 +1073,10 @@ input[type="text"]:hover {
 
 .进度数字 {
   color: #fff;
+}
+
+.进度小数点 {
+  color: #aaa;
 }
 
 .进度百分号 {
