@@ -53,6 +53,7 @@ body:has(.文章列表区.显示) #选择文章 {
   display: flex;
   justify-content: center;
   gap: 25px;
+  position: relative;
 }
 
 .设置子区 {
@@ -62,6 +63,40 @@ body:has(.文章列表区.显示) #选择文章 {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
+}
+
+.文章标题设置子区 {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  translate: -50% 0;
+  opacity: 0;
+}
+
+.文章标题设置子区.显示 {
+  opacity: 1;
+}
+
+.文章标题文件夹名 {
+  color: silver;
+}
+
+.文章标题分隔符 {
+  color: gray;
+  margin: 0 10px;
+}
+
+.文章标题文章序号 {
+  color: lightslategray;
+}
+
+.文章标题文章分隔符 {
+  color: gray;
+  margin: 0 3px;
+}
+
+.文章标题文章文本 {
+  color: lightsteelblue;
 }
 
 .按钮 {
@@ -418,6 +453,15 @@ body:has(.文章列表区.显示) #选择文章 {
   align-items: center;
   gap: 10px;
   position: relative;
+}
+
+.随机标题 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  margin-left: 25px;
+  font-weight: normal;
 }
 
 .标签 {

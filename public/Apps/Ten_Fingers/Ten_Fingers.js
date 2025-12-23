@@ -44,9 +44,11 @@ const Storage_Keys = {
   已设置定时: "TenFingers_已设置定时",
   姓名: "TenFingers_姓名",
   当前文件夹: "TenFingers_当前文件夹",
+  随机选择: "TenFingers_随机选择",
 };
 
 let 当前文件夹 = 从本地存储读取(Storage_Keys.当前文件夹, "Computer");
+let 全局文件夹结构 = null; // 保存文件夹结构以便随机选择
 
 function 从本地存储读取(键名, 默认值) {
   const 存储值 = localStorage.getItem(键名);
@@ -101,6 +103,7 @@ async function 获取文本文件列表() {
 
 async function 初始化文章列表() {
   const 文件夹结构 = await 获取文本文件列表();
+  全局文件夹结构 = 文件夹结构; // 保存到全局变量
   const 文章列表区 = document.querySelector(".文章列表区");
   const 文章列表关闭按钮 = document.createElement("button");
   文章列表关闭按钮.className = "关闭按钮 文章列表关闭按钮";
@@ -194,6 +197,8 @@ async function 初始化文章列表() {
           const 文章内容 = await fetch(文件路径)
             .then((response) => response.text())
             .then((内容) => 内容.trim().replace(/[\r\n]+/g, " "));
+          // 更新文章标题显示
+          更新文章标题显示(文件夹名, 文件名);
           await 初始化输入容器(文章内容);
         }
       });
@@ -417,6 +422,19 @@ function 初始化定时复选框() {
     定时复选框.addEventListener("change", (event) => {
       已设置定时 = event.target.checked;
       保存到本地存储(Storage_Keys.已设置定时, 已设置定时);
+    });
+  }
+}
+
+function 初始化随机复选框() {
+  const 随机复选框 = document.querySelector("#随机复选框");
+  if (随机复选框) {
+    const 随机选择状态 = 从本地存储读取(Storage_Keys.随机选择, false);
+    随机复选框.checked = 随机选择状态;
+
+    随机复选框.addEventListener("change", (event) => {
+      const 选中状态 = event.target.checked;
+      保存到本地存储(Storage_Keys.随机选择, 选中状态);
     });
   }
 }
@@ -801,6 +819,125 @@ function 更新统计信息() {
   }
 }
 
+async function 随机选择文章() {
+  if (!全局文件夹结构) {
+    // 如果还没有加载文件夹结构，先加载
+    全局文件夹结构 = await 获取文本文件列表();
+  }
+
+  // 收集所有可用的文章
+  const 所有文章 = [];
+  for (const [文件夹名, 文件列表] of Object.entries(全局文件夹结构)) {
+    if (!文件列表 || 文件列表.length === 0) {
+      continue;
+    }
+    for (const 文件信息 of 文件列表) {
+      const 文件名 = 文件信息.文件名 || 文件信息;
+      所有文章.push({
+        文件夹名: 文件夹名,
+        文件名: 文件名,
+        文件路径: `./Texts/${文件夹名}/${文件名}`,
+      });
+    }
+  }
+
+  if (所有文章.length === 0) {
+    return null;
+  }
+
+  // 随机选择一篇文章
+  const 随机索引 = Math.floor(Math.random() * 所有文章.length);
+  const 随机文章 = 所有文章[随机索引];
+
+  // 更新文件夹和文章列表的激活状态
+  更新文章列表(随机文章.文件夹名);
+
+  // 找到对应的文章容器并激活
+  const 文章列表区 = document.querySelector(".文章列表区");
+  const 文章列表 = 文章列表区.querySelector(`ul[data-文件夹名="${随机文章.文件夹名}"]`);
+  if (文章列表) {
+    // 移除之前的激活状态
+    const 已激活文章容器 = 文章列表区.querySelector(".文章容器.激活");
+    if (已激活文章容器) {
+      已激活文章容器.classList.remove("激活");
+    }
+
+    // 激活选中的文章容器
+    const 文章容器 = 文章列表.querySelector(`.文章容器[data-文件路径="${随机文章.文件路径}"]`);
+    if (文章容器) {
+      文章容器.classList.add("激活");
+      
+      // 更新文件夹项的data-序号
+      const 文件夹列表区 = document.querySelector(".文件夹列表区");
+      const 文件夹列表 = 文件夹列表区.querySelector(".文件夹列表");
+      const 已选择文章文件夹 = 文件夹列表.querySelector(".文件夹项[data-序号]");
+      已选择文章文件夹?.removeAttribute("data-序号");
+      const 文件夹项 = 文件夹列表.querySelector(`.文件夹项[data-文件夹名="${随机文章.文件夹名}"]`);
+      if (文件夹项) {
+        文件夹项.dataset.序号 = 文章容器.dataset.序号;
+      }
+
+      // 更新当前文章变量
+      const 文章序号 = 文章容器.querySelector(".文章序号")?.textContent.trim() || "";
+      const 文章标题 = 文章容器.querySelector(".文章标题")?.textContent.trim() || "";
+      当前文章 = `${文章序号}_${文章标题}`;
+    }
+  }
+
+  return 随机文章;
+}
+
+function 更新文章标题显示(文件夹名, 文件名) {
+  const 文章标题设置子区 = document.querySelector(".文章标题设置子区");
+  if (!文章标题设置子区) return;
+
+  // 清空之前的内容
+  文章标题设置子区.innerHTML = "";
+
+  // 解析文件名：序号_文本部分.txt
+  const 文件名部分 = 文件名.split("_");
+  const 文章序号 = 文件名部分[0];
+  const 文章文本部分 = 文件名部分[1] ? 文件名部分[1].replace(/\.txt$/i, "") : "";
+
+  // 创建文件夹名span
+  const 文件夹名元素 = document.createElement("span");
+  文件夹名元素.className = "文章标题文件夹名";
+  文件夹名元素.textContent = 文件夹名;
+
+  // 创建分隔符span
+  const 分隔符元素 = document.createElement("span");
+  分隔符元素.className = "文章标题分隔符";
+  分隔符元素.textContent = " - ";
+
+  // 创建文章名span（包含序号、分隔符、文本部分）
+  const 文章名元素 = document.createElement("span");
+  文章名元素.className = "文章标题文章名";
+
+  // 创建文章序号span
+  const 文章序号元素 = document.createElement("span");
+  文章序号元素.className = "文章标题文章序号";
+  文章序号元素.textContent = 文章序号;
+
+  // 创建文章分隔符span（将_替换为·）
+  const 文章分隔符元素 = document.createElement("span");
+  文章分隔符元素.className = "文章标题文章分隔符";
+  文章分隔符元素.textContent = "·";
+
+  // 创建文章文本部分span
+  const 文章文本元素 = document.createElement("span");
+  文章文本元素.className = "文章标题文章文本";
+  文章文本元素.textContent = 文章文本部分;
+
+  // 组装文章名
+  文章名元素.append(文章序号元素, 文章分隔符元素, 文章文本元素);
+
+  // 组装完整标题
+  文章标题设置子区.append(文件夹名元素, 分隔符元素, 文章名元素);
+
+  // 添加"显示"类
+  文章标题设置子区.classList.add("显示");
+}
+
 async function 初始化输入容器(文章内容) {
   文章内容 = 在英文中文间添加空格(文章内容);
   const 输入区 = document.querySelector(".输入区");
@@ -1163,14 +1300,39 @@ function 初始化开始按钮() {
   const 开始按钮 = document.querySelector("#开始");
   if (开始按钮) {
     开始按钮.addEventListener("click", async () => {
-      const 激活的文章容器 = 文章列表区.querySelector(".文章容器.激活");
-      if (激活的文章容器) {
-        const 文件路径 = 激活的文章容器.dataset.文件路径;
-        const 文章内容 = await fetch(文件路径)
-          .then((response) => response.text())
-          .then((内容) => 内容.trim().replace(/[\r\n]+/g, " "));
-        await 初始化输入容器(文章内容);
+      const 随机复选框 = document.querySelector("#随机复选框");
+      const 是否随机 = 随机复选框 && 随机复选框.checked;
+
+      let 文件路径, 文件夹名, 文件名;
+
+      if (是否随机) {
+        // 随机选择文章
+        const 随机文章 = await 随机选择文章();
+        if (!随机文章) {
+          return; // 没有可用的文章
+        }
+        文件路径 = 随机文章.文件路径;
+        文件夹名 = 随机文章.文件夹名;
+        文件名 = 随机文章.文件名;
+      } else {
+        // 使用当前激活的文章
+        const 激活的文章容器 = 文章列表区.querySelector(".文章容器.激活");
+        if (!激活的文章容器) {
+          return; // 没有激活的文章
+        }
+        文件路径 = 激活的文章容器.dataset.文件路径;
+        // 从文件路径中提取文件夹名和文件名
+        const 路径部分 = 文件路径.split("/");
+        文件名 = 路径部分[路径部分.length - 1];
+        文件夹名 = 路径部分[路径部分.length - 2];
       }
+
+      const 文章内容 = await fetch(文件路径)
+        .then((response) => response.text())
+        .then((内容) => 内容.trim().replace(/[\r\n]+/g, " "));
+      // 更新文章标题显示
+      更新文章标题显示(文件夹名, 文件名);
+      await 初始化输入容器(文章内容);
     });
   }
 }
@@ -2563,12 +2725,14 @@ function 隐藏右键菜单() {
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", 初始化定时器设置);
   document.addEventListener("DOMContentLoaded", 初始化定时复选框);
+  document.addEventListener("DOMContentLoaded", 初始化随机复选框);
   document.addEventListener("DOMContentLoaded", 初始化姓名输入框);
   document.addEventListener("DOMContentLoaded", 初始化开始按钮);
   document.addEventListener("DOMContentLoaded", 初始化终止和详情按钮);
 } else {
   初始化定时器设置();
   初始化定时复选框();
+  初始化随机复选框();
   初始化姓名输入框();
   初始化开始按钮();
   初始化终止和详情按钮();
