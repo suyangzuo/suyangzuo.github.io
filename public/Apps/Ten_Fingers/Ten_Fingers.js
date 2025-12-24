@@ -13,6 +13,26 @@ let 正在合成 = false;
 let 输入容器 = null;
 let 隐藏输入框 = null;
 let 测试结束覆盖层 = null;
+let 所有字符元素缓存 = null; // 缓存字符元素数组
+let 上一个当前字符元素 = null; // 缓存上一个当前字符元素
+let 统计信息更新定时器 = null; // 节流定时器
+let 待更新的统计信息 = false; // 标记是否需要更新统计信息
+// 缓存DOM元素引用
+let 字符数显示元素 = null;
+let 已输入字符数元素 = null;
+let 总字符数元素 = null;
+let 错误数据显示元素 = null;
+let 错误字符数元素 = null;
+let 退格次数元素 = null;
+let 正确率数字元素 = null;
+let 小数点元素 = null;
+let 正确率小数元素 = null;
+let 进度圆环元素 = null;
+let 进度百分比元素 = null;
+let 进度数字元素 = null;
+let 进度小数点元素 = null;
+let 进度小数元素 = null;
+let 进度百分号元素 = null;
 let 总字符数 = 0;
 let 已输入字符数 = 0;
 let 正确字符数 = 0;
@@ -743,21 +763,12 @@ function 格式化百分比(数值) {
 }
 
 function 更新统计信息() {
-  const 字符数显示 = document.querySelector("#字符数显示");
-  if (字符数显示) {
-    const 已输入字符数元素 = 字符数显示.querySelector(".已输入字符数");
-    const 总字符数元素 = 字符数显示.querySelector(".总字符数");
-    if (已输入字符数元素) 已输入字符数元素.textContent = 已输入字符数;
-    if (总字符数元素) 总字符数元素.textContent = 总字符数;
-  }
+  // 使用缓存的DOM元素引用
+  if (已输入字符数元素) 已输入字符数元素.textContent = 已输入字符数;
+  if (总字符数元素) 总字符数元素.textContent = 总字符数;
 
-  const 错误数据显示 = document.querySelector("#错误数据显示");
-  if (错误数据显示) {
+  if (错误数据显示元素) {
     const 实际错误字符数 = Object.keys(错误字符集合).length;
-
-    const 错误字符数元素 = 错误数据显示.querySelector(".错误字符数");
-    const 退格次数元素 = 错误数据显示.querySelector(".退格次数");
-    const 正确率数字元素 = 错误数据显示.querySelector(".正确率数字");
 
     if (错误字符数元素) 错误字符数元素.textContent = 实际错误字符数;
     if (退格次数元素) 退格次数元素.textContent = 退格次数;
@@ -767,9 +778,6 @@ function 更新统计信息() {
       const 格式化结果 = 格式化百分比(正确率);
 
       正确率数字元素.textContent = 格式化结果.整数部分;
-
-      const 小数点元素 = 错误数据显示.querySelector(".小数点");
-      const 正确率小数元素 = 错误数据显示.querySelector(".正确率小数");
 
       if (格式化结果.需要显示小数点 && 格式化结果.小数部分 !== null) {
         if (小数点元素) 小数点元素.style.display = "inline";
@@ -783,30 +791,22 @@ function 更新统计信息() {
       }
     } else if (正确率数字元素) {
       正确率数字元素.textContent = "0";
-      const 小数点元素 = 错误数据显示?.querySelector(".小数点");
-      const 正确率小数元素 = 错误数据显示?.querySelector(".正确率小数");
       if (小数点元素) 小数点元素.style.display = "none";
       if (正确率小数元素) 正确率小数元素.style.display = "none";
     }
   }
 
-  const 进度圆环 = document.querySelector("#进度圆环");
-  const 进度百分比 = document.querySelector("#进度百分比");
-  if (进度圆环 && 进度百分比 && 总字符数 > 0) {
+  if (进度圆环元素 && 进度百分比元素 && 总字符数 > 0) {
     const 进度 = (已输入字符数 / 总字符数) * 100;
     const 进度角度 = (进度 / 100) * 360;
-    进度圆环.style.setProperty("--进度角度", `${进度角度}deg`);
+    进度圆环元素.style.setProperty("--进度角度", `${进度角度}deg`);
 
     const 格式化结果 = 格式化百分比(进度);
-    const 进度数字元素 = 进度百分比.querySelector(".进度数字");
-    const 进度小数点元素 = 进度百分比.querySelector(".进度小数点");
-    const 进度小数元素 = 进度百分比.querySelector(".进度小数");
-    const 进度百分号元素 = 进度百分比.querySelector(".进度百分号");
 
     if (进度数字元素) {
       进度数字元素.textContent = 格式化结果.整数部分;
     }
-      if (格式化结果.需要显示小数点 && 格式化结果.小数部分 !== null) {
+    if (格式化结果.需要显示小数点 && 格式化结果.小数部分 !== null) {
       if (进度小数点元素) {
         进度小数点元素.style.display = "inline";
         进度小数点元素.textContent = ".";
@@ -822,16 +822,12 @@ function 更新统计信息() {
     if (进度百分号元素) {
       进度百分号元素.textContent = "%";
     }
-  } else if (进度百分比) {
-    const 进度数字元素 = 进度百分比.querySelector(".进度数字");
-    const 进度小数点元素 = 进度百分比.querySelector(".进度小数点");
-    const 进度小数元素 = 进度百分比.querySelector(".进度小数");
-    const 进度百分号元素 = 进度百分比.querySelector(".进度百分号");
+  } else if (进度百分比元素) {
     if (进度数字元素) 进度数字元素.textContent = "0";
     if (进度小数点元素) 进度小数点元素.style.display = "none";
     if (进度小数元素) 进度小数元素.style.display = "none";
     if (进度百分号元素) 进度百分号元素.textContent = "%";
-    if (进度圆环) 进度圆环.style.setProperty("--进度角度", "0deg");
+    if (进度圆环元素) 进度圆环元素.style.setProperty("--进度角度", "0deg");
   }
 }
 
@@ -1023,6 +1019,27 @@ async function 初始化输入容器(文章内容) {
   });
 
   输入区.appendChild(输入容器);
+  
+  // 缓存字符元素数组
+  所有字符元素缓存 = Array.from(输入容器.querySelectorAll(".原始字符"));
+  上一个当前字符元素 = null;
+  
+  // 缓存DOM元素引用
+  字符数显示元素 = document.querySelector("#字符数显示");
+  已输入字符数元素 = 字符数显示元素?.querySelector(".已输入字符数");
+  总字符数元素 = 字符数显示元素?.querySelector(".总字符数");
+  错误数据显示元素 = document.querySelector("#错误数据显示");
+  错误字符数元素 = 错误数据显示元素?.querySelector(".错误字符数");
+  退格次数元素 = 错误数据显示元素?.querySelector(".退格次数");
+  正确率数字元素 = 错误数据显示元素?.querySelector(".正确率数字");
+  小数点元素 = 错误数据显示元素?.querySelector(".小数点");
+  正确率小数元素 = 错误数据显示元素?.querySelector(".正确率小数");
+  进度圆环元素 = document.querySelector("#进度圆环");
+  进度百分比元素 = document.querySelector("#进度百分比");
+  进度数字元素 = 进度百分比元素?.querySelector(".进度数字");
+  进度小数点元素 = 进度百分比元素?.querySelector(".进度小数点");
+  进度小数元素 = 进度百分比元素?.querySelector(".进度小数");
+  进度百分号元素 = 进度百分比元素?.querySelector(".进度百分号");
 
   测试结束覆盖层 = document.createElement("div");
   测试结束覆盖层.className = "测试结束覆盖层";
@@ -1107,12 +1124,11 @@ async function 初始化输入容器(文章内容) {
 }
 
 function 更新隐藏输入框位置() {
-  if (!隐藏输入框 || !输入容器) return;
+  if (!隐藏输入框 || !输入容器 || !所有字符元素缓存) return;
 
-  const 所有字符元素 = 输入容器.querySelectorAll(".原始字符");
-  if (当前输入索引 >= 所有字符元素.length) return;
+  if (当前输入索引 >= 所有字符元素缓存.length) return;
 
-  const 当前字符元素 = 所有字符元素[当前输入索引];
+  const 当前字符元素 = 所有字符元素缓存[当前输入索引];
   if (!当前字符元素) return;
 
   const 字符位置 = 当前字符元素.getBoundingClientRect();
@@ -1129,16 +1145,15 @@ function 更新隐藏输入框位置() {
 }
 
 function 滚动到当前字符() {
-  if (!输入容器) return;
+  if (!输入容器 || !所有字符元素缓存) return;
 
-  const 所有字符元素 = 输入容器.querySelectorAll(".原始字符");
   if (当前输入索引 === 0) return; // 还没有输入任何字符，不滚动
 
   // 检查刚刚输入的字符（当前输入索引 - 1），而不是下一个要输入的字符
   const 刚刚输入的字符索引 = 当前输入索引 - 1;
-  if (刚刚输入的字符索引 < 0 || 刚刚输入的字符索引 >= 所有字符元素.length) return;
+  if (刚刚输入的字符索引 < 0 || 刚刚输入的字符索引 >= 所有字符元素缓存.length) return;
 
-  const 刚刚输入的字符元素 = 所有字符元素[刚刚输入的字符索引];
+  const 刚刚输入的字符元素 = 所有字符元素缓存[刚刚输入的字符索引];
   if (!刚刚输入的字符元素) return;
 
   // 找到刚刚输入的字符所在行的最后一个字符
@@ -1149,8 +1164,10 @@ function 滚动到当前字符() {
   let 当前行最后一个字符索引 = 刚刚输入的字符索引;
   
   // 向后查找，找到第一个不在同一行的字符
-  for (let i = 刚刚输入的字符索引 + 1; i < 所有字符元素.length; i++) {
-    const 下一个字符元素 = 所有字符元素[i];
+  // 限制查找范围，避免遍历过多元素（最多查找100个字符）
+  const 最大查找范围 = Math.min(刚刚输入的字符索引 + 100, 所有字符元素缓存.length);
+  for (let i = 刚刚输入的字符索引 + 1; i < 最大查找范围; i++) {
+    const 下一个字符元素 = 所有字符元素缓存[i];
     if (!下一个字符元素) break;
     
     const 下一个字符矩形 = 下一个字符元素.getBoundingClientRect();
@@ -1199,16 +1216,18 @@ function 滚动到当前字符() {
 }
 
 function 更新当前字符高亮() {
-  const 所有字符元素 = 输入容器.querySelectorAll(".原始字符");
+  if (!所有字符元素缓存 || !输入容器) return;
 
-  所有字符元素.forEach((元素) => {
-    元素.classList.remove("当前");
-  });
+  // 只更新上一个和当前元素，而不是遍历所有元素
+  if (上一个当前字符元素) {
+    上一个当前字符元素.classList.remove("当前");
+  }
 
-  if (当前输入索引 < 所有字符元素.length) {
-    const 当前字符元素 = 所有字符元素[当前输入索引];
+  if (当前输入索引 < 所有字符元素缓存.length) {
+    const 当前字符元素 = 所有字符元素缓存[当前输入索引];
     if (当前字符元素) {
       当前字符元素.classList.add("当前");
+      上一个当前字符元素 = 当前字符元素;
       更新隐藏输入框位置();
 
       滚动到当前字符();
@@ -1229,8 +1248,7 @@ function 处理键盘输入(event) {
       退格次数++;
       当前输入索引--;
 
-      const 所有字符元素 = 输入容器.querySelectorAll(".原始字符");
-      const 当前字符元素 = 所有字符元素[当前输入索引];
+      const 当前字符元素 = 所有字符元素缓存 && 所有字符元素缓存[当前输入索引] ? 所有字符元素缓存[当前输入索引] : null;
       if (当前字符元素) {
         if (当前字符元素.classList.contains("正确")) {
           正确字符数--;
@@ -1246,7 +1264,15 @@ function 处理键盘输入(event) {
 
       已输入字符数--;
 
-      更新统计信息();
+      // 标记需要更新统计信息，使用节流
+      待更新的统计信息 = true;
+      if (!统计信息更新定时器) {
+        统计信息更新定时器 = requestAnimationFrame(() => {
+          更新统计信息();
+          待更新的统计信息 = false;
+          统计信息更新定时器 = null;
+        });
+      }
 
       更新当前字符高亮();
     }
@@ -1270,14 +1296,16 @@ function 处理输入字符(输入的字符) {
     开始倒计时();
   }
 
-  const 所有字符元素 = 输入容器.querySelectorAll(".原始字符");
+  if (!所有字符元素缓存) {
+    所有字符元素缓存 = Array.from(输入容器.querySelectorAll(".原始字符"));
+  }
 
   for (let i = 0; i < 输入的字符.length; i++) {
-    if (当前输入索引 >= 所有字符元素.length) {
+    if (当前输入索引 >= 所有字符元素缓存.length) {
       break;
     }
 
-    const 当前字符元素 = 所有字符元素[当前输入索引];
+    const 当前字符元素 = 所有字符元素缓存[当前输入索引];
     const 应该输入的字符 = 当前字符元素.textContent;
     const 实际输入的字符 = 输入的字符[i];
 
@@ -1303,11 +1331,19 @@ function 处理输入字符(输入的字符) {
     当前输入索引++;
   }
 
-  if (当前输入索引 >= 所有字符元素.length) {
+  if (当前输入索引 >= 所有字符元素缓存.length) {
     进入测试结束状态("所有字符输入完成");
   }
 
-  更新统计信息();
+  // 标记需要更新统计信息，使用节流
+  待更新的统计信息 = true;
+  if (!统计信息更新定时器) {
+    统计信息更新定时器 = requestAnimationFrame(() => {
+      更新统计信息();
+      待更新的统计信息 = false;
+      统计信息更新定时器 = null;
+    });
+  }
 
   更新当前字符高亮();
 }
