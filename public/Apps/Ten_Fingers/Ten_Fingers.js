@@ -462,14 +462,14 @@ function 初始化随机复选框() {
 
 function 初始化姓名输入框() {
   if (姓名输入框) {
-    const 存储的姓名 = 从会话存储读取(Storage_Keys.姓名, "测试者");
+    const 存储的姓名 = 从本地存储读取(Storage_Keys.姓名, "测试者");
     测试者姓名 = 存储的姓名;
     姓名输入框.value = 测试者姓名;
 
     姓名输入框.addEventListener("input", (event) => {
       const 输入的姓名 = event.target.value;
       测试者姓名 = 输入的姓名;
-      保存到会话存储(Storage_Keys.姓名, 输入的姓名);
+      保存到本地存储(Storage_Keys.姓名, 输入的姓名);
     });
   }
 }
