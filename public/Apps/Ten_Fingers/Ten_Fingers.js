@@ -1285,6 +1285,17 @@ async function 初始化输入容器(文章内容) {
   }, 100);
   输入容器.addEventListener("scroll", 滚动监听器, { passive: true });
   
+  // 禁止使用鼠标滚轮对输入容器进行滚动
+  输入容器.addEventListener("wheel", (event) => {
+    event.preventDefault();
+  }, { passive: false });
+  
+  // 兼容旧版浏览器的 mousewheel 事件
+  输入容器.addEventListener("mousewheel", (event) => {
+    event.preventDefault();
+    return false;
+  }, { passive: false });
+  
   // 所有字符元素缓存改为通过映射表访问（虚拟滚动时）
   所有字符元素缓存 = null; // 不再使用全局缓存，改为通过映射表访问
   上一个当前字符元素 = null;
