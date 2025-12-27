@@ -13,11 +13,19 @@ let 正在合成 = false;
 let 输入容器 = null;
 let 隐藏输入框 = null;
 let 测试结束覆盖层 = null;
-let 所有字符元素缓存 = null; // 缓存字符元素数组
+let 所有字符元素缓存 = null; // 缓存字符元素数组（虚拟滚动时使用）
 let 上一个当前字符元素 = null; // 缓存上一个当前字符元素
 let 统计信息更新定时器 = null; // 节流定时器
 let 待更新的统计信息 = false; // 标记是否需要更新统计信息
 let 配对符号状态 = new Map(); // 记录每种配对符号的状态（前符号 -> 是否已输入前符号）
+
+// 虚拟滚动相关变量
+let 文章内容字符串 = ""; // 保存原始文章内容
+let 块大小 = 450; // 每个块包含的字符数（400-500之间）
+let 块数组 = []; // 块数组，每个元素包含 { blockElement, elements, startIndex, endIndex, isRendered }
+let 字符元素映射 = new Map(); // 字符索引到字符元素的映射（仅已渲染的块）
+let 滚动监听器 = null; // 滚动事件监听器
+let 正在程序滚动 = false; // 标记是否正在程序滚动，避免滚动事件干扰
 // 缓存DOM元素引用
 let 字符数显示元素 = null;
 let 已输入字符数元素 = null;
@@ -959,8 +967,232 @@ function 更新文章标题显示(文件夹名, 文件名) {
   文章标题设置子区.classList.add("显示");
 }
 
+// 虚拟滚动：块管理模块
+function 获取块索引(字符索引) {
+  return Math.floor(字符索引 / 块大小);
+}
+
+function 获取块内索引(字符索引) {
+  return 字符索引 % 块大小;
+}
+
+function 获取字符元素(字符索引) {
+  // 先检查映射表
+  if (字符元素映射.has(字符索引)) {
+    return 字符元素映射.get(字符索引);
+  }
+  
+  // 如果不在映射表中，说明块未渲染，返回 null
+  return null;
+}
+
+function 创建块(块索引, 开始索引, 结束索引) {
+  const 块元素 = document.createElement("div");
+  块元素.className = "字符块";
+  块元素.dataset.blockIndex = 块索引;
+  // 使用 display: contents 避免块影响布局，让字符连续显示
+  // 如果浏览器不支持 contents，块元素不会影响布局，字符仍然会连续显示
+  块元素.style.display = "contents";
+  
+  // 确保块元素不会影响布局（作为降级方案）
+  块元素.style.margin = "0";
+  块元素.style.padding = "0";
+  块元素.style.border = "none";
+  
+  // 确保文章内容字符串已初始化
+  if (!文章内容字符串 || 文章内容字符串.length === 0) {
+    console.error("文章内容字符串为空，无法创建块");
+    return null;
+  }
+  
+  const 字符片段 = 文章内容字符串.slice(开始索引, 结束索引);
+  const 字符元素数组 = [];
+  
+  for (let i = 0; i < 字符片段.length; i++) {
+    const 字符 = 字符片段[i];
+    const 全局索引 = 开始索引 + i;
+    
+    const 字符元素 = document.createElement("span");
+    字符元素.className = "原始字符";
+    字符元素.textContent = 字符;
+    字符元素.dataset.charIndex = 全局索引;
+    字符元素.setAttribute("data-input", ""); // 初始化 data-input 属性为空
+    
+    if (字符 === "\n") {
+      字符元素.classList.add("换行符");
+    } else if (字符 === " ") {
+      字符元素.classList.add("空格");
+    }
+    
+    块元素.appendChild(字符元素);
+    字符元素数组.push(字符元素);
+    字符元素映射.set(全局索引, 字符元素);
+  }
+  
+  return {
+    blockElement: 块元素,
+    elements: 字符元素数组,
+    startIndex: 开始索引,
+    endIndex: 结束索引,
+    isRendered: true
+  };
+}
+
+function 卸载块(块索引) {
+  const 块数据 = 块数组[块索引];
+  if (!块数据 || !块数据.isRendered) return;
+  
+  // 从映射表中移除
+  for (let i = 块数据.startIndex; i < 块数据.endIndex; i++) {
+    字符元素映射.delete(i);
+  }
+  
+  // 从 DOM 中移除
+  if (块数据.blockElement.parentNode) {
+    块数据.blockElement.parentNode.removeChild(块数据.blockElement);
+  }
+  
+  块数据.isRendered = false;
+  块数据.blockElement = null;
+  块数据.elements = null;
+}
+
+function 渲染块(块索引) {
+  const 块数据 = 块数组[块索引];
+  if (!块数据 || 块数据.isRendered) return;
+  
+  // 重新创建块
+  const 新块数据 = 创建块(块索引, 块数据.startIndex, 块数据.endIndex);
+  if (!新块数据) {
+    console.error(`创建块 ${块索引} 失败`);
+    return;
+  }
+  块数组[块索引] = 新块数据;
+  
+  // 插入到正确位置
+  let 插入位置 = null;
+  for (let i = 块索引 - 1; i >= 0; i--) {
+    if (块数组[i] && 块数组[i].isRendered && 块数组[i].blockElement.parentNode) {
+      插入位置 = 块数组[i].blockElement.nextSibling;
+      break;
+    }
+  }
+  
+  if (插入位置) {
+    输入容器.insertBefore(新块数据.blockElement, 插入位置);
+  } else {
+    // 如果没有找到插入位置，直接追加到容器末尾
+    输入容器.appendChild(新块数据.blockElement);
+  }
+  
+  // 恢复错误标记和状态
+  恢复块状态(块索引);
+}
+
+function 恢复块状态(块索引) {
+  const 块数据 = 块数组[块索引];
+  if (!块数据 || !块数据.isRendered) return;
+  
+  for (let i = 块数据.startIndex; i < 块数据.endIndex; i++) {
+    const 字符元素 = 字符元素映射.get(i);
+    if (!字符元素) continue;
+    
+    // 恢复错误标记
+    if (错误字符集合[i]) {
+      字符元素.classList.add("错误");
+      字符元素.classList.remove("正确");
+    } else if (i < 当前输入索引) {
+      // 已输入但未标记为错误的字符，标记为正确
+      字符元素.classList.add("正确");
+      字符元素.classList.remove("错误");
+    }
+    
+    // 恢复当前字符高亮
+    if (i === 当前输入索引) {
+      字符元素.classList.add("当前");
+      上一个当前字符元素 = 字符元素;
+    } else {
+      字符元素.classList.remove("当前");
+    }
+  }
+}
+
+function 更新可见块() {
+  if (!输入容器) return;
+  
+  // 如果块数组为空，说明还没有初始化，直接返回
+  if (!块数组 || 块数组.length === 0) return;
+  
+  // 如果正在程序滚动，暂时不更新可见块，避免干扰滚动
+  if (正在程序滚动) return;
+  
+  // 计算当前输入索引所在的块
+  const 当前块索引 = 获取块索引(当前输入索引);
+  
+  // 确定需要渲染的块范围（当前 + 前后各 2 个）
+  const 预加载范围 = 2;
+  const 最小块索引 = Math.max(0, 当前块索引 - 预加载范围);
+  const 最大块索引 = Math.min(块数组.length - 1, 当前块索引 + 预加载范围);
+  
+  // 卸载不在范围内的块
+  for (let i = 0; i < 块数组.length; i++) {
+    if (i < 最小块索引 || i > 最大块索引) {
+      卸载块(i);
+    }
+  }
+  
+  // 渲染在范围内的块
+  for (let i = 最小块索引; i <= 最大块索引; i++) {
+    if (块数组[i] && !块数组[i].isRendered) {
+      渲染块(i);
+    }
+  }
+}
+
+function 确保块已加载(字符索引) {
+  const 目标块索引 = 获取块索引(字符索引);
+  
+  // 如果目标块未渲染，先渲染它
+  if (!块数组[目标块索引] || !块数组[目标块索引].isRendered) {
+    渲染块(目标块索引);
+  }
+  
+  // 同时确保相邻块也已加载（用于平滑滚动）
+  const 预加载范围 = 1;
+  for (let i = Math.max(0, 目标块索引 - 预加载范围); 
+       i <= Math.min(块数组.length - 1, 目标块索引 + 预加载范围); 
+       i++) {
+    if (块数组[i] && !块数组[i].isRendered) {
+      渲染块(i);
+    }
+  }
+}
+
+// 节流函数
+function 节流(函数, 延迟) {
+  let 上次执行时间 = 0;
+  let 定时器ID = null;
+  
+  return function(...参数) {
+    const 当前时间 = Date.now();
+    const 剩余时间 = 延迟 - (当前时间 - 上次执行时间);
+    
+    if (剩余时间 <= 0) {
+      上次执行时间 = 当前时间;
+      函数.apply(this, 参数);
+    } else {
+      clearTimeout(定时器ID);
+      定时器ID = setTimeout(() => {
+        上次执行时间 = Date.now();
+        函数.apply(this, 参数);
+      }, 剩余时间);
+    }
+  };
+}
+
 async function 初始化输入容器(文章内容) {
   文章内容 = 在英文中文间添加空格(文章内容);
+  文章内容字符串 = 文章内容; // 保存原始内容供虚拟滚动使用
   const 输入区 = document.querySelector(".输入区");
   if (!输入区) return;
 
@@ -1007,6 +1239,15 @@ async function 初始化输入容器(文章内容) {
   更新计时器显示();
   更新速度显示();
 
+  // 清理旧的虚拟滚动数据
+  块数组 = [];
+  字符元素映射.clear();
+  上一个当前字符元素 = null;
+  if (滚动监听器) {
+    输入容器?.removeEventListener("scroll", 滚动监听器);
+    滚动监听器 = null;
+  }
+
   输入容器 = document.createElement("div");
   输入容器.className = "输入容器";
   // 如果文章包含中文，添加"中文文章"类
@@ -1015,28 +1256,37 @@ async function 初始化输入容器(文章内容) {
   }
   输入容器.setAttribute("tabindex", "0");
 
-  const 字符数组 = [...文章内容];
+  // 虚拟滚动：创建块结构
+  // 注意：总字符数已经在上面赋值了，这里直接使用
+  const 块数量 = Math.ceil(总字符数 / 块大小);
+  
+  for (let i = 0; i < 块数量; i++) {
+    const 开始索引 = i * 块大小;
+    const 结束索引 = Math.min(开始索引 + 块大小, 总字符数);
+    
+    块数组.push({
+      blockElement: null,
+      elements: null,
+      startIndex: 开始索引,
+      endIndex: 结束索引,
+      isRendered: false
+    });
+  }
 
-  字符数组.forEach((字符, 索引) => {
-    const 字符元素 = document.createElement("span");
-    字符元素.className = "原始字符";
-    字符元素.textContent = 字符;
-    字符元素.dataset.charIndex = 索引;
-    字符元素.setAttribute("data-input", ""); // 初始化 data-input 属性为空
-
-    if (字符 === "\n") {
-      字符元素.classList.add("换行符");
-    } else if (字符 === " ") {
-      字符元素.classList.add("空格");
-    }
-
-    输入容器.appendChild(字符元素);
-  });
+  // 初始只渲染当前块 + 前后各 2 个（共 5 个）
+  当前输入索引 = 0;
+  更新可见块();
 
   输入区.appendChild(输入容器);
   
-  // 缓存字符元素数组
-  所有字符元素缓存 = Array.from(输入容器.querySelectorAll(".原始字符"));
+  // 添加滚动监听器（使用节流优化）
+  滚动监听器 = 节流(() => {
+    更新可见块();
+  }, 100);
+  输入容器.addEventListener("scroll", 滚动监听器, { passive: true });
+  
+  // 所有字符元素缓存改为通过映射表访问（虚拟滚动时）
+  所有字符元素缓存 = null; // 不再使用全局缓存，改为通过映射表访问
   上一个当前字符元素 = null;
   
   // 缓存DOM元素引用
@@ -1209,9 +1459,10 @@ async function 初始化输入容器(文章内容) {
       const 输入数据 = event.data;
       if (!输入数据) return;
       
-      const 当前应该输入的字符 = 所有字符元素缓存 && 所有字符元素缓存[当前输入索引] 
-        ? 所有字符元素缓存[当前输入索引].textContent 
-        : null;
+      // 确保块已加载
+      确保块已加载(当前输入索引);
+      const 当前字符元素 = 获取字符元素(当前输入索引);
+      const 当前应该输入的字符 = 当前字符元素 ? 当前字符元素.textContent : null;
       
       // 处理多字符输入（自动配对）
       if (输入数据.length > 1) {
@@ -1308,9 +1559,10 @@ async function 初始化输入容器(文章内容) {
 
     const 输入的字符 = 隐藏输入框.value;
     if (输入的字符) {
-      const 当前应该输入的字符 = 所有字符元素缓存 && 所有字符元素缓存[当前输入索引] 
-        ? 所有字符元素缓存[当前输入索引].textContent 
-        : null;
+      // 确保块已加载
+      确保块已加载(当前输入索引);
+      const 当前字符元素 = 获取字符元素(当前输入索引);
+      const 当前应该输入的字符 = 当前字符元素 ? 当前字符元素.textContent : null;
       
       // 如果是符号自动配对，检查状态决定处理前符号还是后符号
       if (是符号自动配对(输入的字符, 当前应该输入的字符)) {
@@ -1364,9 +1616,10 @@ async function 初始化输入容器(文章内容) {
     if (!正在合成) {
       const 输入的字符 = 隐藏输入框.value;
       if (输入的字符) {
-        const 当前应该输入的字符 = 所有字符元素缓存 && 所有字符元素缓存[当前输入索引] 
-          ? 所有字符元素缓存[当前输入索引].textContent 
-          : null;
+        // 确保块已加载
+        确保块已加载(当前输入索引);
+        const 当前字符元素 = 获取字符元素(当前输入索引);
+        const 当前应该输入的字符 = 当前字符元素 ? 当前字符元素.textContent : null;
         
         // 如果是符号自动配对，检查状态决定处理前符号还是后符号
         if (是符号自动配对(输入的字符, 当前应该输入的字符)) {
@@ -1436,11 +1689,12 @@ async function 初始化输入容器(文章内容) {
 }
 
 function 更新隐藏输入框位置() {
-  if (!隐藏输入框 || !输入容器 || !所有字符元素缓存) return;
+  if (!隐藏输入框 || !输入容器) return;
 
-  if (当前输入索引 >= 所有字符元素缓存.length) return;
-
-  const 当前字符元素 = 所有字符元素缓存[当前输入索引];
+  // 确保目标字符所在的块已加载
+  确保块已加载(当前输入索引);
+  
+  const 当前字符元素 = 获取字符元素(当前输入索引);
   if (!当前字符元素) return;
 
   const 字符位置 = 当前字符元素.getBoundingClientRect();
@@ -1457,15 +1711,18 @@ function 更新隐藏输入框位置() {
 }
 
 function 滚动到当前字符() {
-  if (!输入容器 || !所有字符元素缓存) return;
+  if (!输入容器) return;
 
   if (当前输入索引 === 0) return; // 还没有输入任何字符，不滚动
 
   // 检查刚刚输入的字符（当前输入索引 - 1），而不是下一个要输入的字符
   const 刚刚输入的字符索引 = 当前输入索引 - 1;
-  if (刚刚输入的字符索引 < 0 || 刚刚输入的字符索引 >= 所有字符元素缓存.length) return;
+  if (刚刚输入的字符索引 < 0 || 刚刚输入的字符索引 >= 总字符数) return;
 
-  const 刚刚输入的字符元素 = 所有字符元素缓存[刚刚输入的字符索引];
+  // 确保容器已加载
+  确保块已加载(刚刚输入的字符索引);
+  
+  const 刚刚输入的字符元素 = 获取字符元素(刚刚输入的字符索引);
   if (!刚刚输入的字符元素) return;
 
   // 找到刚刚输入的字符所在行的最后一个字符
@@ -1477,9 +1734,12 @@ function 滚动到当前字符() {
   
   // 向后查找，找到第一个不在同一行的字符
   // 限制查找范围，避免遍历过多元素（最多查找100个字符）
-  const 最大查找范围 = Math.min(刚刚输入的字符索引 + 100, 所有字符元素缓存.length);
+  const 最大查找范围 = Math.min(刚刚输入的字符索引 + 100, 总字符数);
   for (let i = 刚刚输入的字符索引 + 1; i < 最大查找范围; i++) {
-    const 下一个字符元素 = 所有字符元素缓存[i];
+    // 确保块已加载
+    确保块已加载(i);
+    
+    const 下一个字符元素 = 获取字符元素(i);
     if (!下一个字符元素) break;
     
     const 下一个字符矩形 = 下一个字符元素.getBoundingClientRect();
@@ -1495,48 +1755,79 @@ function 滚动到当前字符() {
     return; // 不是行尾，不滚动
   }
 
-  const 容器高度 = 输入容器.clientHeight;
-  const 容器滚动顶部 = 输入容器.scrollTop;
-  const 容器滚动底部 = 容器滚动顶部 + 容器高度;
+  // 使用 requestAnimationFrame 确保在布局更新后计算位置
+  requestAnimationFrame(() => {
+    const 容器高度 = 输入容器.clientHeight;
+    const 容器滚动顶部 = 输入容器.scrollTop;
+    const 容器滚动底部 = 容器滚动顶部 + 容器高度;
 
-  const 容器矩形 = 输入容器.getBoundingClientRect();
-  const 字符矩形 = 刚刚输入的字符元素.getBoundingClientRect();
+    const 容器矩形 = 输入容器.getBoundingClientRect();
+    const 字符矩形 = 刚刚输入的字符元素.getBoundingClientRect();
 
-  const 字符相对顶部 = 字符矩形.top - 容器矩形.top + 容器滚动顶部;
-  const 字符相对底部 = 字符矩形.bottom - 容器矩形.top + 容器滚动顶部;
+    // 计算字符相对于容器的绝对位置（考虑滚动）
+    // 使用 getBoundingClientRect 计算相对位置，然后加上当前滚动位置
+    // 这样可以避免因为块元素的存在导致的位置计算错误
+    const 字符相对顶部 = 字符矩形.top - 容器矩形.top + 容器滚动顶部;
+    const 字符相对底部 = 字符矩形.bottom - 容器矩形.top + 容器滚动顶部;
 
-  const 边距 = 80;
-  const 可见区域顶部 = 容器滚动顶部 + 边距;
-  const 可见区域底部 = 容器滚动底部 - 边距;
+    const 边距 = 80;
+    const 可见区域顶部 = 容器滚动顶部 + 边距;
+    const 可见区域底部 = 容器滚动底部 - 边距;
 
-  const 容器上内边距 = 20;
+    const 容器上内边距 = 20;
 
-  if (字符相对顶部 < 可见区域顶部) {
-    const 目标滚动位置 = 字符相对顶部 - 容器上内边距;
-    输入容器.scrollTo({
-      top: Math.max(0, 目标滚动位置),
-      behavior: "smooth",
-    });
-  } else if (字符相对底部 > 可见区域底部) {
-    // 让新行滚动到容器顶部，与最开始的第一行保持相同的垂直位置
-    const 目标滚动位置 = 字符相对顶部 - 容器上内边距;
-    输入容器.scrollTo({
-      top: Math.max(0, 目标滚动位置),
-      behavior: "smooth",
-    });
-  }
+    // 只在需要滚动时才滚动，避免重复滚动
+    if (字符相对顶部 < 可见区域顶部) {
+      // 计算目标滚动位置：让字符行顶部距离容器顶部有 容器上内边距 的距离
+      const 目标滚动位置 = 字符相对顶部 - 容器上内边距;
+      // 检查目标位置是否与当前滚动位置差异较大，避免微小调整
+      const 滚动差异 = Math.abs(目标滚动位置 - 容器滚动顶部);
+      if (滚动差异 > 5) {
+        正在程序滚动 = true;
+        输入容器.scrollTo({
+          top: Math.max(0, 目标滚动位置),
+          behavior: "smooth",
+        });
+        // 滚动完成后重置标志（平滑滚动大约需要 500ms）
+        setTimeout(() => {
+          正在程序滚动 = false;
+        }, 600);
+      }
+    } else if (字符相对底部 > 可见区域底部) {
+      // 让新行滚动到容器顶部，与最开始的第一行保持相同的垂直位置
+      // 计算目标滚动位置：让字符行顶部距离容器顶部有 容器上内边距 的距离
+      const 目标滚动位置 = 字符相对顶部 - 容器上内边距;
+      // 检查目标位置是否与当前滚动位置差异较大，避免微小调整
+      const 滚动差异 = Math.abs(目标滚动位置 - 容器滚动顶部);
+      if (滚动差异 > 5) {
+        正在程序滚动 = true;
+        输入容器.scrollTo({
+          top: Math.max(0, 目标滚动位置),
+          behavior: "smooth",
+        });
+        // 滚动完成后重置标志（平滑滚动大约需要 500ms）
+        setTimeout(() => {
+          正在程序滚动 = false;
+        }, 600);
+      }
+    }
+  });
 }
 
 function 更新当前字符高亮() {
-  if (!所有字符元素缓存 || !输入容器) return;
+  if (!输入容器) return;
 
   // 只更新上一个和当前元素，而不是遍历所有元素
   if (上一个当前字符元素) {
     上一个当前字符元素.classList.remove("当前");
+    上一个当前字符元素 = null;
   }
 
-  if (当前输入索引 < 所有字符元素缓存.length) {
-    const 当前字符元素 = 所有字符元素缓存[当前输入索引];
+  // 确保当前字符所在的块已加载
+  确保块已加载(当前输入索引);
+  
+  if (当前输入索引 < 总字符数) {
+    const 当前字符元素 = 获取字符元素(当前输入索引);
     if (当前字符元素) {
       当前字符元素.classList.add("当前");
       上一个当前字符元素 = 当前字符元素;
@@ -1545,6 +1836,9 @@ function 更新当前字符高亮() {
       滚动到当前字符();
     }
   }
+  
+  // 更新可见块（输入时可能需要加载下一个块）
+  更新可见块();
 }
 
 function 处理键盘输入(event) {
@@ -1560,7 +1854,10 @@ function 处理键盘输入(event) {
       退格次数++;
       当前输入索引--;
 
-      const 当前字符元素 = 所有字符元素缓存 && 所有字符元素缓存[当前输入索引] ? 所有字符元素缓存[当前输入索引] : null;
+      // 确保块已加载（退格时可能需要加载前一个块）
+      确保块已加载(当前输入索引);
+      
+      const 当前字符元素 = 获取字符元素(当前输入索引);
       if (当前字符元素) {
         if (当前字符元素.classList.contains("正确")) {
           正确字符数--;
@@ -1610,16 +1907,21 @@ function 处理输入字符(输入的字符) {
     开始倒计时();
   }
 
-  if (!所有字符元素缓存) {
-    所有字符元素缓存 = Array.from(输入容器.querySelectorAll(".原始字符"));
-  }
-
   for (let i = 0; i < 输入的字符.length; i++) {
-    if (当前输入索引 >= 所有字符元素缓存.length) {
+    if (当前输入索引 >= 总字符数) {
       break;
     }
 
-    const 当前字符元素 = 所有字符元素缓存[当前输入索引];
+    // 确保当前字符所在的块已加载
+    确保块已加载(当前输入索引);
+    
+    const 当前字符元素 = 获取字符元素(当前输入索引);
+    if (!当前字符元素) {
+      // 如果块未加载，跳过这个字符（理论上不应该发生）
+      当前输入索引++;
+      continue;
+    }
+    
     const 应该输入的字符 = 当前字符元素.textContent;
     const 实际输入的字符 = 输入的字符[i];
 
@@ -1648,7 +1950,7 @@ function 处理输入字符(输入的字符) {
     当前输入索引++;
   }
 
-  if (当前输入索引 >= 所有字符元素缓存.length) {
+  if (当前输入索引 >= 总字符数) {
     进入测试结束状态("所有字符输入完成");
   }
 
