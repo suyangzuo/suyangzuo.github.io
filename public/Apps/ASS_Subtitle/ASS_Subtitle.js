@@ -543,18 +543,28 @@ class ASSParser {
     固定表格.appendChild(固定表头行);
 
     const 第一个单元格 = 固定表头行.querySelector(".单元格:first-child");
-    
+
     const 固定第一个单元格Div = document.createElement("div");
     固定第一个单元格Div.className = "固定表头第一格";
     if (第一个单元格) {
       固定第一个单元格Div.innerHTML = 第一个单元格.innerHTML;
       const 计算样式 = window.getComputedStyle(第一个单元格);
       const 样式属性 = [
-        "padding", "textAlign", "fontSize", "fontWeight", "color",
-        "backgroundColor", "borderRight", "whiteSpace", "display",
-        "flexDirection", "alignItems", "justifyContent", "gap"
+        "padding",
+        "textAlign",
+        "fontSize",
+        "fontWeight",
+        "color",
+        "backgroundColor",
+        "borderRight",
+        "whiteSpace",
+        "display",
+        "flexDirection",
+        "alignItems",
+        "justifyContent",
+        "gap",
       ];
-      样式属性.forEach(属性 => {
+      样式属性.forEach((属性) => {
         const 值 = 计算样式.getPropertyValue(属性);
         if (值) {
           固定第一个单元格Div.style.setProperty(属性, 值);
@@ -906,6 +916,25 @@ class ASSParser {
     });
   }
 
+  // 辅助函数：在 contentEditable 元素中插入文本（替代已弃用的 execCommand）
+  插入文本到可编辑元素(元素, 文本) {
+    const 选择 = window.getSelection();
+    if (选择.rangeCount > 0) {
+      const 范围 = 选择.getRangeAt(0);
+      范围.deleteContents();
+      const 文本节点 = document.createTextNode(文本);
+      范围.insertNode(文本节点);
+      // 移动光标到插入文本的末尾
+      范围.setStartAfter(文本节点);
+      范围.collapse(true);
+      选择.removeAllRanges();
+      选择.addRange(范围);
+    } else {
+      // 如果没有选择范围，直接追加文本
+      元素.textContent = (元素.textContent || "") + 文本;
+    }
+  }
+
   创建表格文本框(容器, 字段, 值, 样式索引, 字段索引) {
     const 包装div = document.createElement("div");
     包装div.className = "表格输入框包装";
@@ -926,6 +955,41 @@ class ASSParser {
       可编辑div.textContent = 值;
     }
 
+    // 字体名称字段的特殊处理：不能在开头输入空白字符
+    const 是字体名称字段 = 字段 === "Fontname";
+
+    if (是字体名称字段) {
+      // 使用 beforeinput 事件阻止在开头输入空白字符
+      可编辑div.addEventListener("beforeinput", (e) => {
+        const 选择 = window.getSelection();
+        if (选择.rangeCount > 0) {
+          const 范围 = 选择.getRangeAt(0);
+          const 光标位置 = 范围.startOffset;
+          const 当前文本 = 可编辑div.textContent || "";
+
+          // 如果光标在开头（位置为0），且输入的是空白字符，则阻止
+          if (光标位置 === 0 && e.inputType === "insertText") {
+            const 输入字符 = e.data;
+            if (输入字符 && /^\s+$/.test(输入字符)) {
+              e.preventDefault();
+              return;
+            }
+          }
+
+          // 处理粘贴：如果粘贴的内容在开头位置且以空白字符开头，则去除开头的空白字符
+          if (e.inputType === "insertFromPaste" && 光标位置 === 0) {
+            const 粘贴文本 = e.dataTransfer?.getData("text/plain") || "";
+            if (粘贴文本 && /^\s+/.test(粘贴文本)) {
+              e.preventDefault();
+              const 去除开头空白 = 粘贴文本.replace(/^\s+/, "");
+              this.插入文本到可编辑元素(可编辑div, 去除开头空白);
+              return;
+            }
+          }
+        }
+      });
+    }
+
     可编辑div.addEventListener("input", () => {
       const 文本内容 = 可编辑div.textContent || "";
       this.更新样式单元格("[V4+ Styles]", 样式索引, 字段索引, 文本内容);
@@ -938,23 +1002,55 @@ class ASSParser {
       }
     });
 
+    // blur 事件处理：字体名称字段失焦时修剪两端空白字符
     if (是颜色字段) {
       可编辑div.addEventListener("blur", () => {
         const 文本内容 = 可编辑div.textContent || "";
         this.渲染颜色文本(可编辑div, 文本内容);
+      });
+    } else if (是字体名称字段) {
+      可编辑div.addEventListener("blur", () => {
+        const 文本内容 = 可编辑div.textContent || "";
+        const 修剪后的文本 = 文本内容.trim();
+        if (文本内容 !== 修剪后的文本) {
+          可编辑div.textContent = 修剪后的文本;
+          this.更新样式单元格("[V4+ Styles]", 样式索引, 字段索引, 修剪后的文本);
+          if (字段 !== "Name" && this.自动保存) {
+            this.保存文件();
+          }
+        }
       });
     }
 
     可编辑div.addEventListener("paste", (e) => {
       e.preventDefault();
       const 文本 = (e.clipboardData || window.clipboardData).getData("text");
-      document.execCommand("insertText", false, 文本);
+      this.插入文本到可编辑元素(可编辑div, 文本);
     });
 
     可编辑div.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
+      if (e.key === "Enter") {
         e.preventDefault();
         return;
+      }
+      // 字体名称字段：只在开头时阻止空格，中间和尾部允许空格
+      if (e.key === " ") {
+        if (是字体名称字段) {
+          const 选择 = window.getSelection();
+          if (选择.rangeCount > 0) {
+            const 范围 = 选择.getRangeAt(0);
+            const 光标位置 = 范围.startOffset;
+            // 只在光标在开头（位置为0）时阻止空格
+            if (光标位置 === 0) {
+              e.preventDefault();
+              return;
+            }
+          }
+        } else {
+          // 其他字段：完全阻止空格
+          e.preventDefault();
+          return;
+        }
       }
       if (e.key === "Escape") {
         e.preventDefault();
@@ -1178,7 +1274,7 @@ class ASSParser {
           数字文本 = "-" + 数字文本.substring(1).replace(/-/g, "");
         }
       }
-      document.execCommand("insertText", false, 数字文本);
+      this.插入文本到可编辑元素(可编辑div, 数字文本);
     });
 
     可编辑div.addEventListener("keydown", (e) => {

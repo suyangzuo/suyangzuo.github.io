@@ -942,7 +942,7 @@ input[type="text"]:hover {
 }
 
 /* 只在中文文章且输入错误时显示伪元素 */
-.输入容器 .原始字符.错误::after {
+.输入容器 .原始字符[data-state="error"]::after {
   content: attr(data-input);
   position: absolute;
   left: 50%;
@@ -958,7 +958,7 @@ input[type="text"]:hover {
 }
 
 /* 当 data-input 为空时，不显示伪元素 */
-.输入容器.中文文章 .原始字符.错误[data-input=""]::after {
+.输入容器.中文文章 .原始字符[data-state="error"][data-input=""]::after {
   display: none;
 }
 
@@ -973,19 +973,19 @@ input[type="text"]:hover {
   width: 1ch;
 }
 
-.原始字符.空格.错误 {
+.原始字符.空格[data-state="error"] {
   background-image: linear-gradient(to bottom, transparent 25%, #f44 25%, #f44 75%, transparent 75%);
 }
 
-.原始字符.正确 {
+.原始字符[data-state="correct"] {
   color: #38a86a;
 }
 
-.原始字符.错误 {
+.原始字符[data-state="error"] {
   color: #f44;
 }
 
-.输入区:has(.隐藏输入框:focus) .原始字符.当前 {
+.输入区:has(.隐藏输入框:focus) .原始字符[data-active="1"] {
   background: linear-gradient(
     to top,
     transparent,
@@ -996,7 +996,7 @@ input[type="text"]:hover {
   color: #fff;
 }
 
-.输入区:has(.隐藏输入框:focus) .原始字符.空格.当前 {
+.输入区:has(.隐藏输入框:focus) .原始字符.空格[data-active="1"] {
   background: linear-gradient(to top, transparent, rgba(255, 255, 255, 0.5) 50%, transparent);
   color: #fff;
 }
