@@ -35,6 +35,12 @@ const 字符状态枚举 = Object.freeze({
   错误: "error",
 });
 const 当前字符激活标记 = "1";
+const 英文单词字符正则 = /[A-Za-z0-9_'\u2019-]/;
+
+function 是英文单词字符(字符) {
+  if (!字符) return false;
+  return 英文单词字符正则.test(字符);
+}
 
 function 设置字符结果状态(字符元素, 状态 = 字符状态枚举.默认) {
   if (!字符元素) return;
@@ -112,10 +118,14 @@ const Storage_Keys = {
   姓名: "TenFingers_姓名",
   当前文件夹: "TenFingers_当前文件夹",
   随机选择: "TenFingers_随机选择",
+  断行整词: "TenFingers_断行整词",
 };
 
 let 当前文件夹 = 从本地存储读取(Storage_Keys.当前文件夹, "Computer");
 let 全局文件夹结构 = null; // 保存文件夹结构以便随机选择
+let 断行整词首选项 = 从本地存储读取(Storage_Keys.断行整词, false);
+let 当前文章整词断行 = 断行整词首选项;
+let 最近文章原始内容 = "";
 
 function 从本地存储读取(键名, 默认值) {
   const 存储值 = localStorage.getItem(键名);
@@ -266,6 +276,7 @@ async function 初始化文章列表() {
             .then((内容) => 内容.trim().replace(/[\r\n]+/g, " "));
           // 更新文章标题显示
           更新文章标题显示(文件夹名, 文件名);
+          最近文章原始内容 = 文章内容;
           await 初始化输入容器(文章内容);
         }
       });
@@ -504,6 +515,29 @@ function 初始化随机复选框() {
       保存到本地存储(Storage_Keys.随机选择, 选中状态);
     });
   }
+}
+
+function 初始化断行复选框() {
+  const 断行复选框 = document.querySelector("#断行复选框");
+  if (!断行复选框) return;
+
+  断行复选框.checked = 断行整词首选项;
+
+  断行复选框.addEventListener("change", (event) => {
+    const 是否启用 = event.target.checked;
+    断行整词首选项 = 是否启用;
+    保存到本地存储(Storage_Keys.断行整词, 是否启用);
+
+    const 已经开始测试 = 已输入字符数 > 0 || 当前输入索引 > 0;
+    if (已经开始测试) {
+      return;
+    }
+
+    if (最近文章原始内容) {
+      当前文章整词断行 = 断行整词首选项;
+      初始化输入容器(最近文章原始内容);
+    }
+  });
 }
 
 function 初始化姓名输入框() {
@@ -1045,6 +1079,8 @@ function 创建块(块索引, 开始索引, 结束索引) {
   
   const 字符片段 = 文章内容字符串.slice(开始索引, 结束索引);
   const 字符元素数组 = [];
+  const 需要整词断行 = 当前文章整词断行;
+  let 当前词容器 = null;
   
   for (let i = 0; i < 字符片段.length; i++) {
     const 字符 = 字符片段[i];
@@ -1062,7 +1098,17 @@ function 创建块(块索引, 开始索引, 结束索引) {
       字符元素.classList.add("空格");
     }
     
-    块元素.appendChild(字符元素);
+    if (需要整词断行 && 是英文单词字符(字符)) {
+      if (!当前词容器) {
+        当前词容器 = document.createElement("span");
+        当前词容器.className = "词容器";
+        块元素.appendChild(当前词容器);
+      }
+      当前词容器.appendChild(字符元素);
+    } else {
+      当前词容器 = null;
+      块元素.appendChild(字符元素);
+    }
     字符元素数组.push(字符元素);
     字符元素映射.set(全局索引, 字符元素);
   }
@@ -1229,6 +1275,8 @@ function 节流(函数, 延迟) {
 }
 
 async function 初始化输入容器(文章内容) {
+  最近文章原始内容 = 文章内容;
+  当前文章整词断行 = 断行整词首选项;
   文章内容 = 在英文中文间添加空格(文章内容);
   文章内容字符串 = 文章内容; // 保存原始内容供虚拟滚动使用
   const 输入区 = document.querySelector(".输入区");
@@ -1296,19 +1344,45 @@ async function 初始化输入容器(文章内容) {
 
   // 虚拟滚动：创建块结构
   // 注意：总字符数已经在上面赋值了，这里直接使用
-  const 块数量 = Math.ceil(总字符数 / 块大小);
-  
-  for (let i = 0; i < 块数量; i++) {
-    const 开始索引 = i * 块大小;
-    const 结束索引 = Math.min(开始索引 + 块大小, 总字符数);
-    
-    块数组.push({
-      blockElement: null,
-      elements: null,
-      startIndex: 开始索引,
-      endIndex: 结束索引,
-      isRendered: false
-    });
+  if (总字符数 > 0) {
+    if (当前文章整词断行) {
+      let 当前索引 = 0;
+      while (当前索引 < 总字符数) {
+        const 开始索引 = 当前索引;
+        let 结束索引 = Math.min(开始索引 + 块大小, 总字符数);
+
+        if (结束索引 < 总字符数) {
+          while (
+            结束索引 < 总字符数 &&
+            是英文单词字符(文章内容字符串[结束索引]) &&
+            是英文单词字符(文章内容字符串[结束索引 - 1])
+          ) {
+            结束索引++;
+          }
+        }
+
+        块数组.push({
+          blockElement: null,
+          elements: null,
+          startIndex: 开始索引,
+          endIndex: 结束索引,
+          isRendered: false,
+        });
+
+        当前索引 = 结束索引;
+      }
+    } else {
+      for (let 开始索引 = 0; 开始索引 < 总字符数; 开始索引 += 块大小) {
+        const 结束索引 = Math.min(开始索引 + 块大小, 总字符数);
+        块数组.push({
+          blockElement: null,
+          elements: null,
+          startIndex: 开始索引,
+          endIndex: 结束索引,
+          isRendered: false,
+        });
+      }
+    }
   }
 
   // 初始只渲染当前块 + 前后各 2 个（共 5 个）
@@ -2050,7 +2124,7 @@ function 初始化开始按钮() {
         文件名 = 随机文章.文件名;
       } else {
         // 使用当前激活的文章
-      const 激活的文章容器 = 文章列表区.querySelector(".文章容器.激活");
+        const 激活的文章容器 = 文章列表区.querySelector(".文章容器.激活");
         if (!激活的文章容器) {
           return; // 没有激活的文章
         }
@@ -2061,12 +2135,13 @@ function 初始化开始按钮() {
         文件夹名 = 路径部分[路径部分.length - 2];
       }
 
-        const 文章内容 = await fetch(文件路径)
-          .then((response) => response.text())
+      const 文章内容 = await fetch(文件路径)
+        .then((response) => response.text())
         .then((内容) => 内容.trim().replace(/[\r\n]+/g, " "));
       // 更新文章标题显示
       更新文章标题显示(文件夹名, 文件名);
-        await 初始化输入容器(文章内容);
+      最近文章原始内容 = 文章内容;
+      await 初始化输入容器(文章内容);
     });
   }
 }
@@ -3485,6 +3560,7 @@ if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", 初始化定时器设置);
   document.addEventListener("DOMContentLoaded", 初始化定时复选框);
   document.addEventListener("DOMContentLoaded", 初始化随机复选框);
+  document.addEventListener("DOMContentLoaded", 初始化断行复选框);
   document.addEventListener("DOMContentLoaded", 初始化姓名输入框);
   document.addEventListener("DOMContentLoaded", 初始化开始按钮);
   document.addEventListener("DOMContentLoaded", 初始化终止和详情按钮);
@@ -3492,6 +3568,7 @@ if (document.readyState === "loading") {
   初始化定时器设置();
   初始化定时复选框();
   初始化随机复选框();
+  初始化断行复选框();
   初始化姓名输入框();
   初始化开始按钮();
   初始化终止和详情按钮();

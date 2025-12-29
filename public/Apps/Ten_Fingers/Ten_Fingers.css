@@ -482,6 +482,22 @@ body:has(.文章列表区.显示) #选择文章 {
   font-weight: normal;
 }
 
+.其它选项设置子区 {
+  align-items: center;
+  gap: 8px;
+}
+
+.其它选项标题 {
+  margin: 0;
+  font-weight: normal;
+  color: var(--按钮字体色);
+}
+
+.其它选项列表 {
+  display: flex;
+  gap: 25px;
+}
+
 .标签 {
   display: flex;
   align-items: center;
@@ -939,6 +955,15 @@ input[type="text"]:hover {
   color: gray;
   align-content: center;
   position: relative;
+}
+
+.词容器 {
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  align-items: flex-start;
+  gap: 0;
 }
 
 /* 只在中文文章且输入错误时显示伪元素 */
