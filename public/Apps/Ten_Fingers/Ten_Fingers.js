@@ -1321,6 +1321,23 @@ async function 初始化输入容器(文章内容) {
     测试结束覆盖层.style.display = "none";
   }
 
+  // 缓存DOM元素引用（在首次更新统计信息前完成）
+  字符数显示元素 = document.querySelector("#字符数显示");
+  已输入字符数元素 = 字符数显示元素?.querySelector(".已输入字符数");
+  总字符数元素 = 字符数显示元素?.querySelector(".总字符数");
+  错误数据显示元素 = document.querySelector("#错误数据显示");
+  错误字符数元素 = 错误数据显示元素?.querySelector(".错误字符数");
+  退格次数元素 = 错误数据显示元素?.querySelector(".退格次数");
+  正确率数字元素 = 错误数据显示元素?.querySelector(".正确率数字");
+  小数点元素 = 错误数据显示元素?.querySelector(".小数点");
+  正确率小数元素 = 错误数据显示元素?.querySelector(".正确率小数");
+  进度圆环元素 = document.querySelector("#进度圆环");
+  进度百分比元素 = document.querySelector("#进度百分比");
+  进度数字元素 = 进度百分比元素?.querySelector(".进度数字");
+  进度小数点元素 = 进度百分比元素?.querySelector(".进度小数点");
+  进度小数元素 = 进度百分比元素?.querySelector(".进度小数");
+  进度百分号元素 = 进度百分比元素?.querySelector(".进度百分号");
+
   更新统计信息();
   更新计时器显示();
   更新速度显示();
@@ -1412,23 +1429,6 @@ async function 初始化输入容器(文章内容) {
   所有字符元素缓存 = null; // 不再使用全局缓存，改为通过映射表访问
   上一个当前字符元素 = null;
   
-  // 缓存DOM元素引用
-  字符数显示元素 = document.querySelector("#字符数显示");
-  已输入字符数元素 = 字符数显示元素?.querySelector(".已输入字符数");
-  总字符数元素 = 字符数显示元素?.querySelector(".总字符数");
-  错误数据显示元素 = document.querySelector("#错误数据显示");
-  错误字符数元素 = 错误数据显示元素?.querySelector(".错误字符数");
-  退格次数元素 = 错误数据显示元素?.querySelector(".退格次数");
-  正确率数字元素 = 错误数据显示元素?.querySelector(".正确率数字");
-  小数点元素 = 错误数据显示元素?.querySelector(".小数点");
-  正确率小数元素 = 错误数据显示元素?.querySelector(".正确率小数");
-  进度圆环元素 = document.querySelector("#进度圆环");
-  进度百分比元素 = document.querySelector("#进度百分比");
-  进度数字元素 = 进度百分比元素?.querySelector(".进度数字");
-  进度小数点元素 = 进度百分比元素?.querySelector(".进度小数点");
-  进度小数元素 = 进度百分比元素?.querySelector(".进度小数");
-  进度百分号元素 = 进度百分比元素?.querySelector(".进度百分号");
-
   测试结束覆盖层 = document.createElement("div");
   测试结束覆盖层.className = "测试结束覆盖层";
   测试结束覆盖层.textContent = "测试结束";
