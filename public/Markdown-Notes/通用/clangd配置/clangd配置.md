@@ -1,4 +1,19 @@
-# <center>🚀 clangd 配置</center>
+# <center>🚀 clangd 配置 </center>
+
+## 🔗 clangd 和 clang
+
+| 项目 | clang | clangd |
+|:---:|:---:|:---:|
+| 类型 | 编译器 | 语言服务器 |
+| 是否编译代码 | ✔️ | ❌ |
+| 是否生成程序 | ✔️ | ❌ |
+| 是否依赖编辑器 | ❌ | ✔️ |
+| 主要用途 | 构建程序 | 代码分析与提示 |
+
+### 👋 一句话结论
+
+- 👉 clang **真正负责编译与生成程序**
+- 👉 clangd **负责代码分析与智能提示**
 
 ## 📥 下载 clangd
 
@@ -79,7 +94,8 @@ CompileFlags:
     - "-IC:/msys64/mingw64/include"
     - "--target=x86_64-w64-windows-gnu"
 ```
-🖥️ 你的文件结构应该是这样的 
+
+🖥️ 你的文件结构应该是这样的
 
 ```bash
 MyProject/
@@ -134,6 +150,7 @@ MyProject/
 "editor.inlayHints.enabled": "on"
 
 ```
+
 该配置用于：
 
 允许 **VS Code** 显示 **clangd** 提供的内联提示（例如参数名、类型提示等）
