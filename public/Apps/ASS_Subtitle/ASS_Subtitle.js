@@ -7,10 +7,15 @@ class ASSParser {
     this.原始文件数据 = null;
     this.自动保存 = false;
     this.保存定时器 = null;
+    this.保存提示元素 = null;
+    this.保存提示隐藏定时器 = null;
+    this.保存提示显示动画 = null;
+    this.保存提示隐藏动画 = null;
     this.文件已修改 = false;
     this.ASS标准默认样式 = this.创建ASS标准默认样式();
     this.副字幕统一样式 = null;
     this.副字幕统一样式基线 = null;
+    this.主字幕分组列表 = [];
     this.初始化();
   }
 
@@ -197,7 +202,8 @@ class ASSParser {
     }
 
     if (this.文件数据["[Events]"]) {
-      this.渲染Events(ASS区);
+      this.渲染主字幕(ASS区);
+      this.渲染副字幕(ASS区);
     }
   }
 
@@ -472,9 +478,9 @@ class ASSParser {
     }, 0);
   }
 
-  渲染Events(容器) {
+  渲染副字幕(容器) {
     const 部分区 = document.createElement("div");
-    部分区.className = "部分区 部分区-Events";
+    部分区.className = "部分区 部分区-副字幕";
 
     const 标题 = document.createElement("div");
     标题.className = "部分标题";
@@ -533,6 +539,7 @@ class ASSParser {
       const 样式名 = 样式索引 !== -1 ? 事件字段[字段列表[样式索引]] || "Default" : "Default";
       const 基础样式 = this.构建基础样式(样式名, 样式映射, 默认样式);
       const 副字幕样式 = this.解析副字幕样式(副文本原始, 基础样式);
+      const 引用样式名 = this.提取副字幕样式引用(副文本原始);
 
       副字幕列表.push({
         序号: 副字幕列表.length + 1,
@@ -542,6 +549,7 @@ class ASSParser {
         副文本: 副文本净化 || "(空)",
         原始副文本: 副文本原始,
         样式: 副字幕样式,
+        引用样式名,
       });
     }
 
@@ -551,22 +559,210 @@ class ASSParser {
       return;
     }
 
-    const 计数 = document.createElement("div");
-    计数.className = "副字幕计数";
-    计数.innerHTML = `检测到 <span class="副字幕计数数字">${副字幕列表.length}</span> 条含副字幕的行，以下样式将统一应用于所有副字幕。`;
-    部分区.appendChild(计数);
+    const 引用样式计数 = new Map();
+    const 自定义列表 = [];
 
-    const 基线样式 = 副字幕列表[0]?.样式 ? { ...副字幕列表[0].样式 } : { ...默认样式 };
-    this.副字幕统一样式基线 = { ...基线样式 };
-    this.副字幕统一样式 = { ...基线样式 };
+    副字幕列表.forEach((项) => {
+      if (项.引用样式名) {
+        引用样式计数.set(项.引用样式名, (引用样式计数.get(项.引用样式名) || 0) + 1);
+      } else {
+        自定义列表.push(项);
+      }
+    });
 
-    const 样式表 = this.创建副字幕样式表(this.副字幕统一样式);
-    部分区.appendChild(样式表);
+    const 总引用数 = Array.from(引用样式计数.values()).reduce((a, b) => a + b, 0);
+
+    if (总引用数 > 0) {
+      const 提示 = document.createElement("div");
+      提示.className = "副字幕引用提示";
+
+      const 样式串 = Array.from(引用样式计数.entries())
+        .map(([样式名, 行数]) => `<span class="副字幕引用提示-样式名">${样式名}</span>`)
+        .join(" / ");
+
+      提示.innerHTML = `有 <span class="副字幕引用提示-数量">${总引用数}</span> 行副字幕引用了 <span class="副字幕引用提示-标签">[V4+ Styles]</span> 中的样式：${样式串}`;
+
+      部分区.appendChild(提示);
+    }
+
+    if (自定义列表.length > 0) {
+      const 计数 = document.createElement("div");
+      计数.className = "副字幕计数";
+      计数.innerHTML = `有 <span class="副字幕计数数字">${自定义列表.length}</span> 行副字幕使用自定义样式，以下表格内样式会应用到这些行。`;
+      部分区.appendChild(计数);
+
+      const 基线样式 = 自定义列表[0]?.样式 ? { ...自定义列表[0].样式 } : { ...默认样式 };
+      this.副字幕统一样式基线 = { ...基线样式 };
+      this.副字幕统一样式 = { ...基线样式 };
+
+      const 样式表 = this.创建副字幕样式表(this.副字幕统一样式);
+      部分区.appendChild(样式表);
+
+      setTimeout(() => {
+        this.初始化所有颜色选择器(样式表);
+      }, 0);
+    } else {
+      // 没有自定义样式行时，不需要可编辑表
+      this.副字幕统一样式 = null;
+      this.副字幕统一样式基线 = null;
+    }
+
     容器.appendChild(部分区);
+  }
 
-    setTimeout(() => {
-      this.初始化所有颜色选择器(样式表);
-    }, 0);
+  渲染主字幕(容器) {
+    const 部分区 = document.createElement("div");
+    部分区.className = "部分区 部分区-主字幕";
+
+    const 标题 = document.createElement("div");
+    标题.className = "部分标题";
+    标题.textContent = "[Events] 主字幕样式";
+    部分区.appendChild(标题);
+
+    const 行 = this.文件数据["[Events]"];
+    if (!行 || 行.length === 0) {
+      部分区.appendChild(document.createTextNode("未找到事件数据"));
+      容器.appendChild(部分区);
+      return;
+    }
+
+    const 格式行 = 行.find((内容) => 内容.startsWith("Format:"));
+    if (!格式行) {
+      部分区.appendChild(document.createTextNode("缺少 Format 行，无法解析 Events 部分"));
+      容器.appendChild(部分区);
+      return;
+    }
+
+    const 字段列表 = 格式行
+      .replace(/^Format:/i, "")
+      .split(",")
+      .map((字段) => 字段.trim())
+      .filter((字段) => 字段);
+
+    const 文本索引 = 字段列表.findIndex((字段) => 字段.toLowerCase() === "text");
+    if (文本索引 === -1) {
+      部分区.appendChild(document.createTextNode("Format 中缺少 Text 字段"));
+      容器.appendChild(部分区);
+      return;
+    }
+
+    const 样式索引 = 字段列表.findIndex((字段) => 字段.toLowerCase() === "style");
+
+    const 样式映射 = this.构建样式映射();
+    const 默认样式 = this.ASS标准默认样式 || this.创建ASS标准默认样式();
+
+    const 主字幕自定义列表 = [];
+    const 主字幕引用计数 = new Map();
+
+    for (let 行索引值 = 0; 行索引值 < 行.length; 行索引值++) {
+      const 行内容 = 行[行索引值];
+      if (!行内容.startsWith("Dialogue:")) continue;
+
+      const 事件字段 = this.解析事件行(行内容, 字段列表, 文本索引);
+      if (!事件字段) continue;
+
+      const 文本值 = 事件字段[字段列表[文本索引]] || "";
+      const 行拆分 = 文本值.split(/\\[Nn]/);
+      const 主文本原始 = 行拆分[0] || "";
+      const 主文本净化 = 主文本原始.replace(/^\{[^}]*\}/, "").trim();
+
+      const 样式名 = 样式索引 !== -1 ? 事件字段[字段列表[样式索引]] || "Default" : "Default";
+      const 有覆盖 = /^\{[^}]*\}/.test(主文本原始);
+
+      if (!有覆盖) {
+        主字幕引用计数.set(样式名, (主字幕引用计数.get(样式名) || 0) + 1);
+        continue;
+      }
+
+      const 覆盖串 = (主文本原始.match(/^\{[^}]*\}/) || [""])[0];
+      const 覆盖字段集合 = this.提取覆盖字段集合(覆盖串);
+
+      const 基础样式 = this.构建基础样式(样式名, 样式映射, 默认样式);
+      const 主字幕样式 = this.解析副字幕样式(主文本原始, 基础样式);
+
+      主字幕自定义列表.push({
+        样式: 主字幕样式,
+        样式名,
+        主文本: 主文本净化 || "(空)",
+        原始主文本: 主文本原始,
+        覆盖字段集合,
+        行索引: 行索引值,
+        基础样式,
+      });
+    }
+
+    const 引用总数 = Array.from(主字幕引用计数.values()).reduce((a, b) => a + b, 0);
+
+    if (引用总数 === 0 && 主字幕自定义列表.length === 0) {
+      return; // 无引用且无自定义，无需渲染
+    }
+
+    if (引用总数 > 0) {
+      const 提示 = document.createElement("div");
+      提示.className = "样式引用提示 样式引用提示-主 副字幕引用提示";
+
+      const 样式串 = Array.from(主字幕引用计数.entries())
+        .map(([样式名]) => `<span class="样式引用提示-样式名">${样式名}</span>`)
+        .join(" / ");
+
+      提示.innerHTML = `有 <span class="样式引用提示-数量">${引用总数}</span> 行主字幕引用了 <span class="样式引用提示-标签">[V4+ Styles]</span> 中的样式：${样式串}`;
+
+      部分区.appendChild(提示);
+    }
+
+    if (主字幕自定义列表.length > 0) {
+      const 分组映射 = new Map();
+      this.主字幕分组列表 = [];
+
+      主字幕自定义列表.forEach((项) => {
+        const 字段列表 = this.构建覆盖字段列表(项.覆盖字段集合);
+        if (字段列表.length === 0) return;
+        const 键对象 = {};
+        字段列表.forEach((f) => {
+          if (f === "Pos") {
+            键对象.PosX = 项.样式.PosX || "";
+            键对象.PosY = 项.样式.PosY || "";
+          } else {
+            键对象[f] = 项.样式[f] || "";
+          }
+        });
+        const 键 = JSON.stringify({ 字段: 字段列表, 值: 键对象, 样式名: 项.样式名 });
+        if (!分组映射.has(键)) {
+          分组映射.set(键, {
+            样式: { ...项.样式 },
+            字段列表,
+            行数: 0,
+            行索引列表: [],
+            基础样式: { ...项.基础样式 },
+            样式名: 项.样式名,
+          });
+        }
+        const 组 = 分组映射.get(键);
+        组.行数 += 1;
+        组.行索引列表.push(项.行索引);
+      });
+
+      this.主字幕分组列表 = Array.from(分组映射.values());
+
+      this.主字幕分组列表.forEach((组, 索引) => {
+        const 字段列表 = 组.字段列表;
+        if (字段列表.length === 0) return;
+
+        const 计数 = document.createElement("div");
+        计数.className = "样式计数 样式计数-主 副字幕计数";
+        计数.innerHTML = `有 <span class="样式计数数字">${组.行数}</span> 行主字幕使用自定义样式，以下表格中的样式会应用于这些行。`;
+        部分区.appendChild(计数);
+
+        const 样式表 = this.创建主字幕样式表(组.样式, 字段列表, 索引);
+        部分区.appendChild(样式表);
+
+        setTimeout(() => {
+          this.初始化所有颜色选择器(样式表);
+        }, 0);
+      });
+    }
+
+    容器.appendChild(部分区);
   }
 
   创建副字幕样式表(样式) {
@@ -679,6 +875,419 @@ class ASSParser {
         this.创建副字幕表格数字框(单元格, 字段, 值, 1);
       } else {
         this.创建副字幕表格文本框(单元格, 字段, 值);
+      }
+
+      数据行.appendChild(单元格);
+    });
+
+    表格.appendChild(数据行);
+    表格容器.appendChild(表格);
+    this.初始化列高亮(表格);
+    return 表格容器;
+  }
+
+  构建覆盖字段列表(集合) {
+    if (!集合 || 集合.size === 0) return [];
+    const 顺序字段 = [
+      "Fontname",
+      "Fontsize",
+      "PrimaryColour",
+      "SecondaryColour",
+      "OutlineColour",
+      "BackColour",
+      "Bold",
+      "Italic",
+      "Underline",
+      "StrikeOut",
+      "BorderStyle",
+      "Outline",
+      "Shadow",
+      "Alignment",
+      "Pos",
+      "ScaleX",
+      "ScaleY",
+      "Spacing",
+      "Angle",
+      "MarginL",
+      "MarginR",
+      "MarginV",
+    ];
+    return 顺序字段.filter((f) => 集合.has(f));
+  }
+
+  创建主字幕样式表(样式, 字段列表, 分组索引) {
+    const 表格容器 = document.createElement("div");
+    表格容器.className = "样式表格容器 样式表格容器-主 副字幕样式表格容器";
+
+    const 表格 = document.createElement("table");
+    表格.className = "样式表格 主字幕样式表 副字幕样式表";
+
+    const 字段映射 = {
+      Fontname: "字体名称",
+      Fontsize: "字体大小",
+      PrimaryColour: "主要颜色",
+      SecondaryColour: "次要颜色",
+      OutlineColour: "轮廓颜色",
+      BackColour: "背景颜色",
+      Bold: "粗体",
+      Italic: "斜体",
+      Underline: "下划线",
+      StrikeOut: "删除线",
+      ScaleX: "横向缩放",
+      ScaleY: "纵向缩放",
+      Spacing: "间距",
+      Angle: "角度",
+      BorderStyle: "边框样式",
+      Outline: "轮廓宽度",
+      Shadow: "阴影深度",
+      Alignment: "对齐方式",
+      MarginL: "左边距",
+      MarginR: "右边距",
+      MarginV: "垂直边距",
+      Pos: "位置",
+    };
+
+    const 选项字段 = {
+      Bold: { 选项: ["0", "-1"], 标签: ["关闭", "开启"] },
+      Italic: { 选项: ["0", "-1"], 标签: ["关闭", "开启"] },
+      Underline: { 选项: ["0", "-1"], 标签: ["关闭", "开启"] },
+      StrikeOut: { 选项: ["0", "-1"], 标签: ["关闭", "开启"] },
+      BorderStyle: { 选项: ["1", "3"], 标签: ["正常边框", "不透明背景"] },
+      Alignment: {
+        选项: ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
+        标签: ["左下", "中下", "右下", "左中", "中中", "右中", "左上", "中上", "右上"],
+      },
+    };
+
+    const 浮点数字段 = new Set(["Spacing", "Angle", "Outline", "Shadow"]);
+    const 整数字段 = new Set(["Fontsize", "ScaleX", "ScaleY", "MarginL", "MarginR", "MarginV"]);
+
+    const 表头行 = document.createElement("tr");
+    表头行.className = "表头行";
+    字段列表.forEach((字段) => {
+      const th = document.createElement("th");
+      th.className = "表头单元格 单元格";
+      const 字段中文 = document.createElement("div");
+      字段中文.className = "表头中文";
+      字段中文.textContent = 字段映射[字段] || 字段;
+      const 字段英文 = document.createElement("div");
+      字段英文.className = "表头英文";
+      字段英文.textContent = 字段;
+      th.appendChild(字段中文);
+      th.appendChild(字段英文);
+      表头行.appendChild(th);
+    });
+    表格.appendChild(表头行);
+
+    const 数据行 = document.createElement("tr");
+    数据行.className = "数据行 主字幕数据行";
+
+    字段列表.forEach((字段) => {
+      const 值 = 样式 && 样式[字段] !== undefined ? 样式[字段] : "";
+      const 单元格 = document.createElement("td");
+      单元格.className = "数据单元格 单元格";
+
+      if (字段 === "PrimaryColour" || 字段 === "SecondaryColour" || 字段 === "OutlineColour" || 字段 === "BackColour") {
+        const 包装div = document.createElement("div");
+        包装div.className = "颜色选择器包装";
+
+        const 颜色显示div = document.createElement("div");
+        颜色显示div.className = "颜色显示文本";
+        颜色显示div.dataset.字段 = 字段;
+        颜色显示div.dataset.原始值 = 值;
+        颜色显示div.dataset.主字幕组 = 分组索引.toString();
+        this.渲染颜色文本(颜色显示div, 值);
+
+        包装div.appendChild(颜色显示div);
+        单元格.appendChild(包装div);
+      } else if (字段 === "Pos") {
+        const 创建Pos输入 = (默认值, 轴字段) => {
+          const 容器 = document.createElement("div");
+          容器.className = "表格数字框容器";
+
+          const 可编辑 = document.createElement("div");
+          可编辑.className = "表格数字框";
+          可编辑.contentEditable = "true";
+          可编辑.textContent = 默认值 || "";
+          可编辑.dataset.字段 = 轴字段;
+
+          const 按钮组 = document.createElement("div");
+          按钮组.className = "表格数字增减按钮组";
+
+          const 更新值 = (增量) => {
+            const 当前值 = parseFloat(可编辑.textContent) || 0;
+            const 新值 = (当前值 + 增量).toString();
+            可编辑.textContent = 新值;
+            this.更新主字幕样式字段(分组索引, 轴字段, 新值);
+          };
+
+          const 增加按钮 = document.createElement("div");
+          增加按钮.className = "表格数字增减按钮";
+          增加按钮.textContent = "+";
+          增加按钮.addEventListener("click", () => 更新值(1));
+
+          const 减少按钮 = document.createElement("div");
+          减少按钮.className = "表格数字增减按钮";
+          减少按钮.textContent = "-";
+          减少按钮.addEventListener("click", () => 更新值(-1));
+
+          const 处理输入 = () => {
+            let 文本内容 = 可编辑.textContent || "";
+            文本内容 = 文本内容.replace(/[^\d.-]/g, "");
+
+            const 小数点索引 = 文本内容.indexOf(".");
+            if (小数点索引 !== -1) {
+              文本内容 = 文本内容.substring(0, 小数点索引 + 1) + 文本内容.substring(小数点索引 + 1).replace(/\./g, "");
+            }
+
+            if (文本内容.includes("-")) {
+              const 负号位置 = 文本内容.indexOf("-");
+              if (负号位置 !== 0) {
+                文本内容 = "-" + 文本内容.replace(/-/g, "");
+              } else {
+                const 负号后内容 = 文本内容.substring(1).replace(/-/g, "");
+                文本内容 = "-" + 负号后内容;
+              }
+            }
+
+            if (可编辑.textContent !== 文本内容) {
+              可编辑.textContent = 文本内容;
+              const range = document.createRange();
+              const sel = window.getSelection();
+              range.selectNodeContents(可编辑);
+              range.collapse(false);
+              sel.removeAllRanges();
+              sel.addRange(range);
+            }
+
+            this.更新主字幕样式字段(分组索引, 轴字段, 文本内容);
+          };
+
+          可编辑.addEventListener("input", 处理输入);
+          可编辑.addEventListener("paste", (e) => {
+            e.preventDefault();
+            const 文本 = (e.clipboardData || window.clipboardData).getData("text");
+            const 过滤后 = (文本 || "").replace(/[^\d.-]/g, "");
+            this.插入文本到可编辑元素(可编辑, 过滤后);
+            处理输入();
+          });
+
+          可编辑.addEventListener("blur", () => {
+            const 文本内容 = 可编辑.textContent || "";
+            if (!文本内容 || 文本内容 === "-") {
+              可编辑.textContent = "0";
+              this.更新主字幕样式字段(分组索引, 轴字段, "0");
+            }
+          });
+
+          按钮组.appendChild(增加按钮);
+          按钮组.appendChild(减少按钮);
+          容器.appendChild(可编辑);
+          容器.appendChild(按钮组);
+          return 容器;
+        };
+
+        const 数字框容器X = 创建Pos输入(样式.PosX, "PosX");
+        const 数字框容器Y = 创建Pos输入(样式.PosY, "PosY");
+
+        const pos包装 = document.createElement("div");
+        pos包装.style.display = "flex";
+        pos包装.style.gap = "8px";
+        pos包装.appendChild(数字框容器X);
+        pos包装.appendChild(数字框容器Y);
+
+        单元格.appendChild(pos包装);
+      } else if (选项字段[字段]) {
+        const 配置 = 选项字段[字段];
+        const 选项 = 配置.选项 || [];
+        const 标签 = 配置.标签 || [];
+        const 是双选 = 选项.length === 2;
+
+        if (是双选) {
+          const [关闭值, 开启值] = 选项;
+          let 开启 = (值 || "").toString() === 开启值;
+
+          const 滑块容器 = document.createElement("div");
+          滑块容器.className = 字段 === "BorderStyle" ? "表格滑块容器 表格滑块容器-边框样式" : "表格滑块容器";
+
+          const 滑块轨道 = document.createElement("div");
+          滑块轨道.className = "表格滑块轨道";
+
+          const 状态标签 = document.createElement("span");
+          状态标签.className = "表格滑块标签";
+
+          const 滑块按钮 = document.createElement("div");
+          滑块按钮.className = "表格滑块按钮";
+
+          const 更新滑块状态 = (新状态) => {
+            开启 = 新状态;
+            if (开启) {
+              滑块轨道.classList.add("表格滑块轨道-开启");
+              滑块轨道.classList.remove("表格滑块轨道-关闭");
+              滑块按钮.classList.add("表格滑块按钮-开启");
+              滑块按钮.classList.remove("表格滑块按钮-关闭");
+              状态标签.classList.add("表格滑块标签-开启");
+              状态标签.classList.remove("表格滑块标签-关闭");
+            } else {
+              滑块轨道.classList.add("表格滑块轨道-关闭");
+              滑块轨道.classList.remove("表格滑块轨道-开启");
+              滑块按钮.classList.add("表格滑块按钮-关闭");
+              滑块按钮.classList.remove("表格滑块按钮-开启");
+              状态标签.classList.add("表格滑块标签-关闭");
+              状态标签.classList.remove("表格滑块标签-开启");
+            }
+
+            if (字段 === "BorderStyle") {
+              const 当前值 = 开启 ? 开启值 : 关闭值;
+              const 索引 = 选项.indexOf(当前值);
+              状态标签.textContent = 标签 && 标签[索引] ? 标签[索引] : 当前值;
+            } else {
+              状态标签.textContent = 开启 ? "ON" : "OFF";
+            }
+          };
+
+          滑块轨道.addEventListener("click", () => {
+            const 新状态 = !开启;
+            更新滑块状态(新状态);
+            this.更新主字幕样式字段(分组索引, 字段, 新状态 ? 开启值 : 关闭值);
+          });
+
+          更新滑块状态(开启);
+
+          滑块轨道.appendChild(状态标签);
+          滑块轨道.appendChild(滑块按钮);
+          滑块容器.appendChild(滑块轨道);
+          单元格.appendChild(滑块容器);
+        } else {
+          const 下拉框 = document.createElement("select");
+          下拉框.className = "表格下拉框";
+          选项.forEach((opt, idx) => {
+            const option元素 = document.createElement("option");
+            option元素.value = opt;
+            option元素.textContent = `${opt} (${标签[idx]})`;
+            if (opt === (值 || "").toString()) option元素.selected = true;
+            下拉框.appendChild(option元素);
+          });
+          下拉框.addEventListener("change", () => {
+            this.更新主字幕样式字段(分组索引, 字段, 下拉框.value);
+          });
+          单元格.appendChild(下拉框);
+        }
+      } else if (浮点数字段.has(字段) || 整数字段.has(字段)) {
+        const 使用数字容器 = 字段 === "Fontsize";
+        const 外容器 = document.createElement("div");
+        if (使用数字容器) {
+          外容器.className = "表格数字框容器";
+        }
+
+        const div = document.createElement("div");
+        div.className = 使用数字容器 ? "表格数字框" : "表格输入框";
+        div.textContent = 值;
+        div.contentEditable = "true";
+        div.dataset.字段 = 字段;
+
+        const 处理输入 = () => {
+          let 文本内容 = div.textContent || "";
+          文本内容 = 文本内容.replace(浮点数字段.has(字段) ? /[^\d.-]/g : /[^\d-]/g, "");
+
+          if (浮点数字段.has(字段)) {
+            const 小数点索引 = 文本内容.indexOf(".");
+            if (小数点索引 !== -1) {
+              文本内容 = 文本内容.substring(0, 小数点索引 + 1) + 文本内容.substring(小数点索引 + 1).replace(/\./g, "");
+            }
+          }
+
+          if (文本内容.includes("-")) {
+            const 负号位置 = 文本内容.indexOf("-");
+            if (负号位置 !== 0) {
+              文本内容 = "-" + 文本内容.replace(/-/g, "");
+            } else {
+              const 负号后内容 = 文本内容.substring(1).replace(/-/g, "");
+              文本内容 = "-" + 负号后内容;
+            }
+          }
+
+          if (div.textContent !== 文本内容) {
+            div.textContent = 文本内容;
+            const range = document.createRange();
+            const sel = window.getSelection();
+            range.selectNodeContents(div);
+            range.collapse(false);
+            sel.removeAllRanges();
+            sel.addRange(range);
+          }
+
+          this.更新主字幕样式字段(分组索引, 字段, 文本内容);
+        };
+
+        div.addEventListener("input", 处理输入);
+        div.addEventListener("paste", (e) => {
+          e.preventDefault();
+          const 文本 = (e.clipboardData || window.clipboardData).getData("text");
+          const 过滤后 = 文本.replace(浮点数字段.has(字段) ? /[^\d.-]/g : /[^\d-]/g, "");
+          this.插入文本到可编辑元素(div, 过滤后);
+          处理输入();
+        });
+
+        div.addEventListener("blur", () => {
+          const 文本内容 = div.textContent || "";
+          if (!文本内容 || 文本内容 === "-") {
+            div.textContent = "0";
+            this.更新主字幕样式字段(分组索引, 字段, "0");
+          }
+        });
+
+        if (使用数字容器) {
+          const 按钮组 = document.createElement("div");
+          按钮组.className = "表格数字增减按钮组";
+
+          const 更新值 = (增量) => {
+            const 当前值 = parseFloat(div.textContent) || 0;
+            const 新值 = (当前值 + 增量).toString();
+            div.textContent = 新值;
+            处理输入();
+          };
+
+          const 增加按钮 = document.createElement("div");
+          增加按钮.className = "表格数字增减按钮";
+          增加按钮.textContent = "+";
+          增加按钮.addEventListener("click", () => 更新值(1));
+
+          const 减少按钮 = document.createElement("div");
+          减少按钮.className = "表格数字增减按钮";
+          减少按钮.textContent = "-";
+          减少按钮.addEventListener("click", () => 更新值(-1));
+
+          按钮组.appendChild(增加按钮);
+          按钮组.appendChild(减少按钮);
+
+          外容器.appendChild(div);
+          外容器.appendChild(按钮组);
+          单元格.appendChild(外容器);
+        } else {
+          单元格.appendChild(div);
+        }
+      } else {
+        const div = document.createElement("div");
+        div.className = "表格输入框";
+        div.textContent = 值;
+        div.contentEditable = "true";
+        div.dataset.字段 = 字段;
+
+        const 处理输入 = () => {
+          const 文本内容 = div.textContent || "";
+          this.更新主字幕样式字段(分组索引, 字段, 文本内容);
+        };
+
+        div.addEventListener("input", 处理输入);
+        div.addEventListener("blur", () => {
+          if (div.textContent === null) {
+            div.textContent = "";
+          }
+          处理输入();
+        });
+
+        单元格.appendChild(div);
       }
 
       数据行.appendChild(单元格);
@@ -922,7 +1531,13 @@ class ASSParser {
     const { 选项, 标签 } = 选项配置;
     const 当前值 = 值 !== undefined && 值 !== null ? 值.toString().trim() : "";
 
-    const 是开关类型 = 选项.length === 2 && 选项.includes("0") && 选项.includes("-1") && 标签 && 标签.includes("关闭") && 标签.includes("开启");
+    const 是开关类型 =
+      选项.length === 2 &&
+      选项.includes("0") &&
+      选项.includes("-1") &&
+      标签 &&
+      标签.includes("关闭") &&
+      标签.includes("开启");
     const 是边框样式类型 = 选项.length === 2 && 选项.includes("1") && 选项.includes("3") && 字段 === "BorderStyle";
     const 使用滑块 = 是开关类型 || 是边框样式类型;
 
@@ -1086,6 +1701,29 @@ class ASSParser {
     this.应用副字幕样式到文件();
   }
 
+  更新主字幕样式字段(分组索引, 字段, 新值) {
+    if (!this.主字幕分组列表 || !this.主字幕分组列表[分组索引]) return;
+    const 组 = this.主字幕分组列表[分组索引];
+    if (!组.样式) {
+      组.样式 = {};
+    }
+
+    if (字段 === "PosX" || 字段 === "PosY") {
+      组.样式[字段] = 新值;
+    } else {
+      组.样式[字段] = 新值;
+    }
+
+    this.应用主字幕样式组到文件(分组索引);
+
+    if (this.自动保存) {
+      this.保存文件();
+    } else {
+      this.文件已修改 = true;
+      this.更新保存按钮状态();
+    }
+  }
+
   构建样式映射() {
     const 映射 = {};
     const 行 = this.文件数据["[V4+ Styles]"];
@@ -1158,7 +1796,7 @@ class ASSParser {
 
     let 全局Alpha = null;
     const 局部Alpha = {};
-    const 颜色通道映射 = { "1": "PrimaryColour", "2": "SecondaryColour", "3": "OutlineColour", "4": "BackColour" };
+    const 颜色通道映射 = { 1: "PrimaryColour", 2: "SecondaryColour", 3: "OutlineColour", 4: "BackColour" };
 
     const 设置粗细标记 = (键, 值) => {
       const 数值 = Number(值);
@@ -1204,6 +1842,15 @@ class ASSParser {
       const 全局透明匹配 = 标签.match(/^alpha&H([0-9A-Fa-f]{2})/);
       if (全局透明匹配) {
         全局Alpha = 全局透明匹配[1];
+        return;
+      }
+
+      if (标签.startsWith("pos")) {
+        const 坐标匹配 = 标签.match(/^pos\(([^,]+),([^\)]+)\)/i);
+        if (坐标匹配) {
+          样式.PosX = 坐标匹配[1].trim();
+          样式.PosY = 坐标匹配[2].trim();
+        }
         return;
       }
 
@@ -1279,7 +1926,7 @@ class ASSParser {
 
       const 斜体匹配 = 标签.match(/^i(-?\d+)/);
       if (斜体匹配) {
-        设置粗细标记("Italic",斜体匹配[1]);
+        设置粗细标记("Italic", 斜体匹配[1]);
         return;
       }
 
@@ -1309,11 +1956,33 @@ class ASSParser {
     return 样式;
   }
 
+  提取副字幕样式引用(副文本) {
+    if (!副文本) return null;
+    // 仅包含一个 \r 样式引用且无其它覆盖标签时，认定为纯样式引用
+    const 覆盖匹配 = 副文本.match(/^\{\s*\\r\s*([^\\}]*?)\s*\}([\s\S]*)$/i);
+    if (!覆盖匹配) return null;
+
+    const 样式名 = (覆盖匹配[1] || "").trim();
+    if (!样式名) return null;
+
+    const 覆盖内容 = 覆盖匹配[0].replace(/[{}]/g, "");
+    const 剩余覆盖 = 覆盖内容.replace(/^\s*\\r[^\\]*/i, "");
+    if (/\\/.test(剩余覆盖)) return null;
+
+    const 剩余文本 = (覆盖匹配[2] || "").trim();
+    if (/\{\s*\\/.test(剩余文本)) return null;
+
+    return 样式名;
+  }
+
   标准化ASS颜色值(颜色值, 默认值) {
     const 默认颜色 = 默认值 || "&H00FFFFFF";
     if (!颜色值) return 默认颜色;
 
-    const 提取 = 颜色值.replace(/^&H/i, "").replace(/[^0-9A-Fa-f]/g, "").toUpperCase();
+    const 提取 = 颜色值
+      .replace(/^&H/i, "")
+      .replace(/[^0-9A-Fa-f]/g, "")
+      .toUpperCase();
     if (提取.length === 6) {
       return `&H00${提取}`;
     }
@@ -1325,7 +1994,11 @@ class ASSParser {
 
   更新颜色Alpha(颜色值, alphaHex) {
     const 基础色 = this.标准化ASS颜色值(颜色值, this.ASS标准默认样式.PrimaryColour);
-    const 有效Alpha = (alphaHex || "00").replace(/[^0-9A-Fa-f]/g, "").toUpperCase().padStart(2, "0").slice(-2);
+    const 有效Alpha = (alphaHex || "00")
+      .replace(/[^0-9A-Fa-f]/g, "")
+      .toUpperCase()
+      .padStart(2, "0")
+      .slice(-2);
     const 色值 = 基础色.replace(/^&H/i, "");
     const 颜色部分 = 色值.substring(2);
     return `&H${有效Alpha}${颜色部分}`;
@@ -1447,6 +2120,225 @@ class ASSParser {
     return 标签.length > 0 ? `{${标签.join("")}}` : "";
   }
 
+  生成主字幕覆盖标签(当前样式, 基线样式, 字段列表) {
+    const 基线 = 基线样式 || this.ASS标准默认样式;
+    const 当前 = 当前样式 || {};
+    const 标签 = [];
+    const 字段集 = new Set(字段列表 || []);
+
+    const 有字段 = (键) => 字段集.has(键);
+
+    if (有字段("Fontname") && 当前.Fontname !== undefined && 当前.Fontname !== 基线.Fontname) {
+      标签.push(`\\fn${当前.Fontname}`);
+    }
+
+    if (有字段("Fontsize") && 当前.Fontsize !== undefined && 当前.Fontsize !== 基线.Fontsize) {
+      标签.push(`\\fs${当前.Fontsize}`);
+    }
+
+    const 处理颜色 = (键, 标记) => {
+      if (!有字段(键)) return;
+      const 当前色 = this.标准化ASS颜色值(当前[键], 基线[键]);
+      const 基线色 = this.标准化ASS颜色值(基线[键], 基线[键]);
+      if (当前色 !== 基线色) {
+        const rgb = this.提取色RGB部分(当前色);
+        标签.push(`\\${标记}&H${rgb}`);
+
+        const 当前Alpha = this.提取Alpha(当前色);
+        const 基线Alpha = this.提取Alpha(基线色);
+        if (当前Alpha !== 基线Alpha) {
+          标签.push(`\\${标记[0]}a&H${当前Alpha}`);
+        }
+      }
+    };
+
+    处理颜色("PrimaryColour", "c");
+    处理颜色("SecondaryColour", "2c");
+    处理颜色("OutlineColour", "3c");
+    处理颜色("BackColour", "4c");
+
+    const 简单双态 = [
+      ["Bold", "b"],
+      ["Italic", "i"],
+      ["Underline", "u"],
+      ["StrikeOut", "s"],
+    ];
+
+    简单双态.forEach(([键, 标记]) => {
+      if (!有字段(键)) return;
+      if (当前[键] !== undefined && 当前[键] !== 基线[键]) {
+        标签.push(`\\${标记}${当前[键]}`);
+      }
+    });
+
+    const 处理差异 = (键, 构造) => {
+      if (!有字段(键)) return;
+      const 当前值 = 当前[键];
+      const 基线值 = 基线[键];
+      if (当前值 === undefined) return;
+      if (当前值 === 基线值) return;
+      const 结果 = 构造(当前值);
+      if (结果) 标签.push(结果);
+    };
+
+    处理差异("ScaleX", (v) => `\\fscx${v}`);
+    处理差异("ScaleY", (v) => `\\fscy${v}`);
+    处理差异("Spacing", (v) => `\\fsp${v}`);
+    处理差异("Angle", (v) => `\\frz${v}`);
+    处理差异("Outline", (v) => `\\bord${v}`);
+    处理差异("Shadow", (v) => `\\shad${v}`);
+    处理差异("Alignment", (v) => `\\an${v}`);
+    处理差异("MarginL", (v) => `\\margl${v}`);
+    处理差异("MarginR", (v) => `\\margr${v}`);
+    处理差异("MarginV", (v) => `\\margv${v}`);
+
+    if (有字段("Pos")) {
+      const 基线X = 基线.PosX ?? "";
+      const 基线Y = 基线.PosY ?? "";
+      const 当前X = 当前.PosX ?? "";
+      const 当前Y = 当前.PosY ?? "";
+      const 坐标为空 = !当前X && 当前X !== "0" && !当前Y && 当前Y !== "0";
+      const 与基线相同 = 当前X === 基线X && 当前Y === 基线Y;
+      if (!坐标为空 && !与基线相同) {
+        标签.push(`\\pos(${当前X || 0},${当前Y || 0})`);
+      }
+    }
+
+    return 标签.length > 0 ? `{${标签.join("")}}` : "";
+  }
+
+  应用主字幕样式组到文件(分组索引) {
+    if (!this.主字幕分组列表 || !this.主字幕分组列表[分组索引]) return;
+    if (!this.文件数据 || !this.文件数据["[Events]"]) return;
+
+    const 行 = this.文件数据["[Events]"];
+    if (!行 || 行.length === 0) return;
+
+    const 格式行 = 行.find((内容) => 内容.startsWith("Format:"));
+    if (!格式行) return;
+
+    const 字段列表 = 格式行
+      .replace(/^Format:/i, "")
+      .split(",")
+      .map((字段) => 字段.trim())
+      .filter((字段) => 字段);
+
+    const 文本索引 = 字段列表.findIndex((字段) => 字段.toLowerCase() === "text");
+    if (文本索引 === -1) return;
+
+    const 组 = this.主字幕分组列表[分组索引];
+    const 目标字段集 = new Set((组.字段列表 || []).map((f) => (f === "PosX" || f === "PosY" ? "Pos" : f)));
+    const 颜色字段映射 = { "1": "PrimaryColour", "2": "SecondaryColour", "3": "OutlineColour", "4": "BackColour" };
+
+    const 构造标签 = (字段, 原标签 = "") => {
+      const 样式值 = 组.样式 || {};
+      const 默认 = this.ASS标准默认样式 || {};
+
+      if (字段 === "Fontname") return `\\fn${样式值.Fontname ?? ""}`;
+      if (字段 === "Fontsize") return `\\fs${样式值.Fontsize ?? ""}`;
+
+      if (字段 === "PrimaryColour" || 字段 === "SecondaryColour" || 字段 === "OutlineColour" || 字段 === "BackColour") {
+        const 前缀匹配 = 原标签.match(/^\\([1234]?)(c|a)/i);
+        const 通道 = 前缀匹配?.[1] || (字段 === "PrimaryColour" ? "" : Object.entries(颜色字段映射).find(([, v]) => v === 字段)?.[0] || "");
+        const 是Alpha = /^\\[1234]?a/i.test(原标签);
+        const 键 = 通道 ? 颜色字段映射[通道] || 字段 : 字段;
+        const 颜色 = this.标准化ASS颜色值(样式值[键], 默认[键]);
+        if (是Alpha) {
+          const alpha = this.提取Alpha(颜色);
+          return `\\${通道 || "1"}a&H${alpha}`;
+        }
+        const rgb = this.提取色RGB部分(颜色);
+        const 标记 = 通道 ? `${通道}c` : "c";
+        return `\\${标记}&H${rgb}`;
+      }
+
+      if (字段 === "Bold") {
+        const 值 = 样式值.Bold;
+        if (值 === "-1") return "\\b1";
+        if (值 === "0") return "\\b0";
+        return `\\b${值 ?? ""}`;
+      }
+      if (字段 === "Italic") return `\\i${样式值.Italic ?? ""}`;
+      if (字段 === "Underline") return `\\u${样式值.Underline ?? ""}`;
+      if (字段 === "StrikeOut") return `\\s${样式值.StrikeOut ?? ""}`;
+      if (字段 === "BorderStyle") return `\\bord${样式值.Outline ?? ""}`; // 兼容未直接编辑的边框样式
+      if (字段 === "Outline") return `\\bord${样式值.Outline ?? ""}`;
+      if (字段 === "Shadow") return `\\shad${样式值.Shadow ?? ""}`;
+      if (字段 === "ScaleX") return `\\fscx${样式值.ScaleX ?? ""}`;
+      if (字段 === "ScaleY") return `\\fscy${样式值.ScaleY ?? ""}`;
+      if (字段 === "Spacing") return `\\fsp${样式值.Spacing ?? ""}`;
+      if (字段 === "Angle") return `\\frz${样式值.Angle ?? ""}`;
+      if (字段 === "Alignment") return `\\an${样式值.Alignment ?? ""}`;
+      if (字段 === "MarginL") return `\\margl${样式值.MarginL ?? ""}`;
+      if (字段 === "MarginR") return `\\margr${样式值.MarginR ?? ""}`;
+      if (字段 === "MarginV") return `\\margv${样式值.MarginV ?? ""}`;
+      if (字段 === "Pos") {
+        const x = 样式值.PosX ?? "";
+        const y = 样式值.PosY ?? "";
+        if (x === "" && y === "") return "";
+        return `\\pos(${x || 0},${y || 0})`;
+      }
+
+      return 原标签 || "";
+    };
+
+    组.行索引列表.forEach((行索引) => {
+      const 行内容 = 行[行索引];
+      if (!行内容 || !行内容.startsWith("Dialogue:")) return;
+
+      const 事件字段 = this.解析事件行(行内容, 字段列表, 文本索引);
+      if (!事件字段) return;
+
+      const 文本值 = 事件字段[字段列表[文本索引]] || "";
+      const 拆分 = 文本值.split(/\\[Nn]/);
+      const 主原始 = 拆分[0] || "";
+      const 原覆盖 = 主原始.match(/^\{[^}]*\}/)?.[0] || "";
+      const 主正文 = 主原始.replace(/^\{[^}]*\}/, "");
+      const 剩余文本 = 拆分.slice(1).join("\\N");
+
+      const 原标签列表 = this.拆分覆盖标签(原覆盖);
+      const 新标签列表 = [];
+      const 已处理字段 = new Set();
+
+      原标签列表.forEach((tag) => {
+        const 字段 = this.识别标签字段(tag);
+        const 标准字段 = 字段 === "PosX" || 字段 === "PosY" ? "Pos" : 字段;
+        if (标准字段 && 目标字段集.has(标准字段)) {
+          const 新标签 = 构造标签(标准字段, tag);
+          if (新标签) {
+            新标签列表.push(新标签);
+          }
+          已处理字段.add(标准字段);
+        } else {
+          新标签列表.push(tag);
+        }
+      });
+
+      目标字段集.forEach((字段) => {
+        if (已处理字段.has(字段)) return;
+        const 新标签 = 构造标签(字段, "");
+        if (新标签) {
+          新标签列表.push(新标签);
+        }
+      });
+
+      const 最终覆盖 = 新标签列表.length > 0 ? `{${新标签列表.join("")}}` : "";
+      const 新主文本 = 最终覆盖 ? `${最终覆盖}${主正文}` : 主正文;
+      const 新文本值 = 剩余文本 ? `${新主文本}\\N${剩余文本}` : 新主文本;
+
+      const 新字段列表 = [];
+      for (let i = 0; i < 字段列表.length; i++) {
+        if (i === 文本索引) {
+          新字段列表.push(新文本值);
+        } else {
+          新字段列表.push(事件字段[字段列表[i]] || "");
+        }
+      }
+
+      行[行索引] = `Dialogue: ${新字段列表.join(",")}`;
+    });
+  }
+
   拆分覆盖标签(覆盖串) {
     if (!覆盖串) return [];
     const 内容 = 覆盖串.replace(/^\{/, "").replace(/\}$/, "");
@@ -1471,6 +2363,7 @@ class ASSParser {
     if (/^4a/.test(t)) return "BackColour";
     if (t.startsWith("bord")) return "Outline";
     if (t.startsWith("shad")) return "Shadow";
+    if (t.startsWith("pos")) return "Pos";
     if (t.startsWith("fscx")) return "ScaleX";
     if (t.startsWith("fscy")) return "ScaleY";
     if (t.startsWith("fsp")) return "Spacing";
@@ -1895,6 +2788,9 @@ class ASSParser {
               this.文件已修改 = true;
               this.更新保存按钮状态();
             }
+          } else if (颜色显示div.dataset.主字幕组 !== undefined) {
+            const 分组索引 = Number(颜色显示div.dataset.主字幕组);
+            this.更新主字幕样式字段(分组索引, 字段, ass颜色);
           } else {
             this.更新样式单元格("[V4+ Styles]", 样式索引, 字段索引, ass颜色);
             if (this.自动保存) {
@@ -2967,6 +3863,72 @@ class ASSParser {
     }
   }
 
+  显示保存成功提示(文本 = "保存成功") {
+    if (typeof document === "undefined") return;
+
+    if (!this.保存提示元素) {
+      const 提示 = document.createElement("div");
+      提示.className = "保存成功提示";
+      提示.textContent = 文本;
+      document.body.appendChild(提示);
+      this.保存提示元素 = 提示;
+    } else {
+      this.保存提示元素.textContent = 文本;
+    }
+
+    if (this.保存提示隐藏定时器) {
+      clearTimeout(this.保存提示隐藏定时器);
+    }
+
+    if (this.保存提示隐藏动画) {
+      this.保存提示隐藏动画.cancel();
+      this.保存提示隐藏动画 = null;
+    }
+
+    if (this.保存提示显示动画) {
+      this.保存提示显示动画.cancel();
+      this.保存提示显示动画 = null;
+    }
+
+    // 使用 Web Animation API 播放弹出动画
+    const 显示关键帧 = [
+      { opacity: 0, transform: "translate(-50%, 12px)" },
+      { opacity: 1, transform: "translate(-50%, 0)" },
+    ];
+
+    this.保存提示显示动画 = this.保存提示元素.animate(显示关键帧, {
+      duration: 250,
+      easing: "ease-out",
+      fill: "forwards",
+    });
+
+    this.保存提示显示动画.onfinish = () => {
+      this.保存提示显示动画 = null;
+    };
+
+    this.保存提示隐藏定时器 = setTimeout(() => {
+      if (this.保存提示显示动画) {
+        this.保存提示显示动画.finish();
+      }
+
+      const 隐藏关键帧 = [
+        { opacity: 1, transform: "translate(-50%, 0)" },
+        { opacity: 0, transform: "translate(-50%, 12px)" },
+      ];
+
+      this.保存提示隐藏动画 = this.保存提示元素.animate(隐藏关键帧, {
+        duration: 200,
+        easing: "ease-in",
+        fill: "forwards",
+      });
+
+      this.保存提示隐藏动画.onfinish = () => {
+        this.保存提示隐藏动画 = null;
+        this.保存提示元素.classList.remove("保存成功提示-显示");
+      };
+    }, 1600);
+  }
+
   全部撤销() {
     if (!this.原始文件数据 || !this.文件数据) return;
 
@@ -2999,6 +3961,7 @@ class ASSParser {
         const 可写流 = await this.文件句柄.createWritable();
         await 可写流.write(内容);
         await 可写流.close();
+        this.显示保存成功提示();
         return true;
       } catch (error) {
         if (error.name === "AbortError") {
@@ -3028,6 +3991,7 @@ class ASSParser {
         this.文件句柄 = 文件句柄;
         this.当前文件 = await 文件句柄.getFile();
         document.getElementById("文件名").textContent = this.当前文件.name;
+        this.显示保存成功提示();
         return true;
       } catch (error) {
         if (error.name === "AbortError") {
@@ -3041,6 +4005,7 @@ class ASSParser {
         a.download = this.当前文件.name;
         a.click();
         URL.revokeObjectURL(url);
+        this.显示保存成功提示();
         return true;
       }
     } else {
@@ -3051,6 +4016,7 @@ class ASSParser {
       a.download = this.当前文件.name;
       a.click();
       URL.revokeObjectURL(url);
+      this.显示保存成功提示();
       return true;
     }
   }
