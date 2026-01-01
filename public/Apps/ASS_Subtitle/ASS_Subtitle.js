@@ -8,6 +8,9 @@ class ASSParser {
     this.自动保存 = false;
     this.保存定时器 = null;
     this.文件已修改 = false;
+    this.ASS标准默认样式 = this.创建ASS标准默认样式();
+    this.副字幕统一样式 = null;
+    this.副字幕统一样式基线 = null;
     this.初始化();
   }
 
@@ -191,6 +194,10 @@ class ASSParser {
 
     if (this.文件数据["[V4+ Styles]"]) {
       this.渲染V4Styles(ASS区);
+    }
+
+    if (this.文件数据["[Events]"]) {
+      this.渲染Events(ASS区);
     }
   }
 
@@ -463,6 +470,1110 @@ class ASSParser {
     setTimeout(() => {
       this.初始化所有颜色选择器(表格);
     }, 0);
+  }
+
+  渲染Events(容器) {
+    const 部分区 = document.createElement("div");
+    部分区.className = "部分区 部分区-Events";
+
+    const 标题 = document.createElement("div");
+    标题.className = "部分标题";
+    标题.textContent = "[Events] 副字幕样式";
+    部分区.appendChild(标题);
+
+    const 行 = this.文件数据["[Events]"];
+    if (!行 || 行.length === 0) {
+      部分区.appendChild(document.createTextNode("未找到事件数据"));
+      容器.appendChild(部分区);
+      return;
+    }
+
+    const 格式行 = 行.find((内容) => 内容.startsWith("Format:"));
+    if (!格式行) {
+      部分区.appendChild(document.createTextNode("缺少 Format 行，无法解析 Events 部分"));
+      容器.appendChild(部分区);
+      return;
+    }
+
+    const 字段列表 = 格式行
+      .replace(/^Format:/i, "")
+      .split(",")
+      .map((字段) => 字段.trim())
+      .filter((字段) => 字段);
+
+    const 文本索引 = 字段列表.findIndex((字段) => 字段.toLowerCase() === "text");
+    if (文本索引 === -1) {
+      部分区.appendChild(document.createTextNode("Format 中缺少 Text 字段"));
+      容器.appendChild(部分区);
+      return;
+    }
+
+    const 样式索引 = 字段列表.findIndex((字段) => 字段.toLowerCase() === "style");
+    const 开始索引 = 字段列表.findIndex((字段) => 字段.toLowerCase() === "start");
+    const 结束索引 = 字段列表.findIndex((字段) => 字段.toLowerCase() === "end");
+
+    const 样式映射 = this.构建样式映射();
+    const 默认样式 = this.ASS标准默认样式 || this.创建ASS标准默认样式();
+
+    const 副字幕列表 = [];
+
+    for (const 行内容 of 行) {
+      if (!行内容.startsWith("Dialogue:")) continue;
+
+      const 事件字段 = this.解析事件行(行内容, 字段列表, 文本索引);
+      if (!事件字段) continue;
+
+      const 文本值 = 事件字段[字段列表[文本索引]] || "";
+      const 行拆分 = 文本值.split(/\\[Nn]/);
+      if (行拆分.length < 2) continue;
+
+      const 副文本原始 = 行拆分.slice(1).join("\\N").trim();
+      const 副文本净化 = 副文本原始.replace(/^\{[^}]*\}/, "").trim();
+
+      const 样式名 = 样式索引 !== -1 ? 事件字段[字段列表[样式索引]] || "Default" : "Default";
+      const 基础样式 = this.构建基础样式(样式名, 样式映射, 默认样式);
+      const 副字幕样式 = this.解析副字幕样式(副文本原始, 基础样式);
+
+      副字幕列表.push({
+        序号: 副字幕列表.length + 1,
+        开始: 开始索引 !== -1 ? 事件字段[字段列表[开始索引]] || "" : "",
+        结束: 结束索引 !== -1 ? 事件字段[字段列表[结束索引]] || "" : "",
+        样式名,
+        副文本: 副文本净化 || "(空)",
+        原始副文本: 副文本原始,
+        样式: 副字幕样式,
+      });
+    }
+
+    if (副字幕列表.length === 0) {
+      部分区.appendChild(document.createTextNode("未找到包含 \\N 的副字幕行"));
+      容器.appendChild(部分区);
+      return;
+    }
+
+    const 计数 = document.createElement("div");
+    计数.className = "副字幕计数";
+    计数.innerHTML = `检测到 <span class="副字幕计数数字">${副字幕列表.length}</span> 条含副字幕的行，以下样式将统一应用于所有副字幕。`;
+    部分区.appendChild(计数);
+
+    const 基线样式 = 副字幕列表[0]?.样式 ? { ...副字幕列表[0].样式 } : { ...默认样式 };
+    this.副字幕统一样式基线 = { ...基线样式 };
+    this.副字幕统一样式 = { ...基线样式 };
+
+    const 样式表 = this.创建副字幕样式表(this.副字幕统一样式);
+    部分区.appendChild(样式表);
+    容器.appendChild(部分区);
+
+    setTimeout(() => {
+      this.初始化所有颜色选择器(样式表);
+    }, 0);
+  }
+
+  创建副字幕样式表(样式) {
+    const 表格容器 = document.createElement("div");
+    表格容器.className = "样式表格容器 副字幕样式表格容器";
+
+    const 表格 = document.createElement("table");
+    表格.className = "样式表格 副字幕样式表";
+
+    const 字段列表 = [
+      "Fontname",
+      "Fontsize",
+      "PrimaryColour",
+      "SecondaryColour",
+      "OutlineColour",
+      "BackColour",
+      "Bold",
+      "Italic",
+      "Underline",
+      "StrikeOut",
+      "BorderStyle",
+      "Outline",
+      "Shadow",
+      "Alignment",
+      "ScaleX",
+      "ScaleY",
+      "Spacing",
+      "Angle",
+    ];
+
+    const 字段映射 = {
+      Fontname: "字体名称",
+      Fontsize: "字体大小",
+      PrimaryColour: "主要颜色",
+      SecondaryColour: "次要颜色",
+      OutlineColour: "轮廓颜色",
+      BackColour: "背景颜色",
+      Bold: "粗体",
+      Italic: "斜体",
+      Underline: "下划线",
+      StrikeOut: "删除线",
+      ScaleX: "横向缩放",
+      ScaleY: "纵向缩放",
+      Spacing: "间距",
+      Angle: "角度",
+      BorderStyle: "边框样式",
+      Outline: "轮廓宽度",
+      Shadow: "阴影深度",
+      Alignment: "对齐方式",
+    };
+
+    const 浮点数字段 = new Set(["Spacing", "Angle", "Outline", "Shadow"]);
+    const 整数字段 = new Set(["Fontsize", "ScaleX", "ScaleY"]);
+
+    const 选项字段 = {
+      Bold: { 选项: ["0", "-1"], 标签: ["关闭", "开启"] },
+      Italic: { 选项: ["0", "-1"], 标签: ["关闭", "开启"] },
+      Underline: { 选项: ["0", "-1"], 标签: ["关闭", "开启"] },
+      StrikeOut: { 选项: ["0", "-1"], 标签: ["关闭", "开启"] },
+      BorderStyle: { 选项: ["1", "3"], 标签: ["正常边框", "不透明背景"] },
+      Alignment: {
+        选项: ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
+        标签: ["左下", "中下", "右下", "左中", "中中", "右中", "左上", "中上", "右上"],
+      },
+    };
+
+    const 表头行 = document.createElement("tr");
+    表头行.className = "表头行";
+    字段列表.forEach((字段) => {
+      const 字段表头 = document.createElement("th");
+      字段表头.className = "表头单元格 单元格";
+      const 字段中文 = document.createElement("div");
+      字段中文.className = "表头中文";
+      字段中文.textContent = 字段映射[字段] || 字段;
+      const 字段英文 = document.createElement("div");
+      字段英文.className = "表头英文";
+      字段英文.textContent = 字段;
+      字段表头.appendChild(字段中文);
+      字段表头.appendChild(字段英文);
+      表头行.appendChild(字段表头);
+    });
+    表格.appendChild(表头行);
+
+    const 数据行 = document.createElement("tr");
+    数据行.className = "数据行 副字幕数据行";
+
+    字段列表.forEach((字段) => {
+      const 值 = 样式 && 样式[字段] !== undefined ? 样式[字段] : "";
+      const 单元格 = document.createElement("td");
+      单元格.className = "数据单元格 单元格";
+
+      if (字段 === "PrimaryColour" || 字段 === "SecondaryColour" || 字段 === "OutlineColour" || 字段 === "BackColour") {
+        const 包装div = document.createElement("div");
+        包装div.className = "颜色选择器包装";
+
+        const 颜色显示div = document.createElement("div");
+        颜色显示div.className = "颜色显示文本";
+        颜色显示div.dataset.字段 = 字段;
+        颜色显示div.dataset.原始值 = 值;
+        颜色显示div.dataset.副字幕 = "true";
+        this.渲染颜色文本(颜色显示div, 值);
+
+        包装div.appendChild(颜色显示div);
+        单元格.appendChild(包装div);
+      } else if (选项字段[字段]) {
+        this.创建副字幕表格选项控件(单元格, 字段, 值, 选项字段[字段]);
+      } else if (浮点数字段.has(字段)) {
+        this.创建副字幕表格数字框(单元格, 字段, 值, 0.1);
+      } else if (整数字段.has(字段)) {
+        this.创建副字幕表格数字框(单元格, 字段, 值, 1);
+      } else {
+        this.创建副字幕表格文本框(单元格, 字段, 值);
+      }
+
+      数据行.appendChild(单元格);
+    });
+
+    表格.appendChild(数据行);
+    表格容器.appendChild(表格);
+    this.初始化列高亮(表格);
+    return 表格容器;
+  }
+
+  创建副字幕表格文本框(容器, 字段, 值) {
+    const 包装div = document.createElement("div");
+    包装div.className = "表格输入框包装";
+
+    const 可编辑div = document.createElement("div");
+    可编辑div.className = "表格输入框";
+    可编辑div.contentEditable = "true";
+    可编辑div.textContent = 值 || "";
+    可编辑div.dataset.字段 = 字段;
+    可编辑div.dataset.副字幕 = "true";
+
+    可编辑div.addEventListener("input", () => {
+      this.更新副字幕样式字段(字段, 可编辑div.textContent || "");
+      if (this.自动保存) {
+        this.保存文件();
+      } else {
+        this.文件已修改 = true;
+        this.更新保存按钮状态();
+      }
+    });
+
+    可编辑div.addEventListener("blur", () => {
+      if (可编辑div.textContent === null || 可编辑div.textContent === "") {
+        可编辑div.textContent = "";
+        this.更新副字幕样式字段(字段, "");
+        if (this.自动保存) {
+          this.保存文件();
+        } else {
+          this.文件已修改 = true;
+          this.更新保存按钮状态();
+        }
+      }
+    });
+
+    包装div.appendChild(可编辑div);
+    容器.appendChild(包装div);
+  }
+
+  创建副字幕表格数字框(容器, 字段, 值, 步进值 = 1) {
+    const 包装div = document.createElement("div");
+    包装div.className = "表格数字框包装";
+
+    const 数字框容器 = document.createElement("div");
+    数字框容器.className = "表格数字框容器";
+
+    const 可编辑div = document.createElement("div");
+    可编辑div.className = "表格数字框";
+    可编辑div.contentEditable = "true";
+    可编辑div.textContent = 值 || "0";
+    可编辑div.dataset.字段 = 字段;
+    可编辑div.dataset.副字幕 = "true";
+
+    const 按钮组 = document.createElement("div");
+    按钮组.className = "表格数字增减按钮组";
+
+    const 更新数值 = (新值) => {
+      const 显示值 = 步进值 >= 1 ? Math.round(新值) : parseFloat(新值.toFixed(1));
+      可编辑div.textContent = 显示值.toString();
+      this.更新副字幕样式字段(字段, 可编辑div.textContent);
+    };
+
+    const 增加按钮 = document.createElement("div");
+    增加按钮.className = "表格数字增减按钮";
+    增加按钮.textContent = "+";
+    增加按钮.addEventListener("click", () => {
+      const 当前值 = parseFloat(可编辑div.textContent) || 0;
+      更新数值(当前值 + 步进值);
+    });
+
+    const 减少按钮 = document.createElement("div");
+    减少按钮.className = "表格数字增减按钮";
+    减少按钮.textContent = "-";
+    减少按钮.addEventListener("click", () => {
+      const 当前值 = parseFloat(可编辑div.textContent) || 0;
+      更新数值(当前值 - 步进值);
+    });
+
+    const 处理输入 = () => {
+      let 文本内容 = 可编辑div.textContent || "";
+
+      if (步进值 < 1) {
+        文本内容 = 文本内容.replace(/[^\d.-]/g, "");
+
+        const 小数点索引 = 文本内容.indexOf(".");
+        if (小数点索引 !== -1) {
+          文本内容 = 文本内容.substring(0, 小数点索引 + 1) + 文本内容.substring(小数点索引 + 1).replace(/\./g, "");
+        }
+      } else {
+        文本内容 = 文本内容.replace(/[^\d-]/g, "");
+      }
+
+      if (文本内容.includes("-")) {
+        const 负号位置 = 文本内容.indexOf("-");
+        if (负号位置 !== 0) {
+          文本内容 = "-" + 文本内容.replace(/-/g, "");
+        } else {
+          const 负号后内容 = 文本内容.substring(1).replace(/-/g, "");
+          文本内容 = "-" + 负号后内容;
+        }
+      }
+
+      if (可编辑div.textContent !== 文本内容) {
+        可编辑div.textContent = 文本内容;
+        const range = document.createRange();
+        const sel = window.getSelection();
+        range.selectNodeContents(可编辑div);
+        range.collapse(false);
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
+
+      this.更新副字幕样式字段(字段, 文本内容);
+      if (this.自动保存) {
+        this.保存文件();
+      } else {
+        this.文件已修改 = true;
+        this.更新保存按钮状态();
+      }
+    };
+
+    可编辑div.addEventListener("input", 处理输入);
+    可编辑div.addEventListener("paste", (e) => {
+      e.preventDefault();
+      const 文本 = (e.clipboardData || window.clipboardData).getData("text");
+
+      let 数字文本;
+      if (步进值 < 1) {
+        数字文本 = 文本.replace(/[^\d.-]/g, "");
+
+        const 小数点索引 = 数字文本.indexOf(".");
+        if (小数点索引 !== -1) {
+          数字文本 = 数字文本.substring(0, 小数点索引 + 1) + 数字文本.substring(小数点索引 + 1).replace(/\./g, "");
+        }
+      } else {
+        数字文本 = 文本.replace(/[^\d-]/g, "");
+      }
+
+      if (数字文本.includes("-")) {
+        const 负号位置 = 数字文本.indexOf("-");
+        if (负号位置 !== 0) {
+          数字文本 = "-" + 数字文本.replace(/-/g, "");
+        } else {
+          数字文本 = "-" + 数字文本.substring(1).replace(/-/g, "");
+        }
+      }
+      this.插入文本到可编辑元素(可编辑div, 数字文本);
+    });
+
+    可编辑div.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        return;
+      }
+      if (e.key === "Escape") {
+        e.preventDefault();
+        可编辑div.blur();
+        return;
+      }
+      if (
+        e.key === "Backspace" ||
+        e.key === "Delete" ||
+        e.key === "ArrowLeft" ||
+        e.key === "ArrowRight" ||
+        e.key === "ArrowUp" ||
+        e.key === "ArrowDown" ||
+        e.key === "Tab" ||
+        (e.ctrlKey && (e.key === "a" || e.key === "c" || e.key === "v" || e.key === "x"))
+      ) {
+        return;
+      }
+
+      if (/^\d$/.test(e.key)) {
+        return;
+      }
+
+      if (步进值 < 1 && e.key === ".") {
+        const 当前文本 = 可编辑div.textContent || "";
+        if (!当前文本.includes(".")) {
+          return;
+        }
+        e.preventDefault();
+        return;
+      }
+
+      if (e.key === "-") {
+        const 当前文本 = 可编辑div.textContent || "";
+        const 选择 = window.getSelection();
+        if (选择.rangeCount > 0) {
+          const range = 选择.getRangeAt(0);
+          if (range.startOffset === 0 && range.endOffset === 可编辑div.textContent.length) {
+            return;
+          }
+          if (range.startOffset === 0 && range.endOffset === 0 && !当前文本.startsWith("-")) {
+            return;
+          }
+        }
+        e.preventDefault();
+        return;
+      }
+
+      e.preventDefault();
+    });
+
+    可编辑div.addEventListener("blur", () => {
+      const 文本内容 = 可编辑div.textContent.trim();
+      if (!文本内容 || 文本内容 === "" || 文本内容 === "-") {
+        可编辑div.textContent = "0";
+        this.更新副字幕样式字段(字段, "0");
+        if (this.自动保存) {
+          this.保存文件();
+        } else {
+          this.文件已修改 = true;
+          this.更新保存按钮状态();
+        }
+      }
+    });
+
+    按钮组.appendChild(增加按钮);
+    按钮组.appendChild(减少按钮);
+    数字框容器.appendChild(可编辑div);
+    数字框容器.appendChild(按钮组);
+    包装div.appendChild(数字框容器);
+    容器.appendChild(包装div);
+  }
+
+  创建副字幕表格选项控件(容器, 字段, 值, 选项配置) {
+    const 包装div = document.createElement("div");
+    包装div.className = "表格输入框包装";
+
+    const { 选项, 标签 } = 选项配置;
+    const 当前值 = 值 !== undefined && 值 !== null ? 值.toString().trim() : "";
+
+    const 是开关类型 = 选项.length === 2 && 选项.includes("0") && 选项.includes("-1") && 标签 && 标签.includes("关闭") && 标签.includes("开启");
+    const 是边框样式类型 = 选项.length === 2 && 选项.includes("1") && 选项.includes("3") && 字段 === "BorderStyle";
+    const 使用滑块 = 是开关类型 || 是边框样式类型;
+
+    if (选项.length > 2) {
+      const 下拉框 = document.createElement("select");
+      下拉框.className = "表格下拉框";
+      下拉框.dataset.字段 = 字段;
+      下拉框.dataset.副字幕 = "true";
+
+      for (let i = 0; i < 选项.length; i++) {
+        const 选项值 = 选项[i];
+        const 选项标签 = 标签 && 标签[i] ? 标签[i] : 选项值;
+        const option元素 = document.createElement("option");
+        option元素.value = 选项值;
+        option元素.textContent = `${选项值} (${选项标签})`;
+        if (当前值 === 选项值) {
+          option元素.selected = true;
+        }
+        下拉框.appendChild(option元素);
+      }
+
+      下拉框.addEventListener("change", () => {
+        const 选中值 = 下拉框.value;
+        this.更新副字幕样式字段(字段, 选中值);
+        if (this.自动保存) {
+          this.保存文件();
+        } else {
+          this.文件已修改 = true;
+          this.更新保存按钮状态();
+        }
+      });
+
+      包装div.appendChild(下拉框);
+    } else if (使用滑块) {
+      const 滑块容器 = document.createElement("div");
+      滑块容器.className = 是边框样式类型 ? "表格滑块容器 表格滑块容器-边框样式" : "表格滑块容器";
+
+      const 滑块轨道 = document.createElement("div");
+      滑块轨道.className = "表格滑块轨道";
+
+      let 关闭值, 开启值;
+      if (是开关类型) {
+        关闭值 = "0";
+        开启值 = "-1";
+      } else if (是边框样式类型) {
+        关闭值 = "1";
+        开启值 = "3";
+      }
+      let 开启 = 当前值 === 开启值;
+
+      const 滑块按钮 = document.createElement("div");
+      滑块按钮.className = "表格滑块按钮";
+
+      const 状态标签 = document.createElement("span");
+      状态标签.className = "表格滑块标签";
+
+      const 更新滑块状态 = (新状态) => {
+        开启 = 新状态;
+
+        if (开启) {
+          滑块轨道.classList.add("表格滑块轨道-开启");
+          滑块轨道.classList.remove("表格滑块轨道-关闭");
+          滑块按钮.classList.add("表格滑块按钮-开启");
+          滑块按钮.classList.remove("表格滑块按钮-关闭");
+          状态标签.classList.add("表格滑块标签-开启");
+          状态标签.classList.remove("表格滑块标签-关闭");
+        } else {
+          滑块轨道.classList.add("表格滑块轨道-关闭");
+          滑块轨道.classList.remove("表格滑块轨道-开启");
+          滑块按钮.classList.add("表格滑块按钮-关闭");
+          滑块按钮.classList.remove("表格滑块按钮-开启");
+          状态标签.classList.add("表格滑块标签-关闭");
+          状态标签.classList.remove("表格滑块标签-开启");
+        }
+
+        if (是开关类型) {
+          状态标签.textContent = 开启 ? "ON" : "OFF";
+        } else if (是边框样式类型) {
+          const 当前值 = 开启 ? "3" : "1";
+          const 当前值索引 = 选项.indexOf(当前值);
+          状态标签.textContent = 标签 && 标签[当前值索引] ? 标签[当前值索引] : 当前值;
+        }
+      };
+
+      更新滑块状态(当前值 === 开启值);
+
+      滑块轨道.appendChild(状态标签);
+      滑块轨道.appendChild(滑块按钮);
+
+      滑块轨道.addEventListener("click", () => {
+        const 新状态 = !开启;
+        更新滑块状态(新状态);
+        const 新值 = 新状态 ? 开启值 : 关闭值;
+        this.更新副字幕样式字段(字段, 新值);
+        if (this.自动保存) {
+          this.保存文件();
+        } else {
+          this.文件已修改 = true;
+          this.更新保存按钮状态();
+        }
+      });
+
+      滑块容器.appendChild(滑块轨道);
+      包装div.appendChild(滑块容器);
+    } else {
+      const 选项组 = document.createElement("div");
+      选项组.className = "单选框组";
+
+      for (let i = 0; i < 选项.length; i++) {
+        const 选项值 = 选项[i];
+        const 选项标签 = 标签 && 标签[i] ? 标签[i] : 选项值;
+
+        const 选项项 = document.createElement("div");
+        选项项.className = "单选框项";
+
+        const 单选框 = document.createElement("input");
+        单选框.type = "radio";
+        单选框.name = `副字幕_${字段}`;
+        单选框.value = 选项值;
+        单选框.checked = 当前值 === 选项值;
+        单选框.dataset.字段 = 字段;
+        单选框.dataset.副字幕 = "true";
+
+        单选框.addEventListener("change", () => {
+          if (单选框.checked) {
+            this.更新副字幕样式字段(字段, 选项值);
+            if (this.自动保存) {
+              this.保存文件();
+            } else {
+              this.文件已修改 = true;
+              this.更新保存按钮状态();
+            }
+          }
+        });
+
+        const 标签元素 = document.createElement("label");
+        标签元素.textContent = 选项标签;
+
+        选项项.appendChild(单选框);
+        选项项.appendChild(标签元素);
+        选项组.appendChild(选项项);
+      }
+
+      包装div.appendChild(选项组);
+    }
+
+    容器.appendChild(包装div);
+  }
+
+  构建基础样式(样式名, 样式映射, 默认样式) {
+    const 基础 = { ...默认样式 };
+    if (样式名 && 样式映射[样式名]) {
+      Object.assign(基础, 样式映射[样式名]);
+    }
+    return 基础;
+  }
+
+  更新副字幕样式字段(字段, 新值) {
+    if (!this.副字幕统一样式) return;
+    this.副字幕统一样式[字段] = 新值;
+    this.应用副字幕样式到文件();
+  }
+
+  构建样式映射() {
+    const 映射 = {};
+    const 行 = this.文件数据["[V4+ Styles]"];
+    if (!行 || 行.length === 0) return 映射;
+
+    const 格式行 = 行.find((内容) => 内容.startsWith("Format:"));
+    if (!格式行) return 映射;
+
+    const 字段列表 = 格式行
+      .replace(/^Format:/i, "")
+      .split(",")
+      .map((字段) => 字段.trim());
+
+    const 样式行 = 行.filter((内容) => 内容.startsWith("Style:"));
+    样式行.forEach((样式内容, 索引) => {
+      const 属性 = this.解析属性行(样式内容);
+      if (!属性) return;
+
+      const 值列表 = 属性.值.split(",");
+      const 样式数据 = {};
+      字段列表.forEach((字段, 字段索引) => {
+        样式数据[字段] = 值列表[字段索引] ? 值列表[字段索引].trim() : "";
+      });
+
+      const 样式名 = 样式数据.Name || `Style ${索引 + 1}`;
+      映射[样式名] = 样式数据;
+    });
+
+    return 映射;
+  }
+
+  解析事件行(行内容, 字段列表, 文本索引) {
+    const 冒号索引 = 行内容.indexOf(":");
+    if (冒号索引 === -1) return null;
+
+    const 值串 = 行内容.substring(冒号索引 + 1).trim();
+    const 分段 = 值串.split(",");
+
+    if (分段.length < 字段列表.length) {
+      return null;
+    }
+
+    const 值列表 = [];
+    for (let i = 0; i < 字段列表.length; i++) {
+      if (i === 文本索引) {
+        值列表.push(分段.slice(i).join(",").trim());
+        break;
+      } else {
+        值列表.push((分段[i] || "").trim());
+      }
+    }
+
+    const 映射 = {};
+    for (let i = 0; i < 字段列表.length && i < 值列表.length; i++) {
+      映射[字段列表[i]] = 值列表[i];
+    }
+
+    return 映射;
+  }
+
+  解析副字幕样式(副文本, 基础样式) {
+    const 样式 = { ...基础样式 };
+    if (!副文本) return 样式;
+
+    const 覆盖匹配 = 副文本.match(/^\{([^}]*)\}/);
+    if (!覆盖匹配) return 样式;
+
+    const 标签串 = 覆盖匹配[1];
+    const 标签列表 = 标签串.split("\\").filter((片段) => 片段);
+
+    let 全局Alpha = null;
+    const 局部Alpha = {};
+    const 颜色通道映射 = { "1": "PrimaryColour", "2": "SecondaryColour", "3": "OutlineColour", "4": "BackColour" };
+
+    const 设置粗细标记 = (键, 值) => {
+      const 数值 = Number(值);
+      样式[键] = 数值 === 0 ? "0" : "-1";
+    };
+
+    标签列表.forEach((标签) => {
+      if (标签.startsWith("fn")) {
+        const 字体 = 标签.substring(2).trim();
+        if (字体) {
+          样式.Fontname = 字体;
+        }
+        return;
+      }
+
+      if (标签.startsWith("fs")) {
+        const 字号 = 标签.substring(2).trim();
+        if (字号) {
+          样式.Fontsize = 字号;
+        }
+        return;
+      }
+
+      const 色匹配 = 标签.match(/^(?:([1234])c|c)&H([0-9A-Fa-f]{6,8})/);
+      if (色匹配) {
+        const 通道 = 色匹配[1] || "1";
+        const 颜色键 = 颜色通道映射[通道];
+        if (颜色键) {
+          样式[颜色键] = this.标准化ASS颜色值(色匹配[2], 样式[颜色键]);
+        }
+        return;
+      }
+
+      const 局部透明匹配 = 标签.match(/^([1234])a&H([0-9A-Fa-f]{2})/);
+      if (局部透明匹配) {
+        const 颜色键 = 颜色通道映射[局部透明匹配[1]];
+        if (颜色键) {
+          局部Alpha[颜色键] = 局部透明匹配[2];
+        }
+        return;
+      }
+
+      const 全局透明匹配 = 标签.match(/^alpha&H([0-9A-Fa-f]{2})/);
+      if (全局透明匹配) {
+        全局Alpha = 全局透明匹配[1];
+        return;
+      }
+
+      if (标签.startsWith("fscx")) {
+        const 值 = 标签.substring(4).trim();
+        if (值) {
+          样式.ScaleX = 值;
+        }
+        return;
+      }
+
+      if (标签.startsWith("fscy")) {
+        const 值 = 标签.substring(4).trim();
+        if (值) {
+          样式.ScaleY = 值;
+        }
+        return;
+      }
+
+      if (标签.startsWith("fsp")) {
+        const 值 = 标签.substring(3).trim();
+        if (值) {
+          样式.Spacing = 值;
+        }
+        return;
+      }
+
+      if (标签.startsWith("frz")) {
+        const 值 = 标签.substring(3).trim();
+        if (值) {
+          样式.Angle = 值;
+        }
+        return;
+      }
+
+      if (标签.startsWith("bord")) {
+        const 值 = 标签.substring(4).trim();
+        if (值) {
+          样式.Outline = 值;
+        }
+        return;
+      }
+
+      if (标签.startsWith("shad")) {
+        const 值 = 标签.substring(4).trim();
+        if (值) {
+          样式.Shadow = 值;
+        }
+        return;
+      }
+
+      if (标签.startsWith("an")) {
+        const 值 = Number(标签.substring(2));
+        if (!Number.isNaN(值)) {
+          样式.Alignment = 值.toString();
+        }
+        return;
+      }
+
+      if (标签.startsWith("a") && !标签.startsWith("alpha")) {
+        const 旧对齐 = Number(标签.substring(1));
+        if (!Number.isNaN(旧对齐)) {
+          样式.Alignment = this.转换SSA对齐到ASS(旧对齐).toString();
+        }
+        return;
+      }
+
+      const 粗体匹配 = 标签.match(/^b(-?\d+)/);
+      if (粗体匹配 && !标签.startsWith("blur")) {
+        设置粗细标记("Bold", 粗体匹配[1]);
+        return;
+      }
+
+      const 斜体匹配 = 标签.match(/^i(-?\d+)/);
+      if (斜体匹配) {
+        设置粗细标记("Italic",斜体匹配[1]);
+        return;
+      }
+
+      const 下划线匹配 = 标签.match(/^u(-?\d+)/);
+      if (下划线匹配) {
+        设置粗细标记("Underline", 下划线匹配[1]);
+        return;
+      }
+
+      const 删除线匹配 = 标签.match(/^s(-?\d+)/);
+      if (删除线匹配) {
+        设置粗细标记("StrikeOut", 删除线匹配[1]);
+      }
+    });
+
+    if (全局Alpha) {
+      样式.PrimaryColour = this.更新颜色Alpha(样式.PrimaryColour, 全局Alpha);
+      样式.SecondaryColour = this.更新颜色Alpha(样式.SecondaryColour, 全局Alpha);
+      样式.OutlineColour = this.更新颜色Alpha(样式.OutlineColour, 全局Alpha);
+      样式.BackColour = this.更新颜色Alpha(样式.BackColour, 全局Alpha);
+    } else {
+      for (const [键, 值] of Object.entries(局部Alpha)) {
+        样式[键] = this.更新颜色Alpha(样式[键], 值);
+      }
+    }
+
+    return 样式;
+  }
+
+  标准化ASS颜色值(颜色值, 默认值) {
+    const 默认颜色 = 默认值 || "&H00FFFFFF";
+    if (!颜色值) return 默认颜色;
+
+    const 提取 = 颜色值.replace(/^&H/i, "").replace(/[^0-9A-Fa-f]/g, "").toUpperCase();
+    if (提取.length === 6) {
+      return `&H00${提取}`;
+    }
+    if (提取.length === 8) {
+      return `&H${提取}`;
+    }
+    return 默认颜色;
+  }
+
+  更新颜色Alpha(颜色值, alphaHex) {
+    const 基础色 = this.标准化ASS颜色值(颜色值, this.ASS标准默认样式.PrimaryColour);
+    const 有效Alpha = (alphaHex || "00").replace(/[^0-9A-Fa-f]/g, "").toUpperCase().padStart(2, "0").slice(-2);
+    const 色值 = 基础色.replace(/^&H/i, "");
+    const 颜色部分 = 色值.substring(2);
+    return `&H${有效Alpha}${颜色部分}`;
+  }
+
+  提取Alpha(颜色值) {
+    const 规范 = this.标准化ASS颜色值(颜色值, this.ASS标准默认样式.PrimaryColour);
+    const 色值 = 规范.replace(/^&H/i, "");
+    return 色值.substring(0, 2).toUpperCase();
+  }
+
+  提取色RGB部分(颜色值) {
+    const 规范 = this.标准化ASS颜色值(颜色值, this.ASS标准默认样式.PrimaryColour);
+    const 色值 = 规范.replace(/^&H/i, "");
+    return 色值.substring(2).toUpperCase();
+  }
+
+  转换SSA对齐到ASS(旧对齐) {
+    const 映射 = {
+      1: 1,
+      2: 2,
+      3: 3,
+      5: 7,
+      6: 8,
+      7: 9,
+      9: 4,
+      10: 5,
+      11: 6,
+    };
+    return 映射[旧对齐] || 2;
+  }
+
+  创建ASS标准默认样式() {
+    return {
+      Name: "Default",
+      Fontname: "Arial",
+      Fontsize: "20",
+      PrimaryColour: "&H00FFFFFF",
+      SecondaryColour: "&H000000FF",
+      OutlineColour: "&H00000000",
+      BackColour: "&H00000000",
+      Bold: "0",
+      Italic: "0",
+      Underline: "0",
+      StrikeOut: "0",
+      ScaleX: "100",
+      ScaleY: "100",
+      Spacing: "0",
+      Angle: "0",
+      BorderStyle: "1",
+      Outline: "2",
+      Shadow: "2",
+      Alignment: "2",
+      MarginL: "10",
+      MarginR: "10",
+      MarginV: "10",
+      Encoding: "1",
+    };
+  }
+
+  生成副字幕覆盖标签(当前样式, 基线样式) {
+    const 基线 = 基线样式 || this.ASS标准默认样式;
+    const 当前 = 当前样式 || {};
+    const 标签 = [];
+
+    const 追加 = (值, 构造) => {
+      if (值 !== undefined && 值 !== null) {
+        const 结果 = 构造(值);
+        if (结果) 标签.push(结果);
+      }
+    };
+
+    if (当前.Fontname !== 基线.Fontname) 追加(当前.Fontname, (v) => `\\fn${v}`);
+    if (当前.Fontsize !== 基线.Fontsize) 追加(当前.Fontsize, (v) => `\\fs${v}`);
+
+    const 色键 = [
+      ["PrimaryColour", "c"],
+      ["SecondaryColour", "2c"],
+      ["OutlineColour", "3c"],
+      ["BackColour", "4c"],
+    ];
+
+    色键.forEach(([键, 标记]) => {
+      const 当前色 = this.标准化ASS颜色值(当前[键], 基线[键]);
+      const 基线色 = this.标准化ASS颜色值(基线[键], 基线[键]);
+      if (当前色 !== 基线色) {
+        const rgb = this.提取色RGB部分(当前色);
+        标签.push(`\\${标记}&H${rgb}`);
+
+        const 当前Alpha = this.提取Alpha(当前色);
+        const 基线Alpha = this.提取Alpha(基线色);
+        if (当前Alpha !== 基线Alpha) {
+          标签.push(`\\${标记[0]}a&H${当前Alpha}`);
+        }
+      }
+    });
+
+    const 简单双态 = [
+      ["Bold", "b"],
+      ["Italic", "i"],
+      ["Underline", "u"],
+      ["StrikeOut", "s"],
+    ];
+
+    简单双态.forEach(([键, 标记]) => {
+      if (当前[键] !== 基线[键]) {
+        标签.push(`\\${标记}${当前[键]}`);
+      }
+    });
+
+    if (当前.ScaleX !== 基线.ScaleX) 追加(当前.ScaleX, (v) => `\\fscx${v}`);
+    if (当前.ScaleY !== 基线.ScaleY) 追加(当前.ScaleY, (v) => `\\fscy${v}`);
+    if (当前.Spacing !== 基线.Spacing) 追加(当前.Spacing, (v) => `\\fsp${v}`);
+    if (当前.Angle !== 基线.Angle) 追加(当前.Angle, (v) => `\\frz${v}`);
+    if (当前.Outline !== 基线.Outline) 追加(当前.Outline, (v) => `\\bord${v}`);
+    if (当前.Shadow !== 基线.Shadow) 追加(当前.Shadow, (v) => `\\shad${v}`);
+    if (当前.Alignment !== 基线.Alignment) 追加(当前.Alignment, (v) => `\\an${v}`);
+
+    return 标签.length > 0 ? `{${标签.join("")}}` : "";
+  }
+
+  拆分覆盖标签(覆盖串) {
+    if (!覆盖串) return [];
+    const 内容 = 覆盖串.replace(/^\{/, "").replace(/\}$/, "");
+    return 内容
+      .split("\\")
+      .filter((片段) => 片段)
+      .map((片段) => `\\${片段}`);
+  }
+
+  识别标签字段(标签) {
+    if (!标签) return null;
+    const t = 标签.startsWith("\\") ? 标签.substring(1) : 标签;
+    if (t.startsWith("fn")) return "Fontname";
+    if (t.startsWith("fs")) return "Fontsize";
+    if (/^(?:1c|c)/.test(t)) return "PrimaryColour";
+    if (/^2c/.test(t)) return "SecondaryColour";
+    if (/^3c/.test(t)) return "OutlineColour";
+    if (/^4c/.test(t)) return "BackColour";
+    if (/^1a/.test(t)) return "PrimaryColour";
+    if (/^2a/.test(t)) return "SecondaryColour";
+    if (/^3a/.test(t)) return "OutlineColour";
+    if (/^4a/.test(t)) return "BackColour";
+    if (t.startsWith("bord")) return "Outline";
+    if (t.startsWith("shad")) return "Shadow";
+    if (t.startsWith("fscx")) return "ScaleX";
+    if (t.startsWith("fscy")) return "ScaleY";
+    if (t.startsWith("fsp")) return "Spacing";
+    if (t.startsWith("frz")) return "Angle";
+    if (t.startsWith("an")) return "Alignment";
+    if (t.startsWith("a") && !t.startsWith("alpha")) return "Alignment";
+    if (t.startsWith("b") && !t.startsWith("blur")) return "Bold";
+    if (t.startsWith("i")) return "Italic";
+    if (t.startsWith("u")) return "Underline";
+    if (t.startsWith("s") && !t.startsWith("shad")) return "StrikeOut";
+    return null;
+  }
+
+  提取覆盖字段集合(覆盖串) {
+    const 集合 = new Set();
+    const 标签列表 = this.拆分覆盖标签(覆盖串);
+    标签列表.forEach((t) => {
+      const 字段 = this.识别标签字段(t);
+      if (字段) 集合.add(字段);
+    });
+    return 集合;
+  }
+
+  应用副字幕样式到文件() {
+    if (!this.文件数据 || !this.文件数据["[Events]"]) return;
+    const 行 = this.文件数据["[Events]"];
+    if (!行 || 行.length === 0) return;
+
+    const 格式行 = 行.find((内容) => 内容.startsWith("Format:"));
+    if (!格式行) return;
+
+    const 字段列表 = 格式行
+      .replace(/^Format:/i, "")
+      .split(",")
+      .map((字段) => 字段.trim())
+      .filter((字段) => 字段);
+
+    const 文本索引 = 字段列表.findIndex((字段) => 字段.toLowerCase() === "text");
+    if (文本索引 === -1) return;
+
+    const 覆盖标签 = this.生成副字幕覆盖标签(this.副字幕统一样式, this.副字幕统一样式基线 || this.ASS标准默认样式);
+
+    const 新事件行 = [];
+    for (const 行内容 of 行) {
+      if (!行内容.startsWith("Dialogue:")) {
+        新事件行.push(行内容);
+        continue;
+      }
+
+      const 事件字段 = this.解析事件行(行内容, 字段列表, 文本索引);
+      if (!事件字段) {
+        新事件行.push(行内容);
+        continue;
+      }
+
+      const 文本值 = 事件字段[字段列表[文本索引]] || "";
+      const 拆分 = 文本值.split(/\\[Nn]/);
+      if (拆分.length < 2) {
+        新事件行.push(行内容);
+        continue;
+      }
+
+      const 主文本 = 拆分[0];
+      const 副原始 = 拆分.slice(1).join("\\N");
+      const 原覆盖 = 副原始.match(/^\{[^}]*\}/)?.[0] || "";
+      const 副去头 = 副原始.replace(/^\{[^}]*\}/, "");
+
+      let 最终覆盖 = "";
+      if (覆盖标签) {
+        const 新字段集合 = this.提取覆盖字段集合(覆盖标签);
+        const 原标签列表 = this.拆分覆盖标签(原覆盖);
+        const 保留原标签 = 原标签列表.filter((tag) => {
+          const 字段 = this.识别标签字段(tag);
+          return !字段 || !新字段集合.has(字段);
+        });
+        const 新标签列表 = this.拆分覆盖标签(覆盖标签);
+        const 合并标签 = [...新标签列表, ...保留原标签];
+        最终覆盖 = 合并标签.length > 0 ? `{${合并标签.join("")}}` : "";
+      } else {
+        最终覆盖 = 原覆盖;
+      }
+
+      const 新副文本 = 最终覆盖 ? `${最终覆盖}${副去头}` : 副去头;
+      const 新文本值 = `${主文本}\\N${新副文本}`;
+
+      const 新字段列表 = [];
+      for (let i = 0; i < 字段列表.length; i++) {
+        if (i === 文本索引) {
+          新字段列表.push(新文本值);
+        } else {
+          新字段列表.push(事件字段[字段列表[i]] || "");
+        }
+      }
+
+      const 新行文本 = `Dialogue: ${新字段列表.join(",")}`;
+      新事件行.push(新行文本);
+    }
+
+    this.文件数据["[Events]"] = 新事件行;
+    if (!this.自动保存) {
+      this.文件已修改 = true;
+      this.更新保存按钮状态();
+    }
   }
 
   初始化列高亮(表格) {
@@ -771,14 +1882,24 @@ class ASSParser {
             console.error("颜色值无效:", rgba);
             return;
           }
-
           const ass颜色 = this.RGBA转ASS颜色(rgba);
           颜色显示div.innerHTML = "";
           this.渲染颜色文本(颜色显示div, ass颜色);
           颜色显示div.dataset.原始值 = ass颜色;
-          this.更新样式单元格("[V4+ Styles]", 样式索引, 字段索引, ass颜色);
-          if (this.自动保存) {
-            this.保存文件();
+
+          if (颜色显示div.dataset.副字幕 === "true") {
+            this.更新副字幕样式字段(字段, ass颜色);
+            if (this.自动保存) {
+              this.保存文件();
+            } else {
+              this.文件已修改 = true;
+              this.更新保存按钮状态();
+            }
+          } else {
+            this.更新样式单元格("[V4+ Styles]", 样式索引, 字段索引, ass颜色);
+            if (this.自动保存) {
+              this.保存文件();
+            }
           }
         } catch (error) {
           console.error("颜色转换错误:", error);

@@ -946,3 +946,105 @@ body:has(.pcr-app.visible) {
   left: calc(50% - 11px);
   transform: translate(-50%, -50%);
 }
+
+.部分区-Events {
+  background: linear-gradient(135deg, rgba(16, 29, 37, 0.8), rgba(12, 18, 24, 0.8));
+  border: 1px solid rgba(74, 168, 136, 0.25);
+  padding: 18px 18px 20px 18px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(74, 168, 136, 0.3) transparent;
+}
+
+.部分区-Events::-webkit-scrollbar {
+  height: 8px;
+}
+
+.部分区-Events::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 4px;
+}
+
+.部分区-Events::-webkit-scrollbar-thumb {
+  background: rgba(74, 168, 136, 0.2);
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.部分区-Events::-webkit-scrollbar-thumb:hover {
+  background: rgba(74, 168, 136, 0.4);
+}
+
+.部分区-Events::-webkit-scrollbar-thumb:active {
+  background: rgba(74, 168, 136, 0.5);
+}
+
+.部分区-Events:not(:hover)::-webkit-scrollbar-thumb {
+  background: rgba(74, 168, 136, 0.1);
+}
+
+.副字幕列表 {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.副字幕卡片 {
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 12px 14px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.副字幕卡片头 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 13px;
+  color: #cfd8dc;
+}
+
+.副字幕卡片头 > div:first-child {
+  font-weight: 700;
+  color: #4ad8b1;
+}
+
+.副字幕文本 {
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.15));
+  color: #f5f5f5;
+  font-size: 16px;
+  word-break: break-all;
+}
+
+.副字幕样式表 {
+  border-collapse: collapse;
+}
+
+.副字幕计数 {
+  margin: 8px 0 14px 2px;
+  color: #cfd8dc;
+  font-size: 14px;
+}
+
+.副字幕计数数字 {
+  color: lightskyblue;
+  font-weight: 700;
+}
+
+.副字幕样式表格容器 {
+  margin-top: 6px;
+  width: fit-content;
+}
+
+.副字幕数据行 > .单元格:first-child {
+  background-color: #1a1a1a;
+}
