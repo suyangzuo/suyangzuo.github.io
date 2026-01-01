@@ -29,7 +29,7 @@ body {
 
 #canvas {
   width: calc(100% - var(--水平内边距));
-  height: calc(100% - var(--垂直内边距));
+  height: clamp(1020px, calc(100% - var(--垂直内边距)), 2000px);
   outline: solid 1px #666;
   background-color: #1a1a1a;
   cursor: grab;

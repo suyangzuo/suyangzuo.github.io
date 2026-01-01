@@ -41,9 +41,21 @@ const 滑块样式配置 = {
   数值与单位间隔: 23,
 };
 
+const 角色尺寸配置 = {
+  存储键: "ease-animation-char-size-v1",
+  最小: 50,
+  最大: 300,
+  默认: 120,
+};
+
+const 布局样式配置 = {
+  基础内边距: 24,
+  贝塞尔左侧额外间距: 10,
+};
+
 const 滑块列表 = [
   { 键: "跳跃时长", 标签: "跳跃时长", 单位: "毫秒", 最小: 200, 最大: 5000, 步长: 50 },
-  { 键: "跳跃高度", 标签: "跳跃高度", 单位: "像素", 最小: 20, 最大: 400, 步长: 5 },
+  { 键: "跳跃高度", 标签: "跳跃高度", 单位: "像素", 最小: 20, 最大: 500, 步长: 5 },
   { 键: "加速时长", 标签: "加速时长", 单位: "毫秒", 最小: 100, 最大: 3000, 步长: 50 },
   { 键: "最高速度", 标签: "最高速度", 单位: "像素/秒", 最小: 20, 最大: 1000, 步长: 10 },
   { 键: "音效音量", 标签: "音效音量", 单位: "%", 最小: 0, 最大: 100, 步长: 1 },
@@ -85,8 +97,8 @@ const 忍者精灵 = {
   朝左: { 起始X: 349, 起始Y: 0 },
 };
 
-const 角色显示宽度 = 110;
-const 角色显示高度 = 110;
+let 角色显示宽度 = 读取角色尺寸();
+let 角色显示高度 = 角色显示宽度;
 
 const 角色 = {
   世界X: 0,
@@ -277,7 +289,8 @@ function 渲染界面帧() {
 
 function 绘制参数区域() {
   const 区域 = 布局.参数区;
-  const 内边距 = 24;
+  const 内边距 = 布局样式配置.基础内边距;
+  const 左侧基准 = 内边距 + 布局样式配置.贝塞尔左侧额外间距;
   上下文.save();
   上下文.fillStyle = "#151515";
   上下文.fillRect(区域.x, 区域.y, 区域.width, 区域.height);
@@ -289,18 +302,18 @@ function 绘制参数区域() {
 
   上下文.fillStyle = "#f2f2f2";
   上下文.font = "600 22px 'Google Sans Code', 'Noto Sans SC', sans-serif";
-  上下文.fillText("参数调节区域", 区域.x + 内边距, 区域.y + 内边距 + 6);
+  上下文.fillText("参数调节区域", 区域.x + 左侧基准, 区域.y + 内边距 + 6);
 
-  绘制曲线切换(区域, 内边距);
-  绘制贝塞尔编辑(区域, 内边距);
-  绘制滑块(区域, 内边距);
+  绘制曲线切换(区域, 内边距, 左侧基准);
+  绘制贝塞尔编辑(区域, 内边距, 左侧基准);
+  绘制滑块(区域, 内边距, 左侧基准);
   上下文.restore();
 }
 
-function 绘制曲线切换(区域, 内边距) {
+function 绘制曲线切换(区域, 内边距, 左侧基准) {
   const 按钮宽 = 120;
   const 按钮高 = 32;
-  const 起始X = 区域.x + 内边距;
+  const 起始X = 区域.x + 左侧基准;
   const 起始Y = 区域.y + 内边距 + 28;
   const 间隔 = 12;
   const 曲线列表 = [
@@ -333,8 +346,10 @@ function 绘制曲线切换(区域, 内边距) {
 function 绘制贝塞尔编辑(区域, 内边距) {
   const 编辑顶部 = 区域.y + 内边距 + 80;
   const 编辑高 = 区域.height * 0.6;
-  const 编辑宽 = 区域.width - 内边距 * 2;
-  const 编辑区 = { x: 区域.x + 内边距, y: 编辑顶部, width: 编辑宽, height: 编辑高 };
+  const 左侧基准 = 内边距 + 布局样式配置.贝塞尔左侧额外间距;
+  const 右侧基准 = 内边距;
+  const 编辑宽 = 区域.width - 左侧基准 - 右侧基准;
+  const 编辑区 = { x: 区域.x + 左侧基准, y: 编辑顶部, width: 编辑宽, height: 编辑高 };
   界面引用.贝塞尔区域 = 编辑区;
 
   上下文.save();
@@ -354,6 +369,8 @@ function 绘制贝塞尔编辑(区域, 内边距) {
     上下文.lineTo(编辑区.x + 编辑区.width, y);
     上下文.stroke();
   }
+
+  绘制坐标轴与刻度(编辑区);
 
   const 当前曲线 = 状态.曲线集[状态.当前曲线];
   const P0 = { x: 0, y: 0 };
@@ -390,12 +407,20 @@ function 绘制贝塞尔编辑(区域, 内边距) {
   }
   上下文.stroke();
 
+  const 动画进度 = 获取当前曲线进度();
+  const 进度点 = 正规化到画布(采样曲线点(当前曲线, 动画进度), 编辑区);
+  上下文.strokeStyle = "#ffd166";
+  上下文.lineWidth = 2;
+  上下文.beginPath();
+  上下文.arc(进度点.x, 进度点.y, 8, 0, Math.PI * 2);
+  上下文.stroke();
+
   绘制控制点(控制点集合.控制点1, "控制点1");
   绘制控制点(控制点集合.控制点2, "控制点2");
 
   上下文.font = "500 14px 'Google Sans Code', monospace";
   const { 颜色, 坐标间隔, 括号间距 } = 坐标显示配置;
-  const 文本Y = 编辑区.y + 编辑区.height + 26;
+  const 文本Y = 编辑区.y + 编辑区.height + 50;
   const 数字宽度 = (文本) => {
     let 宽 = 0;
     for (const 字符 of 文本) {
@@ -456,9 +481,94 @@ function 绘制贝塞尔编辑(区域, 内边距) {
   上下文.restore();
 }
 
+function 绘制坐标轴与刻度(编辑区) {
+  const 刻度列表 = [0, 0.25, 0.5, 0.75, 1];
+  const 轴颜色 = "rgba(255,255,255,0.45)";
+  const 刻度颜色 = "rgba(255,255,255,0.3)";
+  const 文本颜色 = "rgba(255,255,255,0.75)";
+  const 刻度长度 = 8;
+  const 底部Y = 编辑区.y + 编辑区.height;
+
+  const 是跳跃曲线 = 状态.当前曲线 === "跳跃";
+  const x最大值 = 是跳跃曲线 ? 状态.参数.跳跃时长 : 状态.参数.加速时长;
+  const y最大值 = 是跳跃曲线 ? 状态.参数.跳跃高度 : 状态.参数.最高速度;
+  const x上限 = Math.max(x最大值, 1);
+  const y上限 = Math.max(y最大值, 1);
+  const y轴标题 = 是跳跃曲线 ? "高度" : "速度";
+
+  const 格式化刻度 = (数值) => {
+    if (数值 === 0) return "0";
+    if (数值 >= 100) return String(Math.round(数值));
+    const 保留 = 数值 >= 10 ? 1 : 2;
+    return Number(数值.toFixed(保留)).toString();
+  };
+
+  上下文.save();
+  上下文.strokeStyle = 轴颜色;
+  上下文.lineWidth = 1.5;
+  上下文.beginPath();
+  上下文.moveTo(编辑区.x, 底部Y);
+  上下文.lineTo(编辑区.x + 编辑区.width, 底部Y);
+  上下文.stroke();
+  上下文.beginPath();
+  上下文.moveTo(编辑区.x, 底部Y);
+  上下文.lineTo(编辑区.x, 编辑区.y);
+  上下文.stroke();
+
+  上下文.strokeStyle = 刻度颜色;
+  上下文.fillStyle = 文本颜色;
+  上下文.font = "400 14px 'Google Sans Code', 'Noto Sans SC', sans-serif";
+
+  上下文.textAlign = "center";
+  上下文.textBaseline = "bottom";
+  刻度列表.forEach((刻度) => {
+    const x = 编辑区.x + 刻度 * 编辑区.width;
+    上下文.beginPath();
+    上下文.moveTo(x, 底部Y);
+    上下文.lineTo(x, 底部Y - 刻度长度);
+    上下文.stroke();
+    if (刻度 !== 0) {
+      上下文.fillText(格式化刻度(刻度 * x上限), x, 底部Y - 刻度长度 - 4);
+    }
+  });
+
+  上下文.textAlign = "left";
+  上下文.textBaseline = "middle";
+  刻度列表.forEach((刻度) => {
+    const y = 编辑区.y + (1 - 刻度) * 编辑区.height;
+    上下文.beginPath();
+    上下文.moveTo(编辑区.x, y);
+    上下文.lineTo(编辑区.x + 刻度长度, y);
+    上下文.stroke();
+    if (刻度 !== 0) {
+      上下文.fillText(格式化刻度(刻度 * y上限), 编辑区.x + 刻度长度 + 6, y);
+    }
+  });
+
+  // 原点处仅显示一个 0，放在区域外侧左下角
+  上下文.textAlign = "right";
+  上下文.textBaseline = "top";
+  上下文.fillText("0", 编辑区.x - 6, 底部Y + 2);
+
+  上下文.fillStyle = "rgba(53, 192, 146, 1)";
+  上下文.textAlign = "center";
+  上下文.textBaseline = "top";
+  上下文.fillText("时间", 编辑区.x + 编辑区.width / 2, 底部Y + 10);
+
+  上下文.save();
+  上下文.translate(编辑区.x - 15, 编辑区.y + 编辑区.height / 2);
+  上下文.rotate(-Math.PI / 2);
+  上下文.textAlign = "center";
+  上下文.textBaseline = "middle";
+  上下文.fillText(y轴标题, 0, 0);
+  上下文.restore();
+
+  上下文.restore();
+}
+
 function 绘制滑块(区域, 内边距) {
   界面引用.滑轨列表 = [];
-  const 起始Y = 区域.y + 内边距 + 80 + 区域.height * 0.6 + 80;
+  const 起始Y = 区域.y + 内边距 + 80 + 区域.height * 0.6 + 100;
   const 标签宽 = 120;
   const 轨道宽 = Math.max(160, 区域.width - 内边距 * 2 - 标签宽 * 2 - 20);
   const 轨道高 = 6;
@@ -570,6 +680,8 @@ function 绘制动画区域() {
     const x = 轨道起点 + (轨道宽 / 10) * i;
     上下文.fillRect(x - 1, 区域.y + 内边距, 2, 地面Y - 区域.y - 内边距);
   }
+
+  绘制角色尺寸滑块(区域);
 
   const 跳跃缩放 = Math.min(1, (区域.height * 0.5) / Math.max(状态.参数.跳跃高度, 1));
   const 角色屏幕X = 轨道起点 + 角色.世界X * 比例;
@@ -698,6 +810,76 @@ function 绘制速度面板(区域, 面板X, 面板Y) {
   上下文.restore();
 }
 
+function 绘制角色尺寸滑块(区域) {
+  const 轨道宽 = 250;
+  const 轨道高 = 6;
+  const 内边距 = 28;
+  const 轨道X = 区域.x + 区域.width / 2 - 轨道宽 / 2;
+  const 轨道Y = 区域.y + 内边距 + 60;
+
+  const 比例 = (角色显示宽度 - 角色尺寸配置.最小) / (角色尺寸配置.最大 - 角色尺寸配置.最小);
+  const 手柄X = 轨道X + 轨道宽 * 限制值(比例, 0, 1);
+  const 手柄Y = 轨道Y + 轨道高 / 2;
+  const 高亮中 = 交互状态.活动滑块 === "角色尺寸" || 交互状态.悬停滑块 === "角色尺寸";
+
+  上下文.save();
+  上下文.fillStyle = "rgba(45, 45, 45)";
+  上下文.fillRect(轨道X, 轨道Y, 轨道宽, 轨道高);
+
+  const 填充宽 = 手柄X - 轨道X;
+  上下文.fillStyle = 高亮中 ? "#6cb6e4ff" : "#2f5baf";
+  上下文.fillRect(轨道X, 轨道Y, 填充宽, 轨道高);
+
+  上下文.beginPath();
+  上下文.arc(手柄X, 手柄Y, 9, 0, Math.PI * 2);
+  if (高亮中) {
+    上下文.fillStyle = "#993340ff";
+    上下文.shadowColor = "rgba(81, 247, 255, 0.35)";
+    上下文.shadowBlur = 8;
+    上下文.lineWidth = 2.5;
+    上下文.strokeStyle = "#7cf7ff";
+  } else {
+    上下文.fillStyle = "#111";
+    上下文.lineWidth = 2;
+    上下文.strokeStyle = "#51f7ff";
+  }
+  上下文.fill();
+  上下文.stroke();
+  上下文.shadowColor = "transparent";
+
+  上下文.fillStyle = 高亮中 ? "gold" : "darkgoldenrod";
+  上下文.font = "400 14px 'Google Sans Code', 'Noto Sans SC', sans-serif";
+  const px宽度 = 上下文.measureText("px").width;
+  上下文.textAlign = "center";
+  上下文.textBaseline = "top";
+  上下文.fillText("角色尺寸", 轨道X + 轨道宽 / 2, 轨道Y + 24);
+
+  上下文.fillStyle = 高亮中 ? "#fff" : "#ccc";
+  上下文.textBaseline = "bottom";
+  上下文.fillText(`${Math.round(角色显示宽度)}`, 轨道X + 轨道宽 / 2 - px宽度 / 2, 轨道Y - 14);
+  const 角色尺寸宽度 = 上下文.measureText(`${Math.round(角色显示宽度)}`).width;
+  上下文.fillStyle = 高亮中 ? "#aaa" : "gray";
+  上下文.fillText("px", 轨道X + 轨道宽 / 2 + 角色尺寸宽度 / 2 - px宽度 / 2 + 12, 轨道Y - 14);
+
+  界面引用.滑轨列表.push({
+    键: "角色尺寸",
+    x: 轨道X - 15,
+    y: 轨道Y - 20,
+    width: 轨道宽 + 30,
+    height: 50,
+    轨道X,
+    轨道宽,
+    轨道Y,
+    轨道高,
+    手柄X,
+    手柄Y,
+    手柄半径: 12,
+    方向: "horizontal",
+  });
+
+  上下文.restore();
+}
+
 function 绘制控制点(位置, 键) {
   上下文.beginPath();
   上下文.arc(位置.x, 位置.y, 10, 0, Math.PI * 2);
@@ -788,6 +970,18 @@ function 计算贝塞尔(曲线, 时间) {
     return 参数;
   };
   return 限制值(采样曲线Y(求解曲线X(时间)), 0, 1);
+}
+
+function 获取当前曲线进度() {
+  if (状态.当前曲线 === "移动") {
+    const 加速秒 = Math.max(状态.参数.加速时长 / 1000, 0.001);
+    return 限制值(加速秒 > 0 ? 角色.移动计时 / 加速秒 : 0, 0, 1);
+  }
+  const 跳跃秒 = Math.max(状态.参数.跳跃时长 / 1000, 0.001);
+  if (!角色.跳跃中 || 跳跃秒 <= 0) return 0;
+  const 归一 = 限制值(角色.跳跃计时 / 跳跃秒, 0, 1);
+  if (归一 <= 0.5) return 归一 * 2;
+  return (1 - 归一) * 2;
 }
 
 function 处理指针按下(事件) {
@@ -897,11 +1091,27 @@ function 获取指针下滑块(位置) {
 function 更新滑块(位置) {
   const 轨 = 界面引用.滑轨列表.find((轨道) => 轨道.键 === 交互状态.活动滑块);
   if (!轨) return;
-  const 配置 = 滑块列表.find((滑块项) => 滑块项.键 === 轨.键);
-  const 比例 = 限制值((位置.x - 轨.轨道X) / 轨.轨道宽, 0, 1);
+  const 配置 =
+    滑块列表.find((滑块项) => 滑块项.键 === 轨.键) ||
+    (轨.键 === "角色尺寸"
+      ? { 键: "角色尺寸", 最小: 角色尺寸配置.最小, 最大: 角色尺寸配置.最大, 步长: 1 }
+      : null);
+  if (!配置) return;
+
+  const 比例 =
+    轨.方向 === "vertical"
+      ? 1 - 限制值((位置.y - 轨.轨道Y) / 轨.轨道高, 0, 1)
+      : 限制值((位置.x - 轨.轨道X) / 轨.轨道宽, 0, 1);
   const 原值 = 配置.最小 + 比例 * (配置.最大 - 配置.最小);
   const 阶梯值 = Math.round(原值 / 配置.步长) * 配置.步长;
-  状态.参数[配置.键] = 限制值(阶梯值, 配置.最小, 配置.最大);
+  const 限定值 = 限制值(阶梯值, 配置.最小, 配置.最大);
+
+  if (配置.键 === "角色尺寸") {
+    更新角色尺寸(限定值);
+    return;
+  }
+
+  状态.参数[配置.键] = 限定值;
   if (配置.键 === "移动距离") 限制角色位置();
   if (配置.键 === "音效音量") 落地音效.volume = 限制值(状态.参数.音效音量 / 100, 0, 1);
 }
@@ -1006,4 +1216,28 @@ function 绘制圆角矩形(绘制上下文, 起点X, 起点Y, 宽度, 高度, �
   绘制上下文.beginPath();
   绘制上下文.roundRect(起点X, 起点Y, 宽度, 高度, 圆角);
   绘制上下文.closePath();
+}
+
+function 读取角色尺寸() {
+  try {
+    const 已存 = Number(sessionStorage.getItem(角色尺寸配置.存储键));
+    if (!Number.isNaN(已存)) {
+      return 限制值(已存, 角色尺寸配置.最小, 角色尺寸配置.最大);
+    }
+  } catch (error) {
+    /* ignore */
+  }
+  return 角色尺寸配置.默认;
+}
+
+function 更新角色尺寸(新值) {
+  const 尺寸 = 限制值(Math.round(新值), 角色尺寸配置.最小, 角色尺寸配置.最大);
+  角色显示宽度 = 尺寸;
+  角色显示高度 = 尺寸;
+  try {
+    sessionStorage.setItem(角色尺寸配置.存储键, String(尺寸));
+  } catch (error) {
+    /* ignore */
+  }
+  限制角色位置();
 }
