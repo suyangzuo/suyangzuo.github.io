@@ -702,7 +702,10 @@ class ASSParser {
       提示.className = "样式引用提示 样式引用提示-主 副字幕引用提示";
 
       const 样式串 = Array.from(主字幕引用计数.entries())
-        .map(([样式名]) => `<span class="样式引用提示-样式名">${样式名}</span>`)
+        .map(([样式名]) => {
+          const 显示名 = 样式名.startsWith("*") ? 样式名.slice(1) : 样式名;
+          return `<span class="样式引用提示-样式名">${显示名}</span>`;
+        })
         .join(" / ");
 
       提示.innerHTML = `有 <span class="样式引用提示-数量">${引用总数}</span> 行主字幕引用了 <span class="样式引用提示-标签">[V4+ Styles]</span> 中的样式：${样式串}`;
@@ -1002,6 +1005,9 @@ class ASSParser {
         单元格.appendChild(包装div);
       } else if (字段 === "Pos") {
         const 创建Pos输入 = (默认值, 轴字段) => {
+          const 包装div = document.createElement("div");
+          包装div.className = "表格数字框包装";
+
           const 容器 = document.createElement("div");
           容器.className = "表格数字框容器";
 
@@ -1084,7 +1090,8 @@ class ASSParser {
           按钮组.appendChild(减少按钮);
           容器.appendChild(可编辑);
           容器.appendChild(按钮组);
-          return 容器;
+          包装div.appendChild(容器);
+          return 包装div;
         };
 
         const 数字框容器X = 创建Pos输入(样式.PosX, "PosX");
@@ -1174,14 +1181,14 @@ class ASSParser {
           单元格.appendChild(下拉框);
         }
       } else if (浮点数字段.has(字段) || 整数字段.has(字段)) {
-        const 使用数字容器 = 字段 === "Fontsize";
+        const 包装div = document.createElement("div");
+        包装div.className = "表格数字框包装";
+
         const 外容器 = document.createElement("div");
-        if (使用数字容器) {
-          外容器.className = "表格数字框容器";
-        }
+        外容器.className = "表格数字框容器";
 
         const div = document.createElement("div");
-        div.className = 使用数字容器 ? "表格数字框" : "表格输入框";
+        div.className = "表格数字框";
         div.textContent = 值;
         div.contentEditable = "true";
         div.dataset.字段 = 字段;
@@ -1237,36 +1244,33 @@ class ASSParser {
           }
         });
 
-        if (使用数字容器) {
-          const 按钮组 = document.createElement("div");
-          按钮组.className = "表格数字增减按钮组";
+        const 按钮组 = document.createElement("div");
+        按钮组.className = "表格数字增减按钮组";
 
-          const 更新值 = (增量) => {
-            const 当前值 = parseFloat(div.textContent) || 0;
-            const 新值 = (当前值 + 增量).toString();
-            div.textContent = 新值;
-            处理输入();
-          };
+        const 更新值 = (增量) => {
+          const 当前值 = parseFloat(div.textContent) || 0;
+          const 新值 = (当前值 + 增量).toString();
+          div.textContent = 新值;
+          处理输入();
+        };
 
-          const 增加按钮 = document.createElement("div");
-          增加按钮.className = "表格数字增减按钮";
-          增加按钮.textContent = "+";
-          增加按钮.addEventListener("click", () => 更新值(1));
+        const 增加按钮 = document.createElement("div");
+        增加按钮.className = "表格数字增减按钮";
+        增加按钮.textContent = "+";
+        增加按钮.addEventListener("click", () => 更新值(1));
 
-          const 减少按钮 = document.createElement("div");
-          减少按钮.className = "表格数字增减按钮";
-          减少按钮.textContent = "-";
-          减少按钮.addEventListener("click", () => 更新值(-1));
+        const 减少按钮 = document.createElement("div");
+        减少按钮.className = "表格数字增减按钮";
+        减少按钮.textContent = "-";
+        减少按钮.addEventListener("click", () => 更新值(-1));
 
-          按钮组.appendChild(增加按钮);
-          按钮组.appendChild(减少按钮);
+        按钮组.appendChild(增加按钮);
+        按钮组.appendChild(减少按钮);
 
-          外容器.appendChild(div);
-          外容器.appendChild(按钮组);
-          单元格.appendChild(外容器);
-        } else {
-          单元格.appendChild(div);
-        }
+        外容器.appendChild(div);
+        外容器.appendChild(按钮组);
+        包装div.appendChild(外容器);
+        单元格.appendChild(包装div);
       } else {
         const div = document.createElement("div");
         div.className = "表格输入框";
