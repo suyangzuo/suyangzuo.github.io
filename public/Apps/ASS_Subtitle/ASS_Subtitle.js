@@ -1378,7 +1378,7 @@ class ASSParser {
     const 更新数值 = (新值) => {
       const 显示值 = 步进值 >= 1 ? Math.round(新值) : parseFloat(新值.toFixed(1));
       可编辑div.textContent = 显示值.toString();
-      this.更新副字幕样式字段(字段, 可编辑div.textContent);
+      处理输入();
     };
 
     const 增加按钮 = document.createElement("div");
@@ -1550,12 +1550,13 @@ class ASSParser {
     包装div.className = "表格输入框包装";
 
     const { 选项, 标签 } = 选项配置;
-    const 当前值 = 值 !== undefined && 值 !== null ? 值.toString().trim() : "";
+    const 当前值原始 = 值 !== undefined && 值 !== null ? 值.toString().trim() : "";
+    const 当前值 = 当前值原始 === "" ? "" : Number(当前值原始) === 0 ? "0" : "1";
 
     const 是开关类型 =
       选项.length === 2 &&
       选项.includes("0") &&
-      选项.includes("-1") &&
+      (选项.includes("-1") || 选项.includes("1")) &&
       标签 &&
       标签.includes("关闭") &&
       标签.includes("开启");
@@ -1602,7 +1603,7 @@ class ASSParser {
       let 关闭值, 开启值;
       if (是开关类型) {
         关闭值 = "0";
-        开启值 = "-1";
+        开启值 = "1";
       } else if (是边框样式类型) {
         关闭值 = "1";
         开启值 = "3";
@@ -1809,11 +1810,18 @@ class ASSParser {
     const 样式 = { ...基础样式 };
     if (!副文本) return 样式;
 
-    const 覆盖匹配 = 副文本.match(/^\{([^}]*)\}/);
-    if (!覆盖匹配) return 样式;
+    // 支持连续多个覆盖块（{...}{...}），逐一拆解后再解析所有标签
+    let 副剩余 = 副文本;
+    const 标签列表 = [];
+    while (true) {
+      const 覆盖匹配 = 副剩余.match(/^\{([^}]*)\}/);
+      if (!覆盖匹配) break;
+      const 标签串 = 覆盖匹配[1];
+      标签串.split("\\").filter((片段) => 片段).forEach((片段) => 标签列表.push(片段));
+      副剩余 = 副剩余.substring(覆盖匹配[0].length);
+    }
 
-    const 标签串 = 覆盖匹配[1];
-    const 标签列表 = 标签串.split("\\").filter((片段) => 片段);
+    if (标签列表.length === 0) return 样式;
 
     let 全局Alpha = null;
     const 局部Alpha = {};
@@ -1821,7 +1829,7 @@ class ASSParser {
 
     const 设置粗细标记 = (键, 值) => {
       const 数值 = Number(值);
-      样式[键] = 数值 === 0 ? "0" : "-1";
+      样式[键] = 数值 === 0 ? "0" : "1";
     };
 
     标签列表.forEach((标签) => {
@@ -2117,6 +2125,8 @@ class ASSParser {
       }
     });
 
+    const 规范开关值 = (值) => (Number(值) === 0 ? "0" : "1");
+
     const 简单双态 = [
       ["Bold", "b"],
       ["Italic", "i"],
@@ -2126,7 +2136,7 @@ class ASSParser {
 
     简单双态.forEach(([键, 标记]) => {
       if (当前[键] !== 基线[键]) {
-        标签.push(`\\${标记}${当前[键]}`);
+        标签.push(`\\${标记}${规范开关值(当前[键])}`);
       }
     });
 
@@ -2178,6 +2188,8 @@ class ASSParser {
     处理颜色("OutlineColour", "3c");
     处理颜色("BackColour", "4c");
 
+    const 规范开关值 = (值) => (Number(值) === 0 ? "0" : "1");
+
     const 简单双态 = [
       ["Bold", "b"],
       ["Italic", "i"],
@@ -2188,7 +2200,7 @@ class ASSParser {
     简单双态.forEach(([键, 标记]) => {
       if (!有字段(键)) return;
       if (当前[键] !== undefined && 当前[键] !== 基线[键]) {
-        标签.push(`\\${标记}${当前[键]}`);
+        标签.push(`\\${标记}${规范开关值(当前[键])}`);
       }
     });
 
@@ -2451,25 +2463,56 @@ class ASSParser {
 
       const 主文本 = 拆分[0];
       const 副原始 = 拆分.slice(1).join("\\N");
-      const 原覆盖 = 副原始.match(/^\{[^}]*\}/)?.[0] || "";
-      const 副去头 = 副原始.replace(/^\{[^}]*\}/, "");
+
+      // 收集位于副字幕文本开头的所有覆盖块，避免只处理第一个 {…}
+      const 原覆盖块 = [];
+      let 副剩余 = 副原始;
+      while (true) {
+        const 匹配 = 副剩余.match(/^\{[^}]*\}/);
+        if (!匹配) break;
+        原覆盖块.push(匹配[0]);
+        副剩余 = 副剩余.substring(匹配[0].length);
+      }
 
       let 最终覆盖 = "";
       if (覆盖标签) {
-        const 新字段集合 = this.提取覆盖字段集合(覆盖标签);
-        const 原标签列表 = this.拆分覆盖标签(原覆盖);
-        const 保留原标签 = 原标签列表.filter((tag) => {
-          const 字段 = this.识别标签字段(tag);
-          return !字段 || !新字段集合.has(字段);
-        });
         const 新标签列表 = this.拆分覆盖标签(覆盖标签);
-        const 合并标签 = [...新标签列表, ...保留原标签];
+        const 原标签列表 = 原覆盖块.flatMap((块) => this.拆分覆盖标签(块));
+
+        // 以原标签顺序为基准，按字段替换，未出现的新字段追加到末尾
+        const 新标签映射 = new Map();
+        const 新无字段标签 = [];
+        新标签列表.forEach((tag) => {
+          const 字段 = this.识别标签字段(tag);
+          if (字段) {
+            新标签映射.set(字段, tag);
+          } else {
+            新无字段标签.push(tag);
+          }
+        });
+
+        const 合并标签 = [];
+        原标签列表.forEach((tag) => {
+          const 字段 = this.识别标签字段(tag);
+          if (字段 && 新标签映射.has(字段)) {
+            合并标签.push(新标签映射.get(字段));
+            新标签映射.delete(字段);
+          } else {
+            合并标签.push(tag);
+          }
+        });
+
+        // 追加新增的字段标签与无字段标签，保持新标签自身顺序
+        合并标签.push(...新标签映射.values(), ...新无字段标签);
+
         最终覆盖 = 合并标签.length > 0 ? `{${合并标签.join("")}}` : "";
       } else {
-        最终覆盖 = 原覆盖;
+        // 未生成新覆盖时，保留原有覆盖（已拆分后再组装）
+        const 原标签列表 = 原覆盖块.flatMap((块) => this.拆分覆盖标签(块));
+        最终覆盖 = 原标签列表.length > 0 ? `{${原标签列表.join("")}}` : "";
       }
 
-      const 新副文本 = 最终覆盖 ? `${最终覆盖}${副去头}` : 副去头;
+      const 新副文本 = 最终覆盖 ? `${最终覆盖}${副剩余}` : 副剩余;
       const 新文本值 = `${主文本}\\N${新副文本}`;
 
       const 新字段列表 = [];
