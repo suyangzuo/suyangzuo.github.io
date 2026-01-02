@@ -15,6 +15,7 @@ class ASSParser {
     this.ASS标准默认样式 = this.创建ASS标准默认样式();
     this.副字幕统一样式 = null;
     this.副字幕统一样式基线 = null;
+    this.副字幕已编辑字段 = new Set();
     this.主字幕分组列表 = [];
     this.初始化();
   }
@@ -524,6 +525,7 @@ class ASSParser {
     const 结束索引 = 字段列表.findIndex((字段) => 字段.toLowerCase() === "end");
 
     const 样式映射 = this.构建样式映射();
+    const 副字幕字段默认样式 = this.获取副字幕字段标准默认样式();
     const 默认样式 = this.ASS标准默认样式 || this.创建ASS标准默认样式();
 
     const 副字幕列表 = [];
@@ -542,7 +544,7 @@ class ASSParser {
       const 副文本净化 = 副文本原始.replace(/^\{[^}]*\}/, "").trim();
 
       const 样式名 = 样式索引 !== -1 ? 事件字段[字段列表[样式索引]] || "Default" : "Default";
-      const 基础样式 = this.构建基础样式(样式名, 样式映射, 默认样式);
+      const 基础样式 = { ...副字幕字段默认样式 };
       const 副字幕样式 = this.解析副字幕样式(副文本原始, 基础样式);
       const 引用样式名 = this.提取副字幕样式引用(副文本原始);
 
@@ -599,6 +601,7 @@ class ASSParser {
       const 基线样式 = 自定义列表[0]?.样式 ? { ...自定义列表[0].样式 } : { ...默认样式 };
       this.副字幕统一样式基线 = { ...基线样式 };
       this.副字幕统一样式 = { ...基线样式 };
+      this.副字幕已编辑字段 = new Set();
 
       const 样式表 = this.创建副字幕样式表(this.副字幕统一样式);
       部分区.appendChild(样式表);
@@ -1720,6 +1723,9 @@ class ASSParser {
   更新副字幕样式字段(字段, 新值) {
     if (!this.副字幕统一样式) return;
     this.副字幕统一样式[字段] = 新值;
+    if (this.副字幕已编辑字段) {
+      this.副字幕已编辑字段.add(字段);
+    }
     this.应用副字幕样式到文件();
   }
 
@@ -2088,20 +2094,55 @@ class ASSParser {
     };
   }
 
-  生成副字幕覆盖标签(当前样式, 基线样式) {
+  获取副字幕字段标准默认样式() {
+    const 基线 = this.ASS标准默认样式 || this.创建ASS标准默认样式();
+    const 目标字段 = [
+      "Fontname",
+      "Fontsize",
+      "PrimaryColour",
+      "SecondaryColour",
+      "OutlineColour",
+      "BackColour",
+      "Bold",
+      "Italic",
+      "Underline",
+      "StrikeOut",
+      "BorderStyle",
+      "Outline",
+      "Shadow",
+      "Alignment",
+      "ScaleX",
+      "ScaleY",
+      "Spacing",
+      "Angle",
+    ];
+
+    const 样式 = {};
+    目标字段.forEach((字段) => {
+      样式[字段] = 基线[字段] !== undefined ? 基线[字段] : "";
+    });
+
+    return 样式;
+  }
+
+  生成副字幕覆盖标签(当前样式, 基线样式, 强制字段集 = new Set()) {
     const 基线 = 基线样式 || this.ASS标准默认样式;
     const 当前 = 当前样式 || {};
     const 标签 = [];
 
-    const 追加 = (值, 构造) => {
-      if (值 !== undefined && 值 !== null) {
-        const 结果 = 构造(值);
-        if (结果) 标签.push(结果);
-      }
+    const 应输出 = (键, 判定 = () => 当前[键] !== 基线[键]) => {
+      return (强制字段集 && 强制字段集.has(键)) || 判定();
     };
 
-    if (当前.Fontname !== 基线.Fontname) 追加(当前.Fontname, (v) => `\\fn${v}`);
-    if (当前.Fontsize !== 基线.Fontsize) 追加(当前.Fontsize, (v) => `\\fs${v}`);
+    const 追加 = (值, 构造, 键) => {
+      if (值 === undefined || 值 === null) return;
+      if (!应输出(键, () => 构造 === 构造 && 当前[键] !== 基线[键])) return;
+      const 结果 = 构造(值);
+      if (结果) 标签.push(结果);
+    };
+
+    if (应输出("Fontname")) 追加(当前.Fontname, (v) => `\\fn${v}`, "Fontname");
+    if (应输出("Fontsize")) 追加(当前.Fontsize, (v) => `\\fs${v}`, "Fontsize");
 
     const 色键 = [
       ["PrimaryColour", "c"],
@@ -2113,15 +2154,14 @@ class ASSParser {
     色键.forEach(([键, 标记]) => {
       const 当前色 = this.标准化ASS颜色值(当前[键], 基线[键]);
       const 基线色 = this.标准化ASS颜色值(基线[键], 基线[键]);
-      if (当前色 !== 基线色) {
-        const rgb = this.提取色RGB部分(当前色);
-        标签.push(`\\${标记}&H${rgb}`);
+      if (!应输出(键, () => 当前色 !== 基线色)) return;
+      const rgb = this.提取色RGB部分(当前色);
+      标签.push(`\\${标记}&H${rgb}`);
 
-        const 当前Alpha = this.提取Alpha(当前色);
-        const 基线Alpha = this.提取Alpha(基线色);
-        if (当前Alpha !== 基线Alpha) {
-          标签.push(`\\${标记[0]}a&H${当前Alpha}`);
-        }
+      const 当前Alpha = this.提取Alpha(当前色);
+      const 基线Alpha = this.提取Alpha(基线色);
+      if (当前Alpha !== 基线Alpha || (强制字段集 && 强制字段集.has(键))) {
+        标签.push(`\\${标记[0]}a&H${当前Alpha}`);
       }
     });
 
@@ -2135,18 +2175,17 @@ class ASSParser {
     ];
 
     简单双态.forEach(([键, 标记]) => {
-      if (当前[键] !== 基线[键]) {
-        标签.push(`\\${标记}${规范开关值(当前[键])}`);
-      }
+      if (!应输出(键)) return;
+      标签.push(`\\${标记}${规范开关值(当前[键])}`);
     });
 
-    if (当前.ScaleX !== 基线.ScaleX) 追加(当前.ScaleX, (v) => `\\fscx${v}`);
-    if (当前.ScaleY !== 基线.ScaleY) 追加(当前.ScaleY, (v) => `\\fscy${v}`);
-    if (当前.Spacing !== 基线.Spacing) 追加(当前.Spacing, (v) => `\\fsp${v}`);
-    if (当前.Angle !== 基线.Angle) 追加(当前.Angle, (v) => `\\frz${v}`);
-    if (当前.Outline !== 基线.Outline) 追加(当前.Outline, (v) => `\\bord${v}`);
-    if (当前.Shadow !== 基线.Shadow) 追加(当前.Shadow, (v) => `\\shad${v}`);
-    if (当前.Alignment !== 基线.Alignment) 追加(当前.Alignment, (v) => `\\an${v}`);
+    if (应输出("ScaleX")) 追加(当前.ScaleX, (v) => `\\fscx${v}`, "ScaleX");
+    if (应输出("ScaleY")) 追加(当前.ScaleY, (v) => `\\fscy${v}`, "ScaleY");
+    if (应输出("Spacing")) 追加(当前.Spacing, (v) => `\\fsp${v}`, "Spacing");
+    if (应输出("Angle")) 追加(当前.Angle, (v) => `\\frz${v}`, "Angle");
+    if (应输出("Outline")) 追加(当前.Outline, (v) => `\\bord${v}`, "Outline");
+    if (应输出("Shadow")) 追加(当前.Shadow, (v) => `\\shad${v}`, "Shadow");
+    if (应输出("Alignment")) 追加(当前.Alignment, (v) => `\\an${v}`, "Alignment");
 
     return 标签.length > 0 ? `{${标签.join("")}}` : "";
   }
@@ -2439,7 +2478,11 @@ class ASSParser {
     const 文本索引 = 字段列表.findIndex((字段) => 字段.toLowerCase() === "text");
     if (文本索引 === -1) return;
 
-    const 覆盖标签 = this.生成副字幕覆盖标签(this.副字幕统一样式, this.副字幕统一样式基线 || this.ASS标准默认样式);
+    const 覆盖标签 = this.生成副字幕覆盖标签(
+      this.副字幕统一样式,
+      this.副字幕统一样式基线 || this.ASS标准默认样式,
+      this.副字幕已编辑字段 || new Set()
+    );
 
     const 新事件行 = [];
     for (const 行内容 of 行) {
