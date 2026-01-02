@@ -240,6 +240,11 @@ class ASSParser {
       "Video Aspect Ratio": { 中文: "视频宽高比", 类型: "文本" },
       "Video Zoom": { 中文: "视频缩放", 类型: "数字" },
       "Original Script": { 中文: "作者", 类型: "文本" },
+      "Original Translation": { 中文: "原始翻译", 类型: "文本" },
+      "Original Timing": { 中文: "原始时间轴", 类型: "文本" },
+      "Original Editing": { 中文: "原始编辑/校对", 类型: "文本" },
+      "Script Updated By": { 中文: "脚本更新者", 类型: "文本" },
+      "Update Details": { 中文: "更新详情", 类型: "文本" },
     };
 
     for (const [键, 值] of Object.entries(需要显示的属性)) {
@@ -1284,6 +1289,14 @@ class ASSParser {
         };
 
         div.addEventListener("input", 处理输入);
+        div.addEventListener("paste", (e) => {
+          e.preventDefault();
+          const 文本 = (e.clipboardData || window.clipboardData).getData("text");
+          if (文本 !== undefined && 文本 !== null) {
+            div.textContent = 文本;
+          }
+          处理输入();
+        });
         div.addEventListener("blur", () => {
           if (div.textContent === null) {
             div.textContent = "";
@@ -1314,7 +1327,7 @@ class ASSParser {
     可编辑div.dataset.字段 = 字段;
     可编辑div.dataset.副字幕 = "true";
 
-    可编辑div.addEventListener("input", () => {
+    const 处理输入 = () => {
       this.更新副字幕样式字段(字段, 可编辑div.textContent || "");
       if (this.自动保存) {
         this.保存文件();
@@ -1322,18 +1335,22 @@ class ASSParser {
         this.文件已修改 = true;
         this.更新保存按钮状态();
       }
+    };
+
+    可编辑div.addEventListener("input", 处理输入);
+    可编辑div.addEventListener("paste", (e) => {
+      e.preventDefault();
+      const 文本 = (e.clipboardData || window.clipboardData).getData("text");
+      if (文本 !== undefined && 文本 !== null) {
+        可编辑div.textContent = 文本;
+      }
+      处理输入();
     });
 
     可编辑div.addEventListener("blur", () => {
       if (可编辑div.textContent === null || 可编辑div.textContent === "") {
         可编辑div.textContent = "";
-        this.更新副字幕样式字段(字段, "");
-        if (this.自动保存) {
-          this.保存文件();
-        } else {
-          this.文件已修改 = true;
-          this.更新保存按钮状态();
-        }
+        处理输入();
       }
     });
 
@@ -2232,7 +2249,7 @@ class ASSParser {
 
     const 组 = this.主字幕分组列表[分组索引];
     const 目标字段集 = new Set((组.字段列表 || []).map((f) => (f === "PosX" || f === "PosY" ? "Pos" : f)));
-    const 颜色字段映射 = { "1": "PrimaryColour", "2": "SecondaryColour", "3": "OutlineColour", "4": "BackColour" };
+    const 颜色字段映射 = { 1: "PrimaryColour", 2: "SecondaryColour", 3: "OutlineColour", 4: "BackColour" };
 
     const 构造标签 = (字段, 原标签 = "") => {
       const 样式值 = 组.样式 || {};
@@ -2243,7 +2260,9 @@ class ASSParser {
 
       if (字段 === "PrimaryColour" || 字段 === "SecondaryColour" || 字段 === "OutlineColour" || 字段 === "BackColour") {
         const 前缀匹配 = 原标签.match(/^\\([1234]?)(c|a)/i);
-        const 通道 = 前缀匹配?.[1] || (字段 === "PrimaryColour" ? "" : Object.entries(颜色字段映射).find(([, v]) => v === 字段)?.[0] || "");
+        const 通道 =
+          前缀匹配?.[1] ||
+          (字段 === "PrimaryColour" ? "" : Object.entries(颜色字段映射).find(([, v]) => v === 字段)?.[0] || "");
         const 是Alpha = /^\\[1234]?a/i.test(原标签);
         const 键 = 通道 ? 颜色字段映射[通道] || 字段 : 字段;
         const 颜色 = this.标准化ASS颜色值(样式值[键], 默认[键]);
@@ -2748,12 +2767,13 @@ class ASSParser {
         theme: "monolith",
         default: rgba颜色字符串,
         swatches: null,
+        defaultRepresentation: "HEX",
         components: {
           preview: true,
           opacity: true,
           hue: true,
           interaction: {
-            hex: false,
+            hex: true,
             rgba: true,
             hsla: false,
             hsva: false,
@@ -2780,6 +2800,10 @@ class ASSParser {
             return;
           }
           const ass颜色 = this.RGBA转ASS颜色(rgba);
+          const 原始值 = 颜色显示div.dataset.原始值 || "";
+          if (ass颜色 === 原始值) {
+            return; // 仅切换表示方式不保存
+          }
           颜色显示div.innerHTML = "";
           this.渲染颜色文本(颜色显示div, ass颜色);
           颜色显示div.dataset.原始值 = ass颜色;
@@ -3016,6 +3040,8 @@ class ASSParser {
       this.更新样式单元格("[V4+ Styles]", 样式索引, 字段索引, 文本内容);
       if (字段 !== "Name" && this.自动保存) {
         this.保存文件();
+      } else if (!this.自动保存) {
+        this.检查文件是否已修改();
       }
       if (是颜色字段) {
         const 纯文本 = 可编辑div.textContent || "";
@@ -3046,7 +3072,18 @@ class ASSParser {
     可编辑div.addEventListener("paste", (e) => {
       e.preventDefault();
       const 文本 = (e.clipboardData || window.clipboardData).getData("text");
-      this.插入文本到可编辑元素(可编辑div, 文本);
+      const 新文本 = 文本 ?? "";
+      // 直接写入并复用同样的更新/保存逻辑
+      可编辑div.textContent = 新文本;
+      this.更新样式单元格("[V4+ Styles]", 样式索引, 字段索引, 新文本);
+      if (字段 !== "Name" && this.自动保存) {
+        this.保存文件();
+      } else {
+        this.检查文件是否已修改();
+      }
+      if (是颜色字段) {
+        this.渲染颜色文本(可编辑div, 新文本);
+      }
     });
 
     可编辑div.addEventListener("keydown", (e) => {
