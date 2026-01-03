@@ -354,7 +354,8 @@ class ASSParser {
       Angle: "角度",
       BorderStyle: "边框样式",
       Outline: "轮廓宽度",
-      Shadow: "阴影深度",
+        Shadow: "阴影深度",
+        Blur: "模糊",
       Alignment: "对齐方式",
       MarginL: "左边距",
       MarginR: "右边距",
@@ -583,6 +584,30 @@ class ASSParser {
       }
     });
 
+    // 频率阈值：字段在所有自定义副字幕行中的出现率需达到 90% 才显示
+    if (自定义列表.length > 0 && 自定义字段集合.size > 0) {
+      const 字段出现计数 = new Map();
+      自定义列表.forEach((项) => {
+        if (!项.覆盖字段集合) return;
+        项.覆盖字段集合.forEach((f) => {
+          字段出现计数.set(f, (字段出现计数.get(f) || 0) + 1);
+        });
+      });
+
+      const 阈值行数 = Math.ceil(自定义列表.length * 0.9);
+      const 满足阈值字段 = new Set();
+      字段出现计数.forEach((计数, 字段) => {
+        if (计数 >= 阈值行数) {
+          满足阈值字段.add(字段);
+        }
+      });
+
+      自定义字段集合.clear();
+      满足阈值字段.forEach((f) => 自定义字段集合.add(f));
+    }
+
+    ["PrimaryColour", "OutlineColour", "Outline", "Shadow"].forEach((字段) => 自定义字段集合.add(字段));
+
     const 总引用数 = Array.from(引用样式计数.values()).reduce((a, b) => a + b, 0);
 
     if (总引用数 > 0) {
@@ -807,11 +832,13 @@ class ASSParser {
       "BorderStyle",
       "Outline",
       "Shadow",
+      "Blur",
       "Alignment",
       "ScaleX",
       "ScaleY",
       "Spacing",
       "Angle",
+      "Fade",
     ];
   }
 
@@ -851,11 +878,13 @@ class ASSParser {
       BorderStyle: "边框样式",
       Outline: "轮廓宽度",
       Shadow: "阴影深度",
+      Blur: "模糊",
       Alignment: "对齐方式",
+      Fade: "淡入淡出",
     };
 
     const 浮点数字段 = new Set(["Spacing", "Angle", "Outline", "Shadow"]);
-    const 整数字段 = new Set(["Fontsize", "ScaleX", "ScaleY"]);
+    const 整数字段 = new Set(["Fontsize", "ScaleX", "ScaleY", "Blur"]);
 
     const 选项字段 = {
       Bold: { 选项: ["0", "-1"], 标签: ["关闭", "开启"] },
@@ -907,6 +936,106 @@ class ASSParser {
 
         包装div.appendChild(颜色显示div);
         单元格.appendChild(包装div);
+      } else if (字段 === "Fade") {
+        const 创建淡入淡出输入 = (默认值, 目标字段) => {
+          const 包装div = document.createElement("div");
+          包装div.className = "表格数字框包装";
+
+          const 数字框容器 = document.createElement("div");
+          数字框容器.className = "表格数字框容器";
+
+          const 可编辑div = document.createElement("div");
+          可编辑div.className = "表格数字框";
+          可编辑div.contentEditable = "true";
+          可编辑div.textContent = 默认值 ?? "0";
+          可编辑div.dataset.字段 = 目标字段;
+          可编辑div.dataset.副字幕 = "true";
+
+          const 按钮组 = document.createElement("div");
+          按钮组.className = "表格数字增减按钮组";
+
+          const 更新值 = (增量) => {
+            const 当前值 = parseInt(可编辑div.textContent) || 0;
+            const 新值 = Math.max(0, 当前值 + 增量);
+            可编辑div.textContent = 新值.toString();
+            this.更新副字幕样式字段(目标字段, 新值.toString());
+            if (this.自动保存) {
+              this.保存文件();
+            } else {
+              this.文件已修改 = true;
+              this.更新保存按钮状态();
+            }
+          };
+
+          const 增加按钮 = document.createElement("div");
+          增加按钮.className = "表格数字增减按钮";
+          增加按钮.textContent = "+";
+          增加按钮.addEventListener("click", () => 更新值(1));
+
+          const 减少按钮 = document.createElement("div");
+          减少按钮.className = "表格数字增减按钮";
+          减少按钮.textContent = "-";
+          减少按钮.addEventListener("click", () => 更新值(-1));
+
+          const 处理输入 = () => {
+            let 文本内容 = 可编辑div.textContent || "0";
+            文本内容 = 文本内容.replace(/[^\d]/g, "");
+            if (文本内容 === "") 文本内容 = "0";
+
+            if (可编辑div.textContent !== 文本内容) {
+              可编辑div.textContent = 文本内容;
+              const range = document.createRange();
+              const sel = window.getSelection();
+              range.selectNodeContents(可编辑div);
+              range.collapse(false);
+              sel.removeAllRanges();
+              sel.addRange(range);
+            }
+
+            this.更新副字幕样式字段(目标字段, 文本内容);
+            if (this.自动保存) {
+              this.保存文件();
+            } else {
+              this.文件已修改 = true;
+              this.更新保存按钮状态();
+            }
+          };
+
+          可编辑div.addEventListener("input", 处理输入);
+          可编辑div.addEventListener("paste", (e) => {
+            e.preventDefault();
+            const 文本 = (e.clipboardData || window.clipboardData).getData("text") || "";
+            const 过滤后 = 文本.replace(/[^\d]/g, "");
+            this.插入文本到可编辑元素(可编辑div, 过滤后);
+            处理输入();
+          });
+
+          可编辑div.addEventListener("blur", () => {
+            if (!可编辑div.textContent || 可编辑div.textContent === "") {
+              可编辑div.textContent = "0";
+              this.更新副字幕样式字段(目标字段, "0");
+            }
+          });
+
+          按钮组.appendChild(增加按钮);
+          按钮组.appendChild(减少按钮);
+          数字框容器.appendChild(可编辑div);
+          数字框容器.appendChild(按钮组);
+          包装div.appendChild(数字框容器);
+          return 包装div;
+        };
+
+        const 淡入淡出容器 = document.createElement("div");
+        淡入淡出容器.style.display = "flex";
+        淡入淡出容器.style.gap = "8px";
+
+        const 淡入 = 样式 && 样式.FadeIn !== undefined ? 样式.FadeIn : "0";
+        const 淡出 = 样式 && 样式.FadeOut !== undefined ? 样式.FadeOut : "0";
+
+        淡入淡出容器.appendChild(创建淡入淡出输入(淡入, "FadeIn"));
+        淡入淡出容器.appendChild(创建淡入淡出输入(淡出, "FadeOut"));
+
+        单元格.appendChild(淡入淡出容器);
       } else if (选项字段[字段]) {
         this.创建副字幕表格选项控件(单元格, 字段, 值, 选项字段[字段]);
       } else if (浮点数字段.has(字段)) {
@@ -942,8 +1071,10 @@ class ASSParser {
       "BorderStyle",
       "Outline",
       "Shadow",
+      "Blur",
       "Alignment",
       "Pos",
+      "Fade",
       "ScaleX",
       "ScaleY",
       "Spacing",
@@ -980,10 +1111,12 @@ class ASSParser {
       BorderStyle: "边框样式",
       Outline: "轮廓宽度",
       Shadow: "阴影深度",
+      Blur: "模糊",
       Alignment: "对齐方式",
       MarginL: "左边距",
       MarginR: "右边距",
       MarginV: "垂直边距",
+      Fade: "淡入淡出",
       Pos: "位置",
     };
 
@@ -1000,7 +1133,7 @@ class ASSParser {
     };
 
     const 浮点数字段 = new Set(["Spacing", "Angle", "Outline", "Shadow"]);
-    const 整数字段 = new Set(["Fontsize", "ScaleX", "ScaleY", "MarginL", "MarginR", "MarginV"]);
+    const 整数字段 = new Set(["Fontsize", "ScaleX", "ScaleY", "MarginL", "MarginR", "MarginV", "Blur"]);
 
     const 表头行 = document.createElement("tr");
     表头行.className = "表头行";
@@ -1141,6 +1274,93 @@ class ASSParser {
         pos包装.appendChild(数字框容器Y);
 
         单元格.appendChild(pos包装);
+      } else if (字段 === "Fade") {
+        const 创建淡入淡出输入 = (默认值, 目标字段) => {
+          const 包装div = document.createElement("div");
+          包装div.className = "表格数字框包装";
+
+          const 容器 = document.createElement("div");
+          容器.className = "表格数字框容器";
+
+          const 可编辑 = document.createElement("div");
+          可编辑.className = "表格数字框";
+          可编辑.contentEditable = "true";
+          可编辑.textContent = 默认值 ?? "0";
+          可编辑.dataset.字段 = 目标字段;
+
+          const 按钮组 = document.createElement("div");
+          按钮组.className = "表格数字增减按钮组";
+
+          const 更新值 = (增量) => {
+            const 当前值 = parseInt(可编辑.textContent) || 0;
+            const 新值 = Math.max(0, 当前值 + 增量);
+            可编辑.textContent = 新值.toString();
+            this.更新主字幕样式字段(分组索引, 目标字段, 新值.toString());
+          };
+
+          const 增加按钮 = document.createElement("div");
+          增加按钮.className = "表格数字增减按钮";
+          增加按钮.textContent = "+";
+          增加按钮.addEventListener("click", () => 更新值(1));
+
+          const 减少按钮 = document.createElement("div");
+          减少按钮.className = "表格数字增减按钮";
+          减少按钮.textContent = "-";
+          减少按钮.addEventListener("click", () => 更新值(-1));
+
+          const 处理输入 = () => {
+            let 文本内容 = 可编辑.textContent || "0";
+            文本内容 = 文本内容.replace(/[^\d]/g, "");
+            if (文本内容 === "") 文本内容 = "0";
+
+            if (可编辑.textContent !== 文本内容) {
+              可编辑.textContent = 文本内容;
+              const range = document.createRange();
+              const sel = window.getSelection();
+              range.selectNodeContents(可编辑);
+              range.collapse(false);
+              sel.removeAllRanges();
+              sel.addRange(range);
+            }
+
+            this.更新主字幕样式字段(分组索引, 目标字段, 文本内容);
+          };
+
+          可编辑.addEventListener("input", 处理输入);
+          可编辑.addEventListener("paste", (e) => {
+            e.preventDefault();
+            const 文本 = (e.clipboardData || window.clipboardData).getData("text") || "";
+            const 过滤后 = 文本.replace(/[^\d]/g, "");
+            this.插入文本到可编辑元素(可编辑, 过滤后);
+            处理输入();
+          });
+
+          可编辑.addEventListener("blur", () => {
+            if (!可编辑.textContent || 可编辑.textContent === "") {
+              可编辑.textContent = "0";
+              this.更新主字幕样式字段(分组索引, 目标字段, "0");
+            }
+          });
+
+          按钮组.appendChild(增加按钮);
+          按钮组.appendChild(减少按钮);
+          容器.appendChild(可编辑);
+          容器.appendChild(按钮组);
+          包装div.appendChild(容器);
+          return 包装div;
+        };
+
+        const 淡入淡出容器 = document.createElement("div");
+        淡入淡出容器.style.display = "flex";
+        淡入淡出容器.style.gap = "8px";
+
+        const 淡入 = 样式 && 样式.FadeIn !== undefined ? 样式.FadeIn : "0";
+        const 淡出 = 样式 && 样式.FadeOut !== undefined ? 样式.FadeOut : "0";
+
+        淡入淡出容器.appendChild(创建淡入淡出输入(淡入, "FadeIn"));
+        淡入淡出容器.appendChild(创建淡入淡出输入(淡出, "FadeOut"));
+
+        单元格.appendChild(淡入淡出容器);
       } else if (选项字段[字段]) {
         const 配置 = 选项字段[字段];
         const 选项 = 配置.选项 || [];
@@ -1851,9 +2071,15 @@ class ASSParser {
     while (true) {
       const 覆盖匹配 = 副剩余.match(/^\{([^}]*)\}/);
       if (!覆盖匹配) break;
-      const 标签串 = 覆盖匹配[1];
-      标签串.split("\\").filter((片段) => 片段).forEach((片段) => 标签列表.push(片段));
-      副剩余 = 副剩余.substring(覆盖匹配[0].length);
+      const 覆盖块 = 覆盖匹配[0];
+      const 块标签 = this.拆分覆盖标签(覆盖块);
+      块标签.forEach((片段) => {
+        const 去除反斜杠 = 片段.startsWith("\\") ? 片段.substring(1) : 片段;
+        if (去除反斜杠) {
+          标签列表.push(去除反斜杠);
+        }
+      });
+      副剩余 = 副剩余.substring(覆盖块.length);
     }
 
     if (标签列表.length === 0) return 样式;
@@ -1868,6 +2094,21 @@ class ASSParser {
     };
 
     标签列表.forEach((标签) => {
+      const 标签小写 = 标签.toLowerCase();
+
+      if (标签小写.startsWith("t(")) {
+        return; // 时间函数暂不处理
+      }
+
+      if (标签小写.startsWith("fad(")) {
+        const 淡入淡出匹配 = 标签.match(/^fad\(([^,]*),([^)]+)\)/i);
+        if (淡入淡出匹配) {
+          样式.FadeIn = (淡入淡出匹配[1] || "0").trim();
+          样式.FadeOut = (淡入淡出匹配[2] || "0").trim();
+        }
+        return;
+      }
+
       if (标签.startsWith("fn")) {
         const 字体 = 标签.substring(2).trim();
         if (字体) {
@@ -1876,7 +2117,23 @@ class ASSParser {
         return;
       }
 
-      if (标签.startsWith("fs")) {
+      if (标签.startsWith("fscx")) {
+        const 值 = 标签.substring(4).trim();
+        if (值) {
+          样式.ScaleX = 值;
+        }
+        return;
+      }
+
+      if (标签.startsWith("fscy")) {
+        const 值 = 标签.substring(4).trim();
+        if (值) {
+          样式.ScaleY = 值;
+        }
+        return;
+      }
+
+      if (标签.startsWith("fs") && !标签.startsWith("fsc")) {
         const 字号 = 标签.substring(2).trim();
         if (字号) {
           样式.Fontsize = 字号;
@@ -1924,22 +2181,6 @@ class ASSParser {
         return;
       }
 
-      if (标签.startsWith("fscx")) {
-        const 值 = 标签.substring(4).trim();
-        if (值) {
-          样式.ScaleX = 值;
-        }
-        return;
-      }
-
-      if (标签.startsWith("fscy")) {
-        const 值 = 标签.substring(4).trim();
-        if (值) {
-          样式.ScaleY = 值;
-        }
-        return;
-      }
-
       if (标签.startsWith("fsp")) {
         const 值 = 标签.substring(3).trim();
         if (值) {
@@ -1968,6 +2209,14 @@ class ASSParser {
         const 值 = 标签.substring(4).trim();
         if (值) {
           样式.Shadow = 值;
+        }
+        return;
+      }
+
+      if (标签.startsWith("blur")) {
+        const 值 = 标签.substring(4).trim();
+        if (值) {
+          样式.Blur = 值;
         }
         return;
       }
@@ -2137,11 +2386,14 @@ class ASSParser {
       BorderStyle: "1",
       Outline: "2",
       Shadow: "2",
+      Blur: "0",
       Alignment: "2",
       MarginL: "10",
       MarginR: "10",
       MarginV: "10",
       Encoding: "1",
+      FadeIn: "0",
+      FadeOut: "0",
     };
   }
 
@@ -2161,7 +2413,10 @@ class ASSParser {
       "BorderStyle",
       "Outline",
       "Shadow",
+      "Blur",
       "Alignment",
+      "FadeIn",
+      "FadeOut",
       "ScaleX",
       "ScaleY",
       "Spacing",
@@ -2237,7 +2492,19 @@ class ASSParser {
     if (应输出("Angle")) 追加(当前.Angle, (v) => `\\frz${v}`, "Angle");
     if (应输出("Outline")) 追加(当前.Outline, (v) => `\\bord${v}`, "Outline");
     if (应输出("Shadow")) 追加(当前.Shadow, (v) => `\\shad${v}`, "Shadow");
+    if (应输出("Blur")) 追加(当前.Blur, (v) => `\\blur${v}`, "Blur");
     if (应输出("Alignment")) 追加(当前.Alignment, (v) => `\\an${v}`, "Alignment");
+
+    const 淡入基线 = 基线.FadeIn ?? "0";
+    const 淡出基线 = 基线.FadeOut ?? "0";
+    const 淡入当前 = 当前.FadeIn ?? 淡入基线;
+    const 淡出当前 = 当前.FadeOut ?? 淡出基线;
+    const fade已编辑 =
+      (强制字段集 && (强制字段集.has("Fade") || 强制字段集.has("FadeIn") || 强制字段集.has("FadeOut"))) || false;
+    const fade不同 = 淡入当前 !== 淡入基线 || 淡出当前 !== 淡出基线;
+    if (fade不同 || fade已编辑) {
+      标签.push(`\\fad(${淡入当前 || 0},${淡出当前 || 0})`);
+    }
 
     return 标签.length > 0 ? `{${标签.join("")}}` : "";
   }
@@ -2311,10 +2578,21 @@ class ASSParser {
     处理差异("Angle", (v) => `\\frz${v}`);
     处理差异("Outline", (v) => `\\bord${v}`);
     处理差异("Shadow", (v) => `\\shad${v}`);
+    处理差异("Blur", (v) => `\\blur${v}`);
     处理差异("Alignment", (v) => `\\an${v}`);
     处理差异("MarginL", (v) => `\\margl${v}`);
     处理差异("MarginR", (v) => `\\margr${v}`);
     处理差异("MarginV", (v) => `\\margv${v}`);
+
+    if (有字段("Fade")) {
+      const 淡入基线 = 基线.FadeIn ?? "0";
+      const 淡出基线 = 基线.FadeOut ?? "0";
+      const 淡入当前 = 当前.FadeIn ?? 淡入基线;
+      const 淡出当前 = 当前.FadeOut ?? 淡出基线;
+      if (淡入当前 !== 淡入基线 || 淡出当前 !== 淡出基线) {
+        标签.push(`\\fad(${淡入当前 || 0},${淡出当前 || 0})`);
+      }
+    }
 
     if (有字段("Pos")) {
       const 基线X = 基线.PosX ?? "";
@@ -2390,6 +2668,7 @@ class ASSParser {
       if (字段 === "BorderStyle") return `\\bord${样式值.Outline ?? ""}`; // 兼容未直接编辑的边框样式
       if (字段 === "Outline") return `\\bord${样式值.Outline ?? ""}`;
       if (字段 === "Shadow") return `\\shad${样式值.Shadow ?? ""}`;
+      if (字段 === "Blur") return `\\blur${样式值.Blur ?? ""}`;
       if (字段 === "ScaleX") return `\\fscx${样式值.ScaleX ?? ""}`;
       if (字段 === "ScaleY") return `\\fscy${样式值.ScaleY ?? ""}`;
       if (字段 === "Spacing") return `\\fsp${样式值.Spacing ?? ""}`;
@@ -2398,6 +2677,12 @@ class ASSParser {
       if (字段 === "MarginL") return `\\margl${样式值.MarginL ?? ""}`;
       if (字段 === "MarginR") return `\\margr${样式值.MarginR ?? ""}`;
       if (字段 === "MarginV") return `\\margv${样式值.MarginV ?? ""}`;
+      if (字段 === "Fade") {
+        const 淡入 = 样式值.FadeIn ?? "";
+        const 淡出 = 样式值.FadeOut ?? "";
+        if (淡入 === "" && 淡出 === "") return "";
+        return `\\fad(${淡入 || 0},${淡出 || 0})`;
+      }
       if (字段 === "Pos") {
         const x = 样式值.PosX ?? "";
         const y = 样式值.PosY ?? "";
@@ -2468,16 +2753,18 @@ class ASSParser {
   拆分覆盖标签(覆盖串) {
     if (!覆盖串) return [];
     const 内容 = 覆盖串.replace(/^\{/, "").replace(/\}$/, "");
-    return 内容
-      .split("\\")
-      .filter((片段) => 片段)
-      .map((片段) => `\\${片段}`);
+    const 标签列表 = 内容.match(/\\t\([^)]*\)|\\[^\\]+/g);
+    if (!标签列表) return [];
+    return 标签列表.map((标签) => 标签.trim()).filter((标签) => 标签);
   }
 
   识别标签字段(标签) {
     if (!标签) return null;
     const t = 标签.startsWith("\\") ? 标签.substring(1) : 标签;
+    if (t.startsWith("t(")) return null;
     if (t.startsWith("fn")) return "Fontname";
+    if (t.startsWith("fscx")) return "ScaleX";
+    if (t.startsWith("fscy")) return "ScaleY";
     if (t.startsWith("fs")) return "Fontsize";
     if (/^(?:1c|c)/.test(t)) return "PrimaryColour";
     if (/^2c/.test(t)) return "SecondaryColour";
@@ -2490,9 +2777,9 @@ class ASSParser {
     if (/^4a/.test(t)) return "BackColour";
     if (t.startsWith("bord")) return "Outline";
     if (t.startsWith("shad")) return "Shadow";
+    if (t.startsWith("blur")) return "Blur";
     if (t.startsWith("pos")) return "Pos";
-    if (t.startsWith("fscx")) return "ScaleX";
-    if (t.startsWith("fscy")) return "ScaleY";
+    if (t.startsWith("fad")) return "Fade";
     if (t.startsWith("fsp")) return "Spacing";
     if (t.startsWith("frz")) return "Angle";
     if (t.startsWith("an")) return "Alignment";
@@ -2806,7 +3093,9 @@ class ASSParser {
         部分区.scrollLeft = 当前滚动位置;
       }
 
-      if (原始表头Rect.top <= 固定表头数据.固定距离) {
+      const 仍在视口内 = 表格容器Rect.bottom > 155 && 表格容器Rect.top < window.innerHeight;
+
+      if (仍在视口内 && 原始表头Rect.top <= 固定表头数据.固定距离) {
         if (固定表头数据.容器.style.display === "none") {
           固定表头数据.容器.style.display = "block";
           同步宽度();
