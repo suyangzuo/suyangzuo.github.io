@@ -547,6 +547,7 @@ class ASSParser {
       const 基础样式 = { ...副字幕字段默认样式 };
       const 副字幕样式 = this.解析副字幕样式(副文本原始, 基础样式);
       const 引用样式名 = this.提取副字幕样式引用(副文本原始);
+      const 覆盖字段集合 = this.提取副字幕覆盖字段集合(副文本原始);
 
       副字幕列表.push({
         序号: 副字幕列表.length + 1,
@@ -557,6 +558,7 @@ class ASSParser {
         原始副文本: 副文本原始,
         样式: 副字幕样式,
         引用样式名,
+        覆盖字段集合,
       });
     }
 
@@ -568,12 +570,16 @@ class ASSParser {
 
     const 引用样式计数 = new Map();
     const 自定义列表 = [];
+    const 自定义字段集合 = new Set();
 
     副字幕列表.forEach((项) => {
       if (项.引用样式名) {
         引用样式计数.set(项.引用样式名, (引用样式计数.get(项.引用样式名) || 0) + 1);
       } else {
         自定义列表.push(项);
+        if (项.覆盖字段集合 && 项.覆盖字段集合.size > 0) {
+          项.覆盖字段集合.forEach((f) => 自定义字段集合.add(f));
+        }
       }
     });
 
@@ -603,12 +609,22 @@ class ASSParser {
       this.副字幕统一样式 = { ...基线样式 };
       this.副字幕已编辑字段 = new Set();
 
-      const 样式表 = this.创建副字幕样式表(this.副字幕统一样式);
-      部分区.appendChild(样式表);
+      const 副字幕字段顺序 = this.获取副字幕字段顺序();
+      const 自定义字段列表 = 副字幕字段顺序.filter((字段) => 自定义字段集合.has(字段));
 
-      setTimeout(() => {
-        this.初始化所有颜色选择器(样式表);
-      }, 0);
+      if (自定义字段列表.length === 0) {
+        const 无字段提示 = document.createElement("div");
+        无字段提示.className = "副字幕计数";
+        无字段提示.textContent = "未检测到副字幕自定义样式中的代码字段。";
+        部分区.appendChild(无字段提示);
+      } else {
+        const 样式表 = this.创建副字幕样式表(this.副字幕统一样式, 自定义字段列表);
+        部分区.appendChild(样式表);
+
+        setTimeout(() => {
+          this.初始化所有颜色选择器(样式表);
+        }, 0);
+      }
     } else {
       // 没有自定义样式行时，不需要可编辑表
       this.副字幕统一样式 = null;
@@ -776,14 +792,8 @@ class ASSParser {
     容器.appendChild(部分区);
   }
 
-  创建副字幕样式表(样式) {
-    const 表格容器 = document.createElement("div");
-    表格容器.className = "样式表格容器 副字幕样式表格容器";
-
-    const 表格 = document.createElement("table");
-    表格.className = "样式表格 副字幕样式表";
-
-    const 字段列表 = [
+  获取副字幕字段顺序() {
+    return [
       "Fontname",
       "Fontsize",
       "PrimaryColour",
@@ -803,6 +813,25 @@ class ASSParser {
       "Spacing",
       "Angle",
     ];
+  }
+
+  创建副字幕样式表(样式, 指定字段列表 = []) {
+    const 表格容器 = document.createElement("div");
+    表格容器.className = "样式表格容器 副字幕样式表格容器";
+
+    const 表格 = document.createElement("table");
+    表格.className = "样式表格 副字幕样式表";
+
+    const 默认字段列表 = this.获取副字幕字段顺序();
+    const 字段列表 = 指定字段列表.length > 0 ? 指定字段列表 : 默认字段列表;
+
+    if (字段列表.length === 0) {
+      const 提示 = document.createElement("div");
+      提示.className = "副字幕空字段提示";
+      提示.textContent = "未检测到可编辑的副字幕样式字段。";
+      表格容器.appendChild(提示);
+      return 表格容器;
+    }
 
     const 字段映射 = {
       Fontname: "字体名称",
@@ -810,7 +839,7 @@ class ASSParser {
       PrimaryColour: "主要颜色",
       SecondaryColour: "次要颜色",
       OutlineColour: "轮廓颜色",
-      BackColour: "背景颜色",
+      BackColour: "阴影颜色",
       Bold: "粗体",
       Italic: "斜体",
       Underline: "下划线",
@@ -850,7 +879,7 @@ class ASSParser {
       字段中文.textContent = 字段映射[字段] || 字段;
       const 字段英文 = document.createElement("div");
       字段英文.className = "表头英文";
-      字段英文.textContent = 字段;
+      字段英文.textContent = 字段 === "BackColour" ? "ShadowColour" : 字段;
       字段表头.appendChild(字段中文);
       字段表头.appendChild(字段英文);
       表头行.appendChild(字段表头);
@@ -1874,6 +1903,12 @@ class ASSParser {
         return;
       }
 
+      const 主通道透明匹配 = 标签.match(/^ca&H([0-9A-Fa-f]{2})/);
+      if (主通道透明匹配) {
+        局部Alpha.PrimaryColour = 主通道透明匹配[1];
+        return;
+      }
+
       const 全局透明匹配 = 标签.match(/^alpha&H([0-9A-Fa-f]{2})/);
       if (全局透明匹配) {
         全局Alpha = 全局透明匹配[1];
@@ -2008,6 +2043,22 @@ class ASSParser {
     if (/\{\s*\\/.test(剩余文本)) return null;
 
     return 样式名;
+  }
+
+  提取副字幕覆盖字段集合(副文本) {
+    const 集合 = new Set();
+    if (!副文本) return 集合;
+
+    let 剩余 = 副文本;
+    while (true) {
+      const 匹配 = 剩余.match(/^\{[^}]*\}/);
+      if (!匹配) break;
+      const 覆盖块 = 匹配[0];
+      this.提取覆盖字段集合(覆盖块).forEach((f) => 集合.add(f));
+      剩余 = 剩余.substring(覆盖块.length);
+    }
+
+    return 集合;
   }
 
   标准化ASS颜色值(颜色值, 默认值) {
@@ -2160,7 +2211,8 @@ class ASSParser {
 
       const 当前Alpha = this.提取Alpha(当前色);
       const 基线Alpha = this.提取Alpha(基线色);
-      if (当前Alpha !== 基线Alpha || (强制字段集 && 强制字段集.has(键))) {
+      const 需要输出Alpha = 当前Alpha !== 基线Alpha; // 仅在透明度实际不同才输出，避免无谓的 \ca/\3a/\4a
+      if (需要输出Alpha) {
         标签.push(`\\${标记[0]}a&H${当前Alpha}`);
       }
     });
@@ -2431,6 +2483,7 @@ class ASSParser {
     if (/^2c/.test(t)) return "SecondaryColour";
     if (/^3c/.test(t)) return "OutlineColour";
     if (/^4c/.test(t)) return "BackColour";
+    if (/^ca/.test(t)) return "PrimaryColour";
     if (/^1a/.test(t)) return "PrimaryColour";
     if (/^2a/.test(t)) return "SecondaryColour";
     if (/^3a/.test(t)) return "OutlineColour";
@@ -2522,13 +2575,26 @@ class ASSParser {
         const 新标签列表 = this.拆分覆盖标签(覆盖标签);
         const 原标签列表 = 原覆盖块.flatMap((块) => this.拆分覆盖标签(块));
 
+        const 获取合并键 = (tag) => {
+          const 字段 = this.识别标签字段(tag);
+          if (!字段) return null;
+          const 内容 = tag.startsWith("\\") ? tag.substring(1) : tag;
+          const 是颜色字段 =
+            字段 === "PrimaryColour" || 字段 === "SecondaryColour" || 字段 === "OutlineColour" || 字段 === "BackColour";
+          if (是颜色字段) {
+            const 是Alpha = /^([1234]?a)/i.test(内容);
+            return `${字段}-${是Alpha ? "alpha" : "color"}`;
+          }
+          return 字段;
+        };
+
         // 以原标签顺序为基准，按字段替换，未出现的新字段追加到末尾
         const 新标签映射 = new Map();
         const 新无字段标签 = [];
         新标签列表.forEach((tag) => {
-          const 字段 = this.识别标签字段(tag);
-          if (字段) {
-            新标签映射.set(字段, tag);
+          const 键 = 获取合并键(tag);
+          if (键) {
+            新标签映射.set(键, tag);
           } else {
             新无字段标签.push(tag);
           }
@@ -2536,10 +2602,10 @@ class ASSParser {
 
         const 合并标签 = [];
         原标签列表.forEach((tag) => {
-          const 字段 = this.识别标签字段(tag);
-          if (字段 && 新标签映射.has(字段)) {
-            合并标签.push(新标签映射.get(字段));
-            新标签映射.delete(字段);
+          const 键 = 获取合并键(tag);
+          if (键 && 新标签映射.has(键)) {
+            合并标签.push(新标签映射.get(键));
+            新标签映射.delete(键);
           } else {
             合并标签.push(tag);
           }
