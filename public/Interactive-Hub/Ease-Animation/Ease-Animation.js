@@ -45,7 +45,7 @@ const 角色尺寸配置 = {
   存储键: "ease-animation-char-size-v1",
   最小: 50,
   最大: 300,
-  默认: 120,
+  默认: 100,
 };
 
 const 布局样式配置 = {
@@ -301,8 +301,8 @@ function 绘制参数区域() {
   上下文.fillRect(区域.x, 区域.y, 区域.width, 区域.height);
 
   上下文.fillStyle = "#f2f2f2";
-  上下文.font = "600 22px 'Google Sans Code', 'Noto Sans SC', sans-serif";
-  上下文.fillText("参数调节区域", 区域.x + 左侧基准, 区域.y + 内边距 + 6);
+  上下文.font = "600 22px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+  // 上下文.fillText("参数调节区域", 区域.x + 左侧基准, 区域.y + 内边距 + 6);
 
   绘制曲线切换(区域, 内边距, 左侧基准);
   绘制贝塞尔编辑(区域, 内边距, 左侧基准);
@@ -314,7 +314,7 @@ function 绘制曲线切换(区域, 内边距, 左侧基准) {
   const 按钮宽 = 120;
   const 按钮高 = 32;
   const 起始X = 区域.x + 左侧基准;
-  const 起始Y = 区域.y + 内边距 + 28;
+  const 起始Y = 区域.y + 内边距;
   const 间隔 = 12;
   const 曲线列表 = [
     { 键: "移动", 标签: "移动曲线" },
@@ -333,7 +333,7 @@ function 绘制曲线切换(区域, 内边距, 左侧基准) {
     上下文.strokeStyle = 激活 ? "transparent" : "rgba(255,255,255,0.08)";
     上下文.stroke();
     上下文.fillStyle = 激活 ? "#fff" : "#ccc";
-    上下文.font = "500 14px 'Noto Sans SC', sans-serif";
+    上下文.font = "500 14px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
     上下文.textAlign = "center";
     上下文.textBaseline = "middle";
     上下文.fillText(曲线.标签, x + 按钮宽 / 2, y + 按钮高 / 2 + 1);
@@ -344,7 +344,7 @@ function 绘制曲线切换(区域, 内边距, 左侧基准) {
 }
 
 function 绘制贝塞尔编辑(区域, 内边距) {
-  const 编辑顶部 = 区域.y + 内边距 + 80;
+  const 编辑顶部 = 区域.y + 内边距 + 52;
   const 编辑高 = 区域.height * 0.6;
   const 左侧基准 = 内边距 + 布局样式配置.贝塞尔左侧额外间距;
   const 右侧基准 = 内边距;
@@ -418,7 +418,7 @@ function 绘制贝塞尔编辑(区域, 内边距) {
   绘制控制点(控制点集合.控制点1, "控制点1");
   绘制控制点(控制点集合.控制点2, "控制点2");
 
-  上下文.font = "500 14px 'Google Sans Code', monospace";
+  上下文.font = "500 14px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
   const { 颜色, 坐标间隔, 括号间距 } = 坐标显示配置;
   const 文本Y = 编辑区.y + 编辑区.height + 50;
   const 数字宽度 = (文本) => {
@@ -447,6 +447,7 @@ function 绘制贝塞尔编辑(区域, 内边距) {
   let 光标X = 编辑区.x + (编辑区.width - 块宽度) / 2;
 
   const 绘制数字 = (文本) => {
+    上下文.font = "500 14px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
     for (const 字符 of 文本) {
       if (字符 === ".") {
         上下文.fillStyle = 颜色.小数点;
@@ -461,6 +462,7 @@ function 绘制贝塞尔编辑(区域, 内边距) {
   const 绘制标记 = (文本, 颜色值, 前间距 = 0, 后间距 = 0) => {
     上下文.fillStyle = 颜色值;
     光标X += 前间距;
+    上下文.font = "500 14px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
     上下文.fillText(文本, 光标X, 文本Y);
     光标X += 上下文.measureText(文本).width + 后间距;
   };
@@ -517,7 +519,7 @@ function 绘制坐标轴与刻度(编辑区) {
 
   上下文.strokeStyle = 刻度颜色;
   上下文.fillStyle = 文本颜色;
-  上下文.font = "400 14px 'Google Sans Code', 'Noto Sans SC', sans-serif";
+  上下文.font = "400 14px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
 
   上下文.textAlign = "center";
   上下文.textBaseline = "bottom";
@@ -573,11 +575,11 @@ function 绘制滑块(区域, 内边距) {
   const 轨道宽 = Math.max(160, 区域.width - 内边距 * 2 - 标签宽 * 2 - 20);
   const 轨道高 = 6;
   const 间隔 = 36;
+  上下文.font = "500 14px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
   滑块列表.forEach((滑块, 索引) => {
     上下文.save();
     const y = 起始Y + 索引 * 间隔;
     上下文.fillStyle = "#999";
-    上下文.font = "500 14px 'Google Sans Code', 'Noto Sans SC', sans-serif";
     上下文.textAlign = "right";
     上下文.textBaseline = "middle";
 
@@ -714,7 +716,7 @@ function 绘制动画区域() {
   上下文.fillRect(轨道起点, 区域.y + 内边距, 轨道宽, 4);
 
   上下文.fillStyle = "#9ea7ff";
-  上下文.font = "500 14px 'Google Sans Code', 'Noto Sans SC', sans-serif";
+  上下文.font = "500 14px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
   // 上下文.fillText("按 A/D 左右移动，空格跳跃", 轨道起点, 区域.y + 内边距 - 10);
   const 单中文宽度 = 上下文.measureText("按").width;
   const 单英文宽度 = 上下文.measureText("A").width;
@@ -784,7 +786,7 @@ function 绘制速度面板(区域, 面板X, 面板Y) {
     单位: "#8fb3ff",
     斜杠: "gray",
   };
-  上下文.font = "400 16px 'Google Sans Code', 'Noto Sans SC', sans-serif";
+  上下文.font = "400 16px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
   速度列表.forEach((速度, 索引) => {
     const 行Y = 面板Y + 索引 * 30 + 20;
     let 光标X = 面板X - 10;
@@ -848,7 +850,7 @@ function 绘制角色尺寸滑块(区域) {
   上下文.shadowColor = "transparent";
 
   上下文.fillStyle = 高亮中 ? "gold" : "darkgoldenrod";
-  上下文.font = "400 14px 'Google Sans Code', 'Noto Sans SC', sans-serif";
+  上下文.font = "400 14px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
   const px宽度 = 上下文.measureText("px").width;
   上下文.textAlign = "center";
   上下文.textBaseline = "top";
@@ -1220,7 +1222,10 @@ function 绘制圆角矩形(绘制上下文, 起点X, 起点Y, 宽度, 高度, �
 
 function 读取角色尺寸() {
   try {
-    const 已存 = Number(localStorage.getItem(角色尺寸配置.存储键));
+    const 原始 = localStorage.getItem(角色尺寸配置.存储键);
+    if (原始 === null) return 角色尺寸配置.默认; // 首次访问时直接用默认值，避免被最小值夹住
+
+    const 已存 = Number(原始);
     if (!Number.isNaN(已存)) {
       return 限制值(已存, 角色尺寸配置.最小, 角色尺寸配置.最大);
     }
