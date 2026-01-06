@@ -55,6 +55,8 @@ class 绘图器 {
     this.手动t = null;
     this.当前t = 0;
     this.上次时间戳 = null;
+    this.控制点变化回调 = null;
+    this.控制点已变 = false;
     this.滑块样式 = {
       轨道: {
         正常: "rgba(255, 255, 255, 0.12)",
@@ -77,8 +79,8 @@ class 绘图器 {
         拖拽: "rgba(255, 255, 255, 0.8)",
       },
       热区容差: {
-        轨道: { 水平: 5, 垂直: 10 },
-        thumb: { 水平: 5, 垂直: 5 },
+        轨道: { 水平: 10, 垂直: 16 },
+        thumb: { 水平: 16, 垂直: 16 },
       },
       文本: {
         标题: {
@@ -102,6 +104,7 @@ class 绘图器 {
       显示其它算法点: "bezier_show_other_points",
       显示t: "bezier_show_t",
       播放: "bezier_playing",
+      控制点: "bezier_ctrl_points",
     };
     this.加载状态();
     this.实时控制点开关动画.当前 = this.显示实时控制点 ? 1 : 0;
@@ -222,11 +225,16 @@ class 绘图器 {
       }
 
       if (!this.播放 && this.命中t滑块(坐标)) {
-        this.按下tThumb = this.命中tThumb(坐标);
-        this.拖拽t滑块 = this.按下tThumb || this.命中t滑块轨道(坐标);
+        const 命中tThumb = this.命中tThumb(坐标);
+        this.按下tThumb = 命中tThumb;
+        this.拖拽t滑块 = !命中tThumb && this.命中t滑块轨道(坐标);
         if (this.拖拽t滑块) {
           this.更新t通过坐标(坐标.x);
           this.画布.style.cursor = "grabbing";
+          return;
+        }
+        if (this.按下tThumb) {
+          this.画布.style.cursor = "grab";
           return;
         }
       }
@@ -256,9 +264,9 @@ class 绘图器 {
       }
 
       const 命中停留thumb = this.命中端点停留thumb(坐标);
-      const 命中停留滑块 = !命中停留thumb && this.命中端点停留滑块(坐标);
+      const 命中停留滑块 = this.命中端点停留滑块(坐标);
       const 命中thumb = this.命中动画时长thumb(坐标);
-      const 命中滑块 = !命中thumb && this.命中动画时长滑块(坐标);
+      const 命中滑块 = this.命中动画时长滑块(坐标);
 
       if (命中停留thumb) {
         this.按下停留thumb = true;
@@ -325,6 +333,15 @@ class 绘图器 {
         return;
       }
 
+      if (this.按下tThumb) {
+        if ((event.buttons & 1) === 1) {
+          this.拖拽t滑块 = true;
+          this.更新t通过坐标(坐标.x);
+          this.画布.style.cursor = "grabbing";
+          return;
+        }
+      }
+
       if (this.按下停留thumb) {
         if ((event.buttons & 1) === 1) {
           this.拖拽停留滑块 = true;
@@ -351,14 +368,14 @@ class 绘图器 {
       const 命中滑块 = !命中thumb && this.命中动画时长滑块(坐标);
 
       this.悬停thumb = !!命中thumb;
-      this.悬停滑块 = !!命中滑块;
+      this.悬停滑块 = !!(命中滑块 || 命中thumb);
       this.悬停停留thumb = !!命中停留thumb;
-      this.悬停停留滑块 = !!命中停留滑块;
+      this.悬停停留滑块 = !!(命中停留滑块 || 命中停留thumb);
       this.悬停实时控制点开关 = !!命中开关;
       this.悬停显示t开关 = !!命中显示t;
       this.悬停其它算法点开关 = !!命中其它;
       this.悬停播放开关 = !!命中播放;
-      this.悬停t滑块 = !!命中t区;
+      this.悬停t滑块 = !!(命中t区 || 命中tThumb);
       this.悬停tThumb = !!命中tThumb;
 
       let 新悬停点 = null;
@@ -390,6 +407,7 @@ class 绘图器 {
       if (this.当前拖拽点) {
         this.当前拖拽点.x = 坐标.x;
         this.当前拖拽点.y = 坐标.y;
+        this.控制点已变 = true;
         this.画布.style.cursor = "grabbing";
         return;
       }
@@ -415,6 +433,10 @@ class 绘图器 {
       this.按下thumb = false;
       this.按下停留thumb = false;
       this.按下tThumb = false;
+      if (this.控制点已变 && this.控制点变化回调) {
+        this.控制点变化回调(this.控制点);
+      }
+      this.控制点已变 = false;
       this.画布.style.cursor = "auto";
     });
 
@@ -438,6 +460,10 @@ class 绘图器 {
       this.悬停显示t开关 = false;
       this.悬停播放开关 = false;
       this.当前悬停其它点 = null;
+      if (this.控制点已变 && this.控制点变化回调) {
+        this.控制点变化回调(this.控制点);
+      }
+      this.控制点已变 = false;
       this.画布.style.cursor = "auto";
     });
   }
@@ -630,11 +656,27 @@ class 绘图器 {
     }
     if (类型 === "t") {
       if (this.拖拽t滑块) return "拖拽";
-      if (this.悬停tThumb || this.悬停t滑块) return "悬停";
+      if (this.悬停t滑块) return "悬停";
       return "正常";
     }
     if (this.拖拽滑块) return "拖拽";
-    if (this.悬停thumb || this.悬停滑块) return "悬停";
+    if (this.悬停滑块) return "悬停";
+    return "正常";
+  }
+
+  获取滑块thumb状态(类型) {
+    if (类型 === "端点") {
+      if (this.拖拽停留滑块) return "拖拽";
+      if (this.悬停停留thumb) return "悬停";
+      return "正常";
+    }
+    if (类型 === "t") {
+      if (this.拖拽t滑块) return "拖拽";
+      if (this.悬停tThumb) return "悬停";
+      return "正常";
+    }
+    if (this.拖拽滑块) return "拖拽";
+    if (this.悬停thumb) return "悬停";
     return "正常";
   }
 
@@ -832,6 +874,7 @@ class 绘图器 {
     const t轨道Y = t基线 - 2;
 
     const t滑块状态 = this.获取滑块状态("t");
+    const tthumb状态 = this.获取滑块thumb状态("t");
 
     ctx.lineWidth = 6;
     ctx.lineCap = "round";
@@ -853,7 +896,7 @@ class 绘图器 {
     this.绘制滑块thumb({
       x: t滑块x,
       y: t轨道Y,
-      状态: t滑块状态,
+      状态: tthumb状态,
     });
 
     const t值文本 = this.当前t.toFixed(2);
@@ -902,6 +945,7 @@ class 绘图器 {
     const 轨道Y = 动画基线 - 2;
 
     const 滑块状态 = this.获取滑块状态("动画");
+    const thumb状态 = this.获取滑块thumb状态("动画");
 
     ctx.lineWidth = 6;
     ctx.lineCap = "round";
@@ -924,7 +968,7 @@ class 绘图器 {
     this.绘制滑块thumb({
       x: 滑块x,
       y: 轨道Y,
-      状态: 滑块状态,
+      状态: thumb状态,
     });
 
     const 数值文本 = `${this.动画时长}`;
@@ -997,6 +1041,7 @@ class 绘图器 {
     const 停留轨道Y = 停留基线 - 2;
 
     const 停留状态 = this.获取滑块状态("端点");
+    const 停留thumb状态 = this.获取滑块thumb状态("端点");
 
     ctx.lineWidth = 6;
     ctx.lineCap = "round";
@@ -1019,7 +1064,7 @@ class 绘图器 {
     this.绘制滑块thumb({
       x: 停留x,
       y: 停留轨道Y,
-      状态: 停留状态,
+      状态: 停留thumb状态,
     });
 
     const 停留值文本 = `${this.端点停留}`;
@@ -1414,17 +1459,53 @@ class 绘图器 {
 document.addEventListener("DOMContentLoaded", () => {
   const 绘图演示 = new 绘图器();
 
+  const 控制点存储键 = 绘图演示.存储键.控制点;
+
+  const 读取控制点存储 = () => {
+    const 原始 = sessionStorage.getItem(控制点存储键);
+    if (!原始) return null;
+    try {
+      const 数据 = JSON.parse(原始);
+      if (
+        Array.isArray(数据) &&
+        数据.length === 4 &&
+        数据.every((项) => 项 && typeof 项.x === "number" && typeof 项.y === "number")
+      ) {
+        return 数据.map((项) => ({ x: 项.x, y: 项.y }));
+      }
+    } catch (e) {
+      // ignore parse error
+    }
+    return null;
+  };
+
+  const 保存控制点到存储 = () => {
+    if (!p0 || !p1 || !p2 || !p3) return;
+    const 数据 = [p0, p1, p2, p3].map((点) => ({ x: 点.x, y: 点.y }));
+    sessionStorage.setItem(控制点存储键, JSON.stringify(数据));
+  };
+
   // 初始化控制点
   let p0, p1, p2, p3;
 
-  const 更新控制点 = () => {
+  const 应用默认控制点 = () => {
     const 宽度 = 绘图演示.画布.width;
     const 高度 = 绘图演示.画布.height;
 
-    p0 = { x: 宽度 * 0.1, y: 高度 / 2 };
+    p0 = { x: 宽度 * 0.1, y: 高度 / 3 * 2 };
     p1 = { x: 宽度 / 4, y: 高度 * 0.15 };
     p2 = { x: (宽度 * 3) / 4, y: 高度 * 0.85 };
-    p3 = { x: 宽度 * 0.9, y: 高度 / 2 };
+    p3 = { x: 宽度 * 0.9, y: 高度 / 3 };
+  };
+
+  const 更新控制点 = () => {
+    const 存储控制点 = 读取控制点存储();
+    if (存储控制点) {
+      [p0, p1, p2, p3] = 存储控制点;
+    } else {
+      应用默认控制点();
+    }
+    保存控制点到存储();
   };
 
   // 初始更新控制点
@@ -1437,6 +1518,13 @@ document.addEventListener("DOMContentLoaded", () => {
   绘图演示.初始化 = function () {
     原始初始化.call(this);
     更新控制点();
+  };
+
+  绘图演示.控制点变化回调 = (点列表) => {
+    if (!Array.isArray(点列表) || 点列表.length !== 4) return;
+    const 新点 = 点列表.map((点) => ({ x: 点.x, y: 点.y }));
+    [p0, p1, p2, p3] = 新点;
+    保存控制点到存储();
   };
 
   let 上一帧时间 = null;
