@@ -899,7 +899,10 @@ class 绘图器 {
       状态: tthumb状态,
     });
 
-    const t值文本 = this.当前t.toFixed(2);
+    const t值文本 = this.当前t
+      .toFixed(2)
+      .replace(/0+$/, "")
+      .replace(/\.$/, "");
 
     ctx.font = this.滑块样式.文本.值.字体;
     ctx.textAlign = "left";
@@ -1492,10 +1495,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const 宽度 = 绘图演示.画布.width;
     const 高度 = 绘图演示.画布.height;
 
-    p0 = { x: 宽度 * 0.1, y: 高度 / 3 * 2 };
-    p1 = { x: 宽度 / 4, y: 高度 * 0.15 };
-    p2 = { x: (宽度 * 3) / 4, y: 高度 * 0.85 };
-    p3 = { x: 宽度 * 0.9, y: 高度 / 3 };
+    p0 = { x: 宽度 * 0.25, y: (高度 / 3) * 2 };
+    p1 = { x: 宽度 * 0.2, y: 高度 * 0.15 };
+    p2 = { x: 宽度 * 0.8, y: 高度 * 0.85 };
+    p3 = { x: 宽度 * 0.75, y: 高度 / 3 };
   };
 
   const 更新控制点 = () => {
