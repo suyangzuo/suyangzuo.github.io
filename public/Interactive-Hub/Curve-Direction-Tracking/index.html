@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>曲线方向跟踪</title>
+    <link rel="icon" href="/Images/Interactive-Hub/HQ/切线.png" type="image/x-icon" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Ubuntu+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/Styles/common.css" />
+    <link rel="stylesheet" href="/Styles/top-banner-common.css" />
+    <link rel="stylesheet" href="../control.css" />
+    <link rel="stylesheet" href="../interactive-common.css" />
+    <link rel="stylesheet" href="./Curve-Direction-Tracking.css" />
+    <script src="/Scripts/top-banner.js" defer></script>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
+    <script src="./Curve-Direction-Tracking.js" defer></script>
+  </head>
+  <body>
+    <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
+    <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
+    <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
+
+    <section class="曲线方向跟踪总区 总区">
+      <script src="../../Scripts/html-include.js" target="../control.html" position="afterbegin"></script>
+      <p class="交互标题">曲线方向跟踪</p>
+      <div class="控件面板" role="group" aria-label="参数与显示">
+        <label class="控件-行">
+          <span class="控件-标题">t</span>
+          <input id="参数t" type="range" min="0" max="1" step="0.001" value="0" />
+          <span class="t-值" id="t数值">0.000</span>
+        </label>
+        <label class="控件-行 复选">
+          <input id="显示切线" type="checkbox" checked />
+          <span>显示切线</span>
+        </label>
+      </div>
+      <div class="Canvas容器">
+        <canvas id="canvas"></canvas>
+      </div>
+    </section>
+  </body>
+</html>

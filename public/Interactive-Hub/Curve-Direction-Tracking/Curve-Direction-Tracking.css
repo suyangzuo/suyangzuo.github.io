@@ -1,0 +1,67 @@
+:root {
+  --光标-默认: url("/Images/Common/鼠标-默认.cur"), auto;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #111;
+  color: silver;
+  font-family: "Google Sans Code", Consolas, "Noto Sans CJK SC", 微软雅黑, sans-serif;
+}
+
+.总区 {
+  padding-top: 50px;
+}
+
+.Canvas容器 {
+  position: relative;
+  width: 100%;
+  height: clamp(500px, calc(100vh - 50px), 3000px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  --水平内边距: 1vw;
+  --垂直内边距: 2.5vh;
+}
+
+#canvas {
+  width: 100%;
+  height: 100%;
+  cursor: var(--光标-默认);
+}
+
+.控件面板 {
+  display: none;
+}
+
+.控件-行 {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.控件-标题 {
+  font-weight: 700;
+  color: #a5b4fc;
+}
+
+#参数t {
+  width: min(42vw, 460px);
+}
+
+.t-值 {
+  min-width: 56px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.复选 input {
+  transform: translateY(1px);
+}

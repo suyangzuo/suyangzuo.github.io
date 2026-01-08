@@ -211,12 +211,12 @@ body {
   color: #345;
   font-weight: bolder;
   aspect-ratio: 1;
-  height: 50%;
+  height: 45%;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  font-family: "Google Sans Code", monospace;
-  font-size: 1rem;
+  font-family: "Google Sans Code", Consolas, monospace;
+  font-size: 14px;
   text-wrap: nowrap;
 }
 

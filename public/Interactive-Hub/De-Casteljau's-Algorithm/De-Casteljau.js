@@ -3,6 +3,9 @@ class 绘图器 {
     this.画布 = document.getElementById("画布");
     this.上下文 = this.画布.getContext("2d");
     this.dpr = window.devicePixelRatio || 1;
+    this.画布.width = this.画布.offsetWidth * this.dpr;
+    this.画布.height = this.画布.offsetHeight * this.dpr;
+    this.上下文.setTransform(1, 0, 0, 1, 0, 0);
     this.上下文.scale(this.dpr, this.dpr);
 
     this.控制点 = [];
@@ -79,20 +82,20 @@ class 绘图器 {
         拖拽: "rgba(255, 255, 255, 0.8)",
       },
       热区容差: {
-        轨道: { 水平: 10, 垂直: 16 },
-        thumb: { 水平: 16, 垂直: 16 },
+        轨道: { 水平: 10, 垂直: 8 },
+        thumb: { 水平: 16, 垂直: 12 },
       },
       文本: {
         标题: {
-          字体: "18px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif",
+          字号: 18,
           颜色: "rgba(230, 238, 255, 0.75)",
         },
         值: {
-          字体: "18px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif",
+          字号: 18,
           颜色: "#def",
         },
         单位: {
-          字体: "18px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif",
+          字号: 18,
           颜色: "#7f95a9ff",
         },
         值与单位间距: 6,
@@ -115,7 +118,6 @@ class 绘图器 {
     this.显示t开关动画.目标 = this.显示t开关动画.当前;
     this.播放开关动画.当前 = this.播放 ? 1 : 0;
     this.播放开关动画.目标 = this.播放开关动画.当前;
-    this.初始化();
     this.绑定事件();
     this.添加尺寸观察器();
   }
@@ -190,8 +192,15 @@ class 绘图器 {
   }
 
   初始化() {
+    this.dpr = Math.max(1, window.devicePixelRatio || 1);
     this.画布.width = this.画布.offsetWidth * this.dpr;
     this.画布.height = this.画布.offsetHeight * this.dpr;
+    this.上下文.setTransform(1, 0, 0, 1, 0, 0);
+    this.上下文.scale(this.dpr, this.dpr);
+  }
+
+  字体(px) {
+    return `${px / this.dpr}px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif`;
   }
 
   绑定事件() {
@@ -199,8 +208,8 @@ class 绘图器 {
       const 矩形 = this.画布.getBoundingClientRect();
       // 先减去画布左上角偏移，再按 dpr 放大，避免混用物理像素与 CSS 像素导致的偏移
       return {
-        x: (event.clientX - 矩形.left) * this.dpr,
-        y: (event.clientY - 矩形.top) * this.dpr,
+        x: event.clientX - 矩形.left,
+        y: event.clientY - 矩形.top,
       };
     };
 
@@ -507,7 +516,7 @@ class 绘图器 {
   }
 
   清空画布() {
-    this.上下文.clearRect(0, 0, this.画布.width, this.画布.height);
+    this.上下文.clearRect(0, 0, this.画布.offsetWidth, this.画布.offsetHeight);
   }
 
   设置动画时长(数值) {
@@ -733,24 +742,24 @@ class 绘图器 {
       this.上下文.stroke();
 
       // 绘制点的标签
-      this.上下文.font = "18px Google Sans Code, Consolas, Noto Sans SC, 微软雅黑, sans-serif";
+      this.上下文.font = this.字体(18);
       const 单字符宽度 = this.上下文.measureText("P").width;
       this.上下文.fillStyle = "rgba(142, 159, 175, 1)";
       this.上下文.textAlign = "center";
       this.上下文.textBaseline = "middle";
       this.上下文.fillText("P", 点.x - 32, 点.y - 22);
       this.上下文.fillStyle = "rgba(172, 211, 243, 1)";
-      this.上下文.fillText(`${索引}`, 点.x - 32 + 单字符宽度 + 2, 点.y - 22);
+      this.上下文.fillText(`${索引}`, 点.x - 32 + 单字符宽度 + 1, 点.y - 22);
     });
   }
 
   绘制参数区() {
     const ctx = this.上下文;
-    const 区宽度 = 460;
-    const 行间距 = 20;
+    const 区宽度 = Math.max(300, this.画布.offsetWidth / 5);
+    const 行间距 = 15;
     const 内边距 = 20;
-    const 开关高 = 28;
-    const 滑块行高 = 42;
+    const 开关高 = 20;
+    const 滑块行高 = 24;
     const 开关行数 = 3;
     const 滑块行数 = 3;
     const 行总数 = 开关行数 + 滑块行数;
@@ -758,12 +767,12 @@ class 绘图器 {
     const 区高度 = 内容高度 + 内边距 * 2;
     const 左 = 24;
     const 下边距 = 24;
-    const 顶 = this.画布.height - 区高度 - 下边距;
+    const 顶 = this.画布.offsetHeight - 区高度 - 下边距;
     const 标题 = "动画时长";
     const t标题文本 = "t";
     const 停留标题文本 = "端点停留";
 
-    ctx.font = this.滑块样式.文本.标题.字体;
+    ctx.font = this.字体(this.滑块样式.文本.标题.字号);
     const 滑块标题最大宽 = Math.max(
       ctx.measureText(t标题文本).width,
       ctx.measureText(标题).width,
@@ -781,13 +790,13 @@ class 绘图器 {
     ctx.fillStyle = "rgba(12, 16, 24, 0.82)";
     ctx.fill();
 
-    const 开关宽 = 52;
+    const 开关宽 = 40;
     const 行起点x = 左 + 内边距;
     const 行1y = 顶 + 内边距 + 6;
     const 标签间隙 = 12;
     const 行2文字间隙 = 4;
 
-    ctx.font = "18px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+    ctx.font = this.字体(18);
     const 行t文字前 = "显示";
     const 行t文字t = "t";
     const 行t宽前 = ctx.measureText(行t文字前).width;
@@ -800,7 +809,7 @@ class 绘图器 {
     const 标签宽 = Math.max(行t宽, 行实时宽, 行其它宽);
 
     // 行1：显示t
-    ctx.font = "18px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+    ctx.font = this.字体(18);
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
     const 行1文本起点 = 行起点x + (标签宽 - 行t宽);
@@ -822,7 +831,7 @@ class 绘图器 {
 
     // 行2：显示实时控制点
     const 行2y = 行1y + 开关高 + 行间距;
-    ctx.font = "18px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+    ctx.font = this.字体(18);
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
     const 行2文本起点 = 行起点x + (标签宽 - 行实时宽);
@@ -842,7 +851,7 @@ class 绘图器 {
 
     // 行3：显示其它算法点
     const 行3y = 行2y + 开关高 + 行间距;
-    ctx.font = "18px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+    ctx.font = this.字体(18);
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
     const 行3文本起点 = 行起点x + (标签宽 - 行其它宽);
@@ -861,22 +870,22 @@ class 绘图器 {
     });
 
     const t滑块顶 = 行3y + 开关高 + 行间距;
-    const t基线 = t滑块顶 + 滑块行高 / 2 - 4;
-    ctx.font = this.滑块样式.文本.标题.字体;
+    const t基线 = t滑块顶 + 滑块行高 / 2;
+    ctx.font = this.字体(this.滑块样式.文本.标题.字号);
     ctx.fillStyle = this.滑块样式.文本.标题.颜色;
     ctx.textAlign = "right";
     ctx.textBaseline = "middle";
     ctx.fillText(t标题文本, 左 + 内边距 + 滑块标题最大宽, t基线);
 
     const t轨道起点 = 左 + 内边距 + 滑块标题最大宽 + 18;
-    const t轨道终点 = 左 + 区宽度 - 内边距 - 110;
+    const t轨道终点 = 左 + 区宽度 - 内边距 - 80;
     const t轨道长度 = Math.max(40, t轨道终点 - t轨道起点);
-    const t轨道Y = t基线 - 2;
+    const t轨道Y = t基线;
 
     const t滑块状态 = this.获取滑块状态("t");
     const tthumb状态 = this.获取滑块thumb状态("t");
 
-    ctx.lineWidth = 6;
+    ctx.lineWidth = 4;
     ctx.lineCap = "round";
     ctx.strokeStyle = this.滑块样式.轨道[t滑块状态];
     ctx.beginPath();
@@ -899,12 +908,9 @@ class 绘图器 {
       状态: tthumb状态,
     });
 
-    const t值文本 = this.当前t
-      .toFixed(2)
-      .replace(/0+$/, "")
-      .replace(/\.$/, "");
+    const t值文本 = this.当前t.toFixed(2).replace(/0+$/, "").replace(/\.$/, "");
 
-    ctx.font = this.滑块样式.文本.值.字体;
+    ctx.font = this.字体(this.滑块样式.文本.值.字号);
     ctx.textAlign = "left";
     const t值起点 = t轨道起点 + t轨道长度 + 22;
     let t当前x = t值起点;
@@ -919,7 +925,7 @@ class 绘图器 {
       轨道起点: t轨道起点,
       轨道终点: t轨道起点 + t轨道长度,
       轨道Y: t轨道Y,
-      半径: 12,
+      半径: 10,
       热区: {
         x: t轨道起点 - this.滑块样式.热区容差.轨道.水平,
         y: t轨道Y + ctx.lineWidth / 2 - this.滑块样式.热区容差.轨道.垂直,
@@ -935,22 +941,22 @@ class 绘图器 {
     };
 
     const 动画滑块顶 = t滑块顶 + 滑块行高 + 行间距;
-    const 动画基线 = 动画滑块顶 + 滑块行高 / 2 - 10;
-    ctx.font = this.滑块样式.文本.标题.字体;
+    const 动画基线 = 动画滑块顶 + 滑块行高 / 2;
+    ctx.font = this.字体(this.滑块样式.文本.标题.字号);
     ctx.fillStyle = this.滑块样式.文本.标题.颜色;
     ctx.textAlign = "right";
     ctx.textBaseline = "middle";
     ctx.fillText(标题, 左 + 内边距 + 滑块标题最大宽, 动画基线);
 
     const 轨道起点 = 左 + 内边距 + 滑块标题最大宽 + 18;
-    const 轨道终点 = 左 + 区宽度 - 内边距 - 110;
+    const 轨道终点 = 左 + 区宽度 - 内边距 - 80;
     const 轨道长度 = Math.max(40, 轨道终点 - 轨道起点);
-    const 轨道Y = 动画基线 - 2;
+    const 轨道Y = 动画基线;
 
     const 滑块状态 = this.获取滑块状态("动画");
     const thumb状态 = this.获取滑块thumb状态("动画");
 
-    ctx.lineWidth = 6;
+    ctx.lineWidth = 4;
     ctx.lineCap = "round";
     ctx.strokeStyle = this.滑块样式.轨道[滑块状态];
     ctx.beginPath();
@@ -978,14 +984,14 @@ class 绘图器 {
     const 单位文本 = "ms";
     const 数值单位间距 = this.滑块样式.文本.值与单位间距;
 
-    ctx.font = this.滑块样式.文本.值.字体;
+    ctx.font = this.字体(this.滑块样式.文本.值.字号);
     ctx.fillStyle = this.滑块样式.文本.值.颜色;
     ctx.textAlign = "left";
     const 数值起点 = 轨道起点 + 轨道长度 + 22;
     ctx.fillText(数值文本, 数值起点, 动画基线);
     const 数值宽度 = ctx.measureText(数值文本).width;
 
-    ctx.font = this.滑块样式.文本.单位.字体;
+    ctx.font = this.字体(this.滑块样式.文本.单位.字号);
     ctx.fillStyle = this.滑块样式.文本.单位.颜色;
     ctx.fillText(单位文本, 数值起点 + 数值宽度 + 数值单位间距, 动画基线);
 
@@ -993,7 +999,7 @@ class 绘图器 {
       轨道起点,
       轨道终点: 轨道起点 + 轨道长度,
       轨道Y,
-      半径: 12,
+      半径: 10,
       热区: {
         x: 轨道起点 - this.滑块样式.热区容差.轨道.水平,
         y: 轨道Y + ctx.lineWidth / 2 - this.滑块样式.热区容差.轨道.垂直,
@@ -1030,23 +1036,23 @@ class 绘图器 {
     };
 
     // 端点停留滑块
-    const 停留滑块顶 = 动画滑块顶 + 滑块行高 + 行间距 - 10;
-    const 停留基线 = 停留滑块顶 + 滑块行高 / 2 - 4;
-    ctx.font = this.滑块样式.文本.标题.字体;
+    const 停留滑块顶 = 动画滑块顶 + 滑块行高 + 行间距;
+    const 停留基线 = 停留滑块顶 + 滑块行高 / 2;
+    ctx.font = this.字体(this.滑块样式.文本.标题.字号);
     ctx.fillStyle = this.滑块样式.文本.标题.颜色;
     ctx.textAlign = "right";
     ctx.textBaseline = "middle";
     ctx.fillText(停留标题文本, 左 + 内边距 + 滑块标题最大宽, 停留基线);
 
     const 停留轨道起点 = 左 + 内边距 + 滑块标题最大宽 + 18;
-    const 停留轨道终点 = 左 + 区宽度 - 内边距 - 110;
+    const 停留轨道终点 = 左 + 区宽度 - 内边距 - 80;
     const 停留轨道长度 = Math.max(40, 停留轨道终点 - 停留轨道起点);
-    const 停留轨道Y = 停留基线 - 2;
+    const 停留轨道Y = 停留基线;
 
     const 停留状态 = this.获取滑块状态("端点");
     const 停留thumb状态 = this.获取滑块thumb状态("端点");
 
-    ctx.lineWidth = 6;
+    ctx.lineWidth = 4;
     ctx.lineCap = "round";
     ctx.strokeStyle = this.滑块样式.轨道[停留状态];
     ctx.beginPath();
@@ -1073,14 +1079,14 @@ class 绘图器 {
     const 停留值文本 = `${this.端点停留}`;
     const 停留单位文本 = "ms";
 
-    ctx.font = this.滑块样式.文本.值.字体;
+    ctx.font = this.字体(this.滑块样式.文本.值.字号);
     ctx.fillStyle = this.滑块样式.文本.值.颜色;
     ctx.textAlign = "left";
     const 停留值起点 = 停留轨道起点 + 停留轨道长度 + 22;
     ctx.fillText(停留值文本, 停留值起点, 停留基线);
     const 停留值宽 = ctx.measureText(停留值文本).width;
 
-    ctx.font = this.滑块样式.文本.单位.字体;
+    ctx.font = this.字体(this.滑块样式.文本.单位.字号);
     ctx.fillStyle = this.滑块样式.文本.单位.颜色;
     ctx.fillText(停留单位文本, 停留值起点 + 停留值宽 + 数值单位间距, 停留基线);
 
@@ -1088,7 +1094,7 @@ class 绘图器 {
       轨道起点: 停留轨道起点,
       轨道终点: 停留轨道起点 + 停留轨道长度,
       轨道Y: 停留轨道Y,
-      半径: 12,
+      半径: 10,
       热区: {
         x: 停留轨道起点 - this.滑块样式.热区容差.轨道.水平,
         y: 停留轨道Y + ctx.lineWidth / 2 - this.滑块样式.热区容差.轨道.垂直,
@@ -1114,7 +1120,7 @@ class 绘图器 {
     ctx.strokeStyle = 边框色;
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.arc(x, y, 12, 0, Math.PI * 2);
+    ctx.arc(x, y, 10, 0, Math.PI * 2);
     ctx.fill();
     ctx.stroke();
   }
@@ -1236,7 +1242,7 @@ class 绘图器 {
       if (点.y > 最大y) 最大y = 点.y;
     }
 
-    const 文本y = Math.min(window.innerHeight * this.dpr * 0.9, 最大y + 50);
+    const 文本y = Math.min(this.画布.offsetHeight * 0.9, 最大y + 50);
     const 文本x中心 = (p0.x + p3.x) / 2;
 
     const t值 = Math.max(0, Math.min(1, this.当前t || 0));
@@ -1249,7 +1255,7 @@ class 绘图器 {
     };
 
     ctx.save();
-    ctx.font = "24px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+    ctx.font = this.字体(24);
     ctx.textBaseline = "middle";
     ctx.textAlign = "left";
 
@@ -1267,7 +1273,7 @@ class 绘图器 {
     const 模板数字宽 = ctx.measureText(模板数字).width;
     const 模板宽 = t宽 + 等号宽 + 模板数字宽 + 间隔固定 * 2;
     const 文本起点 = 文本x中心 - 模板宽 / 2;
-    const 按钮半径 = 24;
+    const 按钮半径 = 20;
     const 按钮间距 = 18;
     const 按钮中心x = 文本起点 - 按钮间距 - 按钮半径 - 20;
     const 按钮中心y = 文本y;
@@ -1349,7 +1355,7 @@ class 绘图器 {
     };
 
     const 绘制标签 = (点, 文本) => {
-      ctx.font = "18px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+      ctx.font = this.字体(18);
       ctx.textBaseline = "middle";
       ctx.textAlign = "left";
       const 总宽 = ctx.measureText(文本).width;
@@ -1400,7 +1406,7 @@ class 绘图器 {
       };
 
       const 绘制其它标签 = (点, 文本) => {
-        ctx.font = "18px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+        ctx.font = this.字体(18);
         ctx.textBaseline = "alphabetic";
         ctx.textAlign = "left";
         const 总宽 = ctx.measureText(文本).width;
@@ -1469,12 +1475,41 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!原始) return null;
     try {
       const 数据 = JSON.parse(原始);
+      // 新版：按比例存储 { r: true, p: [{x:0..1,y:0..1}*4] }
+      if (数据 && typeof 数据 === "object" && 数据.r === true && Array.isArray(数据.p) && 数据.p.length === 4) {
+        const css宽 = 绘图演示.画布.offsetWidth || 1;
+        const css高 = 绘图演示.画布.offsetHeight || 1;
+        const 点列 = 数据.p;
+        if (
+          点列.every(
+            (项) =>
+              项 &&
+              typeof 项.x === "number" &&
+              typeof 项.y === "number" &&
+              项.x >= 0 &&
+              项.x <= 1 &&
+              项.y >= 0 &&
+              项.y <= 1
+          )
+        ) {
+          return 点列.map((项) => ({ x: 项.x * css宽, y: 项.y * css高 }));
+        }
+      }
+
+      // 旧版：以像素存储的数组 [{x,y}*4]，可能是 CSS 像素或物理像素
       if (
         Array.isArray(数据) &&
         数据.length === 4 &&
         数据.every((项) => 项 && typeof 项.x === "number" && typeof 项.y === "number")
       ) {
-        return 数据.map((项) => ({ x: 项.x, y: 项.y }));
+        const css宽 = 绘图演示.画布.offsetWidth || 1;
+        const css高 = 绘图演示.画布.offsetHeight || 1;
+        const dpr = Math.max(1, 绘图演示.dpr || window.devicePixelRatio || 1);
+        // 旧版存储使用物理像素，数值大约是 CSS 像素的 dpr 倍；
+        // 如果检测到点超出当前 CSS 画布尺寸，则按 dpr 缩放回 CSS 坐标。
+        const 需要缩放 = 数据.some((项) => 项.x > css宽 * 1.05 || 项.y > css高 * 1.05);
+        const 缩放因子 = 需要缩放 ? dpr : 1;
+        return 数据.map((项) => ({ x: 项.x / 缩放因子, y: 项.y / 缩放因子 }));
       }
     } catch (e) {
       // ignore parse error
@@ -1484,7 +1519,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const 保存控制点到存储 = () => {
     if (!p0 || !p1 || !p2 || !p3) return;
-    const 数据 = [p0, p1, p2, p3].map((点) => ({ x: 点.x, y: 点.y }));
+    const css宽 = 绘图演示.画布.offsetWidth || 1;
+    const css高 = 绘图演示.画布.offsetHeight || 1;
+    const 点列 = [p0, p1, p2, p3].map((点) => ({ x: 点.x / css宽, y: 点.y / css高 }));
+    const 数据 = { r: true, p: 点列 };
     sessionStorage.setItem(控制点存储键, JSON.stringify(数据));
   };
 
@@ -1492,8 +1530,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let p0, p1, p2, p3;
 
   const 应用默认控制点 = () => {
-    const 宽度 = 绘图演示.画布.width;
-    const 高度 = 绘图演示.画布.height;
+    const 宽度 = 绘图演示.画布.offsetWidth;
+    const 高度 = 绘图演示.画布.offsetHeight;
 
     p0 = { x: 宽度 * 0.25, y: (高度 / 3) * 2 };
     p1 = { x: 宽度 * 0.2, y: 高度 * 0.15 };
