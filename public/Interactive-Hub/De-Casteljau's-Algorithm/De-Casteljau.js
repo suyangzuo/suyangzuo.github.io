@@ -125,7 +125,7 @@ class 绘图器 {
   保存状态() {
     sessionStorage.setItem(this.存储键.动画时长, String(this.动画时长));
     sessionStorage.setItem(this.存储键.显示实时控制点, this.显示实时控制点 ? "1" : "0");
-    sessionStorage.setItem(this.存储键.显示其它算法点, this.显示其它算法点 ? "1" : "0");
+    localStorage.setItem(this.存储键.显示其它算法点, this.显示其它算法点 ? "1" : "0");
     sessionStorage.setItem(this.存储键.显示t, this.显示t ? "1" : "0");
     sessionStorage.setItem(this.存储键.播放, this.播放 ? "1" : "0");
     sessionStorage.setItem("bezier_endpoint_hold", String(this.端点停留));
@@ -143,7 +143,11 @@ class 绘图器 {
     if (显示 !== null) {
       this.显示实时控制点 = 显示 === "1";
     }
-    const 显示其它 = sessionStorage.getItem(this.存储键.显示其它算法点);
+    // 优先从 localStorage 读取，如果没有则从 sessionStorage 读取（兼容旧数据）
+    let 显示其它 = localStorage.getItem(this.存储键.显示其它算法点);
+    if (显示其它 === null) {
+      显示其它 = sessionStorage.getItem(this.存储键.显示其它算法点);
+    }
     if (显示其它 !== null) {
       this.显示其它算法点 = 显示其它 === "1";
     }
@@ -1389,7 +1393,7 @@ class 绘图器 {
       this.其它算法点 = [];
       const 其它点颜色 = {
         填充: "#ffb347",
-        描边: "#b36b00",
+        描边: "#ffb347",
         标签p: "#d8973cff",
         标签数字: "#ffd166",
         标签下划线: "#9fb4c8",
@@ -1397,7 +1401,7 @@ class 绘图器 {
 
       const 画其它点 = (点) => {
         ctx.beginPath();
-        ctx.arc(点.x, 点.y, 8, 0, Math.PI * 2);
+        ctx.arc(点.x, 点.y, 6, 0, Math.PI * 2);
         ctx.fillStyle = 其它点颜色.填充;
         ctx.strokeStyle = 其它点颜色.描边;
         ctx.lineWidth = 1.5;

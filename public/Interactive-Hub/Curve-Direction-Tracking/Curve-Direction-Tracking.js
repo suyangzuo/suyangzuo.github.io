@@ -26,6 +26,7 @@
     运算符: "#f472b6",
     括号: "#9a93f9ff",
     冒号: "gray",
+    等号: "lightslategray",
     标题: "#7dd3fc",
     点数字: "#86b2ffff",
     上标数字: "#74cc97ff",
@@ -42,7 +43,12 @@
     点UV: "curve-direction-tracking-points",
     参数t: "curve-direction-tracking-t",
     显示切线: "curve-direction-tracking-show-tangent",
+    显示法线: "curve-direction-tracking-show-normal",
+    显示箭头: "curve-direction-tracking-show-arrow",
+    显示小球: "curve-direction-tracking-show-ball",
     显示计算过程: "curve-direction-tracking-show-calculation",
+    显示t坐标: "curve-direction-tracking-show-t-coord",
+    显示控制点坐标: "curve-direction-tracking-show-control-point-coord",
   };
 
   const clamp01 = (v) => Math.min(1, Math.max(0, v));
@@ -52,7 +58,12 @@
       点UV: 默认点UV.map((p) => ({ ...p })),
       参数t: 0,
       显示切线: false,
+      显示法线: false,
+      显示箭头: true,
+      显示小球: false,
       显示计算过程: false,
+      显示t坐标: false,
+      显示控制点坐标: true,
     };
 
     try {
@@ -99,6 +110,41 @@
       console.warn("读取显示计算过程失败", err);
     }
 
+    try {
+      const rawToggle = localStorage.getItem(存储键.显示法线);
+      if (rawToggle !== null) 结果.显示法线 = rawToggle === "1" || rawToggle === "true";
+    } catch (err) {
+      console.warn("读取显示法线失败", err);
+    }
+
+    try {
+      const rawToggle = localStorage.getItem(存储键.显示箭头);
+      if (rawToggle !== null) 结果.显示箭头 = rawToggle === "1" || rawToggle === "true";
+    } catch (err) {
+      console.warn("读取显示箭头失败", err);
+    }
+
+    try {
+      const rawToggle = localStorage.getItem(存储键.显示小球);
+      if (rawToggle !== null) 结果.显示小球 = rawToggle === "1" || rawToggle === "true";
+    } catch (err) {
+      console.warn("读取显示小球失败", err);
+    }
+
+    try {
+      const rawToggle = localStorage.getItem(存储键.显示t坐标);
+      if (rawToggle !== null) 结果.显示t坐标 = rawToggle === "1" || rawToggle === "true";
+    } catch (err) {
+      console.warn("读取显示t坐标失败", err);
+    }
+
+    try {
+      const rawToggle = localStorage.getItem(存储键.显示控制点坐标);
+      if (rawToggle !== null) 结果.显示控制点坐标 = rawToggle === "1" || rawToggle === "true";
+    } catch (err) {
+      console.warn("读取显示控制点坐标失败", err);
+    }
+
     return 结果;
   }
 
@@ -112,9 +158,27 @@
     点集: [],
     参数t: 初始存储.参数t,
     显示切线: 初始存储.显示切线,
+    显示法线: 初始存储.显示法线,
+    显示箭头: 初始存储.显示箭头,
+    显示小球: 初始存储.显示小球,
     显示计算过程: 初始存储.显示计算过程,
+    显示t坐标: 初始存储.显示t坐标,
+    显示控制点坐标: 初始存储.显示控制点坐标,
     切线过渡: { 值: 初始存储.显示切线 ? 1 : 0, 目标: 初始存储.显示切线 ? 1 : 0, 上次: performance.now() },
+    法线过渡: { 值: 初始存储.显示法线 ? 1 : 0, 目标: 初始存储.显示法线 ? 1 : 0, 上次: performance.now() },
+    箭头过渡: { 值: 初始存储.显示箭头 ? 1 : 0, 目标: 初始存储.显示箭头 ? 1 : 0, 上次: performance.now() },
+    小球过渡: { 值: 初始存储.显示小球 ? 1 : 0, 目标: 初始存储.显示小球 ? 1 : 0, 上次: performance.now() },
     过程过渡: { 值: 初始存储.显示计算过程 ? 1 : 0, 目标: 初始存储.显示计算过程 ? 1 : 0, 上次: performance.now() },
+    t坐标过渡: { 值: 初始存储.显示t坐标 ? 1 : 0, 目标: 初始存储.显示t坐标 ? 1 : 0, 上次: performance.now() },
+    控制点坐标过渡: {
+      值: 初始存储.显示控制点坐标 ? 1 : 0,
+      目标: 初始存储.显示控制点坐标 ? 1 : 0,
+      上次: performance.now(),
+    },
+    小球图像: null,
+    小球旋转角度: 0,
+    上次曲线点: null,
+    上次t值: null,
     拖拽索引: -1,
     悬停索引: -1,
     控件拖拽: "",
@@ -124,6 +188,9 @@
       栏: { x: 0, y: 0, w: 0, h: 控件条配置.高度 },
       滑块: { x: 0, y: 0, w: 0 },
       开关: { x: 0, y: 0, w: 0, h: 0, 标签宽: 0 },
+      法线: { x: 0, y: 0, w: 0, h: 0, 标签宽: 0 },
+      箭头: { x: 0, y: 0, w: 0, h: 0, 标签宽: 0 },
+      小球: { x: 0, y: 0, w: 0, h: 0, 标签宽: 0 },
       过程: { x: 0, y: 0, w: 0, h: 0, 标签宽: 0 },
     },
   };
@@ -158,6 +225,51 @@
     } catch (err) {
       console.warn("保存显示计算过程失败", err);
     }
+  }
+
+  function 保存显示法线到本地(值) {
+    try {
+      localStorage.setItem(存储键.显示法线, 值 ? "1" : "0");
+    } catch (err) {
+      console.warn("保存显示法线失败", err);
+    }
+  }
+
+  function 保存显示箭头到本地(值) {
+    try {
+      localStorage.setItem(存储键.显示箭头, 值 ? "1" : "0");
+    } catch (err) {
+      console.warn("保存显示箭头失败", err);
+    }
+  }
+
+  function 保存显示小球到本地(值) {
+    try {
+      localStorage.setItem(存储键.显示小球, 值 ? "1" : "0");
+    } catch (err) {
+      console.warn("保存显示小球失败", err);
+    }
+  }
+
+  function 保存显示t坐标到本地(值) {
+    try {
+      localStorage.setItem(存储键.显示t坐标, 值 ? "1" : "0");
+    } catch (err) {
+      console.warn("保存显示t坐标失败", err);
+    }
+  }
+
+  function 保存显示控制点坐标到本地(值) {
+    try {
+      localStorage.setItem(存储键.显示控制点坐标, 值 ? "1" : "0");
+    } catch (err) {
+      console.warn("保存显示控制点坐标失败", err);
+    }
+  }
+
+  function 加载小球图像() {
+    状态.小球图像 = new Image();
+    状态.小球图像.src = "/Images/Blogs/Canvas API/动画范例-01/ball.webp";
   }
 
   function 混合色(c1, c2, t) {
@@ -212,7 +324,8 @@
     if (ch === "|") return 过程颜色.绝对值线;
     if (/\d/.test(ch)) return 过程颜色.数字;
     if (ch === ".") return 过程颜色.小数点;
-    if (/[+\-×/=|]/.test(ch) || ch === "-") return 过程颜色.运算符;
+    if (ch === "=") return 过程颜色.等号; // "="使用灰色（和冒号一样的颜色）
+    if (/[+\-×/|]/.test(ch) || ch === "-") return 过程颜色.运算符;
     if (/[()\[\]]/.test(ch)) return 过程颜色.括号;
     if (ch === ":") return 过程颜色.冒号;
     return 过程颜色.文本;
@@ -241,7 +354,7 @@
         ctx.fillStyle = 选择颜色(token, ch);
 
         const ch宽 = ctx.measureText(ch).width * scale;
-        const 间距 = 运算符间距(ch);
+        const 间距 = token.noLeftMargin ? 0 : 运算符间距(ch); // 如果设置了noLeftMargin，则不添加左边距
         const 前距 = 间距;
         const 后距 = 间距;
         光标x += 前距;
@@ -345,11 +458,14 @@
     const 切线长 = Math.hypot(切向量.x, 切向量.y) || 1;
     const 切线单位x = 切向量.x / 切线长;
     const 切线单位y = 切向量.y / 切线长;
+    const 法线单位x = -切线单位y;
+    const 法线单位y = 切线单位x;
+
     if (状态.显示切线) {
       const 半长 = 350;
       上下文.save();
       上下文.strokeStyle = "gold";
-      上下文.lineWidth = 0.75;
+      上下文.lineWidth = 1;
       上下文.beginPath();
       上下文.moveTo(曲线点.x - 切线单位x * 半长, 曲线点.y - 切线单位y * 半长);
       上下文.lineTo(曲线点.x + 切线单位x * 半长, 曲线点.y + 切线单位y * 半长);
@@ -357,7 +473,31 @@
       上下文.restore();
     }
 
-    绘制箭头(曲线点.x, 曲线点.y, Math.atan2(切线单位y, 切线单位x));
+    // 绘制顺序：先绘制小球、再绘制法线，最后绘制箭头
+    if (状态.显示小球 && 状态.小球图像 && 状态.小球图像.complete) {
+      绘制小球(曲线点, 法线单位x, 法线单位y, 状态.参数t);
+    }
+
+    if (状态.显示法线) {
+      const 半长 = 350;
+      上下文.save();
+      上下文.strokeStyle = "#ff6b6b"; // 法线颜色（红色，与切线不同）
+      上下文.lineWidth = 1; // 与切线宽度相同
+      上下文.beginPath();
+      上下文.moveTo(曲线点.x - 法线单位x * 半长, 曲线点.y - 法线单位y * 半长);
+      上下文.lineTo(曲线点.x + 法线单位x * 半长, 曲线点.y + 法线单位y * 半长);
+      上下文.stroke();
+      上下文.restore();
+    }
+
+    if (状态.显示箭头) {
+      绘制箭头(曲线点.x, 曲线点.y, Math.atan2(切线单位y, 切线单位x));
+    }
+
+    if (状态.显示t坐标) {
+      绘制t坐标(曲线点.x, 曲线点.y, 法线单位x, 法线单位y);
+    }
+
     绘制控制点();
     绘制控件条();
     绘制计算过程();
@@ -436,11 +576,74 @@
       上下文.fillStyle = 标注颜色.数字;
       上下文.fillText(数字部分, 起始x + 字母宽度 + 1, 锚点y);
       上下文.restore();
+
+      // 绘制控制点坐标（在点的左下方）
+      if (状态.显示控制点坐标) {
+        // 计算左下方的位置（相对于点的位置）
+        // 左下方意味着：x向左偏移，y向下偏移
+        // 使用绘制t坐标函数，但直接指定位置，不依赖法线方向
+        const 偏移x = -60; // 向左偏移
+        const 偏移y = 15; // 向下偏移
+        const 文本x = 点.x + 偏移x;
+        const 文本y = 点.y + 偏移y;
+
+        上下文.save();
+        上下文.font = "14px 'Google Sans Code', Consolas, Noto Sans SC, 微软雅黑, sans-serif";
+        上下文.textAlign = "left";
+        上下文.textBaseline = "top";
+
+        // 定义颜色（与t坐标一致）
+        const 标签颜色 = "#60a5fa"; // x或y的颜色
+        const 冒号颜色 = "#9ca3af"; // 冒号的颜色
+        const 数字颜色 = "#e6b"; // 数字的颜色
+
+        // 格式化坐标值（保留整数）
+        const x值 = Math.round(点.x);
+        const y值 = Math.round(点.y);
+        const x值文本 = x值.toString();
+        const y值文本 = y值.toString();
+
+        // 测量文本宽度
+        const x标签宽 = 上下文.measureText("x").width;
+        const y标签宽 = 上下文.measureText("y").width;
+        const 冒号宽 = 上下文.measureText(":").width;
+        const x数字宽 = 上下文.measureText(x值文本).width;
+        const y数字宽 = 上下文.measureText(y值文本).width;
+
+        // 计算最大宽度（用于对齐）
+        const 最大标签宽 = Math.max(x标签宽, y标签宽);
+        const 最大数字宽 = Math.max(x数字宽, y数字宽);
+        const 行高 = 18;
+
+        // 绘制x行
+        let 当前x = 文本x;
+        上下文.fillStyle = 标签颜色;
+        上下文.fillText("x", 当前x, 文本y);
+        当前x += 最大标签宽 + 2; // 冒号左边2的边距
+        上下文.fillStyle = 冒号颜色;
+        上下文.fillText(":", 当前x, 文本y);
+        当前x += 冒号宽 + 4; // 冒号右边4的边距
+        上下文.fillStyle = 数字颜色;
+        上下文.fillText(x值文本, 当前x, 文本y);
+
+        // 绘制y行
+        当前x = 文本x;
+        上下文.fillStyle = 标签颜色;
+        上下文.fillText("y", 当前x, 文本y + 行高);
+        当前x += 最大标签宽 + 2; // 冒号左边2的边距
+        上下文.fillStyle = 冒号颜色;
+        上下文.fillText(":", 当前x, 文本y + 行高);
+        当前x += 冒号宽 + 4; // 冒号右边4的边距
+        上下文.fillStyle = 数字颜色;
+        上下文.fillText(y值文本, 当前x, 文本y + 行高);
+
+        上下文.restore();
+      }
     });
   }
 
   function 绘制控件条() {
-    const { 滑块, 开关, 过程 } = 状态.控件布局;
+    const { 滑块, 开关, 法线, 箭头, 小球, 控制点坐标, t坐标, 过程 } = 状态.控件布局;
     上下文.save();
 
     // t 滑块标题
@@ -507,22 +710,102 @@
       上下文.fillText(小数部分, 起始x + 整数宽 + 点宽, 滑块.y);
     }
 
-    // 开关
-    const now = performance.now();
-    const 过渡 = 状态.切线过渡;
-    const dt = Math.min(1000, now - 过渡.上次);
-    const step = Math.min(1, dt / 100);
-    过渡.值 += (过渡.目标 - 过渡.值) * step;
-    过渡.上次 = now;
-    const 需要继续动画 = Math.abs(过渡.目标 - 过渡.值) > 0.001;
-    if (需要继续动画) 请求重绘();
+    // 绘制复选框区域的背景
+    const 复选框区宽度 = Math.min(250, 状态.宽度 / 6);
+    const 开关高 = 24;
+    const 行间距 = 12;
+    const 内边距 = 20;
+    const 复选框行数 = 7;
+    const 复选框内容高度 = 开关高 * 复选框行数 + 行间距 * (复选框行数 - 1);
+    const 复选框区高度 = 复选框内容高度 + 内边距 * 2;
+    const 复选框区右 = 状态.宽度 - 控件条配置.边距;
+    const 复选框区下 = 状态.高度 - 控件条配置.边距;
+    const 复选框区顶 = 复选框区下 - 复选框区高度;
+    const 复选框区左 = 复选框区右 - 复选框区宽度;
 
+    const now = performance.now();
+
+    // 绘制切线复选框
+    const 切线过渡 = 状态.切线过渡;
+    const dt切线 = Math.min(1000, now - 切线过渡.上次);
+    const step切线 = Math.min(1, dt切线 / 100);
+    切线过渡.值 += (切线过渡.目标 - 切线过渡.值) * step切线;
+    切线过渡.上次 = now;
+    if (Math.abs(切线过渡.目标 - 切线过渡.值) > 0.001) 请求重绘();
+
+    绘制单个复选框(开关, 切线过渡, "切线");
+
+    // 绘制法线复选框
+    const 法线过渡 = 状态.法线过渡;
+    const dt法线 = Math.min(1000, now - 法线过渡.上次);
+    const step法线 = Math.min(1, dt法线 / 100);
+    法线过渡.值 += (法线过渡.目标 - 法线过渡.值) * step法线;
+    法线过渡.上次 = now;
+    if (Math.abs(法线过渡.目标 - 法线过渡.值) > 0.001) 请求重绘();
+
+    绘制单个复选框(法线, 法线过渡, "法线");
+
+    // 绘制箭头复选框
+    const 箭头过渡 = 状态.箭头过渡;
+    const dt箭头 = Math.min(1000, now - 箭头过渡.上次);
+    const step箭头 = Math.min(1, dt箭头 / 100);
+    箭头过渡.值 += (箭头过渡.目标 - 箭头过渡.值) * step箭头;
+    箭头过渡.上次 = now;
+    if (Math.abs(箭头过渡.目标 - 箭头过渡.值) > 0.001) 请求重绘();
+
+    绘制单个复选框(箭头, 箭头过渡, "箭头");
+
+    // 绘制小球复选框
+    const 小球过渡 = 状态.小球过渡;
+    const dt小球 = Math.min(1000, now - 小球过渡.上次);
+    const step小球 = Math.min(1, dt小球 / 100);
+    小球过渡.值 += (小球过渡.目标 - 小球过渡.值) * step小球;
+    小球过渡.上次 = now;
+    if (Math.abs(小球过渡.目标 - 小球过渡.值) > 0.001) 请求重绘();
+
+    绘制单个复选框(小球, 小球过渡, "小球");
+
+    // 绘制控制点坐标复选框
+    const 控制点坐标过渡 = 状态.控制点坐标过渡;
+    const dt控制点坐标 = Math.min(1000, now - 控制点坐标过渡.上次);
+    const step控制点坐标 = Math.min(1, dt控制点坐标 / 100);
+    控制点坐标过渡.值 += (控制点坐标过渡.目标 - 控制点坐标过渡.值) * step控制点坐标;
+    控制点坐标过渡.上次 = now;
+    if (Math.abs(控制点坐标过渡.目标 - 控制点坐标过渡.值) > 0.001) 请求重绘();
+
+    绘制单个复选框(控制点坐标, 控制点坐标过渡, "控制点坐标");
+
+    // 绘制t坐标复选框
+    const t坐标过渡 = 状态.t坐标过渡;
+    const dtt坐标 = Math.min(1000, now - t坐标过渡.上次);
+    const stept坐标 = Math.min(1, dtt坐标 / 100);
+    t坐标过渡.值 += (t坐标过渡.目标 - t坐标过渡.值) * stept坐标;
+    t坐标过渡.上次 = now;
+    if (Math.abs(t坐标过渡.目标 - t坐标过渡.值) > 0.001) 请求重绘();
+
+    绘制t坐标复选框(t坐标, t坐标过渡);
+
+    // 计算过程复选框
+    const 过程过渡 = 状态.过程过渡;
+    const dt过程 = Math.min(1000, now - 过程过渡.上次);
+    const step过程 = Math.min(1, dt过程 / 100);
+    过程过渡.值 += (过程过渡.目标 - 过程过渡.值) * step过程;
+    过程过渡.上次 = now;
+    const 过程动画中 = Math.abs(过程过渡.目标 - 过程过渡.值) > 0.001;
+    if (过程动画中) 请求重绘();
+
+    绘制单个复选框(过程, 过程过渡, "计算过程");
+
+    上下文.restore();
+  }
+
+  function 绘制单个复选框(布局, 过渡, 标签文本) {
     const 关轨道 = "rgba(55,65,81,0.9)";
-    const 开轨渐变 = 上下文.createLinearGradient(开关.x, 开关.y, 开关.x + 开关.w, 开关.y);
+    const 开轨渐变 = 上下文.createLinearGradient(布局.x, 布局.y, 布局.x + 布局.w, 布局.y);
     开轨渐变.addColorStop(0, "#22acc1ff");
     开轨渐变.addColorStop(1, "#149268ff");
     const 轨阴影 = "rgba(15,23,42,0.45)";
-    绘制圆角矩形(开关.x, 开关.y, 开关.w, 开关.h, 开关.h / 2, () => {
+    绘制圆角矩形(布局.x, 布局.y, 布局.w, 布局.h, 布局.h / 2, () => {
       上下文.fillStyle = 关轨道;
       上下文.shadowColor = 轨阴影;
       上下文.shadowBlur = 18;
@@ -539,9 +822,9 @@
     });
 
     const 开关内边距 = 5;
-    const 旋钮半径 = (开关.h - 开关内边距 * 2) / 2;
-    const 旋钮中心x = 开关.x + 开关内边距 + 旋钮半径 + (开关.w - 开关内边距 * 2 - 旋钮半径 * 2) * 过渡.值;
-    const 旋钮中心y = 开关.y + 开关.h / 2;
+    const 旋钮半径 = (布局.h - 开关内边距 * 2) / 2;
+    const 旋钮中心x = 布局.x + 开关内边距 + 旋钮半径 + (布局.w - 开关内边距 * 2 - 旋钮半径 * 2) * 过渡.值;
+    const 旋钮中心y = 布局.y + 布局.h / 2;
     上下文.fillStyle = "#ffffff";
     上下文.strokeStyle = "rgba(0,0,0,0.1)";
     上下文.lineWidth = 1;
@@ -554,7 +837,6 @@
     上下文.stroke();
     上下文.shadowColor = "transparent";
 
-    // 小内点模拟 iOS 风格指示
     上下文.fillStyle = 混合色("#9ca3af", "#0f172a", 过渡.值);
     上下文.beginPath();
     上下文.arc(旋钮中心x, 旋钮中心y, 3, 0, Math.PI * 2);
@@ -564,29 +846,23 @@
     上下文.font = "14px 'Google Sans Code', Consolas, Noto Sans SC, 微软雅黑, sans-serif";
     上下文.textAlign = "left";
     上下文.textBaseline = "middle";
-    上下文.fillText("切线", 开关.x + 开关.w + 10, 开关.y + 开关.h / 2);
+    上下文.fillText(标签文本, 布局.x + 布局.w + 10, 布局.y + 布局.h / 2);
+  }
 
-    // 计算过程复选框
-    const 过程过渡 = 状态.过程过渡;
-    const dt过程 = Math.min(1000, now - 过程过渡.上次);
-    const step过程 = Math.min(1, dt过程 / 100);
-    过程过渡.值 += (过程过渡.目标 - 过程过渡.值) * step过程;
-    过程过渡.上次 = now;
-    const 过程动画中 = Math.abs(过程过渡.目标 - 过程过渡.值) > 0.001;
-    if (过程动画中) 请求重绘();
-
-    绘制圆角矩形(过程.x, 过程.y, 过程.w, 过程.h, 过程.h / 2, () => {
-      const offTrack = "rgba(55,65,81,0.9)";
-      const onGrad = 上下文.createLinearGradient(过程.x, 过程.y, 过程.x + 过程.w, 过程.y);
-      onGrad.addColorStop(0, "#22acc1ff");
-      onGrad.addColorStop(1, "#149268ff");
-      上下文.fillStyle = offTrack;
-      上下文.shadowColor = "rgba(15,23,42,0.45)";
+  function 绘制t坐标复选框(布局, 过渡) {
+    const 关轨道 = "rgba(55,65,81,0.9)";
+    const 开轨渐变 = 上下文.createLinearGradient(布局.x, 布局.y, 布局.x + 布局.w, 布局.y);
+    开轨渐变.addColorStop(0, "#22acc1ff");
+    开轨渐变.addColorStop(1, "#149268ff");
+    const 轨阴影 = "rgba(15,23,42,0.45)";
+    绘制圆角矩形(布局.x, 布局.y, 布局.w, 布局.h, 布局.h / 2, () => {
+      上下文.fillStyle = 关轨道;
+      上下文.shadowColor = 轨阴影;
       上下文.shadowBlur = 18;
       上下文.shadowOffsetY = 2;
       上下文.fill();
-      上下文.globalAlpha = 过程过渡.值;
-      上下文.fillStyle = onGrad;
+      上下文.globalAlpha = 过渡.值;
+      上下文.fillStyle = 开轨渐变;
       上下文.fill();
       上下文.globalAlpha = 1;
       上下文.shadowColor = "transparent";
@@ -594,31 +870,122 @@
       上下文.lineWidth = 1;
       上下文.stroke();
     });
-    const knobPad = 5;
-    const knobR = (过程.h - knobPad * 2) / 2;
-    const knobCx = 过程.x + knobPad + knobR + (过程.w - knobPad * 2 - knobR * 2) * 过程过渡.值;
-    const knobCy = 过程.y + 过程.h / 2;
+
+    const 开关内边距 = 5;
+    const 旋钮半径 = (布局.h - 开关内边距 * 2) / 2;
+    const 旋钮中心x = 布局.x + 开关内边距 + 旋钮半径 + (布局.w - 开关内边距 * 2 - 旋钮半径 * 2) * 过渡.值;
+    const 旋钮中心y = 布局.y + 布局.h / 2;
     上下文.fillStyle = "#ffffff";
     上下文.strokeStyle = "rgba(0,0,0,0.1)";
     上下文.lineWidth = 1;
+    上下文.shadowColor = "rgba(0,0,0,0.3)";
+    上下文.shadowBlur = 6;
+    上下文.shadowOffsetY = 2;
     上下文.beginPath();
-    上下文.arc(knobCx, knobCy, knobR, 0, Math.PI * 2);
+    上下文.arc(旋钮中心x, 旋钮中心y, 旋钮半径, 0, Math.PI * 2);
     上下文.fill();
     上下文.stroke();
-    上下文.fillStyle = 混合色("#9ca3af", "#0f172a", 过程过渡.值);
+    上下文.shadowColor = "transparent";
+
+    上下文.fillStyle = 混合色("#9ca3af", "#0f172a", 过渡.值);
     上下文.beginPath();
-    上下文.arc(knobCx, knobCy, 3, 0, Math.PI * 2);
+    上下文.arc(旋钮中心x, 旋钮中心y, 3, 0, Math.PI * 2);
     上下文.fill();
 
-    上下文.fillStyle = "#e2e8f0";
-    上下文.fillText("计算过程", 过程.x + 过程.w + 10, 过程.y + 过程.h / 2);
+    // 绘制"t坐标"标签，其中"t"和"坐标"用不同颜色，"t"有2的右边距
+    上下文.font = "14px 'Google Sans Code', Consolas, Noto Sans SC, 微软雅黑, sans-serif";
+    上下文.textAlign = "left";
+    上下文.textBaseline = "middle";
+    const 标签x = 布局.x + 布局.w + 10;
+    const 标签y = 布局.y + 布局.h / 2;
 
-    上下文.restore();
+    // 绘制"t"（使用标签颜色）
+    上下文.fillStyle = "#60a5fa";
+    上下文.fillText("t", 标签x, 标签y);
+
+    // 绘制"坐标"（使用默认颜色）
+    const t宽 = 上下文.measureText("t").width;
+    上下文.fillStyle = "#e2e8f0";
+    上下文.fillText("坐标", 标签x + t宽 + 2, 标签y);
+  }
+
+  function 绘制带括号标题(标题文本, 括号内容, 右对齐x, y) {
+    // 绘制"标题文本(括号内容)"，其中"标题文本"、"()"、"括号内容"分别用不同颜色
+    // "("左边是4的边距，右边是1的边距，")"左边是1的边距，右边是0的边距
+    // 右对齐x是标题右边缘的位置（冒号的位置）
+
+    // 计算标题的总宽度
+    const 标题宽 = 上下文.measureText(标题文本).width;
+    const 左括号宽 = 上下文.measureText("(").width;
+    const 括号内容宽 = 上下文.measureText(括号内容).width;
+    const 右括号宽 = 上下文.measureText(")").width;
+    const 总宽 = 标题宽 + 4 + 左括号宽 + 1 + 括号内容宽 + 1 + 右括号宽;
+
+    // 从右对齐位置向左偏移，实现右对齐
+    let 当前x = 右对齐x - 总宽;
+
+    // 绘制标题文本
+    上下文.fillStyle = 过程颜色.标题;
+    上下文.fillText(标题文本, 当前x, y);
+    当前x += 上下文.measureText(标题文本).width;
+
+    // 绘制"("（左边4px边距，右边1px边距）
+    当前x += 4;
+    上下文.fillStyle = 过程颜色.括号;
+    上下文.fillText("(", 当前x, y);
+    当前x += 上下文.measureText("(").width + 1;
+
+    // 绘制括号内容（使用点数字颜色）
+    上下文.fillStyle = 过程颜色.点数字;
+    上下文.fillText(括号内容, 当前x, y);
+    当前x += 上下文.measureText(括号内容).width;
+
+    // 绘制")"（左边1px边距，右边0px边距）
+    当前x += 1;
+    上下文.fillStyle = 过程颜色.括号;
+    上下文.fillText(")", 当前x, y);
+
+    return 右对齐x; // 返回右对齐位置（冒号位置）
+  }
+
+  function 格式化数值(值, 小数位数 = 2) {
+    return 值.toFixed(小数位数).replace(/\.?0+$/, "");
   }
 
   function 绘制计算过程() {
     if (!状态.显示计算过程) return;
     const { 滑块 } = 状态.控件布局;
+    const [p0, p1, p2, p3] = 状态.点集;
+    const t = 状态.参数t;
+
+    // 计算实际值
+    const mt = 1 - t;
+    const mt平方 = mt * mt;
+    const t平方 = t * t;
+
+    // 计算t坐标（曲线上的点坐标）
+    const 曲线点 = 计算贝塞尔点(t, p0, p1, p2, p3);
+
+    // 计算切向量
+    const 切向量 = 计算贝塞尔切线(t, p0, p1, p2, p3);
+    const 切线长 = Math.hypot(切向量.x, 切向量.y) || 1;
+    const 切线单位x = 切向量.x / 切线长;
+    const 切线单位y = 切向量.y / 切线长;
+
+    // 计算归一化值
+    const 归一化x = 切线单位x;
+    const 归一化y = 切线单位y;
+
+    // 计算法线单位向量
+    const 法线单位x = -切线单位y;
+    const 法线单位y = 切线单位x;
+
+    // 计算切线弧度
+    const 切线弧度 = Math.atan2(切线单位y, 切线单位x);
+
+    // 计算法线弧度
+    const 法线弧度 = Math.atan2(法线单位y, 法线单位x);
+
     上下文.save();
     上下文.font = "14px 'Google Sans Code', Consolas, Noto Sans SC, 微软雅黑, sans-serif";
     上下文.textAlign = "left";
@@ -626,68 +993,270 @@
 
     const 行间距 = 6;
     const 行高 = 18;
-    const 行数据 = [
-      {
-        标题: "切向量",
-        正文: [
-          { text: ": d = 3×(" },
-          { text: "1" },
-          { text: "-" },
-          { text: "t" },
-          { text: ")" },
-          { text: "2", superscript: true, colorType: "上标数字" },
-          { text: "×(" },
-          { text: "p" },
-          { text: "1", colorType: "点数字" },
-          { text: "-" },
-          { text: "p" },
-          { text: "0", colorType: "点数字" },
-          { text: ")+6×(" },
-          { text: "1" },
-          { text: "-" },
-          { text: "t" },
-          { text: ")×t×(" },
-          { text: "p" },
-          { text: "2", colorType: "点数字" },
-          { text: "-" },
-          { text: "p" },
-          { text: "1", colorType: "点数字" },
-          { text: ")+3×t" },
-          { text: "2", superscript: true, colorType: "上标数字" },
-          { text: "×(" },
-          { text: "p" },
-          { text: "3", colorType: "点数字" },
-          { text: "-" },
-          { text: "p" },
-          { text: "2", colorType: "点数字" },
-          { text: ")" },
-        ],
-      },
-      {
-        标题: "归一化",
-        正文: [{ text: ": u = d/|d|" }],
-      },
-      {
-        标题: "弧度",
-        正文: [
-          { text: ": θ = " },
-          { text: "atan2", colorType: "函数" },
-          { text: "(u.y, u.x)" },
-        ],
-      },
-    ];
 
+    // 构建行数据
+    const 行数据 = [];
+
+    // 切向量(dx) - 第一行
+    const dx项1 = 3 * mt平方 * (p1.x - p0.x);
+    const dx项2 = 6 * mt * t * (p2.x - p1.x);
+    const dx项3 = 3 * t平方 * (p3.x - p2.x);
+    const dx结果 = dx项1 + dx项2 + dx项3;
+
+    行数据.push({
+      标题类型: "普通",
+      标题文本: "切向量",
+      正文: [
+        { text: ": d" },
+        { text: "x", colorType: "点数字" },
+        { text: " = " },
+        { text: 格式化数值(3) },
+        { text: "×(" },
+        { text: 格式化数值(1) },
+        { text: "-" },
+        { text: 格式化数值(t) },
+        { text: ")" },
+        { text: "2", superscript: true, colorType: "上标数字" },
+        { text: "×(" },
+        { text: 格式化数值(p1.x) },
+        { text: "-" },
+        { text: 格式化数值(p0.x) },
+        { text: ")+" },
+        { text: 格式化数值(6) },
+        { text: "×(" },
+        { text: 格式化数值(1) },
+        { text: "-" },
+        { text: 格式化数值(t) },
+        { text: ")×" },
+        { text: 格式化数值(t) },
+        { text: "×(" },
+        { text: 格式化数值(p2.x) },
+        { text: "-" },
+        { text: 格式化数值(p1.x) },
+        { text: ")+" },
+        { text: 格式化数值(3) },
+        { text: "×" },
+        { text: 格式化数值(t) },
+        { text: "2", superscript: true, colorType: "上标数字" },
+        { text: "×(" },
+        { text: 格式化数值(p3.x) },
+        { text: "-" },
+        { text: 格式化数值(p2.x) },
+        { text: ") = " },
+        { text: 格式化数值(dx结果) },
+      ],
+    });
+
+    // 切向量(dy) - 第二行
+    const dy项1 = 3 * mt平方 * (p1.y - p0.y);
+    const dy项2 = 6 * mt * t * (p2.y - p1.y);
+    const dy项3 = 3 * t平方 * (p3.y - p2.y);
+    const dy结果 = dy项1 + dy项2 + dy项3;
+
+    行数据.push({
+      标题类型: "普通",
+      标题文本: "切向量",
+      正文: [
+        { text: ": d" },
+        { text: "y", colorType: "点数字" },
+        { text: " = " },
+        { text: 格式化数值(3) },
+        { text: "×(" },
+        { text: 格式化数值(1) },
+        { text: "-" },
+        { text: 格式化数值(t) },
+        { text: ")" },
+        { text: "2", superscript: true, colorType: "上标数字" },
+        { text: "×(" },
+        { text: 格式化数值(p1.y) },
+        { text: "-" },
+        { text: 格式化数值(p0.y) },
+        { text: ")+" },
+        { text: 格式化数值(6) },
+        { text: "×(" },
+        { text: 格式化数值(1) },
+        { text: "-" },
+        { text: 格式化数值(t) },
+        { text: ")×" },
+        { text: 格式化数值(t) },
+        { text: "×(" },
+        { text: 格式化数值(p2.y) },
+        { text: "-" },
+        { text: 格式化数值(p1.y) },
+        { text: ")+" },
+        { text: 格式化数值(3) },
+        { text: "×" },
+        { text: 格式化数值(t) },
+        { text: "2", superscript: true, colorType: "上标数字" },
+        { text: "×(" },
+        { text: 格式化数值(p3.y) },
+        { text: "-" },
+        { text: 格式化数值(p2.y) },
+        { text: ") = " },
+        { text: 格式化数值(dy结果) },
+      ],
+    });
+
+    // 切向量长度 - 第三行
+    行数据.push({
+      标题类型: "普通",
+      标题文本: "切向量长度",
+      正文: [
+        { text: ": " },
+        { text: "|", noLeftMargin: true },
+        { text: "d" },
+        { text: "|", noLeftMargin: true },
+        { text: " = " },
+        { text: "√", colorType: "函数" },
+        { text: "(" },
+        { text: "d" },
+        { text: "x", colorType: "点数字" },
+        { text: "2", superscript: true, colorType: "上标数字" },
+        { text: "+d" },
+        { text: "y", colorType: "点数字" },
+        { text: "2", superscript: true, colorType: "上标数字" },
+        { text: ") = " },
+        { text: "√", colorType: "函数" },
+        { text: "(" },
+        { text: 格式化数值(切向量.x) },
+        { text: "2", superscript: true, colorType: "上标数字" },
+        { text: "+" },
+        { text: 格式化数值(切向量.y) },
+        { text: "2", superscript: true, colorType: "上标数字" },
+        { text: ") = " },
+        { text: "√", colorType: "函数" },
+        { text: "(" },
+        { text: 格式化数值(切向量.x * 切向量.x + 切向量.y * 切向量.y) },
+        { text: ") = " },
+        { text: 格式化数值(切线长) },
+      ],
+    });
+
+    // 归一化(u.x) - 第四行
+    行数据.push({
+      标题类型: "普通",
+      标题文本: "归一化",
+      正文: [
+        { text: ": u" },
+        { text: ".x", colorType: "点数字" },
+        { text: " = d" },
+        { text: "x", colorType: "点数字" },
+        { text: "/|d| = " },
+        { text: 格式化数值(切向量.x) },
+        { text: "/" },
+        { text: 格式化数值(切线长) },
+        { text: " = " },
+        { text: 格式化数值(归一化x) },
+      ],
+    });
+
+    // 归一化(u.y) - 第五行
+    行数据.push({
+      标题类型: "普通",
+      标题文本: "归一化",
+      正文: [
+        { text: ": u" },
+        { text: ".y", colorType: "点数字" },
+        { text: " = d" },
+        { text: "y", colorType: "点数字" },
+        { text: "/|d| = " },
+        { text: 格式化数值(切向量.y) },
+        { text: "/" },
+        { text: 格式化数值(切线长) },
+        { text: " = " },
+        { text: 格式化数值(归一化y) },
+      ],
+    });
+
+    // 切线弧度 - 第六行
+    行数据.push({
+      标题类型: "普通",
+      标题文本: "切线弧度",
+      正文: [
+        { text: ": θ = " },
+        { text: "atan2", colorType: "函数" },
+        { text: "(" },
+        { text: 格式化数值(归一化y) },
+        { text: ", " },
+        { text: 格式化数值(归一化x) },
+        { text: ") = " },
+        { text: 格式化数值(切线弧度) },
+      ],
+    });
+
+    // 法线弧度 - 第七行
+    行数据.push({
+      标题类型: "普通",
+      标题文本: "法线弧度",
+      正文: [
+        { text: ": θ = " },
+        { text: "atan2", colorType: "函数" },
+        { text: "(" },
+        { text: 格式化数值(法线单位y) },
+        { text: ", " },
+        { text: 格式化数值(法线单位x) },
+        { text: ") = " },
+        { text: 格式化数值(法线弧度) },
+      ],
+    });
+
+    // 计算标题最大宽度（包括带括号的标题）
+    let 标题最大宽 = 0;
+    行数据.forEach((行) => {
+      if (行.标题类型 === "带括号") {
+        const 标题宽 = 上下文.measureText(行.标题文本).width;
+        const 左括号宽 = 上下文.measureText("(").width;
+        const 括号内容宽 = 上下文.measureText(行.括号内容).width;
+        const 右括号宽 = 上下文.measureText(")").width;
+        // 标题 + 4 + ( + 1 + 内容 + 1 + )（")"右边距为0）
+        const 总宽 = 标题宽 + 4 + 左括号宽 + 1 + 括号内容宽 + 1 + 右括号宽;
+        标题最大宽 = Math.max(标题最大宽, 总宽);
+      } else {
+        标题最大宽 = Math.max(标题最大宽, 上下文.measureText(行.标题文本).width);
+      }
+    });
+
+    // 收集所有数字，找到最长的数字宽度
+    const 所有数字 = [];
+    行数据.forEach((行) => {
+      行.正文.forEach((token) => {
+        if (typeof token === "object" && token.text) {
+          // 检查是否是数字（包括负数和小数）
+          const 数字匹配 = token.text.match(/^-?\d+\.?\d*$/);
+          if (数字匹配) {
+            所有数字.push(token.text);
+          }
+        }
+      });
+    });
+
+    // 找到最长的数字宽度
+    let 最长数字宽 = 0;
+    所有数字.forEach((数字) => {
+      最长数字宽 = Math.max(最长数字宽, 上下文.measureText(数字).width);
+    });
+
+    // 计算整体宽度（以最长数字宽度为准，加上标题和间距）
+    // 整个区域的宽度应该固定，以所有数字中最长的那个宽度为准
+    // 但需要确保内容能够完整显示
     const 标题间距 = 4;
-    const 标题最大宽 = Math.max(...行数据.map((行) => 上下文.measureText(行.标题).width));
-
     let 最大宽 = 0;
     行数据.forEach((行) => {
       const 正文宽 = 彩色文本宽度(上下文, 行.正文);
       最大宽 = Math.max(最大宽, 标题最大宽 + 标题间距 + 正文宽);
     });
 
+    // 计算基于最长数字的宽度
+    // 假设每行至少有：标题 + 间距 + 一些文本 + 最长数字
+    // 为了确保固定宽度，我们使用一个合理的估算值
+    const 估算其他文本宽 = 200; // 估算其他文本（标签、运算符等）的宽度
+    const 基于数字的宽 = 标题最大宽 + 标题间距 + 估算其他文本宽 + 最长数字宽;
+
+    // 使用两者中的较大值，确保内容完整显示，同时以最长数字宽度为准
+    const 最终宽 = Math.max(最大宽, 基于数字的宽);
+
     const 内边距 = 14;
-    const 框宽 = 最大宽 + 内边距 * 2;
+    const 框宽 = 最终宽 + 内边距 * 2;
     const 框高 = 行数据.length * 行高 + (行数据.length - 1) * 行间距 + 内边距 * 2;
     let 框x = (状态.宽度 - 框宽) / 2;
     框x = Math.max(控件条配置.边距, 框x);
@@ -708,13 +1277,27 @@
 
     let 文本x = 框x + 内边距;
     let 文本y = 框y + 内边距;
+    // 标题右对齐的位置（冒号的位置）
+    const 标题右对齐x = 文本x + 标题最大宽;
+
     行数据.forEach((行, idx) => {
       const yPos = 文本y + idx * (行高 + 行间距) + 4;
-      const 标题宽 = 上下文.measureText(行.标题).width;
-      const 标题起x = 文本x + (标题最大宽 - 标题宽);
-      上下文.fillStyle = 过程颜色.标题;
-      上下文.fillText(行.标题, 标题起x, yPos);
-      绘制彩色文本(上下文, 行.正文, 文本x + 标题最大宽 + 标题间距, yPos);
+      let 标题结束x;
+
+      if (行.标题类型 === "带括号") {
+        // 标题右对齐
+        标题结束x = 绘制带括号标题(行.标题文本, 行.括号内容, 标题右对齐x, yPos);
+      } else {
+        // 标题右对齐
+        const 标题宽 = 上下文.measureText(行.标题文本).width;
+        const 标题起始x = 标题右对齐x - 标题宽;
+        上下文.fillStyle = 过程颜色.标题;
+        上下文.fillText(行.标题文本, 标题起始x, yPos);
+        标题结束x = 标题右对齐x;
+      }
+
+      // 正文从标题后开始，左对齐
+      绘制彩色文本(上下文, 行.正文, 标题结束x + 标题间距, yPos);
     });
 
     上下文.restore();
@@ -756,6 +1339,111 @@
     上下文.restore();
   }
 
+  function 绘制t坐标(x, y, 法线单位x, 法线单位y) {
+    // 偏移距离，避免覆盖曲线
+    const 偏移距离 = 25;
+    const 偏移x = 法线单位x * 偏移距离;
+    const 偏移y = 法线单位y * 偏移距离;
+    const 文本x = x + 偏移x;
+    const 文本y = y + 偏移y;
+
+    上下文.save();
+    上下文.font = "14px 'Google Sans Code', Consolas, Noto Sans SC, 微软雅黑, sans-serif";
+    上下文.textAlign = "left";
+    上下文.textBaseline = "top";
+
+    // 定义颜色
+    const 标签颜色 = "#60a5fa"; // x或y的颜色
+    const 冒号颜色 = "#9ca3af"; // 冒号的颜色
+    const 数字颜色 = "#ea8a24"; // 数字的颜色
+
+    // 格式化坐标值（保留整数）
+    const x值 = Math.round(x);
+    const y值 = Math.round(y);
+    const x值文本 = x值.toString();
+    const y值文本 = y值.toString();
+
+    // 测量文本宽度
+    const x标签宽 = 上下文.measureText("x").width;
+    const y标签宽 = 上下文.measureText("y").width;
+    const 冒号宽 = 上下文.measureText(":").width;
+    const x数字宽 = 上下文.measureText(x值文本).width;
+    const y数字宽 = 上下文.measureText(y值文本).width;
+
+    // 计算最大宽度（用于对齐）
+    const 最大标签宽 = Math.max(x标签宽, y标签宽);
+    const 最大数字宽 = Math.max(x数字宽, y数字宽);
+    const 行高 = 18;
+
+    // 绘制x行
+    let 当前x = 文本x;
+    上下文.fillStyle = 标签颜色;
+    上下文.fillText("x", 当前x, 文本y);
+    当前x += 最大标签宽 + 2; // 冒号左边2的边距
+    上下文.fillStyle = 冒号颜色;
+    上下文.fillText(":", 当前x, 文本y);
+    当前x += 冒号宽 + 4; // 冒号右边4的边距
+    上下文.fillStyle = 数字颜色;
+    上下文.fillText(x值文本, 当前x, 文本y);
+
+    // 绘制y行
+    当前x = 文本x;
+    上下文.fillStyle = 标签颜色;
+    上下文.fillText("y", 当前x, 文本y + 行高);
+    当前x += 最大标签宽 + 2; // 冒号左边2的边距
+    上下文.fillStyle = 冒号颜色;
+    上下文.fillText(":", 当前x, 文本y + 行高);
+    当前x += 冒号宽 + 4; // 冒号右边4的边距
+    上下文.fillStyle = 数字颜色;
+    上下文.fillText(y值文本, 当前x, 文本y + 行高);
+
+    上下文.restore();
+  }
+
+  function 绘制小球(曲线点, 法线单位x, 法线单位y, t) {
+    if (!状态.小球图像 || !状态.小球图像.complete) return;
+
+    const 绘制尺寸 = 48;
+
+    // 计算小球位置：根据法线方向，反方向移动绘制尺寸的一半
+    const 偏移x = -法线单位x * (绘制尺寸 / 2);
+    const 偏移y = -法线单位y * (绘制尺寸 / 2);
+    const 小球x = 曲线点.x + 偏移x;
+    const 小球y = 曲线点.y + 偏移y;
+
+    // 计算旋转角度：根据移动距离计算滚动角度
+    if (状态.上次曲线点 !== null) {
+      // 计算移动距离
+      const dx = 曲线点.x - 状态.上次曲线点.x;
+      const dy = 曲线点.y - 状态.上次曲线点.y;
+      const 移动距离 = Math.sqrt(dx * dx + dy * dy);
+
+      // 计算滚动角度：移动距离 / 小球周长 * 360度
+      // 小球周长 = 绘制尺寸 * π
+      const 小球周长 = 绘制尺寸 * Math.PI;
+      let 滚动角度 = (移动距离 / 小球周长) * (Math.PI * 2); // 转换为弧度
+
+      // 判断移动方向：通过计算当前t值与上一次t值的差值
+      // 如果t值变小，说明是反向移动，滚动角度应该为负（逆时针）
+      if (状态.上次t值 !== null && t < 状态.上次t值) {
+        滚动角度 = -滚动角度; // 反向移动时逆时针滚动
+      }
+
+      // 累积旋转角度
+      状态.小球旋转角度 += 滚动角度;
+    }
+
+    // 更新上一次曲线点位置和t值
+    状态.上次曲线点 = { x: 曲线点.x, y: 曲线点.y };
+    状态.上次t值 = t;
+
+    上下文.save();
+    上下文.translate(小球x, 小球y);
+    上下文.rotate(状态.小球旋转角度);
+    上下文.drawImage(状态.小球图像, -绘制尺寸 / 2, -绘制尺寸 / 2, 绘制尺寸, 绘制尺寸);
+    上下文.restore();
+  }
+
   function 距离平方(a, b) {
     const dx = a.x - b.x;
     const dy = a.y - b.y;
@@ -766,39 +1454,107 @@
     const 栏宽 = 状态.宽度 - 控件条配置.边距 * 2;
     const 栏 = {
       x: 控件条配置.边距,
-      y: 状态.高度 - 控件条配置.高度 - 控件条配置.边距,
+      y: 状态.高度 - 控件条配置.高度,
       w: Math.max(240, 栏宽),
       h: 控件条配置.高度,
     };
 
+    // 右下角复选框区域
     const 开关宽 = 50;
     const 开关高 = 24;
-    const 切线标签宽 = 56;
-    const 过程宽 = 开关宽;
-    const 过程高 = 开关高;
-    const 过程标签宽 = 78;
-    const 开关组宽 = 开关宽 + 10 + 切线标签宽;
-    const 过程组宽 = 过程宽 + 10 + 过程标签宽;
-    const 右侧总宽 = 开关组宽 + 16 + 过程组宽;
+    const 行间距 = 12;
+    const 内边距 = 20;
+    const 复选框区宽度 = Math.min(250, 状态.宽度 / 6);
+    const 复选框行数 = 7;
+    const 复选框内容高度 = 开关高 * 复选框行数 + 行间距 * (复选框行数 - 1);
+    const 复选框区高度 = 复选框内容高度 + 内边距 * 2;
+    const 复选框区右 = 状态.宽度 - 控件条配置.边距;
+    const 复选框区下 = 状态.高度 - 控件条配置.边距;
+    const 复选框区顶 = 复选框区下 - 复选框区高度;
+    const 复选框区左 = 复选框区右 - 复选框区宽度;
+
+    // 计算标签宽度（使用临时canvas测量）
+    const 临时canvas = document.createElement("canvas");
+    const 临时ctx = 临时canvas.getContext("2d");
+    临时ctx.font = "14px 'Google Sans Code', Consolas, Noto Sans SC, 微软雅黑, sans-serif";
+    const 切线标签宽 = 临时ctx.measureText("切线").width;
+    const 法线标签宽 = 临时ctx.measureText("法线").width;
+    const 箭头标签宽 = 临时ctx.measureText("箭头").width;
+    const 小球标签宽 = 临时ctx.measureText("小球").width;
+    const 控制点坐标标签宽 = 临时ctx.measureText("控制点坐标").width;
+    const t坐标标签宽 = 临时ctx.measureText("t").width + 2 + 临时ctx.measureText("坐标").width; // t + 2边距 + 坐标
+    const 过程标签宽 = 临时ctx.measureText("计算过程").width;
+    const 最大标签宽 = Math.max(
+      切线标签宽,
+      法线标签宽,
+      箭头标签宽,
+      小球标签宽,
+      控制点坐标标签宽,
+      t坐标标签宽,
+      过程标签宽
+    );
+
+    const 行起点x = 复选框区左 + 内边距;
+    const 行1y = 复选框区顶 + 内边距;
 
     const 开关 = {
-      x: 栏.x + 栏.w - 右侧总宽,
-      y: 栏.y + 栏.h / 2 + 4 - 开关高 / 2,
+      x: 行起点x + 最大标签宽 + 10,
+      y: 行1y,
       w: 开关宽,
       h: 开关高,
       标签宽: 切线标签宽,
     };
 
+    const 法线 = {
+      x: 行起点x + 最大标签宽 + 10,
+      y: 行1y + 开关高 + 行间距,
+      w: 开关宽,
+      h: 开关高,
+      标签宽: 法线标签宽,
+    };
+
+    const 箭头 = {
+      x: 行起点x + 最大标签宽 + 10,
+      y: 行1y + (开关高 + 行间距) * 2,
+      w: 开关宽,
+      h: 开关高,
+      标签宽: 箭头标签宽,
+    };
+
+    const 小球 = {
+      x: 行起点x + 最大标签宽 + 10,
+      y: 行1y + (开关高 + 行间距) * 3,
+      w: 开关宽,
+      h: 开关高,
+      标签宽: 小球标签宽,
+    };
+
+    const 控制点坐标 = {
+      x: 行起点x + 最大标签宽 + 10,
+      y: 行1y + (开关高 + 行间距) * 4,
+      w: 开关宽,
+      h: 开关高,
+      标签宽: 控制点坐标标签宽,
+    };
+
+    const t坐标 = {
+      x: 行起点x + 最大标签宽 + 10,
+      y: 行1y + (开关高 + 行间距) * 5,
+      w: 开关宽,
+      h: 开关高,
+      标签宽: t坐标标签宽,
+    };
+
     const 过程 = {
-      x: 开关.x + 开关组宽 + 16,
-      y: 栏.y + 栏.h / 2 + 4 - 过程高 / 2,
-      w: 过程宽,
-      h: 过程高,
+      x: 行起点x + 最大标签宽 + 10,
+      y: 行1y + (开关高 + 行间距) * 6,
+      w: 开关宽,
+      h: 开关高,
       标签宽: 过程标签宽,
     };
 
-    const 滑块右界 = 开关.x - 16;
-    const 目标滑块宽 = Math.min(Math.max(90, (栏.w - 右侧总宽 - 48) * 0.3), Math.max(80, 滑块右界 - (栏.x + 24)));
+    const 滑块右界 = 复选框区左 - 16;
+    const 目标滑块宽 = Math.min(Math.max(90, (栏.w - 48) * 0.3), Math.max(80, 滑块右界 - (栏.x + 24)));
     const 居中x = 栏.x + (栏.w - 目标滑块宽) / 2;
     const 最小x = 栏.x + 24;
     const 最大x = 滑块右界 - 目标滑块宽;
@@ -808,7 +1564,7 @@
       w: 目标滑块宽,
     };
 
-    状态.控件布局 = { 栏, 滑块, 开关, 过程 };
+    状态.控件布局 = { 栏, 滑块, 开关, 法线, 箭头, 小球, 控制点坐标, t坐标, 过程 };
   }
 
   function 在滑块区域(位置) {
@@ -820,6 +1576,41 @@
     const { 开关 } = 状态.控件布局;
     const hitW = 开关.w + 10 + 开关.标签宽;
     return 位置.x >= 开关.x && 位置.x <= 开关.x + hitW && 位置.y >= 开关.y && 位置.y <= 开关.y + 开关.h;
+  }
+
+  function 在法线区域(位置) {
+    const { 法线 } = 状态.控件布局;
+    const hitW = 法线.w + 10 + 法线.标签宽;
+    return 位置.x >= 法线.x && 位置.x <= 法线.x + hitW && 位置.y >= 法线.y && 位置.y <= 法线.y + 法线.h;
+  }
+
+  function 在箭头区域(位置) {
+    const { 箭头 } = 状态.控件布局;
+    const hitW = 箭头.w + 10 + 箭头.标签宽;
+    return 位置.x >= 箭头.x && 位置.x <= 箭头.x + hitW && 位置.y >= 箭头.y && 位置.y <= 箭头.y + 箭头.h;
+  }
+
+  function 在小球区域(位置) {
+    const { 小球 } = 状态.控件布局;
+    const hitW = 小球.w + 10 + 小球.标签宽;
+    return 位置.x >= 小球.x && 位置.x <= 小球.x + hitW && 位置.y >= 小球.y && 位置.y <= 小球.y + 小球.h;
+  }
+
+  function 在控制点坐标区域(位置) {
+    const { 控制点坐标 } = 状态.控件布局;
+    const hitW = 控制点坐标.w + 10 + 控制点坐标.标签宽;
+    return (
+      位置.x >= 控制点坐标.x &&
+      位置.x <= 控制点坐标.x + hitW &&
+      位置.y >= 控制点坐标.y &&
+      位置.y <= 控制点坐标.y + 控制点坐标.h
+    );
+  }
+
+  function 在t坐标区域(位置) {
+    const { t坐标 } = 状态.控件布局;
+    const hitW = t坐标.w + 10 + t坐标.标签宽;
+    return 位置.x >= t坐标.x && 位置.x <= t坐标.x + hitW && 位置.y >= t坐标.y && 位置.y <= t坐标.y + t坐标.h;
   }
 
   function 在过程区域(位置) {
@@ -888,9 +1679,24 @@
     }
 
     const 开关命中 = 在开关区域(位置);
+    const 法线命中 = 在法线区域(位置);
+    const 箭头命中 = 在箭头区域(位置);
+    const 小球命中 = 在小球区域(位置);
+    const 控制点坐标命中 = 在控制点坐标区域(位置);
+    const t坐标命中 = 在t坐标区域(位置);
     const 过程命中 = 在过程区域(位置);
 
-    if (thumbHit || trackHit || 开关命中 || 过程命中) {
+    if (
+      thumbHit ||
+      trackHit ||
+      开关命中 ||
+      法线命中 ||
+      箭头命中 ||
+      小球命中 ||
+      控制点坐标命中 ||
+      t坐标命中 ||
+      过程命中
+    ) {
       状态.悬停索引 = -1;
       画布.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
       if (悬停变更) 请求重绘();
@@ -927,6 +1733,51 @@
     if (在开关区域(位置)) {
       切换显示切线(!状态.显示切线);
       e.preventDefault();
+      return;
+    }
+    if (在法线区域(位置)) {
+      状态.显示法线 = !状态.显示法线;
+      状态.法线过渡.目标 = 状态.显示法线 ? 1 : 0;
+      状态.法线过渡.上次 = performance.now();
+      保存显示法线到本地(状态.显示法线);
+      e.preventDefault();
+      请求重绘();
+      return;
+    }
+    if (在箭头区域(位置)) {
+      状态.显示箭头 = !状态.显示箭头;
+      状态.箭头过渡.目标 = 状态.显示箭头 ? 1 : 0;
+      状态.箭头过渡.上次 = performance.now();
+      保存显示箭头到本地(状态.显示箭头);
+      e.preventDefault();
+      请求重绘();
+      return;
+    }
+    if (在小球区域(位置)) {
+      状态.显示小球 = !状态.显示小球;
+      状态.小球过渡.目标 = 状态.显示小球 ? 1 : 0;
+      状态.小球过渡.上次 = performance.now();
+      保存显示小球到本地(状态.显示小球);
+      e.preventDefault();
+      请求重绘();
+      return;
+    }
+    if (在控制点坐标区域(位置)) {
+      状态.显示控制点坐标 = !状态.显示控制点坐标;
+      状态.控制点坐标过渡.目标 = 状态.显示控制点坐标 ? 1 : 0;
+      状态.控制点坐标过渡.上次 = performance.now();
+      保存显示控制点坐标到本地(状态.显示控制点坐标);
+      e.preventDefault();
+      请求重绘();
+      return;
+    }
+    if (在t坐标区域(位置)) {
+      状态.显示t坐标 = !状态.显示t坐标;
+      状态.t坐标过渡.目标 = 状态.显示t坐标 ? 1 : 0;
+      状态.t坐标过渡.上次 = performance.now();
+      保存显示t坐标到本地(状态.显示t坐标);
+      e.preventDefault();
+      请求重绘();
       return;
     }
     if (在过程区域(位置)) {
@@ -1015,9 +1866,27 @@
       状态.显示切线 = false;
       状态.切线过渡 = { 值: 0, 目标: 0, 上次: performance.now() };
       if (显示切线勾选) 显示切线勾选.checked = false;
+      状态.显示法线 = false;
+      状态.法线过渡 = { 值: 0, 目标: 0, 上次: performance.now() };
+      状态.显示箭头 = true;
+      状态.箭头过渡 = { 值: 1, 目标: 1, 上次: performance.now() };
+      状态.显示小球 = false;
+      状态.小球过渡 = { 值: 0, 目标: 0, 上次: performance.now() };
+      状态.显示控制点坐标 = true;
+      状态.控制点坐标过渡 = { 值: 1, 目标: 1, 上次: performance.now() };
+      状态.显示t坐标 = true;
+      状态.t坐标过渡 = { 值: 1, 目标: 1, 上次: performance.now() };
       状态.显示计算过程 = false;
       状态.过程过渡 = { 值: 0, 目标: 0, 上次: performance.now() };
+      状态.小球旋转角度 = 0;
+      状态.上次曲线点 = null;
+      状态.上次t值 = null;
       保存显示切线到本地(false);
+      保存显示法线到本地(false);
+      保存显示箭头到本地(true);
+      保存显示小球到本地(false);
+      保存显示控制点坐标到本地(true);
+      保存显示t坐标到本地(true);
       保存显示计算过程到本地(false);
       保存点UV到会话();
       布局控件条();
@@ -1049,6 +1918,7 @@
 
   window.addEventListener("resize", 调整画布尺寸);
   调整画布尺寸();
+  加载小球图像();
   if (滑块t) 滑块t.value = 状态.参数t.toString();
   if (t数值) t数值.textContent = 格式化t值(状态.参数t);
   更新t值(状态.参数t, false);
