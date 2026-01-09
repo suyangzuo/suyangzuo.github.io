@@ -96,6 +96,11 @@ body {
   transform: translateX(20px);
 }
 
+.开关:hover,
+.开关滑块:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
 .开关文本 {
   color: silver;
   font-size: 14px;

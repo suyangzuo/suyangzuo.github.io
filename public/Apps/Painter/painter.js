@@ -2603,7 +2603,7 @@ class 随心绘 {
 
           return; // 不需要继续后续处理
         } else {
-          this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), pointer';
+          this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
 
           // 重新绘制以清除预览交互框
           this.清空画布();
@@ -3732,7 +3732,7 @@ class 随心绘 {
             return;
           } else if (鼠标在交互框内) {
             // 鼠标在交互框内部，但不在句柄或边界上，使用默认cursor
-            this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), pointer';
+            this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
             // 检测悬停形状（鼠标在交互框内时，也可以悬停到交互框内的其他形状）
             if (!this.全局标志.拖拽中) {
               this.全局属性.悬停形状 = this.鼠标位于形状内();
@@ -3743,7 +3743,7 @@ class 随心绘 {
             return;
           } else {
             // 鼠标在交互框外面，使用默认cursor
-            this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), pointer';
+            this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
             if (!this.全局标志.拖拽中) {
               this.全局属性.悬停形状 = this.鼠标位于形状内();
             }
@@ -4181,7 +4181,7 @@ class 随心绘 {
                 this.全局属性.缩放模式 = "horizontal";
               }
             } else {
-              this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), pointer';
+              this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
             }
           }
         }
@@ -5943,7 +5943,7 @@ class 随心绘 {
         if (this.键盘状态.Alt && this.鼠标位于形状内()) {
           this.canvas.style.cursor = 'url("/Images/Common/copy.cur"), pointer';
         } else {
-          this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), pointer';
+          this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
         }
 
         // 重新绘制
@@ -5983,7 +5983,7 @@ class 随心绘 {
         if (this.键盘状态.Alt && this.鼠标位于形状内()) {
           this.canvas.style.cursor = 'url("/Images/Common/copy.cur"), pointer';
         } else {
-          this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), pointer';
+          this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
         }
 
         // 重新绘制以移除预览
@@ -6534,7 +6534,7 @@ class 随心绘 {
       this.全局标志.旋转中 = false;
       this.全局标志.缩放中 = false;
       this.全局属性.缩放模式 = null;
-      this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), pointer';
+      this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
       if (!this.全局属性.点击坐标) return;
       const 鼠标移动距离 = Math.sqrt(
         Math.abs(this.全局属性.鼠标坐标.x - this.全局属性.点击坐标.x) ** 2 +
@@ -6901,7 +6901,7 @@ class 随心绘 {
     this.全局属性.初始交互框位置 = null;
 
     // 恢复默认光标
-    this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), pointer';
+    this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
 
     // 重新绘制
     this.清空画布();
@@ -7365,7 +7365,7 @@ class 随心绘 {
           if (this.键盘状态.Alt && this.鼠标位于形状内()) {
             this.canvas.style.cursor = 'url("/Images/Common/copy.cur"), pointer';
           } else {
-            this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), pointer';
+            this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
           }
         }
 
@@ -7795,7 +7795,7 @@ class 随心绘 {
 
       // Alt键释放时恢复光标并清除预览交互框（如果不在拖拽复制中）
       if (e.key === "Alt" && !this.全局标志.Alt拖拽复制中) {
-        this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), pointer';
+        this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
 
         // 清除所有形状的Alt预览状态，如果不是选择路径工具也清除悬停状态
         let 需要重绘 = false;
@@ -7863,7 +7863,7 @@ class 随心绘 {
 
       // 恢复光标为默认状态
       if (!this.全局标志.Alt拖拽复制中) {
-        this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), pointer';
+        this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
       }
 
       // 重新绘制

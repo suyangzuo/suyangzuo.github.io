@@ -81,7 +81,7 @@
       }
 
 .滑块标签:hover {
-              cursor: url("/Images/Common/鼠标-默认.cur"), pointer;
+              cursor: url("/Images/Common/鼠标-默认.cur"), auto;
             }
 
             .滑块:hover {

@@ -233,7 +233,7 @@ class 绘图器 {
           this.手动t = null;
         }
         this.保存状态();
-        this.画布.style.cursor = "pointer";
+        this.画布.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
         return;
       }
 
@@ -256,7 +256,7 @@ class 绘图器 {
         this.显示t = !this.显示t;
         this.显示t开关动画.目标 = this.显示t ? 1 : 0;
         this.保存状态();
-        this.画布.style.cursor = "pointer";
+        this.画布.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
         return;
       }
 
@@ -264,7 +264,7 @@ class 绘图器 {
         this.显示实时控制点 = !this.显示实时控制点;
         this.实时控制点开关动画.目标 = this.显示实时控制点 ? 1 : 0;
         this.保存状态();
-        this.画布.style.cursor = "pointer";
+        this.画布.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
         return;
       }
 
@@ -272,7 +272,7 @@ class 绘图器 {
         this.显示其它算法点 = !this.显示其它算法点;
         this.其它算法点开关动画.目标 = this.显示其它算法点 ? 1 : 0;
         this.保存状态();
-        this.画布.style.cursor = "pointer";
+        this.画布.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
         return;
       }
 
@@ -426,7 +426,7 @@ class 绘图器 {
       }
 
       if (命中播放 || 命中显示t || 命中开关 || 命中其它) {
-        this.画布.style.cursor = "pointer";
+        this.画布.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
       } else if (命中thumb || 命中停留thumb || (this.悬停tThumb && !this.播放)) {
         this.画布.style.cursor = "grab";
       } else if (命中滑块 || 命中停留滑块 || (this.悬停t滑块 && !this.播放)) {
@@ -434,7 +434,7 @@ class 绘图器 {
       } else if (this.当前悬停点 || (this.当前悬停其它点 && !this.播放)) {
         this.画布.style.cursor = "grab";
       } else {
-        this.画布.style.cursor = "auto";
+        this.画布.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
       }
     });
 
@@ -450,7 +450,7 @@ class 绘图器 {
         this.控制点变化回调(this.控制点);
       }
       this.控制点已变 = false;
-      this.画布.style.cursor = "auto";
+      this.画布.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
     });
 
     this.画布.addEventListener("mouseleave", () => {
@@ -477,7 +477,7 @@ class 绘图器 {
         this.控制点变化回调(this.控制点);
       }
       this.控制点已变 = false;
-      this.画布.style.cursor = "auto";
+      this.画布.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
     });
   }
 
