@@ -880,6 +880,7 @@ class 曲线运动 {
       currentSpeed: 0.0025,
       position: { x: 0, y: 0 },
       tangent: { x: 0, y: 0 },
+      normal: { x: 0, y: 0 }, // 法线方向
       image: null, // 小球图片
       rotation: 0, // 旋转角度
     };
@@ -1247,6 +1248,13 @@ class 曲线运动 {
     // 计算切线方向
     this.ball.tangent = this.getBezierTangent(this.ball.t);
 
+    // 计算法线方向（垂直于切线，指向曲线外侧）
+    // 对于向下弯曲的曲线，法线应该是 (-tangent.y, tangent.x)
+    this.ball.normal = {
+      x: -this.ball.tangent.y,
+      y: this.ball.tangent.x,
+    };
+
     // 根据高度调整速度（重力效果）
     // 找到曲线的最高点和最低点
     const { P0, P1, P2, P3 } = this.摇摆路径控制点;
@@ -1282,11 +1290,15 @@ class 曲线运动 {
 
   // 绘制圆球
   drawBall() {
-    const { position, radius, tangent, image, rotation } = this.ball;
+    const { position, radius, normal, image, rotation } = this.ball;
 
-    // 计算圆球中心位置（球在曲线的上方滚动）
-    const centerX = position.x + (0.5 - this.ball.t) * this.ball.radius;
-    const centerY = position.y - radius;
+    // 计算圆球中心位置
+    // 小球图像的中心点就是以t算出的曲线上的坐标点
+    // 同时，小球要始终根据法线方向，反方向移动图像绘制高度的一半
+    const 图像高度 = radius * 2;
+    const 偏移距离 = 图像高度 / 2; // 图像绘制高度的一半
+    const centerX = position.x - normal.x * 偏移距离; // 反方向移动
+    const centerY = position.y - normal.y * 偏移距离; // 反方向移动
 
     // 如果图片已加载，使用图片绘制
     if (image && image.complete) {
