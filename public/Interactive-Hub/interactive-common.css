@@ -57,7 +57,7 @@ body {
   color: white;
   text-shadow: 2px 2px 2px #000a;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 9998;
 }
 
 .和与 {

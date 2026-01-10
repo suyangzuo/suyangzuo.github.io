@@ -1264,14 +1264,14 @@ class 坐标系教程 {
     this.ctx.lineWidth = 1;
 
     if (this.显示选项.使用世界坐标系) {
-      this.ctx.beginPath();
-      this.ctx.moveTo(鼠标X, 鼠标Y);
-      this.ctx.lineTo(鼠标X, 0);
-      this.ctx.stroke();
-      this.ctx.beginPath();
-      this.ctx.moveTo(鼠标X, 鼠标Y);
-      this.ctx.lineTo(0, 鼠标Y);
-      this.ctx.stroke();
+    this.ctx.beginPath();
+    this.ctx.moveTo(鼠标X, 鼠标Y);
+    this.ctx.lineTo(鼠标X, 0);
+    this.ctx.stroke();
+    this.ctx.beginPath();
+    this.ctx.moveTo(鼠标X, 鼠标Y);
+    this.ctx.lineTo(0, 鼠标Y);
+    this.ctx.stroke();
     } else {
       const 矩形 = this.矩形;
       const dx = 鼠标X - 矩形.x;
@@ -1307,7 +1307,7 @@ class 坐标系教程 {
       this.ctx.moveTo(局部Y线起点世界.x, 局部Y线起点世界.y);
       this.ctx.lineTo(局部Y线终点世界.x, 局部Y线终点世界.y);
       this.ctx.stroke();
-    }
+  }
 
     this.ctx.restore();
   }

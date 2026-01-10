@@ -12,6 +12,137 @@ const 弹性展示区 = document.getElementsByClassName("弹性-展示区")[0];
 const 水平轴指示区 = document.querySelector(".水平轴指示区");
 const 垂直轴指示区 = document.querySelector(".垂直轴指示区");
 
+let 计算容器 = null;
+let 更新请求ID1 = null;
+let 更新请求ID2 = null;
+let 待更新 = false;
+
+function 创建计算容器() {
+  if (计算容器) {
+    计算容器.innerHTML = "";
+    return;
+  }
+  计算容器 = document.createElement("div");
+  计算容器.style.position = "absolute";
+  计算容器.style.visibility = "hidden";
+  计算容器.style.pointerEvents = "none";
+  计算容器.style.width = "800px";
+  计算容器.style.height = "800px";
+  计算容器.style.top = "0";
+  计算容器.style.left = "0";
+  计算容器.style.overflow = "hidden";
+  弹性展示区.appendChild(计算容器);
+}
+
+function 执行更新() {
+  if (更新请求ID1 !== null) {
+    cancelAnimationFrame(更新请求ID1);
+    更新请求ID1 = null;
+  }
+  if (更新请求ID2 !== null) {
+    cancelAnimationFrame(更新请求ID2);
+    更新请求ID2 = null;
+  }
+
+  const 弹性元素组 = 弹性展示区.querySelectorAll(".弹性元素");
+  if (弹性元素组.length === 0) {
+    待更新 = false;
+    return;
+  }
+
+  if (块布局.checked) {
+    弹性元素组.forEach((元素) => {
+      元素.style.position = "relative";
+      元素.style.left = "";
+      元素.style.top = "";
+      const 原始宽度 = 元素.dataset.原始宽度;
+      const 原始高度 = 元素.dataset.原始高度;
+      if (原始宽度) {
+        元素.style.width = 原始宽度;
+      }
+      if (原始高度) {
+        元素.style.height = 原始高度;
+      }
+    });
+    待更新 = false;
+    return;
+  }
+
+  弹性元素组.forEach((元素) => {
+    元素.style.position = "absolute";
+  });
+
+  创建计算容器();
+  
+  const 计算元素组 = [];
+  弹性元素组.forEach((实际元素) => {
+    const 计算元素 = document.createElement("div");
+    计算元素.className = 实际元素.className;
+    计算元素.style.backgroundColor = 实际元素.style.backgroundColor;
+    计算元素.setAttribute("data-number", 实际元素.getAttribute("data-number"));
+    
+    const 原始宽度 = 实际元素.dataset.原始宽度 || 实际元素.style.width;
+    const 原始高度 = 实际元素.dataset.原始高度 || 实际元素.style.height;
+    
+    实际元素.dataset.原始宽度 = 原始宽度;
+    实际元素.dataset.原始高度 = 原始高度;
+    
+    计算元素.style.width = 原始宽度;
+    计算元素.style.height = 原始高度;
+    计算元素.style.position = "static";
+    计算元素.style.left = "";
+    计算元素.style.top = "";
+    
+    const 实际样式 = window.getComputedStyle(实际元素);
+    计算元素.style.flexGrow = 实际样式.flexGrow;
+    计算元素.style.flexShrink = 实际样式.flexShrink;
+    计算元素.style.flexBasis = 实际样式.flexBasis;
+    
+    计算容器.appendChild(计算元素);
+    计算元素组.push({ 实际元素, 计算元素 });
+  });
+
+  计算容器.style.display = 弹性展示区.style.display || "flex";
+  计算容器.style.flexDirection = 弹性展示区.style.flexDirection || "row";
+  计算容器.style.flexWrap = 弹性展示区.style.flexWrap || "nowrap";
+  计算容器.style.justifyContent = 弹性展示区.style.justifyContent || "normal";
+  计算容器.style.alignItems = 弹性展示区.style.alignItems || "normal";
+  计算容器.style.alignContent = 弹性展示区.style.alignContent || "normal";
+  计算容器.style.rowGap = 弹性展示区.style.rowGap || "0px";
+  计算容器.style.columnGap = 弹性展示区.style.columnGap || "0px";
+
+  更新请求ID1 = requestAnimationFrame(() => {
+    更新请求ID2 = requestAnimationFrame(() => {
+      if (计算容器 && 计算容器.parentElement) {
+        计算元素组.forEach(({ 实际元素, 计算元素 }) => {
+          if (!计算元素.parentElement) return;
+          const 计算元素Rect = 计算元素.getBoundingClientRect();
+          const 计算容器Rect = 计算容器.getBoundingClientRect();
+          实际元素.style.left = `${计算元素Rect.left - 计算容器Rect.left}px`;
+          实际元素.style.top = `${计算元素Rect.top - 计算容器Rect.top}px`;
+          实际元素.style.width = `${计算元素Rect.width}px`;
+          实际元素.style.height = `${计算元素Rect.height}px`;
+        });
+        计算容器.innerHTML = "";
+      }
+      更新请求ID1 = null;
+      更新请求ID2 = null;
+      const 需要再次更新 = 待更新;
+      待更新 = false;
+      if (需要再次更新) {
+        执行更新();
+      }
+    });
+  });
+}
+
+function 更新弹性元素位置() {
+  待更新 = true;
+  if (更新请求ID1 === null && 更新请求ID2 === null) {
+    执行更新();
+  }
+}
+
 const 固定尺寸单选 = document.getElementById("固定");
 const 随机尺寸单选 = document.getElementById("随机");
 
@@ -19,6 +150,9 @@ const 初始块元素数量 = rootStyle.getPropertyValue("--初始盒子数量")
 const 最低尺寸百分比 = 3;
 const 最高尺寸百分比 = 20;
 创建块元素(初始块元素数量);
+window.addEventListener("load", () => {
+  更新弹性元素位置();
+});
 
 function 创建块元素(数量) {
   for (let i = 1; i <= 数量; i++) {
@@ -31,8 +165,12 @@ function 创建块元素(数量) {
     let 高度百分比 = Math.floor(
       Math.random() * (最高尺寸百分比 - 最低尺寸百分比 + 1) + 最低尺寸百分比,
     );
-    element.style.width = 固定尺寸单选.checked ? "12.5%" : `${宽度百分比}%`;
-    element.style.height = 固定尺寸单选.checked ? "125px" : `${高度百分比}%`;
+    const 宽度值 = 固定尺寸单选.checked ? "12.5%" : `${宽度百分比}%`;
+    const 高度值 = 固定尺寸单选.checked ? "125px" : `${高度百分比}%`;
+    element.style.width = 宽度值;
+    element.style.height = 高度值;
+    element.dataset.原始宽度 = 宽度值;
+    element.dataset.原始高度 = 高度值;
     element.setAttribute("data-number", `${i}`);
     弹性展示区.appendChild(element);
   }
@@ -50,9 +188,14 @@ function 修改盒子尺寸() {
     let 高度百分比 = Math.floor(
       Math.random() * (最高尺寸百分比 - 最低尺寸百分比 + 1) + 最低尺寸百分比,
     );
-    盒子.style.width = 固定尺寸单选.checked ? "12.5%" : `${宽度百分比}%`;
-    盒子.style.height = 固定尺寸单选.checked ? "125px" : `${高度百分比}%`;
+    const 宽度值 = 固定尺寸单选.checked ? "12.5%" : `${宽度百分比}%`;
+    const 高度值 = 固定尺寸单选.checked ? "125px" : `${高度百分比}%`;
+    盒子.style.width = 宽度值;
+    盒子.style.height = 高度值;
+    盒子.dataset.原始宽度 = 宽度值;
+    盒子.dataset.原始高度 = 高度值;
   }
+  更新弹性元素位置();
 }
 
 const 展示区块组 = 弹性展示区.getElementsByTagName("div");
@@ -81,6 +224,7 @@ function 修改盒子数量() {
   展示区块数组.forEach((element) => {
     element.style.flexGrow = 扩张滑块.value;
   });
+  更新弹性元素位置();
 }
 
 function 调整盒子数量数字位置() {
@@ -144,6 +288,7 @@ function 修改布局() {
     尺寸区.style.pointerEvents = "auto";
   }
   弹性轴区样式初始化();
+  更新弹性元素位置();
 }
 
 const 主轴行 = document.getElementById("flex-direction-row");
@@ -169,6 +314,7 @@ function 修改主轴方向() {
     水平轴指示文本.textContent = "交叉轴";
     垂直轴指示文本.textContent = "主轴";
   }
+  更新弹性元素位置();
 }
 
 function 弹性轴区样式初始化() {
@@ -204,6 +350,7 @@ function 修改弹性换行() {
     ? "brightness(100%)"
     : `brightness(${已屏蔽亮度})`;
   交叉轴多行分布区.style.pointerEvents = 弹性换行.checked ? "auto" : "none";
+  更新弹性元素位置();
 }
 
 const 行间隙 = document.getElementById("x-gap");
@@ -226,6 +373,7 @@ function 修改行间隙值() {
   弹性展示区.style.rowGap = `${行间隙.value}px`;
   let 行间隙比率 = (行间隙.value * 100) / 行间隙.max;
   root.style.setProperty("--行间隙比率", `${行间隙比率}%`);
+  更新弹性元素位置();
 }
 
 function 修改列间隙值() {
@@ -234,6 +382,7 @@ function 修改列间隙值() {
   弹性展示区.style.columnGap = `${列间隙.value}px`;
   let 列间隙比率 = (列间隙.value * 100) / 列间隙.max;
   root.style.setProperty("--列间隙比率", `${列间隙比率}%`);
+  更新弹性元素位置();
 }
 
 function 调整行间隙位置() {
@@ -352,6 +501,7 @@ function 修改主轴布局(event) {
   const label = document.querySelector(`label[for=${id}]`);
   const 代码 = label.getElementsByClassName("代码")[0].textContent;
   弹性展示区.style.justifyContent = `${代码}`;
+  更新弹性元素位置();
 }
 
 function 修改交叉轴单行布局(event) {
@@ -359,6 +509,7 @@ function 修改交叉轴单行布局(event) {
   const label = document.querySelector(`label[for=${id}]`);
   const 代码 = label.getElementsByClassName("代码")[0].textContent;
   弹性展示区.style.alignItems = `${代码}`;
+  更新弹性元素位置();
 }
 
 function 修改交叉轴多行布局(event) {
@@ -366,6 +517,7 @@ function 修改交叉轴多行布局(event) {
   const label = document.querySelector(`label[for=${id}]`);
   const 代码 = label.getElementsByClassName("代码")[0].textContent;
   弹性展示区.style.alignContent = `${代码}`;
+  更新弹性元素位置();
 }
 
 const 收缩滑块 = document.getElementById("flex-shrink");
@@ -391,6 +543,7 @@ function 修改弹性收缩() {
   Array.from(展示区块组).forEach((element) => {
     element.style.flexShrink = 收缩滑块.value;
   });
+  更新弹性元素位置();
 }
 
 function 修改弹性扩张() {
@@ -401,6 +554,7 @@ function 修改弹性扩张() {
   Array.from(展示区块组).forEach((element) => {
     element.style.flexGrow = 扩张滑块.value;
   });
+  更新弹性元素位置();
 }
 
 function 调整收缩数字位置() {
@@ -498,4 +652,6 @@ function 重置参数() {
   root.style.setProperty("--收缩比率", `${收缩比率}%`);
   let 扩张比率 = (扩张滑块.value * 100) / 扩张滑块.max;
   root.style.setProperty("--扩张比率", `${扩张比率}%`);
+  
+  更新弹性元素位置();
 }

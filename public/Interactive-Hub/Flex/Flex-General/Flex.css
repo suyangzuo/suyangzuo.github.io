@@ -156,8 +156,7 @@
 }
 
 .弹性元素 {
-  position: relative;
-  transition: 500ms;
+  transition: left 250ms ease-out, top 250ms ease-out, width 250ms ease-out, height 250ms ease-out;
   font-family: "JetBrains Mono", Consolas, monospace;
 }
 
@@ -173,6 +172,7 @@
   align-items: center;
   font-family: "JetBrains Mono", Consolas, monospace;
   font-size: 1.125rem;
+  border: solid 1px black;
 }
 
 .弹性元素::before {
@@ -317,14 +317,11 @@
   color: goldenrod;
 }
 
-.弹性-操作区:has(#display-flex:checked)
-  .布局按钮区:has(input[type="radio"]:checked) {
+.弹性-操作区:has(#display-flex:checked) .布局按钮区:has(input[type="radio"]:checked) {
   filter: brightness(100%);
 }
 
-.弹性-操作区:has(#display-flex:checked)
-  .布局按钮区:has(input[type="radio"]:checked)
-  .中文 {
+.弹性-操作区:has(#display-flex:checked) .布局按钮区:has(input[type="radio"]:checked) .中文 {
   color: #dace5c;
 }
 
@@ -332,9 +329,7 @@
   color: yellowgreen;
 }
 
-.弹性-操作区:has(#display-flex:checked)
-  .布局按钮区:has(input[type="radio"]:checked)
-  .代码 {
+.弹性-操作区:has(#display-flex:checked) .布局按钮区:has(input[type="radio"]:checked) .代码 {
   color: lightgreen;
 }
 
@@ -771,10 +766,6 @@ option {
 }
 
 @media screen and (height < 1000px) {
-  .弹性-操作区 {
-    /*height: 850px;*/
-  }
-
   .操作分区 {
     padding: 5px 0;
   }
