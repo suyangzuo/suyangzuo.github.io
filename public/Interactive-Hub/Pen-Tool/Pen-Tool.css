@@ -1,0 +1,39 @@
+:root {
+  --光标-默认: url("/Images/Common/鼠标-默认.cur"), auto;
+  --光标-指向: url("/Images/Common/鼠标-指向.cur"), pointer;
+  --光标-移动: url("/Images/Common/鼠标-移动.cur"), move;
+  --字体-家族: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #111;
+  color: silver;
+  font-family: var(--字体);
+}
+
+.总区 {
+  padding-top: 50px;
+}
+
+.Canvas容器 {
+  position: relative;
+  width: 100%;
+  height: clamp(500px, calc(100vh - 50px), 3000px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#canvas {
+  width: 100%;
+  height: 100%;
+  cursor: var(--光标-默认);
+}

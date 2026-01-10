@@ -20,16 +20,17 @@ body {
   position: relative;
   width: 100%;
   height: clamp(500px, calc(100vh - 110px), 3000px);
+  padding-bottom: 10px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
   --水平内边距: 5vw;
   --垂直内边距: 5vh;
 }
 
 #canvas {
   width: calc(100% - var(--水平内边距));
-  height: calc(100% - var(--垂直内边距));
+  height: calc(100% - 30px);
   outline: solid 1px #666;
   background-color: #1a1a1a;
   cursor: grab;
@@ -41,7 +42,7 @@ body {
 
 .控制区 {
   position: absolute;
-  bottom: calc(var(--垂直内边距) / 2 + 15px);
+  bottom: calc(var(--垂直内边距) / 2);
   right: calc(var(--水平内边距) / 2 + 15px);
   border: solid 2px #fff2;
   padding: 10px 20px;

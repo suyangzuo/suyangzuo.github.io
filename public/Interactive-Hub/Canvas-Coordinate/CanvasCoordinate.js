@@ -9,9 +9,9 @@ class 坐标系教程 {
     this.重置按钮 = document.querySelector(".重置按钮");
     this.重置按钮.addEventListener("click", () => this.重置());
     this.复选框 = {
-      坐标参考线: document.getElementById("坐标参考线"),
-      坐标信息: document.getElementById("坐标信息"),
-      坐标背景: document.getElementById("坐标背景"),
+      鼠标坐标参考线: document.getElementById("鼠标坐标参考线"),
+      鼠标坐标: document.getElementById("鼠标坐标"),
+      鼠标坐标背景: document.getElementById("鼠标坐标背景"),
       坐标系选择: document.getElementById("坐标系选择"),
       观察点坐标: document.getElementById("观察点坐标"),
       坐标转换过程: document.getElementById("坐标转换过程"),
@@ -23,8 +23,6 @@ class 坐标系教程 {
       x: null,
       y: null,
     };
-
-    // 矩形参数
     this.矩形 = {
       x: this.canvas.offsetWidth / 2,
       y: this.canvas.offsetHeight / 2,
@@ -32,15 +30,11 @@ class 坐标系教程 {
       高度: 200,
       旋转角度: 0,
     };
-
-    // 观察点参数
     this.观察点 = {
       x: this.canvas.offsetWidth / 2,
       y: this.canvas.offsetHeight / 2,
       半径: 8,
     };
-
-    // 交互状态
     this.交互状态 = {
       正在拖动: false,
       正在缩放: false,
@@ -52,7 +46,7 @@ class 坐标系教程 {
       鼠标位置: { x: 0, y: 0 },
       缩放边: null,
       缩放角: null,
-      缩放锚点: { x: 0, y: 0 }, // 局部坐标系中的锚点位置
+      缩放锚点: { x: 0, y: 0 },
       Alt键按下: false,
       Shift键按下: false,
       Ctrl键按下: false,
@@ -67,67 +61,43 @@ class 坐标系教程 {
         y减少: { 按下: false, 按下时间: null, 快速增减定时器: null, 悬停: false },
       },
     };
-
-    // 显示选项
     this.显示选项 = {
       世界坐标系: true,
       局部坐标系: true,
-      坐标信息: true,
-      坐标参考线: true,
-      坐标背景: true,
-      使用世界坐标系: true, // 观察点坐标系选择
+      鼠标坐标: true,
+      鼠标坐标参考线: true,
+      鼠标坐标背景: true,
+      使用世界坐标系: true,
       观察点坐标: true,
-      坐标转换过程: false, // 默认关闭
+      坐标转换过程: false,
     };
-
-    // 从sessionStorage加载复选框状态
     this.从SessionStorage加载复选框状态();
-    
-    // 从sessionStorage加载观察点位置
     this.从SessionStorage加载观察点位置();
-    
-    // 从localStorage加载坐标系选择
     this.从LocalStorage加载坐标系选择();
-    
-    // 从localStorage加载矩形状态
     this.从LocalStorage加载矩形状态();
-    
-    // 从localStorage加载观察点坐标状态
     this.从LocalStorage加载观察点坐标状态();
-
-    // 设置复选框的初始状态
-    this.复选框.坐标参考线.checked = this.显示选项.坐标参考线;
-    this.复选框.坐标信息.checked = this.显示选项.坐标信息;
-    this.复选框.坐标背景.checked = this.显示选项.坐标背景;
+    this.复选框.鼠标坐标参考线.checked = this.显示选项.鼠标坐标参考线;
+    this.复选框.鼠标坐标.checked = this.显示选项.鼠标坐标;
+    this.复选框.鼠标坐标背景.checked = this.显示选项.鼠标坐标背景;
     this.复选框.坐标系选择.checked = this.显示选项.使用世界坐标系;
     this.复选框.观察点坐标.checked = this.显示选项.观察点坐标;
     this.复选框.坐标转换过程.checked = this.显示选项.坐标转换过程;
-
-    // 初始绘制
     this.绘制场景();
-
-    // 事件监听
     window.addEventListener("scroll", () => {
       this.边界矩形 = this.canvas.getBoundingClientRect();
     });
-
     window.addEventListener("resize", () => {
       this.边界矩形 = this.canvas.getBoundingClientRect();
       this.canvas.width = this.canvas.offsetWidth * this.dpr;
       this.canvas.height = this.canvas.offsetHeight * this.dpr;
       this.ctx.scale(this.dpr, this.dpr);
-      // 延迟一下，确保控制区位置已更新
       setTimeout(() => {
         this.绘制场景();
       }, 0);
     });
-
     this.canvas.addEventListener("mousedown", (e) => this.鼠标按下(e));
     window.addEventListener("mousemove", (e) => this.鼠标移动(e));
     window.addEventListener("mouseup", () => this.鼠标释放());
-    // this.canvas.addEventListener("mouseleave", () => this.鼠标释放());
-
-    // 监听键盘事件以检测Alt键、Shift键和Ctrl键
     window.addEventListener("keydown", (e) => {
       if (e.key === "Alt") {
         e.preventDefault();
@@ -144,10 +114,8 @@ class 坐标系教程 {
       } else if (e.key === "Shift") {
         this.交互状态.Shift键按下 = false;
       } else if (e.key === "Control" || e.key === "Meta") {
-        // Meta键是Mac上的Command键，在某些系统上Ctrl键可能被识别为Meta
         this.交互状态.Ctrl键按下 = false;
       }
-      // 同时检查修饰键的实际状态（更可靠）
       if (!e.shiftKey) {
         this.交互状态.Shift键按下 = false;
       }
@@ -155,27 +123,23 @@ class 坐标系教程 {
         this.交互状态.Ctrl键按下 = false;
       }
     });
-
-    // 页面失去焦点时，清除按键状态
     window.addEventListener("blur", () => {
       this.交互状态.Alt键按下 = false;
       this.交互状态.Shift键按下 = false;
       this.交互状态.Ctrl键按下 = false;
     });
-
-    // 监听复选框状态变化，重新绘制场景并保存到sessionStorage
-    this.复选框.坐标参考线.addEventListener("change", () => {
-      this.显示选项.坐标参考线 = this.复选框.坐标参考线.checked;
+    this.复选框.鼠标坐标参考线.addEventListener("change", () => {
+      this.显示选项.鼠标坐标参考线 = this.复选框.鼠标坐标参考线.checked;
       this.保存复选框状态到SessionStorage();
       this.绘制场景();
     });
-    this.复选框.坐标信息.addEventListener("change", () => {
-      this.显示选项.坐标信息 = this.复选框.坐标信息.checked;
+    this.复选框.鼠标坐标.addEventListener("change", () => {
+      this.显示选项.鼠标坐标 = this.复选框.鼠标坐标.checked;
       this.保存复选框状态到SessionStorage();
       this.绘制场景();
     });
-    this.复选框.坐标背景.addEventListener("change", () => {
-      this.显示选项.坐标背景 = this.复选框.坐标背景.checked;
+    this.复选框.鼠标坐标背景.addEventListener("change", () => {
+      this.显示选项.鼠标坐标背景 = this.复选框.鼠标坐标背景.checked;
       this.保存复选框状态到SessionStorage();
       this.绘制场景();
     });
@@ -190,29 +154,25 @@ class 坐标系教程 {
       this.保存观察点坐标状态到LocalStorage();
       this.绘制场景();
     });
-    
     this.复选框.坐标转换过程.addEventListener("change", () => {
       this.显示选项.坐标转换过程 = this.复选框.坐标转换过程.checked;
       this.保存复选框状态到SessionStorage();
       this.绘制场景();
     });
   }
-
-  // 从sessionStorage加载复选框状态
   从SessionStorage加载复选框状态() {
     try {
       const 保存的状态 = sessionStorage.getItem("canvasCoordinateCheckboxStates");
       if (保存的状态) {
         const 解析状态 = JSON.parse(保存的状态);
-        // 只更新存在的字段，使用默认值true
-        if (解析状态.坐标参考线 !== undefined) {
-          this.显示选项.坐标参考线 = 解析状态.坐标参考线;
+        if (解析状态.鼠标坐标参考线 !== undefined) {
+          this.显示选项.鼠标坐标参考线 = 解析状态.鼠标坐标参考线;
         }
-        if (解析状态.坐标信息 !== undefined) {
-          this.显示选项.坐标信息 = 解析状态.坐标信息;
+        if (解析状态.鼠标坐标 !== undefined) {
+          this.显示选项.鼠标坐标 = 解析状态.鼠标坐标;
         }
-        if (解析状态.坐标背景 !== undefined) {
-          this.显示选项.坐标背景 = 解析状态.坐标背景;
+        if (解析状态.鼠标坐标背景 !== undefined) {
+          this.显示选项.鼠标坐标背景 = 解析状态.鼠标坐标背景;
         }
         if (解析状态.坐标转换过程 !== undefined) {
           this.显示选项.坐标转换过程 = 解析状态.坐标转换过程;
@@ -220,17 +180,14 @@ class 坐标系教程 {
       }
     } catch (e) {
       console.error("加载sessionStorage状态失败:", e);
-      // 如果出错，保持默认值true
     }
   }
-
-  // 保存复选框状态到sessionStorage
   保存复选框状态到SessionStorage() {
     try {
       const 要保存的状态 = {
-        坐标参考线: this.显示选项.坐标参考线,
-        坐标信息: this.显示选项.坐标信息,
-        坐标背景: this.显示选项.坐标背景,
+        鼠标坐标参考线: this.显示选项.鼠标坐标参考线,
+        鼠标坐标: this.显示选项.鼠标坐标,
+        鼠标坐标背景: this.显示选项.鼠标坐标背景,
         坐标转换过程: this.显示选项.坐标转换过程,
       };
       sessionStorage.setItem("canvasCoordinateCheckboxStates", JSON.stringify(要保存的状态));
@@ -238,8 +195,6 @@ class 坐标系教程 {
       console.error("保存到sessionStorage失败:", e);
     }
   }
-
-  // 从sessionStorage加载观察点位置
   从SessionStorage加载观察点位置() {
     try {
       const 保存的位置 = sessionStorage.getItem("canvasCoordinate观察点位置");
@@ -256,8 +211,6 @@ class 坐标系教程 {
       console.error("加载观察点位置失败:", e);
     }
   }
-
-  // 保存观察点位置到sessionStorage
   保存观察点位置到SessionStorage() {
     try {
       const 要保存的位置 = {
@@ -269,8 +222,6 @@ class 坐标系教程 {
       console.error("保存观察点位置失败:", e);
     }
   }
-
-  // 从localStorage加载坐标系选择
   从LocalStorage加载坐标系选择() {
     try {
       const 保存的选择 = localStorage.getItem("canvasCoordinate坐标系选择");
@@ -282,8 +233,6 @@ class 坐标系教程 {
       console.error("加载坐标系选择失败:", e);
     }
   }
-
-  // 保存坐标系选择到localStorage
   保存坐标系选择到LocalStorage() {
     try {
       localStorage.setItem("canvasCoordinate坐标系选择", JSON.stringify(this.显示选项.使用世界坐标系));
@@ -291,8 +240,6 @@ class 坐标系教程 {
       console.error("保存坐标系选择失败:", e);
     }
   }
-
-  // 从localStorage加载矩形状态
   从LocalStorage加载矩形状态() {
     try {
       const 保存的状态 = localStorage.getItem("canvasCoordinate矩形状态");
@@ -318,8 +265,6 @@ class 坐标系教程 {
       console.error("加载矩形状态失败:", e);
     }
   }
-
-  // 保存矩形状态到localStorage
   保存矩形状态到LocalStorage() {
     try {
       const 要保存的状态 = {
@@ -334,8 +279,6 @@ class 坐标系教程 {
       console.error("保存矩形状态失败:", e);
     }
   }
-
-  // 从localStorage加载观察点坐标状态
   从LocalStorage加载观察点坐标状态() {
     try {
       const 保存的状态 = localStorage.getItem("canvasCoordinate观察点坐标");
@@ -346,8 +289,6 @@ class 坐标系教程 {
       console.error("加载观察点坐标状态失败:", e);
     }
   }
-
-  // 保存观察点坐标状态到localStorage
   保存观察点坐标状态到LocalStorage() {
     try {
       localStorage.setItem("canvasCoordinate观察点坐标", JSON.stringify(this.显示选项.观察点坐标));
@@ -355,7 +296,6 @@ class 坐标系教程 {
       console.error("保存观察点坐标状态失败:", e);
     }
   }
-
   获取鼠标坐标(e) {
     this.交互状态.鼠标位置 = {
       x: e.clientX - this.边界矩形.left,
@@ -363,16 +303,11 @@ class 坐标系教程 {
     };
     this.鼠标坐标 = this.交互状态.鼠标位置;
   }
-
   鼠标按下(e) {
     this.获取鼠标坐标(e);
     const 鼠标位置 = this.交互状态.鼠标位置;
     const 矩形 = this.矩形;
-
-    // 检查是否点击在观察点上
-    const 到观察点距离 = Math.sqrt(
-      Math.pow(鼠标位置.x - this.观察点.x, 2) + Math.pow(鼠标位置.y - this.观察点.y, 2)
-    );
+    const 到观察点距离 = Math.sqrt(Math.pow(鼠标位置.x - this.观察点.x, 2) + Math.pow(鼠标位置.y - this.观察点.y, 2));
     if (到观察点距离 <= this.观察点.半径 + 8) {
       this.交互状态.正在拖动观察点 = true;
       this.交互状态.观察点拖动偏移 = {
@@ -381,28 +316,20 @@ class 坐标系教程 {
       };
       return;
     }
-
-    // 检查是否点击在按钮上
     const 按钮区域 = this.获取按钮区域();
     const 点击的按钮 = this.检查按钮点击(鼠标位置, 按钮区域);
     if (点击的按钮) {
       this.处理按钮按下(点击的按钮);
       return;
     }
-
-
-    // 转换鼠标坐标到局部坐标系
     const dx = 鼠标位置.x - 矩形.x;
     const dy = 鼠标位置.y - 矩形.y;
     const 弧度 = (-矩形.旋转角度 * Math.PI) / 180;
     const 局部X = dx * Math.cos(弧度) - dy * Math.sin(弧度);
     const 局部Y = dx * Math.sin(弧度) + dy * Math.cos(弧度);
-
     const 半宽 = 矩形.宽度 / 2;
     const 半高 = 矩形.高度 / 2;
     const 边界阈值 = 10;
-
-    // 检查是否点击在旋转句柄上（旋转）
     if (Math.abs(局部X) < 边界阈值 && Math.abs(局部Y + 半高 + 20) < 边界阈值) {
       this.交互状态.正在旋转 = true;
       this.交互状态.旋转起始 = {
@@ -411,7 +338,6 @@ class 坐标系教程 {
         y: 鼠标位置.y,
       };
     }
-    // 检查是否点击在角点上（缩放）
     if (
       (Math.abs(局部X - 半宽) < 边界阈值 && Math.abs(局部Y - 半高) < 边界阈值) ||
       (Math.abs(局部X + 半宽) < 边界阈值 && Math.abs(局部Y - 半高) < 边界阈值) ||
@@ -427,16 +353,11 @@ class 坐标系教程 {
         矩形中心X: 矩形.x,
         矩形中心Y: 矩形.y,
       };
-
-      // 使用策略模式确定是哪个角，并设置缩放锚点为对角点，保存被拖拽角点的初始位置
-      // 注意：局部Y = 半高 是下边缘，局部Y = -半高 是上边缘
       const 角点配置 = this.获取角点配置(局部X, 局部Y, 半宽, 半高, 边界阈值);
       this.交互状态.缩放角 = 角点配置.角;
       this.交互状态.缩放锚点 = 角点配置.锚点;
       this.交互状态.被拖拽点初始位置 = 角点配置.被拖拽点;
-    }
-    // 检查是否点击在边缘上（缩放）
-    else if (
+    } else if (
       (Math.abs(局部X - 半宽) < 边界阈值 && Math.abs(局部Y) <= 半高) ||
       (Math.abs(局部X + 半宽) < 边界阈值 && Math.abs(局部Y) <= 半高) ||
       (Math.abs(局部Y - 半高) < 边界阈值 && Math.abs(局部X) <= 半宽) ||
@@ -451,49 +372,42 @@ class 坐标系教程 {
         矩形中心X: 矩形.x,
         矩形中心Y: 矩形.y,
       };
-
-      // 使用数据驱动方式处理边缘检测
       const 边缘配置 = [
         {
           条件: Math.abs(局部X - 半宽) < 边界阈值 && Math.abs(局部Y) <= 半高,
           边: "右",
           锚点: { x: -半宽, y: 0 },
-          被拖拽点: { x: 半宽, y: 局部Y }
+          被拖拽点: { x: 半宽, y: 局部Y },
         },
         {
           条件: Math.abs(局部X + 半宽) < 边界阈值 && Math.abs(局部Y) <= 半高,
           边: "左",
           锚点: { x: 半宽, y: 0 },
-          被拖拽点: { x: -半宽, y: 局部Y }
+          被拖拽点: { x: -半宽, y: 局部Y },
         },
         {
           条件: Math.abs(局部Y - 半高) < 边界阈值 && Math.abs(局部X) <= 半宽,
           边: "下",
           锚点: { x: 0, y: -半高 },
-          被拖拽点: { x: 局部X, y: 半高 }
+          被拖拽点: { x: 局部X, y: 半高 },
         },
         {
-          条件: true, // 默认情况
+          条件: true,
           边: "上",
           锚点: { x: 0, y: 半高 },
-          被拖拽点: { x: 局部X, y: -半高 }
-        }
+          被拖拽点: { x: 局部X, y: -半高 },
+        },
       ];
-
-      // 查找第一个匹配的边缘配置
-      const 匹配配置 = 边缘配置.find(配置 => 配置.条件);
+      const 匹配配置 = 边缘配置.find((配置) => 配置.条件);
       this.交互状态.缩放边 = 匹配配置.边;
       this.交互状态.缩放锚点 = 匹配配置.锚点;
       this.交互状态.被拖拽点初始位置 = 匹配配置.被拖拽点;
-    }
-    // 检查是否点击在矩形内部（拖动）
-    else if (Math.abs(局部X) <= 半宽 && Math.abs(局部Y) <= 半高) {
+    } else if (Math.abs(局部X) <= 半宽 && Math.abs(局部Y) <= 半高) {
       this.交互状态.正在拖动 = true;
       this.交互状态.拖动偏移 = {
         x: 鼠标位置.x - 矩形.x,
         y: 鼠标位置.y - 矩形.y,
       };
-      // 保存开始拖动时矩形的位置（用于Shift键限制方向）
       this.交互状态.拖动起始位置 = {
         x: 矩形.x,
         y: 矩形.y,
@@ -501,57 +415,49 @@ class 坐标系教程 {
       this.canvas.classList.add("dragging");
     }
   }
-
-  // 获取角点配置（策略模式）
   获取角点配置(局部X, 局部Y, 半宽, 半高, 边界阈值) {
     const 角点配置列表 = [
       {
         条件: Math.abs(局部X - 半宽) < 边界阈值 && Math.abs(局部Y - 半高) < 边界阈值,
         角: "右下",
-        锚点: { x: -半宽, y: -半高 }, // 对角是左上角
-        被拖拽点: { x: 半宽, y: 半高 }
+        锚点: { x: -半宽, y: -半高 },
+        被拖拽点: { x: 半宽, y: 半高 },
       },
       {
         条件: Math.abs(局部X + 半宽) < 边界阈值 && Math.abs(局部Y - 半高) < 边界阈值,
         角: "左下",
-        锚点: { x: 半宽, y: -半高 }, // 对角是右上角
-        被拖拽点: { x: -半宽, y: 半高 }
+        锚点: { x: 半宽, y: -半高 },
+        被拖拽点: { x: -半宽, y: 半高 },
       },
       {
         条件: Math.abs(局部X - 半宽) < 边界阈值 && Math.abs(局部Y + 半高) < 边界阈值,
         角: "右上",
-        锚点: { x: -半宽, y: 半高 }, // 对角是左下角
-        被拖拽点: { x: 半宽, y: -半高 }
+        锚点: { x: -半宽, y: 半高 },
+        被拖拽点: { x: 半宽, y: -半高 },
       },
       {
-        条件: true, // 默认情况：左上角
+        条件: true,
         角: "左上",
-        锚点: { x: 半宽, y: 半高 }, // 对角是右下角
-        被拖拽点: { x: -半宽, y: -半高 }
-      }
+        锚点: { x: 半宽, y: 半高 },
+        被拖拽点: { x: -半宽, y: -半高 },
+      },
     ];
-
-    // 查找第一个匹配的角点配置
-    return 角点配置列表.find(配置 => 配置.条件);
+    return 角点配置列表.find((配置) => 配置.条件);
   }
-
   鼠标移动(e) {
     this.获取鼠标坐标(e);
     const 鼠标位置 = this.交互状态.鼠标位置;
-
-    // 同步更新Shift键和Ctrl键状态（从鼠标事件中获取，更可靠）
     this.交互状态.Shift键按下 = e.shiftKey;
     this.交互状态.Ctrl键按下 = e.ctrlKey;
-
-    // 更新按钮悬停状态
     this.更新按钮悬停状态(鼠标位置);
-
-    // 更新鼠标样式（仅在非交互状态下）
-    if (!this.交互状态.正在拖动 && !this.交互状态.正在缩放 && !this.交互状态.正在旋转 && !this.交互状态.正在拖动观察点) {
+    if (
+      !this.交互状态.正在拖动 &&
+      !this.交互状态.正在缩放 &&
+      !this.交互状态.正在旋转 &&
+      !this.交互状态.正在拖动观察点
+    ) {
       this.更新鼠标样式(鼠标位置);
     }
-
-    // 处理不同的交互状态
     if (this.交互状态.正在拖动观察点) {
       this.处理观察点拖动(鼠标位置);
     } else if (this.交互状态.正在拖动) {
@@ -561,43 +467,27 @@ class 坐标系教程 {
     } else if (this.交互状态.正在缩放) {
       this.处理缩放(鼠标位置);
     }
-    
     this.绘制场景();
   }
-
-  // 更新鼠标样式
   更新鼠标样式(鼠标位置) {
-    // 检查是否在观察点上
-    const 到观察点距离 = Math.sqrt(
-      Math.pow(鼠标位置.x - this.观察点.x, 2) + Math.pow(鼠标位置.y - this.观察点.y, 2)
-    );
+    const 到观察点距离 = Math.sqrt(Math.pow(鼠标位置.x - this.观察点.x, 2) + Math.pow(鼠标位置.y - this.观察点.y, 2));
     if (到观察点距离 <= this.观察点.半径 + 8) {
-      this.canvas.style.cursor = "grab";
+      this.canvas.style.cursor = 'url("/Images/Common/鼠标-移动.cur"), move';
       this.交互状态.观察点悬停 = true;
       return;
     } else {
       this.交互状态.观察点悬停 = false;
     }
-
     const 矩形 = this.矩形;
     const 边界阈值 = 10;
-
-    // 转换鼠标坐标到局部坐标系
     const { 局部X, 局部Y, 半宽, 半高 } = this.计算鼠标局部坐标(鼠标位置, 矩形);
-    
     this.交互状态.鼠标已悬停 = false;
-
-    // 按优先级检查鼠标位置并设置对应的cursor样式
     const cursor = this.获取鼠标cursor样式(局部X, 局部Y, 半宽, 半高, 边界阈值);
     this.canvas.style.cursor = cursor;
-
-    // 如果在矩形内部，设置悬停状态
-    if (cursor === "grab" && Math.abs(局部X) <= 半宽 && Math.abs(局部Y) <= 半高) {
+    if (cursor === 'url("/Images/Common/鼠标-移动.cur"), move' && Math.abs(局部X) <= 半宽 && Math.abs(局部Y) <= 半高) {
       this.交互状态.鼠标已悬停 = true;
     }
   }
-
-  // 计算鼠标在局部坐标系中的位置
   计算鼠标局部坐标(鼠标位置, 矩形) {
     const dx = 鼠标位置.x - 矩形.x;
     const dy = 鼠标位置.y - 矩形.y;
@@ -606,311 +496,223 @@ class 坐标系教程 {
     const 局部Y = dx * Math.sin(弧度) + dy * Math.cos(弧度);
     const 半宽 = 矩形.宽度 / 2;
     const 半高 = 矩形.高度 / 2;
-
     return { 局部X, 局部Y, 半宽, 半高 };
   }
-  
-  // 根据鼠标位置获取对应的cursor样式
   获取鼠标cursor样式(局部X, 局部Y, 半宽, 半高, 边界阈值) {
-    // 检查是否在旋转句柄上
     if (this.是否在旋转句柄上(局部X, 局部Y, 半高, 边界阈值)) {
-      return "grab";
+      return 'url("/Images/Common/鼠标-移动.cur"), move';
     }
-
-    // 检查是否在角点上
     const 角点cursor = this.获取角点cursor样式(局部X, 局部Y, 半宽, 半高, 边界阈值);
     if (角点cursor) {
       return 角点cursor;
     }
-
-    // 检查是否在边缘上
     const 边缘cursor = this.获取边缘cursor样式(局部X, 局部Y, 半宽, 半高, 边界阈值);
     if (边缘cursor) {
       return 边缘cursor;
     }
-
-    // 检查是否在矩形内部
     if (Math.abs(局部X) <= 半宽 && Math.abs(局部Y) <= 半高) {
-      return "grab";
+      return 'url("/Images/Common/鼠标-移动.cur"), move';
     }
-
     return 'url("/Images/Common/鼠标-默认.cur"), auto';
   }
-
-  // 检查是否在旋转句柄上
   是否在旋转句柄上(局部X, 局部Y, 半高, 边界阈值) {
     return Math.abs(局部X) < 边界阈值 && Math.abs(局部Y + 半高 + 20) < 边界阈值;
   }
-
-  // 获取角点的cursor样式
   获取角点cursor样式(局部X, 局部Y, 半宽, 半高, 边界阈值) {
-    // 左上角点和右下角点 (nwse-resize)
     if (
       (this.接近值(局部X, 半宽, 边界阈值) && this.接近值(局部Y, 半高, 边界阈值)) ||
       (this.接近值(局部X, -半宽, 边界阈值) && this.接近值(局部Y, -半高, 边界阈值))
     ) {
       return "nwse-resize";
     }
-
-    // 右上角点和左下角点 (nesw-resize)
     if (
       (this.接近值(局部X, -半宽, 边界阈值) && this.接近值(局部Y, 半高, 边界阈值)) ||
       (this.接近值(局部X, 半宽, 边界阈值) && this.接近值(局部Y, -半高, 边界阈值))
     ) {
       return "nesw-resize";
     }
-
     return null;
   }
-
-  // 获取边缘的cursor样式
   获取边缘cursor样式(局部X, 局部Y, 半宽, 半高, 边界阈值) {
-    // 左右边缘 (ew-resize)
     if (
       (this.接近值(局部X, 半宽, 边界阈值) && Math.abs(局部Y) <= 半高) ||
       (this.接近值(局部X, -半宽, 边界阈值) && Math.abs(局部Y) <= 半高)
     ) {
       return "ew-resize";
     }
-
-    // 上下边缘 (ns-resize)
     if (
       (this.接近值(局部Y, 半高, 边界阈值) && Math.abs(局部X) <= 半宽) ||
       (this.接近值(局部Y, -半高, 边界阈值) && Math.abs(局部X) <= 半宽)
     ) {
       return "ns-resize";
     }
-
     return null;
   }
-
-  // 检查值是否接近目标值（在阈值范围内）
   接近值(值, 目标值, 阈值) {
     return Math.abs(值 - 目标值) < 阈值;
   }
-
-  // 处理拖动操作
   处理拖动(鼠标位置) {
     if (this.交互状态.Shift键按下) {
-      // Shift键按下：限制移动方向为水平或垂直（以开始拖拽时的矩形位置为原点）
       const 拖动起始 = this.交互状态.拖动起始位置;
-      
-      // 先计算正常情况下的矩形位置
       const 正常X = 鼠标位置.x - this.交互状态.拖动偏移.x;
       const 正常Y = 鼠标位置.y - this.交互状态.拖动偏移.y;
-      
-      // 计算相对于初始矩形位置的偏移
       const dx = 正常X - 拖动起始.x;
       const dy = 正常Y - 拖动起始.y;
-      
-      // 判断是水平移动还是垂直移动（选择偏移量较大的方向）
       if (Math.abs(dx) > Math.abs(dy)) {
-        // 水平移动：保持Y坐标为初始值
         this.矩形.x = 拖动起始.x + dx;
         this.矩形.y = 拖动起始.y;
       } else {
-        // 垂直移动：保持X坐标为初始值
         this.矩形.x = 拖动起始.x;
         this.矩形.y = 拖动起始.y + dy;
       }
     } else {
-      // 正常拖动：自由移动
       this.矩形.x = 鼠标位置.x - this.交互状态.拖动偏移.x;
       this.矩形.y = 鼠标位置.y - this.交互状态.拖动偏移.y;
     }
     this.保存矩形状态到LocalStorage();
   }
-  
   处理旋转(鼠标位置) {
     const 旋转起始 = this.交互状态.旋转起始;
-
-    // 计算鼠标相对于矩形中心的角度变化
     const dx = 鼠标位置.x - this.矩形.x;
     const dy = 鼠标位置.y - this.矩形.y;
     const 起始Dx = 旋转起始.x - this.矩形.x;
     const 起始Dy = 旋转起始.y - this.矩形.y;
-
     let 当前角度 = (Math.atan2(dy, dx) * 180) / Math.PI;
     let 起始角度 = (Math.atan2(起始Dy, 起始Dx) * 180) / Math.PI;
-
     this.矩形.旋转角度 = 旋转起始.角度 + (当前角度 - 起始角度);
-    
-    // 确保旋转角度始终为正值（0-360范围）
     if (this.矩形.旋转角度 < 0) {
       this.矩形.旋转角度 += 360;
     }
     if (this.矩形.旋转角度 >= 360) {
       this.矩形.旋转角度 -= 360;
     }
-    
-    // 如果Shift键按下，将角度对齐到最近的45度倍数
     if (this.交互状态.Shift键按下) {
       this.矩形.旋转角度 = this.对齐到45度倍数(this.矩形.旋转角度);
     }
     this.保存矩形状态到LocalStorage();
   }
-
-  // 将角度对齐到最近的45度倍数（0, 45, 90, 135, 180, 225, 270, 315）
   对齐到45度倍数(角度) {
-    // 角度已经在0-360范围内，直接计算最近的45度倍数
     const 倍数 = Math.round(角度 / 45);
     const 对齐角度 = 倍数 * 45;
-    
-    // 确保结果在0-360范围内
     return ((对齐角度 % 360) + 360) % 360;
   }
-
-  // 处理缩放操作
   处理缩放(鼠标位置) {
     const 缩放起始 = this.交互状态.缩放起始;
     const 使用中心锚点 = this.交互状态.Alt键按下;
     const 角度 = (this.矩形.旋转角度 * Math.PI) / 180;
     const 弧度 = (-this.矩形.旋转角度 * Math.PI) / 180;
-
-    // 计算鼠标在局部坐标系中的位置和增量
     const { 鼠标局部X, 鼠标局部Y, 局部Dx, 局部Dy } = this.计算缩放局部坐标(鼠标位置, 缩放起始, 弧度);
-
     if (this.交互状态.缩放边) {
       this.处理边缩放(缩放起始, 鼠标局部X, 鼠标局部Y, 局部Dx, 局部Dy, 使用中心锚点, 角度);
     } else if (this.交互状态.缩放角) {
       this.处理角缩放(缩放起始, 鼠标局部X, 鼠标局部Y, 局部Dx, 局部Dy, 使用中心锚点, 角度);
     }
   }
-
-  // 计算缩放时的局部坐标
   计算缩放局部坐标(鼠标位置, 缩放起始, 弧度) {
-    // 将鼠标位置转换为局部坐标系（相对于开始缩放时的矩形中心）
     const dx = 鼠标位置.x - 缩放起始.矩形中心X;
     const dy = 鼠标位置.y - 缩放起始.矩形中心Y;
     const 鼠标局部X = dx * Math.cos(弧度) - dy * Math.sin(弧度);
     const 鼠标局部Y = dx * Math.sin(弧度) + dy * Math.cos(弧度);
-
-    // 计算鼠标移动的增量（相对于开始时的鼠标位置）
     const 起始Dx = 缩放起始.x - 缩放起始.矩形中心X;
     const 起始Dy = 缩放起始.y - 缩放起始.矩形中心Y;
     const 起始鼠标局部X = 起始Dx * Math.cos(弧度) - 起始Dy * Math.sin(弧度);
     const 起始鼠标局部Y = 起始Dx * Math.sin(弧度) + 起始Dy * Math.cos(弧度);
     const 局部Dx = 鼠标局部X - 起始鼠标局部X;
     const 局部Dy = 鼠标局部Y - 起始鼠标局部Y;
-
     return { 鼠标局部X, 鼠标局部Y, 局部Dx, 局部Dy };
   }
-
-  // 处理边的缩放
   处理边缩放(缩放起始, 鼠标局部X, 鼠标局部Y, 局部Dx, 局部Dy, 使用中心锚点, 角度) {
     const 锚点 = 使用中心锚点 ? { x: 0, y: 0 } : this.交互状态.缩放锚点;
     const 被拖拽点初始位置 = this.交互状态.被拖拽点初始位置;
     const 缩放边 = this.交互状态.缩放边;
     const 是水平边 = 缩放边 === "右" || 缩放边 === "左";
-
-    // 计算被拖拽点的局部坐标
     const { x: 被拖拽点局部X, y: 被拖拽点局部Y } = this.计算边拖拽点位置(
-      缩放边, 使用中心锚点, 鼠标局部X, 鼠标局部Y, 被拖拽点初始位置, 局部Dx, 局部Dy
+      缩放边,
+      使用中心锚点,
+      鼠标局部X,
+      鼠标局部Y,
+      被拖拽点初始位置,
+      局部Dx,
+      局部Dy
     );
-
     if (是水平边) {
       this.应用水平边缩放(缩放起始, 被拖拽点局部X, 锚点, 使用中心锚点, 缩放边, 角度);
     } else {
       this.应用垂直边缩放(缩放起始, 被拖拽点局部Y, 锚点, 使用中心锚点, 缩放边, 角度);
     }
   }
-
-  // 计算边拖拽点的位置
   计算边拖拽点位置(缩放边, 使用中心锚点, 鼠标局部X, 鼠标局部Y, 被拖拽点初始位置, 局部Dx, 局部Dy) {
     if (使用中心锚点) {
-      // Alt键按下：被拖拽点直接跟随鼠标位置
       const 是水平边 = 缩放边 === "右" || 缩放边 === "左";
       return {
         x: 是水平边 ? 鼠标局部X : 被拖拽点初始位置.x,
-        y: 是水平边 ? 被拖拽点初始位置.y : 鼠标局部Y
+        y: 是水平边 ? 被拖拽点初始位置.y : 鼠标局部Y,
       };
     } else {
-      // 正常模式：基于初始位置+增量
       const 是水平边 = 缩放边 === "右" || 缩放边 === "左";
       return {
         x: 是水平边 ? 被拖拽点初始位置.x + 局部Dx : 被拖拽点初始位置.x,
-        y: 是水平边 ? 被拖拽点初始位置.y : 被拖拽点初始位置.y + 局部Dy
+        y: 是水平边 ? 被拖拽点初始位置.y : 被拖拽点初始位置.y + 局部Dy,
       };
     }
   }
-
-  // 应用水平边缩放
   应用水平边缩放(缩放起始, 被拖拽点局部X, 锚点, 使用中心锚点, 缩放边, 角度) {
     const 新宽度 = Math.max(1, Math.abs(被拖拽点局部X - 锚点.x));
-
     if (使用中心锚点) {
-      // Alt键按下：以中心为锚点，中心位置不变，宽度 = |被拖拽点局部X| * 2
       this.矩形.x = 缩放起始.矩形中心X;
       this.矩形.y = 缩放起始.矩形中心Y;
       this.矩形.宽度 = Math.max(1, Math.abs(被拖拽点局部X) * 2);
     } else {
-      // 正常模式：以相对边中点为锚点
-      // 根据被拖拽点相对于锚点的实际位置来判断方向，而不是使用固定的缩放边
       const 被拖拽点相对于锚点的X = 被拖拽点局部X - 锚点.x;
       const 方向 = 被拖拽点相对于锚点的X >= 0 ? 1 : -1;
-      
       const 锚点世界 = this.局部坐标转世界坐标(缩放起始.矩形中心X, 缩放起始.矩形中心Y, 锚点.x, 锚点.y, 角度);
       const 新的中心到锚点向量X = (方向 * 新宽度) / 2;
       const 新的中心 = this.局部坐标转世界坐标(锚点世界.x, 锚点世界.y, 新的中心到锚点向量X, 0, 角度);
-
       this.矩形.x = 新的中心.x;
       this.矩形.y = 新的中心.y;
       this.矩形.宽度 = 新宽度;
     }
     this.保存矩形状态到LocalStorage();
   }
-
-  // 应用垂直边缩放
   应用垂直边缩放(缩放起始, 被拖拽点局部Y, 锚点, 使用中心锚点, 缩放边, 角度) {
     const 新高度 = Math.max(1, Math.abs(被拖拽点局部Y - 锚点.y));
-
     if (使用中心锚点) {
-      // Alt键按下：以中心为锚点，中心位置不变，高度 = |被拖拽点局部Y| * 2
       this.矩形.x = 缩放起始.矩形中心X;
       this.矩形.y = 缩放起始.矩形中心Y;
       this.矩形.高度 = Math.max(1, Math.abs(被拖拽点局部Y) * 2);
     } else {
-      // 正常模式：以相对边中点为锚点
-      // 根据被拖拽点相对于锚点的实际位置来判断方向，而不是使用固定的缩放边
       const 被拖拽点相对于锚点的Y = 被拖拽点局部Y - 锚点.y;
       const 方向 = 被拖拽点相对于锚点的Y >= 0 ? 1 : -1;
-      
       const 锚点世界 = this.局部坐标转世界坐标(缩放起始.矩形中心X, 缩放起始.矩形中心Y, 锚点.x, 锚点.y, 角度);
       const 新的中心到锚点向量Y = (方向 * 新高度) / 2;
       const 新的中心 = this.局部坐标转世界坐标(锚点世界.x, 锚点世界.y, 0, 新的中心到锚点向量Y, 角度);
-
       this.矩形.x = 新的中心.x;
       this.矩形.y = 新的中心.y;
       this.矩形.高度 = 新高度;
     }
     this.保存矩形状态到LocalStorage();
   }
-
-  // 处理角的缩放
   处理角缩放(缩放起始, 鼠标局部X, 鼠标局部Y, 局部Dx, 局部Dy, 使用中心锚点, 角度) {
     const 锚点 = 使用中心锚点 ? { x: 0, y: 0 } : this.交互状态.缩放锚点;
     const 被拖拽点初始位置 = this.交互状态.被拖拽点初始位置;
-
-    // 计算被拖拽点的局部坐标
     const 被拖拽点局部X = 使用中心锚点 ? 鼠标局部X : 被拖拽点初始位置.x + 局部Dx;
     const 被拖拽点局部Y = 使用中心锚点 ? 鼠标局部Y : 被拖拽点初始位置.y + 局部Dy;
-
-    // 计算新尺寸
     const 新宽度 = Math.max(10, Math.abs(被拖拽点局部X - 锚点.x));
     const 新高度 = Math.max(10, Math.abs(被拖拽点局部Y - 锚点.y));
-
     if (使用中心锚点) {
-      // Alt键按下：以中心为锚点，中心位置不变，尺寸 = |被拖拽点局部坐标| * 2
       this.矩形.x = 缩放起始.矩形中心X;
       this.矩形.y = 缩放起始.矩形中心Y;
       this.矩形.宽度 = Math.max(10, Math.abs(被拖拽点局部X) * 2);
       this.矩形.高度 = Math.max(10, Math.abs(被拖拽点局部Y) * 2);
     } else {
-      // 正常模式：以对角点为锚点
       const 锚点世界 = this.局部坐标转世界坐标(缩放起始.矩形中心X, 缩放起始.矩形中心Y, 锚点.x, 锚点.y, 角度);
-      const 被拖拽点世界 = this.局部坐标转世界坐标(缩放起始.矩形中心X, 缩放起始.矩形中心Y, 被拖拽点局部X, 被拖拽点局部Y, 角度);
-
-      // 新中心是世界坐标系中锚点和被拖拽点的中点
+      const 被拖拽点世界 = this.局部坐标转世界坐标(
+        缩放起始.矩形中心X,
+        缩放起始.矩形中心Y,
+        被拖拽点局部X,
+        被拖拽点局部Y,
+        角度
+      );
       this.矩形.x = (锚点世界.x + 被拖拽点世界.x) / 2;
       this.矩形.y = (锚点世界.y + 被拖拽点世界.y) / 2;
       this.矩形.宽度 = 新宽度;
@@ -918,15 +720,12 @@ class 坐标系教程 {
     }
     this.保存矩形状态到LocalStorage();
   }
-
-  // 将局部坐标转换为世界坐标
   局部坐标转世界坐标(中心X, 中心Y, 局部X, 局部Y, 角度) {
     return {
       x: 中心X + 局部X * Math.cos(角度) - 局部Y * Math.sin(角度),
-      y: 中心Y + 局部X * Math.sin(角度) + 局部Y * Math.cos(角度)
+      y: 中心Y + 局部X * Math.sin(角度) + 局部Y * Math.cos(角度),
     };
   }
-
   鼠标释放() {
     this.交互状态.正在拖动 = false;
     this.交互状态.正在缩放 = false;
@@ -935,19 +734,13 @@ class 坐标系教程 {
     this.交互状态.缩放边 = null;
     this.交互状态.缩放角 = null;
     this.canvas.classList.remove("dragging");
-    
-    // 停止所有按钮的快速增减
     this.停止所有按钮快速增减();
   }
-
-  // 处理观察点拖动
   处理观察点拖动(鼠标位置) {
     this.观察点.x = 鼠标位置.x - this.交互状态.观察点拖动偏移.x;
     this.观察点.y = 鼠标位置.y - this.交互状态.观察点拖动偏移.y;
     this.保存观察点位置到SessionStorage();
   }
-
-  // 获取控制区位置（相对于Canvas）
   获取控制区位置() {
     if (!this.控制区元素) return null;
     const 画布矩形 = this.canvas.getBoundingClientRect();
@@ -959,12 +752,9 @@ class 坐标系教程 {
       height: 控制区矩形.height,
     };
   }
-
-  // 获取按钮区域
   获取按钮区域() {
     const 控制区位置 = this.获取控制区位置();
     if (!控制区位置) {
-      // 如果控制区不存在，使用原来的计算方式
       const 画布宽度 = this.canvas.offsetWidth;
       const 画布高度 = this.canvas.offsetHeight;
       const 数字框宽度 = 120;
@@ -974,12 +764,10 @@ class 坐标系教程 {
       const 间距 = 10;
       const 右边距 = 20;
       const 下边距 = 80;
-
       const x数字框X = 画布宽度 - 右边距 - 数字框宽度 - 按钮宽度 - 间距;
       const y数字框X = 画布宽度 - 右边距 - 数字框宽度 - 按钮宽度 - 间距;
       const x数字框Y = 画布高度 - 下边距 - 数字框高度 - 间距 - 数字框高度;
       const y数字框Y = 画布高度 - 下边距 - 数字框高度;
-
       return {
         x数字框: { x: x数字框X, y: x数字框Y, width: 数字框宽度, height: 数字框高度 },
         y数字框: { x: y数字框X, y: y数字框Y, width: 数字框宽度, height: 数字框高度 },
@@ -989,22 +777,18 @@ class 坐标系教程 {
         y减少按钮: { x: y数字框X + 数字框宽度 + 间距, y: y数字框Y + 按钮高度, width: 按钮宽度, height: 按钮高度 },
       };
     }
-
     const 数字框宽度 = 120;
     const 数字框高度 = 30;
     const 按钮宽度 = 20;
     const 按钮高度 = 15;
     const 间距 = 10;
-    const 控件间距 = 10; // 控件之间的间距
-    const 控件与控制区间距 = 10; // 控件与控制区之间的间距
-
-    // 计算控件位置：在控制区上方，右对齐
+    const 控件间距 = 10;
+    const 控件与控制区间距 = 10;
     const 控件总宽度 = 数字框宽度 + 间距 + 按钮宽度;
     const x数字框X = 控制区位置.x + 控制区位置.width - 控件总宽度;
     const y数字框X = 控制区位置.x + 控制区位置.width - 控件总宽度;
     const x数字框Y = 控制区位置.y - 控件与控制区间距 - 数字框高度 - 控件间距 - 数字框高度;
     const y数字框Y = 控制区位置.y - 控件与控制区间距 - 数字框高度;
-
     return {
       x数字框: { x: x数字框X, y: x数字框Y, width: 数字框宽度, height: 数字框高度 },
       y数字框: { x: y数字框X, y: y数字框Y, width: 数字框宽度, height: 数字框高度 },
@@ -1014,8 +798,6 @@ class 坐标系教程 {
       y减少按钮: { x: y数字框X + 数字框宽度 + 间距, y: y数字框Y + 按钮高度, width: 按钮宽度, height: 按钮高度 },
     };
   }
-
-  // 检查按钮点击
   检查按钮点击(鼠标位置, 按钮区域) {
     if (this.点在区域内(鼠标位置, 按钮区域.x增加按钮)) return "x增加";
     if (this.点在区域内(鼠标位置, 按钮区域.x减少按钮)) return "x减少";
@@ -1023,45 +805,29 @@ class 坐标系教程 {
     if (this.点在区域内(鼠标位置, 按钮区域.y减少按钮)) return "y减少";
     return null;
   }
-
-  // 检查点是否在区域内
   点在区域内(点, 区域) {
-    return 点.x >= 区域.x && 点.x <= 区域.x + 区域.width &&
-           点.y >= 区域.y && 点.y <= 区域.y + 区域.height;
+    return 点.x >= 区域.x && 点.x <= 区域.x + 区域.width && 点.y >= 区域.y && 点.y <= 区域.y + 区域.height;
   }
-
-  // 更新坐标系选择文本
   更新坐标系选择文本() {
     if (this.坐标系选择文本) {
       this.坐标系选择文本.textContent = this.显示选项.使用世界坐标系 ? "世界坐标系" : "局部坐标系";
     }
   }
-
-  // 处理按钮按下
   处理按钮按下(按钮类型) {
     const 按钮状态 = this.交互状态.按钮状态[按钮类型];
     按钮状态.按下 = true;
     按钮状态.按下时间 = performance.now();
     按钮状态.快速增减定时器 = null;
-    按钮状态.悬停 = true; // 确保悬停状态为true
-
-    // 立即执行一次增减
+    按钮状态.悬停 = true;
     this.执行按钮操作(按钮类型);
-    
-    // 立即更新显示
     this.绘制场景();
-
-    // 0.5秒后开始快速增减
     setTimeout(() => {
       if (按钮状态.按下 && 按钮状态.悬停) {
         this.开始快速增减(按钮类型);
       }
     }, 500);
   }
-
-  // 执行按钮操作
   执行按钮操作(按钮类型) {
-    // 根据按键状态计算步进值
     let 步进 = 1;
     if (this.交互状态.Shift键按下) {
       步进 = 10;
@@ -1069,9 +835,7 @@ class 坐标系教程 {
       步进 = 5;
     }
     let 坐标值 = 0;
-
     if (this.显示选项.使用世界坐标系) {
-      // 世界坐标系：直接使用观察点的世界坐标
       if (按钮类型 === "x增加") {
         this.观察点.x += 步进;
         坐标值 = this.观察点.x;
@@ -1086,14 +850,12 @@ class 坐标系教程 {
         坐标值 = this.观察点.y;
       }
     } else {
-      // 局部坐标系：需要将观察点的世界坐标转换为局部坐标
       const 矩形 = this.矩形;
       const dx = this.观察点.x - 矩形.x;
       const dy = this.观察点.y - 矩形.y;
       const 弧度 = (-矩形.旋转角度 * Math.PI) / 180;
       let 局部X = dx * Math.cos(弧度) - dy * Math.sin(弧度);
       let 局部Y = dx * Math.sin(弧度) + dy * Math.cos(弧度);
-
       if (按钮类型 === "x增加") {
         局部X += 步进;
       } else if (按钮类型 === "x减少") {
@@ -1103,37 +865,28 @@ class 坐标系教程 {
       } else if (按钮类型 === "y减少") {
         局部Y -= 步进;
       }
-
-      // 将局部坐标转换回世界坐标
       const 角度 = (矩形.旋转角度 * Math.PI) / 180;
       const 世界X = 矩形.x + 局部X * Math.cos(角度) - 局部Y * Math.sin(角度);
       const 世界Y = 矩形.y + 局部X * Math.sin(角度) + 局部Y * Math.cos(角度);
       this.观察点.x = 世界X;
       this.观察点.y = 世界Y;
     }
-
     this.保存观察点位置到SessionStorage();
   }
-
-  // 开始快速增减
   开始快速增减(按钮类型) {
     const 按钮状态 = this.交互状态.按钮状态[按钮类型];
     if (!按钮状态.按下 || !按钮状态.悬停) return;
-
     const 快速增减 = () => {
       if (按钮状态.按下 && 按钮状态.悬停) {
         this.执行按钮操作(按钮类型);
         this.绘制场景();
-        按钮状态.快速增减定时器 = setTimeout(快速增减, 50); // 每50ms执行一次
+        按钮状态.快速增减定时器 = setTimeout(快速增减, 50);
       }
     };
-
     快速增减();
   }
-
-  // 停止所有按钮快速增减
   停止所有按钮快速增减() {
-    Object.keys(this.交互状态.按钮状态).forEach(按钮类型 => {
+    Object.keys(this.交互状态.按钮状态).forEach((按钮类型) => {
       const 按钮状态 = this.交互状态.按钮状态[按钮类型];
       按钮状态.按下 = false;
       按钮状态.按下时间 = null;
@@ -1143,19 +896,14 @@ class 坐标系教程 {
       }
     });
   }
-
-  // 更新按钮悬停状态
   更新按钮悬停状态(鼠标位置) {
     const 按钮区域 = this.获取按钮区域();
     const 按钮类型列表 = ["x增加", "x减少", "y增加", "y减少"];
-
-    按钮类型列表.forEach(按钮类型 => {
+    按钮类型列表.forEach((按钮类型) => {
       const 按钮状态 = this.交互状态.按钮状态[按钮类型];
       const 区域 = 按钮区域[按钮类型 + "按钮"];
       const 之前悬停 = 按钮状态.悬停;
       按钮状态.悬停 = this.点在区域内(鼠标位置, 区域);
-
-      // 如果鼠标离开按钮，停止快速增减
       if (之前悬停 && !按钮状态.悬停) {
         按钮状态.按下 = false;
         if (按钮状态.快速增减定时器) {
@@ -1165,98 +913,61 @@ class 坐标系教程 {
       }
     });
   }
-
   绘制场景() {
-    // 清空画布
     this.清空画布();
-
-    // 绘制世界坐标系
     if (this.显示选项.世界坐标系) {
       this.绘制世界坐标系();
     }
-
-    // 绘制局部坐标系
     if (this.显示选项.局部坐标系) {
       this.绘制局部坐标系();
     }
-
-    // 绘制矩形
     this.绘制矩形();
-
-    // 绘制观察点
     this.绘制观察点();
-
-    // 绘制观察点坐标
     if (this.显示选项.观察点坐标) {
       this.绘制观察点坐标();
     }
-
-    // 绘制坐标信息（始终显示）
-    if (this.显示选项.坐标信息) {
+    if (this.显示选项.鼠标坐标) {
       this.绘制坐标信息();
     }
-
-    if (this.显示选项.坐标参考线) {
+    if (this.显示选项.鼠标坐标参考线) {
       this.绘制坐标参考线();
     }
-
-    // 绘制数字框和按钮
     this.绘制数字框和按钮();
-
-    // 绘制坐标转换公式（如果复选框开启）
     if (this.显示选项.坐标转换过程) {
       this.绘制坐标转换公式();
     }
   }
-
   绘制世界坐标系() {
     const 宽度 = this.canvas.offsetWidth;
     const 高度 = this.canvas.offsetHeight;
-
     this.ctx.save();
-
-    // 绘制经纬线
     this.ctx.strokeStyle = "#ffffff1a";
     this.ctx.lineWidth = 0.5;
-
-    // 绘制垂直线（经线）
     for (let x = 0; x <= 宽度; x += 50) {
       this.ctx.beginPath();
       this.ctx.moveTo(x, 0);
       this.ctx.lineTo(x, 高度);
       this.ctx.stroke();
     }
-
-    // 绘制水平线（纬线）
     for (let y = 0; y <= 高度; y += 50) {
       this.ctx.beginPath();
       this.ctx.moveTo(0, y);
       this.ctx.lineTo(宽度, y);
       this.ctx.stroke();
     }
-
-    // 绘制坐标轴
     this.ctx.strokeStyle = "#4fc3f7";
     this.ctx.lineWidth = 2;
-
-    // X轴
     this.ctx.beginPath();
     this.ctx.moveTo(0, 0);
     this.ctx.lineTo(宽度, 0);
     this.ctx.stroke();
-
-    // Y轴
     this.ctx.beginPath();
     this.ctx.moveTo(0, 0);
     this.ctx.lineTo(0, 高度);
     this.ctx.stroke();
-
-    // 绘制刻度
     this.ctx.fillStyle = "#6fa8fdff";
     this.ctx.font = "12px 'Google Sans Code', Consolas, 'Noto Sans CJK SC', 微软雅黑, sans-serif";
     this.ctx.textBaseline = "top";
-
-    // X轴刻度
     for (let x = 100; x < 宽度; x += 100) {
       this.ctx.beginPath();
       this.ctx.moveTo(x, -5);
@@ -1264,8 +975,6 @@ class 坐标系教程 {
       this.ctx.stroke();
       this.ctx.fillText(`${x}`, x - 10, 10);
     }
-
-    // Y轴刻度
     for (let y = 100; y < 高度; y += 100) {
       this.ctx.beginPath();
       this.ctx.moveTo(-5, y);
@@ -1273,128 +982,136 @@ class 坐标系教程 {
       this.ctx.stroke();
       this.ctx.fillText(`${y}`, 10, y - 5);
     }
-
-    // 标签
     this.ctx.fillStyle = "lightcyan";
     this.ctx.font = "13px 'Google Sans Code', Consolas, 'Noto Sans CJK SC', 微软雅黑, sans-serif";
     this.ctx.fillText("世界坐标系", 5, 10);
     this.ctx.fillText("0, 0", 5, 25);
-
     this.ctx.restore();
   }
-
   绘制矩形() {
     const 矩形 = this.矩形;
-
     this.ctx.save();
-
-    // 移动到矩形位置
     this.ctx.translate(矩形.x, 矩形.y);
-
-    // 旋转矩形
     this.ctx.rotate((矩形.旋转角度 * Math.PI) / 180);
-
-    // 绘制矩形
     this.ctx.fillStyle = this.交互状态.鼠标已悬停 ? "rgba(79, 195, 247, 0.2)" : "rgba(79, 195, 247, 0.075)";
     this.ctx.strokeStyle = "#4fc3f7";
     this.ctx.lineWidth = 2;
     this.ctx.fillRect(-矩形.宽度 / 2, -矩形.高度 / 2, 矩形.宽度, 矩形.高度);
     this.ctx.strokeRect(-矩形.宽度 / 2, -矩形.高度 / 2, 矩形.宽度, 矩形.高度);
-
-    // 绘制矩形中心点
     this.ctx.beginPath();
     this.ctx.arc(0, 0, 4, 0, 2 * Math.PI);
     this.ctx.fillStyle = "#ff5722";
     this.ctx.fill();
-
-    // 绘制缩放控制点
     const 半宽 = 矩形.宽度 / 2;
     const 半高 = 矩形.高度 / 2;
-
-    // 绘制旋转句柄
     this.ctx.beginPath();
     this.ctx.moveTo(0, -半高);
     this.ctx.lineTo(0, -半高 - 20);
     this.ctx.strokeStyle = "#ccc";
     this.ctx.lineWidth = 2;
     this.ctx.stroke();
-
     this.ctx.beginPath();
     this.ctx.arc(0, -半高 - 20, 6, 0, 2 * Math.PI);
     this.ctx.fillStyle = "#111";
     this.ctx.fill();
     this.ctx.stroke();
-
-    // 边缘中点（缩放控制点）
     this.ctx.fillStyle = "#4fc3f7";
     this.ctx.beginPath();
     this.ctx.arc(半宽, 0, 5, 0, 2 * Math.PI);
     this.ctx.fill();
-
     this.ctx.beginPath();
     this.ctx.arc(-半宽, 0, 5, 0, 2 * Math.PI);
     this.ctx.fill();
-
     this.ctx.beginPath();
     this.ctx.arc(0, 半高, 5, 0, 2 * Math.PI);
     this.ctx.fill();
-
     this.ctx.beginPath();
     this.ctx.arc(0, -半高, 5, 0, 2 * Math.PI);
     this.ctx.fill();
-
-    // 角点（缩放控制点）
     this.ctx.fillStyle = "yellowgreen";
     this.ctx.beginPath();
     this.ctx.arc(半宽, 半高, 5, 0, 2 * Math.PI);
     this.ctx.fill();
-
     this.ctx.beginPath();
     this.ctx.arc(-半宽, 半高, 5, 0, 2 * Math.PI);
     this.ctx.fill();
-
     this.ctx.beginPath();
     this.ctx.arc(半宽, -半高, 5, 0, 2 * Math.PI);
     this.ctx.fill();
-
     this.ctx.beginPath();
     this.ctx.arc(-半宽, -半高, 5, 0, 2 * Math.PI);
     this.ctx.fill();
+    this.ctx.restore();
 
+    const 旋转句柄局部X = 0;
+    const 旋转句柄局部Y = -半高 - 20;
+    const 角度 = (矩形.旋转角度 * Math.PI) / 180;
+    const 旋转句柄世界X = 矩形.x + 旋转句柄局部X * Math.cos(角度) - 旋转句柄局部Y * Math.sin(角度);
+    const 旋转句柄世界Y = 矩形.y + 旋转句柄局部X * Math.sin(角度) + 旋转句柄局部Y * Math.cos(角度);
+
+    const 法线局部X = 0;
+    const 法线局部Y = -1;
+    const 法线世界X = 法线局部X * Math.cos(角度) - 法线局部Y * Math.sin(角度);
+    const 法线世界Y = 法线局部X * Math.sin(角度) + 法线局部Y * Math.cos(角度);
+
+    this.ctx.font = "13px 'Google Sans Code', Consolas, 'Noto Sans CJK SC', 微软雅黑, sans-serif";
+    const 角度值文本 = `${Math.floor(矩形.旋转角度)}`;
+    const 单位文本 = "°";
+    const 角度值宽度 = this.ctx.measureText(角度值文本).width;
+    const 单位宽度 = this.ctx.measureText(单位文本).width;
+    const 文本总宽度 = 角度值宽度 + 单位宽度;
+    const 文本高度 = 13;
+
+    const 间距 = 20;
+    const 文本半宽 = 文本总宽度 / 2;
+    const 文本半高 = 文本高度 / 2;
+
+    const 法线长度 = Math.sqrt(法线世界X * 法线世界X + 法线世界Y * 法线世界Y);
+    const 法线单位X = 法线长度 > 0 ? 法线世界X / 法线长度 : 0;
+    const 法线单位Y = 法线长度 > 0 ? 法线世界Y / 法线长度 : 0;
+
+    let 到水平边界距离 = Infinity;
+    let 到垂直边界距离 = Infinity;
+
+    if (Math.abs(法线单位X) > 0.0001) {
+      到水平边界距离 = 文本半宽 / Math.abs(法线单位X);
+    }
+    if (Math.abs(法线单位Y) > 0.0001) {
+      到垂直边界距离 = 文本半高 / Math.abs(法线单位Y);
+    }
+
+    const 边界点到中心距离沿法线 = Math.min(到水平边界距离, 到垂直边界距离);
+
+    const 文本中心X = 旋转句柄世界X + 法线单位X * (间距 + 边界点到中心距离沿法线);
+    const 文本中心Y = 旋转句柄世界Y + 法线单位Y * (间距 + 边界点到中心距离沿法线);
+
+    this.ctx.save();
+    this.ctx.textBaseline = "middle";
+    this.ctx.textAlign = "center";
+
+    this.ctx.fillStyle = "#d6a";
+    this.ctx.fillText(角度值文本, 文本中心X - 单位宽度 / 2, 文本中心Y);
+    this.ctx.fillStyle = "#4cf";
+    this.ctx.fillText(单位文本, 文本中心X + 角度值宽度 / 2, 文本中心Y);
     this.ctx.restore();
   }
-
   绘制局部坐标系() {
     const 矩形 = this.矩形;
     const 半宽 = 矩形.宽度 / 2;
     const 半高 = 矩形.高度 / 2;
-
     this.ctx.save();
-
-    // 移动到矩形位置
     this.ctx.translate(矩形.x, 矩形.y);
-
-    // 旋转坐标系
     this.ctx.rotate((矩形.旋转角度 * Math.PI) / 180);
-
-    // 绘制坐标轴
     this.ctx.strokeStyle = "#ff5722";
     this.ctx.lineWidth = 2;
-
-    // X轴（长度匹配矩形宽度，只绘制正值方向）
     this.ctx.beginPath();
     this.ctx.moveTo(0, 0);
     this.ctx.lineTo(半宽, 0);
     this.ctx.stroke();
-
-    // Y轴（长度匹配矩形高度，只绘制正值方向）
     this.ctx.beginPath();
     this.ctx.moveTo(0, 0);
     this.ctx.lineTo(0, 半高);
     this.ctx.stroke();
-
-    // 绘制箭头
-    // X轴箭头
     this.ctx.beginPath();
     this.ctx.moveTo(半宽, 0);
     this.ctx.lineTo(半宽 - 10, -5);
@@ -1402,100 +1119,71 @@ class 坐标系教程 {
     this.ctx.closePath();
     this.ctx.fillStyle = "#ff5722";
     this.ctx.fill();
-
-    // Y轴箭头
     this.ctx.beginPath();
     this.ctx.moveTo(0, 半高);
     this.ctx.lineTo(-5, 半高 - 10);
     this.ctx.lineTo(5, 半高 - 10);
     this.ctx.closePath();
     this.ctx.fill();
-
-    // 绘制刻度
     this.ctx.fillStyle = "#ff9f22ff";
     this.ctx.font = "12px 'Google Sans Code', Consolas, 'Noto Sans CJK SC', 微软雅黑, sans-serif";
     this.ctx.textBaseline = "top";
-
-    // X轴刻度（每50个单位绘制一个）
     for (let x = 50; x <= 半宽; x += 50) {
       this.ctx.beginPath();
       this.ctx.moveTo(x, -5);
       this.ctx.lineTo(x, 5);
       this.ctx.stroke();
-
-      // 整百数字保持在原位，50、150等数字绘制在轴的另一侧
       if (x % 100 === 0) {
         this.ctx.fillText(`${x}`, x - 10, 10);
       } else {
         this.ctx.fillText(`${x}`, x - 10, -20);
       }
     }
-
-    // Y轴刻度（每50个单位绘制一个）
     for (let y = 50; y <= 半高; y += 50) {
       this.ctx.beginPath();
       this.ctx.moveTo(-5, y);
       this.ctx.lineTo(5, y);
       this.ctx.stroke();
-
-      // 整百数字保持在原位，50、150等数字绘制在轴的另一侧
       if (y % 100 === 0) {
         this.ctx.fillText(`${y}`, 10, y - 5);
       } else {
         this.ctx.fillText(`${y}`, -30, y - 5);
       }
     }
-
-    // 标签
     this.ctx.textAlign = "right";
     this.ctx.font = "13px 'Google Sans Code', Consolas, 'Noto Sans CJK SC', 微软雅黑, sans-serif";
-    
-    // 绘制世界坐标系信息（在局部坐标系上方）
     this.ctx.fillStyle = "#5AF";
     this.ctx.fillText("世界坐标系", -15, -45);
     this.ctx.fillStyle = "lightcyan";
     this.ctx.fillText(`${Math.floor(矩形.x)}, ${Math.floor(矩形.y)}`, -15, -30);
-    
-    // 绘制局部坐标系信息
     this.ctx.fillStyle = "#5AF";
     this.ctx.fillText("局部坐标系", -15, -5);
     this.ctx.fillStyle = "lightcyan";
     this.ctx.fillText("0, 0", -15, 10);
-
     this.ctx.restore();
   }
-
   绘制坐标信息() {
-    if (!this.复选框.坐标信息.checked) return;
+    if (!this.复选框.鼠标坐标.checked) return;
     const 矩形 = this.矩形;
-
-    // 默认位置为画布中心
     let x = this.canvas.offsetWidth / 2;
     let y = 30;
     let 局部X = 0;
     let 局部Y = 0;
-
-    // 如果鼠标在画布内，则使用鼠标位置
     if (this.鼠标坐标.x !== null && this.鼠标坐标.y !== null) {
       x = this.鼠标坐标.x;
       y = this.鼠标坐标.y;
-
-      // 计算鼠标在局部坐标系中的位置
       const dx = this.鼠标坐标.x - 矩形.x;
       const dy = this.鼠标坐标.y - 矩形.y;
       const 弧度 = (-矩形.旋转角度 * Math.PI) / 180;
       局部X = dx * Math.cos(弧度) - dy * Math.sin(弧度);
       局部Y = dx * Math.sin(弧度) + dy * Math.cos(弧度);
     }
-
     this.ctx.save();
     const 鼠标与文本距离 = 40;
     const 行距 = 18;
-    const 符号颜色 = "#aaa";
+    const 符号颜色 = "gray";
     this.ctx.font = "13px 'Google Sans Code', Consolas, 'Noto Sans CJK SC', 微软雅黑, sans-serif";
     this.ctx.textBaseline = "top";
-
-    // 如果鼠标在画布内，显示坐标信息
     if (this.鼠标坐标.x !== null && this.鼠标坐标.y !== null) {
       const xy宽度 = this.ctx.measureText("世界坐标").width;
       const 冒号空格宽度 = this.ctx.measureText(": ").width;
@@ -1513,19 +1201,16 @@ class 坐标系教程 {
       }
       if (y <= -鼠标与文本距离 + 14) {
         y = -鼠标与文本距离 + 14;
-      } else if (y >= this.canvas.offsetHeight - 120) {
-        y = this.canvas.offsetHeight - 120;
+      } else if (y >= this.canvas.offsetHeight - 86) {
+        y = this.canvas.offsetHeight - 86;
       }
-
-      if (this.显示选项.坐标背景) {
-        const 最大宽度 = this.ctx.measureText("矩形尺寸: 1000 × 1000").width;
+      if (this.显示选项.鼠标坐标背景) {
+        const 最大宽度 = Math.max(世界总宽度, 局部总宽度);
         this.ctx.beginPath();
         this.ctx.fillStyle = "#000a";
-        this.ctx.roundRect(x - 世界总宽度 / 2 - 15, y + 鼠标与文本距离 - 15, 最大宽度 + 30, 95, [8]);
+        this.ctx.roundRect(x - 最大宽度 / 2 - 15, y + 鼠标与文本距离 - 15, 最大宽度 + 30, 行距 * 2 + 24, [8]);
         this.ctx.fill();
       }
-
-      // 世界坐标
       const 世界坐标垂直坐标 = y + 鼠标与文本距离;
       this.ctx.fillStyle = "silver";
       this.ctx.fillText("世界坐标", x - 世界总宽度 / 2, 世界坐标垂直坐标);
@@ -1541,8 +1226,6 @@ class 坐标系教程 {
         x - 世界总宽度 / 2 + xy宽度 + 冒号空格宽度 + 世界x坐标值宽度 + 逗号空格宽度,
         世界坐标垂直坐标
       );
-
-      // 局部坐标
       const 局部坐标垂直坐标 = y + 鼠标与文本距离 + 行距;
       this.ctx.fillStyle = "silver";
       this.ctx.fillText("局部坐标", x - 世界总宽度 / 2, 局部坐标垂直坐标);
@@ -1558,115 +1241,80 @@ class 坐标系教程 {
         x - 世界总宽度 / 2 + xy宽度 + 冒号空格宽度 + 局部x坐标值宽度 + 逗号空格宽度,
         局部坐标垂直坐标
       );
-
-      // 矩形信息
-      const x坐标垂直坐标 = y + 鼠标与文本距离 + 行距 * 2;
-      const 矩形信息标题宽度 = this.ctx.measureText("矩形信息").width;
-      const 矩形坐标x宽度 = this.ctx.measureText(`${Math.floor(矩形.x)}`).width;
-      const 矩形旋转值宽度 = this.ctx.measureText(`${Math.floor(矩形.旋转角度)}`).width;
-      const 矩形宽度值宽度 = this.ctx.measureText(`${Math.floor(矩形.宽度)}`).width;
-      this.ctx.fillStyle = "silver";
-      // this.ctx.fillText("矩形中心", x - 世界总宽度 / 2, x坐标垂直坐标);
-      this.ctx.fillText("旋转角度", x - 世界总宽度 / 2, x坐标垂直坐标);
-      this.ctx.fillText("矩形尺寸", x - 世界总宽度 / 2, x坐标垂直坐标 + 行距);
-      this.ctx.fillStyle = 符号颜色;
-      // this.ctx.fillText(": ", x - 世界总宽度 / 2 + 矩形信息标题宽度, x坐标垂直坐标);
-      this.ctx.fillText(": ", x - 世界总宽度 / 2 + 矩形信息标题宽度, x坐标垂直坐标);
-      this.ctx.fillText(": ", x - 世界总宽度 / 2 + 矩形信息标题宽度, x坐标垂直坐标 + 行距);
-      /* this.ctx.fillStyle = "lightgreen";
-      this.ctx.fillText(`${Math.floor(矩形.x)}`, x - 世界总宽度 / 2 + 矩形信息标题宽度 + 冒号空格宽度, x坐标垂直坐标);
-      this.ctx.fillStyle = 符号颜色;
-      this.ctx.fillText(", ", x - 世界总宽度 / 2 + 矩形信息标题宽度 + 冒号空格宽度 + 矩形坐标x宽度, x坐标垂直坐标);
-      this.ctx.fillStyle = "lightgreen";
-      this.ctx.fillText(
-        `${Math.floor(矩形.y)}`,
-        x - 世界总宽度 / 2 + 矩形信息标题宽度 + 冒号空格宽度 + 矩形坐标x宽度 + 逗号空格宽度,
-        x坐标垂直坐标
-      ); */
-      this.ctx.fillStyle = "#d6a";
-      this.ctx.fillText(
-        `${Math.floor(矩形.旋转角度)}`,
-        x - 世界总宽度 / 2 + 矩形信息标题宽度 + 冒号空格宽度,
-        x坐标垂直坐标
-      );
-      this.ctx.fillStyle = "#4cf";
-      this.ctx.fillText(
-        "°",
-        x - 世界总宽度 / 2 + 矩形信息标题宽度 + 冒号空格宽度 + 矩形旋转值宽度,
-        x坐标垂直坐标
-      );
-      this.ctx.fillStyle = "lightgreen";
-      const 乘号空格宽度 = this.ctx.measureText(" × ").width;
-      this.ctx.fillText(
-        `${Math.floor(矩形.宽度)}`,
-        x - 世界总宽度 / 2 + 矩形信息标题宽度 + 冒号空格宽度,
-        x坐标垂直坐标 + 行距
-      );
-      this.ctx.fillStyle = 符号颜色;
-      this.ctx.fillText(
-        " × ",
-        x - 世界总宽度 / 2 + 矩形信息标题宽度 + 冒号空格宽度 + 矩形宽度值宽度,
-        x坐标垂直坐标 + 行距
-      );
-      this.ctx.fillStyle = "lightgreen";
-      this.ctx.fillText(
-        `${Math.floor(矩形.高度)}`,
-        x - 世界总宽度 / 2 + 矩形信息标题宽度 + 冒号空格宽度 + 矩形宽度值宽度 + 乘号空格宽度,
-        x坐标垂直坐标 + 行距
-      );
-    }
-    // 如果鼠标不在画布内，只显示矩形信息
-    else {
+    } else {
       this.ctx.fillStyle = "silver";
       this.ctx.fillText(`矩形中心: (${Math.floor(矩形.x)}, ${Math.floor(矩形.y)})`, x - 100, y);
       this.ctx.fillText(`旋转角度: ${Math.floor(矩形.旋转角度)}°`, x - 100, y + 18);
       this.ctx.fillText(`尺寸: ${Math.floor(矩形.宽度)} × ${Math.floor(矩形.高度)}`, x - 100, y + 36);
     }
-
     this.ctx.restore();
   }
-
   绘制坐标参考线() {
-    if (!this.复选框.坐标参考线.checked) return;
-
-    // 如果鼠标不在画布内，不绘制参考线
+    if (!this.复选框.鼠标坐标参考线.checked) return;
     if (this.鼠标坐标.x === null || this.鼠标坐标.y === null) return;
-
-    const 鼠标X = this.鼠标坐标.x;
-    const 鼠标Y = this.鼠标坐标.y;
     const 画布宽度 = this.canvas.offsetWidth;
     const 画布高度 = this.canvas.offsetHeight;
-
-    // 确保鼠标位置在画布范围内
+    const 鼠标X = this.鼠标坐标.x;
+    const 鼠标Y = this.鼠标坐标.y;
     if (鼠标X < 0 || 鼠标X > 画布宽度 || 鼠标Y < 0 || 鼠标Y > 画布高度) return;
 
     this.ctx.save();
-
-    // 设置虚线样式
     this.ctx.setLineDash([5, 5]);
     this.ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
     this.ctx.lineWidth = 1;
 
-    // 绘制垂直向上的虚线（从鼠标位置到画布顶部）
-    this.ctx.beginPath();
-    this.ctx.moveTo(鼠标X, 鼠标Y);
-    this.ctx.lineTo(鼠标X, 0);
-    this.ctx.stroke();
+    if (this.显示选项.使用世界坐标系) {
+      this.ctx.beginPath();
+      this.ctx.moveTo(鼠标X, 鼠标Y);
+      this.ctx.lineTo(鼠标X, 0);
+      this.ctx.stroke();
+      this.ctx.beginPath();
+      this.ctx.moveTo(鼠标X, 鼠标Y);
+      this.ctx.lineTo(0, 鼠标Y);
+      this.ctx.stroke();
+    } else {
+      const 矩形 = this.矩形;
+      const dx = 鼠标X - 矩形.x;
+      const dy = 鼠标Y - 矩形.y;
+      const 弧度 = (-矩形.旋转角度 * Math.PI) / 180;
+      const 局部X = dx * Math.cos(弧度) - dy * Math.sin(弧度);
+      const 局部Y = dx * Math.sin(弧度) + dy * Math.cos(弧度);
+      const 半宽 = 矩形.宽度 / 2;
+      const 半高 = 矩形.高度 / 2;
 
-    // 绘制水平向左的虚线（从鼠标位置到画布左边缘）
-    this.ctx.beginPath();
-    this.ctx.moveTo(鼠标X, 鼠标Y);
-    this.ctx.lineTo(0, 鼠标Y);
-    this.ctx.stroke();
+      const 角度 = (矩形.旋转角度 * Math.PI) / 180;
+
+      const 局部坐标系原点 = { x: 0, y: 0 };
+      const 鼠标局部位置 = { x: 局部X, y: 局部Y };
+
+      const 局部X线起点 = { x: 局部坐标系原点.x, y: 局部Y };
+      const 局部X线终点 = 鼠标局部位置;
+
+      const 局部Y线起点 = { x: 局部X, y: 局部坐标系原点.y };
+      const 局部Y线终点 = 鼠标局部位置;
+
+      const 局部X线起点世界 = this.局部坐标转世界坐标(矩形.x, 矩形.y, 局部X线起点.x, 局部X线起点.y, 角度);
+      const 局部X线终点世界 = this.局部坐标转世界坐标(矩形.x, 矩形.y, 局部X线终点.x, 局部X线终点.y, 角度);
+      const 局部Y线起点世界 = this.局部坐标转世界坐标(矩形.x, 矩形.y, 局部Y线起点.x, 局部Y线起点.y, 角度);
+      const 局部Y线终点世界 = this.局部坐标转世界坐标(矩形.x, 矩形.y, 局部Y线终点.x, 局部Y线终点.y, 角度);
+
+      this.ctx.beginPath();
+      this.ctx.moveTo(局部X线起点世界.x, 局部X线起点世界.y);
+      this.ctx.lineTo(局部X线终点世界.x, 局部X线终点世界.y);
+      this.ctx.stroke();
+
+      this.ctx.beginPath();
+      this.ctx.moveTo(局部Y线起点世界.x, 局部Y线起点世界.y);
+      this.ctx.lineTo(局部Y线终点世界.x, 局部Y线终点世界.y);
+      this.ctx.stroke();
+    }
 
     this.ctx.restore();
   }
-
   绘制观察点() {
     this.ctx.save();
     this.ctx.beginPath();
     this.ctx.arc(this.观察点.x, this.观察点.y, this.观察点.半径, 0, 2 * Math.PI);
-    // 根据悬停状态使用不同的填充色
     this.ctx.fillStyle = this.交互状态.观察点悬停 ? "#ff2722" : "#880712";
     this.ctx.fill();
     this.ctx.strokeStyle = this.交互状态.观察点悬停 ? "#fff" : "#aaa";
@@ -1674,15 +1322,12 @@ class 坐标系教程 {
     this.ctx.stroke();
     this.ctx.restore();
   }
-
   绘制观察点坐标() {
-    // 计算观察点的坐标值（根据坐标系选择）
     let x值, y值;
     if (this.显示选项.使用世界坐标系) {
       x值 = Math.round(this.观察点.x);
       y值 = Math.round(this.观察点.y);
     } else {
-      // 转换为局部坐标
       const 矩形 = this.矩形;
       const dx = this.观察点.x - 矩形.x;
       const dy = this.观察点.y - 矩形.y;
@@ -1690,108 +1335,70 @@ class 坐标系教程 {
       x值 = Math.round(dx * Math.cos(弧度) - dy * Math.sin(弧度));
       y值 = Math.round(dx * Math.sin(弧度) + dy * Math.cos(弧度));
     }
-
     this.ctx.save();
     this.ctx.font = "14px 'Google Sans Code', Consolas, 'Noto Sans CJK SC', 微软雅黑, sans-serif";
     this.ctx.textBaseline = "top";
-
-    // 准备文本内容
     const x文本 = "x";
     const y文本 = "y";
     const 冒号 = ":";
     const x值文本 = `${x值}`;
     const y值文本 = `${y值}`;
-
-    // 测量文本宽度
     const x文本宽度 = this.ctx.measureText(x文本).width;
     const y文本宽度 = this.ctx.measureText(y文本).width;
     const 冒号宽度 = this.ctx.measureText(冒号).width;
     const x值文本宽度 = this.ctx.measureText(x值文本).width;
     const y值文本宽度 = this.ctx.measureText(y值文本).width;
-
-    // 计算总宽度（确保x和y水平对齐）
     const 最大标签宽度 = Math.max(x文本宽度, y文本宽度);
     const 最大数值宽度 = Math.max(x值文本宽度, y值文本宽度);
-    const 总文本宽度 = 最大标签宽度 + 2 + 冒号宽度 + 4 + 最大数值宽度; // 2是冒号左边距，4是冒号右边距
-
-    // 计算文本位置（在观察点下方，以下方为主）
+    const 总文本宽度 = 最大标签宽度 + 2 + 冒号宽度 + 4 + 最大数值宽度;
     const 行高 = 18;
-    const 间距 = 10; // 坐标信息与观察点之间的间距
+    const 间距 = 10;
     const 画布高度 = this.canvas.offsetHeight;
-    const 文本总高度 = 行高 * 2; // x和y两行
-    
-    // 优先在下方，如果下方空间不够则在上方
-    // 下方：文本顶部距离观察点底部（观察点.y + 半径）的间距为10
+    const 文本总高度 = 行高 * 2;
     let 文本起始Y = this.观察点.y + this.观察点.半径 + 间距;
-    
-    // 检查下方空间是否足够
     if (文本起始Y + 文本总高度 > 画布高度) {
-      // 下方空间不够，放在上方
-      // 上方：文本底部距离观察点顶部（观察点.y - 半径）的间距为10
       文本起始Y = this.观察点.y - this.观察点.半径 - 间距 - 文本总高度;
     }
-    
-    // 边界检测：确保坐标信息不超出Canvas上下边界
     if (文本起始Y < 0) {
-      // 上方超出，对齐到顶部
       文本起始Y = 0;
     } else if (文本起始Y + 文本总高度 > 画布高度) {
-      // 下方超出，对齐到底部
       文本起始Y = 画布高度 - 文本总高度;
     }
-
-    // 计算文本起始X（居中对齐）
     let 文本起始X = this.观察点.x - 总文本宽度 / 2;
     const 画布宽度 = this.canvas.offsetWidth;
-
-    // 边界检测：确保坐标信息不超出Canvas边界
     if (文本起始X < 0) {
-      // 左侧超出，对齐到左边界
       文本起始X = 0;
     } else if (文本起始X + 总文本宽度 > 画布宽度) {
-      // 右侧超出，对齐到右边界
       文本起始X = 画布宽度 - 总文本宽度;
     }
-
-    // 绘制x坐标
     let 当前X = 文本起始X;
-    this.ctx.fillStyle = "lightskyblue"; // x或y的颜色
+    this.ctx.fillStyle = "lightskyblue";
     this.ctx.fillText(x文本, 当前X, 文本起始Y);
     当前X += 最大标签宽度;
-    
-    this.ctx.fillStyle = "#aaa"; // 冒号的颜色
-    this.ctx.fillText(冒号, 当前X + 2, 文本起始Y); // 冒号左边距2
+    this.ctx.fillStyle = "#aaa";
+    this.ctx.fillText(冒号, 当前X + 2, 文本起始Y);
     当前X += 2 + 冒号宽度;
-
     const 数值颜色 = "#4da";
-    this.ctx.fillStyle = 数值颜色; // 数值的颜色
-    this.ctx.fillText(x值文本, 当前X + 4, 文本起始Y); // 冒号右边距4
-
-    // 绘制y坐标（确保与x水平对齐）
+    this.ctx.fillStyle = 数值颜色;
+    this.ctx.fillText(x值文本, 当前X + 4, 文本起始Y);
     const y行Y = 文本起始Y + 行高;
     当前X = 文本起始X;
-    this.ctx.fillStyle = "lightskyblue"; // x或y的颜色
+    this.ctx.fillStyle = "lightskyblue";
     this.ctx.fillText(y文本, 当前X, y行Y);
     当前X += 最大标签宽度;
-    
-    this.ctx.fillStyle = "#aaa"; // 冒号的颜色
-    this.ctx.fillText(冒号, 当前X + 2, y行Y); // 冒号左边距2
+    this.ctx.fillStyle = "#aaa";
+    this.ctx.fillText(冒号, 当前X + 2, y行Y);
     当前X += 2 + 冒号宽度;
-    
-    this.ctx.fillStyle = 数值颜色; // 数值的颜色
-    this.ctx.fillText(y值文本, 当前X + 4, y行Y); // 冒号右边距4
-
+    this.ctx.fillStyle = 数值颜色;
+    this.ctx.fillText(y值文本, 当前X + 4, y行Y);
     this.ctx.restore();
   }
-
   绘制数字框和按钮() {
-    // 计算观察点的坐标值（根据坐标系选择）
     let x值, y值;
     if (this.显示选项.使用世界坐标系) {
       x值 = Math.round(this.观察点.x);
       y值 = Math.round(this.观察点.y);
     } else {
-      // 转换为局部坐标
       const 矩形 = this.矩形;
       const dx = this.观察点.x - 矩形.x;
       const dy = this.观察点.y - 矩形.y;
@@ -1799,7 +1406,6 @@ class 坐标系教程 {
       x值 = Math.round(dx * Math.cos(弧度) - dy * Math.sin(弧度));
       y值 = Math.round(dx * Math.sin(弧度) + dy * Math.cos(弧度));
     }
-
     const 按钮区域 = this.获取按钮区域();
     const x数字框X = 按钮区域.x数字框.x;
     const y数字框X = 按钮区域.y数字框.x;
@@ -1807,17 +1413,12 @@ class 坐标系教程 {
     const y数字框Y = 按钮区域.y数字框.y;
     const 数字框宽度 = 按钮区域.x数字框.width;
     const 数字框高度 = 按钮区域.x数字框.height;
-
     this.ctx.save();
-
-    // 绘制X数字框
     this.ctx.fillStyle = "#000a";
     this.ctx.fillRect(x数字框X, x数字框Y, 数字框宽度, 数字框高度);
     this.ctx.strokeStyle = "#4fc3f7";
     this.ctx.lineWidth = 1;
     this.ctx.strokeRect(x数字框X, x数字框Y, 数字框宽度, 数字框高度);
-
-    // 绘制X坐标文本（确保对齐）
     this.ctx.font = "14px 'Google Sans Code', Consolas, 'Noto Sans CJK SC', 微软雅黑, sans-serif";
     this.ctx.textBaseline = "middle";
     const x文本 = "x";
@@ -1825,62 +1426,45 @@ class 坐标系教程 {
     const x值文本 = `${x值}`;
     const x文本宽度 = this.ctx.measureText(x文本).width;
     const 冒号宽度 = this.ctx.measureText(冒号).width;
-    // 使用固定宽度（以4位数字为准）
     const 固定数值宽度 = this.ctx.measureText("1234").width;
-    const 总文本宽度 = x文本宽度 + 2 + 冒号宽度 + 4 + 固定数值宽度; // 2是冒号左边距，4是冒号右边距
+    const 总文本宽度 = x文本宽度 + 2 + 冒号宽度 + 4 + 固定数值宽度;
     const 起始X = x数字框X + (数字框宽度 - 总文本宽度) / 2;
     const 文本Y = x数字框Y + 数字框高度 / 2;
-    
-    this.ctx.fillStyle = "lightskyblue"; // x或y的颜色
+    this.ctx.fillStyle = "lightskyblue";
     this.ctx.fillText(x文本, 起始X, 文本Y);
-    this.ctx.fillStyle = "#aaa"; // 冒号的颜色
+    this.ctx.fillStyle = "#aaa";
     this.ctx.fillText(冒号, 起始X + x文本宽度 + 2, 文本Y);
-    this.ctx.fillStyle = "#ea8a24"; // 数值的颜色
+    this.ctx.fillStyle = "#ea8a24";
     this.ctx.fillText(x值文本, 起始X + x文本宽度 + 2 + 冒号宽度 + 4, 文本Y);
-
-    // 绘制Y数字框
     this.ctx.fillStyle = "#000a";
     this.ctx.fillRect(y数字框X, y数字框Y, 数字框宽度, 数字框高度);
     this.ctx.strokeStyle = "#4fc3f7";
     this.ctx.strokeRect(y数字框X, y数字框Y, 数字框宽度, 数字框高度);
-
-    // 绘制Y坐标文本（确保对齐，x和y的起始位置相同）
     const y文本 = "y";
     const y值文本 = `${y值}`;
     const y文本宽度 = this.ctx.measureText(y文本).width;
     const y文本Y = y数字框Y + 数字框高度 / 2;
-    
-    // 确保x和y的起始位置对齐（使用x的起始位置作为基准）
     const 对齐起始X = y数字框X + (数字框宽度 - 总文本宽度) / 2;
-    
-    this.ctx.fillStyle = "lightskyblue"; // x或y的颜色
+    this.ctx.fillStyle = "lightskyblue";
     this.ctx.fillText(y文本, 对齐起始X, y文本Y);
-    this.ctx.fillStyle = "#aaa"; // 冒号的颜色
+    this.ctx.fillStyle = "#aaa";
     this.ctx.fillText(冒号, 对齐起始X + y文本宽度 + 2, y文本Y);
-    this.ctx.fillStyle = "#ea8a24"; // 数值的颜色
+    this.ctx.fillStyle = "#ea8a24";
     this.ctx.fillText(y值文本, 对齐起始X + y文本宽度 + 2 + 冒号宽度 + 4, y文本Y);
-
-    // 绘制按钮
     this.绘制按钮("x增加", 按钮区域.x增加按钮);
     this.绘制按钮("x减少", 按钮区域.x减少按钮);
     this.绘制按钮("y增加", 按钮区域.y增加按钮);
     this.绘制按钮("y减少", 按钮区域.y减少按钮);
-
     this.ctx.restore();
   }
-
   绘制按钮(按钮类型, 区域) {
     const 按钮状态 = this.交互状态.按钮状态[按钮类型];
     const 是增加按钮 = 按钮类型.includes("增加");
-
-    // 按钮背景
     this.ctx.fillStyle = 按钮状态.悬停 ? "#2C8F30" : "#444";
     this.ctx.fillRect(区域.x, 区域.y, 区域.width, 区域.height);
     this.ctx.strokeStyle = "#fff";
     this.ctx.lineWidth = 1;
     this.ctx.strokeRect(区域.x, 区域.y, 区域.width, 区域.height);
-
-    // 绘制"+"或"-"文本
     this.ctx.fillStyle = "#fff";
     this.ctx.font = "14px 'Google Sans Code', Consolas, 'Noto Sans CJK SC', 微软雅黑, sans-serif";
     this.ctx.textAlign = "center";
@@ -1888,14 +1472,10 @@ class 坐标系教程 {
     const 按钮文本 = 是增加按钮 ? "+" : "-";
     this.ctx.fillText(按钮文本, 区域.x + 区域.width / 2, 区域.y + 区域.height / 2);
   }
-
-  // 绘制坐标转换公式
   绘制坐标转换公式() {
     const 矩形 = this.矩形;
     const 观察点世界X = this.观察点.x;
     const 观察点世界Y = this.观察点.y;
-    
-    // 计算世界坐标转局部坐标的中间值
     const dx = 观察点世界X - 矩形.x;
     const dy = 观察点世界Y - 矩形.y;
     const 弧度 = (-矩形.旋转角度 * Math.PI) / 180;
@@ -1903,183 +1483,273 @@ class 坐标系教程 {
     const sin弧度 = Math.sin(弧度);
     const 局部X = dx * cos弧度 - dy * sin弧度;
     const 局部Y = dx * sin弧度 + dy * cos弧度;
-    
-    // 计算局部坐标转世界坐标的中间值
     const 角度 = (矩形.旋转角度 * Math.PI) / 180;
     const cos角度 = Math.cos(角度);
     const sin角度 = Math.sin(角度);
     const 计算世界X = 矩形.x + 局部X * cos角度 - 局部Y * sin角度;
     const 计算世界Y = 矩形.y + 局部X * sin角度 + 局部Y * cos角度;
-
     this.ctx.save();
     this.ctx.font = "14px 'Google Sans Code', Consolas, 'Noto Sans CJK SC', 微软雅黑, sans-serif";
     this.ctx.textBaseline = "top";
     this.ctx.textAlign = "left";
-
     const 画布宽度 = this.canvas.offsetWidth;
     const 画布高度 = this.canvas.offsetHeight;
-    // 公式绘制在Canvas内部底部，留出足够的空间
-    const 公式区域高度 = 220; // 为公式预留的高度
-    const 起始Y = 画布高度 - 公式区域高度; // Canvas底部向上200px
+    const 公式区域高度 = 220;
+    const 起始Y = 画布高度 - 公式区域高度;
     const 行高 = 26;
-
-    // 颜色定义
     const 数字颜色 = "#4da";
     const 等号颜色 = "lightslategray";
     const 运算符颜色 = "#ff6b6b";
     const 冒号颜色 = "gray";
     const 括号颜色 = "#d93";
-    const 结果颜色 = "#78B0D7"; // 得数颜色
-
-    // 计算左边组变量名的最大宽度（用于冒号对齐）
+    const 结果颜色 = "#78B0D7";
     const 左组变量名 = ["dx", "dy", "弧度", "cos(弧度)", "sin(弧度)", "局部X", "局部Y"];
     let 左组最大宽度 = 0;
     for (const 变量名 of 左组变量名) {
       const 宽度 = this.ctx.measureText(变量名).width;
       if (宽度 > 左组最大宽度) 左组最大宽度 = 宽度;
     }
-
-    // 计算右边组变量名的最大宽度（用于冒号对齐）
     const 右组变量名 = ["弧度", "cos(弧度)", "sin(弧度)", "世界X", "世界Y"];
     let 右组最大宽度 = 0;
     for (const 变量名 of 右组变量名) {
       const 宽度 = this.ctx.measureText(变量名).width;
       if (宽度 > 右组最大宽度) 右组最大宽度 = 宽度;
     }
-    
-    // 先计算弧度值（用于显示公式）
-    // 确保两组公式使用相同的角度绝对值（仅用于显示）
-    // 注意：使用 Math.floor 来确保显示的角度和计算的角度一致
     const 角度绝对值 = Math.abs(矩形.旋转角度);
-    const 显示角度值 = Math.floor(角度绝对值); // 显示时使用整数角度
-    // 如果角度是0，直接返回0，避免浮点数误差
-    const 计算弧度值 = 显示角度值 === 0 ? 0 : (显示角度值 * Math.PI) / 180; // 左组显示用整数角度
-    const 计算角度值 = 显示角度值 === 0 ? 0 : (显示角度值 * Math.PI) / 180; // 右组显示用整数角度（保持一致）
-    
-    // 显示用的cos和sin值（基于绝对值，确保显示一致性）
-    // 注意：实际计算时使用的是cos弧度/sin弧度和cos角度/sin角度（已在上方计算）
-    // 但为了显示时角度绝对值一致，我们使用绝对值来计算显示值
-    // cos(-x) = cos(x)，所以cos值应该一致
-    // sin(-x) = -sin(x)，但为了显示一致性，我们使用绝对值
-    // 如果弧度值是0，直接使用精确值，避免浮点数误差
+    const 显示角度值 = Math.floor(角度绝对值);
+    const 计算弧度值 = 显示角度值 === 0 ? 0 : (显示角度值 * Math.PI) / 180;
+    const 计算角度值 = 显示角度值 === 0 ? 0 : (显示角度值 * Math.PI) / 180;
     const cos弧度显示值 = 计算弧度值 === 0 ? 1 : Math.cos(计算弧度值);
     const sin弧度显示值 = 计算弧度值 === 0 ? 0 : Math.sin(计算弧度值);
     const cos角度显示值 = 计算角度值 === 0 ? 1 : Math.cos(计算角度值);
     const sin角度显示值 = 计算角度值 === 0 ? 0 : Math.sin(计算角度值);
-    
-    // 计算左组公式的最大宽度（用于确定左组位置）
-    // 通过实际计算公式行的宽度来确定（包括"=得数"）
-    // 需要计算所有可能的公式行宽度，取最大值
-    // 注意：宽度计算时也使用3位小数，确保与实际显示一致
-    const 左组公式行1 = this.计算公式行宽度("局部X", 左组最大宽度, [Math.floor(dx), "×", cos弧度显示值, "-", Math.floor(dy), "×", sin弧度显示值], Math.round(局部X));
+    const 左组公式行1 = this.计算公式行宽度(
+      "局部X",
+      左组最大宽度,
+      [Math.floor(dx), "×", cos弧度显示值, "-", Math.floor(dy), "×", sin弧度显示值],
+      Math.round(局部X)
+    );
     const 左组公式行2 = this.计算公式行宽度("cos(弧度)", 左组最大宽度, ["cos", "(", 计算弧度值, ")"], cos弧度显示值);
     const 左组公式行3 = this.计算公式行宽度("sin(弧度)", 左组最大宽度, ["sin", "(", 计算弧度值, ")"], sin弧度显示值);
     const 左组总宽度 = Math.max(左组公式行1, 左组公式行2, 左组公式行3);
-    
-    // 计算右组公式的最大宽度
-    const 右组公式行1 = this.计算公式行宽度("世界X", 右组最大宽度, [Math.floor(矩形.x), "+", Math.round(局部X), "×", cos角度显示值, "-", Math.round(局部Y), "×", sin角度显示值], Math.floor(计算世界X));
+    const 右组公式行1 = this.计算公式行宽度(
+      "世界X",
+      右组最大宽度,
+      [Math.floor(矩形.x), "+", Math.round(局部X), "×", cos角度显示值, "-", Math.round(局部Y), "×", sin角度显示值],
+      Math.floor(计算世界X)
+    );
     const 右组公式行2 = this.计算公式行宽度("cos(弧度)", 右组最大宽度, ["cos", "(", 计算角度值, ")"], cos角度显示值);
     const 右组公式行3 = this.计算公式行宽度("sin(弧度)", 右组最大宽度, ["sin", "(", 计算角度值, ")"], sin角度显示值);
     const 右组总宽度 = Math.max(右组公式行1, 右组公式行2, 右组公式行3);
-    
-    // 计算两组公式的总宽度（包括间距100px）
     const 两组总宽度 = 左组总宽度 + 100 + 右组总宽度;
-    
-    // 两组公式整体水平居中
     const 左组起始X = (画布宽度 - 两组总宽度) / 2;
     const 右组起始X = 左组起始X + 左组总宽度 + 100;
-
-    // 绘制左边：世界坐标转局部坐标
     let 当前Y = 起始Y;
     this.ctx.fillStyle = "gold";
     this.ctx.fillText("世界坐标 → 局部坐标", 左组起始X + 75, 当前Y);
     当前Y += 行高;
-
-    // dx = 观察点.x - 矩形.x
-    this.绘制公式行(左组起始X, 当前Y, "dx", 左组最大宽度, Math.floor(dx), 
-      [Math.floor(观察点世界X), "-", Math.floor(矩形.x)], 数字颜色, 等号颜色, 运算符颜色, 冒号颜色, 括号颜色, 结果颜色);
+    this.绘制公式行(
+      左组起始X,
+      当前Y,
+      "dx",
+      左组最大宽度,
+      Math.floor(dx),
+      [Math.floor(观察点世界X), "-", Math.floor(矩形.x)],
+      数字颜色,
+      等号颜色,
+      运算符颜色,
+      冒号颜色,
+      括号颜色,
+      结果颜色
+    );
     当前Y += 行高;
-
-    // dy = 观察点.y - 矩形.y
-    this.绘制公式行(左组起始X, 当前Y, "dy", 左组最大宽度, Math.floor(dy),
-      [Math.floor(观察点世界Y), "-", Math.floor(矩形.y)], 数字颜色, 等号颜色, 运算符颜色, 冒号颜色, 括号颜色, 结果颜色);
+    this.绘制公式行(
+      左组起始X,
+      当前Y,
+      "dy",
+      左组最大宽度,
+      Math.floor(dy),
+      [Math.floor(观察点世界Y), "-", Math.floor(矩形.y)],
+      数字颜色,
+      等号颜色,
+      运算符颜色,
+      冒号颜色,
+      括号颜色,
+      结果颜色
+    );
     当前Y += 行高;
-
-    // 弧度 = |矩形.旋转角度| × π / 180（使用绝对值确保一致性）
-    // 注意：使用显示角度值（整数）来确保显示和计算一致
-    this.绘制公式行(左组起始X, 当前Y, "弧度", 左组最大宽度, 计算弧度值,
-      [显示角度值, "×", "π", "/", 180], 数字颜色, 等号颜色, 运算符颜色, 冒号颜色, 括号颜色, 结果颜色);
+    this.绘制公式行(
+      左组起始X,
+      当前Y,
+      "弧度",
+      左组最大宽度,
+      计算弧度值,
+      [显示角度值, "×", "π", "/", 180],
+      数字颜色,
+      等号颜色,
+      运算符颜色,
+      冒号颜色,
+      括号颜色,
+      结果颜色
+    );
     当前Y += 行高;
-
-    // cos(弧度) = cos(计算弧度值)
-    this.绘制公式行(左组起始X, 当前Y, "cos(弧度)", 左组最大宽度, cos弧度显示值,
-      ["cos", "(", 计算弧度值, ")"], 数字颜色, 等号颜色, 运算符颜色, 冒号颜色, 括号颜色, 结果颜色);
+    this.绘制公式行(
+      左组起始X,
+      当前Y,
+      "cos(弧度)",
+      左组最大宽度,
+      cos弧度显示值,
+      ["cos", "(", 计算弧度值, ")"],
+      数字颜色,
+      等号颜色,
+      运算符颜色,
+      冒号颜色,
+      括号颜色,
+      结果颜色
+    );
     当前Y += 行高;
-
-    // sin(弧度) = sin(计算弧度值)
-    this.绘制公式行(左组起始X, 当前Y, "sin(弧度)", 左组最大宽度, sin弧度显示值,
-      ["sin", "(", 计算弧度值, ")"], 数字颜色, 等号颜色, 运算符颜色, 冒号颜色, 括号颜色, 结果颜色);
+    this.绘制公式行(
+      左组起始X,
+      当前Y,
+      "sin(弧度)",
+      左组最大宽度,
+      sin弧度显示值,
+      ["sin", "(", 计算弧度值, ")"],
+      数字颜色,
+      等号颜色,
+      运算符颜色,
+      冒号颜色,
+      括号颜色,
+      结果颜色
+    );
     当前Y += 行高;
-
-    // 局部X = dx × cos(弧度) - dy × sin(弧度)
-    // 注意：实际计算使用精确值，显示时使用3位小数
-    // 使用 Math.round() 与观察点下方显示的值保持一致
-    this.绘制公式行(左组起始X, 当前Y, "局部X", 左组最大宽度, Math.round(局部X),
-      [Math.floor(dx), "×", cos弧度显示值, "-", Math.floor(dy), "×", sin弧度显示值], 数字颜色, 等号颜色, 运算符颜色, 冒号颜色, 括号颜色, 结果颜色);
+    this.绘制公式行(
+      左组起始X,
+      当前Y,
+      "局部X",
+      左组最大宽度,
+      Math.round(局部X),
+      [Math.floor(dx), "×", cos弧度显示值, "-", Math.floor(dy), "×", sin弧度显示值],
+      数字颜色,
+      等号颜色,
+      运算符颜色,
+      冒号颜色,
+      括号颜色,
+      结果颜色
+    );
     当前Y += 行高;
-
-    // 局部Y = dx × sin(弧度) + dy × cos(弧度)
-    this.绘制公式行(左组起始X, 当前Y, "局部Y", 左组最大宽度, Math.round(局部Y),
-      [Math.floor(dx), "×", sin弧度显示值, "+", Math.floor(dy), "×", cos弧度显示值], 数字颜色, 等号颜色, 运算符颜色, 冒号颜色, 括号颜色, 结果颜色);
-
-    // 绘制右边：局部坐标转世界坐标
+    this.绘制公式行(
+      左组起始X,
+      当前Y,
+      "局部Y",
+      左组最大宽度,
+      Math.round(局部Y),
+      [Math.floor(dx), "×", sin弧度显示值, "+", Math.floor(dy), "×", cos弧度显示值],
+      数字颜色,
+      等号颜色,
+      运算符颜色,
+      冒号颜色,
+      括号颜色,
+      结果颜色
+    );
     当前Y = 起始Y;
     this.ctx.fillStyle = "gold";
     this.ctx.fillText("局部坐标 → 世界坐标", 右组起始X + 75, 当前Y);
     当前Y += 行高;
-
-    // 弧度 = 矩形.旋转角度 × π / 180（使用绝对值确保一致性）
-    // 注意：使用显示角度值（整数）来确保显示和计算一致
-    this.绘制公式行(右组起始X, 当前Y, "弧度", 右组最大宽度, 计算角度值,
-      [显示角度值, "×", "π", "/", 180], 数字颜色, 等号颜色, 运算符颜色, 冒号颜色, 括号颜色, 结果颜色);
+    this.绘制公式行(
+      右组起始X,
+      当前Y,
+      "弧度",
+      右组最大宽度,
+      计算角度值,
+      [显示角度值, "×", "π", "/", 180],
+      数字颜色,
+      等号颜色,
+      运算符颜色,
+      冒号颜色,
+      括号颜色,
+      结果颜色
+    );
     当前Y += 行高;
-
-    // cos(弧度) = cos(计算角度值)
-    this.绘制公式行(右组起始X, 当前Y, "cos(弧度)", 右组最大宽度, cos角度显示值,
-      ["cos", "(", 计算角度值, ")"], 数字颜色, 等号颜色, 运算符颜色, 冒号颜色, 括号颜色, 结果颜色);
+    this.绘制公式行(
+      右组起始X,
+      当前Y,
+      "cos(弧度)",
+      右组最大宽度,
+      cos角度显示值,
+      ["cos", "(", 计算角度值, ")"],
+      数字颜色,
+      等号颜色,
+      运算符颜色,
+      冒号颜色,
+      括号颜色,
+      结果颜色
+    );
     当前Y += 行高;
-
-    // sin(弧度) = sin(计算角度值)
-    this.绘制公式行(右组起始X, 当前Y, "sin(弧度)", 右组最大宽度, sin角度显示值,
-      ["sin", "(", 计算角度值, ")"], 数字颜色, 等号颜色, 运算符颜色, 冒号颜色, 括号颜色, 结果颜色);
+    this.绘制公式行(
+      右组起始X,
+      当前Y,
+      "sin(弧度)",
+      右组最大宽度,
+      sin角度显示值,
+      ["sin", "(", 计算角度值, ")"],
+      数字颜色,
+      等号颜色,
+      运算符颜色,
+      冒号颜色,
+      括号颜色,
+      结果颜色
+    );
     当前Y += 行高;
-
-    // 世界X = 矩形.x + 局部X × cos(角度) - 局部Y × sin(角度)
-    // 注意：实际计算使用精确值，显示时使用3位小数
-    // 使用 Math.round() 与观察点下方显示的值保持一致
-    this.绘制公式行(右组起始X, 当前Y, "世界X", 右组最大宽度, Math.floor(计算世界X),
-      [Math.floor(矩形.x), "+", Math.round(局部X), "×", cos角度显示值, "-", Math.round(局部Y), "×", sin角度显示值], 数字颜色, 等号颜色, 运算符颜色, 冒号颜色, 括号颜色, 结果颜色);
+    this.绘制公式行(
+      右组起始X,
+      当前Y,
+      "世界X",
+      右组最大宽度,
+      Math.floor(计算世界X),
+      [Math.floor(矩形.x), "+", Math.round(局部X), "×", cos角度显示值, "-", Math.round(局部Y), "×", sin角度显示值],
+      数字颜色,
+      等号颜色,
+      运算符颜色,
+      冒号颜色,
+      括号颜色,
+      结果颜色
+    );
     当前Y += 行高;
-
-    // 世界Y = 矩形.y + 局部X × sin(角度) + 局部Y × cos(角度)
-    this.绘制公式行(右组起始X, 当前Y, "世界Y", 右组最大宽度, Math.floor(计算世界Y),
-      [Math.floor(矩形.y), "+", Math.round(局部X), "×", sin角度显示值, "+", Math.round(局部Y), "×", cos角度显示值], 数字颜色, 等号颜色, 运算符颜色, 冒号颜色, 括号颜色, 结果颜色);
-
+    this.绘制公式行(
+      右组起始X,
+      当前Y,
+      "世界Y",
+      右组最大宽度,
+      Math.floor(计算世界Y),
+      [Math.floor(矩形.y), "+", Math.round(局部X), "×", sin角度显示值, "+", Math.round(局部Y), "×", cos角度显示值],
+      数字颜色,
+      等号颜色,
+      运算符颜色,
+      冒号颜色,
+      括号颜色,
+      结果颜色
+    );
     this.ctx.restore();
   }
-
-  // 绘制公式行
-  绘制公式行(起始X, 起始Y, 变量名, 变量名最大宽度, 结果值, 表达式数组, 数字颜色, 等号颜色, 运算符颜色, 冒号颜色, 括号颜色, 结果颜色) {
+  绘制公式行(
+    起始X,
+    起始Y,
+    变量名,
+    变量名最大宽度,
+    结果值,
+    表达式数组,
+    数字颜色,
+    等号颜色,
+    运算符颜色,
+    冒号颜色,
+    括号颜色,
+    结果颜色
+  ) {
     let 当前X = 起始X;
-    
-    // 绘制变量名（右对齐，括号使用不同颜色）
     this.ctx.textAlign = "left";
-    // 计算变量名的实际宽度
     const 变量名实际宽度 = this.ctx.measureText(变量名).width;
-    // 计算右对齐的起始位置
     const 右对齐起始X = 当前X + 变量名最大宽度 - 变量名实际宽度;
-    
-    // 从左到右绘制每个字符
     let 字符X = 右对齐起始X;
     for (let i = 0; i < 变量名.length; i++) {
       const 字符 = 变量名[i];
@@ -2092,40 +1762,30 @@ class 坐标系教程 {
       字符X += this.ctx.measureText(字符).width;
     }
     当前X += 变量名最大宽度;
-    
-    // 冒号（左边2，右边4的边距）
     当前X += 2;
     this.ctx.fillStyle = 冒号颜色;
     this.ctx.fillText(":", 当前X, 起始Y);
     当前X += this.ctx.measureText(":").width + 4;
-    
-    // 等号
     this.ctx.fillStyle = 等号颜色;
     this.ctx.fillText(" = ", 当前X, 起始Y);
     当前X += this.ctx.measureText(" = ").width;
-    
-    // 绘制表达式
     for (let i = 0; i < 表达式数组.length; i++) {
       const 项 = 表达式数组[i];
       const 前一项 = i > 0 ? 表达式数组[i - 1] : null;
       const 后一项 = i < 表达式数组.length - 1 ? 表达式数组[i + 1] : null;
-      
       if (typeof 项 === "string") {
-        // 检查是否是负数的负号（前一项是运算符或开头，后一项是数字）
-        const 是负数负号 = 项 === "-" && 
+        const 是负数负号 =
+          项 === "-" &&
           (前一项 === null || ["+", "-", "×", "/", "("].includes(前一项)) &&
-          (后一项 !== null && typeof 后一项 === "number");
-        
+          后一项 !== null &&
+          typeof 后一项 === "number";
         if (是负数负号) {
-          // 这是负数的负号，应该和后面的数字一起显示
-          // 跳过这个负号，在下一个数字处理时一起显示
           continue;
         } else if (["+", "-", "×", "/"].includes(项)) {
-          // 运算符
-          当前X += 4; // 运算符左边4的边距
+          当前X += 4;
           this.ctx.fillStyle = 运算符颜色;
           this.ctx.fillText(项, 当前X, 起始Y);
-          当前X += this.ctx.measureText(项).width + 4; // 运算符右边4的边距
+          当前X += this.ctx.measureText(项).width + 4;
         } else if (项 === "(") {
           this.ctx.fillStyle = 括号颜色;
           this.ctx.fillText(项, 当前X, 起始Y);
@@ -2135,87 +1795,65 @@ class 坐标系教程 {
           this.ctx.fillText(项, 当前X, 起始Y);
           当前X += this.ctx.measureText(项).width;
         } else if (项 === "π") {
-          // π符号用数字颜色显示
           this.ctx.fillStyle = 数字颜色;
           this.ctx.fillText(项, 当前X, 起始Y);
           当前X += this.ctx.measureText(项).width;
         } else if (项 === "cos" || 项 === "sin") {
-          // 函数名用白色显示
           this.ctx.fillStyle = "#fff";
           this.ctx.fillText(项, 当前X, 起始Y);
           当前X += this.ctx.measureText(项).width;
         }
       } else {
-        // 数字（包括负数）
-        // 检查前一项是否是负号（用于负数显示，当表达式数组是 [5, "×", "-", 3] 这种情况）
-        const 前一项是负号 = i > 0 && 表达式数组[i - 1] === "-" &&
+        const 前一项是负号 =
+          i > 0 &&
+          表达式数组[i - 1] === "-" &&
           (i === 1 || 表达式数组[i - 2] === null || ["+", "-", "×", "/", "("].includes(表达式数组[i - 2]));
-        
-        // 公式显示统一使用3位小数（避免文本过长）
         let 数字文本;
         if (变量名 === "cos(弧度)" || 变量名 === "sin(弧度)") {
-          // 在cos/sin表达式中，弧度值使用3位小数
           数字文本 = this.精确格式化数字(项, 3);
         } else {
-          // 其他数字也使用3位小数
           数字文本 = this.精确格式化数字(项, 3);
         }
-        
-        // 如果是负数（表达式数组分开传递负号的情况），添加负号（作为数字的一部分）
         if (前一项是负号) {
           数字文本 = "-" + 数字文本;
         }
-        
-        // 如果数字本身就是负数，格式化数字已经包含了负号，不需要额外处理
-        // 确保0值能正确显示（包括格式化后的空字符串）
         if (!数字文本 || 数字文本 === "" || 数字文本 === null || 数字文本 === undefined) {
           数字文本 = "0";
         }
-        
-        // 确保数字文本不为空
         if (数字文本.trim() === "") {
           数字文本 = "0";
         }
-        
         this.ctx.fillStyle = 数字颜色;
         this.ctx.fillText(数字文本, 当前X, 起始Y);
         当前X += this.ctx.measureText(数字文本).width;
       }
     }
-    
-    // 在公式后面加上"=得数"
-    当前X += 2; // 等号左边2的边距
+    当前X += 2;
     this.ctx.fillStyle = 等号颜色;
     this.ctx.fillText(" = ", 当前X, 起始Y);
     当前X += this.ctx.measureText(" = ").width;
-    
-    // 绘制结果值（使用结果颜色）
-    // 公式显示统一使用3位小数（避免文本过长）
     let 结果文本;
     if (变量名 === "弧度" || 变量名 === "cos(弧度)" || 变量名 === "sin(弧度)") {
-      结果文本 = this.精确格式化数字(结果值, 3); // 弧度值使用3位小数
+      结果文本 = this.精确格式化数字(结果值, 3);
     } else {
-      结果文本 = this.精确格式化数字(结果值, 3); // 统一使用3位小数
+      结果文本 = this.精确格式化数字(结果值, 3);
     }
     this.ctx.fillStyle = 结果颜色;
     this.ctx.fillText(结果文本, 当前X, 起始Y);
   }
-
-  // 计算公式行的宽度
   计算公式行宽度(变量名, 变量名最大宽度, 表达式数组, 结果值 = 0) {
     let 宽度 = 变量名最大宽度;
-    宽度 += 2; // 冒号左边距
+    宽度 += 2;
     宽度 += this.ctx.measureText(":").width;
-    宽度 += 4; // 冒号右边距
+    宽度 += 4;
     宽度 += this.ctx.measureText(" = ").width;
-    
     for (let i = 0; i < 表达式数组.length; i++) {
       const 项 = 表达式数组[i];
       if (typeof 项 === "string") {
         if (["+", "-", "×", "/"].includes(项)) {
-          宽度 += 4; // 运算符左边距
+          宽度 += 4;
           宽度 += this.ctx.measureText(项).width;
-          宽度 += 4; // 运算符右边距
+          宽度 += 4;
         } else {
           宽度 += this.ctx.measureText(项).width;
         }
@@ -2223,40 +1861,27 @@ class 坐标系教程 {
         宽度 += this.ctx.measureText(this.格式化数字(项)).width;
       }
     }
-    
-    // 加上"=得数"的宽度
-    宽度 += 2; // 等号左边距
+    宽度 += 2;
     宽度 += this.ctx.measureText(" = ").width;
     宽度 += this.ctx.measureText(this.格式化数字(结果值)).width;
-    
     return 宽度;
   }
-
-  // 精确格式化数字（使用Math.round避免toFixed的精度问题）
   精确格式化数字(值, 小数位数 = 2) {
-    // 如果值非常接近0，直接返回0（避免浮点数误差）
     const 容差 = Math.pow(10, -(小数位数 + 2));
     if (Math.abs(值) < 容差) {
       return "0";
     }
     const 倍数 = Math.pow(10, 小数位数);
     const 精确值 = Math.round(值 * 倍数) / 倍数;
-    
-    // 如果四舍五入后仍然是0，返回0
     if (Math.abs(精确值) < 容差) {
       return "0";
     }
-    
-    // 转换为字符串，移除末尾的0
     let 结果 = 精确值.toString();
     if (结果.includes(".")) {
       结果 = 结果.replace(/\.?0+$/, "");
     }
     return 结果;
   }
-
-  // 格式化数字（保留适当的小数位数，使用精确方法）
-  // 注意：此函数用于非公式显示，公式显示统一使用3位小数
   格式化数字(值) {
     if (Math.abs(值) < 0.001) {
       return "0";
@@ -2266,13 +1891,10 @@ class 坐标系教程 {
     }
     return this.精确格式化数字(值, 2);
   }
-
   清空画布() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
-
   重置() {
-    // 恢复矩形初始状态
     this.矩形 = {
       x: this.canvas.offsetWidth / 2,
       y: this.canvas.offsetHeight / 2,
@@ -2280,16 +1902,12 @@ class 坐标系教程 {
       高度: 200,
       旋转角度: 0,
     };
-
-    // 恢复观察点初始状态
     this.观察点 = {
       x: this.canvas.offsetWidth / 2,
       y: this.canvas.offsetHeight / 2,
       半径: 8,
     };
     this.保存观察点位置到SessionStorage();
-
-    // 重置交互状态
     this.交互状态 = {
       正在拖动: false,
       正在缩放: false,
@@ -2315,18 +1933,13 @@ class 坐标系教程 {
         y减少: { 按下: false, 按下时间: null, 快速增减定时器: null, 悬停: false },
       },
     };
-
-    // 重置鼠标坐标
     this.鼠标坐标 = {
       x: null,
       y: null,
     };
-
-    // 重新绘制场景
     this.绘制场景();
   }
 }
-
 document.addEventListener("DOMContentLoaded", () => {
   new 坐标系教程();
 });
