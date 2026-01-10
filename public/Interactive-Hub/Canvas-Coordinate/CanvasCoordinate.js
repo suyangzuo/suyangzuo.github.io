@@ -1323,38 +1323,55 @@ class 坐标系教程 {
     this.ctx.restore();
   }
   绘制观察点坐标() {
-    let x值, y值;
-    if (this.显示选项.使用世界坐标系) {
-      x值 = Math.round(this.观察点.x);
-      y值 = Math.round(this.观察点.y);
-    } else {
-      const 矩形 = this.矩形;
-      const dx = this.观察点.x - 矩形.x;
-      const dy = this.观察点.y - 矩形.y;
-      const 弧度 = (-矩形.旋转角度 * Math.PI) / 180;
-      x值 = Math.round(dx * Math.cos(弧度) - dy * Math.sin(弧度));
-      y值 = Math.round(dx * Math.sin(弧度) + dy * Math.cos(弧度));
-    }
+    // 计算世界坐标
+    const 世界X = Math.round(this.观察点.x);
+    const 世界Y = Math.round(this.观察点.y);
+    
+    // 计算局部坐标
+    const 矩形 = this.矩形;
+    const dx = this.观察点.x - 矩形.x;
+    const dy = this.观察点.y - 矩形.y;
+    const 弧度 = (-矩形.旋转角度 * Math.PI) / 180;
+    const 局部X = Math.round(dx * Math.cos(弧度) - dy * Math.sin(弧度));
+    const 局部Y = Math.round(dx * Math.sin(弧度) + dy * Math.cos(弧度));
+    
     this.ctx.save();
     this.ctx.font = "14px 'Google Sans Code', Consolas, 'Noto Sans CJK SC', 微软雅黑, sans-serif";
     this.ctx.textBaseline = "top";
+    
+    // 准备文本
+    const 世界文本 = "世界";
+    const 局部文本 = "局部";
     const x文本 = "x";
     const y文本 = "y";
     const 冒号 = ":";
-    const x值文本 = `${x值}`;
-    const y值文本 = `${y值}`;
+    const 世界x值文本 = `${世界X}`;
+    const 世界y值文本 = `${世界Y}`;
+    const 局部x值文本 = `${局部X}`;
+    const 局部y值文本 = `${局部Y}`;
+    
+    // 测量文本宽度
+    const 世界文本宽度 = this.ctx.measureText(世界文本).width;
+    const 局部文本宽度 = this.ctx.measureText(局部文本).width;
     const x文本宽度 = this.ctx.measureText(x文本).width;
     const y文本宽度 = this.ctx.measureText(y文本).width;
     const 冒号宽度 = this.ctx.measureText(冒号).width;
-    const x值文本宽度 = this.ctx.measureText(x值文本).width;
-    const y值文本宽度 = this.ctx.measureText(y值文本).width;
-    const 最大标签宽度 = Math.max(x文本宽度, y文本宽度);
-    const 最大数值宽度 = Math.max(x值文本宽度, y值文本宽度);
+    const 世界x值文本宽度 = this.ctx.measureText(世界x值文本).width;
+    const 世界y值文本宽度 = this.ctx.measureText(世界y值文本).width;
+    const 局部x值文本宽度 = this.ctx.measureText(局部x值文本).width;
+    const 局部y值文本宽度 = this.ctx.measureText(局部y值文本).width;
+    
+    // 计算最大宽度（包括"世界"/"局部"和"x"/"y"之间1的间隙）
+    const 最大标签宽度 = Math.max(世界文本宽度 + 1 + x文本宽度, 世界文本宽度 + 1 + y文本宽度, 局部文本宽度 + 1 + x文本宽度, 局部文本宽度 + 1 + y文本宽度);
+    const 最大数值宽度 = Math.max(世界x值文本宽度, 世界y值文本宽度, 局部x值文本宽度, 局部y值文本宽度);
     const 总文本宽度 = 最大标签宽度 + 2 + 冒号宽度 + 4 + 最大数值宽度;
+    
     const 行高 = 18;
     const 间距 = 10;
     const 画布高度 = this.canvas.offsetHeight;
-    const 文本总高度 = 行高 * 2;
+    const 文本总高度 = 行高 * 4; // 4行：局部x、局部y、世界x、世界y
+    
+    // 计算文本起始位置（局部坐标在上方，世界坐标在下方）
     let 文本起始Y = this.观察点.y + this.观察点.半径 + 间距;
     if (文本起始Y + 文本总高度 > 画布高度) {
       文本起始Y = this.观察点.y - this.观察点.半径 - 间距 - 文本总高度;
@@ -1364,6 +1381,7 @@ class 坐标系教程 {
     } else if (文本起始Y + 文本总高度 > 画布高度) {
       文本起始Y = 画布高度 - 文本总高度;
     }
+    
     let 文本起始X = this.观察点.x - 总文本宽度 / 2;
     const 画布宽度 = this.canvas.offsetWidth;
     if (文本起始X < 0) {
@@ -1371,26 +1389,78 @@ class 坐标系教程 {
     } else if (文本起始X + 总文本宽度 > 画布宽度) {
       文本起始X = 画布宽度 - 总文本宽度;
     }
+    
+    // 颜色定义
+    const 世界颜色 = "#5AF"; // 世界坐标标题颜色
+    const 局部颜色 = "#dd8742"; // 局部坐标标题颜色
+    const 世界数值颜色 = "lightseagreen"; // 世界坐标数字颜色
+    const 局部数值颜色 = "#50c878"; // 局部坐标数字颜色
+    const 冒号颜色 = "#aaa";
+    
+    // 绘制局部坐标（上方）
+    let 当前Y = 文本起始Y;
     let 当前X = 文本起始X;
+    
+    // 局部x
+    this.ctx.fillStyle = 局部颜色;
+    this.ctx.fillText(局部文本, 当前X, 当前Y);
+    当前X += 局部文本宽度 + 1; // "局部"和"x"之间1的间隙
     this.ctx.fillStyle = "lightskyblue";
-    this.ctx.fillText(x文本, 当前X, 文本起始Y);
-    当前X += 最大标签宽度;
-    this.ctx.fillStyle = "#aaa";
-    this.ctx.fillText(冒号, 当前X + 2, 文本起始Y);
+    this.ctx.fillText(x文本, 当前X, 当前Y);
+    当前X += x文本宽度;
+    this.ctx.fillStyle = 冒号颜色;
+    this.ctx.fillText(冒号, 当前X + 1, 当前Y);
     当前X += 2 + 冒号宽度;
-    const 数值颜色 = "#4da";
-    this.ctx.fillStyle = 数值颜色;
-    this.ctx.fillText(x值文本, 当前X + 4, 文本起始Y);
-    const y行Y = 文本起始Y + 行高;
+    this.ctx.fillStyle = 局部数值颜色;
+    this.ctx.fillText(局部x值文本, 当前X + 4, 当前Y); // 冒号和数字之间4的间隙
+    
+    // 局部y
+    当前Y += 行高;
     当前X = 文本起始X;
+    this.ctx.fillStyle = 局部颜色;
+    this.ctx.fillText(局部文本, 当前X, 当前Y);
+    当前X += 局部文本宽度 + 1; // "局部"和"y"之间1的间隙
     this.ctx.fillStyle = "lightskyblue";
-    this.ctx.fillText(y文本, 当前X, y行Y);
-    当前X += 最大标签宽度;
-    this.ctx.fillStyle = "#aaa";
-    this.ctx.fillText(冒号, 当前X + 2, y行Y);
+    this.ctx.fillText(y文本, 当前X, 当前Y);
+    当前X += y文本宽度;
+    this.ctx.fillStyle = 冒号颜色;
+    this.ctx.fillText(冒号, 当前X + 1, 当前Y);
     当前X += 2 + 冒号宽度;
-    this.ctx.fillStyle = 数值颜色;
-    this.ctx.fillText(y值文本, 当前X + 4, y行Y);
+    this.ctx.fillStyle = 局部数值颜色;
+    this.ctx.fillText(局部y值文本, 当前X + 4, 当前Y); // 冒号和数字之间4的间隙
+    
+    // 绘制世界坐标（下方）
+    当前Y += 行高;
+    当前X = 文本起始X;
+    
+    // 世界x
+    this.ctx.fillStyle = 世界颜色;
+    this.ctx.fillText(世界文本, 当前X, 当前Y);
+    当前X += 世界文本宽度 + 1; // "世界"和"x"之间1的间隙
+    this.ctx.fillStyle = "lightskyblue";
+    this.ctx.fillText(x文本, 当前X, 当前Y);
+    当前X += x文本宽度;
+    this.ctx.fillStyle = 冒号颜色;
+    this.ctx.fillText(冒号, 当前X + 1, 当前Y);
+    当前X += 2 + 冒号宽度;
+    this.ctx.fillStyle = 世界数值颜色;
+    this.ctx.fillText(世界x值文本, 当前X + 4, 当前Y); // 冒号和数字之间4的间隙
+    
+    // 世界y
+    当前Y += 行高;
+    当前X = 文本起始X;
+    this.ctx.fillStyle = 世界颜色;
+    this.ctx.fillText(世界文本, 当前X, 当前Y);
+    当前X += 世界文本宽度 + 1; // "世界"和"y"之间1的间隙
+    this.ctx.fillStyle = "lightskyblue";
+    this.ctx.fillText(y文本, 当前X, 当前Y);
+    当前X += y文本宽度;
+    this.ctx.fillStyle = 冒号颜色;
+    this.ctx.fillText(冒号, 当前X + 1, 当前Y);
+    当前X += 2 + 冒号宽度;
+    this.ctx.fillStyle = 世界数值颜色;
+    this.ctx.fillText(世界y值文本, 当前X + 4, 当前Y); // 冒号和数字之间4的间隙
+    
     this.ctx.restore();
   }
   绘制数字框和按钮() {
@@ -1553,8 +1623,8 @@ class 坐标系教程 {
       当前Y,
       "dx",
       左组最大宽度,
-      Math.floor(dx),
-      [Math.floor(观察点世界X), "-", Math.floor(矩形.x)],
+      Math.round(dx),
+      [Math.round(观察点世界X), "-", Math.floor(矩形.x)],
       数字颜色,
       等号颜色,
       运算符颜色,
@@ -1568,8 +1638,8 @@ class 坐标系教程 {
       当前Y,
       "dy",
       左组最大宽度,
-      Math.floor(dy),
-      [Math.floor(观察点世界Y), "-", Math.floor(矩形.y)],
+      Math.round(dy),
+      [Math.round(观察点世界Y), "-", Math.floor(矩形.y)],
       数字颜色,
       等号颜色,
       运算符颜色,
@@ -1706,7 +1776,7 @@ class 坐标系教程 {
       当前Y,
       "世界X",
       右组最大宽度,
-      Math.floor(计算世界X),
+      Math.round(计算世界X),
       [Math.floor(矩形.x), "+", Math.round(局部X), "×", cos角度显示值, "-", Math.round(局部Y), "×", sin角度显示值],
       数字颜色,
       等号颜色,
@@ -1721,7 +1791,7 @@ class 坐标系教程 {
       当前Y,
       "世界Y",
       右组最大宽度,
-      Math.floor(计算世界Y),
+      Math.round(计算世界Y),
       [Math.floor(矩形.y), "+", Math.round(局部X), "×", sin角度显示值, "+", Math.round(局部Y), "×", cos角度显示值],
       数字颜色,
       等号颜色,
