@@ -5,48 +5,42 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>贪吃蛇</title>
+  <title>跳跳乐</title>
   <link rel="icon" href="/Games/Mario-Run.gif" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Ubuntu+Mono&display=swap"
     rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="../game-common.css" />
+  <link rel="stylesheet" type="text/css" href="JumpToPrize.css" />
   <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
   <link rel="stylesheet" type="text/css" href="/Styles/top-banner-common.css" />
-  <link rel="stylesheet" type="text/css" href="../game-common.css" />
-  <link rel="stylesheet" type="text/css" href="./snake.css" />
-  <script src="/Scripts/d0483e3bd3.js" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
   <script src="/Scripts/top-banner.js" defer></script>
   <script src="https://cdn.lordicon.com/lordicon.js"></script>
 </head>
 
 <body>
   <script src="/Scripts/html-include.js" target="/top-banner.html" position="afterbegin"></script>
+
   <div class="background-image">
-    <img src="../Images-Common/Snake-Banner.jpg" alt="游戏背景墙" />
+    <img src="../Images-Common/跳跳乐.png" alt="游戏背景墙" />
   </div>
+
+  <!-- 游戏控制区域 -->
   <div class="control-area">
     <div class="back-to-navigator">
       <a href="../" title="返回游戏大厅">
         <img src="../后退.png" alt="后退" />
       </a>
     </div>
-    <div class="reset-game">
-      <img src="../重置.png" alt="重置游戏" title="重置" />
+    <div class="reset-game" id="resetGame" title="重置游戏">
+      <img src="../重置.png" alt="重置游戏" />
     </div>
   </div>
-  <div id="game-container">
-    <div id="game-info">
-      <div id="score">分数：<span></span></div>
-      <div id="speed">
-        <input type="range" min="25" max="125" value="75" step="25" class="slider" />
-        <p></p>
-      </div>
-    </div>
-    <div id="game-area">
-      <canvas id="game-board" width="600" height="600"></canvas>
-    </div>
-  </div>
-  <script src="./game-logic.js"></script>
+
+  <script src="JumpToPrize.js"></script>
 </body>
 
 </html>

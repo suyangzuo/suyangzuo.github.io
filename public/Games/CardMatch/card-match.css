@@ -40,7 +40,7 @@
 
 #card-count-text {
   color: cornflowerblue;
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", Consolas, monospace;
 }
 
 .数据统计区 {
@@ -64,12 +64,12 @@
 #click-count {
   color: rgb(252, 252, 252);
   width: 5ch;
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", Consolas, monospace;
 }
 
 .得分区 {
   font-size: 2.25em;
-  font-family: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑， sans-serif;
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑， sans-serif;
   display: flex;
   align-items: center;
   gap: 15px;

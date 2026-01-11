@@ -131,14 +131,14 @@ label span {
 }
 
 .值 {
-  font-family: Consolas, Noto Sans;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", sans-serif;
   color: darkkhaki;
 }
 
 .game-area {
   position: relative;
   height: calc(100vh - 150px);
-  font-family: "JetBrains Mono", "Noto Sans SC", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", sans-serif;
   display: flex;
   justify-content: center;
   align-items: flex-end;

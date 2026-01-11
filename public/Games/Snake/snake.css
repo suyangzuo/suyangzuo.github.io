@@ -6,6 +6,7 @@
   text-align: center;
   display: flex;
   justify-content: center;
+  font-family: Google Sans Code, Consolas, Noto Sans SC, 微软雅黑, sans-serif;
 }
 
 #game-board {

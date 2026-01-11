@@ -3,7 +3,7 @@ body {
   background-color: rgb(24, 25, 26) !important;
   color: aliceblue;
   width: 100vw;
-  /* overflow: hidden; */
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 .background-image {
@@ -23,7 +23,6 @@ body {
 }
 
 .control-area {
-  /* background-color: violet; */
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -55,7 +54,6 @@ body {
 }
 
 .reset-game {
-  /* background-color: rgb(30, 125, 163); */
   position: relative;
 }
 
@@ -82,7 +80,6 @@ body {
 
 .back-to-navigator {
   background-color: transparent;
-  /* background-color: blueviolet; */
 }
 
 .reset-game,

@@ -1,62 +1,60 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>卡片配对</title>
-    <link rel="icon" href="/Games/Mario-Run.gif" type="image/x-icon" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Noto+Sans+Mono&family=Noto+Sans+SC&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" type="text/css" href="../game-common.css" />
-    <link rel="stylesheet" type="text/css" href="./card-match.css" />
-    <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
-    <link rel="stylesheet" type="text/css" href="/Styles/top-banner-common.css" />
-    <script src="/Scripts/d0483e3bd3.js" crossorigin="anonymous"></script>
-    <script src="/Scripts/top-banner.js" defer></script>
-    <script src="https://cdn.lordicon.com/lordicon.js"></script>
-  </head>
-  <body>
-    <script src="/Scripts/html-include.js" target="/top-banner.html" position="afterbegin"></script>
 
-    <div class="background-image">
-      <img src="../Images-Common/Game-Background-02.webp" alt="游戏背景墙" />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>卡片配对</title>
+  <link rel="icon" href="/Games/Mario-Run.gif" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Ubuntu+Mono&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="../game-common.css" />
+  <link rel="stylesheet" type="text/css" href="./card-match.css" />
+  <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
+  <link rel="stylesheet" type="text/css" href="/Styles/top-banner-common.css" />
+  <script src="/Scripts/d0483e3bd3.js" crossorigin="anonymous"></script>
+  <script src="/Scripts/top-banner.js" defer></script>
+  <script src="https://cdn.lordicon.com/lordicon.js"></script>
+</head>
+
+<body>
+  <script src="/Scripts/html-include.js" target="/top-banner.html" position="afterbegin"></script>
+
+  <div class="background-image">
+    <img src="../Images-Common/Game-Background-02.webp" alt="游戏背景墙" />
+  </div>
+  <div class="control-area">
+    <div class="back-to-navigator">
+      <a href="../" title="返回游戏大厅">
+        <img src="../后退.png" alt="后退" />
+      </a>
     </div>
-    <div class="control-area">
-      <div class="back-to-navigator">
-        <a href="../" title="返回游戏大厅">
-          <img src="../后退.png" alt="后退" />
-        </a>
+    <div class="reset-game">
+      <img src="../重置.png" alt="重置游戏" title="重置" />
+    </div>
+  </div>
+  <div class="game-area">
+    <div id="game-info">
+      <div id="card-count">
+        <input type="range" min="16" max="40" value="24" step="4" class="slider" />
+        <p>卡片数量：<span id="card-count-text">24</span></p>
       </div>
-      <div class="reset-game">
-        <img src="../重置.png" alt="重置游戏" title="重置" />
+      <p class="数据统计区">
+        <span class="数据统计 用时统计"><span class="统计标题 用时标题">游戏用时</span><span id="time-passed"></span></span>
+        <span class="数据统计 点击次数统计"><span class="统计标题 点击次数标题">点击次数</span><span id="click-count"></span></span>
+      </p>
+      <div class="得分区">
+        <span class="得分标题">得分</span>
+        <span class="得分" id="score">0</span>
       </div>
     </div>
-    <div class="game-area">
-      <div id="game-info">
-        <div id="card-count">
-          <input type="range" min="16" max="40" value="24" step="4" class="slider" />
-          <p>卡片数量：<span id="card-count-text">24</span></p>
-        </div>
-        <p class="数据统计区">
-          <span class="数据统计 用时统计"
-            ><span class="统计标题 用时标题">游戏用时</span><span id="time-passed"></span
-          ></span>
-          <span class="数据统计 点击次数统计"
-            ><span class="统计标题 点击次数标题">点击次数</span><span id="click-count"></span
-          ></span>
-        </p>
-        <div class="得分区">
-          <span class="得分标题">得分</span>
-          <span class="得分" id="score">0</span>
-        </div>
-      </div>
-      <div id="card-grid"></div>
-    </div>
-    <script src="./gameLogic.js"></script>
-  </body>
+    <div id="card-grid"></div>
+  </div>
+  <script src="./gameLogic.js"></script>
+</body>
+
 </html>
