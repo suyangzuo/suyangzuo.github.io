@@ -1087,10 +1087,24 @@ class 坐标系教程 {
 
     this.ctx.save();
     this.ctx.textBaseline = "middle";
-    this.ctx.textAlign = "center";
+    this.ctx.textAlign = "left";
 
-    this.ctx.fillStyle = "#d6a";
-    this.ctx.fillText(角度值文本, 文本中心X - 单位宽度 / 2, 文本中心Y);
+    // 绘制角度值，小数点使用gray颜色
+    // 计算角度值文本的左对齐起始位置（原来使用center对齐，所以需要计算左对齐位置）
+    const 角度值中心X = 文本中心X - 单位宽度 / 2;
+    const 角度值左对齐X = 角度值中心X - 角度值宽度 / 2;
+    let 当前X = 角度值左对齐X;
+    for (let i = 0; i < 角度值文本.length; i++) {
+      const 字符 = 角度值文本[i];
+      if (字符 === ".") {
+        this.ctx.fillStyle = "gray";
+      } else {
+        this.ctx.fillStyle = "#d6a";
+      }
+      this.ctx.fillText(字符, 当前X, 文本中心Y);
+      当前X += this.ctx.measureText(字符).width;
+    }
+    this.ctx.textAlign = "center";
     this.ctx.fillStyle = "#4cf";
     this.ctx.fillText(单位文本, 文本中心X + 角度值宽度 / 2, 文本中心Y);
     this.ctx.restore();
@@ -1932,9 +1946,17 @@ class 坐标系教程 {
         if (数字文本.trim() === "") {
           数字文本 = "0";
         }
-        this.ctx.fillStyle = 数字颜色;
-        this.ctx.fillText(数字文本, 当前X, 起始Y);
-        当前X += this.ctx.measureText(数字文本).width;
+        // 绘制数字文本，小数点使用lightslategray颜色
+        for (let j = 0; j < 数字文本.length; j++) {
+          const 字符 = 数字文本[j];
+          if (字符 === ".") {
+            this.ctx.fillStyle = "#aaa";
+          } else {
+            this.ctx.fillStyle = 数字颜色;
+          }
+          this.ctx.fillText(字符, 当前X, 起始Y);
+          当前X += this.ctx.measureText(字符).width;
+        }
       }
     }
     当前X += 2;
@@ -1947,8 +1969,17 @@ class 坐标系教程 {
     } else {
       结果文本 = this.精确格式化数字(结果值, 3);
     }
-    this.ctx.fillStyle = 结果颜色;
-    this.ctx.fillText(结果文本, 当前X, 起始Y);
+    // 绘制结果文本，小数点使用lightslategray颜色
+    for (let j = 0; j < 结果文本.length; j++) {
+      const 字符 = 结果文本[j];
+      if (字符 === ".") {
+        this.ctx.fillStyle = "#aaa";
+      } else {
+        this.ctx.fillStyle = 结果颜色;
+      }
+      this.ctx.fillText(字符, 当前X, 起始Y);
+      当前X += this.ctx.measureText(字符).width;
+    }
   }
   计算公式行宽度(变量名, 变量名最大宽度, 表达式数组, 结果值 = 0) {
     let 宽度 = 变量名最大宽度;

@@ -347,23 +347,107 @@
     }
 
     let 光标x = x;
-    tokens.forEach((token) => {
+    let 上一个token最后一个字符 = null;
+    tokens.forEach((token, tokenIndex) => {
       const scale = token.superscript ? 0.7 : 1;
       const yOffset = token.superscript ? -6 : 0;
-      for (const ch of token.text) {
-        ctx.fillStyle = 选择颜色(token, ch);
+      
+      // 如果colorType是"点数字"，需要将点和数字分开处理
+      if (token.colorType === "点数字") {
+        for (let i = 0; i < token.text.length; i++) {
+          const ch = token.text[i];
+          
+          // 在"dx"或"dy"中，"d"和"x"/"y"之间添加1的间距
+          // 检查：1) 前一个字符是否是"d"，当前字符是否是"x"或"y"（同一token内）
+          //      2) 上一个token的最后一个字符是否是"d"，当前字符是否是"x"或"y"（跨token）
+          if ((i > 0 && token.text[i - 1] === "d" && (ch === "x" || ch === "y")) ||
+              (i === 0 && 上一个token最后一个字符 === "d" && (ch === "x" || ch === "y"))) {
+            光标x += 1;
+          }
+          
+          // 点使用gray颜色，数字使用点数字颜色
+          if (ch === ".") {
+            ctx.fillStyle = "gray";
+          } else {
+            ctx.fillStyle = 过程颜色.点数字;
+          }
 
-        const ch宽 = ctx.measureText(ch).width * scale;
-        const 间距 = token.noLeftMargin ? 0 : 运算符间距(ch); // 如果设置了noLeftMargin，则不添加左边距
-        const 前距 = 间距;
-        const 后距 = 间距;
-        光标x += 前距;
-        ctx.save();
-        ctx.translate(光标x, y + yOffset);
-        if (scale !== 1) ctx.scale(scale, scale);
-        ctx.fillText(ch, 0, 0);
-        ctx.restore();
-        光标x += ch宽 + 后距;
+          const ch宽 = ctx.measureText(ch).width * scale;
+          const 间距 = token.noLeftMargin ? 0 : 运算符间距(ch); // 如果设置了noLeftMargin，则不添加左边距
+          const 前距 = 间距;
+          const 后距 = 间距;
+          光标x += 前距;
+          
+          ctx.save();
+          ctx.translate(光标x, y + yOffset);
+          if (scale !== 1) ctx.scale(scale, scale);
+          ctx.fillText(ch, 0, 0);
+          ctx.restore();
+          光标x += ch宽 + 后距;
+        }
+      } else {
+        for (let i = 0; i < token.text.length; i++) {
+          const ch = token.text[i];
+          
+          // 在"dx"或"dy"中，"d"和"x"/"y"之间添加1的间距
+          // 检查：1) 前一个字符是否是"d"，当前字符是否是"x"或"y"（同一token内）
+          //      2) 上一个token的最后一个字符是否是"d"，当前字符是否是"x"或"y"（跨token）
+          if ((i > 0 && token.text[i - 1] === "d" && (ch === "x" || ch === "y")) ||
+              (i === 0 && 上一个token最后一个字符 === "d" && (ch === "x" || ch === "y"))) {
+            光标x += 1;
+          }
+          
+          ctx.fillStyle = 选择颜色(token, ch);
+
+          const ch宽 = ctx.measureText(ch).width * scale;
+          let 间距 = token.noLeftMargin ? 0 : 运算符间距(ch); // 如果设置了noLeftMargin，则不添加左边距
+          
+          // 在"|d|"中，"|"和"d"之间不应该有运算符间距（与算术标题保持一致）
+          // 检查：1) 当前字符是"|"，下一个字符是"d"（同一token内）
+          //      2) 当前字符是"|"，下一个token的第一个字符是"d"（跨token）
+          let 前距 = 间距;
+          let 后距 = 间距;
+          if (ch === "|" && 
+              ((i < token.text.length - 1 && token.text[i + 1] === "d") ||
+               (i === token.text.length - 1 && tokenIndex < tokens.length - 1 && tokens[tokenIndex + 1].text && tokens[tokenIndex + 1].text[0] === "d"))) {
+            后距 = 0; // "|"和"d"之间不添加右边距
+          }
+          // 检查：当前字符是"d"，前一个字符是"|"（同一token内或跨token）
+          if (ch === "d" && 
+              ((i > 0 && token.text[i - 1] === "|") ||
+               (i === 0 && 上一个token最后一个字符 === "|"))) {
+            前距 = 0; // "|"和"d"之间不添加左边距
+          }
+          // 检查：当前字符是"d"，下一个字符是"|"（同一token内）
+          //      或当前字符是"d"，下一个token的第一个字符是"|"（跨token）
+          if (ch === "d" && 
+              ((i < token.text.length - 1 && token.text[i + 1] === "|") ||
+               (i === token.text.length - 1 && tokenIndex < tokens.length - 1 && tokens[tokenIndex + 1].text && tokens[tokenIndex + 1].text[0] === "|"))) {
+            后距 = 0; // "d"和"|"之间不添加右边距
+          }
+          // 检查：当前字符是"|"，前一个字符是"d"（同一token内或跨token）
+          if (ch === "|" && 
+              ((i > 0 && token.text[i - 1] === "d") ||
+               (i === 0 && 上一个token最后一个字符 === "d"))) {
+            前距 = 0; // "d"和"|"之间不添加左边距
+          }
+          
+          光标x += 前距;
+          
+          ctx.save();
+          ctx.translate(光标x, y + yOffset);
+          if (scale !== 1) ctx.scale(scale, scale);
+          ctx.fillText(ch, 0, 0);
+          ctx.restore();
+          光标x += ch宽 + 后距;
+        }
+      }
+      
+      // 记录当前token的最后一个字符，供下一个token使用
+      if (token.text.length > 0) {
+        上一个token最后一个字符 = token.text[token.text.length - 1];
+      } else {
+        上一个token最后一个字符 = null;
       }
     });
     return 光标x - x;
@@ -1007,8 +1091,7 @@
       标题类型: "普通",
       标题文本: "切向量",
       正文: [
-        { text: ": d" },
-        { text: "x", colorType: "点数字" },
+        { text: ":", arithmeticTitle: "dx" },
         { text: " = " },
         { text: 格式化数值(3) },
         { text: "×(" },
@@ -1057,8 +1140,7 @@
       标题类型: "普通",
       标题文本: "切向量",
       正文: [
-        { text: ": d" },
-        { text: "y", colorType: "点数字" },
+        { text: ":", arithmeticTitle: "dy" },
         { text: " = " },
         { text: 格式化数值(3) },
         { text: "×(" },
@@ -1102,10 +1184,7 @@
       标题类型: "普通",
       标题文本: "切向量长度",
       正文: [
-        { text: ": " },
-        { text: "|", noLeftMargin: true },
-        { text: "d" },
-        { text: "|", noLeftMargin: true },
+        { text: ":", arithmeticTitle: "|d|" },
         { text: " = " },
         { text: "√", colorType: "函数" },
         { text: "(" },
@@ -1137,8 +1216,7 @@
       标题类型: "普通",
       标题文本: "归一化",
       正文: [
-        { text: ": u" },
-        { text: ".x", colorType: "点数字" },
+        { text: ":", arithmeticTitle: "u.x" },
         { text: " = d" },
         { text: "x", colorType: "点数字" },
         { text: "/|d| = " },
@@ -1155,8 +1233,7 @@
       标题类型: "普通",
       标题文本: "归一化",
       正文: [
-        { text: ": u" },
-        { text: ".y", colorType: "点数字" },
+        { text: ":", arithmeticTitle: "u.y" },
         { text: " = d" },
         { text: "y", colorType: "点数字" },
         { text: "/|d| = " },
@@ -1173,7 +1250,8 @@
       标题类型: "普通",
       标题文本: "切线弧度",
       正文: [
-        { text: ": θ = " },
+        { text: ":", arithmeticTitle: "θ" },
+        { text: " = " },
         { text: "atan2", colorType: "函数" },
         { text: "(" },
         { text: 格式化数值(归一化y) },
@@ -1189,7 +1267,8 @@
       标题类型: "普通",
       标题文本: "法线弧度",
       正文: [
-        { text: ": θ = " },
+        { text: ":", arithmeticTitle: "θ" },
+        { text: " = " },
         { text: "atan2", colorType: "函数" },
         { text: "(" },
         { text: 格式化数值(法线单位y) },
@@ -1279,7 +1358,80 @@
       }
 
       // 正文从标题区域结束后开始，左对齐
-      绘制彩色文本(上下文, 行.正文, 标题结束x + 标题间距, yPos);
+      // 检查第一个token是否有arithmeticTitle属性
+      let 正文起始x = 标题结束x + 标题间距;
+      if (行.正文.length > 0 && 行.正文[0].arithmeticTitle !== undefined) {
+        // 第一个token是冒号，包含arithmeticTitle属性
+        const 冒号token = 行.正文[0];
+        
+        // 测量"u.x"的宽度作为标准宽度
+        const 标准宽度 = 上下文.measureText("u.x").width;
+        
+        // 绘制冒号
+        上下文.fillStyle = 过程颜色.冒号;
+        上下文.fillText(冒号token.text, 正文起始x, yPos);
+        const 冒号后x = 正文起始x + 上下文.measureText(冒号token.text).width;
+        const 算术标题区域起始x = 冒号后x + 6; // 冒号与算术标题之间6的间距
+        
+        // 绘制算术标题（右对齐在固定宽度内）
+        const 算术标题文本 = 冒号token.arithmeticTitle;
+        const 算术标题宽度 = 上下文.measureText(算术标题文本).width;
+        const 算术标题起始x = 算术标题区域起始x + 标准宽度 - 算术标题宽度; // 右对齐
+        
+        // 绘制算术标题，逐个字符绘制以正确处理颜色和间距
+        let 当前x = 算术标题起始x;
+        for (let i = 0; i < 算术标题文本.length; i++) {
+          const ch = 算术标题文本[i];
+          
+          // 在"dx"或"dy"中，"d"和"x"/"y"之间添加1的间距
+          if ((算术标题文本 === "dx" || 算术标题文本 === "dy") && i > 0 && 算术标题文本[i - 1] === "d" && (ch === "x" || ch === "y")) {
+            当前x += 1; // "d"和"x"/"y"之间1的间距
+          }
+          
+          // 确定字符颜色
+          if (ch === ".") {
+            上下文.fillStyle = "gray";
+          } else if (算术标题文本 === "dx" || 算术标题文本 === "dy") {
+            // "dx"或"dy"中的"x"或"y"使用点数字颜色
+            if (ch === "x" || ch === "y") {
+              上下文.fillStyle = 过程颜色.点数字;
+            } else {
+              上下文.fillStyle = 过程颜色.文本;
+            }
+          } else if (算术标题文本 === "u.x" || 算术标题文本 === "u.y") {
+            // "u.x"或"u.y"中的"x"或"y"使用点数字颜色
+            if (ch === "x" || ch === "y") {
+              上下文.fillStyle = 过程颜色.点数字;
+            } else {
+              上下文.fillStyle = 过程颜色.文本;
+            }
+          } else if (算术标题文本 === "|d|") {
+            // "|d|"中的"|"使用绝对值线颜色，"d"使用文本颜色
+            if (ch === "|") {
+              上下文.fillStyle = 过程颜色.绝对值线;
+            } else {
+              上下文.fillStyle = 过程颜色.文本;
+            }
+          } else {
+            // 默认使用文本颜色
+            上下文.fillStyle = 过程颜色.文本;
+          }
+          
+          上下文.fillText(ch, 当前x, yPos);
+          当前x += 上下文.measureText(ch).width;
+        }
+        
+        // 更新正文起始位置（跳过冒号、间距和算术标题区域）
+        正文起始x = 算术标题区域起始x + 标准宽度;
+        
+        // 绘制剩余正文（从第二个token开始）
+        if (行.正文.length > 1) {
+          绘制彩色文本(上下文, 行.正文.slice(1), 正文起始x, yPos);
+        }
+      } else {
+        // 没有算术标题，正常绘制
+        绘制彩色文本(上下文, 行.正文, 正文起始x, yPos);
+      }
     });
 
     上下文.restore();
