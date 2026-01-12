@@ -1036,6 +1036,10 @@
     return 值.toFixed(小数位数).replace(/\.?0+$/, "");
   }
 
+  function 格式化控制点坐标(值) {
+    return Math.round(值).toString();
+  }
+
   function 绘制计算过程() {
     if (!状态.显示计算过程) return;
     const { 滑块 } = 状态.控件布局;
@@ -1101,9 +1105,9 @@
         { text: ")" },
         { text: "2", superscript: true, colorType: "上标数字" },
         { text: "×(" },
-        { text: 格式化数值(p1.x) },
+        { text: 格式化控制点坐标(p1.x) },
         { text: "-" },
-        { text: 格式化数值(p0.x) },
+        { text: 格式化控制点坐标(p0.x) },
         { text: ")+" },
         { text: 格式化数值(6) },
         { text: "×(" },
@@ -1113,18 +1117,18 @@
         { text: ")×" },
         { text: 格式化数值(t) },
         { text: "×(" },
-        { text: 格式化数值(p2.x) },
+        { text: 格式化控制点坐标(p2.x) },
         { text: "-" },
-        { text: 格式化数值(p1.x) },
+        { text: 格式化控制点坐标(p1.x) },
         { text: ")+" },
         { text: 格式化数值(3) },
         { text: "×" },
         { text: 格式化数值(t) },
         { text: "2", superscript: true, colorType: "上标数字" },
         { text: "×(" },
-        { text: 格式化数值(p3.x) },
+        { text: 格式化控制点坐标(p3.x) },
         { text: "-" },
-        { text: 格式化数值(p2.x) },
+        { text: 格式化控制点坐标(p2.x) },
         { text: ") = " },
         { text: 格式化数值(dx结果) },
       ],
@@ -1150,9 +1154,9 @@
         { text: ")" },
         { text: "2", superscript: true, colorType: "上标数字" },
         { text: "×(" },
-        { text: 格式化数值(p1.y) },
+        { text: 格式化控制点坐标(p1.y) },
         { text: "-" },
-        { text: 格式化数值(p0.y) },
+        { text: 格式化控制点坐标(p0.y) },
         { text: ")+" },
         { text: 格式化数值(6) },
         { text: "×(" },
@@ -1162,18 +1166,18 @@
         { text: ")×" },
         { text: 格式化数值(t) },
         { text: "×(" },
-        { text: 格式化数值(p2.y) },
+        { text: 格式化控制点坐标(p2.y) },
         { text: "-" },
-        { text: 格式化数值(p1.y) },
+        { text: 格式化控制点坐标(p1.y) },
         { text: ")+" },
         { text: 格式化数值(3) },
         { text: "×" },
         { text: 格式化数值(t) },
         { text: "2", superscript: true, colorType: "上标数字" },
         { text: "×(" },
-        { text: 格式化数值(p3.y) },
+        { text: 格式化控制点坐标(p3.y) },
         { text: "-" },
-        { text: 格式化数值(p2.y) },
+        { text: 格式化控制点坐标(p2.y) },
         { text: ") = " },
         { text: 格式化数值(dy结果) },
       ],
@@ -1280,7 +1284,7 @@
     });
 
     // 固定宽度
-    const 固定宽度 = 990;
+    const 固定宽度 = 935;
     const 标题间距 = 4;
     const 内边距 = 14;
     

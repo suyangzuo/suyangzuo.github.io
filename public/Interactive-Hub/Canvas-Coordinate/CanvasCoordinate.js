@@ -1062,7 +1062,7 @@ class 坐标系教程 {
     const 文本总宽度 = 角度值宽度 + 单位宽度;
     const 文本高度 = 13;
 
-    const 间距 = 20;
+    const 间距 = 20; // 文本边缘到旋转手柄圆心的距离
     const 文本半宽 = 文本总宽度 / 2;
     const 文本半高 = 文本高度 / 2;
 
@@ -1070,20 +1070,18 @@ class 坐标系教程 {
     const 法线单位X = 法线长度 > 0 ? 法线世界X / 法线长度 : 0;
     const 法线单位Y = 法线长度 > 0 ? 法线世界Y / 法线长度 : 0;
 
-    let 到水平边界距离 = Infinity;
-    let 到垂直边界距离 = Infinity;
+    // 计算文本边缘到文本中心的距离（沿法线方向）
+    // 需要找到文本在法线方向上的投影半宽
+    // 文本的四个角在法线方向上的投影：±文本半宽 * 法线单位X, ±文本半高 * 法线单位Y
+    // 最靠近旋转手柄的角是：(-文本半宽 * 法线单位X, -文本半高 * 法线单位Y) 方向上的点
+    // 这个点在法线方向上的投影距离 = 文本半宽 * |法线单位X| + 文本半高 * |法线单位Y|
+    const 文本边缘到中心距离沿法线 = 文本半宽 * Math.abs(法线单位X) + 文本半高 * Math.abs(法线单位Y);
 
-    if (Math.abs(法线单位X) > 0.0001) {
-      到水平边界距离 = 文本半宽 / Math.abs(法线单位X);
-    }
-    if (Math.abs(法线单位Y) > 0.0001) {
-      到垂直边界距离 = 文本半高 / Math.abs(法线单位Y);
-    }
+    // 文本中心到旋转手柄的距离 = 间距（边缘到圆心） + 文本边缘到中心距离沿法线
+    const 文本中心到旋转手柄距离 = 间距 + 文本边缘到中心距离沿法线;
 
-    const 边界点到中心距离沿法线 = Math.min(到水平边界距离, 到垂直边界距离);
-
-    const 文本中心X = 旋转句柄世界X + 法线单位X * (间距 + 边界点到中心距离沿法线);
-    const 文本中心Y = 旋转句柄世界Y + 法线单位Y * (间距 + 边界点到中心距离沿法线);
+    const 文本中心X = 旋转句柄世界X + 法线单位X * 文本中心到旋转手柄距离;
+    const 文本中心Y = 旋转句柄世界Y + 法线单位Y * 文本中心到旋转手柄距离;
 
     this.ctx.save();
     this.ctx.textBaseline = "middle";
@@ -1168,12 +1166,43 @@ class 坐标系教程 {
     this.ctx.font = "13px 'Google Sans Code', Consolas, 'Noto Sans CJK SC', 微软雅黑, sans-serif";
     this.ctx.fillStyle = "#5AF";
     this.ctx.fillText("世界坐标系", -15, -45);
+    // 绘制世界坐标系数值，逗号使用gray颜色（右对齐，从右向左绘制）
     this.ctx.fillStyle = "lightcyan";
-    this.ctx.fillText(`${Math.floor(矩形.x)}, ${Math.floor(矩形.y)}`, -15, -30);
+    const 世界x值文本 = `${Math.floor(矩形.x)}`;
+    const 世界y值文本 = `${Math.floor(矩形.y)}`;
+    const 世界x值宽度 = this.ctx.measureText(世界x值文本).width;
+    const 世界y值宽度 = this.ctx.measureText(世界y值文本).width;
+    const 逗号宽度 = this.ctx.measureText(", ").width;
+    let 世界坐标当前X = -15;
+    // 先绘制 y 值（最右边）
+    this.ctx.fillText(世界y值文本, 世界坐标当前X, -30);
+    世界坐标当前X -= 世界y值宽度;
+    // 然后绘制逗号
+    this.ctx.fillStyle = "#888";
+    this.ctx.fillText(", ", 世界坐标当前X, -30);
+    世界坐标当前X -= 逗号宽度;
+    // 最后绘制 x 值
+    this.ctx.fillStyle = "lightcyan";
+    this.ctx.fillText(世界x值文本, 世界坐标当前X, -30);
     this.ctx.fillStyle = "#5AF";
     this.ctx.fillText("局部坐标系", -15, -5);
+    // 绘制局部坐标系数值，逗号使用gray颜色（右对齐，从右向左绘制）
     this.ctx.fillStyle = "lightcyan";
-    this.ctx.fillText("0, 0", -15, 10);
+    const 局部x值文本 = "0";
+    const 局部y值文本 = "0";
+    const 局部x值宽度 = this.ctx.measureText(局部x值文本).width;
+    const 局部y值宽度 = this.ctx.measureText(局部y值文本).width;
+    let 局部坐标当前X = -15;
+    // 先绘制 y 值（最右边）
+    this.ctx.fillText(局部y值文本, 局部坐标当前X, 10);
+    局部坐标当前X -= 局部y值宽度;
+    // 然后绘制逗号
+    this.ctx.fillStyle = "#888";
+    this.ctx.fillText(", ", 局部坐标当前X, 10);
+    局部坐标当前X -= 逗号宽度;
+    // 最后绘制 x 值
+    this.ctx.fillStyle = "lightcyan";
+    this.ctx.fillText(局部x值文本, 局部坐标当前X, 10);
     this.ctx.restore();
   }
   绘制坐标信息() {
@@ -1382,27 +1411,51 @@ class 坐标系教程 {
     
     const 行高 = 18;
     const 间距 = 10;
+    const 内边距 = 8; // 边框内边距
+    const 圆角半径 = 6; // 圆角半径
     const 画布高度 = this.canvas.offsetHeight;
     const 文本总高度 = 行高 * 4; // 4行：局部x、局部y、世界x、世界y
+    const 边框总高度 = 文本总高度 + 内边距 * 2; // 加上上下内边距
+    const 边框总宽度 = 总文本宽度 + 内边距 * 2; // 加上左右内边距
     
-    // 计算文本起始位置（局部坐标在上方，世界坐标在下方）
-    let 文本起始Y = this.观察点.y + this.观察点.半径 + 间距;
-    if (文本起始Y + 文本总高度 > 画布高度) {
-      文本起始Y = this.观察点.y - this.观察点.半径 - 间距 - 文本总高度;
+    // 计算边框位置（局部坐标在上方，世界坐标在下方）
+    let 边框起始Y = this.观察点.y + this.观察点.半径 + 间距;
+    if (边框起始Y + 边框总高度 > 画布高度) {
+      边框起始Y = this.观察点.y - this.观察点.半径 - 间距 - 边框总高度;
     }
-    if (文本起始Y < 0) {
-      文本起始Y = 0;
-    } else if (文本起始Y + 文本总高度 > 画布高度) {
-      文本起始Y = 画布高度 - 文本总高度;
+    if (边框起始Y < 0) {
+      边框起始Y = 0;
+    } else if (边框起始Y + 边框总高度 > 画布高度) {
+      边框起始Y = 画布高度 - 边框总高度;
     }
     
-    let 文本起始X = this.观察点.x - 总文本宽度 / 2;
+    let 边框起始X = this.观察点.x - 边框总宽度 / 2;
     const 画布宽度 = this.canvas.offsetWidth;
-    if (文本起始X < 0) {
-      文本起始X = 0;
-    } else if (文本起始X + 总文本宽度 > 画布宽度) {
-      文本起始X = 画布宽度 - 总文本宽度;
+    if (边框起始X < 0) {
+      边框起始X = 0;
+    } else if (边框起始X + 边框总宽度 > 画布宽度) {
+      边框起始X = 画布宽度 - 边框总宽度;
     }
+    
+    // 计算文本起始位置（在边框内，加上内边距）
+    const 文本起始X = 边框起始X + 内边距;
+    const 文本起始Y = 边框起始Y + 内边距;
+    
+    // 绘制边框（带圆角）
+    this.ctx.beginPath();
+    this.ctx.roundRect(边框起始X, 边框起始Y, 边框总宽度, 边框总高度, 圆角半径);
+    this.ctx.strokeStyle = "#555"; // 半透明白色边框
+    this.ctx.lineWidth = 1;
+    this.ctx.stroke();
+    
+    // 绘制局部坐标和世界坐标之间的横线
+    const 横线Y = 文本起始Y + 行高 * 2; // 在第2行和第3行之间
+    this.ctx.strokeStyle = "#555"; // 半透明白色横线
+    this.ctx.lineWidth = 1;
+    this.ctx.beginPath();
+    this.ctx.moveTo(边框起始X, 横线Y);
+    this.ctx.lineTo(边框起始X + 边框总宽度, 横线Y);
+    this.ctx.stroke();
     
     // 颜色定义
     const 世界颜色 = "#5AF"; // 世界坐标标题颜色
@@ -1444,7 +1497,7 @@ class 坐标系教程 {
     this.ctx.fillText(局部y值文本, 当前X + 4, 当前Y); // 冒号和数字之间4的间隙
     
     // 绘制世界坐标（下方）
-    当前Y += 行高;
+    当前Y += 行高 + 7;
     当前X = 文本起始X;
     
     // 世界x
@@ -1587,6 +1640,8 @@ class 坐标系教程 {
     const 冒号颜色 = "gray";
     const 括号颜色 = "#d93";
     const 结果颜色 = "#78B0D7";
+    const 函数颜色 = "#d6c";
+    const 箭头颜色 = "goldenrod";
     const 左组变量名 = ["dx", "dy", "弧度", "cos(弧度)", "sin(弧度)", "局部X", "局部Y"];
     let 左组最大宽度 = 0;
     for (const 变量名 of 左组变量名) {
@@ -1659,8 +1714,19 @@ class 坐标系教程 {
     const 左组起始X = (画布宽度 - 两组总宽度) / 2;
     const 右组起始X = 左组起始X + 固定公式组宽度 + 50;
     let 当前Y = 起始Y;
+    // 绘制左组标题，箭头使用单独颜色
+    const 左组标题X = 左组起始X + 75;
     this.ctx.fillStyle = "gold";
-    this.ctx.fillText("世界坐标 → 局部坐标", 左组起始X + 75, 当前Y);
+    const 左组标题前半部分 = "世界坐标 ";
+    const 左组标题箭头 = "⟶";
+    const 左组标题后半部分 = " 局部坐标";
+    this.ctx.fillText(左组标题前半部分, 左组标题X, 当前Y);
+    let 左组标题当前X = 左组标题X + this.ctx.measureText(左组标题前半部分).width;
+    this.ctx.fillStyle = 箭头颜色;
+    this.ctx.fillText(左组标题箭头, 左组标题当前X, 当前Y);
+    左组标题当前X += this.ctx.measureText(左组标题箭头).width;
+    this.ctx.fillStyle = "gold";
+    this.ctx.fillText(左组标题后半部分, 左组标题当前X, 当前Y);
     当前Y += 行高;
     this.绘制公式行(
       左组起始X,
@@ -1674,7 +1740,8 @@ class 坐标系教程 {
       运算符颜色,
       冒号颜色,
       括号颜色,
-      结果颜色
+      结果颜色,
+      函数颜色
     );
     当前Y += 行高;
     this.绘制公式行(
@@ -1689,7 +1756,8 @@ class 坐标系教程 {
       运算符颜色,
       冒号颜色,
       括号颜色,
-      结果颜色
+      结果颜色,
+      函数颜色
     );
     当前Y += 行高;
     this.绘制公式行(
@@ -1704,7 +1772,8 @@ class 坐标系教程 {
       运算符颜色,
       冒号颜色,
       括号颜色,
-      结果颜色
+      结果颜色,
+      函数颜色
     );
     当前Y += 行高;
     this.绘制公式行(
@@ -1719,7 +1788,8 @@ class 坐标系教程 {
       运算符颜色,
       冒号颜色,
       括号颜色,
-      结果颜色
+      结果颜色,
+      函数颜色
     );
     当前Y += 行高;
     this.绘制公式行(
@@ -1734,7 +1804,8 @@ class 坐标系教程 {
       运算符颜色,
       冒号颜色,
       括号颜色,
-      结果颜色
+      结果颜色,
+      函数颜色
     );
     当前Y += 行高;
     this.绘制公式行(
@@ -1749,7 +1820,8 @@ class 坐标系教程 {
       运算符颜色,
       冒号颜色,
       括号颜色,
-      结果颜色
+      结果颜色,
+      函数颜色
     );
     当前Y += 行高;
     this.绘制公式行(
@@ -1764,11 +1836,23 @@ class 坐标系教程 {
       运算符颜色,
       冒号颜色,
       括号颜色,
-      结果颜色
+      结果颜色,
+      函数颜色
     );
     当前Y = 起始Y;
+    // 绘制右组标题，箭头使用单独颜色
+    const 右组标题X = 右组起始X + 75;
     this.ctx.fillStyle = "gold";
-    this.ctx.fillText("局部坐标 → 世界坐标", 右组起始X + 75, 当前Y);
+    const 右组标题前半部分 = "局部坐标 ";
+    const 右组标题箭头 = "⟶";
+    const 右组标题后半部分 = " 世界坐标";
+    this.ctx.fillText(右组标题前半部分, 右组标题X, 当前Y);
+    let 右组标题当前X = 右组标题X + this.ctx.measureText(右组标题前半部分).width;
+    this.ctx.fillStyle = 箭头颜色;
+    this.ctx.fillText(右组标题箭头, 右组标题当前X, 当前Y);
+    右组标题当前X += this.ctx.measureText(右组标题箭头).width;
+    this.ctx.fillStyle = "gold";
+    this.ctx.fillText(右组标题后半部分, 右组标题当前X, 当前Y);
     当前Y += 行高;
     this.绘制公式行(
       右组起始X,
@@ -1782,7 +1866,8 @@ class 坐标系教程 {
       运算符颜色,
       冒号颜色,
       括号颜色,
-      结果颜色
+      结果颜色,
+      函数颜色
     );
     当前Y += 行高;
     this.绘制公式行(
@@ -1797,7 +1882,8 @@ class 坐标系教程 {
       运算符颜色,
       冒号颜色,
       括号颜色,
-      结果颜色
+      结果颜色,
+      函数颜色
     );
     当前Y += 行高;
     this.绘制公式行(
@@ -1812,7 +1898,8 @@ class 坐标系教程 {
       运算符颜色,
       冒号颜色,
       括号颜色,
-      结果颜色
+      结果颜色,
+      函数颜色
     );
     当前Y += 行高;
     this.绘制公式行(
@@ -1827,7 +1914,8 @@ class 坐标系教程 {
       运算符颜色,
       冒号颜色,
       括号颜色,
-      结果颜色
+      结果颜色,
+      函数颜色
     );
     当前Y += 行高;
     this.绘制公式行(
@@ -1842,7 +1930,8 @@ class 坐标系教程 {
       运算符颜色,
       冒号颜色,
       括号颜色,
-      结果颜色
+      结果颜色,
+      函数颜色
     );
     this.ctx.restore();
   }
@@ -1858,17 +1947,30 @@ class 坐标系教程 {
     运算符颜色,
     冒号颜色,
     括号颜色,
-    结果颜色
+    结果颜色,
+    函数颜色
   ) {
     let 当前X = 起始X;
     this.ctx.textAlign = "left";
     const 变量名实际宽度 = this.ctx.measureText(变量名).width;
     const 右对齐起始X = 当前X + 变量名最大宽度 - 变量名实际宽度;
     let 字符X = 右对齐起始X;
+    // 找到 "cos" 和 "sin" 在变量名中的位置
+    const cos索引 = 变量名.indexOf("cos");
+    const sin索引 = 变量名.indexOf("sin");
+    const cos结束索引 = cos索引 !== -1 ? cos索引 + 3 : -1;
+    const sin结束索引 = sin索引 !== -1 ? sin索引 + 3 : -1;
+    
     for (let i = 0; i < 变量名.length; i++) {
       const 字符 = 变量名[i];
+      // 检查当前字符是否在 "cos" 或 "sin" 的范围内
+      const 在cos范围内 = cos索引 !== -1 && i >= cos索引 && i < cos结束索引;
+      const 在sin范围内 = sin索引 !== -1 && i >= sin索引 && i < sin结束索引;
+      
       if (字符 === "(" || 字符 === ")") {
         this.ctx.fillStyle = 括号颜色;
+      } else if (在cos范围内 || 在sin范围内) {
+        this.ctx.fillStyle = 函数颜色;
       } else {
         this.ctx.fillStyle = "#fff";
       }
@@ -1913,7 +2015,7 @@ class 坐标系教程 {
           this.ctx.fillText(项, 当前X, 起始Y);
           当前X += this.ctx.measureText(项).width;
         } else if (项 === "cos" || 项 === "sin") {
-          this.ctx.fillStyle = "#fff";
+          this.ctx.fillStyle = 函数颜色;
           this.ctx.fillText(项, 当前X, 起始Y);
           当前X += this.ctx.measureText(项).width;
         }
