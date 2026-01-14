@@ -30,6 +30,8 @@
     标题: "#7dd3fc",
     点数字: "#86b2ffff",
     上标数字: "#74cc97ff",
+    全局对象: "#d74",
+    逗号: "silver",
   };
 
   const 默认点UV = [
@@ -321,9 +323,11 @@
     if (token && token.colorType === "点数字") return 过程颜色.点数字;
     if (token && token.colorType === "上标数字") return 过程颜色.上标数字;
     if (token && token.colorType === "函数") return 过程颜色.函数;
+    if (token && token.text === "Math") return 过程颜色.全局对象;
     if (ch === "|") return 过程颜色.绝对值线;
     if (/\d/.test(ch)) return 过程颜色.数字;
-    if (ch === ".") return 过程颜色.小数点;
+    if (ch === ".") return "gray"; // "." 使用 gray 颜色
+    if (ch === ",") return 过程颜色.逗号; // "," 使用单独的颜色
     if (ch === "=") return 过程颜色.等号; // "="使用灰色（和冒号一样的颜色）
     if (/[+\-×/|]/.test(ch) || ch === "-") return 过程颜色.运算符;
     if (/[()\[\]]/.test(ch)) return 过程颜色.括号;
@@ -1256,6 +1260,8 @@
       正文: [
         { text: ":", arithmeticTitle: "θ" },
         { text: " = " },
+        { text: "Math" },
+        { text: "." },
         { text: "atan2", colorType: "函数" },
         { text: "(" },
         { text: 格式化数值(归一化y) },
@@ -1273,6 +1279,8 @@
       正文: [
         { text: ":", arithmeticTitle: "θ" },
         { text: " = " },
+        { text: "Math" },
+        { text: "." },
         { text: "atan2", colorType: "函数" },
         { text: "(" },
         { text: 格式化数值(法线单位y) },
