@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canvas 旋转</title>
+    <link rel="icon" href="/Images/Interactive-Hub/HQ/Canvas旋转.svg" type="image/x-icon" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Ubuntu+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/Styles/common.css" />
+    <link rel="stylesheet" href="/Styles/top-banner-common.css" />
+    <link rel="stylesheet" href="../control.css" />
+    <link rel="stylesheet" href="../interactive-common.css" />
+    <link rel="stylesheet" href="./Canvas-Rotate.css" />
+    <script src="/Scripts/top-banner.js" defer></script>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
+    <script src="./Canvas-Rotate.js" defer></script>
+  </head>
+  <body>
+    <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
+    <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
+    <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
+
+    <section class="Canvas旋转总区 总区">
+      <script src="../../Scripts/html-include.js" target="../control.html" position="afterbegin"></script>
+      <p class="交互标题">Canvas 旋转</p>
+      <div class="Canvas容器">
+        <canvas id="canvas"></canvas>
+        <div class="形状选择区">
+          <label class="形状选择器 标签">
+            <span class="描述">矩形</span>
+            <input class="单选框" type="radio" name="形状" id="矩形" checked />
+          </label>
+          <label class="形状选择器 标签">
+            <span class="描述">椭圆</span>
+            <input class="单选框" type="radio" name="形状" id="椭圆" />
+          </label>
+          <label class="形状选择器 标签">
+            <span class="描述">正多边形</span>
+            <input class="单选框" type="radio" name="形状" id="正多边形" />
+          </label>
+          <label class="形状选择器 标签">
+            <span class="描述">不规则</span>
+            <input class="单选框" type="radio" name="形状" id="不规则" />
+          </label>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

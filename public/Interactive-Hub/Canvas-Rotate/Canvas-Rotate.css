@@ -1,0 +1,86 @@
+:root {
+  --光标-默认: url("/Images/Common/鼠标-默认.cur"), auto;
+  --光标-指向: url("/Images/Common/鼠标-指向.cur"), auto;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #111;
+  color: silver;
+  font-family: "Google Sans Code", Consolas, "Noto Sans CJK SC", 微软雅黑, sans-serif;
+}
+
+.总区 {
+  padding-top: 50px;
+}
+
+.Canvas容器 {
+  position: relative;
+  width: 100%;
+  height: clamp(500px, calc(100vh - 50px), 3000px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  --水平内边距: 1vw;
+  --垂直内边距: 2.5vh;
+}
+
+#canvas {
+  width: 100%;
+  height: 100%;
+  cursor: var(--光标-默认);
+}
+
+.形状选择区 {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  translate: -50% 0;
+  display: flex;
+  justify-content: center;
+  border-radius: 5px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.形状选择器.标签 {
+  position: relative;
+  display: flex;
+}
+
+.描述 {
+  padding: 10px 15px;
+  font-size: 14px;
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+  background-color: #151a1f;
+}
+
+.单选框 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.单选框:hover {
+  cursor: var(--光标-指向);
+}
+
+.形状选择器.标签:hover .描述 {
+  background-color: #252a2f;
+  cursor: var(--光标-指向);
+}
+
+.形状选择器.标签:has(.单选框:checked) .描述 {
+  background-color: #567;
+  color: white;
+}
