@@ -87,15 +87,15 @@ class 绘图器 {
       },
       文本: {
         标题: {
-          字号: 18,
+          字号: 14,
           颜色: "rgba(230, 238, 255, 0.75)",
         },
         值: {
-          字号: 18,
+          字号: 14,
           颜色: "#def",
         },
         单位: {
-          字号: 18,
+          字号: 14,
           颜色: "#7f95a9ff",
         },
         值与单位间距: 6,
@@ -204,7 +204,7 @@ class 绘图器 {
   }
 
   字体(px) {
-    return `${px / this.dpr}px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif`;
+    return `${px}px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif`;
   }
 
   绑定事件() {
@@ -746,7 +746,7 @@ class 绘图器 {
       this.上下文.stroke();
 
       // 绘制点的标签
-      this.上下文.font = this.字体(18);
+      this.上下文.font = this.字体(14);
       const 单字符宽度 = this.上下文.measureText("P").width;
       this.上下文.fillStyle = "rgba(142, 159, 175, 1)";
       this.上下文.textAlign = "center";
@@ -800,7 +800,7 @@ class 绘图器 {
     const 标签间隙 = 12;
     const 行2文字间隙 = 4;
 
-    ctx.font = this.字体(18);
+    ctx.font = this.字体(14);
     const 行t文字前 = "显示";
     const 行t文字t = "t";
     const 行t宽前 = ctx.measureText(行t文字前).width;
@@ -813,7 +813,7 @@ class 绘图器 {
     const 标签宽 = Math.max(行t宽, 行实时宽, 行其它宽);
 
     // 行1：显示t
-    ctx.font = this.字体(18);
+    ctx.font = this.字体(14);
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
     const 行1文本起点 = 行起点x + (标签宽 - 行t宽);
@@ -835,7 +835,7 @@ class 绘图器 {
 
     // 行2：显示实时控制点
     const 行2y = 行1y + 开关高 + 行间距;
-    ctx.font = this.字体(18);
+    ctx.font = this.字体(14);
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
     const 行2文本起点 = 行起点x + (标签宽 - 行实时宽);
@@ -855,7 +855,7 @@ class 绘图器 {
 
     // 行3：显示其它算法点
     const 行3y = 行2y + 开关高 + 行间距;
-    ctx.font = this.字体(18);
+    ctx.font = this.字体(14);
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
     const 行3文本起点 = 行起点x + (标签宽 - 行其它宽);
@@ -1259,7 +1259,7 @@ class 绘图器 {
     };
 
     ctx.save();
-    ctx.font = this.字体(24);
+    ctx.font = this.字体(18);
     ctx.textBaseline = "middle";
     ctx.textAlign = "left";
 
@@ -1277,7 +1277,7 @@ class 绘图器 {
     const 模板数字宽 = ctx.measureText(模板数字).width;
     const 模板宽 = t宽 + 等号宽 + 模板数字宽 + 间隔固定 * 2;
     const 文本起点 = 文本x中心 - 模板宽 / 2;
-    const 按钮半径 = 20;
+    const 按钮半径 = 18;
     const 按钮间距 = 18;
     const 按钮中心x = 文本起点 - 按钮间距 - 按钮半径 - 20;
     const 按钮中心y = 文本y;
@@ -1359,7 +1359,7 @@ class 绘图器 {
     };
 
     const 绘制标签 = (点, 文本) => {
-      ctx.font = this.字体(18);
+      ctx.font = this.字体(14);
       ctx.textBaseline = "middle";
       ctx.textAlign = "left";
       const 总宽 = ctx.measureText(文本).width;
@@ -1410,7 +1410,7 @@ class 绘图器 {
       };
 
       const 绘制其它标签 = (点, 文本) => {
-        ctx.font = this.字体(18);
+        ctx.font = this.字体(14);
         ctx.textBaseline = "alphabetic";
         ctx.textAlign = "left";
         const 总宽 = ctx.measureText(文本).width;
