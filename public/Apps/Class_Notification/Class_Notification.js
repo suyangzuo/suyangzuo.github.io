@@ -1,7 +1,7 @@
 const 信息提供区 = document.querySelector("#信息提供区");
 const 标签区集合 = 信息提供区.querySelectorAll(".标签区");
-const 生成截图按钮 = document.getElementById("生成截图");
-const 截图生成区 = document.getElementById("截图生成区");
+const 生成对话按钮 = document.getElementById("生成对话");
+const 对话生成区 = document.getElementById("对话生成区");
 const 随机回复复选框 = document.getElementById("随机生成回复");
 const 分割回复时间复选框 = document.getElementById("分割回复时间");
 const 颜色模式复选框 = document.getElementById("颜色模式");
@@ -36,9 +36,9 @@ if (localStorage.getItem("颜色模式") === null) {
   颜色模式 = localStorage.getItem("颜色模式");
   颜色模式复选框.checked = 颜色模式 === "light";
   if (颜色模式复选框.checked) {
-    截图生成区.setAttribute("浅色模式", "");
+    对话生成区.setAttribute("浅色模式", "");
   } else {
-    截图生成区.removeAttribute("浅色模式");
+    对话生成区.removeAttribute("浅色模式");
   }
 }
 
@@ -55,9 +55,9 @@ if (localStorage.getItem("颜色模式") === null) {
 颜色模式复选框.addEventListener("input", () => {
   颜色模式 = 颜色模式复选框.checked ? "light" : "dark";
   if (颜色模式复选框.checked) {
-    截图生成区.setAttribute("浅色模式", "");
+    对话生成区.setAttribute("浅色模式", "");
   } else {
-    截图生成区.removeAttribute("浅色模式");
+    对话生成区.removeAttribute("浅色模式");
   }
   localStorage.setItem("颜色模式", 颜色模式);
 });
@@ -85,22 +85,23 @@ for (const 输入框 of 输入框集合) {
   });
 }
 
-生成截图按钮.addEventListener("click", 生成截图);
+生成对话按钮.addEventListener("click", 生成对话);
 
-function 生成截图() {
+function 生成对话() {
   for (const 标签区 of 标签区集合) {
     const 输入框 = 标签区.querySelector(".输入框");
     const 标签 = 标签区.querySelector(".标签");
-    if ((输入框.value === null || 输入框.value === "") && 输入框.id !== "回复者姓名后缀") {
+    // 允许"回复者姓名后缀"和"回复信息"为空，因为代码中有默认处理逻辑
+    if ((输入框.value === null || 输入框.value === "") && 输入框.id !== "回复者姓名后缀" && 输入框.id !== "回复信息") {
       return;
     }
   }
 
-  截图生成区.innerHTML = "";
+  对话生成区.innerHTML = "";
 
   const 班级名称区 = document.createElement("div");
   班级名称区.className = "班级名称区";
-  截图生成区.appendChild(班级名称区);
+  对话生成区.appendChild(班级名称区);
 
   const 时间区 = document.createElement("h6");
   时间区.className = "时间区";
@@ -111,7 +112,7 @@ function 生成截图() {
   const 小时文本 = 小时 < 10 ? `0${小时}` : 小时.toString();
   const 分钟文本 = 分钟 < 10 ? `0${分钟}` : 分钟.toString();
   时间区.textContent = `${小时文本}:${分钟文本}`;
-  截图生成区.appendChild(时间区);
+  对话生成区.appendChild(时间区);
 
   const 班级名称输入框 = document.getElementById("班级名称");
   const 班级名称 = 班级名称输入框.value;
@@ -192,16 +193,16 @@ function 生成截图() {
     const 新小时文本 = 新小时 < 10 ? `0${新小时}` : 新小时.toString();
     const 新分钟文本 = 新分钟 < 10 ? `0${新分钟}` : 新分钟.toString();
     时间分区.textContent = `${新小时文本}:${新分钟文本}`;
-    截图生成区.appendChild(时间分区);
+    对话生成区.appendChild(时间分区);
   }
 
-  截图生成区.querySelectorAll(".个人区").item(0).classList.add("班主任区");
+  对话生成区.querySelectorAll(".个人区").item(0).classList.add("班主任区");
 }
 
 function 生成个人信息(name, info) {
   const 个人区 = document.createElement("div");
   个人区.className = "个人区";
-  截图生成区.appendChild(个人区);
+  对话生成区.appendChild(个人区);
 
   const 头像区 = document.createElement("figure");
   头像区.className = "头像区";
@@ -228,8 +229,8 @@ function 生成个人信息(name, info) {
 }
 
 截图按钮.addEventListener("click", async () => {
-  if (截图生成区.innerHTML === "") return;
-  const png = await snapdom.toPng(截图生成区);
+  if (对话生成区.innerHTML === "") return;
+  const png = await snapdom.toPng(对话生成区);
   png.className = "图像 截图图像";
   const 模态对话框 = document.createElement("dialog");
   模态对话框.className = "模态对话框 对话框 截图对话框";

@@ -52,6 +52,12 @@ body {
   font-size: 18px;
 }
 
+#关闭截图对话框:hover {
+  background-color: #fff5;
+  border: solid 1px #fffa;
+  color: white;
+}
+
 label {
   user-select: none;
 }
@@ -116,13 +122,13 @@ select:-webkit-autofill:focus {
 .输入框 {
   font-size: 1rem;
   background-color: #1a1f25;
-  color: #def;
+  color: #abc;
   border: none;
   padding: 5px 8px;
   width: 300px;
   height: 40px;
   border-radius: 5px;
-  outline: solid 1.5px #678;
+  outline: solid 1.5px #456;
   transition: 150ms;
 }
 
@@ -132,7 +138,7 @@ select:-webkit-autofill:focus {
 }
 
 .标签区:hover .输入框 {
-  outline: solid 1.5px #abc;
+  outline: solid 1.5px #678;
 }
 
 .输入框::placeholder {
@@ -142,8 +148,9 @@ select:-webkit-autofill:focus {
 }
 
 .标签区 .输入框:focus {
-  outline: solid 1.5px lightblue;
+  outline: solid 1.5px rgb(122, 145, 179);
   background-color: #2a2f35;
+  color: #def;
 }
 
 .输入框:focus::placeholder {
@@ -193,6 +200,8 @@ select:-webkit-autofill:focus {
   position: absolute;
   content: "\2713";
   color: lightgreen;
+  font-family: "Font Awesome 6 Free", ui-rounded;
+  font-size: 14px;
   font-weight: bold;
   top: 50%;
   left: 50%;
@@ -245,6 +254,11 @@ select:-webkit-autofill:focus {
   gap: 25px;
 }
 
+body:has(#对话生成区:empty) #截图 {
+  pointer-events: none;
+  filter: brightness(25%);
+}
+
 .按钮 {
   background-color: #fff3;
   border: solid 1.5px #fff5;
@@ -265,9 +279,10 @@ select:-webkit-autofill:focus {
   width: 75%;
   height: 75%;
   object-fit: contain;
+  user-select: none;
 }
 
-#生成截图 {
+#生成对话 {
   position: relative;
   flex-shrink: 0;
   width: 150px;
@@ -280,17 +295,17 @@ select:-webkit-autofill:focus {
   transition: 250ms;
 }
 
-#生成截图:hover {
+#生成对话:hover {
   box-shadow: inset 0 0 4px 2px rgb(109, 219, 157);
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
-#生成截图:active {
+#生成对话:active {
   background-color: lightseagreen;
   box-shadow: inset 0 0 4px 2px transparent;
 }
 
-.生成截图后置动画区 {
+.生成对话后置动画区 {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -303,7 +318,7 @@ select:-webkit-autofill:focus {
   overflow: hidden;
 }
 
-.生成截图后置动画区::before {
+.生成对话后置动画区::before {
   position: absolute;
   width: 300%;
   height: 300%;
@@ -318,7 +333,7 @@ select:-webkit-autofill:focus {
   transition: 250ms;
 }
 
-#生成截图:hover .生成截图后置动画区::before {
+#生成对话:hover .生成对话后置动画区::before {
   animation-play-state: running;
   opacity: 1;
 }
@@ -334,7 +349,7 @@ select:-webkit-autofill:focus {
   }
 }
 
-#截图生成区 {
+#对话生成区 {
   background-color: #1a1a1a;
   margin: 50px auto 0;
   width: min(100%, 500px);
@@ -361,7 +376,7 @@ select:-webkit-autofill:focus {
   width: 100%;
 }
 
-#截图生成区[浅色模式] .班级名称区 {
+#对话生成区[浅色模式] .班级名称区 {
   border-bottom: solid 1px #ddd;
 }
 
@@ -431,17 +446,17 @@ select:-webkit-autofill:focus {
   line-height: 1.5em;
 }
 
-#截图生成区[浅色模式] {
+#对话生成区[浅色模式] {
   background-color: #eee;
   color: black;
 }
 
-#截图生成区[浅色模式] .个人区.班主任区 .内容区 {
+#对话生成区[浅色模式] .个人区.班主任区 .内容区 {
   background-color: #0099ff;
   color: white;
 }
 
-#截图生成区[浅色模式] .内容区 {
+#对话生成区[浅色模式] .内容区 {
   background-color: #fff;
   color: black;
 }
