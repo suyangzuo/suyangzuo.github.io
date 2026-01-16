@@ -84,3 +84,23 @@ body {
   background-color: #567;
   color: white;
 }
+
+.提示区 {
+  position: absolute;
+  bottom: 25px;
+  left: 50px;
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+  font-size: 14px;
+}
+
+.提示 {
+  display: flex;
+  align-items: center;
+}
+
+.提示键 {
+  color: coral;
+  margin: 0 2px;
+  width: 34px;
+  text-align: center;
+}

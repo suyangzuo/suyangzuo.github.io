@@ -76,8 +76,9 @@
     <p class="分区普通文本">
       <span class="行内专业名词">Canvas</span>中没有元素，只有纯粹的图形，因此无法使用<span class="代码">:hover</span
       >选择器来提供鼠标悬停时的样式，也无法为图形添加事件侦听器。因此，我们只能为整个<span class="代码">Canvas</span
-      >添加鼠标<span class="行内专业名词">移动</span
-      >事件监听器，并实时判断鼠标的坐标是否位于图形内部。无论是检测鼠标进入、离开，还是实现拖拽、点击，前提都要用整个<span
+      >添加鼠标<span class="行内专业名词">移动</span>事件监听器<span class="附加说明"
+        >或者直接为<span class="行内专业名词 等宽">window</span>添加鼠标移动事件</span
+      >，并实时判断鼠标的坐标是否位于图形内部。无论是检测鼠标进入、离开，还是实现拖拽、点击，前提都要用整个<span
         class="行内专业名词"
         >Canvas</span
       >的<span class="行内代码">mousemove</span>事件来判断鼠标位置。

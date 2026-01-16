@@ -12,9 +12,9 @@
   --scrollbar-width: 10px;
   --光标-默认: url("/Images/Common/鼠标-默认.cur"), auto;
   --光标-手指: url("/Images/Common/鼠标-指向.cur"), pointer;
-  --中文字体: "Noto Sans SC", 微软雅黑，sans-serif;
-  --代码字体: "JetBrains Mono", Consolas, monospace;
-  --中文代码混合字体: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;;
+  --中文字体: "Noto Sans SC", 微软雅黑, sans-serif;
+  --代码字体: "JetBrains Mono", "Google Sans Code", Consolas, monospace;
+  --中文代码混合字体: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 *,
@@ -45,7 +45,7 @@ body {
   color: var(--f-color);
   z-index: 0;
   cursor: url("/Images/Common/鼠标-默认.cur"), auto;
-  font-family: "Noto Sans SC", 微软雅黑, sans-serif, Consolas, monospace;
+  font-family: "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 *::-webkit-scrollbar {

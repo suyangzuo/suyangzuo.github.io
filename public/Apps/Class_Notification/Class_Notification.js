@@ -146,8 +146,15 @@ function 生成截图() {
 
   let 发送时间使用计数 = 0;
   for (const 姓名 of 姓名集合) {
-    const 回复索引 = Math.floor(Math.random() * 回复词集合.length);
-    const 回复信息 = 随机回复复选框.checked ? 回复词集合[回复索引] : "已收到";
+    const 回复信息输入框 = document.getElementById("回复信息");
+    const 输入框内容 = 回复信息输入框.value.trim();
+    let 回复信息;
+    if (输入框内容) {
+      回复信息 = 输入框内容;
+    } else {
+      const 回复索引 = Math.floor(Math.random() * 回复词集合.length);
+      回复信息 = 随机回复复选框.checked ? 回复词集合[回复索引] : "已收到";
+    }
 
     const 后缀索引 = Math.floor(Math.random() * 后缀集合.length);
     const 后缀 = 后缀集合[后缀索引];

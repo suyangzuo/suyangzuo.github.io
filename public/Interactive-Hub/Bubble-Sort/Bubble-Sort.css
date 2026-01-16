@@ -204,7 +204,7 @@ input[type="checkbox"]:checked::before {
   left: 50%;
   translate: -50% -50%;
   content: "\f00c";
-  font-family: "Font Awesome 6 Free", ui-rounded;;
+  font-family: "Font Awesome 6 Free", ui-rounded;
   font-weight: bolder;
   color: lightgreen;
 }

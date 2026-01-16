@@ -8,30 +8,47 @@ const 抛射物图 = new Image();
 const 击中效果 = new Image();
 击中效果.src = "./Images/击中效果.png";
 
-const 起点 = {
+const p0 = {
   x: 绘图区.width / 5,
   y: (绘图区.height / 3) * 2,
 };
 
-const 终点 = {
+const p3 = {
   x: (绘图区.width / 5) * 4,
   y: (绘图区.height / 3) * 2,
 };
 
-const 控制点_1 = {
+const p1 = {
   x: (绘图区.width / 100) * 35,
   y: 绘图区.height / 5,
 };
 
-const 控制点_2 = {
+const p2 = {
   x: (绘图区.width / 100) * 65,
   y: 绘图区.height / 5,
 };
 
 const 图像宽度 = 75 * devicePixelRatio;
 const 图像高度 = 75 * devicePixelRatio;
-let t = 0;
-let 速度 = 0.01;
+
+// 动画配置对象
+const 动画配置 = {
+  默认抛掷距离: {
+    x: 0.8, // p3.x = 绘图区.width * 0.8
+    y: 2/3  // p3.y = 绘图区.height * 2/3
+  },
+  p1默认坐标: {
+    x: 0.35, // p1.x = 绘图区.width * 0.35
+    y: 0.2   // p1.y = 绘图区.height * 0.2
+  },
+  p2默认坐标: {
+    x: 0.65, // p2.x = 绘图区.width * 0.65
+    y: 0.2   // p2.y = 绘图区.height * 0.2
+  },
+  动画时长: 2000 // 毫秒
+};
+
+let 动画开始时间 = null;
 let 旋转角度 = 0;
 
 初始化绘图区();
@@ -46,18 +63,18 @@ function 初始化绘图区() {
 }
 
 function 初始化贝塞尔曲线参数() {
-  起点.x = 绘图区.width / 5;
-  起点.y = (绘图区.height / 3) * 2;
-  终点.x = (绘图区.width / 5) * 4;
-  终点.y = (绘图区.height / 3) * 2;
-  控制点_1.x = (绘图区.width / 100) * 35;
-  控制点_1.y = 绘图区.height / 5;
-  控制点_2.x = (绘图区.width / 100) * 65;
-  控制点_2.y = 绘图区.height / 5;
+  p0.x = 绘图区.width / 5;
+  p0.y = (绘图区.height / 3) * 2;
+  p3.x = 绘图区.width * 动画配置.默认抛掷距离.x;
+  p3.y = 绘图区.height * 动画配置.默认抛掷距离.y;
+  p1.x = 绘图区.width * 动画配置.p1默认坐标.x;
+  p1.y = 绘图区.height * 动画配置.p1默认坐标.y;
+  p2.x = 绘图区.width * 动画配置.p2默认坐标.x;
+  p2.y = 绘图区.height * 动画配置.p2默认坐标.y;
 }
 
 function 绘制贝塞尔曲线参数点() {
-  const 点集合 = [起点, 终点, 控制点_1, 控制点_2];
+  const 点集合 = [p0, p3, p1, p2];
   const 半径 = 10;
   for (const 点 of 点集合) {
     上下文.beginPath();
@@ -70,8 +87,8 @@ function 绘制贝塞尔曲线参数点() {
 
 function 绘制贝塞尔曲线() {
   上下文.beginPath();
-  上下文.moveTo(起点.x, 起点.y);
-  上下文.bezierCurveTo(控制点_1.x, 控制点_1.y, 控制点_2.x, 控制点_2.y, 终点.x, 终点.y);
+  上下文.moveTo(p0.x, p0.y);
+  上下文.bezierCurveTo(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
   上下文.strokeStyle = "lightskyblue";
   上下文.lineWidth = 2 * devicePixelRatio;
   上下文.stroke();
@@ -94,21 +111,29 @@ function 绘制击中效果(x, y) {
   上下文.drawImage(击中效果, x - 图像宽度, y - 图像高度, 图像宽度 * 2, 图像高度 * 2);
 }
 
-function 绘制抛射动画() {
+function 绘制抛射动画(当前时间戳) {
+  // 如果是第一次调用，记录开始时间
+  if (动画开始时间 === null) {
+    动画开始时间 = 当前时间戳 || performance.now();
+  }
+  
+  const 当前时间 = 当前时间戳 || performance.now();
+  const 经过时间 = 当前时间 - 动画开始时间;
+  const t = Math.min(经过时间 / 动画配置.动画时长, 1);
+  
   const 当前点 = 获取当前贝塞尔坐标(t);
-  上下文.clearRect(起点.x - 图像宽度, 0, 终点.x + 图像宽度, 终点.y + 图像宽度);
-  /* 上下文.clearRect(终点.x - 图像宽度, 终点.y - 图像宽度, 图像宽度 * 2, 图像高度 * 2);
-  上下文.clearRect(当前点.x - 图像宽度, 当前点.y - 图像高度, 图像宽度 * 2, 图像高度 * 2); */
+  上下文.clearRect(p0.x - 图像宽度, 0, p3.x + 图像宽度, p3.y + 图像宽度);
   绘制贝塞尔曲线();
   绘制贝塞尔曲线参数点();
   绘制抛射物(当前点.x, 当前点.y);
-  t += 速度;
-  速度 += 0.00025;
-  旋转角度 += 2.5;
-  if (t > 1) {
+  
+  // 旋转角度基于时间计算（每秒旋转一定角度）
+  const 旋转速度 = 360; // 度/秒
+  旋转角度 = (经过时间 / 1000) * 旋转速度;
+  
+  if (t >= 1) {
     绘制击中效果(当前点.x, 当前点.y);
-    t = 0;
-    速度 = 0.01;
+    动画开始时间 = null;
     旋转角度 = 0;
     绘图区.addEventListener("click", 点击蓄力按钮);
   } else {
@@ -159,15 +184,15 @@ function 绘制蓄力按钮(填充色, 描边色, 描边宽度) {
 
 function 获取当前贝塞尔坐标(t) {
   const x =
-    Math.pow(1 - t, 3) * 起点.x +
-    3 * Math.pow(1 - t, 2) * t * 控制点_1.x +
-    3 * (1 - t) * Math.pow(t, 2) * 控制点_2.x +
-    Math.pow(t, 3) * 终点.x;
+    Math.pow(1 - t, 3) * p0.x +
+    3 * Math.pow(1 - t, 2) * t * p1.x +
+    3 * (1 - t) * Math.pow(t, 2) * p2.x +
+    Math.pow(t, 3) * p3.x;
   const y =
-    Math.pow(1 - t, 3) * 起点.y +
-    3 * Math.pow(1 - t, 2) * t * 控制点_1.y +
-    3 * (1 - t) * Math.pow(t, 2) * 控制点_2.y +
-    Math.pow(t, 3) * 终点.y;
+    Math.pow(1 - t, 3) * p0.y +
+    3 * Math.pow(1 - t, 2) * t * p1.y +
+    3 * (1 - t) * Math.pow(t, 2) * p2.y +
+    Math.pow(t, 3) * p3.y;
   return { x, y };
 }
 
