@@ -5,15 +5,12 @@ const 截图生成区 = document.getElementById("截图生成区");
 const 随机回复复选框 = document.getElementById("随机生成回复");
 const 分割回复时间复选框 = document.getElementById("分割回复时间");
 const 颜色模式复选框 = document.getElementById("颜色模式");
-const 回复词集合 = [
-  "已收到",
-  "收到",
-  "已知悉",
-  "收到了",
-  "好的老师",
-  "收到！",
-  "明白！",
-];
+const 截图按钮 = document.getElementById("截图");
+const 回复词集合 = ["已收到", "收到", "已知悉", "收到了", "好的老师", "收到！", "明白！"];
+
+// 获取信息输入区的所有文本框
+const 信息输入区 = document.querySelector(".信息输入区");
+const 输入框集合 = 信息输入区.querySelectorAll(".输入框");
 
 let 随机回复 = false;
 let 分割回复时间 = true;
@@ -65,16 +62,36 @@ if (localStorage.getItem("颜色模式") === null) {
   localStorage.setItem("颜色模式", 颜色模式);
 });
 
+// 定义使用localStorage的文本框id
+const 使用localStorage的输入框id = ["班级名称", "班级人数", "班主任姓名", "学生姓名", "回复者姓名后缀"];
+
+// 恢复所有文本框的值
+for (const 输入框 of 输入框集合) {
+  const 使用localStorage = 使用localStorage的输入框id.includes(输入框.id);
+  const 存储键 = `输入框_${输入框.id}`;
+  const 保存的值 = 使用localStorage ? localStorage.getItem(存储键) : sessionStorage.getItem(存储键);
+
+  if (保存的值 !== null) {
+    输入框.value = 保存的值;
+  }
+
+  // 为每个文本框添加input事件监听器，保存值到对应的存储
+  输入框.addEventListener("input", () => {
+    if (使用localStorage) {
+      localStorage.setItem(存储键, 输入框.value);
+    } else {
+      sessionStorage.setItem(存储键, 输入框.value);
+    }
+  });
+}
+
 生成截图按钮.addEventListener("click", 生成截图);
 
 function 生成截图() {
   for (const 标签区 of 标签区集合) {
     const 输入框 = 标签区.querySelector(".输入框");
     const 标签 = 标签区.querySelector(".标签");
-    if (
-      (输入框.value === null || 输入框.value === "") &&
-      输入框.id !== "回复者姓名后缀"
-    ) {
+    if ((输入框.value === null || 输入框.value === "") && 输入框.id !== "回复者姓名后缀") {
       return;
     }
   }
@@ -161,8 +178,7 @@ function 生成截图() {
 
     生成个人信息(`${姓名}${后缀}`, 回复信息);
 
-    const 需要添加时间 =
-      Math.floor(Math.random() * (最大值 - 最小值 + 1) + 最小值) === 最大值;
+    const 需要添加时间 = Math.floor(Math.random() * (最大值 - 最小值 + 1) + 最小值) === 最大值;
     if (!分割回复时间复选框.checked) continue;
     if (!需要添加时间) continue;
     if (++发送时间使用计数 > 时间段数) continue;
@@ -170,10 +186,7 @@ function 生成截图() {
 
     const 时间分区 = document.createElement("h6");
     时间分区.className = "时间区";
-    当前日期 = new Date(
-      当前日期.getTime() +
-        Math.floor(Math.random() * (1800 - 180) + 180) * 1000,
-    );
+    当前日期 = new Date(当前日期.getTime() + Math.floor(Math.random() * (1800 - 180) + 180) * 1000);
     const 新小时 = 当前日期.getHours();
     const 新分钟 = 当前日期.getMinutes();
     const 新小时文本 = 新小时 < 10 ? `0${新小时}` : 新小时.toString();
@@ -213,3 +226,28 @@ function 生成个人信息(name, info) {
 
   个人区.append(头像区, 姓名内容区);
 }
+
+截图按钮.addEventListener("click", async () => {
+  if (截图生成区.innerHTML === "") return;
+  const png = await snapdom.toPng(截图生成区);
+  png.className = "图像 截图图像";
+  const 模态对话框 = document.createElement("dialog");
+  模态对话框.className = "模态对话框 对话框 截图对话框";
+  document.body.appendChild(模态对话框);
+  模态对话框.showModal();
+
+  const 截图容器 = document.createElement("div");
+  截图容器.className = "截图容器";
+  模态对话框.appendChild(截图容器);
+  截图容器.appendChild(png);
+
+  const 关闭按钮 = document.createElement("button");
+  关闭按钮.className = "按钮";
+  关闭按钮.id = "关闭截图对话框";
+  关闭按钮.textContent = "✖";
+  模态对话框.appendChild(关闭按钮);
+  关闭按钮.addEventListener("click", () => {
+    模态对话框.close();
+    模态对话框.remove();
+  });
+});

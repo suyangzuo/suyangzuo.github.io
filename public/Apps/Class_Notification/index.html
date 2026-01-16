@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
@@ -12,103 +12,56 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="/Styles/top-banner-common.css"
-    />
+    <link rel="stylesheet" type="text/css" href="/Styles/top-banner-common.css" />
     <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
     <link rel="stylesheet" href="../apps-common-control.css" />
     <link rel="stylesheet" href="./Class_Notification.css" />
     <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
     <script src="/Scripts/top-banner.js" defer></script>
+    <script src="/Scripts/snapdom.js" defer></script>
     <script src="./Class_Notification.js" defer></script>
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
   </head>
   <body>
-    <script
-      src="../../Scripts/html-include.js"
-      target="../../top-banner.html"
-      position="afterbegin"
-    ></script>
+    <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
 
-    <script
-      src="/Scripts/html-include.js"
-      target="../apps-common-control.html"
-      position="afterbegin"
-    ></script>
+    <script src="/Scripts/html-include.js" target="../apps-common-control.html" position="afterbegin"></script>
 
     <section id="信息提供区">
       <h1 class="标题">回复模拟器</h1>
       <div class="信息输入区">
         <label for="班级名称" class="标签区">
           <span class="标签">群名称</span>
-          <input
-            type="text"
-            id="班级名称"
-            class="输入框"
-            placeholder="输入群名称"
-          />
+          <input type="text" id="班级名称" class="输入框" placeholder="输入群名称" />
         </label>
         <label for="班级人数" class="标签区">
           <span class="标签">群人数</span>
-          <input
-            type="text"
-            id="班级人数"
-            class="输入框"
-            placeholder="输入群人数"
-          />
+          <input type="text" id="班级人数" class="输入框" placeholder="输入群人数" />
         </label>
         <label for="班主任姓名" class="标签区">
           <span class="标签">发送者姓名</span>
-          <input
-            type="text"
-            id="班主任姓名"
-            class="输入框"
-            placeholder="输入发送者姓名"
-          />
+          <input type="text" id="班主任姓名" class="输入框" placeholder="输入发送者姓名" />
         </label>
         <label for="通知信息" class="标签区">
           <span class="标签">通知信息</span>
-          <input
-            type="text"
-            id="通知信息"
-            class="输入框"
-            placeholder="输入通知信息"
-          />
+          <input type="text" id="通知信息" class="输入框" placeholder="输入通知信息" />
         </label>
         <label for="学生姓名" class="标签区">
           <span class="标签">回复者姓名</span>
-          <input
-            type="text"
-            id="学生姓名"
-            class="输入框"
-            placeholder="多个姓名之间用中文逗号隔开"
-          />
+          <input type="text" id="学生姓名" class="输入框" placeholder="多个姓名之间用中文逗号隔开" />
         </label>
         <label for="回复者姓名后缀" class="标签区">
           <span class="标签">回复者后缀</span>
-          <input
-            type="text"
-            id="回复者姓名后缀"
-            class="输入框"
-            placeholder="多个后缀之间用中文逗号隔开"
-          />
+          <input type="text" id="回复者姓名后缀" class="输入框" placeholder="多个后缀之间用中文逗号隔开" />
         </label>
         <label for="回复信息" class="标签区">
           <span class="标签">回复信息</span>
-          <input
-            type="text"
-            id="回复信息"
-            class="输入框"
-            placeholder="输入回复信息"
-          />
+          <input type="text" id="回复信息" class="输入框" placeholder="输入回复信息" />
         </label>
       </div>
       <div id="选项区">
         <label for="随机生成回复" class="选项标签"
-          ><span class="选项文本">随机生成回复</span
-          ><input type="checkbox" id="随机生成回复" class="选项复选框"
+          ><span class="选项文本">随机生成回复</span><input type="checkbox" id="随机生成回复" class="选项复选框"
         /></label>
         <label for="分割回复时间" class="选项标签"
           ><span class="选项文本">分割回复时间</span
@@ -118,9 +71,10 @@
           <input type="checkbox" id="颜色模式" />
         </label>
       </div>
-      <button id="生成截图">
-        生成截图<span class="生成截图后置动画区"></span>
-      </button>
+      <div class="按钮区">
+        <button id="生成截图" class="按钮">生成截图<span class="生成截图后置动画区"></span></button>
+        <button id="截图" class="按钮"><img class="按钮配图" src="./Images/截图.svg" alt="截图" /></button>
+      </div>
     </section>
     <section id="截图生成区"></section>
   </body>
