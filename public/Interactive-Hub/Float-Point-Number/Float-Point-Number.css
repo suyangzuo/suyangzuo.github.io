@@ -104,7 +104,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
   font-size: 16px;
   font-weight: bold;
   color: var(--深色文本);
@@ -271,7 +271,7 @@
 }
 
 .科学记数法标签 {
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
   font-size: 14px;
   color: var(--深色文本);
   font-weight: 500;
@@ -293,7 +293,7 @@
 }
 
 .表示标签 {
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
   font-size: 14px;
   color: #888;
   font-weight: 500;
@@ -301,7 +301,7 @@
 }
 
 .表示值 {
-  font-family: "Googole Sans Code", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
   font-size: 18px;
   font-weight: normal;
   word-break: break-all;
@@ -387,7 +387,7 @@
 }
 
 .浮点数类型标签 {
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
   font-weight: 500;
   font-size: 14px;
   color: var(--深色文本);
@@ -417,7 +417,7 @@
 
 .浮点数类型标签 .字节数 .数字 {
   color: var(--次方符号颜色);
-  font-family: "Google Sans Code", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
   font-weight: bold;
 }
 
@@ -435,7 +435,7 @@
 }
 
 .数值标签 {
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
   font-size: 14px;
   color: var(--深色文本);
   font-weight: 500;
@@ -464,7 +464,7 @@
 }
 
 .科学记数法 {
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
   font-size: 16px;
   color: var(--深色次要文本);
   font-weight: normal;
@@ -473,7 +473,7 @@
 }
 
 .数值输入框 {
-  font-family: "Google Sans Code", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
   font-size: 18px;
   color: var(--数字颜色);
   padding: 10px 20px;
@@ -504,7 +504,7 @@
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   transition: all 0.2s ease;
   position: relative;
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
   font-size: 20px;
   font-weight: bold;
   color: var(--深色文本);
@@ -543,7 +543,7 @@
   border-radius: 6px;
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   transition: all 0.2s ease;
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
   font-size: 14px;
   font-weight: bold;
   color: var(--深色文本);
@@ -597,7 +597,7 @@
 }
 
 .步进标签 {
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
   font-size: 14px;
   color: var(--深色文本);
   font-weight: 500;
@@ -605,7 +605,7 @@
 }
 
 .步进输入框 {
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
   font-size: 14px;
   color: var(--数字颜色);
   font-weight: bold;

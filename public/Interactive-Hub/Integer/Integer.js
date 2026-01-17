@@ -7,7 +7,7 @@ class IntegerVisualizer {
     this.bits = []; // 存储位值
     this.bitSize = 32; // 默认32位
     this.hoveredBit = -1; // 悬停的位索引
-    
+
     // 连续增减相关
     this.increaseInterval = null;
     this.decreaseInterval = null;
@@ -15,7 +15,7 @@ class IntegerVisualizer {
     this.minIntervalDelay = 50; // 最小延迟
     this.increaseTimeout = null; // 增加按钮的延迟超时
     this.decreaseTimeout = null; // 减少按钮的延迟超时
-    
+
     // DOM元素缓存
     this.domCache = {
       calculationContent: null,
@@ -25,9 +25,9 @@ class IntegerVisualizer {
       explainBtn: null,
       lastExpressionType: null, // 记录上次的表达式类型
       lastSignType: null, // 记录上次的符号类型
-      lastIntegerType: null // 记录上次的整数类型
+      lastIntegerType: null, // 记录上次的整数类型
     };
-    
+
     // 整数类型配置
     this.integerTypes = {
       char: {
@@ -35,29 +35,29 @@ class IntegerVisualizer {
         displayName: "char",
         size: 1, // 字节数
         bits: 8,
-        description: "1字节 (8位)"
+        description: "1字节 (8位)",
       },
       short: {
         name: "short",
         displayName: "short",
         size: 2,
         bits: 16,
-        description: "2字节 (16位)"
+        description: "2字节 (16位)",
       },
       int: {
         name: "int",
         displayName: "int",
         size: 4,
         bits: 32,
-        description: "4字节 (32位)"
+        description: "4字节 (32位)",
       },
       longlong: {
         name: "long long",
         displayName: "long long",
         size: 8,
         bits: 64,
-        description: "8字节 (64位)"
-      }
+        description: "8字节 (64位)",
+      },
     };
 
     // 为每种类型存储独立的位值
@@ -65,7 +65,7 @@ class IntegerVisualizer {
       char: this.generateRandomBits(8),
       short: this.generateRandomBits(16),
       int: this.generateRandomBits(32),
-      longlong: this.generateRandomBits(64)
+      longlong: this.generateRandomBits(64),
     };
 
     // 为每种类型存储符号设置
@@ -73,7 +73,7 @@ class IntegerVisualizer {
       char: true,
       short: true,
       int: true,
-      longlong: true
+      longlong: true,
     };
 
     this.init();
@@ -89,7 +89,7 @@ class IntegerVisualizer {
     this.updateValueFromBits();
     // 初始化极值按钮状态
     this.updateExtremeButtons();
-    
+
     // 初始化DOM缓存
     this.cacheDOMElements();
   }
@@ -97,20 +97,20 @@ class IntegerVisualizer {
   setupCanvas() {
     // 获取设备像素比
     const dpr = window.devicePixelRatio || 1;
-    
+
     // 获取容器宽度
     const container = this.canvas.parentElement;
     const containerWidth = container.clientWidth;
     const maxBitSize = 35; // 最大格子尺寸
     const gap = 5;
     const padding = 100; // 左右各50px的内边距
-    
+
     // 考虑内边距后的可用宽度
     const availableWidth = containerWidth - padding;
-    
+
     // 计算合适的格子尺寸，确保不超过最大值
     const bitsPerRow = Math.floor(availableWidth / (maxBitSize + gap));
-    
+
     // 特殊处理不同类型的换行逻辑
     let actualBitsPerRow;
     if (this.currentType === "longlong") {
@@ -136,43 +136,43 @@ class IntegerVisualizer {
       const bytesPerRow = Math.floor(bitsPerRow / 8) * 8;
       actualBitsPerRow = Math.max(8, bytesPerRow); // 至少8位（1字节）
     }
-    
+
     // 根据实际每行格子数计算合适的格子尺寸
     const totalBytesInRow = Math.ceil(actualBitsPerRow / 8);
     const totalGaps = actualBitsPerRow - 1 + (totalBytesInRow - 1); // 格子间距 + 字节间距
     const totalExtraGaps = (totalBytesInRow - 1) * maxBitSize; // 字节间的额外间距
-    
+
     // 计算格子尺寸，确保不超过最大值
     const bitWidth = Math.min(maxBitSize, (availableWidth - totalGaps * gap - totalExtraGaps) / actualBitsPerRow);
-    
+
     // 设置Canvas的CSS尺寸为容器宽度
-    this.canvas.style.width = containerWidth + 'px';
-    
+    this.canvas.style.width = containerWidth + "px";
+
     // 设置Canvas的实际尺寸（考虑DPI缩放）
     this.canvas.width = containerWidth * dpr;
     this.canvas.height = 200 * dpr; // 临时高度，稍后会重新计算
-    
+
     // 缩放绘图上下文以匹配DPI
     this.ctx.scale(dpr, dpr);
-    
+
     // 计算实际需要的宽度（包含字节间距）
     const totalBytes = Math.ceil(this.bitSize / 8);
     const bytesPerRowActual = Math.ceil(actualBitsPerRow / 8);
     const rows = Math.ceil(totalBytes / bytesPerRowActual);
-    
+
     // 调整高度以适应新的字节分隔线布局和更大的行距
     const bytes = Math.ceil(this.bitSize / 8);
     const calculatedHeight = rows * (bitWidth + gap + 80) + bytes * 50 + 80; // 增加行距到80px
-    
+
     // 重新设置Canvas的实际高度
     this.canvas.height = calculatedHeight * dpr;
-    
+
     // 重新缩放绘图上下文（因为重新设置尺寸会重置变换）
     this.ctx.scale(dpr, dpr);
-    
+
     // 存储当前格子尺寸，供其他方法使用
     this.currentBitSize = bitWidth;
-    
+
     // 初始化位值 - 只在类型切换时重新初始化，视口改变时保持原有值
     if (!this.bits || this.bits.length !== this.integerTypes[this.currentType].bits) {
       this.bits = [...this.typeBits[this.currentType]];
@@ -186,23 +186,23 @@ class IntegerVisualizer {
       radio.addEventListener("change", (e) => {
         const oldType = this.currentType;
         const newType = e.target.value;
-        
+
         // 保存当前类型的位值
         this.typeBits[oldType] = [...this.bits];
         this.typeSigns[oldType] = this.isSigned;
-        
+
         // 切换到新类型
         this.currentType = newType;
         this.bits = [...this.typeBits[newType]];
         this.isSigned = this.typeSigns[newType];
         this.bitSize = this.integerTypes[newType].bits;
-        
+
         // 清除DOM缓存，强制重新生成
         this.domCache.calculationContent = null;
         this.domCache.lastExpressionType = null;
         this.domCache.lastSignType = null;
         this.domCache.lastIntegerType = null;
-        
+
         this.updateTypeSelection();
         this.updateSignSelection();
         this.setupCanvas();
@@ -216,17 +216,17 @@ class IntegerVisualizer {
     document.querySelectorAll('input[name="signType"]').forEach((radio) => {
       radio.addEventListener("change", (e) => {
         const newSignType = e.target.value === "signed";
-        
+
         // 只有当符号类型真正改变时才执行更新
         if (this.isSigned !== newSignType) {
           this.isSigned = newSignType;
           this.typeSigns[this.currentType] = this.isSigned;
-          
+
           // 清除DOM缓存，强制重新生成
           this.domCache.calculationContent = null;
           this.domCache.lastExpressionType = null;
           this.domCache.lastSignType = null;
-          
+
           this.updateSignSelection();
           this.draw();
           this.updateValueFromBits();
@@ -239,13 +239,13 @@ class IntegerVisualizer {
     const valueInput = document.getElementById("currentValue");
     valueInput.addEventListener("input", (e) => {
       const inputValue = e.target.value.trim();
-      
+
       // 允许空值、单独的负号、以及有效的数字
       if (inputValue === "" || inputValue === "-") {
         // 不触发任何事件，保持当前状态
         return;
       }
-      
+
       // 检查是否是有效的数字（包括负数）
       const numberValue = parseInt(inputValue);
       if (isNaN(numberValue)) {
@@ -253,7 +253,7 @@ class IntegerVisualizer {
         e.target.value = this.calculateValue();
         return;
       }
-      
+
       // 有效数字，更新位值
       this.setValueToBits(numberValue);
       // 使用智能更新
@@ -262,34 +262,34 @@ class IntegerVisualizer {
       this.updateExplainButtonVisibility();
       this.redrawCanvasOnly();
     });
-    
+
     // 添加失去焦点事件，处理不完整的输入
     valueInput.addEventListener("blur", (e) => {
       const inputValue = e.target.value.trim();
-      
+
       // 如果输入为空或只有负号，恢复为当前值
       if (inputValue === "" || inputValue === "-") {
         e.target.value = this.calculateValue();
       }
     });
-    
+
     // 增减按钮事件
     const increaseBtn = document.getElementById("increaseBtn");
     const decreaseBtn = document.getElementById("decreaseBtn");
-    const valueInputGroup = document.querySelector('.数值输入组');
+    const valueInputGroup = document.querySelector(".数值输入组");
 
     // 增加按钮
     increaseBtn.addEventListener("mousedown", (e) => {
       // 只响应左键点击
       if (e.button !== 0) return;
-      
+
       e.preventDefault(); // 阻止默认行为
       increaseBtn.classList.add("active");
       valueInputGroup.classList.add("button-active");
-      
+
       // 立即增加一次值
       this.increaseValue();
-      
+
       // 延迟750ms后开始连续增加，避免误触
       this.increaseTimeout = setTimeout(() => {
         this.startContinuousIncrease();
@@ -299,7 +299,7 @@ class IntegerVisualizer {
     increaseBtn.addEventListener("mouseup", (e) => {
       // 只响应左键释放
       if (e.button !== 0) return;
-      
+
       increaseBtn.classList.remove("active");
       // 清除延迟超时
       if (this.increaseTimeout) {
@@ -308,7 +308,7 @@ class IntegerVisualizer {
       }
       this.stopContinuousChange();
       // 检查鼠标是否在数值输入组内
-      if (!valueInputGroup.matches(':hover')) {
+      if (!valueInputGroup.matches(":hover")) {
         valueInputGroup.classList.remove("button-active");
       }
     });
@@ -329,14 +329,14 @@ class IntegerVisualizer {
     decreaseBtn.addEventListener("mousedown", (e) => {
       // 只响应左键点击
       if (e.button !== 0) return;
-      
+
       e.preventDefault(); // 阻止默认行为
       decreaseBtn.classList.add("active");
       valueInputGroup.classList.add("button-active");
-      
+
       // 立即减少一次值
       this.decreaseValue();
-      
+
       // 延迟750ms后开始连续减少，避免误触
       this.decreaseTimeout = setTimeout(() => {
         this.startContinuousDecrease();
@@ -346,7 +346,7 @@ class IntegerVisualizer {
     decreaseBtn.addEventListener("mouseup", (e) => {
       // 只响应左键释放
       if (e.button !== 0) return;
-      
+
       decreaseBtn.classList.remove("active");
       // 清除延迟超时
       if (this.decreaseTimeout) {
@@ -355,7 +355,7 @@ class IntegerVisualizer {
       }
       this.stopContinuousChange();
       // 检查鼠标是否在数值输入组内
-      if (!valueInputGroup.matches(':hover')) {
+      if (!valueInputGroup.matches(":hover")) {
         valueInputGroup.classList.remove("button-active");
       }
     });
@@ -384,10 +384,10 @@ class IntegerVisualizer {
     document.addEventListener("mouseup", (e) => {
       // 只响应左键释放
       if (e.button !== 0) return;
-      
+
       increaseBtn.classList.remove("active");
       decreaseBtn.classList.remove("active");
-      
+
       // 清除延迟超时
       if (this.increaseTimeout) {
         clearTimeout(this.increaseTimeout);
@@ -397,11 +397,11 @@ class IntegerVisualizer {
         clearTimeout(this.decreaseTimeout);
         this.decreaseTimeout = null;
       }
-      
+
       this.stopContinuousChange();
-      
+
       // 检查鼠标是否在数值输入组内
-      if (!valueInputGroup.matches(':hover')) {
+      if (!valueInputGroup.matches(":hover")) {
         valueInputGroup.classList.remove("button-active");
       }
     });
@@ -422,7 +422,7 @@ class IntegerVisualizer {
     maxBtn.addEventListener("click", (e) => {
       // 只响应左键点击
       if (e.button !== 0) return;
-      
+
       e.preventDefault();
       this.setToMaxValue();
     });
@@ -430,7 +430,7 @@ class IntegerVisualizer {
     minBtn.addEventListener("click", (e) => {
       // 只响应左键点击
       if (e.button !== 0) return;
-      
+
       e.preventDefault();
       this.setToMinValue();
     });
@@ -463,7 +463,7 @@ class IntegerVisualizer {
         this.domCache.lastExpressionType = null;
         this.domCache.lastSignType = null;
         this.domCache.lastIntegerType = null;
-        
+
         this.setupCanvas();
         this.draw();
       }, 100);
@@ -505,7 +505,7 @@ class IntegerVisualizer {
     this.increaseInterval = setInterval(() => {
       this.intervalDelay = Math.max(this.minIntervalDelay, this.intervalDelay * 0.9);
       this.increaseValue();
-      
+
       // 检查是否达到最大值，如果达到则停止连续增加
       const inputValue = document.getElementById("currentValue").value.trim();
       const currentValue = parseInt(inputValue) || 0;
@@ -515,11 +515,11 @@ class IntegerVisualizer {
       } else {
         maxValue = Math.pow(2, this.bitSize) - 1;
       }
-      
+
       if (currentValue >= maxValue) {
         this.stopContinuousChange();
         document.getElementById("increaseBtn").classList.remove("active");
-        document.querySelector('.数值输入组').classList.remove("button-active");
+        document.querySelector(".数值输入组").classList.remove("button-active");
       }
     }, this.intervalDelay);
   }
@@ -530,7 +530,7 @@ class IntegerVisualizer {
     this.decreaseInterval = setInterval(() => {
       this.intervalDelay = Math.max(this.minIntervalDelay, this.intervalDelay * 0.9);
       this.decreaseValue();
-      
+
       // 检查是否达到最小值，如果达到则停止连续减少
       const inputValue = document.getElementById("currentValue").value.trim();
       const currentValue = parseInt(inputValue) || 0;
@@ -540,11 +540,11 @@ class IntegerVisualizer {
       } else {
         minValue = 0;
       }
-      
+
       if (currentValue <= minValue) {
         this.stopContinuousChange();
         document.getElementById("decreaseBtn").classList.remove("active");
-        document.querySelector('.数值输入组').classList.remove("button-active");
+        document.querySelector(".数值输入组").classList.remove("button-active");
       }
     }, this.intervalDelay);
   }
@@ -573,7 +573,7 @@ class IntegerVisualizer {
   increaseValue() {
     const inputValue = document.getElementById("currentValue").value.trim();
     const currentValue = parseInt(inputValue) || 0;
-    
+
     // 计算当前类型的最大值
     let maxValue;
     if (this.isSigned) {
@@ -581,12 +581,12 @@ class IntegerVisualizer {
     } else {
       maxValue = Math.pow(2, this.bitSize) - 1; // 无符号整数的最大值
     }
-    
+
     // 如果当前值已经达到最大值，则不再增加
     if (currentValue >= maxValue) {
       return;
     }
-    
+
     const newValue = currentValue + 1;
     this.setValueToBits(newValue);
     // 使用智能更新
@@ -599,7 +599,7 @@ class IntegerVisualizer {
   decreaseValue() {
     const inputValue = document.getElementById("currentValue").value.trim();
     const currentValue = parseInt(inputValue) || 0;
-    
+
     // 计算当前类型的最小值
     let minValue;
     if (this.isSigned) {
@@ -607,12 +607,12 @@ class IntegerVisualizer {
     } else {
       minValue = 0; // 无符号整数的最小值
     }
-    
+
     // 如果当前值已经达到最小值，则不再减少
     if (currentValue <= minValue) {
       return;
     }
-    
+
     const newValue = currentValue - 1;
     this.setValueToBits(newValue);
     // 使用智能更新
@@ -629,13 +629,13 @@ class IntegerVisualizer {
     } else {
       this.setUnsignedValueToBits(value);
     }
-    
+
     // 更新输入框值
     document.getElementById("currentValue").value = value;
-    
+
     // 保存到当前类型
     this.typeBits[this.currentType] = [...this.bits];
-    
+
     // 更新极值按钮状态
     this.updateExtremeButtons();
   }
@@ -644,7 +644,7 @@ class IntegerVisualizer {
     // 确保值在范围内
     const maxValue = Math.pow(2, this.bitSize) - 1;
     value = Math.max(0, Math.min(value, maxValue));
-    
+
     // 转换为二进制
     for (let i = 0; i < this.bitSize; i++) {
       this.bits[i] = (value >> (this.bitSize - 1 - i)) & 1;
@@ -656,7 +656,7 @@ class IntegerVisualizer {
     const maxValue = Math.pow(2, this.bitSize - 1) - 1;
     const minValue = -Math.pow(2, this.bitSize - 1);
     value = Math.max(minValue, Math.min(value, maxValue));
-    
+
     if (value >= 0) {
       // 正数，直接转换
       this.setUnsignedValueToBits(value);
@@ -664,12 +664,12 @@ class IntegerVisualizer {
       // 负数，使用补码
       const absValue = Math.abs(value);
       this.setUnsignedValueToBits(absValue);
-      
+
       // 取反
       for (let i = 0; i < this.bitSize; i++) {
         this.bits[i] = this.bits[i] === 0 ? 1 : 0;
       }
-      
+
       // 加1
       let carry = 1;
       for (let i = this.bitSize - 1; i >= 0; i--) {
@@ -683,7 +683,7 @@ class IntegerVisualizer {
   updateValueFromBits() {
     const value = this.calculateValue();
     document.getElementById("currentValue").value = value;
-    
+
     // 更新极值按钮状态
     this.updateExtremeButtons();
   }
@@ -693,15 +693,15 @@ class IntegerVisualizer {
     document.querySelectorAll(".整数类型选项").forEach((option) => {
       option.classList.remove("selected");
     });
-    
+
     // 更新radio按钮的checked状态
     document.querySelectorAll('input[name="integerType"]').forEach((radio) => {
       radio.checked = false;
     });
-    
+
     const targetRadio = document.getElementById(`type-${this.currentType}`);
     const targetLabel = document.querySelector(`label[for="type-${this.currentType}"]`);
-    
+
     if (targetRadio && targetLabel) {
       targetRadio.checked = true;
       targetLabel.classList.add("selected");
@@ -713,16 +713,16 @@ class IntegerVisualizer {
     document.querySelectorAll(".符号选项").forEach((option) => {
       option.classList.remove("selected");
     });
-    
+
     // 更新radio按钮的checked状态
     document.querySelectorAll('input[name="signType"]').forEach((radio) => {
       radio.checked = false;
     });
-    
+
     const signValue = this.isSigned ? "signed" : "unsigned";
     const targetRadio = document.getElementById(signValue);
     const targetLabel = document.querySelector(`label[for="${signValue}"]`);
-    
+
     if (targetRadio && targetLabel) {
       targetRadio.checked = true;
       targetLabel.classList.add("selected");
@@ -746,7 +746,7 @@ class IntegerVisualizer {
     const padding = 100; // 左右各50px的内边距
     const availableWidth = containerWidth - padding;
     const bitsPerRow = Math.floor(availableWidth / (bitWidth + gap));
-    
+
     // 特殊处理不同类型的换行逻辑
     let actualBitsPerRow;
     if (this.currentType === "longlong") {
@@ -772,31 +772,31 @@ class IntegerVisualizer {
       const bytesPerRow = Math.floor(bitsPerRow / 8) * 8;
       actualBitsPerRow = Math.max(8, bytesPerRow); // 至少8位（1字节）
     }
-    
+
     const row = Math.floor(index / actualBitsPerRow);
     const col = index % actualBitsPerRow;
-    
+
     // 计算字节内的位置
     const byteIndex = Math.floor(col / 8);
     const bitInByte = col % 8;
-    
+
     // 在每8个格子之间增加一个格子的距离
     const extraGap = byteIndex * bitWidth; // 每个字节后增加一个格子的宽度作为间距
-    
+
     const x = col * (bitWidth + gap) + extraGap;
     const y = row * (bitHeight + gap + 80); // 增加行距到80px
-    
+
     // 计算整体宽度以确定居中偏移，考虑内边距
     const totalBitsInRow = Math.min(actualBitsPerRow, this.bitSize - row * actualBitsPerRow);
     const totalBytesInRow = Math.ceil(totalBitsInRow / 8);
     const totalWidth = totalBitsInRow * (bitWidth + gap) + (totalBytesInRow - 1) * bitWidth;
     const centerOffset = (availableWidth - totalWidth) / 2 + padding / 2; // 加上左内边距
-    
+
     return {
       x: x + centerOffset, // 居中偏移
       y: y + 30, // 上边距
       width: bitWidth,
-      height: bitHeight
+      height: bitHeight,
     };
   }
 
@@ -804,19 +804,18 @@ class IntegerVisualizer {
     const rect = this.canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    
+
     let newHoveredBit = -1;
-    
+
     // 检查鼠标是否在任何位上
     for (let i = 0; i < this.bitSize; i++) {
       const bitRect = this.getBitRect(i);
-      if (x >= bitRect.x && x <= bitRect.x + bitRect.width &&
-          y >= bitRect.y && y <= bitRect.y + bitRect.height) {
+      if (x >= bitRect.x && x <= bitRect.x + bitRect.width && y >= bitRect.y && y <= bitRect.y + bitRect.height) {
         newHoveredBit = i;
         break;
       }
     }
-    
+
     if (newHoveredBit !== this.hoveredBit) {
       this.hoveredBit = newHoveredBit;
       // 只重绘Canvas，不重新生成计算表达式
@@ -831,24 +830,24 @@ class IntegerVisualizer {
     const containerWidth = container.clientWidth;
     const calculatedHeight = this.canvas.height / (window.devicePixelRatio || 1);
     this.ctx.clearRect(0, 0, containerWidth, calculatedHeight);
-    
+
     // 绘制位格子
     for (let i = 0; i < this.bitSize; i++) {
       this.drawBit(i);
     }
-    
+
     // 绘制字节分隔线
     this.drawByteSeparators();
-    
+
     // 注意：这里不调用updateCalculationExpression，避免不必要的更新
   }
 
   handleClick(e) {
     if (this.hoveredBit === -1) return;
-    
+
     // 检查是否是最左边的格子（索引最大的格子）
     const isLeftmostBit = this.hoveredBit === 0;
-    
+
     if (isLeftmostBit) {
       // 最左边的格子（最高位）
       if (this.isSigned) {
@@ -863,14 +862,14 @@ class IntegerVisualizer {
       // 其他格子，正常切换位值
       this.bits[this.hoveredBit] = this.bits[this.hoveredBit] === 0 ? 1 : 0;
     }
-    
+
     // 使用智能更新
     this.updateCalculationExpression();
     this.updateValueFromBits();
-    
+
     // 控制解释原理按钮的显示
     this.updateExplainButtonVisibility();
-    
+
     // 只重绘Canvas
     this.redrawCanvasOnly();
   }
@@ -901,7 +900,7 @@ class IntegerVisualizer {
     } else {
       // 负数，使用补码计算
       // 先取反
-      const invertedBits = this.bits.map(bit => bit === 0 ? 1 : 0);
+      const invertedBits = this.bits.map((bit) => (bit === 0 ? 1 : 0));
       // 加1
       let carry = 1;
       const resultBits = [];
@@ -917,7 +916,7 @@ class IntegerVisualizer {
           absValue += Math.pow(2, this.bitSize - 1 - i);
         }
       }
-      
+
       return -absValue;
     }
   }
@@ -933,7 +932,7 @@ class IntegerVisualizer {
   generateUnsignedExpression() {
     let expression = "";
     let hasTerms = false;
-    
+
     for (let i = 0; i < this.bitSize; i++) {
       if (this.bits[i] === 1) {
         if (hasTerms) {
@@ -943,14 +942,14 @@ class IntegerVisualizer {
         hasTerms = true;
       }
     }
-    
+
     if (!hasTerms) {
       expression = '<span class="数字">0</span>';
     }
-    
+
     const value = this.calculateValue();
     expression += `<span class="等号"> = </span><span class="结果">${value}</span>`;
-    
+
     return expression;
   }
 
@@ -959,7 +958,7 @@ class IntegerVisualizer {
       // 正数，使用无符号的显示方式但应用有符号的颜色
       let expression = "";
       let hasTerms = false;
-      
+
       for (let i = 0; i < this.bitSize; i++) {
         if (this.bits[i] === 1) {
           if (hasTerms) {
@@ -969,24 +968,24 @@ class IntegerVisualizer {
           hasTerms = true;
         }
       }
-      
+
       if (!hasTerms) {
         expression = '<span class="数字">0</span>';
       }
-      
+
       const value = this.calculateValue();
       expression += `<span class="等号"> = </span><span class="结果">${value}</span>`;
-      
+
       return expression;
     } else {
       // 负数，显示简化的计算过程
       let expression = '<div class="标题">负数计算过程</div>';
-      
+
       // 显示原始位值
       expression += '<div class="计算步骤容器">';
       expression += '<div class="步骤标签区">';
       expression += '<span class="标签">原值<span class="分隔符">-</span><span class="术语">原码</span></span>';
-      expression += '</div>';
+      expression += "</div>";
       expression += '<div class="步骤数字区">';
       for (let i = 0; i < this.bitSize; i++) {
         const bitValue = this.bits[i];
@@ -995,17 +994,17 @@ class IntegerVisualizer {
           expression += " ";
         }
       }
-      expression += '</div>';
-      expression += '</div>';
-      
+      expression += "</div>";
+      expression += "</div>";
+
       // 向下箭头
       expression += '<div class="向下箭头">↓</div>';
-      
+
       // 计算反码
       expression += '<div class="计算步骤容器">';
       expression += '<div class="步骤标签区">';
       expression += '<span class="标签">取反<span class="分隔符">-</span><span class="术语">反码</span></span>';
-      expression += '</div>';
+      expression += "</div>";
       expression += '<div class="步骤数字区">';
       for (let i = 0; i < this.bitSize; i++) {
         const inverted = this.bits[i] === 0 ? 1 : 0;
@@ -1014,12 +1013,12 @@ class IntegerVisualizer {
           expression += " ";
         }
       }
-      expression += '</div>';
-      expression += '</div>';
-      
+      expression += "</div>";
+      expression += "</div>";
+
       // 向下箭头
       expression += '<div class="向下箭头">↓</div>';
-      
+
       // 反码加1
       let carry = 1;
       const resultBits = [];
@@ -1029,11 +1028,11 @@ class IntegerVisualizer {
         resultBits.unshift(sum % 2);
         carry = Math.floor(sum / 2);
       }
-      
+
       expression += '<div class="计算步骤容器">';
       expression += '<div class="步骤标签区">';
       expression += '<span class="标签">加1<span class="分隔符">-</span><span class="术语">补码</span></span>';
-      expression += '</div>';
+      expression += "</div>";
       expression += '<div class="步骤数字区">';
       for (let i = 0; i < this.bitSize; i++) {
         const resultBit = resultBits[i];
@@ -1042,9 +1041,9 @@ class IntegerVisualizer {
           expression += " ";
         }
       }
-      expression += '</div>';
-      expression += '</div>';
-      
+      expression += "</div>";
+      expression += "</div>";
+
       // 计算绝对值
       let absValue = 0;
       for (let i = 0; i < this.bitSize; i++) {
@@ -1052,7 +1051,7 @@ class IntegerVisualizer {
           absValue += Math.pow(2, this.bitSize - 1 - i);
         }
       }
-      
+
       // 分解结果显示和解释原理按钮放在同一个容器中
       expression += '<div class="结果按钮容器">';
       expression += '<div class="计算步骤容器">';
@@ -1060,10 +1059,10 @@ class IntegerVisualizer {
       expression += '<span class="等号符号">=</span>';
       expression += '<span class="负号符号">-</span>';
       expression += `<span class="结果数字">${absValue}</span>`;
-      expression += '</div>';
+      expression += "</div>";
       expression += '<button class="解释原理按钮" id="explainBtn" type="button">解释原理</button>';
-      expression += '</div>';
-      
+      expression += "</div>";
+
       return expression;
     }
   }
@@ -1074,21 +1073,21 @@ class IntegerVisualizer {
     const containerWidth = container.clientWidth;
     const calculatedHeight = this.canvas.height / (window.devicePixelRatio || 1);
     this.ctx.clearRect(0, 0, containerWidth, calculatedHeight);
-    
+
     // 绘制位格子
     for (let i = 0; i < this.bitSize; i++) {
       this.drawBit(i);
     }
-    
+
     // 绘制字节分隔线
     this.drawByteSeparators();
-    
+
     // 智能更新计算表达式
     this.updateCalculationExpression();
-    
+
     // 控制解释原理按钮的显示
     this.updateExplainButtonVisibility();
-    
+
     // 设置计算表达式区域的位置
     this.updateCalculationExpressionPosition();
   }
@@ -1096,16 +1095,16 @@ class IntegerVisualizer {
   // 智能更新计算表达式
   updateCalculationExpression() {
     const currentExpressionType = this.getExpressionType();
-    const currentSignType = this.isSigned ? 'signed' : 'unsigned';
+    const currentSignType = this.isSigned ? "signed" : "unsigned";
     const currentIntegerType = this.currentType;
-    
+
     // 检查是否需要重新生成DOM
-    const needRegenerateDOM = 
+    const needRegenerateDOM =
       this.domCache.lastExpressionType !== currentExpressionType ||
       this.domCache.lastSignType !== currentSignType ||
       this.domCache.lastIntegerType !== currentIntegerType ||
       !this.domCache.calculationContent;
-    
+
     if (needRegenerateDOM) {
       // 需要重新生成DOM
       this.regenerateCalculationExpression();
@@ -1116,7 +1115,7 @@ class IntegerVisualizer {
       // 只需要更新数字内容
       this.updateCalculationNumbers();
     }
-    
+
     // 确保CSS类是最新的
     this.updateCalculationExpressionClasses();
   }
@@ -1124,11 +1123,11 @@ class IntegerVisualizer {
   // 获取当前表达式类型
   getExpressionType() {
     if (!this.isSigned) {
-      return 'unsigned';
+      return "unsigned";
     } else if (this.bits[0] === 0) {
-      return 'signed_positive';
+      return "signed_positive";
     } else {
-      return 'signed_negative';
+      return "signed_negative";
     }
   }
 
@@ -1136,13 +1135,13 @@ class IntegerVisualizer {
   regenerateCalculationExpression() {
     const expression = this.generateCalculationExpression();
     document.getElementById("calculationContent").innerHTML = expression;
-    
+
     // 缓存DOM元素
     this.cacheDOMElements();
-    
+
     // 立即更新CSS类
     this.updateCalculationExpressionClasses();
-    
+
     // 调整箭头位置
     this.adjustArrowPositions();
   }
@@ -1151,17 +1150,17 @@ class IntegerVisualizer {
   cacheDOMElements() {
     const calculationContent = document.getElementById("calculationContent");
     this.domCache.calculationContent = calculationContent;
-    
+
     // 缓存箭头
-    this.domCache.arrows = Array.from(calculationContent.querySelectorAll('.向下箭头'));
-    
+    this.domCache.arrows = Array.from(calculationContent.querySelectorAll(".向下箭头"));
+
     // 缓存数字元素
-    this.domCache.numberElements = Array.from(calculationContent.querySelectorAll('.数字'));
-    
+    this.domCache.numberElements = Array.from(calculationContent.querySelectorAll(".数字"));
+
     // 缓存结果元素
-    const resultElements = calculationContent.querySelectorAll('.结果, .结果数字');
+    const resultElements = calculationContent.querySelectorAll(".结果, .结果数字");
     this.domCache.resultElements = Array.from(resultElements);
-    
+
     // 缓存解释原理按钮
     this.domCache.explainBtn = document.getElementById("explainBtn");
   }
@@ -1169,9 +1168,9 @@ class IntegerVisualizer {
   // 只更新数字内容
   updateCalculationNumbers() {
     if (!this.domCache.numberElements.length) return;
-    
+
     const expressionType = this.getExpressionType();
-    
+
     // 检查表达式类型是否发生了变化
     if (this.domCache.lastExpressionType !== expressionType) {
       // 表达式类型发生了变化，需要重新生成DOM
@@ -1180,18 +1179,18 @@ class IntegerVisualizer {
       this.domCache.lastExpressionType = expressionType;
       return;
     }
-    
-    if (expressionType === 'unsigned' || expressionType === 'signed_positive') {
+
+    if (expressionType === "unsigned" || expressionType === "signed_positive") {
       // 无符号或有符号正数，更新计算表达式中的数字
       this.updatePositiveExpressionNumbers();
-    } else if (expressionType === 'signed_negative') {
+    } else if (expressionType === "signed_negative") {
       // 有符号负数，更新负数计算过程中的数字
       this.updateNegativeExpressionNumbers();
     }
-    
+
     // 更新结果
     this.updateResultNumbers();
-    
+
     // 确保CSS类是最新的
     this.updateCalculationExpressionClasses();
   }
@@ -1213,7 +1212,7 @@ class IntegerVisualizer {
         this.domCache.numberElements[i].className = `数字 位值${bitValue}`;
       }
     }
-    
+
     // 更新反码数字
     for (let i = 0; i < this.bitSize; i++) {
       if (this.domCache.numberElements[i + this.bitSize]) {
@@ -1222,7 +1221,7 @@ class IntegerVisualizer {
         this.domCache.numberElements[i + this.bitSize].className = `数字 位值${inverted}`;
       }
     }
-    
+
     // 更新补码数字
     let carry = 1;
     const resultBits = [];
@@ -1232,7 +1231,7 @@ class IntegerVisualizer {
       resultBits.unshift(sum % 2);
       carry = Math.floor(sum / 2);
     }
-    
+
     for (let i = 0; i < this.bitSize; i++) {
       if (this.domCache.numberElements[i + this.bitSize * 2]) {
         const resultBit = resultBits[i];
@@ -1245,8 +1244,8 @@ class IntegerVisualizer {
   // 更新结果数字
   updateResultNumbers() {
     const expressionType = this.getExpressionType();
-    
-    if (expressionType === 'signed_negative') {
+
+    if (expressionType === "signed_negative") {
       // 负数，需要计算绝对值
       let carry = 1;
       const resultBits = [];
@@ -1256,14 +1255,14 @@ class IntegerVisualizer {
         resultBits.unshift(sum % 2);
         carry = Math.floor(sum / 2);
       }
-      
+
       let absValue = 0;
       for (let i = 0; i < this.bitSize; i++) {
         if (resultBits[i] === 1) {
           absValue += Math.pow(2, this.bitSize - 1 - i);
         }
       }
-      
+
       // 更新结果数字
       if (this.domCache.resultElements.length > 0) {
         this.domCache.resultElements[0].textContent = absValue;
@@ -1282,10 +1281,10 @@ class IntegerVisualizer {
     const bitValue = this.bits[index];
     const isHovered = index === this.hoveredBit;
     const isSignBit = index === 0 && this.isSigned;
-    
+
     // 绘制开关背景
     this.ctx.save();
-    
+
     // 设置样式
     if (isSignBit) {
       if (bitValue === 0) {
@@ -1304,36 +1303,36 @@ class IntegerVisualizer {
       } else {
         this.ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue("--位格子背景");
         // 文本为0的格子边框颜色更显眼
-        this.ctx.strokeStyle = bitValue === 0 ? "#666" : getComputedStyle(document.documentElement).getPropertyValue("--位格子边框");
+        this.ctx.strokeStyle =
+          bitValue === 0 ? "#666" : getComputedStyle(document.documentElement).getPropertyValue("--位格子边框");
       }
     }
-    
+
     // 悬停效果 - 只改变边框颜色，不改变内部
     if (isHovered) {
       this.ctx.strokeStyle = "#fff";
     }
-    
+
     // 绘制开关外框
     this.ctx.lineWidth = 2;
     this.drawRoundedRect(bitRect.x, bitRect.y, bitRect.width, bitRect.height, 8);
     this.ctx.stroke();
-    
+
     // 绘制开关背景 - 悬停时不改变内部颜色
-    this.ctx.fillStyle = bitValue === 1 ? 
-      (isSignBit ? 
-        getComputedStyle(document.documentElement).getPropertyValue("--符号位背景") : // 符号位为1时用红色
-        getComputedStyle(document.documentElement).getPropertyValue("--位格子激活")
-      ) : 
-      (isSignBit ? 
-        getComputedStyle(document.documentElement).getPropertyValue("--符号位激活") : // 符号位为0时用蓝色
-        getComputedStyle(document.documentElement).getPropertyValue("--位格子背景")
-      );
-    
+    this.ctx.fillStyle =
+      bitValue === 1
+        ? isSignBit
+          ? getComputedStyle(document.documentElement).getPropertyValue("--符号位背景") // 符号位为1时用红色
+          : getComputedStyle(document.documentElement).getPropertyValue("--位格子激活")
+        : isSignBit
+          ? getComputedStyle(document.documentElement).getPropertyValue("--符号位激活") // 符号位为0时用蓝色
+          : getComputedStyle(document.documentElement).getPropertyValue("--位格子背景");
+
     this.drawRoundedRect(bitRect.x + 2, bitRect.y + 2, bitRect.width - 4, bitRect.height - 4, 6);
     this.ctx.fill();
-    
+
     this.ctx.restore();
-    
+
     // 绘制位值（0或1）- 修复有符号状态下的显示逻辑
     let displayValue = bitValue;
     if (isSignBit) {
@@ -1341,18 +1340,19 @@ class IntegerVisualizer {
       // 这样：符号位显示0时表示正数，显示1时表示负数
       displayValue = bitValue;
     }
-    
-    this.ctx.fillStyle = displayValue === 1 ? "#fff" : getComputedStyle(document.documentElement).getPropertyValue("--深色文本");
+
+    this.ctx.fillStyle =
+      displayValue === 1 ? "#fff" : getComputedStyle(document.documentElement).getPropertyValue("--深色文本");
     // 字体大小不需要考虑DPI缩放，因为已经通过ctx.scale处理了
     const fontSize = Math.max(12, Math.min(16, this.currentBitSize * 0.4)); // 根据格子尺寸动态调整字体大小
-    this.ctx.font = `${fontSize}px JetBrains Mono, Consolas, monospace`;
+    this.ctx.font = `${fontSize}px Google Sans Code, JetBrains Mono, Consolas, Noto Sans SC, 微软雅黑, sans-serif`;
     this.ctx.textAlign = "center";
     this.ctx.textBaseline = "middle";
     this.ctx.fillText(displayValue.toString(), bitRect.x + bitRect.width / 2, bitRect.y + bitRect.height / 2);
-    
+
     // 绘制索引
     this.ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue("--索引文字");
-    this.ctx.font = "12px JetBrains Mono, Consolas, monospace";
+    this.ctx.font = "12px Google Sans Code, JetBrains Mono, Consolas, Noto Sans SC, 微软雅黑, sans-serif";
     this.ctx.textAlign = "center";
     this.ctx.textBaseline = "middle";
     this.ctx.fillText((this.bitSize - 1 - index).toString(), bitRect.x + bitRect.width / 2, bitRect.y - 12);
@@ -1375,19 +1375,19 @@ class IntegerVisualizer {
 
   drawByteSeparators() {
     this.ctx.lineWidth = 1; // 改为1px高度
-    
+
     // 遍历每个字节，确保所有字节都有分隔线
     const totalBytes = Math.ceil(this.bitSize / 8);
-    
+
     // 修复：遍历所有字节，包括最后一个字节
     for (let byteIndex = 1; byteIndex <= totalBytes; byteIndex++) {
       const startBitIndex = (byteIndex - 1) * 8;
       const endBitIndex = Math.min(byteIndex * 8 - 1, this.bitSize - 1);
-      
+
       // 获取字节的第一个和最后一个位的位置
       const startBitRect = this.getBitRect(startBitIndex);
       const endBitRect = this.getBitRect(endBitIndex);
-      
+
       // 检查字节是否跨行
       if (startBitRect.y === endBitRect.y) {
         // 同一行，正常绘制
@@ -1395,19 +1395,19 @@ class IntegerVisualizer {
         const endX = endBitRect.x + endBitRect.width;
         const centerX = (startX + endX) / 2;
         const y = startBitRect.y + startBitRect.height + 17;
-        
+
         // 使用gray颜色绘制横线
         this.ctx.strokeStyle = "gray";
         this.ctx.fillStyle = "silver"; // 字节文本使用silver颜色
-        
+
         // 绘制纯横线
         this.ctx.beginPath();
         this.ctx.moveTo(startX, y);
         this.ctx.lineTo(endX, y);
         this.ctx.stroke();
-        
+
         // 绘制字节标签 - 修复字节顺序
-        this.ctx.font = "14px JetBrains Mono, Consolas, monospace";
+        this.ctx.font = "14px Google Sans Code, JetBrains Mono, Consolas, Noto Sans SC, 微软雅黑, sans-serif";
         this.ctx.textAlign = "center";
         this.ctx.textBaseline = "middle";
         this.ctx.fillText(`字节${totalBytes - byteIndex + 1}`, centerX, y + 20);
@@ -1420,7 +1420,7 @@ class IntegerVisualizer {
         const padding = 100; // 左右各50px的内边距
         const availableWidth = containerWidth - padding;
         const bitsPerRow = Math.floor(availableWidth / (bitWidth + gap));
-        
+
         // 特殊处理不同类型的换行逻辑，与setupCanvas方法保持一致
         let actualBitsPerRow;
         if (this.currentType === "longlong") {
@@ -1446,41 +1446,41 @@ class IntegerVisualizer {
           const bytesPerRow = Math.floor(bitsPerRow / 8) * 8;
           actualBitsPerRow = Math.max(8, bytesPerRow); // 至少8位（1字节）
         }
-        
+
         // 计算当前字节跨越的行
         const startRow = Math.floor(startBitIndex / actualBitsPerRow);
         const endRow = Math.floor(endBitIndex / actualBitsPerRow);
-        
+
         for (let row = startRow; row <= endRow; row++) {
           const rowStartBit = row * actualBitsPerRow;
           const rowEndBit = Math.min((row + 1) * actualBitsPerRow - 1, this.bitSize - 1);
-          
+
           // 计算当前行中字节的范围
           const byteStartInRow = Math.max(startBitIndex, rowStartBit);
           const byteEndInRow = Math.min(endBitIndex, rowEndBit);
-          
+
           if (byteStartInRow <= byteEndInRow) {
             const startBitRectInRow = this.getBitRect(byteStartInRow);
             const endBitRectInRow = this.getBitRect(byteEndInRow);
-            
+
             const startX = startBitRectInRow.x;
             const endX = endBitRectInRow.x + endBitRectInRow.width;
             const centerX = (startX + endX) / 2;
             const y = startBitRectInRow.y + startBitRectInRow.height + 17;
-            
+
             // 使用gray颜色绘制横线
             this.ctx.strokeStyle = "gray";
             this.ctx.fillStyle = "silver"; // 字节文本使用silver颜色
-            
+
             // 绘制纯横线
             this.ctx.beginPath();
             this.ctx.moveTo(startX, y);
             this.ctx.lineTo(endX, y);
             this.ctx.stroke();
-            
+
             // 只在第一行绘制字节标签 - 修复字节顺序
             if (row === startRow) {
-              this.ctx.font = "14px JetBrains Mono, Consolas, monospace";
+              this.ctx.font = "14px Google Sans Code, JetBrains Mono, Consolas, Noto Sans SC, 微软雅黑, sans-serif";
               this.ctx.textAlign = "center";
               this.ctx.textBaseline = "middle";
               this.ctx.fillText(`字节${totalBytes - byteIndex + 1}`, centerX, y + 20);
@@ -1500,7 +1500,7 @@ class IntegerVisualizer {
     const padding = 100;
     const availableWidth = containerWidth - padding;
     const bitsPerRow = Math.floor(availableWidth / (bitWidth + gap));
-    
+
     // 特殊处理不同类型的换行逻辑，与setupCanvas方法保持一致
     let actualBitsPerRow;
     if (this.currentType === "longlong") {
@@ -1526,16 +1526,16 @@ class IntegerVisualizer {
       const bytesPerRow = Math.floor(bitsPerRow / 8) * 8;
       actualBitsPerRow = Math.max(8, bytesPerRow); // 至少8位（1字节）
     }
-    
+
     // 计算总行数
     const totalRows = Math.ceil(this.bitSize / actualBitsPerRow);
     const lastRow = totalRows - 1;
-    
+
     // 计算最下面一行格子的底部位置
     const bitHeight = bitWidth; // 确保宽高相等
     const rowHeight = bitHeight + gap + 80; // 行距80px
     const lastRowBottom = 30 + (lastRow + 1) * rowHeight; // 30px是上边距
-    
+
     // 设置计算表达式区域的位置
     const calculationExpression = document.getElementById("calculationExpression");
     calculationExpression.style.top = `${lastRowBottom + 100}px`; // 再向下100px
@@ -1548,7 +1548,7 @@ class IntegerVisualizer {
     } else {
       maxValue = Math.pow(2, this.bitSize) - 1; // 无符号整数的最大值
     }
-    
+
     this.setValueToBits(maxValue);
     // 使用智能更新
     this.updateCalculationExpression();
@@ -1564,7 +1564,7 @@ class IntegerVisualizer {
     } else {
       minValue = 0; // 无符号整数的最小值
     }
-    
+
     this.setValueToBits(minValue);
     // 使用智能更新
     this.updateCalculationExpression();
@@ -1578,7 +1578,7 @@ class IntegerVisualizer {
     const currentValue = parseInt(inputValue) || 0;
     const maxBtn = document.getElementById("maxBtn");
     const minBtn = document.getElementById("minBtn");
-    
+
     // 计算当前类型的最大值和最小值
     let maxValue, minValue;
     if (this.isSigned) {
@@ -1588,14 +1588,14 @@ class IntegerVisualizer {
       maxValue = Math.pow(2, this.bitSize) - 1;
       minValue = 0;
     }
-    
+
     // 更新最大值按钮状态
     if (currentValue === maxValue) {
       maxBtn.classList.add("highlighted");
     } else {
       maxBtn.classList.remove("highlighted");
     }
-    
+
     // 更新最小值按钮状态
     if (currentValue === minValue) {
       minBtn.classList.add("highlighted");
@@ -1793,12 +1793,12 @@ class IntegerVisualizer {
 
   updateExplainButtonVisibility() {
     const explainBtn = document.getElementById("explainBtn");
-    
+
     // 如果按钮不存在，说明还没有生成（可能是正数状态）
     if (!explainBtn) {
       return;
     }
-    
+
     // 只有变量类型为"有符号"且最高位为1（负数）时才显示解释原理按钮
     if (this.isSigned && this.bits[0] === 1) {
       explainBtn.style.display = "block";
@@ -1809,10 +1809,10 @@ class IntegerVisualizer {
 
   updateCalculationExpressionClasses() {
     const calculationExpression = document.getElementById("calculationExpression");
-    
+
     // 移除所有可能的类
     calculationExpression.classList.remove("无符号", "有符号正数", "有符号负数");
-    
+
     if (!this.isSigned) {
       // 无符号类型
       calculationExpression.classList.add("无符号");
@@ -1832,24 +1832,24 @@ class IntegerVisualizer {
   adjustArrowPositions() {
     // 只在重新生成DOM时调整箭头位置
     setTimeout(() => {
-      const arrows = document.querySelectorAll('.向下箭头');
-      arrows.forEach(arrow => {
+      const arrows = document.querySelectorAll(".向下箭头");
+      arrows.forEach((arrow) => {
         const container = arrow.previousElementSibling;
-        if (container && container.classList.contains('计算步骤容器')) {
-          const labelArea = container.querySelector('.步骤标签区');
-          const numberArea = container.querySelector('.步骤数字区');
-          
+        if (container && container.classList.contains("计算步骤容器")) {
+          const labelArea = container.querySelector(".步骤标签区");
+          const numberArea = container.querySelector(".步骤数字区");
+
           if (labelArea && numberArea) {
             const labelWidth = labelArea.offsetWidth;
             const numberWidth = numberArea.offsetWidth;
             const containerWidth = container.offsetWidth;
-            
+
             // 计算步骤数字区相对于容器的中心位置
-            const numberAreaCenter = labelWidth + (numberWidth / 2);
-            
+            const numberAreaCenter = labelWidth + numberWidth / 2;
+
             // 计算箭头应该的位置（相对于容器的50%位置）
-            const arrowOffset = numberAreaCenter - (containerWidth / 2);
-            
+            const arrowOffset = numberAreaCenter - containerWidth / 2;
+
             arrow.style.marginLeft = `${arrowOffset}px`;
           }
         }

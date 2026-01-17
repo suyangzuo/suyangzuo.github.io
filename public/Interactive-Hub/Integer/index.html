@@ -1,109 +1,103 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>整数</title>
-    <link rel="icon" href="/Images/Interactive-Hub/HQ/整数.png" type="image/x-icon" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Ubuntu+Mono&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/Styles/common.css" />
-    <link rel="stylesheet" href="/Styles/top-banner-common.css" />
-    <link rel="stylesheet" href="../control.css" />
-    <link rel="stylesheet" href="../interactive-common.css" />
-    <link rel="stylesheet" href="./Integer.css" />
-    <script src="/Scripts/top-banner.js" defer></script>
-    <script src="https://cdn.lordicon.com/lordicon.js"></script>
-    <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
-    <script src="./Integer.js" defer></script>
-  </head>
-  <body>
-    <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
-    <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
-    <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
 
-    <section class="整数总区 总区">
-      <script src="../../Scripts/html-include.js" target="../control.html" position="afterbegin"></script>
-      <p class="交互标题">整数</p>
-      <figure class="展示区">
-        <div class="canvas-container">
-          <canvas id="integerCanvas" width="800" height="200"></canvas>
-          <div class="计算表达式区" id="calculationExpression">
-            <div class="计算表达式内容" id="calculationContent">计算表达式将在这里显示...</div>
-          </div>
-        </div>
-      </figure>
-      
-      <!-- 原理解释对话框 -->
-      <div class="原理对话框" id="principleDialog">
-        <div class="对话框内容">
-          <button class="对话框关闭按钮" id="closeDialogBtn">&times;</button>
-          <div class="对话框标题">负数补码原理详解</div>
-          <div class="原理内容" id="principleContent">
-            <!-- 原理内容将通过JavaScript动态生成 -->
-          </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>整数</title>
+  <link rel="icon" href="/Images/Interactive-Hub/HQ/整数.png" type="image/x-icon" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Ubuntu+Mono&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/Styles/common.css" />
+  <link rel="stylesheet" href="/Styles/top-banner-common.css" />
+  <link rel="stylesheet" href="../control.css" />
+  <link rel="stylesheet" href="../interactive-common.css" />
+  <link rel="stylesheet" href="./Integer.css" />
+  <script src="/Scripts/top-banner.js" defer></script>
+  <script src="https://cdn.lordicon.com/lordicon.js"></script>
+  <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
+  <script src="./Integer.js" defer></script>
+</head>
+
+<body>
+  <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
+  <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
+  <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
+
+  <section class="整数总区 总区">
+    <script src="../../Scripts/html-include.js" target="../control.html" position="afterbegin"></script>
+    <p class="交互标题">整数</p>
+    <figure class="展示区">
+      <div class="canvas-container">
+        <canvas id="integerCanvas" width="800" height="200"></canvas>
+        <div class="计算表达式区" id="calculationExpression">
+          <div class="计算表达式内容" id="calculationContent">计算表达式将在这里显示...</div>
         </div>
       </div>
+    </figure>
 
-      <div class="控制区">
-        <div class="整数类型选择区">
-          <label class="整数类型选项" for="type-char">
-            <input type="radio" id="type-char" name="integerType" value="char" />
-            <span class="整数类型标签"
-              ><span class="变量类型">char</span
-              ><span class="字节数"><span class="数字">1</span><span class="单位">字节</span></span></span
-            >
-          </label>
-          <label class="整数类型选项" for="type-short">
-            <input type="radio" id="type-short" name="integerType" value="short" />
-            <span class="整数类型标签"
-              ><span class="变量类型">short</span
-              ><span class="字节数"><span class="数字">2</span><span class="单位">字节</span></span></span
-            >
-          </label>
-          <label class="整数类型选项 selected" for="type-int">
-            <input type="radio" id="type-int" name="integerType" value="int" checked />
-            <span class="整数类型标签"
-              ><span class="变量类型">int</span
-              ><span class="字节数"><span class="数字">4</span><span class="单位">字节</span></span></span
-            >
-          </label>
-          <label class="整数类型选项" for="type-longlong">
-            <input type="radio" id="type-longlong" name="integerType" value="longlong" />
-            <span class="整数类型标签"
-              ><span class="变量类型">long long</span
-              ><span class="字节数"><span class="数字">8</span><span class="单位">字节</span></span></span
-            >
-          </label>
-        </div>
-
-        <div class="符号选择区">
-          <label class="符号选项 selected" for="signed">
-            <input type="radio" id="signed" name="signType" value="signed" checked />
-            <span class="符号标签">有符号</span>
-          </label>
-          <label class="符号选项" for="unsigned">
-            <input type="radio" id="unsigned" name="signType" value="unsigned" />
-            <span class="符号标签">无符号</span>
-          </label>
-        </div>
-
-        <div class="数值显示区">
-          <span class="数值标签">当前数值:</span>
-          <div class="数值输入组">
-            <button class="数值增减按钮 减少按钮" id="decreaseBtn" type="button"></button>
-            <input type="number" class="数值输入框" id="currentValue" value="0" />
-            <button class="数值增减按钮 增加按钮" id="increaseBtn" type="button"></button>
-          </div>
-          <div class="极值按钮组">
-            <button class="极值按钮 最小值按钮" id="minBtn" type="button">MIN</button>
-            <button class="极值按钮 最大值按钮" id="maxBtn" type="button">MAX</button>
-          </div>
+    <!-- 原理解释对话框 -->
+    <div class="原理对话框" id="principleDialog">
+      <div class="对话框内容">
+        <button class="对话框关闭按钮" id="closeDialogBtn">&times;</button>
+        <div class="对话框标题">负数补码原理详解</div>
+        <div class="原理内容" id="principleContent">
+          <!-- 原理内容将通过JavaScript动态生成 -->
         </div>
       </div>
-    </section>
-  </body>
+    </div>
+
+    <div class="控制区">
+      <div class="整数类型选择区">
+        <label class="整数类型选项" for="type-char">
+          <input type="radio" id="type-char" name="integerType" value="char" />
+          <span class="整数类型标签"><span class="变量类型">char</span><span class="字节数"><span class="数字">1</span><span
+                class="单位">字节</span></span></span>
+        </label>
+        <label class="整数类型选项" for="type-short">
+          <input type="radio" id="type-short" name="integerType" value="short" />
+          <span class="整数类型标签"><span class="变量类型">short</span><span class="字节数"><span class="数字">2</span><span
+                class="单位">字节</span></span></span>
+        </label>
+        <label class="整数类型选项 selected" for="type-int">
+          <input type="radio" id="type-int" name="integerType" value="int" checked />
+          <span class="整数类型标签"><span class="变量类型">int</span><span class="字节数"><span class="数字">4</span><span
+                class="单位">字节</span></span></span>
+        </label>
+        <label class="整数类型选项" for="type-longlong">
+          <input type="radio" id="type-longlong" name="integerType" value="longlong" />
+          <span class="整数类型标签"><span class="变量类型">long long</span><span class="字节数"><span class="数字">8</span><span
+                class="单位">字节</span></span></span>
+        </label>
+      </div>
+
+      <div class="符号选择区">
+        <label class="符号选项 selected" for="signed">
+          <input type="radio" id="signed" name="signType" value="signed" checked />
+          <span class="符号标签">有符号</span>
+        </label>
+        <label class="符号选项" for="unsigned">
+          <input type="radio" id="unsigned" name="signType" value="unsigned" />
+          <span class="符号标签">无符号</span>
+        </label>
+      </div>
+
+      <div class="数值显示区">
+        <span class="数值标签">当前数值:</span>
+        <div class="数值输入组">
+          <button class="数值增减按钮 减少按钮" id="decreaseBtn" type="button"></button>
+          <input type="number" class="数值输入框" id="currentValue" value="0" />
+          <button class="数值增减按钮 增加按钮" id="increaseBtn" type="button"></button>
+        </div>
+        <div class="极值按钮组">
+          <button class="极值按钮 最小值按钮" id="minBtn" type="button">MIN</button>
+          <button class="极值按钮 最大值按钮" id="maxBtn" type="button">MAX</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+
 </html>

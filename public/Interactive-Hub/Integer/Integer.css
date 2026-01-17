@@ -96,7 +96,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
   font-size: 16px;
   font-weight: bold;
   color: var(--深色文本);
@@ -224,7 +224,7 @@
   top: -30px;
   left: 50%;
   transform: translateX(-50%);
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
   font-size: 12px;
   color: var(--索引文字);
   user-select: none;
@@ -236,7 +236,7 @@
   bottom: -25px;
   left: 50%;
   transform: translateX(-50%);
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
   font-size: 12px;
   color: var(--索引文字);
   user-select: none;
@@ -248,7 +248,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
   font-size: 18px;
   font-weight: bold;
   color: var(--深色文本);
@@ -266,7 +266,7 @@
   border: 2px solid var(--计算表达式边框);
   border-radius: 8px;
   padding: 15px;
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
   font-size: 16px;
   line-height: 1.6;
   color: var(--深色文本);
@@ -295,7 +295,7 @@
   border: none;
   border-radius: 6px;
   padding: 8px 16px;
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
   font-size: 14px;
   font-weight: bold;
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
@@ -378,7 +378,7 @@
 }
 
 .原理内容 {
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
   font-size: 16px;
   line-height: 1.8;
   color: var(--深色文本);
@@ -608,7 +608,7 @@
 }
 
 .整数类型标签 {
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
   font-weight: 500;
   font-size: 14px;
   color: var(--深色文本);
@@ -703,7 +703,7 @@
 }
 
 .符号标签 {
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
   font-weight: 600;
   font-size: 14px;
   color: var(--深色文本);
@@ -722,7 +722,7 @@
 }
 
 .数值标签 {
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
   font-size: 14px;
   color: var(--深色文本);
   font-weight: 500;
@@ -752,7 +752,7 @@
 }
 
 .数值输入框 {
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
   font-size: 18px;
   color: var(--数字颜色);
   font-weight: bold;
@@ -784,7 +784,7 @@
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   transition: all 0.2s ease;
   position: relative;
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
   font-size: 20px;
   font-weight: bold;
   color: var(--深色文本);
@@ -831,7 +831,7 @@
   border-radius: 6px;
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   transition: all 125ms ease-out;
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
   font-size: 14px;
   font-weight: bold;
   color: var(--深色文本);
@@ -1066,7 +1066,7 @@
 .计算表达式区.无符号 .指数,
 .计算表达式区.有符号正数 .指数 {
   color: var(--指数颜色) !important;
-  font-family: "Ubuntu Mono", monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", "微软雅黑", sans-serif;
 }
 
 .计算表达式区.无符号 .运算符,

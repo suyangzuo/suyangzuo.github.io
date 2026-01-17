@@ -1,102 +1,92 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>浮点数</title>
-    <link rel="icon" href="/Images/Interactive-Hub/HQ/浮点数.png" type="image/x-icon" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Ubuntu+Mono&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/Styles/common.css" />
-    <link rel="stylesheet" href="/Styles/top-banner-common.css" />
-    <link rel="stylesheet" href="../control.css" />
-    <link rel="stylesheet" href="../interactive-common.css" />
-    <link rel="stylesheet" href="./Float-Point-Number.css" />
-    <script src="/Scripts/top-banner.js" defer></script>
-    <script src="https://cdn.lordicon.com/lordicon.js"></script>
-    <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
-    <script src="./Float-Point-Number.js" defer></script>
-  </head>
-  <body>
-    <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
-    <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
-    <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
 
-    <section class="浮点数总区 总区">
-      <script src="../../Scripts/html-include.js" target="../control.html" position="afterbegin"></script>
-      <p class="交互标题">浮点数</p>
-      <figure class="展示区">
-        <div class="canvas-container">
-          <canvas id="floatCanvas" width="800" height="200"></canvas>
-        </div>
-        <div class="计算表达式区" id="calculationExpression">
-          <div class="计算表达式内容" id="calculationContent"></div>
-        </div>
-      </figure>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>浮点数</title>
+  <link rel="icon" href="/Images/Interactive-Hub/HQ/浮点数.png" type="image/x-icon" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Ubuntu+Mono&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/Styles/common.css" />
+  <link rel="stylesheet" href="/Styles/top-banner-common.css" />
+  <link rel="stylesheet" href="../control.css" />
+  <link rel="stylesheet" href="../interactive-common.css" />
+  <link rel="stylesheet" href="./Float-Point-Number.css" />
+  <script src="/Scripts/top-banner.js" defer></script>
+  <script src="https://cdn.lordicon.com/lordicon.js"></script>
+  <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
+  <script src="./Float-Point-Number.js" defer></script>
+</head>
 
-      <div class="控制区">
-        <div class="浮点数类型选择区">
-          <label class="浮点数类型选项 selected" for="type-float">
-            <input type="radio" id="type-float" name="floatType" value="float" checked />
-            <span class="浮点数类型标签"
-              ><span class="变量类型">float</span
-              ><span class="字节数"><span class="数字">4</span><span class="单位">字节</span></span></span
-            >
-          </label>
-          <label class="浮点数类型选项" for="type-double">
-            <input type="radio" id="type-double" name="floatType" value="double" />
-            <span class="浮点数类型标签"
-              ><span class="变量类型">double</span
-              ><span class="字节数"><span class="数字">8</span><span class="单位">字节</span></span></span
-            >
-          </label>
-          <div class="步进设置区">
-            <span class="步进标签">步进</span>
-            <input
-              type="number"
-              class="步进输入框"
-              id="stepValue"
-              value="0.1"
-              min="0.000001"
-              max="1000000"
-              step="0.000001"
-            />
-          </div>
+<body>
+  <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
+  <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
+  <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
+
+  <section class="浮点数总区 总区">
+    <script src="../../Scripts/html-include.js" target="../control.html" position="afterbegin"></script>
+    <p class="交互标题">浮点数</p>
+    <figure class="展示区">
+      <div class="canvas-container">
+        <canvas id="floatCanvas" width="800" height="200"></canvas>
+      </div>
+      <div class="计算表达式区" id="calculationExpression">
+        <div class="计算表达式内容" id="calculationContent"></div>
+      </div>
+    </figure>
+
+    <div class="控制区">
+      <div class="浮点数类型选择区">
+        <label class="浮点数类型选项 selected" for="type-float">
+          <input type="radio" id="type-float" name="floatType" value="float" checked />
+          <span class="浮点数类型标签"><span class="变量类型">float</span><span class="字节数"><span class="数字">4</span><span
+                class="单位">字节</span></span></span>
+        </label>
+        <label class="浮点数类型选项" for="type-double">
+          <input type="radio" id="type-double" name="floatType" value="double" />
+          <span class="浮点数类型标签"><span class="变量类型">double</span><span class="字节数"><span class="数字">8</span><span
+                class="单位">字节</span></span></span>
+        </label>
+        <div class="步进设置区">
+          <span class="步进标签">步进</span>
+          <input type="number" class="步进输入框" id="stepValue" value="0.1" min="0.000001" max="1000000" step="0.000001" />
         </div>
-        <div class="科学记数法显示区">
-          <div class="数值表示内容">
-            <div class="表示项">
-              <span class="表示标签">十进制精确值:</span>
-              <div class="表示值" id="decimalValue">0.00000000000000000000000000000000</div>
-            </div>
-            <div class="表示项">
-              <span class="表示标签">二进制精确值:</span>
-              <div class="表示值" id="binaryValue">0.00000000000000000000000000000000</div>
-            </div>
-            <div class="表示项">
-              <span class="表示标签">二进制科学记数法:</span>
-              <div class="表示值" id="binaryScientificValue">0.00000000000000000000000 × 2^0</div>
-            </div>
+      </div>
+      <div class="科学记数法显示区">
+        <div class="数值表示内容">
+          <div class="表示项">
+            <span class="表示标签">十进制精确值:</span>
+            <div class="表示值" id="decimalValue">0.00000000000000000000000000000000</div>
           </div>
-        </div>
-        <div class="数值显示区">
-          <span class="数值标签">当前数值:</span>
-          <div class="数值输入组">
-            <button class="数值增减按钮 减少按钮" id="decreaseBtn" type="button"></button>
-            <div class="数值显示区域">
-              <input type="text" class="数值输入框" id="currentValue" value="0" step="0.01" />
-            </div>
-            <button class="数值增减按钮 增加按钮" id="increaseBtn" type="button"></button>
+          <div class="表示项">
+            <span class="表示标签">二进制精确值:</span>
+            <div class="表示值" id="binaryValue">0.00000000000000000000000000000000</div>
           </div>
-          <div class="极值按钮组">
-            <button class="极值按钮 最小值按钮" id="minBtn" type="button">MIN</button>
-            <button class="极值按钮 最大值按钮" id="maxBtn" type="button">MAX</button>
+          <div class="表示项">
+            <span class="表示标签">二进制科学记数法:</span>
+            <div class="表示值" id="binaryScientificValue">0.00000000000000000000000 × 2^0</div>
           </div>
         </div>
       </div>
-    </section>
-  </body>
+      <div class="数值显示区">
+        <span class="数值标签">当前数值:</span>
+        <div class="数值输入组">
+          <button class="数值增减按钮 减少按钮" id="decreaseBtn" type="button"></button>
+          <div class="数值显示区域">
+            <input type="text" class="数值输入框" id="currentValue" value="0" step="0.01" />
+          </div>
+          <button class="数值增减按钮 增加按钮" id="increaseBtn" type="button"></button>
+        </div>
+        <div class="极值按钮组">
+          <button class="极值按钮 最小值按钮" id="minBtn" type="button">MIN</button>
+          <button class="极值按钮 最大值按钮" id="maxBtn" type="button">MAX</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+
 </html>
