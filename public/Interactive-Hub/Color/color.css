@@ -26,7 +26,7 @@ input[type="text"] {
   width: calc(100% - 30px);
   background-color: #333;
   color: white;
-  font-family: "JetBrains Mono", Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
   font-size: 1rem;
   padding: 4px 5px;
   border: none;
@@ -81,7 +81,7 @@ input[type="text"]:focus {
 }
 
 .clr-dark input.clr-color {
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
   font-size: 1rem;
 }
 
@@ -90,7 +90,7 @@ input[type="text"]:focus {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  font-family: "JetBrains Mono", Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 .颜色标题 {
@@ -125,8 +125,7 @@ input[type="text"]:focus {
   width: fit-content;
 }
 
-:where(.hex颜色值, .hex无透明颜色值, .hex简写颜色值, .hex简写无透明颜色值)
-  .颜色分值 {
+:where(.hex颜色值, .hex无透明颜色值, .hex简写颜色值, .hex简写无透明颜色值) .颜色分值 {
   margin: 0 1px;
 }
 

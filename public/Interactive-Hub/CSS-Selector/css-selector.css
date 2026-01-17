@@ -66,7 +66,7 @@
 
 .file-name {
   color: var(--text-color);
-  font-family: "JetBrains Mono", monospace;
+  font-family: "JetBrains Mono", "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
   font-size: 14px;
 }
 
@@ -107,7 +107,7 @@ pre[class*="language-"] {
 
 .code-content pre[class*="language-"] {
   margin: 0;
-  font-family: "JetBrains Mono", "Consolas", "Monaco", monospace;
+  font-family: "JetBrains Mono", "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
   font-size: 14px;
   line-height: 1.6;
   color: var(--code-text);
@@ -154,7 +154,7 @@ pre[class*="language-"] {
   display: block;
   padding-right: 0.8em;
   text-align: right;
-  font-family: "JetBrains Mono", monospace;
+  font-family: "JetBrains Mono", "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
   font-size: 14px;
   line-height: 1.6;
 }
@@ -166,7 +166,7 @@ pre[class*="language-"] {
   display: block;
   padding: 0;
   background: transparent;
-  font-family: "JetBrains Mono", "Consolas", "Monaco", monospace;
+  font-family: "JetBrains Mono", "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 /* 为缩进添加圆点 */
@@ -181,7 +181,7 @@ pre[class*="language-"] {
 
 /* 覆盖Prism.js的token样式 */
 .code-content pre[class*="language-"] .token {
-  font-family: "JetBrains Mono", "Consolas", "Monaco", monospace;
+  font-family: "JetBrains Mono", "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 .code-content pre[class*="language-"] .token.tag {
@@ -215,27 +215,27 @@ pre[class*="language-"] {
 /* 代码高亮样式 */
 .code-content .tag {
   color: var(--code-tag);
-  font-family: "JetBrains Mono", "Consolas", "Monaco", monospace;
+  font-family: "JetBrains Mono", "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 .code-content .attr {
   color: var(--code-attr);
-  font-family: "JetBrains Mono", "Consolas", "Monaco", monospace;
+  font-family: "JetBrains Mono", "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 .code-content .string {
   color: var(--code-string);
-  font-family: "JetBrains Mono", "Consolas", "Monaco", monospace;
+  font-family: "JetBrains Mono", "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 .code-content .comment {
   color: var(--code-comment);
-  font-family: "JetBrains Mono", "Consolas", "Monaco", monospace;
+  font-family: "JetBrains Mono", "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 .code-content .keyword {
   color: var(--code-keyword);
-  font-family: "JetBrains Mono", "Consolas", "Monaco", monospace;
+  font-family: "JetBrains Mono", "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 /* 选择器匹配高亮 - 针对Prism.js token */
@@ -271,7 +271,7 @@ pre[class*="language-"] {
   position: relative;
   animation: pulse 2s infinite;
   z-index: 2;
-  font-family: "JetBrains Mono", "Consolas", "Monaco", monospace;
+  font-family: "JetBrains Mono", "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
   display: inline-block;
   margin: 1px 0;
 }
@@ -338,7 +338,7 @@ pre[class*="language-"] {
   border: 1px solid var(--input-border);
   border-radius: 6px;
   color: var(--text-color);
-  font-family: "JetBrains Mono", monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
   font-size: 14px;
   outline: none;
   transition: border-color 0.3s ease;

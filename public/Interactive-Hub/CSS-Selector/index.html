@@ -1,52 +1,53 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CSS 选择器</title>
-    <link rel="icon" href="/Images/Interactive-Hub/HQ/CSS选择器.jpg" type="image/x-icon" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Ubuntu+Mono&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/Styles/common.css" />
-    <link rel="stylesheet" href="/Styles/top-banner-common.css" />
-    <link rel="stylesheet" href="../control.css" />
-    <link rel="stylesheet" href="../interactive-common.css" />
-    <link rel="stylesheet" href="/Styles/prism.css" />
-    <link rel="stylesheet" href="./css-selector.css" />
-    <script src="/Scripts/top-banner.js" defer></script>
-    <script src="https://cdn.lordicon.com/lordicon.js"></script>
-    <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
-    <script src="/Scripts/prism.js"></script>
-    <script src="./css-selector.js" defer></script>
-  </head>
-  <body>
-    <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
-    <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
-    <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
 
-    <section class="CSS选择器总区 总区">
-      <script src="../../Scripts/html-include.js" target="../control.html" position="afterbegin"></script>
-      <p class="交互标题">CSS 选择器</p>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSS 选择器</title>
+  <link rel="icon" href="/Images/Interactive-Hub/HQ/CSS选择器.jpg" type="image/x-icon" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Ubuntu+Mono&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/Styles/common.css" />
+  <link rel="stylesheet" href="/Styles/top-banner-common.css" />
+  <link rel="stylesheet" href="../control.css" />
+  <link rel="stylesheet" href="../interactive-common.css" />
+  <link rel="stylesheet" href="/Styles/prism.css" />
+  <link rel="stylesheet" href="./css-selector.css" />
+  <script src="/Scripts/top-banner.js" defer></script>
+  <script src="https://cdn.lordicon.com/lordicon.js"></script>
+  <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
+  <script src="/Scripts/prism.js"></script>
+  <script src="./css-selector.js" defer></script>
+</head>
 
-      <div class="main-container">
-        <div class="展示区">
-          <div class="code-container">
-            <div class="code-header">
-              <span class="file-name">index.html</span>
-              <div class="code-controls">
-                <button id="randomHtmlBtn" class="random-html-btn" title="随机生成HTML代码">
-                  <i class="fa-solid fa-dice"></i>
-                </button>
-                <span class="control-btn"></span>
-                <span class="control-btn"></span>
-                <span class="control-btn"></span>
-              </div>
+<body>
+  <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
+  <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
+  <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
+
+  <section class="CSS选择器总区 总区">
+    <script src="../../Scripts/html-include.js" target="../control.html" position="afterbegin"></script>
+    <p class="交互标题">CSS 选择器</p>
+
+    <div class="main-container">
+      <div class="展示区">
+        <div class="code-container">
+          <div class="code-header">
+            <span class="file-name">index.html</span>
+            <div class="code-controls">
+              <button id="randomHtmlBtn" class="random-html-btn" title="随机生成HTML代码">
+                <i class="fa-solid fa-dice"></i>
+              </button>
+              <span class="control-btn"></span>
+              <span class="control-btn"></span>
+              <span class="control-btn"></span>
             </div>
-            <div class="code-content">
-              <pre class="line-numbers" data-line="1-50"><code class="language-markup" id="htmlCode">
+          </div>
+          <div class="code-content">
+            <pre class="line-numbers" data-line="1-50"><code class="language-markup" id="htmlCode">
 &lt;!DOCTYPE html&gt;
 &lt;html lang="zh-CN"&gt;
   &lt;head&gt;
@@ -91,92 +92,82 @@
     &lt;/footer&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-            </div>
-          </div>
-        </div>
-
-        <div class="设置区">
-          <div class="selector-input-container">
-            <h3>选择器输入</h3>
-            <div class="input-group">
-              <div class="input-wrapper">
-                <input type="text" id="selectorInput" placeholder="输入CSS选择器" />
-                <button id="clearBtn" class="clear-btn">
-                  <i class="fa-solid fa-times"></i>
-                </button>
-              </div>
-            </div>
-            <div class="selector-info">
-              <span id="matchCount">匹配数量: <span class="match-count-number">0</span></span>
-              <span id="selectorType">选择器类型: <span class="selector-type-text">-</span></span>
-            </div>
-            <div id="noMatchesMessage" class="no-matches-message">没有找到匹配的元素</div>
-          </div>
-
-          <div class="help-container">
-            <h3>选择器说明</h3>
-            <div class="help-content">
-              <p><strong>通用选择器:</strong> *</p>
-              <p>
-                <strong>元素选择器:</strong> h1 <span class="separator">|</span> p <span class="separator">|</span> div
-              </p>
-              <p>
-                <strong>类选择器:</strong> <span class="selector-class-id">.</span>title
-                <span class="separator">|</span> <span class="selector-class-id">.</span>paragraph
-              </p>
-              <p><strong>ID选择器:</strong> <span class="selector-class-id">#</span>main-header</p>
-              <p><strong>后代选择器:</strong> div p <span class="separator">|</span> article h2</p>
-              <p><strong>子元素选择器:</strong> div <span class="selector-child">></span> p</p>
-              <p><strong>接续兄弟选择器:</strong> div <span class="selector-adjacent">+</span> p</p>
-              <p><strong>后续兄弟选择器:</strong> div <span class="selector-sibling">~</span> p</p>
-              <p>
-                <strong>伪类选择器:</strong> <span class="selector-pseudo">:</span>first-child
-                <span class="separator">|</span> <span class="selector-pseudo">:</span>hover
-              </p>
-              <p>
-                <strong>函数式伪类选择器:</strong> <span class="selector-pseudo">:</span>where<span
-                  class="selector-function"
-                  >()</span
-                >
-                <span class="separator">|</span> <span class="selector-pseudo">:</span>has<span
-                  class="selector-function"
-                  >()</span
-                >
-                <span class="separator">|</span> <span class="selector-pseudo">:</span>not<span
-                  class="selector-function"
-                  >()</span
-                >
-              </p>
-              <p>
-                <strong>伪元素选择器:</strong> <span class="selector-pseudo">::</span>before
-                <span class="separator">|</span> <span class="selector-pseudo">::</span>after
-              </p>
-              <p>
-                <strong>属性选择器:</strong> <span class="selector-attribute">[</span>type<span
-                  class="selector-operator"
-                  >=</span
-                >"text"<span class="selector-attribute">]</span> <span class="separator">|</span>
-                <span class="selector-attribute">[</span>class<span class="selector-operator">*=</span>"btn"<span
-                  class="selector-attribute"
-                  >]</span
-                >
-              </p>
-              <p>
-                <strong>交集选择器:</strong> div<span class="selector-class-id">.</span>box
-                <span class="separator">|</span> <span class="selector-class-id">.</span>highlight<span
-                  class="selector-class-id"
-                  >#</span
-                >code
-              </p>
-              <p>
-                <strong>并集选择器:</strong> h1<span class="union-comma">,</span>
-                <span class="selector-class-id">.</span>test<span class="union-comma">,</span>
-                <span class="selector-class-id">#</span>count
-              </p>
-            </div>
           </div>
         </div>
       </div>
-    </section>
-  </body>
+
+      <div class="设置区">
+        <div class="selector-input-container">
+          <h3>选择器输入</h3>
+          <div class="input-group">
+            <div class="input-wrapper">
+              <input type="text" id="selectorInput" placeholder="输入CSS选择器" />
+              <button id="clearBtn" class="clear-btn">
+                <i class="fa-solid fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <div class="selector-info">
+            <span id="matchCount">匹配数量: <span class="match-count-number">0</span></span>
+            <span id="selectorType">选择器类型: <span class="selector-type-text">-</span></span>
+          </div>
+          <div id="noMatchesMessage" class="no-matches-message">没有找到匹配的元素</div>
+        </div>
+
+        <div class="help-container">
+          <h3>选择器说明</h3>
+          <div class="help-content">
+            <p><strong>通用选择器:</strong> *</p>
+            <p>
+              <strong>元素选择器:</strong> h1 <span class="separator">|</span> p <span class="separator">|</span> div
+            </p>
+            <p>
+              <strong>类选择器:</strong> <span class="selector-class-id">.</span>title
+              <span class="separator">|</span> <span class="selector-class-id">.</span>paragraph
+            </p>
+            <p><strong>ID选择器:</strong> <span class="selector-class-id">#</span>main-header</p>
+            <p><strong>后代选择器:</strong> div p <span class="separator">|</span> article h2</p>
+            <p><strong>子元素选择器:</strong> div <span class="selector-child">></span> p</p>
+            <p><strong>接续兄弟选择器:</strong> div <span class="selector-adjacent">+</span> p</p>
+            <p><strong>后续兄弟选择器:</strong> div <span class="selector-sibling">~</span> p</p>
+            <p>
+              <strong>伪类选择器:</strong> <span class="selector-pseudo">:</span>first-child
+              <span class="separator">|</span> <span class="selector-pseudo">:</span>hover
+            </p>
+            <p>
+              <strong>函数式伪类选择器:</strong> <span class="selector-pseudo">:</span>where<span
+                class="selector-function">()</span>
+              <span class="separator">|</span> <span class="selector-pseudo">:</span>has<span
+                class="selector-function">()</span>
+              <span class="separator">|</span> <span class="selector-pseudo">:</span>not<span
+                class="selector-function">()</span>
+            </p>
+            <p>
+              <strong>伪元素选择器:</strong> <span class="selector-pseudo">::</span>before
+              <span class="separator">|</span> <span class="selector-pseudo">::</span>after
+            </p>
+            <p>
+              <strong>属性选择器:</strong> <span class="selector-attribute">[</span>type<span
+                class="selector-operator">=</span>"text"<span class="selector-attribute">]</span> <span
+                class="separator">|</span>
+              <span class="selector-attribute">[</span>class<span class="selector-operator">*=</span>"btn"<span
+                class="selector-attribute">]</span>
+            </p>
+            <p>
+              <strong>交集选择器:</strong> div<span class="selector-class-id">.</span>box
+              <span class="separator">|</span> <span class="selector-class-id">.</span>highlight<span
+                class="selector-class-id">#</span>code
+            </p>
+            <p>
+              <strong>并集选择器:</strong> h1<span class="union-comma">,</span>
+              <span class="selector-class-id">.</span>test<span class="union-comma">,</span>
+              <span class="selector-class-id">#</span>count
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+
 </html>
