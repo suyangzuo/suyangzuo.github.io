@@ -1,78 +1,67 @@
 <!doctype html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>插入排序法</title>
-    <link
-      rel="icon"
-      href="/Images/Interactive-Hub/HQ/插入排序法.png"
-      type="image/x-icon"
-    />
-    <link rel="stylesheet" href="/Styles/common.css" />
-    <link rel="stylesheet" href="/Styles/top-banner-common.css" />
-    <link rel="stylesheet" href="../control.css" />
-    <link rel="stylesheet" href="../interactive-common.css" />
-    <link rel="stylesheet" href="./Insert-Sort.css" />
-    <script src="/Scripts/top-banner.js" defer></script>
-    <script src="https://cdn.lordicon.com/lordicon.js"></script>
-    <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
-    <script src="./Insert-Sort.js" defer></script>
-  </head>
-  <body>
-    <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
-    <script
-      src="../../Scripts/html-include.js"
-      target="../../top-banner.html"
-      position="afterbegin"
-    ></script>
-    <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
 
-    <section class="插入排序总区 总区">
-      <script
-        src="../../Scripts/html-include.js"
-        target="../control.html"
-        position="afterbegin"
-      ></script>
-      <p class="交互标题">插入排序法</p>
-      <section id="排序区">
-        <div class="数字区"></div>
-        <div class="控制区">
-          <div class="设置区">
-            <label class="动画速率标签" for="动画速率">
-              <span class="标签文本">动画速率</span>
-              <input type="range" min="1" max="10" value="4" id="动画速率" />
-              <span id="动画速率数值"
-                ><span class="乘号">×</span
-                ><span class="动画速率数值文本">4</span></span
-              >
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>插入排序法</title>
+  <link rel="icon" href="/Images/Interactive-Hub/HQ/插入排序法.png" type="image/x-icon" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Ubuntu+Mono&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/Styles/common.css" />
+  <link rel="stylesheet" href="/Styles/top-banner-common.css" />
+  <link rel="stylesheet" href="../control.css" />
+  <link rel="stylesheet" href="../interactive-common.css" />
+  <link rel="stylesheet" href="./Insert-Sort.css" />
+  <script src="/Scripts/top-banner.js" defer></script>
+  <script src="https://cdn.lordicon.com/lordicon.js"></script>
+  <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
+  <script src="./Insert-Sort.js" defer></script>
+</head>
+
+<body>
+  <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
+  <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
+  <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
+
+  <section class="插入排序总区 总区">
+    <script src="../../Scripts/html-include.js" target="../control.html" position="afterbegin"></script>
+    <p class="交互标题">插入排序法</p>
+    <section id="排序区">
+      <div class="数字区"></div>
+      <div class="控制区">
+        <div class="设置区">
+          <label class="动画速率标签" for="动画速率">
+            <span class="标签文本">动画速率</span>
+            <input type="range" min="1" max="10" value="4" id="动画速率" />
+            <span id="动画速率数值"><span class="乘号">×</span><span class="动画速率数值文本">4</span></span>
+          </label>
+          <div class="复选区">
+            <label class="排列顺序标签" for="排列顺序">
+              <span class="标签文本">升序</span>
+              <input type="checkbox" checked id="排列顺序" />
             </label>
-            <div class="复选区">
-              <label class="排列顺序标签" for="排列顺序">
-                <span class="标签文本">升序</span>
-                <input type="checkbox" checked id="排列顺序" />
-              </label>
-              <label class="播放音效标签" for="播放音效">
-                <span class="标签文本">音效</span>
-                <input type="checkbox" checked id="播放音效" />
-              </label>
-            </div>
-            <button id="开始运行">开始运行</button>
+            <label class="播放音效标签" for="播放音效">
+              <span class="标签文本">音效</span>
+              <input type="checkbox" checked id="播放音效" />
+            </label>
           </div>
-          <div class="代码演示区">
-            <p class="外循环区">
-              <span class="循环文本">外循环</span>
-              <span class="外循环索引">i</span>
-              <span class="等号">=</span>
-              <span class="外循环索引数字"></span>
-              <span class="外循环轮"
-                >第<span class="外循环轮数字"></span>轮</span
-              >
-            </p>
-          </div>
+          <button id="开始运行">开始运行</button>
         </div>
-      </section>
+        <div class="代码演示区">
+          <p class="外循环区">
+            <span class="循环文本">外循环</span>
+            <span class="外循环索引">i</span>
+            <span class="等号">=</span>
+            <span class="外循环索引数字"></span>
+            <span class="外循环轮">第<span class="外循环轮数字"></span>轮</span>
+          </p>
+        </div>
+      </div>
     </section>
-  </body>
+  </section>
+</body>
+
 </html>

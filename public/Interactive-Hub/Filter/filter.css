@@ -142,11 +142,11 @@ body {
 }
 
 #效果图滑块::-moz-range-thumb:hover {
-  cursor: url("/Images/Common/鼠标-横向缩放.png"), ew-resize;
+  cursor: url("/Images/Common/鼠标-拖拽.cur"), ew-resize;
 }
 
 #效果图滑块::-webkit-slider-thumb:hover {
-  cursor: url("/Images/Common/鼠标-横向缩放.png"), ew-resize;
+  cursor: url("/Images/Common/鼠标-拖拽.cur"), ew-resize;
 }
 
 .分割线 {

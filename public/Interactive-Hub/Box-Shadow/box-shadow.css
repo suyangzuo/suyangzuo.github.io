@@ -473,7 +473,7 @@ label {
 }
 
 .阴影属性滑块:hover {
-  cursor: url("/Images/Common/鼠标-横向缩放.png"), ew-resize;
+  cursor: url("/Images/Common/鼠标-拖拽.cur"), ew-resize;
 }
 
 .滑块数据文本 {

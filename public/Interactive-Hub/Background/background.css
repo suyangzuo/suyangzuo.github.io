@@ -100,7 +100,7 @@
 }
 
 .属性区.拖拽区:hover {
-  cursor: url("/Images/Common/鼠标-横向缩放.png"), ew-resize;
+  cursor: url("/Images/Common/鼠标-拖拽.cur"), ew-resize;
   outline: none;
   background: linear-gradient(to top, #ddd, #b2b2b2);
   color: black;
@@ -327,7 +327,7 @@ label[for="bg-size"] {
 }
 
 .范围滑块::-webkit-slider-thumb:hover {
-  cursor: url("/Images/Common/鼠标-横向缩放.png"), ew-resize;
+  cursor: url("/Images/Common/鼠标-拖拽.cur"), ew-resize;
 }
 
 .属性区 {

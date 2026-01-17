@@ -10,6 +10,10 @@
   --数字过渡时长: 500ms;
 }
 
+body {
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+}
+
 input[type="range"] {
   height: 6px;
   border-radius: 999px;
@@ -78,7 +82,7 @@ input[type="range"]::-webkit-slider-thumb {
 .数字索引 {
   position: absolute;
   top: 25%;
-  font-family: consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
   color: #888;
   font-size: 0.9em;
   transition: var(--数字过渡时长);
@@ -87,7 +91,7 @@ input[type="range"]::-webkit-slider-thumb {
 .i索引,
 .j索引 {
   position: absolute;
-  font-family: consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
   opacity: 0;
   transition: var(--数字过渡时长);
 }
@@ -188,7 +192,7 @@ label {
 }
 
 #动画速率:hover {
-  cursor: url("/Images/Common/鼠标-横向缩放.png"), ew-resize;
+  cursor: url("/Images/Common/鼠标-拖拽.cur"), ew-resize;
 }
 
 #动画速率数值 {
@@ -198,7 +202,7 @@ label {
   display: inline-flex;
   justify-content: flex-start;
   align-items: center;
-  font-family: "Jetbrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 .乘号 {
@@ -336,7 +340,7 @@ input[type="checkbox"]:checked::before {
   align-items: center;
   background-color: rgb(117, 94, 61);
   border-radius: 5px;
-  font-family: consolas, monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 .外循环索引,
@@ -374,7 +378,7 @@ input[type="checkbox"]:checked::before {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: consolas, 微软雅黑, sans-serif;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 .内循环轮 {

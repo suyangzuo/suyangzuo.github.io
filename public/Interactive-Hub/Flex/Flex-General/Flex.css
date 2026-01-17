@@ -614,7 +614,7 @@ input[type="range"]::after {
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
-  cursor: url("/Images/Common/鼠标-横向缩放.png"), ew-resize;
+  cursor: url("/Images/Common/鼠标-拖拽.cur"), ew-resize;
 }
 
 .盒子数量按钮区,
