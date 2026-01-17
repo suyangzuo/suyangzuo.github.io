@@ -46,7 +46,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+  background:
+    radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
     radial-gradient(circle at 80% 20%, rgba(0, 102, 204, 0.1) 0%, transparent 50%),
     radial-gradient(circle at 40% 40%, rgba(0, 212, 255, 0.05) 0%, transparent 50%);
   pointer-events: none;
@@ -69,7 +70,9 @@
     rgba(0, 212, 255, 0.08) 100%
   );
   border-bottom: 1px solid rgba(0, 212, 255, 0.2);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
   overflow: hidden;
 }
 
@@ -81,7 +84,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(circle at 25% 25%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+  background:
+    radial-gradient(circle at 25% 25%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
     radial-gradient(circle at 75% 75%, rgba(0, 102, 204, 0.06) 0%, transparent 50%),
     linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.03) 50%, transparent 100%);
   pointer-events: none;
@@ -114,37 +118,44 @@
 
 @keyframes backgroundShift {
   0% {
-    background: radial-gradient(circle at 25% 25%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+    background:
+      radial-gradient(circle at 25% 25%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
       radial-gradient(circle at 75% 75%, rgba(0, 102, 204, 0.06) 0%, transparent 50%),
       linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.03) 50%, transparent 100%);
   }
   16.67% {
-    background: radial-gradient(circle at 30% 30%, rgba(0, 212, 255, 0.09) 0%, transparent 50%),
+    background:
+      radial-gradient(circle at 30% 30%, rgba(0, 212, 255, 0.09) 0%, transparent 50%),
       radial-gradient(circle at 70% 70%, rgba(0, 102, 204, 0.07) 0%, transparent 50%),
       linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.04) 50%, transparent 100%);
   }
   33.33% {
-    background: radial-gradient(circle at 35% 35%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+    background:
+      radial-gradient(circle at 35% 35%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
       radial-gradient(circle at 65% 65%, rgba(0, 102, 204, 0.08) 0%, transparent 50%),
       linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.05) 50%, transparent 100%);
   }
   50% {
-    background: radial-gradient(circle at 40% 40%, rgba(0, 212, 255, 0.11) 0%, transparent 50%),
+    background:
+      radial-gradient(circle at 40% 40%, rgba(0, 212, 255, 0.11) 0%, transparent 50%),
       radial-gradient(circle at 60% 60%, rgba(0, 102, 204, 0.09) 0%, transparent 50%),
       linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.06) 50%, transparent 100%);
   }
   66.67% {
-    background: radial-gradient(circle at 35% 35%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+    background:
+      radial-gradient(circle at 35% 35%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
       radial-gradient(circle at 65% 65%, rgba(0, 102, 204, 0.08) 0%, transparent 50%),
       linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.05) 50%, transparent 100%);
   }
   83.33% {
-    background: radial-gradient(circle at 30% 30%, rgba(0, 212, 255, 0.09) 0%, transparent 50%),
+    background:
+      radial-gradient(circle at 30% 30%, rgba(0, 212, 255, 0.09) 0%, transparent 50%),
       radial-gradient(circle at 70% 70%, rgba(0, 102, 204, 0.07) 0%, transparent 50%),
       linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.04) 50%, transparent 100%);
   }
   100% {
-    background: radial-gradient(circle at 25% 25%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+    background:
+      radial-gradient(circle at 25% 25%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
       radial-gradient(circle at 75% 75%, rgba(0, 102, 204, 0.06) 0%, transparent 50%),
       linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.03) 50%, transparent 100%);
   }
@@ -208,7 +219,9 @@
   background: rgba(0, 212, 255, 0.1);
   border: 1.2px solid rgba(0, 212, 255, 0.3);
   backdrop-filter: blur(15px);
-  box-shadow: 0 5px 19px rgba(0, 212, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 5px 19px rgba(0, 212, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   transform: translateY(0);
@@ -222,7 +235,9 @@
   transform: translateY(-5px) scale(1.05);
   background: rgba(0, 212, 255, 0.15);
   border-color: rgba(0, 212, 255, 0.5);
-  box-shadow: 0 10px 29px rgba(0, 212, 255, 0.3), 0 0 0 1px rgba(0, 212, 255, 0.2),
+  box-shadow:
+    0 10px 29px rgba(0, 212, 255, 0.3),
+    0 0 0 1px rgba(0, 212, 255, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
@@ -241,7 +256,9 @@
   border-radius: 12px;
   border: 1.2px solid rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(15px);
-  box-shadow: 0 5px 19px rgba(255, 255, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 5px 19px rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   /* 确保文字清晰渲染 */
   -webkit-font-smoothing: antialiased;
@@ -253,7 +270,9 @@
   transform: translateY(-4px) scale(1.03);
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 7px 24px rgba(255, 255, 255, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.1),
+  box-shadow:
+    0 7px 24px rgba(255, 255, 255, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
@@ -271,7 +290,9 @@
   background: rgba(0, 212, 255, 0.1);
   border: 1.2px solid rgba(0, 212, 255, 0.3);
   backdrop-filter: blur(15px);
-  box-shadow: 0 5px 19px rgba(0, 212, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 5px 19px rgba(0, 212, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   transform: translateY(0);
@@ -285,7 +306,9 @@
   transform: translateY(-5px) scale(1.05);
   background: rgba(0, 212, 255, 0.15);
   border-color: rgba(0, 212, 255, 0.5);
-  box-shadow: 0 10px 29px rgba(0, 212, 255, 0.3), 0 0 0 1px rgba(0, 212, 255, 0.2),
+  box-shadow:
+    0 10px 29px rgba(0, 212, 255, 0.3),
+    0 0 0 1px rgba(0, 212, 255, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
@@ -510,7 +533,7 @@
 }
 
 .条目链接 {
-  width: calc(25% - 15px);
+  width: max(285px, calc(25% - 15px));
   transition: all 0.25s ease;
 }
 
@@ -526,7 +549,7 @@
 }
 
 .条目链接旋转容器 {
-  padding: 15px;
+  padding: 10px 15px;
   width: 100%;
   height: 100%;
   background: rgba(255, 255, 255, 0.03);
@@ -579,7 +602,7 @@
 .链接标题 {
   text-wrap: nowrap;
   flex-shrink: 0;
-  font-size: 15px;
+  font-size: 14px;
   color: var(--文字主色);
   font-weight: 500;
   letter-spacing: 0.3px;

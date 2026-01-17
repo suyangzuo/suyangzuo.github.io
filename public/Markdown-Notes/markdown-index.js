@@ -20,13 +20,22 @@ const 知识库 = {
           日: 22,
         },
       },
-       {
+      {
         标题: "clangd配置",
         作者: "凌子轩",
         时间: {
           年: 2025,
           月: 12,
           日: 21,
+        },
+      },
+      {
+        标题: "自定义 FireFox 开发者工具字体",
+        作者: "苏扬",
+        时间: {
+          年: 2026,
+          月: 1,
+          日: 17,
         },
       },
     ],
@@ -300,9 +309,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const 目录数据 = 知识库[目标目录];
   const 要打开的笔记 =
-    URL参数.技术栈 &&
-    URL参数.笔记 &&
-    目录数据?.笔记.some((笔记) => 笔记.标题.replaceAll(" ", "") === URL参数.笔记)
+    URL参数.技术栈 && URL参数.笔记 && 目录数据?.笔记.some((笔记) => 笔记.标题.replaceAll(" ", "") === URL参数.笔记)
       ? URL参数.笔记
       : null;
 
@@ -372,9 +379,7 @@ function 切换目录(键, { 更新历史 = true } = {}) {
 
   const 目标目录元素 =
     Array.from(目录区.children).find((目录元素) => 目录元素.dataset?.技术栈 === 标准键) ||
-    Array.from(目录区.children).find(
-      (目录元素) => 目录元素.querySelector(".目录标题")?.textContent === 标准键
-    );
+    Array.from(目录区.children).find((目录元素) => 目录元素.querySelector(".目录标题")?.textContent === 标准键);
 
   if (目标目录元素) {
     目标目录元素.classList.add("当前目录");

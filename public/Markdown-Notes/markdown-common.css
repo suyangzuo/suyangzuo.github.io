@@ -192,6 +192,7 @@ ol ol {
 .笔记目录区 code {
   font-size: 14px;
   font-family: var(--中文代码混合字体);
+  line-height: 1.5em;
 }
 
 .笔记区 :is(h1, h2, h3, h4, h5, h6) code {
@@ -345,7 +346,7 @@ ol ol {
   background: rgba(255, 215, 0, 0.1);
   padding: 1px 4px;
   border-radius: 3px;
-  font-size: 0.9em;
+  font-size: 0.95em;
 }
 
 .一级目录 strong,
