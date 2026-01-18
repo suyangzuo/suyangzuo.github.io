@@ -204,7 +204,7 @@
         鼠标位于多边形内部(鼠标坐标, 多边形路径对象) {
           return this.ctx.isPointInPath(
             多边形路径对象,
-            // isPointInPath 检测的是物理像素，因此鼠标坐标必须 ✗ DPI缩放比例
+            // isPointInPath 检测的是物理像素，因此鼠标坐标必须 × DPI缩放比例
             鼠标坐标.x * this.dpr, 
             鼠标坐标.y * this.dpr
           );
