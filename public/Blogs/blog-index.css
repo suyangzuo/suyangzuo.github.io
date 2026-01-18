@@ -20,12 +20,13 @@
   --行内专业名词颜色: #709de8;
   --行内代码颜色: #4aa66f;
   --标题字体集: "Titillium Web", "Segoe UI Emoji", "Noto Sans SC", sans-serif;
-  --代码字体集: "JetBrains Mono", "Segoe UI Emoji", "Noto Sans SC", monospace;
+  --代码字体集: "JetBrains Mono", "Segoe UI Emoji", "Noto Sans SC", 微软雅黑, sans-serif;
   --font-awesome-字体集: "Font Awesome 6 Free", ui-rounded;
-  --代码块字体集: "Jetbrains Mono", Monaco, "Andale Mono", "Ubuntu Mono", "Segoe UI Emoji", "Noto Sans SC", monospace !important;
+  --代码块字体集:
+    "Jetbrains Mono", "Google Sans Code", "Segoe UI Emoji", "Noto Sans SC", 微软雅黑, sans-serif !important;
   --分区列表项-字体颜色: #9ab;
   --已激活章节标题-字体颜色: rgb(129, 206, 129) !important;
-  --正文字体: /* "IBM Plex Sans",  */ "Noto Sans SC", sans-serif, "Noto Sans Mono", "Segoe UI Emoji", monospace;
+  --正文字体: "Google Sans Code", "JetBrains Mono", "Segoe UI Emoji", "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 html {
@@ -303,7 +304,9 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
   overflow-x: hidden;
   backdrop-filter: blur(20px);
   border: none;
-  transition: translate 0.25s, display 0.25s allow-discrete;
+  transition:
+    translate 0.25s,
+    display 0.25s allow-discrete;
 }
 
 #收藏栏[open] {
@@ -665,13 +668,16 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   width: 65px;
   height: 65px;
   border-radius: 50px;
-  background: no-repeat center/contain url("./选择器修饰.png"),
+  background:
+    no-repeat center/contain url("./选择器修饰.png"),
     radial-gradient(circle at center, #80d0c744 0%, #13547a11 50%);
   bottom: 40px;
   right: 50px;
   pointer-events: all;
   animation: 旋转技术栈选择器 5s linear infinite;
-  transition: scale 0.25s, filter 250ms;
+  transition:
+    scale 0.25s,
+    filter 250ms;
 }
 
 body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .技术栈选择器 {
@@ -744,7 +750,9 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   backdrop-filter: blur(20px);
   border: solid 2px #3a3a3a;
   clip-path: inset(50% 50% 50% 50%);
-  transition: clip-path 250ms, display 250ms allow-discrete;
+  transition:
+    clip-path 250ms,
+    display 250ms allow-discrete;
   overflow: hidden;
 }
 
@@ -980,7 +988,9 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   align-items: center;
   border-radius: 200px;
   pointer-events: none;
-  transition: left 250ms, border 250ms;
+  transition:
+    left 250ms,
+    border 250ms;
 }
 
 #侧边栏布局:hover::before {
@@ -1003,7 +1013,9 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   align-items: center;
   border-radius: 200px;
   pointer-events: none;
-  transition: left 250ms, scale 250ms;
+  transition:
+    left 250ms,
+    scale 250ms;
 }
 
 #侧边栏布局[layout="紧凑"]::after {
@@ -1266,7 +1278,10 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .简介标题 {
-  font-family: “Fira Sans”, "Noto Sans SC", sans-serif;
+  font-family:
+    “Fira Sans”,
+    "Noto Sans SC",
+    sans-serif;
   font-size: 2.25rem;
   letter-spacing: 1px;
   display: flex;
@@ -1699,7 +1714,9 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(#555 0%, #555 100%) content-box, linear-gradient(#678 0%, #555 95%) border-box;
+  background:
+    linear-gradient(#555 0%, #555 100%) content-box,
+    linear-gradient(#678 0%, #555 95%) border-box;
   /*background-color: #fff1;*/
   border: solid 2px transparent;
   border-radius: 10px;
@@ -1792,7 +1809,9 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 .代码 {
   font-family: "JetBrains Mono", "Segoe UI Emoji", "Noto Sans SC", monospace;
   background-color: #222;
-  box-shadow: inset 0 1px 1px 0 #fff5, 0 1px 0 0 #fff2;
+  box-shadow:
+    inset 0 1px 1px 0 #fff5,
+    0 1px 0 0 #fff2;
   color: white;
   padding: 2px 5px;
   margin: 0 0.25em;
@@ -1801,7 +1820,9 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .提醒 .代码 {
-  box-shadow: inset 0 1px 1px 0 #fff6, 0 1px 0 0 #fff2;
+  box-shadow:
+    inset 0 1px 1px 0 #fff6,
+    0 1px 0 0 #fff2;
 }
 
 *[class*="2级标题"] > .代码 {
@@ -2688,32 +2709,67 @@ div.code-toolbar > .toolbar {
 
 @keyframes 文本阴影叠加动画 {
   from {
-    text-shadow: 0 0 0 transparent, 0 0 0 transparent, 0 0 0 transparent, 0 0 0 transparent;
+    text-shadow:
+      0 0 0 transparent,
+      0 0 0 transparent,
+      0 0 0 transparent,
+      0 0 0 transparent;
   }
   5% {
-    text-shadow: 15px 15px 0 black, 0 0 0 transparent, 0 0 0 transparent, 0 0 0 transparent;
+    text-shadow:
+      15px 15px 0 black,
+      0 0 0 transparent,
+      0 0 0 transparent,
+      0 0 0 transparent;
   }
   10% {
-    text-shadow: 15px 15px 0 black, -15px 15px 0 gold, 0 0 0 transparent, 0 0 0 transparent;
+    text-shadow:
+      15px 15px 0 black,
+      -15px 15px 0 gold,
+      0 0 0 transparent,
+      0 0 0 transparent;
   }
   15% {
-    text-shadow: 15px 15px 0 black, -15px 15px 0 gold, -15px -15px 0 seagreen, 0 0 0 transparent;
+    text-shadow:
+      15px 15px 0 black,
+      -15px 15px 0 gold,
+      -15px -15px 0 seagreen,
+      0 0 0 transparent;
   }
   20% {
-    text-shadow: 15px 15px 0 black, -15px 15px 0 gold, -15px -15px 0 seagreen, 15px -15px 0 lightskyblue;
+    text-shadow:
+      15px 15px 0 black,
+      -15px 15px 0 gold,
+      -15px -15px 0 seagreen,
+      15px -15px 0 lightskyblue;
   }
   40% {
-    text-shadow: 200px 100px 0 black, -200px 100px 0 gold, -200px -100px 0 seagreen, 200px -100px 0 lightskyblue;
+    text-shadow:
+      200px 100px 0 black,
+      -200px 100px 0 gold,
+      -200px -100px 0 seagreen,
+      200px -100px 0 lightskyblue;
   }
   60% {
-    text-shadow: 200px 100px 20px black, -200px 100px 20px gold, -200px -100px 20px seagreen,
+    text-shadow:
+      200px 100px 20px black,
+      -200px 100px 20px gold,
+      -200px -100px 20px seagreen,
       200px -100px 20px lightskyblue;
   }
   80% {
-    text-shadow: 200px 100px 0 black, -200px 100px 0 gold, -200px -100px 0 seagreen, 200px -100px 0 lightskyblue;
+    text-shadow:
+      200px 100px 0 black,
+      -200px 100px 0 gold,
+      -200px -100px 0 seagreen,
+      200px -100px 0 lightskyblue;
   }
   to {
-    text-shadow: 0 0 0 transparent, 0 0 0 transparent, 0 0 0 transparent, 0 0 0 transparent;
+    text-shadow:
+      0 0 0 transparent,
+      0 0 0 transparent,
+      0 0 0 transparent,
+      0 0 0 transparent;
   }
 }
 

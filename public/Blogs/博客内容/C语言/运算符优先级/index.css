@@ -1,23 +1,22 @@
 td:has(i) {
-          text-align: center;
-        }
+  text-align: center;
+}
 
-        td > i {
-          color: goldenrod;
-          font-size: 2em;
-        }
+td > i {
+  color: goldenrod;
+  font-size: 2em;
+}
 
-        tr:nth-child(even) > td:not(td[rowspan]) {
-          background-color: #234;
-        }
+tr:nth-child(even) > td:not(td[rowspan]) {
+  background-color: #234;
+}
 
-        .表身区 td:not(td[span]) {
-          padding: 5px 15px;
-        }
+.表身区 td:not(td[span]) {
+  padding: 5px 15px;
+}
 
-        .代码 {
-          font-size: 0.95em;
-          font-family: "Red Hat Mono", "Segoe UI Emoji", "Noto Sans SC",
-            monospace;
-          padding: 1px 5px;
-        }
+.代码 {
+  font-size: 0.95em;
+  font-family: "Google Sans Code", "Segoe UI Emoji", "Noto Sans SC", 微软雅黑, sans-serif;
+  padding: 1px 5px;
+}
