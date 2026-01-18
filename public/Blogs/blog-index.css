@@ -26,7 +26,7 @@
     "Jetbrains Mono", "Google Sans Code", "Segoe UI Emoji", "Noto Sans SC", 微软雅黑, sans-serif !important;
   --分区列表项-字体颜色: #9ab;
   --已激活章节标题-字体颜色: rgb(129, 206, 129) !important;
-  --正文字体: "Google Sans Code", "JetBrains Mono", "Segoe UI Emoji", "Noto Sans SC", 微软雅黑, sans-serif;
+  --正文字体: "Google Sans Flex", "Segoe UI Emoji", "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 html {

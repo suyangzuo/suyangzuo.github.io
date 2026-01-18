@@ -11,6 +11,11 @@ tr:nth-child(even) > td:not(td[rowspan]) {
   background-color: #234;
 }
 
+.表身区 th {
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+  font-weight: normal;
+}
+
 .表身区 td:not(td[span]) {
   padding: 5px 15px;
 }
