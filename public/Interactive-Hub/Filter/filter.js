@@ -26,6 +26,8 @@ const 全局重置按钮 = document.querySelector(".重置按钮");
 let 缩略图已显示 = false;
 let 滤镜列表已显示 = false;
 let 滤镜效果组 = [];
+let 效果图滑块指针差值 = 0;
+let 正在拖拽效果图滑块 = false;
 
 图像区.addEventListener("click", () => {
   滤镜开关按钮.innerHTML = '<i class="fa-solid fa-eye"></i>';
@@ -47,6 +49,69 @@ let 滤镜效果组 = [];
   const 拇指x偏移 = (效果图滑块.value - 500) * (拇指宽度 / 1000);
   root.style.setProperty("--效果图滑块拇指x修正", `${拇指x偏移}px`);
 });
+
+// 记录按下时拇指中心与指针的差值，拖拽时保持该差值避免跳动
+效果图滑块.addEventListener("pointerdown", (e) => {
+  const 滑块矩形 = 效果图滑块.getBoundingClientRect();
+  const 最小值 = parseInt(效果图滑块.min || "0", 10);
+  const 最大值 = parseInt(效果图滑块.max || "1000", 10);
+  const 当前值 = parseInt(效果图滑块.value, 10);
+  const 比例 = (当前值 - 最小值) / (最大值 - 最小值);
+  const 当前拇指宽度 = parseInt(
+    rootStyle.getPropertyValue("--效果图滑块拇指宽度"),
+    10,
+  );
+  const 拇指中心x = 滑块矩形.left + 比例 * 滑块矩形.width;
+  const 指针x = e.clientX;
+  const 距离 = 指针x - 拇指中心x;
+
+  // 仅当点击发生在拇指附近才自定义拖拽，避免破坏点击轨道跳转的行为
+  if (Math.abs(距离) <= 当前拇指宽度 / 2 + 4) {
+    效果图滑块指针差值 = 距离;
+    正在拖拽效果图滑块 = true;
+    效果图滑块.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  } else {
+    效果图滑块指针差值 = 0;
+    正在拖拽效果图滑块 = false;
+  }
+});
+
+效果图滑块.addEventListener("pointermove", (e) => {
+  if (!正在拖拽效果图滑块) return;
+  const 滑块矩形 = 效果图滑块.getBoundingClientRect();
+  const 最小值 = parseInt(效果图滑块.min || "0", 10);
+  const 最大值 = parseInt(效果图滑块.max || "1000", 10);
+  const 步长 = parseFloat(效果图滑块.step || "1");
+
+  const 目标中心x = e.clientX - 滑块矩形.left - 效果图滑块指针差值;
+  const 限制后x = Math.min(
+    Math.max(目标中心x, 0),
+    滑块矩形.width,
+  );
+  const 比例 = 滑块矩形.width === 0 ? 0 : 限制后x / 滑块矩形.width;
+  const 原始值 = 最小值 + (最大值 - 最小值) * 比例;
+  const 对齐值 = Math.round((原始值 - 最小值) / 步长) * 步长 + 最小值;
+  const 新值 = Math.min(Math.max(对齐值, 最小值), 最大值);
+
+  if (Number(效果图滑块.value) !== 新值) {
+    效果图滑块.value = 新值;
+    // 手动触发 input 以复用现有更新逻辑
+    效果图滑块.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+  e.preventDefault();
+});
+
+const 重置效果图滑块拖拽状态 = (e) => {
+  if (正在拖拽效果图滑块) {
+    效果图滑块.releasePointerCapture(e.pointerId);
+  }
+  正在拖拽效果图滑块 = false;
+  效果图滑块指针差值 = 0;
+};
+
+效果图滑块.addEventListener("pointerup", 重置效果图滑块拖拽状态);
+效果图滑块.addEventListener("pointercancel", 重置效果图滑块拖拽状态);
 
 for (const 缩略图项 of 缩略图像组) {
   缩略图项.addEventListener("click", () => {
