@@ -127,11 +127,7 @@ body::before {
 }
 
 .教程区 {
-  background: linear-gradient(
-    43deg,
-    rgba(73, 84, 101, 0.55),
-    rgba(68, 95, 123, 0.55)
-  );
+  background: linear-gradient(43deg, rgba(73, 84, 101, 0.55), rgba(68, 95, 123, 0.55));
   backdrop-filter: blur(8px);
   border-radius: 10px;
   width: 100%;
@@ -141,7 +137,9 @@ body::before {
   gap: 5px 0;
   place-content: center;
   padding: 15px 5px;
-  box-shadow: inset 1px 1px 2px 0 #ffffff2a, 6px 6px 15px 0 #0008;
+  box-shadow:
+    inset 1px 1px 2px 0 #ffffff2a,
+    6px 6px 15px 0 #0008;
 }
 
 .教程区网格 {
@@ -178,7 +176,9 @@ body::before {
 }
 
 .教程区网格:hover::before {
-  box-shadow: inset 1.5px 1.5px 1.5px 0 #ffff, 1px 1px 4px 0 #0008;
+  box-shadow:
+    inset 1.5px 1.5px 1.5px 0 #ffff,
+    1px 1px 4px 0 #0008;
   visibility: visible;
   opacity: 1;
 }
@@ -196,6 +196,7 @@ body::before {
   width: 80%;
   height: 60px;
   object-fit: contain;
+  filter: drop-shadow(2px 2px 2px #000a);
 }
 
 .教程Logo[alt="Zbrush"] {

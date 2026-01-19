@@ -142,7 +142,7 @@
           const 距离平方 = (鼠标坐标.x - 圆心.x) ** 2 + (鼠标坐标.y - 圆心.y) ** 2;
 
           // 距离平方和半径平方比较，等价于距离和半径比较
-          return 距离平方 <= Math.pow(半径, 2);
+          return 距离平方 <= 半径 ** 2;
         }
       </code>
     </pre>
@@ -204,9 +204,9 @@
         鼠标位于多边形内部(鼠标坐标, 多边形路径对象) {
           return this.ctx.isPointInPath(
             多边形路径对象,
-            // isPointInPath 检测的是物理像素，因此鼠标坐标必须 × DPI缩放比例
-            鼠标坐标.x * this.dpr, 
-            鼠标坐标.y * this.dpr
+            // isPointInPath 检测的是物理像素，因此鼠标坐标必须 × 分辨率缩放值
+            鼠标坐标.x * 分辨率缩放值, 
+            鼠标坐标.y * 分辨率缩放值
           );
         }
       </code>
@@ -615,26 +615,34 @@
         >个呢？能这么写代码吗？
       </li>
       <li class="分区列表项">
-        虽然拖拽问题解决了，但是鼠标悬停到图形重叠范围内时，所有符合条件的图形依然会触发鼠标悬停效果。
+        <span>虽然拖拽问题解决了，但是鼠标悬停到图形重叠范围内时，所有符合条件的图形依然会触发鼠标悬停效果。</span>
       </li>
       <li class="分区列表项">
-        检测鼠标是否位于矩形、正圆、多边形内部，用了<span class="行内专业名词 等宽">3</span>种不同的逻辑，写成了<span
-          class="行内专业名词 等宽"
-          >3</span
-        >个函数，不具备通用性。
+        <span
+          >检测鼠标是否位于矩形、正圆、多边形内部，用了<span class="行内专业名词 等宽">3</span>种不同的逻辑，写成了<span
+            class="行内专业名词 等宽"
+            >3</span
+          >个函数，不具备通用性。</span
+        >
       </li>
     </ul>
     <p class="分区普通文本">我们需要解决上面3个问题，其思路为：</p>
     <ul class="分区列表">
       <li class="分区列表项">
-        将<span class="行内专业名词 等宽">3</span>个图形按照绘制顺序，放到<span class="行内专业名词">数组</span
-        >中，<span class="行内专业名词">索引</span>就是天然的层叠顺序，越靠后的图形，越在上方。
+        <span
+          >将<span class="行内专业名词 等宽">3</span>个图形按照绘制顺序，放到<span class="行内专业名词">数组</span
+          >中，<span class="行内专业名词">索引</span>就是天然的层叠顺序，越靠后的图形，越在上方。</span
+        >
       </li>
       <li class="分区列表项">
-        鼠标移动时，对<span class="行内专业名词">图形数组</span>进行<span class="强调">从后往前</span
-        >依次检测，当检测到第一个符合条件的图形时，立刻停止检测，这样就能确保只有最上方的图形能触发效果。
+        <span
+          >鼠标移动时，对<span class="行内专业名词">图形数组</span>进行<span class="强调">从后往前</span
+          >依次检测，当检测到第一个符合条件的图形时，立刻停止检测，这样就能确保只有最上方的图形能触发效果。</span
+        >
       </li>
-      <li class="分区列表项">所有图形全部使用<span class="行内代码">isPointInPath</span>检测鼠标是否位于内部。</li>
+      <li class="分区列表项">
+        <span>所有图形全部使用<span class="行内代码">isPointInPath</span>检测鼠标是否位于内部。</span>
+      </li>
     </ul>
     <pre class="line-numbers">
       <code class="language-javascript">
