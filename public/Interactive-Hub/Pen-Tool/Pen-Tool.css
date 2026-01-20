@@ -2,7 +2,8 @@
   --光标-默认: url("/Images/Common/鼠标-默认.cur"), auto;
   --光标-指向: url("/Images/Common/鼠标-指向.cur"), pointer;
   --光标-移动: url("/Images/Common/鼠标-移动.cur"), move;
-  --字体-家族: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+  --光标-拖拽: url("/Images/Common/鼠标-拖拽.cur"), grab;
+  --字体-家族: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 *,

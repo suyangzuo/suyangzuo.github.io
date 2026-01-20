@@ -1,9 +1,7 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<!-- Uploaded to: SVG Repo, www.svgrepo.com, Transformed by: SVG Repo Mixer Tools -->
-<svg width="256px" height="256px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#ffffff">
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Transformed by: SVG Repo Mixer Tools -->
+<svg height="256px" width="256px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="#000000">
 <g id="SVGRepo_bgCarrier" stroke-width="0"/>
 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
-<g id="SVGRepo_iconCarrier">
-<path fill="#000000" fill-rule="evenodd" d="M.923.02A.75.75 0 00.02.923l2.476 10.433a.75.75 0 00.587.563l4.245.822a.75.75 0 00.142.864l2.175 2.175a.75.75 0 001.06 0l5.075-5.075a.75.75 0 000-1.06L13.605 7.47a.75.75 0 00-.864-.142l-.822-4.245a.75.75 0 00-.563-.587L.923.02zm10.529 8.542l-.913-4.718L3.15 2.09l3.08 3.08a2.25 2.25 0 11-1.06 1.06l-3.08-3.08 1.753 7.388 4.718.913 2.89-2.89zM9.06 13.075l4.014-4.014 1.114 1.114-4.014 4.014-1.114-1.114zM6.45 7.201a.75.75 0 111.5 0 .75.75 0 01-1.5 0z" clip-rule="evenodd"/>
-</g>
+<g id="SVGRepo_iconCarrier"> <g> <path style="fill:#252525;" d="M117.7,468.587l274.381-274.389l41.82,41.82c0,0-54.692,48.645-50.88,157.332L117.7,468.587z"/> <path style="fill:#252525;" d="M117.7,468.587l274.381-274.389l-41.82-41.82c0,0-48.645,54.692-157.332,50.88L117.7,468.587z"/> </g> <polygon style="fill:#E21B1B;" points="380.263,74.279 512,206.016 452.734,254.851 331.428,133.545 "/> <g> <ellipse transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 713.4814 279.2473)" style="fill:#FFFFFF;" cx="298.907" cy="287.39" rx="25.079" ry="25.309"/> <polygon style="fill:#FFFFFF;" points="121.552,438.459 115.948,432.855 205.738,343.064 237.468,343.207 311.913,268.762 317.517,274.366 240.734,351.149 209.004,351.006 "/> </g> <path style="fill:#252525;" d="M117.922,468.088c-30.216-7.966-55.747-28.155-70.458-55.715 c-32.039-61.374-8.886-150.983,11.311-213.047C84.67,119.832,0.848,56.817,0,56.183l9.369-12.769 c16.574,12.96,31.103,28.321,43.12,45.593c26.157,37.754,33.568,77.6,21.322,115.234c-30.231,93.017-34.266,158.695-12.286,200.8 c12.801,23.748,34.916,41.099,61.034,47.876L117.922,468.088z"/> </g>
 </svg>
