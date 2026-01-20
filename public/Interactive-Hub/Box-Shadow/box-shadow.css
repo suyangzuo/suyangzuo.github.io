@@ -1,11 +1,7 @@
 :root {
   --进度条预填充颜色: #fd6e6a;
   --进度条颜色-未填充: rgba(160, 160, 160);
-  --进度条渐变-已填充: linear-gradient(
-    135deg,
-    var(--进度条预填充颜色) 10%,
-    #ffc600 100%
-  );
+  --进度条渐变-已填充: linear-gradient(135deg, var(--进度条预填充颜色) 10%, #ffc600 100%);
   --拇指渐变背景: linear-gradient(to right, #eaeaea, #dbdbdb, #c4c0ac);
   --拇指宽度: 18px;
   --范围滑块宽度: 250px;
@@ -609,15 +605,48 @@ label {
   top: var(--当前阴影代码包围框垂直偏移);
   visibility: var(--当前阴影代码包围框可见性);
   opacity: var(--当前阴影代码包围框透明度);
-  background-color: rgb(211, 202, 98);
+  background-color: #ffffff20;
   mix-blend-mode: exclusion;
   transition: 0.25s;
+  z-index: -1;
 }
 
 .阴影代码抬头,
 .单个阴影代码 {
   padding: 1px 0;
   text-wrap: nowrap;
+}
+
+.代码属性 {
+  color: #f7d778;
+}
+
+.代码冒号 {
+  color: rgb(151, 172, 192);
+}
+
+.代码数字 {
+  color: #7cdfff;
+}
+
+.代码单位 {
+  color: #ffb36b;
+}
+
+.代码函数 {
+  color: #99ff99;
+}
+
+.代码括号 {
+  color: #bc4990;
+}
+
+.代码逗号 {
+  color: gray;
+}
+
+.代码分号 {
+  color: goldenrod;
 }
 
 .红代码 {

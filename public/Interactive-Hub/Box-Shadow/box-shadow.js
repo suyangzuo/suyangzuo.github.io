@@ -16,10 +16,14 @@ const 滑块_扩散半径 = document.getElementById("扩散半径");
 
 const 增加阴影数量按钮 = document.getElementsByClassName("增加阴影数量按钮")[0];
 const 阴影列表 = document.getElementsByClassName("阴影列表")[0];
+const 展示区 = document.getElementsByClassName("展示区")[0];
 
 let 阴影序号池 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const 已加入序号池 = [];
 let 当前阴影序号 = -1;
+let 正在拖拽阴影 = false;
+let 阴影拖拽偏移 = { x: 0, y: 0 };
+let 拖拽前过渡 = "";
 
 const 本体 = document.getElementsByClassName("本体")[0];
 
@@ -47,6 +51,10 @@ for (let i = 0; i < 阴影属性组.length; i++) {
     完整代码: "",
   };
 }
+
+展示区.addEventListener("mousedown", 开始拖拽阴影);
+展示区.addEventListener("mousemove", 拖拽阴影);
+展示区.addEventListener("mouseup", 结束拖拽阴影);
 
 function 清空阴影属性(阴影属性) {
   阴影属性.内嵌 = "";
@@ -125,6 +133,10 @@ function 点击增加阴影数量按钮(event) {
       `${单个阴影代码组[代码序号].offsetTop + 1}px`,
     );
   }
+
+  if (已加入序号池.length === 1) {
+    阴影项.click();
+  }
 }
 
 function 更新阴影和代码() {
@@ -159,11 +171,6 @@ function 点击阴影项(event) {
 
   获取16进制颜色(阴影属性);
 
-  本体.style.transition = "box-shadow 250ms";
-  阴影属性.模糊半径 = parseInt(阴影属性.模糊半径, 10) + 20;
-  阴影属性.扩散半径 = parseInt(阴影属性.扩散半径, 10) + 40;
-  阴影属性.完整代码 = `${阴影属性.内嵌} ${阴影属性.x轴偏移}px ${阴影属性.y轴偏移}px ${阴影属性.模糊半径}px ${阴影属性.扩散半径}px ${阴影属性.颜色}`;
-
   root.style.setProperty("--当前阴影代码包围框可见性", "visible");
   root.style.setProperty("--当前阴影代码包围框透明度", "100%");
   let 代码序号 = 已加入序号池.indexOf(当前阴影序号);
@@ -173,30 +180,29 @@ function 点击阴影项(event) {
     `${单个阴影代码组[代码序号].offsetTop + 1}px`,
   );
 
-  const 有效属性组 = 阴影属性组.filter((阴影属性) => 阴影属性.完整代码 !== "");
-  const 有效代码组 = [];
-  有效属性组.forEach((属性) => {
-    有效代码组.push(属性.完整代码);
-  });
-  本体.style.boxShadow = `${有效代码组.join(",")}`;
-  setTimeout(() => {
-    阴影属性.模糊半径 -= 20;
-    阴影属性.扩散半径 -= 40;
-    阴影属性.完整代码 = `${阴影属性.内嵌} ${阴影属性.x轴偏移}px ${阴影属性.y轴偏移}px ${阴影属性.模糊半径}px ${阴影属性.扩散半径}px ${阴影属性.颜色}`;
+  // 基态与高亮态 box-shadow 生成（不修改原始数据，仅用于动画）
+  const 有效属性组 = 阴影属性组.filter((p) => p.完整代码 !== "");
+  const 有效代码组 = 有效属性组.map((p) => p.完整代码);
+  const baseShadow = 有效代码组.join(",");
+  const 高亮模糊 = parseInt(阴影属性.模糊半径, 10) + 20;
+  const 高亮扩散 = parseInt(阴影属性.扩散半径, 10) + 40;
+  const 高亮代码 = `${阴影属性.内嵌} ${阴影属性.x轴偏移}px ${阴影属性.y轴偏移}px ${高亮模糊}px ${高亮扩散}px ${阴影属性.颜色}`;
+  const 替换索引 = 有效属性组.indexOf(阴影属性);
+  const 高亮代码组 = 有效代码组.slice();
+  if (替换索引 > -1) 高亮代码组[替换索引] = 高亮代码;
+  const highlightShadow = 高亮代码组.join(",");
 
-    const 有效属性组 = 阴影属性组.filter(
-      (阴影属性) => 阴影属性.完整代码 !== "",
-    );
-    const 有效代码组 = [];
-    有效属性组.forEach((属性) => {
-      有效代码组.push(属性.完整代码);
-    });
-    本体.style.boxShadow = `${有效代码组.join(",")}`;
-    // 本体.style.transition = "none";
+  // 应用基态，播放一次性高亮动画
+  本体.style.boxShadow = baseShadow;
+  const 动画 = 本体.animate(
+    [{ boxShadow: baseShadow }, { boxShadow: highlightShadow }, { boxShadow: baseShadow }],
+    { duration: 500, easing: "ease-out" },
+  );
+  动画.onfinish = () => {
     所有阴影项.forEach((项) => {
       项.style.pointerEvents = "all";
     });
-  }, 250);
+  };
 }
 
 function 点击删除阴影按钮(event) {
@@ -204,6 +210,14 @@ function 点击删除阴影按钮(event) {
   const 阴影项 = event.currentTarget.parentElement;
   // const 序号 = event.currentTarget.previousElementSibling.textContent;
   const 序号 = parseInt(阴影项.getAttribute("序号"), 10);
+  const 正在删除已选中 = 阴影项.hasAttribute("已选中");
+  const 自动选中目标 =
+    正在删除已选中
+      ? 阴影项.nextElementSibling || 阴影项.previousElementSibling
+      : null;
+  if (正在删除已选中) {
+    之前选中阴影项 = null;
+  }
   if (序号 === 当前阴影序号) {
     当前阴影序号 = -1;
   }
@@ -219,7 +233,10 @@ function 点击删除阴影按钮(event) {
   清空阴影属性(阴影属性组[序号 - 1]);
   更新阴影和代码();
   const 单个阴影代码组 = 代码区.querySelectorAll(".单个阴影代码");
-
+  if (自动选中目标) {
+    自动选中目标.click();
+    return;
+  }
   let 代码序号 = 已加入序号池.indexOf(当前阴影序号);
   if (阴影序号池.length === 10 || 代码序号 === -1) {
     控制区.setAttribute("已屏蔽", "");
@@ -321,6 +338,64 @@ function 根据参数调整对应阴影效果(序号) {
     有效代码组.push(属性.完整代码);
   });
   本体.style.boxShadow = `${有效代码组.join(",")}`;
+}
+
+function 计算阴影外框(阴影属性) {
+  const 本体矩形 = 本体.getBoundingClientRect();
+  const 扩散 = Number(阴影属性.扩散半径);
+  const 左 = 本体矩形.left + Number(阴影属性.x轴偏移) - 扩散;
+  const 上 = 本体矩形.top + Number(阴影属性.y轴偏移) - 扩散;
+  const 宽 = 本体矩形.width + 扩散 * 2;
+  const 高 = 本体矩形.height + 扩散 * 2;
+  return { 左, 上, 宽, 高 };
+}
+
+function 开始拖拽阴影(event) {
+  if (当前阴影序号 === -1) return;
+  const 阴影属性 = 阴影属性组[当前阴影序号 - 1];
+  const 外框 = 计算阴影外框(阴影属性);
+  const 鼠标x = event.clientX;
+  const 鼠标y = event.clientY;
+  const 在阴影内 =
+    鼠标x >= 外框.左 &&
+    鼠标x <= 外框.左 + 外框.宽 &&
+    鼠标y >= 外框.上 &&
+    鼠标y <= 外框.上 + 外框.高;
+  if (!在阴影内) return;
+
+  正在拖拽阴影 = true;
+  阴影拖拽偏移 = { x: 鼠标x - 外框.左, y: 鼠标y - 外框.上 };
+  拖拽前过渡 = 本体.style.transition;
+  本体.style.transition = "none";
+}
+
+function 拖拽阴影(event) {
+  if (!正在拖拽阴影 || 当前阴影序号 === -1) return;
+  const 阴影属性 = 阴影属性组[当前阴影序号 - 1];
+  const 目标左 = event.clientX - 阴影拖拽偏移.x;
+  const 目标上 = event.clientY - 阴影拖拽偏移.y;
+
+  const 本体矩形 = 本体.getBoundingClientRect();
+  const 新x偏移 = 目标左 - 本体矩形.left + Number(阴影属性.扩散半径);
+  const 新y偏移 = 目标上 - 本体矩形.top + Number(阴影属性.扩散半径);
+
+  滑块_x轴偏移.value = Math.round(新x偏移);
+  滑块_y轴偏移.value = Math.round(新y偏移);
+  非操作性修改滑块比率(滑块_x轴偏移);
+  非操作性修改滑块比率(滑块_y轴偏移);
+  根据参数调整对应阴影效果(当前阴影序号);
+
+  const 有效属性组 = 阴影属性组.filter((阴影属性) => 阴影属性.完整代码 !== "");
+  const 有效代码组 = [];
+  有效属性组.forEach((属性) => {
+    有效代码组.push(属性.完整代码);
+  });
+  打印代码(有效代码组);
+}
+
+function 结束拖拽阴影() {
+  正在拖拽阴影 = false;
+  本体.style.transition = 拖拽前过渡;
 }
 
 const 加减按钮组 = document.getElementsByClassName("阴影属性按钮");
@@ -445,21 +520,80 @@ function 获取16进制颜色(阴影属性) {
   蓝值.textContent = 阴影属性.蓝;
 }
 
+function 构建阴影代码片段(代码文本, 是否末尾) {
+  const 容器 = document.createElement("span");
+  容器.className = "单个阴影代码";
+  const 模式 = /(rgba|-?\d+(?:\.\d+)?|px|\(|\)|,|;)/g;
+  let lastIndex = 0;
+  let 匹配 = 模式.exec(代码文本);
+
+  while (匹配) {
+    if (匹配.index > lastIndex) {
+      容器.appendChild(
+        document.createTextNode(代码文本.slice(lastIndex, 匹配.index)),
+      );
+    }
+
+    const token = 匹配[0];
+    const tokenSpan = document.createElement("span");
+
+    if (token === "rgba") {
+      tokenSpan.className = "代码函数";
+    } else if (token === "px") {
+      tokenSpan.className = "代码单位";
+    } else if (token === ",") {
+      tokenSpan.className = "代码逗号";
+    } else if (token === ";") {
+      tokenSpan.className = "代码分号";
+    } else if (token === "(" || token === ")") {
+      tokenSpan.className = "代码括号";
+    } else {
+      tokenSpan.className = "代码数字";
+    }
+
+    tokenSpan.textContent = token;
+    容器.appendChild(tokenSpan);
+    lastIndex = 模式.lastIndex;
+    匹配 = 模式.exec(代码文本);
+  }
+
+  if (lastIndex < 代码文本.length) {
+    容器.appendChild(document.createTextNode(代码文本.slice(lastIndex)));
+  }
+
+  const 结尾符号 = document.createElement("span");
+  结尾符号.className = 是否末尾 ? "代码分号" : "代码逗号";
+  结尾符号.textContent = 是否末尾 ? ";" : ",";
+  容器.appendChild(结尾符号);
+
+  return 容器;
+}
+
 function 打印代码(有效代码组) {
   if (有效代码组.length === 0) {
     代码文本元素.innerHTML = "";
     return;
   }
   代码文本元素.textContent = "";
+
   const 代码属性元素 = document.createElement("span");
   代码属性元素.className = "阴影代码抬头";
-  代码属性元素.textContent = "box-shadow:";
+
+  const 属性文本 = document.createElement("span");
+  属性文本.className = "代码属性";
+  属性文本.textContent = "box-shadow";
+  const 冒号文本 = document.createElement("span");
+  冒号文本.className = "代码冒号";
+  冒号文本.textContent = ":";
+  代码属性元素.appendChild(属性文本);
+  代码属性元素.appendChild(冒号文本);
   代码文本元素.appendChild(代码属性元素);
+
   for (const [索引, 有效代码] of 有效代码组.entries()) {
-    const 代码元素 = document.createElement("span");
-    代码元素.className = "单个阴影代码";
-    const 后置符号 = 索引 === 有效代码组.length - 1 ? ";" : ",";
-    代码元素.textContent = `${有效代码}${后置符号}`;
+    const 代码元素 = 构建阴影代码片段(
+      有效代码,
+      索引 === 有效代码组.length - 1,
+    );
     代码文本元素.appendChild(代码元素);
   }
 }
