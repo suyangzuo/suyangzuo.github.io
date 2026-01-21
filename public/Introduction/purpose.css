@@ -1,5 +1,6 @@
 body {
   position: relative;
+  font-family: "Google Sans", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 /* .logo-container {
@@ -139,7 +140,7 @@ body {
 }
 
 .技术 {
-  font-family: Consolas, monospace;
+  font-family: "Noto Sans SC", 微软雅黑, sans-serif;
   font-size: 1.1em;
   color: rgb(76, 131, 193);
 }
@@ -240,7 +241,10 @@ body {
   font-size: 1rem !important;
   color: white !important;
   background: linear-gradient(#111, #252525);
-  transition: opacity 0.5s ease-out, top 0.5s ease-out, box-shadow 0.25s ease-out;
+  transition:
+    opacity 0.5s ease-out,
+    top 0.5s ease-out,
+    box-shadow 0.25s ease-out;
 }
 
 .pop-up:hover {

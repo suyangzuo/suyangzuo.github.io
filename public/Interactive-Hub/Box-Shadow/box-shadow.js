@@ -24,6 +24,7 @@ let 当前阴影序号 = -1;
 let 正在拖拽阴影 = false;
 let 阴影拖拽偏移 = { x: 0, y: 0 };
 let 拖拽前过渡 = "";
+let 当前阴影高亮动画 = null;
 
 const 本体 = document.getElementsByClassName("本体")[0];
 
@@ -47,14 +48,14 @@ for (let i = 0; i < 阴影属性组.length; i++) {
     绿: 0,
     蓝: 0,
     透明度: 1,
-    颜色: `rgba(${this.红}, ${this.绿}, ${this.蓝}, ${this.透明度})`,
+    颜色: `rgb(${this.红}, ${this.绿}, ${this.蓝})`,
     完整代码: "",
   };
 }
 
 展示区.addEventListener("mousedown", 开始拖拽阴影);
 展示区.addEventListener("mousemove", 拖拽阴影);
-展示区.addEventListener("mouseup", 结束拖拽阴影);
+window.addEventListener("mouseup", 结束拖拽阴影);
 
 function 清空阴影属性(阴影属性) {
   阴影属性.内嵌 = "";
@@ -66,7 +67,7 @@ function 清空阴影属性(阴影属性) {
   阴影属性.绿 = Math.floor(Math.random() * 256);
   阴影属性.蓝 = Math.floor(Math.random() * 256);
   阴影属性.透明度 = 1;
-  阴影属性.颜色 = `rgba(${阴影属性.红}, ${阴影属性.绿}, ${阴影属性.蓝}, ${阴影属性.透明度})`;
+  阴影属性.颜色 = `rgb(${阴影属性.红}, ${阴影属性.绿}, ${阴影属性.蓝})`;
   阴影属性.完整代码 = "";
 }
 
@@ -80,7 +81,7 @@ function 初始化阴影属性(阴影属性) {
   阴影属性.绿 = Math.floor(Math.random() * 256);
   阴影属性.蓝 = Math.floor(Math.random() * 256);
   阴影属性.透明度 = 1;
-  阴影属性.颜色 = `rgba(${阴影属性.红}, ${阴影属性.绿}, ${阴影属性.蓝}, ${阴影属性.透明度})`;
+  阴影属性.颜色 = `rgb(${阴影属性.红}, ${阴影属性.绿}, ${阴影属性.蓝})`;
   阴影属性.完整代码 = `${阴影属性.内嵌} ${阴影属性.x轴偏移}px ${阴影属性.y轴偏移}px ${阴影属性.模糊半径}px ${阴影属性.扩散半径}px ${阴影属性.颜色}`;
   return 阴影属性;
 }
@@ -154,10 +155,6 @@ let 之前选中阴影项 = null;
 function 点击阴影项(event) {
   控制区.removeAttribute("已屏蔽");
   颜色区.removeAttribute("已屏蔽");
-  const 所有阴影项 = document.querySelectorAll(".阴影项");
-  所有阴影项.forEach((项) => {
-    项.style.pointerEvents = "none";
-  });
   const 阴影项 = event.currentTarget;
   阴影项.setAttribute("已选中", "");
   if (之前选中阴影项 !== null && 之前选中阴影项 !== 阴影项) {
@@ -180,6 +177,11 @@ function 点击阴影项(event) {
     `${单个阴影代码组[代码序号].offsetTop + 1}px`,
   );
 
+  if (当前阴影高亮动画) {
+    当前阴影高亮动画.cancel();
+    当前阴影高亮动画 = null;
+  }
+
   // 基态与高亮态 box-shadow 生成（不修改原始数据，仅用于动画）
   const 有效属性组 = 阴影属性组.filter((p) => p.完整代码 !== "");
   const 有效代码组 = 有效属性组.map((p) => p.完整代码);
@@ -194,14 +196,15 @@ function 点击阴影项(event) {
 
   // 应用基态，播放一次性高亮动画
   本体.style.boxShadow = baseShadow;
-  const 动画 = 本体.animate(
+  当前阴影高亮动画 = 本体.animate(
     [{ boxShadow: baseShadow }, { boxShadow: highlightShadow }, { boxShadow: baseShadow }],
     { duration: 500, easing: "ease-out" },
   );
-  动画.onfinish = () => {
-    所有阴影项.forEach((项) => {
-      项.style.pointerEvents = "all";
-    });
+  当前阴影高亮动画.onfinish = () => {
+    当前阴影高亮动画 = null;
+  };
+  当前阴影高亮动画.oncancel = () => {
+    当前阴影高亮动画 = null;
   };
 }
 
@@ -490,7 +493,7 @@ function 修改颜色() {
   阴影属性.红 = red;
   阴影属性.绿 = green;
   阴影属性.蓝 = blue;
-  阴影属性.颜色 = `rgba(${阴影属性.红}, ${阴影属性.绿}, ${阴影属性.蓝}, ${阴影属性.透明度})`;
+  阴影属性.颜色 = `rgb(${阴影属性.红}, ${阴影属性.绿}, ${阴影属性.蓝})`;
 
   阴影属性.完整代码 = `${阴影属性.内嵌} ${阴影属性.x轴偏移}px ${阴影属性.y轴偏移}px ${阴影属性.模糊半径}px ${阴影属性.扩散半径}px ${阴影属性.颜色}`;
 
@@ -523,7 +526,7 @@ function 获取16进制颜色(阴影属性) {
 function 构建阴影代码片段(代码文本, 是否末尾) {
   const 容器 = document.createElement("span");
   容器.className = "单个阴影代码";
-  const 模式 = /(rgba|-?\d+(?:\.\d+)?|px|\(|\)|,|;)/g;
+  const 模式 = /(rgb|-?\d+(?:\.\d+)?|px|\(|\)|,|;)/g;
   let lastIndex = 0;
   let 匹配 = 模式.exec(代码文本);
 
@@ -537,7 +540,7 @@ function 构建阴影代码片段(代码文本, 是否末尾) {
     const token = 匹配[0];
     const tokenSpan = document.createElement("span");
 
-    if (token === "rgba") {
+    if (token === "rgb") {
       tokenSpan.className = "代码函数";
     } else if (token === "px") {
       tokenSpan.className = "代码单位";
@@ -621,7 +624,7 @@ function 重置参数(event) {
       绿: 0,
       蓝: 0,
       透明度: 1,
-      颜色: `rgba(${this.红}, ${this.绿}, ${this.蓝}, ${this.透明度})`,
+        颜色: `rgb(${this.红}, ${this.绿}, ${this.蓝})`,
       完整代码: "",
     };
   }
