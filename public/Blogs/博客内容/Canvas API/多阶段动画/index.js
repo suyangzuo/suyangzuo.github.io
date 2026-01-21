@@ -1,184 +1,192 @@
-class DrawRectangleMultiPhases {
+class 多阶段矩形动画 {
   constructor() {
-    this.canvas = document.getElementById("canvas-phase");
-    this.ctx = this.canvas.getContext("2d");
+    this.画布 = document.getElementById("canvas-phase");
+    this.上下文 = this.画布.getContext("2d");
 
-    this.setupCanvas();
+    this.初始化画布();
 
-    this.config = {
-      point: {
-        waitBeforeMove: 1000,
-        move: 1000,
-        waitAfterMove: 1000,
+    this.配置 = {
+      点: {
+        移动前等待: 1000,
+        移动: 1000,
+        移动后等待: 1000,
       },
-      rect: {
-        width: 150,
-        height: 250,
-        firstLines: 1000,
-        secondLines: 1000,
-        waitAfterOutline: 500,
-        fill: 1000,
-        waitAfterFill: 3000,
+      矩形: {
+        宽: 150,
+        高: 250,
+        第一段线: 1000,
+        第二段线: 1000,
+        描边后等待: 500,
+        填充: 1000,
+        填充后等待: 3000,
       },
-      highlightDuration: 125,
-      waitingYOffset: 60,
-      slider: {
+      高亮时长: 125,
+      等待偏移量: 60,
+      滑块: {
         x: 30,
-        y: this.cssHeight - 80,
-        width: 120,
-        height: 8,
-        thumb: 20,
-        min: 1,
-        max: 5,
-        value: 1,
+        y: this.css高 - 80,
+        宽度: 120,
+        高度: 8,
+        拇指: 20,
+        最小: 1,
+        最大: 5,
+        数值: 1,
       },
     };
 
-    this.state = {
-      speed: 1,
-      point: {
-        phase: "waitingBeforeMove",
-        startTime: null,
-        start: { x: 0, y: 0 },
-        target: { x: 0, y: 0 },
-        pos: { x: 0, y: 0 },
+    this.状态 = {
+      速度: 1,
+      点: {
+        阶段: "waitingBeforeMove",
+        开始时间: null,
+        起点: { x: 0, y: 0 },
+        目标: { x: 0, y: 0 },
+        位置: { x: 0, y: 0 },
       },
-      rect: {
-        phase: "waiting",
-        startTime: null,
-        first: 0,
-        second: 0,
-        fill: 0,
+      矩形: {
+        阶段: "waiting",
+        开始时间: null,
+        第一段: 0,
+        第二段: 0,
+        填充: 0,
       },
-      highlight: {
-        point: { current: 1, target: 1, progress: 0, start: null },
-        rect: { current: 1, target: 1, progress: 0, start: null },
+      高亮: {
+        点: { 当前: 1, 目标: 1, 进度: 0, 起始时间: null },
+        矩形: { 当前: 1, 目标: 1, 进度: 0, 起始时间: null },
       },
-      waitingMoveStart: null,
-      waitingYOffset: 0,
-      timelineStart: null,
-      slider: { dragging: false, hovered: false },
+      等待移动开始: null,
+      等待y偏移: 0,
+      时间轴开始: null,
+      滑块: { 拖拽中: false, 悬停: false },
     };
 
-    this.setTargetToCenter();
-    this.attachEvents();
-    this.resetAnimation(true);
-    requestAnimationFrame(this.loop.bind(this));
+    this.目标置中();
+    this.绑定事件();
+    this.重置动画(true);
+    requestAnimationFrame(this.循环.bind(this));
   }
 
-  setupCanvas() {
-    const dpr = window.devicePixelRatio || 1;
-    const rect = this.canvas.getBoundingClientRect();
-    this.canvas.width = rect.width * dpr;
-    this.canvas.height = rect.height * dpr;
-    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    this.cssWidth = rect.width;
-    this.cssHeight = rect.height;
+  初始化画布() {
+    this.dpr = window.devicePixelRatio || 1;
+    this.画布.width = this.画布.clientWidth * this.dpr;
+    this.画布.height = this.画布.clientHeight * this.dpr;
+    this.上下文.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+    this.css宽 = this.画布.clientWidth;
+    this.css高 = this.画布.clientHeight;
+    this.边界矩形 = this.画布.getBoundingClientRect();
+    this.刷新边界矩形 = this.防抖(() => {
+      this.边界矩形 = this.画布.getBoundingClientRect();
+    }, 50);
   }
 
-  setTargetToCenter() {
-    const w = this.config.rect.width;
-    const h = this.config.rect.height;
-    this.state.point.target.x = (this.cssWidth - w) / 2;
-    this.state.point.target.y = (this.cssHeight - h) / 2;
+  目标置中() {
+    const 宽度 = this.配置.矩形.宽;
+    const 高度 = this.配置.矩形.高;
+    this.状态.点.目标.x = (this.css宽 - 宽度) / 2;
+    this.状态.点.目标.y = (this.css高 - 高度) / 2;
   }
 
-  attachEvents() {
+  绑定事件() {
     window.addEventListener("resize", () => {
-      this.setupCanvas();
-      this.setTargetToCenter();
-      this.config.slider.y = this.cssHeight - 80;
-      this.resetAnimation(true);
+      this.初始化画布();
+      this.目标置中();
+      this.配置.滑块.y = this.css高 - 80;
+      this.重置动画(true);
+      this.刷新边界矩形();
     });
 
-    this.canvas.addEventListener("mousedown", (e) => this.handleMouseDown(e));
-    this.canvas.addEventListener("mousemove", (e) => this.handleMouseMove(e));
-    this.canvas.addEventListener("mouseup", () => this.handleMouseUp());
-    this.canvas.addEventListener("mouseleave", () => this.handleMouseLeave());
+    window.addEventListener("scroll", () => {
+      this.刷新边界矩形();
+    });
+
+    this.画布.addEventListener("mousedown", (e) => this.按下处理(e));
+    this.画布.addEventListener("mousemove", (e) => this.移动处理(e));
+    this.画布.addEventListener("mouseup", () => this.松开处理());
+    this.画布.addEventListener("mouseleave", () => this.离开处理());
   }
 
-  loop(timestamp) {
-    if (!this.state.timelineStart) {
-      this.state.timelineStart = timestamp;
-      this.state.waitingMoveStart = timestamp;
-      this.updateCoordinates();
+  循环(时间戳) {
+    if (!this.状态.时间轴开始) {
+      this.状态.时间轴开始 = 时间戳;
+      this.状态.等待移动开始 = 时间戳;
+      this.更新坐标();
     }
 
-    this.update(timestamp);
-    this.draw();
-    requestAnimationFrame(this.loop.bind(this));
+    this.更新(时间戳);
+    this.绘制();
+    requestAnimationFrame(this.循环.bind(this));
   }
 
-  resetAnimation(reseed = false, preserveSliderDrag = false) {
-    this.state.point.phase = "waitingBeforeMove";
-    this.state.point.startTime = null;
-    this.state.point.pos = { x: 0, y: 0 };
-    if (reseed) {
-      this.state.point.start = { x: 0, y: 0 };
+  重置动画(重新播种 = false, 保留滑块状态 = false) {
+    this.状态.点.阶段 = "waitingBeforeMove";
+    this.状态.点.开始时间 = null;
+    this.状态.点.位置 = { x: 0, y: 0 };
+    if (重新播种) {
+      this.状态.点.起点 = { x: 0, y: 0 };
     } else {
-      this.state.point.start = { x: this.state.point.pos.x, y: this.state.point.pos.y };
+      this.状态.点.起点 = { x: this.状态.点.位置.x, y: this.状态.点.位置.y };
     }
 
-    this.state.rect.phase = "waiting";
-    this.state.rect.startTime = null;
-    this.state.rect.first = 0;
-    this.state.rect.second = 0;
-    this.state.rect.fill = 0;
+    this.状态.矩形.阶段 = "waiting";
+    this.状态.矩形.开始时间 = null;
+    this.状态.矩形.第一段 = 0;
+    this.状态.矩形.第二段 = 0;
+    this.状态.矩形.填充 = 0;
 
-    this.state.highlight.point = { current: 1, target: 1, progress: 0, start: null };
-    this.state.highlight.rect = { current: 1, target: 1, progress: 0, start: null };
+    this.状态.高亮.点 = { 当前: 1, 目标: 1, 进度: 0, 起始时间: null };
+    this.状态.高亮.矩形 = { 当前: 1, 目标: 1, 进度: 0, 起始时间: null };
 
-    this.state.waitingMoveStart = null;
-    this.state.waitingYOffset = 0;
-    this.state.timelineStart = null;
-    if (!preserveSliderDrag) {
-      this.state.slider.dragging = false;
-      this.state.slider.hovered = false;
+    this.状态.等待移动开始 = null;
+    this.状态.等待y偏移 = 0;
+    this.状态.时间轴开始 = null;
+    if (!保留滑块状态) {
+      this.状态.滑块.拖拽中 = false;
+      this.状态.滑块.悬停 = false;
     }
-    // 保持当前 speed，slider 的 value 已外部同步
-    this.updateCoordinates();
+    // 保持当前速度，滑块的数值已外部同步
+    this.更新坐标();
   }
 
-  update(timestamp) {
-    this.updatePoint(timestamp);
-    this.updateRect(timestamp);
-    this.updateHighlights(timestamp);
-    this.updateWaitingYOffset(timestamp);
-    this.updateCoordinates();
+  更新(时间戳) {
+    this.更新点(时间戳);
+    this.更新矩形(时间戳);
+    this.更新高亮组(时间戳);
+    this.更新等待偏移(时间戳);
+    this.更新坐标();
   }
 
-  updatePoint(timestamp) {
-    const durations = this.getPointDurations();
-    const p = this.state.point;
+  更新点(时间戳) {
+    const 时长 = this.获取点时长();
+    const 点 = this.状态.点;
 
-    if (!p.startTime) p.startTime = timestamp;
-    if (!this.state.waitingMoveStart) this.state.waitingMoveStart = timestamp;
+    if (!点.开始时间) 点.开始时间 = 时间戳;
+    if (!this.状态.等待移动开始) this.状态.等待移动开始 = 时间戳;
 
-    const elapsed = timestamp - p.startTime;
+    const 已过时间 = 时间戳 - 点.开始时间;
 
-    switch (p.phase) {
+    switch (点.阶段) {
       case "waitingBeforeMove":
-        if (elapsed >= durations.waitBeforeMove) {
-          p.phase = "moving";
-          p.startTime = timestamp;
+        if (已过时间 >= 时长.移动前等待) {
+          点.阶段 = "moving";
+          点.开始时间 = 时间戳;
         }
         break;
       case "moving":
         {
-          const progress = Math.min(elapsed / durations.move, 1);
-          p.pos.x = p.start.x + (p.target.x - p.start.x) * progress;
-          p.pos.y = p.start.y + (p.target.y - p.start.y) * progress;
-          if (progress === 1) {
-            p.phase = "waitingAfterMove";
-            p.startTime = timestamp;
+          const 进度 = Math.min(已过时间 / 时长.移动, 1);
+          点.位置.x = 点.起点.x + (点.目标.x - 点.起点.x) * 进度;
+          点.位置.y = 点.起点.y + (点.目标.y - 点.起点.y) * 进度;
+          if (进度 === 1) {
+            点.阶段 = "waitingAfterMove";
+            点.开始时间 = 时间戳;
           }
         }
         break;
       case "waitingAfterMove":
-        if (elapsed >= durations.waitAfterMove) {
-          p.phase = "completed";
-          p.startTime = timestamp;
-          this.startRectangle(timestamp);
+        if (已过时间 >= 时长.移动后等待) {
+          点.阶段 = "completed";
+          点.开始时间 = 时间戳;
+          this.开始绘制矩形(时间戳);
         }
         break;
       default:
@@ -186,53 +194,53 @@ class DrawRectangleMultiPhases {
     }
   }
 
-  startRectangle(timestamp) {
-    const r = this.state.rect;
-    if (r.phase !== "waiting") return;
-    r.phase = "drawingFirstLines";
-    r.startTime = timestamp;
-    r.first = 0;
-    r.second = 0;
-    r.fill = 0;
+  开始绘制矩形(时间戳) {
+    const 矩形 = this.状态.矩形;
+    if (矩形.阶段 !== "waiting") return;
+    矩形.阶段 = "drawingFirstLines";
+    矩形.开始时间 = 时间戳;
+    矩形.第一段 = 0;
+    矩形.第二段 = 0;
+    矩形.填充 = 0;
   }
 
-  updateRect(timestamp) {
-    const r = this.state.rect;
-    if (!r.startTime) return;
-    const d = this.getRectDurations();
-    const elapsed = timestamp - r.startTime;
+  更新矩形(时间戳) {
+    const 矩形 = this.状态.矩形;
+    if (!矩形.开始时间) return;
+    const 时长 = this.获取矩形时长();
+    const 已过时间 = 时间戳 - 矩形.开始时间;
 
-    switch (r.phase) {
+    switch (矩形.阶段) {
       case "drawingFirstLines":
-        r.first = Math.min(elapsed / d.firstLines, 1);
-        if (r.first === 1) {
-          r.phase = "drawingSecondLines";
-          r.startTime = timestamp;
+        矩形.第一段 = Math.min(已过时间 / 时长.第一段线, 1);
+        if (矩形.第一段 === 1) {
+          矩形.阶段 = "drawingSecondLines";
+          矩形.开始时间 = 时间戳;
         }
         break;
       case "drawingSecondLines":
-        r.second = Math.min(elapsed / d.secondLines, 1);
-        if (r.second === 1) {
-          r.phase = "waitingAfterOutline";
-          r.startTime = timestamp;
+        矩形.第二段 = Math.min(已过时间 / 时长.第二段线, 1);
+        if (矩形.第二段 === 1) {
+          矩形.阶段 = "waitingAfterOutline";
+          矩形.开始时间 = 时间戳;
         }
         break;
       case "waitingAfterOutline":
-        if (elapsed >= d.waitAfterOutline) {
-          r.phase = "filling";
-          r.startTime = timestamp;
+        if (已过时间 >= 时长.描边后等待) {
+          矩形.阶段 = "filling";
+          矩形.开始时间 = 时间戳;
         }
         break;
       case "filling":
-        r.fill = Math.min(elapsed / d.fill, 1);
-        if (r.fill === 1) {
-          r.phase = "waitingAfterFill";
-          r.startTime = timestamp;
+        矩形.填充 = Math.min(已过时间 / 时长.填充, 1);
+        if (矩形.填充 === 1) {
+          矩形.阶段 = "waitingAfterFill";
+          矩形.开始时间 = 时间戳;
         }
         break;
       case "waitingAfterFill":
-        if (elapsed >= d.waitAfterFill) {
-          this.resetAnimation();
+        if (已过时间 >= 时长.填充后等待) {
+          this.重置动画();
         }
         break;
       default:
@@ -240,42 +248,42 @@ class DrawRectangleMultiPhases {
     }
   }
 
-  updateWaitingYOffset(timestamp) {
-    if (!this.state.waitingMoveStart) {
-      this.state.waitingYOffset = 0;
+  更新等待偏移(时间戳) {
+    if (!this.状态.等待移动开始) {
+      this.状态.等待y偏移 = 0;
       return;
     }
-    const total = this.getPointDurations();
-    const totalDuration = total.waitBeforeMove + total.move + total.waitAfterMove;
-    const elapsed = timestamp - this.state.waitingMoveStart;
-    const progress = Math.min(Math.max(elapsed / totalDuration, 0), 1);
-    this.state.waitingYOffset = this.config.waitingYOffset * progress;
+    const 点时长 = this.获取点时长();
+    const 总时长 = 点时长.移动前等待 + 点时长.移动 + 点时长.移动后等待;
+    const 已过时间 = 时间戳 - this.状态.等待移动开始;
+    const 进度 = Math.min(Math.max(已过时间 / 总时长, 0), 1);
+    this.状态.等待y偏移 = this.配置.等待偏移量 * 进度;
   }
 
-  updateHighlights(timestamp) {
-    this.updateHighlightBlock(timestamp, this.state.highlight.point, this.getPointStatusIndex());
-    this.updateHighlightBlock(timestamp, this.state.highlight.rect, this.getRectStatusIndex());
+  更新高亮组(时间戳) {
+    this.更新单个高亮块(时间戳, this.状态.高亮.点, this.获取点状态索引());
+    this.更新单个高亮块(时间戳, this.状态.高亮.矩形, this.获取矩形状态索引());
   }
 
-  updateHighlightBlock(timestamp, block, targetIndex) {
-    if (block.target !== targetIndex) {
-      block.target = targetIndex;
-      block.start = timestamp;
-      block.progress = 0;
+  更新单个高亮块(时间戳, 高亮块, 目标索引) {
+    if (高亮块.目标 !== 目标索引) {
+      高亮块.目标 = 目标索引;
+      高亮块.起始时间 = 时间戳;
+      高亮块.进度 = 0;
     }
-    if (block.start && block.current !== block.target) {
-      const elapsed = timestamp - block.start;
-      block.progress = Math.min(elapsed / this.config.highlightDuration, 1);
-      if (block.progress === 1) {
-        block.current = block.target;
-        block.start = null;
-        block.progress = 0;
+    if (高亮块.起始时间 && 高亮块.当前 !== 高亮块.目标) {
+      const 已过时间 = 时间戳 - 高亮块.起始时间;
+      高亮块.进度 = Math.min(已过时间 / this.配置.高亮时长, 1);
+      if (高亮块.进度 === 1) {
+        高亮块.当前 = 高亮块.目标;
+        高亮块.起始时间 = null;
+        高亮块.进度 = 0;
       }
     }
   }
 
-  getPointStatusIndex() {
-    switch (this.state.point.phase) {
+  获取点状态索引() {
+    switch (this.状态.点.阶段) {
       case "waitingBeforeMove":
         return 1;
       case "moving":
@@ -289,8 +297,8 @@ class DrawRectangleMultiPhases {
     }
   }
 
-  getRectStatusIndex() {
-    switch (this.state.rect.phase) {
+  获取矩形状态索引() {
+    switch (this.状态.矩形.阶段) {
       case "waiting":
         return 1;
       case "drawingFirstLines":
@@ -308,274 +316,286 @@ class DrawRectangleMultiPhases {
     }
   }
 
-  draw() {
-    const ctx = this.ctx;
-    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  绘制() {
+    const 上下文 = this.上下文;
+    上下文.clearRect(0, 0, this.画布.width, this.画布.height);
 
-    this.drawDashedBorders();
-    if (this.state.point.phase === "waitingAfterMove" || this.state.rect.phase !== "waiting") {
-      this.drawRectangle();
+    this.绘制虚线();
+    if (this.状态.点.阶段 === "waitingAfterMove" || this.状态.矩形.阶段 !== "waiting") {
+      this.绘制矩形();
     }
-    this.drawPoint();
-    this.drawStatusDisplay();
-    this.drawSpeedSlider();
+    this.绘制点();
+    this.绘制状态显示();
+    this.绘制速度滑块();
   }
 
-  drawPoint() {
-    const ctx = this.ctx;
-    ctx.beginPath();
-    ctx.arc(this.state.point.pos.x, this.state.point.pos.y, 5, 0, Math.PI * 2);
-    ctx.fillStyle = "orange";
-    ctx.fill();
+  绘制点() {
+    const 上下文 = this.上下文;
+    上下文.beginPath();
+    上下文.arc(this.状态.点.位置.x, this.状态.点.位置.y, 5, 0, Math.PI * 2);
+    上下文.fillStyle = "orange";
+    上下文.fill();
   }
 
-  drawRectangle() {
-    const ctx = this.ctx;
-    const rect = this.state.rect;
-    const w = this.config.rect.width;
-    const h = this.config.rect.height;
-    const startX = (this.cssWidth - w) / 2;
-    const startY = (this.cssHeight - h) / 2;
+  绘制矩形() {
+    const 上下文 = this.上下文;
+    const 矩形 = this.状态.矩形;
+    const 宽度 = this.配置.矩形.宽;
+    const 高度 = this.配置.矩形.高;
+    const 起点x = (this.css宽 - 宽度) / 2;
+    const 起点y = (this.css高 - 高度) / 2;
 
-    ctx.strokeStyle = "lightskyblue";
-    ctx.lineWidth = 2;
+    上下文.strokeStyle = "lightskyblue";
+    上下文.lineWidth = 2;
 
-    if (rect.phase !== "waiting") {
-      ctx.beginPath();
-      ctx.moveTo(startX, startY);
-      ctx.lineTo(startX + w * rect.first, startY);
-      ctx.stroke();
+    if (矩形.阶段 !== "waiting") {
+      上下文.beginPath();
+      上下文.moveTo(起点x, 起点y);
+      上下文.lineTo(起点x + 宽度 * 矩形.第一段, 起点y);
+      上下文.stroke();
 
-      ctx.beginPath();
-      ctx.moveTo(startX, startY);
-      ctx.lineTo(startX, startY + h * rect.first);
-      ctx.stroke();
+      上下文.beginPath();
+      上下文.moveTo(起点x, 起点y);
+      上下文.lineTo(起点x, 起点y + 高度 * 矩形.第一段);
+      上下文.stroke();
     }
 
-    if (["drawingSecondLines", "waitingAfterOutline", "filling", "waitingAfterFill"].includes(rect.phase)) {
-      ctx.beginPath();
-      ctx.moveTo(startX + w, startY);
-      ctx.lineTo(startX + w, startY + h * rect.second);
-      ctx.stroke();
+    if (["drawingSecondLines", "waitingAfterOutline", "filling", "waitingAfterFill"].includes(矩形.阶段)) {
+      上下文.beginPath();
+      上下文.moveTo(起点x + 宽度, 起点y);
+      上下文.lineTo(起点x + 宽度, 起点y + 高度 * 矩形.第二段);
+      上下文.stroke();
 
-      ctx.beginPath();
-      ctx.moveTo(startX, startY + h);
-      ctx.lineTo(startX + w * rect.second, startY + h);
-      ctx.stroke();
+      上下文.beginPath();
+      上下文.moveTo(起点x, 起点y + 高度);
+      上下文.lineTo(起点x + 宽度 * 矩形.第二段, 起点y + 高度);
+      上下文.stroke();
     }
 
-    if (["filling", "waitingAfterFill"].includes(rect.phase)) {
-      ctx.fillStyle = "rgba(0, 100, 255, 0.5)";
-      const fillHeight = h * rect.fill;
-      ctx.fillRect(startX, startY, w, fillHeight);
+    if (["filling", "waitingAfterFill"].includes(矩形.阶段)) {
+      上下文.fillStyle = "rgba(0, 100, 255, 0.5)";
+      const 填充高度 = 高度 * 矩形.填充;
+      上下文.fillRect(起点x, 起点y, 宽度, 填充高度);
     }
   }
 
-  drawStatusDisplay() {
-    const display = {
-      leftX: this.cssWidth - 210,
-      rightX: this.cssWidth - 100,
-      startY: 50,
-      lineHeight: 30,
-      highlightHeight: 25,
-      padding: 5,
+  绘制状态显示() {
+    const 显示配置 = {
+      左列x: this.css宽 - 210,
+      右列x: this.css宽 - 100,
+      起始y: 50,
+      行高: 30,
+      高亮高度: 25,
+      内边距: 5,
     };
 
-    const pointStatus = ["点状态", "移动前等待", "移动", "移动后等待", "完成"];
-    const rectStatus = ["矩形状态", "等待", "绘制左上线", "绘制右下线", "填充前等待", "填充", "填充后等待"];
+    const 点状态文本 = ["点状态", "移动前等待", "移动", "移动后等待", "完成"];
+    const 矩形状态文本 = ["矩形状态", "等待", "绘制左上线", "绘制右下线", "填充前等待", "填充", "填充后等待"];
 
-    this.ctx.font = "14px Arial";
-    this.ctx.textAlign = "left";
-    this.ctx.textBaseline = "middle";
+    this.上下文.font = "14px 'Noto Sans SC', 微软雅黑, sans-serif";
+    this.上下文.textAlign = "left";
+    this.上下文.textBaseline = "middle";
 
-    this.drawStatusColumn(display.leftX, display.startY, pointStatus, this.state.highlight.point, "left", display);
-    this.drawStatusColumn(display.rightX, display.startY, rectStatus, this.state.highlight.rect, "right", display);
+    this.绘制状态列(显示配置.左列x, 显示配置.起始y, 点状态文本, this.状态.高亮.点, "left", 显示配置);
+    this.绘制状态列(显示配置.右列x, 显示配置.起始y, 矩形状态文本, this.状态.高亮.矩形, "right", 显示配置);
   }
 
-  drawStatusColumn(x, startY, texts, highlight, column, display) {
-    const ctx = this.ctx;
-    texts.forEach((text, index) => {
-      let y = startY + index * display.lineHeight;
+  绘制状态列(x坐标, 起始y, 文本组, 高亮数据, 列方向, 显示配置) {
+    const 上下文 = this.上下文;
+    文本组.forEach((文本, 索引) => {
+      let y坐标 = 起始y + 索引 * 显示配置.行高;
 
-      if (column === "right") {
-        if (index === 1) {
-          y += this.state.waitingYOffset;
-        } else if (index >= 2) {
-          y += 60;
+      if (列方向 === "right") {
+        if (索引 === 1) {
+          y坐标 += this.状态.等待y偏移;
+        } else if (索引 >= 2) {
+          y坐标 += 60;
         }
       }
 
-      if (index !== 0) {
-        let alpha = 0;
-        if (highlight.current === index) alpha = 0.5;
-        else if (highlight.target === index && highlight.progress > 0) alpha = 0.5 * highlight.progress;
-        else if (highlight.current !== 0 && highlight.progress > 0 && highlight.current === index) alpha = 0.5 * (1 - highlight.progress);
-        if (alpha > 0) {
-          ctx.fillStyle = `rgba(50, 150, 255, ${alpha})`;
-          ctx.fillRect(
-            x - display.padding,
-            y - display.highlightHeight / 2,
-            ctx.measureText(text).width + display.padding * 2,
-            display.highlightHeight,
+      if (索引 !== 0) {
+        let 透明度 = 0;
+        if (高亮数据.当前 === 索引) 透明度 = 0.5;
+        else if (高亮数据.目标 === 索引 && 高亮数据.进度 > 0) 透明度 = 0.5 * 高亮数据.进度;
+        else if (高亮数据.当前 !== 0 && 高亮数据.进度 > 0 && 高亮数据.当前 === 索引) 透明度 = 0.5 * (1 - 高亮数据.进度);
+        if (透明度 > 0) {
+          上下文.fillStyle = `rgba(50, 150, 255, ${透明度})`;
+          上下文.fillRect(
+            x坐标 - 显示配置.内边距,
+            y坐标 - 显示配置.高亮高度 / 2,
+            上下文.measureText(文本).width + 显示配置.内边距 * 2,
+            显示配置.高亮高度,
           );
         }
       }
 
-      if (index === 0) {
-        ctx.font = "bold 16px sans-serif";
-        ctx.fillStyle = "Gold";
+      if (索引 === 0) {
+        上下文.font = "bold 16px 'Noto Sans SC', 微软雅黑, sans-serif";
+        上下文.fillStyle = "Gold";
       } else {
-        ctx.font = "14px sans-serif";
-        const active =
-          highlight.current === index ||
-          (highlight.target === index && highlight.progress > 0) ||
-          (highlight.current !== 0 && highlight.progress > 0 && highlight.current === index);
-        ctx.fillStyle = active ? "white" : "silver";
+        上下文.font = "14px 'Noto Sans SC', 微软雅黑, sans-serif";
+        const 已激活 =
+          高亮数据.当前 === 索引 ||
+          (高亮数据.目标 === 索引 && 高亮数据.进度 > 0) ||
+          (高亮数据.当前 !== 0 && 高亮数据.进度 > 0 && 高亮数据.当前 === 索引);
+        上下文.fillStyle = 已激活 ? "white" : "silver";
       }
-      ctx.fillText(text, x, y + 1);
+      上下文.fillText(文本, x坐标, y坐标 + 1);
     });
   }
 
-  drawSpeedSlider() {
-    const slider = this.config.slider;
-    const stateSlider = this.state.slider;
-    const ctx = this.ctx;
+  绘制速度滑块() {
+    const 滑块配置 = this.配置.滑块;
+    const 滑块状态 = this.状态.滑块;
+    const 上下文 = this.上下文;
 
-    ctx.font = "14px sans-serif";
-    ctx.fillStyle = "white";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText("动画时长倍率", slider.x + slider.width / 2, slider.y - 25);
+    上下文.font = "14px 'Noto Sans SC', 微软雅黑, sans-serif";
+    上下文.fillStyle = "white";
+    上下文.textAlign = "center";
+    上下文.textBaseline = "middle";
+    上下文.fillText("动画时长倍率", 滑块配置.x + 滑块配置.宽度 / 2, 滑块配置.y - 25);
 
-    ctx.fillStyle = "#444";
-    ctx.fillRect(slider.x, slider.y, slider.width, slider.height);
+    上下文.fillStyle = "#444";
+    上下文.fillRect(滑块配置.x, 滑块配置.y, 滑块配置.宽度, 滑块配置.高度);
 
-    const ratio = (this.state.speed - slider.min) / (slider.max - slider.min);
-    const filledWidth = ratio * slider.width;
-    if (filledWidth > 0) {
-      ctx.fillStyle = "rgba(76, 175, 80, 0.75)";
-      ctx.fillRect(slider.x, slider.y, filledWidth, slider.height);
+    const 比率 = (this.状态.速度 - 滑块配置.最小) / (滑块配置.最大 - 滑块配置.最小);
+    const 填充宽度 = 比率 * 滑块配置.宽度;
+    if (填充宽度 > 0) {
+      上下文.fillStyle = "rgba(76, 175, 80, 0.75)";
+      上下文.fillRect(滑块配置.x, 滑块配置.y, 填充宽度, 滑块配置.高度);
     }
 
-    ctx.strokeStyle = "#666";
-    ctx.lineWidth = 1;
-    ctx.strokeRect(slider.x, slider.y, slider.width, slider.height);
+    上下文.strokeStyle = "#666";
+    上下文.lineWidth = 1;
+    上下文.strokeRect(滑块配置.x, 滑块配置.y, 滑块配置.宽度, 滑块配置.高度);
 
-    const thumbX = slider.x + ratio * slider.width;
-    ctx.fillStyle = stateSlider.hovered || stateSlider.dragging ? "#66BB6A" : "#2C8F30";
-    ctx.beginPath();
-    ctx.arc(thumbX, slider.y + slider.height / 2, slider.thumb / 2, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.strokeStyle = "#fff";
-    ctx.lineWidth = 2;
-    ctx.stroke();
+    const 拇指x = 滑块配置.x + 比率 * 滑块配置.宽度;
+    上下文.fillStyle = 滑块状态.悬停 || 滑块状态.拖拽中 ? "#66BB6A" : "#2C8F30";
+    上下文.beginPath();
+    上下文.arc(拇指x, 滑块配置.y + 滑块配置.高度 / 2, 滑块配置.拇指 / 2, 0, Math.PI * 2);
+    上下文.fill();
+    上下文.strokeStyle = "#fff";
+    上下文.lineWidth = 2;
+    上下文.stroke();
 
-    ctx.textAlign = "center";
-    for (let i = slider.min; i <= slider.max; i++) {
-      const markX = slider.x + ((i - slider.min) / (slider.max - slider.min)) * slider.width;
-      const markY = slider.y + slider.height + 20;
-      if (i === this.state.speed) {
-        ctx.font = "bold 14px Google Sans Code";
-        ctx.fillStyle = "#4CAF50";
+    上下文.textAlign = "center";
+    for (let 数值 = 滑块配置.最小; 数值 <= 滑块配置.最大; 数值++) {
+      const 刻度x = 滑块配置.x + ((数值 - 滑块配置.最小) / (滑块配置.最大 - 滑块配置.最小)) * 滑块配置.宽度;
+      const 刻度y = 滑块配置.y + 滑块配置.高度 + 20;
+      if (数值 === this.状态.速度) {
+        上下文.font = "bold 14px 'Google Sans Code', 'JetBrains Mono', Consolas, monospace";
+        上下文.fillStyle = "#4CAF50";
       } else {
-        ctx.font = "12px Google Sans Code";
-        ctx.fillStyle = "#888";
+        上下文.font = "12px 'Google Sans Code', 'JetBrains Mono', Consolas, monospace";
+        上下文.fillStyle = "#888";
       }
-      ctx.fillText(i.toString(), markX, markY);
+      上下文.fillText(数值.toString(), 刻度x, 刻度y);
     }
   }
 
-  drawDashedBorders() {
-    const ctx = this.ctx;
-    ctx.setLineDash([7, 7]);
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
-    ctx.beginPath();
-    ctx.moveTo(0, this.state.point.pos.y);
-    ctx.lineTo(this.state.point.pos.x, this.state.point.pos.y);
-    ctx.stroke();
+  绘制虚线() {
+    const 上下文 = this.上下文;
+    上下文.setLineDash([7, 7]);
+    上下文.strokeStyle = "rgba(255, 255, 255, 0.5)";
+    上下文.beginPath();
+    上下文.moveTo(0, this.状态.点.位置.y);
+    上下文.lineTo(this.状态.点.位置.x, this.状态.点.位置.y);
+    上下文.stroke();
 
-    ctx.beginPath();
-    ctx.moveTo(this.state.point.pos.x, 0);
-    ctx.lineTo(this.state.point.pos.x, this.state.point.pos.y);
-    ctx.stroke();
-    ctx.setLineDash([]);
+    上下文.beginPath();
+    上下文.moveTo(this.状态.点.位置.x, 0);
+    上下文.lineTo(this.状态.点.位置.x, this.状态.点.位置.y);
+    上下文.stroke();
+    上下文.setLineDash([]);
   }
 
-  handleMouseDown(e) {
-    const { x, y } = this.getMousePos(e);
-    if (this.isPointInSlider(x, y)) {
-      this.state.slider.dragging = true;
-      this.updateSliderValue(x);
+  按下处理(e) {
+    const { x, y } = this.获取鼠标位置(e);
+    if (this.点在滑块内(x, y)) {
+      this.状态.滑块.拖拽中 = true;
+      this.更新滑块数值(x);
     }
   }
 
-  handleMouseMove(e) {
-    const { x, y } = this.getMousePos(e);
-    this.state.slider.hovered = this.isPointInSlider(x, y);
-    if (this.state.slider.dragging) {
-      this.updateSliderValue(x);
+  移动处理(e) {
+    const { x, y } = this.获取鼠标位置(e);
+    this.状态.滑块.悬停 = this.点在滑块内(x, y);
+    if (this.状态.滑块.拖拽中) {
+      this.更新滑块数值(x);
     }
   }
 
-  handleMouseUp() {
-    this.state.slider.dragging = false;
+  松开处理() {
+    this.状态.滑块.拖拽中 = false;
   }
 
-  handleMouseLeave() {
-    this.state.slider.dragging = false;
-    this.state.slider.hovered = false;
+  离开处理() {
+    this.状态.滑块.拖拽中 = false;
+    this.状态.滑块.悬停 = false;
   }
 
-  getMousePos(e) {
-    const rect = this.canvas.getBoundingClientRect();
-    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+  获取鼠标位置(e) {
+    return { x: e.clientX - this.边界矩形.left, y: e.clientY - this.边界矩形.top };
   }
 
-  isPointInSlider(x, y) {
-    const s = this.config.slider;
-    const halfThumb = s.thumb / 2;
-    return x >= s.x - halfThumb && x <= s.x + s.width + halfThumb && y >= s.y - halfThumb && y <= s.y + s.height + halfThumb;
+  点在滑块内(x坐标, y坐标) {
+    const 滑块配置 = this.配置.滑块;
+    const 半拇指 = 滑块配置.拇指 / 2;
+    return (
+      x坐标 >= 滑块配置.x - 半拇指 &&
+      x坐标 <= 滑块配置.x + 滑块配置.宽度 + 半拇指 &&
+      y坐标 >= 滑块配置.y - 半拇指 &&
+      y坐标 <= 滑块配置.y + 滑块配置.高度 + 半拇指
+    );
   }
 
-  updateSliderValue(x) {
-    const s = this.config.slider;
-    const clamped = Math.max(0, Math.min(s.width, x - s.x));
-    const ratio = clamped / s.width;
-    const newValue = Math.round(s.min + ratio * (s.max - s.min));
-    if (newValue !== this.state.speed) {
-      this.state.speed = newValue;
-      this.config.slider.value = newValue;
-      this.resetAnimation(true, true);
+  更新滑块数值(x坐标) {
+    const 滑块配置 = this.配置.滑块;
+    const 限制值 = Math.max(0, Math.min(滑块配置.宽度, x坐标 - 滑块配置.x));
+    const 比率 = 限制值 / 滑块配置.宽度;
+    const 新数值 = Math.round(滑块配置.最小 + 比率 * (滑块配置.最大 - 滑块配置.最小));
+    if (新数值 !== this.状态.速度) {
+      this.状态.速度 = 新数值;
+      this.配置.滑块.数值 = 新数值;
+      this.重置动画(true, true);
     }
   }
 
-  getPointDurations() {
+  获取点时长() {
     return {
-      waitBeforeMove: this.config.point.waitBeforeMove * this.state.speed,
-      move: this.config.point.move * this.state.speed,
-      waitAfterMove: this.config.point.waitAfterMove * this.state.speed,
+      移动前等待: this.配置.点.移动前等待 * this.状态.速度,
+      移动: this.配置.点.移动 * this.状态.速度,
+      移动后等待: this.配置.点.移动后等待 * this.状态.速度,
     };
   }
 
-  getRectDurations() {
+  获取矩形时长() {
     return {
-      firstLines: this.config.rect.firstLines * this.state.speed,
-      secondLines: this.config.rect.secondLines * this.state.speed,
-      waitAfterOutline: this.config.rect.waitAfterOutline * this.state.speed,
-      fill: this.config.rect.fill * this.state.speed,
-      waitAfterFill: this.config.rect.waitAfterFill * this.state.speed,
+      第一段线: this.配置.矩形.第一段线 * this.状态.速度,
+      第二段线: this.配置.矩形.第二段线 * this.状态.速度,
+      描边后等待: this.配置.矩形.描边后等待 * this.状态.速度,
+      填充: this.配置.矩形.填充 * this.状态.速度,
+      填充后等待: this.配置.矩形.填充后等待 * this.状态.速度,
     };
   }
 
-  updateCoordinates() {
-    const xCoord = document.getElementById("x-coord");
-    const yCoord = document.getElementById("y-coord");
-    if (!xCoord || !yCoord) return;
-    xCoord.innerHTML = `X<span class="coord-colon">:</span><span class="coord-value">${Math.round(this.state.point.pos.x)}</span>`;
-    xCoord.style.left = `${this.state.point.pos.x}px`;
-    yCoord.innerHTML = `Y<span class="coord-colon">:</span><span class="coord-value">${Math.round(this.state.point.pos.y)}</span>`;
-    yCoord.style.top = `${this.state.point.pos.y}px`;
+  防抖(函数体, 延迟 = 50) {
+    let 定时器 = null;
+    return (...参数) => {
+      if (定时器) clearTimeout(定时器);
+      定时器 = setTimeout(() => 函数体.apply(this, 参数), 延迟);
+    };
+  }
+
+  更新坐标() {
+    const x坐标元素 = document.getElementById("x-coord");
+    const y坐标元素 = document.getElementById("y-coord");
+    if (!x坐标元素 || !y坐标元素) return;
+    x坐标元素.innerHTML = `X<span class="coord-colon">:</span><span class="coord-value">${Math.round(this.状态.点.位置.x)}</span>`;
+    x坐标元素.style.left = `${this.状态.点.位置.x}px`;
+    y坐标元素.innerHTML = `Y<span class="coord-colon">:</span><span class="coord-value">${Math.round(this.状态.点.位置.y)}</span>`;
+    y坐标元素.style.top = `${this.状态.点.位置.y}px`;
   }
 }
 
-new DrawRectangleMultiPhases();
+new 多阶段矩形动画();
