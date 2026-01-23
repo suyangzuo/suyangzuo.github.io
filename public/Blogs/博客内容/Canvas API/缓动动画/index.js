@@ -353,26 +353,28 @@ class 缓动动画 {
     const { p0, p1, p2, p3 } = this.曲线;
     const mt = 1 - t;
     const mt2 = mt * mt;
+    const mt3 = mt ** 3;
     const t2 = t * t;
+    const t3 = t ** 3;
     return {
-      x: p0.x * mt2 * mt + 3 * p1.x * mt2 * t + 3 * p2.x * mt * t2 + p3.x * t2 * t,
-      y: p0.y * mt2 * mt + 3 * p1.y * mt2 * t + 3 * p2.y * mt * t2 + p3.y * t2 * t,
+      x: p0.x * mt3 + 3 * p1.x * mt2 * t + 3 * p2.x * mt * t2 + p3.x * t3,
+      y: p0.y * mt3 + 3 * p1.y * mt2 * t + 3 * p2.y * mt * t2 + p3.y * t3,
     };
   }
 
   根据x求t(x目标, 迭代 = 24) {
-    let lo = 0;
-    let hi = 1;
+    let floor = 0;
+    let ceil = 1;
     for (let i = 0; i < 迭代; i++) {
-      const mid = (lo + hi) / 2;
+      const mid = (floor + ceil) / 2;
       const x = this.评估贝塞尔(mid).x;
       if (x < x目标) {
-        lo = mid;
+        floor = mid;
       } else {
-        hi = mid;
+        ceil = mid;
       }
     }
-    return (lo + hi) / 2;
+    return (floor + ceil) / 2;
   }
 
   重建时间表(锁定进度 = null) {
@@ -383,11 +385,11 @@ class 缓动动画 {
     let 最近时间 = 0;
 
     for (let i = 0; i < 样本.length; i++) {
-      const s = this.夹取(样本[i].x, 0, 1);
-      const tNorm = this.夹取(样本[i].y, 0, this.控制点最大归一);
-      const time = tNorm * this.汽车.时长;
-      最近时间 = Math.max(最近时间, time);
-      表.push({ s, time: 最近时间 });
+      const 归一化距离 = this.夹取(样本[i].x, 0, 1);
+      const 归一化时间 = this.夹取(样本[i].y, 0, this.控制点最大归一);
+      const time = 归一化时间 * this.汽车.时长;
+      最近时间 = Math.max(最近时间, time); //确保时间单调递增
+      表.push({ s: 归一化距离, time: 最近时间 });
     }
 
     if (表.length === 0 || 表[0].s > 0) {
@@ -1055,14 +1057,16 @@ class 映射关系 {
       ctx.stroke();
       // 曲线映射图：时间点上方绘制两位小数（首尾不绘制）
       if (isCurve && i !== 0 && i !== tPoints.length - 1) {
+        const t = tPoints.length === 1 ? 0.5 : i / (tPoints.length - 1);
+        let tStr = t.toFixed(2);
+        // 如果小数部分最后一位是0，则去掉
+        if (tStr.endsWith('0')) tStr = tStr.slice(0, -1);
         ctx.save();
         ctx.fillStyle = this.样式.文字;
         ctx.font = "12px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "bottom";
-        // t为归一化时间
-        const t = tPoints.length === 1 ? 0.5 : i / (tPoints.length - 1);
-        ctx.fillText(t.toFixed(2), p.x, p.y - 8);
+        ctx.fillText(tStr, p.x, p.y - 8);
         ctx.restore();
       }
     }
@@ -1109,19 +1113,20 @@ class 映射关系 {
       ctx.stroke();
       // 绘制数值（首尾不绘制）
       if (isCurve && i !== 0 && i !== dPoints.length - 1) {
-        ctx.save();
-        ctx.fillStyle = this.样式.文字;
-        ctx.font = "12px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "top";
-        // 反算归一化路程值
         let dVal;
         if (isCurve) {
           dVal = this.查表查x(i / (dPoints.length - 1), this._y查表);
         } else {
           dVal = dPoints.length === 1 ? 0.5 : i / (dPoints.length - 1);
         }
-        ctx.fillText(dVal.toFixed(2), p.x, p.y + 8);
+        let dStr = dVal.toFixed(2);
+        if (dStr.endsWith('0')) dStr = dStr.slice(0, -1);
+        ctx.save();
+        ctx.fillStyle = this.样式.文字;
+        ctx.font = "12px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "top";
+        ctx.fillText(dStr, p.x, p.y + 8);
         ctx.restore();
       }
     }
