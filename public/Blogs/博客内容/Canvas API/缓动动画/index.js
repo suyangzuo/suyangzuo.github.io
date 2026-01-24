@@ -974,10 +974,10 @@ class 映射关系 {
     this.绘制控制点();
     // --- 新增映射关系图和滑块 ---
     const ctx = this.ctx;
-    const margin = 90;
+    const margin = 70;
     let yBase = this.区域.底 + margin;
     this.绘制映射关系图(yBase, false); // 匀速
-    yBase += 120;
+    yBase += 140;
     this.绘制映射关系图(yBase, true); // 曲线
     yBase += 100;
     this.绘制滑块(yBase);
@@ -990,7 +990,7 @@ class 映射关系 {
     const right = this.区域.右;
     const width = right - left;
     const tY = yBase;
-    const dY = yBase + 50;
+    const dY = yBase + 75;
     ctx.save();
     ctx.strokeStyle = this.样式.轴线;
     ctx.lineWidth = 1.5;
@@ -1060,13 +1060,35 @@ class 映射关系 {
         const t = tPoints.length === 1 ? 0.5 : i / (tPoints.length - 1);
         let tStr = t.toFixed(2);
         // 如果小数部分最后一位是0，则去掉
-        if (tStr.endsWith('0')) tStr = tStr.slice(0, -1);
+        if (tStr.endsWith("0")) tStr = tStr.slice(0, -1);
         ctx.save();
-        ctx.fillStyle = this.样式.文字;
         ctx.font = "12px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "bottom";
-        ctx.fillText(tStr, p.x, p.y - 8);
+        const dotIdx = tStr.indexOf(".");
+        if (dotIdx !== -1) {
+          // 先绘制整数部分
+          const intPart = tStr.slice(0, dotIdx);
+          const dot = ".";
+          const fracPart = tStr.slice(dotIdx + 1);
+          // 计算整体宽度，左起点
+          const wAll = ctx.measureText(tStr).width;
+          const wInt = ctx.measureText(intPart).width;
+          const wDot = ctx.measureText(dot).width;
+          const wFrac = ctx.measureText(fracPart).width;
+          let xStart = p.x - wAll / 2;
+          ctx.fillStyle = this.样式.文字;
+          ctx.fillText(intPart, xStart, p.y - 8);
+          xStart += wInt;
+          ctx.fillStyle = "#888";
+          ctx.fillText(dot, xStart, p.y - 8);
+          xStart += wDot + (fracPart.length - 1) * wDot / 2;
+          ctx.fillStyle = this.样式.文字;
+          ctx.fillText(fracPart, xStart, p.y - 8);
+        } else {
+          ctx.fillStyle = this.样式.文字;
+          ctx.fillText(tStr, p.x, p.y - 8);
+        }
         ctx.restore();
       }
     }
@@ -1120,13 +1142,33 @@ class 映射关系 {
           dVal = dPoints.length === 1 ? 0.5 : i / (dPoints.length - 1);
         }
         let dStr = dVal.toFixed(2);
-        if (dStr.endsWith('0')) dStr = dStr.slice(0, -1);
+        if (dStr.endsWith("0")) dStr = dStr.slice(0, -1);
         ctx.save();
-        ctx.fillStyle = this.样式.文字;
         ctx.font = "12px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "top";
-        ctx.fillText(dStr, p.x, p.y + 8);
+        const dotIdx = dStr.indexOf(".");
+        if (dotIdx !== -1) {
+          const intPart = dStr.slice(0, dotIdx);
+          const dot = ".";
+          const fracPart = dStr.slice(dotIdx + 1);
+          const wAll = ctx.measureText(dStr).width;
+          const wInt = ctx.measureText(intPart).width;
+          const wDot = ctx.measureText(dot).width;
+          const wFrac = ctx.measureText(fracPart).width;
+          let xStart = p.x - wAll / 2;
+          ctx.fillStyle = this.样式.文字;
+          ctx.fillText(intPart, xStart, p.y + 8);
+          xStart += wInt;
+          ctx.fillStyle = "#888";
+          ctx.fillText(dot, xStart, p.y + 8);
+          xStart += wDot + (fracPart.length - 1) * wDot / 2;
+          ctx.fillStyle = this.样式.文字;
+          ctx.fillText(fracPart, xStart, p.y + 8);
+        } else {
+          ctx.fillStyle = this.样式.文字;
+          ctx.fillText(dStr, p.x, p.y + 8);
+        }
         ctx.restore();
       }
     }
@@ -1148,7 +1190,7 @@ class 映射关系 {
     const sliderW = 260,
       sliderH = 16;
     const sliderX = left + 240;
-    const sliderY = yBase + 10;
+    const sliderY = yBase + 30;
     ctx.save();
     // 滑块轨道：左侧高亮，右侧原色
     const trackY = sliderY + sliderH / 2 - 2;
@@ -1176,11 +1218,12 @@ class 映射关系 {
     ctx.fill();
     ctx.shadowBlur = 0;
     // 标题
-    ctx.fillStyle = this.样式.文字;
+    ctx.fillStyle = "lightslategray";
     ctx.font = "14px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
     ctx.textAlign = "right";
     ctx.fillText("分布数量", sliderX - 18, sliderY + sliderH / 2 + 6);
     // 数字
+    ctx.fillStyle = "lightsteelblue";
     ctx.textAlign = "left";
     ctx.fillText(val, sliderX + sliderW + 20, sliderY + sliderH / 2 + 6);
     ctx.restore();
