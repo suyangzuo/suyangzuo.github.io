@@ -1,3 +1,5 @@
+const 对象集合 = [];
+
 class 缓动动画 {
   constructor() {
     this.canvas = document.getElementById("canvas-缓动动画");
@@ -6,7 +8,9 @@ class 缓动动画 {
     this.ctx = this.canvas.getContext("2d");
     this.dpr = window.devicePixelRatio || 1;
     this.布局 = { 左: 50, 右: 45, 顶: 28, 底: 150 };
+    this.边界矩形 = this.canvas.getBoundingClientRect();
     this.初始化尺寸();
+    this.在视口内 = false;
 
     this.控制点最大归一 = 1; // 0-1 归一化的时间轴
 
@@ -112,6 +116,11 @@ class 缓动动画 {
     this.ctx.restore();
   }
 
+  刷新边界矩形() {
+    if (!this.在视口内) return;
+    this.边界矩形 = this.canvas.getBoundingClientRect();
+  }
+
   初始化尺寸() {
     this.cssWidth = this.canvas.clientWidth;
     this.cssHeight = this.canvas.clientHeight;
@@ -149,15 +158,16 @@ class 缓动动画 {
 
   绑定事件() {
     const debouncedResize = this.防抖(() => {
+      this.刷新边界矩形();
       this.初始化尺寸();
       this.重建时间表(this.当前进度());
       this.绘制();
     }, 80);
     window.addEventListener("resize", debouncedResize);
+    window.addEventListener("scroll", this.刷新边界矩形.bind(this));
 
     const 坐标 = (e) => {
-      const rect = this.canvas.getBoundingClientRect();
-      return { x: e.clientX - rect.left, y: e.clientY - rect.top, ctrl: e.ctrlKey };
+      return { x: e.clientX - this.边界矩形.left, y: e.clientY - this.边界矩形.top, ctrl: e.ctrlKey };
     };
 
     this.canvas.addEventListener("mousemove", (e) => {
@@ -900,6 +910,7 @@ class 映射关系 {
     this.边界矩形 = this.canvas.getBoundingClientRect();
     this.鼠标坐标 = { x: 0, y: 0 };
     this.鼠标已按下 = false;
+    this.在视口内 = false;
     this.光标样式 = {
       默认: 'url("/Images/Common/鼠标-默认.cur"), auto',
       悬停: 'url("/Images/Common/鼠标-指向.cur"), pointer',
@@ -1082,7 +1093,7 @@ class 映射关系 {
           xStart += wInt;
           ctx.fillStyle = "#888";
           ctx.fillText(dot, xStart, p.y - 8);
-          xStart += wDot + (fracPart.length - 1) * wDot / 2;
+          xStart += wDot + ((fracPart.length - 1) * wDot) / 2;
           ctx.fillStyle = this.样式.文字;
           ctx.fillText(fracPart, xStart, p.y - 8);
         } else {
@@ -1162,7 +1173,7 @@ class 映射关系 {
           xStart += wInt;
           ctx.fillStyle = "#888";
           ctx.fillText(dot, xStart, p.y + 8);
-          xStart += wDot + (fracPart.length - 1) * wDot / 2;
+          xStart += wDot + ((fracPart.length - 1) * wDot) / 2;
           ctx.fillStyle = this.样式.文字;
           ctx.fillText(fracPart, xStart, p.y + 8);
         } else {
@@ -1531,6 +1542,7 @@ class 映射关系 {
   }
 
   刷新边界矩形() {
+    if (!this.在视口内) return;
     this.边界矩形 = this.canvas.getBoundingClientRect();
   }
 
@@ -1544,12 +1556,43 @@ class 映射关系 {
 }
 
 const 启动 = () => {
-  new 缓动动画();
-  new 映射关系();
+  const 缓动动画对象 = new 缓动动画();
+  const 映射关系对象 = new 映射关系();
+  对象集合.push(
+    {
+      对象: 缓动动画对象,
+      canvas: 缓动动画对象.canvas,
+    },
+    {
+      对象: 映射关系对象,
+      canvas: 映射关系对象.canvas,
+    },
+  );
 };
 
 if (document.readyState === "loading") {
   window.addEventListener("DOMContentLoaded", 启动);
 } else {
   启动();
+}
+
+const 观察器设置 = {
+  threshold: 0.01,
+};
+
+const 观察器回调 = (entries) => {
+  entries.forEach((entry) => {
+    const canvas = entry.target;
+    const obj = 对象集合.find((o) => o.canvas === canvas).对象;
+    if (entry.isIntersecting) {
+      obj.在视口内 = true;
+    } else {
+      obj.在视口内 = false;
+    }
+  });
+};
+
+const 观察器 = new IntersectionObserver(观察器回调, 观察器设置);
+for (const 对象 of 对象集合) {
+  观察器.observe(对象.canvas);
 }

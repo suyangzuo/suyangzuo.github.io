@@ -12,7 +12,7 @@
       </p>
     </section>
     <section class="简介信息图像">
-      <img src="/Images/Contributors/Extreme Hunter.jpg" alt="苏扬" />
+      <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
     </section>
   </div>
   <ul class="联系方式列表">
@@ -63,9 +63,43 @@
 </article>
 <div class="专题正文区">
   <article class="正文分区">
-    <h2 class="分区标题 分区2级标题">缓动动画</h2>
+    <h2 class="分区标题 分区2级标题">缓动的本质</h2>
 
-    <h3 class="分区标题 分区3级标题">动画效果</h3>
+    <h3 class="分区标题 分区3级标题"><span class="行内专业名词">线性</span>与<span class="行内专业名词">缓动</span></h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词">线性</span>的含义：整个变化过程是<span class="行内专业名词">匀速</span
+      >的。举个例子：用<span class="行内专业名词 等宽">10</span>秒跑完<span class="行内专业名词 等宽">100</span
+      >米，如果是线性运动，意味着当时间过了一半时<span class="附加说明 等宽"
+        ><span class="行内专业名词 等宽">5</span>秒</span
+      >，距离也正好是一半<span class="附加说明 等宽"><span class="行内专业名词 等宽">50</span>米</span
+      >，时间与路程的的变化比例正好是<span class="专业名词 等宽"
+        >1<span class="行内专业名词 等宽" style="color: gray">:</span>1</span
+      >。如果用函数来表示的话，设<span class="代码"
+        >y<span class="次要 等宽" style="color: gray; margin: 0 6px">=</span><span style="color: greenyellow">f</span
+        ><span style="color: darkgoldenrod">(</span>x<span style="color: darkgoldenrod">)</span></span
+      >，<span class="行内代码">x</span>代表时间，<span class="行内代码">y</span>代表路程，二者的映射关系为<span
+        class="专业名词 等宽"
+        >1<span class="行内专业名词 等宽" style="color: gray">:</span>1</span
+      >。
+    </p>
+    <p class="分区普通文本">
+      然而，现实生活中很多事物的变化是<span class="行内专业名词">非线性</span
+      >的，就拿跑步来说，一个人从原地不动，一直到达自己的最高速度，这里有个加速过程；到达终点后，我们还要慢慢减速，直到停下，怎么可能从头到尾保持匀速呢？
+    </p>
+    <p class="分区普通文本">
+      <span class="行内专业名词">缓动</span>的含义：整个变化过程是<span class="行内专业名词">非线性</span
+      >的，意味着<span class="代码"
+        >y<span class="次要 等宽" style="color: gray; margin: 0 6px">=</span><span style="color: greenyellow">f</span
+        ><span style="color: darkgoldenrod">(</span>x<span style="color: darkgoldenrod">)</span></span
+      >中<span class="行内代码">x</span>和<span class="行内代码">y</span>的映射关系<span class="强调">不是</span
+      ><span class="专业名词 等宽">1<span class="行内专业名词 等宽" style="color: gray">:</span>1</span
+      >。要做出平滑、优雅、符合预期与常识的缓动效果，就要找到<span class="代码"
+        >y<span class="次要 等宽" style="color: gray; margin: 0 6px">=</span><span style="color: greenyellow">f</span
+        ><span style="color: darkgoldenrod">(</span>x<span style="color: darkgoldenrod">)</span></span
+      >的映射关系<span class="行内专业名词">算法</span>。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">缓动效果</h3>
     <figure class="截图容器" style="width: 100%; aspect-ratio: 1.25">
       <canvas id="canvas-缓动动画" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
     </figure>
