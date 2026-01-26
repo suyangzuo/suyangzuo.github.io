@@ -854,11 +854,13 @@ class 映射关系 {
   评估贝塞尔(t) {
     const { p0, p1, p2, p3 } = this.曲线;
     const mt = 1 - t;
-    const mt2 = mt * mt;
+    const mt2 = mt ** 2;
+    const mt3 = mt ** 3;
     const t2 = t * t;
+    const t3 = t ** 3;
     return {
-      x: p0.x * mt2 * mt + 3 * p1.x * mt2 * t + 3 * p2.x * mt * t2 + p3.x * t2 * t,
-      y: p0.y * mt2 * mt + 3 * p1.y * mt2 * t + 3 * p2.y * mt * t2 + p3.y * t2 * t,
+      x: p0.x * mt3 + 3 * p1.x * mt2 * t + 3 * p2.x * mt * t2 + p3.x * t3,
+      y: p0.y * mt3 + 3 * p1.y * mt2 * t + 3 * p2.y * mt * t2 + p3.y * t3,
     };
   }
 
@@ -984,7 +986,6 @@ class 映射关系 {
     this.绘制曲线();
     this.绘制控制点();
     // --- 新增映射关系图和滑块 ---
-    const ctx = this.ctx;
     const margin = 70;
     let yBase = this.区域.底 + margin;
     this.绘制映射关系图(yBase, false); // 匀速
@@ -1138,7 +1139,6 @@ class 映射关系 {
       }
     }
     for (let i = 0; i < dPoints.length; i++) {
-      const 是偶数 = i % 2 === 0;
       const p = dPoints[i];
       ctx.beginPath();
       ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
@@ -1166,7 +1166,6 @@ class 映射关系 {
           const wAll = ctx.measureText(dStr).width;
           const wInt = ctx.measureText(intPart).width;
           const wDot = ctx.measureText(dot).width;
-          const wFrac = ctx.measureText(fracPart).width;
           let xStart = p.x - wAll / 2;
           ctx.fillStyle = this.样式.文字;
           ctx.fillText(intPart, xStart, p.y + 8);
@@ -1188,7 +1187,7 @@ class 映射关系 {
     ctx.fillStyle = "lightskyblue";
     ctx.font = "14px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
     ctx.fillText("时间", left - 8, tY);
-    ctx.fillText("路程", left - 8, dY + 8);
+    ctx.fillText("距离", left - 8, dY + 8);
     ctx.restore();
   }
 
@@ -1208,7 +1207,7 @@ class 映射关系 {
     const trackH = 4;
     const highlightColor = "#6ac69d"; // 高亮色（金色）
     const min = 2,
-      max = 10;
+      max = 20;
     const val = this.分布数量;
     const t = (val - min) / (max - min);
     const knobX = sliderX + t * sliderW;
@@ -1288,7 +1287,7 @@ class 映射关系 {
       ctx.stroke();
     }
     const yLines = 5;
-    const yStep = 1 / yLines;
+    const yStep = 1 / (yLines - 1);
     for (let i = 1; i < yLines; i++) {
       const ny = yStep * i;
       const y = area.顶 + (1 - ny) * area.高;
@@ -1300,7 +1299,9 @@ class 映射关系 {
       ctx.font = "12px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
       ctx.textAlign = "right";
       ctx.textBaseline = "middle";
-      ctx.fillText(ny.toFixed(1), area.左 - 6, y);
+      let text = ny.toFixed(1);
+      if (text === "1.0") text = "1";
+      ctx.fillText(text, area.左 - 6, y);
     }
     ctx.strokeStyle = this.样式.轴线;
     ctx.lineWidth = 1.2;
@@ -1319,7 +1320,7 @@ class 映射关系 {
     ctx.fillText("时间", area.左 + 6, area.顶);
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
-    ctx.fillText("距离", area.右 + 8, area.底);
+    ctx.fillText("变化", area.右 + 8, area.底);
     ctx.fillStyle = 刻度数字颜色;
     ctx.font = "12px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
     ctx.textAlign = "right";
@@ -1555,9 +1556,505 @@ class 映射关系 {
   }
 }
 
+class 匀加速 {
+  constructor() {
+    this.canvas = document.querySelector("#canvas-匀加速");
+    this.ctx = this.canvas.getContext("2d");
+    this.dpr = window.devicePixelRatio || 1;
+    this.cssWidth = this.canvas.clientWidth;
+    this.cssHeight = this.canvas.clientHeight;
+    this.canvas.width = this.cssWidth * this.dpr;
+    this.canvas.height = this.cssHeight * this.dpr;
+    this.ctx.scale(this.dpr, this.dpr);
+    this.在视口内 = false;
+    this.边界矩形 = this.canvas.getBoundingClientRect();
+    this.鼠标坐标 = { x: 0, y: 0 };
+    this.鼠标已按下 = false;
+    this.拖拽中 = false;
+    this.状态 = {
+      悬停: null,
+      拖拽: null,
+      拖拽偏移: null,
+    };
+    this.方向 = 1;
+    this.加速度 = 50;
+    this.加速用时 = 2000;
+    this.速度 = 0;
+    this.最高速度 = 250;
+    this.位置 = 0;
+
+    this.滑块配置 = {
+      左边距: 20,
+      顶边距: 20,
+      滑块高度: 25,
+      滑块间距: 5,
+      数值宽度: 60,
+      滑块轨道高度: 8,
+      滑块thumb宽度: 6,
+      滑块thumb高度: 20,
+      滑块thumb圆角: 4,
+    };
+
+    this.滑块数据 = [
+      {
+        id: "最高速度",
+        标题: "最高速度",
+        最小值: 100,
+        最大值: 500,
+        当前值: 250,
+        单位: "px/s",
+        类型: "滑块",
+      },
+      {
+        id: "加速用时",
+        标题: "加速用时",
+        最小值: 500,
+        最大值: 5000,
+        当前值: 2000,
+        单位: "ms",
+        类型: "滑块",
+        步长: 50,
+      },
+      {
+        id: "加速度",
+        标题: "加速度",
+        当前值: 0,
+        单位: "px/s²",
+        类型: "计算",
+      },
+      {
+        id: "当前速度",
+        标题: "当前速度",
+        当前值: 0,
+        单位: "px/s",
+        类型: "计算",
+      },
+    ];
+
+    this.滑块区域 = [];
+    this.读取设置();
+    this.计算滑块区域();
+
+    this.绑定事件();
+    this.绘制();
+  }
+
+  绑定事件() {
+    this.canvas.addEventListener("mousemove", (e) => {
+      const 坐标 = this.获取鼠标坐标(e);
+      this.鼠标坐标.x = 坐标.x;
+      this.鼠标坐标.y = 坐标.y;
+
+      if (this.状态.拖拽) {
+        this.更新滑块值(this.状态.拖拽, 坐标.x);
+        this.绘制();
+      } else {
+        const 悬停结果 = this.检测滑块悬停(坐标.x, 坐标.y);
+        if (悬停结果 !== this.状态.悬停) {
+          this.状态.悬停 = 悬停结果;
+          this.绘制();
+        }
+      }
+    });
+
+    this.canvas.addEventListener("mousedown", (e) => {
+      this.鼠标已按下 = true;
+      const 坐标 = this.获取鼠标坐标(e);
+      const 悬停结果 = this.检测滑块悬停(坐标.x, 坐标.y);
+
+      if (悬停结果) {
+        const { 类型, 滑块id, 滑块区域 } = 悬停结果;
+
+        if (类型 === "轨道") {
+          // 当鼠标悬停在轨道上按下时，thumb圆心跳到鼠标坐标位置
+          this.更新滑块值(滑块id, 坐标.x);
+          // 重新获取更新后的滑块区域
+          const 更新后的滑块区域 = this.滑块区域.find((s) => s.滑块.id === 滑块id);
+          if (更新后的滑块区域) {
+            this.状态.拖拽 = 滑块id;
+            // 基于新的thumb位置计算拖拽偏移量
+            this.状态.拖拽偏移 = {
+              x: 坐标.x - 更新后的滑块区域.thumb.中心x,
+              y: 坐标.y - 更新后的滑块区域.thumb.中心y,
+            };
+            this.绘制();
+          }
+        } else if (类型 === "thumb") {
+          // 当鼠标悬停在thumb上按下时，正常拖拽
+          this.状态.拖拽 = 滑块id;
+          this.状态.拖拽偏移 = {
+            x: 坐标.x - 滑块区域.thumb.中心x,
+            y: 坐标.y - 滑块区域.thumb.中心y,
+          };
+          this.绘制();
+        }
+      }
+    });
+
+    window.addEventListener("mouseup", (e) => {
+      if (this.状态.拖拽) {
+        this.状态.拖拽 = null;
+        this.状态.拖拽偏移 = null;
+        this.绘制();
+      }
+      this.鼠标已按下 = false;
+    });
+
+    const debouncedResize = this.防抖(() => {
+      this.刷新边界矩形();
+      this.初始化尺寸();
+      this.计算滑块区域();
+      this.绘制();
+    }, 50);
+    window.addEventListener("resize", debouncedResize);
+    window.addEventListener("scroll", this.刷新边界矩形.bind(this));
+  }
+
+  防抖(fn, delay) {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => fn.apply(this, args), delay);
+    };
+  }
+
+  刷新边界矩形() {
+    if (!this.在视口内) return;
+    this.边界矩形 = this.canvas.getBoundingClientRect();
+  }
+
+  保存设置() {
+    try {
+      const 设置 = {
+        加速度: this.加速度,
+        最高速度: this.最高速度,
+        加速用时: this.加速用时,
+        滑块数据: this.滑块数据.map((滑块) => ({
+          id: 滑块.id,
+          当前值: 滑块.当前值,
+        })),
+      };
+      sessionStorage.setItem("匀加速-设置", JSON.stringify(设置));
+    } catch (e) {
+      console.warn("保存匀加速设置失败", e);
+    }
+  }
+
+  读取设置() {
+    try {
+      const raw = sessionStorage.getItem("匀加速-设置");
+      if (!raw) return;
+      const 设置 = JSON.parse(raw);
+      if (!设置 || typeof 设置 !== "object") return;
+
+      if (typeof 设置.加速度 === "number") {
+        this.加速度 = 设置.加速度;
+        this.滑块数据[0].当前值 = 设置.加速度;
+      }
+      if (typeof 设置.最高速度 === "number") {
+        this.最高速度 = 设置.最高速度;
+        this.滑块数据[1].当前值 = 设置.最高速度;
+      }
+      if (typeof 设置.加速用时 === "number") {
+        this.加速用时 = 设置.加速用时;
+        this.滑块数据[2].当前值 = 设置.加速用时;
+      }
+
+      if (Array.isArray(设置.滑块数据)) {
+        设置.滑块数据.forEach((保存的滑块) => {
+          const 滑块 = this.滑块数据.find((s) => s.id === 保存的滑块.id);
+          if (滑块 && typeof 保存的滑块.当前值 === "number") {
+            滑块.当前值 = 保存的滑块.当前值;
+          }
+        });
+      }
+    } catch (e) {
+      console.warn("读取匀加速设置失败", e);
+    }
+  }
+
+  初始化尺寸() {
+    this.cssWidth = this.canvas.clientWidth;
+    this.cssHeight = this.canvas.clientHeight;
+    this.canvas.width = this.cssWidth * this.dpr;
+    this.canvas.height = this.cssHeight * this.dpr;
+    this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+    this.计算滑块区域();
+  }
+
+  计算标题宽度() {
+    const ctx = this.ctx;
+    ctx.font = "13px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+    const 测量结果 = ctx.measureText("最高速度");
+    return 测量结果.width;
+  }
+
+  计算滑块区域() {
+    this.滑块区域 = [];
+    const { 左边距, 顶边距, 滑块高度, 滑块间距, 数值宽度 } = this.滑块配置;
+    const 标题宽度 = this.计算标题宽度();
+    const 滑块轨道左 = 左边距 + 标题宽度 + 16;
+    const 滑块轨道宽度 = 200;
+
+    this.滑块数据.forEach((滑块, index) => {
+      const 滑块顶 = 顶边距 + index * (滑块高度 + 滑块间距);
+      const 滑块轨道顶 = 滑块顶 + (滑块高度 - this.滑块配置.滑块轨道高度) / 2;
+      let thumb中心x = 滑块轨道左;
+      let thumb中心y = 滑块轨道顶 + this.滑块配置.滑块轨道高度 / 2;
+
+      // 只对滑块类型计算进度和thumb位置
+      if (滑块.类型 === "滑块") {
+        const 进度 = (滑块.当前值 - 滑块.最小值) / (滑块.最大值 - 滑块.最小值);
+        thumb中心x = 滑块轨道左 + 进度 * 滑块轨道宽度;
+      }
+
+      // 为计算类型的滑块设置不同的数值位置
+      const 数值位置x = 滑块.类型 === "计算" ? 滑块轨道左 : 滑块轨道左 + 滑块轨道宽度 + 16;
+
+      this.滑块区域.push({
+        滑块,
+        区域: {
+          左: 滑块轨道左,
+          右: 滑块轨道左 + 滑块轨道宽度,
+          顶: 滑块顶,
+          底: 滑块顶 + 滑块高度,
+        },
+        轨道: {
+          左: 滑块轨道左,
+          右: 滑块轨道左 + 滑块轨道宽度,
+          顶: 滑块轨道顶,
+          高: this.滑块配置.滑块轨道高度,
+        },
+        thumb: {
+          中心x: thumb中心x,
+          中心y: thumb中心y,
+          宽: this.滑块配置.滑块thumb宽度,
+          高: this.滑块配置.滑块thumb高度,
+          圆角: this.滑块配置.滑块thumb圆角,
+        },
+        标题位置: {
+          x: 左边距 + 标题宽度,
+          y: 滑块顶 + 滑块高度 / 2,
+        },
+        数值位置: {
+          x: 数值位置x,
+          y: 滑块顶 + 滑块高度 / 2,
+        },
+      });
+    });
+  }
+
+  检测滑块悬停(x, y) {
+    for (const 滑块区域 of this.滑块区域) {
+      const { 区域, thumb, 轨道, 滑块 } = 滑块区域;
+
+      // 只对滑块类型进行悬停检测
+      if (滑块.类型 !== "滑块") continue;
+
+      // 首先检测是否悬停在thumb上（左右各加入5的容差）
+      const 容差 = 5;
+      const thumb左 = thumb.中心x - thumb.宽 / 2 - 容差;
+      const thumb右 = thumb.中心x + thumb.宽 / 2 + 容差;
+      const thumb顶 = thumb.中心y - thumb.高 / 2;
+      const thumb底 = thumb.中心y + thumb.高 / 2;
+
+      if (x >= thumb左 && x <= thumb右 && y >= thumb顶 && y <= thumb底) {
+        return { 类型: "thumb", 滑块id: 滑块.id, 滑块区域 };
+      }
+
+      // 然后检测是否悬停在轨道上（增加上下容差各5像素）
+      const 轨道容差 = 5;
+      if (x >= 轨道.左 && x <= 轨道.右 && y >= 轨道.顶 - 轨道容差 && y <= 轨道.顶 + 轨道.高 + 轨道容差) {
+        return { 类型: "轨道", 滑块id: 滑块.id, 滑块区域 };
+      }
+    }
+    return null;
+  }
+
+  更新滑块值(滑块id, 鼠标x) {
+    const 滑块区域 = this.滑块区域.find((s) => s.滑块.id === 滑块id);
+    if (!滑块区域) return;
+
+    const { 轨道, 滑块 } = 滑块区域;
+
+    // 只对滑块类型的滑块进行更新
+    if (滑块.类型 !== "滑块") return;
+
+    let 实际鼠标x = 鼠标x;
+
+    if (this.状态.拖拽偏移) {
+      实际鼠标x = 鼠标x - this.状态.拖拽偏移.x;
+    }
+
+    const 相对位置 = Math.max(0, Math.min(1, (实际鼠标x - 轨道.左) / (轨道.右 - 轨道.左)));
+    let 新值 = 滑块.最小值 + 相对位置 * (滑块.最大值 - 滑块.最小值);
+
+    // 如果滑块有步长属性，按步长调整值
+    if (滑块.步长) {
+      新值 = Math.round(新值 / 滑块.步长) * 滑块.步长;
+      // 确保值在范围内
+      新值 = Math.max(滑块.最小值, Math.min(滑块.最大值, 新值));
+    }
+
+    滑块.当前值 = 新值;
+
+    // 更新滑块值
+    this.最高速度 = this.滑块数据[0].当前值;
+    this.加速用时 = this.滑块数据[1].当前值;
+
+    // 计算加速度（最高速度 / 加速用时，注意单位转换）
+    const 加速用时秒 = this.加速用时 / 1000;
+    const 计算加速度 = this.最高速度 / 加速用时秒;
+    this.加速度 = 计算加速度;
+    this.滑块数据[2].当前值 = 计算加速度;
+
+    // 当前速度（这里可以根据实际情况计算，暂时设为0）
+    this.滑块数据[3].当前值 = this.速度;
+
+    this.保存设置();
+    this.计算滑块区域();
+  }
+
+  绘制滑块() {
+    const ctx = this.ctx;
+    const { 滑块轨道高度, 滑块thumb宽度, 滑块thumb高度, 滑块thumb圆角 } = this.滑块配置;
+
+    this.滑块区域.forEach((滑块区域, index) => {
+      const { 滑块, 轨道, thumb, 标题位置, 数值位置, 区域 } = 滑块区域;
+      const 悬停中 = this.状态.悬停 === 滑块.id;
+      const 拖拽中 = this.状态.拖拽 === 滑块.id;
+
+      ctx.save();
+
+      ctx.font = "13px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+      ctx.textBaseline = "middle";
+
+      ctx.fillStyle = "rgba(159, 225, 255, 1)";
+      ctx.textAlign = "right";
+      ctx.fillText(滑块.标题, 标题位置.x, 标题位置.y);
+
+      if (滑块.类型 === "滑块") {
+        // 绘制滑块轨道
+        ctx.fillStyle = "#374151";
+        ctx.fillRect(轨道.左, 轨道.顶, 轨道.右 - 轨道.左, 轨道.高);
+
+        // 绘制进度条
+        const 进度 = (滑块.当前值 - 滑块.最小值) / (滑块.最大值 - 滑块.最小值);
+        ctx.fillStyle = "#589f7fff";
+        ctx.fillRect(轨道.左, 轨道.顶, 进度 * (轨道.右 - 轨道.左), 轨道.高);
+
+        // 当鼠标悬停在thumb上、轨道上或者正在拖拽时，都显示thumb
+        const 悬停在thumb上 = this.状态.悬停 && this.状态.悬停.类型 === "thumb" && this.状态.悬停.滑块id === 滑块.id;
+        const 悬停在轨道上 = this.状态.悬停 && this.状态.悬停.类型 === "轨道" && this.状态.悬停.滑块id === 滑块.id;
+        const 拖拽当前滑块 = this.状态.拖拽 === 滑块.id;
+
+        if (悬停在thumb上 || 悬停在轨道上 || 拖拽当前滑块) {
+          // 根据不同状态设置不同的颜色
+          if (悬停在thumb上 || 拖拽当前滑块) {
+            ctx.fillStyle = "#f59e0b";
+          } else {
+            ctx.fillStyle = "#6ac69d";
+          }
+          ctx.beginPath();
+          ctx.roundRect(thumb.中心x - thumb.宽 / 2, thumb.中心y - thumb.高 / 2, thumb.宽, thumb.高, 滑块thumb圆角);
+          ctx.fill();
+        }
+      }
+
+      // 绘制数值和单位
+      ctx.textAlign = "left";
+      let 当前值文本;
+      let 整数部分,
+        小数部分,
+        有小数点 = false;
+
+      if (滑块.类型 === "计算") {
+        // 计算类型的数值：如果小数部分最后一位为0，就不显示最后一位
+        const 两位小数 = 滑块.当前值.toFixed(2);
+        if (两位小数.endsWith(".00")) {
+          当前值文本 = Math.round(滑块.当前值).toString();
+        } else if (两位小数.endsWith("0")) {
+          当前值文本 = 滑块.当前值.toFixed(1);
+        } else {
+          当前值文本 = 两位小数;
+        }
+
+        // 分解数值为整数部分和小数部分
+        if (当前值文本.includes(".")) {
+          [整数部分, 小数部分] = 当前值文本.split(".");
+          有小数点 = true;
+        } else {
+          整数部分 = 当前值文本;
+          小数部分 = "";
+        }
+      } else {
+        // 滑块类型的数值取整
+        当前值文本 = `${Math.round(滑块.当前值)}`;
+        整数部分 = 当前值文本;
+        小数部分 = "";
+      }
+
+      const 单位文本 = 滑块.单位;
+
+      // 绘制整数部分
+      ctx.fillStyle = "#cde";
+      ctx.fillText(整数部分, 数值位置.x, 数值位置.y);
+
+      let 总宽度 = ctx.measureText(整数部分).width;
+
+      // 绘制小数点（使用gray颜色）
+      if (有小数点) {
+        ctx.fillStyle = "gray";
+        ctx.fillText(".", 数值位置.x + 总宽度, 数值位置.y);
+        总宽度 += ctx.measureText(".").width;
+
+        // 绘制小数部分
+        ctx.fillStyle = "#cde";
+        ctx.fillText(小数部分, 数值位置.x + 总宽度, 数值位置.y);
+        总宽度 += ctx.measureText(小数部分).width;
+      }
+
+      const 单位位置x = 数值位置.x + 总宽度 + 4;
+      let 单位绘制位置x = 单位位置x;
+
+      // 逐个字符绘制单位，其中"/"使用gray颜色
+      for (const char of 单位文本) {
+        if (char === "/") {
+          ctx.fillStyle = "#789";
+        } else {
+          ctx.fillStyle = "darkgoldenrod";
+        }
+        ctx.fillText(char, 单位绘制位置x, 数值位置.y);
+        单位绘制位置x += ctx.measureText(char).width;
+      }
+
+      ctx.restore();
+    });
+  }
+
+  绘制() {
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+
+    this.ctx.fillStyle = "#0b1220";
+    this.ctx.fillRect(0, 0, this.cssWidth, this.cssHeight);
+
+    this.绘制滑块();
+  }
+
+  获取鼠标坐标(e) {
+    return {
+      x: e.clientX - this.边界矩形.left,
+      y: e.clientY - this.边界矩形.top,
+    };
+  }
+}
+
 const 启动 = () => {
   const 缓动动画对象 = new 缓动动画();
   const 映射关系对象 = new 映射关系();
+  const 匀加速对象 = new 匀加速();
   对象集合.push(
     {
       对象: 缓动动画对象,
@@ -1566,6 +2063,10 @@ const 启动 = () => {
     {
       对象: 映射关系对象,
       canvas: 映射关系对象.canvas,
+    },
+    {
+      对象: 匀加速对象,
+      canvas: 匀加速对象.canvas,
     },
   );
 };

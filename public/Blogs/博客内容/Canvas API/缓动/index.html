@@ -1,0 +1,277 @@
+<article class="专题简介">
+  <h1 class="简介标题"><span>缓动</span><span class="原创">原创</span></h1>
+  <div class="简介信息">
+    <section class="简介信息文本">
+      <p class="作者">
+        <span class="作者前缀 前缀">作者：</span>
+        <span class="作者姓名">苏扬</span>
+      </p>
+      <p class="日期">
+        <span class="日期前缀 前缀">日期：</span>
+        <span class="日期文本">待定</span>
+      </p>
+    </section>
+    <section class="简介信息图像">
+      <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+    </section>
+  </div>
+  <ul class="联系方式列表">
+    <li class="联系方式项">
+      <a class="联系方式链接" href="mailto:suyangzuo@gmail.com" target="_blank">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://github.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-github"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.deviantart.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-deviantart"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dev.to/suyangzuo" target="_blank"><i class="fa-brands fa-dev"></i></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.freecodecamp.org/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-free-code-camp"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://codepen.io/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-codepen"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dribbble.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-dribbble"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.artstation.com/user-7893655" target="_blank"
+        ><i class="fa-brands fa-artstation"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://codesandbox.io/u/suyangzuo" target="_blank">
+        <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
+      /></a>
+    </li>
+  </ul>
+</article>
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">缓动的本质</h2>
+
+    <h3 class="分区标题 分区3级标题"><span class="行内专业名词">线性</span>与<span class="行内专业名词">缓动</span></h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词">线性</span>的含义：整个变化过程是<span class="行内专业名词">匀速</span
+      >的。举个例子：用<span class="行内专业名词 等宽">10</span>秒跑完<span class="行内专业名词 等宽">100</span
+      >米，如果是线性运动，意味着当时间过了一半时<span class="附加说明 等宽"
+        ><span class="行内专业名词 等宽">5</span>秒</span
+      >，距离也正好是一半<span class="附加说明 等宽"><span class="行内专业名词 等宽">50</span>米</span
+      >，时间与路程的的变化比例正好是<span class="专业名词 等宽"
+        >1<span class="行内专业名词 等宽" style="color: gray">:</span>1</span
+      >。如果用函数来表示的话，设<span class="代码"
+        >y<span class="次要 等宽" style="color: gray; margin: 0 6px">=</span><span style="color: greenyellow">f</span
+        ><span style="color: darkgoldenrod">(</span>x<span style="color: darkgoldenrod">)</span></span
+      >，<span class="行内代码">x</span>代表时间，<span class="行内代码">y</span>代表路程，二者的映射关系为<span
+        class="专业名词 等宽"
+        >1<span class="行内专业名词 等宽" style="color: gray">:</span>1</span
+      >。
+    </p>
+    <p class="分区普通文本">
+      然而，现实生活中很多事物的变化是<span class="行内专业名词">非线性</span
+      >的，就拿跑步来说，一个人从原地不动，一直到达自己的最高速度，这里有个加速过程；到达终点后，我们还要慢慢减速，直到停下，怎么可能从头到尾保持匀速呢？
+    </p>
+    <p class="分区普通文本">
+      <span class="行内专业名词">缓动</span>的含义：整个变化过程是<span class="行内专业名词">非线性</span
+      >的，意味着<span class="代码"
+        >y<span class="次要 等宽" style="color: gray; margin: 0 6px">=</span><span style="color: greenyellow">f</span
+        ><span style="color: darkgoldenrod">(</span>x<span style="color: darkgoldenrod">)</span></span
+      >中<span class="行内代码">x</span>和<span class="行内代码">y</span>的映射关系<span class="强调">不是</span
+      ><span class="专业名词 等宽">1<span class="行内专业名词 等宽" style="color: gray">:</span>1</span
+      >。要做出平滑、优雅、符合预期与常识的缓动效果，就要找到<span class="代码"
+        >y<span class="次要 等宽" style="color: gray; margin: 0 6px">=</span><span style="color: greenyellow">f</span
+        ><span style="color: darkgoldenrod">(</span>x<span style="color: darkgoldenrod">)</span></span
+      >的映射关系<span class="行内专业名词">算法</span>。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">缓动动画范例</h3>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.25">
+      <canvas id="canvas-缓动动画" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <p class="分区普通文本">
+      上面的汽车是<span class="行内专业名词">线性</span>匀速运动，下面的汽车是<span class="行内专业名词">缓动</span
+      >运动。你可以拖拽两个控制点，来改变下面汽车的缓动效果。
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span><span class="强调">相同点</span>：用固定的时间移动固定的距离，二者一起开始，一起结束。</span>
+      </li>
+      <li class="分区列表项">
+        <span
+          ><span class="强调">不同点</span>：运动的过程，一个是<span class="行内专业名词">线性</span>，一个是<span
+            class="行内专业名词"
+            >缓动</span
+          >。</span
+        >
+      </li>
+    </ul>
+    <p class="分区普通文本">
+      想一想：生活中汽车从静止到发动、加速，然后再减速、停下，整个过程的曲线应该是什么样子的？拖拽控制点试试看！
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">小提示</h3>
+      <p class="分区普通文本">
+        访问<a class="超链接" href="/Interactive-Hub/Ease-Animation/" target="_blank">缓动动画</a
+        >，这是一个模拟游戏人物移动和跳跃的小程序，尝试各种不同的参数，看看哪一种符合你心中游戏人物运动的预期效果。
+      </p>
+    </section>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">缓动算法</h2>
+
+    <h3 class="分区标题 分区3级标题">归一化</h3>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span
+          ><span class="行内专业名词">什么是归一化</span>：将变化量映射到<span class="代码"
+            ><span style="color: gold">[</span>0<span style="color: gray">,</span> 1<span style="color: gold"
+              >]</span
+            ></span
+          >区间就是归一化。举个例子：一个物体，从视口水平坐标<span class="代码"
+            >800<span style="color: lightslategray; margin-left: 2px">px</span></span
+          >移动到<span class="代码">2000<span style="color: lightslategray; margin-left: 2px">px</span></span
+          >处，归一化后，<span class="代码">800<span style="color: lightslategray; margin-left: 2px">px</span></span
+          >被映射到<span class="代码">0</span>，<span class="代码"
+            >2000<span style="color: lightslategray; margin-left: 2px">px</span></span
+          >被映射到<span class="代码">1</span>，<span class="代码"
+            >1400<span style="color: lightslategray; margin-left: 2px">px</span></span
+          >被映射到<span class="代码">0.5</span></span
+        >。
+      </li>
+      <li class="分区列表项">
+        <span
+          ><span class="行内专业名词">为什么归一化</span>：将<span class="行内专业名词">算法</span>与<span
+            class="行内专业名词"
+            >具体业务</span
+          >解耦，让<span class="代码"
+            >y<span class="次要 等宽" style="color: gray; margin: 0 6px">=</span
+            ><span style="color: greenyellow">f</span><span style="color: darkgoldenrod">(</span>x<span
+              style="color: darkgoldenrod"
+              >)</span
+            ></span
+          >具备通用性。举个例子，假设要用<span class="行内代码">5</span>秒时间水平移动<span class="行内代码">2000</span
+          >像素，时间来到<span class="行内代码">4</span>秒处，应该运动多少像素？没有归一化的函数是：<span class="代码"
+            >y<span class="次要 等宽" style="color: gray; margin: 0 6px">=</span
+            ><span style="color: greenyellow">f</span><span style="color: darkgoldenrod">(</span>4<span
+              style="color: darkgoldenrod"
+              >)</span
+            ></span
+          >，函数内部就必须专门为<span class="行内代码">4</span
+          >编写代码，如果换成其它数字呢？这样的函数就失去了通用性；而归一化的函数是：<span class="代码"
+            >y<span class="次要 等宽" style="color: gray; margin: 0 6px">=</span
+            ><span style="color: greenyellow">f</span><span style="color: darkgoldenrod">(</span>0.8<span
+              style="color: darkgoldenrod"
+              >)</span
+            ></span
+          >。这里的<span class="代码">4</span>秒，就是<span class="行内专业名词">具体业务</span>，将其映射为<span
+            class="代码"
+            >0.8</span
+          >，无论本来的数值是什么，传入的时候全部归入<span class="代码"
+            ><span style="color: gold">[</span>0<span style="color: gray">,</span> 1<span style="color: gold"
+              >]</span
+            ></span
+          >区间，这样的函数就具备了通用性。</span
+        >
+      </li>
+    </ul>
+    <p class="分区普通文本">
+      通用性的<span class="代码"
+        >y<span class="次要 等宽" style="color: gray; margin: 0 6px">=</span><span style="color: greenyellow">f</span
+        ><span style="color: darkgoldenrod">(</span>x<span style="color: darkgoldenrod">)</span></span
+      >处理流程：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span>将具体业务的<span class="行内代码">x</span>归一化为函数内部参数<span class="行内代码">x</span></span
+        >。
+      </li>
+      <li class="分区列表项">
+        <span
+          >将归一化的参数，代入<span class="代码"
+            >y<span class="次要 等宽" style="color: gray; margin: 0 6px">=</span
+            ><span style="color: greenyellow">f</span><span style="color: darkgoldenrod">(</span>x<span
+              style="color: darkgoldenrod"
+              >)</span
+            ></span
+          >函数。<span class="附加说明">内部使用归一化参数，不涉及具体业务数值，通用性高</span></span
+        >
+      </li>
+      <li class="分区列表项">
+        <span>将函数返回的归一化的<span class="行内代码">y</span>转换为具体业务的<span class="行内代码">y</span></span
+        >。
+      </li>
+    </ul>
+
+    <h3 class="分区标题 分区3级标题">映射关系范例</h3>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1">
+      <canvas id="canvas-映射关系" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <p class="分区普通文本">
+      上方的横幅代表<span class="行内专业名词">线性</span>映射，下方的横幅代表<span class="行内专业名词">缓动</span
+      >映射。你可以拖拽控制点，来观察映射关系的变化。<span class="强调">注意：</span>，在<span class="行内专业名词 等宽"
+        >图2</span
+      >中，我对<span class="行内代码">Y</span>轴刻度做了<span class="行内专业名词">归一化</span>处理，这和<span
+        class="行内专业名词 等宽"
+        >图1</span
+      >有所不同。
+    </p>
+    <p class="分区普通文本">
+      你可能觉得好奇，<span class="行内专业名词 等宽">图2</span>下方的<span class="行内专业名词">缓动</span
+      >映射表中，是怎么把<span class="行内专业名词">时间</span>映射为<span class="行内专业名词">距离</span
+      >的？用了什么公式？其实，在<span class="行内专业名词 等宽">图1</span>和<span class="行内专业名词 等宽">图2</span
+      >中，我都是用<span class="行内专业名词">三次贝塞尔曲线算法</span
+      >来实现映射关系的，这是一种非常流行的做法，效果非常好。但是，也有别的方法实现缓动动画，具体取决于业务需求。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">匀加速缓动</h3>
+    <p class="分区普通文本">
+      下面我就用一个<span class="行内专业名词">匀加速</span>范例来演示缓动效果，之所以选择<span class="行内专业名词"
+        >匀加速</span
+      >，是因为它在实际业务中比较常用，但是实现难度又不高，不需要复杂的数学计算<span class="附加说明"
+        >比如<span class="行内专业名词">三次贝塞尔曲线算法</span></span
+      >。
+    </p>
+    <p class="分区普通文本">
+      假设一个物体的最高速度为<span class="行内代码">400</span>，速度从<span class="行内代码">0</span>加速到<span
+        class="行内代码"
+        >400</span
+      >需要<span class="行内代码">5<span style="color: lightsteelblue; margin-left: 2px">秒</span></span
+      >，并且是<span class="行内专业名词">匀加速</span>，我们就可以算出加速度是<span class="代码"
+        >80<span style="color: gray; margin: 0 2px">/</span>秒</span
+      >。然而，假设速度<span class="行内专业名词 等宽">每秒变化1次</span
+      >，整个加速过程会显得非常卡顿、不自然，为了让动画更自然，我们需要增加<span class="行内专业名词"
+        >每秒变化的次数</span
+      >，比如<span class="专业名词 等宽"
+        >100<span style="color: lightsteelblue; margin-left: 2px">次</span
+        ><span style="color: gray; margin: 0 2px">/</span>秒</span
+      >。
+    </p>
+    <p class="分区普通文本">
+      在这个案例中的<span class="代码"
+        >y<span class="次要 等宽" style="color: gray; margin: 0 6px">=</span><span style="color: greenyellow">f</span
+        ><span style="color: darkgoldenrod">(</span>x<span style="color: darkgoldenrod">)</span></span
+      >中，<span class="行内代码">x</span>是<span class="行内专业名词">时间</span>，<span class="行内代码">y</span
+      >是<span class="行内专业名词">速度</span>，而呈现<span class="行内专业名词">缓动</span
+      >效果的，则是加速过程中距离的变化。
+    </p>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1">
+      <canvas id="canvas-匀加速" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+  </article>
+</div>
