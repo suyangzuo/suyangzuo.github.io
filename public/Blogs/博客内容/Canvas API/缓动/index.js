@@ -2012,7 +2012,6 @@ class 匀加速 {
     if (!当前时间) 当前时间 = performance.now();
     if (!this.上次时间) this.上次时间 = 当前时间;
 
-    // 确保速度映射表已经生成
     if (!this.速度映射表 || this.速度映射表.length === 0) {
       this.生成速度映射表();
     }
@@ -2131,22 +2130,18 @@ class 匀加速 {
       ctx.fillText(滑块.标题, 标题位置.x, 标题位置.y);
 
       if (滑块.类型 === "滑块") {
-        // 绘制滑块轨道
         ctx.fillStyle = "#374151";
         ctx.fillRect(轨道.左, 轨道.顶, 轨道.右 - 轨道.左, 轨道.高);
 
-        // 绘制进度条
         const 进度 = (滑块.当前值 - 滑块.最小值) / (滑块.最大值 - 滑块.最小值);
         ctx.fillStyle = "#589f7fff";
         ctx.fillRect(轨道.左, 轨道.顶, 进度 * (轨道.右 - 轨道.左), 轨道.高);
 
-        // 当鼠标悬停在thumb上、轨道上或者正在拖拽时，都显示thumb
         const 悬停在thumb上 = this.状态.悬停 && this.状态.悬停.类型 === "thumb" && this.状态.悬停.滑块id === 滑块.id;
         const 悬停在轨道上 = this.状态.悬停 && this.状态.悬停.类型 === "轨道" && this.状态.悬停.滑块id === 滑块.id;
         const 拖拽当前滑块 = this.状态.拖拽 === 滑块.id;
 
         if (悬停在thumb上 || 悬停在轨道上 || 拖拽当前滑块) {
-          // 根据不同状态设置不同的颜色
           if (悬停在thumb上 || 拖拽当前滑块) {
             ctx.fillStyle = "#f59e0b";
           } else {
@@ -2158,7 +2153,6 @@ class 匀加速 {
         }
       }
 
-      // 绘制数值和单位
       ctx.textAlign = "left";
       let 当前值文本;
       let 整数部分,
@@ -2166,7 +2160,6 @@ class 匀加速 {
         有小数点 = false;
 
       if (滑块.类型 === "计算") {
-        // 计算类型的数值：如果小数部分最后一位为0，就不显示最后一位
         const 两位小数 = 滑块.当前值.toFixed(2);
         if (两位小数.endsWith(".00")) {
           当前值文本 = Math.round(滑块.当前值).toString();
@@ -2176,7 +2169,6 @@ class 匀加速 {
           当前值文本 = 两位小数;
         }
 
-        // 分解数值为整数部分和小数部分
         if (当前值文本.includes(".")) {
           [整数部分, 小数部分] = 当前值文本.split(".");
           有小数点 = true;
@@ -2185,7 +2177,6 @@ class 匀加速 {
           小数部分 = "";
         }
       } else {
-        // 滑块类型的数值取整
         当前值文本 = `${Math.round(滑块.当前值)}`;
         整数部分 = 当前值文本;
         小数部分 = "";
@@ -2193,19 +2184,16 @@ class 匀加速 {
 
       const 单位文本 = 滑块.单位;
 
-      // 绘制整数部分
       ctx.fillStyle = "#cde";
       ctx.fillText(整数部分, 数值位置.x, 数值位置.y);
 
       let 总宽度 = ctx.measureText(整数部分).width;
 
-      // 绘制小数点（使用gray颜色）
       if (有小数点) {
         ctx.fillStyle = "gray";
         ctx.fillText(".", 数值位置.x + 总宽度, 数值位置.y);
         总宽度 += ctx.measureText(".").width;
 
-        // 绘制小数部分
         ctx.fillStyle = "#cde";
         ctx.fillText(小数部分, 数值位置.x + 总宽度, 数值位置.y);
         总宽度 += ctx.measureText(小数部分).width;
@@ -2214,7 +2202,6 @@ class 匀加速 {
       const 单位位置x = 数值位置.x + 总宽度 + 4;
       let 单位绘制位置x = 单位位置x;
 
-      // 逐个字符绘制单位，其中"/"使用gray颜色
       for (const char of 单位文本) {
         if (char === "/") {
           ctx.fillStyle = "#789";
@@ -2278,10 +2265,9 @@ class 匀加速 {
       const 列Y = 起始Y;
 
       // 绘制"时间"和"速度"标题，对准各自列的中间
-      ctx.fillStyle = "lightskyblue";
+      ctx.fillStyle = "#d6B";
       ctx.textAlign = "center";
       ctx.fillText("时间", 列X + 时间宽度 / 2, 列Y);
-      ctx.fillStyle = "lightgreen";
       ctx.fillText("速度", 列X + 时间宽度 + 2 + 冒号宽度 + 4 + 速度宽度 / 2, 列Y);
     }
 
@@ -2300,12 +2286,12 @@ class 匀加速 {
 
       // 如果当前索引是速度映射表索引，绘制下方的矩形
       if (i === this.速度映射表索引) {
-        ctx.fillStyle = "#def3";
+        ctx.fillStyle = "#def2";
         ctx.strokeStyle = "#def7";
-        const 矩形宽度 = 时间宽度 + 2 + 冒号宽度 + 14 + 速度宽度;
+        const 矩形宽度 = 时间宽度 + 2 + 冒号宽度 + 20 + 速度宽度;
         const 矩形高度 = 20;
-        ctx.fillRect(X - 5, Y - 15, 矩形宽度, 矩形高度);
-        ctx.strokeRect(X - 5, Y - 15, 矩形宽度, 矩形高度);
+        ctx.fillRect(X - 11, Y - 15, 矩形宽度, 矩形高度);
+        ctx.strokeRect(X - 11, Y - 15, 矩形宽度, 矩形高度);
       }
 
       // 绘制时间数值（蓝色），右对齐
