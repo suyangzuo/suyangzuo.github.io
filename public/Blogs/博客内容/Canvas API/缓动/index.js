@@ -2123,7 +2123,7 @@ class 匀加速 {
 
       ctx.save();
 
-      ctx.font = "13px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+      ctx.font = "14px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
       ctx.textBaseline = "middle";
 
       ctx.fillStyle = "rgba(159, 225, 255, 1)";
@@ -2254,7 +2254,7 @@ class 匀加速 {
     };
 
     // 计算每一项的宽度，以"999.99: 999.99"为准
-    ctx.font = "12px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+    ctx.font = "14px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
     const 时间宽度 = ctx.measureText("999.99").width;
     const 冒号宽度 = ctx.measureText(":").width;
     const 速度宽度 = ctx.measureText("999.99").width;
@@ -2304,8 +2304,8 @@ class 匀加速 {
         ctx.strokeStyle = "#def7";
         const 矩形宽度 = 时间宽度 + 2 + 冒号宽度 + 14 + 速度宽度;
         const 矩形高度 = 20;
-        ctx.fillRect(X - 5, Y - 14, 矩形宽度, 矩形高度);
-        ctx.strokeRect(X - 5, Y - 14, 矩形宽度, 矩形高度);
+        ctx.fillRect(X - 5, Y - 15, 矩形宽度, 矩形高度);
+        ctx.strokeRect(X - 5, Y - 15, 矩形宽度, 矩形高度);
       }
 
       // 绘制时间数值（蓝色），右对齐
