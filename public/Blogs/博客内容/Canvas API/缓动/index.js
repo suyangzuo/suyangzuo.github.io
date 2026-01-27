@@ -456,12 +456,12 @@ class 缓动动画 {
   }
 
   开始动画() {
-    if (this._rafId) cancelAnimationFrame(this._rafId);
+    if (this.rafId) cancelAnimationFrame(this.rafId);
     const 循环 = (ts) => {
       this.更新动画(ts);
-      this._rafId = requestAnimationFrame(循环);
+      this.rafId = requestAnimationFrame(循环);
     };
-    this._rafId = requestAnimationFrame(循环);
+    this.rafId = requestAnimationFrame(循环);
   }
 
   更新动画(timestamp) {
@@ -1231,7 +1231,7 @@ class 映射关系 {
     ctx.fillStyle = "lightslategray";
     ctx.font = "14px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
     ctx.textAlign = "right";
-    ctx.fillText("分布数量", sliderX - 18, sliderY + sliderH / 2 + 6);
+    ctx.fillText("采样数量", sliderX - 18, sliderY + sliderH / 2 + 6);
     // 数字
     ctx.fillStyle = "lightsteelblue";
     ctx.textAlign = "left";
@@ -1286,7 +1286,7 @@ class 映射关系 {
       ctx.lineTo(x, area.底);
       ctx.stroke();
     }
-    const yLines = 5;
+    const yLines = 6;
     const yStep = 1 / (yLines - 1);
     for (let i = 1; i < yLines; i++) {
       const ny = yStep * i;
@@ -1576,12 +1576,22 @@ class 匀加速 {
       拖拽: null,
       拖拽偏移: null,
     };
+    this.按键状态 = {
+      a: false,
+      d: false,
+    };
+    this.按键 = null;
     this.方向 = 1;
     this.加速度 = 50;
     this.加速用时 = 2000;
     this.速度 = 0;
     this.最高速度 = 250;
     this.位置 = 0;
+    this.累积时间差 = 0;
+    this.速度映射表 = null;
+    this.rafId = null;
+    this.加速开始时间 = null;
+    this.上次时间 = performance.now();
 
     this.滑块配置 = {
       左边距: 20,
@@ -1604,6 +1614,7 @@ class 匀加速 {
         当前值: 250,
         单位: "px/s",
         类型: "滑块",
+        步长: 5,
       },
       {
         id: "加速用时",
@@ -1629,14 +1640,41 @@ class 匀加速 {
         单位: "px/s",
         类型: "计算",
       },
+      {
+        id: "采样数量",
+        标题: "采样数量",
+        最小值: 2,
+        最大值: 60,
+        当前值: 30,
+        单位: "",
+        类型: "滑块",
+        步长: 1,
+      },
     ];
+
+    this.汽车 = {
+      x: 0,
+      y: this.cssHeight - 64 / this.dpr,
+      width: 96 / this.dpr,
+      height: 64 / this.dpr,
+      src: "/Images/Blogs/Canvas API/缓动动画/汽车-精灵图.png",
+      img: new Image(),
+      已加载: false,
+    };
+    this.汽车.img.src = this.汽车.src;
+    this.汽车.img.onload = () => {
+      this.汽车.已加载 = true;
+      this.绘制汽车();
+    };
 
     this.滑块区域 = [];
     this.读取设置();
     this.计算滑块区域();
+    this.生成速度映射表();
 
     this.绑定事件();
     this.绘制();
+    this.开始动画();
   }
 
   绑定事件() {
@@ -1708,6 +1746,30 @@ class 匀加速 {
     }, 50);
     window.addEventListener("resize", debouncedResize);
     window.addEventListener("scroll", this.刷新边界矩形.bind(this));
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "a") {
+        this.按键状态.a = true;
+      } else if (e.key === "d") {
+        this.按键状态.d = true;
+      }
+      // 根据按键状态更新this.按键
+      this.按键 = e.key;
+    });
+    window.addEventListener("keyup", (e) => {
+      if (e.key === "a") {
+        this.按键状态.a = false;
+      } else if (e.key === "d") {
+        this.按键状态.d = false;
+      }
+      // 根据按键状态更新this.按键
+      if (this.按键状态.a && !this.按键状态.d) {
+        this.按键 = "a";
+      } else if (!this.按键状态.a && this.按键状态.d) {
+        this.按键 = "d";
+      } else {
+        this.按键 = null;
+      }
+    });
   }
 
   防抖(fn, delay) {
@@ -1796,32 +1858,59 @@ class 匀加速 {
     const 滑块轨道左 = 左边距 + 标题宽度 + 16;
     const 滑块轨道宽度 = 200;
 
+    // 计算"最高速度"滑块的整体宽度
+    // 包括：标题宽度 + 16px间距 + 滑块轨道宽度(200) + 16px间距 + 数值宽度(60)
+    const 主滑块整体宽度 = 标题宽度 + 16 + 滑块轨道宽度 + 16 + 数值宽度;
+
     this.滑块数据.forEach((滑块, index) => {
-      const 滑块顶 = 顶边距 + index * (滑块高度 + 滑块间距);
-      const 滑块轨道顶 = 滑块顶 + (滑块高度 - this.滑块配置.滑块轨道高度) / 2;
-      let thumb中心x = 滑块轨道左;
+      let 滑块顶 = 顶边距;
+      let 滑块轨道顶;
+      let 滑块轨道左调整 = 滑块轨道左;
+      let 标题位置x = 左边距 + 标题宽度;
+
+      // 根据滑块ID设置不同的位置
+      if (滑块.id === "最高速度") {
+        滑块顶 = 顶边距;
+      } else if (滑块.id === "加速用时") {
+        滑块顶 = 顶边距 + (滑块高度 + 滑块间距);
+      } else if (滑块.id === "采样数量") {
+        滑块顶 = 顶边距 + 2 * (滑块高度 + 滑块间距);
+      } else if (滑块.id === "加速度") {
+        // 加速度整体放到最高速度滑块整体的右方，加上主滑块整体宽度
+        滑块顶 = 顶边距;
+        滑块轨道左调整 = 滑块轨道左 + 主滑块整体宽度 + 75;
+        标题位置x = 滑块轨道左调整 - 16;
+      } else if (滑块.id === "当前速度") {
+        // 当前速度整体放到加速用时滑块整体的右方，加上主滑块整体宽度
+        滑块顶 = 顶边距 + (滑块高度 + 滑块间距);
+        滑块轨道左调整 = 滑块轨道左 + 主滑块整体宽度 + 75;
+        标题位置x = 滑块轨道左调整 - 16;
+      }
+
+      滑块轨道顶 = 滑块顶 + (滑块高度 - this.滑块配置.滑块轨道高度) / 2;
+      let thumb中心x = 滑块轨道左调整;
       let thumb中心y = 滑块轨道顶 + this.滑块配置.滑块轨道高度 / 2;
 
       // 只对滑块类型计算进度和thumb位置
       if (滑块.类型 === "滑块") {
         const 进度 = (滑块.当前值 - 滑块.最小值) / (滑块.最大值 - 滑块.最小值);
-        thumb中心x = 滑块轨道左 + 进度 * 滑块轨道宽度;
+        thumb中心x = 滑块轨道左调整 + 进度 * 滑块轨道宽度;
       }
 
       // 为计算类型的滑块设置不同的数值位置
-      const 数值位置x = 滑块.类型 === "计算" ? 滑块轨道左 : 滑块轨道左 + 滑块轨道宽度 + 16;
+      const 数值位置x = 滑块.类型 === "计算" ? 滑块轨道左调整 : 滑块轨道左调整 + 滑块轨道宽度 + 16;
 
       this.滑块区域.push({
         滑块,
         区域: {
-          左: 滑块轨道左,
-          右: 滑块轨道左 + 滑块轨道宽度,
+          左: 滑块轨道左调整,
+          右: 滑块轨道左调整 + 滑块轨道宽度,
           顶: 滑块顶,
           底: 滑块顶 + 滑块高度,
         },
         轨道: {
-          左: 滑块轨道左,
-          右: 滑块轨道左 + 滑块轨道宽度,
+          左: 滑块轨道左调整,
+          右: 滑块轨道左调整 + 滑块轨道宽度,
           顶: 滑块轨道顶,
           高: this.滑块配置.滑块轨道高度,
         },
@@ -1833,7 +1922,7 @@ class 匀加速 {
           圆角: this.滑块配置.滑块thumb圆角,
         },
         标题位置: {
-          x: 左边距 + 标题宽度,
+          x: 标题位置x,
           y: 滑块顶 + 滑块高度 / 2,
         },
         数值位置: {
@@ -1874,14 +1963,9 @@ class 匀加速 {
   更新滑块值(滑块id, 鼠标x) {
     const 滑块区域 = this.滑块区域.find((s) => s.滑块.id === 滑块id);
     if (!滑块区域) return;
-
     const { 轨道, 滑块 } = 滑块区域;
-
-    // 只对滑块类型的滑块进行更新
     if (滑块.类型 !== "滑块") return;
-
     let 实际鼠标x = 鼠标x;
-
     if (this.状态.拖拽偏移) {
       实际鼠标x = 鼠标x - this.状态.拖拽偏移.x;
     }
@@ -1889,30 +1973,143 @@ class 匀加速 {
     const 相对位置 = Math.max(0, Math.min(1, (实际鼠标x - 轨道.左) / (轨道.右 - 轨道.左)));
     let 新值 = 滑块.最小值 + 相对位置 * (滑块.最大值 - 滑块.最小值);
 
-    // 如果滑块有步长属性，按步长调整值
     if (滑块.步长) {
       新值 = Math.round(新值 / 滑块.步长) * 滑块.步长;
-      // 确保值在范围内
       新值 = Math.max(滑块.最小值, Math.min(滑块.最大值, 新值));
     }
 
     滑块.当前值 = 新值;
-
-    // 更新滑块值
     this.最高速度 = this.滑块数据[0].当前值;
     this.加速用时 = this.滑块数据[1].当前值;
-
-    // 计算加速度（最高速度 / 加速用时，注意单位转换）
     const 加速用时秒 = this.加速用时 / 1000;
     const 计算加速度 = this.最高速度 / 加速用时秒;
     this.加速度 = 计算加速度;
     this.滑块数据[2].当前值 = 计算加速度;
-
-    // 当前速度（这里可以根据实际情况计算，暂时设为0）
     this.滑块数据[3].当前值 = this.速度;
 
     this.保存设置();
+    this.生成速度映射表();
     this.计算滑块区域();
+  }
+
+  生成速度映射表() {
+    const 采样数量 = this.滑块数据[4].当前值;
+    this.速度映射表 = [];
+    for (let i = 0; i < 采样数量; i++) {
+      const 进度 = i / (采样数量 - 1);
+      const 时间 = 进度 * this.加速用时;
+      const 速度 = Math.min(进度 * this.最高速度, this.最高速度);
+      this.速度映射表.push({
+        时间: 时间,
+        速度: 速度,
+      });
+    }
+    this.速度映射表索引 = 0;
+    this.绘制(); // 速度映射表修改后重新绘制
+  }
+
+  开始动画(当前时间) {
+    if (!当前时间) 当前时间 = performance.now();
+    if (!this.上次时间) this.上次时间 = 当前时间;
+
+    // 确保速度映射表已经生成
+    if (!this.速度映射表 || this.速度映射表.length === 0) {
+      this.生成速度映射表();
+    }
+
+    const 当前运动方向 = this.速度 >= 0 ? 1 : -1;
+
+    let 需要减速 = false;
+    if (this.按键 === "a" && 当前运动方向 === 1 && this.速度 > 0) {
+      需要减速 = true;
+    } else if (this.按键 === "d" && 当前运动方向 === -1 && this.速度 < 0) {
+      需要减速 = true;
+    }
+
+    if (this.按键 === "a") {
+      if (需要减速) {
+        this.加速开始时间 = null;
+      } else {
+        this.方向 = -1;
+        if (!this.加速开始时间) this.加速开始时间 = 当前时间;
+      }
+    } else if (this.按键 === "d") {
+      if (需要减速) {
+        this.加速开始时间 = null;
+      } else {
+        this.方向 = 1;
+        if (!this.加速开始时间) this.加速开始时间 = 当前时间;
+      }
+    } else {
+      this.加速开始时间 = null;
+    }
+
+    if (this.加速开始时间) {
+      this.累积时间差 = Math.min(当前时间 - this.加速开始时间, this.加速用时);
+    } else {
+      const 单次时间差 = 当前时间 - this.上次时间;
+      this.累积时间差 = Math.max(0, this.累积时间差 - 单次时间差);
+    }
+
+    if (需要减速 || !this.按键) {
+      if (this.速度映射表索引 > 0 && this.累积时间差 <= this.速度映射表[this.速度映射表索引 - 1].时间) {
+        this.速度映射表索引--;
+      }
+      this.速度映射表索引 = Math.max(0, this.速度映射表索引);
+      const 速度大小 = this.速度映射表[this.速度映射表索引].速度;
+      this.速度 = 速度大小 * 当前运动方向;
+    } else {
+      if (this.累积时间差 > this.速度映射表[this.速度映射表索引].时间) {
+        this.速度映射表索引++;
+      }
+      this.速度映射表索引 = Math.min(this.速度映射表索引, this.速度映射表.length - 1);
+      const 速度大小 = this.速度映射表[this.速度映射表索引].速度;
+      this.速度 = 速度大小 * this.方向;
+    }
+    if (this.速度 !== 0) {
+      const 新位置 = this.汽车.x + (this.速度 * (当前时间 - this.上次时间)) / 1000;
+      const 左边界 = 0;
+      const 右边界 = this.cssWidth - this.汽车.width;
+
+      this.汽车.x = Math.max(左边界, Math.min(新位置, 右边界));
+
+      if (this.汽车.x === 左边界 || this.汽车.x === 右边界) {
+        this.速度 = 0;
+        this.累积时间差 = 0;
+        this.速度映射表索引 = 0;
+      }
+    }
+
+    if (this.滑块数据[3]) {
+      this.滑块数据[3].当前值 = this.速度;
+      this.绘制();
+    }
+
+    this.擦除动画区域();
+    this.绘制汽车();
+    this.上次时间 = 当前时间;
+    this.rafId = requestAnimationFrame(this.开始动画.bind(this));
+  }
+
+  擦除动画区域() {
+    this.ctx.clearRect(0, this.汽车.y, this.cssWidth, this.汽车.y + this.汽车.height);
+  }
+
+  绘制汽车() {
+    if (!this.汽车.已加载) return;
+    const 图像实际宽度 = this.汽车.img.naturalWidth;
+    const 图像实际高度 = this.汽车.img.naturalHeight;
+    this.ctx.drawImage(
+      this.汽车.img,
+      0,
+      this.方向 === 1 ? 0 : 图像实际高度 / 2,
+      图像实际宽度,
+      图像实际高度 / 2,
+      this.汽车.x,
+      this.汽车.y,
+      this.汽车.width,
+      this.汽车.height,
+    );
   }
 
   绘制滑块() {
@@ -2041,6 +2238,93 @@ class 匀加速 {
     this.ctx.fillRect(0, 0, this.cssWidth, this.cssHeight);
 
     this.绘制滑块();
+    this.绘制速度映射表();
+    this.绘制汽车();
+  }
+
+  绘制速度映射表() {
+    if (!this.速度映射表 || this.速度映射表.length === 0) return;
+
+    const ctx = this.ctx;
+    const 绘制区域 = {
+      x: 15,
+      y: 120,
+      width: this.cssWidth - 30,
+      height: this.cssHeight - 220,
+    };
+
+    // 计算每一项的宽度，以"999.99: 999.99"为准
+    ctx.font = "12px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+    const 时间宽度 = ctx.measureText("999.99").width;
+    const 冒号宽度 = ctx.measureText(":").width;
+    const 速度宽度 = ctx.measureText("999.99").width;
+    const 列间距 = 100;
+    const 项宽度 = 时间宽度 + 2 + 冒号宽度 + 4 + 速度宽度 + 列间距; // 100是额外间距
+    const 项高度 = 20; // 每项高度
+
+    // 计算列数和行数
+    const 行数 = 20;
+    const 列数 = Math.max(1, Math.ceil(this.速度映射表.length / 行数));
+
+    // 计算起始位置，使整体居中
+    const 总宽度 = 列数 * 项宽度;
+    const 总高度 = 行数 * 项高度;
+    const 起始X = 绘制区域.x + (绘制区域.width - 总宽度) / 2;
+    const 起始Y = 绘制区域.y + (绘制区域.height - 总高度) / 2;
+
+    // 绘制每一列的标题
+    for (let 列 = 0; 列 < 列数; 列++) {
+      const 列X = 起始X + 列 * 项宽度 + 列间距 / 2;
+      const 列Y = 起始Y;
+
+      // 绘制"时间"和"速度"标题，对准各自列的中间
+      ctx.fillStyle = "lightskyblue";
+      ctx.textAlign = "center";
+      ctx.fillText("时间", 列X + 时间宽度 / 2, 列Y);
+      ctx.fillStyle = "lightgreen";
+      ctx.fillText("速度", 列X + 时间宽度 + 2 + 冒号宽度 + 4 + 速度宽度 / 2, 列Y);
+    }
+
+    // 绘制数据
+    for (let i = 0; i < this.速度映射表.length; i++) {
+      const 数据 = this.速度映射表[i];
+      const 列 = Math.floor(i / 行数);
+      const 行 = i % 行数;
+
+      const X = 起始X + 列 * 项宽度 + 列间距 / 2;
+      const Y = 起始Y + (行 + 1) * 项高度; // +1 是为了跳过标题行
+
+      // 格式化时间和速度，最多保留2位小数，最后一位为0不绘制
+      const 时间文本 = 数据.时间.toFixed(2).replace(/\.?0+$/, "");
+      const 速度文本 = 数据.速度.toFixed(2).replace(/\.?0+$/, "");
+
+      // 如果当前索引是速度映射表索引，绘制下方的矩形
+      if (i === this.速度映射表索引) {
+        ctx.fillStyle = "#def3";
+        ctx.strokeStyle = "#def7";
+        const 矩形宽度 = 时间宽度 + 2 + 冒号宽度 + 14 + 速度宽度;
+        const 矩形高度 = 20;
+        ctx.fillRect(X - 5, Y - 14, 矩形宽度, 矩形高度);
+        ctx.strokeRect(X - 5, Y - 14, 矩形宽度, 矩形高度);
+      }
+
+      // 绘制时间数值（蓝色），右对齐
+      ctx.fillStyle = "#61afef";
+      ctx.textAlign = "right";
+      ctx.fillText(时间文本, X + 时间宽度, Y);
+
+      // 绘制冒号（灰色），在时间数字右边+2px
+      ctx.fillStyle = "#787c99";
+      ctx.textAlign = "left";
+      const 冒号X = X + 时间宽度 + 2;
+      ctx.fillText(":", 冒号X, Y);
+
+      // 绘制速度数值（绿色），在冒号右边+4px
+      ctx.fillStyle = "#98c379";
+      ctx.textAlign = "left";
+      const 速度X = 冒号X + 冒号宽度 + 4;
+      ctx.fillText(速度文本, 速度X, Y);
+    }
   }
 
   获取鼠标坐标(e) {
@@ -2087,8 +2371,14 @@ const 观察器回调 = (entries) => {
     const obj = 对象集合.find((o) => o.canvas === canvas).对象;
     if (entry.isIntersecting) {
       obj.在视口内 = true;
+      if ("开始动画" in obj) {
+        obj.开始动画();
+      }
     } else {
       obj.在视口内 = false;
+      if (Object.hasOwn(obj, "rafId")) {
+        cancelAnimationFrame(obj.rafId);
+      }
     }
   });
 };

@@ -8,7 +8,12 @@
       </p>
       <p class="日期">
         <span class="日期前缀 前缀">日期：</span>
-        <span class="日期文本">待定</span>
+        <span class="日期文本"
+          ><span class="日期文本-数字 日期文本-年">2026</span>年<span class="日期文本-数字 日期文本-月">1</span>月<span
+            class="日期文本-数字 日期文本-日"
+            >27</span
+          >日</span
+        >
       </p>
     </section>
     <section class="简介信息图像">
@@ -224,7 +229,7 @@
     </figure>
     <p class="分区普通文本">
       上方的横幅代表<span class="行内专业名词">线性</span>映射，下方的横幅代表<span class="行内专业名词">缓动</span
-      >映射。你可以拖拽控制点，来观察映射关系的变化。<span class="强调">注意：</span>，在<span class="行内专业名词 等宽"
+      >映射。你可以拖拽控制点，来观察映射关系的变化。<span class="强调">注意：</span>在<span class="行内专业名词 等宽"
         >图2</span
       >中，我对<span class="行内代码">Y</span>轴刻度做了<span class="行内专业名词">归一化</span>处理，这和<span
         class="行内专业名词 等宽"
@@ -237,6 +242,12 @@
       >的？用了什么公式？其实，在<span class="行内专业名词 等宽">图1</span>和<span class="行内专业名词 等宽">图2</span
       >中，我都是用<span class="行内专业名词">三次贝塞尔曲线算法</span
       >来实现映射关系的，这是一种非常流行的做法，效果非常好。但是，也有别的方法实现缓动动画，具体取决于业务需求。
+    </p>
+    <p class="分区普通文本">
+      想要让变化变得平滑、自然，就要增加<span class="行内专业名词">采样数量</span
+      >，数量越多，变化越平滑，但性能开销也越大。因此，需要在平滑度和性能之间做出权衡。<span class="行内专业名词 等宽"
+        >图1</span
+      >的汽车缓动非常平滑，因为我用了<span class="行内代码">400</span>个采样。
     </p>
 
     <h3 class="分区标题 分区3级标题">匀加速缓动</h3>
@@ -253,7 +264,7 @@
         >400</span
       >需要<span class="行内代码">5<span style="color: lightsteelblue; margin-left: 2px">秒</span></span
       >，并且是<span class="行内专业名词">匀加速</span>，我们就可以算出加速度是<span class="代码"
-        >80<span style="color: gray; margin: 0 2px">/</span>秒</span
+        >80<span style="color: gray; margin: 0 2px">/</span>秒<sup>2</sup></span
       >。然而，假设速度<span class="行内专业名词 等宽">每秒变化1次</span
       >，整个加速过程会显得非常卡顿、不自然，为了让动画更自然，我们需要增加<span class="行内专业名词"
         >每秒变化的次数</span
@@ -268,10 +279,100 @@
         ><span style="color: darkgoldenrod">(</span>x<span style="color: darkgoldenrod">)</span></span
       >中，<span class="行内代码">x</span>是<span class="行内专业名词">时间</span>，<span class="行内代码">y</span
       >是<span class="行内专业名词">速度</span>，而呈现<span class="行内专业名词">缓动</span
-      >效果的，则是加速过程中距离的变化。
+      >效果的，则是加速过程中距离的变化。为了让加速过程更加平滑，我们需要增加<span class="行内专业名词">采样数量</span
+      >，也就是<span class="行内代码">x</span>的采样频率。比如：整个加速时长是<span class="行内专业名词 等宽"
+        >2000<span class="次要">毫秒</span></span
+      >，如果每隔<span class="行内专业名词 等宽">100<span class="次要">毫秒</span></span
+      >采样一次，则采样数量就是<span class="行内专业名词 等宽">20</span>。
     </p>
     <figure class="截图容器" style="width: 100%; aspect-ratio: 1">
-      <canvas id="canvas-匀加速" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+      <canvas id="canvas-匀加速" style="width: 100%; height: calc(100% - 42px); background-color: #0b1220"></canvas>
     </figure>
+    <p class="分区普通文本">
+      当各种参数确定后，某个时间点的速度其实就已经确定下来了，有鉴于此，我们不需要在变化过程中实时计算速度，这会增加性能开销。相反，我们可以预先生成<span
+        class="代码"
+        ><span class="行内代码">x</span><span class="次要">和</span><span class="行内代码">y</span>的<span
+          class="行内专业名词"
+          >映射关系表</span
+        ></span
+      >。如前所述，映射关系的采样频率越高，速度变化越平滑，你可以试着将<span class="行内专业名词">采样数量</span
+      >改为<span class="行内代码">2</span>，这就意味着对<span class="行内代码 等宽">x</span
+      ><span class="附加说明">加速用时</span>的采样仅有开始的<span class="行内代码">0</span>和<span class="行内专业名词"
+        >最大值</span
+      >，对应的<span class="行内代码 等宽">y</span><span class="附加说明">速度</span>就只有<span class="行内代码"
+        >0</span
+      >和<span class="行内专业名词">最大值</span
+      >，这种情况下，加速时，汽车会一瞬间到达最高速度；减速时，汽车会瞬间停下。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">匀加速算法</h3>
+    <p class="分区普通文本">首先，我们要根据各种参数，预先生成<span class="行内专业名词">映射关系表</span>：</p>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        let 最高速度 = 500; //单位：像素/秒
+        let 加速用时 = 1000; //单位：毫秒，意味着从0到最高速度需要1秒
+        let 采样数量 = 30; //数值越大，变速过程越平滑
+        let 当前速度 = 0; //汽车初始速度，单位：像素/秒
+        let 汽车水平坐标 = 0;
+        this.速度映射表 = []; //初始化映射表
+        let 映射索引 = 0;
+
+        生成映射关系表();
+        let 速度映射表 = 0;
+
+        function 生成映射关系表() {
+          this.速度映射表 = [];
+          for (let i = 0; i < 采样数量; i++) {
+            const 进度 = i / (采样数量 - 1); //进度，区间[0, 1]，用来归一化
+            const 时间 = 进度 * this.加速用时; //归一化时间
+            const 速度 = Math.min(进度 * this.最高速度, this.最高速度); //用归一化时间反推实际速度
+            this.速度映射表.push({
+              时间: 时间,
+              速度: 速度,
+            });
+          }
+          映射索引 = 0; //每次重新生成映射关系表，都重置索引，因为时间默认为0
+        }
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      接下来，以<span class="行内专业名词">刚开始加速</span>的时间点为基准，获取<span class="行内专业名词"
+        >已经加速了多长时间</span
+      >，如果这段时间超过了映射关系表的<span class="行内专业名词">当前索引</span>指向的时间，就将索引指向下一个数据<span
+        class="附加说明 等宽"
+        >索引++</span
+      >。为了保证这种检测的精确性，必须<span class="强调">间隔很短时间就检测一次</span>，因此，我们用<span
+        class="行内代码"
+        >requestAnimationFrame</span
+      >递归调用来实现。
+    </p>
+    <pre class="line-numbers">
+      <code class="lang-javascript">
+        let 加速开始时间 = performance.now();
+        let 上次动画时间 = 0; //用来计算每两次动画帧之间的间隔
+        动画(当前时间) {
+          if (!当前时间) 当前时间 = performance.now(); //防止 非requestAnimationFrame 调用
+          const 加速时长 = 当前时间 - 加速开始时间;
+          if (加速时长 > 速度映射表[速度映射表索引].时间) {
+            映射索引++;
+          }
+          当前速度 = 速度映射表[映射索引].速度;
+          const 此帧移动距离 = 当前速度 * (当前时间 - 上次动画时间) / 1000; //毫秒转换为秒
+          汽车水平坐标 += 此帧移动距离;
+          上次动画时间 = 当前时间;
+          requestAnimationFrame(动画);
+        }
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      缓动有很多算法，这里直介绍<span class="行内专业名词">匀加速</span
+      >算法，可以看到，算法中没有使用任何跟曲线有关的数学公式，<span class="行内专业名词">时间</span>和<span
+        class="行内专业名词"
+        >速度</span
+      >的映射关系是<span class="行内专业名词">线性</span>的，而<span class="行内专业名词">时间</span>和<span
+        class="行内专业名词"
+        >速度</span
+      >的映射关系是<span class="行内专业名词">缓动</span>的。
+    </p>
   </article>
 </div>

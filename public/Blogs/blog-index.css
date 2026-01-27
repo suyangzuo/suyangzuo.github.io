@@ -1153,17 +1153,12 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 
 .次要 {
   color: #aaa;
-  font-size: 0.9em;
-  margin: 0 0.25ch;
+  font-size: 0.965em;
+  margin: 0 0.175ch;
 }
 
 .代码 .次要 {
   font-size: 1em;
-}
-
-.专题-内容 .次要 {
-  font-size: 0.95em;
-  margin: 0 2px;
 }
 
 .专题.当前专题 .专题-内容 .次要 {
@@ -1801,6 +1796,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 
 .附加说明 .行内专业名词 {
   color: lightblue;
+  text-shadow: 0 0 2px #000a;
 }
 
 .表格标题 .行内专业名词 {
@@ -1901,7 +1897,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 
 sup,
 sub {
-  font-family: "Ubuntu Mono", "Noto Sans SC", sans-serif;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
   color: rgb(134, 194, 224);
   color: yellowgreen;
 }
