@@ -1592,6 +1592,9 @@ class 匀加速 {
     this.rafId = null;
     this.加速开始时间 = null;
     this.上次时间 = performance.now();
+    this.显示模式 = "映射表"; // 默认显示映射表
+    this.单选按钮区域 = [];
+    this.悬停的按钮 = null; // 跟踪当前悬停的按钮
 
     this.滑块配置 = {
       左边距: 20,
@@ -1654,9 +1657,9 @@ class 匀加速 {
 
     this.汽车 = {
       x: 0,
-      y: this.cssHeight - 64 / this.dpr,
-      width: 96 / this.dpr,
-      height: 64 / this.dpr,
+      y: this.cssHeight - 56 / this.dpr,
+      width: 84 / this.dpr,
+      height: 56 / this.dpr,
       src: "/Images/Blogs/Canvas API/缓动动画/汽车-精灵图.png",
       img: new Image(),
       已加载: false,
@@ -1770,6 +1773,16 @@ class 匀加速 {
         this.按键 = null;
       }
     });
+
+    this.canvas.addEventListener("click", (e) => {
+      const 坐标 = this.获取鼠标坐标(e);
+      this.检测单选按钮点击(坐标.x, 坐标.y);
+    });
+
+    this.canvas.addEventListener("mousemove", (e) => {
+      const 坐标 = this.获取鼠标坐标(e);
+      this.检测单选按钮悬停(坐标.x, 坐标.y);
+    });
   }
 
   防抖(fn, delay) {
@@ -1791,6 +1804,7 @@ class 匀加速 {
         加速度: this.加速度,
         最高速度: this.最高速度,
         加速用时: this.加速用时,
+        显示模式: this.显示模式,
         滑块数据: this.滑块数据.map((滑块) => ({
           id: 滑块.id,
           当前值: 滑块.当前值,
@@ -1829,6 +1843,10 @@ class 匀加速 {
             滑块.当前值 = 保存的滑块.当前值;
           }
         });
+      }
+
+      if (设置.显示模式 === "映射表" || 设置.显示模式 === "坐标轴") {
+        this.显示模式 = 设置.显示模式;
       }
     } catch (e) {
       console.warn("读取匀加速设置失败", e);
@@ -1931,6 +1949,78 @@ class 匀加速 {
         },
       });
     });
+
+    // 计算单选按钮区域
+    this.计算单选按钮区域();
+  }
+
+  计算单选按钮区域() {
+    this.单选按钮区域 = [];
+    const 右边距 = 20;
+    const 顶边距 = 20;
+    const 按钮宽度 = 80;
+    const 按钮高度 = 25;
+    const 按钮间距 = 10;
+
+    // 映射表按钮
+    this.单选按钮区域.push({
+      id: "映射表",
+      区域: {
+        左: this.cssWidth - 右边距 - 按钮宽度,
+        右: this.cssWidth - 右边距,
+        顶: 顶边距,
+        底: 顶边距 + 按钮高度,
+      },
+    });
+
+    // 坐标轴按钮
+    this.单选按钮区域.push({
+      id: "坐标轴",
+      区域: {
+        左: this.cssWidth - 右边距 - 按钮宽度,
+        右: this.cssWidth - 右边距,
+        顶: 顶边距 + 按钮高度 + 1.5,
+        底: 顶边距 + 按钮高度 * 2 + 1.5,
+      },
+    });
+  }
+
+  检测单选按钮点击(x, y) {
+    for (const 按钮 of this.单选按钮区域) {
+      const { 区域, id } = 按钮;
+      if (x >= 区域.左 && x <= 区域.右 && y >= 区域.顶 && y <= 区域.底) {
+        if (this.显示模式 !== id) {
+          this.显示模式 = id;
+          this.保存设置();
+          this.绘制();
+        }
+        break;
+      }
+    }
+  }
+
+  检测单选按钮悬停(x, y) {
+    let 新的悬停按钮 = null;
+
+    for (const 按钮 of this.单选按钮区域) {
+      const { 区域, id } = 按钮;
+      if (x >= 区域.左 && x <= 区域.右 && y >= 区域.顶 && y <= 区域.底) {
+        新的悬停按钮 = id;
+        break;
+      }
+    }
+
+    // 如果悬停状态发生变化，重新绘制
+    if (this.悬停的按钮 !== 新的悬停按钮) {
+      this.悬停的按钮 = 新的悬停按钮;
+      this.绘制();
+    }
+
+    if (新的悬停按钮) {
+      this.canvas.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
+    } else {
+      this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
+    }
   }
 
   检测滑块悬停(x, y) {
@@ -2025,25 +2115,41 @@ class 匀加速 {
       需要减速 = true;
     }
 
+    // 记录当前方向是否改变
+    const 方向改变 = (this.按键 === "a" && this.方向 !== -1) || (this.按键 === "d" && this.方向 !== 1);
+
     if (this.按键 === "a") {
       if (需要减速) {
         this.加速开始时间 = null;
       } else {
         this.方向 = -1;
-        if (!this.加速开始时间) this.加速开始时间 = 当前时间;
+        // 只有在方向改变或首次加速时重置加速开始时间
+        if (!this.加速开始时间 || 方向改变) {
+          // 计算当前累积时间差对应的时间点，作为新的加速开始时间
+          // 这样可以保持加速进度的连续性
+          this.加速开始时间 = 当前时间 - this.累积时间差;
+        }
       }
     } else if (this.按键 === "d") {
       if (需要减速) {
         this.加速开始时间 = null;
       } else {
         this.方向 = 1;
-        if (!this.加速开始时间) this.加速开始时间 = 当前时间;
+        // 只有在方向改变或首次加速时重置加速开始时间
+        if (!this.加速开始时间 || 方向改变) {
+          // 计算当前累积时间差对应的时间点，作为新的加速开始时间
+          // 这样可以保持加速进度的连续性
+          this.加速开始时间 = 当前时间 - this.累积时间差;
+        }
       }
     } else {
+      // 当松开按键时，重置加速开始时间，停止加速
+      // 这样可以确保只有在按键按下时才加速
       this.加速开始时间 = null;
     }
 
     if (this.加速开始时间) {
+      // 计算累积时间差，确保不超过加速用时
       this.累积时间差 = Math.min(当前时间 - this.加速开始时间, this.加速用时);
     } else {
       const 单次时间差 = 当前时间 - this.上次时间;
@@ -2225,8 +2331,326 @@ class 匀加速 {
     this.ctx.fillRect(0, 0, this.cssWidth, this.cssHeight);
 
     this.绘制滑块();
-    this.绘制速度映射表();
+    this.绘制单选按钮();
+
+    if (this.显示模式 === "映射表") {
+      this.绘制速度映射表();
+    } else if (this.显示模式 === "坐标轴") {
+      this.绘制坐标轴();
+    }
+
     this.绘制汽车();
+  }
+
+  绘制单选按钮() {
+    const ctx = this.ctx;
+
+    this.单选按钮区域.forEach((按钮) => {
+      const { id, 区域 } = 按钮;
+      const 选中 = this.显示模式 === id;
+      const 悬停 = this.悬停的按钮 === id;
+
+      // 绘制按钮背景
+      if (选中) {
+        ctx.fillStyle = "#263446ff";
+      } else if (悬停) {
+        ctx.fillStyle = "#263446ff";
+      } else {
+        ctx.fillStyle = "#192330ff";
+      }
+      ctx.beginPath();
+      ctx.roundRect(区域.左, 区域.顶, 区域.右 - 区域.左, 区域.底 - 区域.顶, 0);
+      ctx.fill();
+
+      // 绘制按钮边框
+      if (选中) {
+        ctx.strokeStyle = "#6ac69d";
+      } else {
+        ctx.strokeStyle = "#374151";
+      }
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.roundRect(区域.左, 区域.顶, 区域.右 - 区域.左, 区域.底 - 区域.顶, 0);
+      ctx.stroke();
+
+      // 绘制按钮文本
+      if (选中) {
+        ctx.fillStyle = "#9ff9d0ff";
+      } else if (悬停) {
+        ctx.fillStyle = "white";
+      } else {
+        ctx.fillStyle = "silver";
+      }
+      ctx.font = "14px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(id, (区域.左 + 区域.右) / 2, (区域.顶 + 区域.底) / 2 + 1);
+    });
+  }
+
+  绘制坐标轴() {
+    if (!this.速度映射表 || this.速度映射表.length === 0) return;
+
+    const ctx = this.ctx;
+    const 绘制区域 = {
+      x: 45,
+      y: 120,
+      width: this.cssWidth - 90,
+      height: this.cssHeight - 220,
+    };
+
+    // 计算坐标轴范围
+    const 最大时间 = this.速度映射表[this.速度映射表.length - 1].时间;
+    const 最大速度 = this.最高速度;
+
+    // 计算坐标轴刻度
+    const 时间刻度数量 = 5;
+    const 速度刻度数量 = 5;
+
+    // 绘制坐标轴
+    ctx.strokeStyle = "#4b5563";
+    ctx.lineWidth = 2;
+
+    // X轴
+    ctx.beginPath();
+    ctx.moveTo(绘制区域.x, 绘制区域.y + 绘制区域.height);
+    ctx.lineTo(绘制区域.x + 绘制区域.width, 绘制区域.y + 绘制区域.height);
+    ctx.stroke();
+
+    // Y轴
+    ctx.beginPath();
+    ctx.moveTo(绘制区域.x, 绘制区域.y);
+    ctx.lineTo(绘制区域.x, 绘制区域.y + 绘制区域.height);
+    ctx.stroke();
+
+    // 绘制经纬线（网格线）
+    ctx.strokeStyle = "#ffffff1a";
+    ctx.lineWidth = 1;
+
+    // 绘制垂直网格线（Y轴方向）
+    for (let i = 0; i <= 时间刻度数量 * 2; i++) {
+      const x = 绘制区域.x + (i / (时间刻度数量 * 2)) * 绘制区域.width;
+      ctx.beginPath();
+      ctx.moveTo(x, 绘制区域.y);
+      ctx.lineTo(x, 绘制区域.y + 绘制区域.height);
+      ctx.stroke();
+    }
+
+    // 绘制水平网格线（X轴方向）
+    for (let i = 0; i <= 速度刻度数量 * 2; i++) {
+      const y = 绘制区域.y + 绘制区域.height - (i / (速度刻度数量 * 2)) * 绘制区域.height;
+      ctx.beginPath();
+      ctx.moveTo(绘制区域.x, y);
+      ctx.lineTo(绘制区域.x + 绘制区域.width, y);
+      ctx.stroke();
+    }
+
+    // 绘制X轴刻度和标签
+    ctx.fillStyle = "#9ca3af";
+    ctx.font = "12px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+    ctx.textAlign = "center";
+
+    for (let i = 0; i <= 时间刻度数量; i++) {
+      const 时间 = (i / 时间刻度数量) * 最大时间;
+      const x = 绘制区域.x + (i / 时间刻度数量) * 绘制区域.width;
+
+      // 绘制刻度线
+      ctx.beginPath();
+      ctx.moveTo(x, 绘制区域.y + 绘制区域.height);
+      ctx.lineTo(x, 绘制区域.y + 绘制区域.height + 5);
+      ctx.stroke();
+
+      // 绘制标签
+      ctx.fillText(时间.toFixed(0), x, 绘制区域.y + 绘制区域.height + 16);
+    }
+
+    // 绘制Y轴刻度和标签
+    ctx.textAlign = "right";
+
+    for (let i = 0; i <= 速度刻度数量; i++) {
+      const 速度 = (i / 速度刻度数量) * 最大速度;
+      const y = 绘制区域.y + 绘制区域.height - (i / 速度刻度数量) * 绘制区域.height;
+
+      // 绘制刻度线
+      ctx.beginPath();
+      ctx.moveTo(绘制区域.x - 5, y);
+      ctx.lineTo(绘制区域.x, y);
+      ctx.stroke();
+
+      // 绘制标签，处理小数点最后一位为0的情况
+      let 标签文本 = (速度 / 最大速度).toFixed(1);
+      if (标签文本.endsWith(".0")) {
+        标签文本 = 标签文本.slice(0, -2);
+      }
+      ctx.fillText(标签文本, 绘制区域.x - 10, y);
+    }
+
+    // 计算行驶距离
+    const 距离映射表 = [];
+    let 累计距离 = 0;
+    let 上次时间 = 0;
+
+    this.速度映射表.forEach((项, index) => {
+      if (index > 0) {
+        const 时间差 = 项.时间 - 上次时间;
+        const 平均速度 = (项.速度 + this.速度映射表[index - 1].速度) / 2;
+        const 距离增量 = (平均速度 * 时间差) / 1000; // 转换为像素
+        累计距离 += 距离增量;
+      }
+      距离映射表.push({ ...项, 距离: 累计距离 });
+      上次时间 = 项.时间;
+    });
+
+    // 计算最大距离
+    const 最大距离 = 距离映射表[距离映射表.length - 1].距离;
+
+    // 绘制速度折线
+    ctx.strokeStyle = "#61afef";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+
+    this.速度映射表.forEach((项, index) => {
+      const x = 绘制区域.x + (项.时间 / 最大时间) * 绘制区域.width;
+      const y = 绘制区域.y + 绘制区域.height - (项.速度 / 最大速度) * 绘制区域.height;
+
+      if (index === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+    });
+
+    ctx.stroke();
+
+    // 绘制速度折线节点小圆
+    ctx.fillStyle = "#61afef";
+    this.速度映射表.forEach((项) => {
+      const x = 绘制区域.x + (项.时间 / 最大时间) * 绘制区域.width;
+      const y = 绘制区域.y + 绘制区域.height - (项.速度 / 最大速度) * 绘制区域.height;
+
+      ctx.beginPath();
+      ctx.arc(x, y, 3, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    // 绘制距离折线
+    ctx.strokeStyle = "#98c379";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+
+    距离映射表.forEach((项, index) => {
+      const x = 绘制区域.x + (项.时间 / 最大时间) * 绘制区域.width;
+      const y = 绘制区域.y + 绘制区域.height - (项.距离 / 最大距离) * 绘制区域.height;
+
+      if (index === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+    });
+
+    ctx.stroke();
+
+    // 绘制距离折线节点小圆
+    距离映射表.forEach((项) => {
+      const x = 绘制区域.x + (项.时间 / 最大时间) * 绘制区域.width;
+      const y = 绘制区域.y + 绘制区域.height - (项.距离 / 最大距离) * 绘制区域.height;
+
+      ctx.fillStyle = "#98c379";
+      ctx.beginPath();
+      ctx.arc(x, y, 3, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    // 绘制实时位置指示器（根据当前时间进度）
+    const 当前时间 = this.累积时间差;
+    if (当前时间 >= 0 && 当前时间 <= 最大时间) {
+      // 计算当前速度对应的位置
+      let 当前速度 = 0;
+      let 当前距离 = 0;
+
+      // 查找当前时间对应的速度和距离（使用线性插值）
+      for (let i = 1; i < this.速度映射表.length; i++) {
+        const 前一个 = this.速度映射表[i - 1];
+        const 当前 = this.速度映射表[i];
+
+        if (当前时间 >= 前一个.时间 && 当前时间 <= 当前.时间) {
+          // 计算时间在两个采样点之间的比例
+          const 比例 = (当前时间 - 前一个.时间) / (当前.时间 - 前一个.时间);
+          // 线性插值计算当前速度
+          当前速度 = 前一个.速度 + (当前.速度 - 前一个.速度) * 比例;
+          break;
+        }
+      }
+
+      for (let i = 1; i < 距离映射表.length; i++) {
+        const 前一个 = 距离映射表[i - 1];
+        const 当前 = 距离映射表[i];
+
+        if (当前时间 >= 前一个.时间 && 当前时间 <= 当前.时间) {
+          // 计算时间在两个采样点之间的比例
+          const 比例 = (当前时间 - 前一个.时间) / (当前.时间 - 前一个.时间);
+          // 线性插值计算当前距离
+          当前距离 = 前一个.距离 + (当前.距离 - 前一个.距离) * 比例;
+          break;
+        }
+      }
+
+      // 计算速度指示器位置
+      const 速度X = 绘制区域.x + (当前时间 / 最大时间) * 绘制区域.width;
+      const 速度Y = 绘制区域.y + 绘制区域.height - (当前速度 / 最大速度) * 绘制区域.height;
+
+      // 计算距离指示器位置
+      const 距离X = 绘制区域.x + (当前时间 / 最大时间) * 绘制区域.width;
+      const 距离Y = 绘制区域.y + 绘制区域.height - (当前距离 / 最大距离) * 绘制区域.height;
+
+      // 绘制速度指示器圆圈
+      ctx.beginPath();
+      ctx.arc(速度X, 速度Y, 10, 0, Math.PI * 2);
+      ctx.strokeStyle = "gold";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // 绘制距离指示器圆圈
+      ctx.beginPath();
+      ctx.arc(距离X, 距离Y, 10, 0, Math.PI * 2);
+      ctx.strokeStyle = "gold";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+
+    // 绘制坐标轴标题
+    ctx.fillStyle = "#d6b";
+    ctx.font = "14px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+    ctx.textAlign = "center";
+
+    // X轴标题
+    ctx.fillText("时间", 绘制区域.x + 绘制区域.width, 绘制区域.y + 绘制区域.height - 15);
+
+    // Y轴标题
+    ctx.textAlign = "left";
+    ctx.fillText("变化", 绘制区域.x + 10, 绘制区域.y + 1);
+
+    // 绘制图例
+    ctx.textAlign = "left";
+    ctx.font = "14px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+
+    // 图例位置
+    const 图例X = 绘制区域.x + 绘制区域.width - 132;
+    const 图例Y = 绘制区域.y + 绘制区域.height - 100;
+    const 图例间距 = 25;
+
+    // 速度图例
+    ctx.fillStyle = "#61afef";
+    ctx.fillRect(图例X, 图例Y, 15, 15);
+    ctx.fillStyle = "#d1d5db";
+    ctx.fillText("速度", 图例X + 25, 图例Y + 9);
+
+    // 距离图例
+    ctx.fillStyle = "#98c379";
+    ctx.fillRect(图例X, 图例Y + 图例间距, 15, 15);
+    ctx.fillStyle = "#d1d5db";
+    ctx.fillText("距离", 图例X + 25, 图例Y + 图例间距 + 9);
   }
 
   绘制速度映射表() {
@@ -2287,11 +2711,12 @@ class 匀加速 {
       // 如果当前索引是速度映射表索引，绘制下方的矩形
       if (i === this.速度映射表索引) {
         ctx.fillStyle = "#def2";
-        ctx.strokeStyle = "#def7";
+        ctx.strokeStyle = "#defa";
+        ctx.lineWidth = 1;
         const 矩形宽度 = 时间宽度 + 2 + 冒号宽度 + 20 + 速度宽度;
         const 矩形高度 = 20;
-        ctx.fillRect(X - 11, Y - 15, 矩形宽度, 矩形高度);
-        ctx.strokeRect(X - 11, Y - 15, 矩形宽度, 矩形高度);
+        ctx.fillRect(X - 8, Y - 12, 矩形宽度, 矩形高度);
+        ctx.strokeRect(X - 8, Y - 12, 矩形宽度, 矩形高度);
       }
 
       // 绘制时间数值（蓝色），右对齐
