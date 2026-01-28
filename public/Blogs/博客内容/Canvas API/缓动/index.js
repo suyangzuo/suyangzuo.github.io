@@ -2394,9 +2394,9 @@ class 匀加速 {
     const ctx = this.ctx;
     const 绘制区域 = {
       x: 45,
-      y: 120,
+      y: 140,
       width: this.cssWidth - 90,
-      height: this.cssHeight - 220,
+      height: this.cssHeight - 230,
     };
 
     // 计算坐标轴范围
@@ -2424,7 +2424,7 @@ class 匀加速 {
     ctx.stroke();
 
     // 绘制经纬线（网格线）
-    ctx.strokeStyle = "#ffffff1a";
+    ctx.strokeStyle = "#ffffff15";
     ctx.lineWidth = 1;
 
     // 绘制垂直网格线（Y轴方向）
@@ -2636,8 +2636,8 @@ class 匀加速 {
     ctx.font = "14px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
 
     // 图例位置
-    const 图例X = 绘制区域.x + 绘制区域.width - 132;
-    const 图例Y = 绘制区域.y + 绘制区域.height - 100;
+    const 图例X = 绘制区域.x + 绘制区域.width - 120;
+    const 图例Y = 绘制区域.y + 绘制区域.height - 280;
     const 图例间距 = 25;
 
     // 速度图例
