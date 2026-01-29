@@ -100,10 +100,16 @@ class 缓动动画 {
     this.动画 = { 方向: 1, 已用时: 0, 上次时间: null, 总时长: 0 };
     this.路径 = { 起点: 10, 终点: this.cssWidth - 10 - this.汽车.width, 长度: 0 };
 
+    this.归一化刻度 = false; // 默认不使用归一化刻度
+    // this.复选框区域 = null; // 复选框区域 - 移除，因为初始化尺寸时已计算
+    this.悬停的复选框 = false; // 跟踪复选框悬停状态
+    this.鼠标坐标 = { x: 0, y: 0 }; // 鼠标坐标
+
     this.绑定事件();
     this.加载汽车图片();
     this.更新行程();
     this.重建时间表();
+    this.读取设置();
     this.开始动画();
     this.绘制();
   }
@@ -133,6 +139,9 @@ class 缓动动画 {
     const h = Math.max(200, this.cssHeight - 顶 - 底);
     this.区域 = { 左, 顶, 右: 左 + w, 底: 顶 + h, 宽: w, 高: h };
 
+    // 计算复选框区域
+    this.计算复选框区域();
+
     this.地面 = {
       x: 0,
       y: this.cssHeight - 25,
@@ -146,6 +155,36 @@ class 缓动动画 {
       const 终点 = Math.max(起点 + 20, this.cssWidth - 10 - 120 / this.dpr);
       this.路径 = { 起点, 终点, 长度: 终点 - 起点 };
     }
+  }
+
+  计算复选框区域() {
+    const 复选框宽度 = 20; // 实际绘制的复选框宽度
+    const 复选框高度 = 20; // 实际绘制的复选框高度
+    const 文本宽度 = 40; // 文本区域宽度
+    const 总宽度 = 复选框宽度 + 文本宽度;
+    const 绘制区域 = this.区域;
+
+    // 复选框位置：垂直靠上，水平居中
+    this.复选框区域 = {
+      复选框: {
+        左: 绘制区域.左 + (绘制区域.宽 - 总宽度) / 2,
+        右: 绘制区域.左 + (绘制区域.宽 - 总宽度) / 2 + 复选框宽度,
+        顶: 绘制区域.顶 + 10,
+        底: 绘制区域.顶 + 10 + 复选框高度,
+      },
+      文本: {
+        左: 绘制区域.左 + (绘制区域.宽 - 总宽度) / 2 + 复选框宽度,
+        右: 绘制区域.左 + (绘制区域.宽 - 总宽度) / 2 + 总宽度,
+        顶: 绘制区域.顶 + 10,
+        底: 绘制区域.顶 + 10 + 复选框高度,
+      },
+      整体: {
+        左: 绘制区域.左 + (绘制区域.宽 - 总宽度) / 2,
+        右: 绘制区域.左 + (绘制区域.宽 - 总宽度) / 2 + 总宽度,
+        顶: 绘制区域.顶 + 10,
+        底: 绘制区域.顶 + 10 + 复选框高度,
+      },
+    };
   }
 
   加载汽车图片() {
@@ -172,12 +211,35 @@ class 缓动动画 {
 
     this.canvas.addEventListener("mousemove", (e) => {
       const p = 坐标(e);
+      // 获取鼠标坐标用于复选框检测
+      this.获取鼠标坐标(e);
+
+      // 检测复选框悬停
+      const 复选框区域 = this.复选框区域;
+      const 复选框悬停 =
+        复选框区域 &&
+        this.鼠标坐标.x >= 复选框区域.整体.左 &&
+        this.鼠标坐标.x <= 复选框区域.整体.右 &&
+        this.鼠标坐标.y >= 复选框区域.整体.顶 &&
+        this.鼠标坐标.y <= 复选框区域.整体.底;
+
+      // 更新复选框悬停状态
+      if (复选框悬停 !== this.悬停的复选框) {
+        this.悬停的复选框 = 复选框悬停;
+      }
+
+      // 检测控制点悬停
       this.状态.悬停 = this.命中控制点(p.x, p.y) || this.状态.拖拽;
-      if (this.状态.悬停) {
+
+      // 设置光标样式 - 复选框悬停优先
+      if (复选框悬停) {
+        this.canvas.style.cursor = this.光标样式.悬停;
+      } else if (this.状态.悬停) {
         this.canvas.style.cursor = this.光标样式.拖拽;
       } else {
         this.canvas.style.cursor = this.光标样式.默认;
       }
+
       if (this.状态.拖拽) {
         if (!this.状态.拖拽已移动) {
           this.动画.已用时 = 0;
@@ -236,6 +298,12 @@ class 缓动动画 {
     };
     this.canvas.addEventListener("mouseup", 结束);
     this.canvas.addEventListener("mouseleave", 结束);
+
+    // 复选框事件处理
+    this.canvas.addEventListener("click", (e) => {
+      this.获取鼠标坐标(e);
+      this.检测复选框点击(this.鼠标坐标.x, this.鼠标坐标.y);
+    });
   }
 
   命中控制点(x, y) {
@@ -294,6 +362,124 @@ class 缓动动画 {
 
   点积(a, b) {
     return a.x * b.x + a.y * b.y;
+  }
+
+  获取鼠标坐标(e) {
+    const x = e.clientX - this.边界矩形.left;
+    const y = e.clientY - this.边界矩形.top;
+    this.鼠标坐标 = { x, y };
+    return { x, y };
+  }
+
+  绘制复选框() {
+    const ctx = this.ctx;
+    const 复选框区域 = this.复选框区域;
+    if (!复选框区域) return;
+
+    const { 复选框, 文本 } = 复选框区域;
+    const 选中 = this.归一化刻度;
+    const 悬停 = this.悬停的复选框;
+
+    // 绘制复选框背景
+    if (选中) {
+      ctx.fillStyle = "#263446ff";
+    } else if (悬停) {
+      ctx.fillStyle = "#263446ff";
+    } else {
+      ctx.fillStyle = "#192330ff";
+    }
+    ctx.beginPath();
+    ctx.roundRect(复选框.左, 复选框.顶, 20, 20, 3);
+    ctx.fill();
+
+    // 绘制复选框边框
+    ctx.strokeStyle = 选中 ? "#41785fff" : 悬停 ? "#aaa" : "#374151";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.roundRect(复选框.左, 复选框.顶, 20, 20, 3);
+    ctx.stroke();
+
+    // 绘制复选框内的勾选标记
+    if (选中) {
+      ctx.strokeStyle = "#6ac69d";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(复选框.左 + 4, 复选框.顶 + 10);
+      ctx.lineTo(复选框.左 + 9, 复选框.顶 + 14);
+      ctx.lineTo(复选框.左 + 16, 复选框.顶 + 5);
+      ctx.stroke();
+    }
+
+    // 绘制文本
+    ctx.fillStyle = 悬停 || 选中 ? "white" : "silver";
+    ctx.font = "14px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "middle";
+    ctx.fillText("归一", 复选框.左 + 26, 复选框.顶 + 10);
+  }
+
+  检测复选框点击(x, y) {
+    const 复选框区域 = this.复选框区域;
+    if (!复选框区域) return;
+
+    if (x >= 复选框区域.整体.左 && x <= 复选框区域.整体.右 && y >= 复选框区域.整体.顶 && y <= 复选框区域.整体.底) {
+      this.归一化刻度 = !this.归一化刻度;
+      this.保存设置();
+      this.绘制();
+    }
+  }
+
+  检测复选框悬停(x, y) {
+    const 复选框区域 = this.复选框区域;
+    if (!复选框区域) return;
+
+    const isHovering =
+      x >= 复选框区域.整体.左 && x <= 复选框区域.整体.右 && y >= 复选框区域.整体.顶 && y <= 复选框区域.整体.底;
+
+    if (isHovering !== this.悬停的复选框) {
+      this.悬停的复选框 = isHovering;
+      this.canvas.style.cursor = isHovering
+        ? 'url("/Images/Common/鼠标-指向.cur"), pointer'
+        : 'url("/Images/Common/鼠标-默认.cur"), auto';
+      this.绘制();
+    }
+  }
+
+  读取设置() {
+    try {
+      const raw = sessionStorage.getItem("缓动动画-设置");
+      if (!raw) return;
+      const obj = JSON.parse(raw);
+      if (!obj || typeof obj !== "object") return;
+      const { p1, p2, 归一化刻度 } = obj;
+      const clampPoint = (p) => {
+        if (!p || typeof p.x !== "number" || typeof p.y !== "number") return null;
+        return {
+          x: Math.max(0, Math.min(1, p.x)),
+          y: Math.max(0, Math.min(1, p.y)),
+        };
+      };
+      const cp1 = clampPoint(p1);
+      const cp2 = clampPoint(p2);
+      if (cp1) this.曲线.p1 = cp1;
+      if (cp2) this.曲线.p2 = cp2;
+      if (typeof 归一化刻度 === "boolean") this.归一化刻度 = 归一化刻度;
+    } catch (e) {
+      console.warn("读取缓动动画设置失败", e);
+    }
+  }
+
+  保存设置() {
+    try {
+      const payload = {
+        p1: this.曲线.p1,
+        p2: this.曲线.p2,
+        归一化刻度: this.归一化刻度,
+      };
+      sessionStorage.setItem("缓动动画-设置", JSON.stringify(payload));
+    } catch (e) {
+      console.warn("保存缓动动画设置失败", e);
+    }
   }
 
   限制到域(p, maxY, isHandle = false) {
@@ -518,6 +704,7 @@ class 缓动动画 {
     this.绘制控制点();
     this.绘制幽灵汽车();
     this.绘制汽车();
+    this.绘制复选框();
   }
 
   绘制背景与区域() {
@@ -565,7 +752,14 @@ class 缓动动画 {
       ctx.font = "12px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
       ctx.textAlign = "right";
       ctx.textBaseline = "middle";
-      ctx.fillText(String(Math.round(v)), area.左 - 6, y);
+      let text;
+      if (this.归一化刻度) {
+        text = ny.toFixed(1);
+        if (text === "1.0") text = "1";
+      } else {
+        text = String(Math.round(v));
+      }
+      ctx.fillText(text, area.左 - 10, y);
     }
 
     // 顶部刻度标签（总时长）
@@ -573,7 +767,13 @@ class 缓动动画 {
     ctx.font = "12px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
     ctx.textAlign = "right";
     ctx.textBaseline = "middle";
-    ctx.fillText(String(this.轴最大时间), area.左 - 6, area.顶);
+    let topText;
+    if (this.归一化刻度) {
+      topText = "1";
+    } else {
+      topText = String(this.轴最大时间);
+    }
+    ctx.fillText(topText, area.左 - 10, area.顶);
 
     ctx.strokeStyle = this.样式.轴线;
     ctx.lineWidth = 1.2;
@@ -595,16 +795,20 @@ class 缓动动画 {
     ctx.textBaseline = "middle";
     ctx.fillText("距离", area.右 + 8, area.底);
 
-    // 原点和 x=1 标签
+    // 原点和 x 标签
     ctx.fillStyle = 刻度数字颜色;
     ctx.font = "12px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
-    ctx.textAlign = "right";
-    ctx.textBaseline = "top";
-    ctx.fillText("0", area.左 - 4, area.底 + 15);
+    // X轴原点标签（显示路径起点）
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
-    ctx.fillText("1", area.右, area.底 + 15);
-    // 新增X轴0.2、0.4、0.6、0.8刻度
+    const x原点值 = this.归一化刻度 ? "0" : String(Math.round(this.路径.起点));
+    ctx.fillText(x原点值, area.左, area.底 + 12);
+    // X轴终点标签
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    const x终点值 = this.归一化刻度 ? "1" : String(Math.round(this.路径.终点));
+    ctx.fillText(x终点值, area.右, area.底 + 12);
+    // 新增X轴刻度
     for (let i = 1; i < 5; i++) {
       const frac = i * 0.2;
       const x = area.左 + frac * area.宽;
@@ -616,8 +820,22 @@ class 缓动动画 {
       ctx.fillStyle = 刻度数字颜色;
       ctx.textAlign = "center";
       ctx.textBaseline = "top";
-      ctx.fillText(frac.toFixed(1), x, area.底 + 15);
+      let label;
+      if (this.归一化刻度) {
+        label = frac.toFixed(1);
+      } else {
+        const 实际值 = this.路径.起点 + frac * this.路径.长度;
+        label = String(Math.round(实际值));
+      }
+      ctx.fillText(label, x, area.底 + 12);
     }
+
+    // Y轴原点标签（始终显示0）
+    ctx.fillStyle = 刻度数字颜色;
+    ctx.font = "12px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+    ctx.textAlign = "right";
+    ctx.textBaseline = "middle";
+    ctx.fillText("0", area.左 - 10, area.底);
 
     ctx.restore();
   }
@@ -820,7 +1038,7 @@ class 映射关系 {
       if (!raw) return;
       const obj = JSON.parse(raw);
       if (!obj || typeof obj !== "object") return;
-      const { p1, p2, 分布数量 } = obj;
+      const { p1, p2, 分布数量, 归一化刻度 } = obj;
       const clampPoint = (p) => {
         if (!p || typeof p.x !== "number" || typeof p.y !== "number") return null;
         return {
@@ -833,6 +1051,7 @@ class 映射关系 {
       if (cp1) this.曲线.p1 = cp1;
       if (cp2) this.曲线.p2 = cp2;
       if (typeof 分布数量 === "number" && 分布数量 >= 2 && 分布数量 <= 10) this.分布数量 = 分布数量;
+      if (typeof 归一化刻度 === "boolean") this.归一化刻度 = 归一化刻度;
     } catch (e) {
       console.warn("读取映射关系设置失败", e);
     }
@@ -844,6 +1063,7 @@ class 映射关系 {
         p1: this.曲线.p1,
         p2: this.曲线.p2,
         分布数量: this.分布数量,
+        归一化刻度: this.归一化刻度,
       };
       sessionStorage.setItem("映射关系-设置", JSON.stringify(payload));
     } catch (e) {
@@ -961,6 +1181,10 @@ class 映射关系 {
     // 分布点缓存结构预留: { [key]: {tPoints, dPoints} }
     this.分布点缓存 = {};
 
+    this.归一化刻度 = false; // 默认不使用归一化刻度
+    // this.复选框区域 = null; // 复选框区域 - 移除，因为初始化尺寸时已计算
+    this.悬停的复选框 = false; // 跟踪复选框悬停状态
+
     this.读取设置();
     this.绑定事件();
     this.状态 = {
@@ -978,6 +1202,38 @@ class 映射关系 {
     const w = Math.max(200, this.cssWidth - 左 - 右);
     const h = Math.max(200, this.cssHeight - 顶 - 底);
     this.区域 = { 左, 顶, 右: 左 + w, 底: 顶 + h, 宽: w, 高: h };
+    // 计算复选框区域
+    this.计算复选框区域();
+  }
+
+  计算复选框区域() {
+    const 复选框宽度 = 20; // 实际绘制的复选框宽度
+    const 复选框高度 = 20; // 实际绘制的复选框高度
+    const 文本宽度 = 40; // 文本区域宽度
+    const 总宽度 = 复选框宽度 + 文本宽度;
+    const 绘制区域 = this.区域;
+
+    // 复选框位置：垂直靠上，水平居中
+    this.复选框区域 = {
+      复选框: {
+        左: 绘制区域.左 + (绘制区域.宽 - 总宽度) / 2,
+        右: 绘制区域.左 + (绘制区域.宽 - 总宽度) / 2 + 复选框宽度,
+        顶: 绘制区域.顶 + 10,
+        底: 绘制区域.顶 + 10 + 复选框高度,
+      },
+      文本: {
+        左: 绘制区域.左 + (绘制区域.宽 - 总宽度) / 2 + 复选框宽度,
+        右: 绘制区域.左 + (绘制区域.宽 - 总宽度) / 2 + 总宽度,
+        顶: 绘制区域.顶 + 10,
+        底: 绘制区域.顶 + 10 + 复选框高度,
+      },
+      整体: {
+        左: 绘制区域.左 + (绘制区域.宽 - 总宽度) / 2,
+        右: 绘制区域.左 + (绘制区域.宽 - 总宽度) / 2 + 总宽度,
+        顶: 绘制区域.顶 + 10,
+        底: 绘制区域.顶 + 10 + 复选框高度,
+      },
+    };
   }
 
   绘制() {
@@ -985,6 +1241,8 @@ class 映射关系 {
     this.绘制网格坐标轴();
     this.绘制曲线();
     this.绘制控制点();
+    // 绘制复选框
+    this.绘制复选框();
     // --- 新增映射关系图和滑块 ---
     const margin = 70;
     let yBase = this.区域.底 + margin;
@@ -1299,8 +1557,15 @@ class 映射关系 {
       ctx.font = "12px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
       ctx.textAlign = "right";
       ctx.textBaseline = "middle";
-      let text = ny.toFixed(1);
-      if (text === "1.0") text = "1";
+      let text;
+      if (this.归一化刻度) {
+        text = ny.toFixed(1);
+        if (text === "1.0") text = "1";
+      } else {
+        // 非归一化时显示实际值（0-100）
+        const actualValue = ny * 100;
+        text = actualValue.toFixed(0);
+      }
       ctx.fillText(text, area.左 - 6, y);
     }
     ctx.strokeStyle = this.样式.轴线;
@@ -1328,7 +1593,13 @@ class 映射关系 {
     ctx.fillText("0", area.左 - 4, area.底 + 15);
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
-    ctx.fillText("1", area.右, area.底 + 15);
+    let endText;
+    if (this.归一化刻度) {
+      endText = "1";
+    } else {
+      endText = "100";
+    }
+    ctx.fillText(endText, area.右, area.底 + 15);
     for (let i = 1; i < 5; i++) {
       const frac = i * 0.2;
       const x = area.左 + frac * area.宽;
@@ -1340,7 +1611,15 @@ class 映射关系 {
       ctx.fillStyle = 刻度数字颜色;
       ctx.textAlign = "center";
       ctx.textBaseline = "top";
-      ctx.fillText(frac.toFixed(1), x, area.底 + 15);
+      let text;
+      if (this.归一化刻度) {
+        text = frac.toFixed(1);
+      } else {
+        // 非归一化时显示实际值（0-100）
+        const actualValue = frac * 100;
+        text = actualValue.toFixed(0);
+      }
+      ctx.fillText(text, x, area.底 + 15);
     }
     ctx.restore();
   }
@@ -1458,14 +1737,33 @@ class 映射关系 {
           sliderHot = true;
         }
       }
+      // 复选框悬停检测
+      const 复选框区域 = this.复选框区域;
+      const 复选框悬停 =
+        复选框区域 &&
+        x >= 复选框区域.整体.左 &&
+        x <= 复选框区域.整体.右 &&
+        y >= 复选框区域.整体.顶 &&
+        y <= 复选框区域.整体.底;
+
+      // 更新状态
       this.状态.滑块悬停 = sliderHot;
-      // 优先滑块thumb悬停样式
-      if (sliderHot || this.状态.滑块拖拽) {
-        this.canvas.style.cursor = "pointer";
+      this.状态.悬停 = found;
+
+      // 更新复选框悬停状态
+      if (复选框悬停 !== this.悬停的复选框) {
+        this.悬停的复选框 = 复选框悬停;
+      }
+
+      // 优先设置光标样式
+      if (复选框悬停) {
+        this.canvas.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
+      } else if (sliderHot || this.状态.滑块拖拽) {
+        this.canvas.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
       } else {
         this.canvas.style.cursor = found ? this.光标样式.拖拽 : this.光标样式.默认;
       }
-      this.状态.悬停 = found;
+
       if (this.状态.拖拽) {
         // 拖拽中，更新控制点
         const offset = this.状态.拖拽偏移 || { dx: 0, dy: 0 };
@@ -1511,6 +1809,12 @@ class 映射关系 {
       this.状态.拖拽 = null;
       this.状态.拖拽偏移 = null;
     });
+
+    // 复选框事件处理
+    this.canvas.addEventListener("click", (e) => {
+      this.获取鼠标坐标(e);
+      this.检测复选框点击(this.鼠标坐标.x, this.鼠标坐标.y);
+    });
   }
 
   滑块更新(x) {
@@ -1528,6 +1832,87 @@ class 映射关系 {
       this.保存设置();
     }
     this.绘制();
+  }
+
+  获取鼠标坐标(e) {
+    const x = e.clientX - this.边界矩形.left;
+    const y = e.clientY - this.边界矩形.top;
+    this.鼠标坐标 = { x, y };
+    return { x, y };
+  }
+
+  绘制复选框() {
+    const ctx = this.ctx;
+    const 复选框区域 = this.复选框区域;
+    if (!复选框区域) return;
+
+    const { 复选框, 文本 } = 复选框区域;
+    const 选中 = this.归一化刻度;
+    const 悬停 = this.悬停的复选框;
+
+    // 绘制复选框背景
+    if (选中) {
+      ctx.fillStyle = "#263446ff";
+    } else if (悬停) {
+      ctx.fillStyle = "#263446ff";
+    } else {
+      ctx.fillStyle = "#192330ff";
+    }
+    ctx.beginPath();
+    ctx.roundRect(复选框.左, 复选框.顶, 20, 20, 3);
+    ctx.fill();
+
+    // 绘制复选框边框
+    ctx.strokeStyle = 选中 ? "#41785fff" : 悬停 ? "#aaa" : "#374151";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.roundRect(复选框.左, 复选框.顶, 20, 20, 3);
+    ctx.stroke();
+
+    // 绘制复选框内的勾选标记
+    if (选中) {
+      ctx.strokeStyle = "#6ac69d";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(复选框.左 + 4, 复选框.顶 + 10);
+      ctx.lineTo(复选框.左 + 9, 复选框.顶 + 14);
+      ctx.lineTo(复选框.左 + 16, 复选框.顶 + 5);
+      ctx.stroke();
+    }
+
+    // 绘制文本
+    ctx.fillStyle = 悬停 || 选中 ? "white" : "silver";
+    ctx.font = "14px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "middle";
+    ctx.fillText("归一", 复选框.左 + 26, 复选框.顶 + 10);
+  }
+
+  检测复选框点击(x, y) {
+    const 复选框区域 = this.复选框区域;
+    if (!复选框区域) return;
+
+    if (x >= 复选框区域.整体.左 && x <= 复选框区域.整体.右 && y >= 复选框区域.整体.顶 && y <= 复选框区域.整体.底) {
+      this.归一化刻度 = !this.归一化刻度;
+      this.保存设置();
+      this.绘制();
+    }
+  }
+
+  检测复选框悬停(x, y) {
+    const 复选框区域 = this.复选框区域;
+    if (!复选框区域) return;
+
+    const isHovering =
+      x >= 复选框区域.整体.左 && x <= 复选框区域.整体.右 && y >= 复选框区域.整体.顶 && y <= 复选框区域.整体.底;
+
+    if (isHovering !== this.悬停的复选框) {
+      this.悬停的复选框 = isHovering;
+      this.canvas.style.cursor = isHovering
+        ? 'url("/Images/Common/鼠标-指向.cur"), pointer'
+        : 'url("/Images/Common/鼠标-默认.cur"), auto';
+      this.绘制();
+    }
   }
 
   更新控制点(x, y, key) {
@@ -1595,6 +1980,9 @@ class 匀加速 {
     this.显示模式 = "映射表"; // 默认显示映射表
     this.单选按钮区域 = [];
     this.悬停的按钮 = null; // 跟踪当前悬停的按钮
+    this.归一化刻度 = false; // 默认不使用归一化刻度
+    this.复选框区域 = null; // 复选框区域
+    this.悬停的复选框 = false; // 跟踪复选框悬停状态
 
     this.滑块配置 = {
       左边距: 20,
@@ -1777,11 +2165,13 @@ class 匀加速 {
     this.canvas.addEventListener("click", (e) => {
       const 坐标 = this.获取鼠标坐标(e);
       this.检测单选按钮点击(坐标.x, 坐标.y);
+      this.检测复选框点击(坐标.x, 坐标.y);
     });
 
     this.canvas.addEventListener("mousemove", (e) => {
       const 坐标 = this.获取鼠标坐标(e);
       this.检测单选按钮悬停(坐标.x, 坐标.y);
+      this.检测复选框悬停(坐标.x, 坐标.y);
     });
   }
 
@@ -1805,6 +2195,7 @@ class 匀加速 {
         最高速度: this.最高速度,
         加速用时: this.加速用时,
         显示模式: this.显示模式,
+        归一化刻度: this.归一化刻度,
         滑块数据: this.滑块数据.map((滑块) => ({
           id: 滑块.id,
           当前值: 滑块.当前值,
@@ -1847,6 +2238,10 @@ class 匀加速 {
 
       if (设置.显示模式 === "映射表" || 设置.显示模式 === "坐标轴") {
         this.显示模式 = 设置.显示模式;
+      }
+
+      if (typeof 设置.归一化刻度 === "boolean") {
+        this.归一化刻度 = 设置.归一化刻度;
       }
     } catch (e) {
       console.warn("读取匀加速设置失败", e);
@@ -1952,6 +2347,43 @@ class 匀加速 {
 
     // 计算单选按钮区域
     this.计算单选按钮区域();
+    // 计算复选框区域
+    this.计算复选框区域();
+  }
+
+  计算复选框区域() {
+    const 复选框宽度 = 20;
+    const 复选框高度 = 20;
+    const 文本宽度 = 40;
+    const 总宽度 = 复选框宽度 + 文本宽度;
+    const 绘制区域 = {
+      x: 45,
+      y: 140,
+      width: this.cssWidth - 90,
+      height: this.cssHeight - 240,
+    };
+
+    // 复选框位置：垂直靠上，水平居中
+    this.复选框区域 = {
+      复选框: {
+        左: 绘制区域.x + (绘制区域.width - 总宽度) / 2,
+        右: 绘制区域.x + (绘制区域.width - 总宽度) / 2 + 复选框宽度,
+        顶: 绘制区域.y + 10,
+        底: 绘制区域.y + 10 + 复选框高度,
+      },
+      文本: {
+        左: 绘制区域.x + (绘制区域.width - 总宽度) / 2 + 复选框宽度,
+        右: 绘制区域.x + (绘制区域.width - 总宽度) / 2 + 总宽度,
+        顶: 绘制区域.y + 10,
+        底: 绘制区域.y + 10 + 复选框高度,
+      },
+      整体: {
+        左: 绘制区域.x + (绘制区域.width - 总宽度) / 2,
+        右: 绘制区域.x + (绘制区域.width - 总宽度) / 2 + 总宽度,
+        顶: 绘制区域.y + 10,
+        底: 绘制区域.y + 10 + 复选框高度,
+      },
+    };
   }
 
   计算单选按钮区域() {
@@ -2020,6 +2452,31 @@ class 匀加速 {
       this.canvas.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
     } else {
       this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
+    }
+  }
+
+  检测复选框点击(x, y) {
+    if (!this.复选框区域) return;
+    const { 整体 } = this.复选框区域;
+    if (x >= 整体.左 && x <= 整体.右 && y >= 整体.顶 && y <= 整体.底) {
+      this.归一化刻度 = !this.归一化刻度;
+      this.保存设置();
+      this.绘制();
+    }
+  }
+
+  检测复选框悬停(x, y) {
+    if (!this.复选框区域) return;
+    const { 整体 } = this.复选框区域;
+    const 新的悬停状态 = x >= 整体.左 && x <= 整体.右 && y >= 整体.顶 && y <= 整体.底;
+
+    if (this.悬停的复选框 !== 新的悬停状态) {
+      this.悬停的复选框 = 新的悬停状态;
+      this.绘制();
+    }
+
+    if (新的悬停状态) {
+      this.canvas.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
     }
   }
 
@@ -2289,12 +2746,31 @@ class 匀加速 {
       }
 
       const 单位文本 = 滑块.单位;
+      let 总宽度;
 
-      ctx.fillStyle = "#cde";
-      ctx.fillText(整数部分, 数值位置.x, 数值位置.y);
+      // 处理负号的颜色
+      let 负号 = "";
+      let 整数部分无符号 = 整数部分;
+      if (整数部分.startsWith("-")) {
+        负号 = "-";
+        整数部分无符号 = 整数部分.slice(1);
+      }
 
-      let 总宽度 = ctx.measureText(整数部分).width;
+      // 绘制负号（如果有）
+      if (负号) {
+        ctx.fillStyle = "lightslategray";
+        ctx.fillText(负号, 数值位置.x, 数值位置.y);
+        总宽度 = ctx.measureText(负号).width + 1;
 
+        // 绘制整数部分（无符号）
+        ctx.fillStyle = "#cde";
+        ctx.fillText(整数部分无符号, 数值位置.x + 总宽度, 数值位置.y);
+        总宽度 += ctx.measureText(整数部分无符号).width;
+      } else {
+        ctx.fillStyle = "#cde";
+        ctx.fillText(整数部分, 数值位置.x, 数值位置.y);
+        总宽度 = ctx.measureText(整数部分).width;
+      }
       if (有小数点) {
         ctx.fillStyle = "gray";
         ctx.fillText(".", 数值位置.x + 总宽度, 数值位置.y);
@@ -2388,6 +2864,52 @@ class 匀加速 {
     });
   }
 
+  绘制复选框() {
+    if (!this.复选框区域 || this.显示模式 !== "坐标轴") return;
+
+    const ctx = this.ctx;
+    const { 复选框, 文本 } = this.复选框区域;
+    const 选中 = this.归一化刻度;
+    const 悬停 = this.悬停的复选框;
+
+    // 绘制复选框背景
+    if (选中) {
+      ctx.fillStyle = "#263446ff";
+    } else if (悬停) {
+      ctx.fillStyle = "#263446ff";
+    } else {
+      ctx.fillStyle = "#192330ff";
+    }
+    ctx.beginPath();
+    ctx.roundRect(复选框.左, 复选框.顶, 复选框.右 - 复选框.左, 复选框.底 - 复选框.顶, 3);
+    ctx.fill();
+
+    // 绘制复选框边框
+    ctx.strokeStyle = 选中 ? "#41785fff" : 悬停 ? "#aaa" : "#374151";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.roundRect(复选框.左, 复选框.顶, 复选框.右 - 复选框.左, 复选框.底 - 复选框.顶, 3);
+    ctx.stroke();
+
+    // 绘制复选框内的勾选标记
+    if (选中) {
+      ctx.strokeStyle = "#6ac69d";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(复选框.左 + 4, 复选框.顶 + 10);
+      ctx.lineTo(复选框.左 + 9, 复选框.顶 + 14);
+      ctx.lineTo(复选框.左 + 16, 复选框.顶 + 5);
+      ctx.stroke();
+    }
+
+    // 绘制文本
+    ctx.fillStyle = 悬停 || 选中 ? "white" : "silver";
+    ctx.font = "14px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "middle";
+    ctx.fillText("归一", 文本.左 + 8, (文本.顶 + 文本.底) / 2);
+  }
+
   绘制坐标轴() {
     if (!this.速度映射表 || this.速度映射表.length === 0) return;
 
@@ -2396,8 +2918,11 @@ class 匀加速 {
       x: 45,
       y: 140,
       width: this.cssWidth - 90,
-      height: this.cssHeight - 230,
+      height: this.cssHeight - 240,
     };
+
+    // 绘制复选框
+    this.绘制复选框();
 
     // 计算坐标轴范围
     const 最大时间 = this.速度映射表[this.速度映射表.length - 1].时间;
@@ -2460,8 +2985,17 @@ class 匀加速 {
       ctx.lineTo(x, 绘制区域.y + 绘制区域.height + 5);
       ctx.stroke();
 
-      // 绘制标签
-      ctx.fillText(时间.toFixed(0), x, 绘制区域.y + 绘制区域.height + 16);
+      // 绘制标签，根据复选框状态显示归一化或实际数值
+      let 标签文本;
+      if (this.归一化刻度) {
+        标签文本 = (时间 / 最大时间).toFixed(1);
+        if (标签文本.endsWith(".0")) {
+          标签文本 = 标签文本.slice(0, -2);
+        }
+      } else {
+        标签文本 = 时间.toFixed(0);
+      }
+      ctx.fillText(标签文本, x, 绘制区域.y + 绘制区域.height + 16);
     }
 
     // 绘制Y轴刻度和标签
@@ -2477,10 +3011,15 @@ class 匀加速 {
       ctx.lineTo(绘制区域.x, y);
       ctx.stroke();
 
-      // 绘制标签，处理小数点最后一位为0的情况
-      let 标签文本 = (速度 / 最大速度).toFixed(1);
-      if (标签文本.endsWith(".0")) {
-        标签文本 = 标签文本.slice(0, -2);
+      // 绘制标签，根据复选框状态显示归一化或实际数值
+      let 标签文本;
+      if (this.归一化刻度) {
+        标签文本 = (速度 / 最大速度).toFixed(1);
+        if (标签文本.endsWith(".0")) {
+          标签文本 = 标签文本.slice(0, -2);
+        }
+      } else {
+        标签文本 = 速度.toFixed(0);
       }
       ctx.fillText(标签文本, 绘制区域.x - 10, y);
     }
