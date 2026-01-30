@@ -1588,7 +1588,6 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 
 .分区列表项 {
   list-style-type: disc;
-  list-style-position: inside;
   padding: 3px 0;
   color: var(--分区列表项-字体颜色);
   line-height: 1.5em;
@@ -1611,9 +1610,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .分区列表:not(.有序列表) > .分区列表项 {
-  padding-left: 1.5em;
-  /* text-indent: -1.425em; */
-  text-indent: -1.1em;
+  margin-left: 1em;
   line-height: 1.75rem;
 }
 

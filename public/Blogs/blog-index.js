@@ -220,7 +220,7 @@ function 设置侧边栏(event) {
   // 此if用于后退、前进时
   if (event === undefined) {
     const 当前专题 = Array.from(专题组).find(
-      (专题) => 专题名称 === 专题.getElementsByClassName("专题-内容")[0].innerText
+      (专题) => 专题名称 === 专题.getElementsByClassName("专题-内容")[0].innerText,
     );
 
     if (当前专题 === undefined) return;
@@ -449,10 +449,13 @@ async function 设置内容() {
 function 点选技术栈(event) {
   const 技术栈 = event.currentTarget;
   技术栈名称 = 技术栈.getElementsByTagName("p")[0].textContent.trim();
+  console.log(技术栈名称);
   if (技术栈名称 === "Web前端原生开发") {
     技术栈名称 = "Web前端-原生开发";
   } else if (技术栈名称 === "C#") {
     技术栈名称 = "CSharp";
+  } else if (技术栈名称 === "ApacheECharts") {
+    技术栈名称 = "Apache ECharts";
   }
   localStorage.setItem("页面技术栈", 技术栈名称);
 
