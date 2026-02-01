@@ -1,0 +1,416 @@
+#总区 {
+  position: relative;
+  width: clamp(800px, 100vw, 2400px);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 65px 0 0 0;
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  color: #e0e0e0;
+}
+
+.参数区 {
+  flex-shrink: 0;
+  width: min(50%, fit-content);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  padding: 50px;
+}
+
+.生成区 {
+  aspect-ratio: 0.6667;
+  height: clamp(1080px, calc(100vh - 75px), 1280px);
+  position: relative;
+}
+
+.背景区 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.背景区 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.文件选择标签,
+.文本输入标签 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.标签标题 {
+  color: darkgoldenrod;
+  font-size: 18px;
+  margin-left: 4px;
+}
+
+.文件选择框 {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: linear-gradient(135deg, rgba(30, 36, 48, 0.9), rgba(18, 22, 30, 0.9));
+  color: #e8eaf1;
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  font-size: 14px;
+  letter-spacing: 0.2px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.文件选择框::file-selector-button {
+  margin-right: 12px;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #3c4f92, #553ca6);
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.文件选择框::-webkit-file-upload-button {
+  margin-right: 12px;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #3c4f92, #553ca6);
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.文件选择框:hover {
+  border-color: rgba(125, 154, 255, 0.65);
+  box-shadow:
+    0 12px 26px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.文件选择框:hover::file-selector-button,
+.文件选择框:hover::-webkit-file-upload-button {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+}
+
+.文件选择框:focus-visible {
+  outline: none;
+  border-color: rgba(140, 166, 255, 0.95);
+  box-shadow:
+    0 0 0 3px rgba(108, 140, 255, 0.25),
+    0 14px 28px rgba(0, 0, 0, 0.3);
+}
+
+.文本输入框 {
+  font-size: 16px;
+  font-family: "Noto Sans SC", 微软雅黑, sans-serif;
+  padding: 5px;
+}
+
+#打卡地点 {
+  width: min(520px, 100%);
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: linear-gradient(135deg, rgba(24, 30, 42, 0.92), rgba(14, 18, 28, 0.92));
+  color: #eef0f6;
+  box-shadow:
+    0 12px 26px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  font-size: 16px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+#打卡地点::placeholder {
+  color: rgba(230, 234, 245, 0.55);
+}
+
+#打卡地点:hover {
+  border-color: rgba(125, 154, 255, 0.6);
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.36),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+#打卡地点:focus-visible {
+  outline: none;
+  border-color: rgba(140, 166, 255, 0.95);
+  box-shadow:
+    0 0 0 3px rgba(108, 140, 255, 0.28),
+    0 16px 32px rgba(0, 0, 0, 0.35);
+}
+
+.打卡信息区 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 75%;
+  padding: 0 0 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.打卡标题区 {
+  width: 200px;
+  height: 65px;
+  border-radius: 10px;
+  background-color: #fff9;
+  backdrop-filter: blur(1px);
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.打卡标题 {
+  flex-shrink: 0;
+  width: fit-content;
+  height: 100%;
+  background-color: rgb(242, 185, 13);
+  color: black;
+  font-size: 34px;
+  font-weight: bold;
+  padding: 0 5px;
+}
+
+.打卡时间 {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  scale: 1 1.35;
+  font-size: 34px;
+  font-family: "Noto Sans SC", 微软雅黑, sans-serif;
+  font-weight: bold;
+  line-height: 1;
+  background: linear-gradient(#4371c5 20%, #000000 100%);
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.打卡时间垫底层 {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  translate: 0 -50%;
+  font-size: 34px;
+  color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  scale: 1 1.35;
+  font-family: "Noto Sans SC", 微软雅黑, sans-serif;
+  font-weight: bold;
+  line-height: 1;
+  filter: blur(0.75px);
+  -webkit-text-stroke: 4px #fff;
+}
+
+.打卡地点与日期 {
+  width: 100%;
+  border-left: solid 5px rgb(242, 185, 13);
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-family: "Noto Sans SC", 微软雅黑, sans-serif;
+  font-size: 28px;
+  text-shadow: 2px 2px 6px #000a;
+}
+
+.打卡日期 {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  letter-spacing: 2px;
+}
+
+.防伪区 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 22px;
+  color: #fff8;
+  text-wrap: nowrap;
+  text-shadow: 2px 2px 6px #000a;
+}
+
+.防伪标志 {
+  height: 26px;
+  aspect-ratio: 1;
+}
+
+.防伪标志 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.按钮区 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#生成截图 {
+  width: 75px;
+  height: 75px;
+  background-color: transparent;
+  filter: drop-shadow(0 0 2px #fff);
+}
+
+#生成截图 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+#生成截图:hover {
+  filter: brightness(1.5) drop-shadow(0 0 2px #fff);
+}
+
+.广告区 {
+  position: absolute;
+  right: 10px;
+  bottom: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  text-shadow: 2px 2px 8px #000a;
+}
+
+.广告标题 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.广告内容 {
+  font-size: 19px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  overflow: visible;
+}
+
+.广告重点 {
+  display: inline-flex;
+  align-items: center;
+  color: black;
+  background-color: #def;
+  border: solid 1px #222;
+  padding: 0 4px;
+  font-weight: bold;
+  text-shadow: none;
+  white-space: nowrap;
+}
+
+.广告防伪 {
+  font-size: 13px;
+}
+
+.防伪ID {
+  font-size: "Google Sans Code", Consolas, monospace;
+}
+
+.截图模态 {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 12, 18, 0.88);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 24px;
+}
+
+.截图模态关闭 {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(20, 24, 32, 0.8);
+  color: #f5f6fb;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.截图模态关闭:hover {
+  transform: translateY(-1px);
+  border-color: rgba(140, 166, 255, 0.7);
+  background-color: #fff2;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.45);
+}
+
+.截图模态图像容器 {
+  width: min(97.5vw, calc(97.5vh * 0.6667));
+  max-height: 97.5vh;
+  aspect-ratio: 0.6667;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: linear-gradient(160deg, rgba(18, 22, 32, 0.9), rgba(10, 14, 22, 0.92));
+  box-shadow:
+    0 28px 60px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.截图模态图像 {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.截图模态加载 {
+  color: rgba(240, 242, 250, 0.72);
+  font-size: 16px;
+  letter-spacing: 0.5px;
+}
