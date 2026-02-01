@@ -27,6 +27,16 @@
   position: relative;
 }
 
+.生成区::before {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: solid 2px #fff2;
+}
+
 .背景区 {
   position: absolute;
   top: 0;
@@ -341,6 +351,7 @@
 
 .广告防伪 {
   font-size: 13px;
+  display: none;
 }
 
 .防伪ID {
