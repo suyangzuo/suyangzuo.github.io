@@ -1968,7 +1968,7 @@ class 匀加速 {
     this.按键 = null;
     this.方向 = 1;
     this.加速度 = 50;
-    this.加速用时 = 2000;
+    this.加速用时 = 1000;
     this.速度 = 0;
     this.最高速度 = 250;
     this.位置 = 0;
@@ -2816,6 +2816,88 @@ class 匀加速 {
     }
 
     this.绘制汽车();
+    this.绘制提示文本();
+  }
+
+  绘制提示文本() {
+    if (this.速度 === 0 && !this.按键) {
+      const ctx = this.ctx;
+      ctx.save();
+      ctx.font = "12px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "bottom";
+
+      const 文本 = "按住 A 或 D 移动汽车";
+      const 文本宽度 = ctx.measureText(文本).width;
+      const 理想绘制X = this.汽车.x + this.汽车.width / 2;
+      const 绘制Y = this.汽车.y - 10;
+
+      // 计算边界调整后的绘制位置
+      const 左边界 = 0;
+      const 右边界 = this.cssWidth;
+      let 实际绘制X = 理想绘制X;
+
+      // 计算圆角矩形的位置和大小
+      const 矩形边距 = 8;
+      const 矩形高度 = 20;
+      const 矩形顶 = 绘制Y - 矩形高度 + 3;
+      const 矩形宽度 = 文本宽度 + 矩形边距 * 2;
+
+      // 检查是否超出左边界
+      if (理想绘制X - 文本宽度 / 2 < 左边界) {
+        实际绘制X = 左边界 + 文本宽度 / 2 + 矩形边距;
+      }
+      // 检查是否超出右边界
+      if (理想绘制X + 文本宽度 / 2 > 右边界) {
+        实际绘制X = 右边界 - 文本宽度 / 2 - 矩形边距;
+      }
+
+      const 矩形左 = 实际绘制X - 文本宽度 / 2 - 矩形边距;
+
+      // 绘制圆角矩形底色
+      ctx.fillStyle = "rgba(22, 30, 46, 0.8)";
+      ctx.strokeStyle = "#fff2";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.roundRect(矩形左, 矩形顶, 矩形宽度, 矩形高度, 0);
+      ctx.fill();
+      ctx.stroke();
+
+      // 分段绘制文本
+      const 第一部分 = "按住 ";
+      const 第二部分 = "A";
+      const 第三部分 = " 或 ";
+      const 第四部分 = "D";
+      const 第五部分 = " 移动汽车";
+
+      let 当前X = 实际绘制X - 文本宽度 / 2;
+
+      // 绘制第一部分
+      ctx.fillStyle = "#e5e7eb";
+      ctx.fillText(第一部分, 当前X + ctx.measureText(第一部分).width / 2, 绘制Y);
+      当前X += ctx.measureText(第一部分).width;
+
+      // 绘制第二部分（A）
+      ctx.fillStyle = "#60a5fa";
+      ctx.fillText(第二部分, 当前X + ctx.measureText(第二部分).width / 2, 绘制Y);
+      当前X += ctx.measureText(第二部分).width;
+
+      // 绘制第三部分
+      ctx.fillStyle = "#e5e7eb";
+      ctx.fillText(第三部分, 当前X + ctx.measureText(第三部分).width / 2, 绘制Y);
+      当前X += ctx.measureText(第三部分).width;
+
+      // 绘制第四部分（D）
+      ctx.fillStyle = "#60a5fa";
+      ctx.fillText(第四部分, 当前X + ctx.measureText(第四部分).width / 2, 绘制Y);
+      当前X += ctx.measureText(第四部分).width;
+
+      // 绘制第五部分
+      ctx.fillStyle = "#e5e7eb";
+      ctx.fillText(第五部分, 当前X + ctx.measureText(第五部分).width / 2, 绘制Y);
+
+      ctx.restore();
+    }
   }
 
   绘制单选按钮() {

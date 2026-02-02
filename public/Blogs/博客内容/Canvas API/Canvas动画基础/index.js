@@ -33,6 +33,9 @@ class SpeedControlAnimation {
     this.lastMouseX = 0;
     this.lastMouseY = 0;
 
+    // 动画状态
+    this.isRunning = true;
+
     // 绑定事件
     this.bindEvents();
 
@@ -126,6 +129,8 @@ class SpeedControlAnimation {
 
   // 动画循环
   animate(currentTime) {
+    if (!this.isRunning) return;
+
     // 计算时间差（毫秒转换为秒）
     const deltaTime = (currentTime - this.lastTime) / 1000;
     this.lastTime = currentTime;
@@ -228,12 +233,21 @@ class SpeedControlAnimation {
 
   // 启动动画
   start() {
+    this.isRunning = true;
     requestAnimationFrame(this.animate.bind(this));
+  }
+
+  // 停止动画
+  stop() {
+    this.isRunning = false;
   }
 }
 
 // 创建动画实例
 const speedControlAnimation = new SpeedControlAnimation("canvas-speed-control");
+
+// 为交叉观察器提供全局访问
+window.speedControlAnimation = speedControlAnimation;
 
 class DeltaTimeAnimation {
   constructor(canvasId) {
@@ -758,6 +772,9 @@ class 固定速度 {
     this.lastMouseX = 0;
     this.lastMouseY = 0;
 
+    // 动画状态
+    this.isRunning = true;
+
     // 绑定事件
     this.添加鼠标事件();
 
@@ -859,6 +876,8 @@ class 固定速度 {
 
   // 动画循环
   刷新动画参数与图形(currentTime) {
+    if (!this.isRunning) return;
+
     // 计算时间差（毫秒转换为秒）
     const deltaTime = (currentTime - this.lastTime) / 1000;
     this.lastTime = currentTime;
@@ -961,12 +980,21 @@ class 固定速度 {
 
   // 启动动画
   开始动画() {
+    this.isRunning = true;
     requestAnimationFrame(this.刷新动画参数与图形.bind(this));
+  }
+
+  // 停止动画
+  停止动画() {
+    this.isRunning = false;
   }
 }
 
 // 创建动画实例
-new 固定速度("canvas-固定速度");
+const fixedSpeedAnimation = new 固定速度("canvas-固定速度");
+
+// 为交叉观察器提供全局访问
+window.fixedSpeedAnimation = fixedSpeedAnimation;
 
 class 固定时间 {
   constructor(canvasId) {
@@ -1003,6 +1031,9 @@ class 固定时间 {
     this.isDragging = false;
     this.lastMouseX = 0;
     this.lastMouseY = 0;
+
+    // 动画状态
+    this.isRunning = true;
 
     // 绑定事件
     this.添加鼠标事件();
@@ -1144,6 +1175,8 @@ class 固定时间 {
 
   // 动画循环
   刷新动画参数与图形(currentTime) {
+    if (!this.isRunning) return;
+
     // 计算时间差（毫秒转换为秒）
     const deltaTime = (currentTime - this.lastTime) / 1000;
     this.lastTime = currentTime;
@@ -1246,12 +1279,21 @@ class 固定时间 {
 
   // 启动动画
   开始动画() {
+    this.isRunning = true;
     requestAnimationFrame(this.刷新动画参数与图形.bind(this));
+  }
+
+  // 停止动画
+  停止动画() {
+    this.isRunning = false;
   }
 }
 
 // 创建动画实例
-new 固定时间("canvas-固定时间");
+const fixedTimeAnimation = new 固定时间("canvas-固定时间");
+
+// 为交叉观察器提供全局访问
+window.fixedTimeAnimation = fixedTimeAnimation;
 
 const canvas_delay = document.getElementById("canvas-delay");
 const ctx_delay = canvas_delay.getContext("2d");
@@ -1606,3 +1648,78 @@ canvas_delay.addEventListener("mouseleave", function () {
 
 // 启动初始绘制（不自动开始动画）
 requestAnimationFrame(animate_delay);
+
+// 交叉观察器配置
+const observerOptions = {
+  root: null, // 使用视口作为根
+  rootMargin: "0px",
+  threshold: 0.01, // 阈值为0.01
+};
+
+// 交叉观察器回调函数
+const observerCallback = (entries, observer) => {
+  entries.forEach((entry) => {
+    const canvasId = entry.target.id;
+
+    // 根据canvas ID获取对应的动画实例
+    let animationInstance;
+    switch (canvasId) {
+      case "canvas-speed-control":
+        animationInstance = window.speedControlAnimation;
+        break;
+      case "canvas-deltaTime":
+        animationInstance = window.deltaTimeAnimation;
+        break;
+      case "canvas-move":
+        animationInstance = window.moveAnimation;
+        break;
+      case "canvas-固定速度":
+        animationInstance = window.fixedSpeedAnimation;
+        break;
+      case "canvas-固定时间":
+        animationInstance = window.fixedTimeAnimation;
+        break;
+      default:
+        return;
+    }
+
+    if (entry.isIntersecting) {
+      // Canvas在视口内，启动动画
+      if (animationInstance) {
+        if (animationInstance.start) {
+          animationInstance.start();
+        } else if (animationInstance.开始动画) {
+          animationInstance.开始动画();
+        }
+      }
+    } else {
+      // Canvas不在视口内，停止动画
+      if (animationInstance) {
+        if (animationInstance.stop) {
+          animationInstance.stop();
+        } else if (animationInstance.停止动画) {
+          animationInstance.停止动画();
+        }
+      }
+    }
+  });
+};
+
+// 创建交叉观察器实例
+const animationObserver = new IntersectionObserver(observerCallback, observerOptions);
+
+// 监控所有动画canvas元素
+const canvasElements = [
+  "canvas-speed-control",
+  "canvas-deltaTime",
+  "canvas-move",
+  "canvas-固定速度",
+  "canvas-固定时间",
+];
+
+canvasElements.forEach((canvasId) => {
+  const canvas = document.getElementById(canvasId);
+  if (canvas) {
+    animationObserver.observe(canvas);
+  }
+});

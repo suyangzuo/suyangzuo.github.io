@@ -105,7 +105,7 @@
     <p class="分区普通文本">
       用代码写动画，就可以在动画播放过程中与动画进行交互，比如实时调整动画播放的速度，这是普通动画无法比拟的。此外，由于动画实际上是纯文本代码，因此占用容量非常小，非常适合部署在网页中运行。
     </p>
-    
+
     <p class="分区普通文本">
       从<span class="行内专业名词">Canvas API</span>的整体设计来看，它更适合用来做科学、教学、演示这类动画。
     </p>
@@ -135,12 +135,13 @@
     </p>
     <p class="分区普通文本">
       <span class="行内代码">requestAnimationFrame()</span
-      >会告诉浏览器，尽量按照显示器刷新率来执行动画。比如显示器刷新率为<span class="行内专业名词">60Hz</span>，那么<span
-        class="行内代码"
-        >requestAnimationFrame()</span
-      >就是每秒钟运行<span class="行内专业名词">60次</span>。从编程语法上讲，<span class="行内代码"
-        >requestAnimationFrame()</span
-      >往往采用<span class="行内专业名词">递归调用</span>的方式，也就是<span class="强调"
+      >会告诉浏览器，尽量按照显示器刷新率来执行动画。比如显示器刷新率为<span class="行内专业名词 等宽">60Hz</span
+      >，那么<span class="行内代码">requestAnimationFrame()</span>就会<span class="强调">尽量</span>每秒钟运行<span
+        class="行内专业名词 等宽"
+        >60次</span
+      >。从编程语法上讲，<span class="行内代码">requestAnimationFrame()</span>往往采用<span class="行内专业名词"
+        >递归调用</span
+      >的方式，也就是<span class="强调"
         >在动画函数内部，用<span class="行内代码"
           >requestAnimationFrame(<span class="行内专业名词">函数自身</span>)</span
         >的方式，像套娃一样不断自己调用自己</span
@@ -171,14 +172,15 @@
     <p class="分区普通文本">
       之前说过，<span class="行内代码">requestAnimationFrame()</span
       >会按照显示器刷新率来更新动画，但是，不同的显示器刷新率不一样，以前绝大部分显示器刷新率都是<span
-        class="行内专业名词"
+        class="行内专业名词 等宽"
         >60Hz</span
-      >，但现在出现了很多高刷新率的显示器，它们的刷新率可以到达<span class="行内专业名词">120Hz</span
-      >以上，最夸张的甚至能到<span class="行内专业名词">600Hz</span>。假设动画中设置了每次向右偏移<span
-        class="行内专业名词"
+      >，但现在出现了很多高刷新率的显示器，它们的刷新率可以到达<span class="行内专业名词 等宽">120Hz</span
+      >以上，最夸张的甚至能到<span class="行内专业名词 等宽">600Hz</span>。假设动画中设置了每次向右偏移<span
+        class="行内专业名词 等宽"
         >2px</span
-      >，在<span class="行内专业名词">60Hz</span>刷新率上，每秒就会偏移<span class="行内专业名词">120px</span
-      >，而在<span class="行内专业名词">144Hz</span>的显示器上，每秒会偏移<span class="行内专业名词">288px</span
+      >，在<span class="行内专业名词 等宽">60Hz</span>刷新率上，每秒就会偏移<span class="行内专业名词 等宽">120px</span
+      >，而在<span class="行内专业名词 等宽">144Hz</span>的显示器上，每秒会偏移<span class="行内专业名词 等宽"
+        >288px</span
       >！！！这肯定是不符合业务需求的，动画的速度应该在不同刷新率的显示器上一致。
     </p>
     <p class="分区普通文本">
@@ -207,10 +209,11 @@
         >当前时间</span
       >。每渲染一帧，我们就要知道<span class="行内专业名词">这一帧的当前时间</span>，然后减去<span class="行内专业名词"
         >上一帧的当前时间</span
-      >，就得到了时间差。万幸的是，<span class="行内代码">JavaScript</span>内置了这个参数：可以叫<span class="行内代码"
-        >currentTime</span
-      >或者<span class="行内代码">timestamp</span
-      >，这个参数的意思是：从页面加载，到运行到这一帧时，一共经过了多长时间，单位为<span class="行内专业名词">毫秒</span
+      >，就得到了时间差。万幸的是，<span class="行内代码">JavaScript</span>直接提供了此功能。当使用<span
+        class="行内代码"
+        >requestAnimationFrame</span
+      >调用函数时，函数的<span class="强调 等宽">第1个</span>参数默认代表<span class="行内专业名词">当前时间</span
+      >，这个参数的含义是：从页面加载，到运行到这一帧时，一共经过了多长时间，单位为<span class="行内专业名词">毫秒</span
       >。
     </p>
     <pre class="line-numbers">
@@ -242,7 +245,48 @@
         >两帧之间的时间差</span
       >，从而计算出<span class="行内专业名词">两帧之间移动的距离</span>。
     </p>
-    
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        只有使用<span class="行内代码">requestAnimationFrame</span>调用函数时，函数的<span class="强调 等宽">第1个</span
+        >参数才代表<span class="行内专业名词">当前时间</span>，如果<span class="强调 等宽">第1次调用</span>函数时是<span
+          class="强调 等宽"
+          >直接</span
+        >调用，并没有用<span class="行内代码">requestAnimationFrame</span>，会出现<span class="行内专业名词"
+          >当前时间</span
+        >为<span class="行内代码">null</span>的情况，针对这种情况，我们需要做一些防御措施：
+      </p>
+      <pre class="line-numbers">
+        <code class="lang-javascript">
+          let lastTime = 0;
+          const 每秒移动距离 = 300;
+
+          animate(currentTime) {
+            //↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ 
+            //防御措施，防止未使用 requestAnimationFrame 时，currentTime 为 null
+            //以下写法二择一即可
+
+            //传统写法
+            if (!currentTime) {
+              currentTime = performance.now();
+            }
+
+            //逻辑空赋值运算符写法
+            currentTime ??= performance.now();
+            //↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ 
+            
+            //其它代码在此省略---------------------------------
+            requestAnimationFrame(animate);
+          }
+
+          // 首次调用动画，直接调用，没有使用 requestAnimationFrame
+          animate();
+        </code>
+      </pre>
+      <p class="分区普通文本">
+        保险起见，建议无论是否使用<span class="行内代码">requestAnimationFrame</span>进行首次调用，均写好防御代码。
+      </p>
+    </section>
   </article>
 
   <article class="正文分区">
@@ -295,7 +339,6 @@
       由于没有动画停止条件，所以<span class="行内代码">requestAnimationFrame()</span
       >递归调用会一直进行下去，直到页面被关闭。
     </p>
-    
 
     <h3 class="分区标题 分区3级标题">条件迭代</h3>
     <p class="分区普通文本">
@@ -364,7 +407,6 @@
         >true</span
       >，从而停止动画。
     </p>
-    
   </article>
 
   <article class="正文分区">
@@ -413,7 +455,6 @@
     <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
       <canvas id="canvas-固定速度" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
     </figure>
-    
 
     <h3 class="分区标题 分区3级标题">固定时间</h3>
     <p class="分区普通文本">
@@ -460,7 +501,6 @@
     <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
       <canvas id="canvas-固定时间" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
     </figure>
-    
 
     <h3 class="分区标题 分区3级标题">延时动画</h3>
     <p class="分区普通文本">
@@ -508,6 +548,5 @@
     <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
       <canvas id="canvas-delay" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
     </figure>
-    
   </article>
 </div>
