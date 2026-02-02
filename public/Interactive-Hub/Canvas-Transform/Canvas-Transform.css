@@ -1,5 +1,6 @@
 :root {
   --光标-默认: url("/Images/Common/鼠标-默认.cur"), auto;
+  --光标-指向: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 *,
@@ -13,7 +14,7 @@
 body {
   background-color: #111;
   color: silver;
-  font-family: "Google Sans Code", Consolas, "Noto Sans CJK SC", 微软雅黑, sans-serif;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans CJK SC", 微软雅黑, sans-serif;
 }
 
 .总区 {
@@ -23,7 +24,7 @@ body {
 .Canvas容器 {
   position: relative;
   width: 100%;
-  height: clamp(500px, calc(100vh - 50px), 3000px);
+  height: clamp(600px, calc(100vh - 50px), 3000px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,8 +32,131 @@ body {
   --垂直内边距: 2.5vh;
 }
 
-#canvas {
+#canvas-transform {
   width: 100%;
   height: 100%;
   cursor: var(--光标-默认);
+}
+
+.复合操作区 {
+  position: absolute;
+  bottom: 310px;
+  left: 25px;
+  border-radius: 8px;
+  color: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 10px;
+  background-color: #1c314b;
+}
+
+.操作区 {
+  position: absolute;
+  bottom: 25px;
+  left: 25px;
+  border-radius: 8px;
+  color: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 10px;
+  background-color: #1c314b;
+}
+
+/* 滑块容器 */
+.slider-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 20px;
+}
+
+.slider-wrapper:hover {
+  background-color: #fff1;
+  outline: solid 1px #fff4;
+}
+
+/* 滑块标题 */
+.slider-title {
+  width: 70px;
+  font-size: 14px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 5px;
+}
+
+.slider-title .param {
+  color: #4a9eff;
+  font-weight: bold;
+}
+
+.slider-title .label {
+  color: #b8c6db;
+}
+
+/* 滑块控件 */
+.slider-wrapper input[type="range"] {
+  width: 180px;
+  height: 8px;
+  appearance: none;
+  background: transparent;
+  cursor: var(--光标-默认);
+}
+
+.slider-wrapper input[type="range"]:hover {
+  cursor: var(--光标-指向);
+}
+
+/* 滑块轨道样式（Chrome/Safari） */
+.slider-wrapper input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 6px;
+  background: #1a1a2e;
+  border-radius: 3px;
+}
+
+/* 滑块轨道样式（Firefox） */
+.slider-wrapper input[type="range"]::-moz-range-track {
+  width: 100%;
+  height: 6px;
+  background: #1a1a2e;
+  border-radius: 3px;
+  border: none;
+}
+
+/* 滑块进度条样式（Firefox） */
+.slider-wrapper input[type="range"]::-moz-range-progress {
+  background: #4a9eff;
+  height: 6px;
+  border-radius: 3px;
+}
+
+/* 滑块thumb样式（Chrome/Safari） */
+.slider-wrapper input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #ffffff;
+  border-radius: 50%;
+  margin-top: -5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* 滑块thumb样式（Firefox） */
+.slider-wrapper input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #ffffff;
+  border-radius: 50%;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* 滑块值显示 */
+.slider-value {
+  width: 50px;
+  text-align: left;
+  font-size: 14px;
+  color: #4a9eff;
 }
