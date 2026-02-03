@@ -353,7 +353,9 @@ window.addEventListener("DOMContentLoaded", () => {
   const loadSliderValues = () => {
     sliders.forEach(({ id, param, default: defaultValue }) => {
       const input = document.getElementById(id);
-      const valueDisplay = input.nextElementSibling;
+      // 对于a、b、c、d滑块，input后面是datalist，所以需要通过父元素查找slider-value
+      // 对于e、f滑块，input后面直接是slider-value
+      const valueDisplay = input.parentElement.querySelector('.slider-value');
 
       if (input && valueDisplay) {
         // 从sessionStorage中读取值，否则使用默认值
@@ -363,32 +365,24 @@ window.addEventListener("DOMContentLoaded", () => {
         // 设置滑块值
         input.value = value;
 
-        // 格式化显示：平移参数显示整数，其他参数如果小数部分全部为0则显示整数，否则显示一位小数
+        // 格式化显示：平移参数显示整数，a、b、c、d 参数最多显示两位小数
         let formattedValue;
         if (param === "e" || param === "f") {
           formattedValue = value.toFixed(0);
         } else {
-          // 检查是否为-0
-          if (Object.is(value, -0)) {
-            formattedValue = "0";
+          // a、b、c、d 参数最多显示两位小数
+          formattedValue = value.toFixed(2);
+          // 如果小数部分为0，则显示为整数
+          if (formattedValue.endsWith(".00")) {
+            formattedValue = formattedValue.slice(0, -3);
           }
-          // 检查小数部分是否为0
-          else if (value % 1 === 0) {
-            formattedValue = value.toFixed(0);
-          }
-          // 检查一位小数后是否全部为0
-          else {
-            const oneDecimal = value.toFixed(1);
-            if (Math.abs(parseFloat(oneDecimal)) < 0.01) {
-              formattedValue = "0";
-            } else if (oneDecimal.charAt(oneDecimal.length - 1) === "0") {
-              formattedValue = parseInt(oneDecimal).toString();
-            } else {
-              formattedValue = oneDecimal;
-            }
+          // 如果小数部分只有一位为0，则显示为一位小数
+          else if (formattedValue.endsWith("0")) {
+            formattedValue = formattedValue.slice(0, -1);
           }
         }
-        valueDisplay.textContent = formattedValue;
+        // 更新值显示，处理负号颜色
+        updateSliderValueDisplay(valueDisplay, formattedValue);
 
         // 更新Canvas变换
         window.canvasTransform.updateTransform({ [param]: value });
@@ -400,6 +394,17 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   };
 
+  // 更新滑块值显示，处理负号颜色
+  const updateSliderValueDisplay = (valueDisplay, formattedValue) => {
+    if (formattedValue.startsWith("-")) {
+      const negativeSign = "-";
+      const restValue = formattedValue.slice(1);
+      valueDisplay.innerHTML = `<span style="color: #f59e0b; margin-right: 1px">${negativeSign}</span>${restValue}`;
+    } else {
+      valueDisplay.textContent = formattedValue;
+    }
+  };
+
   // 保存滑块值到sessionStorage
   const saveSliderValue = (param, value) => {
     sessionStorage.setItem(`slider-${param}`, value.toString());
@@ -409,38 +414,32 @@ window.addEventListener("DOMContentLoaded", () => {
   const resetSliderValues = () => {
     sliders.forEach(({ id, param, default: defaultValue }) => {
       const input = document.getElementById(id);
-      const valueDisplay = input.nextElementSibling;
+      // 对于a、b、c、d滑块，input后面是datalist，所以需要通过父元素查找slider-value
+      // 对于e、f滑块，input后面直接是slider-value
+      const valueDisplay = input.parentElement.querySelector('.slider-value');
 
       if (input && valueDisplay) {
         // 设置默认值
         input.value = defaultValue;
 
-        // 更新值显示
+        // 更新值显示：平移参数显示整数，a、b、c、d 参数最多显示两位小数
         let formattedValue;
         if (param === "e" || param === "f") {
           formattedValue = defaultValue.toFixed(0);
         } else {
-          // 检查是否为-0
-          if (Object.is(defaultValue, -0)) {
-            formattedValue = "0";
+          // a、b、c、d 参数最多显示两位小数
+          formattedValue = defaultValue.toFixed(2);
+          // 如果小数部分为0，则显示为整数
+          if (formattedValue.endsWith(".00")) {
+            formattedValue = formattedValue.slice(0, -3);
           }
-          // 检查小数部分是否为0
-          else if (defaultValue % 1 === 0) {
-            formattedValue = defaultValue.toFixed(0);
-          }
-          // 检查一位小数后是否全部为0
-          else {
-            const oneDecimal = defaultValue.toFixed(1);
-            if (Math.abs(parseFloat(oneDecimal)) < 0.01) {
-              formattedValue = "0";
-            } else if (oneDecimal.charAt(oneDecimal.length - 1) === "0") {
-              formattedValue = parseInt(oneDecimal).toString();
-            } else {
-              formattedValue = oneDecimal;
-            }
+          // 如果小数部分只有一位为0，则显示为一位小数
+          else if (formattedValue.endsWith("0")) {
+            formattedValue = formattedValue.slice(0, -1);
           }
         }
-        valueDisplay.textContent = formattedValue;
+        // 更新值显示，处理负号颜色
+        updateSliderValueDisplay(valueDisplay, formattedValue);
 
         // 更新Canvas变换
         window.canvasTransform.updateTransform({ [param]: defaultValue });
@@ -458,20 +457,31 @@ window.addEventListener("DOMContentLoaded", () => {
   // 绑定滑块输入事件
   sliders.forEach(({ id, param }) => {
     const input = document.getElementById(id);
-    const valueDisplay = input.nextElementSibling;
+    // 对于a、b、c、d滑块，input后面是datalist，所以需要通过父元素查找slider-value
+    // 对于e、f滑块，input后面直接是slider-value
+    const valueDisplay = input.parentElement.querySelector('.slider-value');
 
     if (input && valueDisplay) {
       input.addEventListener("input", (e) => {
         const value = parseFloat(e.target.value);
-        // 格式化显示：平移参数显示整数，其他参数如果小数部分为0则显示整数，否则显示一位小数
+        // 格式化显示：平移参数显示整数，a、b、c、d 参数最多显示两位小数
         let formattedValue;
         if (param === "e" || param === "f") {
           formattedValue = value.toFixed(0);
         } else {
-          // 检查小数部分是否为0
-          formattedValue = value % 1 === 0 ? value.toFixed(0) : value.toFixed(1);
+          // a、b、c、d 参数最多显示两位小数
+          formattedValue = value.toFixed(2);
+          // 如果小数部分为0，则显示为整数
+          if (formattedValue.endsWith(".00")) {
+            formattedValue = formattedValue.slice(0, -3);
+          }
+          // 如果小数部分只有一位为0，则显示为一位小数
+          else if (formattedValue.endsWith("0")) {
+            formattedValue = formattedValue.slice(0, -1);
+          }
         }
-        valueDisplay.textContent = formattedValue;
+        // 更新值显示，处理负号颜色
+        updateSliderValueDisplay(valueDisplay, formattedValue);
 
         // 更新Canvas变换
         window.canvasTransform.updateTransform({ [param]: value });
@@ -492,7 +502,7 @@ window.addEventListener("DOMContentLoaded", () => {
     if (rotateInput && rotateValueDisplay) {
       rotateInput.value = value;
       // 在数值后面添加"°"符号，并设置不同的颜色
-      rotateValueDisplay.innerHTML = `${value}<span style="color: #86beff;">°</span>`;
+      rotateValueDisplay.innerHTML = `${value}<span style="color: #f59e0b;">°</span>`;
     }
   };
 
@@ -508,7 +518,7 @@ window.addEventListener("DOMContentLoaded", () => {
     rotateInput.addEventListener("input", (e) => {
       const angle = parseFloat(e.target.value);
       // 在数值后面添加"°"符号，并设置不同的颜色
-      rotateValueDisplay.innerHTML = `${angle}<span style="color: #86beff;">°</span>`;
+      rotateValueDisplay.innerHTML = `${angle}<span style="color: #f59e0b;">°</span>`;
 
       // 将角度转换为弧度
       const radians = (angle * Math.PI) / 180;
@@ -523,62 +533,82 @@ window.addEventListener("DOMContentLoaded", () => {
       const c = -sin;
       const d = cos;
 
-      // 格式化数值的函数：旋转时显示精确到小数点后三位（最后一位是0则不显示），-0显示为0
+      // 格式化数值的函数：旋转时显示精确到小数点后两位（最后一位是0则不显示），-0显示为0
       const formatValueRotate = (value) => {
         // 检查是否为-0
         if (Object.is(value, -0)) return "0";
         // 检查小数部分是否为0
         if (value % 1 === 0) return value.toFixed(0);
         // 检查是否接近0
-        if (Math.abs(value) < 0.001) return "0";
-        // 先格式化为三位小数
-        let threeDecimal = value.toFixed(3);
+        if (Math.abs(value) < 0.01) return "0";
+        // 先格式化为两位小数
+        let twoDecimal = value.toFixed(2);
         // 移除末尾的0
-        while (threeDecimal.includes(".") && threeDecimal.endsWith("0")) {
-          threeDecimal = threeDecimal.slice(0, -1);
+        while (twoDecimal.includes(".") && twoDecimal.endsWith("0")) {
+          twoDecimal = twoDecimal.slice(0, -1);
         }
         // 如果末尾是小数点，也移除
-        if (threeDecimal.endsWith(".")) {
-          threeDecimal = threeDecimal.slice(0, -1);
+        if (twoDecimal.endsWith(".")) {
+          twoDecimal = twoDecimal.slice(0, -1);
         }
-        return threeDecimal;
+        return twoDecimal;
       };
 
-      // 计算thumb位置的值（小数点后一位）
+      // 计算thumb位置的值（小数点后两位，与step=0.01匹配）
       const getThumbValue = (value) => {
-        return parseFloat(value.toFixed(1));
+        return parseFloat(value.toFixed(2));
       };
 
       // 更新a滑块
       const sliderA = document.getElementById("slider-a");
-      const valueDisplayA = sliderA?.nextElementSibling;
+      // 通过父元素查找slider-value
+      const valueDisplayA = sliderA?.parentElement.querySelector('.slider-value');
       if (sliderA && valueDisplayA) {
-        sliderA.value = getThumbValue(a); // thumb位置以小数点后一位为准
-        valueDisplayA.textContent = formatValueRotate(a); // 显示精确到三位小数
+        sliderA.value = getThumbValue(a); // thumb位置以小数点后两位为准
+        const formattedValueA = formatValueRotate(a);
+        updateSliderValueDisplay(valueDisplayA, formattedValueA); // 显示最多两位小数
+        // 触发input事件以确保浏览器更新滑块位置
+        const eventA = new Event("input", { bubbles: true });
+        sliderA.dispatchEvent(eventA);
       }
 
       // 更新b滑块
       const sliderB = document.getElementById("slider-b");
-      const valueDisplayB = sliderB?.nextElementSibling;
+      // 通过父元素查找slider-value
+      const valueDisplayB = sliderB?.parentElement.querySelector('.slider-value');
       if (sliderB && valueDisplayB) {
-        sliderB.value = getThumbValue(b); // thumb位置以小数点后一位为准
-        valueDisplayB.textContent = formatValueRotate(b); // 显示精确到三位小数
+        sliderB.value = getThumbValue(b); // thumb位置以小数点后两位为准
+        const formattedValueB = formatValueRotate(b);
+        updateSliderValueDisplay(valueDisplayB, formattedValueB); // 显示最多两位小数
+        // 触发input事件以确保浏览器更新滑块位置
+        const eventB = new Event("input", { bubbles: true });
+        sliderB.dispatchEvent(eventB);
       }
 
       // 更新c滑块
       const sliderC = document.getElementById("slider-c");
-      const valueDisplayC = sliderC?.nextElementSibling;
+      // 通过父元素查找slider-value
+      const valueDisplayC = sliderC?.parentElement.querySelector('.slider-value');
       if (sliderC && valueDisplayC) {
-        sliderC.value = getThumbValue(c); // thumb位置以小数点后一位为准
-        valueDisplayC.textContent = formatValueRotate(c); // 显示精确到三位小数
+        sliderC.value = getThumbValue(c); // thumb位置以小数点后两位为准
+        const formattedValueC = formatValueRotate(c);
+        updateSliderValueDisplay(valueDisplayC, formattedValueC); // 显示最多两位小数
+        // 触发input事件以确保浏览器更新滑块位置
+        const eventC = new Event("input", { bubbles: true });
+        sliderC.dispatchEvent(eventC);
       }
 
       // 更新d滑块
       const sliderD = document.getElementById("slider-d");
-      const valueDisplayD = sliderD?.nextElementSibling;
+      // 通过父元素查找slider-value
+      const valueDisplayD = sliderD?.parentElement.querySelector('.slider-value');
       if (sliderD && valueDisplayD) {
-        sliderD.value = getThumbValue(d); // thumb位置以小数点后一位为准
-        valueDisplayD.textContent = formatValueRotate(d); // 显示精确到三位小数
+        sliderD.value = getThumbValue(d); // thumb位置以小数点后两位为准
+        const formattedValueD = formatValueRotate(d);
+        updateSliderValueDisplay(valueDisplayD, formattedValueD); // 显示最多两位小数
+        // 触发input事件以确保浏览器更新滑块位置
+        const eventD = new Event("input", { bubbles: true });
+        sliderD.dispatchEvent(eventD);
       }
 
       // 更新Canvas变换

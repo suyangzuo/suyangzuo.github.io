@@ -14,7 +14,7 @@
 body {
   background-color: #111;
   color: silver;
-  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans CJK SC", 微软雅黑, sans-serif;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 .总区 {
@@ -96,7 +96,7 @@ body {
 
 /* 滑块控件 */
 .slider-wrapper input[type="range"] {
-  width: 180px;
+  width: 400px;
   height: 8px;
   appearance: none;
   background: transparent;

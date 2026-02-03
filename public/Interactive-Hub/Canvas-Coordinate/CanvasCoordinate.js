@@ -971,7 +971,7 @@ class 坐标系教程 {
     this.ctx.lineTo(0, 高度);
     this.ctx.stroke();
     this.ctx.fillStyle = "#6fa8fdff";
-    this.ctx.font = "12px 'Google Sans Code', Consolas, 'Noto Sans CJK SC', 微软雅黑, sans-serif";
+    this.ctx.font = "12px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
     this.ctx.textBaseline = "top";
     for (let x = 100; x < 宽度; x += 100) {
       this.ctx.beginPath();
@@ -988,7 +988,7 @@ class 坐标系教程 {
       this.ctx.fillText(`${y}`, 10, y - 5);
     }
     this.ctx.fillStyle = "lightcyan";
-    this.ctx.font = "13px 'Google Sans Code', Consolas, 'Noto Sans CJK SC', 微软雅黑, sans-serif";
+    this.ctx.font = "13px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
     this.ctx.fillText("世界坐标系", 5, 10);
     this.ctx.fillText("0, 0", 5, 25);
     this.ctx.restore();
@@ -1059,7 +1059,7 @@ class 坐标系教程 {
     const 法线世界X = 法线局部X * Math.cos(角度) - 法线局部Y * Math.sin(角度);
     const 法线世界Y = 法线局部X * Math.sin(角度) + 法线局部Y * Math.cos(角度);
 
-    this.ctx.font = "13px 'Google Sans Code', Consolas, 'Noto Sans CJK SC', 微软雅黑, sans-serif";
+    this.ctx.font = "13px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
     const 角度值文本 = this.格式化一位小数(矩形.旋转角度);
     const 单位文本 = "°";
     const 角度值宽度 = this.ctx.measureText(角度值文本).width;
@@ -1143,7 +1143,7 @@ class 坐标系教程 {
     this.ctx.closePath();
     this.ctx.fill();
     this.ctx.fillStyle = "#ff9f22ff";
-    this.ctx.font = "12px 'Google Sans Code', Consolas, 'Noto Sans CJK SC', 微软雅黑, sans-serif";
+    this.ctx.font = "12px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
     this.ctx.textBaseline = "top";
     for (let x = 50; x <= 半宽; x += 50) {
       this.ctx.beginPath();
@@ -1168,7 +1168,7 @@ class 坐标系教程 {
       }
     }
     this.ctx.textAlign = "right";
-    this.ctx.font = "13px 'Google Sans Code', Consolas, 'Noto Sans CJK SC', 微软雅黑, sans-serif";
+    this.ctx.font = "13px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
     this.ctx.fillStyle = "#5AF";
     this.ctx.fillText("世界坐标系", -15, -45);
     // 世界坐标值（右对齐到 -15），统一一位小数，小数点灰色
@@ -1233,7 +1233,7 @@ class 坐标系教程 {
     const 鼠标与文本距离 = 40;
     const 行距 = 18;
     const 符号颜色 = "gray";
-    this.ctx.font = "13px 'Google Sans Code', Consolas, 'Noto Sans CJK SC', 微软雅黑, sans-serif";
+    this.ctx.font = "13px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
     this.ctx.textBaseline = "top";
     if (this.鼠标坐标.x !== null && this.鼠标坐标.y !== null) {
       const xy宽度 = this.ctx.measureText("世界坐标").width;
@@ -1407,7 +1407,7 @@ class 坐标系教程 {
     const 局部Y = this.格式化一位小数(dx * Math.sin(弧度) + dy * Math.cos(弧度));
     
     this.ctx.save();
-    this.ctx.font = "14px 'Google Sans Code', Consolas, 'Noto Sans CJK SC', 微软雅黑, sans-serif";
+    this.ctx.font = "14px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
     this.ctx.textBaseline = "top";
     
     // 准备文本
@@ -1608,7 +1608,7 @@ class 坐标系教程 {
     this.ctx.strokeStyle = "#4fc3f7";
     this.ctx.lineWidth = 1;
     this.ctx.strokeRect(x数字框X, x数字框Y, 数字框宽度, 数字框高度);
-    this.ctx.font = "14px 'Google Sans Code', Consolas, 'Noto Sans CJK SC', 微软雅黑, sans-serif";
+    this.ctx.font = "14px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
     this.ctx.textBaseline = "middle";
     const x文本 = "x";
     const 冒号 = ":";
@@ -1667,7 +1667,7 @@ class 坐标系教程 {
     this.ctx.lineWidth = 1;
     this.ctx.strokeRect(区域.x, 区域.y, 区域.width, 区域.height);
     this.ctx.fillStyle = "#fff";
-    this.ctx.font = "14px 'Google Sans Code', Consolas, 'Noto Sans CJK SC', 微软雅黑, sans-serif";
+    this.ctx.font = "14px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
     this.ctx.textAlign = "center";
     this.ctx.textBaseline = "middle";
     const 按钮文本 = 是增加按钮 ? "+" : "-";
@@ -1690,7 +1690,7 @@ class 坐标系教程 {
     const 计算世界X = 矩形.x + 局部X * cos角度 - 局部Y * sin角度;
     const 计算世界Y = 矩形.y + 局部X * sin角度 + 局部Y * cos角度;
     this.ctx.save();
-    this.ctx.font = "14px 'Google Sans Code', Consolas, 'Noto Sans CJK SC', 微软雅黑, sans-serif";
+    this.ctx.font = "14px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
     this.ctx.textBaseline = "top";
     this.ctx.textAlign = "left";
     const 画布宽度 = this.canvas.offsetWidth;
