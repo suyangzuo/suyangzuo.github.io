@@ -67,7 +67,7 @@ body {
   display: flex;
   align-items: center;
   gap: 15px;
-  padding: 10px 20px;
+  padding: 10px;
 }
 
 .slider-wrapper:hover {
@@ -155,7 +155,7 @@ body {
 
 /* 滑块值显示 */
 .slider-value {
-  width: 50px;
+  width: 42px;
   text-align: left;
   font-size: 14px;
   color: #4a9eff;

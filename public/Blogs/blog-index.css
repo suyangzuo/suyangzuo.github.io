@@ -1734,7 +1734,6 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 
 .截图容器 > img {
   width: 100%;
-  height: 100%;
   object-fit: contain;
 }
 

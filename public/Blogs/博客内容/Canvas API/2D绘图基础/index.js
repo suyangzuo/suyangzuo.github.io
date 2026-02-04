@@ -1700,12 +1700,12 @@ class ClosePathDemo {
         this.checkboxY + this.checkboxPadding + this.checkboxSize / 2,
       );
       this.ctx.lineTo(
-        this.checkboxX + this.checkboxPadding + this.checkboxSize / 2,
-        this.checkboxY + this.checkboxPadding + this.checkboxSize - 3,
+        this.checkboxX + this.checkboxPadding + this.checkboxSize / 2 - 1,
+        this.checkboxY + this.checkboxPadding + this.checkboxSize - 4,
       );
       this.ctx.lineTo(
         this.checkboxX + this.checkboxPadding + this.checkboxSize - 3,
-        this.checkboxY + this.checkboxPadding + 3,
+        this.checkboxY + this.checkboxPadding + 4,
       );
       this.ctx.stroke();
     }
