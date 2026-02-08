@@ -2829,12 +2829,9 @@ class 圆水平垂直独立镜像缩放 {
         const 字体 = "14px 'Google Sans Code', 'JetBrains Mono', Consolas, monospace";
         this.上下文.font = 字体;
         this.上下文.textBaseline = "middle";
-        const 总宽 =
-          this.上下文.measureText(角度部分).width +
-          等号边距 * 2 +
-          this.上下文.measureText("=").width +
-          this.上下文.measureText(弧度Str).width;
-        let x = 文本X - 总宽 / 2;
+        const 等号宽 = this.上下文.measureText("=").width;
+        const 等号中心X = 文本X;
+        let x = 等号中心X - 等号宽 / 2 - 等号边距 - this.上下文.measureText(角度部分).width;
         for (const ch of 角度部分) {
           if (ch === "-") this.上下文.fillStyle = "lightskyblue";
           else if (ch === ".") this.上下文.fillStyle = "gray";
@@ -2843,10 +2840,9 @@ class 圆水平垂直独立镜像缩放 {
           this.上下文.fillText(ch, x, 文本Y);
           x += this.上下文.measureText(ch).width;
         }
-        x += 等号边距;
         this.上下文.fillStyle = 等号色;
-        this.上下文.fillText("=", x, 文本Y);
-        x += this.上下文.measureText("=").width + 等号边距;
+        this.上下文.fillText("=", 等号中心X - 等号宽 / 2, 文本Y);
+        x = 等号中心X + 等号宽 / 2 + 等号边距;
         for (const ch of 弧度Str) {
           if (ch === "-") this.上下文.fillStyle = "lightskyblue";
           else if (ch === ".") this.上下文.fillStyle = "gray";
