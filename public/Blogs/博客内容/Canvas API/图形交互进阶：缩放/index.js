@@ -1910,6 +1910,11 @@ class 圆热区 {
     }
 
     if (this.鼠标在画布内 && this.显示算法) {
+      const 精简小数 = (s) => {
+        if (!s.includes(".")) return s;
+        s = s.replace(/0+$/, "");
+        return s.endsWith(".") ? s.slice(0, -1) : s;
+      };
       const mx = this.最后鼠标X;
       const my = this.最后鼠标Y;
       const 水平距离 = Math.abs(mx - cx);
@@ -1990,14 +1995,14 @@ class 圆热区 {
       ctx.font = "14px 'Noto Sans SC', 微软雅黑, sans-serif";
       ctx.fillStyle = "#94a3b8";
       ctx.fillText("归一化距离", 距离标注x, 距离文本y);
-      this._绘制数值含灰点(ctx, 归一化距离.toFixed(2), 距离标注x, 距离数值y, "#e2e8f0", false);
+      this._绘制数值含灰点(ctx, 精简小数(归一化距离.toFixed(2)), 距离标注x, 距离数值y, "#e2e8f0", false);
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       const 水平线中x = 水平距离 > rx ? (cx + mx) / 2 : cx + (mx >= cx ? rx : -rx) / 2;
       const 水平线中y = cy;
       const 水平数值y = 水平线中y - 16;
       const 水平文本y = 水平数值y - 18;
-      this._绘制数值含灰点(ctx, 归一化水平偏移.toFixed(2), 水平线中x, 水平数值y, "#e2e8f0");
+      this._绘制数值含灰点(ctx, 精简小数(归一化水平偏移.toFixed(2)), 水平线中x, 水平数值y, "#e2e8f0");
       ctx.fillStyle = "#94a3b8";
       ctx.font = "14px 'Noto Sans SC', 微软雅黑, sans-serif";
       ctx.fillText("归一化水平偏移", 水平线中x, 水平文本y);
@@ -2008,7 +2013,7 @@ class 圆热区 {
       const 垂直数值y = 垂直线中y + 9;
       ctx.textAlign = "left";
       ctx.fillText("归一化垂直偏移", 垂直标注x, 垂直文本y);
-      this._绘制数值含灰点(ctx, 归一化垂直偏移.toFixed(2), 垂直标注x, 垂直数值y, "#e2e8f0", false);
+      this._绘制数值含灰点(ctx, 精简小数(归一化垂直偏移.toFixed(2)), 垂直标注x, 垂直数值y, "#e2e8f0", false);
       ctx.textAlign = "left";
     }
 
