@@ -649,6 +649,35 @@
         }
       </code>
     </pre>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        椭圆的<span class="行内专业名词">水平半径</span>和<span class="行内专业名词">垂直半径</span
+        >往往不同，进行角度<span class="行内专业名词">均分</span>时，要考虑使用<span class="行内专业名词">几何角度</span
+        >还是<span class="行内专业名词">参数角度</span>。
+      </p>
+      <ul class="分区列表">
+        <li class="分区列表项">
+          <span><span class="专业名词">几何角度</span>：角度均分</span>
+        </li>
+        <li class="分区列表项">
+          <span><span class="专业名词">参数角度</span>：弧长均分</span>
+        </li>
+      </ul>
+      <p class="分区普通文本">
+        这两者在正圆中没有区别，但在椭圆中则不同。用哪个要看场景需求，如果需要严格按照角度均分，则使用<span
+          class="行内专业名词"
+          >几何角度</span
+        >；如果更注重用户的视觉感受，则使用<span class="行内专业名词">参数角度</span>。
+      </p>
+      <pre class="line-numbers">
+        <code class="language-javascript">
+          几何角度转参数角度(几何角度, 水平半径, 垂直半径) {
+            return Math.atan2(水平半径 * Math.sin(几何角度), 垂直半径 * Math.cos(几何角度));
+          }
+        </code>
+      </pre>
+    </section>
     <p class="分区普通文本">
       当触发<span class="行内代码">mousedown</span>事件时，如果<span class="行内专业名词">命中热区</span>为<span
         class="行内代码"
