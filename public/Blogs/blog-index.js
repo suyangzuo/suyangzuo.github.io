@@ -1015,14 +1015,14 @@ function 更新图像序号() {
     截图序号.className = "截图序号";
     container.appendChild(截图序号);
     const imageIndex = Array.from(screenShotsContainers).indexOf(container);
-    截图序号.textContent = `图 ${imageIndex + 1}`;
+    截图序号.innerHTML = `<span style="margin-right: 4px">图</span><span style="color: lightblue">${imageIndex + 1}</span>`;
 
     const containerSibling = container.nextElementSibling;
     if (containerSibling !== null && containerSibling.className === "分区普通文本") {
       const 行内截图序号 = document.createElement("span");
       行内截图序号.className = "行内截图序号";
-      行内截图序号.textContent = `· 图${imageIndex + 1} ·`;
-      containerSibling?.prepend("如 ", 行内截图序号, " 所示：");
+      行内截图序号.innerHTML = `<span style="margin: 0 1px 0 2px; color: #ba8e23">·</span><span style="margin-right: 2px; color: #63a4dc">图</span><span style="color: lightblue">${imageIndex + 1}</span><span style="margin: 0 2px 0 1px; color: #ba8e23">·</span>`;
+      containerSibling?.prepend("如", 行内截图序号, "所示：");
     }
   });
 }

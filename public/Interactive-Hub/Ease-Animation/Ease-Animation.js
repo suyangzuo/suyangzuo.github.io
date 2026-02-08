@@ -336,7 +336,7 @@ function 绘制曲线切换(区域, 内边距, 左侧基准) {
     上下文.font = "500 14px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
     上下文.textAlign = "center";
     上下文.textBaseline = "middle";
-    上下文.fillText(曲线.标签, x + 按钮宽 / 2, y + 按钮高 / 2 + 1);
+    上下文.fillText(曲线.标签, x + 按钮宽 / 2, y + 按钮高 / 2 + 2);
     界面引用.切换按钮[曲线.键] = { x, y, width: 按钮宽, height: 按钮高 };
   });
   上下文.textAlign = "left";

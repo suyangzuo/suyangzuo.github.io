@@ -1,0 +1,737 @@
+<article class="专题简介">
+  <h1 class="简介标题">
+    <span>图形交互进阶<span class="次要">：</span>缩放</span><span class="原创">原创</span>
+  </h1>
+  <div class="简介信息">
+    <section class="简介信息文本">
+      <p class="作者">
+        <span class="作者前缀 前缀">作者：</span>
+        <span class="作者姓名">苏扬</span>
+      </p>
+      <p class="日期">
+        <span class="日期前缀 前缀">日期：</span>
+        <span class="日期文本"
+          ><span class="日期文本-数字 日期文本-年">2026</span>年<span class="日期文本-数字 日期文本-月">2</span>月<span
+            class="日期文本-数字 日期文本-日"
+            >8</span
+          >日</span
+        >
+      </p>
+    </section>
+    <section class="简介信息图像">
+      <img src="/Images/Contributors/Extreme Hunter.jpg" alt="苏扬" />
+    </section>
+  </div>
+  <ul class="联系方式列表">
+    <li class="联系方式项">
+      <a class="联系方式链接" href="mailto:suyangzuo@gmail.com" target="_blank">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://github.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-github"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.deviantart.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-deviantart"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dev.to/suyangzuo" target="_blank"><i class="fa-brands fa-dev"></i></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.freecodecamp.org/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-free-code-camp"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://codepen.io/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-codepen"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dribbble.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-dribbble"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.artstation.com/user-7893655" target="_blank"
+        ><i class="fa-brands fa-artstation"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://codesandbox.io/u/suyangzuo" target="_blank">
+        <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
+      /></a>
+    </li>
+  </ul>
+</article>
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">热区</h2>
+
+    <h3 class="分区标题 分区3级标题">什么是热区</h3>
+    <p class="分区普通文本">
+      热区，即<span class="行内专业名词">能够触发事件的区域</span>；称之为<span class="专业名词">命中区域</span>、<span
+        class="专业名词"
+        >触发区域</span
+      >、<span class="专业名词">判定区域</span>亦可。
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Canvas API/图形交互进阶/关闭按钮.webp" alt="关闭按钮热区" />
+    </figure>
+    <p class="分区普通文本">
+      这是个常见的关闭按钮，如果真的仅仅将<span class="行内专业名词">✕</span>当做热区，就得用鼠标碰到<span
+        class="行内专业名词"
+        >✕</span
+      >，这会非常麻烦。实际上能够触发关闭按钮的区域，是整个红色区域，也就是<span class="行内专业名词">热区</span>。
+    </p>
+    <p class="分区普通文本">
+      为了和图形交互，我们经常需要判断<span class="行内专业名词">鼠标是否位于热区内</span
+      >，如果鼠标位于热区内，则触发相应的交互效果。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">热区形状</h3>
+    <p class="分区普通文本">
+      如前所说，热区并非总是和可见的形状相匹配，就像关闭按钮的热区不是<span class="行内专业名词">✕</span
+      >，而是红色区域。在和图形有关的程序中，热区极其常见，包括游戏：
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Canvas API/图形交互进阶/街霸.webp" alt="街霸热区" />
+    </figure>
+    <p class="分区普通文本">
+      是不是很奇怪？所有的热区<span class="附加说明">游戏中一般称为<span class="行内专业名词">判定框</span></span
+      >都是矩形，而不是拳头、胳膊、身体的形状。如此设计的理由很简单：矩形的计算最为简单，可大幅提升程序的性能。图中的游戏叫<span
+        class="专业名词"
+        >街头霸王<span class="行内专业名词 等宽" style="margin-right: 0">2</span></span
+      >，诞生于<span class="行内专业名词 等宽">1991</span
+      >年，彼时的游戏机性能非常弱，如果严格按照拳头、胳膊、身体的形状进行实时判定，当时的<span class="行内专业名词 等宽"
+        >CPU</span
+      >根本无法负荷如此复杂的计算。即使到了今天，硬件性能翻天覆地，能够减少计算量依然是一件稳赚不赔的事。因此，程序中的热区大多采用<span
+        class="行内专业名词"
+        >矩形</span
+      >或者<span class="行内专业名词">圆</span>。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">容差</h3>
+    <p class="分区普通文本">
+      热区面积为<span class="行内代码">0</span>的图形，是无法被触发的。比如一个<span class="行内专业名词">点</span
+      >、一条<span class="行内专业名词">边</span>，因为从几何角度看，一个<span class="行内专业名词">点</span
+      >只是个坐标，它是没有大小的；一条<span class="行内专业名词">边</span>也是，它是没有宽度的。<span
+        class="行内专业名词 等宽"
+        >二维</span
+      >环境中，只有一个<span class="行内专业名词">面</span>才能被触发。因此，为了能够触发<span class="行内专业名词"
+        >点</span
+      >或<span class="行内专业名词">线</span>，我们需要将其转化为一个<span class="行内专业名词">面</span
+      >，方法就是为其设置<span class="行内专业名词">容差</span>：
+    </p>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.1">
+      <canvas id="cvs-热区" style="width: 100%; height: calc(100% - 42px); background-color: #111"></canvas>
+    </figure>
+    <p class="分区普通文本">
+      假如将容差设置为<span class="行内代码">0</span>，意味着热区的面积为<span class="行内代码">0</span
+      >，此时无法触发相应的图形，因此，容差必须至少为<span class="行内代码">1</span
+      >。不过，容差太大，也会导致鼠标离图形很远就进入热区，这也不符合用户的预期，因此，容差的尺寸要根据实际需要，进行合理的设置。实际上，<span
+        class="行内专业名词 等宽"
+        >图3</span
+      >的复选框、滑块，都设置了适当的容差，形成了合理的热区面积，使得你觉得<span class="行内专业名词"
+        >这种点击或拖拽的感觉很舒服</span
+      >。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">热区优先级</h3>
+    <p class="分区普通文本">
+      假设热区彼此重叠，该如何抉择？如同<span class="行内专业名词 等宽">图3</span
+      >所示，角热区、边热区、矩形内部热区，彼此都有重叠的部分，自己试一下，当鼠标位于热区重叠区域，哪个热区被触发了？
+    </p>
+    <p class="分区普通文本">
+      基本的准则是：<span class="专业名词"
+        >哪个热区被触发的<span class="强调">几率最低</span>，哪个热区的<span class="强调">优先级就最高</span></span
+      >。<span class="行内专业名词 等宽">图3</span
+      >中，最不可能被触发的是四个角，因此，角热区的优先级最高，其次是边热区；矩形内部被触发的几率最大，因此优先级最低。
+    </p>
+    <p class="分区普通文本">
+      如果是同优先级的热区彼此重叠，比如四个角的热区重叠了，则可根据自己的需要决定哪个角最优先。越优先的，其触发检测代码越靠前。
+    </p>
+    <p class="分区普通文本">假设图形是一个圆，则圆的边界的热区优先级最高，其次是圆的内部。</p>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">矩形缩放</h2>
+    <h3 class="分区标题 分区3级标题">实现思路</h3>
+    <p class="分区普通文本">
+      <span class="行内代码">鼠标按下</span>时获取<span class="行内专业名词">命中热区</span>；<span class="行内代码"
+        >鼠标移动</span
+      >时根据<span class="行内专业名词">命中热区</span>调用相关函数；<span class="行内代码">鼠标抬起</span>时清空<span
+        class="行内专业名词"
+        >命中热区</span
+      >。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        如果需要实现类似<span class="行内专业名词 等宽">图3</span>或<span class="行内专业名词 等宽">图4</span
+        >的高亮效果，即<span class="行内代码">鼠标移动</span>到<span class="行内专业名词">边</span>或<span
+          class="行内专业名词"
+          >角</span
+        >上，其样式会改变，则<span class="行内代码">鼠标移动</span>时也要获取<span class="行内专业名词">命中热区</span
+        >。
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">定义<span class="行内专业名词">获取命中热区</span>函数</h3>
+    <p class="分区普通文本">
+      自定义<span class="行内代码">9</span>个热区，分为<span class="行内代码">3</span>个优先级：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span
+          >第<span class="行内代码">1</span>优先级：<span class="行内专业名词 等宽">4</span>个<span
+            class="行内专业名词 等宽"
+            >角</span
+          >：<span class="专业名词">西北</span>、<span class="专业名词">东北</span>、<span class="专业名词">东南</span
+          >、<span class="专业名词">西南</span></span
+        >
+      </li>
+      <li class="分区列表项">
+        <span
+          >第<span class="行内代码">2</span>优先级：<span class="行内专业名词 等宽">4</span>条<span
+            class="行内专业名词 等宽"
+            >边</span
+          >：<span class="专业名词">北</span>、<span class="专业名词">东</span>、<span class="专业名词">南</span>、<span
+            class="专业名词"
+            >西</span
+          ></span
+        >
+      </li>
+      <li class="分区列表项">
+        <span>第<span class="行内代码">3</span>优先级：<span class="专业名词">本体</span></span>
+      </li>
+    </ul>
+    <pre class="line-numbers">
+      <code class="language-javascript">
+        function 获取命中热区(矩形, 鼠标X, 鼠标Y) {
+          const 容差 = 5; //此处所有容差相同，也可以分开设置
+          const 左边缘 = 矩形.X;
+          const 右边缘 = 矩形.X + 矩形.width;
+          const 上边缘 = 矩形.Y;
+          const 下边缘 = 矩形.Y + 矩形.height;
+      
+          const 在左 = 鼠标X >= 左边缘 - 容差 && 鼠标X <= 左边缘 + 容差;
+          const 在右 = 鼠标X >= 右边缘 - 容差 && 鼠标X <= 右边缘 + 容差;
+          const 在上 = 鼠标Y >= 上边缘 - 容差 && 鼠标Y <= 上边缘 + 容差;
+          const 在下 = 鼠标Y >= 下边缘 - 容差 && 鼠标Y <= 下边缘 + 容差;
+          
+          //避免矩形宽度极小时，无法正常触发热区
+          let 范围X小 = Math.min(左边缘, 右边缘) - 容差;
+          let 范围X大 = Math.max(左边缘, 右边缘) + 容差;
+          if (范围X大 - 范围X小 < 2 * 容差) {
+            const 中心X = (左边缘 + 右边缘) / 2;
+            范围X小 = 中心X - 容差;
+            范围X大 = 中心X + 容差;
+          }
+          const 在X扩展 = 鼠标X >= 范围X小 && 鼠标X <= 范围X大;
+          
+          //避免矩形高度极小时，无法正常触发热区
+          let 范围Y小 = Math.min(上边缘, 下边缘) - 容差;
+          let 范围Y大 = Math.max(上边缘, 下边缘) + 容差;
+          if (范围Y大 - 范围Y小 < 2 * 容差) {
+            const 中心Y = (上边缘 + 下边缘) / 2;
+            范围Y小 = 中心Y - 容差;
+            范围Y大 = 中心Y + 容差;
+          }
+          const 在Y扩展 = 鼠标Y >= 范围Y小 && 鼠标Y <= 范围Y大;
+          
+          //第1优先级
+          if (在左 && 在上) return "西北";
+          if (在右 && 在上) return "东北";
+          if (在右 && 在下) return "东南";
+          if (在左 && 在下) return "西南";
+
+          //第2优先级
+          if (在上 && 在X扩展) return "北";
+          if (在右 && 在Y扩展) return "东";
+          if (在下 && 在X扩展) return "南";
+          if (在左 && 在Y扩展) return "西";
+
+          //第3优先级
+          if (鼠标X >= 左边缘 && 
+              鼠标X <= 右边缘 && 
+              鼠标Y >= 上边缘 && 
+              鼠标Y <= 下边缘) 
+              return "本体";
+
+          //未命中任何热区
+          return null;
+        }
+      </code>
+    </pre>
+
+    <h3 class="分区标题 分区3级标题">定义<span class="行内专业名词">应用缩放</span>函数</h3>
+    <p class="分区普通文本">
+      这是矩形缩放的核心逻辑。我设置了<span class="行内专业名词">最小尺寸</span>，因为尺寸过小在很多场景下没有意义。
+    </p>
+    <pre class="line-numbers">
+      <code class="language-javascript">
+        function 应用缩放(矩形, 鼠标X, 鼠标Y) {
+          //"偏移"是指鼠标按下时，鼠标坐标和边或角的距离，保持距离不变可让拖拽过程更加自然
+          const 有效X = 鼠标X + 缩放偏移X;
+          const 有效Y = 鼠标Y + 缩放偏移Y;
+
+          const { 原始X, 原始Y, 原始宽, 原始高 } = 矩形;
+
+          //为矩形设置最小尺寸，尺寸过小会影响拖拽体验
+          const 最小宽度 = 10;
+          const 最小高度 = 10;
+      
+          switch (命中热区) {
+            case "西北": {
+              矩形.width = Math.max(最小宽度, 原始X + 原始宽 - 有效X);
+              矩形.height = Math.max(最小高度, 原始Y + 原始高 - 有效Y);
+              矩形.X = 原始X + 原始宽 - 矩形.width;
+              矩形.Y = 原始Y + 原始高 - 矩形.height;
+              break;
+            }
+            case "北": {
+              矩形.height = Math.max(最小高度, 原始Y + 原始高 - 有效Y);
+              矩形.Y = 原始Y + 原始高 - 矩形.height;
+              break;
+            }
+            case "东北": {
+              矩形.width = Math.max(最小宽度, 有效X - 原始X);
+              矩形.height = Math.max(最小高度, 原始Y + 原始高 - 有效Y);
+              矩形.Y = 原始Y + 原始高 - 矩形.height;
+              break;
+            }
+            case "东": {
+              矩形.width = Math.max(最小宽度, 有效X - 原始X);
+              break;
+            }
+            case "东南": {
+              矩形.width = Math.max(最小宽度, 有效X - 原始X);
+              矩形.height = Math.max(最小高度, 有效Y - 原始Y);
+              break;
+            }
+            case "南": {
+              矩形.height = Math.max(最小高度, 有效Y - 原始Y);
+              break;
+            }
+            case "西南": {
+              矩形.width = Math.max(最小宽度, 原始X + 原始宽 - 有效X);
+              矩形.height = Math.max(最小高度, 有效Y - 原始Y);
+              矩形.X = 原始X + 原始宽 - 矩形.width;
+              break;
+            }
+            case "西": {
+              矩形.width = Math.max(最小宽度, 原始X + 原始宽 - 有效X);
+              矩形.X = 原始X + 原始宽 - 矩形.width;
+              break;
+            }
+          }
+        }
+      </code>
+    </pre>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内代码">mousedown</span>调用<span class="行内专业名词">获取命中热区</span>
+    </h3>
+    <p class="分区普通文本">
+      当触发<span class="行内代码">mousedown</span>事件时，调用<span class="行内代码">获取命中热区</span
+      >函数，获取命中的热区：
+    </p>
+    <pre class="line-numbers">
+      <code class="language-javascript">
+        //之前已定义“命中热区”变量或属性
+        canvas.addEventListener("mousedown", () => {
+          命中热区 = 获取命中热区(矩形, 鼠标X, 鼠标Y);
+        })
+
+        //命中热区为 null，则鼠标移动时什么也不做
+        //命中热区为 "本体"，则鼠标移动时，矩形也随之移动
+        //命中热区为 "各种方向"，则鼠标移动时，缩放矩形
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      此<span class="行内专业名词">命中热区</span>只有在<span class="行内代码">mousedown</span
+      >时才会获取，确保只有在<span class="行内专业名词">按下鼠标</span>的前提下才会触发拖拽逻辑。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内代码">mousemove</span>调用<span class="行内专业名词">应用缩放</span>
+    </h3>
+    <pre class="line-numbers">
+      <code class="language-javascript">
+        canvas.addEventListener("mousemove", () => {
+          if (!命中热区) return; //未命中任何热区，什么都不做
+
+          //命中本体，代表移动矩形
+          if (命中热区 === "本体") {
+            矩形.X = 鼠标X - 拖拽偏移X;
+            矩形.Y = 鼠标Y - 拖拽偏移Y;
+            绘制();
+            return;
+          }
+        
+          //命中其它热区，代表缩放矩形
+          if (命中热区) {
+            应用缩放(鼠标X, 鼠标Y);
+            绘制();
+            return;
+          }
+        });
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      如果<span class="行内专业名词">命中热区</span>为<span class="行内代码">null</span>，代表两种情况：
+    </p>
+    <ul class="分区列表" style="margin-bottom: 0">
+      <li class="分区列表项">
+        <span><span>未按下鼠标</span></span>
+      </li>
+      <li class="分区列表项">
+        <span><span>鼠标按下时不在热区</span></span>
+      </li>
+    </ul>
+    <p class="分区普通文本">以上两种情况下，即使鼠标移动，也不应该触发拖拽逻辑。</p>
+
+    <h3 class="分区标题 分区3级标题">普通缩放</h3>
+    <p class="分区普通文本">这个案例展示了典型的矩形缩放效果。</p>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.1">
+      <canvas id="cvs-缩放" style="width: 100%; height: calc(100% - 42px); background-color: #0f1720"></canvas>
+    </figure>
+    <p class="分区普通文本">拖拽矩形的角或边，可进行缩放操作。</p>
+
+    <h3 class="分区标题 分区3级标题">镜像缩放</h3>
+    <p class="分区普通文本">镜像缩放的核心逻辑：<span class="强调">允许负值</span>。</p>
+    <pre class="line-numbers">
+      <code class="language-javascript">
+        function 应用缩放(矩形, 鼠标X, 鼠标Y) {
+          const 有效X = 鼠标X + 缩放偏移X;
+          const 有效Y = 鼠标Y + 缩放偏移Y;
+          const { 原始X, 原始Y, 原始宽, 原始高 } = 矩形;
+          const 最小宽度 = 10;
+          const 最小高度 = 10;
+
+          //确保宽高不会位于 (-最小值, 最小值) 范围内
+          const 限定有效范围 = 
+            (值, 最小值) => (Math.abs(值) < 最小值 ? (值 >= 0 ? 最小值 : -最小值) : 值);
+      
+          switch (命中热区) {
+            case "西北": {
+              矩形.width = 限定有效范围(原始X + 原始宽 - 有效X, 最小宽度);
+              矩形.height = 限定有效范围(原始Y + 原始高 - 有效Y, 最小高度);
+              矩形.X = 原始X + 原始宽 - 矩形.width;
+              矩形.Y = 原始Y + 原始高 - 矩形.height;
+              break;
+            }
+            case "北": {
+              矩形.height = 限定有效范围(原始Y + 原始高 - 有效Y, 最小高度);
+              矩形.Y = 原始Y + 原始高 - 矩形.height;
+              break;
+            }
+            case "东北": {
+              矩形.width = 限定有效范围(有效X - 原始X, 最小宽度);
+              矩形.height = 限定有效范围(原始Y + 原始高 - 有效Y, 最小高度);
+              矩形.Y = 原始Y + 原始高 - 矩形.height;
+              break;
+            }
+            case "东": {
+              矩形.width = 限定有效范围(有效X - 原始X, 最小宽度);
+              break;
+            }
+            case "东南": {
+              矩形.width = 限定有效范围(有效X - 原始X, 最小宽度);
+              矩形.height = 限定有效范围(有效Y - 原始Y, 最小高度);
+              break;
+            }
+            case "南": {
+              矩形.height = 限定有效范围(有效Y - 原始Y, 最小高度);
+              break;
+            }
+            case "西南": {
+              矩形.width = 限定有效范围(原始X + 原始宽 - 有效X, 最小宽度);
+              矩形.height = 限定有效范围(有效Y - 原始Y, 最小高度);
+              矩形.X = 原始X + 原始宽 - 矩形.width;
+              break;
+            }
+            case "西": {
+              矩形.width = 限定有效范围(原始X + 原始宽 - 有效X, 最小宽度);
+              矩形.X = 原始X + 原始宽 - 矩形.width;
+              break;
+            }
+          }
+          
+          // -------------------- ↓ 标准化 ↓ --------------------    
+          const 水平翻转镜像表 = {
+            北: "北",
+            东: "西",
+            西: "东",
+            南: "南",
+            西北: "东北",
+            东北: "西北",
+            东南: "西南",
+            西南: "东南",
+          };
+          const 垂直翻转镜像表 = {
+            北: "南",
+            东: "东",
+            西: "西",
+            南: "北",
+            西北: "西南",
+            东北: "东南",
+            东南: "东北",
+            西南: "西北",
+          };
+          // 标准化的目标：不出现负值
+          // 标准化的核心逻辑：假设翻转后尺寸为负，则逆转矩形参数 (坐标、尺寸、热区)
+          const 水平翻转 = 矩形.width < 0;
+          const 垂直翻转 = 矩形.height < 0;
+          if (水平翻转) {
+            矩形.X += 矩形.width;
+            矩形.width = -矩形.width;
+            命中热区 = 水平翻转镜像表[命中热区];
+          }
+          if (垂直翻转) {
+            矩形.Y += 矩形.height;
+            矩形.height = -矩形.height;
+            命中热区 = 垂直翻转镜像表[命中热区];
+          }
+          // -------------------- ↑ 标准化 ↑ --------------------
+        }
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.1">
+      <canvas id="cvs-镜像缩放" style="width: 100%; height: calc(100% - 42px); background-color: #0f1720"></canvas>
+    </figure>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">圆缩放</h2>
+
+    <h3 class="分区标题 分区3级标题">定义<span class="行内专业名词">获取命中热区</span>函数</h3>
+    <p class="分区普通文本">
+      要判断鼠标是否位于<span class="行内专业名词">边界热区</span>，其实很简单：将圆心到<span class="行内专业名词"
+        >内容差</span
+      >的边界，视为<span class="行内专业名词">内圆</span>；将圆心到<span class="行内专业名词">外容差</span
+      >的边界，视为<span class="行内专业名词">外圆</span>。检测鼠标到两个圆的<span class="行内专业名词"
+        >归一化距离平方</span
+      >，只要<span class="强调">在内圆之外</span>且<span class="强调">在外圆之内</span>，就代表鼠标在<span
+        class="行内专业名词"
+        >边界热区</span
+      >。
+    </p>
+    <p class="分区普通文本">
+      如果只需要<span class="行内专业名词">等比</span>缩放，则返回的热区就比较简单，只需要定义<span class="行内代码"
+        >2</span
+      >个热区：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span>第<span class="行内代码">1</span>优先级：<span class="专业名词">边界</span></span>
+      </li>
+      <li class="分区列表项">
+        <span>第<span class="行内代码">2</span>优先级：<span class="专业名词">本体</span></span>
+      </li>
+    </ul>
+
+    <pre class="line-numbers">
+      <code class="language-javascript">
+        function 获取命中拖拽热区(椭圆, 鼠标X, 鼠标Y) {
+          const 圆内容差 = 4;
+          const 圆外容差 = 8;
+          const { 圆心X, 圆心Y, 水平半径, 垂直半径 } = 椭圆;
+          const 鼠标到圆心水平距离 = 鼠标X - 圆心X;
+          const 鼠标到圆心垂直距离 = 鼠标Y - 圆心Y;
+          const 内容差圆水平半径 = Math.max(5, 水平半径 - 圆内容差); //保留5像素留给"本体"
+          const 内容差圆垂直半径 = Math.max(5, 垂直半径 - 圆内容差); //保留5像素留给"本体"
+          const 外容差圆水平半径 = 水平半径 + 圆外容差;
+          const 外容差圆垂直半径 = 垂直半径 + 圆外容差;
+          const 归一化鼠标到圆心距离平方_外 =
+            (鼠标到圆心水平距离 / 外容差圆水平半径) ** 2 + (鼠标到圆心垂直距离 / 外容差圆垂直半径) ** 2;
+          const 归一化鼠标到圆心距离平方_内 =
+            (鼠标到圆心水平距离 / 内容差圆水平半径) ** 2 + (鼠标到圆心垂直距离 / 内容差圆垂直半径) ** 2;
+          const 归一化鼠标到圆心距离平方 = 
+            (鼠标到圆心水平距离 / 水平半径) ** 2 + (鼠标到圆心垂直距离 / 垂直半径) ** 2;
+
+          //在内圆之外 且 在外圆之内
+          if (归一化鼠标到圆心距离平方_内 >= 1 && 归一化鼠标到圆心距离平方_外 <= 1) return "边界";
+          if (归一化鼠标到圆心距离平方 < 1) return "内部";
+          return null; //未命中任何热区
+        }
+      </code>
+    </pre>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.1">
+      <canvas id="cvs-圆热区" style="width: 100%; height: calc(100% - 42px); background-color: #0f1720"></canvas>
+    </figure>
+
+    <h3 class="分区标题 分区3级标题">定义<span class="行内专业名词">应用等比镜像缩放</span>函数</h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词">等比</span>缩放的核心，就是获取<span class="行内专业名词">缩放系数</span>。
+    </p>
+    <pre class="line-numbers">
+      <code class="language-javascript">
+        function 应用等比镜像缩放(椭圆, 鼠标X, 鼠标Y) {
+          const { 圆心X, 圆心Y, 水平半径, 垂直半径 } = 椭圆;
+          const 有效X = 鼠标X + 水平偏移;
+          const 有效Y = 鼠标Y + 垂直偏移;
+          const 归一化鼠标到圆心水平距离 = (有效X - 圆心X) / 水平半径;
+          const 归一化鼠标到圆心垂直距离 = (有效Y - 圆心Y) / 垂直半径;
+          //等比缩放圆的核心数据：缩放系数
+          const 缩放系数 = Math.sqrt(归一化鼠标到圆心水平距离 ** 2 + 归一化鼠标到圆心垂直距离 ** 2);
+          
+          let 缩放后水平半径 = 水平半径 * 缩放系数;
+          let 缩放后垂直半径 = 垂直半径 * 缩放系数;
+          const 有效半径 = Math.min(Math.abs(缩放后水平半径), Math.abs(缩放后垂直半径));
+
+          //确保半径不会小于最小值
+          const 最小半径 = 5;
+          if (有效半径 <= 0) {
+            缩放后水平半径 = 水平半径 >= 0 ? 最小半径 : -最小半径;
+            缩放后垂直半径 = 垂直半径 >= 0 ? 最小半径 : -最小半径;
+          } else if (有效半径 < 最小半径) {
+            const 最小半径缩放系数 = 最小半径 / 有效半径;
+            缩放后水平半径 *= 最小半径缩放系数;
+            缩放后垂直半径 *= 最小半径缩放系数;
+          }
+
+          椭圆.水平半径 = 缩放后水平半径;
+          椭圆.垂直半径 = 缩放后垂直半径;
+
+          //标准化：圆心置于几何中心，半径由负变正
+          if (标准化) {
+            if (椭圆.水平半径 < 0) {
+              椭圆.圆心X += 椭圆.水平半径;
+              椭圆.水平半径 = -椭圆.水平半径;
+            }
+            if (椭圆.垂直半径 < 0) {
+              椭圆.圆心Y += 椭圆.垂直半径;
+              椭圆.垂直半径 = -椭圆.垂直半径;
+            }
+          }
+        }
+      </code>
+    </pre>
+
+    <h3 class="分区标题 分区3级标题">等比镜像缩放</h3>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.25">
+      <canvas id="cvs-圆镜像缩放" style="width: 100%; height: calc(100% - 42px); background-color: #0f1720"></canvas>
+    </figure>
+
+    <h3 class="分区标题 分区3级标题">水平垂直独立缩放</h3>
+    <p class="分区普通文本">
+      要实现<span class="行内专业名词">水平</span>和<span class="行内专业名词">垂直</span>独立缩放，有两种方式：
+    </p>
+    <ol class="分区列表 有序列表">
+      <li class="分区列表项">
+        <span
+          ><span class="次要">：</span><span>将圆视为矩形操作，相当于围着圆的四周建立一个逻辑上的矩形边界</span></span
+        >
+      </li>
+      <li class="分区列表项">
+        <span><span class="次要">：</span><span>根据鼠标与圆心的角度，判断应该等比缩放还是独立缩放</span></span>
+      </li>
+    </ol>
+    <p class="分区普通文本">我这里介绍的是第<span class="行内代码">2</span>种方式。</p>
+    <pre class="line-numbers">
+      <code class="language-javascript">
+        function 根据弧度获取缩放模式(弧度) {
+          //将360°分为8份，左右2份为水平缩放，上下2份为垂直缩放，另外4份为等比缩放
+          const 八分角 = Math.PI / 8; //注意这里用的是弧度制
+          if ((弧度 >= -八分角 && 弧度 < 八分角) || 
+              (弧度 >= 7 * 八分角 || 弧度 < -7 * 八分角)) 
+            return "水平";
+          if ((弧度 >= 3 * 八分角 && 弧度 < 5 * 八分角) || 
+              (弧度 >= -5 * 八分角 && 弧度 < -3 * 八分角)) 
+            return "垂直";
+          return "等比";
+        }
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      当触发<span class="行内代码">mousedown</span>事件时，如果<span class="行内专业名词">命中热区</span>为<span
+        class="行内代码"
+        >边界</span
+      >，则调用<span class="行内代码">根据弧度获取缩放模式</span>函数。
+    </p>
+    <pre class="line-numbers">
+      <code class="language-javascript">
+        let 缩放模式 = null;
+        canvas.addEventListener("mousedown", (e) => {
+          const 鼠标X = e.clientX;
+          const 鼠标Y = e.clientY;
+          if (命中热区 === "边界") {
+            const { 圆心X, 圆心Y, 水平半径, 垂直半径 } = 椭圆;
+            const 弧度 = Math.atan2(鼠标Y - 圆心Y, 鼠标X - 圆心X); //先获取鼠标与圆心之间的弧度
+            缩放模式 = 根据弧度获取缩放模式(弧度);
+          }
+        });
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      <span class="行内代码">应用缩放</span>函数也要做相应修改，主要就是增加<span class="行内专业名词">缩放模式</span
+      >，并将<span class="行内专业名词">缩放模式</span>分为<span class="行内专业名词">水平</span>、<span
+        class="行内专业名词"
+        >垂直</span
+      >、<span class="行内专业名词">等比</span>。
+    </p>
+    <pre class="line-numbers">
+      <code class="language-javascript">
+        function 应用缩放(椭圆, 鼠标X, 鼠标Y) {
+          const { 圆心X, 圆心Y, 水平半径, 垂直半径 } = 椭圆;
+          const 有效X = 鼠标X + 缩放偏移X;
+          const 有效Y = 鼠标Y + 缩放偏移Y;
+          const 最小半径 = 5;
+          let 新水平半径 = 水平半径;
+          let 新垂直半径 = 垂直半径;
+
+          //这个"if"是独立缩放的核心逻辑
+          if (缩放模式 === "水平") {
+            //只管水平，忽略垂直
+            新水平半径 = Math.max(最小半径, Math.abs(有效X - 圆心X));
+          } else if (缩放模式 === "垂直") {
+            //只管垂直，忽略水平
+            新垂直半径 = Math.max(最小半径, Math.abs(有效Y - 圆心Y));
+          } else {
+            const 归一化鼠标到圆心水平距离 = (有效X - 圆心X) / 水平半径;
+            const 归一化鼠标到圆心垂直距离 = (有效Y - 圆心Y) / 垂直半径;
+            const 缩放系数 = Math.sqrt(归一化鼠标到圆心水平距离 ** 2 + 归一化鼠标到圆心垂直距离 ** 2);
+            新水平半径 = 水平半径 * 缩放系数;
+            新垂直半径 = 垂直半径 * 缩放系数;
+            const 最小有效 = Math.min(Math.abs(新水平半径), Math.abs(新垂直半径));
+            if (最小有效 < 最小 && 最小有效 > 0) {
+              const 最小半径缩放系数 = 最小半径 / 最小有效;
+              新水平半径 *= 最小半径缩放系数;
+              新垂直半径 *= 最小半径缩放系数;
+            } else if (最小有效 === 0) {
+              新水平半径 = 水平半径 >= 0 ? 最小半径 : -最小半径;
+              新垂直半径 = 垂直半径 >= 0 ? 最小半径 : -最小半径;
+            }
+          }
+
+          椭圆.水平半径 = 新水平半径;
+          椭圆.垂直半径 = 新垂直半径;
+
+          if (标准化) {
+            if (椭圆.水平半径 < 0) {
+              椭圆.圆心X += 椭圆.水平半径;
+              椭圆.水平半径 = -椭圆.水平半径;
+            }
+            if (椭圆.垂直半径 < 0) {
+              椭圆.圆心Y += 椭圆.垂直半径;
+              椭圆.垂直半径 = -椭圆.垂直半径;
+            }
+          }
+        }
+      </code>
+    </pre>
+
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.25">
+      <canvas
+        id="cvs-圆水平垂直独立镜像缩放"
+        style="width: 100%; height: calc(100% - 42px); background-color: #0f1720"
+      ></canvas>
+    </figure>
+  </article>
+</div>

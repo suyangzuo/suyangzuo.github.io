@@ -247,7 +247,8 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) {
 }
 
 .锚链接-3级标题,
-.锚链接-3级标题:link {
+.锚链接-3级标题:link,
+.章节区内容 a:not(:hover, .已激活):visited {
   padding: 4px 0;
   font-size: 14px;
   display: flex;
@@ -1645,6 +1646,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 .分区列表.有序列表 > .分区列表项 {
   list-style-type: none;
   counter-increment: li;
+  line-height: 2rem;
 }
 
 .分区列表.有序列表 > .分区列表项:not(:first-child):has(.截图容器, .提醒, pre) {
@@ -1658,13 +1660,13 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   content: counter(li);
   width: 1.5em;
   height: 1.5em;
-  font-family: "Google Sans Code", monospace;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, monospace;
   font-size: 0.8em;
   font-weight: 500;
   border-radius: 3em;
   margin-right: 0.5em;
   background-color: #222;
-  outline: solid 1px #666;
+  box-shadow: inset 0 1px 0 1px #555;
   color: silver;
   translate: 0 -0.075em;
 }
@@ -1754,6 +1756,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 
 .行内截图序号 {
   color: lightskyblue;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 .专业名词 {
