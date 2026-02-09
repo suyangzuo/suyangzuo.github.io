@@ -767,7 +767,7 @@ function 特殊元素样式补充() {
     if (首节点 === null) return;
     if (首节点.nodeType === Node.TEXT_NODE && 首节点.textContent.trim().length === 0) {
       const 第2节点 = 首节点.nextSibling;
-      if (第2节点.nodeType === Node.ELEMENT_NODE) {
+      if (第2节点 && 第2节点.nodeType === Node.ELEMENT_NODE) {
         第2节点.style.marginLeft = "0";
       }
     }

@@ -1781,6 +1781,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 .专业名词 {
