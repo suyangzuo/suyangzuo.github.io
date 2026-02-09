@@ -2899,15 +2899,25 @@ class 几何角度和参数角度 {
     const 角度外扩 = 20;
     const 弧长外扩 = 28;
     const 垂直压缩系数 = 0.55;
-    const 左右压缩系数 = 0.75;
+    const 对角扩展系数 = 1.3;
+    const 平滑 = (v, low, high, outLow, outHigh) => {
+      if (v <= low) return outLow;
+      if (v >= high) return outHigh;
+      return outLow + (outHigh - outLow) * ((v - low) / (high - low));
+    };
     for (let i = 0; i < 8; i++) {
       const [startθ, endθ] = 扇形范围列表[i];
       let 中点θ = (startθ + endθ) / 2;
       if (endθ < startθ) 中点θ += Math.PI;
       const sinθ = Math.sin(中点θ);
       const cosθ = Math.cos(中点θ);
-      const 上下外扩系数 = Math.abs(sinθ) > 0.7 ? 垂直压缩系数 : 1;
-      const 左右外扩系数 = Math.abs(cosθ) > 0.7 ? 左右压缩系数 : 1;
+      const absCos = Math.abs(cosθ);
+      const absSin = Math.abs(sinθ);
+      const 是否对角 = absCos > 0.5 && absCos < 0.9 && absSin > 0.5 && absSin < 0.9;
+      const 上下外扩系数 =
+        absSin >= 0.85 ? 垂直压缩系数 : absSin <= 0.55 ? (是否对角 ? 对角扩展系数 : 1) : 平滑(absSin, 0.55, 0.85, 是否对角 ? 对角扩展系数 : 1, 垂直压缩系数);
+      const 左右外扩系数 =
+        absCos >= 0.85 ? 1 : absCos <= 0.55 ? (是否对角 ? 对角扩展系数 : 1) : 平滑(absCos, 0.55, 0.85, 是否对角 ? 对角扩展系数 : 1, 1);
       const 几何角度度 = 45;
       const 几何角起 = this.参数角转几何角(startθ, rx, ry);
       let 几何角终 = this.参数角转几何角(endθ, rx, ry);
@@ -2929,7 +2939,7 @@ class 几何角度和参数角度 {
       const θ份额Str = 精简小数(Δθ.toFixed(3));
       const 角度X = cx + (内rx + 角度外扩 * 左右外扩系数) * cosθ;
       const 角度Y = cy + (内ry + 角度外扩 * 上下外扩系数) * sinθ;
-      const θ份额X = cx + (rx + 弧长外扩) * cosθ;
+      const θ份额X = cx + (rx + 弧长外扩 * 左右外扩系数) * cosθ;
       const θ份额Y = cy + (ry + 弧长外扩 * 上下外扩系数) * sinθ;
       let x = 角度X - this.上下文.measureText(角度度 + "°").width / 2;
       for (const ch of 角度度 + "°") {
