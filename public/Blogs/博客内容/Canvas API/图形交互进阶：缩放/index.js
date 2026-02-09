@@ -2607,6 +2607,472 @@ class 圆镜像缩放 {
 
 const 圆镜像缩放实例 = new 圆镜像缩放("#cvs-圆镜像缩放");
 
+class 几何角度和参数角度 {
+  constructor(画布元素) {
+    this.画布 = typeof 画布元素 === "string" ? document.querySelector(画布元素) : 画布元素;
+    if (!this.画布 || this.画布.tagName !== "CANVAS") {
+      throw new Error("请传入有效的 canvas 元素或选择器");
+    }
+    this.上下文 = this.画布.getContext("2d");
+    this.设备像素比 = window.devicePixelRatio || 1;
+    this.角度模式 = "几何角度";
+    this.悬停几何角度 = false;
+    this.悬停参数角度 = false;
+    this.线条过渡开始时间 = null;
+    this.线条过渡起始模式 = null;
+    this.复选框字体 = "14px 'Noto Sans SC', 微软雅黑, sans-serif";
+    this.椭圆半径 = { rx: 300, ry: 120 };
+    this.悬停滑块 = null;
+    this.activeSlider = null;
+    this.滑块拖拽偏移 = 0;
+    this.滑块区域 = { x: 12, y: 0, width: 180, height: 100, padding: 10, trackH: 5, thumbR: 8 };
+    this.rx范围 = [80, 300];
+    this.ry范围 = [80, 175];
+    this.绑定事件 = this.绑定事件.bind(this);
+    this.鼠标按下 = this.鼠标按下.bind(this);
+    this.鼠标移动 = this.鼠标移动.bind(this);
+    this.鼠标离开 = this.鼠标离开.bind(this);
+    this.绑定事件();
+    this.设置画布尺寸();
+    window.addEventListener("resize", () => this.设置画布尺寸());
+  }
+
+  绑定事件() {
+    window.addEventListener("resize", this.更新边界矩形.bind(this));
+    this.画布.addEventListener("mousedown", this.鼠标按下);
+    this.画布.addEventListener("mousemove", this.鼠标移动);
+    this.画布.addEventListener("mouseleave", this.鼠标离开);
+    window.addEventListener("mousemove", (this.窗口鼠标移动 = this.窗口鼠标移动.bind(this)));
+    window.addEventListener("mouseup", (this.窗口鼠标松开 = this.窗口鼠标松开.bind(this)));
+  }
+
+  窗口鼠标移动(事件) {
+    if (this.activeSlider == null) return;
+    const p = this.获取画布坐标(事件);
+    this.从点更新滑块值(this.activeSlider, p, this.滑块拖拽偏移);
+    this.绘制();
+  }
+
+  窗口鼠标松开() {
+    if (this.activeSlider != null) {
+      this.activeSlider = null;
+      this.绘制();
+    }
+  }
+
+  更新边界矩形() {
+    this.边界矩形 = this.画布.getBoundingClientRect();
+  }
+
+  设置画布尺寸() {
+    this.更新边界矩形();
+    this.画布.width = this.画布.clientWidth * this.设备像素比;
+    this.画布.height = this.画布.clientHeight * this.设备像素比;
+    this.上下文.scale(this.设备像素比, this.设备像素比);
+    this.滑块区域.y = this.画布.clientHeight - this.滑块区域.height - 12;
+    this.绘制();
+  }
+
+  获取画布坐标(事件) {
+    return {
+      x: 事件.clientX - this.边界矩形.left,
+      y: 事件.clientY - this.边界矩形.top,
+    };
+  }
+
+  滑块命中检测(p) {
+    const s = this.滑块区域;
+    for (let i = 0; i < 2; i++) {
+      const lay = this.获取滑块布局(i);
+      const inTrack =
+        p.x >= lay.trackX - 10 &&
+        p.x <= lay.trackX + lay.trackW + 10 &&
+        p.y >= lay.trackY - 12 &&
+        p.y <= lay.trackY + lay.trackH + 12;
+      const inThumb = Math.hypot(p.x - lay.thumbX, p.y - lay.thumbY) <= lay.thumbR + 2;
+      if (inTrack || inThumb) {
+        return { index: i, inThumb, offsetX: p.x - lay.thumbX };
+      }
+    }
+    return null;
+  }
+
+  获取滑块布局(index) {
+    const s = this.滑块区域;
+    const x = s.x;
+    const sy = s.y + s.padding + index * 44;
+    const trackX = x + s.padding;
+    const trackY = sy + 20;
+    const trackW = s.width - s.padding * 2 - 35;
+    const trackH = s.trackH;
+    const [min, max] = index === 0 ? this.rx范围 : this.ry范围;
+    const val = index === 0 ? this.椭圆半径.rx : this.椭圆半径.ry;
+    const t = (val - min) / (max - min);
+    const thumbX = trackX + s.thumbR + t * Math.max(0, trackW - s.thumbR * 2);
+    const thumbY = trackY + trackH / 2;
+    return {
+      labelY: sy,
+      trackX,
+      trackY,
+      trackW,
+      trackH,
+      thumbX,
+      thumbY,
+      thumbR: s.thumbR,
+      min,
+      max,
+    };
+  }
+
+  从点更新滑块值(index, p, offsetX) {
+    const lay = this.获取滑块布局(index);
+    const desiredX = p.x - offsetX;
+    const minX = lay.trackX + lay.thumbR;
+    const maxX = lay.trackX + lay.trackW - lay.thumbR;
+    const clampedX = Math.max(minX, Math.min(maxX, desiredX));
+    const t = (clampedX - minX) / Math.max(1, lay.trackW - lay.thumbR * 2);
+    const val = Math.round(lay.min + t * (lay.max - lay.min));
+    if (index === 0) {
+      this.椭圆半径.rx = Math.max(lay.min, Math.min(lay.max, val));
+    } else {
+      this.椭圆半径.ry = Math.max(lay.min, Math.min(lay.max, val));
+    }
+  }
+
+  位于几何角度单选框(鼠标X, 鼠标Y) {
+    const 边距 = 10;
+    const 文案Y = this.画布.clientHeight - 边距;
+    const 内边距 = 6;
+    const rb高 = 30;
+    this.上下文.font = this.复选框字体;
+    const 几何宽 = this.上下文.measureText("几何角度").width;
+    const 参数宽 = this.上下文.measureText("参数角度").width;
+    const 总宽 = 几何宽 + 参数宽 + 内边距 * 4;
+    const rb左 = (this.画布.clientWidth - 总宽) / 2;
+    const rbY = 文案Y - rb高 + 6;
+    const 几何左 = rb左;
+    const 几何右 = rb左 + 几何宽 + 内边距 * 2;
+    return 鼠标X >= 几何左 && 鼠标X <= 几何右 && 鼠标Y >= rbY - 6 && 鼠标Y <= rbY - 6 + rb高;
+  }
+
+  位于参数角度单选框(鼠标X, 鼠标Y) {
+    const 边距 = 10;
+    const 文案Y = this.画布.clientHeight - 边距;
+    const 内边距 = 6;
+    const rb高 = 30;
+    this.上下文.font = this.复选框字体;
+    const 几何宽 = this.上下文.measureText("几何角度").width;
+    const 参数宽 = this.上下文.measureText("参数角度").width;
+    const 总宽 = 几何宽 + 参数宽 + 内边距 * 4;
+    const rb左 = (this.画布.clientWidth - 总宽) / 2;
+    const rbY = 文案Y - rb高 + 6;
+    const 参数左 = rb左 + 几何宽 + 内边距 * 2;
+    const 参数右 = 参数左 + 参数宽 + 内边距 * 2;
+    return 鼠标X >= 参数左 && 鼠标X <= 参数右 && 鼠标Y >= rbY - 6 && 鼠标Y <= rbY - 6 + rb高;
+  }
+
+  几何角转参数角(几何角, rx, ry) {
+    return Math.atan2(rx * Math.sin(几何角), ry * Math.cos(几何角));
+  }
+
+  参数角转几何角(θ, rx, ry) {
+    return Math.atan2(ry * Math.sin(θ), rx * Math.cos(θ));
+  }
+
+  椭圆弧长(startθ, endθ, rx, ry) {
+    let start = startθ;
+    let end = endθ;
+    if (end < start) end += 2 * Math.PI;
+    const n = 200;
+    let sum = 0;
+    const dt = (end - start) / n;
+    for (let i = 0; i < n; i++) {
+      const t = start + (i + 0.5) * dt;
+      const ds = Math.sqrt(rx * rx * Math.sin(t) ** 2 + ry * ry * Math.cos(t) ** 2);
+      sum += ds * dt;
+    }
+    return sum;
+  }
+
+  获取边界θ列表(t) {
+    const π = Math.PI;
+    const π8 = π / 8;
+    const 边界角度列表 = [-π8, π8, 3 * π8, 5 * π8, 7 * π8, -7 * π8, -5 * π8, -3 * π8];
+    const rx = this.椭圆半径.rx;
+    const ry = this.椭圆半径.ry;
+    return 边界角度列表.map((角) => {
+      const θ起始 = this.线条过渡起始模式 === "参数角度" ? 角 : this.几何角转参数角(角, rx, ry);
+      const θ结束 = this.角度模式 === "参数角度" ? 角 : this.几何角转参数角(角, rx, ry);
+      let 差 = θ结束 - θ起始;
+      if (差 > Math.PI) 差 -= 2 * Math.PI;
+      if (差 < -Math.PI) 差 += 2 * Math.PI;
+      return θ起始 + 差 * t;
+    });
+  }
+
+  绘制() {
+    this.上下文.clearRect(0, 0, this.画布.width, this.画布.height);
+    const cx = this.画布.clientWidth / 2;
+    const cy = this.画布.clientHeight * 0.45;
+    const { rx, ry } = this.椭圆半径;
+    const π = Math.PI;
+    const π8 = π / 8;
+    const 奇数填充色 = "rgba(80, 160, 255, 0.2)";
+    const 偶数填充色 = "rgba(160, 80, 255, 0.2)";
+    const 奇数描边色 = "rgba(80, 160, 255, 0.6)";
+    const 偶数描边色 = "rgba(160, 80, 255, 0.6)";
+    const 内rx = rx / 3;
+    const 内ry = ry / 3;
+
+    let 需要继续动画 = false;
+    let 边界θ组 = [];
+    let 过渡t = 1;
+    if (this.线条过渡开始时间 != null && this.线条过渡起始模式 != null) {
+      const 经过 = performance.now() - this.线条过渡开始时间;
+      过渡t = Math.min(1, 经过 / 250);
+      if (过渡t >= 1) {
+        this.线条过渡开始时间 = null;
+        this.线条过渡起始模式 = null;
+      } else {
+        需要继续动画 = true;
+      }
+      边界θ组 = this.获取边界θ列表(过渡t);
+    } else {
+      const 边界角度列表 = [-π8, π8, 3 * π8, 5 * π8, 7 * π8, -7 * π8, -5 * π8, -3 * π8];
+      边界θ组 = 边界角度列表.map((角) => (this.角度模式 === "参数角度" ? 角 : this.几何角转参数角(角, rx, ry)));
+    }
+
+    const 扇形范围列表 = [
+      [边界θ组[0], 边界θ组[1]],
+      [边界θ组[1], 边界θ组[2]],
+      [边界θ组[2], 边界θ组[3]],
+      [边界θ组[3], 边界θ组[4]],
+      [边界θ组[4], 边界θ组[5]],
+      [边界θ组[5], 边界θ组[6]],
+      [边界θ组[6], 边界θ组[7]],
+      [边界θ组[7], 边界θ组[0]],
+    ];
+
+    for (let i = 0; i < 8; i++) {
+      const [startθ, endθ] = 扇形范围列表[i];
+      const 填充色 = i % 2 === 0 ? 偶数填充色 : 奇数填充色;
+      this.上下文.fillStyle = 填充色;
+      this.上下文.beginPath();
+      this.上下文.moveTo(cx, cy);
+      this.上下文.lineTo(cx + 内rx * Math.cos(startθ), cy + 内ry * Math.sin(startθ));
+      this.上下文.ellipse(cx, cy, 内rx, 内ry, 0, startθ, endθ);
+      this.上下文.closePath();
+      this.上下文.fill();
+    }
+
+    for (let i = 0; i < 8; i++) {
+      const θ = 边界θ组[i];
+      this.上下文.strokeStyle = "#fff3";
+      this.上下文.lineWidth = 1;
+      this.上下文.beginPath();
+      this.上下文.moveTo(cx, cy);
+      this.上下文.lineTo(cx + rx * Math.cos(θ), cy + ry * Math.sin(θ));
+      this.上下文.stroke();
+    }
+
+    for (let i = 0; i < 8; i++) {
+      const [startθ, endθ] = 扇形范围列表[i];
+      const 描边色 = i % 2 === 0 ? "#a43" : "#36a";
+      this.上下文.strokeStyle = 描边色;
+      this.上下文.lineWidth = 2;
+      this.上下文.beginPath();
+      this.上下文.ellipse(cx, cy, rx, ry, 0, startθ, endθ);
+      this.上下文.stroke();
+    }
+
+    const 精简小数 = (s) => {
+      if (!s.includes(".")) return s;
+      s = s.replace(/0+$/, "");
+      return s.endsWith(".") ? s.slice(0, -1) : s;
+    };
+    const 度数色 = "#a2a8a0";
+    const 度数单位色 = "#284";
+    const 字体 = "13px 'Google Sans Code', 'JetBrains Mono', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+    this.上下文.font = 字体;
+    this.上下文.textAlign = "center";
+    this.上下文.textBaseline = "middle";
+    const 角度外扩 = 12;
+    const 弧长外扩 = 28;
+    const 垂直压缩系数 = 0.55;
+    for (let i = 0; i < 8; i++) {
+      const [startθ, endθ] = 扇形范围列表[i];
+      let 中点θ = (startθ + endθ) / 2;
+      if (endθ < startθ) 中点θ += Math.PI;
+      const sinθ = Math.sin(中点θ);
+      const 上下外扩系数 = Math.abs(sinθ) > 0.7 ? 垂直压缩系数 : 1;
+      const 几何角度度 = 45;
+      const 几何角起 = this.参数角转几何角(startθ, rx, ry);
+      let 几何角终 = this.参数角转几何角(endθ, rx, ry);
+      if (几何角终 < 几何角起) 几何角终 += 2 * Math.PI;
+      const 参数角度度 = Math.round(((几何角终 - 几何角起) * 180) / Math.PI);
+      let 角度度;
+      if (this.线条过渡开始时间 == null || this.线条过渡起始模式 == null) {
+        角度度 = this.角度模式 === "几何角度" ? 几何角度度 : 参数角度度;
+      } else {
+        const t = 过渡t;
+        if (this.线条过渡起始模式 === "参数角度") {
+          角度度 = Math.round(参数角度度 * (1 - t) + 几何角度度 * t);
+        } else {
+          角度度 = Math.round(几何角度度 * (1 - t) + 参数角度度 * t);
+        }
+      }
+      let Δθ = endθ - startθ;
+      if (Δθ < 0) Δθ += 2 * Math.PI;
+      const θ份额Str = 精简小数(Δθ.toFixed(3));
+      const 角度X = cx + (内rx + 角度外扩) * Math.cos(中点θ);
+      const 角度Y = cy + (内ry + 角度外扩 * 上下外扩系数) * sinθ;
+      const θ份额X = cx + (rx + 弧长外扩) * Math.cos(中点θ);
+      const θ份额Y = cy + (ry + 弧长外扩 * 上下外扩系数) * sinθ;
+      let x = 角度X - this.上下文.measureText(角度度 + "°").width / 2;
+      for (const ch of 角度度 + "°") {
+        this.上下文.fillStyle = ch === "°" ? 度数单位色 : 度数色;
+        this.上下文.fillText(ch, x + this.上下文.measureText(ch).width / 2, 角度Y);
+        x += this.上下文.measureText(ch).width;
+      }
+      this.上下文.fillStyle = "#94a3b8";
+      this.上下文.fillText(θ份额Str, θ份额X, θ份额Y);
+    }
+    this.上下文.textAlign = "left";
+
+    this.上下文.strokeStyle = "rgba(255,255,255,0.4)";
+    this.上下文.lineWidth = 1;
+    this.上下文.beginPath();
+    this.上下文.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+    this.上下文.stroke();
+
+    this.上下文.fillStyle = "rgba(200, 80, 80)";
+    this.上下文.beginPath();
+    this.上下文.arc(cx, cy, 4, 0, Math.PI * 2);
+    this.上下文.fill();
+
+    const s = this.滑块区域;
+    this.上下文.fillStyle = "rgba(10,15,20,0.6)";
+    this.上下文.strokeStyle = "rgba(255,255,255,0.2)";
+    this.上下文.lineWidth = 1;
+    roundRect(this.上下文, s.x, s.y, s.width, s.height, 8, true, true);
+    const 滑块名称 = ["水平半径", "垂直半径"];
+    const 滑块值 = [this.椭圆半径.rx, this.椭圆半径.ry];
+    const 滑块色 = "#349a59";
+    const 滑块悬停色 = "#57c477";
+    for (let i = 0; i < 2; i++) {
+      const lay = this.获取滑块布局(i);
+      const isHover = this.悬停滑块 === i || this.activeSlider === i;
+      const 色 = isHover ? 滑块悬停色 : 滑块色;
+      this.上下文.fillStyle = "#cbd5e1";
+      this.上下文.font = "14px 'Noto Sans SC', 微软雅黑, sans-serif";
+      this.上下文.textBaseline = "top";
+      this.上下文.fillText(滑块名称[i], s.x + s.padding, lay.labelY);
+      this.上下文.fillStyle = "rgba(255,255,255,0.08)";
+      roundRect(this.上下文, lay.trackX, lay.trackY, lay.trackW, lay.trackH, 0, true, false);
+      const tpos = lay.thumbX;
+      this.上下文.fillStyle = 色;
+      roundRect(this.上下文, lay.trackX, lay.trackY, tpos - lay.trackX, lay.trackH, 0, true, false);
+      this.上下文.beginPath();
+      this.上下文.arc(tpos, lay.thumbY, lay.thumbR, 0, Math.PI * 2);
+      this.上下文.fill();
+      this.上下文.fillStyle = "#80aae0";
+      this.上下文.font = "14px 'Google Sans Code', 'JetBrains Mono', Consolas, monospace";
+      this.上下文.fillText(String(Math.round(滑块值[i])), lay.trackX + lay.trackW + 10, lay.trackY - 2);
+    }
+    this.上下文.textBaseline = "bottom";
+
+    const 边距 = 10;
+    const 文案Y = this.画布.clientHeight - 边距;
+    this.上下文.font = this.复选框字体;
+    const 几何宽 = this.上下文.measureText("几何角度").width;
+    const 参数宽 = this.上下文.measureText("参数角度").width;
+    const 内边距 = 6;
+    const rb高 = 30;
+    const 总宽 = 几何宽 + 参数宽 + 内边距 * 4;
+    const rb左 = (this.画布.clientWidth - 总宽) / 2;
+    const rbY = 文案Y - rb高 + 6;
+    const 几何选 = this.角度模式 === "几何角度";
+    const 参数选 = this.角度模式 === "参数角度";
+    const 文本垂直中心Y = rbY - 5 + rb高 / 2;
+    this.上下文.textBaseline = "middle";
+    this.上下文.fillStyle = 几何选 ? "#2d854d" : this.悬停几何角度 ? "#1a243a" : "#0b1220";
+    roundRect(this.上下文, rb左, rbY - 6, 几何宽 + 内边距 * 2, rb高, 0, true, false);
+    this.上下文.fillStyle = 几何选 ? "lightcyan" : this.悬停几何角度 ? "#94a3b8" : "#64748b";
+    this.上下文.fillText("几何角度", rb左 + 内边距, 文本垂直中心Y);
+    this.上下文.fillStyle = 参数选 ? "#2d854d" : this.悬停参数角度 ? "#1a243a" : "#0b1220";
+    const 参数左 = rb左 + 几何宽 + 内边距 * 2;
+    roundRect(this.上下文, 参数左, rbY - 6, 参数宽 + 内边距 * 2, rb高, 0, true, false);
+    this.上下文.fillStyle = 参数选 ? "lightcyan" : this.悬停参数角度 ? "#94a3b8" : "#64748b";
+    this.上下文.fillText("参数角度", 参数左 + 内边距, 文本垂直中心Y);
+    this.上下文.textBaseline = "bottom";
+
+    if (需要继续动画) {
+      requestAnimationFrame(() => this.绘制());
+    }
+  }
+
+  鼠标按下(事件) {
+    const p = this.获取画布坐标(事件);
+    const 滑块命中 = this.滑块命中检测(p);
+    if (滑块命中) {
+      this.activeSlider = 滑块命中.index;
+      this.滑块拖拽偏移 = 滑块命中.inThumb ? 滑块命中.offsetX : 0;
+      if (!滑块命中.inThumb) this.从点更新滑块值(this.activeSlider, p, 0);
+      this.绘制();
+      return;
+    }
+    const 鼠标X = p.x, 鼠标Y = p.y;
+    if (this.位于几何角度单选框(鼠标X, 鼠标Y)) {
+      if (this.角度模式 !== "几何角度") {
+        this.线条过渡起始模式 = this.角度模式;
+        this.线条过渡开始时间 = performance.now();
+      }
+      this.角度模式 = "几何角度";
+      this.绘制();
+      return;
+    }
+    if (this.位于参数角度单选框(鼠标X, 鼠标Y)) {
+      if (this.角度模式 !== "参数角度") {
+        this.线条过渡起始模式 = this.角度模式;
+        this.线条过渡开始时间 = performance.now();
+      }
+      this.角度模式 = "参数角度";
+      this.绘制();
+    }
+  }
+
+  鼠标移动(事件) {
+    const p = this.获取画布坐标(事件);
+    const 上次悬停几何 = this.悬停几何角度;
+    const 上次悬停参数 = this.悬停参数角度;
+    const 上次悬停滑块 = this.悬停滑块;
+    this.悬停几何角度 = this.位于几何角度单选框(p.x, p.y);
+    this.悬停参数角度 = this.位于参数角度单选框(p.x, p.y);
+    const 滑块命中 = this.滑块命中检测(p);
+    this.悬停滑块 = 滑块命中 ? 滑块命中.index : null;
+    if (
+      上次悬停几何 !== this.悬停几何角度 ||
+      上次悬停参数 !== this.悬停参数角度 ||
+      上次悬停滑块 !== this.悬停滑块
+    ) {
+      this.绘制();
+    }
+    this.画布.style.cursor =
+      this.悬停几何角度 || this.悬停参数角度 || this.悬停滑块 != null ? 光标.指向 : 光标.默认;
+  }
+
+  鼠标离开(事件) {
+    const hadHover = this.悬停几何角度 || this.悬停参数角度 || this.悬停滑块 != null;
+    this.悬停几何角度 = false;
+    this.悬停参数角度 = false;
+    this.悬停滑块 = null;
+    if (hadHover) this.绘制();
+    if (!this.activeSlider) this.画布.style.cursor = 光标.默认;
+  }
+}
+
+const 几何角度和参数角度实例 = new 几何角度和参数角度("#cvs-几何角度参数角度");
+
 class 圆水平垂直独立镜像缩放 {
   constructor(画布元素) {
     this.缩放模式 = null;
@@ -2713,31 +3179,33 @@ class 圆水平垂直独立镜像缩放 {
     return null;
   }
 
-  是否在几何角度单选(鼠标X, 鼠标Y) {
+  位于几何角度单选框(鼠标X, 鼠标Y) {
     const 边距 = 10;
     const 文案Y = this.画布.clientHeight - 边距;
-    const rbY = 文案Y - 85;
-    const rb左 = 边距;
     const 内边距 = 6;
     const rb高 = 30;
     this.上下文.font = this.复选框字体;
     const 几何宽 = this.上下文.measureText("几何角度").width;
     const 参数宽 = this.上下文.measureText("参数角度").width;
+    const 总宽 = 几何宽 + 参数宽 + 内边距 * 4;
+    const rb左 = (this.画布.clientWidth - 总宽) / 2;
+    const rbY = 文案Y - rb高 + 6;
     const 几何左 = rb左;
     const 几何右 = rb左 + 几何宽 + 内边距 * 2;
     return 鼠标X >= 几何左 && 鼠标X <= 几何右 && 鼠标Y >= rbY - 6 && 鼠标Y <= rbY - 6 + rb高;
   }
 
-  是否在参数角度单选(鼠标X, 鼠标Y) {
+  位于参数角度单选框(鼠标X, 鼠标Y) {
     const 边距 = 10;
     const 文案Y = this.画布.clientHeight - 边距;
-    const rbY = 文案Y - 85;
-    const rb左 = 边距;
     const 内边距 = 6;
     const rb高 = 30;
     this.上下文.font = this.复选框字体;
     const 几何宽 = this.上下文.measureText("几何角度").width;
     const 参数宽 = this.上下文.measureText("参数角度").width;
+    const 总宽 = 几何宽 + 参数宽 + 内边距 * 4;
+    const rb左 = (this.画布.clientWidth - 总宽) / 2;
+    const rbY = 文案Y - rb高 + 6;
     const 参数左 = rb左 + 几何宽 + 内边距 * 2;
     const 参数右 = 参数左 + 参数宽 + 内边距 * 2;
     return 鼠标X >= 参数左 && 鼠标X <= 参数右 && 鼠标Y >= rbY - 6 && 鼠标Y <= rbY - 6 + rb高;
@@ -2811,7 +3279,8 @@ class 圆水平垂直独立镜像缩放 {
     this.上下文.fill();
 
     if (this.当前悬停 === "缩放") {
-      const 几何角 = this.当前操作 === "缩放" ? this.缩放起始角度 : Math.atan2(this.最后鼠标Y - cy, this.最后鼠标X - cx);
+      const 几何角 =
+        this.当前操作 === "缩放" ? this.缩放起始角度 : Math.atan2(this.最后鼠标Y - cy, this.最后鼠标X - cx);
       const 缩放用角度 = this.获取缩放用角度(几何角, rx, ry);
       const { startAngle, endAngle } =
         this.角度模式 === "参数角度"
@@ -2948,16 +3417,17 @@ class 圆水平垂直独立镜像缩放 {
     this.上下文.font = "16px 'Noto Sans SC', 微软雅黑, sans-serif";
     this.上下文.textBaseline = "bottom";
     const 文案Y = this.画布.clientHeight - 边距;
-    const rbY = 文案Y - 85;
     this.上下文.font = this.复选框字体;
     const 几何宽 = this.上下文.measureText("几何角度").width;
     const 参数宽 = this.上下文.measureText("参数角度").width;
     const 内边距 = 6;
     const rb高 = 30;
+    const 总宽 = 几何宽 + 参数宽 + 内边距 * 4;
+    const rb左 = (this.画布.clientWidth - 总宽) / 2;
+    const rbY = 文案Y - rb高 + 6;
     const 几何选 = this.角度模式 === "几何角度";
     const 参数选 = this.角度模式 === "参数角度";
-    const 文本垂直中心Y = rbY - 4 + rb高 / 2;
-    const rb左 = 边距;
+    const 文本垂直中心Y = rbY - 5 + rb高 / 2;
     this.上下文.textBaseline = "middle";
     this.上下文.fillStyle = 几何选 ? "#2d854d" : this.悬停几何角度 ? "#1a243a" : "#0b1220";
     roundRect(this.上下文, rb左, rbY - 6, 几何宽 + 内边距 * 2, rb高, 0, true, false);
@@ -3011,7 +3481,7 @@ class 圆水平垂直独立镜像缩放 {
     const 拖拽热区 = this.获取命中拖拽热区(鼠标X, 鼠标Y);
     this.按下命中热区 = 拖拽热区;
     if (!拖拽热区) {
-      if (this.是否在几何角度单选(鼠标X, 鼠标Y)) {
+      if (this.位于几何角度单选框(鼠标X, 鼠标Y)) {
         if (this.角度模式 !== "几何角度") {
           this.线条过渡起始模式 = this.角度模式;
           this.线条过渡开始时间 = performance.now();
@@ -3020,7 +3490,7 @@ class 圆水平垂直独立镜像缩放 {
         this.绘制();
         return;
       }
-      if (this.是否在参数角度单选(鼠标X, 鼠标Y)) {
+      if (this.位于参数角度单选框(鼠标X, 鼠标Y)) {
         if (this.角度模式 !== "参数角度") {
           this.线条过渡起始模式 = this.角度模式;
           this.线条过渡开始时间 = performance.now();
@@ -3142,8 +3612,8 @@ class 圆水平垂直独立镜像缩放 {
     const 上次悬停几何 = this.悬停几何角度;
     const 上次悬停参数 = this.悬停参数角度;
     this.悬停标准化复选框 = this.是否在标准化复选框(鼠标X, 鼠标Y);
-    this.悬停几何角度 = this.是否在几何角度单选(鼠标X, 鼠标Y);
-    this.悬停参数角度 = this.是否在参数角度单选(鼠标X, 鼠标Y);
+    this.悬停几何角度 = this.位于几何角度单选框(鼠标X, 鼠标Y);
+    this.悬停参数角度 = this.位于参数角度单选框(鼠标X, 鼠标Y);
     if (
       命中 !== this.当前悬停 ||
       上次悬停复选框 !== this.悬停标准化复选框 ||
@@ -3191,7 +3661,15 @@ class 圆水平垂直独立镜像缩放 {
 const 圆水平垂直独立镜像缩放实例 = new 圆水平垂直独立镜像缩放("#cvs-圆水平垂直独立镜像缩放");
 
 // 统一的全局 scroll 防抖：滚动时更新所有 canvas 的边界矩形
-const 实例集合 = [热区实例, 缩放实例, 镜像缩放实例, 圆热区实例, 圆镜像缩放实例, 圆水平垂直独立镜像缩放实例];
+const 实例集合 = [
+  热区实例,
+  缩放实例,
+  镜像缩放实例,
+  圆热区实例,
+  圆镜像缩放实例,
+  圆水平垂直独立镜像缩放实例,
+  几何角度和参数角度实例,
+];
 let 全局滚动定时器 = null;
 window.addEventListener(
   "scroll",
