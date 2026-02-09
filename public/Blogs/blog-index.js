@@ -1011,11 +1011,21 @@ function 双击图像生成图像对话框() {
 function 更新图像序号() {
   const screenShotsContainers = document.querySelectorAll(".截图容器");
   screenShotsContainers.forEach((container) => {
+    const imageIndex = Array.from(screenShotsContainers).indexOf(container);
     const 截图序号 = document.createElement("span");
     截图序号.className = "截图序号";
-    container.appendChild(截图序号);
-    const imageIndex = Array.from(screenShotsContainers).indexOf(container);
     截图序号.innerHTML = `<span style="margin-right: 4px">图</span><span style="color: lightblue">${imageIndex + 1}</span>`;
+    const 包装 = document.createElement("span");
+    包装.className = "截图信息包装器";
+    包装.append(截图序号);
+    const dataDesc = container.getAttribute("data-desc");
+    if (dataDesc != null && dataDesc.trim() !== "") {
+      const 截图描述 = document.createElement("span");
+      截图描述.className = "截图描述";
+      截图描述.innerHTML = dataDesc.trim().replace(/(和|与)/g, '<span class="次要" style="margin: 0 4px">$&</span>');
+      包装.append(截图描述);
+    }
+    container.appendChild(包装);
 
     const containerSibling = container.nextElementSibling;
     if (containerSibling !== null && containerSibling.className === "分区普通文本") {

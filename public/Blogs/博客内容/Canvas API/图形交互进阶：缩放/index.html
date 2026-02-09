@@ -636,14 +636,30 @@
     <p class="分区普通文本">我这里介绍的是第<span class="行内代码">2</span>种方式。</p>
     <pre class="line-numbers">
       <code class="language-javascript">
-        function 根据弧度获取缩放模式(弧度) {
+        几何角度转参数角度(几何角度, 水平半径, 垂直半径) {
+          return Math.atan2(水平半径 * Math.sin(几何角度), 垂直半径 * Math.cos(几何角度));
+        }
+
+        参数角度转几何角度(θ, 水平半径, 垂直半径) {
+          return Math.atan2(垂直半径 * Math.sin(θ), 水平半径 * Math.cos(θ));
+        }
+
+        获取缩放弧度(几何角度, rx, ry) {
+          return this.角度模式 === "参数角度" ? this.几何角度转参数角度(几何角度, rx, ry) : 几何角度;
+        }
+        
+        //缩放弧度可能是几何角度，也可能是θ
+        const 缩放弧度 = this.获取缩放弧度(几何角度, Math.abs(rx), Math.abs(ry));
+
+        //无论是几何角度还是θ，都调用此函数获取缩放模式
+        function 根据弧度获取缩放模式(缩放弧度) {
           //将360°分为8份，左右2份为水平缩放，上下2份为垂直缩放，另外4份为等比缩放
           const 八分角 = Math.PI / 8; //注意这里用的是弧度制
-          if ((弧度 >= -八分角 && 弧度 < 八分角) || 
-              (弧度 >= 7 * 八分角 || 弧度 < -7 * 八分角)) 
+          if ((缩放弧度 >= -八分角 && 缩放弧度 < 八分角) || 
+              (缩放弧度 >= 7 * 八分角 || 缩放弧度 < -7 * 八分角)) 
             return "水平";
-          if ((弧度 >= 3 * 八分角 && 弧度 < 5 * 八分角) || 
-              (弧度 >= -5 * 八分角 && 弧度 < -3 * 八分角)) 
+          if ((缩放弧度 >= 3 * 八分角 && 缩放弧度 < 5 * 八分角) || 
+              (缩放弧度 >= -5 * 八分角 && 缩放弧度 < -3 * 八分角)) 
             return "垂直";
           return "等比";
         }
@@ -670,18 +686,7 @@
           >几何角度</span
         >；如果更注重用户的视觉感受，则使用<span class="行内专业名词">参数角度</span>。
       </p>
-      <pre class="line-numbers">
-        <code class="language-javascript">
-          几何角度转参数角度(几何角度, 水平半径, 垂直半径) {
-            return Math.atan2(水平半径 * Math.sin(几何角度), 垂直半径 * Math.cos(几何角度));
-          }
-
-          参数角度转几何角度(θ, 水平半径, 垂直半径) {
-            return Math.atan2(垂直半径 * Math.sin(θ), 水平半径 * Math.cos(θ));
-          }
-        </code>
-      </pre>
-      <figure class="截图容器" style="width: 100%; aspect-ratio: 1.4" data-desc="几何角度 和 参数角度">
+      <figure class="截图容器" style="width: 100%; aspect-ratio: 1.4" data-desc="几何角度和参数角度">
         <canvas
           id="cvs-几何角度参数角度"
           style="width: 100%; height: calc(100% - 42px); background-color: #0f1720"

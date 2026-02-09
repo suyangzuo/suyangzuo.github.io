@@ -1747,16 +1747,40 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   width: 100%;
 }
 
+.截图信息包装器 {
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  font-family:
+    "Google Sans Code",
+    "JetBrains Mono" "Consolas",
+    "Noto Sans SC",
+    微软雅黑,
+    sans-serif;
+  color: #abc;
+}
+
 .截图序号 {
   color: #ccc;
   font-size: 15px;
-  padding: 10px 0;
   font-family: "Google Sans Code", "Consolas", sans-serif;
 }
 
 .行内截图序号 {
   color: lightskyblue;
   font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+}
+
+.截图描述 {
+  font-size: 14px;
+  padding: 5px 16px;
+  border-radius: 99px;
+  background-color: #0007;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .专业名词 {

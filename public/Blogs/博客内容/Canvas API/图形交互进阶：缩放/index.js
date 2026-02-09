@@ -2896,15 +2896,18 @@ class 几何角度和参数角度 {
     this.上下文.font = 字体;
     this.上下文.textAlign = "center";
     this.上下文.textBaseline = "middle";
-    const 角度外扩 = 12;
+    const 角度外扩 = 20;
     const 弧长外扩 = 28;
     const 垂直压缩系数 = 0.55;
+    const 左右压缩系数 = 0.75;
     for (let i = 0; i < 8; i++) {
       const [startθ, endθ] = 扇形范围列表[i];
       let 中点θ = (startθ + endθ) / 2;
       if (endθ < startθ) 中点θ += Math.PI;
       const sinθ = Math.sin(中点θ);
+      const cosθ = Math.cos(中点θ);
       const 上下外扩系数 = Math.abs(sinθ) > 0.7 ? 垂直压缩系数 : 1;
+      const 左右外扩系数 = Math.abs(cosθ) > 0.7 ? 左右压缩系数 : 1;
       const 几何角度度 = 45;
       const 几何角起 = this.参数角转几何角(startθ, rx, ry);
       let 几何角终 = this.参数角转几何角(endθ, rx, ry);
@@ -2924,9 +2927,9 @@ class 几何角度和参数角度 {
       let Δθ = endθ - startθ;
       if (Δθ < 0) Δθ += 2 * Math.PI;
       const θ份额Str = 精简小数(Δθ.toFixed(3));
-      const 角度X = cx + (内rx + 角度外扩) * Math.cos(中点θ);
+      const 角度X = cx + (内rx + 角度外扩 * 左右外扩系数) * cosθ;
       const 角度Y = cy + (内ry + 角度外扩 * 上下外扩系数) * sinθ;
-      const θ份额X = cx + (rx + 弧长外扩) * Math.cos(中点θ);
+      const θ份额X = cx + (rx + 弧长外扩) * cosθ;
       const θ份额Y = cy + (ry + 弧长外扩 * 上下外扩系数) * sinθ;
       let x = 角度X - this.上下文.measureText(角度度 + "°").width / 2;
       for (const ch of 角度度 + "°") {
