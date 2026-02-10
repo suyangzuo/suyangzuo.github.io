@@ -20,7 +20,7 @@
   display: flex;
   flex-direction: column;
   gap: 50px;
-  padding: 25px;
+  padding: 10px 20px;
   background-color: #000d;
   border: solid 25px transparent;
   backdrop-filter: blur(4px);
@@ -29,7 +29,145 @@
 
 .参数区:not(:has(.标签:hover, .按钮区:hover)):hover {
   cursor: url("/Images/Common/鼠标-拖拽.cur"), grab;
-  border: solid 25px #abca;
+}
+
+.拖拽提示箭头-包装 {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.拖拽提示箭头-包装.拖拽提示箭头-显示 {
+  opacity: 1;
+}
+
+.拖拽提示箭头-包装 .拖拽提示箭头 {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 28px;
+  height: 12px;
+}
+
+.日期时间行 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 50px;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.日期区,
+.时间区 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: fit-content;
+}
+
+.日期输入行,
+.时间输入行 {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  width: 100%;
+}
+
+.日期输入框,
+.时间输入框 {
+  width: 180px;
+  flex-shrink: 0;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: linear-gradient(135deg, rgba(24, 30, 42, 0.95), rgba(14, 18, 28, 0.95));
+  color: #eef0f6;
+  font-size: 16px;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+  box-shadow:
+    0 12px 26px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.时间输入框 {
+  width: fit-content;
+}
+
+.日期输入框::-webkit-calendar-picker-indicator,
+.时间输入框::-webkit-calendar-picker-indicator {
+  filter: invert(0.85);
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.日期输入框:hover,
+.时间输入框:hover {
+  border-color: rgba(125, 154, 255, 0.6);
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.36),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+#calendar-button:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+}
+
+.日期输入框:focus-visible,
+.时间输入框:focus-visible {
+  outline: none;
+  border-color: rgba(140, 166, 255, 0.95);
+  box-shadow:
+    0 0 0 3px rgba(108, 140, 255, 0.28),
+    0 16px 32px rgba(0, 0, 0, 0.35);
+}
+
+.日期输入框::placeholder,
+.时间输入框::placeholder {
+  color: rgba(230, 234, 245, 0.5);
+}
+
+.当前值按钮 {
+  flex-shrink: 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, rgba(40, 50, 70, 0.95), rgba(24, 30, 44, 0.95));
+  color: #c8d0e0;
+  font-size: 14px;
+  font-family: "Noto Sans SC", 微软雅黑, sans-serif;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.当前值按钮:hover {
+  border-color: lightblue;
+  color: #e8eaf1;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.当前值按钮:focus-visible {
+  outline: none;
+  border-color: rgba(140, 166, 255, 0.9);
+  box-shadow: 0 0 0 2px rgba(108, 140, 255, 0.25);
 }
 
 .生成区 {
@@ -66,6 +204,13 @@
   flex-direction: column;
   gap: 10px;
   width: 100%;
+}
+
+.文件选择标签:hover,
+.文本输入标签:hover,
+input[type="file"]:hover,
+input[type="file"]::file-selector-button:hover {
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
 }
 
 .标签标题 {

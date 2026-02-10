@@ -10,20 +10,26 @@ const 参数区 = document.querySelector(".参数区");
 const 打卡地点显示区 = document.querySelector(".打卡地点");
 const 打卡地点文本框 = document.getElementById("打卡地点");
 const 打卡日期 = document.querySelector(".打卡日期");
+const 打卡日期输入 = document.getElementById("打卡日期输入");
+const 打卡时间输入 = document.getElementById("打卡时间输入");
 const 防伪ID = document.querySelector(".防伪ID");
 const 星期名称表 = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
 const 打卡地点存储键 = "Clock_In_Special_打卡地点";
 const 背景图存储键 = "Clock_In_Special_背景图";
 const 防伪字符表 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-const 生成打卡时间 = () => {
+const 生成打卡时间 = (小时数, 分钟数) => {
   if (!打卡时间) {
     return;
   }
 
   const 当前时间 = new Date();
-  const 小时 = String(当前时间.getHours()).padStart(2, "0");
-  const 分钟 = String(当前时间.getMinutes()).padStart(2, "0");
+  const 小时 = 小时数 != null && 分钟数 != null
+    ? String(小时数).padStart(2, "0")
+    : String(当前时间.getHours()).padStart(2, "0");
+  const 分钟 = 小时数 != null && 分钟数 != null
+    ? String(分钟数).padStart(2, "0")
+    : String(当前时间.getMinutes()).padStart(2, "0");
 
   打卡时间.innerHTML = "";
   if (打卡标题区) {
@@ -77,6 +83,52 @@ const 更新打卡地点 = () => {
   sessionStorage.setItem(打卡地点存储键, 文本值);
 };
 
+const 更新打卡日期 = () => {
+  if (!打卡日期) return;
+
+  let 日期对象 = new Date();
+  if (打卡日期输入 && 打卡日期输入.value) {
+    const 解析 = new Date(打卡日期输入.value);
+    if (!Number.isNaN(解析.getTime())) {
+      日期对象 = 解析;
+    }
+  }
+
+  const 年份 = 日期对象.getFullYear();
+  const 月份 = String(日期对象.getMonth() + 1).padStart(2, "0");
+  const 日期 = String(日期对象.getDate()).padStart(2, "0");
+  const 星期 = 星期名称表[日期对象.getDay()];
+
+  打卡日期.innerHTML = "";
+  const 年月日元素 = document.createElement("span");
+  年月日元素.className = "打卡日期片";
+  年月日元素.textContent = `${年份}.${月份}.${日期}`;
+  const 星期元素 = document.createElement("span");
+  星期元素.className = "打卡日期片";
+  星期元素.textContent = 星期;
+  打卡日期.append(年月日元素, 星期元素);
+};
+
+const 更新打卡时间 = () => {
+  if (!打卡时间) return;
+
+  let 小时数 = null;
+  let 分钟数 = null;
+  if (打卡时间输入 && 打卡时间输入.value) {
+    const 匹配 = /^(\d{1,2}):(\d{2})$/.exec(打卡时间输入.value.trim());
+    if (匹配) {
+      const h = parseInt(匹配[1], 10);
+      const m = parseInt(匹配[2], 10);
+      if (h >= 0 && h <= 23 && m >= 0 && m <= 59) {
+        小时数 = h;
+        分钟数 = m;
+      }
+    }
+  }
+
+  生成打卡时间(小时数, 分钟数);
+};
+
 const 生成防伪ID = (长度 = 14) => {
   let 结果 = "";
   for (let i = 0; i < 长度; i += 1) {
@@ -86,7 +138,17 @@ const 生成防伪ID = (长度 = 14) => {
   return 结果;
 };
 
-document.addEventListener("DOMContentLoaded", 生成打卡时间);
+document.addEventListener("DOMContentLoaded", () => {
+  const 今 = new Date();
+  if (打卡日期输入) {
+    打卡日期输入.value = `${今.getFullYear()}-${String(今.getMonth() + 1).padStart(2, "0")}-${String(今.getDate()).padStart(2, "0")}`;
+  }
+  if (打卡时间输入) {
+    打卡时间输入.value = `${String(今.getHours()).padStart(2, "0")}:${String(今.getMinutes()).padStart(2, "0")}`;
+  }
+  更新打卡日期();
+  更新打卡时间();
+});
 document.addEventListener("DOMContentLoaded", () => {
   if (防伪ID) {
     防伪ID.textContent = 生成防伪ID();
@@ -116,31 +178,34 @@ document.addEventListener("DOMContentLoaded", () => {
   背景区.innerHTML = "";
   背景区.append(图像元素);
 });
-document.addEventListener("DOMContentLoaded", () => {
-  if (!打卡日期) {
-    return;
-  }
-
-  const 当前日期 = new Date();
-  const 年份 = 当前日期.getFullYear();
-  const 月份 = String(当前日期.getMonth() + 1).padStart(2, "0");
-  const 日期 = String(当前日期.getDate()).padStart(2, "0");
-  const 星期 = 星期名称表[当前日期.getDay()];
-
-  打卡日期.innerHTML = "";
-  const 年月日元素 = document.createElement("span");
-  年月日元素.className = "打卡日期片";
-  年月日元素.textContent = `${年份}.${月份}.${日期}`;
-
-  const 星期元素 = document.createElement("span");
-  星期元素.className = "打卡日期片";
-  星期元素.textContent = 星期;
-
-  打卡日期.append(年月日元素, 星期元素);
-});
 
 if (打卡地点文本框) {
   打卡地点文本框.addEventListener("input", 更新打卡地点);
+}
+if (打卡日期输入) {
+  打卡日期输入.addEventListener("change", 更新打卡日期);
+  打卡日期输入.addEventListener("input", 更新打卡日期);
+}
+if (打卡时间输入) {
+  打卡时间输入.addEventListener("change", 更新打卡时间);
+  打卡时间输入.addEventListener("input", 更新打卡时间);
+}
+
+const 使用当前日期按钮 = document.getElementById("使用当前日期");
+const 使用当前时间按钮 = document.getElementById("使用当前时间");
+if (使用当前日期按钮 && 打卡日期输入) {
+  使用当前日期按钮.addEventListener("click", () => {
+    const 今 = new Date();
+    打卡日期输入.value = `${今.getFullYear()}-${String(今.getMonth() + 1).padStart(2, "0")}-${String(今.getDate()).padStart(2, "0")}`;
+    更新打卡日期();
+  });
+}
+if (使用当前时间按钮 && 打卡时间输入) {
+  使用当前时间按钮.addEventListener("click", () => {
+    const 今 = new Date();
+    打卡时间输入.value = `${String(今.getHours()).padStart(2, "0")}:${String(今.getMinutes()).padStart(2, "0")}`;
+    更新打卡时间();
+  });
 }
 
 选择图像.addEventListener("change", () => {
