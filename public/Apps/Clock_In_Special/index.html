@@ -29,19 +29,6 @@
     <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
     <script src="/Scripts/html-include.js" target="../apps-common-control.html" position="afterbegin"></script>
     <div id="总区">
-      <div class="参数区">
-        <label for="选择图像" class="标签 文件选择标签">
-          <span class="标签标题">选择背景图</span>
-          <input type="file" id="选择图像" class="文件选择框" accept="image/*" />
-        </label>
-        <label for="打卡地点" class="标签 文本输入标签">
-          <span class="标签标题">打卡地点</span>
-          <input type="text" id="打卡地点" class="文本输入框" placeholder="输入地址信息" size="50" />
-        </label>
-        <div class="按钮区">
-          <button class="按钮" id="生成截图" title="生成截图"><img src="./Images/截图.svg" alt="生成截图" /></button>
-        </div>
-      </div>
       <div class="结果区">
         <div class="生成区">
           <figure class="背景区"></figure>
@@ -70,6 +57,19 @@
               ><span style="margin-right: 4px">防伪</span><span class="防伪ID">1234567890ABCD</span></span
             >
           </div>
+        </div>
+      </div>
+      <div class="参数区">
+        <label for="选择图像" class="标签 文件选择标签">
+          <span class="标签标题">选择背景图</span>
+          <input type="file" id="选择图像" class="文件选择框" accept="image/*" />
+        </label>
+        <label for="打卡地点" class="标签 文本输入标签">
+          <span class="标签标题">打卡地点</span>
+          <input type="text" id="打卡地点" class="文本输入框" placeholder="输入地址信息" size="50" />
+        </label>
+        <div class="按钮区">
+          <button class="按钮" id="生成截图" title="生成截图"><img src="./Images/截图.svg" alt="生成截图" /></button>
         </div>
       </div>
     </div>

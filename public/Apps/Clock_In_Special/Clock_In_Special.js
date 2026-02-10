@@ -6,6 +6,7 @@ const 打卡标题区 = document.querySelector(".打卡标题区");
 const 打卡时间 = document.querySelector(".打卡时间");
 const 生成截图按钮 = document.getElementById("生成截图");
 const 生成区 = document.querySelector(".生成区");
+const 参数区 = document.querySelector(".参数区");
 const 打卡地点显示区 = document.querySelector(".打卡地点");
 const 打卡地点文本框 = document.getElementById("打卡地点");
 const 打卡日期 = document.querySelector(".打卡日期");
@@ -164,6 +165,44 @@ if (打卡地点文本框) {
   读取器.readAsDataURL(文件);
 });
 
+if (参数区) {
+  let 拖拽偏移X = 0;
+  let 拖拽偏移Y = 0;
+
+  const 在可拖拽区域 = (节点) =>
+    参数区.contains(节点) && !节点.closest(".标签") && !节点.closest(".按钮区");
+
+  参数区.addEventListener("mousedown", (e) => {
+    if (!在可拖拽区域(e.target)) return;
+    e.preventDefault();
+
+    const 区 = 参数区.getBoundingClientRect();
+    拖拽偏移X = e.clientX - 区.left;
+    拖拽偏移Y = e.clientY - 区.top;
+
+    const 总区 = 参数区.offsetParent;
+    if (!总区) return;
+
+    const onMove = (e) => {
+      const 总Rect = 总区.getBoundingClientRect();
+      const 边左 = 总Rect.left + 总区.clientLeft;
+      const 边上 = 总Rect.top + 总区.clientTop;
+      参数区.style.left = `${e.clientX - 拖拽偏移X - 边左}px`;
+      参数区.style.top = `${e.clientY - 拖拽偏移Y - 边上}px`;
+    };
+
+    const onUp = () => {
+      document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseup", onUp);
+      参数区.style.removeProperty("cursor");
+    };
+
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseup", onUp);
+    参数区.style.cursor = 'url("/Images/Common/鼠标-拖拽.cur"), grab';
+  });
+}
+
 const 创建截图模态 = () => {
   const 模态层 = document.createElement("div");
   模态层.className = "截图模态";
@@ -227,8 +266,6 @@ const 打开截图模态 = async () => {
     });
     图像容器.innerHTML = "";
     截图图像.classList.add("截图模态图像");
-    截图图像.style.width = "100%";
-    截图图像.style.height = "100%";
     图像容器.append(截图图像);
   } catch (错误) {
     图像容器.innerHTML = "";

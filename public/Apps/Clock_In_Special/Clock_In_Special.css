@@ -3,27 +3,38 @@
   width: clamp(800px, 100vw, 2400px);
   min-height: 100vh;
   margin: 0 auto;
-  padding: 65px 0 0 0;
+  padding: 50px 0 0 0;
   font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 20px;
   color: #e0e0e0;
 }
 
 .参数区 {
+  position: absolute;
+  top: 75px;
+  left: 25px;
   width: min(50%, 750px);
-  height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
   gap: 50px;
-  padding: 50px;
+  padding: 25px;
+  background-color: #000d;
+  border: solid 25px transparent;
+  backdrop-filter: blur(4px);
+  border-radius: 10px;
+}
+
+.参数区:not(:has(.标签:hover, .按钮区:hover)):hover {
+  cursor: url("/Images/Common/鼠标-拖拽.cur"), grab;
+  border: solid 25px #abca;
 }
 
 .生成区 {
-  aspect-ratio: 0.6667;
-  height: clamp(1080px, calc(100vh - 75px), 1280px);
+  width: fit-content;
+  height: fit-content;
   position: relative;
 }
 
@@ -38,26 +49,23 @@
 }
 
 .背景区 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  width: fit-content;
+  height: fit-content;
+  display: flex;
 }
 
 .背景区 > img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: calc(100vw - 50px);
+  max-height: calc(100vh - 75px);
+  object-fit: contain;
 }
 
 .文件选择标签,
 .文本输入标签 {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
   gap: 10px;
-  width: fit-content;
+  width: 100%;
 }
 
 .标签标题 {
@@ -294,6 +302,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  width: fit-content;
+  margin: 0 auto;
 }
 
 #生成截图 {
@@ -405,9 +415,8 @@
 }
 
 .截图模态图像容器 {
-  width: min(97.5vw, calc(97.5vh * 0.6667));
-  max-height: 97.5vh;
-  aspect-ratio: 0.6667;
+  width: fit-content;
+  height: fit-content;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -419,8 +428,8 @@
 }
 
 .截图模态图像 {
-  width: 100%;
-  height: 100%;
+  max-width: 97.5vw;
+  height: 97.5vh;
   object-fit: contain;
 }
 
