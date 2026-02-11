@@ -18,18 +18,32 @@ const 打卡地点存储键 = "Clock_In_Special_打卡地点";
 const 背景图存储键 = "Clock_In_Special_背景图";
 const 防伪字符表 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
+const 设置背景图尺寸 = (img) => {
+  if (!img || !img.naturalWidth || !img.naturalHeight) return;
+  const 比 = img.naturalWidth / img.naturalHeight;
+  img.style.maxWidth = "";
+  img.style.maxHeight = "";
+  img.style.width = "";
+  img.style.height = "";
+  if (比 < 1) {
+    img.style.maxWidth = "750px";
+    img.style.height = "auto";
+  } else {
+    img.style.maxHeight = "1200px";
+    img.style.width = "auto";
+  }
+};
+
 const 生成打卡时间 = (小时数, 分钟数) => {
   if (!打卡时间) {
     return;
   }
 
   const 当前时间 = new Date();
-  const 小时 = 小时数 != null && 分钟数 != null
-    ? String(小时数).padStart(2, "0")
-    : String(当前时间.getHours()).padStart(2, "0");
-  const 分钟 = 小时数 != null && 分钟数 != null
-    ? String(分钟数).padStart(2, "0")
-    : String(当前时间.getMinutes()).padStart(2, "0");
+  const 小时 =
+    小时数 != null && 分钟数 != null ? String(小时数).padStart(2, "0") : String(当前时间.getHours()).padStart(2, "0");
+  const 分钟 =
+    小时数 != null && 分钟数 != null ? String(分钟数).padStart(2, "0") : String(当前时间.getMinutes()).padStart(2, "0");
 
   打卡时间.innerHTML = "";
   if (打卡标题区) {
@@ -177,6 +191,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   背景区.innerHTML = "";
   背景区.append(图像元素);
+  图像元素.onload = () => 设置背景图尺寸(图像元素);
+  if (图像元素.complete) 设置背景图尺寸(图像元素);
 });
 
 if (打卡地点文本框) {
@@ -223,6 +239,7 @@ if (使用当前时间按钮 && 打卡时间输入) {
 
     背景区.innerHTML = "";
     背景区.append(图像元素);
+    图像元素.onload = () => 设置背景图尺寸(图像元素);
 
     sessionStorage.setItem(背景图存储键, 图像数据);
   };
@@ -234,8 +251,7 @@ if (参数区) {
   let 拖拽偏移X = 0;
   let 拖拽偏移Y = 0;
 
-  const 在可拖拽区域 = (节点) =>
-    参数区.contains(节点) && !节点.closest(".标签") && !节点.closest(".按钮区");
+  const 在可拖拽区域 = (节点) => 参数区.contains(节点) && !节点.closest(".标签") && !节点.closest(".按钮区");
 
   参数区.addEventListener("mousedown", (e) => {
     if (!在可拖拽区域(e.target)) return;

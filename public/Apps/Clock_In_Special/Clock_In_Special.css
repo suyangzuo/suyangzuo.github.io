@@ -19,10 +19,10 @@
   width: min(50%, 750px);
   display: flex;
   flex-direction: column;
-  gap: 50px;
-  padding: 10px 20px;
+  gap: 40px;
+  padding: 20px;
   background-color: #000d;
-  border: solid 25px transparent;
+  border: solid 15px transparent;
   backdrop-filter: blur(4px);
   border-radius: 10px;
 }
@@ -55,13 +55,22 @@
   height: 12px;
 }
 
+.日期时间与按钮行 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 100px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
 .日期时间行 {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   gap: 50px;
   width: fit-content;
-  margin: 0 auto;
 }
 
 .日期区,
@@ -193,8 +202,7 @@
 }
 
 .背景区 > img {
-  max-width: calc(100vw - 50px);
-  max-height: calc(100vh - 75px);
+  min-width: 600px;
   object-fit: contain;
 }
 
@@ -448,7 +456,6 @@ input[type="file"]::file-selector-button:hover {
   justify-content: center;
   align-items: center;
   width: fit-content;
-  margin: 0 auto;
 }
 
 #生成截图 {
