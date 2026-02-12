@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC&family=JetBrains+Mono:ital@0;1&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@300;400;500;600;700&family=JetBrains+Mono:ital@0;1&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
@@ -17,178 +17,253 @@
     <link rel="stylesheet" href="/Font-Awesome-Free/css/fontawesome.css" />
     <link rel="stylesheet" href="/Font-Awesome-Free/css/brands.css" />
     <link rel="stylesheet" href="/Font-Awesome-Free/css/solid.css" />
-    <link rel="stylesheet" href="./apps-index.css" />
-    <script src="/Scripts/lordicon.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="apps-index.css" />
     <script src="/Scripts/top-banner.js" defer></script>
+    <script src="apps.js" defer></script>
   </head>
   <body>
     <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
     <section class="app-banner">
-      <figure class="顶栏图片">
-        <img src="/Images/Apps/App-例图03.png" alt="App" />
-      </figure>
-      <div class="顶栏文字">
-        <p class="顶栏标题"><span style="margin-right: 10px">Web</span>应用实验室</p>
-        <h1 style="font-size: 6.5rem; translate: 0 -30px">发挥你的<span class="创意">创意</span></h1>
+      <div class="banner-head">
+        <p class="banner-label"><span class="banner-label-web">Web</span>应用实验室</p>
+        <h1 class="banner-title">发挥你的<span class="banner-title-accent">创意</span></h1>
+        <p class="banner-subtitle">探索我们精心打造的Web应用，从实用工具到创意项目，应有尽有</p>
+      </div>
+      <div class="banner-carousel" aria-label="应用卡片轮播">
+        <div class="箭头区">
+          <button class="箭头 箭头-左">
+            <img src="/Images/Common/箭头01-左.png" alt="左箭头" />
+          </button>
+          <button class="箭头 箭头-右">
+            <img src="/Images/Common/箭头01-右.png" alt="右箭头" />
+          </button>
+        </div>
+        <div class="banner-viewport"></div>
+        <div class="指示器区"></div>
       </div>
     </section>
     <section class="app-center">
-      <div class="app 密码生成器">
-        <h1 class="app-名称">密码生成器</h1>
-        <figure class="图片区">
-          <img src="/Images/Index-Images/密码.png" alt="密码" />
-        </figure>
-        <div class="app-access">
-          <a class="app-链接" type="button" target="_self" href="Password_Generator/"
-            >访问<i class="fa-solid fa-circle-arrow-right"></i
-          ></a>
-          <a class="app-作者" href="/Introduction/contributors.html#贡献者-01" title="作者：苏扬"
-            ><img src="/Images/Contributors/苏扬.jpg" alt="苏扬"
-          /></a>
-        </div>
+      <div class="section-header">
+        <h2>精选应用</h2>
+        <p>我们的应用实验室汇集了各种实用工具和创意项目，每一个都经过精心设计和开发</p>
       </div>
-      <div class="app 密码生成器">
-        <h1 class="app-名称">回复模拟器</h1>
-        <figure class="图片区">
-          <img src="/Images/Apps/回复模拟器.png" alt="回复模拟器" />
-        </figure>
-        <div class="app-access">
-          <a class="app-链接" type="button" target="_self" href="Class_Notification/"
-            >访问<i class="fa-solid fa-circle-arrow-right"></i
-          ></a>
-          <a class="app-作者" href="/Introduction/contributors.html#贡献者-01" title="作者：苏扬"
-            ><img src="/Images/Contributors/苏扬.jpg" alt="苏扬"
-          /></a>
+      <div class="app-grid">
+        <div class="app-card 密码生成器">
+          <div class="image-container">
+            <img src="/Images/Index-Images/密码.png" alt="密码生成器" />
+          </div>
+          <div class="card-content">
+            <h3 class="app-name">密码生成器</h3>
+            <p class="app-description">
+              安全、强大的密码生成工具，支持自定义长度和字符类型，帮助你创建难以破解的密码。
+            </p>
+            <div class="app-access">
+              <a class="app-link" type="button" target="_self" href="Password_Generator/">
+                访问<i class="fa-solid fa-arrow-right"></i>
+              </a>
+              <div class="app-author">
+                <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+                <span class="author-name">苏扬</span>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="app 快捷键测试器">
-        <h1 class="app-名称">快捷键测试器</h1>
-        <figure class="图片区">
-          <img src="/Images/Apps/快捷键测试器.png" alt="快捷键测试器" />
-        </figure>
-        <div class="app-access">
-          <a class="app-链接" type="button" target="_self" href="ShortcutTester/"
-            >访问<i class="fa-solid fa-circle-arrow-right"></i
-          ></a>
-          <a class="app-作者" href="/Introduction/contributors.html#贡献者-01" title="作者：苏扬"
-            ><img src="/Images/Contributors/苏扬.jpg" alt="苏扬"
-          /></a>
+        <div class="app-card 回复模拟器">
+          <div class="image-container">
+            <img src="/Images/Apps/回复模拟器.png" alt="回复模拟器" />
+          </div>
+          <div class="card-content">
+            <h3 class="app-name">回复模拟器</h3>
+            <p class="app-description">模拟社交媒体回复界面，让你可以预览和设计各种回复效果，提升你的内容创作体验。</p>
+            <div class="app-access">
+              <a class="app-link" type="button" target="_self" href="Class_Notification/">
+                访问<i class="fa-solid fa-arrow-right"></i>
+              </a>
+              <div class="app-author">
+                <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+                <span class="author-name">苏扬</span>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="app 快捷键测试器">
-        <h1 class="app-名称">课程表</h1>
-        <figure class="图片区">
-          <img src="/Images/Apps/课程表.png" alt="课程表" />
-        </figure>
-        <div class="app-access">
-          <a class="app-链接" type="button" target="_self" href="schedule/"
-            >访问<i class="fa-solid fa-circle-arrow-right"></i
-          ></a>
-          <a class="app-作者" href="/Introduction/contributors.html#贡献者-01" title="作者：凌子轩"
-            ><img src="/Images/Contributors/凌子轩.jpg" alt="凌子轩"
-          /></a>
+        <div class="app-card 快捷键测试器">
+          <div class="image-container">
+            <img src="/Images/Apps/快捷键测试器.png" alt="快捷键测试器" />
+          </div>
+          <div class="card-content">
+            <h3 class="app-name">快捷键测试器</h3>
+            <p class="app-description">测试和记录键盘快捷键的工具，帮助开发者和用户了解各种应用程序的快捷键设置。</p>
+            <div class="app-access">
+              <a class="app-link" type="button" target="_self" href="ShortcutTester/">
+                访问<i class="fa-solid fa-arrow-right"></i>
+              </a>
+              <div class="app-author">
+                <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+                <span class="author-name">苏扬</span>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="app 快乐大转盘">
-        <h1 class="app-名称">快乐大转盘</h1>
-        <figure class="图片区">
-          <img src="/Images/Apps/快乐大转盘.png" alt="快乐大转盘" />
-        </figure>
-        <div class="app-access">
-          <a class="app-链接" type="button" target="_self" href="Wheel_of_Fortune/"
-            >访问<i class="fa-solid fa-circle-arrow-right"></i
-          ></a>
-          <a class="app-作者" href="/Introduction/contributors.html#贡献者-01" title="作者：苏扬"
-            ><img src="/Images/Contributors/苏扬.jpg" alt="苏扬"
-          /></a>
+        <div class="app-card 课程表">
+          <div class="image-container">
+            <img src="/Images/Apps/课程表.png" alt="课程表" />
+          </div>
+          <div class="card-content">
+            <h3 class="app-name">课程表</h3>
+            <p class="app-description">
+              美观实用的课程表管理工具，帮助学生和教师轻松管理课程安排，支持自定义时间段和课程信息。
+            </p>
+            <div class="app-access">
+              <a class="app-link" type="button" target="_self" href="schedule/">
+                访问<i class="fa-solid fa-arrow-right"></i>
+              </a>
+              <div class="app-author">
+                <img src="/Images/Contributors/凌子轩.jpg" alt="凌子轩" />
+                <span class="author-name">凌子轩</span>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="app 十指禅">
-        <h1 class="app-名称">十指禅</h1>
-        <figure class="图片区">
-          <img src="/Images/Apps/十指禅.png" alt="十指禅" />
-        </figure>
-        <div class="app-access">
-          <a class="app-链接" type="button" target="_self" href="Ten_Fingers/"
-            >访问<i class="fa-solid fa-circle-arrow-right"></i
-          ></a>
-          <a class="app-作者" href="/Introduction/contributors.html#贡献者-01" title="作者：苏扬"
-            ><img src="/Images/Contributors/苏扬.jpg" alt="苏扬"
-          /></a>
+        <div class="app-card 快乐大转盘">
+          <div class="image-container">
+            <img src="/Images/Apps/快乐大转盘.png" alt="快乐大转盘" />
+          </div>
+          <div class="card-content">
+            <h3 class="app-name">快乐大转盘</h3>
+            <p class="app-description">有趣的随机选择工具，支持自定义选项和概率，适用于游戏、抽奖、决策等各种场景。</p>
+            <div class="app-access">
+              <a class="app-link" type="button" target="_self" href="Wheel_of_Fortune/">
+                访问<i class="fa-solid fa-arrow-right"></i>
+              </a>
+              <div class="app-author">
+                <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+                <span class="author-name">苏扬</span>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="app 随心绘">
-        <h1 class="app-名称">随心绘</h1>
-        <figure class="图片区">
-          <img src="/Images/Apps/笔刷.png" alt="随心绘" />
-        </figure>
-        <div class="app-access">
-          <a class="app-链接" type="button" target="_self" href="Painter/"
-            >访问<i class="fa-solid fa-circle-arrow-right"></i
-          ></a>
-          <a class="app-作者" href="/Introduction/contributors.html#贡献者-01" title="作者：苏扬"
-            ><img src="/Images/Contributors/苏扬.jpg" alt="苏扬"
-          /></a>
+        <div class="app-card 十指禅">
+          <div class="image-container">
+            <img src="/Images/Apps/十指禅.png" alt="十指禅" />
+          </div>
+          <div class="card-content">
+            <h3 class="app-name">十指禅</h3>
+            <p class="app-description">
+              手指灵活性训练工具，通过游戏化的方式帮助你提高手指协调性和反应速度，适合钢琴练习者和打字爱好者。
+            </p>
+            <div class="app-access">
+              <a class="app-link" type="button" target="_self" href="Ten_Fingers/">
+                访问<i class="fa-solid fa-arrow-right"></i>
+              </a>
+              <div class="app-author">
+                <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+                <span class="author-name">苏扬</span>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="app BASE64">
-        <h1 class="app-名称">图文编解码</h1>
-        <figure class="图片区">
-          <img src="/Images/Apps/图片编解码.png" alt="图片编解码" />
-        </figure>
-        <div class="app-access">
-          <a class="app-链接" type="button" target="_self" href="BASE64_Encoder/"
-            >访问<i class="fa-solid fa-circle-arrow-right"></i
-          ></a>
-          <a class="app-作者" href="/Introduction/contributors.html#贡献者-05" title="作者：杜宗远"
-            ><img src="/Images/Contributors/杜宗远.jpg" alt="杜宗远"
-          /></a>
+        <div class="app-card 随心绘">
+          <div class="image-container">
+            <img src="/Images/Apps/笔刷.png" alt="随心绘" />
+          </div>
+          <div class="card-content">
+            <h3 class="app-name">随心绘</h3>
+            <p class="app-description">
+              简单易用的在线绘图工具，支持多种笔刷和颜色，让你随时随地释放创意，创作属于自己的艺术作品。
+            </p>
+            <div class="app-access">
+              <a class="app-link" type="button" target="_self" href="Painter/">
+                访问<i class="fa-solid fa-arrow-right"></i>
+              </a>
+              <div class="app-author">
+                <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+                <span class="author-name">苏扬</span>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="app 虚拟老师">
-        <h1 class="app-名称">虚拟老师</h1>
-        <figure class="图片区">
-          <img src="/Images/Apps/虚拟老师.png" alt="虚拟老师" />
-        </figure>
-        <div class="app-access">
-          <a class="app-链接" type="button" target="_self" href="VirtualTeacher/"
-            >访问<i class="fa-solid fa-circle-arrow-right"></i
-          ></a>
-          <a class="app-作者" href="/Introduction/contributors.html#贡献者-05" title="作者：杜宗远"
-            ><img src="/Images/Contributors/杜宗远.jpg" alt="杜宗远"
-          /></a>
+        <div class="app-card 图文编解码">
+          <div class="image-container">
+            <img src="/Images/Apps/图片编解码.png" alt="图文编解码" />
+          </div>
+          <div class="card-content">
+            <h3 class="app-name">图文编解码</h3>
+            <p class="app-description">
+              强大的BASE64编解码工具，支持图片和文本的相互转换，方便你在网页和应用中处理数据。
+            </p>
+            <div class="app-access">
+              <a class="app-link" type="button" target="_self" href="BASE64_Encoder/">
+                访问<i class="fa-solid fa-arrow-right"></i>
+              </a>
+              <div class="app-author">
+                <img src="/Images/Contributors/杜宗远.jpg" alt="杜宗远" />
+                <span class="author-name">杜宗远</span>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="app ASS字幕解析器">
-        <h1 class="app-名称">ASS 字幕解析器</h1>
-        <figure class="图片区">
-          <img src="/Images/Apps/ASS字幕.png" alt="随心绘" />
-        </figure>
-        <div class="app-access">
-          <a class="app-链接" type="button" target="_self" href="ASS_Subtitle/"
-            >访问<i class="fa-solid fa-circle-arrow-right"></i
-          ></a>
-          <a class="app-作者" href="/Introduction/contributors.html#贡献者-01" title="作者：苏扬"
-            ><img src="/Images/Contributors/苏扬.jpg" alt="苏扬"
-          /></a>
+        <div class="app-card 虚拟老师">
+          <div class="image-container">
+            <img src="/Images/Apps/虚拟老师.png" alt="虚拟老师" />
+          </div>
+          <div class="card-content">
+            <h3 class="app-name">虚拟老师</h3>
+            <p class="app-description">
+              交互式学习助手，通过虚拟老师形象提供各种知识讲解和学习指导，让学习变得更加生动有趣。
+            </p>
+            <div class="app-access">
+              <a class="app-link" type="button" target="_self" href="VirtualTeacher/">
+                访问<i class="fa-solid fa-arrow-right"></i>
+              </a>
+              <div class="app-author">
+                <img src="/Images/Contributors/杜宗远.jpg" alt="杜宗远" />
+                <span class="author-name">杜宗远</span>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="app 专用打卡器">
-        <h1 class="app-名称">专用打卡器</h1>
-        <figure class="图片区">
-          <img src="/Images/Apps/专用打卡器.jpg" alt="专用打卡器" />
-        </figure>
-        <div class="app-access">
-          <a class="app-链接" type="button" target="_self" href="Clock_In_Special/"
-            >访问<i class="fa-solid fa-circle-arrow-right"></i
-          ></a>
-          <a class="app-作者" href="/Introduction/contributors.html#贡献者-01" title="作者：苏扬"
-            ><img src="/Images/Contributors/苏扬.jpg" alt="苏扬"
-          /></a>
+        <div class="app-card ASS字幕解析器">
+          <div class="image-container">
+            <img src="/Images/Apps/ASS字幕.png" alt="ASS字幕解析器" />
+          </div>
+          <div class="card-content">
+            <h3 class="app-name">ASS 字幕解析器</h3>
+            <p class="app-description">
+              专业的ASS字幕文件解析工具，支持预览字幕效果、编辑字幕内容，是视频创作者的得力助手。
+            </p>
+            <div class="app-access">
+              <a class="app-link" type="button" target="_self" href="ASS_Subtitle/">
+                访问<i class="fa-solid fa-arrow-right"></i>
+              </a>
+              <div class="app-author">
+                <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+                <span class="author-name">苏扬</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="app-card 专用打卡器">
+          <div class="image-container">
+            <img src="/Images/Apps/专用打卡器.jpg" alt="专用打卡器" />
+          </div>
+          <div class="card-content">
+            <h3 class="app-name">专用打卡器</h3>
+            <p class="app-description">
+              简洁高效的打卡工具，支持自定义打卡项目和时间，帮助你养成良好的习惯和时间管理能力。
+            </p>
+            <div class="app-access">
+              <a class="app-link" type="button" target="_self" href="Clock_In_Special/">
+                访问<i class="fa-solid fa-arrow-right"></i>
+              </a>
+              <div class="app-author">
+                <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+                <span class="author-name">苏扬</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
     <script src="../Scripts/html-include.js" target="../bottom-banner.html" position="beforeend"></script>
-    <script src="/Apps/apps.js"></script>
   </body>
 </html>
