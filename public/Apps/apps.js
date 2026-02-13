@@ -1,4 +1,6 @@
-const 卡片间距 = 100;
+const root = document.documentElement;
+const rootStyle = window.getComputedStyle(root);
+const 卡片间距 = parseInt(rootStyle.getPropertyValue("--轮播图卡片间距"), 10);
 const 卡片组 = document.querySelectorAll(".app-card");
 const 卡片数量 = 卡片组.length;
 const 轮播图视口 = document.querySelector(".banner-viewport");
@@ -82,6 +84,14 @@ const 轮播卡片容器组 = document.querySelectorAll(".轮播卡片容器");
 const 左箭头 = document.querySelector(".箭头-左");
 const 右箭头 = document.querySelector(".箭头-右");
 
+function 初始化箭头位置() {
+  const 指示器宽度 = 指示器区.offsetWidth;
+  左箭头.style.translate = `calc(${-指示器宽度 / 2 - 65}px) 70px`;
+  右箭头.style.translate = `calc(${指示器宽度 / 2 + 65}px) 70px`;
+}
+
+初始化箭头位置();
+
 function 滚动到卡片(index) {
   轮播图视口.style.translate = `calc(${-index * 100}% - ${卡片间距 * index}px) 0`;
   轮播图视口.style.transition = "0.25s ease-out";
@@ -100,17 +110,19 @@ function 滚动到卡片(index) {
   当前索引 = index;
 }
 
-function 卡片初始化() {
+function 卡片克隆初始化() {
   const 轮播卡片容器组 = document.querySelectorAll(".轮播卡片容器");
   const 首卡片克隆 = 轮播卡片容器组[0].cloneNode(true);
+  const 第二卡片克隆 = 轮播卡片容器组[1].cloneNode(true);
   const 尾卡片克隆 = 轮播卡片容器组[卡片数量 - 1].cloneNode(true);
-  轮播图视口.appendChild(首卡片克隆);
-  轮播卡片容器组[0].before(尾卡片克隆);
-  尾卡片克隆.style.marginLeft = `calc(-100% - ${卡片间距}px)`;
+  const 倒二卡片克隆 = 轮播卡片容器组[卡片数量 - 2].cloneNode(true);
+  轮播图视口.append(首卡片克隆, 第二卡片克隆);
+  轮播图视口.prepend(倒二卡片克隆, 尾卡片克隆);
+  倒二卡片克隆.style.marginLeft = `calc(-200% - ${卡片间距 * 2}px)`;
   首卡片克隆.classList.remove("当前卡片");
 }
 
-卡片初始化();
+卡片克隆初始化();
 
 指示器组.forEach((指示器, i) => {
   指示器.addEventListener("click", () => {
