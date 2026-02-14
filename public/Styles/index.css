@@ -393,8 +393,10 @@ html {
 }
 
 .hero--dash .hero__inner {
+  height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
   align-items: center;
   text-align: center;
 }
@@ -458,15 +460,13 @@ html {
 
 .hero--dash .hero__head {
   position: relative;
-  margin-bottom: 48px;
   flex-shrink: 0;
   padding: 32px 28px 36px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 16px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 50%, transparent 100%);
   box-shadow:
     0 0 0 1px rgba(139, 92, 246, 0.08),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.04);
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
 }
 
 /* 四角装饰 L 形 */
@@ -520,7 +520,6 @@ html {
   flex-wrap: wrap;
   justify-content: center;
   gap: 8px 14px;
-  margin-bottom: 50px;
 }
 
 .hero__tech-badges span {
@@ -601,13 +600,12 @@ html {
   align-items: center;
   text-align: left;
   width: 100%;
-  gap: 0;
+  gap: 50px;
 }
 
 /* 突出：整体包含元素（无背景） */
 .hero__modules-featured-wrap {
   width: 100%;
-  margin-bottom: 24px;
 }
 
 .hero__modules-featured {
@@ -640,7 +638,6 @@ html {
   align-items: center;
   gap: 12px;
   width: clamp(500px, 75vw, 1500px);
-  margin-top: 7.5vh;
   overflow-x: auto;
   padding: 4px 0;
   -webkit-overflow-scrolling: touch;
