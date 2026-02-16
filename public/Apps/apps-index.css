@@ -257,7 +257,6 @@ body {
   display: flex;
   flex-direction: column;
   backdrop-filter: blur(12px);
-  border: 2px solid rgba(255, 255, 255, 0.06);
   border-radius: 24px;
   overflow: hidden;
   filter: brightness(50%);
@@ -265,9 +264,9 @@ body {
   scale: 0.8;
   box-shadow:
     0 1px 3px rgba(0, 0, 0, 0.12),
-    0 8px 16px rgba(0, 0, 0, 0.16),
-    0 32px 64px rgba(0, 0, 0, 0.2);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    0 8px 16px rgba(0, 0, 0, 0.35),
+    0 32px 64px rgba(0, 0, 0, 0.25);
+  transition: all 0.35s ease-out;
   position: relative;
 }
 
@@ -283,7 +282,7 @@ body {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(129, 140, 248, 0.4), transparent);
+  background: linear-gradient(90deg, transparent, rgba(129, 140, 248, 0.75), transparent);
 }
 
 .轮播卡片容器:hover {
@@ -293,7 +292,6 @@ body {
     0 12px 24px rgba(0, 0, 0, 0.18),
     0 48px 96px rgba(0, 0, 0, 0.24),
     0 0 60px -20px rgba(129, 140, 248, 0.15);
-  border-color: rgba(129, 140, 248, 0.75);
 }
 
 .轮播图卡片图容器 {
