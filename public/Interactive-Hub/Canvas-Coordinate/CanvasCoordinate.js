@@ -6,7 +6,7 @@ class 坐标系教程 {
     this.canvas.width = this.canvas.offsetWidth * this.dpr;
     this.canvas.height = this.canvas.offsetHeight * this.dpr;
     this.ctx.scale(this.dpr, this.dpr);
-    this.颜色 = { 小数点: "gray", 全局对象: "#6cf", 坐标字母: "#ed8937" };
+    this.颜色 = { 小数点: "gray", 全局对象: "#6cf", 坐标字母: "#ed8937", 负号: "#ff6b6b" };
     this.重置按钮 = document.querySelector(".重置按钮");
     this.重置按钮.addEventListener("click", () => this.重置());
     this.复选框 = {
@@ -77,8 +77,8 @@ class 坐标系教程 {
       观察点坐标: true,
       坐标转换过程: false,
     };
-    this.从SessionStorage加载复选框状态();
-    this.从SessionStorage加载观察点位置();
+    this.从LocalStorage加载复选框状态();
+    this.从LocalStorage加载观察点位置();
     this.从LocalStorage加载坐标系选择();
     this.从LocalStorage加载矩形状态();
     this.从LocalStorage加载观察点坐标状态();
@@ -136,17 +136,17 @@ class 坐标系教程 {
     });
     this.复选框.鼠标坐标参考线.addEventListener("change", () => {
       this.显示选项.鼠标坐标参考线 = this.复选框.鼠标坐标参考线.checked;
-      this.保存复选框状态到SessionStorage();
+      this.保存复选框状态到LocalStorage();
       this.绘制场景();
     });
     this.复选框.鼠标坐标.addEventListener("change", () => {
       this.显示选项.鼠标坐标 = this.复选框.鼠标坐标.checked;
-      this.保存复选框状态到SessionStorage();
+      this.保存复选框状态到LocalStorage();
       this.绘制场景();
     });
     this.复选框.鼠标坐标背景.addEventListener("change", () => {
       this.显示选项.鼠标坐标背景 = this.复选框.鼠标坐标背景.checked;
-      this.保存复选框状态到SessionStorage();
+      this.保存复选框状态到LocalStorage();
       this.绘制场景();
     });
     this.复选框.坐标系选择.addEventListener("change", () => {
@@ -162,14 +162,14 @@ class 坐标系教程 {
     });
     this.复选框.坐标转换过程.addEventListener("change", () => {
       this.显示选项.坐标转换过程 = this.复选框.坐标转换过程.checked;
-      this.保存复选框状态到SessionStorage();
+      this.保存复选框状态到LocalStorage();
       this.绘制场景();
     });
   }
 
-  从SessionStorage加载复选框状态() {
+  从LocalStorage加载复选框状态() {
     try {
-      const 保存的状态 = sessionStorage.getItem("canvasCoordinateCheckboxStates");
+      const 保存的状态 = localStorage.getItem("canvasCoordinateCheckboxStates");
       if (保存的状态) {
         const 解析状态 = JSON.parse(保存的状态);
         if (解析状态.鼠标坐标参考线 !== undefined) {
@@ -186,11 +186,11 @@ class 坐标系教程 {
         }
       }
     } catch (e) {
-      console.error("加载sessionStorage状态失败:", e);
+      console.error("加载localStorage状态失败:", e);
     }
   }
 
-  保存复选框状态到SessionStorage() {
+  保存复选框状态到LocalStorage() {
     try {
       const 要保存的状态 = {
         鼠标坐标参考线: this.显示选项.鼠标坐标参考线,
@@ -198,15 +198,15 @@ class 坐标系教程 {
         鼠标坐标背景: this.显示选项.鼠标坐标背景,
         坐标转换过程: this.显示选项.坐标转换过程,
       };
-      sessionStorage.setItem("canvasCoordinateCheckboxStates", JSON.stringify(要保存的状态));
+      localStorage.setItem("canvasCoordinateCheckboxStates", JSON.stringify(要保存的状态));
     } catch (e) {
-      console.error("保存到sessionStorage失败:", e);
+      console.error("保存到localStorage失败:", e);
     }
   }
 
-  从SessionStorage加载观察点位置() {
+  从LocalStorage加载观察点位置() {
     try {
-      const 保存的位置 = sessionStorage.getItem("canvasCoordinate观察点位置");
+      const 保存的位置 = localStorage.getItem("canvasCoordinate观察点位置");
       if (保存的位置) {
         const 解析位置 = JSON.parse(保存的位置);
         if (解析位置.x !== undefined) {
@@ -221,13 +221,13 @@ class 坐标系教程 {
     }
   }
 
-  保存观察点位置到SessionStorage() {
+  保存观察点位置到LocalStorage() {
     try {
       const 要保存的位置 = {
         x: this.观察点.x,
         y: this.观察点.y,
       };
-      sessionStorage.setItem("canvasCoordinate观察点位置", JSON.stringify(要保存的位置));
+      localStorage.setItem("canvasCoordinate观察点位置", JSON.stringify(要保存的位置));
     } catch (e) {
       console.error("保存观察点位置失败:", e);
     }
@@ -495,6 +495,7 @@ class 坐标系教程 {
     if (到观察点距离 <= this.观察点.半径 + 8) {
       this.canvas.style.cursor = 'url("/Images/Common/鼠标-移动.cur"), move';
       this.交互状态.观察点悬停 = true;
+      this.交互状态.鼠标已悬停 = false;
       this.交互状态.悬停状态.角点 = null;
       this.交互状态.悬停状态.边缘 = null;
       this.交互状态.悬停状态.旋转句柄 = false;
@@ -817,7 +818,7 @@ class 坐标系教程 {
       y: 中心Y + 局部X * Math.sin(角度) + 局部Y * Math.cos(角度),
     };
   }
-  
+
   鼠标释放() {
     this.交互状态.正在拖动 = false;
     this.交互状态.正在缩放 = false;
@@ -832,7 +833,7 @@ class 坐标系教程 {
   处理观察点拖动(鼠标位置) {
     this.观察点.x = 鼠标位置.x - this.交互状态.观察点拖动偏移.x;
     this.观察点.y = 鼠标位置.y - this.交互状态.观察点拖动偏移.y;
-    this.保存观察点位置到SessionStorage();
+    this.保存观察点位置到LocalStorage();
   }
 
   获取控制区位置() {
@@ -975,7 +976,7 @@ class 坐标系教程 {
       this.观察点.x = 世界X;
       this.观察点.y = 世界Y;
     }
-    this.保存观察点位置到SessionStorage();
+    this.保存观察点位置到LocalStorage();
   }
 
   开始快速增减(按钮类型) {
@@ -1383,7 +1384,8 @@ class 坐标系教程 {
       const 逗号空格宽度 = this.ctx.measureText(", ").width;
       const 世界总宽度 = xy宽度 + 冒号空格宽度 + 世界x坐标值宽度 + 逗号空格宽度 + 世界y坐标值宽度;
       const 局部总宽度 = xy宽度 + 冒号空格宽度 + 局部x坐标值宽度 + 逗号空格宽度 + 局部y坐标值宽度;
-      const 最大内容宽度 = Math.max(世界总宽度, 局部总宽度);
+      // const 最大内容宽度 = Math.max(世界总宽度, 局部总宽度);
+      const 最大内容宽度 = 177;
       if (x <= 最大内容宽度 / 2 + 15) {
         x = 最大内容宽度 / 2 + 15;
       } else if (x >= this.canvas.offsetWidth - 最大内容宽度 / 2 - 25) {
@@ -1397,52 +1399,77 @@ class 坐标系教程 {
       if (this.显示选项.鼠标坐标背景) {
         this.ctx.beginPath();
         this.ctx.fillStyle = "#000a";
-        this.ctx.roundRect(x - 最大内容宽度 / 2 - 15, y + 鼠标与文本距离 - 15, 最大内容宽度 + 30, 行距 * 2 + 24, [8]);
+        this.ctx.roundRect(x - 最大内容宽度 / 2 - 15, y + 鼠标与文本距离 - 15, 最大内容宽度 + 30, 行距 * 2 + 12, [8]);
         this.ctx.fill();
       }
-      const 世界坐标垂直坐标 = y + 鼠标与文本距离;
+      const 世界坐标垂直坐标 = y + 鼠标与文本距离 - 5;
+      const 文本起始X = x - 最大内容宽度 / 2 - 7;
       this.ctx.fillStyle = "silver";
-      this.ctx.fillText("世界坐标", x - 最大内容宽度 / 2, 世界坐标垂直坐标);
+      this.ctx.fillText("世界坐标", 文本起始X, 世界坐标垂直坐标);
       this.ctx.fillStyle = 符号颜色;
-      this.ctx.fillText(": ", x - 最大内容宽度 / 2 + xy宽度, 世界坐标垂直坐标);
-      // 世界X（逐字符绘制，小数点灰色）
-      let 当前X = x - 最大内容宽度 / 2 + xy宽度 + 冒号空格宽度;
+      this.ctx.fillText(": ", 文本起始X + xy宽度, 世界坐标垂直坐标);
+      // 世界X（逐字符绘制，小数点灰色，负号红色）
+      let 当前X = 文本起始X + xy宽度 + 冒号空格宽度;
       for (let i = 0; i < 世界x显示文本.length; i++) {
         const 字符 = 世界x显示文本[i];
-        this.ctx.fillStyle = 字符 === "." ? this.颜色.小数点 : "lightskyblue";
+        if (字符 === "-") {
+          this.ctx.fillStyle = "#ff5722";
+        } else if (字符 === ".") {
+          this.ctx.fillStyle = this.颜色.小数点;
+        } else {
+          this.ctx.fillStyle = "lightskyblue";
+        }
         this.ctx.fillText(字符, 当前X, 世界坐标垂直坐标);
         当前X += this.ctx.measureText(字符).width;
       }
-      this.ctx.fillStyle = 符号颜色;
-      this.ctx.fillText(", ", x - 最大内容宽度 / 2 + xy宽度 + 冒号空格宽度 + 世界x坐标值宽度, 世界坐标垂直坐标);
-      // 世界Y（逐字符绘制，小数点灰色）
-      当前X = x - 最大内容宽度 / 2 + xy宽度 + 冒号空格宽度 + 世界x坐标值宽度 + 逗号空格宽度;
+      this.ctx.fillStyle = "#999";
+      this.ctx.fillText(", ", 文本起始X + xy宽度 + 冒号空格宽度 + 世界x坐标值宽度, 世界坐标垂直坐标);
+      // 世界Y（逐字符绘制，小数点灰色，负号红色）
+      当前X = 文本起始X + xy宽度 + 冒号空格宽度 + 世界x坐标值宽度 + 逗号空格宽度;
       for (let i = 0; i < 世界y显示文本.length; i++) {
         const 字符 = 世界y显示文本[i];
-        this.ctx.fillStyle = 字符 === "." ? this.颜色.小数点 : "lightskyblue";
+        if (字符 === "-") {
+          this.ctx.fillStyle = "#ff5722";
+        } else if (字符 === ".") {
+          this.ctx.fillStyle = this.颜色.小数点;
+        } else {
+          this.ctx.fillStyle = "lightskyblue";
+        }
         this.ctx.fillText(字符, 当前X, 世界坐标垂直坐标);
         当前X += this.ctx.measureText(字符).width;
       }
-      const 局部坐标垂直坐标 = y + 鼠标与文本距离 + 行距;
+      const 局部坐标垂直坐标 = y + 鼠标与文本距离 + 行距 - 5;
       this.ctx.fillStyle = "silver";
-      this.ctx.fillText("局部坐标", x - 最大内容宽度 / 2, 局部坐标垂直坐标);
+      this.ctx.fillText("局部坐标", 文本起始X, 局部坐标垂直坐标);
       this.ctx.fillStyle = 符号颜色;
-      this.ctx.fillText(": ", x - 最大内容宽度 / 2 + xy宽度, 局部坐标垂直坐标);
-      // 局部X
-      当前X = x - 最大内容宽度 / 2 + xy宽度 + 冒号空格宽度;
+      this.ctx.fillText(": ", 文本起始X + xy宽度, 局部坐标垂直坐标);
+      // 局部X（逐字符绘制，小数点灰色，负号红色）
+      当前X = 文本起始X + xy宽度 + 冒号空格宽度;
       for (let i = 0; i < 局部x显示文本.length; i++) {
         const 字符 = 局部x显示文本[i];
-        this.ctx.fillStyle = 字符 === "." ? this.颜色.小数点 : "#ff5722";
+        if (字符 === "-") {
+          this.ctx.fillStyle = "#ff5722";
+        } else if (字符 === ".") {
+          this.ctx.fillStyle = this.颜色.小数点;
+        } else {
+          this.ctx.fillStyle = "rgba(51, 186, 127, 1)";
+        }
         this.ctx.fillText(字符, 当前X, 局部坐标垂直坐标);
         当前X += this.ctx.measureText(字符).width;
       }
-      this.ctx.fillStyle = 符号颜色;
-      this.ctx.fillText(", ", x - 最大内容宽度 / 2 + xy宽度 + 冒号空格宽度 + 局部x坐标值宽度, 局部坐标垂直坐标);
-      // 局部Y
-      当前X = x - 最大内容宽度 / 2 + xy宽度 + 冒号空格宽度 + 局部x坐标值宽度 + 逗号空格宽度;
+      this.ctx.fillStyle = "#999";
+      this.ctx.fillText(", ", 文本起始X + xy宽度 + 冒号空格宽度 + 局部x坐标值宽度, 局部坐标垂直坐标);
+      // 局部Y（逐字符绘制，小数点灰色，负号红色）
+      当前X = 文本起始X + xy宽度 + 冒号空格宽度 + 局部x坐标值宽度 + 逗号空格宽度;
       for (let i = 0; i < 局部y显示文本.length; i++) {
         const 字符 = 局部y显示文本[i];
-        this.ctx.fillStyle = 字符 === "." ? this.颜色.小数点 : "#ff5722";
+        if (字符 === "-") {
+          this.ctx.fillStyle = "#ff5722";
+        } else if (字符 === ".") {
+          this.ctx.fillStyle = this.颜色.小数点;
+        } else {
+          this.ctx.fillStyle = "rgba(51, 186, 127, 1)";
+        }
         this.ctx.fillText(字符, 当前X, 局部坐标垂直坐标);
         当前X += this.ctx.measureText(字符).width;
       }
@@ -1454,7 +1481,7 @@ class 坐标系教程 {
     }
     this.ctx.restore();
   }
-  
+
   绘制坐标参考线() {
     if (!this.复选框.鼠标坐标参考线.checked) return;
     if (this.鼠标坐标.x === null || this.鼠标坐标.y === null) return;
@@ -1577,7 +1604,7 @@ class 坐标系教程 {
       局部文本宽度 + 1 + y文本宽度,
     );
     const 最大数值宽度 = Math.max(世界x值文本宽度, 世界y值文本宽度, 局部x值文本宽度, 局部y值文本宽度);
-    const 总文本宽度 = 最大标签宽度 + 2 + 冒号宽度 + 4 + 最大数值宽度;
+    const 总文本宽度 = Math.max(111, 最大标签宽度 + 2 + 冒号宽度 + 4 + 最大数值宽度);
 
     const 行高 = 18;
     const 间距 = 10;
@@ -1654,7 +1681,13 @@ class 坐标系教程 {
     let 数字X = 当前X + 4;
     for (let i = 0; i < 局部x值文本.length; i++) {
       const 字符 = 局部x值文本[i];
-      this.ctx.fillStyle = 字符 === "." ? this.颜色.小数点 : 局部数值颜色;
+      if (字符 === "-") {
+        this.ctx.fillStyle = this.颜色.负号;
+      } else if (字符 === ".") {
+        this.ctx.fillStyle = this.颜色.小数点;
+      } else {
+        this.ctx.fillStyle = 局部数值颜色;
+      }
       this.ctx.fillText(字符, 数字X, 当前Y);
       数字X += this.ctx.measureText(字符).width;
     }
@@ -1675,7 +1708,13 @@ class 坐标系教程 {
     数字X = 当前X + 4;
     for (let i = 0; i < 局部y值文本.length; i++) {
       const 字符 = 局部y值文本[i];
-      this.ctx.fillStyle = 字符 === "." ? this.颜色.小数点 : 局部数值颜色;
+      if (字符 === "-") {
+        this.ctx.fillStyle = this.颜色.负号;
+      } else if (字符 === ".") {
+        this.ctx.fillStyle = this.颜色.小数点;
+      } else {
+        this.ctx.fillStyle = 局部数值颜色;
+      }
       this.ctx.fillText(字符, 数字X, 当前Y);
       数字X += this.ctx.measureText(字符).width;
     }
@@ -1698,7 +1737,13 @@ class 坐标系教程 {
     数字X = 当前X + 4;
     for (let i = 0; i < 世界x值文本.length; i++) {
       const 字符 = 世界x值文本[i];
-      this.ctx.fillStyle = 字符 === "." ? this.颜色.小数点 : 世界数值颜色;
+      if (字符 === "-") {
+        this.ctx.fillStyle = this.颜色.负号;
+      } else if (字符 === ".") {
+        this.ctx.fillStyle = this.颜色.小数点;
+      } else {
+        this.ctx.fillStyle = 世界数值颜色;
+      }
       this.ctx.fillText(字符, 数字X, 当前Y);
       数字X += this.ctx.measureText(字符).width;
     }
@@ -1719,7 +1764,13 @@ class 坐标系教程 {
     数字X = 当前X + 4;
     for (let i = 0; i < 世界y值文本.length; i++) {
       const 字符 = 世界y值文本[i];
-      this.ctx.fillStyle = 字符 === "." ? this.颜色.小数点 : 世界数值颜色;
+      if (字符 === "-") {
+        this.ctx.fillStyle = this.颜色.负号;
+      } else if (字符 === ".") {
+        this.ctx.fillStyle = this.颜色.小数点;
+      } else {
+        this.ctx.fillStyle = 世界数值颜色;
+      }
       this.ctx.fillText(字符, 数字X, 当前Y);
       数字X += this.ctx.measureText(字符).width;
     }
@@ -2313,7 +2364,9 @@ class 坐标系教程 {
         // 绘制数字文本，小数点使用lightslategray颜色
         for (let j = 0; j < 数字文本.length; j++) {
           const 字符 = 数字文本[j];
-          if (字符 === ".") {
+          if (字符 === "-") {
+            this.ctx.fillStyle = "rgba(74, 143, 217, 1)";
+          } else if (字符 === ".") {
             this.ctx.fillStyle = this.颜色.小数点;
           } else {
             this.ctx.fillStyle = 数字颜色;
@@ -2339,7 +2392,9 @@ class 坐标系教程 {
     // 绘制结果文本，小数点使用lightslategray颜色
     for (let j = 0; j < 结果文本.length; j++) {
       const 字符 = 结果文本[j];
-      if (字符 === ".") {
+      if (字符 === "-") {
+        this.ctx.fillStyle = "rgba(74, 143, 217, 1)";
+      } else if (字符 === ".") {
         this.ctx.fillStyle = this.颜色.小数点;
       } else {
         this.ctx.fillStyle = 结果颜色;
@@ -2445,7 +2500,7 @@ class 坐标系教程 {
       y: this.canvas.offsetHeight / 2,
       半径: 8,
     };
-    this.保存观察点位置到SessionStorage();
+    this.保存观察点位置到LocalStorage();
     this.交互状态 = {
       正在拖动: false,
       正在缩放: false,
