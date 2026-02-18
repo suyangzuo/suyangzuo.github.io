@@ -32,7 +32,7 @@ body {
   width: calc(100% - var(--水平内边距));
   height: calc(100% - 30px);
   outline: solid 1px #666;
-  background-color: #1a1a1a;
+  backdrop-filter: blur(4px);
   cursor: grab;
 }
 
