@@ -37,8 +37,9 @@
       /* --theme-body-font-size: 24px !important; /* Some of UI */
     }
 
-    /* Most DevTools text */
-    .devtools-monospace {
+    /* 开发者工具字体、控制台代码字体 */
+    .devtools-monospace,
+    .CodeMirror-line {
       font-family:
         "Google Sans Code",
         "JetBrains Nerd Font",
@@ -52,7 +53,7 @@
       font-weight: 400 !important;
     }
 
-    /* Main tree view in the HTML inspector */
+    /* DOM探查器字体 */
     .inspector-panel #markup-view {
       font-family:
         "Google Sans Code",
