@@ -1036,7 +1036,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   position: relative;
   width: 100%;
   padding: 0 10px;
-  font-size: 1.125rem;
+  font-size: 1rem;
   color: rgb(255, 255, 255);
   font-family: "Titillium Web", "Noto Sans SC", sans-serif;
   font-weight: 600;
@@ -1079,11 +1079,11 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 
 .专题 {
   width: 100%;
-  padding: 3px 8px;
+  padding: 3px 8px 3px 12px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   transition: padding 250ms;
   font-size: 0.75em;
 }
@@ -1106,6 +1106,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   width: 15px;
   height: 100%;
   text-align: center;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 .专题[原创] .专题-标记 {
@@ -1118,6 +1119,13 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 
 .专题[未完成] {
   filter: brightness(35%);
+}
+
+.专题序号 {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  translate: 0 1px;
 }
 
 .专题-内容 {

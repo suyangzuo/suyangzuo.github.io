@@ -250,14 +250,11 @@ function 设置侧边栏(event) {
   index = JSON.parse(localStorage.getItem("专题索引记录")).find((记录) => 记录.技术栈 === 技术栈名称).专题索引;
 
   专题组[index]?.classList.add("当前专题");
-  专题组.forEach((专题) => {
+  专题组.forEach((专题, i) => {
     专题.addEventListener("click", 修改专题样式);
     const 标记 = 专题.querySelector(".专题-标记");
-    if (专题.hasAttribute("原创")) {
-      标记.innerHTML = "<i class='fa-solid fa-mug-hot'></i>";
-    } else {
-      标记.innerHTML = "<i class='fa-solid fa-circle-nodes'></i>";
-    }
+    const 序号 = i + 1;
+    标记.innerHTML = `<span class="专题序号">${序号}</span>`;
     专题.addEventListener("click", 当前专题已被收藏时刷新收藏按钮样式);
   });
 
