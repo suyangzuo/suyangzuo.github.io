@@ -3129,7 +3129,7 @@ class 匀加速 {
     const 最大距离分母 = 最大距离 || 1;
 
     // 绘制速度折线（阶跃：从原点先垂直到 Y=1，再水平到时间=1；与映射表阶跃语义一致）
-    ctx.strokeStyle = "#61afef";
+    ctx.strokeStyle = "rgba(97, 175, 239, 0.45)";
     ctx.lineWidth = 1;
     ctx.beginPath();
 
@@ -3161,7 +3161,7 @@ class 匀加速 {
     });
 
     // 绘制距离折线
-    ctx.strokeStyle = "#98c379";
+    ctx.strokeStyle = "rgba(152, 195, 121, 0.45)";
     ctx.lineWidth = 1;
     ctx.beginPath();
 
@@ -3334,10 +3334,20 @@ class 匀加速 {
         ctx.strokeRect(X - 12, Y - 12, 矩形宽度, 矩形高度);
       }
 
-      // 绘制时间数值（蓝色），右对齐
-      ctx.fillStyle = "#61afef";
+      // 绘制时间数值（蓝色），右对齐，小数点灰色
       ctx.textAlign = "right";
-      ctx.fillText(时间文本, X + 时间宽度, Y);
+      let 当前X = X + 时间宽度 + 8;
+      for (let j = 时间文本.length - 1; j >= 0; j--) {
+        const 字符 = 时间文本[j];
+        if (字符 === ".") {
+          ctx.fillStyle = "gray";
+        } else {
+          ctx.fillStyle = "#61afef";
+        }
+        const 字符宽度 = ctx.measureText(字符).width;
+        当前X -= 字符宽度;
+        ctx.fillText(字符, 当前X, Y);
+      }
 
       // 绘制冒号（灰色），在时间数字右边+2px
       ctx.fillStyle = "#787c99";
@@ -3345,11 +3355,19 @@ class 匀加速 {
       const 冒号X = X + 时间宽度 + 2;
       ctx.fillText(":", 冒号X, Y);
 
-      // 绘制速度数值（绿色），在冒号右边+4px
-      ctx.fillStyle = "#98c379";
+      // 绘制速度数值（绿色），在冒号右边+4px，小数点灰色
       ctx.textAlign = "left";
-      const 速度X = 冒号X + 冒号宽度 + 4;
-      ctx.fillText(速度文本, 速度X, Y);
+      let 速度当前X = 冒号X + 冒号宽度 + 4;
+      for (let j = 0; j < 速度文本.length; j++) {
+        const 字符 = 速度文本[j];
+        if (字符 === ".") {
+          ctx.fillStyle = "gray";
+        } else {
+          ctx.fillStyle = "#98c379";
+        }
+        ctx.fillText(字符, 速度当前X, Y);
+        速度当前X += ctx.measureText(字符).width;
+      }
     }
   }
 
