@@ -1,0 +1,437 @@
+<article class="专题简介">
+  <h1 class="简介标题">
+    <span><span class="行内专业名词 等宽">Canvas</span>变换</span><span class="原创">原创</span>
+  </h1>
+  <div class="简介信息">
+    <section class="简介信息文本">
+      <p class="作者">
+        <span class="作者前缀 前缀">作者：</span>
+        <span class="作者姓名">苏扬</span>
+      </p>
+      <p class="日期">
+        <span class="日期前缀 前缀">日期：</span>
+        <span class="日期文本"
+          ><span class="日期文本-数字 日期文本-年">2026</span>年<span class="日期文本-数字 日期文本-月">2</span>月<span
+            class="日期文本-数字 日期文本-日"
+            >26</span
+          >日</span
+        >
+      </p>
+    </section>
+    <section class="简介信息图像">
+      <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+    </section>
+  </div>
+  <ul class="联系方式列表">
+    <li class="联系方式项">
+      <a class="联系方式链接" href="mailto:suyangzuo@gmail.com" target="_blank">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://github.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-github"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.deviantart.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-deviantart"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dev.to/suyangzuo" target="_blank"><i class="fa-brands fa-dev"></i></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.freecodecamp.org/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-free-code-camp"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://codepen.io/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-codepen"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://dribbble.com/suyangzuo" target="_blank"
+        ><i class="fa-brands fa-dribbble"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://www.artstation.com/user-7893655" target="_blank"
+        ><i class="fa-brands fa-artstation"></i
+      ></a>
+    </li>
+    <li class="联系方式项">
+      <a class="联系方式链接" href="https://codesandbox.io/u/suyangzuo" target="_blank">
+        <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
+      /></a>
+    </li>
+  </ul>
+</article>
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">线性变换<span class="次要">与</span>仿射变换</h2>
+
+    <h3 class="分区标题 分区3级标题">线性变换</h3>
+    <p class="分区普通文本">
+      所谓<span class="行内专业名词">线性变换</span>，即<span class="行内专业名词">参数</span>与<span
+        class="行内专业名词"
+        >结果</span
+      >的变化率相等，。举个例子：函数<span class="代码"
+        >y<span class="次要 等宽" style="color: gray; margin: 0 6px">=</span><span style="color: greenyellow">f</span
+        ><span style="color: darkgoldenrod">(</span>x<span style="color: darkgoldenrod">)</span></span
+      >，<span class="行内代码">x</span>增加<span class="行内代码">n</span>倍，<span class="行内代码">y</span
+      >也增加<span class="行内代码">n</span>倍，这就叫<span class="行内专业名词">线性函数</span>，即<span class="代码"
+        ><span style="color: greenyellow">f</span><span style="color: darkgoldenrod">(</span>n<span
+          class="次要"
+          style="margin: 0 4px"
+          >*</span
+        >x<span style="color: darkgoldenrod">)</span><span class="次要" style="margin: 0 4px">=</span>n<span
+          class="次要"
+          style="margin: 0 4px"
+          >*</span
+        ><span style="color: greenyellow">f</span><span style="color: darkgoldenrod">(</span>x<span
+          style="color: darkgoldenrod"
+          >)</span
+        ></span
+      >，映射到坐标轴中表现为一条直线，因此叫<span class="行内专业名词">线性变换</span>。
+    </p>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.25" data-desc="线性变换">
+      <canvas id="canvas-线性变换" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <p class="分区普通文本">
+      你会发现无论怎么改变参数，直线永远<span class="强调">经过原点</span>，即<span class="代码"
+        ><span style="color: greenyellow">f</span><span style="color: darkgoldenrod">(</span>0<span
+          class="次要"
+          style="margin: 0 4px"
+          >*</span
+        >x<span style="color: darkgoldenrod">)</span><span class="次要" style="margin: 0 4px">=</span>0<span
+          class="次要"
+          style="margin: 0 4px"
+          >*</span
+        ><span style="color: greenyellow">f</span><span style="color: darkgoldenrod">(</span>x<span
+          style="color: darkgoldenrod"
+          >)</span
+        ></span
+      >，这是<span class="行内专业名词">线性变换</span>的一个重要特征：参数为<span class="行内专业名词 等宽">0</span
+      >时，结果也为<span class="行内专业名词 等宽">0</span>。因此，我们可以总结一下<span class="行内专业名词"
+        >线性变换</span
+      >的特征：
+    </p>
+    <ol class="分区列表 有序列表">
+      <li class="分区列表项">直线</li>
+      <li class="分区列表项">经过原点</li>
+    </ol>
+    <p class="分区普通文本">
+      想一想，在遵守这两个特征的前提下，我们可以在几何空间中做哪些变换呢？缩放、旋转，对吧？但是无法移动，因为一旦移动，直线就不经过原点了；可是移动又是一个很常见的操作，怎么办呢？此时，我们就需要<span
+        class="行内专业名词"
+        >仿射变换</span
+      >了。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">仿射变换</h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词">仿射</span>，含义为<span class="行内专业名词">相似的空间映射</span>，它和<span
+        class="行内专业名词"
+        >线性变换</span
+      >基本一致，唯一的区别就是空间被<span class="行内专业名词">平移</span>了，其公式可以表示为：<span class="代码"
+        >y<span class="次要 等宽" style="color: gray; margin: 0 6px">=</span><span style="color: greenyellow">f</span
+        ><span style="color: darkgoldenrod">(</span>x<span style="color: darkgoldenrod">)</span
+        ><span class="次要 等宽" style="color: gray; margin: 0 6px">+</span>b</span
+      >，这个<span class="行内代码">b</span>代表<span class="行内专业名词">平移</span>，当<span class="代码"
+        >x<span class="次要">=</span>0</span
+      >时，<span class="代码">y<span class="次要">=</span>b</span>，因此直线<span class="强调">不经过原点</span>。
+    </p>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.25" data-desc="仿射变换">
+      <canvas id="canvas-仿射变换" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <p class="分区普通文本">
+      <span class="行内专业名词 等宽">Canvas</span>中使用的就是<span class="行内专业名词">仿射变换</span
+      >。我们在各种图形软件中，看到的<span class="专业名词">缩放视图</span>、<span class="专业名词">移动视图</span
+      >等功能，就是使用<span class="行内专业名词">仿射变换</span>来实现的。
+    </p>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题"><span class="行内专业名词 等宽">Canvas</span>变换</h2>
+    <h3 class="分区标题 分区3级标题"><span class="行内专业名词 等宽">Canvas</span>变换类型</h3>
+    <p class="分区普通文本">
+      在<span class="行内专业名词 等宽">Canvas</span>中，变换主要有：<span class="专业名词">平移</span>、<span
+        class="专业名词"
+        >旋转</span
+      >、<span class="专业名词">缩放</span>这<span class="行内专业名词 等宽">3</span>种，分别对应以下方法：
+    </p>
+    <ol class="分区列表 有序列表">
+      <li class="分区列表项">
+        <span
+          >平移<span class="次要">：</span
+          ><span class="代码"
+            >ctx<span class="次要">.</span><span style="color: rgb(211, 150, 81)">translate</span
+            ><span style="color: lightskyblue">(</span>水平平移<span class="次要" style="margin-right: 6px">,</span
+            >垂直平移<span style="color: lightskyblue">)</span></span
+          ></span
+        >
+      </li>
+      <li class="分区列表项">
+        <span
+          >旋转<span class="次要">：</span
+          ><span class="代码"
+            >ctx<span class="次要">.</span><span style="color: rgb(211, 150, 81)">rotate</span
+            ><span style="color: lightskyblue">(</span>旋转弧度<span style="color: lightskyblue">)</span></span
+          ></span
+        >
+      </li>
+      <li class="分区列表项">
+        <span
+          >缩放<span class="次要">：</span
+          ><span class="代码"
+            >ctx<span class="次要">.</span><span style="color: rgb(211, 150, 81)">scale</span
+            ><span style="color: lightskyblue">(</span>水平缩放<span class="次要" style="margin-right: 6px">,</span
+            >垂直缩放<span style="color: lightskyblue">)</span></span
+          ></span
+        >
+      </li>
+    </ol>
+
+    <h3 class="分区标题 分区3级标题"><span class="行内专业名词 等宽">Canvas</span>变换累积</h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词 等宽">Canvas</span>变换具有<span class="行内专业名词">累积性</span>，举个例子：运行<span
+        class="代码"
+        >ctx<span class="次要">.</span><span style="color: rgb(211, 150, 81)">scale</span
+        ><span style="color: lightskyblue">(</span>2<span class="次要" style="margin-right: 6px">,</span>2<span
+          style="color: lightskyblue"
+          >)</span
+        ></span
+      >，整个<span class="行内专业名词 等宽">Canvas</span>视图会放大<span class="行内代码">2</span>倍，此时再次运行<span
+        class="代码"
+        >ctx<span class="次要">.</span><span style="color: rgb(211, 150, 81)">scale</span
+        ><span style="color: lightskyblue">(</span>2<span class="次要" style="margin-right: 6px">,</span>2<span
+          style="color: lightskyblue"
+          >)</span
+        ></span
+      >，则会在<span class="强调">放大<span class="行内代码">2</span>倍的基础上</span>再次放大<span class="行内代码"
+        >2</span
+      >倍，结果是一共放大了<span class="代码"
+        ><span class="行内代码">2</span><span class="次要">×</span><span class="行内代码">2</span
+        ><span class="次要">=</span><span class="行内代码">4</span></span
+      >倍。
+    </p>
+    <p class="分区普通文本">
+      不仅如此，假设先用<span class="代码"
+        >ctx<span class="次要">.</span><span style="color: rgb(211, 150, 81)">rotate</span
+        ><span style="color: lightskyblue">(</span>Math.PI<span class="次要">/</span>4<span style="color: lightskyblue"
+          >)</span
+        ></span
+      >顺时针旋转<span class="行内代码">45°</span>，再用<span class="代码"
+        >ctx<span class="次要">.</span><span style="color: rgb(211, 150, 81)">translate</span
+        ><span style="color: lightskyblue">(</span>100<span class="次要" style="margin-right: 6px">,</span>0<span
+          style="color: lightskyblue"
+          >)</span
+        ></span
+      >进行<span class="行内专业名词">水平平移</span>，则图形不会向右水平移动，而是会向<span class="行内专业名词"
+        >右下方</span
+      >斜着移动，因为整个坐标轴的<span class="行内专业名词 等宽">x轴</span>已经被旋转了<span class="行内代码">45°</span
+      >。
+    </p>
+    <p class="分区普通文本">这种累积性往往不是我们想要的，为了避免累积，我们需要先重置变换，再应用新的变换。</p>
+    <pre class="line-numbers">
+      <code class="language-javascript">
+        ctx.translate(旧水平平移, 旧垂直平移);
+        ctx.rotate(旧弧度);
+        ctx.scale(旧水平缩放, 旧垂直缩放);
+
+        //方法1
+        ctx.resetTransform(); //重置所有变换，推荐
+
+        //方法2
+        ctx.transform(1, 0, 0, 1, 0, 0); //重置所有变换
+
+        ctx.translate(新水平平移, 新垂直平移);
+        ctx.rotate(新弧度);
+        ctx.scale(新水平缩放, 新垂直缩放);
+      </code>
+    </pre>
+
+    <h3 class="分区标题 分区3级标题"><span class="行内专业名词 等宽">Canvas</span>变换顺序</h3>
+    <p class="分区普通文本">
+      <span class="专业名词">平移</span>、<span class="专业名词">旋转</span>、<span class="专业名词">缩放</span
+      >，应用的顺序不同，最终效果也不同。一般来说，按照以下顺序更加符合人的期待：
+    </p>
+    <ol class="分区列表 有序列表">
+      <li class="分区列表项">
+        <span>平移</span>
+      </li>
+      <li class="分区列表项">
+        <span>旋转</span>
+      </li>
+      <li class="分区列表项">
+        <span>缩放</span>
+      </li>
+    </ol>
+
+    <h3 class="分区标题 分区3级标题">一次性应用全部<span class="行内专业名词 等宽">Canvas</span>变换</h3>
+    <p class="分区普通文本">
+      如前所述，<span class="行内专业名词 等宽">Canvas</span>变换具有<span class="行内专业名词">累积性</span>、<span
+        class="行内专业名词"
+        >顺序性</span
+      >，如果程序中需要经常应用各种变换，写代码会很累，因此，我们应该使用<span class="代码"
+        >ctx<span class="次要">.</span><span style="color: rgb(211, 150, 81)">setTransform</span
+        ><span style="color: lightskyblue">(</span>a<span class="次要" style="margin-right: 6px">,</span>b<span
+          class="次要"
+          style="margin-right: 6px"
+          >,</span
+        >c<span class="次要" style="margin-right: 6px">,</span>d<span class="次要" style="margin-right: 6px">,</span
+        >e<span class="次要" style="margin-right: 6px">,</span>f<span style="color: lightskyblue">)</span></span
+      >函数，来代替<span class="专业名词">平移</span>、<span class="专业名词">旋转</span>、<span class="专业名词"
+        >缩放</span
+      >这<span class="行内专业名词 等宽">3</span>个函数。
+    </p>
+    <p class="分区普通文本">
+      <span class="代码"
+        >ctx<span class="次要">.</span><span style="color: rgb(211, 150, 81)">setTransform</span
+        ><span style="color: lightskyblue">(</span>a<span class="次要" style="margin-right: 6px">,</span>b<span
+          class="次要"
+          style="margin-right: 6px"
+          >,</span
+        >c<span class="次要" style="margin-right: 6px">,</span>d<span class="次要" style="margin-right: 6px">,</span
+        >e<span class="次要" style="margin-right: 6px">,</span>f<span style="color: lightskyblue">)</span></span
+      >具有以下优点：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span><span class="强调">没有累积性</span>：每次运行此函数，都会自动先重置变换。</span>
+      </li>
+      <li class="分区列表项">
+        <span
+          ><span class="强调">执行顺序符合人的心理预期</span>：会自动按照<span class="专业名词">平移</span>、<span
+            class="专业名词"
+            >旋转</span
+          >、<span class="专业名词">缩放</span>的顺序执行。</span
+        >
+      </li>
+    </ul>
+    <p class="分区普通文本">
+      <span class="代码"
+        >ctx<span class="次要">.</span><span style="color: rgb(211, 150, 81)">setTransform</span
+        ><span style="color: lightskyblue">(</span>a<span class="次要" style="margin-right: 6px">,</span>b<span
+          class="次要"
+          style="margin-right: 6px"
+          >,</span
+        >c<span class="次要" style="margin-right: 6px">,</span>d<span class="次要" style="margin-right: 6px">,</span
+        >e<span class="次要" style="margin-right: 6px">,</span>f<span style="color: lightskyblue">)</span></span
+      >的参数含义如下：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span><span class="代码">a</span>：水平缩放</span>
+      </li>
+      <li class="分区列表项">
+        <span><span class="代码">b</span>：水平倾斜</span>
+      </li>
+      <li class="分区列表项">
+        <span><span class="代码">c</span>：垂直倾斜</span>
+      </li>
+      <li class="分区列表项">
+        <span><span class="代码">d</span>：垂直缩放</span>
+      </li>
+      <li class="分区列表项">
+        <span><span class="代码">e</span>：水平平移</span>
+      </li>
+      <li class="分区列表项">
+        <span><span class="代码">f</span>：垂直平移</span>
+      </li>
+    </ul>
+    <p class="分区普通文本">
+      你可能觉得奇怪，怎么不是<span class="行内专业名词">旋转</span>，而是<span class="行内专业名词">倾斜</span
+      >呢？因为<span class="专业名词">线性变换<span class="次要">/</span>仿射变换</span>是没有<span class="行内专业名词"
+        >旋转</span
+      >的，所谓的<span class="行内专业名词">旋转</span>，其实就是用<span class="行内专业名词">倾斜</span>来实现的。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">平移</h3>
+    <p class="分区普通文本">
+      平移相当于<span class="行内专业名词 等宽">Photoshop</span>中的<span class="行内专业名词">移动视图</span
+      >，视图内的所有图形都会同步移动，以保持和原点的相对位置不变。
+    </p>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.25" data-desc="平移">
+      <canvas id="canvas-translate" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+
+    <h3 class="分区标题 分区3级标题">倾斜</h3>
+    <p class="分区普通文本">
+      单独的<span class="行内专业名词">倾斜</span>操作很少用到，<span class="行内专业名词">倾斜</span
+      >的主要用途是实现<span class="行内专业名词">旋转</span>。试试将两个倾斜的数值设置为一正一负。
+    </p>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.25" data-desc="倾斜">
+      <canvas id="canvas-skew" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <p class="分区普通文本">
+      水平倾斜和垂直倾斜一正一负，就可以实现旋转，且图像的比例保持不变。但你肯定发现问题了：图像的尺寸变大了。为了实现旋转时尺寸保持不变，需要同时应用合适的缩放。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">缩放</h3>
+    <p class="分区普通文本">
+      尝试负值，可以非常方便地实现<span class="行内专业名词">水平翻转</span>、<span class="行内专业名词">垂直翻转</span
+      >等常见操作。
+    </p>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.25" data-desc="缩放">
+      <canvas id="canvas-scale" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+
+    <h3 class="分区标题 分区3级标题">旋转</h3>
+    <p class="分区普通文本">
+      如前所述，<span class="专业名词">线性变换<span class="次要">/</span>仿射变换</span>是没有<span
+        class="行内专业名词"
+        >旋转</span
+      >的，<span class="行内专业名词">旋转</span>是用<span class="行内专业名词">倾斜</span
+      >实现的，但是会导致图像变大，因此我们要同步应用合适的<span class="行内专业名词">缩放</span>来保持图像尺寸不变。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        <span class="行内专业名词 等宽">Canvas</span>旋转的<span class="行内专业名词">锚点</span>永远都是<span
+          class="行内专业名词"
+          >原点</span
+        >，也就是世界坐标系的<span class="代码">0<span class="次要" style="margin-right: 6px">,</span>0</span
+        >。如果希望一个图形围绕自身旋转，就必须让图形的<span class="行内专业名词">中心点</span>位于<span
+          class="行内专业名词"
+          >原点</span
+        >。
+      </p>
+    </section>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.25" data-desc="旋转">
+      <canvas id="canvas-rotate" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+    </figure>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        为了保证在不同<span class="行内专业名词">分辨率缩放</span>的显示器上显示效果一致，<span
+          class="行内专业名词 等宽"
+          >Canvas</span
+        >的<span class="行内专业名词">上下文</span>一般都要进行<span class="行内专业名词">缩放</span
+        >处理；对图像进行旋转时，又要同步应用<span class="行内专业名词">缩放</span>。然而，当使用<span class="行内代码"
+          >setTransform</span
+        >时会先重置变换。也就是说，为图像旋转应用的<span class="行内专业名词">缩放</span
+        >，会覆盖之前为了分辨率缩放应用的<span class="行内专业名词">缩放</span
+        >。因此，为了保证旋转图像时尺寸不变，且分辨率缩放也维持正常，<span class="行内专业名词">水平缩放</span>和<span
+          class="行内专业名词"
+          >垂直缩放</span
+        >都要<span class="代码">叠加<span class="行内代码">dpr</span></span
+        >。
+      </p>
+      <pre class="line-numbers">
+        <code class="language-javascript">
+          const dpr = window.devicePixelRatio;
+          const 旋转弧度 = Math.PI / 4; //顺时针旋转45°
+          const a = Math.cos(旋转弧度) * dpr;
+          const b = Math.sin(旋转弧度);
+          const c = -b;
+          const d = a; //保证水平缩放和垂直缩放一致，比例不会失调
+          const e = 0;
+          const f = 0;
+          ctx.setTransform(a, b, c, d, e, f);
+        </code>
+      </pre>
+    </section>
+  </article>
+</div>
