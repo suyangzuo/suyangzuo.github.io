@@ -265,31 +265,31 @@ class Canvas线性变换 {
     // 绘制滑块标题，右对齐，中文和字母不同颜色
     ctx.font = `14px ${fontFamily}`;
     ctx.textBaseline = "middle";
-    
+
     // 分离中文和字母
     const 中文匹配 = label.match(/[\u4e00-\u9fa5]+/);
     const 字母匹配 = label.match(/[a-zA-Z]+/);
     const 中文部分 = 中文匹配 ? 中文匹配[0] : "";
     const 字母部分 = 字母匹配 ? 字母匹配[0] : "";
-    
+
     // 调整标题X，减少文本和滑块之间的距离
     const 标题X = 滑块区域.track.x - 5;
-    
+
     // 计算整体宽度
     const 整体宽度 = ctx.measureText(中文部分 + 字母部分).width;
-    
+
     // 中文在前（左边），字母在后（右边），整体右对齐
     ctx.textAlign = "left";
-    
+
     // 计算起始位置，使整体右对齐到标题X
     const 起始位置 = 标题X - 整体宽度 - 4;
-    
+
     // 绘制中文部分
     if (中文部分) {
       ctx.fillStyle = "#61afef";
       ctx.fillText(中文部分, 起始位置 - 2, 滑块区域.label.y);
     }
-    
+
     // 绘制字母部分
     if (字母部分) {
       const 中文宽度 = ctx.measureText(中文部分).width;
@@ -367,7 +367,9 @@ class Canvas线性变换 {
       return 值.toString();
     } else {
       // n值，最多显示到小数点后1位
-      return Number(值).toFixed(1).replace(/\.?0+$/, '');
+      return Number(值)
+        .toFixed(1)
+        .replace(/\.?0+$/, "");
     }
   }
 
@@ -449,11 +451,11 @@ class Canvas线性变换 {
     ctx.font = `14px ${fontFamily}`;
     ctx.textAlign = "right";
     ctx.textBaseline = "top";
-    
+
     // 中文部分
     ctx.fillStyle = "#61afef";
     ctx.fillText("轴", this.canvas.offsetWidth / 2 - 10, 10);
-    
+
     // 字母部分
     ctx.fillStyle = "#e5c07b";
     ctx.fillText("x", this.canvas.offsetWidth / 2 - 26, 10);
@@ -461,11 +463,11 @@ class Canvas线性变换 {
     // 在y轴线上端绘制"y轴"文本
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
-    
+
     // 中文部分
     ctx.fillStyle = "#61afef";
     ctx.fillText("轴", 30, -this.canvas.offsetHeight / 2 + 10);
-    
+
     // 字母部分
     ctx.fillStyle = "#e5c07b";
     ctx.fillText("y", 16, -this.canvas.offsetHeight / 2 + 10);
@@ -534,12 +536,12 @@ class Canvas线性变换 {
     // 增加x宽度，使用更长的字符串来测量
     const x宽度 = ctx.measureText("600").width;
     const n宽度 = ctx.measureText("-10").width;
-    
+
     // 计算各部分的位置
     const y标题宽度 = ctx.measureText("y").width;
     const 等号宽度 = ctx.measureText(" = ").width;
     const 乘号宽度 = ctx.measureText(" * ").width;
-    
+
     // 计算关键位置
     const y位置 = x;
     const 等号位置 = y位置 + y标题宽度;
@@ -551,25 +553,25 @@ class Canvas线性变换 {
 
     // 绘制标题
     ctx.textAlign = "left";
-    
+
     // 绘制"y"
     ctx.fillStyle = "#61afef";
     ctx.fillText("y", y位置, y);
-    
+
     // 绘制" = "
     ctx.fillStyle = "#98c379";
     ctx.fillText(" = ", 等号位置, y);
-    
+
     // 绘制"x"，处于下方"x的值"的水平居中位
     ctx.textAlign = "center";
     ctx.fillStyle = "#61afef";
     ctx.fillText("x", x中心位置, y);
-    
+
     // 绘制" * "，要与下方值运算里面的"*"水平对齐
     ctx.textAlign = "left";
     ctx.fillStyle = "#98c379";
     ctx.fillText(" * ", 乘号位置, y);
-    
+
     // 绘制"n"，处于下方"n的值"的水平居中位
     ctx.textAlign = "center";
     ctx.fillStyle = "#61afef";
@@ -579,14 +581,16 @@ class Canvas线性变换 {
     const y值 = this.x * this.n;
 
     // 绘制值
-    
+
     // 下方的得数(y的值)用右对齐，与标题中的"y"右对齐
     ctx.textAlign = "right";
-    
+
     // y值格式化，根据n的精度计算
-    const y值文本 = Number(y值).toFixed(1).replace(/\.?0+$/, '');
+    const y值文本 = Number(y值)
+      .toFixed(1)
+      .replace(/\.?0+$/, "");
     const y标题右边缘 = y位置 + y标题宽度;
-    
+
     // 分离负号和数字部分，分别绘制
     if (y值文本.startsWith("-")) {
       // 绘制数字部分
@@ -594,7 +598,7 @@ class Canvas线性变换 {
       const 数字宽度 = ctx.measureText(数字部分).width;
       ctx.fillStyle = "#e5c07b";
       ctx.fillText(数字部分, y标题右边缘, y + 25);
-      
+
       // 绘制负号，在数字前面
       ctx.fillStyle = "darkgoldenrod";
       ctx.fillText("-", y标题右边缘 - 数字宽度, y + 25);
@@ -608,41 +612,43 @@ class Canvas线性变换 {
     ctx.textAlign = "left";
     ctx.fillStyle = "#98c379";
     ctx.fillText(" = ", 等号位置, y + 25);
-    
+
     // 下方的x的值用居中对齐，与标题中的"x"居中对齐
     ctx.textAlign = "center";
     ctx.fillStyle = "#e5c07b";
     // x值始终为整数
     const x值文本 = Math.round(this.x).toString();
     ctx.fillText(x值文本, x中心位置, y + 25);
-    
+
     // 绘制" * "，与标题中的"*"水平对齐
     ctx.textAlign = "left";
     ctx.fillStyle = "#98c379";
     ctx.fillText(" * ", 乘号位置, y + 25);
-    
+
     // 下方的"n的值"用居中对齐，与标题中的"n"居中对齐
     // n值最多显示到小数点后1位
-    const n值文本 = Number(this.n).toFixed(1).replace(/\.?0+$/, '');
-    
+    const n值文本 = Number(this.n)
+      .toFixed(1)
+      .replace(/\.?0+$/, "");
+
     // 分离负号和数字部分，分别绘制
     if (n值文本.startsWith("-")) {
       // 切换到左对齐，以便更精确地控制位置
       ctx.textAlign = "left";
-      
+
       // 计算n值的总宽度
       const 负号宽度 = ctx.measureText("-").width;
       const 数字部分 = n值文本.substring(1);
       const 数字宽度 = ctx.measureText(数字部分).width;
       const n值总宽度 = 负号宽度 + 数字宽度;
-      
+
       // 计算n值左边缘位置，使整个n值文本居中
       const n值左边缘 = n中心位置 - n值总宽度 / 2;
-      
+
       // 绘制负号
       ctx.fillStyle = "darkgoldenrod";
       ctx.fillText("-", n值左边缘, y + 25);
-      
+
       // 绘制数字部分
       ctx.fillStyle = "#e5c07b";
       ctx.fillText(数字部分, n值左边缘 + 负号宽度, y + 25);
@@ -713,7 +719,7 @@ class Canvas仿射变换 {
     this.画布宽度 = this.canvas.offsetWidth;
     this.画布高度 = this.canvas.offsetHeight;
     this.网格间距 = 40;
-    
+
     this.原点X = this.画布宽度 / 2;
     this.原点Y = this.画布高度 / 2;
     this.n = 0;
@@ -748,7 +754,7 @@ class Canvas仿射变换 {
     };
 
     this.滑块状态 = {
-      "平移": {
+      平移: {
         当前值: 0,
         最小值: -100,
         最大值: 100,
@@ -1009,31 +1015,31 @@ class Canvas仿射变换 {
     // 绘制滑块标题，右对齐，中文和字母不同颜色
     ctx.font = `14px ${fontFamily}`;
     ctx.textBaseline = "middle";
-    
+
     // 分离中文和字母
     const 中文匹配 = label.match(/[\u4e00-\u9fa5]+/);
     const 字母匹配 = label.match(/[a-zA-Z]+/);
     const 中文部分 = 中文匹配 ? 中文匹配[0] : "";
     const 字母部分 = 字母匹配 ? 字母匹配[0] : "";
-    
+
     // 调整标题X，减少文本和滑块之间的距离
     const 标题X = 滑块区域.track.x - 5;
-    
+
     // 计算整体宽度
     const 整体宽度 = ctx.measureText(中文部分 + 字母部分).width;
-    
+
     // 中文在前（左边），字母在后（右边），整体右对齐
     ctx.textAlign = "left";
-    
+
     // 计算起始位置，使整体右对齐到标题X
     const 起始位置 = 标题X - 整体宽度 - 4;
-    
+
     // 绘制中文部分
     if (中文部分) {
       ctx.fillStyle = "#61afef";
       ctx.fillText(中文部分, 起始位置 - 2, 滑块区域.label.y);
     }
-    
+
     // 绘制字母部分
     if (字母部分) {
       const 中文宽度 = ctx.measureText(中文部分).width;
@@ -1110,7 +1116,9 @@ class Canvas仿射变换 {
       return 值.toString();
     } else {
       // 小数类型，最多显示到小数点后1位
-      return Number(值).toFixed(1).replace(/\.?0+$/, '');
+      return Number(值)
+        .toFixed(1)
+        .replace(/\.?0+$/, "");
     }
   }
 
@@ -1197,11 +1205,11 @@ class Canvas仿射变换 {
     ctx.font = `14px ${fontFamily}`;
     ctx.textAlign = "right";
     ctx.textBaseline = "top";
-    
+
     // 中文部分
     ctx.fillStyle = "#61afef";
     ctx.fillText("轴", this.canvas.offsetWidth / 2 - 10, 10);
-    
+
     // 字母部分
     ctx.fillStyle = "#e5c07b";
     ctx.fillText("x", this.canvas.offsetWidth / 2 - 26, 10);
@@ -1209,11 +1217,11 @@ class Canvas仿射变换 {
     // 在y轴线上端绘制"y轴"文本
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
-    
+
     // 中文部分
     ctx.fillStyle = "#61afef";
     ctx.fillText("轴", 30, -this.canvas.offsetHeight / 2 + 10);
-    
+
     // 字母部分
     ctx.fillStyle = "#e5c07b";
     ctx.fillText("y", 16, -this.canvas.offsetHeight / 2 + 10);
@@ -1283,13 +1291,13 @@ class Canvas仿射变换 {
     const x宽度 = ctx.measureText("600").width;
     const n宽度 = ctx.measureText("-10").width;
     const 平移宽度 = ctx.measureText("-100").width;
-    
+
     // 计算各部分的位置
     const y标题宽度 = ctx.measureText("y").width;
     const 等号宽度 = ctx.measureText(" = ").width;
     const 乘号宽度 = ctx.measureText(" * ").width;
     const 加号宽度 = ctx.measureText(" + ").width;
-    
+
     // 计算关键位置
     const y位置 = x;
     const 等号位置 = y位置 + y标题宽度;
@@ -1304,35 +1312,35 @@ class Canvas仿射变换 {
 
     // 绘制标题
     ctx.textAlign = "left";
-    
+
     // 绘制"y"
     ctx.fillStyle = "#61afef";
     ctx.fillText("y", y位置, y);
-    
+
     // 绘制" = "
     ctx.fillStyle = "#98c379";
     ctx.fillText(" = ", 等号位置, y);
-    
+
     // 绘制"x"，处于下方"x的值"的水平居中位
     ctx.textAlign = "center";
     ctx.fillStyle = "#61afef";
     ctx.fillText("x", x中心位置, y);
-    
+
     // 绘制" * "，要与下方值运算里面的"*"水平对齐
     ctx.textAlign = "left";
     ctx.fillStyle = "#98c379";
     ctx.fillText(" * ", 乘号位置, y);
-    
+
     // 绘制"n"，处于下方"n的值"的水平居中位
     ctx.textAlign = "center";
     ctx.fillStyle = "#61afef";
     ctx.fillText("n", n中心位置, y);
-    
+
     // 绘制" + "
     ctx.textAlign = "left";
     ctx.fillStyle = "#98c379";
     ctx.fillText(" + ", 加号位置, y);
-    
+
     // 绘制"平移"，处于下方"平移"的水平居中位
     ctx.textAlign = "center";
     ctx.fillStyle = "#61afef";
@@ -1342,14 +1350,16 @@ class Canvas仿射变换 {
     const y值 = this.x * this.n + this.平移;
 
     // 绘制值
-    
+
     // 下方的得数(y的值)用右对齐，与标题中的"y"右对齐
     ctx.textAlign = "right";
-    
+
     // y值格式化，根据n的精度计算
-    const y值文本 = Number(y值).toFixed(1).replace(/\.?0+$/, '');
+    const y值文本 = Number(y值)
+      .toFixed(1)
+      .replace(/\.?0+$/, "");
     const y标题右边缘 = y位置 + y标题宽度;
-    
+
     // 分离负号和数字部分，分别绘制
     if (y值文本.startsWith("-")) {
       // 绘制数字部分
@@ -1357,7 +1367,7 @@ class Canvas仿射变换 {
       const 数字宽度 = ctx.measureText(数字部分).width;
       ctx.fillStyle = "#e5c07b";
       ctx.fillText(数字部分, y标题右边缘, y + 25);
-      
+
       // 绘制负号，在数字前面
       ctx.fillStyle = "darkgoldenrod";
       ctx.fillText("-", y标题右边缘 - 数字宽度, y + 25);
@@ -1371,41 +1381,43 @@ class Canvas仿射变换 {
     ctx.textAlign = "left";
     ctx.fillStyle = "#98c379";
     ctx.fillText(" = ", 等号位置, y + 25);
-    
+
     // 下方的x的值用居中对齐，与标题中的"x"居中对齐
     ctx.textAlign = "center";
     ctx.fillStyle = "#e5c07b";
     // x值始终为整数
     const x值文本 = Math.round(this.x).toString();
     ctx.fillText(x值文本, x中心位置, y + 25);
-    
+
     // 绘制" * "，与标题中的"*"水平对齐
     ctx.textAlign = "left";
     ctx.fillStyle = "#98c379";
     ctx.fillText(" * ", 乘号位置, y + 25);
-    
+
     // 下方的"n的值"用居中对齐，与标题中的"n"居中对齐
     // n值最多显示到小数点后1位
-    const n值文本 = Number(this.n).toFixed(1).replace(/\.?0+$/, '');
-    
+    const n值文本 = Number(this.n)
+      .toFixed(1)
+      .replace(/\.?0+$/, "");
+
     // 分离负号和数字部分，分别绘制
     if (n值文本.startsWith("-")) {
       // 切换到左对齐，以便更精确地控制位置
       ctx.textAlign = "left";
-      
+
       // 计算n值的总宽度
       const 负号宽度 = ctx.measureText("-").width;
       const 数字部分 = n值文本.substring(1);
       const 数字宽度 = ctx.measureText(数字部分).width;
       const n值总宽度 = 负号宽度 + 数字宽度;
-      
+
       // 计算n值左边缘位置，使整个n值文本居中
       const n值左边缘 = n中心位置 - n值总宽度 / 2;
-      
+
       // 绘制负号
       ctx.fillStyle = "darkgoldenrod";
       ctx.fillText("-", n值左边缘, y + 25);
-      
+
       // 绘制数字部分
       ctx.fillStyle = "#e5c07b";
       ctx.fillText(数字部分, n值左边缘 + 负号宽度, y + 25);
@@ -1415,34 +1427,34 @@ class Canvas仿射变换 {
       ctx.fillStyle = "#e5c07b";
       ctx.fillText(n值文本, n中心位置, y + 25);
     }
-    
+
     // 绘制" + "，与标题中的"+"水平对齐
     ctx.textAlign = "left";
     ctx.fillStyle = "#98c379";
     ctx.fillText(" + ", 加号位置, y + 25);
-    
+
     // 下方的"平移的值"用居中对齐，与标题中的"平移"居中对齐
     // 平移值始终为整数
     const 平移值文本 = Math.round(this.平移).toString();
-    
+
     // 分离负号和数字部分，分别绘制
     if (平移值文本.startsWith("-")) {
       // 切换到左对齐，以便更精确地控制位置
       ctx.textAlign = "left";
-      
+
       // 计算平移值的总宽度
       const 负号宽度 = ctx.measureText("-").width;
       const 数字部分 = 平移值文本.substring(1);
       const 数字宽度 = ctx.measureText(数字部分).width;
       const 平移值总宽度 = 负号宽度 + 数字宽度;
-      
+
       // 计算平移值左边缘位置，使整个平移值文本居中
       const 平移值左边缘 = 平移中心位置 - 平移值总宽度 / 2;
-      
+
       // 绘制负号
       ctx.fillStyle = "darkgoldenrod";
       ctx.fillText("-", 平移值左边缘, y + 25);
-      
+
       // 绘制数字部分
       ctx.fillStyle = "#e5c07b";
       ctx.fillText(数字部分, 平移值左边缘 + 负号宽度, y + 25);
@@ -1502,6 +1514,595 @@ class Canvas仿射变换 {
 }
 
 new Canvas仿射变换("canvas-仿射变换");
+
+class Canvas变换顺序 {
+  constructor(CanvasId) {
+    this.canvas = document.getElementById(CanvasId);
+    this.ctx = this.canvas.getContext("2d");
+    this.canvas.width = this.canvas.offsetWidth * dpr;
+    this.canvas.height = this.canvas.offsetHeight * dpr;
+    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    this.画布宽度 = this.canvas.offsetWidth;
+    this.画布高度 = this.canvas.offsetHeight;
+    this.网格间距 = 40;
+    this.原点X = this.画布宽度 / 2;
+    this.原点Y = this.画布高度 / 2;
+
+    this.对象宽 = 125;
+    this.对象高 = 125;
+
+    this.滑块配置 = {
+      左边距: 10,
+      顶边距: this.画布高度 - 30,
+      宽度: 200,
+      高度: 20,
+      间距: 30,
+      数值宽度: 80,
+    };
+    this.滑块状态 = {
+      平移: { 当前值: 0, 最小值: 0, 最大值: 100, 拖动中: false, 悬停: false },
+      旋转: { 当前值: 0, 最小值: 0, 最大值: 45, 拖动中: false, 悬停: false },
+      缩放: { 当前值: 1, 最小值: 1, 最大值: 3, 拖动中: false, 悬停: false },
+    };
+
+    this.变换顺序 = ["平移", "旋转", "缩放"];
+    this.绘制用变换顺序 = ["平移", "旋转", "缩放"];
+    this.按钮宽 = 60;
+    this.按钮高 = 28;
+    this.按钮间距 = 10;
+    this.按钮起始X = this.画布宽度 - 70;
+    this.按钮起始Y = 40;
+    this.槽Y = [
+      this.按钮起始Y,
+      this.按钮起始Y + this.按钮高 + this.按钮间距,
+      this.按钮起始Y + 2 * (this.按钮高 + this.按钮间距),
+    ];
+    this.顺序按钮拖拽 = { 槽索引: -1, 按钮所在槽: -1, 偏移Y: 0, 当前Y: 0 };
+    this.顺序按钮目标槽索引 = null;
+    this.顺序按钮上一帧目标槽 = null;
+    this.顺序按钮悬停槽索引 = -1;
+    this.顺序按钮过渡 = null;
+    this.顺序按钮过渡时长 = 250;
+
+    this.播放按钮 = { x: this.画布宽度 / 2 - 35, y: 8, width: 70, height: 36, 悬停: false };
+
+    this.动画状态 = {
+      播放中: false,
+      当前段: 0,
+      段开始时间: 0,
+      每段时长: 1000,
+      倒计时中: false,
+      倒计时开始时间: 0,
+      倒计时时长: 1000,
+    };
+
+    this.绑定事件();
+    this.绘制();
+  }
+
+  绑定事件() {
+    this.canvas.addEventListener("mousedown", (e) => this.鼠标按下(e));
+    this.canvas.addEventListener("mousemove", (e) => this.鼠标移动(e));
+    this.canvas.addEventListener("mouseup", () => this.鼠标释放());
+    this.canvas.addEventListener("mouseleave", () => this.鼠标释放());
+  }
+
+  获取鼠标坐标(e) {
+    const rect = this.canvas.getBoundingClientRect();
+    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+  }
+
+  鼠标按下(e) {
+    const 坐标 = this.获取鼠标坐标(e);
+
+    if (this.检查在播放按钮上(坐标)) {
+      this.开始播放();
+      return;
+    }
+
+    for (let i = 0; i < 3; i++) {
+      const y = this.槽Y[i];
+      if (
+        坐标.x >= this.按钮起始X &&
+        坐标.x <= this.按钮起始X + this.按钮宽 &&
+        坐标.y >= y &&
+        坐标.y <= y + this.按钮高
+      ) {
+        this.顺序按钮拖拽.槽索引 = i;
+        this.顺序按钮拖拽.按钮所在槽 = i;
+        this.顺序按钮拖拽.偏移Y = 坐标.y - this.槽Y[i];
+        this.顺序按钮拖拽.当前Y = this.槽Y[i];
+        this.顺序按钮目标槽索引 = null;
+        this.顺序按钮上一帧目标槽 = null;
+        this.顺序按钮悬停槽索引 = -1;
+        this.顺序按钮过渡 = null;
+        return;
+      }
+    }
+  }
+
+  鼠标移动(e) {
+    const 坐标 = this.获取鼠标坐标(e);
+
+    this.播放按钮.悬停 = this.检查在播放按钮上(坐标);
+    if (this.顺序按钮拖拽.槽索引 >= 0) {
+      this.顺序按钮悬停槽索引 = -1;
+    } else {
+      this.顺序按钮悬停槽索引 = -1;
+      for (let i = 0; i < 3; i++) {
+        const y = this.槽Y[i];
+        if (
+          坐标.x >= this.按钮起始X &&
+          坐标.x <= this.按钮起始X + this.按钮宽 &&
+          坐标.y >= y &&
+          坐标.y <= y + this.按钮高
+        ) {
+          this.顺序按钮悬停槽索引 = i;
+          break;
+        }
+      }
+    }
+
+    this.canvas.style.cursor = this.播放按钮.悬停
+      ? "pointer"
+      : this.顺序按钮拖拽.槽索引 >= 0
+        ? "ns-resize"
+        : this.顺序按钮悬停槽索引 >= 0
+          ? "pointer"
+          : "default";
+
+    if (this.顺序按钮拖拽.槽索引 >= 0) {
+      const minY = this.槽Y[0];
+      const maxY = this.槽Y[2];
+      this.顺序按钮拖拽.当前Y = Math.max(minY, Math.min(maxY, 坐标.y - this.顺序按钮拖拽.偏移Y));
+
+      const i = this.顺序按钮拖拽.槽索引;
+      const 按钮所在槽 = this.顺序按钮拖拽.按钮所在槽;
+      const 鼠标在按钮列内 =
+        坐标.x >= this.按钮起始X - 6 && 坐标.x <= this.按钮起始X + this.按钮宽 + 6;
+      const 拖拽中心Y = this.顺序按钮拖拽.当前Y + this.按钮高 / 2;
+
+      this.顺序按钮目标槽索引 = null;
+      if (鼠标在按钮列内) {
+        let 最近槽 = 0;
+        let 最小距离 = Infinity;
+        for (let k = 0; k < 3; k++) {
+          const 槽中心Y = this.槽Y[k] + this.按钮高 / 2;
+          const 距离 = Math.abs(拖拽中心Y - 槽中心Y);
+          if (距离 < 最小距离) {
+            最小距离 = 距离;
+            最近槽 = k;
+          }
+        }
+
+        if (最近槽 !== 按钮所在槽) {
+          this.顺序按钮目标槽索引 = 最近槽;
+        }
+      }
+
+      const 新目标 = this.顺序按钮目标槽索引;
+      const 旧目标 = this.顺序按钮上一帧目标槽;
+      const now = performance.now();
+
+      if (新目标 !== 旧目标) {
+        if (新目标 !== null) {
+          [this.变换顺序[按钮所在槽], this.变换顺序[新目标]] = [this.变换顺序[新目标], this.变换顺序[按钮所在槽]];
+          this.顺序按钮拖拽.按钮所在槽 = 新目标;
+          this.顺序按钮过渡 = {
+            名称: this.变换顺序[按钮所在槽],
+            起始Y: this.槽Y[新目标],
+            目标Y: this.槽Y[按钮所在槽],
+            开始时间: now,
+          };
+          this.顺序按钮上一帧目标槽 = 新目标;
+        } else {
+          this.顺序按钮上一帧目标槽 = 新目标;
+        }
+      }
+    }
+
+    this.绘制();
+  }
+
+  鼠标释放() {
+    const i = this.顺序按钮拖拽.槽索引;
+    const j = this.顺序按钮目标槽索引;
+    const 按钮所在槽 = this.顺序按钮拖拽.按钮所在槽;
+    const 松手Y = this.顺序按钮拖拽.当前Y;
+    if (i >= 0) {
+      const 落点槽 = j !== null ? j : 按钮所在槽;
+      this.顺序按钮过渡 = {
+        名称: this.变换顺序[落点槽],
+        起始Y: 松手Y,
+        目标Y: this.槽Y[落点槽],
+        开始时间: performance.now(),
+      };
+    }
+    this.顺序按钮拖拽.槽索引 = -1;
+    this.顺序按钮拖拽.按钮所在槽 = -1;
+    this.顺序按钮目标槽索引 = null;
+    this.顺序按钮上一帧目标槽 = null;
+    this.顺序按钮悬停槽索引 = -1;
+    this.绘制();
+  }
+
+  检查在播放按钮上(坐标) {
+    const b = this.播放按钮;
+    return 坐标.x >= b.x && 坐标.x <= b.x + b.width && 坐标.y >= b.y && 坐标.y <= b.y + b.height;
+  }
+
+  开始播放() {
+    this.动画状态.播放中 = false;
+    this.重置滑块到初始();
+    this.绘制用变换顺序 = [...this.变换顺序];
+    this.动画状态.倒计时中 = true;
+    this.动画状态.倒计时开始时间 = performance.now();
+    this.倒计时循环();
+  }
+
+  倒计时循环() {
+    if (!this.动画状态.倒计时中) return;
+    const 已过 = performance.now() - this.动画状态.倒计时开始时间;
+    if (已过 >= this.动画状态.倒计时时长) {
+      this.动画状态.倒计时中 = false;
+      this.动画状态.播放中 = true;
+      this.动画状态.当前段 = 0;
+      this.动画状态.段开始时间 = performance.now();
+      this.动画循环();
+      return;
+    }
+    this.绘制();
+    requestAnimationFrame(() => this.倒计时循环());
+  }
+
+  动画循环() {
+    if (!this.动画状态.播放中) return;
+
+    const 当前时间 = performance.now();
+    const 段经过 = 当前时间 - this.动画状态.段开始时间;
+
+    if (段经过 >= this.动画状态.每段时长) {
+      this.应用动画进度(this.动画状态.当前段, 1);
+      this.动画状态.当前段++;
+      this.动画状态.段开始时间 += this.动画状态.每段时长;
+      if (this.动画状态.当前段 >= 3) {
+        this.动画状态.播放中 = false;
+        this.绘制();
+        return;
+      }
+      requestAnimationFrame(() => this.动画循环());
+      return;
+    }
+
+    const 段进度 = Math.min(段经过 / this.动画状态.每段时长, 1);
+    const 缓动进度 = 1 - Math.pow(1 - 段进度, 3);
+    this.应用动画进度(this.动画状态.当前段, 缓动进度);
+    this.绘制();
+
+    requestAnimationFrame(() => this.动画循环());
+  }
+
+  重置滑块到初始() {
+    this.滑块状态["平移"].当前值 = 0;
+    this.滑块状态["旋转"].当前值 = 0;
+    this.滑块状态["缩放"].当前值 = 1;
+  }
+
+  应用动画进度(段索引, 进度) {
+    const 顺序 = this.变换顺序;
+    for (const name of ["平移", "旋转", "缩放"]) {
+      const idx = 顺序.indexOf(name);
+      const 值 = idx < 段索引 ? 1 : idx > 段索引 ? 0 : 进度;
+      if (name === "平移") this.滑块状态["平移"].当前值 = 值 * 100;
+      else if (name === "旋转") this.滑块状态["旋转"].当前值 = 值 * 45;
+      else this.滑块状态["缩放"].当前值 = 1 + 值 * 2;
+    }
+  }
+
+  绘制经纬线() {
+    const ctx = this.ctx;
+    ctx.save();
+    ctx.translate(this.原点X, this.原点Y);
+    const 平移量 = (this.滑块状态["平移"].当前值 / 100) * 200;
+    const 旋转量 = (this.滑块状态["旋转"].当前值 * Math.PI) / 180;
+    const 缩放量 = this.滑块状态["缩放"].当前值;
+    for (const name of this.绘制用变换顺序) {
+      if (name === "平移") ctx.translate(平移量, 0);
+      else if (name === "旋转") ctx.rotate(旋转量);
+      else ctx.scale(缩放量, 缩放量);
+    }
+    ctx.strokeStyle = "#ffffff0c";
+    ctx.lineWidth = 1;
+    const 绘制范围 = 800;
+    for (let y = -绘制范围; y <= 绘制范围; y += this.网格间距) {
+      ctx.beginPath();
+      ctx.moveTo(-绘制范围, y);
+      ctx.lineTo(绘制范围, y);
+      ctx.stroke();
+    }
+    for (let x = -绘制范围; x <= 绘制范围; x += this.网格间距) {
+      ctx.beginPath();
+      ctx.moveTo(x, -绘制范围);
+      ctx.lineTo(x, 绘制范围);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  绘制轴线和原点() {
+    const ctx = this.ctx;
+    ctx.save();
+    ctx.translate(this.原点X, this.原点Y);
+    const 平移量 = (this.滑块状态["平移"].当前值 / 100) * 200;
+    const 旋转量 = (this.滑块状态["旋转"].当前值 * Math.PI) / 180;
+    const 缩放量 = this.滑块状态["缩放"].当前值;
+    for (const name of this.绘制用变换顺序) {
+      if (name === "平移") ctx.translate(平移量, 0);
+      else if (name === "旋转") ctx.rotate(旋转量);
+      else ctx.scale(缩放量, 缩放量);
+    }
+    const 绘制范围 = 800;
+    ctx.strokeStyle = "#666";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(-绘制范围, 0);
+    ctx.lineTo(绘制范围, 0);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(0, -绘制范围);
+    ctx.lineTo(0, 绘制范围);
+    ctx.stroke();
+    ctx.fillStyle = "gold";
+    ctx.beginPath();
+    ctx.arc(0, 0, 4, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.font = `14px ${fontFamily}`;
+    ctx.textAlign = "right";
+    ctx.textBaseline = "top";
+    ctx.fillStyle = "#61afef";
+    ctx.fillText("轴", -80, -20);
+    ctx.fillStyle = "#e5c07b";
+    ctx.fillText("x", -95, -20);
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#61afef";
+    ctx.fillText("轴", -15, -85);
+    ctx.fillStyle = "#e5c07b";
+    ctx.fillText("y", -30, -85);
+    ctx.restore();
+  }
+
+  计算滑块区域(type) {
+    const { 左边距, 顶边距, 宽度, 高度, 间距 } = this.滑块配置;
+    let y;
+    if (type === "平移") y = 顶边距 - 2 * 间距;
+    else if (type === "旋转") y = 顶边距 - 1 * 间距;
+    else y = 顶边距;
+
+    const 滑块 = this.滑块状态[type];
+    const 比例 = (滑块.当前值 - 滑块.最小值) / (滑块.最大值 - 滑块.最小值);
+    const thumbX = 左边距 + 70 + 比例 * (宽度 - 12);
+    return {
+      track: { x: 左边距 + 70, y: y - 6, width: 宽度, height: 高度 },
+      thumb: { x: thumbX, y: y - 6, width: 12, height: 高度 },
+      label: { x: 左边距, y: y + 5 },
+      value: { x: 左边距 + 80 + 宽度, y: y + 5 },
+    };
+  }
+
+  绘制滑块() {
+    this.绘制单个滑块("平移", "平移");
+    this.绘制单个滑块("旋转", "旋转");
+    this.绘制单个滑块("缩放", "缩放");
+  }
+
+  绘制单个滑块(type, label) {
+    const ctx = this.ctx;
+    const 滑块区域 = this.计算滑块区域(type);
+    const 滑块 = this.滑块状态[type];
+    const 比例 = (滑块.当前值 - 滑块.最小值) / (滑块.最大值 - 滑块.最小值);
+
+    ctx.font = `14px ${fontFamily}`;
+    ctx.textBaseline = "middle";
+    ctx.textAlign = "left";
+    const 标题X = 滑块区域.track.x - 5;
+    ctx.fillStyle = "#61afef";
+    ctx.fillText(label, 标题X - ctx.measureText(label).width - 4, 滑块区域.label.y);
+
+    ctx.fillStyle = "#444";
+    ctx.fillRect(滑块区域.track.x, 滑块区域.track.y, 滑块区域.track.width, 滑块区域.track.height);
+    ctx.fillStyle = "#4e81cdff";
+    ctx.fillRect(滑块区域.track.x, 滑块区域.track.y, 比例 * 滑块区域.track.width, 滑块区域.track.height);
+    ctx.fillStyle = "transparent";
+    ctx.fillRect(滑块区域.thumb.x, 滑块区域.thumb.y, 滑块区域.thumb.width, 滑块区域.thumb.height);
+
+    let 值文本 = type === "缩放" ? 滑块.当前值.toFixed(1).replace(/\.0$/, "") : String(Math.round(滑块.当前值));
+    if (type === "旋转") 值文本 += "°";
+    ctx.fillStyle = "#ffffff";
+    ctx.fillText(值文本, 滑块区域.value.x, 滑块区域.value.y);
+  }
+
+  绘制播放按钮() {
+    const ctx = this.ctx;
+    const b = this.播放按钮;
+    ctx.fillStyle = b.悬停 ? "#4e81cdff" : "#305286ff";
+    ctx.fillRect(b.x, b.y, b.width, b.height);
+    ctx.fillStyle = "#ffffff";
+    ctx.font = `14px ${fontFamily}`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("播放", b.x + b.width / 2, b.y + b.height / 2 + 1);
+  }
+
+  顺序按钮过渡进度() {
+    if (!this.顺序按钮过渡) return 1;
+    const t = (performance.now() - this.顺序按钮过渡.开始时间) / this.顺序按钮过渡时长;
+    return Math.min(t, 1);
+  }
+
+  顺序按钮过渡当前Y() {
+    if (!this.顺序按钮过渡) return null;
+    const p = this.顺序按钮过渡进度();
+    const ease = 1 - Math.pow(1 - p, 3);
+    return this.顺序按钮过渡.起始Y + (this.顺序按钮过渡.目标Y - this.顺序按钮过渡.起始Y) * ease;
+  }
+
+  绘制顺序按钮() {
+    const ctx = this.ctx;
+    const 拖拽中 = this.顺序按钮拖拽.槽索引 >= 0;
+    const 目标槽 = this.顺序按钮目标槽索引;
+    const 过渡 = this.顺序按钮过渡;
+    const 过渡当前Y = this.顺序按钮过渡当前Y();
+    const 过渡未结束 = 过渡 && this.顺序按钮过渡进度() < 1;
+
+    ctx.fillStyle = "#000c";
+    ctx.fillRect(this.画布宽度 - 85, 0, 85, 165);
+
+    ctx.font = `14px ${fontFamily}`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "bottom";
+    ctx.fillStyle = "lightsteelblue";
+    ctx.fillText("变换顺序", this.按钮起始X + this.按钮宽 / 2, this.槽Y[0] - 12);
+
+    const 画占位 = (x, y) => {
+      ctx.fillStyle = "rgba(78, 129, 205, 0.35)";
+      ctx.fillRect(x, y, this.按钮宽, this.按钮高);
+      ctx.strokeStyle = "rgba(78, 129, 205, 0.8)";
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(x, y, this.按钮宽, this.按钮高);
+    };
+
+    const 画单个按钮 = (名称, y, 高亮 = false) => {
+      ctx.fillStyle = 高亮 ? "rgb(48, 64, 92)" : "#305286ff";
+      ctx.fillRect(this.按钮起始X, y, this.按钮宽, this.按钮高);
+      if (高亮) {
+        ctx.strokeStyle = "lightblue";
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(this.按钮起始X, y, this.按钮宽, this.按钮高);
+      }
+      ctx.fillStyle = "#ffffff";
+      ctx.font = `12px ${fontFamily}`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(名称, this.按钮起始X + this.按钮宽 / 2, y + this.按钮高 / 2 + 1);
+    };
+
+    if (拖拽中) {
+      const 拖拽槽 = this.顺序按钮拖拽.槽索引;
+      const 按钮所在槽 = this.顺序按钮拖拽.按钮所在槽;
+      画占位(this.按钮起始X, this.槽Y[拖拽槽]);
+      画占位(this.按钮起始X, this.槽Y[按钮所在槽]);
+    }
+
+    for (let k = 0; k < 3; k++) {
+      let 显示名称;
+      let 显示Y;
+      const 被过渡占用 = 过渡 && this.变换顺序[k] === 过渡.名称;
+      if (拖拽中 && k === this.顺序按钮拖拽.按钮所在槽) continue;
+      if (拖拽中 && k === this.顺序按钮拖拽.槽索引) {
+        显示名称 = this.变换顺序[k];
+        显示Y =
+          过渡当前Y !== null && 过渡 && 过渡.名称 === 显示名称 && 过渡.目标Y === this.槽Y[k]
+            ? 过渡当前Y
+            : this.槽Y[k];
+      } else if (被过渡占用 && 过渡当前Y !== null && !拖拽中) {
+        显示名称 = 过渡.名称;
+        显示Y = 过渡当前Y;
+      } else if (拖拽中 && 过渡 && 被过渡占用 && 过渡.目标Y === this.槽Y[k]) {
+        显示名称 = 过渡.名称;
+        显示Y = 过渡当前Y !== null ? 过渡当前Y : this.槽Y[k];
+      } else {
+        显示名称 = this.变换顺序[k];
+        显示Y = this.槽Y[k];
+      }
+      const 悬停高亮 = !拖拽中 && this.顺序按钮悬停槽索引 === k;
+      画单个按钮(显示名称, 显示Y, 悬停高亮);
+    }
+
+    if (拖拽中) {
+      const y = this.顺序按钮拖拽.当前Y;
+      ctx.fillStyle = "rgb(48, 64, 92)";
+      ctx.fillRect(this.按钮起始X, y, this.按钮宽, this.按钮高);
+      ctx.strokeStyle = "lightblue";
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(this.按钮起始X, y, this.按钮宽, this.按钮高);
+      ctx.fillStyle = "#ffffff";
+      ctx.font = `12px ${fontFamily}`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(this.变换顺序[this.顺序按钮拖拽.按钮所在槽], this.按钮起始X + this.按钮宽 / 2, y + this.按钮高 / 2 + 1);
+    }
+
+    if (过渡未结束) {
+      requestAnimationFrame(() => this.绘制());
+    } else if (过渡 && !拖拽中) {
+      this.顺序按钮过渡 = null;
+    }
+  }
+
+  应用变换顺序绘制对象() {
+    const ctx = this.ctx;
+    ctx.save();
+    ctx.translate(this.原点X, this.原点Y);
+
+    const 平移量 = (this.滑块状态["平移"].当前值 / 100) * 200;
+    const 旋转量 = (this.滑块状态["旋转"].当前值 * Math.PI) / 180;
+    const 缩放量 = this.滑块状态["缩放"].当前值;
+
+    for (const name of this.绘制用变换顺序) {
+      if (name === "平移") ctx.translate(平移量, 0);
+      else if (name === "旋转") ctx.rotate(旋转量);
+      else ctx.scale(缩放量, 缩放量);
+    }
+
+    ctx.translate(-this.对象宽 / 2, -this.对象高 / 2);
+    ctx.fillStyle = "#4e81cd39";
+    ctx.strokeStyle = "#61afef";
+    ctx.lineWidth = 2;
+    ctx.fillRect(0, 0, this.对象宽, this.对象高);
+    ctx.strokeRect(0, 0, this.对象宽, this.对象高);
+    ctx.fillStyle = "#e5c07b";
+    ctx.font = `16px ${fontFamily}`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("对象", this.对象宽 / 2 + 25, this.对象高 / 2 + 20);
+    ctx.restore();
+  }
+
+  绘制() {
+    const ctx = this.ctx;
+    ctx.fillStyle = "#222";
+    ctx.fillRect(0, 0, this.画布宽度, this.画布高度);
+    this.绘制经纬线();
+    this.绘制轴线和原点();
+    this.绘制播放按钮();
+    this.应用变换顺序绘制对象();
+    this.绘制滑块();
+    this.绘制顺序按钮();
+    if (this.动画状态.倒计时中) {
+      this.绘制倒计时叠加();
+    }
+  }
+
+  绘制倒计时叠加() {
+    const ctx = this.ctx;
+    const 已过 = performance.now() - this.动画状态.倒计时开始时间;
+    const 剩余秒 = Math.max(0, (this.动画状态.倒计时时长 - 已过) / 1000);
+    const 显示数字 = 剩余秒 > 0 ? (剩余秒 > 0.1 ? 剩余秒.toFixed(1) : "0") : "GO";
+    const cx = this.画布宽度 / 2;
+    const cy = this.画布高度 / 2;
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.font = `${Math.min(75, this.画布宽度 * 0.2)}px ${fontFamily}`;
+    ctx.fillStyle = "#fff";
+    ctx.fillText(显示数字, 0, -150);
+    ctx.restore();
+  }
+}
+
+new Canvas变换顺序("canvas-变换顺序");
 class Canvas变换基类 {
   constructor(canvasId) {
     this.canvas = document.getElementById(canvasId);
@@ -3112,4 +3713,3 @@ class Canvas旋转 extends Canvas变换基类 {
 }
 
 new Canvas旋转();
-
