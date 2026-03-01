@@ -200,7 +200,7 @@ select:-webkit-autofill:focus {
   position: absolute;
   content: "\2713";
   color: lightgreen;
-  font-family: "Font Awesome 6 Free", ui-rounded;
+  font-family: "Font Awesome 7 Free", ui-rounded;
   font-size: 14px;
   font-weight: bold;
   top: 50%;
@@ -243,7 +243,7 @@ select:-webkit-autofill:focus {
 #颜色模式:checked::before {
   color: gold;
   left: calc(100% - 35px);
-  font-family: "Font Awesome 6 Free", ui-rounded;
+  font-family: "Font Awesome 7 Free", ui-rounded;
   content: "\f185";
 }
 

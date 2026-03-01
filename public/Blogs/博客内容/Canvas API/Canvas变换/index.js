@@ -1548,22 +1548,47 @@ class Canvas变换顺序 {
 
     this.变换顺序 = ["平移", "旋转", "缩放"];
     this.绘制用变换顺序 = ["平移", "旋转", "缩放"];
-    this.按钮宽 = 60;
-    this.按钮高 = 28;
-    this.按钮间距 = 10;
-    this.按钮起始X = this.画布宽度 - 70;
-    this.按钮起始Y = 40;
-    this.槽Y = [
-      this.按钮起始Y,
-      this.按钮起始Y + this.按钮高 + this.按钮间距,
-      this.按钮起始Y + 2 * (this.按钮高 + this.按钮间距),
-    ];
-    this.顺序按钮拖拽 = { 槽索引: -1, 按钮所在槽: -1, 偏移Y: 0, 当前Y: 0 };
-    this.顺序按钮目标槽索引 = null;
-    this.顺序按钮上一帧目标槽 = null;
-    this.顺序按钮悬停槽索引 = -1;
-    this.顺序按钮过渡 = null;
-    this.顺序按钮过渡时长 = 250;
+    this.排序区配置 = {
+      右边距: 10,
+      顶边距: 8,
+      宽: 130,
+      高: 170,
+      圆角: 10,
+      标题: "变换顺序",
+      标题字体: `14px ${fontFamily}`,
+      标题色: "#e2e8f0",
+      序号字体: `13px ${fontFamily}`,
+      序号色: "#94a3b8",
+      行起始Y: 40,
+      行高: 44,
+      序号X: 20,
+      芯片X: 40,
+      芯片宽: 70,
+      芯片高: 30,
+      芯片圆角: 8,
+      芯片字体: `14px ${fontFamily}`,
+      背景色: "rgba(10,15,20,0.62)",
+      描边色: "rgba(255,255,255,0.2)",
+      拖拽透明度: 0.92,
+      动画系数: 0.25,
+      动画阈值: 0.35,
+    };
+    this.分组样式 = {
+      平移: { 填充: "rgba(249, 115, 22, 0.2)", 描边: "#fb923c", 文字: "#ffedd5" },
+      旋转: { 填充: "rgba(56, 189, 248, 0.22)", 描边: "#38bdf8", 文字: "#e0f2fe" },
+      缩放: { 填充: "rgba(52, 211, 153, 0.2)", 描边: "#34d399", 文字: "#d1fae5" },
+    };
+    this.顺序芯片状态 = {
+      平移: { x: 0, y: 0, 目标x: 0, 目标y: 0 },
+      旋转: { x: 0, y: 0, 目标x: 0, 目标y: 0 },
+      缩放: { x: 0, y: 0, 目标x: 0, 目标y: 0 },
+    };
+    this.拖拽顺序芯片 = null;
+    this.顺序拖拽偏移 = { x: 0, y: 0 };
+    this.悬停顺序芯片 = null;
+    this.顺序动画上次时间戳 = performance.now();
+    this.顺序动画基准帧时长 = 1000 / 60;
+    this._刷新顺序芯片目标(true);
 
     this.播放按钮 = { x: this.画布宽度 / 2 - 35, y: 8, width: 70, height: 36, 悬停: false };
 
@@ -1601,130 +1626,132 @@ class Canvas变换顺序 {
       return;
     }
 
-    for (let i = 0; i < 3; i++) {
-      const y = this.槽Y[i];
-      if (
-        坐标.x >= this.按钮起始X &&
-        坐标.x <= this.按钮起始X + this.按钮宽 &&
-        坐标.y >= y &&
-        坐标.y <= y + this.按钮高
-      ) {
-        this.顺序按钮拖拽.槽索引 = i;
-        this.顺序按钮拖拽.按钮所在槽 = i;
-        this.顺序按钮拖拽.偏移Y = 坐标.y - this.槽Y[i];
-        this.顺序按钮拖拽.当前Y = this.槽Y[i];
-        this.顺序按钮目标槽索引 = null;
-        this.顺序按钮上一帧目标槽 = null;
-        this.顺序按钮悬停槽索引 = -1;
-        this.顺序按钮过渡 = null;
-        return;
-      }
-    }
+    const 命中芯片 = this._命中顺序芯片(坐标);
+    if (!命中芯片) return;
+    this.拖拽顺序芯片 = 命中芯片;
+    this.悬停顺序芯片 = 命中芯片;
+    const s = this.顺序芯片状态[命中芯片];
+    this.顺序拖拽偏移.x = 坐标.x - s.x;
+    this.顺序拖拽偏移.y = 坐标.y - s.y;
   }
 
   鼠标移动(e) {
     const 坐标 = this.获取鼠标坐标(e);
 
     this.播放按钮.悬停 = this.检查在播放按钮上(坐标);
-    if (this.顺序按钮拖拽.槽索引 >= 0) {
-      this.顺序按钮悬停槽索引 = -1;
+    if (this.拖拽顺序芯片) {
+      const s = this.顺序芯片状态[this.拖拽顺序芯片];
+      s.x = 坐标.x - this.顺序拖拽偏移.x;
+      s.y = 坐标.y - this.顺序拖拽偏移.y;
+      this._更新顺序拖拽排序(坐标.y);
+      this.悬停顺序芯片 = this.拖拽顺序芯片;
     } else {
-      this.顺序按钮悬停槽索引 = -1;
-      for (let i = 0; i < 3; i++) {
-        const y = this.槽Y[i];
-        if (
-          坐标.x >= this.按钮起始X &&
-          坐标.x <= this.按钮起始X + this.按钮宽 &&
-          坐标.y >= y &&
-          坐标.y <= y + this.按钮高
-        ) {
-          this.顺序按钮悬停槽索引 = i;
-          break;
-        }
-      }
+      this.悬停顺序芯片 = this._命中顺序芯片(坐标);
     }
 
     this.canvas.style.cursor = this.播放按钮.悬停
       ? "pointer"
-      : this.顺序按钮拖拽.槽索引 >= 0
-        ? "ns-resize"
-        : this.顺序按钮悬停槽索引 >= 0
+      : this.拖拽顺序芯片
+        ? 'url("/Images/Common/鼠标-拖拽.cur"), grab'
+        : this.悬停顺序芯片
           ? "pointer"
           : "default";
-
-    if (this.顺序按钮拖拽.槽索引 >= 0) {
-      const minY = this.槽Y[0];
-      const maxY = this.槽Y[2];
-      this.顺序按钮拖拽.当前Y = Math.max(minY, Math.min(maxY, 坐标.y - this.顺序按钮拖拽.偏移Y));
-
-      const i = this.顺序按钮拖拽.槽索引;
-      const 按钮所在槽 = this.顺序按钮拖拽.按钮所在槽;
-      const 鼠标在按钮列内 =
-        坐标.x >= this.按钮起始X - 6 && 坐标.x <= this.按钮起始X + this.按钮宽 + 6;
-      const 拖拽中心Y = this.顺序按钮拖拽.当前Y + this.按钮高 / 2;
-
-      this.顺序按钮目标槽索引 = null;
-      if (鼠标在按钮列内) {
-        let 最近槽 = 0;
-        let 最小距离 = Infinity;
-        for (let k = 0; k < 3; k++) {
-          const 槽中心Y = this.槽Y[k] + this.按钮高 / 2;
-          const 距离 = Math.abs(拖拽中心Y - 槽中心Y);
-          if (距离 < 最小距离) {
-            最小距离 = 距离;
-            最近槽 = k;
-          }
-        }
-
-        if (最近槽 !== 按钮所在槽) {
-          this.顺序按钮目标槽索引 = 最近槽;
-        }
-      }
-
-      const 新目标 = this.顺序按钮目标槽索引;
-      const 旧目标 = this.顺序按钮上一帧目标槽;
-      const now = performance.now();
-
-      if (新目标 !== 旧目标) {
-        if (新目标 !== null) {
-          [this.变换顺序[按钮所在槽], this.变换顺序[新目标]] = [this.变换顺序[新目标], this.变换顺序[按钮所在槽]];
-          this.顺序按钮拖拽.按钮所在槽 = 新目标;
-          this.顺序按钮过渡 = {
-            名称: this.变换顺序[按钮所在槽],
-            起始Y: this.槽Y[新目标],
-            目标Y: this.槽Y[按钮所在槽],
-            开始时间: now,
-          };
-          this.顺序按钮上一帧目标槽 = 新目标;
-        } else {
-          this.顺序按钮上一帧目标槽 = 新目标;
-        }
-      }
-    }
 
     this.绘制();
   }
 
   鼠标释放() {
-    const i = this.顺序按钮拖拽.槽索引;
-    const j = this.顺序按钮目标槽索引;
-    const 按钮所在槽 = this.顺序按钮拖拽.按钮所在槽;
-    const 松手Y = this.顺序按钮拖拽.当前Y;
-    if (i >= 0) {
-      const 落点槽 = j !== null ? j : 按钮所在槽;
-      this.顺序按钮过渡 = {
-        名称: this.变换顺序[落点槽],
-        起始Y: 松手Y,
-        目标Y: this.槽Y[落点槽],
-        开始时间: performance.now(),
-      };
+    if (this.拖拽顺序芯片) {
+      this.拖拽顺序芯片 = null;
+      this._刷新顺序芯片目标(false);
     }
-    this.顺序按钮拖拽.槽索引 = -1;
-    this.顺序按钮拖拽.按钮所在槽 = -1;
-    this.顺序按钮目标槽索引 = null;
-    this.顺序按钮上一帧目标槽 = null;
-    this.顺序按钮悬停槽索引 = -1;
     this.绘制();
+  }
+
+  _顺序区矩形() {
+    const c = this.排序区配置;
+    return {
+      x: this.画布宽度 - c.右边距 - c.宽,
+      y: c.顶边距,
+      w: c.宽,
+      h: c.高,
+    };
+  }
+
+  _顺序槽位(index) {
+    const p = this._顺序区矩形();
+    const c = this.排序区配置;
+    return {
+      x: p.x + c.芯片X,
+      y: p.y + c.行起始Y + index * c.行高,
+      w: c.芯片宽,
+      h: c.芯片高,
+    };
+  }
+
+  _命中顺序芯片(p) {
+    const names = ["平移", "旋转", "缩放"];
+    for (let i = names.length - 1; i >= 0; i--) {
+      const name = names[i];
+      const s = this.顺序芯片状态[name];
+      const c = this.排序区配置;
+      if (p.x >= s.x && p.x <= s.x + c.芯片宽 && p.y >= s.y && p.y <= s.y + c.芯片高) return name;
+    }
+    return null;
+  }
+
+  _刷新顺序芯片目标(force = false) {
+    for (let i = 0; i < this.变换顺序.length; i++) {
+      const name = this.变换顺序[i];
+      const slot = this._顺序槽位(i);
+      const s = this.顺序芯片状态[name];
+      s.目标x = slot.x;
+      s.目标y = slot.y;
+      if (force && this.拖拽顺序芯片 !== name) {
+        s.x = slot.x;
+        s.y = slot.y;
+      }
+    }
+  }
+
+  _更新顺序拖拽排序(mouseY) {
+    if (!this.拖拽顺序芯片) return;
+    const c = this.排序区配置;
+    const p = this._顺序区矩形();
+    const rel = mouseY - (p.y + c.行起始Y + c.芯片高 / 2);
+    let target = Math.round(rel / c.行高);
+    target = Math.max(0, Math.min(2, target));
+
+    const from = this.变换顺序.indexOf(this.拖拽顺序芯片);
+    if (from === target) return;
+    this.变换顺序.splice(from, 1);
+    this.变换顺序.splice(target, 0, this.拖拽顺序芯片);
+    this._刷新顺序芯片目标(false);
+  }
+
+  _更新顺序芯片动画() {
+    let need = false;
+    const c = this.排序区配置;
+    const 当前时间戳 = performance.now();
+    const 原始delta = 当前时间戳 - this.顺序动画上次时间戳;
+    const deltaMs = Math.max(0, Math.min(100, 原始delta || this.顺序动画基准帧时长));
+    this.顺序动画上次时间戳 = 当前时间戳;
+    const 时间归一系数 = deltaMs / this.顺序动画基准帧时长;
+    const 插值系数 = 1 - Math.pow(1 - c.动画系数, 时间归一系数);
+    const names = ["平移", "旋转", "缩放"];
+    for (const name of names) {
+      if (name === this.拖拽顺序芯片) continue;
+      const s = this.顺序芯片状态[name];
+      s.x += (s.目标x - s.x) * 插值系数;
+      s.y += (s.目标y - s.y) * 插值系数;
+      if (Math.abs(s.目标x - s.x) > c.动画阈值 || Math.abs(s.目标y - s.y) > c.动画阈值) {
+        need = true;
+      } else {
+        s.x = s.目标x;
+        s.y = s.目标y;
+      }
+    }
+    return need;
   }
 
   检查在播放按钮上(坐标) {
@@ -1934,110 +1961,67 @@ class Canvas变换顺序 {
     ctx.fillText("播放", b.x + b.width / 2, b.y + b.height / 2 + 1);
   }
 
-  顺序按钮过渡进度() {
-    if (!this.顺序按钮过渡) return 1;
-    const t = (performance.now() - this.顺序按钮过渡.开始时间) / this.顺序按钮过渡时长;
-    return Math.min(t, 1);
-  }
-
-  顺序按钮过渡当前Y() {
-    if (!this.顺序按钮过渡) return null;
-    const p = this.顺序按钮过渡进度();
-    const ease = 1 - Math.pow(1 - p, 3);
-    return this.顺序按钮过渡.起始Y + (this.顺序按钮过渡.目标Y - this.顺序按钮过渡.起始Y) * ease;
-  }
-
   绘制顺序按钮() {
     const ctx = this.ctx;
-    const 拖拽中 = this.顺序按钮拖拽.槽索引 >= 0;
-    const 目标槽 = this.顺序按钮目标槽索引;
-    const 过渡 = this.顺序按钮过渡;
-    const 过渡当前Y = this.顺序按钮过渡当前Y();
-    const 过渡未结束 = 过渡 && this.顺序按钮过渡进度() < 1;
+    const p = this._顺序区矩形();
+    const c = this.排序区配置;
 
-    ctx.fillStyle = "#000c";
-    ctx.fillRect(this.画布宽度 - 85, 0, 85, 165);
+    ctx.save();
+    ctx.fillStyle = c.背景色;
+    ctx.strokeStyle = c.描边色;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.roundRect(p.x, p.y, p.w, p.h, c.圆角);
+    ctx.fill();
+    ctx.stroke();
 
-    ctx.font = `14px ${fontFamily}`;
+    ctx.fillStyle = c.标题色;
+    ctx.font = c.标题字体;
+    ctx.textBaseline = "top";
+    ctx.textAlign = "left";
+    ctx.fillText(c.标题, p.x + 35, p.y + 12);
+
+    ctx.font = c.序号字体;
+    ctx.fillStyle = c.序号色;
+    ctx.textBaseline = "middle";
     ctx.textAlign = "center";
-    ctx.textBaseline = "bottom";
-    ctx.fillStyle = "lightsteelblue";
-    ctx.fillText("变换顺序", this.按钮起始X + this.按钮宽 / 2, this.槽Y[0] - 12);
+    for (let i = 0; i < 3; i++) {
+      const y = p.y + c.行起始Y + i * c.行高 + c.芯片高 / 2;
+      ctx.fillText(String(i + 1), p.x + c.序号X, y);
+    }
 
-    const 画占位 = (x, y) => {
-      ctx.fillStyle = "rgba(78, 129, 205, 0.35)";
-      ctx.fillRect(x, y, this.按钮宽, this.按钮高);
-      ctx.strokeStyle = "rgba(78, 129, 205, 0.8)";
-      ctx.lineWidth = 1.5;
-      ctx.strokeRect(x, y, this.按钮宽, this.按钮高);
-    };
-
-    const 画单个按钮 = (名称, y, 高亮 = false) => {
-      ctx.fillStyle = 高亮 ? "rgb(48, 64, 92)" : "#305286ff";
-      ctx.fillRect(this.按钮起始X, y, this.按钮宽, this.按钮高);
-      if (高亮) {
-        ctx.strokeStyle = "lightblue";
-        ctx.lineWidth = 1.5;
-        ctx.strokeRect(this.按钮起始X, y, this.按钮宽, this.按钮高);
-      }
-      ctx.fillStyle = "#ffffff";
-      ctx.font = `12px ${fontFamily}`;
+    const 画单个芯片 = (name, isDragging) => {
+      const s = this.顺序芯片状态[name];
+      const st = this.分组样式[name];
+      ctx.save();
+      ctx.globalAlpha = isDragging ? c.拖拽透明度 : 1;
+      ctx.fillStyle = st.填充;
+      ctx.strokeStyle = st.描边;
+      ctx.lineWidth = isDragging || this.悬停顺序芯片 === name ? 2 : 1;
+      ctx.beginPath();
+      ctx.roundRect(s.x, s.y, c.芯片宽, c.芯片高, c.芯片圆角);
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = st.文字;
+      ctx.font = c.芯片字体;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText(名称, this.按钮起始X + this.按钮宽 / 2, y + this.按钮高 / 2 + 1);
+      ctx.fillText(name, s.x + c.芯片宽 / 2, s.y + c.芯片高 / 2 + 1);
+      ctx.restore();
     };
 
-    if (拖拽中) {
-      const 拖拽槽 = this.顺序按钮拖拽.槽索引;
-      const 按钮所在槽 = this.顺序按钮拖拽.按钮所在槽;
-      画占位(this.按钮起始X, this.槽Y[拖拽槽]);
-      画占位(this.按钮起始X, this.槽Y[按钮所在槽]);
+    for (const name of this.变换顺序) {
+      if (name === this.拖拽顺序芯片) continue;
+      画单个芯片(name, false);
+    }
+    if (this.拖拽顺序芯片) {
+      画单个芯片(this.拖拽顺序芯片, true);
     }
 
-    for (let k = 0; k < 3; k++) {
-      let 显示名称;
-      let 显示Y;
-      const 被过渡占用 = 过渡 && this.变换顺序[k] === 过渡.名称;
-      if (拖拽中 && k === this.顺序按钮拖拽.按钮所在槽) continue;
-      if (拖拽中 && k === this.顺序按钮拖拽.槽索引) {
-        显示名称 = this.变换顺序[k];
-        显示Y =
-          过渡当前Y !== null && 过渡 && 过渡.名称 === 显示名称 && 过渡.目标Y === this.槽Y[k]
-            ? 过渡当前Y
-            : this.槽Y[k];
-      } else if (被过渡占用 && 过渡当前Y !== null && !拖拽中) {
-        显示名称 = 过渡.名称;
-        显示Y = 过渡当前Y;
-      } else if (拖拽中 && 过渡 && 被过渡占用 && 过渡.目标Y === this.槽Y[k]) {
-        显示名称 = 过渡.名称;
-        显示Y = 过渡当前Y !== null ? 过渡当前Y : this.槽Y[k];
-      } else {
-        显示名称 = this.变换顺序[k];
-        显示Y = this.槽Y[k];
-      }
-      const 悬停高亮 = !拖拽中 && this.顺序按钮悬停槽索引 === k;
-      画单个按钮(显示名称, 显示Y, 悬停高亮);
-    }
+    ctx.restore();
 
-    if (拖拽中) {
-      const y = this.顺序按钮拖拽.当前Y;
-      ctx.fillStyle = "rgb(48, 64, 92)";
-      ctx.fillRect(this.按钮起始X, y, this.按钮宽, this.按钮高);
-      ctx.strokeStyle = "lightblue";
-      ctx.lineWidth = 1.5;
-      ctx.strokeRect(this.按钮起始X, y, this.按钮宽, this.按钮高);
-      ctx.fillStyle = "#ffffff";
-      ctx.font = `12px ${fontFamily}`;
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText(this.变换顺序[this.顺序按钮拖拽.按钮所在槽], this.按钮起始X + this.按钮宽 / 2, y + this.按钮高 / 2 + 1);
-    }
-
-    if (过渡未结束) {
-      requestAnimationFrame(() => this.绘制());
-    } else if (过渡 && !拖拽中) {
-      this.顺序按钮过渡 = null;
-    }
+    const 动画中 = this._更新顺序芯片动画();
+    if (动画中) requestAnimationFrame(() => this.绘制());
   }
 
   应用变换顺序绘制对象() {

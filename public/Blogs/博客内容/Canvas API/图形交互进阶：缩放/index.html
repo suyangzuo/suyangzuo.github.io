@@ -98,7 +98,7 @@
       如前所说，热区并非总是和可见的形状相匹配，就像关闭按钮的热区不是<span class="行内专业名词">✕</span
       >，而是红色区域。在和图形有关的程序中，热区极其常见，包括游戏：
     </p>
-    <figure class="截图容器">
+    <figure class="截图容器" data-desc="格斗游戏中的热区">
       <img src="/Images/Blogs/Canvas API/图形交互进阶/街霸.webp" alt="街霸热区" />
     </figure>
     <p class="分区普通文本">
@@ -127,7 +127,7 @@
       >或<span class="行内专业名词">线</span>，我们需要将其转化为一个<span class="行内专业名词">面</span
       >，方法就是为其设置<span class="行内专业名词">容差</span>：
     </p>
-    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.1">
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.1" data-desc="热区容差">
       <canvas id="cvs-热区" style="width: 100%; height: calc(100% - 42px); background-color: #111"></canvas>
     </figure>
     <p class="分区普通文本">
@@ -146,12 +146,27 @@
       假设热区彼此重叠，该如何抉择？如同<span class="行内专业名词 等宽">图3</span
       >所示，角热区、边热区、矩形内部热区，彼此都有重叠的部分，自己试一下，当鼠标位于热区重叠区域，哪个热区被触发了？
     </p>
-    <p class="分区普通文本">
-      基本的准则是：<span class="专业名词"
-        >哪个热区被触发的<span class="强调">几率最低</span>，哪个热区的<span class="强调">优先级就最高</span></span
-      >。<span class="行内专业名词 等宽">图3</span
-      >中，最不可能被触发的是四个角，因此，角热区的优先级最高，其次是边热区；矩形内部被触发的几率最大，因此优先级最低。
-    </p>
+    <p class="分区普通文本">基本的准则是：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span
+          ><span class="行内专业名词">彼此重叠的热区：</span
+          ><span class="专业名词">面积<span class="强调">小</span>的优先级<span class="强调">高</span></span
+          >，<span class="专业名词">面积<span class="强调">大</span>的优先级<span class="强调">低</span></span
+          >；因为面积大的会将面积小的包含在内部，假设面积大的热区优先级高，则面积小的热区永远无法触发。<span
+            class="行内专业名词 等宽"
+            >图3</span
+          >中，面积最小的的是四个角的热区，因此，角热区的优先级最高，其次是边热区；矩形内部面积最大，因此优先级最低。</span
+        >
+      </li>
+      <li class="分区列表项">
+        <span><span class="行内专业名词">不重叠的热区：</span>根据需要自行设置优先级</span>
+      </li>
+    </ul>
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.25" data-desc="热区优先级">
+      <canvas id="cvs-热区优先级" style="width: 100%; height: calc(100% - 42px); background-color: #0a0a0a"></canvas>
+    </figure>
+    <p class="分区普通文本">优先级主要解决的是热区彼此重叠时的优先级问题。</p>
     <p class="分区普通文本">
       如果是同优先级的热区彼此重叠，比如四个角的热区重叠了，则可根据自己的需要决定哪个角最优先。越优先的，其触发检测代码越靠前。
     </p>
