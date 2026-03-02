@@ -256,7 +256,7 @@
         ctx.stroke();   //描边
       </code>
     </pre>
-    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
+    <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75" data-desc="绘制直线">
       <canvas id="canvas-直线" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
     </figure>
 
@@ -265,13 +265,15 @@
     <p class="分区普通文本">要绘制矩形，需要知道<span class="行内专业名词">2</span>个必要条件：</p>
     <ul class="分区列表">
       <li class="分区列表项">
-        矩形的<span class="行内专业名词">坐标</span>，<span class="强调">注意：</span>
+        矩形的<span class="行内专业名词">坐标</span>
         <ul class="分区列表">
           <li class="分区列表项">
             矩形的<span class="行内专业名词">坐标</span>就是矩形<span class="强调">左上角</span>的坐标。
           </li>
           <li class="分区列表项">
-            矩形的<span class="行内专业名词">坐标</span>是相对于<span class="行内专业名词">Canvas</span><span class="强调">左上角</span>的。
+            矩形的<span class="行内专业名词">坐标</span>是相对于<span class="行内专业名词 等宽">Canvas</span><span class="强调">原点</span>的<span
+              class="附加说明"><span class="行内专业名词 等宽">Canvas</span>原点默认在<span class="行内专业名词 等宽">Canvas</span>的<span
+                class="强调">左上角</span></span>。
           </li>
         </ul>
       </li>
@@ -329,7 +331,7 @@
       </code>
     </pre>
     <figure class="截图容器" style="width: 100%; aspect-ratio: 1.75">
-      <canvas id="canvas-2" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
+      <canvas id="canvas-绘制矩形" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
     </figure>
 
 
@@ -357,7 +359,7 @@
       <canvas id="canvas-round-rect" style="width: 100%; height: calc(100% - 42px); background-color: #222"></canvas>
     </figure>
     <p class="分区普通文本">
-      圆角半径数组的写法和<span class="行内专业名词">CSS</span>是一致的，只不过用的是数组的形式，因此两个值之间要用英文逗号。
+      圆角半径的书写顺序和<span class="行内专业名词">CSS</span>是一致的，只不过用的是数组的形式，因此两个值之间要用英文逗号。
     </p>
 
 

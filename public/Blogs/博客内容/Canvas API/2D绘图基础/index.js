@@ -3,23 +3,260 @@ class CanvasDrawer {
     this.canvas = document.getElementById(canvasId);
     this.ctx = this.canvas.getContext("2d");
     this.dpr = window.devicePixelRatio || 1;
+    this.config = {
+      points: [
+        { x: 100, y: 100 },
+        { x: 300, y: 250 },
+        { x: 440, y: 40 },
+        { x: 640, y: 350 },
+      ],
+      point: {
+        radius: 6,
+        hoverRadius: 9,
+        hitTolerance: 7,
+      },
+      label: {
+        offsetX: -40,
+        offsetY: -20,
+        font: "14px 'Google Sans Code', 'Consolas', monospace",
+      },
+      code: {
+        leftPadding: 16,
+        bottomPadding: 16,
+        lineHeight: 24,
+        font: "14px 'Google Sans Code', 'Consolas', monospace",
+      },
+      colors: {
+        background: "rgba(0, 0, 0, 0)",
+        lineStroke: "lightskyblue",
+        pointFill: "transparent",
+        pointHoverFill: "#ffd166",
+        pointStroke: "transparent",
+        number: "#ffd166",
+        comma: "#8b949e",
+        dot: "#8b949e",
+        bracket: "#7ee787",
+        semicolon: "silver",
+        normalText: "#e6edf3",
+        functionName: "#79c0ff",
+      },
+    };
+
+    this.points = this.config.points.map((point) => ({ ...point }));
+    this.hoveredPointIndex = -1;
+    this.draggingPointIndex = -1;
+
     this.setupCanvas();
-    this.drawLine(100, 100, 400, 200);
+    this.bindEvents();
+    this.render();
   }
 
   setupCanvas() {
     this.canvas.width = this.canvas.offsetWidth * this.dpr;
     this.canvas.height = this.canvas.offsetHeight * this.dpr;
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
     this.ctx.scale(this.dpr, this.dpr);
   }
 
-  drawLine(startX, startY, endX, endY, strokeStyle = "lightskyblue", lineWidth = 2) {
+  bindEvents() {
+    this.canvas.addEventListener("mousemove", (event) => this.handleMouseMove(event));
+    this.canvas.addEventListener("mousedown", (event) => this.handleMouseDown(event));
+    this.canvas.addEventListener("mouseup", () => this.handleMouseUp());
+    this.canvas.addEventListener("mouseleave", () => this.handleMouseLeave());
+    window.addEventListener("mouseup", () => this.handleMouseUp());
+    window.addEventListener("resize", () => {
+      this.setupCanvas();
+      this.render();
+    });
+  }
+
+  getMousePosition(event) {
+    const rect = this.canvas.getBoundingClientRect();
+    return {
+      x: ((event.clientX - rect.left) * this.canvas.offsetWidth) / rect.width,
+      y: ((event.clientY - rect.top) * this.canvas.offsetHeight) / rect.height,
+    };
+  }
+
+  findPointIndexByPosition(x, y) {
+    const { point } = this.config;
+    const maxDistance = point.radius + point.hitTolerance;
+
+    for (let index = this.points.length - 1; index >= 0; index -= 1) {
+      const pointItem = this.points[index];
+      const dx = x - pointItem.x;
+      const dy = y - pointItem.y;
+      if (Math.hypot(dx, dy) <= maxDistance) {
+        return index;
+      }
+    }
+
+    return -1;
+  }
+
+  handleMouseMove(event) {
+    const { x, y } = this.getMousePosition(event);
+
+    if (this.draggingPointIndex !== -1) {
+      this.points[this.draggingPointIndex].x = x;
+      this.points[this.draggingPointIndex].y = y;
+      this.hoveredPointIndex = this.draggingPointIndex;
+      this.canvas.style.cursor = "grabbing";
+      this.render();
+      return;
+    }
+
+    const hitIndex = this.findPointIndexByPosition(x, y);
+    this.hoveredPointIndex = hitIndex;
+    this.canvas.style.cursor = hitIndex === -1 ? "default" : "pointer";
+    this.render();
+  }
+
+  handleMouseDown(event) {
+    const { x, y } = this.getMousePosition(event);
+    const hitIndex = this.findPointIndexByPosition(x, y);
+
+    if (hitIndex !== -1) {
+      this.draggingPointIndex = hitIndex;
+      this.hoveredPointIndex = hitIndex;
+      this.canvas.style.cursor = "grabbing";
+      this.render();
+    }
+  }
+
+  handleMouseUp() {
+    if (this.draggingPointIndex !== -1) {
+      this.draggingPointIndex = -1;
+      this.canvas.style.cursor = this.hoveredPointIndex === -1 ? "default" : "pointer";
+      this.render();
+    }
+  }
+
+  handleMouseLeave() {
+    if (this.draggingPointIndex === -1) {
+      this.hoveredPointIndex = -1;
+    }
+    this.canvas.style.cursor = "default";
+    this.render();
+  }
+
+  render() {
+    const width = this.canvas.offsetWidth;
+    const height = this.canvas.offsetHeight;
+    const { colors } = this.config;
+
+    this.ctx.clearRect(0, 0, width, height);
+    this.ctx.fillStyle = colors.background;
+    this.ctx.fillRect(0, 0, width, height);
+
+    this.drawPolyline();
+    this.drawPoints();
+    this.drawCodePreview();
+  }
+
+  drawPolyline() {
+    const { lineStroke } = this.config.colors;
+    const lineWidth = 2;
+
     this.ctx.beginPath();
-    this.ctx.moveTo(startX, startY);
-    this.ctx.lineTo(endX, endY);
-    this.ctx.strokeStyle = strokeStyle;
+    this.ctx.moveTo(this.points[0].x, this.points[0].y);
+    for (let index = 1; index < this.points.length; index += 1) {
+      this.ctx.lineTo(this.points[index].x, this.points[index].y);
+    }
+    this.ctx.strokeStyle = lineStroke;
     this.ctx.lineWidth = lineWidth;
     this.ctx.stroke();
+  }
+
+  drawPoints() {
+    const { point, colors } = this.config;
+
+    this.points.forEach((pointItem, index) => {
+      const isHovered = index === this.hoveredPointIndex;
+      const radius = isHovered ? point.hoverRadius : point.radius;
+      const fillStyle = isHovered ? colors.pointHoverFill : colors.pointFill;
+
+      this.ctx.beginPath();
+      this.ctx.arc(pointItem.x, pointItem.y, radius, 0, 2 * Math.PI);
+      this.ctx.fillStyle = fillStyle;
+      this.ctx.fill();
+    });
+  }
+
+  drawCodePreview() {
+    const { code, colors } = this.config;
+    const roundedPoints = this.points.map((pointItem) => ({
+      x: Math.round(pointItem.x),
+      y: Math.round(pointItem.y),
+    }));
+
+    const lines = [
+      [
+        { text: "ctx", color: colors.normalText },
+        { text: ".", color: colors.dot },
+        { text: "moveTo", color: colors.functionName },
+        { text: "(", color: colors.bracket },
+        { text: `${roundedPoints[0].x}`, color: colors.number },
+        { text: ",", color: colors.comma },
+        { text: ` ${roundedPoints[0].y}`, color: colors.number },
+        { text: ")", color: colors.bracket },
+        { text: ";", color: colors.semicolon },
+      ],
+      [
+        { text: "ctx", color: colors.normalText },
+        { text: ".", color: colors.dot },
+        { text: "lineTo", color: colors.functionName },
+        { text: "(", color: colors.bracket },
+        { text: `${roundedPoints[1].x}`, color: colors.number },
+        { text: ",", color: colors.comma },
+        { text: ` ${roundedPoints[1].y}`, color: colors.number },
+        { text: ")", color: colors.bracket },
+        { text: ";", color: colors.semicolon },
+      ],
+      [
+        { text: "ctx", color: colors.normalText },
+        { text: ".", color: colors.dot },
+        { text: "lineTo", color: colors.functionName },
+        { text: "(", color: colors.bracket },
+        { text: `${roundedPoints[2].x}`, color: colors.number },
+        { text: ",", color: colors.comma },
+        { text: ` ${roundedPoints[2].y}`, color: colors.number },
+        { text: ")", color: colors.bracket },
+        { text: ";", color: colors.semicolon },
+      ],
+      [
+        { text: "ctx", color: colors.normalText },
+        { text: ".", color: colors.dot },
+        { text: "lineTo", color: colors.functionName },
+        { text: "(", color: colors.bracket },
+        { text: `${roundedPoints[3].x}`, color: colors.number },
+        { text: ",", color: colors.comma },
+        { text: ` ${roundedPoints[3].y}`, color: colors.number },
+        { text: ")", color: colors.bracket },
+        { text: ";", color: colors.semicolon },
+      ],
+    ];
+
+    const codeTop = this.canvas.offsetHeight - code.bottomPadding - code.lineHeight * lines.length;
+
+    this.ctx.font = code.font;
+    this.ctx.textAlign = "left";
+    this.ctx.textBaseline = "middle";
+
+    lines.forEach((tokens, index) => {
+      const y = codeTop + code.lineHeight * index + code.lineHeight / 2;
+      this.drawTokenLine(code.leftPadding, y, tokens);
+    });
+  }
+
+  drawTokenLine(startX, y, tokens) {
+    let currentX = startX;
+
+    tokens.forEach((token) => {
+      this.ctx.fillStyle = token.color;
+      this.ctx.fillText(token.text, currentX, y);
+      currentX += this.ctx.measureText(token.text).width;
+    });
   }
 }
 
@@ -140,69 +377,356 @@ function animate() {
 
 animate();
 
-const canvas_2 = document.getElementById("canvas-2");
-const ctx_2 = canvas_2.getContext("2d");
-const dpr_2 = window.devicePixelRatio || 1;
-canvas_2.width = canvas_2.offsetWidth * dpr_2;
-canvas_2.height = canvas_2.offsetHeight * dpr_2;
-ctx_2.scale(dpr_2, dpr_2);
-ctx_2.fillStyle = "#006400a0";
-ctx_2.strokeStyle = "gold";
-ctx_2.fillRect(265, 100, 250, 200);
-ctx_2.strokeRect(265, 100, 250, 200);
+class RectCanvasDemo {
+  constructor(canvasId) {
+    this.canvas = document.getElementById(canvasId);
+    this.ctx = this.canvas.getContext("2d");
+    this.dpr = window.devicePixelRatio || 1;
 
-ctx_2.arc(265, 100, 5, 0, 2 * Math.PI);
-ctx_2.fillStyle = "black";
-ctx_2.strokeStyle = "white";
-ctx_2.fill();
-ctx_2.stroke();
+    this.config = {
+      rect: {
+        x: 265,
+        y: 100,
+        width: 250,
+        height: 200,
+        minWidth: 20,
+        minHeight: 20,
+      },
+      interaction: {
+        edgeTolerance: 5,
+        cornerTolerance: 5,
+      },
+      label: {
+        sideOffset: 16,
+        bottomOffset: 10,
+        font: "14px 'Google Sans Code', 'Consolas', sans-serif",
+      },
+      code: {
+        leftPadding: 16,
+        bottomPadding: 16,
+        lineHeight: 24,
+        font: "14px 'Google Sans Code', 'Consolas', monospace",
+      },
+      colors: {
+        rectFill: "#006400a0",
+        rectStroke: "gold",
+        anchorFill: "black",
+        anchorStroke: "white",
+        labelText: "silver",
+        normalText: "#e6edf3",
+        functionName: "#79c0ff",
+        bracket: "#7ee787",
+        punctuationGray: "#8b949e",
+        operator: "#ff7b72",
+        semicolon: "silver",
+        number: "#ffd166",
+      },
+    };
 
-ctx_2.font = "16px 'Google Sans Code', 'Consolas', sans-serif";
-ctx_2.textAlign = "center";
-ctx_2.textBaseline = "bottom";
-ctx_2.fillStyle = "silver";
-ctx_2.fillText("坐标：(265, 100)", 265, 85);
+    this.rect = { ...this.config.rect };
+    this.hoverRegion = null;
+    this.dragRegion = null;
+    this.dragStart = { x: 0, y: 0 };
+    this.rectStart = { ...this.rect };
 
-const canvas_round_rect = document.getElementById("canvas-round-rect");
-const ctx_round_rect = canvas_round_rect.getContext("2d");
-const dpr_round_rect = window.devicePixelRatio || 1;
-canvas_round_rect.width = canvas_round_rect.offsetWidth * dpr_round_rect;
-canvas_round_rect.height = canvas_round_rect.offsetHeight * dpr_round_rect;
-ctx_round_rect.scale(dpr_round_rect, dpr_round_rect);
-ctx_round_rect.roundRect(
-  (canvas_round_rect.offsetWidth - 300) / 2,
-  (canvas_round_rect.offsetHeight - 200) / 2,
-  300,
-  200,
-  [20, 40, 80],
-);
-ctx_round_rect.fillStyle = "darkgreen";
-ctx_round_rect.strokeStyle = "gold";
-ctx_round_rect.fill();
-ctx_round_rect.stroke();
+    this.initCanvas();
+    this.bindEvents();
+    this.render();
+  }
 
-ctx_round_rect.font = "16px 'Google Sans Code', monospace";
-ctx_round_rect.fillStyle = "#ccc";
-ctx_round_rect.fillText(
-  "20",
-  (canvas_round_rect.offsetWidth - 300) / 2 - 30,
-  (canvas_round_rect.offsetHeight - 200) / 2 - 15,
-);
-ctx_round_rect.fillText(
-  "40",
-  (canvas_round_rect.offsetWidth - 300) / 2 + 300 + 10,
-  (canvas_round_rect.offsetHeight - 200) / 2 - 15,
-);
-ctx_round_rect.fillText(
-  "80",
-  (canvas_round_rect.offsetWidth - 300) / 2 + 300 + 10,
-  (canvas_round_rect.offsetHeight - 200) / 2 + 200 + 15,
-);
-ctx_round_rect.fillText(
-  "40",
-  (canvas_round_rect.offsetWidth - 300) / 2 - 30,
-  (canvas_round_rect.offsetHeight - 200) / 2 + 200 + 15,
-);
+  initCanvas() {
+    this.canvas.width = this.canvas.offsetWidth * this.dpr;
+    this.canvas.height = this.canvas.offsetHeight * this.dpr;
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+    this.ctx.scale(this.dpr, this.dpr);
+  }
+
+  bindEvents() {
+    this.canvas.addEventListener("mousedown", (event) => this.handleMouseDown(event));
+    this.canvas.addEventListener("mousemove", (event) => this.handleMouseMove(event));
+    this.canvas.addEventListener("mouseup", () => this.handleMouseUp());
+    this.canvas.addEventListener("mouseleave", () => this.handleMouseLeave());
+    window.addEventListener("mouseup", () => this.handleMouseUp());
+    window.addEventListener("resize", () => {
+      this.initCanvas();
+      this.render();
+    });
+  }
+
+  getMousePosition(event) {
+    const rect = this.canvas.getBoundingClientRect();
+    return {
+      x: ((event.clientX - rect.left) * this.canvas.offsetWidth) / rect.width,
+      y: ((event.clientY - rect.top) * this.canvas.offsetHeight) / rect.height,
+    };
+  }
+
+  getHitRegion(x, y) {
+    const { edgeTolerance, cornerTolerance } = this.config.interaction;
+    const left = this.rect.x;
+    const top = this.rect.y;
+    const right = this.rect.x + this.rect.width;
+    const bottom = this.rect.y + this.rect.height;
+
+    const corners = [
+      { key: "nw", x: left, y: top },
+      { key: "ne", x: right, y: top },
+      { key: "sw", x: left, y: bottom },
+      { key: "se", x: right, y: bottom },
+    ];
+
+    for (const corner of corners) {
+      if (Math.hypot(x - corner.x, y - corner.y) <= cornerTolerance) {
+        return corner.key;
+      }
+    }
+
+    const inHorizontalRange = x >= left - edgeTolerance && x <= right + edgeTolerance;
+    const inVerticalRange = y >= top - edgeTolerance && y <= bottom + edgeTolerance;
+
+    if (Math.abs(y - top) <= edgeTolerance && inHorizontalRange) {
+      return "n";
+    }
+    if (Math.abs(y - bottom) <= edgeTolerance && inHorizontalRange) {
+      return "s";
+    }
+    if (Math.abs(x - left) <= edgeTolerance && inVerticalRange) {
+      return "w";
+    }
+    if (Math.abs(x - right) <= edgeTolerance && inVerticalRange) {
+      return "e";
+    }
+
+    if (x >= left && x <= right && y >= top && y <= bottom) {
+      return "move";
+    }
+
+    return null;
+  }
+
+  getCursorByRegion(region) {
+    const cursorMap = {
+      nw: "nwse-resize",
+      se: "nwse-resize",
+      ne: "nesw-resize",
+      sw: "nesw-resize",
+      n: "ns-resize",
+      s: "ns-resize",
+      e: "ew-resize",
+      w: "ew-resize",
+      move: "move",
+    };
+    return cursorMap[region] || "default";
+  }
+
+  clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+  }
+
+  handleMouseDown(event) {
+    const { x, y } = this.getMousePosition(event);
+    const region = this.getHitRegion(x, y);
+
+    if (!region) {
+      return;
+    }
+
+    this.dragRegion = region;
+    this.hoverRegion = region;
+    this.dragStart = { x, y };
+    this.rectStart = { ...this.rect };
+    this.canvas.style.cursor = this.getCursorByRegion(region);
+  }
+
+  handleMouseMove(event) {
+    const { x, y } = this.getMousePosition(event);
+
+    if (this.dragRegion) {
+      this.applyDrag(x, y);
+      this.render();
+      return;
+    }
+
+    this.hoverRegion = this.getHitRegion(x, y);
+    this.canvas.style.cursor = this.getCursorByRegion(this.hoverRegion);
+  }
+
+  handleMouseUp() {
+    this.dragRegion = null;
+    this.canvas.style.cursor = this.getCursorByRegion(this.hoverRegion);
+  }
+
+  handleMouseLeave() {
+    if (!this.dragRegion) {
+      this.hoverRegion = null;
+      this.canvas.style.cursor = "default";
+    }
+  }
+
+  applyDrag(currentX, currentY) {
+    const dx = currentX - this.dragStart.x;
+    const dy = currentY - this.dragStart.y;
+    const canvasWidth = this.canvas.offsetWidth;
+    const canvasHeight = this.canvas.offsetHeight;
+    const { minWidth, minHeight } = this.rect;
+
+    if (this.dragRegion === "move") {
+      const maxX = canvasWidth - this.rectStart.width;
+      const maxY = canvasHeight - this.rectStart.height;
+      this.rect.x = this.clamp(this.rectStart.x + dx, 0, maxX);
+      this.rect.y = this.clamp(this.rectStart.y + dy, 0, maxY);
+      return;
+    }
+
+    let left = this.rectStart.x;
+    let top = this.rectStart.y;
+    let right = this.rectStart.x + this.rectStart.width;
+    let bottom = this.rectStart.y + this.rectStart.height;
+
+    if (this.dragRegion.includes("w")) {
+      left = this.clamp(this.rectStart.x + dx, 0, right - minWidth);
+    }
+    if (this.dragRegion.includes("e")) {
+      right = this.clamp(this.rectStart.x + this.rectStart.width + dx, left + minWidth, canvasWidth);
+    }
+    if (this.dragRegion.includes("n")) {
+      top = this.clamp(this.rectStart.y + dy, 0, bottom - minHeight);
+    }
+    if (this.dragRegion.includes("s")) {
+      bottom = this.clamp(this.rectStart.y + this.rectStart.height + dy, top + minHeight, canvasHeight);
+    }
+
+    this.rect.x = left;
+    this.rect.y = top;
+    this.rect.width = right - left;
+    this.rect.height = bottom - top;
+  }
+
+  render() {
+    this.ctx.clearRect(0, 0, this.canvas.offsetWidth, this.canvas.offsetHeight);
+    this.drawRect();
+    this.drawSizeLabels();
+    this.drawCodePreview();
+  }
+
+  drawRect() {
+    const { colors } = this.config;
+
+    this.ctx.fillStyle = colors.rectFill;
+    this.ctx.strokeStyle = colors.rectStroke;
+    this.ctx.fillRect(this.rect.x, this.rect.y, this.rect.width, this.rect.height);
+    this.ctx.strokeRect(this.rect.x, this.rect.y, this.rect.width, this.rect.height);
+
+    this.ctx.beginPath();
+    this.ctx.arc(this.rect.x, this.rect.y, 5, 0, 2 * Math.PI);
+    this.ctx.fillStyle = colors.anchorFill;
+    this.ctx.strokeStyle = colors.anchorStroke;
+    this.ctx.fill();
+    this.ctx.stroke();
+  }
+
+  drawSizeLabels() {
+    const { label, colors } = this.config;
+    const widthValue = Math.round(this.rect.width);
+    const heightValue = Math.round(this.rect.height);
+
+    this.ctx.font = label.font;
+    this.ctx.fillStyle = colors.labelText;
+
+    this.ctx.textAlign = "left";
+    this.ctx.textBaseline = "middle";
+    this.ctx.fillText(`${heightValue}`, this.rect.x + this.rect.width + label.sideOffset, this.rect.y + this.rect.height / 2);
+
+    this.ctx.textAlign = "center";
+    this.ctx.textBaseline = "top";
+    this.ctx.fillText(`${widthValue}`, this.rect.x + this.rect.width / 2, this.rect.y + this.rect.height + label.bottomOffset);
+  }
+
+  drawCodePreview() {
+    const { code, colors } = this.config;
+    const lineY = this.canvas.offsetHeight - code.bottomPadding - code.lineHeight / 2;
+    const x = Math.round(this.rect.x);
+    const y = Math.round(this.rect.y);
+    const width = Math.round(this.rect.width);
+    const height = Math.round(this.rect.height);
+
+    this.ctx.font = code.font;
+    this.ctx.textAlign = "left";
+    this.ctx.textBaseline = "middle";
+
+    const tokens = [
+      { text: "ctx", color: colors.normalText },
+      { text: ".", color: colors.punctuationGray },
+      { text: "rect", color: colors.functionName },
+      { text: "(", color: colors.bracket },
+      { text: `${x}`, color: colors.number },
+      { text: ",", color: colors.punctuationGray },
+      { text: ` ${y}`, color: colors.number },
+      { text: ",", color: colors.punctuationGray },
+      { text: ` ${width}`, color: colors.number },
+      { text: ",", color: colors.punctuationGray },
+      { text: ` ${height}`, color: colors.number },
+      { text: ")", color: colors.bracket },
+      { text: ";", color: colors.semicolon },
+    ];
+
+    this.drawTokenLine(code.leftPadding, lineY, tokens);
+  }
+
+  drawTokenLine(startX, y, tokens) {
+    let currentX = startX;
+    tokens.forEach((token) => {
+      this.ctx.fillStyle = token.color;
+      this.ctx.fillText(token.text, currentX, y);
+      currentX += this.ctx.measureText(token.text).width;
+    });
+  }
+
+}
+
+new RectCanvasDemo("canvas-绘制矩形");
+
+class RoundRectDemo {
+  constructor(canvasId) {
+    this.canvas = document.getElementById(canvasId);
+    this.ctx = this.canvas.getContext("2d");
+    this.dpr = window.devicePixelRatio || 1;
+
+    this.rectWidth = 300;
+    this.rectHeight = 200;
+    this.radii = [20, 40, 80];
+
+    this.initCanvas();
+    this.draw();
+  }
+
+  initCanvas() {
+    this.canvas.width = this.canvas.offsetWidth * this.dpr;
+    this.canvas.height = this.canvas.offsetHeight * this.dpr;
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+    this.ctx.scale(this.dpr, this.dpr);
+  }
+
+  draw() {
+    const rectX = (this.canvas.offsetWidth - this.rectWidth) / 2;
+    const rectY = (this.canvas.offsetHeight - this.rectHeight) / 2;
+
+    this.ctx.roundRect(rectX, rectY, this.rectWidth, this.rectHeight, this.radii);
+    this.ctx.fillStyle = "darkgreen";
+    this.ctx.strokeStyle = "gold";
+    this.ctx.fill();
+    this.ctx.stroke();
+
+    this.ctx.font = "16px 'Google Sans Code', monospace";
+    this.ctx.fillStyle = "#ccc";
+    this.ctx.fillText("20", rectX - 30, rectY - 15);
+    this.ctx.fillText("40", rectX + this.rectWidth + 10, rectY - 15);
+    this.ctx.fillText("80", rectX + this.rectWidth + 10, rectY + this.rectHeight + 15);
+    this.ctx.fillText("40", rectX - 30, rectY + this.rectHeight + 15);
+  }
+}
+
+new RoundRectDemo("canvas-round-rect");
 
 class CircleDemo {
   constructor(canvasId) {
@@ -210,27 +734,99 @@ class CircleDemo {
     this.ctx = this.canvas.getContext("2d");
     this.dpr = window.devicePixelRatio || 1;
 
-    // 滑块相关属性
-    this.sliderX = 20;
-    this.sliderY = 40;
-    this.sliderWidth = 200;
-    this.sliderHeight = 6;
-    this.thumbSize = 16;
-    this.endAngle = 2 * Math.PI; // 默认值
-    this.minValue = 0;
-    this.maxValue = 2 * Math.PI;
-    this.step = 0.01;
-    this.isDragging = false;
-    this.isHovered = false;
+    this.config = {
+      circle: {
+        centerX: 390,
+        centerY: 200,
+        radius: 100,
+        minRadius: 20,
+      },
+      slider: {
+        x: 20,
+        width: 200,
+        height: 6,
+        thumbRadius: 10,
+        startY: 40,
+        gap: 55,
+        minValue: 0,
+        maxValue: 2 * Math.PI,
+      },
+      interaction: {
+        centerHitRadius: 12,
+        circumferenceTolerance: 10,
+      },
+      code: {
+        leftPadding: 16,
+        bottomPadding: 16,
+        lineHeight: 24,
+        font: "14px 'Google Sans Code', 'Consolas', monospace",
+      },
+      label: {
+        font: "16px 'Google Sans Code', 'Consolas', sans-serif",
+        offsetY: 25,
+      },
+      colors: {
+        circleFill: "darkgreen",
+        circleStroke: "gold",
+        centerFill: "black",
+        centerStroke: "white",
+        coordText: "white",
+        sliderTrack: "#333",
+        sliderProgress: "#4CAF50",
+        sliderTrackBorder: "#666",
+        sliderThumb: "#4CAF50",
+        sliderThumbActive: "#2C8F30",
+        sliderLabel: "#aaa",
+        sliderNumber: "#FFD700",
+        normalText: "#e6edf3",
+        functionName: "#79c0ff",
+        bracket: "#7ee787",
+        punctuationGray: "#8b949e",
+        operator: "lightseagreen",
+        semicolon: "silver",
+        number: "#ffd166",
+      },
+    };
+
+    this.circle = { ...this.config.circle };
+    this.startAngle = 0;
+    this.endAngle = 2 * Math.PI;
+    this.sliders = {
+      start: {
+        key: "start",
+        label: "起始弧度: ",
+        x: this.config.slider.x,
+        y: this.config.slider.startY,
+        width: this.config.slider.width,
+        height: this.config.slider.height,
+        thumbRadius: this.config.slider.thumbRadius,
+        isDragging: false,
+        isHovered: false,
+      },
+      end: {
+        key: "end",
+        label: "结束弧度: ",
+        x: this.config.slider.x,
+        y: this.config.slider.startY + this.config.slider.gap,
+        width: this.config.slider.width,
+        height: this.config.slider.height,
+        thumbRadius: this.config.slider.thumbRadius,
+        isDragging: false,
+        isHovered: false,
+      },
+    };
+    this.dragMode = null;
+    this.dragOffset = { x: 0, y: 0 };
 
     this.initCanvas();
     this.bindEvents();
-    this.draw();
+    this.render();
   }
 
   initCanvas() {
     this.canvas.width = this.canvas.offsetWidth * this.dpr;
     this.canvas.height = this.canvas.offsetHeight * this.dpr;
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
     this.ctx.scale(this.dpr, this.dpr);
   }
 
@@ -239,156 +835,396 @@ class CircleDemo {
     this.canvas.addEventListener("mousemove", (e) => this.handleMouseMove(e));
     this.canvas.addEventListener("mouseup", () => this.handleMouseUp());
     this.canvas.addEventListener("mouseleave", () => this.handleMouseLeave());
+    window.addEventListener("mouseup", () => this.handleMouseUp());
+    window.addEventListener("resize", () => {
+      this.initCanvas();
+      this.render();
+    });
+  }
+
+  getMousePosition(e) {
+    const rect = this.canvas.getBoundingClientRect();
+    return {
+      x: ((e.clientX - rect.left) * this.canvas.offsetWidth) / rect.width,
+      y: ((e.clientY - rect.top) * this.canvas.offsetHeight) / rect.height,
+    };
+  }
+
+  clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+  }
+
+  getHitMode(x, y) {
+    const { centerHitRadius, circumferenceTolerance } = this.config.interaction;
+    const dx = x - this.circle.centerX;
+    const dy = y - this.circle.centerY;
+    const distance = Math.hypot(dx, dy);
+
+    if (Math.abs(distance - this.circle.radius) <= circumferenceTolerance) {
+      return "radius";
+    }
+
+    if (distance <= centerHitRadius) {
+      return "center";
+    }
+
+    return null;
+  }
+
+  getRadiusCursorByAngle(x, y) {
+    const dx = x - this.circle.centerX;
+    const dy = y - this.circle.centerY;
+    if (dx === 0 && dy === 0) {
+      return "ew-resize";
+    }
+
+    const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
+    const normalized = (angle + 360) % 360;
+
+    if (normalized < 22.5 || normalized >= 337.5 || (normalized >= 157.5 && normalized < 202.5)) {
+      return "ew-resize";
+    }
+
+    if ((normalized >= 67.5 && normalized < 112.5) || (normalized >= 247.5 && normalized < 292.5)) {
+      return "ns-resize";
+    }
+
+    if ((normalized >= 22.5 && normalized < 67.5) || (normalized >= 202.5 && normalized < 247.5)) {
+      return "nwse-resize";
+    }
+
+    return "nesw-resize";
+  }
+
+  getSliderValue(sliderKey) {
+    return sliderKey === "start" ? this.startAngle : this.endAngle;
+  }
+
+  setSliderValue(sliderKey, value) {
+    if (sliderKey === "start") {
+      this.startAngle = value;
+      return;
+    }
+    this.endAngle = value;
+  }
+
+  getSliderThumbX(slider) {
+    const value = this.getSliderValue(slider.key);
+    const ratio = (value - this.config.slider.minValue) / (this.config.slider.maxValue - this.config.slider.minValue);
+    return slider.x + ratio * slider.width;
+  }
+
+  getSliderAtPosition(x, y) {
+    const sliders = Object.values(this.sliders);
+    for (const slider of sliders) {
+      const thumbX = this.getSliderThumbX(slider);
+      const thumbY = slider.y + slider.height / 2;
+      const distance = Math.hypot(x - thumbX, y - thumbY);
+      if (distance <= slider.thumbRadius) {
+        return slider;
+      }
+    }
+    return null;
+  }
+
+  updateSliderHover(x, y) {
+    let hasChange = false;
+    const hitSlider = this.getSliderAtPosition(x, y);
+
+    Object.values(this.sliders).forEach((slider) => {
+      const nextHovered = !!hitSlider && hitSlider.key === slider.key;
+      if (slider.isHovered !== nextHovered) {
+        slider.isHovered = nextHovered;
+        hasChange = true;
+      }
+    });
+
+    return { hasChange, hitSlider };
+  }
+
+  updateSliderValueByMouse(slider, mouseX) {
+    const relativeX = this.clamp(mouseX - slider.x, 0, slider.width);
+    const value =
+      (relativeX / slider.width) * (this.config.slider.maxValue - this.config.slider.minValue) +
+      this.config.slider.minValue;
+    this.setSliderValue(slider.key, value);
   }
 
   handleMouseDown(e) {
-    const rect = this.canvas.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) * (this.canvas.width / rect.width)) / this.dpr;
-    const y = ((e.clientY - rect.top) * (this.canvas.height / rect.height)) / this.dpr;
+    const { x, y } = this.getMousePosition(e);
+    const sliderHit = this.getSliderAtPosition(x, y);
 
-    const thumbX = this.getThumbPosition();
-    const thumbY = this.sliderY + this.sliderHeight / 2;
+    if (sliderHit) {
+      sliderHit.isDragging = true;
+      this.dragMode = `slider-${sliderHit.key}`;
+      this.canvas.style.cursor = "ew-resize";
+      return;
+    }
 
-    // 检查是否点击在thumb上
-    if (Math.abs(x - thumbX) <= this.thumbSize / 2 && Math.abs(y - thumbY) <= this.thumbSize / 2) {
-      this.isDragging = true;
+    const hitMode = this.getHitMode(x, y);
+
+    if (!hitMode) {
+      return;
+    }
+
+    this.dragMode = hitMode;
+    if (hitMode === "center") {
+      this.dragOffset.x = x - this.circle.centerX;
+      this.dragOffset.y = y - this.circle.centerY;
+      this.canvas.style.cursor = "move";
+    } else {
+      this.canvas.style.cursor = this.getRadiusCursorByAngle(x, y);
     }
   }
 
   handleMouseMove(e) {
-    const rect = this.canvas.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) * (this.canvas.width / rect.width)) / this.dpr;
-    const y = ((e.clientY - rect.top) * (this.canvas.height / rect.height)) / this.dpr;
+    const { x, y } = this.getMousePosition(e);
 
-    if (this.isDragging) {
-      // 更新滑块值
-      const newValue = ((x - this.sliderX) / this.sliderWidth) * (this.maxValue - this.minValue) + this.minValue;
-      this.endAngle = Math.max(this.minValue, Math.min(this.maxValue, newValue));
-      this.draw();
-    } else {
-      // 检查悬停状态
-      const thumbX = this.getThumbPosition();
-      const thumbY = this.sliderY + this.sliderHeight / 2;
-      const wasHovered = this.isHovered;
-      this.isHovered = Math.abs(x - thumbX) <= this.thumbSize / 2 && Math.abs(y - thumbY) <= this.thumbSize / 2;
+    if (this.dragMode === "slider-start") {
+      this.updateSliderValueByMouse(this.sliders.start, x);
+      this.render();
+      return;
+    }
 
-      if (wasHovered !== this.isHovered) {
-        this.draw();
+    if (this.dragMode === "slider-end") {
+      this.updateSliderValueByMouse(this.sliders.end, x);
+      this.render();
+      return;
+    }
+
+    if (this.dragMode === "center") {
+      const maxX = this.canvas.offsetWidth - this.circle.radius;
+      const maxY = this.canvas.offsetHeight - this.circle.radius;
+      const minX = this.circle.radius;
+      const minY = this.circle.radius;
+
+      this.circle.centerX = this.clamp(x - this.dragOffset.x, minX, maxX);
+      this.circle.centerY = this.clamp(y - this.dragOffset.y, minY, maxY);
+      this.render();
+      return;
+    }
+
+    if (this.dragMode === "radius") {
+      const newRadius = Math.hypot(x - this.circle.centerX, y - this.circle.centerY);
+      const maxRadiusByCanvas = Math.min(
+        this.circle.centerX,
+        this.circle.centerY,
+        this.canvas.offsetWidth - this.circle.centerX,
+        this.canvas.offsetHeight - this.circle.centerY,
+      );
+      this.circle.radius = this.clamp(newRadius, this.config.circle.minRadius, maxRadiusByCanvas);
+      this.canvas.style.cursor = this.getRadiusCursorByAngle(x, y);
+      this.render();
+      return;
+    }
+
+    const { hasChange, hitSlider } = this.updateSliderHover(x, y);
+    if (hitSlider) {
+      this.canvas.style.cursor = "ew-resize";
+      if (hasChange) {
+        this.render();
       }
+      return;
+    }
+
+    const hoverMode = this.getHitMode(x, y);
+    if (hoverMode === "center") {
+      this.canvas.style.cursor = "move";
+    } else if (hoverMode === "radius") {
+      this.canvas.style.cursor = this.getRadiusCursorByAngle(x, y);
+    } else {
+      this.canvas.style.cursor = "default";
+    }
+
+    if (hasChange) {
+      this.render();
     }
   }
 
   handleMouseUp() {
-    this.isDragging = false;
+    Object.values(this.sliders).forEach((slider) => {
+      slider.isDragging = false;
+    });
+    this.dragMode = null;
   }
 
   handleMouseLeave() {
-    this.isDragging = false;
-    if (this.isHovered) {
-      this.isHovered = false;
-      this.draw();
+    let hasChange = false;
+    Object.values(this.sliders).forEach((slider) => {
+      slider.isDragging = false;
+      if (slider.isHovered) {
+        slider.isHovered = false;
+        hasChange = true;
+      }
+    });
+    this.dragMode = null;
+    this.canvas.style.cursor = "default";
+    if (hasChange) {
+      this.render();
     }
-  }
-
-  getThumbPosition() {
-    const ratio = (this.endAngle - this.minValue) / (this.maxValue - this.minValue);
-    return this.sliderX + ratio * this.sliderWidth;
   }
 
   formatAngle(angle) {
     const pi = Math.PI;
-    if (Math.abs(angle - pi / 2) < 0.01) return { text: "0.5π", number: "0.5" };
-    if (Math.abs(angle - pi) < 0.01) return { text: "π", number: "1" };
-    if (Math.abs(angle - 1.5 * pi) < 0.01) return { text: "1.5π", number: "1.5" };
-    if (Math.abs(angle - 2 * pi) < 0.01) return { text: "2π", number: "2" };
-
-    // 格式化普通数字，去掉不必要的尾随零
-    const formatted = parseFloat(angle.toFixed(2)).toString();
-    return { text: formatted, number: formatted };
+    if (Math.abs(angle - 0) < 0.01) return "0";
+    if (Math.abs(angle - pi / 2) < 0.01) return "0.5π";
+    if (Math.abs(angle - pi) < 0.01) return "π";
+    if (Math.abs(angle - 1.5 * pi) < 0.01) return "1.5π";
+    if (Math.abs(angle - 2 * pi) < 0.01) return "2π";
+    return parseFloat(angle.toFixed(2)).toString();
   }
 
-  draw() {
-    // 清除画布
-    this.ctx.clearRect(0, 0, this.canvas.width / this.dpr, this.canvas.height / this.dpr);
+  getAngleCodeTokens(angle, withLeadingSpace = false) {
+    const { colors } = this.config;
+    const prefix = withLeadingSpace ? " " : "";
+    const pi = Math.PI;
 
-    // 绘制滑块
-    this.drawSlider();
-
-    // 绘制圆形
-    this.ctx.beginPath();
-    this.ctx.arc(390, 200, 100, 0, this.endAngle);
-    this.ctx.fillStyle = "darkgreen";
-    this.ctx.strokeStyle = "gold";
-    this.ctx.fill();
-    this.ctx.stroke();
-
-    // 绘制中心点
-    this.ctx.beginPath();
-    this.ctx.arc(390, 200, 5, 0, 2 * Math.PI);
-    this.ctx.fillStyle = "black";
-    this.ctx.strokeStyle = "white";
-    this.ctx.fill();
-    this.ctx.stroke();
-
-    // 绘制坐标文字
-    this.ctx.font = "16px 'Google Sans Code', 'Consolas', sans-serif";
-    this.ctx.textAlign = "center";
-    this.ctx.textBaseline = "middle";
-    this.ctx.fillStyle = "white";
-    this.ctx.fillText("坐标：(390, 200)", 390, 175);
-  }
-
-  drawSlider() {
-    this.ctx.save();
-
-    // 绘制滑块轨道背景
-    this.ctx.fillStyle = "#333";
-    this.ctx.fillRect(this.sliderX, this.sliderY, this.sliderWidth, this.sliderHeight);
-
-    // 绘制已滑过的部分
-    const thumbX = this.getThumbPosition();
-    this.ctx.fillStyle = "#4CAF50";
-    this.ctx.fillRect(this.sliderX, this.sliderY, thumbX - this.sliderX, this.sliderHeight);
-
-    // 绘制滑块轨道边框
-    this.ctx.strokeStyle = "#666";
-    this.ctx.lineWidth = 1;
-    this.ctx.strokeRect(this.sliderX, this.sliderY, this.sliderWidth, this.sliderHeight);
-
-    // 绘制thumb
-    const thumbY = this.sliderY + this.sliderHeight / 2;
-    this.ctx.beginPath();
-    this.ctx.arc(thumbX, thumbY, 10, 0, 2 * Math.PI);
-
-    if (this.isHovered || this.isDragging) {
-      this.ctx.fillStyle = "#2C8F30";
-    } else {
-      this.ctx.fillStyle = "#4CAF50";
+    if (Math.abs(angle - 2 * pi) < 0.01) {
+      return [
+        { text: `${prefix}2`, color: colors.number },
+        { text: "*", color: colors.operator, gapBefore: 6, gapAfter: 6 },
+        { text: "Math", color: colors.number },
+        { text: ".", color: colors.punctuationGray },
+        { text: "PI", color: colors.number },
+      ];
     }
 
+    if (Math.abs(angle - pi) < 0.01) {
+      return [
+        { text: `${prefix}Math`, color: colors.number },
+        { text: ".", color: colors.punctuationGray },
+        { text: "PI", color: colors.number },
+      ];
+    }
+
+    const angleText = parseFloat(angle.toFixed(2)).toString();
+    if (!angleText.includes(".")) {
+      return [{ text: `${prefix}${angleText}`, color: colors.number }];
+    }
+
+    const [intPart, decimalPart] = angleText.split(".");
+    return [
+      { text: `${prefix}${intPart}`, color: colors.number },
+      { text: ".", color: colors.punctuationGray },
+      { text: decimalPart, color: colors.number },
+    ];
+  }
+
+  render() {
+    this.ctx.clearRect(0, 0, this.canvas.offsetWidth, this.canvas.offsetHeight);
+    this.drawSlider(this.sliders.start);
+    this.drawSlider(this.sliders.end);
+    this.drawCircle();
+    this.drawArcCodePreview();
+  }
+
+  drawSlider(slider) {
+    const { colors } = this.config;
+
+    this.ctx.save();
+    this.ctx.fillStyle = colors.sliderTrack;
+    this.ctx.fillRect(slider.x, slider.y, slider.width, slider.height);
+
+    const thumbX = this.getSliderThumbX(slider);
+    this.ctx.fillStyle = colors.sliderProgress;
+    this.ctx.fillRect(slider.x, slider.y, thumbX - slider.x, slider.height);
+
+    this.ctx.strokeStyle = colors.sliderTrackBorder;
+    this.ctx.lineWidth = 1;
+    this.ctx.strokeRect(slider.x, slider.y, slider.width, slider.height);
+
+    const thumbY = slider.y + slider.height / 2;
+    this.ctx.beginPath();
+    this.ctx.arc(thumbX, thumbY, slider.thumbRadius, 0, 2 * Math.PI);
+    this.ctx.fillStyle = slider.isHovered || slider.isDragging ? colors.sliderThumbActive : colors.sliderThumb;
     this.ctx.fill();
 
-    // 绘制角度值
-    this.ctx.font = "16px 'Google Sans Code', sans-serif";
+    this.ctx.font = "14px 'Google Sans Code', sans-serif";
     this.ctx.textAlign = "left";
-    this.ctx.textBaseline = "bottom"; // 明确设置文本基线
+    this.ctx.textBaseline = "bottom";
 
-    const angleInfo = this.formatAngle(this.endAngle);
-    const labelText = "结束弧度: ";
-    const numberText = angleInfo.text;
+    this.ctx.fillStyle = colors.sliderLabel;
+    this.ctx.fillText(slider.label, slider.x, slider.y - 10);
 
-    // 绘制标签文字（白色）
-    this.ctx.fillStyle = "#aaa";
-    this.ctx.fillText(labelText, this.sliderX, this.sliderY - 10);
-
-    // 计算数字文字的起始位置
-    const labelWidth = this.ctx.measureText(labelText).width;
-
-    // 绘制数字（黄色）
-    this.ctx.fillStyle = "#FFD700"; // 金黄色
-    this.ctx.fillText(numberText, this.sliderX + labelWidth, this.sliderY - 10);
-
+    const labelWidth = this.ctx.measureText(slider.label).width;
+    this.ctx.fillStyle = colors.sliderNumber;
+    this.ctx.fillText(this.formatAngle(this.getSliderValue(slider.key)), slider.x + labelWidth, slider.y - 10);
     this.ctx.restore();
+  }
+
+  drawCircle() {
+    const { colors } = this.config;
+
+    this.ctx.beginPath();
+    this.ctx.arc(this.circle.centerX, this.circle.centerY, this.circle.radius, this.startAngle, this.endAngle);
+    this.ctx.fillStyle = colors.circleFill;
+    this.ctx.strokeStyle = colors.circleStroke;
+    this.ctx.fill();
+    this.ctx.stroke();
+
+    this.ctx.beginPath();
+    this.ctx.arc(this.circle.centerX, this.circle.centerY, 5, 0, 2 * Math.PI);
+    this.ctx.fillStyle = colors.centerFill;
+    this.ctx.strokeStyle = colors.centerStroke;
+    this.ctx.fill();
+    this.ctx.stroke();
+
+    this.ctx.font = this.config.label.font;
+    this.ctx.textAlign = "center";
+    this.ctx.textBaseline = "middle";
+    this.ctx.fillStyle = colors.coordText;
+    this.ctx.fillText(
+      `坐标：(${Math.round(this.circle.centerX)}, ${Math.round(this.circle.centerY)})`,
+      this.circle.centerX,
+      this.circle.centerY - this.circle.radius - this.config.label.offsetY,
+    );
+  }
+
+  drawArcCodePreview() {
+    const { code, colors } = this.config;
+    const x = Math.round(this.circle.centerX);
+    const y = Math.round(this.circle.centerY);
+    const radius = Math.round(this.circle.radius);
+    const lineY = this.canvas.offsetHeight - code.bottomPadding - code.lineHeight / 2;
+
+    this.ctx.font = code.font;
+    this.ctx.textAlign = "left";
+    this.ctx.textBaseline = "middle";
+
+    const tokens = [
+      { text: "ctx", color: colors.normalText },
+      { text: ".", color: colors.punctuationGray },
+      { text: "arc", color: colors.functionName },
+      { text: "(", color: colors.bracket },
+      { text: `${x}`, color: colors.number },
+      { text: ",", color: colors.punctuationGray },
+      { text: ` ${y}`, color: colors.number },
+      { text: ",", color: colors.punctuationGray },
+      { text: ` ${radius}`, color: colors.number },
+      { text: ",", color: colors.punctuationGray },
+      ...this.getAngleCodeTokens(this.startAngle, true),
+      { text: ",", color: colors.punctuationGray },
+      ...this.getAngleCodeTokens(this.endAngle, true),
+      { text: ")", color: colors.bracket },
+      { text: ";", color: colors.semicolon },
+    ];
+
+    this.drawTokenLine(code.leftPadding, lineY, tokens);
+  }
+
+  drawTokenLine(startX, y, tokens) {
+    let currentX = startX;
+    tokens.forEach((token) => {
+      if (token.gapBefore) {
+        currentX += token.gapBefore;
+      }
+      this.ctx.fillStyle = token.color;
+      this.ctx.fillText(token.text, currentX, y);
+      currentX += this.ctx.measureText(token.text).width;
+      if (token.gapAfter) {
+        currentX += token.gapAfter;
+      }
+    });
   }
 }
 
