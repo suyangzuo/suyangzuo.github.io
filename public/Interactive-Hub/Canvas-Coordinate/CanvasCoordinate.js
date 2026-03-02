@@ -8,6 +8,8 @@ class 坐标系教程 {
     this.ctx.scale(this.dpr, this.dpr);
     this.颜色 = { 小数点: "gray", 全局对象: "#6cf", 坐标字母: "#ed8937", 负号: "#ff6b6b" };
     this.重置按钮 = document.querySelector(".重置按钮");
+    this.重置过渡时长 = 500;
+    this.重置动画帧id = null;
     this.重置按钮.addEventListener("click", () => this.重置());
     this.复选框 = {
       鼠标坐标参考线: document.getElementById("鼠标坐标参考线"),
@@ -1306,8 +1308,8 @@ class 坐标系教程 {
     this.ctx.fillStyle = "#5AF";
     this.ctx.fillText("世界坐标系", -15, -45);
     // 世界坐标值（右对齐到 -15），统一一位小数，小数点灰色
-    const 世界x值文本 = this.格式化一位小数(矩形.x);
-    const 世界y值文本 = this.格式化一位小数(矩形.y);
+    const 世界x值文本 = `${Math.trunc(矩形.x)}`;
+    const 世界y值文本 = `${Math.trunc(矩形.y)}`;
     const 合并文本 = `${世界x值文本}, ${世界y值文本}`;
     const 合并宽度 = this.ctx.measureText(合并文本).width;
     const 起始X = -8 - 合并宽度;
@@ -1373,8 +1375,8 @@ class 坐标系教程 {
     if (this.鼠标坐标.x !== null && this.鼠标坐标.y !== null) {
       const xy宽度 = this.ctx.measureText("世界坐标").width;
       const 冒号空格宽度 = this.ctx.measureText(": ").width;
-      const 世界x显示文本 = this.格式化一位小数(x);
-      const 世界y显示文本 = this.格式化一位小数(this.鼠标坐标.y);
+      const 世界x显示文本 = `${Math.trunc(x)}`;
+      const 世界y显示文本 = `${Math.trunc(this.鼠标坐标.y)}`;
       const 局部x显示文本 = this.格式化一位小数(局部X);
       const 局部y显示文本 = this.格式化一位小数(局部Y);
       const 世界x坐标值宽度 = this.ctx.measureText(世界x显示文本).width;
@@ -2488,55 +2490,111 @@ class 坐标系教程 {
   }
 
   重置() {
-    this.矩形 = {
+    if (this.重置动画帧id !== null) {
+      cancelAnimationFrame(this.重置动画帧id);
+      this.重置动画帧id = null;
+    }
+
+    this.停止所有按钮快速增减();
+
+    const 起始矩形 = {
+      x: this.矩形.x,
+      y: this.矩形.y,
+      宽度: this.矩形.宽度,
+      高度: this.矩形.高度,
+      旋转角度: this.矩形.旋转角度,
+    };
+    const 起始观察点 = {
+      x: this.观察点.x,
+      y: this.观察点.y,
+    };
+
+    const 目标矩形 = {
       x: this.canvas.offsetWidth / 2,
       y: this.canvas.offsetHeight / 2,
       宽度: 300,
       高度: 200,
       旋转角度: 0,
     };
-    this.观察点 = {
+    const 目标观察点 = {
       x: this.canvas.offsetWidth / 2,
       y: this.canvas.offsetHeight / 2,
       半径: 8,
     };
-    this.保存观察点位置到LocalStorage();
-    this.交互状态 = {
-      正在拖动: false,
-      正在缩放: false,
-      正在旋转: false,
-      正在拖动观察点: false,
-      拖动偏移: { x: 0, y: 0 },
-      拖动起始位置: { x: 0, y: 0 },
-      观察点拖动偏移: { x: 0, y: 0 },
-      缩放起始: { 宽度: 0, 高度: 0, x: 0, y: 0, 矩形中心X: 0, 矩形中心Y: 0 },
-      旋转起始: { 角度: 0, x: 0, y: 0 },
-      鼠标位置: { x: 0, y: 0 },
-      缩放边: null,
-      缩放角: null,
-      缩放锚点: { x: 0, y: 0 },
-      Alt键按下: false,
-      Shift键按下: false,
-      Ctrl键按下: false,
-      鼠标已悬停: false,
-      观察点悬停: false,
-      悬停状态: {
-        角点: null,
-        边缘: null,
-        旋转句柄: false,
-      },
-      按钮状态: {
-        x增加: { 按下: false, 按下时间: null, 快速增减定时器: null, 悬停: false },
-        x减少: { 按下: false, 按下时间: null, 快速增减定时器: null, 悬停: false },
-        y增加: { 按下: false, 按下时间: null, 快速增减定时器: null, 悬停: false },
-        y减少: { 按下: false, 按下时间: null, 快速增减定时器: null, 悬停: false },
-      },
+
+    const 开始时间 = performance.now();
+    const 缓动 = (t) => 1 - Math.pow(1 - t, 3);
+    const 插值 = (起始值, 目标值, t) => 起始值 + (目标值 - 起始值) * t;
+
+    const 执行动画 = (当前时间) => {
+      const 线性进度 = Math.min((当前时间 - 开始时间) / this.重置过渡时长, 1);
+      const 进度 = 缓动(线性进度);
+
+      this.矩形 = {
+        x: 插值(起始矩形.x, 目标矩形.x, 进度),
+        y: 插值(起始矩形.y, 目标矩形.y, 进度),
+        宽度: 插值(起始矩形.宽度, 目标矩形.宽度, 进度),
+        高度: 插值(起始矩形.高度, 目标矩形.高度, 进度),
+        旋转角度: 插值(起始矩形.旋转角度, 目标矩形.旋转角度, 进度),
+      };
+
+      this.观察点 = {
+        x: 插值(起始观察点.x, 目标观察点.x, 进度),
+        y: 插值(起始观察点.y, 目标观察点.y, 进度),
+        半径: 8,
+      };
+
+      this.绘制场景();
+
+      if (线性进度 < 1) {
+        this.重置动画帧id = requestAnimationFrame(执行动画);
+        return;
+      }
+
+      this.矩形 = { ...目标矩形 };
+      this.观察点 = { ...目标观察点 };
+      this.保存矩形状态到LocalStorage();
+      this.保存观察点位置到LocalStorage();
+      this.交互状态 = {
+        正在拖动: false,
+        正在缩放: false,
+        正在旋转: false,
+        正在拖动观察点: false,
+        拖动偏移: { x: 0, y: 0 },
+        拖动起始位置: { x: 0, y: 0 },
+        观察点拖动偏移: { x: 0, y: 0 },
+        缩放起始: { 宽度: 0, 高度: 0, x: 0, y: 0, 矩形中心X: 0, 矩形中心Y: 0 },
+        旋转起始: { 角度: 0, x: 0, y: 0 },
+        鼠标位置: { x: 0, y: 0 },
+        缩放边: null,
+        缩放角: null,
+        缩放锚点: { x: 0, y: 0 },
+        Alt键按下: false,
+        Shift键按下: false,
+        Ctrl键按下: false,
+        鼠标已悬停: false,
+        观察点悬停: false,
+        悬停状态: {
+          角点: null,
+          边缘: null,
+          旋转句柄: false,
+        },
+        按钮状态: {
+          x增加: { 按下: false, 按下时间: null, 快速增减定时器: null, 悬停: false },
+          x减少: { 按下: false, 按下时间: null, 快速增减定时器: null, 悬停: false },
+          y增加: { 按下: false, 按下时间: null, 快速增减定时器: null, 悬停: false },
+          y减少: { 按下: false, 按下时间: null, 快速增减定时器: null, 悬停: false },
+        },
+      };
+      this.鼠标坐标 = {
+        x: null,
+        y: null,
+      };
+      this.重置动画帧id = null;
+      this.绘制场景();
     };
-    this.鼠标坐标 = {
-      x: null,
-      y: null,
-    };
-    this.绘制场景();
+
+    this.重置动画帧id = requestAnimationFrame(执行动画);
   }
 }
 document.addEventListener("DOMContentLoaded", () => {

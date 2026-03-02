@@ -340,6 +340,9 @@ window.canvasTransform = new CanvasTransform();
 
 // 绑定滑块事件
 window.addEventListener("DOMContentLoaded", () => {
+  const 重置过渡时长 = 500;
+  let 重置动画帧id = null;
+
   const sliders = [
     { id: "slider-a", param: "a", default: 1, min: -2, max: 2 },
     { id: "slider-b", param: "b", default: 0, min: -1, max: 1 },
@@ -403,6 +406,20 @@ window.addEventListener("DOMContentLoaded", () => {
     } else {
       valueDisplay.textContent = formattedValue;
     }
+  };
+
+  const formatSliderValue = (param, value) => {
+    if (param === "e" || param === "f") {
+      return value.toFixed(0);
+    }
+
+    let formattedValue = value.toFixed(2);
+    if (formattedValue.endsWith(".00")) {
+      formattedValue = formattedValue.slice(0, -3);
+    } else if (formattedValue.endsWith("0")) {
+      formattedValue = formattedValue.slice(0, -1);
+    }
+    return formattedValue;
   };
 
   // 保存滑块值到sessionStorage
@@ -627,19 +644,110 @@ window.addEventListener("DOMContentLoaded", () => {
   const resetButton = document.querySelector(".重置按钮");
   if (resetButton) {
     resetButton.addEventListener("click", () => {
-      resetSliderValues();
-      // 重置旋转滑块为0
+      if (重置动画帧id !== null) {
+        cancelAnimationFrame(重置动画帧id);
+        重置动画帧id = null;
+      }
+
+      const 起始变换参数 = { ...window.canvasTransform.transformParams };
+      const 目标变换参数 = {
+        a: 1,
+        b: 0,
+        c: 0,
+        d: 1,
+        e: 0,
+        f: 0,
+      };
+
+      const 起始矩形 = {
+        x: window.canvasTransform.rect.x,
+        y: window.canvasTransform.rect.y,
+        width: window.canvasTransform.rect.width,
+        height: window.canvasTransform.rect.height,
+      };
+      const 目标矩形 = {
+        x: 0,
+        y: 0,
+        width: 240,
+        height: 160,
+      };
+
       const rotateInput = document.getElementById("slider-rotate");
       const rotateValueDisplay = rotateInput?.nextElementSibling;
-      if (rotateInput && rotateValueDisplay) {
-        rotateInput.value = 0;
-        rotateValueDisplay.innerHTML = `0<span style="color: #86beff;">°</span>`;
-        // 保存重置后的值到sessionStorage
-        saveRotateValue(0);
-      }
-      // 使用默认矩形位置（坐标为0,0）
-      window.canvasTransform.rect = window.canvasTransform.getDefaultRect();
-      window.canvasTransform.draw();
+      const 起始角度 = rotateInput ? parseFloat(rotateInput.value) || 0 : 0;
+      const 目标角度 = 0;
+
+      const 开始时间 = performance.now();
+      const 缓动 = (t) => 1 - Math.pow(1 - t, 3);
+      const 插值 = (起始值, 目标值, t) => 起始值 + (目标值 - 起始值) * t;
+
+      const 执行动画 = (当前时间) => {
+        const 线性进度 = Math.min((当前时间 - 开始时间) / 重置过渡时长, 1);
+        const 进度 = 缓动(线性进度);
+
+        const 当前变换参数 = {
+          a: 插值(起始变换参数.a, 目标变换参数.a, 进度),
+          b: 插值(起始变换参数.b, 目标变换参数.b, 进度),
+          c: 插值(起始变换参数.c, 目标变换参数.c, 进度),
+          d: 插值(起始变换参数.d, 目标变换参数.d, 进度),
+          e: 插值(起始变换参数.e, 目标变换参数.e, 进度),
+          f: 插值(起始变换参数.f, 目标变换参数.f, 进度),
+        };
+
+        window.canvasTransform.transformParams = {
+          ...window.canvasTransform.transformParams,
+          ...当前变换参数,
+        };
+
+        window.canvasTransform.rect = {
+          ...window.canvasTransform.rect,
+          x: 插值(起始矩形.x, 目标矩形.x, 进度),
+          y: 插值(起始矩形.y, 目标矩形.y, 进度),
+          width: 插值(起始矩形.width, 目标矩形.width, 进度),
+          height: 插值(起始矩形.height, 目标矩形.height, 进度),
+          isDragging: false,
+          isHovering: false,
+        };
+
+        sliders.forEach(({ id, param }) => {
+          const input = document.getElementById(id);
+          const valueDisplay = input?.parentElement.querySelector(".slider-value");
+          if (!input || !valueDisplay) {
+            return;
+          }
+          const 当前值 = 当前变换参数[param];
+          input.value = 当前值;
+          updateSliderValueDisplay(valueDisplay, formatSliderValue(param, 当前值));
+        });
+
+        if (rotateInput && rotateValueDisplay) {
+          const 当前角度 = 插值(起始角度, 目标角度, 进度);
+          const 角度文本 = Math.abs(当前角度) < 0.01 ? "0" : 当前角度.toFixed(1).replace(/\.0$/, "");
+          rotateInput.value = 当前角度;
+          rotateValueDisplay.innerHTML = `${角度文本}<span style="color: #86beff;">°</span>`;
+        }
+
+        window.canvasTransform.draw();
+
+        if (线性进度 < 1) {
+          重置动画帧id = requestAnimationFrame(执行动画);
+          return;
+        }
+
+        重置动画帧id = null;
+        resetSliderValues();
+
+        if (rotateInput && rotateValueDisplay) {
+          rotateInput.value = 0;
+          rotateValueDisplay.innerHTML = `0<span style="color: #86beff;">°</span>`;
+          saveRotateValue(0);
+        }
+
+        window.canvasTransform.rect = window.canvasTransform.getDefaultRect();
+        window.canvasTransform.draw();
+      };
+
+      重置动画帧id = requestAnimationFrame(执行动画);
     });
   }
 
