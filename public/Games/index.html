@@ -24,153 +24,341 @@
 <body>
   <script src="/Scripts/html-include.js" target="/top-banner.html" position="afterbegin"></script>
 
-  <div class="games-navigator">
-    <div class="game-grid" id="card-match">
-      <a href="CardMatch/" target="_self">
-        <img src="./Images-Common/Game-Background-02.webp" alt="背景" />
-        <p><span class="游戏名称">卡片配对</span></p>
-      </a>
-      <a class="游戏作者" href="/Introduction/contributors.html#贡献者-01" title="作者：苏扬">
-        <img class="游戏作者肖像" src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
-      </a>
+  <!-- 页面标题区 -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title">游戏中心</h1>
+      <p class="hero-subtitle">探索精彩游戏世界，享受无限乐趣</p>
     </div>
-    <div class="game-grid" id="snake">
-      <a href="Snake/" target="_self">
-        <img src="./Images-Common/Snake-Banner.jpg" alt="背景" />
-        <p><span class="游戏名称">贪吃蛇</span></p>
-      </a>
-      <a class="游戏作者" href="/Introduction/contributors.html#贡献者-01" title="作者：苏扬">
-        <img class="游戏作者肖像" src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
-      </a>
+  </section>
+
+  <!-- 游戏展示区 -->
+  <section class="games-showcase">
+    <div class="games-container">
+      <!-- 已完成游戏区 -->
+      <div class="games-section">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="section-icon">🎮</span>
+            精选游戏
+          </h2>
+          <p class="section-desc">精心打磨的完整游戏体验</p>
+        </div>
+        <div class="games-grid completed-games">
+          <div class="game-card" id="card-match">
+            <a href="CardMatch/" target="_self" class="game-link">
+              <div class="game-image-wrapper">
+                <img src="./Images-Common/Game-Background-02.webp" alt="卡片配对" />
+                <div class="game-overlay">
+                  <span class="play-btn">开始游戏</span>
+                </div>
+              </div>
+              <div class="game-info">
+                <span class="game-number">01</span>
+                <h3 class="game-name">卡片配对</h3>
+              </div>
+            </a>
+            <a class="game-author" href="/Introduction/contributors.html#贡献者-01" title="作者：苏扬">
+              <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+            </a>
+          </div>
+
+          <div class="game-card" id="snake">
+            <a href="Snake/" target="_self" class="game-link">
+              <div class="game-image-wrapper">
+                <img src="./Images-Common/Snake-Banner.jpg" alt="贪吃蛇" />
+                <div class="game-overlay">
+                  <span class="play-btn">开始游戏</span>
+                </div>
+              </div>
+              <div class="game-info">
+                <span class="game-number">02</span>
+                <h3 class="game-name">贪吃蛇</h3>
+              </div>
+            </a>
+            <a class="game-author" href="/Introduction/contributors.html#贡献者-01" title="作者：苏扬">
+              <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+            </a>
+          </div>
+
+          <div class="game-card" id="GuessWho">
+            <a href="./GuessWho/" target="_self" class="game-link">
+              <div class="game-image-wrapper">
+                <img src="./GuessWho/img/背景图片.png" alt="画中寻名" />
+                <div class="game-overlay">
+                  <span class="play-btn">开始游戏</span>
+                </div>
+              </div>
+              <div class="game-info">
+                <span class="game-number">03</span>
+                <h3 class="game-name">画中寻名</h3>
+              </div>
+            </a>
+            <a class="game-author" href="/Introduction/contributors.html#贡献者-03" title="作者：凌子轩">
+              <img src="/Images/Contributors/凌子轩.jpg" alt="凌子轩" />
+            </a>
+          </div>
+
+          <div class="game-card" id="teris">
+            <a href="Teris/" target="_self" class="game-link">
+              <div class="game-image-wrapper">
+                <img src="Images-Common/俄罗斯方块.webp" alt="俄罗斯方块" />
+                <div class="game-overlay">
+                  <span class="play-btn">开始游戏</span>
+                </div>
+              </div>
+              <div class="game-info">
+                <span class="game-number">04</span>
+                <h3 class="game-name">俄罗斯方块</h3>
+              </div>
+            </a>
+            <a class="game-author" href="/Introduction/contributors.html#贡献者-01" title="作者：苏扬">
+              <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+            </a>
+          </div>
+
+          <div class="game-card" id="findBombs">
+            <a href="FindBombs/" target="_self" class="game-link">
+              <div class="game-image-wrapper">
+                <img src="Images-Common/找炸弹.jpg" alt="找炸弹" />
+                <div class="game-overlay">
+                  <span class="play-btn">开始游戏</span>
+                </div>
+              </div>
+              <div class="game-info">
+                <span class="game-number">05</span>
+                <h3 class="game-name">找炸弹</h3>
+              </div>
+            </a>
+            <a class="game-author" href="/Introduction/contributors.html#贡献者-01" title="作者：苏扬">
+              <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+            </a>
+          </div>
+
+          <div class="game-card" id="hanoiTower">
+            <a href="HanoiTower/" target="_self" class="game-link">
+              <div class="game-image-wrapper">
+                <img src="Images-Common/汉诺塔-背景.jpg" alt="汉诺塔" />
+                <div class="game-overlay">
+                  <span class="play-btn">开始游戏</span>
+                </div>
+              </div>
+              <div class="game-info">
+                <span class="game-number">06</span>
+                <h3 class="game-name">汉诺塔</h3>
+              </div>
+            </a>
+            <a class="game-author" href="/Introduction/contributors.html#贡献者-01" title="作者：苏扬">
+              <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+            </a>
+          </div>
+
+          <div class="game-card" id="findTreasure">
+            <a href="FindTreasure/" target="_self" class="game-link">
+              <div class="game-image-wrapper">
+                <img src="Images-Common/village.png" alt="找宝藏" />
+                <div class="game-overlay">
+                  <span class="play-btn">开始游戏</span>
+                </div>
+              </div>
+              <div class="game-info">
+                <span class="game-number">07</span>
+                <h3 class="game-name">找宝藏</h3>
+              </div>
+            </a>
+            <a class="game-author" href="/Introduction/contributors.html#贡献者-04" title="作者：周张晨垚">
+              <img src="/Images/Contributors/zzcy.jpg" alt="周张晨垚" />
+            </a>
+          </div>
+
+          <div class="game-card" id="minesweeper">
+            <a href="Minesweeper/" target="_self" class="game-link">
+              <div class="game-image-wrapper">
+                <img src="Images-Common/扫雷-封面.png" alt="经典扫雷" />
+                <div class="game-overlay">
+                  <span class="play-btn">开始游戏</span>
+                </div>
+              </div>
+              <div class="game-info">
+                <span class="game-number">08</span>
+                <h3 class="game-name">经典扫雷</h3>
+              </div>
+            </a>
+            <a class="game-author" href="/Introduction/contributors.html#贡献者-05" title="作者：杜宗远">
+              <img src="/Images/Contributors/杜宗远.jpg" alt="杜宗远" />
+            </a>
+          </div>
+
+          <div class="game-card" id="gomoku">
+            <a href="Gomoku/" target="_self" class="game-link">
+              <div class="game-image-wrapper">
+                <img src="Images-Common/五子连珠.jpg" alt="五子连珠" />
+                <div class="game-overlay">
+                  <span class="play-btn">开始游戏</span>
+                </div>
+              </div>
+              <div class="game-info">
+                <span class="game-number">09</span>
+                <h3 class="game-name">五子连珠</h3>
+              </div>
+            </a>
+            <a class="game-author" href="/Introduction/contributors.html#贡献者-05" title="作者：杜宗远">
+              <img src="/Images/Contributors/杜宗远.jpg" alt="杜宗远" />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 开发中游戏区 -->
+      <div class="games-section ea-section">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="section-icon">🚧</span>
+            开发中
+          </h2>
+          <p class="section-desc">即将上线的精彩游戏，敬请期待</p>
+        </div>
+        <div class="games-grid ea-games">
+          <div class="game-card ea" id="rock-paper-scissors">
+            <a href="./Rock-Paper-Scissors/" target="_self" class="game-link">
+              <div class="game-image-wrapper">
+                <img src="./Images-Common/Rock-Paper-Scissors.png" alt="猜拳" />
+                <div class="game-overlay ea-overlay">
+                  <span class="ea-badge">开发中</span>
+                  <span class="play-btn">抢先体验</span>
+                </div>
+              </div>
+              <div class="game-info">
+                <span class="game-number">10</span>
+                <h3 class="game-name">猜拳</h3>
+              </div>
+            </a>
+            <a class="game-author" href="/Introduction/contributors.html#贡献者-04" title="作者：周张晨垚">
+              <img src="/Images/Contributors/zzcy.jpg" alt="周张晨垚" />
+            </a>
+          </div>
+
+          <div class="game-card ea" id="throwRocks">
+            <a href="ThrowRocks/" target="_self" class="game-link">
+              <div class="game-image-wrapper">
+                <img src="Images-Common/Throw-Rocks.gif" alt="扔香蕉" />
+                <div class="game-overlay ea-overlay">
+                  <span class="ea-badge">开发中</span>
+                  <span class="play-btn">抢先体验</span>
+                </div>
+              </div>
+              <div class="game-info">
+                <span class="game-number">11</span>
+                <h3 class="game-name">扔香蕉</h3>
+              </div>
+            </a>
+            <a class="game-author" href="/Introduction/contributors.html#贡献者-01" title="作者：苏扬">
+              <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+            </a>
+          </div>
+
+          <div class="game-card ea" id="breakout">
+            <a href="Breakout/" target="_self" class="game-link">
+              <div class="game-image-wrapper">
+                <img src="Images-Common/打砖块.webp" alt="打砖块" />
+                <div class="game-overlay ea-overlay">
+                  <span class="ea-badge">开发中</span>
+                  <span class="play-btn">抢先体验</span>
+                </div>
+              </div>
+              <div class="game-info">
+                <span class="game-number">12</span>
+                <h3 class="game-name">打砖块</h3>
+              </div>
+            </a>
+            <a class="game-author" href="/Introduction/contributors.html#贡献者-01" title="作者：苏扬">
+              <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+            </a>
+          </div>
+
+          <div class="game-card ea" id="spaceWar">
+            <a href="SpaceWar/" target="_self" class="game-link">
+              <div class="game-image-wrapper">
+                <img src="Images-Common/太空星球与飞船.png" alt="太空大战" />
+                <div class="game-overlay ea-overlay">
+                  <span class="ea-badge">开发中</span>
+                  <span class="play-btn">抢先体验</span>
+                </div>
+              </div>
+              <div class="game-info">
+                <span class="game-number">13</span>
+                <h3 class="game-name">太空大战</h3>
+              </div>
+            </a>
+            <a class="game-author" href="/Introduction/contributors.html#贡献者-01" title="作者：苏扬">
+              <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+            </a>
+          </div>
+
+          <div class="game-card ea" id="game2048">
+            <a href="./game-2048/" target="_self" class="game-link">
+              <div class="game-image-wrapper">
+                <img src="./game-2048/Images/game-2048.png" alt="2048" />
+                <div class="game-overlay ea-overlay">
+                  <span class="ea-badge">开发中</span>
+                  <span class="play-btn">抢先体验</span>
+                </div>
+              </div>
+              <div class="game-info">
+                <span class="game-number">14</span>
+                <h3 class="game-name">2048</h3>
+              </div>
+            </a>
+            <a class="game-author" href="/Introduction/contributors.html#贡献者-03" title="作者：凌子轩">
+              <img src="/Images/Contributors/凌子轩.jpg" alt="凌子轩" />
+            </a>
+          </div>
+
+          <div class="game-card ea" id="jumpToPrize">
+            <a href="./JumpToPrize/" target="_self" class="game-link">
+              <div class="game-image-wrapper">
+                <img src="Images-Common/跳跳乐.png" alt="跳跳乐" />
+                <div class="game-overlay ea-overlay">
+                  <span class="ea-badge">开发中</span>
+                  <span class="play-btn">抢先体验</span>
+                </div>
+              </div>
+              <div class="game-info">
+                <span class="game-number">15</span>
+                <h3 class="game-name">跳跳乐</h3>
+              </div>
+            </a>
+            <a class="game-author" href="/Introduction/contributors.html#贡献者-01" title="作者：苏扬">
+              <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="game-grid ea" id="Rock-Paper-Scissors">
-      <a href="./Rock-Paper-Scissors/" target="_self">
-        <img src="./Images-Common/Rock-Paper-Scissors.png" alt="背景" />
-        <p><span class="游戏名称">猜拳</span></p>
-      </a>
-      <a class="游戏作者" href="/Introduction/contributors.html#贡献者-04" title="作者：周张晨垚">
-        <img class="游戏作者肖像" src="/Images/Contributors/zzcy.jpg" alt="周张晨垚" />
-      </a>
+  </section>
+
+  <!-- 统计信息区 -->
+  <section class="stats-section">
+    <div class="stats-container">
+      <div class="stat-item">
+        <span class="stat-number" id="totalGames">15</span>
+        <span class="stat-label">游戏总数</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number" id="completedGames">9</span>
+        <span class="stat-label">已完成</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number" id="eaGames">6</span>
+        <span class="stat-label">开发中</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number" id="contributors">5</span>
+        <span class="stat-label">贡献者</span>
+      </div>
     </div>
-    <div class="game-grid" id="GuessWho">
-      <a href="./GuessWho/" target="_self">
-        <img src="./GuessWho/img/背景图片.png" alt="背景" />
-        <p><span class="游戏名称">画中寻名</span></p>
-      </a>
-      <a class="游戏作者" href="/Introduction/contributors.html#贡献者-03" title="作者：凌子轩">
-        <img class="游戏作者肖像" src="/Images/Contributors/凌子轩.jpg" alt="凌子轩" />
-      </a>
-    </div>
-    <div class="game-grid ea">
-      <a href="ThrowRocks/" target="_self">
-        <img src="Images-Common/Throw-Rocks.gif" alt="背景" />
-        <p><span class="游戏名称">扔香蕉</span></p>
-      </a>
-      <a class="游戏作者" href="/Introduction/contributors.html#贡献者-01" title="作者：苏扬">
-        <img class="游戏作者肖像" src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
-      </a>
-    </div>
-    <div class="game-grid ea">
-      <a href="Breakout/" target="_self">
-        <img src="Images-Common/打砖块.webp" alt="背景" />
-        <p><span class="游戏名称">打砖块</span></p>
-      </a>
-      <a class="游戏作者" href="/Introduction/contributors.html#贡献者-01" title="作者：苏扬">
-        <img class="游戏作者肖像" src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
-      </a>
-    </div>
-    <div class="game-grid">
-      <a href="Teris/" target="_self">
-        <img src="Images-Common/俄罗斯方块.webp" alt="背景" />
-        <p><span class="游戏名称">俄罗斯方块</span></p>
-      </a>
-      <a class="游戏作者" href="/Introduction/contributors.html#贡献者-01" title="作者：苏扬">
-        <img class="游戏作者肖像" src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
-      </a>
-    </div>
-    <div class="game-grid">
-      <a href="FindBombs/" target="_self">
-        <img src="Images-Common/找炸弹.jpg" alt="背景" />
-        <p><span class="游戏名称">找炸弹</span></p>
-      </a>
-      <a class="游戏作者" href="/Introduction/contributors.html#贡献者-01" title="作者：苏扬">
-        <img class="游戏作者肖像" src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
-      </a>
-    </div>
-    <div class="game-grid">
-      <a href="HanoiTower/" target="_self">
-        <img src="Images-Common/汉诺塔-背景.jpg" alt="背景" />
-        <p><span class="游戏名称">汉诺塔</span></p>
-      </a>
-      <a class="游戏作者" href="/Introduction/contributors.html#贡献者-01" title="作者：苏扬">
-        <img class="游戏作者肖像" src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
-      </a>
-    </div>
-    <div class="game-grid">
-      <a href="FindTreasure/" target="_self">
-        <img src="Images-Common/village.png" alt="背景" />
-        <p><span class="游戏名称">找宝藏</span></p>
-      </a>
-      <a class="游戏作者" href="/Introduction/contributors.html#贡献者-04" title="作者：周张晨垚">
-        <img class="游戏作者肖像" src="/Images/Contributors/zzcy.jpg" alt="周张晨垚" />
-      </a>
-    </div>
-    <div class="game-grid">
-      <a href="Minesweeper/" target="_self">
-        <img src="Images-Common/扫雷-封面.png" alt="背景" />
-        <p><span class="游戏名称">经典扫雷</span></p>
-      </a>
-      <a class="游戏作者" href="/Introduction/contributors.html#贡献者-05" title="作者：杜宗远">
-        <img class="游戏作者肖像" src="/Images/Contributors/杜宗远.jpg" alt="杜宗远" />
-      </a>
-    </div>
-    <div class="game-grid">
-      <a href="Gomoku/" target="_self">
-        <img src="Images-Common/五子连珠.jpg" alt="背景" />
-        <p><span class="游戏名称">五子连珠</span></p>
-      </a>
-      <a class="游戏作者" href="/Introduction/contributors.html#贡献者-05" title="作者：杜宗远">
-        <img class="游戏作者肖像" src="/Images/Contributors/杜宗远.jpg" alt="杜宗远" />
-      </a>
-    </div>
-    <div class="game-grid ea">
-      <a href="SpaceWar/" target="_self">
-        <img src="Images-Common/太空星球与飞船.png" alt="背景" />
-        <p><span class="游戏名称">太空大战</span></p>
-      </a>
-      <a class="游戏作者" href="/Introduction/contributors.html#贡献者-01" title="作者：苏扬">
-        <img class="游戏作者肖像" src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
-      </a>
-    </div>
-    <div class="game-grid ea">
-      <a href="./game-2048/" target="_self">
-        <img src="./game-2048/Images/game-2048.png" alt="背景" />
-        <p><span class="游戏名称">2048</span></p>
-      </a>
-      <a class="游戏作者" href="/Introduction/contributors.html#贡献者-03" title="作者：凌子轩">
-        <img class="游戏作者肖像" src="/Images/Contributors/凌子轩.jpg" alt="凌子轩" />
-      </a>
-    </div>
-    <div class="game-grid ea"><a href="./JumpToPrize/" target="_self">
-        <img src="Images-Common/跳跳乐.png" alt="背景" />
-        <p><span class="游戏名称">跳跳乐</span></p>
-      </a>
-      <a class="游戏作者" href="/Introduction/contributors.html#贡献者-01" title="作者：苏扬">
-        <img class="游戏作者肖像" src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
-      </a>
-    </div>
-    <div class="game-grid none"></div>
-    <div class="game-grid none"></div>
-    <div class="game-grid none"></div>
-    <div class="game-grid none"></div>
-    <div class="game-grid none"></div>
-    <div class="game-grid none"></div>
-    <div class="game-grid none"></div>
-    <div class="game-grid none"></div>
-    <div class="game-grid none"></div>
-    <div class="game-grid none"></div>
-    <div class="game-grid none"></div>
-  </div>
+  </section>
+
   <script src="/Scripts/html-include.js" target="/bottom-banner.html" position="beforeend"></script>
 </body>
 
