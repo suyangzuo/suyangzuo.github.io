@@ -67,11 +67,13 @@ if (localStorage.getItem("专题") === null) {
 let 专题文件路径 = `./博客内容/${技术栈名称}/${专题名称}/index.html`;
 
 let 前一专题 = null;
+let 内容加载请求序号 = 0;
 
 从网址获取技术栈和专题();
 
 设置侧边栏();
-设置内容().then((发生了回退) => {
+设置内容().then((结果) => {
+  if (结果.已过期) return;
   生成章节区();
   生成章节();
   初始化章节观察器();
@@ -81,12 +83,13 @@ let 前一专题 = null;
 window.addEventListener("popstate", () => {
   从网址获取技术栈和专题();
   设置侧边栏();
-  设置内容().then((发生了回退) => {
+  设置内容().then((结果) => {
+    if (结果.已过期) return;
     生成章节区();
     生成章节();
     初始化章节观察器();
     当前专题已被收藏时刷新收藏按钮样式();
-    if (发生了回退) {
+    if (结果.发生了回退) {
       更新网址(技术栈名称, 专题名称);
     }
   });
@@ -118,7 +121,8 @@ function 从网址获取技术栈和专题() {
   技术栈.addEventListener("click", 点选技术栈);
   技术栈.addEventListener("click", 设置侧边栏);
   技术栈.addEventListener("click", () => {
-    设置内容().then((发生了回退) => {
+    设置内容().then((结果) => {
+      if (结果.已过期) return;
       生成章节区();
       生成章节();
       初始化章节观察器();
@@ -371,6 +375,9 @@ async function 加载专题CSS文件(技术栈名称, 专题名称) {
 }
 
 async function 设置内容() {
+  const 当前请求序号 = ++内容加载请求序号;
+  const 请求已过期 = () => 当前请求序号 !== 内容加载请求序号;
+
   专题文件路径 = `./博客内容/${技术栈名称}/${专题名称}/index.html`;
   let 需要更新侧边栏 = false;
   let 发生了回退 = false;
@@ -380,6 +387,8 @@ async function 设置内容() {
 
   try {
     const response = await fetch(专题文件路径);
+    if (请求已过期()) return { 发生了回退: false, 已过期: true };
+
     if (!response.ok) {
       // 如果文件不存在，回退到首页
       专题文件路径 = `./博客内容/${技术栈名称}/首页/index.html`;
@@ -389,19 +398,26 @@ async function 设置内容() {
       发生了回退 = true;
 
       const 首页响应 = await fetch(专题文件路径);
+      if (请求已过期()) return { 发生了回退: false, 已过期: true };
+
       if (!首页响应.ok) {
         throw new Error(`无法加载专题文件: ${专题文件路径}`);
       }
       const content = await 首页响应.text();
+      if (请求已过期()) return { 发生了回退: false, 已过期: true };
       专题内容区.innerHTML = content;
     } else {
       const content = await response.text();
+      if (请求已过期()) return { 发生了回退: false, 已过期: true };
       专题内容区.innerHTML = content;
     }
 
     // 加载专题的外部 JS 和 CSS 文件（如果存在）
     await 加载专题CSS文件(技术栈名称, 专题名称);
+    if (请求已过期()) return { 发生了回退: false, 已过期: true };
+
     await 加载专题JS文件(技术栈名称, 专题名称);
+    if (请求已过期()) return { 发生了回退: false, 已过期: true };
 
     // 处理 HTML 内联的 script 标签（保持向后兼容，虽然重构后应该不会有）
     const parser = new DOMParser();
@@ -416,6 +432,8 @@ async function 设置内容() {
       }
     });
   } catch (error) {
+    if (请求已过期()) return { 发生了回退: false, 已过期: true };
+
     console.error("加载专题内容时出错:", error);
     // 如果连首页都无法加载，显示错误信息
     专题内容区.innerHTML = `<div style="padding: 20px; text-align: center; color: #ff6b6b;">
@@ -423,6 +441,8 @@ async function 设置内容() {
       <p>无法加载专题内容，请检查网络连接或联系管理员。</p>
     </div>`;
   }
+
+  if (请求已过期()) return { 发生了回退: false, 已过期: true };
 
   const 选项卡标题 = document.querySelector("title");
   选项卡标题.textContent = `${技术栈名称}-${专题名称}`;
@@ -440,7 +460,7 @@ async function 设置内容() {
     设置侧边栏();
   }
 
-  return 发生了回退;
+  return { 发生了回退, 已过期: false };
 }
 
 function 点选技术栈(event) {
@@ -487,7 +507,8 @@ function 修改专题样式(event) {
   }
   localStorage.setItem("专题索引记录", JSON.stringify(专题索引记录));
 
-  设置内容().then((发生了回退) => {
+  设置内容().then((结果) => {
+    if (结果.已过期) return;
     生成章节区();
     生成章节();
     初始化章节观察器();
@@ -650,6 +671,12 @@ function 特殊元素样式补充() {
     const 原文链接 = document.querySelector(".原文链接 > a");
     原文链接.style.marginLeft = "0";
   }
+
+  // 先清理旧序号，确保重复调用时不会叠加。
+  const 已有标题序号组 = document.querySelectorAll(
+    ".分区2级标题 > .标题序号-2级, .分区3级标题 > .标题序号-3级"
+  );
+  已有标题序号组.forEach((序号) => 序号.remove());
 
   const 分区2级标题组 = document.querySelectorAll(".分区2级标题");
   分区2级标题组?.forEach((标题, 索引) => {

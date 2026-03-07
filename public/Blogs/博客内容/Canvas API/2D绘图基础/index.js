@@ -536,6 +536,7 @@ class RectCanvasDemo {
     this.dragStart = { x, y };
     this.rectStart = { ...this.rect };
     this.canvas.style.cursor = this.getCursorByRegion(region);
+    this.render();
   }
 
   handleMouseMove(event) {
@@ -552,8 +553,12 @@ class RectCanvasDemo {
   }
 
   handleMouseUp() {
+    const 拖拽中 = !!this.dragRegion;
     this.dragRegion = null;
     this.canvas.style.cursor = this.getCursorByRegion(this.hoverRegion);
+    if (拖拽中) {
+      this.render();
+    }
   }
 
   handleMouseLeave() {
@@ -617,12 +622,14 @@ class RectCanvasDemo {
     this.ctx.fillRect(this.rect.x, this.rect.y, this.rect.width, this.rect.height);
     this.ctx.strokeRect(this.rect.x, this.rect.y, this.rect.width, this.rect.height);
 
-    this.ctx.beginPath();
-    this.ctx.arc(this.rect.x, this.rect.y, 5, 0, 2 * Math.PI);
-    this.ctx.fillStyle = colors.anchorFill;
-    this.ctx.strokeStyle = colors.anchorStroke;
-    this.ctx.fill();
-    this.ctx.stroke();
+    if (this.dragRegion) {
+      this.ctx.beginPath();
+      this.ctx.arc(this.rect.x, this.rect.y, 5, 0, 2 * Math.PI);
+      this.ctx.fillStyle = colors.anchorFill;
+      this.ctx.strokeStyle = colors.anchorStroke;
+      this.ctx.fill();
+      this.ctx.stroke();
+    }
   }
 
   drawSizeLabels() {
