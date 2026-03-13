@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+Mono&family=Fira+Sans:ital@0;1&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Ubuntu+Mono&family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;700&family=Exo+2:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
@@ -33,458 +33,94 @@
     <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
 
     <!-- ---------------------------- ↓ 主内容 --------------------------------- -->
-    <main class="main-content">
-      <div class="page-shell">
-        <section class="hero hero--dash" aria-labelledby="hero-dash-title">
-          <div class="hero__bg hero__bg--grid" aria-hidden="true">
-            <div class="grid-lines"></div>
-          </div>
-          <div class="hero__glow hero__glow--1" aria-hidden="true"></div>
-          <div class="hero__glow hero__glow--2" aria-hidden="true"></div>
-          <div class="hero__glow hero__glow--3" aria-hidden="true"></div>
-          <div class="hero__deco-dots" aria-hidden="true">
-            <span></span><span></span><span></span><span></span><span></span><span></span>
-          </div>
-          <div class="section-shell hero__inner">
-            <div class="hero__tech-badges" aria-hidden="true">
-              <span><i class="fa-brands fa-html5" aria-hidden="true"></i>HTML</span>
-              <span><i class="fa-brands fa-css3-alt" aria-hidden="true"></i>CSS</span>
-              <span><i class="fa-brands fa-js" aria-hidden="true"></i>JS</span>
-              <span><i class="fa-solid fa-code" aria-hidden="true"></i>TS</span>
-              <span><i class="fa-brands fa-python" aria-hidden="true"></i>Python</span>
-              <span><i class="fa-brands fa-git-alt" aria-hidden="true"></i>Git</span>
-              <span><i class="fa-brands fa-node-js" aria-hidden="true"></i>Node</span>
-              <span><i class="fa-brands fa-vuejs" aria-hidden="true"></i>Vue</span>
-              <span><i class="fa-solid fa-file-lines" aria-hidden="true"></i>MD</span>
-            </div>
-            <div class="hero__head">
-              <span class="hero__corner hero__corner--tl" aria-hidden="true"></span>
-              <span class="hero__corner hero__corner--tr" aria-hidden="true"></span>
-              <span class="hero__corner hero__corner--bl" aria-hidden="true"></span>
-              <span class="hero__corner hero__corner--br" aria-hidden="true"></span>
-              <h1 class="hero__title" id="hero-dash-title">面向学生的下一代自学服务平台</h1>
-              <p class="hero__subtitle">一站式学习、创作、工具与娱乐</p>
-              <p class="hero__intro">
-                聚合交互式学习中心、知识库、工具实验室与游戏化练习。实时预览与可控动效，帮助你在专注、可验证的环境下自驱成长。
-              </p>
-            </div>
-            <nav class="hero__modules" aria-label="子模块导航">
-              <div class="hero__modules-featured-wrap">
-                <div class="hero__modules-featured">
-                  <a class="hero__module-link hero__module-link--featured hero__module-link--primary" href="/Interactive-Hub/" target="_self">
-                    <span class="hero__module-icon" aria-hidden="true"><i class="fa-solid fa-flask"></i></span>
-                    <span class="hero__module-text">交互式学习中心</span>
-                  </a>
-                  <a class="hero__module-link hero__module-link--featured hero__module-link--cyan" href="/Blogs/" target="_self">
-                    <span class="hero__module-icon" aria-hidden="true"><i class="fa-solid fa-book-open-reader"></i></span>
-                    <span class="hero__module-text">经验之谈</span>
-                  </a>
-                </div>
-              </div>
-              <div class="hero__modules-others">
-                <a class="hero__module-link hero__module-link--secondary hero__module-link--amber" href="/Markdown-Notes/" target="_self">
-                  <span class="hero__module-icon" aria-hidden="true"><i class="fa-solid fa-book-bookmark"></i></span>
-                  <span class="hero__module-text">知识库</span>
-                </a>
-                <a class="hero__module-link hero__module-link--secondary hero__module-link--emerald" href="/Apps/" target="_self">
-                  <span class="hero__module-icon" aria-hidden="true"><i class="fa-solid fa-screwdriver-wrench"></i></span>
-                  <span class="hero__module-text">Web 应用实验室</span>
-                </a>
-                <a class="hero__module-link hero__module-link--secondary hero__module-link--pink" href="/Games/" target="_self">
-                  <span class="hero__module-icon" aria-hidden="true"><i class="fa-solid fa-gamepad"></i></span>
-                  <span class="hero__module-text">休闲游戏</span>
-                </a>
-                <a class="hero__module-link hero__module-link--secondary hero__module-link--primary" href="/Tutorials/" target="_self">
-                  <span class="hero__module-icon" aria-hidden="true"><i class="fa-solid fa-video"></i></span>
-                  <span class="hero__module-text">在线教程</span>
-                </a>
-                <a class="hero__module-link hero__module-link--secondary hero__module-link--cyan" href="/Software/" target="_self">
-                  <span class="hero__module-icon" aria-hidden="true"><i class="fa-solid fa-download"></i></span>
-                  <span class="hero__module-text">软件下载</span>
-                </a>
-                <a class="hero__module-link hero__module-link--secondary hero__module-link--amber" href="/Introduction/contributors.html" target="_self">
-                  <span class="hero__module-icon" aria-hidden="true"><i class="fa-solid fa-people-group"></i></span>
-                  <span class="hero__module-text">贡献者</span>
-                </a>
-                <a class="hero__module-link hero__module-link--secondary hero__module-link--outline" href="/Introduction/purpose.html" target="_self">
-                  <span class="hero__module-icon" aria-hidden="true"><i class="fa-solid fa-compass"></i></span>
-                  <span class="hero__module-text">网站宗旨</span>
-                </a>
-              </div>
-            </nav>
-          </div>
-        </section>
-
-        <section class="live-lab" aria-label="实时图表预览">
-          <div class="section-shell">
-            <div class="section-heading">
-              <div>
-                <p class="eyebrow">Live Analytics</p>
-                <h2>实时图表预览 · 可控动效</h2>
-                <p class="muted">用数据流判断学习节奏：每 500ms 推送一次的新鲜数据、可暂停与模式切换，兼顾低噪声与可读性。</p>
-              </div>
-              <a class="link-inline" href="/Interactive-Hub/" target="_self">进入交互中心 <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
-            <div class="live-lab__grid">
-              <div class="chart-panel panel">
-                <div class="chart-panel__head">
-                  <div>
-                    <p class="eyebrow eyebrow--soft">Live Preview</p>
-                    <h3>Streaming Curve</h3>
-                    <p class="muted">可视化学习信号，保持玻璃态质感。</p>
-                  </div>
-                  <div class="chart-controls" role="group" aria-label="图表控制">
-                    <button class="chip chip--accent" type="button" data-mode="pulse">脉冲</button>
-                    <button class="chip" type="button" data-mode="steady">稳态</button>
-                    <button class="chip chip--ghost" type="button" id="chartToggle">暂停</button>
-                  </div>
-                </div>
-                <canvas id="liveChart" class="chart-canvas" role="img" aria-label="实时交互式曲线预览"></canvas>
-                <div class="chart-meta" aria-live="polite">
-                  <div>
-                    <p class="muted">当前模式</p>
-                    <strong id="chartMode">脉冲</strong>
-                  </div>
-                  <div>
-                    <p class="muted">刷新频率</p>
-                    <strong>500ms</strong>
-                  </div>
-                  <div>
-                    <p class="muted">状态</p>
-                    <strong id="chartStatus">实时更新</strong>
-                  </div>
-                </div>
-              </div>
-              <div class="live-stack">
-                <article class="live-card panel">
-                  <div class="live-card__head">
-                    <p class="eyebrow eyebrow--soft">交互式学习中心</p>
-                    <span class="pill">模块联动</span>
-                  </div>
-                  <h3>即时演算 · 可视化 · 分享</h3>
-                  <p class="muted">滑杆、输入框、拖拽、可视化一体化；每个实验都能保存状态并复用到课堂或自习。</p>
-                  <div class="chip-row">
-                    <span class="chip chip--ghost">低延迟</span>
-                    <span class="chip chip--ghost">秒级反馈</span>
-                    <span class="chip chip--ghost">状态同步</span>
-                  </div>
-                  <a class="link-inline" href="/Interactive-Hub/" target="_self">立即体验 <i class="fa-solid fa-arrow-right"></i></a>
-                </article>
-                <article class="live-card panel">
-                  <div class="live-card__head">
-                    <p class="eyebrow eyebrow--soft">子模块集成</p>
-                    <span class="pill pill--accent">One Dock</span>
-                  </div>
-                  <h3>博客 · 工具 · 游戏 · 下载</h3>
-                  <p class="muted">统一导航、统一视觉语言、统一快捷键。学习、实践、休闲在同一块玻璃卡里串联。</p>
-                  <div class="integration-grid">
-                    <div class="integration-pill"><i class="fa-solid fa-book-open-reader"></i><span>博客与知识库</span></div>
-                    <div class="integration-pill"><i class="fa-solid fa-screwdriver-wrench"></i><span>工具实验室</span></div>
-                    <div class="integration-pill"><i class="fa-solid fa-gamepad"></i><span>游戏化练习</span></div>
-                    <div class="integration-pill"><i class="fa-solid fa-cloud-arrow-down"></i><span>软件下载</span></div>
-                  </div>
-                </article>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="nav-rail">
-          <div class="section-shell">
-            <div class="section-heading">
-              <div>
-                <p class="eyebrow">Command Center</p>
-                <h2>四大航道，一键直达</h2>
-                <p class="muted">用金融级玻璃卡片承载学习、创作、工具与娱乐。</p>
-              </div>
-              <a class="link-inline" href="/Introduction/purpose.html" target="_self">
-                了解我们的使命 <i class="fa-solid fa-arrow-right"></i>
-              </a>
-            </div>
-            <div class="card-grid nav-rail__grid">
-              <a class="nav-card" href="/Interactive-Hub/" target="_self">
-                <div class="nav-card__icon"><i class="fa-solid fa-flask"></i></div>
-                <div>
-                  <p class="eyebrow eyebrow--soft">交互式学习中心</p>
-                  <h3>即时演算与可视化</h3>
-                  <p class="muted">每一次滑杆与输入都可被捕捉、复用、分享。</p>
-                  <span class="cta-text">进入交互中心</span>
-                </div>
-              </a>
-              <a class="nav-card" href="/Blogs/" target="_self">
-                <div class="nav-card__icon"><i class="fa-solid fa-book-open-reader"></i></div>
-                <div>
-                  <p class="eyebrow eyebrow--soft">经验之谈</p>
-                  <h3>重内容与轻阅读</h3>
-                  <p class="muted">高完成度长文与速查型笔记，让灵感与实践对齐。</p>
-                  <span class="cta-text">阅读更新</span>
-                </div>
-              </a>
-              <a class="nav-card" href="/Apps/" target="_self">
-                <div class="nav-card__icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-                <div>
-                  <p class="eyebrow eyebrow--soft">Web应用实验室</p>
-                  <h3>安全、效率、自动化</h3>
-                  <p class="muted">从密码生成到快捷键测试，快速调用常用工具。</p>
-                  <span class="cta-text">打开工具箱</span>
-                </div>
-              </a>
-              <a class="nav-card" href="/Games/" target="_self">
-                <div class="nav-card__icon"><i class="fa-solid fa-gamepad"></i></div>
-                <div>
-                  <p class="eyebrow eyebrow--soft">休闲游戏</p>
-                  <h3>逻辑、记忆、合作</h3>
-                  <p class="muted">休闲小游戏让学习节奏更柔和，激活团队气氛。</p>
-                  <span class="cta-text">开始畅玩</span>
-                </div>
-              </a>
-            </div>
-          </div>
-        </section>
-
-        <section class="panels" id="交互式学习中心">
-          <div class="section-shell">
-            <div class="panel-grid">
-              <div class="panel panel--wide">
-                <div class="panel__head">
-                  <div>
-                    <p class="eyebrow">Interactive Hub</p>
-                    <h2>交互式实验台</h2>
-                    <p class="muted">统一界面、标准化操作，所见即所得。</p>
-                  </div>
-                  <a class="btn btn--ghost" href="/Interactive-Hub/" target="_self">
-                    <span>进入中心</span>
-                    <i class="fa-solid fa-arrow-right"></i>
-                  </a>
-                </div>
-                <div class="card-grid media-grid">
-                  <article class="media-card">
-                    <figure class="media-card__visual"><img src="/Images/Index-Images/程序员02.png" alt="交互式体验" /></figure>
-                    <div class="media-card__body">
-                      <div class="badge">交互</div>
-                      <h3>实时操作与反馈</h3>
-                      <p>每个参数的调整都能即时呈现效果，帮助你快速理解输入与输出的关系。</p>
-                    </div>
-                  </article>
-                  <article class="media-card">
-                    <figure class="media-card__visual"><img src="/Images/Index-Images/写代码01.png" alt="可视化" /></figure>
-                    <div class="media-card__body">
-                      <div class="badge">可视化</div>
-                      <h3>数据与界面透明呈现</h3>
-                      <p>直观、简洁的 UI，把复杂逻辑拆解为清晰的视觉元素。</p>
-                    </div>
-                  </article>
-                  <article class="media-card">
-                    <figure class="media-card__visual"><img src="/Images/Index-Images/电脑01.png" alt="标准化" /></figure>
-                    <div class="media-card__body">
-                      <div class="badge">标准化</div>
-                      <h3>统一交互语言</h3>
-                      <p>每个模块都遵循一致的界面与操作流程，降低学习成本，提升效率。</p>
-                    </div>
-                  </article>
-                </div>
-              </div>
-
-              <div class="panel panel--compact">
-                <div class="panel__head">
-                  <div>
-                    <p class="eyebrow">Content Matrix</p>
-                    <h2>深度与速览并行</h2>
-                    <p class="muted">重博客解读技术全景，轻博客快速索引与协作。</p>
-                  </div>
-                </div>
-                <div class="card-grid matrix-mini">
-                  <a class="matrix-card" href="/Blogs/" target="_self">
-                    <div class="matrix-card__head">
-                      <div class="badge">经验之谈</div>
-                      <h3>技术博客</h3>
-                      <p>高完成度的原创与精选文章，配合代码示例、插图与思考。</p>
-                    </div>
-                    <div class="matrix-card__media">
-                      <img src="/Images/Index-Images/重博客.png" alt="技术博客图标" />
-                    </div>
-                    <span class="cta-text">进入阅读</span>
-                  </a>
-                  <a class="matrix-card" href="/Markdown-Notes/" target="_self">
-                    <div class="matrix-card__head">
-                      <div class="badge badge--neutral">知识库</div>
-                      <h3>Markdown 笔记</h3>
-                      <p>协作式轻博客，快速检索、对齐知识点，方便课堂与自学。</p>
-                    </div>
-                    <div class="matrix-card__media">
-                      <img src="/Images/Index-Images/轻博客.png" alt="知识库图标" />
-                    </div>
-                    <span class="cta-text">开始查阅</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="lab-games">
-          <div class="section-shell two-col">
-            <div class="stack-card stack-card--glow">
-              <div class="section-heading">
-                <div>
-                  <p class="eyebrow">Tools Lab</p>
-                  <h2>实用工具实验室</h2>
-                  <p class="muted">日常开发与课堂演示的效率搭子。</p>
-                </div>
-                <a class="btn btn--ghost" href="/Apps/" target="_self">
-                  <span>全部工具</span>
-                  <i class="fa-solid fa-arrow-right"></i>
-                </a>
-              </div>
-              <div class="stack-list">
-                <a class="stack-item" href="/Apps/Password_Generator/" target="_self">
-                  <div class="stack-item__icon"><i class="fa-solid fa-shield"></i></div>
-                  <div>
-                    <h4>密码生成器</h4>
-                    <p>一键生成强密码，安全策略实时可视化。</p>
-                  </div>
-                  <span class="pill">安全</span>
-                </a>
-                <a class="stack-item" href="/Apps/Class_Notification/" target="_self">
-                  <div class="stack-item__icon"><i class="fa-solid fa-robot"></i></div>
-                  <div>
-                    <h4>回复模拟器</h4>
-                    <p>课堂通知与自动回复的轻量演练场。</p>
-                  </div>
-                  <span class="pill">沟通</span>
-                </a>
-                <a class="stack-item" href="/Apps/ShortcutTester/" target="_self">
-                  <div class="stack-item__icon"><i class="fa-solid fa-keyboard"></i></div>
-                  <div>
-                    <h4>快捷键测试器</h4>
-                    <p>练习与验证快捷键手感，支持多场景。</p>
-                  </div>
-                  <span class="pill">效率</span>
-                </a>
-                <a class="stack-item" href="/Apps/Wheel_of_Fortune/" target="_self">
-                  <div class="stack-item__icon"><i class="fa-solid fa-circle-notch"></i></div>
-                  <div>
-                    <h4>快乐大转盘</h4>
-                    <p>课堂互动、抽奖与即时反馈的趣味模块。</p>
-                  </div>
-                  <span class="pill">互动</span>
-                </a>
-              </div>
-            </div>
-            <div class="stack-card stack-card--glow">
-              <div class="section-heading">
-                <div>
-                  <p class="eyebrow">Game Lounge</p>
-                  <h2>休闲游戏角</h2>
-                  <p class="muted">寓教于乐，在游戏中巩固逻辑与思维。</p>
-                </div>
-                <a class="btn btn--ghost" href="/Games/" target="_self">
-                  <span>全部游戏</span>
-                  <i class="fa-solid fa-arrow-right"></i>
-                </a>
-              </div>
-              <div class="stack-list">
-                <a class="stack-item" href="/Games/CardMatch/" target="_self">
-                  <div class="stack-item__icon"><i class="fa-solid fa-shapes"></i></div>
-                  <div>
-                    <h4>卡牌配对</h4>
-                    <p>记忆与策略的双重挑战，支持轻松上手。</p>
-                  </div>
-                  <span class="pill">记忆</span>
-                </a>
-                <a class="stack-item" href="/Games/Snake/" target="_self">
-                  <div class="stack-item__icon"><i class="fa-solid fa-wave-square"></i></div>
-                  <div>
-                    <h4>贪吃蛇</h4>
-                    <p>经典玩法，练习专注与操作流畅度。</p>
-                  </div>
-                  <span class="pill">经典</span>
-                </a>
-                <a class="stack-item" href="/Games/HanoiTower/" target="_self">
-                  <div class="stack-item__icon"><i class="fa-solid fa-diagram-project"></i></div>
-                  <div>
-                    <h4>汉诺塔</h4>
-                    <p>递归思维的可视化演练，直观理解算法。</p>
-                  </div>
-                  <span class="pill">算法</span>
-                </a>
-                <a class="stack-item" href="/Games/FindTreasure/" target="_self">
-                  <div class="stack-item__icon"><i class="fa-solid fa-map-location-dot"></i></div>
-                  <div>
-                    <h4>找宝藏</h4>
-                    <p>概率与推理的轻量游戏，适合团队互动。</p>
-                  </div>
-                  <span class="pill">推理</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="resource-rail">
-          <div class="section-shell">
-            <div class="card-grid resource-grid">
-              <a class="rail-card" href="/Tutorials/" target="_self">
-                <div class="rail-card__icon"><i class="fa-solid fa-video"></i></div>
-                <div class="rail-card__body">
-                  <p class="eyebrow eyebrow--soft">Resources</p>
-                  <h3>精选在线教程</h3>
-                  <p>按主题、难度、场景归档的学习路线，支持速查与系统化进阶。</p>
-                  <div class="rail-meta">
-                    <span>覆盖：前端 / 算法 / 数据 / AI / 可视化</span>
-                    <span>格式：视频课 · 图文 · 互动练习</span>
-                    <span>频率：周更，含收藏与历史记录</span>
-                  </div>
-                  <div class="rail-tags">
-                    <span class="pill pill--soft">路线图</span>
-                    <span class="pill pill--soft">难度分层</span>
-                    <span class="pill pill--soft">题单</span>
-                  </div>
-                  <span class="cta-text">开始学习</span>
-                </div>
-              </a>
-              <a class="rail-card" href="/Software/" target="_self">
-                <div class="rail-card__icon"><i class="fa-solid fa-download"></i></div>
-                <div class="rail-card__body">
-                  <p class="eyebrow eyebrow--soft">Downloads</p>
-                  <h3>软件下载直达</h3>
-                  <p>官方入口、版本说明与校验信息，一站式获取，避免踩坑。</p>
-                  <div class="rail-meta">
-                    <span>内容：官方链接 · 版本对比 · 许可证说明</span>
-                    <span>校验：SHA 校验/签名提示，系统兼容性标注</span>
-                    <span>镜像：含常用国内镜像/跳转</span>
-                  </div>
-                  <div class="rail-tags">
-                    <span class="pill pill--soft">免坑指南</span>
-                    <span class="pill pill--soft">校验信息</span>
-                    <span class="pill pill--soft">镜像</span>
-                  </div>
-                  <span class="cta-text">前往下载</span>
-                </div>
-              </a>
-              <div class="mission-card mission-card--glow">
-                <div class="mission-card__icon"><i class="fa-solid fa-compass"></i></div>
-                <h3>网站宗旨</h3>
-                <p>降低优质资源的搜索难度，聚合离散内容，为学生提供可信赖的学习控制台。</p>
-                <ul>
-                  <li><i class="fa-solid fa-check"></i><span>降低搜索难度，提升学习效率</span></li>
-                  <li><i class="fa-solid fa-check"></i><span>聚合高质量内容与工具</span></li>
-                  <li><i class="fa-solid fa-check"></i><span>保持界面一致与长期维护</span></li>
-                </ul>
-                <a class="link-inline" href="/Introduction/purpose.html" target="_self">网站宗旨 <i class="fa-solid fa-arrow-right"></i></a>
-                <div class="avatar-row" aria-label="贡献者预览">
-                  <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
-                  <img src="/Images/Contributors/02.png" alt="陈鹏" />
-                  <img src="/Images/Contributors/凌子轩.jpg" alt="凌子轩" />
-                  <img src="/Images/Contributors/zzcy.jpg" alt="周张晨垚" />
-                  <span class="avatar-more">+4</span>
-                </div>
-                <a class="link-inline" href="/Introduction/contributors.html" target="_self">贡献团队 <i class="fa-solid fa-arrow-right"></i></a>
-              </div>
-            </div>
-          </div>
-        </section>
+    <main class="主容器">
+      <div class="简介区">
+        <h1 class="简介标题">永恒</h1>
+        <h2 class="简介副标题">面向学生的新一代在线自学平台，为深度自学提供一站式解决方案</h2>
+        <div class="技术栈区">
+          <span class="技术栈"><i class="fa-solid fa-c 技术栈图标"></i></span>
+          <span class="技术栈"><i class="fa-brands fa-java"></i></span>
+          <span class="技术栈"><i class="fa-brands fa-python"></i></span>
+          <span class="技术栈"><i class="fa-solid fa-database"></i></span>
+          <span class="技术栈"><i class="fa-solid fa-code"></i></span>
+          <span class="技术栈"><i class="fa-brands fa-js"></i></span>
+          <span class="技术栈"><i class="fa-brands fa-node"></i></span>
+          <span class="技术栈"><i class="fa-solid fa-chart-area"></i></span>
+          <span class="技术栈"><i class="fa-brands fa-postgresql"></i></span>
+          <span class="技术栈"><i class="fa-brands fa-git-alt"></i></span>
+        </div>
       </div>
+      <section class="主模块区">
+        <p class="主模块标题区 模块标题区">
+          <span class="分区标题">深度学习，自我适配</span>
+          <span class="分区标题描述"
+            >提供交互式学习、经验分享、Web应用开发和休闲游戏等多个模块，满足不同学生的学习需求。</span
+          >
+        </p>
+        <div class="主模块内容区">
+          <a class="主模块" href="./Interactive-Hub/" target="_self">
+            <figure class="主模块背景图容器">
+              <img class="主模块背景图" src="/Images/Index-Images/人机交流.png" alt="交互式学习中心" />
+            </figure>
+            <span class="主模块标题">交互式学习中心<span class="主模块描述">直观、易用的交互式可视化教程</span></span>
+          </a>
+          <a class="主模块" href="./Blogs/" target="_self">
+            <figure class="主模块背景图容器">
+              <img class="主模块背景图" src="/Images/Index-Images/Web技术栈.png" alt="经验之谈" />
+            </figure>
+            <span class="主模块标题">经验之谈<span class="主模块描述">精心编写的技术博客</span></span>
+          </a>
+          <a class="主模块" href="./Apps/" target="_self">
+            <figure class="主模块背景图容器">
+              <img class="主模块背景图" src="/Images/Index-Images/笔记本.jpg" alt="Web应用实验室" />
+            </figure>
+            <span class="主模块标题">Web应用实验室<span class="主模块描述">创意聚集之地</span></span>
+          </a>
+          <a class="主模块" href="./Games/" target="_self">
+            <figure class="主模块背景图容器">
+              <img class="主模块背景图" src="/Images/Index-Images/夜之城.jpg" alt="休闲游戏" />
+            </figure>
+            <span class="主模块标题">休闲游戏<span class="主模块描述">寓教于乐，启迪思维</span></span>
+          </a>
+        </div>
+      </section>
+      <section class="数据区">
+        <div class="数据分区">
+          <span class="数值">30<span class="符号">+</span></span
+          ><span class="数据描述">可视化教程</span>
+        </div>
+        <div class="数据分区">
+          <span class="数值">20<span class="符号">+</span></span
+          ><span class="数据描述">技术博客</span>
+        </div>
+        <div class="数据分区">
+          <span class="数值">8<span class="符号">+</span></span
+          ><span class="数据描述">应用程序</span>
+        </div>
+        <div class="数据分区">
+          <span class="数值">10<span class="符号">+</span></span
+          ><span class="数据描述">休闲游戏</span>
+        </div>
+      </section>
+      <section class="展示区">
+        <div class="展示区标题区">
+          <h1 class="展示区标题">交互式，可视化</h1>
+          <p class="展示区描述">
+            每一个教程都采用了交互式的演示形式，帮助学生更加直观地理解代码的作用和产生的效果，无论是数据结构，还是Web前端，都能获得最佳学习效果。代码托管于GitHub，你也可以随时参与到其中，贡献自己的知识与见解，让其它人看到你的创意与努力。
+          </p>
+        </div>
+        <div class="展示区背景区">
+          <figure class="展示区图片容器">
+            <img class="展示区图片" src="/Images/Index-Images/弹性布局演示.webp" alt="弹性布局演示" />
+          </figure>
+          <figure class="展示区图片容器">
+            <img class="展示区图片" src="/Images/Index-Images/冒泡排序演示.webp" alt="冒泡排序演示" />
+          </figure>
+          <figure class="展示区图片容器">
+            <img class="展示区图片" src="/Images/Index-Images/忍者缓动演示.webp" alt="忍者缓动演示" />
+          </figure>
+        </div>
+      </section>
     </main>
     <!-- ---------------------------- ↑ 主内容 --------------------------------- -->
 
