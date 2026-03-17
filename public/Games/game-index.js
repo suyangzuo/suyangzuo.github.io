@@ -108,8 +108,9 @@ function animateNumber(element, finalValue) {
  */
 function initScrollEffects() {
   const heroSection = document.querySelector('.hero-section');
+  const heroContent = document.querySelector('.hero-content');
   
-  if (!heroSection) return;
+  if (!heroSection || !heroContent) return;
   
   window.addEventListener('scroll', () => {
     const scrollY = window.scrollY;
@@ -123,6 +124,11 @@ function initScrollEffects() {
       // 淡出效果
       const opacity = 1 - (scrollY / heroHeight);
       heroSection.style.opacity = Math.max(opacity, 0);
+      
+      // 内容缩放效果
+      const scale = 1 - (scrollY / (heroHeight * 2));
+      heroContent.style.transform = `scale(${Math.max(scale, 0.8)})`;
+      heroContent.style.opacity = Math.max(opacity, 0.7);
     }
   });
 }
