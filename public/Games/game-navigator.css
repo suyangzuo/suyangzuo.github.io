@@ -272,7 +272,7 @@
   max-width: 900px;
   margin: 0 auto;
   transform-style: preserve-3d;
-  transition: transform 0.3s ease-out;
+  transition: transform 0.1s linear;
 }
 
 .hero-decorative-icons {
@@ -365,8 +365,8 @@
   position: relative;
   display: inline-block;
   animation: titleGradient 8s ease infinite, titleGlow 4s ease-in-out infinite;
-  transform: translateZ(50px);
   filter: drop-shadow(0 0 30px rgba(74, 158, 255, 0.4));
+  will-change: transform;
 }
 
 @keyframes titleGradient {

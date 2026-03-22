@@ -50,6 +50,25 @@ function initHero3DEffect() {
   const heroContent = document.querySelector('.hero-content');
   
   if (!heroSection || !heroContent) return;
+  
+  let rafId = null;
+  let targetRotateX = 0;
+  let targetRotateY = 0;
+  let currentRotateX = 0;
+  let currentRotateY = 0;
+  
+  function updateTransform() {
+    currentRotateX += (targetRotateX - currentRotateX) * 0.1;
+    currentRotateY += (targetRotateY - currentRotateY) * 0.1;
+    
+    if (Math.abs(targetRotateX - currentRotateX) > 0.01 || Math.abs(targetRotateY - currentRotateY) > 0.01) {
+      heroContent.style.transform = `perspective(1000px) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg)`;
+      rafId = requestAnimationFrame(updateTransform);
+    } else {
+      heroContent.style.transform = `perspective(1000px) rotateX(${targetRotateX}deg) rotateY(${targetRotateY}deg)`;
+      rafId = null;
+    }
+  }
 
   heroSection.addEventListener('mousemove', (e) => {
     const rect = heroSection.getBoundingClientRect();
@@ -58,14 +77,20 @@ function initHero3DEffect() {
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
 
-    const rotateX = (mouseY - centerY) / centerY * -5;
-    const rotateY = (mouseX - centerX) / centerX * 5;
-
-    heroContent.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(20px)`;
+    targetRotateX = (mouseY - centerY) / centerY * -5;
+    targetRotateY = (mouseX - centerX) / centerX * 5;
+    
+    if (!rafId) {
+      rafId = requestAnimationFrame(updateTransform);
+    }
   });
 
   heroSection.addEventListener('mouseleave', () => {
-    heroContent.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+    targetRotateX = 0;
+    targetRotateY = 0;
+    if (!rafId) {
+      rafId = requestAnimationFrame(updateTransform);
+    }
   });
 }
 
