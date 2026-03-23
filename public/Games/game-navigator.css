@@ -582,6 +582,30 @@
 .game-card {
   position: relative;
   background: 
+    radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(74, 158, 255, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.02) 0%, transparent 70%),
+    repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.01) 0px,
+      rgba(255, 255, 255, 0.01) 2px,
+      transparent 2px,
+      transparent 10px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(74, 158, 255, 0.01) 0px,
+      rgba(74, 158, 255, 0.01) 2px,
+      transparent 2px,
+      transparent 10px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.005) 0px,
+      rgba(255, 255, 255, 0.005) 1px,
+      transparent 1px,
+      transparent 15px
+    ),
     linear-gradient(145deg, rgba(38, 39, 42, 0.98) 0%, rgba(28, 29, 31, 0.96) 100%);
   border-radius: 24px;
   overflow: hidden;
@@ -657,6 +681,36 @@
     transparent 50%, 
     rgba(255, 200, 100, 0.05) 100%
   );
+}
+
+.game-card.ea {
+  position: relative;
+  background: 
+    radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(240, 160, 64, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.02) 0%, transparent 70%),
+    repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.01) 0px,
+      rgba(255, 255, 255, 0.01) 2px,
+      transparent 2px,
+      transparent 10px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(240, 160, 64, 0.01) 0px,
+      rgba(240, 160, 64, 0.01) 2px,
+      transparent 2px,
+      transparent 10px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.005) 0px,
+      rgba(255, 255, 255, 0.005) 1px,
+      transparent 1px,
+      transparent 15px
+    ),
+    linear-gradient(145deg, rgba(38, 39, 42, 0.98) 0%, rgba(28, 29, 31, 0.96) 100%);
 }
 
 .game-card.ea:hover {
@@ -847,7 +901,32 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  background: linear-gradient(180deg, rgba(38, 39, 42, 0.98) 0%, rgba(28, 29, 31, 0.96) 100%);
+  background: 
+    radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(74, 158, 255, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.02) 0%, transparent 70%),
+    repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.01) 0px,
+      rgba(255, 255, 255, 0.01) 2px,
+      transparent 2px,
+      transparent 10px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(74, 158, 255, 0.01) 0px,
+      rgba(74, 158, 255, 0.01) 2px,
+      transparent 2px,
+      transparent 10px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.005) 0px,
+      rgba(255, 255, 255, 0.005) 1px,
+      transparent 1px,
+      transparent 15px
+    ),
+    linear-gradient(180deg, rgba(38, 39, 42, 0.98) 0%, rgba(28, 29, 31, 0.96) 100%);
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   position: relative;
   z-index: 4;
@@ -882,6 +961,35 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(74, 158, 255, 0.15);
   letter-spacing: 1px;
+}
+
+.game-card.ea .game-info {
+  background: 
+    radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(240, 160, 64, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.02) 0%, transparent 70%),
+    repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.01) 0px,
+      rgba(255, 255, 255, 0.01) 2px,
+      transparent 2px,
+      transparent 10px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(240, 160, 64, 0.01) 0px,
+      rgba(240, 160, 64, 0.01) 2px,
+      transparent 2px,
+      transparent 10px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.005) 0px,
+      rgba(255, 255, 255, 0.005) 1px,
+      transparent 1px,
+      transparent 15px
+    ),
+    linear-gradient(180deg, rgba(38, 39, 42, 0.98) 0%, rgba(28, 29, 31, 0.96) 100%);
 }
 
 .game-card.ea .game-number {
