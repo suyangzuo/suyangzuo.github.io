@@ -357,6 +357,7 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  color: transparent;
   letter-spacing: -3px;
   text-shadow: 
     0 4px 8px rgba(0, 0, 0, 0.4),
@@ -364,9 +365,8 @@
   line-height: 1.05;
   position: relative;
   display: inline-block;
-  animation: titleGradient 8s ease infinite, titleGlow 4s ease-in-out infinite;
-  filter: drop-shadow(0 0 30px rgba(74, 158, 255, 0.4));
-  will-change: transform;
+  animation: titleGradient 8s ease infinite;
+  will-change: background-position;
 }
 
 @keyframes titleGradient {
