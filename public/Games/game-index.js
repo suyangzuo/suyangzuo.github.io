@@ -1,15 +1,116 @@
 // ==================== 游戏导航页面交互脚本 ====================
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 初始化游戏卡片动画
+  initMouseGlowEffect();
+  initHero3DEffect();
   initGameCardsAnimation();
-  
-  // 初始化统计数字动画
   initStatsAnimation();
-  
-  // 初始化滚动效果
   initScrollEffects();
+  initDynamicParticles();
 });
+
+function initMouseGlowEffect() {
+  const heroSection = document.querySelector('.hero-section');
+  const mouseGlow = document.querySelector('.mouse-glow');
+  if (!heroSection || !mouseGlow) return;
+
+  let mouseX = 0;
+  let mouseY = 0;
+  let glowX = 0;
+  let glowY = 0;
+  const smoothFactor = 0.1;
+
+  heroSection.addEventListener('mousemove', (e) => {
+    const rect = heroSection.getBoundingClientRect();
+    mouseX = e.clientX - rect.left;
+    mouseY = e.clientY - rect.top;
+  });
+
+  heroSection.addEventListener('mouseenter', () => {
+    mouseGlow.style.opacity = '1';
+  });
+
+  heroSection.addEventListener('mouseleave', () => {
+    mouseGlow.style.opacity = '0';
+  });
+
+  function updateGlow() {
+    glowX += (mouseX - glowX) * smoothFactor;
+    glowY += (mouseY - glowY) * smoothFactor;
+    mouseGlow.style.left = glowX + 'px';
+    mouseGlow.style.top = glowY + 'px';
+    requestAnimationFrame(updateGlow);
+  }
+
+  updateGlow();
+}
+
+function initHero3DEffect() {
+  const heroSection = document.querySelector('.hero-section');
+  const heroContent = document.querySelector('.hero-content');
+  
+  if (!heroSection || !heroContent) return;
+  
+  let rafId = null;
+  let targetRotateX = 0;
+  let targetRotateY = 0;
+  let currentRotateX = 0;
+  let currentRotateY = 0;
+  
+  function updateTransform() {
+    currentRotateX += (targetRotateX - currentRotateX) * 0.1;
+    currentRotateY += (targetRotateY - currentRotateY) * 0.1;
+    
+    if (Math.abs(targetRotateX - currentRotateX) > 0.01 || Math.abs(targetRotateY - currentRotateY) > 0.01) {
+      heroContent.style.transform = `perspective(1000px) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg)`;
+      rafId = requestAnimationFrame(updateTransform);
+    } else {
+      heroContent.style.transform = `perspective(1000px) rotateX(${targetRotateX}deg) rotateY(${targetRotateY}deg)`;
+      rafId = null;
+    }
+  }
+
+  heroSection.addEventListener('mousemove', (e) => {
+    const rect = heroSection.getBoundingClientRect();
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    targetRotateX = (mouseY - centerY) / centerY * -5;
+    targetRotateY = (mouseX - centerX) / centerX * 5;
+    
+    if (!rafId) {
+      rafId = requestAnimationFrame(updateTransform);
+    }
+  });
+
+  heroSection.addEventListener('mouseleave', () => {
+    targetRotateX = 0;
+    targetRotateY = 0;
+    if (!rafId) {
+      rafId = requestAnimationFrame(updateTransform);
+    }
+  });
+}
+
+function initDynamicParticles() {
+  const heroSection = document.querySelector('.hero-section');
+  const particlesContainer = document.querySelector('.particles-container');
+  if (!heroSection || !particlesContainer) return;
+
+  const particleCount = 15;
+  
+  for (let i = 0; i < particleCount; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.left = Math.random() * 100 + '%';
+    particle.style.top = Math.random() * 100 + '%';
+    particle.style.animationDelay = Math.random() * 15 + 's';
+    particle.style.animationDuration = (12 + Math.random() * 8) + 's';
+    particlesContainer.appendChild(particle);
+  }
+}
 
 /**
  * 游戏卡片入场动画
