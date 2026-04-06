@@ -266,8 +266,43 @@ function 右移动(棋盘) {
   return 移动发生;
 }
 
+// 音效管理
+const 音效 = {
+  移动: null,
+  合并: null,
+  胜利: null,
+  失败: null,
+  新游戏: null
+};
+
+// 初始化音效
+function 初始化音效() {
+  try {
+    音效.移动 = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAA');
+    音效.合并 = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAA');
+    音效.胜利 = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAA');
+    音效.失败 = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAA');
+    音效.新游戏 = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAA');
+  } catch (e) {
+    console.log('音效初始化失败:', e);
+  }
+}
+
+// 播放音效
+function 播放音效(类型) {
+  if (音效[类型] && !游戏结束) {
+    try {
+      音效[类型].currentTime = 0;
+      音效[类型].play().catch(() => {});
+    } catch (e) {
+      console.log('播放音效失败:', e);
+    }
+  }
+}
+
 // 添加游戏状态变量
 let 分数 = 0;
+let 最高分 = localStorage.getItem('2048-high-score') ? parseInt(localStorage.getItem('2048-high-score')) : 0;
 let 游戏结束 = false;
 let 游戏胜利 = false;
  
@@ -293,7 +328,16 @@ function 渲染棋盘(棋盘) {
       分数容器.className = 'score-container';
       main.appendChild(分数容器);
     }
-    分数容器.innerHTML = `<div class="score-label">分数</div><div class="score-value">${分数}</div>`;
+    分数容器.innerHTML = `
+      <div class="score-item">
+        <div class="score-label">分数</div>
+        <div class="score-value">${分数}</div>
+      </div>
+      <div class="score-item">
+        <div class="score-label">最高分</div>
+        <div class="score-value">${最高分}</div>
+      </div>
+    `;
     
     // 创建棋盘格子
     棋盘容器.innerHTML = '';
@@ -350,16 +394,16 @@ function 渲染棋盘(棋盘) {
         棋盘容器.appendChild(节点A);
       }
       已使用.add(节点A);
-      节点A.classList.add('moving');
       节点A.style.top = `${m.行 * 25}%`;
       节点A.style.left = `${m.列 * 25}%`;
       节点A.textContent = m.值;
-      节点A.className = `number-cell value-${m.值} moving`;
+      节点A.className = `number-cell value-${m.值}`;
       节点A.dataset.row = String(m.行);
       节点A.dataset.col = String(m.列);
-      setTimeout(() => {
-        节点A.className = `number-cell value-${m.值}`;
-      }, 300);
+      if (m.源.length === 2) {
+        节点A.classList.add('merging');
+        播放音效('合并');
+      }
 
       if (m.源.length === 2) {
         const 次源 = m.源[1];
@@ -371,7 +415,7 @@ function 渲染棋盘(棋盘) {
           节点B.style.left = `${m.列 * 25}%`;
           setTimeout(() => {
             if (节点B.parentElement) 节点B.remove();
-          }, 300);
+          }, 250);
         }
       }
     });
@@ -384,9 +428,24 @@ function 渲染棋盘(棋盘) {
   }
   
   // 更新分数显示
-  const 分数值元素 = document.querySelector('.score-value');
-  if (分数值元素) {
-    分数值元素.textContent = 分数;
+  const 分数容器 = document.querySelector('.score-container');
+  if (分数容器) {
+    分数容器.innerHTML = `
+      <div class="score-item">
+        <div class="score-label">分数</div>
+        <div class="score-value">${分数}</div>
+      </div>
+      <div class="score-item">
+        <div class="score-label">最高分</div>
+        <div class="score-value">${最高分}</div>
+      </div>
+    `;
+  }
+  
+  // 检查并更新最高分
+  if (分数 > 最高分) {
+    最高分 = 分数;
+    localStorage.setItem('2048-high-score', 最高分.toString());
   }
   
   // 保存当前棋盘状态
@@ -395,10 +454,67 @@ function 渲染棋盘(棋盘) {
   // 检查游戏状态
   if (已胜利(棋盘) && !游戏胜利) {
     游戏胜利 = true;
+    播放音效('胜利');
     显示游戏状态('恭喜，你赢了！', '胜利');
   } else if (已失败(棋盘) && !游戏结束) {
     游戏结束 = true;
+    播放音效('失败');
     显示游戏状态('游戏结束', '失败');
+  }
+}
+
+// 创建粒子效果
+function 创建粒子效果(行, 列, 值) {
+  const 棋盘容器 = document.querySelector('.game-board');
+  if (!棋盘容器) return;
+  
+  const 粒子数量 = 8;
+  const 颜色映射 = {
+    2: '#ffecd2',
+    4: '#f093fb',
+    8: '#4facfe',
+    16: '#43e97b',
+    32: '#fa709a',
+    64: '#ff9a9e',
+    128: '#a8edea',
+    256: '#d299c2',
+    512: '#ffecd2',
+    1024: '#e0c3fc',
+    2048: '#f093fb'
+  };
+  
+  const 粒子颜色 = 颜色映射[值] || '#ffffff';
+  const 粒子大小 = 8;
+  
+  for (let i = 0; i < 粒子数量; i++) {
+    const 粒子 = document.createElement('div');
+    粒子.className = 'particle';
+    粒子.style.backgroundColor = 粒子颜色;
+    粒子.style.width = `${粒子大小}px`;
+    粒子.style.height = `${粒子大小}px`;
+    粒子.style.left = `${列 * 25 + 12.5}%`;
+    粒子.style.top = `${行 * 25 + 12.5}%`;
+    粒子.style.transform = 'translate(-50%, -50%)';
+    粒子.style.animation = `particleAnimation 0.6s ease-out forwards`;
+    
+    // 随机方向
+    const 角度 = (Math.PI * 2 / 粒子数量) * i;
+    const 距离 = 20 + Math.random() * 15;
+    const 偏移X = Math.cos(角度) * 距离;
+    const 偏移Y = Math.sin(角度) * 距离;
+    
+    粒子.style.setProperty('--offset-x', `${偏移X}px`);
+    粒子.style.setProperty('--offset-y', `${偏移Y}px`);
+    粒子.style.setProperty('--delay', `${Math.random() * 0.2}s`);
+    
+    棋盘容器.appendChild(粒子);
+    
+    // 动画结束后移除粒子
+    setTimeout(() => {
+      if (粒子.parentElement) {
+        粒子.remove();
+      }
+    }, 600);
   }
 }
 
@@ -435,6 +551,7 @@ function 重置游戏() {
   前一个棋盘 = null;
   最近移动方向 = null;
   document.querySelectorAll('.game-status').forEach(el => el.remove());
+  播放音效('新游戏');
   渲染棋盘(棋盘);
 }
 
@@ -470,18 +587,19 @@ function 处理键盘事件(event) {
   }
   
   if (移动发生) {
+    播放音效('移动');
     动画进行中 = true;
     // 先渲染移动动画
     渲染棋盘(棋盘);
     
-    // 移动动画完成后（350ms）延迟50ms再生成新数字并重新渲染
+    // 移动动画完成后（250ms）延迟50ms再生成新数字并重新渲染
     if (延迟生成计时器) clearTimeout(延迟生成计时器);
     延迟生成计时器 = setTimeout(() => {
       每次移动后随机生成一个数字(棋盘);
       最近移动方向 = null;
       渲染棋盘(棋盘);
       动画进行中 = false;
-    }, 400); // 350ms动画时间 + 50ms延迟
+    }, 300); // 250ms动画时间 + 50ms延迟
   }
   
   event.preventDefault();
@@ -491,6 +609,9 @@ function 处理键盘事件(event) {
 
 // 初始化游戏
 function 初始化游戏() {
+  // 初始化音效
+  初始化音效();
+  
   // 找到重置按钮并添加事件
   const 重置按钮 = document.querySelector('.reset-game img[alt="重置游戏"]');
   if (重置按钮) {
@@ -501,8 +622,95 @@ function 初始化游戏() {
   // 添加键盘事件监听
   document.addEventListener('keydown', 处理键盘事件);
   
+  // 添加触摸事件监听
+  let 触摸开始X = 0;
+  let 触摸开始Y = 0;
+  
+  document.addEventListener('touchstart', (e) => {
+    触摸开始X = e.touches[0].clientX;
+    触摸开始Y = e.touches[0].clientY;
+  });
+  
+  document.addEventListener('touchend', (e) => {
+    if (游戏结束 || 动画进行中) return;
+    
+    const 触摸结束X = e.changedTouches[0].clientX;
+    const 触摸结束Y = e.changedTouches[0].clientY;
+    
+    const 位移X = 触摸结束X - 触摸开始X;
+    const 位移Y = 触摸结束Y - 触摸开始Y;
+    
+    // 确定滑动方向
+    if (Math.abs(位移X) > Math.abs(位移Y)) {
+      // 水平滑动
+      if (Math.abs(位移X) > 50) {
+        if (位移X > 0) {
+          // 右移
+          处理滑动('右');
+        } else {
+          // 左移
+          处理滑动('左');
+        }
+      }
+    } else {
+      // 垂直滑动
+      if (Math.abs(位移Y) > 50) {
+        if (位移Y > 0) {
+          // 下移
+          处理滑动('下');
+        } else {
+          // 上移
+          处理滑动('上');
+        }
+      }
+    }
+  });
+  
   // 初始渲染棋盘
+  播放音效('新游戏');
   渲染棋盘(棋盘);
+}
+
+// 处理滑动事件
+function 处理滑动(方向) {
+  let 移动发生 = false;
+  
+  switch (方向) {
+    case '上':
+      最近移动方向 = '上';
+      移动发生 = 上移动(棋盘);
+      break;
+    case '下':
+      最近移动方向 = '下';
+      移动发生 = 下移动(棋盘);
+      break;
+    case '左':
+      最近移动方向 = '左';
+      移动发生 = 左移动(棋盘);
+      break;
+    case '右':
+      最近移动方向 = '右';
+      移动发生 = 右移动(棋盘);
+      break;
+    default:
+      return;
+  }
+  
+  if (移动发生) {
+    播放音效('移动');
+    动画进行中 = true;
+    // 先渲染移动动画
+    渲染棋盘(棋盘);
+    
+    // 移动动画完成后（250ms）延迟50ms再生成新数字并重新渲染
+    if (延迟生成计时器) clearTimeout(延迟生成计时器);
+    延迟生成计时器 = setTimeout(() => {
+      每次移动后随机生成一个数字(棋盘);
+      最近移动方向 = null;
+      渲染棋盘(棋盘);
+      动画进行中 = false;
+    }, 300); // 250ms动画时间 + 50ms延迟
+  }
 }
 
 // 页面加载完成后初始化游戏
