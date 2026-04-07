@@ -14,10 +14,106 @@
   /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
   position: relative;
   font-family: 'Google Sans Code', 'Noto Sans SC', sans-serif;
+  padding: 20px;
+}
+
+/* 游戏控制说明 */
+.game-instructions {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+  padding: 15px 25px;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.game-instructions:hover {
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.instruction-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  transition: all 0.3s ease;
+}
+
+.instruction-item:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.instruction-icon {
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+.instruction-text {
+  white-space: nowrap;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.instruction-item:hover .instruction-text {
+  opacity: 1;
+  color: #ffffff;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .game-instructions {
+    gap: 15px;
+    padding: 10px 15px;
+    margin-top: 20px;
+  }
+  
+  .instruction-item {
+    font-size: 12px;
+  }
+  
+  .instruction-icon {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .game-instructions {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    width: 90%;
+    max-width: 300px;
+    margin-top: 15px;
+  }
+  
+  .instruction-item {
+    font-size: 11px;
+    gap: 4px;
+  }
+  
+  .main {
+    padding: 15px;
+  }
 }
 
 /* 分数显示样式 */
 .score-container {
+  display: flex;
+  gap: 30px;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -27,6 +123,13 @@
   text-align: center;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+}
+
+.score-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 120px;
 }
 
 .score-container:hover {
@@ -139,7 +242,9 @@
   color: white;
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
   z-index: 10;
-  transition: top 0.3s ease, left 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
+  transition: top 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), left 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, opacity 0.25s ease;
+  transform: scale(1);
+  will-change: top, left, transform, box-shadow;
 }
 
 
@@ -148,16 +253,64 @@
 .number-cell.moving {
   z-index: 20;
   box-shadow: 0 20px 48px rgba(0, 0, 0, 0.55);
-  transition: top 0.3s ease, left 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
+  transition: top 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), left 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, opacity 0.25s ease;
 }
 
-/* 合并动画相关样式已简化 */
+/* 合并动画相关样式 */
 .number-cell.merging {
   z-index: 30;
+  animation: mergeAnimation 0.3s ease-in-out;
 }
 
-/* 粒子效果相关样式已移至JavaScript动态创建 */
-/* 保留这个注释以便将来参考 */
+@keyframes mergeAnimation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* 新生成数字的动画 */
+.number-cell.new {
+  animation: appearAnimation 0.3s ease-in-out;
+}
+
+@keyframes appearAnimation {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 粒子效果相关样式 */
+.particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 40;
+}
+
+@keyframes particleAnimation {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0) translateY(-50px);
+  }
+}
 /* 不同数字的渐变色 */
 .value-2 { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); color: #666; }
 .value-4 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
@@ -245,14 +398,75 @@
 }
 
 /* 响应式设计 */
-@media (max-width: 500px) {
+@media (max-width: 768px) {
+  .score-container {
+    gap: 20px;
+    padding: 15px 30px;
+  }
+  
+  .score-item {
+    min-width: 100px;
+  }
+  
+  .score-value {
+    font-size: 36px;
+  }
+  
+  .game-board {
+    width: 80vw;
+    height: 80vw;
+    max-width: 450px;
+    max-height: 450px;
+  }
+  
+  .number-cell {
+    font-size: 30px;
+  }
+  
+  .value-128, .value-256, .value-512 {
+    font-size: 24px;
+  }
+  
+  .value-1024, .value-2048 {
+    font-size: 18px;
+  }
+  
+  .status-message {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .score-container {
+    gap: 15px;
+    padding: 12px 20px;
+  }
+  
+  .score-item {
+    min-width: 80px;
+  }
+  
+  .score-label {
+    font-size: 14px;
+  }
+  
+  .score-value {
+    font-size: 28px;
+  }
+  
   .game-board {
     width: 90vw;
     height: 90vw;
+    padding: 12px;
+  }
+  
+  .grid-cell {
+    border-radius: 8px;
   }
   
   .number-cell {
     font-size: 24px;
+    border-radius: 8px;
   }
   
   .value-128, .value-256, .value-512 {
@@ -263,12 +477,38 @@
     font-size: 16px;
   }
   
-  .score-value {
-    font-size: 36px;
+  .status-message {
+    font-size: 28px;
+  }
+  
+  .restart-button,
+  .continue-button {
+    padding: 12px 30px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 360px) {
+  .number-cell {
+    font-size: 20px;
+  }
+  
+  .value-128, .value-256, .value-512 {
+    font-size: 16px;
+  }
+  
+  .value-1024, .value-2048 {
+    font-size: 12px;
   }
   
   .status-message {
-    font-size: 36px;
+    font-size: 24px;
+  }
+  
+  .restart-button,
+  .continue-button {
+    padding: 10px 25px;
+    font-size: 14px;
   }
 }
 
