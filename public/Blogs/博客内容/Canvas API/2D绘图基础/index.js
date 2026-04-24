@@ -642,11 +642,19 @@ class RectCanvasDemo {
 
     this.ctx.textAlign = "left";
     this.ctx.textBaseline = "middle";
-    this.ctx.fillText(`${heightValue}`, this.rect.x + this.rect.width + label.sideOffset, this.rect.y + this.rect.height / 2);
+    this.ctx.fillText(
+      `${heightValue}`,
+      this.rect.x + this.rect.width + label.sideOffset,
+      this.rect.y + this.rect.height / 2,
+    );
 
     this.ctx.textAlign = "center";
     this.ctx.textBaseline = "top";
-    this.ctx.fillText(`${widthValue}`, this.rect.x + this.rect.width / 2, this.rect.y + this.rect.height + label.bottomOffset);
+    this.ctx.fillText(
+      `${widthValue}`,
+      this.rect.x + this.rect.width / 2,
+      this.rect.y + this.rect.height + label.bottomOffset,
+    );
   }
 
   drawCodePreview() {
@@ -688,7 +696,6 @@ class RectCanvasDemo {
       currentX += this.ctx.measureText(token.text).width;
     });
   }
-
 }
 
 new RectCanvasDemo("canvas-绘制矩形");
@@ -2347,36 +2354,244 @@ class TextAlignmentDemo {
 // 初始化应用
 new TextAlignmentDemo();
 
-const canvas_clear = document.getElementById("canvas-clearRect");
-const ctx_clear = canvas_clear.getContext("2d");
-const dpr_clear = window.devicePixelRatio || 1;
-canvas_clear.width = canvas_clear.offsetWidth * dpr_clear;
-canvas_clear.height = canvas_clear.offsetHeight * dpr_clear;
-ctx_clear.scale(dpr_clear, dpr_clear);
-ctx_clear.fillStyle = "darkgreen";
-ctx_clear.strokeStyle = "gold";
-const 清空演示半径 = 100;
-const 清空演示圆心 = {
-  x: canvas_clear.offsetWidth / 2,
-  y: canvas_clear.offsetHeight / 2,
-};
-ctx_clear.arc(清空演示圆心.x, 清空演示圆心.y, 清空演示半径, 0, 2 * Math.PI);
-ctx_clear.fill();
-ctx_clear.stroke();
-ctx_clear.clearRect(
-  清空演示圆心.x,
-  清空演示圆心.y,
-  清空演示半径 + ctx_clear.lineWidth,
-  清空演示半径 + ctx_clear.lineWidth,
-);
-ctx_clear.setLineDash([10, 5]);
-ctx_clear.strokeStyle = "white";
-ctx_clear.strokeRect(
-  清空演示圆心.x,
-  清空演示圆心.y,
-  清空演示半径 + ctx_clear.lineWidth,
-  清空演示半径 + ctx_clear.lineWidth,
-);
+class canvasClear {
+  constructor() {
+    this.canvas = document.getElementById("canvas-clearRect");
+    this.ctx = this.canvas.getContext("2d");
+    this.dpr = window.devicePixelRatio || 1;
+    this.canvas.width = this.canvas.offsetWidth * this.dpr;
+    this.canvas.height = this.canvas.offsetHeight * this.dpr;
+    this.ctx.scale(this.dpr, this.dpr);
+    this.鼠标已按下 = false;
+    this.拖拽中 = false;
+    this.在视口内 = false;
+    this.鼠标位于清空区域内 = false;
+    this.之前描边宽度 = 1;
+    this.鼠标坐标 = {
+      x: 0,
+      y: 0,
+    };
+    this.边界矩形 = this.canvas.getBoundingClientRect();
+    this.演示圆 = {
+      半径: 100,
+      圆心: {
+        x: this.canvas.offsetWidth / 2,
+        y: this.canvas.offsetHeight / 2,
+      },
+    };
+    this.清空区域 = {
+      x: this.演示圆.圆心.x,
+      y: this.演示圆.圆心.y,
+      width: this.演示圆.半径,
+      height: this.演示圆.半径,
+      描边宽度: 1,
+      描边颜色: "gray",
+      描边虚线长度间隔: [10, 7],
+    };
+    this.鼠标与清空区域偏移 = {
+      水平: 0,
+      垂直: 0,
+    };
+    this.ctx.lineWidth = this.清空区域.描边宽度;
+    this.绘制清空区域描边复选框 = document.getElementById("清空区域描边");
+
+    this.绘制全部();
+    this.设置交叉观察器();
+    this.设置事件绑定();
+  }
+
+  清空画布() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
+  绘制全部() {
+    this.清空画布();
+    this.绘制正圆();
+    this.清空指定区域();
+    this.绘制代码();
+  }
+
+  绘制代码() {
+    this.ctx.save();
+    this.ctx.font = "14px 'Google Sans Code', 'JetBrains Mono', Consolas, monospace";
+    this.ctx.textAlign = "left";
+    this.ctx.textBaseline = "bottom";
+
+    const clearRectX = Math.round(this.清空区域.x);
+    const clearRectY = Math.round(this.清空区域.y);
+    const clearRectWidth = Math.round(this.清空区域.width);
+    const clearRectHeight = Math.round(this.清空区域.height);
+
+    const codeText = `ctx.clearRect(${clearRectX}, ${clearRectY}, ${clearRectWidth}, ${clearRectHeight})`;
+    const y = this.canvas.offsetHeight - 20;
+    let currentX = 20; // 距离左边界20px
+
+    const charColorMap = [
+      { regex: /[.]/, color: "#ff6b6b" },
+      { regex: /[()]/, color: "#4ecdc4" },
+      { regex: /[,]/, color: "#598a59ff" },
+      { regex: /[0-9]/, color: "darkgoldenrod" },
+      { regex: /[-]/, color: "gray" },
+    ];
+
+    for (let i = 0; i < codeText.length; i++) {
+      const char = codeText[i];
+      let fillStyle = "silver";
+
+      for (const { regex, color } of charColorMap) {
+        if (regex.test(char)) {
+          fillStyle = color;
+          break;
+        }
+      }
+
+      this.ctx.fillStyle = fillStyle;
+      this.ctx.fillText(char, currentX, y);
+      currentX += this.ctx.measureText(char).width;
+    }
+
+    this.ctx.restore();
+  }
+
+  绘制正圆() {
+    this.ctx.save();
+    this.ctx.beginPath();
+    this.ctx.strokeStyle = "gold";
+    this.ctx.fillStyle = "darkgreen";
+    this.ctx.arc(this.演示圆.圆心.x, this.演示圆.圆心.y, this.演示圆.半径, 0, 2 * Math.PI);
+    this.ctx.fill();
+    this.ctx.stroke();
+    this.ctx.restore();
+  }
+
+  清空指定区域() {
+    const 描边半宽 = this.之前描边宽度 / 2;
+    this.ctx.clearRect(
+      this.清空区域.x - 描边半宽,
+      this.清空区域.y - 描边半宽,
+      this.清空区域.width + this.之前描边宽度,
+      this.清空区域.height + this.之前描边宽度,
+    );
+    this.ctx.save();
+    this.ctx.beginPath();
+    this.ctx.strokeStyle = this.清空区域.描边颜色;
+    this.ctx.lineWidth = this.清空区域.描边宽度;
+    this.之前描边宽度 = this.ctx.lineWidth;
+    this.ctx.setLineDash(this.清空区域.描边虚线长度间隔);
+    if (this.绘制清空区域描边复选框.checked) {
+      this.ctx.strokeRect(this.清空区域.x, this.清空区域.y, this.清空区域.width, this.清空区域.height);
+    }
+    this.ctx.restore();
+  }
+
+  获取鼠标坐标(e) {
+    this.鼠标坐标.x = e.clientX - this.边界矩形.left;
+    this.鼠标坐标.y = e.clientY - this.边界矩形.top;
+  }
+
+  获取边界矩形() {
+    this.边界矩形 = this.canvas.getBoundingClientRect();
+  }
+
+  设置事件绑定() {
+    window.addEventListener("scroll", () => {
+      if (this.在视口内) {
+        this.获取边界矩形();
+      }
+    });
+
+    this.canvas.addEventListener("mousedown", () => {
+      this.鼠标已按下 = true;
+      if (this.鼠标位于清空区域内) {
+        this.拖拽中 = true;
+        this.canvas.style.cursor = 'url("/Images/Common/鼠标-拖拽.cur"), grab';
+        this.鼠标与清空区域偏移.水平 = this.鼠标坐标.x - this.清空区域.x;
+        this.鼠标与清空区域偏移.垂直 = this.鼠标坐标.y - this.清空区域.y;
+      }
+    });
+
+    this.canvas.addEventListener("mouseleave", () => {
+      this.鼠标已按下 = false;
+      this.拖拽中 = false;
+    });
+
+    this.canvas.addEventListener("mouseup", () => {
+      this.鼠标已按下 = false;
+      this.拖拽中 = false;
+      this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
+    });
+
+    this.canvas.addEventListener("mousemove", (e) => {
+      this.获取鼠标坐标(e);
+      const 鼠标悬停于清空区域内 = this.鼠标在清空区域内();
+      if (this.拖拽中) {
+        this.清空区域.x = this.鼠标坐标.x - this.鼠标与清空区域偏移.水平;
+        this.清空区域.y = this.鼠标坐标.y - this.鼠标与清空区域偏移.垂直;
+        this.绘制全部();
+        this.高亮描边清空区域();
+        this.绘制代码();
+      }
+      if (鼠标悬停于清空区域内 === this.鼠标位于清空区域内) {
+        return;
+      }
+      if (鼠标悬停于清空区域内 && !this.鼠标位于清空区域内) {
+        this.高亮描边清空区域();
+      } else {
+        this.清空指定区域();
+      }
+      this.鼠标位于清空区域内 = 鼠标悬停于清空区域内;
+    });
+
+    this.绘制清空区域描边复选框.addEventListener("change", () => {
+      this.绘制全部();
+    });
+  }
+
+  鼠标在清空区域内() {
+    return (
+      this.鼠标坐标.x >= this.清空区域.x &&
+      this.鼠标坐标.x <= this.清空区域.x + this.清空区域.width &&
+      this.鼠标坐标.y >= this.清空区域.y &&
+      this.鼠标坐标.y <= this.清空区域.y + this.清空区域.height
+    );
+  }
+
+  高亮描边清空区域() {
+    const 描边半宽 = this.之前描边宽度 / 2;
+    this.ctx.clearRect(
+      this.清空区域.x - 描边半宽,
+      this.清空区域.y - 描边半宽,
+      this.清空区域.width + this.之前描边宽度,
+      this.清空区域.height + this.之前描边宽度,
+    );
+    this.ctx.save();
+    this.ctx.lineWidth = 2;
+    this.之前描边宽度 = this.ctx.lineWidth;
+    this.ctx.strokeStyle = "silver";
+    this.ctx.setLineDash(this.清空区域.描边虚线长度间隔);
+    if (this.绘制清空区域描边复选框.checked) {
+      this.ctx.strokeRect(this.清空区域.x, this.清空区域.y, this.清空区域.width, this.清空区域.height);
+    }
+    this.ctx.restore();
+  }
+
+  设置交叉观察器() {
+    const 回调 = (entries) => {
+      for (const entry of entries) {
+        this.在视口内 = entry.isIntersecting;
+      }
+    };
+
+    const 选项 = {
+      threshold: 0.01,
+    };
+
+    const 交叉观察器 = new IntersectionObserver(回调, 选项);
+    交叉观察器.observe(this.canvas);
+  }
+}
+
+new canvasClear();
 
 class ClosePathDemo {
   constructor(canvasId) {
