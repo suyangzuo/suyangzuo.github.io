@@ -163,6 +163,7 @@ if (localStorage.getItem("选择排序法-动画速率") === null) {
         await sleep(数字过渡时长);
         if (!排序过程正在运行) return; //修复重置后仍然交换元素位置与索引
         数字索引组[preRecorderIndex].style.color = "#888";
+        数字索引组[preRecorderIndex].style.scale = "1";
         索引记录框.style.translate = `calc((${数字宽度} + ${数字间隙}) * ${recorderIndex}) 0`;
         比较对象外框.style.translate = 数字组[recorderIndex].style.translate;
         比较对象底色.style.translate = 数字组[recorderIndex].style.translate;
