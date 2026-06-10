@@ -1,0 +1,45 @@
+:root {
+  --高亮行列色: rgb(16, 51, 91);
+}
+
+body:has(.pcr-app.visible) {
+  overflow: hidden;
+}
+
+.禁用 {
+  filter: brightness(0.35);
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.隐藏 {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#总区 {
+  position: relative;
+  width: clamp(800px, 100vw, 2400px);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 65px 0 160px 0;
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+  display: flex;
+  gap: 20px;
+  color: #e0e0e0;
+}
+
+.提示动画区 {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  translate: -50% -50px;
+}
+
+.提示动画内容 {
+  padding: 15px 25px;
+  background-color: #248;
+  box-shadow: 0 1px 1px 0 #fff2;
+  border-radius: 10px;
+}
