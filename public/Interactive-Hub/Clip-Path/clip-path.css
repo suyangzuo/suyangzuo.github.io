@@ -181,10 +181,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 14px;
+  font-size: 13px;
   /*background-color: #111111d5;*/
   color: gold;
-  font-family: "Jetbrains Mono", Consolas, monospace;
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 .修剪序号.修剪序号刷新中 {
@@ -218,9 +218,10 @@ body {
 .修剪数据分区 {
   width: 100%;
   height: 50%;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   display: flex;
-  font-family: Consolas, monospace;
+  align-items: center;
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
   color: #aaa;
 }
 

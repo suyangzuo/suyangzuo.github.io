@@ -29,6 +29,8 @@ let 当前拖拽对象 = null;
 }); */
 
 多边形图像容器.addEventListener("click", (event) => {
+  if (event.target.closest(".多边形修剪指示区")) return;
+
   const 多边形修剪指示区 = document.createElement("div");
   多边形修剪指示区.className = "多边形修剪指示区";
   多边形修剪指示区.draggable = true;
@@ -64,63 +66,49 @@ let 当前拖拽对象 = null;
   指示区三角箭头.className = "指示区三角箭头";
   多边形修剪指示区.appendChild(指示区三角箭头);
 
-  多边形修剪指示区.addEventListener("dragstart", (e) => {
-    const dragImage = new Image();
-    dragImage.src = "/Images/Common/透明.png";
-    e.dataTransfer.setDragImage(dragImage, 0, 0);
+  多边形修剪指示区.draggable = false;
+  多边形修剪指示区.addEventListener("pointerdown", (e) => {
+    if (e.target.closest(".修剪指示区关闭按钮")) return;
+    e.preventDefault();
     当前拖拽对象 = 多边形修剪指示区;
     多边形修剪指示区.classList.add("拖拽中");
-    /*setTimeout(() => {
-      e.target.style.opacity = "0";
-    }, 0);*/
-    const 拖拽时点击位置_x = e.clientX - 多边形图像容器边界矩形.left;
-    const 拖拽时点击位置_y = e.clientY - 多边形图像容器边界矩形.top;
-    修剪指示区偏移_x = 拖拽时点击位置_x - 多边形修剪指示区.offsetLeft;
-    修剪指示区偏移_y = 拖拽时点击位置_y - 多边形修剪指示区.offsetTop;
+    多边形修剪指示区.setPointerCapture(e.pointerId);
+
+    const 多边形图像容器边界矩形 = 多边形图像容器.getBoundingClientRect();
+    修剪指示区偏移_x = e.clientX - 多边形图像容器边界矩形.left - 多边形修剪指示区.offsetLeft;
+    修剪指示区偏移_y = e.clientY - 多边形图像容器边界矩形.top - 多边形修剪指示区.offsetTop;
   });
 
-  多边形修剪指示区.addEventListener("dragend", (event) => {
-    多边形修剪指示区.classList.remove("拖拽中");
+  多边形修剪指示区.addEventListener("pointermove", (e) => {
+    if (当前拖拽对象 !== 多边形修剪指示区) return;
+    e.preventDefault();
+
     const 多边形图像容器边界矩形 = 多边形图像容器.getBoundingClientRect();
-    const 放置光标位置_x = event.clientX - 多边形图像容器边界矩形.left;
-    const 放置光标位置_y = event.clientY - 多边形图像容器边界矩形.top;
+    const 多边形图像容器宽度 = parseInt(window.getComputedStyle(多边形图像容器).width, 10);
+    const 多边形图像容器高度 = parseInt(window.getComputedStyle(多边形图像容器).height, 10);
+
+    const 放置光标位置_x = e.clientX - 多边形图像容器边界矩形.left;
+    const 放置光标位置_y = e.clientY - 多边形图像容器边界矩形.top;
+
     当前拖拽对象.style.left = `${放置光标位置_x - 修剪指示区偏移_x}px`;
     当前拖拽对象.style.top = `${放置光标位置_y - 修剪指示区偏移_y}px`;
 
-    const 浮点对象 = 多边形浮点数据组.find((数据) => 数据.修剪序号 === 序号);
     const 鼠标比例_水平 = ((放置光标位置_x - 修剪指示区偏移_x) / 多边形图像容器宽度) * 100;
     const 鼠标比例_垂直 = ((放置光标位置_y - 修剪指示区偏移_y) / 多边形图像容器高度) * 100;
-    浮点对象.坐标.x = 鼠标比例_水平;
-    浮点对象.坐标.y = 鼠标比例_垂直;
+
+    const 拖拽修剪区序号 = parseInt(多边形修剪指示区.querySelector(".修剪序号").innerText, 10);
+    const 浮点对象 = 多边形浮点数据组.find((数据) => 数据.修剪序号 === 拖拽修剪区序号);
+    if (浮点对象) {
+      浮点对象.坐标.x = 鼠标比例_水平;
+      浮点对象.坐标.y = 鼠标比例_垂直;
+    }
+
     多边形图像.style.clipPath = 生成精确修剪值代码();
 
     const x比例 = 多边形修剪指示区.querySelector(".x比例数据");
     const y比例 = 多边形修剪指示区.querySelector(".y比例数据");
     x比例.textContent = `${鼠标比例_水平.toFixed(0)}`;
     y比例.textContent = `${鼠标比例_垂直.toFixed(0)}`;
-    更新多边形代码区代码();
-  });
-
-  多边形修剪指示区.addEventListener("drag", (e) => {
-    const 拖拽时位置_x = e.clientX - 多边形图像容器边界矩形.left - 修剪指示区偏移_x;
-    const 拖拽时位置_y = e.clientY - 多边形图像容器边界矩形.top - 修剪指示区偏移_y;
-    const 拖拽时鼠标水平比例 = (拖拽时位置_x / 多边形图像容器宽度) * 100;
-    const 拖拽时鼠标垂直比例 = (拖拽时位置_y / 多边形图像容器高度) * 100;
-    const 拖拽修剪区序号 = parseInt(多边形修剪指示区.querySelector(".修剪序号").innerText, 10);
-
-    多边形浮点数据组.find((数据) => 数据.修剪序号 === 拖拽修剪区序号).坐标.x = 拖拽时鼠标水平比例;
-    多边形浮点数据组.find((数据) => 数据.修剪序号 === 拖拽修剪区序号).坐标.y = 拖拽时鼠标垂直比例;
-    多边形图像.style.clipPath = 生成精确修剪值代码();
-
-    const x比例 = 多边形修剪指示区.querySelector(".x比例数据");
-    const y比例 = 多边形修剪指示区.querySelector(".y比例数据");
-    x比例.textContent = `${拖拽时鼠标水平比例.toFixed(0)}`;
-    y比例.textContent = `${拖拽时鼠标垂直比例.toFixed(0)}`;
-
-    const 放置光标位置_x = e.clientX - 多边形图像容器边界矩形.left;
-    const 放置光标位置_y = e.clientY - 多边形图像容器边界矩形.top;
-    当前拖拽对象.style.left = `${放置光标位置_x - 修剪指示区偏移_x}px`;
-    当前拖拽对象.style.top = `${放置光标位置_y - 修剪指示区偏移_y}px`;
 
     更新多边形代码区代码();
     if (多边形修剪代码容器.classList.contains("代码容器可见")) {
@@ -129,6 +117,19 @@ let 当前拖拽对象 = null;
         刷新代码格式化脚本();
       }, 125);
     }
+  });
+
+  多边形修剪指示区.addEventListener("pointerup", (e) => {
+    e.stopPropagation();
+    多边形修剪指示区.classList.remove("拖拽中");
+    多边形修剪指示区.releasePointerCapture(e.pointerId);
+    当前拖拽对象 = null;
+  });
+
+  多边形修剪指示区.addEventListener("pointercancel", (e) => {
+    多边形修剪指示区.classList.remove("拖拽中");
+    多边形修剪指示区.releasePointerCapture(e.pointerId);
+    当前拖拽对象 = null;
   });
 
   const 修剪数据分区_x = document.createElement("修剪数据分区");
