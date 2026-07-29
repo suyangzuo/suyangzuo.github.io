@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,7 +14,6 @@
     />
     <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
     <link rel="stylesheet" type="text/css" href="/Styles/top-banner-common.css" />
-    <link rel="stylesheet" type="text/css" href="/Styles/common.css" />
     <link rel="stylesheet" href="../apps-common-control.css" />
     <script src="https://kit.fontawesome.com/d0483e3bd3.js" crossorigin="anonymous"></script>
     <script src="/Scripts/top-banner.js" defer></script>
@@ -24,99 +23,68 @@
   <body>
     <script src="../../Scripts/html-include.js" target="../../top-banner.html" position="afterbegin"></script>
     <script src="/Scripts/html-include.js" target="../apps-common-control.html" position="afterbegin"></script>
-    <!-- <div class="top">
-      <button id="重置按钮"></button>
-    </div> -->
-    <button id="重置按钮">
+
+    <button id="重置按钮" aria-label="重置课程表">
+      <i class="fa-solid fa-rotate"></i>
       <p>重置</p>
     </button>
-    <div class="main">
-      <div class="left">
+
+    <main class="main">
+      <aside class="left" aria-label="科目面板">
         <div class="科目区"></div>
-      </div>
-      <div class="right">
-        <table class="表格">
+      </aside>
+
+      <section class="right" aria-label="课程表">
+        <table class="表格" role="grid" aria-label="每周课程表">
           <thead>
             <tr>
-              <th></th>
-              <th>星期一</th>
-              <th>星期二</th>
-              <th>星期三</th>
-              <th>星期四</th>
-              <th>星期五</th>
+              <th scope="col"></th>
+              <th scope="col">星期一</th>
+              <th scope="col">星期二</th>
+              <th scope="col">星期三</th>
+              <th scope="col">星期四</th>
+              <th scope="col">星期五</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <th>第一课</th>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <th scope="row">第一课</th>
+              <td></td><td></td><td></td><td></td><td></td>
             </tr>
             <tr>
-               <th>第二课</th>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <th scope="row">第二课</th>
+              <td></td><td></td><td></td><td></td><td></td>
             </tr>
             <tr>
-               <th>第三课</th>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <th scope="row">第三课</th>
+              <td></td><td></td><td></td><td></td><td></td>
             </tr>
             <tr>
-               <th>第四课</th>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <th scope="row">第四课</th>
+              <td></td><td></td><td></td><td></td><td></td>
             </tr>
             <tr>
-              <th class="午休"  colspan="6" >午休</th>
+              <th class="午休" colspan="6">午休</th>
             </tr>
             <tr>
-               <th>第五课</th>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <th scope="row">第五课</th>
+              <td></td><td></td><td></td><td></td><td></td>
             </tr>
             <tr>
-               <th>第六课</th>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <th scope="row">第六课</th>
+              <td></td><td></td><td></td><td></td><td></td>
             </tr>
             <tr>
-               <th>第七课</th>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <th scope="row">第七课</th>
+              <td></td><td></td><td></td><td></td><td></td>
             </tr>
             <tr>
-               <th>第八课</th>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <th scope="row">第八课</th>
+              <td></td><td></td><td></td><td></td><td></td>
             </tr>
           </tbody>
         </table>
-      </div>
-    </div>
+      </section>
+    </main>
   </body>
 </html>
