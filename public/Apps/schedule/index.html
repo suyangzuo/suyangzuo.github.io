@@ -31,7 +31,86 @@
 
     <main class="main">
       <aside class="left" aria-label="科目面板">
-        <div class="科目区"></div>
+        <div class="面板容器">
+          <nav class="选项卡栏" role="tablist" aria-label="科目面板选项卡">
+            <button class="选项卡 active" role="tab" aria-selected="true" data-tab="subjects">
+              <i class="fa-solid fa-layer-group"></i>
+              <span>科目</span>
+            </button>
+            <button class="选项卡" role="tab" aria-selected="false" data-tab="custom">
+              <i class="fa-solid fa-pen-to-square"></i>
+              <span>自定义</span>
+            </button>
+            <div class="选项卡指示器"></div>
+          </nav>
+
+          <div class="选项卡内容">
+            <section class="面板 active" data-panel="subjects" role="tabpanel">
+              <div class="科目区"></div>
+            </section>
+
+            <section class="面板" data-panel="custom" role="tabpanel">
+              <div class="自定义头部">
+                <h3>添加科目</h3>
+                <p>创建属于你的专属科目</p>
+              </div>
+
+              <form class="添加表单" id="添加表单" autocomplete="off">
+                <div class="表单组">
+                  <label for="科目名称输入">科目名称</label>
+                  <input
+                    type="text"
+                    id="科目名称输入"
+                    maxlength="8"
+                    placeholder="如 物理"
+                    required
+                  />
+                </div>
+
+                <div class="表单组">
+                  <label for="老师输入">教师姓名</label>
+                  <input
+                    type="text"
+                    id="老师输入"
+                    maxlength="10"
+                    placeholder="如 张老师"
+                  />
+                </div>
+
+                <div class="表单组">
+                  <label>选择颜色</label>
+                  <div class="颜色选择器">
+                    <input
+                      type="color"
+                      id="颜色输入"
+                      value="#7c5cff"
+                      aria-label="自定义颜色"
+                    />
+                    <div class="预设颜色" id="预设颜色"></div>
+                  </div>
+                </div>
+
+                <button type="submit" class="添加按钮">
+                  <i class="fa-solid fa-plus"></i>
+                  <span>添加科目</span>
+                </button>
+              </form>
+
+              <div class="自定义列表头">
+                <h4>已添加科目</h4>
+                <span class="计数" id="自定义计数">0</span>
+              </div>
+
+              <div class="自定义列表" id="自定义列表">
+                <div class="空状态" id="空状态">
+                  <i class="fa-solid fa-inbox"></i>
+                  <p>还没有自定义科目</p>
+                  <span>在上方添加你的第一个科目</span>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
       </aside>
 
       <section class="right" aria-label="课程表">
