@@ -15,6 +15,7 @@
   --schedule-text: var(--f-color, #eeeeee);
   --schedule-text-muted: rgba(238, 238, 238, 0.6);
   --schedule-accent: var(--网站风格颜色, #2a978c);
+  --schedule-accent-soft: rgba(42, 151, 140, 0.15);
   --schedule-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
   --schedule-shadow-soft: 0 4px 14px rgba(0, 0, 0, 0.25);
   --radius-sm: 10px;
@@ -102,7 +103,7 @@ body {
 
 .left {
   width: 22%;
-  min-width: 220px;
+  min-width: 260px;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -117,10 +118,10 @@ body {
   align-items: center;
 }
 
-.科目区 {
+/* ========== 面板容器 ========== */
+.面板容器 {
   width: 100%;
   height: 100%;
-  padding: 22px 18px;
   background: linear-gradient(
     165deg,
     rgba(255, 255, 255, 0.06),
@@ -131,43 +132,130 @@ body {
   backdrop-filter: blur(18px) saturate(140%);
   -webkit-backdrop-filter: blur(18px) saturate(140%);
   box-shadow: var(--schedule-shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.面板容器::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  pointer-events: none;
+}
+
+/* ========== 选项卡栏 ========== */
+.选项卡栏 {
+  display: flex;
+  position: relative;
+  padding: 6px;
+  margin: 12px 12px 0;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--schedule-border);
+  border-radius: 14px;
+  flex-shrink: 0;
+}
+
+.选项卡 {
+  flex: 1;
+  position: relative;
+  z-index: 2;
+  padding: 10px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  color: var(--schedule-text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: color 0.3s ease;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.选项卡 i {
+  font-size: 14px;
+}
+
+.选项卡:hover {
+  color: var(--schedule-text);
+}
+
+.选项卡.active {
+  color: #fff;
+}
+
+.选项卡指示器 {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: calc(50% - 6px);
+  height: calc(100% - 12px);
+  background: linear-gradient(
+    135deg,
+    var(--schedule-accent),
+    rgba(42, 151, 140, 0.7)
+  );
+  border-radius: 10px;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 4px 14px rgba(42, 151, 140, 0.35);
+  z-index: 1;
+}
+
+.选项卡栏[data-active="custom"] .选项卡指示器 {
+  transform: translateX(100%);
+}
+
+/* ========== 选项卡内容 ========== */
+.选项卡内容 {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.面板 {
+  position: absolute;
+  inset: 0;
+  padding: 16px 14px;
+  overflow-y: auto;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(12px);
+  transition: opacity 0.35s ease, transform 0.35s ease, visibility 0s linear 0.35s;
+}
+
+.面板.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  transition: opacity 0.35s ease, transform 0.35s ease, visibility 0s;
+}
+
+/* ========== 科目区（科目面板） ========== */
+.科目区 {
+  width: 100%;
+  min-height: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-auto-rows: minmax(56px, auto);
   gap: 10px;
-  overflow-y: auto;
   align-content: start;
-}
-
-.科目区::before {
-  content: "科目 · SUBJECTS";
-  grid-column: 1 / -1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  font-size: 12px;
-  letter-spacing: 3px;
-  color: var(--schedule-text-muted);
-  padding: 0 4px 14px;
-  margin-bottom: 4px;
-  border-bottom: 1px solid var(--schedule-border);
-  position: relative;
-}
-
-.科目区::before::after {
-  content: "";
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  width: 40px;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    var(--schedule-accent, #7c5cff),
-    transparent
-  );
-  border-radius: 2px;
+  padding-bottom: 8px;
 }
 
 .科目 {
@@ -261,6 +349,336 @@ body {
   font-family: var(--代码字体, Consolas, monospace);
 }
 
+/* ========== 自定义面板 ========== */
+.自定义头部 {
+  text-align: center;
+  padding: 8px 0 14px;
+  border-bottom: 1px solid var(--schedule-border);
+  margin-bottom: 14px;
+  position: relative;
+}
+
+.自定义头部::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--schedule-accent),
+    transparent
+  );
+  border-radius: 2px;
+}
+
+.自定义头部 h3 {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: var(--schedule-text);
+}
+
+.自定义头部 p {
+  font-size: 12px;
+  color: var(--schedule-text-muted);
+  margin-top: 4px;
+  letter-spacing: 1px;
+}
+
+.添加表单 {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.表单组 {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.表单组 label {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--schedule-text-muted);
+  text-transform: uppercase;
+}
+
+.表单组 input[type="text"] {
+  width: 100%;
+  height: 38px;
+  padding: 0 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--schedule-border);
+  border-radius: var(--radius-sm);
+  color: var(--schedule-text);
+  font-size: 14px;
+  letter-spacing: 1px;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  font-family: inherit;
+}
+
+.表单组 input[type="text"]::placeholder {
+  color: rgba(238, 238, 238, 0.3);
+}
+
+.表单组 input[type="text"]:focus {
+  outline: none;
+  border-color: var(--schedule-accent);
+  background: rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0 3px var(--schedule-accent-soft);
+}
+
+.颜色选择器 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+input[type="color"] {
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--schedule-border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  cursor: pointer;
+  padding: 3px;
+  transition: border-color 0.25s ease, transform 0.2s ease;
+}
+
+input[type="color"]:hover {
+  border-color: var(--schedule-border-strong);
+  transform: scale(1.05);
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 6px;
+}
+
+.预设颜色 {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.预设颜色 span {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+
+.预设颜色 span:hover {
+  transform: scale(1.15);
+}
+
+.预设颜色 span.selected {
+  border-color: #fff;
+  box-shadow: 0 0 0 2px var(--schedule-accent);
+}
+
+.添加按钮 {
+  width: 100%;
+  height: 44px;
+  margin-top: 4px;
+  background: linear-gradient(
+    135deg,
+    var(--schedule-accent),
+    rgba(42, 151, 140, 0.85)
+  );
+  border: none;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.2s ease, box-shadow 0.25s ease, filter 0.2s ease;
+  font-family: inherit;
+}
+
+.添加按钮:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(42, 151, 140, 0.4);
+  filter: brightness(1.08);
+}
+
+.添加按钮:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.添加按钮 i {
+  font-size: 14px;
+}
+
+.自定义列表头 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0 8px;
+  border-top: 1px solid var(--schedule-border);
+  margin-top: 4px;
+}
+
+.自定义列表头 h4 {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: var(--schedule-text-muted);
+}
+
+.计数 {
+  min-width: 24px;
+  height: 22px;
+  padding: 0 8px;
+  background: var(--schedule-accent-soft);
+  color: var(--schedule-accent);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0;
+}
+
+.自定义列表 {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 16px;
+}
+
+.空状态 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 36px 16px;
+  color: var(--schedule-text-muted);
+  text-align: center;
+  gap: 6px;
+}
+
+.空状态 i {
+  font-size: 32px;
+  opacity: 0.4;
+  margin-bottom: 4px;
+}
+
+.空状态 p {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.空状态 span {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.自定义科目项 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--schedule-border);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.自定义科目项:hover {
+  border-color: var(--schedule-border-strong);
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.自定义颜色预览 {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  flex-shrink: 0;
+}
+
+.自定义信息 {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.自定义名称 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--schedule-text);
+}
+
+.自定义老师 {
+  font-size: 11px;
+  color: var(--schedule-text-muted);
+  letter-spacing: 0.5px;
+}
+
+.自定义删除 {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: rgba(255, 82, 82, 0.12);
+  border-radius: 8px;
+  color: #ff6b6b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, transform 0.2s ease, color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.自定义删除:hover {
+  background: rgba(255, 82, 82, 0.25);
+  color: #ff4040;
+  transform: scale(1.08);
+}
+
+.自定义删除:active {
+  transform: scale(0.95);
+}
+
+/* ========== 表格 ========== */
 table {
   width: min(88%, 1100px);
   height: 100%;
@@ -426,13 +844,14 @@ td.已经放置 .单元格盒子 {
 }
 
 @supports not (backdrop-filter: blur(10px)) {
-  .科目区,
+  .面板容器,
   #重置按钮,
   .提示 {
     background: rgba(30, 35, 40, 0.9);
   }
 }
 
+/* ========== 响应式 ========== */
 @media (max-width: 1080px) {
   .main {
     flex-direction: column;
@@ -448,10 +867,13 @@ td.已经放置 .单元格盒子 {
     min-width: 0;
   }
 
+  .面板容器 {
+    min-height: 400px;
+  }
+
   .科目区 {
     grid-template-columns: 1fr 1fr;
     gap: 8px;
-    padding: 16px 14px;
   }
 
   .科目 {
@@ -515,7 +937,6 @@ td.已经放置 .单元格盒子 {
   .科目区 {
     grid-template-columns: 1fr;
     gap: 8px;
-    padding: 14px;
   }
 
   .科目 {
@@ -529,6 +950,24 @@ td.已经放置 .单元格盒子 {
 
   .老师名称 {
     font-size: 12px;
+  }
+
+  .选项卡 {
+    font-size: 12px;
+    padding: 8px 8px;
+    letter-spacing: 1px;
+  }
+
+  .选项卡 i {
+    font-size: 13px;
+  }
+
+  .选项卡 span {
+    display: none;
+  }
+
+  .选项卡 {
+    gap: 0;
   }
 }
 
