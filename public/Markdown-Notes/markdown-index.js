@@ -53,12 +53,30 @@ const 知识库 = {
         },
       },
       {
+        标题: "路径命令",
+        作者: "苏扬",
+        时间: {
+          年: 2026,
+          月: 8,
+          日: 31,
+        },
+      },
+      {
         标题: "文件处理命令",
         作者: "苏扬",
         时间: {
           年: 2026,
           月: 8,
           日: 31,
+        },
+      },
+      {
+        标题: "进程监测命令",
+        作者: "苏扬",
+        时间: {
+          年: 2026,
+          月: 9,
+          日: 3,
         },
       },
       {
@@ -612,8 +630,8 @@ function 生成笔记目录区内容() {
       目录区_二级目录.href = `#${二级目录.id}`;
       目录区_二级目录.className = "二级目录";
       目录区_二级目录.innerHTML = 二级目录.innerHTML;
-      const 前缀符号 = 目录区_二级目录.querySelector(".前缀符号");
-      前缀符号?.remove();
+      const 二级前缀符号 = 目录区_二级目录.querySelector(".前缀符号");
+      二级前缀符号?.remove();
       目录分级容器.appendChild(目录区_二级目录);
       目录区_二级目录.addEventListener("click", (event) => {
         event.preventDefault();
@@ -633,6 +651,38 @@ function 生成笔记目录区内容() {
       });
       笔记目录区标题组.push(目录区_二级目录);
       笔记区目录组.push(二级目录);
+
+      const 三级目录组 = 笔记区.querySelectorAll(
+        `#${二级目录.id} ~ h3:not(#${二级目录.id} ~ h2 ~ h3, #${二级目录.id} ~ h1 ~ h3)`
+      );
+      for (const [index_3, 三级目录] of 三级目录组.entries()) {
+        三级目录.id = `${二级目录.id}-${index_3 + 1}`;
+        const 目录区_三级目录 = document.createElement("a");
+        目录区_三级目录.href = `#${三级目录.id}`;
+        目录区_三级目录.className = "三级目录";
+        目录区_三级目录.innerHTML = 三级目录.innerHTML;
+        const 三级前缀符号 = 目录区_三级目录.querySelector(".前缀符号");
+        三级前缀符号?.remove();
+        目录分级容器.appendChild(目录区_三级目录);
+        目录区_三级目录.addEventListener("click", (event) => {
+          event.preventDefault();
+          滚动到标题(三级目录);
+          // 记录点击目标
+          const 目标索引 = 笔记目录区标题组.indexOf(目录区_三级目录);
+          点击目标索引 = 目标索引;
+          点击目标时间戳 = Date.now();
+
+          // 清除所有高亮状态
+          const 所有高亮目录 = 笔记目录容器.querySelectorAll(".当前目录");
+          所有高亮目录.forEach((目录) => 目录.classList.remove("当前目录"));
+
+          // 立即高亮点击的标题
+          目录区_三级目录.classList.add("当前目录");
+          当前高亮索引 = 目标索引;
+        });
+        笔记目录区标题组.push(目录区_三级目录);
+        笔记区目录组.push(三级目录);
+      }
     }
   }
 

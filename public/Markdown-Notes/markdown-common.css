@@ -17,6 +17,11 @@
   --中文代码混合字体: "JetBrains Mono", "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
+hr {
+  opacity: 0.5;
+  margin: 30px 0;
+}
+
 .top-banner,
 #公共页脚 {
   box-sizing: border-box;
@@ -146,7 +151,8 @@ ol ol {
 }
 
 .笔记区 h1,
-.笔记区 h2 {
+.笔记区 h2,
+.笔记区 h3 {
   scroll-margin-top: 50px;
 }
 
@@ -260,7 +266,8 @@ ol ol {
 }
 
 .一级目录,
-.二级目录 {
+.二级目录,
+.三级目录 {
   margin: 0;
   text-decoration: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -269,13 +276,14 @@ ol ol {
 }
 
 .一级目录 > center,
-.二级目录 > center {
+.二级目录 > center,
+.三级目录 > center {
   text-align: left;
 }
 
-.一级目录 {
-  color: #e0e0e0;
-  font-size: 15px;
+a:link.一级目录 {
+  color: #6eabe8;
+  font-size: 17px;
   font-weight: 500;
   padding: 10px 12px;
   letter-spacing: 0.3px;
@@ -283,9 +291,9 @@ ol ol {
 }
 
 .二级目录 {
-  font-size: 14px;
-  color: #b0b0b0;
-  padding: 5px 12px 5px 40px;
+  font-size: 15px;
+  color: #eee;
+  padding: 5px 12px 5px 20px;
   border-left: 2px solid transparent;
   position: relative;
 }
@@ -293,31 +301,60 @@ ol ol {
 .二级目录::before {
   content: "•";
   position: absolute;
-  left: 25px;
-  color: #666;
+  left: 5px;
+  color: #aaa;
   font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.三级目录 {
+  font-size: 13px;
+  color: #a0a0a0;
+  padding: 4px 12px 4px 45px;
+  border-left: 2px solid transparent;
+  position: relative;
+  color: gray;
+}
+
+.三级目录::before {
+  content: "□";
+  position: absolute;
+  left: 30px;
+  top: 50%;
+  translate: 0 -50%;
+  color: #888;
+  font-size: 12px;
   transition: all 0.3s ease;
 }
 
 .二级目录,
 .二级目录:visited,
 .二级目录:link {
-  color: #b0b0b0;
+  color: #eee;
+}
+
+.三级目录,
+.三级目录:visited,
+.三级目录:link {
+  color: #aaa;
 }
 
 .一级目录:not(.当前目录):hover,
-.二级目录:not(.当前目录):hover {
+.二级目录:not(.当前目录):hover,
+.三级目录:not(.当前目录):hover {
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
   border-left-color: rgba(255, 255, 255, 0.3);
 }
 
-.二级目录:not(.当前目录):hover::before {
+.二级目录:not(.当前目录):hover::before,
+.三级目录:not(.当前目录):hover::before {
   color: #999;
   transform: scale(1.2);
 }
 
 .一级目录.当前目录,
-.二级目录.当前目录 {
+.二级目录.当前目录,
+.三级目录.当前目录 {
   background: linear-gradient(135deg, rgba(78, 48, 79, 0.9) 0%, rgba(78, 48, 79, 0.7) 50%, rgba(78, 48, 79, 0.5) 100%);
   box-shadow: 0 2px 8px rgba(78, 48, 79, 0.4);
   border-left-color: #9c6b9d;
@@ -335,13 +372,15 @@ ol ol {
   }
 }
 
-.二级目录.当前目录::before {
+.二级目录.当前目录::before,
+.三级目录.当前目录::before {
   color: #9c6b9d;
   transform: scale(1.3);
 }
 
 .一级目录 code,
-.二级目录 code {
+.二级目录 code,
+.三级目录 code {
   color: #ffd700;
   background: rgba(255, 215, 0, 0.1);
   padding: 1px 4px;
@@ -350,7 +389,8 @@ ol ol {
 }
 
 .一级目录 strong,
-.二级目录 strong {
+.二级目录 strong,
+.三级目录 strong {
   color: #4ade80;
   font-weight: 600;
 }
@@ -695,7 +735,8 @@ a:visited {
 
 /* 添加目录项的焦点状态 */
 .一级目录:focus,
-.二级目录:focus {
+.二级目录:focus,
+.三级目录:focus {
   outline: none;
   box-shadow: 0 0 0 2px rgba(78, 48, 79, 0.5);
 }
@@ -717,11 +758,11 @@ a:visited {
 
   .二级目录 {
     font-size: 12px;
-    padding: 6px 10px 6px 35px;
+    padding: 6px 10px 6px 15px;
   }
 
   .二级目录::before {
-    left: 20px;
+    left: 0;
   }
 }
 
@@ -768,6 +809,38 @@ a:visited {
   width: 4px;
   background: linear-gradient(180deg, var(--网站风格颜色) 0%, rgba(42, 151, 140, 0.7) 100%);
   border-radius: 2px;
+}
+
+.笔记区 h3 {
+  scroll-margin-top: 50px;
+  font-size: 1.15em;
+  font-weight: 600;
+  color: #b8d4e8;
+  margin: 1.5em 0 0.75em 0;
+  padding: 0 0 8px 0;
+  background: none;
+  border-left: none;
+  border-radius: 0;
+  box-shadow: none;
+  position: relative;
+}
+
+.笔记区 h3::before {
+  content: "◊";
+  color: rgba(42, 151, 140, 0.8);
+  margin-right: 8px;
+  font-size: 0.9em;
+}
+
+.笔记区 h3::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 60%;
+  height: 1px;
+  scale: 1 0.75;
+  background: linear-gradient(90deg, rgba(42, 151, 140, 0.8) 0%, transparent 100%);
 }
 
 /* 图片对话框样式 */
