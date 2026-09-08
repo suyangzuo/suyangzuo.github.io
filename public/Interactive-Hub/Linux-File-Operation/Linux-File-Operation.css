@@ -36,22 +36,58 @@ body {
   z-index: 1000;
 }
 
+.初始化模式组 {
+  display: flex;
+  flex-direction: column;
+}
+
+.设置组标签 {
+  font-size: 14px;
+  color: rgb(212, 158, 22);
+  user-select: none;
+  letter-spacing: 1px;
+  padding: 5px 0;
+}
+
 .初始化模式标签 {
   display: flex;
   align-items: center;
   gap: 6px;
+  padding: 4px 0;
   cursor: var(--光标-指向);
   font-size: 14px;
   color: #aaa;
   user-select: none;
 }
 
-.初始化模式标签 input[type="radio"] {
-  accent-color: #4a9eff;
-  cursor: var(--光标-指向);
+.初始化模式标签:hover > span {
+  color: white;
 }
 
-.初始化模式标签 input[type="radio"]:checked + span {
+.初始化模式标签 input[type="radio"] {
+  display: none;
+}
+
+.初始化模式标签 .打勾框 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  font-size: 13px;
+  color: transparent;
+  transition: color 0.15s;
+}
+
+.初始化模式标签 input[type="radio"]:checked ~ .打勾框 {
+  color: #4a9eff;
+}
+
+.初始化模式标签 input[type="radio"]:checked ~ .打勾框::before {
+  content: "\2713";
+}
+
+.初始化模式标签 input[type="radio"]:checked ~ span:last-child {
   color: #4a9eff;
   font-weight: 600;
 }
@@ -72,6 +108,36 @@ body {
   cursor: var(--光标-默认);
 }
 
+/* ------------------------- ↓ 提示区 ------------------------- */
+.提示区 {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 1000;
+  user-select: none;
+}
+
+.提示容器 {
+  padding: 6px 14px;
+  background: rgba(17, 17, 17, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  font-size: 13px;
+  color: #aaa;
+  white-space: nowrap;
+}
+
+.提示容器 .按键-Ctrl,
+.提示容器 .按键-空格 {
+  color: #e8a33d;
+  font-weight: 600;
+}
+/* ------------------------- ↑ 提示区 ------------------------- */
+
 /* ------------------------- ↓ 命令输入区 ------------------------- */
 /* ------------------------- ↓ 路径显示区 ------------------------- */
 .路径显示区 {
@@ -84,7 +150,7 @@ body {
   backdrop-filter: blur(10px);
   z-index: 1000;
   font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   color: #6ee7a0;
   white-space: nowrap;
   user-select: none;
@@ -125,6 +191,14 @@ body {
   padding: 0 14px;
   align-content: center;
   background-color: #333;
+}
+
+.命令提示符 .路径斜杠 {
+  color: #aaa;
+}
+
+.命令提示符 .提示符符号 {
+  color: darkgoldenrod;
 }
 
 .命令输入包装 {

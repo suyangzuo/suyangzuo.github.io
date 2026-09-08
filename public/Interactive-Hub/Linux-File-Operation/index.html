@@ -34,14 +34,29 @@
       </div>
 
       <div class="设置区">
-        <label class="初始化模式标签">
-          <input type="radio" name="初始化模式" value="随机" checked />
-          <span>随机创建</span>
-        </label>
-        <label class="初始化模式标签">
-          <input type="radio" name="初始化模式" value="仅根目录" />
-          <span>仅根目录</span>
-        </label>
+        <div class="初始化模式组">
+          <span class="设置组标签">初始化模式</span>
+          <label class="初始化模式标签">
+            <input type="radio" name="初始化模式" value="随机" checked />
+            <span class="打勾框"></span>
+            <span>随机创建</span>
+          </label>
+          <label class="初始化模式标签">
+            <input type="radio" name="初始化模式" value="仅根目录" />
+            <span class="打勾框"></span>
+            <span>仅根目录</span>
+          </label>
+          <label class="初始化模式标签">
+            <input type="radio" name="初始化模式" value="模拟真实" />
+            <span class="打勾框"></span>
+            <span>模拟真实</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="提示区">
+        <div class="提示容器">按住 <span class="按键-空格">空格</span> 可拖拽视图</div>
+        <div class="提示容器">按住 <span class="按键-Ctrl">Ctrl</span> 可单独拖拽节点</div>
       </div>
 
       <div class="路径显示区" id="路径显示区"></div>
