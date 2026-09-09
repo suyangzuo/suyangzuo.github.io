@@ -27,13 +27,17 @@ body {
   bottom: 25px;
   left: 25px;
   display: flex;
-  gap: 20px;
-  padding: 10px 20px;
+  /* gap: 20px; */
+  /* padding: 10px 20px; */
   background: rgba(17, 17, 17, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 12px;
   backdrop-filter: blur(10px);
   z-index: 1000;
+}
+
+.设置区 > div {
+  padding: 10px 25px;
 }
 
 .初始化模式组 {
@@ -90,6 +94,29 @@ body {
 .初始化模式标签 input[type="radio"]:checked ~ span:last-child {
   color: #4a9eff;
   font-weight: 600;
+}
+
+/* 复选框样式（显示隐藏目录或文件） */
+.初始化模式标签 input[type="checkbox"] {
+  display: none;
+}
+
+.初始化模式标签 input[type="checkbox"]:checked ~ .打勾框 {
+  color: #4a9eff;
+}
+
+.初始化模式标签 input[type="checkbox"]:checked ~ .打勾框::before {
+  content: "\2713";
+}
+
+.初始化模式标签 input[type="checkbox"]:checked ~ span:last-child {
+  color: #4a9eff;
+  font-weight: 600;
+}
+
+.隐藏组 {
+  display: flex;
+  flex-direction: column;
 }
 /* ------------------------- ↑ 设置区 ------------------------- */
 
@@ -183,7 +210,7 @@ body {
 
 .命令提示符 {
   color: #4a9eff;
-  font-family: "JetBrains Mono", monospace;
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
   font-weight: 700;
   font-size: 15px;
   white-space: nowrap;
@@ -245,7 +272,7 @@ body {
   outline: none;
   color: transparent;
   caret-color: #e0e0e0;
-  font-family: "JetBrains Mono", "Noto Sans SC", monospace;
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
   font-size: 15px;
   line-height: 1.4;
   padding: 4px 6px;
