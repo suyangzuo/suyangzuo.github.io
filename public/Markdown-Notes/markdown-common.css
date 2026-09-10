@@ -738,7 +738,7 @@ a:visited {
 .二级目录:focus,
 .三级目录:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(78, 48, 79, 0.5);
+  /* box-shadow: 0 0 0 2px rgba(78, 48, 79, 0.5); */
 }
 
 /* 响应式设计 */

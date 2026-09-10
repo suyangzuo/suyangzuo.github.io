@@ -64,6 +64,10 @@
       </div>
 
       <div class="提示区">
+        <button class="历史记录按钮" id="历史记录按钮" title="历史记录">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>历史记录</span>
+        </button>
         <div class="提示容器">按住 <span class="按键-空格">空格</span> 可拖拽视图</div>
         <div class="提示容器">按住 <span class="按键-Ctrl">Ctrl</span> 可单独拖拽节点</div>
       </div>
@@ -87,5 +91,36 @@
         </button>
       </div>
     </section>
+
+    <!-- 历史记录模态对话框 -->
+    <div class="历史记录模态" id="历史记录模态">
+      <div class="历史记录对话框">
+        <div class="历史记录头部">
+          <h2 class="历史记录标题">命令历史记录</h2>
+          <div class="历史记录头部按钮组">
+            <button class="历史记录导出按钮" id="历史记录导出按钮" title="导出为 Markdown">
+              <i class="fa-solid fa-download"></i>
+              <span>导出</span>
+            </button>
+            <button class="历史记录关闭按钮" id="历史记录关闭按钮" title="关闭">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+        <div class="历史记录表格容器">
+          <table class="历史记录表格">
+            <thead>
+              <tr>
+                <th>序号</th>
+                <th>命令</th>
+                <th>结果</th>
+              </tr>
+            </thead>
+            <tbody id="历史记录表格体">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

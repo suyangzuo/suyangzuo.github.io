@@ -79,6 +79,7 @@ body {
   width: 16px;
   height: 16px;
   font-size: 13px;
+  outline: solid 1px #fff4;
   color: transparent;
   transition: color 0.15s;
 }
@@ -148,12 +149,12 @@ body {
 }
 
 .提示容器 {
-  padding: 6px 14px;
+  padding: 8px 14px;
   background: rgba(17, 17, 17, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 8px;
   backdrop-filter: blur(10px);
-  font-size: 13px;
+  font-size: 14px;
   color: #aaa;
   white-space: nowrap;
 }
@@ -306,3 +307,202 @@ body {
   transform: scale(1.05);
 }
 /* ------------------------- ↑ 命令输入区 ------------------------- */
+
+/* ------------------------- ↓ 历史记录按钮 ------------------------- */
+.历史记录按钮 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(17, 17, 17, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  color: #aaa;
+  font-size: 14px;
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+  cursor: var(--光标-指向);
+  transition: 0.2s;
+  user-select: none;
+}
+
+.历史记录按钮:hover {
+  background: rgba(74, 158, 255, 0.2);
+  border-color: rgba(74, 158, 255, 0.4);
+  color: #4a9eff;
+}
+/* ------------------------- ↑ 历史记录按钮 ------------------------- */
+
+/* ------------------------- ↓ 历史记录模态对话框 ------------------------- */
+.历史记录模态 {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+}
+
+.历史记录模态.显示 {
+  display: flex;
+}
+
+.历史记录对话框 {
+  width: min(90vw, 800px);
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+}
+
+.历史记录头部 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.历史记录标题 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #e0e0e0;
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+}
+
+.历史记录头部按钮组 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.历史记录导出按钮 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(74, 158, 255, 0.15);
+  border: 1px solid rgba(74, 158, 255, 0.35);
+  border-radius: 8px;
+  color: #4a9eff;
+  font-size: 13px;
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+  cursor: var(--光标-指向);
+  transition: 0.2s;
+  user-select: none;
+}
+
+.历史记录导出按钮:hover {
+  background: rgba(74, 158, 255, 0.28);
+  border-color: rgba(74, 158, 255, 0.55);
+}
+
+.历史记录关闭按钮 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  color: #aaa;
+  font-size: 15px;
+  cursor: var(--光标-指向);
+  transition: 0.2s;
+  user-select: none;
+}
+
+.历史记录关闭按钮:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.45);
+  color: #ef4444;
+}
+
+.历史记录表格容器 {
+  flex: 1;
+  overflow: auto;
+  padding: 20px 24px;
+}
+
+.历史记录表格 {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+}
+
+.历史记录表格 thead {
+  position: sticky;
+  top: 0;
+  background: #222;
+  z-index: 1;
+}
+
+.历史记录表格 th {
+  padding: 10px 14px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #e8a33d;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-collapse: collapse;
+  white-space: nowrap;
+}
+
+.历史记录表格 th:nth-child(1),
+.历史记录表格 td:nth-child(1) {
+  width: 4%;
+  white-space: nowrap;
+}
+
+.历史记录表格 th:nth-child(3),
+.历史记录表格 td:nth-child(3) {
+  width: 4%;
+  white-space: nowrap;
+}
+
+.历史记录表格 td {
+  padding: 9px 14px;
+  font-size: 14px;
+  color: #ccc;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-collapse: collapse;
+}
+
+.历史记录表格 td:first-of-type {
+  color: gray;
+  text-align: right;
+}
+
+.历史记录表格 td:last-of-type{
+  text-align: center;
+}
+
+.历史记录表格 tbody tr:nth-child(odd) {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.历史记录表格 tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.历史记录表格 .结果图标-正确 {
+  color: #22c55e;
+  font-weight: 700;
+}
+
+.历史记录表格 .结果图标-错误 {
+  color: #ef4444;
+  font-weight: 700;
+}
+/* ------------------------- ↑ 历史记录模态对话框 ------------------------- */

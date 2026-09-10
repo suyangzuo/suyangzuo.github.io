@@ -233,6 +233,11 @@ const 命令执行按钮 = document.getElementById("命令执行按钮");
 const 命令提示符 = document.getElementById("命令提示符");
 const 重置按钮 = document.querySelector(".重置按钮");
 const 显示隐藏复选框 = document.getElementById("显示隐藏");
+const 历史记录按钮 = document.getElementById("历史记录按钮");
+const 历史记录模态 = document.getElementById("历史记录模态");
+const 历史记录关闭按钮 = document.getElementById("历史记录关闭按钮");
+const 历史记录导出按钮 = document.getElementById("历史记录导出按钮");
+const 历史记录表格体 = document.getElementById("历史记录表格体");
 
 let 根节点 = null;
 let 当前位置节点 = null;
@@ -243,6 +248,7 @@ let cd动画组 = []; // cd 切换时的圆形滑动动画
 let 命令历史 = [];
 let 历史索引 = -1;
 let 临时输入 = "";
+let 命令记录组 = []; // 保存用户输入的命令记录（含对错标记）
 let 画布宽 = 0;
 let 画布高 = 0;
 let 动画帧ID = null;
@@ -1610,6 +1616,10 @@ function 执行命令() {
   命令输入框.value = "";
   更新命令高亮(); // 同步清空高亮层
 
+  // 记录命令（无论对错）
+  const 命令正确 = 解析.有效 || !!解析.静默忽略;
+  命令记录组.push({ 命令: 输入, 正确: 命令正确 });
+
   if (!解析.有效) {
     if (解析.静默忽略) {
       更新提示符();
@@ -2171,6 +2181,81 @@ function 调整画布尺寸() {
   请求重绘();
 }
 
+// ==================== 历史记录 ====================
+function 打开历史记录() {
+  渲染历史记录表格();
+  历史记录模态.classList.add("显示");
+}
+
+function 关闭历史记录() {
+  历史记录模态.classList.remove("显示");
+  聚焦命令输入框();
+}
+
+function 渲染历史记录表格() {
+  历史记录表格体.innerHTML = "";
+  if (命令记录组.length === 0) {
+    const 空行 = document.createElement("tr");
+    const 空单元格 = document.createElement("td");
+    空单元格.colSpan = 3;
+    空单元格.textContent = "暂无历史记录";
+    空单元格.style.textAlign = "center";
+    空单元格.style.color = "#666";
+    空单元格.style.padding = "20px";
+    空行.appendChild(空单元格);
+    历史记录表格体.appendChild(空行);
+    return;
+  }
+  命令记录组.forEach((记录, 索引) => {
+    const 行 = document.createElement("tr");
+
+    const 序号单元格 = document.createElement("td");
+    序号单元格.textContent = 索引 + 1;
+    行.appendChild(序号单元格);
+
+    const 命令单元格 = document.createElement("td");
+    命令单元格.textContent = 记录.命令;
+    行.appendChild(命令单元格);
+
+    const 结果单元格 = document.createElement("td");
+    const 图标 = document.createElement("i");
+    if (记录.正确) {
+      图标.className = "fa-solid fa-check 结果图标-正确";
+    } else {
+      图标.className = "fa-solid fa-xmark 结果图标-错误";
+    }
+    结果单元格.appendChild(图标);
+    行.appendChild(结果单元格);
+
+    历史记录表格体.appendChild(行);
+  });
+}
+
+function 导出历史记录() {
+  let 内容 = "# 命令历史记录\n\n";
+  内容 += "| 序号 | 命令 | 结果 |\n";
+  内容 += "| --- | --- | --- |\n";
+  命令记录组.forEach((记录, 索引) => {
+    const 转义命令 = 记录.命令.replace(/\|/g, "\\|");
+    内容 += `| ${索引 + 1} | ${转义命令} | ${记录.正确 ? "✅" : "❌"} |\n`;
+  });
+  const Blob对象 = new Blob([内容], { type: "text/markdown;charset=utf-8" });
+  const 链接 = document.createElement("a");
+  链接.href = URL.createObjectURL(Blob对象);
+  链接.download = "命令历史记录.md";
+  document.body.appendChild(链接);
+  链接.click();
+  document.body.removeChild(链接);
+  URL.revokeObjectURL(链接.href);
+}
+
+历史记录按钮.addEventListener("click", 打开历史记录);
+历史记录关闭按钮.addEventListener("click", 关闭历史记录);
+历史记录导出按钮.addEventListener("click", 导出历史记录);
+历史记录模态.addEventListener("click", (事件) => {
+  if (事件.target === 历史记录模态) 关闭历史记录();
+});
+
 // ==================== 事件绑定 ====================
 命令执行按钮.addEventListener("click", 执行命令);
 命令输入框.addEventListener("keydown", 处理键盘事件);
@@ -2180,6 +2265,14 @@ function 调整画布尺寸() {
 画布.addEventListener("mousemove", 处理鼠标移动);
 画布.addEventListener("mouseup", 处理鼠标松开);
 画布.addEventListener("mouseleave", 处理鼠标松开);
+
+// 在指定区域松开鼠标后自动聚焦命令输入框
+function 聚焦命令输入框() {
+  命令输入框.focus();
+}
+重置按钮.addEventListener("mouseup", 聚焦命令输入框);
+画布.addEventListener("mouseup", 聚焦命令输入框);
+document.querySelector(".设置区").addEventListener("mouseup", 聚焦命令输入框);
 window.addEventListener("resize", 调整画布尺寸);
 
 // 空格键：按下时禁止页面滚动，进入视图拖拽准备状态
@@ -2238,3 +2331,4 @@ if (显示隐藏复选框) {
 恢复初始化模式();
 调整画布尺寸();
 重置();
+聚焦命令输入框();
