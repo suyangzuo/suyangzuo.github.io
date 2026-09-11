@@ -13,8 +13,8 @@
   --光标-默认: url("/Images/Common/鼠标-默认.cur"), auto;
   --光标-手指: url("/Images/Common/鼠标-指向.cur"), pointer;
   --中文字体: "Noto Sans SC", 微软雅黑, sans-serif;
-  --代码字体: "JetBrains Mono", Consolas, monospace;
-  --中文代码混合字体: "JetBrains Mono", "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+  --代码字体: "Google Sans Code", "JetBrains Mono", Consolas, monospace;
+  --中文代码混合字体: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 hr {
