@@ -267,11 +267,13 @@ let 拖拽时按住Ctrl = false;
 let 视图偏移X = 0;
 let 视图偏移Y = 0;
 let 正在拖拽视图 = false;
-let 空格按下 = false;
 let 视图拖拽起始X = 0;
 let 视图拖拽起始Y = 0;
 let 视图拖拽初始偏移X = 0;
 let 视图拖拽初始偏移Y = 0;
+let 右键按下位置X = 0;
+let 右键按下位置Y = 0;
+let 右键已移动 = false;
 
 // ==================== 目录名称池 ====================
 const 目录名称池 = [
@@ -972,16 +974,20 @@ function 查找命中节点(x, y) {
 }
 
 function 处理鼠标按下(事件) {
-  // 按住空格时拖拽：拖拽 Canvas 视图
-  if (空格按下) {
+  // 按住鼠标右键时拖拽：拖拽 Canvas 视图
+  if (事件.button === 2) {
     正在拖拽视图 = true;
+    右键按下位置X = 事件.clientX;
+    右键按下位置Y = 事件.clientY;
+    右键已移动 = false;
     视图拖拽起始X = 事件.clientX;
     视图拖拽起始Y = 事件.clientY;
     视图拖拽初始偏移X = 视图偏移X;
     视图拖拽初始偏移Y = 视图偏移Y;
-    画布.style.cursor = "grabbing";
     return;
   }
+  // 非右键：阻止后续可能触发的 contextmenu
+  右键已移动 = true;
 
   const { x, y } = 获取鼠标坐标(事件);
   const 命中节点 = 查找命中节点(x, y);
@@ -1019,6 +1025,17 @@ function 更新拖拽跟随组() {
 function 处理鼠标移动(事件) {
   // 拖拽视图：更新视图偏移（使用原始 clientX/Y）
   if (正在拖拽视图) {
+    const 移动距离 = Math.sqrt(
+      (事件.clientX - 右键按下位置X) ** 2 + (事件.clientY - 右键按下位置Y) ** 2
+    );
+    if (移动距离 > 配置.交互.拖拽阈值) {
+      if (!右键已移动) {
+        画布.style.cursor = 'url("/Images/Common/鼠标-移动抓手.cur"), grabbing';
+      }
+      右键已移动 = true;
+      // 一旦判定为拖拽，立即阻止本次按下可能触发的 contextmenu
+      事件.preventDefault();
+    }
     视图偏移X = 视图拖拽初始偏移X + (事件.clientX - 视图拖拽起始X);
     视图偏移Y = 视图拖拽初始偏移Y + (事件.clientY - 视图拖拽起始Y);
     请求重绘();
@@ -1071,10 +1088,19 @@ function 处理鼠标松开(事件) {
   // 结束视图拖拽
   if (正在拖拽视图) {
     正在拖拽视图 = false;
-    画布.style.cursor = 空格按下 ? "grab" : "var(--光标-默认)";
+    画布.style.cursor = "var(--光标-默认)";
+    // 右键未移动就松开：视为正常右击，弹出菜单
+    if (事件.button === 2 && !右键已移动) {
+      const 菜单事件 = new MouseEvent("contextmenu", {
+        bubbles: true,
+        cancelable: true,
+        clientX: 事件.clientX,
+        clientY: 事件.clientY,
+      });
+      画布.dispatchEvent(菜单事件);
+    }
     return;
   }
-
   if (!拖拽节点) return;
 
   const 按下时长 = performance.now() - 鼠标按下时间;
@@ -2273,24 +2299,9 @@ function 聚焦命令输入框() {
 重置按钮.addEventListener("mouseup", 聚焦命令输入框);
 画布.addEventListener("mouseup", 聚焦命令输入框);
 document.querySelector(".设置区").addEventListener("mouseup", 聚焦命令输入框);
-window.addEventListener("resize", 调整画布尺寸);
-
-// 空格键：按下时禁止页面滚动，进入视图拖拽准备状态
-window.addEventListener("keydown", (事件) => {
-  if (事件.code === "Space" && document.activeElement !== 命令输入框) {
-    事件.preventDefault();
-    if (!空格按下) {
-      空格按下 = true;
-      画布.style.cursor = "grab";
-    }
-  }
-});
-window.addEventListener("keyup", (事件) => {
-  if (事件.code === "Space") {
-    空格按下 = false;
-    正在拖拽视图 = false;
-    画布.style.cursor = "var(--光标-默认)";
-  }
+// 右键拖拽判定后阻止 contextmenu；未拖拽的右键点击放行，让浏览器弹菜单
+画布.addEventListener("contextmenu", (事件) => {
+  if (右键已移动) 事件.preventDefault();
 });
 
 // Ctrl 键：拖拽中按下/松开时，实时切换子节点是否跟随
