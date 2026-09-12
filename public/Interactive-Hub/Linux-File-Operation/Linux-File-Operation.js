@@ -1237,6 +1237,10 @@ function 更新命令高亮() {
 
 function 解析相对路径(路径) {
   if (!路径 || 路径 === "/") return 根节点;
+  // ~ 表示当前用户主目录（/home/user），支持 ~/子目录 写法
+  if (路径 === "~" || 路径.startsWith("~/")) {
+    路径 = "/home/user" + 路径.slice(1);
+  }
   if (路径.startsWith("/")) {
     // 绝对路径：从根开始
     return 解析路径(路径);
