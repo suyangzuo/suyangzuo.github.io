@@ -327,16 +327,46 @@ function 更新主目录() {
   if (第一个目录) 第一个目录.是主目录 = true;
 }
 
-// ==================== 目录名称池 ====================
+// ==================== 目录名称池（中英文混合，不以"."开头） ====================
 const 目录名称池 = [
+  // 中文
   "文档", "图片", "音乐", "视频", "下载", "桌面", "项目", "代码",
   "资料", "备份", "配置", "脚本", "日志", "模板", "测试", "工具",
+  "相册", "收藏", "文档库", "源代码", "资源", "插件", "主题", "字体",
+  "文档集", "归档", "快照", "工作区", "临时", "缓存", "输出", "输入",
+  "共享", "公共", "私有", "系统", "用户", "组", "权限", "安全",
+  "网络", "数据库", "缓存区", "交换区", "挂载", "设备", "驱动", "内核",
+  "模块", "服务", "进程", "线程", "信号", "管道", "套接字", "消息",
+  "队列", "栈", "堆", "树", "图", "哈希", "链表", "数组",
+  // 英文
+  "Documents", "Pictures", "Music", "Videos", "Downloads", "Desktop", "Projects", "Code",
+  "Data", "Backup", "Config", "Scripts", "Logs", "Templates", "Tests", "Tools",
+  "Album", "Favorites", "Library", "Source", "Resources", "Plugins", "Themes", "Fonts",
+  "Archive", "Workspace", "Temp", "Cache", "Output", "Input", "Shared", "Public",
+  "Private", "System", "Users", "Groups", "Permissions", "Security", "Network", "Database",
+  "Swap", "Mount", "Devices", "Drivers", "Kernel", "Modules", "Services", "Processes",
+  "Threads", "Signals", "Pipes", "Sockets", "Messages", "Queue", "Stack", "Heap",
+  "Tree", "Graph", "Hash", "List", "Array", "Dict", "Set", "Tuple",
 ];
 
 const 文件名称池 = [
+  // 中文
   "报告.txt", "笔记.md", "数据.csv", "配置.conf", "脚本.sh",
   "说明.txt", "代码.py", "样式.css", "页面.html", "清单.txt",
-  "备忘录.md", "记录.log", "索引.json", "readme.txt", "主程序.c",
+  "备忘录.md", "记录.log", "索引.json", "说明文档.txt", "主程序.c",
+  "摘要.txt", "概览.md", "统计.csv", "设置.ini", "运行.sh",
+  "教程.txt", "指南.md", "表格.xls", "演示.ppt", "草稿.doc",
+  // 英文
+  "readme.txt", "Makefile", "Dockerfile", "env.example", "package.json",
+  "tsconfig.json", "webpack.config.js", "README.md", "LICENSE", "CHANGELOG.md",
+  "TODO.md", "CONTRIBUTING.md", "babel.config.js", "eslintrc.json", "prettierrc.json",
+  "setup.py", "requirements.txt", "Pipfile", "Cargo.toml", "go.mod",
+  "pom.xml", "build.gradle", "CMakeLists.txt", "configure.ac", "Makefile.am",
+  "index.js", "app.js", "main.py", "server.go", "lib.rs",
+  "utils.js", "helpers.py", "constants.ts", "types.ts", "api.dart",
+  "README.rst", "index.rst", "conf.py", "database.sql", "schema.prisma",
+  "nginx.conf", "apache.conf", "ssh_config", "bashrc.example", "zshrc.example",
+  "vimrc.example", "tmux.conf", "gitconfig.example", "npmrc.example", "yarn.lock",
 ];
 
 // ==================== 节点尺寸测量 ====================
@@ -2272,14 +2302,15 @@ function 随机初始化() {
   const 已用名称 = new Set();
   const 所有目录组 = [根节点];
 
-  // 先随机决定总层数：1-5（1 层 = 只有根目录）
-  const 最大层数 = 1 + Math.floor(Math.random() * 5); // 1~5
+  // 先随机决定总层数：2-8（1 层 = 只有根目录）
+  const 最大层数 = 2 + Math.floor(Math.random() * 7); // 2~8
 
   if (最大层数 >= 2) {
     const 根子节点数 = 2 + Math.floor(Math.random() * 2); // 2-3
     for (let i = 0; i < 根子节点数; i++) {
       const 名称 = 取随机名称(目录名称池, 已用名称);
-      const 子目录 = 创建节点("目录", 名称, 根节点);
+      const 隐藏前缀 = Math.random() < 0.1 ? "." : "";
+      const 子目录 = 创建节点("目录", 隐藏前缀 + 名称, 根节点);
       根节点.子节点组.push(子目录);
       节点表.set(子目录.id, 子目录);
       所有目录组.push(子目录);
@@ -2295,7 +2326,8 @@ function 随机初始化() {
           const 子节点数 = 1 + Math.floor(Math.random() * 2); // 1-2
           for (let j = 0; j < 子节点数; j++) {
             const 名称 = 取随机名称(目录名称池, 已用名称);
-            const 子目录 = 创建节点("目录", 名称, 父节点);
+            const 隐藏前缀 = Math.random() < 0.1 ? "." : "";
+            const 子目录 = 创建节点("目录", 隐藏前缀 + 名称, 父节点);
             父节点.子节点组.push(子目录);
             节点表.set(子目录.id, 子目录);
             所有目录组.push(子目录);
@@ -2314,7 +2346,8 @@ function 随机初始化() {
     for (let i = 0; i < 文件数; i++) {
       const 随机目录 = 所有目录组[Math.floor(Math.random() * 所有目录组.length)];
       const 文件名称 = 取随机名称(文件名称池, 已用名称);
-      const 文件 = 创建节点("文件", 文件名称, 随机目录);
+      const 隐藏前缀 = Math.random() < 0.1 ? "." : "";
+      const 文件 = 创建节点("文件", 隐藏前缀 + 文件名称, 随机目录);
       随机目录.子节点组.push(文件);
       节点表.set(文件.id, 文件);
     }
