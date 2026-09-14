@@ -339,14 +339,14 @@ const 目录名称池 = [
   "模块", "服务", "进程", "线程", "信号", "管道", "套接字", "消息",
   "队列", "栈", "堆", "树", "图", "哈希", "链表", "数组",
   // 英文
-  "Documents", "Pictures", "Music", "Videos", "Downloads", "Desktop", "Projects", "Code",
-  "Data", "Backup", "Config", "Scripts", "Logs", "Templates", "Tests", "Tools",
-  "Album", "Favorites", "Library", "Source", "Resources", "Plugins", "Themes", "Fonts",
-  "Archive", "Workspace", "Temp", "Cache", "Output", "Input", "Shared", "Public",
-  "Private", "System", "Users", "Groups", "Permissions", "Security", "Network", "Database",
-  "Swap", "Mount", "Devices", "Drivers", "Kernel", "Modules", "Services", "Processes",
-  "Threads", "Signals", "Pipes", "Sockets", "Messages", "Queue", "Stack", "Heap",
-  "Tree", "Graph", "Hash", "List", "Array", "Dict", "Set", "Tuple",
+  "documents", "pictures", "music", "videos", "downloads", "desktop", "projects", "code",
+  "data", "backup", "config", "scripts", "logs", "templates", "tests", "tools",
+  "album", "favorites", "library", "source", "resources", "plugins", "themes", "fonts",
+  "archive", "workspace", "temp", "cache", "output", "input", "shared", "public",
+  "private", "system", "users", "groups", "permissions", "security", "network", "database",
+  "swap", "mount", "devices", "drivers", "kernel", "modules", "services", "processes",
+  "threads", "signals", "pipes", "sockets", "messages", "queue", "stack", "heap",
+  "tree", "graph", "hash", "list", "array", "dict", "set", "tuple",
 ];
 
 const 文件名称池 = [
@@ -357,14 +357,14 @@ const 文件名称池 = [
   "摘要.txt", "概览.md", "统计.csv", "设置.ini", "运行.sh",
   "教程.txt", "指南.md", "表格.xls", "演示.ppt", "草稿.doc",
   // 英文
-  "readme.txt", "Makefile", "Dockerfile", "env.example", "package.json",
-  "tsconfig.json", "webpack.config.js", "README.md", "LICENSE", "CHANGELOG.md",
-  "TODO.md", "CONTRIBUTING.md", "babel.config.js", "eslintrc.json", "prettierrc.json",
-  "setup.py", "requirements.txt", "Pipfile", "Cargo.toml", "go.mod",
-  "pom.xml", "build.gradle", "CMakeLists.txt", "configure.ac", "Makefile.am",
+  "readme.txt", "makefile", "dockerfile", "env.example", "package.json",
+  "tsconfig.json", "webpack.config.js", "readme.md", "license", "changelog.md",
+  "todo.md", "contributing.md", "babel.config.js", "eslintrc.json", "prettierrc.json",
+  "setup.py", "requirements.txt", "pipfile", "cargo.toml", "go.mod",
+  "pom.xml", "build.gradle", "cmakelists.txt", "configure.ac", "makefile.am",
   "index.js", "app.js", "main.py", "server.go", "lib.rs",
   "utils.js", "helpers.py", "constants.ts", "types.ts", "api.dart",
-  "README.rst", "index.rst", "conf.py", "database.sql", "schema.prisma",
+  "readme.rst", "index.rst", "conf.py", "database.sql", "schema.prisma",
   "nginx.conf", "apache.conf", "ssh_config", "bashrc.example", "zshrc.example",
   "vimrc.example", "tmux.conf", "gitconfig.example", "npmrc.example", "yarn.lock",
 ];
