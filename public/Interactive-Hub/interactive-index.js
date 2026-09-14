@@ -1,4 +1,25 @@
 const root = document.querySelector(":root");
+const 中心标题动画持续时间 = Number.parseFloat(
+  getComputedStyle(root).getPropertyValue("--中心标题动画持续时间")
+);
+
+const 中心标题组 = document.querySelectorAll(".中心标题");
+for (const 中心标题 of 中心标题组) {
+  const 字符组 = 中心标题.querySelectorAll("span");
+  字符组.forEach((字符, 索引) => {
+    const 轴 = 索引 % 2 === 0 ? "rotateY" : "rotateX";
+    字符.animate(
+      [{ transform: `${轴}(90deg)` }, { transform: `${轴}(0deg)` }],
+      {
+        duration: 中心标题动画持续时间 * 1000,
+        delay: 中心标题动画持续时间 * 1000 * 索引,
+        easing: "ease-in",
+        fill: "forwards",
+      }
+    );
+  });
+}
+
 const 交互列表组 = document.querySelectorAll(".交互列表");
 
 for (const 交互列表 of 交互列表组) {

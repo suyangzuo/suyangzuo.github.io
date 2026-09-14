@@ -44,64 +44,15 @@ body {
   font-size: 4rem;
   padding: 20px 0;
   letter-spacing: 10px;
+  perspective: 800px;
 }
 
 .中心标题 > span {
   transform-style: preserve-3d;
-  perspective: 800px;
   display: inline-block;
-}
-
-.中心标题 > span:nth-child(even) {
   transform: rotateX(90deg);
-  animation: 中心标题动画-X var(--中心标题动画持续时间) ease-in forwards;
-}
-
-.中心标题 > span:nth-child(odd) {
-  transform: rotateY(90deg);
-  animation: 中心标题动画-Y var(--中心标题动画持续时间) ease-in forwards;
-}
-
-.中心标题 > span:nth-child(2) {
-  animation-delay: var(--中心标题动画持续时间);
-}
-
-.中心标题 > span:nth-child(3) {
-  animation-delay: calc(var(--中心标题动画持续时间) * 2);
-}
-
-.中心标题 > span:nth-child(4) {
-  animation-delay: calc(var(--中心标题动画持续时间) * 3);
-}
-
-.中心标题 > span:nth-child(5) {
-  animation-delay: calc(var(--中心标题动画持续时间) * 4);
-}
-
-.中心标题 > span:nth-child(6) {
-  animation-delay: calc(var(--中心标题动画持续时间) * 5);
-}
-
-.中心标题 > span:nth-child(7) {
-  animation-delay: calc(var(--中心标题动画持续时间) * 6);
-}
-
-@keyframes 中心标题动画-X {
-  from {
-    transform: rotateX(90deg);
-  }
-  to {
-    transform: rotateX(0);
-  }
-}
-
-@keyframes 中心标题动画-Y {
-  from {
-    transform: rotateY(90deg);
-  }
-  to {
-    transform: rotateY(0);
-  }
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .交互技术栈 {
