@@ -211,7 +211,9 @@ body {
   overflow: hidden;
   backdrop-filter: blur(12px);
   z-index: 1001;
-  min-width: 520px;
+  width: max-content;
+  min-width: 550px;
+  max-width: min(85vw, 1200px);
 }
 
 .命令提示符 {
@@ -250,8 +252,13 @@ body {
   color: #e0e0e0;
   pointer-events: none;
   white-space: pre;
-  overflow: hidden;
+  overflow-x: auto;
+  scrollbar-width: none;
   display: block;
+}
+
+.命令高亮层::-webkit-scrollbar {
+  display: none;
 }
 
 .命令高亮层 .语法-命令 {

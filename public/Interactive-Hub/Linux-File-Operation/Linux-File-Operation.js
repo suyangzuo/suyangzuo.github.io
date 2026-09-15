@@ -1396,10 +1396,13 @@ function 更新提示符() {
 // ==================== 命令语法高亮 ====================
 const 命令高亮层 = document.getElementById("命令高亮层");
 
+const 命令输入区 = document.querySelector(".命令输入区");
+
 function 更新命令高亮() {
   const 文本 = 命令输入框.value;
   if (!文本) {
     命令高亮层.innerHTML = "";
+    命令输入区.style.width = "";
     return;
   }
 
@@ -1442,6 +1445,12 @@ function 更新命令高亮() {
   }
 
   命令高亮层.innerHTML = 结果;
+
+  // 根据内容实际宽度自动扩展输入区，最大宽度由 CSS max-width 限制
+  命令高亮层.style.width = "max-content";
+  const 内容宽度 = 命令高亮层.offsetWidth;
+  命令高亮层.style.width = "";
+  命令输入区.style.width = Math.max(内容宽度, 340) + 命令提示符.offsetWidth + 命令执行按钮.offsetWidth + 30 + "px";
 }
 
 function 解析相对路径(路径) {
@@ -1784,6 +1793,18 @@ function 解析命令(输入) {
       if (同名 && 同名 !== 源节点) {
         return { 有效: false, 错误: { 有错误: true, 消息: `cp：目标已存在同名项：${新名称}` } };
       }
+      // 源和目标解析到同一节点：不能复制
+      if (目标父节点 === 源节点.父节点 && 新名称 === 源节点.名称) {
+        return { 有效: false, 错误: { 有错误: true, 消息: `cp：${源路径} 和 ${目标路径} 是同一文件` } };
+      }
+      // 目标是源目录本身或其后代：会导致无限递归
+      let 检查节点 = 目标父节点;
+      while (检查节点) {
+        if (检查节点 === 源节点) {
+          return { 有效: false, 错误: { 有错误: true, 消息: `cp：不能将目录复制到自身或其子目录中` } };
+        }
+        检查节点 = 检查节点.父节点;
+      }
       return { 有效: true, 命令: "cp", 源: 源节点, 目标父节点, 新名称, 递归 };
     }
 
@@ -1853,6 +1874,10 @@ function 解析命令(输入) {
       const 同名 = 目标父节点.子节点组.find((n) => n.名称 === 新名称);
       if (同名 && 同名 !== 源节点) {
         return { 有效: false, 错误: { 有错误: true, 消息: `mv：目标已存在同名项：${新名称}` } };
+      }
+      // 源路径和目标路径相同且名称相同：不能移动
+      if (目标父节点 === 源节点.父节点 && 新名称 === 源节点.名称) {
+        return { 有效: false, 错误: { 有错误: true, 消息: `mv：${源路径} 和 ${目标路径} 是同一文件` } };
       }
       return { 有效: true, 命令: "mv", 源: 源节点, 目标父节点, 新名称 };
     }
@@ -2440,6 +2465,10 @@ function 重置() {
   历史索引 = -1;
   临时输入 = "";
 
+  // 清空命令输入框并同步高亮层
+  命令输入框.value = "";
+  更新命令高亮();
+
   const 选中模式 = document.querySelector('input[name="初始化模式"]:checked');
   const 模式 = 选中模式 ? 选中模式.value : "随机";
 
@@ -2472,9 +2501,12 @@ function 调整画布尺寸() {
   画布.width = 画布宽 * dpr;
   画布.height = 画布高 * dpr;
   上下文.setTransform(dpr, 0, 0, dpr, 0, 0);
-  if (根节点) 布局并动画();
+  // 窗体尺寸变化时仅更新画布，不重新布局，保持各节点当前位置
   请求重绘();
 }
+
+// 监听窗口尺寸变化，实时调整画布
+window.addEventListener("resize", 调整画布尺寸);
 
 // ==================== 历史记录 ====================
 function 打开历史记录() {
@@ -2555,6 +2587,10 @@ function 导出历史记录() {
 命令执行按钮.addEventListener("click", 执行命令);
 命令输入框.addEventListener("keydown", 处理键盘事件);
 命令输入框.addEventListener("input", 更新命令高亮);
+// 同步输入框与高亮层的水平滚动位置，防止高亮层文本溢出
+命令输入框.addEventListener("scroll", () => {
+  命令高亮层.scrollLeft = 命令输入框.scrollLeft;
+});
 重置按钮.addEventListener("click", 重置);
 画布.addEventListener("mousedown", 处理鼠标按下);
 画布.addEventListener("mousemove", 处理鼠标移动);
