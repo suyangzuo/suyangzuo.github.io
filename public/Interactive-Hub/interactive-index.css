@@ -6,6 +6,8 @@
   --四角线框厚度: 1px;
   --交互单项宽度: 272px;
   --交互单项高度: 60px;
+  --Linux-水平偏移: 0px;
+  --Linux-垂直偏移: 0px;
   --Web前端-水平偏移: 0px;
   --Web前端-垂直偏移: 0px;
   --数据结构与算法-水平偏移: 0px;
@@ -102,7 +104,11 @@ body {
   pointer-events: none;
   mask: conic-gradient(at var(--四角线框宽度) var(--四角线框高度), transparent 75%, white 75%) 0 0 /
     calc(100% - var(--四角线框宽度)) calc(100% - var(--四角线框高度)) repeat;
-  transition: top 250ms, left 250ms, opacity 250ms, scale 250ms;
+  transition:
+    top 250ms,
+    left 250ms,
+    opacity 250ms,
+    scale 250ms;
   opacity: 0;
   scale: 0;
 }
@@ -110,6 +116,11 @@ body {
 .交互列表:has(.交互单项:hover) .四角线框 {
   opacity: 1;
   scale: 1;
+}
+
+.Linux交互列表 .四角线框 {
+  left: calc(var(--Linux-水平偏移) - var(--四角线框间隙));
+  top: calc(var(--Linux-垂直偏移) - var(--四角线框间隙));
 }
 
 .Web前端交互列表 .四角线框 {
