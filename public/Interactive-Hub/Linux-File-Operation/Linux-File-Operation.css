@@ -64,7 +64,7 @@ body {
   user-select: none;
 }
 
-.初始化模式标签:hover > span {
+.初始化模式标签:hover > span:last-child {
   color: white;
 }
 
@@ -78,18 +78,22 @@ body {
   justify-content: center;
   width: 16px;
   height: 16px;
-  font-size: 13px;
   outline: solid 1px #fff4;
   color: transparent;
   transition: color 0.15s;
 }
 
-.初始化模式标签 input[type="radio"]:checked ~ .打勾框 {
-  color: #4a9eff;
+/* 用 clip-path 绘制打勾形状，颜色跟随 currentColor 过渡 */
+.初始化模式标签 .打勾框::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: currentColor;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 48% 67%);
 }
 
-.初始化模式标签 input[type="radio"]:checked ~ .打勾框::before {
-  content: "\2713";
+.初始化模式标签 input[type="radio"]:checked ~ .打勾框 {
+  color: lightblue;
 }
 
 .初始化模式标签 input[type="radio"]:checked ~ span:last-child {
@@ -103,11 +107,7 @@ body {
 }
 
 .初始化模式标签 input[type="checkbox"]:checked ~ .打勾框 {
-  color: #4a9eff;
-}
-
-.初始化模式标签 input[type="checkbox"]:checked ~ .打勾框::before {
-  content: "\2713";
+  color: lightblue;
 }
 
 .初始化模式标签 input[type="checkbox"]:checked ~ span:last-child {
