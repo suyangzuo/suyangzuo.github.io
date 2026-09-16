@@ -50,7 +50,7 @@ body {
   width: fit-content;
   padding: 15px 25px;
   border-radius: 10px;
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(10px);
   top: calc(50px + 1.5%);
   left: 50%;
   transform: translateX(-50%);
