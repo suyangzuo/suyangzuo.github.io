@@ -111,7 +111,7 @@ const 配置 = {
     高: 130,
     圆角: 8,
     填充色: "#1c1c1cff",
-    当前填充色: "#55420eff",
+    当前填充色: "#3e310cff",
     描边色: "#b06100ff",
     当前描边色: "#FF8C00",
     描边宽度: 2,
@@ -128,10 +128,10 @@ const 配置 = {
     二进制行高: 12,
   },
   根目录: {
-    高: 120,
+    高: 130,
     圆角: 10,
     填充色: "#1c1c1c",
-    当前填充色: "#2d5a3dff",
+    当前填充色: "#1e3e29ff",
     描边色: "#4a9e6aff",
     当前描边色: "#6ee7a0",
     描边宽度: 2,
@@ -142,15 +142,15 @@ const 配置 = {
     名称偏移: -10,
     文本边距: 18,
     权限字体: "14px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif",
-    权限行高: 22,
+    权限行高: 30,
     权限内边距: 20,
     二进制字体: "12px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif",
     二进制行高: 13,
   },
   文件: {
-    高: 106,
+    高: 130,
     圆角: 5,
-    填充色: "#245181ff",
+    填充色: "#173352ff",
     描边色: "#75a7e1ff",
     描边宽度: 2,
     名称颜色: "#fff",
@@ -158,7 +158,7 @@ const 配置 = {
     名称偏移: -8,
     文本边距: 15,
     权限字体: "14px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif",
-    权限行高: 21,
+    权限行高: 30,
     权限内边距: 16,
     二进制字体: "12px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif",
     二进制行高: 12,
@@ -901,16 +901,16 @@ function 绘制节点(节点) {
     }
 
     for (let i = 0; i < 3; i++) {
-      // 二进制小行："0b" 灰色右端贴字母区左端，3 个二进制位白色分别居中于 r/w/x 字符槽
+      // 二进制小行："0b" 灰色右端贴字母区左端（再左移 2px），3 个二进制位白色分别居中于 r/w/x 字符槽；整行基线上移 1px
       if (显示二进制) {
         上下文.font = 尺寸.二进制字体;
         const 位串 = 类组[i][1].toString(2).padStart(3, "0");
         上下文.fillStyle = 配置.权限配色.二进制前缀;
-        上下文.fillText("0b", 字母区起始X - 上下文.measureText("0b").width, y);
+        上下文.fillText("0b", 字母区起始X - 上下文.measureText("0b").width - 2, y - 1);
         上下文.fillStyle = 配置.权限配色.二进制位;
         上下文.textAlign = "center";
         for (let j = 0; j < 3; j++) {
-          上下文.fillText(位串[j], 字母区起始X + j * 字母槽宽 + 字母宽 / 2, y);
+          上下文.fillText(位串[j], 字母区起始X + j * 字母槽宽 + 字母宽 / 2, y - 1);
         }
         上下文.textAlign = "left";
         y += 小行高;
@@ -1454,7 +1454,7 @@ function 处理鼠标移动(事件) {
       if (悬停节点) { 悬停节点 = null; 需要重绘 = true; }
       if (悬停权限字母) { 悬停权限字母 = null; 需要重绘 = true; }
       if (悬停删除节点 !== 删除命中) { 悬停删除节点 = 删除命中; 需要重绘 = true; }
-      画布.style.cursor = "pointer";
+      画布.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
       if (需要重绘) 请求重绘();
       return;
     }
@@ -1470,7 +1470,7 @@ function 处理鼠标移动(事件) {
         悬停权限字母.位 === 权限命中.位;
       if (!同一字母) { 悬停权限字母 = 权限命中; 需要重绘 = true; }
       if (悬停节点 !== 权限命中.节点) { 悬停节点 = 权限命中.节点; 需要重绘 = true; }
-      画布.style.cursor = "pointer";
+      画布.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
       if (需要重绘) 请求重绘();
       return;
     }
@@ -1478,7 +1478,7 @@ function 处理鼠标移动(事件) {
     const 命中 = 查找命中节点(x, y);
     if (命中 !== 悬停节点) {
       悬停节点 = 命中;
-      画布.style.cursor = 命中 ? "pointer" : "var(--光标-默认)";
+      画布.style.cursor = 命中 ? 'url("/Images/Common/鼠标-指向.cur"), pointer' : "var(--光标-默认)";
       需要重绘 = true;
     }
     if (需要重绘) 请求重绘();

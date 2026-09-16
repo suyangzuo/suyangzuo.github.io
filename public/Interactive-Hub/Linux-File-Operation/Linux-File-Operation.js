@@ -1245,7 +1245,7 @@ function 处理鼠标移动(事件) {
       let 需要重绘 = false;
       if (悬停节点) { 悬停节点 = null; 需要重绘 = true; }
       if (悬停删除节点 !== 删除命中) { 悬停删除节点 = 删除命中; 需要重绘 = true; }
-      画布.style.cursor = "pointer";
+      画布.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
       if (需要重绘) 请求重绘();
       return;
     }
@@ -1254,7 +1254,7 @@ function 处理鼠标移动(事件) {
     if (悬停删除节点) { 悬停删除节点 = null; 需要重绘 = true; }
     if (命中 !== 悬停节点) {
       悬停节点 = 命中;
-      画布.style.cursor = 命中 ? "pointer" : "var(--光标-默认)";
+      画布.style.cursor = 命中 ? 'url("/Images/Common/鼠标-指向.cur"), pointer' : "var(--光标-默认)";
       需要重绘 = true;
     }
     if (需要重绘) 请求重绘();
