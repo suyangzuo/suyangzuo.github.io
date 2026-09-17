@@ -78,7 +78,7 @@ body {
   justify-content: center;
   width: 16px;
   height: 16px;
-  outline: solid 1px #fff4;
+  outline: solid 1px #5a5a5a;
   color: transparent;
   transition: color 0.15s;
 }
