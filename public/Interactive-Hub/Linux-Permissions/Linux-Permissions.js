@@ -1642,6 +1642,57 @@ function 规范化路径(路径) {
   return "/" + 结果.join("/");
 }
 
+// 花括号展开：parent/{a,b,c} → parent/a parent/b parent/c，支持嵌套和多段
+function 展开花括号(文本) {
+  // 找到第一对花括号
+  let 开括号位置 = -1;
+  let 闭括号位置 = -1;
+  let 深度 = 0;
+  for (let i = 0; i < 文本.length; i++) {
+    if (文本[i] === "{") {
+      if (深度 === 0) 开括号位置 = i;
+      深度++;
+    } else if (文本[i] === "}") {
+      深度--;
+      if (深度 === 0) {
+        闭括号位置 = i;
+        break;
+      }
+    }
+  }
+
+  // 没有花括号，原样返回
+  if (开括号位置 === -1 || 闭括号位置 === -1) return [文本];
+
+  const 前缀 = 文本.slice(0, 开括号位置);
+  const 后缀 = 文本.slice(闭括号位置 + 1);
+  const 内部 = 文本.slice(开括号位置 + 1, 闭括号位置);
+
+  // 按逗号拆分顶层（不拆分嵌套花括号内的逗号）
+  const 选项组 = [];
+  let 当前 = "";
+  let 嵌套深度 = 0;
+  for (const 字符 of 内部) {
+    if (字符 === "{") 嵌套深度++;
+    else if (字符 === "}") 嵌套深度--;
+    if (字符 === "," && 嵌套深度 === 0) {
+      选项组.push(当前);
+      当前 = "";
+    } else {
+      当前 += 字符;
+    }
+  }
+  if (当前 || 选项组.length === 0) 选项组.push(当前);
+
+  // 逐个选项与前缀后缀拼接，再递归展开剩余花括号
+  const 结果 = [];
+  for (const 选项 of 选项组) {
+    const 拼接 = 前缀 + 选项 + 后缀;
+    结果.push(...展开花括号(拼接));
+  }
+  return 结果;
+}
+
 function 解析路径(路径) {
   const 规范化 = 规范化路径(路径);
   if (规范化 === "/") return 根节点;
@@ -1687,16 +1738,16 @@ const 命令高亮层 = document.getElementById("命令高亮层");
 
 const 命令输入区 = document.querySelector(".命令输入区");
 
-function 更新命令高亮() {
-  const 文本 = 命令输入框.value;
-  if (!文本) {
-    命令高亮层.innerHTML = "";
-    命令输入区.style.width = "";
-    return;
-  }
-
+function 高亮命令语法(文本) {
   const 有效命令组 = ["cd", "mkdir", "rmdir", "rm", "touch", "cp", "mv", "chmod"];
   const 转义 = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  // 路径中的特殊字符用单独颜色高亮
+  const 转义路径 = (s) =>
+    转义(s)
+      .replace(/\//g, '<span class="语法-斜杠">/</span>')
+      .replace(/\{/g, '<span class="语法-花括号">{</span>')
+      .replace(/\}/g, '<span class="语法-花括号">}</span>')
+      .replace(/,/g, '<span class="语法-逗号">,</span>');
   const 部分组 = 文本.split(/(\s+)/);
   let 结果 = "";
   let 已遇到命令 = false;
@@ -1737,13 +1788,24 @@ function 更新命令高亮() {
     } else if (当前命令 === "chmod" && !chmod模式已高亮) {
       // chmod 后的第一个非横杠参数是权限模式
       chmod模式已高亮 = true;
-      结果 += `<span class="语法-参数">${转义(部分)}</span>`;
+      结果 += `<span class="语法-参数">${转义路径(部分)}</span>`;
     } else {
-      结果 += `<span class="语法-路径">${转义(部分)}</span>`;
+      结果 += `<span class="语法-路径">${转义路径(部分)}</span>`;
     }
   }
 
-  命令高亮层.innerHTML = 结果;
+  return 结果;
+}
+
+function 更新命令高亮() {
+  const 文本 = 命令输入框.value;
+  if (!文本) {
+    命令高亮层.innerHTML = "";
+    命令输入区.style.width = "";
+    return;
+  }
+
+  命令高亮层.innerHTML = 高亮命令语法(文本);
 
   // 根据内容实际宽度自动扩展输入区，最大宽度由 CSS max-width 限制
   命令高亮层.style.width = "max-content";
@@ -1918,7 +1980,7 @@ function 解析命令(输入) {
 
     case "mkdir": {
       let 创建父级 = false;
-      let 路径组 = [];
+      let 原始路径组 = [];
 
       for (const 参数 of 参数组) {
         if (参数.startsWith("-")) {
@@ -1928,109 +1990,130 @@ function 解析命令(输入) {
             else return { 有效: false, 错误: { 有错误: true, 消息: `mkdir：无效参数 -${标志}\n支持：-p（创建父级目录）` } };
           }
         } else {
-          路径组.push(参数);
+          原始路径组.push(参数);
         }
+      }
+
+      // 花括号展开：parent/{a,b,c} → parent/a parent/b parent/c
+      const 路径组 = [];
+      for (const 原始路径 of 原始路径组) {
+        路径组.push(...展开花括号(原始路径));
       }
 
       if (路径组.length === 0) {
-        return { 有效: false, 错误: { 有错误: true, 消息: "mkdir：缺少目录名\n用法：mkdir [-p] <目录名/路径>" } };
-      }
-      if (路径组.length > 1) {
-        return { 有效: false, 错误: { 有错误: true, 消息: "mkdir：参数过多\n用法：mkdir [-p] <目录名/路径>" } };
+        return { 有效: false, 错误: { 有错误: true, 消息: "mkdir：缺少目录名\n用法：mkdir [-p] <目录名/路径> [目录名/路径...]" } };
       }
 
-      const 路径 = 路径组[0];
-      // 解析路径，支持相对路径和绝对路径
-      let 父节点;
-      let 目录名组;
+      // 多目录支持：每个路径独立解析，返回创建任务组
+      const 创建任务组 = [];
+      for (const 路径 of 路径组) {
+        // 解析路径，支持相对路径和绝对路径
+        let 父节点;
+        let 目录名组;
 
-      if (路径.startsWith("/")) {
-        // 绝对路径
-        const 规范化后路径 = 规范化路径(路径);
-        if (规范化后路径 === "/") {
-          return { 有效: false, 错误: { 有错误: true, 消息: "mkdir：目录已存在：/" } };
+        if (路径.startsWith("/")) {
+          // 绝对路径
+          const 规范化后路径 = 规范化路径(路径);
+          if (规范化后路径 === "/") {
+            return { 有效: false, 错误: { 有错误: true, 消息: "mkdir：目录已存在：/" } };
+          }
+          const 部分组 = 规范化后路径.split("/").filter((p) => p);
+          目录名组 = 部分组;
+          父节点 = 根节点;
+        } else {
+          // 相对路径
+          const 部分组 = 路径.split("/").filter((p) => p && p !== ".");
+          if (部分组.length === 0) {
+            return { 有效: false, 错误: { 有错误: true, 消息: "mkdir：无效的目录名" } };
+          }
+          目录名组 = 部分组;
+          父节点 = 当前位置节点;
         }
-        const 部分组 = 规范化后路径.split("/").filter((p) => p);
-        目录名组 = 部分组;
-        父节点 = 根节点;
-      } else {
-        // 相对路径
-        const 部分组 = 路径.split("/").filter((p) => p && p !== ".");
-        if (部分组.length === 0) {
-          return { 有效: false, 错误: { 有错误: true, 消息: "mkdir：无效的目录名" } };
-        }
-        目录名组 = 部分组;
-        父节点 = 当前位置节点;
-      }
 
-      // 处理 ".." 和 "."
-      const 处理后目录组 = [];
-      let 当前节点 = 父节点;
-      for (let i = 0; i < 目录名组.length - 1; i++) {
-        const 名 = 目录名组[i];
-        if (名 === "..") {
-          if (当前节点.父节点) 当前节点 = 当前节点.父节点;
-        } else if (名 !== ".") {
-          const 子节点 = 当前节点.子节点组.find((n) => n.名称 === 名);
-          if (!子节点) {
-            if (!创建父级) {
-              return { 有效: false, 错误: { 有错误: true, 消息: `mkdir：目录不存在：${名}\n使用 -p 参数自动创建父级目录` } };
+        // 处理 ".." 和 "."
+        let 当前节点 = 父节点;
+        for (let i = 0; i < 目录名组.length - 1; i++) {
+          const 名 = 目录名组[i];
+          if (名 === "..") {
+            if (当前节点.父节点) 当前节点 = 当前节点.父节点;
+          } else if (名 !== ".") {
+            const 子节点 = 当前节点.子节点组.find((n) => n.名称 === 名);
+            if (!子节点) {
+              if (!创建父级) {
+                return { 有效: false, 错误: { 有错误: true, 消息: `mkdir：目录不存在：${名}\n使用 -p 参数自动创建父级目录` } };
+              }
+              // 创建中间目录
+              const 新目录 = 创建节点("目录", 名, 当前节点);
+              新目录.x = 当前节点.x + 当前节点.宽 + 配置.布局.子节点水平间距;
+              新目录.y = 当前节点.y;
+              新目录.固定位置 = true;
+              当前节点.子节点组.push(新目录);
+              节点表.set(新目录.id, 新目录);
+              当前节点 = 新目录;
+            } else if (子节点.类型 !== "目录") {
+              return { 有效: false, 错误: { 有错误: true, 消息: `mkdir：${名} 不是目录` } };
+            } else {
+              当前节点 = 子节点;
             }
-            // 创建中间目录
-            const 新目录 = 创建节点("目录", 名, 当前节点);
-            新目录.x = 当前节点.x + 当前节点.宽 + 配置.布局.子节点水平间距;
-            新目录.y = 当前节点.y;
-            新目录.固定位置 = true;
-            当前节点.子节点组.push(新目录);
-            节点表.set(新目录.id, 新目录);
-            当前节点 = 新目录;
-          } else if (子节点.类型 !== "目录") {
-            return { 有效: false, 错误: { 有错误: true, 消息: `mkdir：${名} 不是目录` } };
-          } else {
-            当前节点 = 子节点;
           }
         }
-      }
 
-      const 最终目录名 = 目录名组[目录名组.length - 1];
-      if (最终目录名 === ".." || 最终目录名 === ".") {
-        return { 有效: false, 错误: { 有错误: true, 消息: "mkdir：无效的目录名" } };
-      }
-
-      const 重复 = 当前节点.子节点组.find((n) => n.名称 === 最终目录名);
-      if (重复) {
-        if (创建父级) {
-          // -p 模式下已存在则静默成功
-          return { 有效: true, 命令: "mkdir", 静默忽略: true };
+        const 最终目录名 = 目录名组[目录名组.length - 1];
+        if (最终目录名 === ".." || 最终目录名 === ".") {
+          return { 有效: false, 错误: { 有错误: true, 消息: "mkdir：无效的目录名" } };
         }
-        return { 有效: false, 错误: { 有错误: true, 消息: `mkdir：已存在同名项：${最终目录名}` } };
+
+        const 重复 = 当前节点.子节点组.find((n) => n.名称 === 最终目录名);
+        if (重复) {
+          if (创建父级) {
+            // -p 模式下已存在则静默成功
+            continue;
+          }
+          return { 有效: false, 错误: { 有错误: true, 消息: `mkdir：已存在同名项：${最终目录名}` } };
+        }
+
+        创建任务组.push({ 名称: 最终目录名, 父节点: 当前节点 });
       }
 
-      return 包装({ 有效: true, 命令: "mkdir", 名称: 最终目录名, 父节点: 当前节点, 创建父级 });
+      if (创建任务组.length === 0) {
+        // -p 模式下全部已存在
+        return { 有效: true, 命令: "mkdir", 静默忽略: true };
+      }
+
+      return 包装({ 有效: true, 命令: "mkdir", 创建任务组, 创建父级 });
     }
 
     case "rmdir": {
       if (参数组.length === 0) {
-        return { 有效: false, 错误: { 有错误: true, 消息: "rmdir：缺少目录名\n用法：rmdir <目录名>" } };
+        return { 有效: false, 错误: { 有错误: true, 消息: "rmdir：缺少目录名\n用法：rmdir <目录名/路径>" } };
       }
-      if (参数组.length > 1) {
-        return { 有效: false, 错误: { 有错误: true, 消息: "rmdir：参数过多\n用法：rmdir <目录名>" } };
+
+      // 花括号展开：parent/{a,b} → parent/a parent/b
+      const 路径组 = [];
+      for (const 参数 of 参数组) {
+        路径组.push(...展开花括号(参数));
       }
-      const 名称 = 参数组[0];
-      if (名称.includes("/") && 名称 !== "/") {
-        return { 有效: false, 错误: { 有错误: true, 消息: "rmdir：请使用目录名而非路径\n用法：rmdir <目录名>" } };
+
+      // 多目录支持：逐个解析路径，返回目标组
+      const 目标组 = [];
+      for (const 路径 of 路径组) {
+        const 目标节点 = 解析相对路径(路径);
+        if (!目标节点) {
+          return { 有效: false, 错误: { 有错误: true, 消息: `rmdir：目录不存在：${路径}` } };
+        }
+        if (目标节点.类型 !== "目录") {
+          return { 有效: false, 错误: { 有错误: true, 消息: `rmdir：${路径} 不是目录\n请使用 rm 删除文件` } };
+        }
+        if (目标节点 === 根节点) {
+          return { 有效: false, 错误: { 有错误: true, 消息: "rmdir：不能删除根目录 /" } };
+        }
+        if (目标节点.子节点组.length > 0) {
+          return { 有效: false, 错误: { 有错误: true, 消息: `rmdir：目录非空：${路径}\n请先删除目录内的所有内容` } };
+        }
+        目标组.push(目标节点);
       }
-      const 目标节点 = 当前位置节点.子节点组.find((n) => n.名称 === 名称);
-      if (!目标节点) {
-        return { 有效: false, 错误: { 有错误: true, 消息: `rmdir：目录不存在：${名称}` } };
-      }
-      if (目标节点.类型 !== "目录") {
-        return { 有效: false, 错误: { 有错误: true, 消息: `rmdir：${名称} 不是目录\n请使用 rm 删除文件` } };
-      }
-      if (目标节点.子节点组.length > 0) {
-        return { 有效: false, 错误: { 有错误: true, 消息: `rmdir：目录非空：${名称}\n请先删除目录内的所有内容` } };
-      }
-      return 包装({ 有效: true, 命令: "rmdir", 目标: 目标节点, 名称 });
+
+      return 包装({ 有效: true, 命令: "rmdir", 目标组 });
     }
 
     case "rm": {
@@ -2052,51 +2135,109 @@ function 解析命令(输入) {
       }
 
       if (名称组.length === 0) {
-        return { 有效: false, 错误: { 有错误: true, 消息: "rm：缺少文件名\n用法：rm [-f] [-r] <文件名>" } };
-      }
-      if (名称组.length > 1) {
-        return { 有效: false, 错误: { 有错误: true, 消息: "rm：一次只能删除一个文件\n用法：rm [-f] [-r] <文件名>" } };
-      }
-      if (名称组[0].includes("/") && 名称组[0] !== "/") {
-        return { 有效: false, 错误: { 有错误: true, 消息: "rm：请使用文件名而非路径\n用法：rm [-f] [-r] <文件名>" } };
+        return { 有效: false, 错误: { 有错误: true, 消息: "rm：缺少文件名\n用法：rm [-f] [-r] <文件名/路径> [文件名/路径...]" } };
       }
 
-      const 名称 = 名称组[0];
-      const 目标节点 = 当前位置节点.子节点组.find((n) => n.名称 === 名称);
-      if (!目标节点) {
-        if (强制) {
-          return { 有效: false, 静默忽略: true };
-        }
-        return { 有效: false, 错误: { 有错误: true, 消息: `rm：文件不存在：${名称}` } };
+      // 花括号展开：parent/{a,b} → parent/a parent/b
+      const 展开名称组 = [];
+      for (const 名称 of 名称组) {
+        展开名称组.push(...展开花括号(名称));
       }
-      if (目标节点.类型 === "目录") {
-        if (!递归) {
-          return { 有效: false, 错误: { 有错误: true, 消息: `rm：${名称} 是目录\n请使用 rm -r 或 rmdir 删除目录` } };
+
+      // 多目标支持：逐个解析路径，返回目标组
+      const 目标组 = [];
+      for (const 名称 of 展开名称组) {
+        const 目标节点 = 解析相对路径(名称);
+        if (!目标节点) {
+          if (强制) {
+            return { 有效: false, 静默忽略: true };
+          }
+          return { 有效: false, 错误: { 有错误: true, 消息: `rm：文件不存在：${名称}` } };
         }
-        return 包装({ 有效: true, 命令: "rm", 目标: 目标节点, 名称, 递归: true, 强制 });
+        if (目标节点.类型 === "目录") {
+          if (!递归) {
+            return { 有效: false, 错误: { 有错误: true, 消息: `rm：${名称} 是目录\n请使用 rm -r 或 rmdir 删除目录` } };
+          }
+          目标组.push({ 目标: 目标节点, 递归: true });
+        } else {
+          目标组.push({ 目标: 目标节点, 递归: false });
+        }
       }
-      return 包装({ 有效: true, 命令: "rm", 目标: 目标节点, 名称, 递归: false, 强制 });
+
+      return 包装({ 有效: true, 命令: "rm", 目标组, 强制 });
     }
 
     case "touch": {
       if (参数组.length === 0) {
-        return { 有效: false, 错误: { 有错误: true, 消息: "touch：缺少文件名\n用法：touch <文件名>" } };
+        return { 有效: false, 错误: { 有错误: true, 消息: "touch：缺少文件名\n用法：touch <文件名/路径> [文件名/路径...]" } };
       }
-      if (参数组.length > 1) {
-        return { 有效: false, 错误: { 有错误: true, 消息: "touch：参数过多\n用法：touch <文件名>" } };
+
+      // 花括号展开：dir/{a,b} → dir/a dir/b
+      const 展开参数组 = [];
+      for (const 原始参数 of 参数组) {
+        if (原始参数.startsWith("-")) {
+          return { 有效: false, 错误: { 有错误: true, 消息: "touch：不支持该参数\n用法：touch <文件名/路径> [文件名/路径...]" } };
+        }
+        展开参数组.push(...展开花括号(原始参数));
       }
-      const 名称 = 参数组[0];
-      if (名称.startsWith("-")) {
-        return { 有效: false, 错误: { 有错误: true, 消息: "touch：不支持该参数\n用法：touch <文件名>" } };
+
+      const 创建任务组 = [];
+      for (const 参数 of 展开参数组) {
+        // 解析路径，支持相对路径和绝对路径
+        let 父节点;
+        let 文件名;
+
+        if (参数.startsWith("/")) {
+          // 绝对路径
+          const 规范化后路径 = 规范化路径(参数);
+          const 部分组 = 规范化后路径.split("/").filter((p) => p);
+          if (部分组.length === 0) {
+            return { 有效: false, 错误: { 有错误: true, 消息: "touch：无效的文件路径" } };
+          }
+          文件名 = 部分组[部分组.length - 1];
+          // 解析父目录
+          父节点 = 根节点;
+          for (let i = 0; i < 部分组.length - 1; i++) {
+            const 名 = 部分组[i];
+            const 子节点 = 父节点.子节点组.find((n) => n.名称 === 名);
+            if (!子节点 || 子节点.类型 !== "目录") {
+              return { 有效: false, 错误: { 有错误: true, 消息: `touch：目录不存在：${部分组.slice(0, i + 1).join("/")}` } };
+            }
+            父节点 = 子节点;
+          }
+        } else {
+          // 相对路径
+          const 部分组 = 参数.split("/").filter((p) => p && p !== ".");
+          if (部分组.length === 0) {
+            return { 有效: false, 错误: { 有错误: true, 消息: "touch：无效的文件名" } };
+          }
+          文件名 = 部分组[部分组.length - 1];
+          if (文件名 === ".." || 文件名 === ".") {
+            return { 有效: false, 错误: { 有错误: true, 消息: "touch：无效的文件名" } };
+          }
+          // 解析父目录
+          父节点 = 当前位置节点;
+          for (let i = 0; i < 部分组.length - 1; i++) {
+            const 名 = 部分组[i];
+            if (名 === "..") {
+              if (父节点.父节点) 父节点 = 父节点.父节点;
+            } else {
+              const 子节点 = 父节点.子节点组.find((n) => n.名称 === 名);
+              if (!子节点 || 子节点.类型 !== "目录") {
+                return { 有效: false, 错误: { 有错误: true, 消息: `touch：目录不存在：${部分组.slice(0, i + 1).join("/")}` } };
+              }
+              父节点 = 子节点;
+            }
+          }
+        }
+
+        const 重复 = 父节点.子节点组.find((n) => n.名称 === 文件名);
+        if (重复) {
+          return { 有效: false, 静默忽略: true, 消息: `touch：${参数} 已存在（已更新）` };
+        }
+        创建任务组.push({ 名称: 文件名, 父节点 });
       }
-      if (名称.includes("/")) {
-        return { 有效: false, 错误: { 有错误: true, 消息: "touch：文件名不能包含 /" } };
-      }
-      const 重复 = 当前位置节点.子节点组.find((n) => n.名称 === 名称);
-      if (重复) {
-        return { 有效: false, 静默忽略: true, 消息: `touch：${名称} 已存在（已更新）` };
-      }
-      return 包装({ 有效: true, 命令: "touch", 名称 });
+      return 包装({ 有效: true, 命令: "touch", 创建任务组 });
     }
 
     case "cp": {
@@ -2312,39 +2453,51 @@ function 执行命令() {
     }
     case "mkdir": {
       if (解析.静默忽略) break; // -p 模式下已存在则静默成功
-      const 权限错误 = 解析.提权 ? null : 检查目录写权限错误("mkdir", 解析.父节点);
-      if (权限错误) {
-        显示错误(权限错误 + "\n提示：可使用 sudo 提权执行");
-        break;
+      // 多目录支持：逐个校验并执行
+      for (const 任务 of 解析.创建任务组) {
+        const 权限错误 = 解析.提权 ? null : 检查目录写权限错误("mkdir", 任务.父节点);
+        if (权限错误) {
+          显示错误(权限错误 + "\n提示：可使用 sudo 提权执行");
+          break;
+        }
+        执行mkdir(任务.名称, 任务.父节点);
       }
-      执行mkdir(解析.名称, 解析.父节点);
       break;
     }
     case "rmdir": {
-      const 权限错误 = 解析.提权 ? null : (解析.目标.父节点 ? 检查目录写权限错误("rmdir", 解析.目标.父节点) : null);
-      if (权限错误) {
-        显示错误(权限错误 + "\n提示：可使用 sudo 提权执行");
-        break;
+      // 多目标支持：逐个校验并执行
+      for (const 目标 of 解析.目标组) {
+        const 权限错误 = 解析.提权 ? null : (目标.父节点 ? 检查目录写权限错误("rmdir", 目标.父节点) : null);
+        if (权限错误) {
+          显示错误(权限错误 + "\n提示：可使用 sudo 提权执行");
+          break;
+        }
+        执行rmdir(目标);
       }
-      执行rmdir(解析.目标);
       break;
     }
     case "rm": {
-      const 权限错误 = 解析.提权 ? null : 检查rm错误(解析.目标, 解析.递归);
-      if (权限错误) {
-        显示错误(权限错误 + "\n提示：可使用 sudo 提权执行");
-        break;
+      // 多目标支持：逐个校验并执行
+      for (const 任务 of 解析.目标组) {
+        const 权限错误 = 解析.提权 ? null : 检查rm错误(任务.目标, 任务.递归);
+        if (权限错误) {
+          显示错误(权限错误 + "\n提示：可使用 sudo 提权执行");
+          break;
+        }
+        执行rm(任务.目标, 任务.递归);
       }
-      执行rm(解析.目标, 解析.递归);
       break;
     }
     case "touch": {
-      const 权限错误 = 解析.提权 ? null : 检查目录写权限错误("touch", 当前位置节点);
-      if (权限错误) {
-        显示错误(权限错误 + "\n提示：可使用 sudo 提权执行");
-        break;
+      // 多目标支持：逐个校验并执行
+      for (const 任务 of 解析.创建任务组) {
+        const 权限错误 = 解析.提权 ? null : 检查目录写权限错误("touch", 任务.父节点);
+        if (权限错误) {
+          显示错误(权限错误 + "\n提示：可使用 sudo 提权执行");
+          break;
+        }
+        执行touch(任务.名称, 任务.父节点);
       }
-      执行touch(解析.名称);
       break;
     }
     case "cp": {
@@ -2727,15 +2880,15 @@ function 执行rm(目标节点, 递归) {
   布局并动画();
 }
 
-function 执行touch(名称) {
-  const 新节点 = 创建节点("文件", 名称, 当前位置节点);
+function 执行touch(名称, 父节点 = 当前位置节点) {
+  const 新节点 = 创建节点("文件", 名称, 父节点);
   测量节点尺寸(新节点);
   // 寻找不重叠且靠近当前节点的位置
-  const 空位 = 寻找近处空位(当前位置节点, 新节点.宽, 新节点.高);
+  const 空位 = 寻找近处空位(父节点, 新节点.宽, 新节点.高);
   新节点.x = 空位.x;
   新节点.y = 空位.y;
   新节点.固定位置 = true; // 固定位置，不参与自动布局
-  当前位置节点.子节点组.push(新节点);
+  父节点.子节点组.push(新节点);
   节点表.set(新节点.id, 新节点);
   布局并动画();
 }
@@ -3171,7 +3324,7 @@ function 渲染历史记录表格() {
     行.appendChild(序号单元格);
 
     const 命令单元格 = document.createElement("td");
-    命令单元格.textContent = 记录.命令;
+    命令单元格.innerHTML = 高亮命令语法(记录.命令);
     行.appendChild(命令单元格);
 
     const 结果单元格 = document.createElement("td");
@@ -3226,6 +3379,105 @@ function 导出历史记录() {
 画布.addEventListener("mousemove", 处理鼠标移动);
 画布.addEventListener("mouseup", 处理鼠标松开);
 画布.addEventListener("mouseleave", 处理鼠标松开);
+
+// ==================== 命令输入区拖拽 ====================
+// 拖拽热区：边框向内 2px、向外 6px
+const 命令输入区拖拽 = {
+  激活: false,
+  起始X: 0,
+  起始Y: 0,
+  偏移X: 0,
+  偏移Y: 0,
+  按下时宽: 0,
+  按下时高: 0,
+};
+
+function 命令输入区热区判定(事件) {
+  const 矩形 = 命令输入区.getBoundingClientRect();
+  const 内边距 = 2;
+  const x = 事件.clientX;
+  const y = 事件.clientY;
+
+  // 命令提示符区域始终可拖拽
+  const 提示符矩形 = 命令提示符.getBoundingClientRect();
+  if (x >= 提示符矩形.left && x <= 提示符矩形.right && y >= 提示符矩形.top && y <= 提示符矩形.bottom) {
+    return true;
+  }
+
+  // 不在元素范围内
+  if (x < 矩形.left || x > 矩形.right || y < 矩形.top || y > 矩形.bottom) {
+    return false;
+  }
+
+  // 在上边框热区（向内 2px）
+  if (y >= 矩形.top && y <= 矩形.top + 内边距) return true;
+  // 在下边框热区（向内 2px）
+  if (y >= 矩形.bottom - 内边距 && y <= 矩形.bottom) return true;
+  // 在左边框热区（向内 2px）
+  if (x >= 矩形.left && x <= 矩形.left + 内边距) return true;
+  // 在右边框热区（向内 2px）
+  if (x >= 矩形.right - 内边距 && x <= 矩形.right) return true;
+
+  return false;
+}
+
+命令输入区.addEventListener("mousedown", (事件) => {
+  if (事件.button !== 0) return; // 仅左键
+  if (!命令输入区热区判定(事件)) return;
+
+  // 阻止文本选择
+  事件.preventDefault();
+
+  const 矩形 = 命令输入区.getBoundingClientRect();
+  命令输入区拖拽.激活 = true;
+  命令输入区拖拽.起始X = 事件.clientX;
+  命令输入区拖拽.起始Y = 事件.clientY;
+  命令输入区拖拽.按下时宽 = 矩形.width;
+  命令输入区拖拽.按下时高 = 矩形.height;
+  // 记录元素左上角当前视口坐标作为拖拽基准
+  命令输入区拖拽.基准X = 矩形.left;
+  命令输入区拖拽.基准Y = 矩形.top;
+  // 将 fixed 定位改为以当前位置为基准
+  命令输入区.style.left = 矩形.left + "px";
+  命令输入区.style.top = 矩形.top + "px";
+  命令输入区.style.transform = "none";
+  命令输入区.style.cursor = 'url("/Images/Common/鼠标-移动抓手.cur"), grabbing';
+});
+
+document.addEventListener("mousemove", (事件) => {
+  if (!命令输入区拖拽.激活) return;
+
+  const 视口宽 = window.innerWidth;
+  const 视口高 = window.innerHeight;
+  const 元素宽 = 命令输入区拖拽.按下时宽;
+  const 元素高 = 命令输入区拖拽.按下时高;
+
+  let 新X = 命令输入区拖拽.基准X + (事件.clientX - 命令输入区拖拽.起始X);
+  let 新Y = 命令输入区拖拽.基准Y + (事件.clientY - 命令输入区拖拽.起始Y);
+
+  // 限制在视口内：left 0 ~ 视口宽-元素宽，top 0 ~ 视口高-元素高
+  新X = Math.max(0, Math.min(新X, 视口宽 - 元素宽));
+  新Y = Math.max(0, Math.min(新Y, 视口高 - 元素高));
+
+  命令输入区.style.left = 新X + "px";
+  命令输入区.style.top = 新Y + "px";
+});
+
+document.addEventListener("mouseup", () => {
+  if (!命令输入区拖拽.激活) return;
+  命令输入区拖拽.激活 = false;
+  命令输入区.style.cursor = "";
+});
+
+// 热区悬停时光标提示可拖拽
+命令输入区.addEventListener("mousemove", (事件) => {
+  if (命令输入区拖拽.激活) return;
+  if (命令输入区热区判定(事件)) {
+    命令输入区.style.cursor = 'url("/Images/Common/鼠标-移动抓手.cur"), grab';
+  } else {
+    命令输入区.style.cursor = "";
+  }
+});
 
 // 在指定区域松开鼠标后自动聚焦命令输入框
 function 聚焦命令输入框() {
