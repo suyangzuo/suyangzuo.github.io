@@ -345,7 +345,7 @@ function 绘制曲线切换(区域, 内边距, 左侧基准) {
 
 function 绘制贝塞尔编辑(区域, 内边距) {
   const 编辑顶部 = 区域.y + 内边距 + 52;
-  const 编辑高 = 区域.height * 0.6;
+  const 编辑高 = Math.max(区域.height * 0.6 - 150, 100);
   const 左侧基准 = 内边距 + 布局样式配置.贝塞尔左侧额外间距;
   const 右侧基准 = 内边距;
   const 编辑宽 = 区域.width - 左侧基准 - 右侧基准;
@@ -570,7 +570,7 @@ function 绘制坐标轴与刻度(编辑区) {
 
 function 绘制滑块(区域, 内边距) {
   界面引用.滑轨列表 = [];
-  const 起始Y = 区域.y + 内边距 + 80 + 区域.height * 0.6 + 100;
+  const 起始Y = 区域.y + 内边距 + 80 + 区域.height * 0.6 + 100 - 150;
   const 标签宽 = 120;
   const 轨道宽 = Math.max(160, 区域.width - 内边距 * 2 - 标签宽 * 2 - 20);
   const 轨道高 = 6;
