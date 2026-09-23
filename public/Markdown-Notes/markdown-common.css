@@ -22,6 +22,11 @@ hr {
   margin: 30px 0;
 }
 
+.hljs-comment,
+.hljs-quote {
+  color: #626d7d !important;
+}
+
 .top-banner,
 #公共页脚 {
   box-sizing: border-box;
@@ -107,7 +112,7 @@ body {
 .容器区 {
   width: 1000px;
   height: fit-content;
-  margin: 25px auto;
+  margin: 25px auto 800px;
   position: relative;
 }
 
@@ -815,7 +820,7 @@ a:visited {
   scroll-margin-top: 50px;
   font-size: 1.15em;
   font-weight: 600;
-  color: #b8d4e8;
+  color: cadetblue;
   margin: 2em 0 0.75em 0;
   padding: 0 0 8px 0;
   background: none;
