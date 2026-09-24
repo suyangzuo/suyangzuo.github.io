@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
@@ -27,11 +27,123 @@
 
     <section class="Linux用户和组总区 总区">
       <script src="../../Scripts/html-include.js" target="../control.html" position="afterbegin"></script>
-      <p class="交互标题">Linux 用户和组</p>
+      <p class="交互标题">Linux 用户<span style="color: #888; margin: 0 5px; font-size: 0.95em">和</span>组</p>
 
       <div class="Canvas容器">
         <canvas id="canvas"></canvas>
+        <canvas id="用户和组"></canvas>
+      </div>
+
+      <div class="设置区">
+        <div class="初始化模式组">
+          <span class="设置组标签">初始化模式</span>
+          <label class="初始化模式标签">
+            <input type="radio" name="初始化模式" value="随机" checked />
+            <span class="打勾框"></span>
+            <span>随机创建</span>
+          </label>
+          <label class="初始化模式标签">
+            <input type="radio" name="初始化模式" value="仅根目录" />
+            <span class="打勾框"></span>
+            <span>仅根目录</span>
+          </label>
+          <label class="初始化模式标签">
+            <input type="radio" name="初始化模式" value="模拟真实" />
+            <span class="打勾框"></span>
+            <span>模拟真实</span>
+          </label>
+        </div>
+
+        <div class="权限模式组">
+          <span class="设置组标签">权限模式</span>
+          <label class="初始化模式标签">
+            <input type="radio" id="权限模式-字母" name="权限模式" value="字母" checked />
+            <span class="打勾框"></span>
+            <span>字母模式</span>
+          </label>
+          <label class="初始化模式标签">
+            <input type="radio" id="权限模式-数字" name="权限模式" value="数字" />
+            <span class="打勾框"></span>
+            <span>数字模式</span>
+          </label>
+        </div>
+
+        <div class="其它选项组">
+          <span class="设置组标签">其它选项</span>
+          <label class="复选标签">
+            <input type="checkbox" id="其它选项-突出生效权限" checked />
+            <span class="打勾框"></span>
+            <span>突出生效权限</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="提示区">
+        <button class="历史记录按钮" id="历史记录按钮" title="历史记录">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>历史记录</span>
+        </button>
+        <div class="提示容器">
+          按住
+          <img
+            class="按键-图标"
+            src="./Images/鼠标滚轮.png"
+            style="scale: 1.25; filter: brightness(1.5)"
+            alt="鼠标右键"
+          />
+          可拖拽视图
+        </div>
+        <div class="提示容器">按住 <img class="按键-图标" src="./Images/Ctrl.png" alt="鼠标右键" /> 可单独拖拽节点</div>
+      </div>
+
+      <div class="路径显示区" id="路径显示区"></div>
+      <div class="命令输入区">
+        <span class="命令提示符" id="命令提示符">/</span>
+        <div class="命令输入包装">
+          <div class="命令高亮层" id="命令高亮层"></div>
+          <input
+            type="text"
+            class="命令输入框"
+            id="命令输入框"
+            placeholder="输入命令，如: chmod 755 文件、chmod u+x 脚本.sh、chmod -R 644 目录…"
+            autocomplete="off"
+            spellcheck="false"
+          />
+        </div>
+        <button class="命令执行按钮" id="命令执行按钮" title="执行">
+          <i class="fa-solid fa-play"></i>
+        </button>
       </div>
     </section>
+
+    <!-- 历史记录模态对话框 -->
+    <div class="历史记录模态" id="历史记录模态">
+      <div class="历史记录对话框">
+        <div class="历史记录头部">
+          <h2 class="历史记录标题">命令历史记录</h2>
+          <div class="历史记录头部按钮组">
+            <button class="历史记录导出按钮" id="历史记录导出按钮" title="导出为 Markdown">
+              <i class="fa-solid fa-download"></i>
+              <span>导出</span>
+            </button>
+            <button class="历史记录关闭按钮" id="历史记录关闭按钮" title="关闭">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+        <div class="历史记录表格容器">
+          <table class="历史记录表格">
+            <thead>
+              <tr>
+                <th>序号</th>
+                <th>命令</th>
+                <th>结果</th>
+              </tr>
+            </thead>
+            <tbody id="历史记录表格体"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
