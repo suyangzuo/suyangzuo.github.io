@@ -227,6 +227,16 @@ const 配置 = {
     停留时间: 2200,
     消失时间: 300,
   },
+  成功: {
+    背景色: "rgba(30, 130, 60, 0.94)",
+    文字颜色: "#fff",
+    字体: "14px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif",
+    圆角: 8,
+    内边距: 12,
+    最大宽度: 420,
+    停留时间: 2200,
+    消失时间: 300,
+  },
   交互: {
     拖拽阈值: 5,
     点击时间阈值: 300,
@@ -375,20 +385,24 @@ function 查找主目录() {
   return 所有节点.find((n) => n.是主目录) || null;
 }
 
-// 更新主目录标记：确保 home 目录下第一个目录子节点为主目录
+// 更新主目录标记：清除旧标记，并优先把当前用户的主目录标记为主目录（~ 指向它）
+// 当前用户没有主目录时，回退为 home 目录下第一个目录子节点
 function 更新主目录() {
   const home目录 = 查找home目录();
-  if (!home目录) {
-    const 旧主目录 = 查找主目录();
-    if (旧主目录) 旧主目录.是主目录 = false;
+  const 所有节点 = 根节点 ? 收集所有节点(根节点) : [];
+  // 清除全部旧标记
+  for (const 节点 of 所有节点) 节点.是主目录 = false;
+
+  if (!home目录) return;
+
+  // 优先当前用户的主目录（/home/当前用户）
+  const 期望名称 = 面板当前用户;
+  const 用户主目录 = home目录.子节点组.find((n) => n.类型 === "目录" && n.名称 === 期望名称);
+  if (用户主目录) {
+    用户主目录.是主目录 = true;
     return;
   }
-  // 当前主目录仍然有效（在 home 下）则不变
-  const 当前主目录 = 查找主目录();
-  if (当前主目录 && 当前主目录.父节点 === home目录) return;
-  // 清除失效标记
-  if (当前主目录) 当前主目录.是主目录 = false;
-  // 将 home 下第一个目录子节点设为主目录
+  // 回退：home 目录下第一个目录子节点
   const 第一个目录 = home目录.子节点组.find((n) => n.类型 === "目录");
   if (第一个目录) 第一个目录.是主目录 = true;
 }
@@ -1311,7 +1325,7 @@ function 绘制节点(节点) {
 function 绘制错误提示() {
   if (!错误提示组.length) return;
   const 提示 = 错误提示组[0];
-  const 配置错误 = 提示.类型 === "警告" ? 配置.警告 : 配置.错误;
+  const 配置错误 = 提示.类型 === "警告" ? 配置.警告 : 提示.类型 === "成功" ? 配置.成功 : 配置.错误;
 
   const 行高 = 22;
   const 行组 = 提示.消息.split("\n");
@@ -2091,7 +2105,7 @@ const 命令高亮层 = document.getElementById("命令高亮层");
 const 命令输入区 = document.querySelector(".命令输入区");
 
 function 高亮命令语法(文本) {
-  const 有效命令组 = ["cd", "mkdir", "rmdir", "rm", "touch", "cp", "mv", "chmod"];
+  const 有效命令组 = ["cd", "mkdir", "rmdir", "rm", "touch", "cp", "mv", "chmod", "useradd", "su", "usermod", "userdel", "groupdel"];
   const 转义 = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   // 路径中的特殊字符用单独颜色高亮
   const 转义路径 = (s) =>
@@ -2172,7 +2186,7 @@ function 解析相对路径(路径) {
   if (路径 === "~") {
     const 主目录 = 查找主目录();
     if (主目录) return 主目录;
-    return 解析路径("/home/user");
+    return 解析路径("/home/" + 面板当前用户);
   }
   if (路径.startsWith("~/")) {
     const 主目录 = 查找主目录();
@@ -2191,7 +2205,7 @@ function 解析相对路径(路径) {
       }
       return 节点;
     }
-    路径 = "/home/user" + 路径.slice(1);
+    路径 = "/home/" + 面板当前用户 + 路径.slice(1);
   }
   if (路径.startsWith("/")) {
     // 绝对路径：从根开始
@@ -2263,10 +2277,10 @@ function 智能分割命令(输入) {
   return 结果;
 }
 
-// 将路径开头的 ~ 展开为主目录的绝对路径（~ 或 ~/... → 主目录路径/...）
+// 将路径开头的 ~ 展开为当前用户主目录的绝对路径（~ 或 ~/... → 主目录路径/...）
 function 展开主目录路径(路径) {
   if (路径 !== "~" && !路径.startsWith("~/")) return 路径;
-  let 主目录路径 = "/home/user";
+  let 主目录路径 = "/home/" + 面板当前用户;
   const 主目录 = 查找主目录();
   if (主目录) {
     const 部分组 = [];
@@ -2303,15 +2317,21 @@ function 解析命令(输入) {
   // 统一展开参数开头的 ~ 为主目录绝对路径，让所有命令都能识别 ~
   const 参数组 = 部分组.slice(1).map(展开主目录路径);
 
-  const 有效命令组 = ["cd", "mkdir", "rmdir", "rm", "touch", "cp", "mv", "chmod"];
+  const 有效命令组 = ["cd", "mkdir", "rmdir", "rm", "touch", "cp", "mv", "chmod", "useradd", "su", "usermod", "userdel", "groupdel"];
   if (!有效命令组.includes(命令)) {
     return {
       有效: false,
       错误: {
         有错误: true,
-        消息: `未知命令：${命令}\n支持：cd / mkdir / rmdir / rm / touch / cp / mv / chmod（可加 sudo 前缀提权）`,
+        消息: `未知命令：${命令}\n支持：cd / mkdir / rmdir / rm / touch / cp / mv / chmod / useradd / su / usermod / userdel / groupdel（可加 sudo 前缀提权）`,
       },
     };
+  }
+
+  // 需要 root 提权的管理类命令：未加 sudo 时直接报错
+  const 需提权命令组 = ["useradd", "usermod", "userdel", "groupdel"];
+  if (需提权命令组.includes(命令) && !提权) {
+    return { 有效: false, 错误: { 有错误: true, 消息: `${命令}：权限不足\n该命令需要 root 权限，请使用 sudo` } };
   }
 
   // 包装有效结果：附加 提权 标记供执行时跳过权限检查
@@ -2960,6 +2980,116 @@ function 解析命令(输入) {
       }
       return 包装({ 有效: true, 命令: "mv", 任务组, 目标父节点 });
     }
+
+    // ==================== 用户与组命令 ====================
+    case "useradd": {
+      let 创建主目录 = false;
+      let 登录shell = null;
+      let 名称 = null;
+      for (let i = 0; i < 参数组.length; i++) {
+        const 参数 = 参数组[i];
+        if (参数 === "-m") {
+          创建主目录 = true;
+        } else if (参数 === "-s") {
+          const 值 = 参数组[++i];
+          if (!值) return { 有效: false, 错误: { 有错误: true, 消息: "useradd：-s 需要指定 shell 路径\n用法：useradd [-m] [-s <shell>] <用户名>" } };
+          登录shell = 值;
+        } else if (参数.startsWith("-")) {
+          return { 有效: false, 错误: { 有错误: true, 消息: `useradd：无效参数 ${参数}\n支持：-m（创建主目录）-s（指定登录shell）` } };
+        } else if (!名称) {
+          名称 = 参数;
+        } else {
+          return { 有效: false, 错误: { 有错误: true, 消息: "useradd：参数过多\n用法：useradd [-m] [-s <shell>] <用户名>" } };
+        }
+      }
+      if (!名称) return { 有效: false, 错误: { 有错误: true, 消息: "useradd：缺少用户名\n用法：useradd [-m] [-s <shell>] <用户名>" } };
+      if (面板用户组.some((u) => u.名称 === 名称)) return { 有效: false, 错误: { 有错误: true, 消息: `useradd：用户已存在：${名称}` } };
+      return 包装({ 有效: true, 命令: "useradd", 名称, 选项: { 创建主目录, 登录shell } });
+    }
+
+    case "su": {
+      let 切换主目录 = false;
+      let 名称 = null;
+      for (const 参数 of 参数组) {
+        if (参数 === "-") 切换主目录 = true;
+        else if (参数.startsWith("-")) return { 有效: false, 错误: { 有错误: true, 消息: `su：无效参数 ${参数}\n支持：su [-] [用户名]` } };
+        else if (!名称) 名称 = 参数;
+        else return { 有效: false, 错误: { 有错误: true, 消息: "su：参数过多\n用法：su [-] [用户名]" } };
+      }
+      const 目标 = 名称 ? 面板用户组.find((u) => u.名称 === 名称) : null;
+      if (名称 && !目标) return { 有效: false, 错误: { 有错误: true, 消息: `su：用户不存在：${名称}` } };
+      return 包装({ 有效: true, 命令: "su", 目标用户: 目标 || null, 切换主目录 });
+    }
+
+    case "usermod": {
+      let 新名称 = null;
+      let 新主目录 = null;
+      let 移动主目录 = false;
+      let 登录shell = null;
+      let 主组 = null;
+      let 目标用户 = null;
+      for (let i = 0; i < 参数组.length; i++) {
+        const 参数 = 参数组[i];
+        if (参数 === "-l") {
+          const 值 = 参数组[++i];
+          if (!值) return { 有效: false, 错误: { 有错误: true, 消息: "usermod：-l 需要指定新用户名\n用法：usermod -l <新用户名> <旧用户名>" } };
+          新名称 = 值;
+        } else if (参数 === "-d") {
+          const 值 = 参数组[++i];
+          if (!值) return { 有效: false, 错误: { 有错误: true, 消息: "usermod：-d 需要指定主目录路径\n用法：usermod -d <新主目录> [-m] <用户名>" } };
+          新主目录 = 值;
+        } else if (参数 === "-m") {
+          移动主目录 = true;
+        } else if (参数 === "-s") {
+          const 值 = 参数组[++i];
+          if (!值) return { 有效: false, 错误: { 有错误: true, 消息: "usermod：-s 需要指定 shell 路径\n用法：usermod -s <shell> <用户名>" } };
+          登录shell = 值;
+        } else if (参数 === "-g") {
+          const 值 = 参数组[++i];
+          if (!值) return { 有效: false, 错误: { 有错误: true, 消息: "usermod：-g 需要指定主组\n用法：usermod -g <主组> <用户名>" } };
+          主组 = 值;
+        } else if (参数.startsWith("-")) {
+          return { 有效: false, 错误: { 有错误: true, 消息: `usermod：无效参数 ${参数}\n支持：-l（改用户名）-d（改主目录）-m（移动主目录内容）-s（改登录shell）-g（改主组）` } };
+        } else if (!目标用户) {
+          目标用户 = 参数;
+        } else {
+          return { 有效: false, 错误: { 有错误: true, 消息: "usermod：参数过多\n用法：usermod [-l 新名] [-d 新主目录 [-m]] [-s shell] [-g 主组] <用户名>" } };
+        }
+      }
+      if (!目标用户) return { 有效: false, 错误: { 有错误: true, 消息: "usermod：缺少用户名\n用法：usermod [-l 新名] [-d 新主目录 [-m]] [-s shell] [-g 主组] <用户名>" } };
+      const 用户 = 面板用户组.find((u) => u.名称 === 目标用户);
+      if (!用户) return { 有效: false, 错误: { 有错误: true, 消息: `usermod：用户不存在：${目标用户}` } };
+      return 包装({ 有效: true, 命令: "usermod", 用户, 选项: { 新名称, 新主目录, 移动主目录, 登录shell, 主组 } });
+    }
+
+    case "userdel": {
+      let 删除主目录 = false;
+      let 强制 = false;
+      let 名称 = null;
+      for (const 参数 of 参数组) {
+        if (参数 === "-r") 删除主目录 = true;
+        else if (参数 === "-f") 强制 = true;
+        else if (参数.startsWith("-")) return { 有效: false, 错误: { 有错误: true, 消息: `userdel：无效参数 ${参数}\n支持：-r（删除主目录）-f（强制删除）` } };
+        else if (!名称) 名称 = 参数;
+        else return { 有效: false, 错误: { 有错误: true, 消息: "userdel：参数过多\n用法：userdel [-r] [-f] <用户名>" } };
+      }
+      if (!名称) return { 有效: false, 错误: { 有错误: true, 消息: "userdel：缺少用户名\n用法：userdel [-r] [-f] <用户名>" } };
+      const 用户 = 面板用户组.find((u) => u.名称 === 名称);
+      if (!用户) return { 有效: false, 错误: { 有错误: true, 消息: `userdel：用户不存在：${名称}` } };
+      return 包装({ 有效: true, 命令: "userdel", 用户, 选项: { 删除主目录, 强制 } });
+    }
+
+    case "groupdel": {
+      let 名称 = null;
+      for (const 参数 of 参数组) {
+        if (参数.startsWith("-")) return { 有效: false, 错误: { 有错误: true, 消息: `groupdel：无效参数 ${参数}\n用法：groupdel <组名>` } };
+        if (!名称) 名称 = 参数;
+        else return { 有效: false, 错误: { 有错误: true, 消息: "groupdel：参数过多\n用法：groupdel <组名>" } };
+      }
+      if (!名称) return { 有效: false, 错误: { 有错误: true, 消息: "groupdel：缺少组名\n用法：groupdel <组名>" } };
+      if (!面板组组.some((g) => g.名称 === 名称)) return { 有效: false, 错误: { 有错误: true, 消息: `groupdel：组不存在：${名称}` } };
+      return 包装({ 有效: true, 命令: "groupdel", 组名: 名称 });
+    }
   }
 }
 
@@ -3172,6 +3302,26 @@ function 执行命令() {
         }
         执行mv(任务.源, 解析.目标父节点, 任务.新名称);
       }
+      break;
+    }
+    case "useradd": {
+      执行useradd(解析.名称, 解析.选项);
+      break;
+    }
+    case "su": {
+      执行su(解析.目标用户, 解析.切换主目录);
+      break;
+    }
+    case "usermod": {
+      执行usermod(解析.用户, 解析.选项);
+      break;
+    }
+    case "userdel": {
+      执行userdel(解析.用户, 解析.选项);
+      break;
+    }
+    case "groupdel": {
+      执行groupdel(解析.组名);
       break;
     }
   }
@@ -3756,6 +3906,265 @@ function 显示警告(消息) {
     },
   ];
   请求重绘();
+}
+
+function 显示成功(消息) {
+  // 绿色成功提示，行为与错误/警告一致
+  错误提示组 = [
+    {
+      消息,
+      类型: "成功",
+      阶段: "显示",
+      开始时间: performance.now(),
+    },
+  ];
+  请求重绘();
+}
+
+// ==================== 用户与组命令 ====================
+// 同步重绘：用户和组面板 + 主目录标记 + 主画布布局/提示符
+function 同步用户组界面() {
+  绘制用户和组面板();
+  更新主目录();
+  布局并动画();
+  请求重绘();
+  更新提示符();
+}
+
+// 在 home 目录下创建主目录（所有者=用户名，所属组=主组），返回节点或 null
+function 创建用户主目录节点(用户名, 组名) {
+  const home目录 = 查找home目录();
+  if (!home目录) return null;
+  if (home目录.子节点组.some((n) => n.名称 === 用户名)) return null; // 已存在
+  const 节点 = 创建节点("目录", 用户名, home目录);
+  节点.所有者 = 用户名;
+  节点.所属组 = 组名 || 用户名;
+  测量节点尺寸(节点);
+  const 空位 = 寻找近处空位(home目录, 节点.宽, 节点.高);
+  节点.x = 空位.x;
+  节点.y = 空位.y;
+  节点.固定位置 = true;
+  home目录.子节点组.push(节点);
+  节点表.set(节点.id, 节点);
+  return 节点;
+}
+
+function 执行useradd(名称, 选项) {
+  // -m：同步创建主目录；未指定 -m 时仅登记用户信息
+  let 主目录 = "/home/" + 名称;
+  if (选项.创建主目录) {
+    const 节点 = 创建用户主目录节点(名称, 名称);
+    if (节点) 主目录 = "/home/" + 名称;
+  }
+  面板用户组.push({ 名称, 主组: 名称, 附加组组: [], 主目录, 登录shell: 选项.登录shell || 默认登录shell });
+  同步用户组界面();
+}
+
+function 执行su(目标用户, 切换主目录) {
+  const 目标主目录节点 = 查找用户主目录节点(目标用户.名称);
+  if (切换主目录 && !目标主目录节点) {
+    显示错误(`su：${目标用户.名称} 的主目录不存在：/home/${目标用户.名称}`);
+    return;
+  }
+  面板当前用户 = 目标用户.名称;
+  // 主目录标记与 ~ 指向新用户
+  更新主目录();
+  // 更新"当前用户"高亮与连线
+  绘制用户和组面板();
+  // 有 "-" 时切换当前目录到该用户主目录；无 "-" 保持当前目录
+  if (切换主目录) {
+    执行cd(目标主目录节点);
+  } else {
+    布局并动画();
+    请求重绘();
+    更新提示符();
+  }
+}
+
+// 按用户名查找其主目录节点（/home/用户名）
+function 查找用户主目录节点(用户名) {
+  const home目录 = 查找home目录();
+  if (!home目录) return null;
+  return home目录.子节点组.find((n) => n.类型 === "目录" && n.名称 === 用户名) || null;
+}
+
+// 将某用户的所有节点（所有者匹配）改属到新用户名/新主组
+function 批量改属用户节点(旧用户名, 新用户名, 新主组) {
+  for (const 节点 of 收集所有节点(根节点)) {
+    if (节点.所有者 === 旧用户名) {
+      节点.所有者 = 新用户名;
+      节点.所属组 = 新主组;
+    }
+  }
+}
+
+function 执行usermod(用户, 选项) {
+  const 旧名称 = 用户.名称;
+
+  // -g：修改主组（先校验组存在）
+  if (选项.主组) {
+    if (!面板组组.some((g) => g.名称 === 选项.主组)) {
+      显示错误(`usermod：组不存在：${选项.主组}`);
+      return;
+    }
+    用户.主组 = 选项.主组;
+  }
+
+  // -l：修改用户名
+  if (选项.新名称 && 选项.新名称 !== 旧名称) {
+    if (面板用户组.some((u) => u.名称 === 选项.新名称)) {
+      显示错误(`usermod：用户名已存在：${选项.新名称}`);
+      return;
+    }
+    用户.名称 = 选项.新名称;
+    // 同步同名主组
+    const 组 = 面板组组.find((g) => g.名称 === 旧名称);
+    if (组) 组.名称 = 选项.新名称;
+  }
+
+  // 更新节点归属（用户名/主组可能已变化）
+  批量改属用户节点(旧名称, 用户.名称, 用户.主组);
+
+  // -d：更新主目录路径（-m 时移动内容）
+  if (选项.新主目录) {
+    const 旧节点 = 查找用户主目录节点(旧名称);
+    const 新路径 = 选项.新主目录;
+    let 新节点 = 解析路径(新路径);
+    if (选项.移动主目录) {
+      // 移动原主目录内容到新位置
+      if (旧节点 && 旧节点 !== 新节点) {
+        if (!新节点) {
+          // 目标不存在：确保父路径存在（自动补建缺失的中间目录），再移动并重命名原主目录节点
+          const 父路径 = 新路径.slice(0, 新路径.lastIndexOf("/")) || "/";
+          const 新名称 = 新路径.slice(新路径.lastIndexOf("/") + 1);
+          let 父节点 = 确保目录路径(父路径);
+          if (父节点 && !父节点.子节点组.some((n) => n.名称 === 新名称)) {
+            const 原父 = 旧节点.父节点;
+            if (原父) {
+              const 索引 = 原父.子节点组.indexOf(旧节点);
+              if (索引 > -1) 原父.子节点组.splice(索引, 1);
+            }
+            旧节点.父节点 = 父节点;
+            旧节点.名称 = 新名称;
+            父节点.子节点组.push(旧节点);
+            新节点 = 旧节点;
+          }
+        } else if (新节点.类型 === "目录") {
+          // 目标已存在：把原主目录内容移入
+          for (const 子 of [...旧节点.子节点组]) {
+            子.父节点 = 新节点;
+            新节点.子节点组.push(子);
+          }
+          旧节点.子节点组 = [];
+          // 删除旧主目录节点
+          const 原父 = 旧节点.父节点;
+          if (原父) {
+            const 索引 = 原父.子节点组.indexOf(旧节点);
+            if (索引 > -1) 原父.子节点组.splice(索引, 1);
+          }
+          节点表.delete(旧节点.id);
+        }
+      }
+    } else {
+      // 无 -m：仅更新登记的主目录路径，不创建/移动目录内容
+    }
+    用户.主目录 = 新路径;
+  }
+
+  // -s：修改登录shell（绿色提示）
+  if (选项.登录shell) {
+    用户.登录shell = 选项.登录shell;
+    显示成功(`已将登录shell改为：${选项.登录shell}`);
+  }
+
+  同步用户组界面();
+}
+
+// 确保某绝对路径存在（逐段创建缺失目录，属主 root），返回末节点或 null
+function 确保目录路径(绝对路径) {
+  if (!绝对路径 || !绝对路径.startsWith("/")) return null;
+  const 部分组 = 绝对路径.split("/").filter(Boolean);
+  let 当前 = 根节点;
+  for (const 名 of 部分组) {
+    let 子 = 当前.子节点组.find((n) => n.名称 === 名 && n.类型 === "目录");
+    if (!子) {
+      子 = 创建节点("目录", 名, 当前);
+      子.所有者 = "root";
+      子.所属组 = "root";
+      测量节点尺寸(子);
+      const 空位 = 寻找近处空位(当前, 子.宽, 子.高);
+      子.x = 空位.x;
+      子.y = 空位.y;
+      子.固定位置 = true;
+      当前.子节点组.push(子);
+      节点表.set(子.id, 子);
+    }
+    当前 = 子;
+  }
+  return 当前;
+}
+
+function 执行userdel(用户, 选项) {
+  const 用户名 = 用户.名称;
+
+  // 不能删除当前登录用户（除非 -f 强制）
+  if (用户名 === 面板当前用户 && !选项.强制) {
+    显示错误(`userdel：无法删除当前登录用户：${用户名}\n请先切换到其他用户，或使用 -f 强制删除`);
+    return;
+  }
+
+  // -r：删除主目录；未加 -r 时若主目录非空给出警告
+  const 主目录节点 = 查找用户主目录节点(用户名);
+  if (选项.删除主目录) {
+    if (主目录节点 && 主目录节点 !== 当前位置节点) {
+      // 若当前目录在被删主目录内，先回到 home
+      let 祖先 = 当前位置节点;
+      let 在内部 = false;
+      while (祖先) {
+        if (祖先 === 主目录节点) { 在内部 = true; break; }
+        祖先 = 祖先.父节点;
+      }
+      if (在内部) 执行cd(查找home目录() || 根节点);
+      执行rm(主目录节点, true);
+    }
+  } else if (主目录节点 && 收集所有节点(主目录节点).length > 1) {
+    显示警告(`userdel：主目录 /home/${用户名} 仍保留\n如要一并删除，请使用 -r 参数`);
+  }
+
+  // 从用户列表移除
+  面板用户组 = 面板用户组.filter((u) => u !== 用户);
+  // 删除同名主组
+  面板组组 = 面板组组.filter((g) => g.名称 !== 用户名);
+  // 从其他用户的附加组中移除该组
+  for (const u of 面板用户组) u.附加组组 = u.附加组组.filter((g) => g !== 用户名);
+
+  // 若被删的是当前用户（-f 强制），切换当前用户到剩余的第一个用户
+  if (面板当前用户 === 用户名) {
+    面板当前用户 = 面板用户组.length ? 面板用户组[0].名称 : "root";
+  }
+
+  同步用户组界面();
+}
+
+function 执行groupdel(组名) {
+  // 有用户以该组作为主组：报错
+  const 占用用户 = 面板用户组.filter((u) => u.主组 === 组名);
+  if (占用用户.length) {
+    显示错误(`groupdel：无法删除组 ${组名}：它是用户 ${占用用户.map((u) => u.名称).join("、")} 的主组`);
+    return;
+  }
+  // 有用户把它作为附加组：删除成功但给出黄色警告
+  const 附加占用 = 面板用户组.filter((u) => u.附加组组.includes(组名));
+  let 警告 = null;
+  if (附加占用.length) {
+    警告 = `groupdel：已将组 ${组名} 从以下用户的附加组中移除：${附加占用.map((u) => u.名称).join("、")}`;
+  }
+
+  面板组组 = 面板组组.filter((g) => g.名称 !== 组名);
+  for (const u of 面板用户组) u.附加组组 = u.附加组组.filter((g) => g !== 组名);
+
+  同步用户组界面();
+  if (警告) 显示警告(警告);
 }
 
 // ==================== 历史记录 ====================
@@ -4343,9 +4752,10 @@ const 组图标 = new Image();
 组图标.onload = () => 绘制用户和组面板();
 
 // 面板数据：当前存在的用户与组
-let 面板用户组 = []; // { 名称, 主组, 附加组组 }
+let 面板用户组 = []; // { 名称, 主组, 附加组组, 主目录, 登录shell }
 let 面板组组 = []; // { 名称, 配色索引 }
 let 面板当前用户 = "ntzz";
+const 默认登录shell = "/bin/bash";
 
 let 用户和组内容宽 = 0;
 let 用户和组内容高 = 0;
@@ -4363,12 +4773,13 @@ const 面板组名称池 = ["wheel", "docker", "dev", "ops", "staff", "admin", "
 // 每个用户默认拥有与自己同名的组（同名组即其主组），组的总数比用户多 1-3 个
 // 每个用户额外分配 0-2 个附加组（从额外组中选取）
 function 初始化用户和组() {
-  面板用户组 = [{ 名称: "ntzz", 主组: "ntzz", 附加组组: [] }];
+  面板用户组 = [{ 名称: "ntzz", 主组: "ntzz", 附加组组: [], 主目录: "/home/ntzz", 登录shell: 默认登录shell }];
   const 可用用户名 = [...面板用户名称池];
   const 额外用户数 = 1 + Math.floor(Math.random() * 3); // 1-3
   for (let i = 0; i < 额外用户数 && 可用用户名.length; i++) {
     const 名称 = 可用用户名.splice(Math.floor(Math.random() * 可用用户名.length), 1)[0];
-    面板用户组.push({ 名称, 主组: 名称, 附加组组: [] }); // 主组为同名组
+    // 主组为同名组
+    面板用户组.push({ 名称, 主组: 名称, 附加组组: [], 主目录: "/home/" + 名称, 登录shell: 默认登录shell });
   }
 
   // 每个用户的同名组（按用户顺序分配配色）
