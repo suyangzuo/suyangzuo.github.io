@@ -2105,7 +2105,7 @@ const 命令高亮层 = document.getElementById("命令高亮层");
 const 命令输入区 = document.querySelector(".命令输入区");
 
 function 高亮命令语法(文本) {
-  const 有效命令组 = ["cd", "mkdir", "rmdir", "rm", "touch", "cp", "mv", "chmod", "useradd", "su", "usermod", "userdel", "groupdel"];
+  const 有效命令组 = ["cd", "mkdir", "rmdir", "rm", "touch", "cp", "mv", "chmod", "chown", "useradd", "su", "usermod", "userdel", "groupdel"];
   const 转义 = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   // 路径中的特殊字符用单独颜色高亮
   const 转义路径 = (s) =>
@@ -2317,19 +2317,19 @@ function 解析命令(输入) {
   // 统一展开参数开头的 ~ 为主目录绝对路径，让所有命令都能识别 ~
   const 参数组 = 部分组.slice(1).map(展开主目录路径);
 
-  const 有效命令组 = ["cd", "mkdir", "rmdir", "rm", "touch", "cp", "mv", "chmod", "useradd", "su", "usermod", "userdel", "groupdel"];
+  const 有效命令组 = ["cd", "mkdir", "rmdir", "rm", "touch", "cp", "mv", "chmod", "chown", "useradd", "su", "usermod", "userdel", "groupdel"];
   if (!有效命令组.includes(命令)) {
     return {
       有效: false,
       错误: {
         有错误: true,
-        消息: `未知命令：${命令}\n支持：cd / mkdir / rmdir / rm / touch / cp / mv / chmod / useradd / su / usermod / userdel / groupdel（可加 sudo 前缀提权）`,
+        消息: `未知命令：${命令}\n支持：cd / mkdir / rmdir / rm / touch / cp / mv / chmod / chown / useradd / su / usermod / userdel / groupdel（可加 sudo 前缀提权）`,
       },
     };
   }
 
   // 需要 root 提权的管理类命令：未加 sudo 时直接报错
-  const 需提权命令组 = ["useradd", "usermod", "userdel", "groupdel"];
+  const 需提权命令组 = ["chown", "useradd", "usermod", "userdel", "groupdel"];
   if (需提权命令组.includes(命令) && !提权) {
     return { 有效: false, 错误: { 有错误: true, 消息: `${命令}：权限不足\n该命令需要 root 权限，请使用 sudo` } };
   }
@@ -2423,6 +2423,83 @@ function 解析命令(输入) {
       }
 
       return 包装({ 有效: true, 命令: "chmod", 目标: 目标节点, 数字模式, 符号语句组, 递归 });
+    }
+
+    case "chown": {
+      let 递归 = false;
+      let 非标志参数组 = [];
+
+      for (const 参数 of 参数组) {
+        if (参数.startsWith("-")) {
+          const 标志组 = 参数.slice(1).split("");
+          for (const 标志 of 标志组) {
+            if (标志 === "r" || 标志 === "R") 递归 = true;
+            else
+              return {
+                有效: false,
+                错误: { 有错误: true, 消息: `chown：无效参数 -${标志}\n支持：-R（递归修改属主/属组）` },
+              };
+          }
+        } else {
+          非标志参数组.push(参数);
+        }
+      }
+
+      if (非标志参数组.length === 0) {
+        return {
+          有效: false,
+          错误: {
+            有错误: true,
+            消息: "chown：缺少属主/属组\n用法：chown [-R] <属主[:属组]> <目标>\n例如：chown alice 文件 / chown alice:dev 目录",
+          },
+        };
+      }
+
+      // 属主[:属组]，二者均可省略：:group 只改组，owner: 只改属主
+      const 属主属组文本 = 非标志参数组[0];
+      const 冒号索引 = 属主属组文本.indexOf(":");
+      let 新属主 = null;
+      let 新属组 = null;
+      if (冒号索引 === -1) {
+        新属主 = 属主属组文本;
+      } else {
+        新属主 = 属主属组文本.slice(0, 冒号索引) || null;
+        新属组 = 属主属组文本.slice(冒号索引 + 1) || null;
+      }
+      if (!新属主 && !新属组) {
+        return { 有效: false, 错误: { 有错误: true, 消息: "chown：属主与属组不能同时为空\n用法：chown <属主[:属组]> <目标>" } };
+      }
+      if (新属主 && !面板用户组.some((u) => u.名称 === 新属主)) {
+        return { 有效: false, 错误: { 有错误: true, 消息: `chown：用户不存在：${新属主}` } };
+      }
+      if (新属组 && !面板组组.some((g) => g.名称 === 新属组)) {
+        return { 有效: false, 错误: { 有错误: true, 消息: `chown：组不存在：${新属组}` } };
+      }
+
+      if (非标志参数组.length === 1) {
+        return { 有效: false, 错误: { 有错误: true, 消息: "chown：缺少目标\n用法：chown [-R] <属主[:属组]> <目标>" } };
+      }
+
+      // 解析所有目标（支持花括号展开与 * 通配符）
+      const 目标组 = [];
+      for (const 目标路径 of 非标志参数组.slice(1)) {
+        for (const 展开路径 of 展开花括号(目标路径)) {
+          const 通配 = 展开通配符(展开路径);
+          const 节点组 = 通配 ? 通配.节点组 : [解析相对路径(展开路径)];
+          if (!通配 && !节点组[0]) {
+            return { 有效: false, 错误: { 有错误: true, 消息: `chown：路径不存在：${展开路径}` } };
+          }
+          if (通配 && 节点组.length === 0) {
+            return { 有效: false, 错误: { 有错误: true, 消息: `chown：通配符无匹配：${展开路径}` } };
+          }
+          for (const 节点 of 节点组) 目标组.push(节点);
+        }
+      }
+      if (目标组.length === 0) {
+        return { 有效: false, 错误: { 有错误: true, 消息: "chown：缺少目标" } };
+      }
+
+      return 包装({ 有效: true, 命令: "chown", 新属主, 新属组, 目标组, 递归 });
     }
 
     case "mkdir": {
@@ -2743,21 +2820,23 @@ function 解析命令(输入) {
 
     case "cp": {
       let 递归 = false;
+      let 保留属性 = false;
       let 路径组 = [];
       for (const 参数 of 参数组) {
         if (参数.startsWith("-")) {
           const 标志组 = 参数.slice(1).split("");
           for (const 标志 of 标志组) {
             if (标志 === "r" || 标志 === "R") 递归 = true;
+            else if (标志 === "p") 保留属性 = true;
             else
-              return { 有效: false, 错误: { 有错误: true, 消息: `cp：无效参数 -${标志}\n支持：-r（递归复制目录）` } };
+              return { 有效: false, 错误: { 有错误: true, 消息: `cp：无效参数 -${标志}\n支持：-r（递归复制目录）-p（保留权限/属主/属组）` } };
           }
         } else {
           路径组.push(参数);
         }
       }
       if (路径组.length < 2) {
-        return { 有效: false, 错误: { 有错误: true, 消息: "cp：缺少源或目标\n用法：cp [-r] <源> <目标>" } };
+        return { 有效: false, 错误: { 有错误: true, 消息: "cp：缺少源或目标\n用法：cp [-r] [-p] <源> <目标>" } };
       }
 
       // 花括号展开：{a,b} → a b，parent/{a,b} → parent/a parent/b
@@ -2870,7 +2949,7 @@ function 解析命令(输入) {
       }
       // 多条警告合并为一条，避免逐条闪烁
       const 警告消息 = 警告组.length ? 警告组.join("\n") : null;
-      return 包装({ 有效: true, 命令: "cp", 任务组, 目标父节点, 递归, 警告消息 });
+      return 包装({ 有效: true, 命令: "cp", 任务组, 目标父节点, 递归, 保留属性, 警告消息 });
     }
 
     case "mv": {
@@ -3232,6 +3311,11 @@ function 执行命令() {
       执行chmod(解析.目标, 解析.数字模式, 解析.符号语句组, 解析.递归);
       break;
     }
+    case "chown": {
+      // chown 需要 root 权限，未加 sudo 已在解析阶段报错
+      执行chown(解析.新属主, 解析.新属组, 解析.目标组, 解析.递归);
+      break;
+    }
     case "mkdir": {
       if (解析.静默忽略) break; // -p 模式下已存在则静默成功
       // 多目录支持：逐个校验并执行
@@ -3289,7 +3373,7 @@ function 执行命令() {
           显示错误(权限错误 + "\n提示：可使用 sudo 提权执行");
           break;
         }
-        执行cp(任务.源, 解析.目标父节点, 任务.新名称, 解析.递归);
+        执行cp(任务.源, 解析.目标父节点, 任务.新名称, 解析.递归, 解析.保留属性, 解析.提权);
       }
       break;
     }
@@ -3456,6 +3540,29 @@ function 检查chmod错误(目标节点) {
     return `chmod：权限不足：${节点路径文本(目标节点)}\n缺少 r（读取）或 w（写入）权限，无法修改权限`;
   }
   return null;
+}
+
+// 修改单个节点的属主/属组（新属主/新属组为 null 表示不改）
+function 应用chown到节点(节点, 新属主, 新属组) {
+  if (新属主) 节点.所有者 = 新属主;
+  if (新属组) 节点.所属组 = 新属组;
+}
+
+function 执行chown(新属主, 新属组, 目标组, 递归) {
+  for (const 目标节点 of 目标组) {
+    const 应用组 = 递归 ? 收集所有节点(目标节点) : [目标节点];
+    for (const 节点 of 应用组) {
+      应用chown到节点(节点, 新属主, 新属组);
+    }
+    // 波纹效果提示操作成功
+    波纹组.push({
+      x: 目标节点.x,
+      y: 目标节点.y,
+      起始时间: performance.now(),
+      最大半径: 配置.高亮.波纹最大半径,
+    });
+  }
+  请求重绘();
 }
 
 // 获取节点的祖先路径（从根到该节点）
@@ -3722,10 +3829,38 @@ function 执行touch(名称, 父节点 = 当前位置节点) {
   布局并动画();
 }
 
+// -p 复制时计算副本的所有者/所属组：
+// 只有 root（sudo）才完整保留源的属主/属组；普通用户不能保留非本人的属主，
+// 也不能把副本归到自己不属于的组（此时组退化为当前用户的主组）
+function 求副本属主属组(源节点, 提权) {
+  const 当前用户 = 面板用户组.find((u) => u.名称 === 面板当前用户);
+  let 所有者 = 源节点.所有者;
+  let 所属组 = 源节点.所属组;
+
+  if (!提权) {
+    // 非 root：副本属主只能是当前用户
+    if (源节点.所有者 !== 面板当前用户) 所有者 = 面板当前用户;
+    // 所属组必须是当前用户的主组或附加组，否则退化为主组
+    const 组可用 =
+      当前用户 &&
+      所属组 &&
+      (当前用户.主组 === 所属组 || 当前用户.附加组组.includes(所属组));
+    if (!组可用) 所属组 = 当前用户 ? 当前用户.主组 : "";
+  }
+
+  return { 所有者, 所属组 };
+}
+
 // 深拷贝子树（用于 cp 递归复制目录），每个节点都寻找不重叠的空位
-function 克隆子树(源节点, 新父节点) {
+function 克隆子树(源节点, 新父节点, 保留属性, 提权) {
   const 新节点 = 创建节点(源节点.类型, 源节点.名称, 新父节点);
   新节点.权限 = { ...源节点.权限 }; // cp 保留源权限
+  // -p：按权限规则保留源的所有者与所属组
+  if (保留属性) {
+    const 属主属组 = 求副本属主属组(源节点, 提权);
+    新节点.所有者 = 属主属组.所有者;
+    新节点.所属组 = 属主属组.所属组;
+  }
   测量节点尺寸(新节点);
   const 空位 = 寻找近处空位(新父节点, 新节点.宽, 新节点.高);
   新节点.x = 空位.x;
@@ -3734,16 +3869,21 @@ function 克隆子树(源节点, 新父节点) {
   节点表.set(新节点.id, 新节点);
   新父节点.子节点组.push(新节点);
   for (const 子 of 源节点.子节点组) {
-    克隆子树(子, 新节点);
+    克隆子树(子, 新节点, 保留属性, 提权);
   }
   return 新节点;
 }
 
-function 执行cp(源节点, 目标父节点, 新名称, 递归) {
+function 执行cp(源节点, 目标父节点, 新名称, 递归, 保留属性, 提权) {
   if (源节点.类型 === "目录" && 递归) {
     // 递归复制整个子树（保留源权限）
     const 新节点 = 创建节点("目录", 新名称, 目标父节点);
     新节点.权限 = { ...源节点.权限 };
+    if (保留属性) {
+      const 属主属组 = 求副本属主属组(源节点, 提权);
+      新节点.所有者 = 属主属组.所有者;
+      新节点.所属组 = 属主属组.所属组;
+    }
     测量节点尺寸(新节点);
     const 空位 = 寻找近处空位(目标父节点, 新节点.宽, 新节点.高);
     新节点.x = 空位.x;
@@ -3752,12 +3892,17 @@ function 执行cp(源节点, 目标父节点, 新名称, 递归) {
     节点表.set(新节点.id, 新节点);
     目标父节点.子节点组.push(新节点);
     for (const 子 of 源节点.子节点组) {
-      克隆子树(子, 新节点);
+      克隆子树(子, 新节点, 保留属性, 提权);
     }
   } else {
     // 复制单个文件（保留源权限）
     const 新节点 = 创建节点("文件", 新名称, 目标父节点);
     新节点.权限 = { ...源节点.权限 };
+    if (保留属性) {
+      const 属主属组 = 求副本属主属组(源节点, 提权);
+      新节点.所有者 = 属主属组.所有者;
+      新节点.所属组 = 属主属组.所属组;
+    }
     测量节点尺寸(新节点);
     const 空位 = 寻找近处空位(目标父节点, 新节点.宽, 新节点.高);
     新节点.x = 空位.x;
