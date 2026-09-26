@@ -1,0 +1,3650 @@
+// ==================== 工具函数 ====================
+function 创建补间(起始值, 结束值, 持续时间 = 250) {
+  return {
+    起始值,
+    结束值,
+    起始时间: performance.now(),
+    持续时间,
+    当前值: 起始值,
+    已完成: 起始值 === 结束值,
+    更新(当前时间) {
+      if (this.已完成) return this.当前值;
+      const 进度 = Math.min((当前时间 - this.起始时间) / this.持续时间, 1);
+      this.当前值 = this.起始值 + (this.结束值 - this.起始值) * 进度;
+      if (进度 >= 1) this.已完成 = true;
+      return this.当前值;
+    },
+    跳转至结束() {
+      this.当前值 = this.结束值;
+      this.已完成 = true;
+    },
+  };
+}
+
+function 颜色混合(颜色1, 颜色2, 比例) {
+  const rgb1 = 解析颜色(颜色1);
+  const rgb2 = 解析颜色(颜色2);
+  const r = Math.round(rgb1.r + (rgb2.r - rgb1.r) * 比例);
+  const g = Math.round(rgb1.g + (rgb2.g - rgb1.g) * 比例);
+  const b = Math.round(rgb1.b + (rgb2.b - rgb1.b) * 比例);
+  const a = rgb1.a + (rgb2.a - rgb1.a) * 比例;
+  return `rgba(${r},${g},${b},${a})`;
+}
+
+function 解析颜色(颜色) {
+  if (颜色.startsWith("#")) {
+    let hex = 颜色.slice(1);
+    if (hex.length === 3) {
+      hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+    }
+    const num = parseInt(hex, 16);
+    if (hex.length === 8) {
+      return {
+        r: (num >>> 24) & 255,
+        g: (num >>> 16) & 255,
+        b: (num >>> 8) & 255,
+        a: (num & 255) / 255,
+      };
+    }
+    return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255, a: 1 };
+  }
+  const match = 颜色.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
+  if (match) {
+    return {
+      r: parseInt(match[1]),
+      g: parseInt(match[2]),
+      b: parseInt(match[3]),
+      a: match[4] !== undefined ? parseFloat(match[4]) : 1,
+    };
+  }
+  return { r: 255, g: 255, b: 255, a: 1 };
+}
+
+function 圆角矩形路径(上下文, x, y, 宽, 高, 半径) {
+  const r = Math.min(半径, 宽 / 2, 高 / 2);
+  上下文.beginPath();
+  上下文.moveTo(x + r, y);
+  上下文.lineTo(x + 宽 - r, y);
+  上下文.quadraticCurveTo(x + 宽, y, x + 宽, y + r);
+  上下文.lineTo(x + 宽, y + 高 - r);
+  上下文.quadraticCurveTo(x + 宽, y + 高, x + 宽 - r, y + 高);
+  上下文.lineTo(x + r, y + 高);
+  上下文.quadraticCurveTo(x, y + 高, x, y + 高 - r);
+  上下文.lineTo(x, y + r);
+  上下文.quadraticCurveTo(x, y, x + r, y);
+  上下文.closePath();
+}
+
+function 截断文本(上下文, 文本, 最大宽度) {
+  if (上下文.measureText(文本).width <= 最大宽度) return 文本;
+  let 结果 = 文本;
+  while (结果.length > 1 && 上下文.measureText(结果 + "…").width > 最大宽度) {
+    结果 = 结果.slice(0, -1);
+  }
+  return 结果 + "…";
+}
+
+// ==================== 统一配置对象 ====================
+const 配置 = {
+  动画时长: 250,
+  边距: { 上: 100, 下: 25, 左: 25, 右: 25 },
+  布局: {
+    子节点水平间距: 100,
+    子节点垂直间距: 40,
+  },
+  目录: {
+    高: 40,
+    圆角: 8,
+    填充色: "#1c1c1cff",
+    当前填充色: "#55420eff",
+    描边色: "#b06100ff",
+    当前描边色: "#FF8C00",
+    描边宽度: 2,
+    当前描边宽度: 3,
+    当前放大倍数: 1.3,
+    名称颜色: "#fff",
+    名称字体: "12px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif",
+    名称偏移: -8,
+    文本边距: 15,
+    非空标记: {
+      圆圈颜色: "rgba(255,255,255,0.5)",
+      圆圈半径: 3,
+      圆圈间距: 8,
+    },
+  },
+  根目录: {
+    高: 48,
+    圆角: 10,
+    填充色: "#1c1c1c",
+    当前填充色: "#2d5a3dff",
+    描边色: "#4a9e6aff",
+    当前描边色: "#6ee7a0",
+    描边宽度: 2,
+    当前描边宽度: 4,
+    当前放大倍数: 1.3,
+    名称颜色: "#6ee7a0",
+    名称字体: "bold 15px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif",
+    名称偏移: -10,
+    文本边距: 18,
+  },
+  文件: {
+    高: 34,
+    圆角: 5,
+    填充色: "#245181ff",
+    描边色: "#75a7e1ff",
+    描边宽度: 2,
+    名称颜色: "#fff",
+    名称字体: "13px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif",
+    文本边距: 15,
+  },
+  连接线: {
+    颜色: "#555",
+    宽度: 1.75,
+    弯曲半径: 200,
+  },
+  画布: {
+    背景色: "#111111",
+    字体: "'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif",
+  },
+  高亮: {
+    波纹颜色: "rgba(0, 200, 255, 0.6)",
+    波纹最大半径: 55,
+    波纹持续时间: 600,
+    波纹线宽: 2,
+  },
+  错误: {
+    背景色: "rgba(180, 30, 30, 0.92)",
+    文字颜色: "#fff",
+    字体: "14px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif",
+    圆角: 8,
+    内边距: 12,
+    最大宽度: 420,
+    停留时间: 5000,
+    消失时间: 300,
+  },
+  警告: {
+    背景色: "rgba(200, 150, 20, 0.92)",
+    文字颜色: "#fff",
+    字体: "14px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif",
+    圆角: 8,
+    内边距: 12,
+    最大宽度: 420,
+    停留时间: 2200,
+    消失时间: 300,
+  },
+  信息: {
+    背景色: "rgba(17, 88, 135, 1)",
+    文字颜色: "#fff",
+    字体: "14px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif",
+    圆角: 8,
+    内边距: 12,
+    最大宽度: 420,
+    停留时间: 5000,
+    消失时间: 300,
+  },
+  过程: {
+    背景色: "rgba(25, 135, 60, 0.92)",
+    文字颜色: "#fff",
+    字体: "14px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif",
+    圆角: 8,
+    内边距: 12,
+    最大宽度: 420,
+    停留时间: 5000,
+    消失时间: 300,
+  },
+  交互: {
+    拖拽阈值: 5,
+    点击时间阈值: 300,
+  },
+  主目录图标: {
+    尺寸: 32,
+    边距: 4,
+  },
+  删除按钮: {
+    半径: 9,
+    背景色: "#c0392b",
+    悬停背景色: "#e74c3c",
+    叉颜色: "#ffffff",
+    线宽: 1.6,
+    叉比例: 0.42, // 叉叉半长占半径比例
+  },
+};
+
+// 语义化别名
+配置.目录.当前目录填充色 = 配置.目录.当前填充色;
+配置.目录.当前目录描边色 = 配置.目录.当前描边色;
+配置.目录.当前目录描边宽度 = 配置.目录.当前描边宽度;
+
+// ==================== 节点 ID 计数器 ====================
+let 下一节点ID = 1;
+let 全局层级计数器 = 1; // 用于控制节点层叠顺序，越大越在上层
+
+function 创建节点(类型, 名称, 父节点) {
+  return {
+    id: 下一节点ID++,
+    类型, // "目录" | "文件"
+    名称,
+    父节点,
+    子节点组: [],
+    x: 0,
+    y: 0,
+    宽: 0,
+    高: 0,
+    层级: 全局层级计数器++, // 新节点层级最高
+    动画: null,
+    删除动画: null,
+    当前位置动画: null,
+    当前位置过渡: 0,
+    是当前位置: false,
+    是主目录: false, // home 目录下的主目录（~）
+    被拖拽: false,
+    固定位置: false,
+    拖拽偏移X: 0,
+    拖拽偏移Y: 0,
+  };
+}
+
+// ==================== 全局状态 ====================
+const 画布 = document.getElementById("canvas");
+const 上下文 = 画布.getContext("2d");
+const 命令输入框 = document.getElementById("命令输入框");
+const 命令执行按钮 = document.getElementById("命令执行按钮");
+const 命令提示符 = document.getElementById("命令提示符");
+const 重置按钮 = document.querySelector(".重置按钮");
+const 历史记录按钮 = document.getElementById("历史记录按钮");
+const 历史记录模态 = document.getElementById("历史记录模态");
+const 历史记录关闭按钮 = document.getElementById("历史记录关闭按钮");
+const 历史记录导出按钮 = document.getElementById("历史记录导出按钮");
+const 历史记录表格体 = document.getElementById("历史记录表格体");
+
+let 根节点 = null;
+let 当前位置节点 = null;
+let 节点表 = new Map();
+let 错误提示组 = [];
+let 波纹组 = [];
+let cd动画组 = []; // cd 切换时的圆形滑动动画
+let tar打包动画组 = []; // tar 打包时的节点飞入动画
+let tar打勾节点组 = []; // tar 命令"来源"匹配的节点（执行命令后清空）
+let 命令历史 = [];
+let 历史索引 = -1;
+let 临时输入 = "";
+let 命令记录组 = []; // 保存用户输入的命令记录（含对错标记）
+let 撤销栈 = []; // 撤销快照栈，每条有效命令执行前压入
+let 画布宽 = 0;
+let 画布高 = 0;
+let 动画帧ID = null;
+let 拖拽节点 = null;
+let 拖拽起始X = 0;
+let 拖拽起始Y = 0;
+let 拖拽当前X = 0;
+let 拖拽当前Y = 0;
+let 鼠标按下时间 = 0;
+let 鼠标按下节点 = null;
+let 拖拽跟随偏移组 = [];
+let 悬停节点 = null;
+let 悬停删除节点 = null;
+let 拖拽时按住Ctrl = false;
+// 在删除按钮上按下后尚未确认：移动进入拖拽则取消，松开且未拖拽才执行删除
+let 按下删除节点 = null;
+let 删除按钮按下X = 0;
+let 删除按钮按下Y = 0;
+
+// 视图平移状态
+let 视图偏移X = 0;
+let 视图偏移Y = 0;
+let 正在拖拽视图 = false;
+let 视图拖拽起始X = 0;
+let 视图拖拽起始Y = 0;
+let 视图拖拽初始偏移X = 0;
+let 视图拖拽初始偏移Y = 0;
+let 中键按下位置X = 0;
+let 中键按下位置Y = 0;
+let 中键已移动 = false;
+
+// ==================== 主目录（~）管理 ====================
+const 主目录图标 = new Image();
+主目录图标.src = "/Interactive-Hub/Linux-File-Operation/Images/主目录.svg";
+主目录图标.onload = () => 请求重绘();
+
+// ==================== tar 命令相关 ====================
+const tar图标 = new Image();
+tar图标.src = "./Images/tar.png";
+tar图标.onload = () => 请求重绘();
+
+const targz图标 = new Image();
+targz图标.src = "./Images/tar.gz.png";
+targz图标.onload = () => 请求重绘();
+
+// 当前节点上的 tar 类型图标："tar" | "tar.gz" | null
+// 打包成功后在该文件节点上方绘制对应图标
+function 获取节点tar图标类型(节点) {
+  if (节点.类型 !== "文件") return null;
+  if (节点.名称.endsWith(".tar.gz")) return "tar.gz";
+  if (节点.名称.endsWith(".tar")) return "tar";
+  return null;
+}
+
+// 解析 tar 命令的参数与文件参数（非横杠开头的参数）
+function 解析tar参数(参数组) {
+  const 标志 = { c: false, x: false, t: false, f: false, v: false, z: false, j: false, J: false, k: false };
+  const 文件参数组 = [];
+  for (const 参数 of 参数组) {
+    if (参数.startsWith("-")) {
+      for (const 字母 of 参数.slice(1)) {
+        if (字母 in 标志) 标志[字母] = true;
+        else return { 无效: 字母 };
+      }
+    } else {
+      文件参数组.push(参数);
+    }
+  }
+  return { 标志, 文件参数组 };
+}
+
+// 匹配单个 tar 来源参数（支持路径、* 与 *.ext 通配符），返回匹配的节点组
+function 匹配tar来源(模式) {
+  // 含路径时：最后一段作为名称模式，其余部分解析为目录
+  let 目录节点 = 当前位置节点;
+  let 名称模式 = 模式;
+  const 斜杠位置 = 模式.lastIndexOf("/");
+  if (斜杠位置 !== -1) {
+    const 目录部分 = 斜杠位置 === 0 ? "/" : 模式.slice(0, 斜杠位置);
+    名称模式 = 模式.slice(斜杠位置 + 1);
+    目录节点 = 解析相对路径(目录部分);
+    if (!目录节点 || 目录节点.类型 !== "目录") return [];
+  }
+  const 子节点组 = 目录节点.子节点组.filter((n) => !n.删除动画);
+  if (名称模式 === "*") return 子节点组;
+  const 星号位置 = 名称模式.indexOf("*");
+  if (星号位置 !== -1) {
+    const 前缀 = 名称模式.slice(0, 星号位置);
+    const 后缀 = 名称模式.slice(星号位置 + 1);
+    return 子节点组.filter((n) => n.名称.startsWith(前缀) && n.名称.endsWith(后缀));
+  }
+  return 子节点组.filter((n) => n.名称 === 名称模式);
+}
+
+// 字符串级通配符匹配（用于 tar -x 按来源筛选包内容）
+function 匹配tar字符串(模式, 文本) {
+  if (模式 === "*") return true;
+  const 星号位置 = 模式.indexOf("*");
+  if (星号位置 === -1) return 模式 === 文本;
+  const 前缀 = 模式.slice(0, 星号位置);
+  const 后缀 = 模式.slice(星号位置 + 1);
+  return 文本.startsWith(前缀) && 文本.endsWith(后缀);
+}
+
+// 根据当前输入实时计算需要打勾的节点（tar 命令的"来源"参数）
+function 计算tar匹配节点组() {
+  const 文本 = 命令输入框.value.trim();
+  if (!文本) return [];
+  const 部分组 = 智能分割命令(文本);
+  if (部分组.length === 0) return [];
+  const 命令 = 部分组[0].toLowerCase();
+  if (命令 !== "tar") return [];
+  const 参数组 = 部分组.slice(1).map(展开主目录路径);
+  const 解析结果 = 解析tar参数(参数组);
+  if (解析结果.无效) return [];
+  const { 标志, 文件参数组 } = 解析结果;
+  // 需要 c/x/t 之一，打包/查看必须带 f 并已有打包文件名
+  const 操作数 = [标志.c, 标志.x, 标志.t].filter(Boolean).length;
+  if (操作数 !== 1) return [];
+  if (标志.c || 标志.t) {
+    if (!标志.f || 文件参数组.length < 2) return [];
+  } else if (标志.x) {
+    // x 可无 f 来源（解到当前目录），有 f 时打包文件本身不算来源
+    if (标志.f && 文件参数组.length < 2) return [];
+  }
+  const 来源组 = (标志.c || 标志.t) ? 文件参数组.slice(1) : (标志.f ? 文件参数组.slice(1) : 文件参数组);
+  // -t 只是浏览归档内容，不需要绿勾匹配
+  if (标志.t) return [];
+  const 节点组 = [];
+  const 加入节点及后代 = (节点) => {
+    if (!节点组.includes(节点)) 节点组.push(节点);
+    // 目录递归：其后代目录、文件也一并打勾
+    for (const 子 of 节点.子节点组) {
+      加入节点及后代(子);
+    }
+  };
+  for (const 模式 of 来源组) {
+    for (const 节点 of 匹配tar来源(模式)) {
+      加入节点及后代(节点);
+    }
+  }
+  return 节点组;
+}
+
+// 查找根目录下名为 "home" 的子目录
+function 查找home目录() {
+  if (!根节点) return null;
+  return 根节点.子节点组.find((n) => n.名称 === "home" && n.类型 === "目录") || null;
+}
+
+// 查找当前被标记为主目录的节点
+function 查找主目录() {
+  if (!根节点) return null;
+  const 所有节点 = 收集所有节点(根节点);
+  return 所有节点.find((n) => n.是主目录) || null;
+}
+
+// 更新主目录标记：确保 home 目录下第一个目录子节点为主目录
+function 更新主目录() {
+  const home目录 = 查找home目录();
+  if (!home目录) {
+    const 旧主目录 = 查找主目录();
+    if (旧主目录) 旧主目录.是主目录 = false;
+    return;
+  }
+  // 当前主目录仍然有效（在 home 下）则不变
+  const 当前主目录 = 查找主目录();
+  if (当前主目录 && 当前主目录.父节点 === home目录) return;
+  // 清除失效标记
+  if (当前主目录) 当前主目录.是主目录 = false;
+  // 将 home 下第一个目录子节点设为主目录
+  const 第一个目录 = home目录.子节点组.find((n) => n.类型 === "目录");
+  if (第一个目录) 第一个目录.是主目录 = true;
+}
+
+// ==================== 目录名称池（中英文混合，不以"."开头） ====================
+const 目录名称池 = [
+  // 中文
+  "文档", "图片", "音乐", "视频", "下载", "桌面", "项目", "代码",
+  "资料", "备份", "配置", "脚本", "日志", "模板", "测试", "工具",
+  "相册", "收藏", "文档库", "源代码", "资源", "插件", "主题", "字体",
+  "文档集", "归档", "快照", "工作区", "临时", "缓存", "输出", "输入",
+  "共享", "公共", "私有", "系统", "用户", "组", "权限", "安全",
+  "网络", "数据库", "缓存区", "交换区", "挂载", "设备", "驱动", "内核",
+  "模块", "服务", "进程", "线程", "信号", "管道", "套接字", "消息",
+  "队列", "栈", "堆", "树", "图", "哈希", "链表", "数组",
+  // 英文
+  "documents", "pictures", "music", "videos", "downloads", "desktop", "projects", "code",
+  "data", "backup", "config", "scripts", "logs", "templates", "tests", "tools",
+  "album", "favorites", "library", "source", "resources", "plugins", "themes", "fonts",
+  "archive", "workspace", "temp", "cache", "output", "input", "shared", "public",
+  "private", "system", "users", "groups", "permissions", "security", "network", "database",
+  "swap", "mount", "devices", "drivers", "kernel", "modules", "services", "processes",
+  "threads", "signals", "pipes", "sockets", "messages", "queue", "stack", "heap",
+  "tree", "graph", "hash", "list", "array", "dict", "set", "tuple",
+];
+
+const 文件名称池 = [
+  // 中文
+  "报告.txt", "笔记.md", "数据.csv", "配置.conf", "脚本.sh",
+  "说明.txt", "代码.py", "样式.css", "页面.html", "清单.txt",
+  "备忘录.md", "记录.log", "索引.json", "说明文档.txt", "主程序.c",
+  "摘要.txt", "概览.md", "统计.csv", "设置.ini", "运行.sh",
+  "教程.txt", "指南.md", "表格.xls", "演示.ppt", "草稿.doc",
+  // 英文
+  "readme.txt", "makefile", "dockerfile", "env.example", "package.json",
+  "tsconfig.json", "webpack.config.js", "readme.md", "license", "changelog.md",
+  "todo.md", "contributing.md", "babel.config.js", "eslintrc.json", "prettierrc.json",
+  "setup.py", "requirements.txt", "pipfile", "cargo.toml", "go.mod",
+  "pom.xml", "build.gradle", "cmakelists.txt", "configure.ac", "makefile.am",
+  "index.js", "app.js", "main.py", "server.go", "lib.rs",
+  "utils.js", "helpers.py", "constants.ts", "types.ts", "api.dart",
+  "readme.rst", "index.rst", "conf.py", "database.sql", "schema.prisma",
+  "nginx.conf", "apache.conf", "ssh_config", "bashrc.example", "zshrc.example",
+  "vimrc.example", "tmux.conf", "gitconfig.example", "npmrc.example", "yarn.lock",
+];
+
+// ==================== 节点尺寸测量 ====================
+function 测量节点尺寸(节点) {
+  const 是根目录 = !节点.父节点;
+  const 尺寸 = 是根目录 ? 配置.根目录 : 配置[节点.类型];
+  上下文.font = 尺寸.名称字体;
+  const 文本宽 = 上下文.measureText(节点.名称).width;
+  节点.宽 = Math.ceil(文本宽) + 尺寸.文本边距 * 2;
+  节点.高 = 尺寸.高;
+}
+
+function 测量所有节点(节点) {
+  测量节点尺寸(节点);
+  for (const 子节点 of 节点.子节点组) {
+    测量所有节点(子节点);
+  }
+}
+
+// ==================== 尺寸计算 ====================
+function 计算子树尺寸(节点) {
+  // 子树宽：自身宽度 + 水平间距 + 最深层子树宽度
+  let 最大子树宽 = 0;
+  for (const 子节点 of 节点.子节点组) {
+    const 子尺寸 = 计算子树尺寸(子节点);
+    最大子树宽 = Math.max(最大子树宽, 子尺寸.宽);
+  }
+  return { 宽: 节点.宽 + 配置.布局.子节点水平间距 + 最大子树宽, 高: 节点.高 };
+}
+
+// 下移子树：节点及其所有后代 y 偏移
+function 下移子树(节点, 偏移Y) {
+  节点.布局.y += 偏移Y;
+  for (const 子 of 节点.子节点组) {
+    下移子树(子, 偏移Y);
+  }
+}
+
+// 按深度收集节点
+function 按深度收集(节点, 深度, 结果) {
+  if (!结果[深度]) 结果[深度] = [];
+  结果[深度].push(节点);
+  for (const 子 of 节点.子节点组) {
+    按深度收集(子, 深度 + 1, 结果);
+  }
+}
+
+// 消除同深度不同子树间的重叠：同层节点按 y 排序，
+// 相邻重叠时下移后者及其后代，不影响前者
+function 消除重叠(根) {
+  const 按深度 = [];
+  按深度收集(根, 0, 按深度);
+  const 间距 = 配置.布局.子节点垂直间距;
+
+  for (let d = 1; d < 按深度.length; d++) {
+    const 层节点 = [...按深度[d]].sort((a, b) => a.布局.y - b.布局.y);
+    for (let i = 1; i < 层节点.length; i++) {
+      const 前 = 层节点[i - 1];
+      const 后 = 层节点[i];
+      const 前底 = 前.布局.y + 前.高 / 2;
+      const 后顶 = 后.布局.y - 后.高 / 2;
+      const 重叠 = 前底 + 间距 - 后顶;
+      if (重叠 > 0) {
+        下移子树(后, 重叠);
+      }
+    }
+  }
+}
+
+// 按自身高度紧凑排列子节点，同级节点保持紧凑
+function 计算布局(节点, 左边界, 中心Y) {
+  节点.布局 = { x: 左边界, y: 中心Y };
+  if (!节点.子节点组.length) return;
+
+  const 子左边界 = 左边界 + 节点.宽 + 配置.布局.子节点水平间距;
+  const 间距 = 配置.布局.子节点垂直间距;
+  const 子节点 = 节点.子节点组;
+
+  // 按自身高度紧凑排列
+  const 自身总高 = 子节点.reduce((sum, 子) => sum + 子.高, 0) + (子节点.length - 1) * 间距;
+  let 当前Y = 中心Y - 自身总高 / 2;
+  for (const 子 of 子节点) {
+    const 子中心Y = 当前Y + 子.高 / 2;
+    计算布局(子, 子左边界, 子中心Y);
+    当前Y += 子.高 + 间距;
+  }
+}
+
+function 布局并动画() {
+  if (!根节点) return;
+  测量所有节点(根节点);
+
+  const 可用高度 = 画布高 - 配置.边距.上 - 配置.边距.下;
+  const 可用宽度 = 画布宽 - 配置.边距.左 - 配置.边距.右;
+  const 画布中心Y = 配置.边距.上 + 可用高度 / 2;
+  计算布局(根节点, 配置.边距.左, 画布中心Y);
+  消除重叠(根节点);
+
+  // Y 坐标取整，避免 1px 连线落在半像素位置被反走样
+  const 所有节点 = 收集所有节点(根节点);
+  for (const 节点 of 所有节点) {
+    节点.布局.y = Math.round(节点.布局.y);
+  }
+
+  // 水平居中校正
+  const 树尺寸 = 计算子树尺寸(根节点);
+  const 偏移X = (可用宽度 - Math.min(树尺寸.宽, 可用宽度)) / 2;
+  for (const 节点 of 所有节点) {
+    节点.布局.x += 偏移X;
+  }
+
+  // 为每个节点启动/更新位置动画
+  const 现在 = performance.now();
+  for (const 节点 of 所有节点) {
+    if (节点.删除动画) continue;
+    if (节点.被拖拽) continue; // 拖拽中的节点不自动布局
+    if (节点.固定位置) {
+      // 固定位置的节点：不自动布局，位置由用户拖拽决定
+      节点.动画 = null;
+      continue;
+    }
+    if (!节点.动画) {
+      // 新节点：从当前位置动画到布局位置
+      节点.动画 = {
+        起始值: { x: 节点.x, y: 节点.y },
+        结束值: { x: 节点.布局.x, y: 节点.布局.y },
+        起始时间: 现在,
+        持续时间: 配置.动画时长,
+        已完成: false,
+        更新(时间) {
+          if (this.已完成) return this.结束值;
+          const 进度 = Math.min((时间 - this.起始时间) / this.持续时间, 1);
+          const 当前 = {
+            x: this.起始值.x + (this.结束值.x - this.起始值.x) * 进度,
+            y: this.起始值.y + (this.结束值.y - this.起始值.y) * 进度,
+          };
+          if (进度 >= 1) this.已完成 = true;
+          return 当前;
+        },
+      };
+    } else {
+      // 已有动画：更新目标
+      节点.动画.结束值 = { x: 节点.布局.x, y: 节点.布局.y };
+      节点.动画.已完成 = false;
+      节点.动画.起始时间 = 现在;
+      节点.动画.起始值 = { x: 节点.x, y: 节点.y };
+    }
+  }
+
+  请求重绘();
+}
+
+function 收集所有节点(节点, 结果 = []) {
+  if (!节点) return 结果;
+  结果.push(节点);
+  for (const 子节点 of 节点.子节点组) {
+    收集所有节点(子节点, 结果);
+  }
+  return 结果;
+}
+
+// ==================== 绘制函数 ====================
+function 获取节点实际尺寸(节点) {
+  const 是根目录 = !节点.父节点;
+  const 尺寸 = 是根目录 ? 配置.根目录 : 配置[节点.类型];
+  const 当前比例 = 节点.删除动画 ? 1 - 节点.删除动画.当前值 : 1;
+  let 实际宽 = 节点.宽 * 当前比例;
+  let 实际高 = 节点.高 * 当前比例;
+  let 填充色 = 尺寸.填充色;
+  let 描边色 = 尺寸.描边色;
+  let 描边宽度 = 尺寸.描边宽度;
+  let 名称颜色 = 尺寸.名称颜色;
+
+  const 是当前位置 = 节点.是当前位置 && !节点.删除动画;
+  // 只要当前位置过渡值不为0，就应用过渡效果（包括正在失去当前状态的节点）
+  const 位置比例 = 节点.当前位置过渡;
+
+  if (位置比例 > 0 && 节点.类型 === "目录") {
+    const 放大 = 尺寸.当前放大倍数;
+    实际宽 = 节点.宽 * (1 + (放大 - 1) * 位置比例) * 当前比例;
+    实际高 = 节点.高 * (1 + (放大 - 1) * 位置比例) * 当前比例;
+    填充色 = 颜色混合(尺寸.填充色, 尺寸.当前填充色, 位置比例);
+    描边色 = 颜色混合(尺寸.描边色, 尺寸.当前描边色, 位置比例);
+    描边宽度 = 尺寸.描边宽度 + (尺寸.当前描边宽度 - 尺寸.描边宽度) * 位置比例;
+  }
+
+  return { 实际宽, 实际高, 填充色, 描边色, 描边宽度, 名称颜色, 当前比例, 尺寸 };
+}
+
+// 计算两个节点之间连接线的贝塞尔曲线参数
+function 计算连接线参数(父节点, 子节点) {
+  const 父尺寸 = 获取节点实际尺寸(父节点);
+  const 子尺寸 = 获取节点实际尺寸(子节点);
+
+  const 父中心X = 父节点.x;
+  const 父中心Y = 父节点.y;
+  const 子中心X = 子节点.x;
+  const 子中心Y = 子节点.y;
+
+  const 父半宽 = 父尺寸.实际宽 / 2;
+  const 父半高 = 父尺寸.实际高 / 2;
+  const 子半宽 = 子尺寸.实际宽 / 2;
+  const 子半高 = 子尺寸.实际高 / 2;
+
+  const 水平距离 = Math.abs(子中心X - 父中心X) - 父半宽 - 子半宽;
+  const 垂直距离 = Math.abs(子中心Y - 父中心Y) - 父半高 - 子半高;
+
+  if (水平距离 > 垂直距离) {
+    const 父在左侧 = 父中心X < 子中心X;
+    const 起点X = 父在左侧
+      ? 父中心X + 父半宽 + 父尺寸.描边宽度 / 2
+      : 父中心X - 父半宽 - 父尺寸.描边宽度 / 2;
+    const 起点Y = 父中心Y;
+    const 终点X = 父在左侧
+      ? 子中心X - 子半宽 - 子尺寸.描边宽度 / 2
+      : 子中心X + 子半宽 + 子尺寸.描边宽度 / 2;
+    const 终点Y = 子中心Y;
+    const 控制点1X = 起点X + (父在左侧 ? 水平距离 * 0.5 : -水平距离 * 0.5);
+    const 控制点1Y = 起点Y;
+    const 控制点2X = 终点X + (父在左侧 ? -水平距离 * 0.5 : 水平距离 * 0.5);
+    const 控制点2Y = 终点Y;
+
+    return { 起点X, 起点Y, 控制点1X, 控制点1Y, 控制点2X, 控制点2Y, 终点X, 终点Y };
+  } else {
+    const 父在上方 = 父中心Y < 子中心Y;
+    const 起点X = 父中心X;
+    const 起点Y = 父在上方
+      ? 父中心Y + 父半高 + 父尺寸.描边宽度 / 2
+      : 父中心Y - 父半高 - 父尺寸.描边宽度 / 2;
+    const 终点X = 子中心X;
+    const 终点Y = 父在上方
+      ? 子中心Y - 子半高 - 子尺寸.描边宽度 / 2
+      : 子中心Y + 子半高 + 子尺寸.描边宽度 / 2;
+    const 控制点1X = 起点X;
+    const 控制点1Y = 起点Y + (父在上方 ? 垂直距离 * 0.5 : -垂直距离 * 0.5);
+    const 控制点2X = 终点X;
+    const 控制点2Y = 终点Y + (父在上方 ? -垂直距离 * 0.5 : 垂直距离 * 0.5);
+
+    return { 起点X, 起点Y, 控制点1X, 控制点1Y, 控制点2X, 控制点2Y, 终点X, 终点Y };
+  }
+}
+
+function 绘制连接线(父节点, 子节点) {
+  const 参数 = 计算连接线参数(父节点, 子节点);
+
+  上下文.strokeStyle = 配置.连接线.颜色;
+  上下文.lineWidth = 配置.连接线.宽度;
+  上下文.beginPath();
+  上下文.moveTo(参数.起点X, 参数.起点Y);
+  上下文.bezierCurveTo(参数.控制点1X, 参数.控制点1Y, 参数.控制点2X, 参数.控制点2Y, 参数.终点X, 参数.终点Y);
+  上下文.stroke();
+}
+
+function 绘制节点(节点) {
+  const { 实际宽, 实际高, 填充色, 描边色, 描边宽度, 名称颜色, 当前比例, 尺寸 } = 获取节点实际尺寸(节点);
+  if (当前比例 <= 0) return;
+
+  const 实际X = 节点.x - 实际宽 / 2;
+  const 实际Y = 节点.y - 实际高 / 2;
+  const 实际圆角 = 尺寸.圆角 * 当前比例;
+
+  // 悬停高亮：加粗描边
+  const 是悬停 = 节点 === 悬停节点 && !节点.删除动画;
+  const 最终描边宽度 = 是悬停 ? 描边宽度 + 1.5 : 描边宽度;
+
+  // 填充
+  上下文.fillStyle = 填充色;
+  圆角矩形路径(上下文, 实际X, 实际Y, 实际宽, 实际高, 实际圆角);
+  上下文.fill();
+
+  // 描边
+  上下文.strokeStyle = 描边色;
+  上下文.lineWidth = 最终描边宽度;
+  上下文.stroke();
+
+  // 根目录非空标记：3个小圆圈（绿色调）
+  if (!节点.父节点 && 节点.子节点组.length > 0 && !节点.删除动画) {
+    const 标记 = 配置.根目录.非空标记 || { 圆圈颜色: "rgba(110,231,160,0.6)", 圆圈半径: 3, 圆圈间距: 8 };
+    const 圆圈总数 = 3;
+    const 总宽 = (圆圈总数 - 1) * 标记.圆圈间距;
+    const 起始X = 节点.x - 总宽 / 2;
+    上下文.fillStyle = 标记.圆圈颜色;
+    for (let i = 0; i < 圆圈总数; i++) {
+      上下文.beginPath();
+      上下文.arc(起始X + i * 标记.圆圈间距, 节点.y, 标记.圆圈半径, 0, Math.PI * 2);
+      上下文.fill();
+    }
+  }
+
+  // 普通目录非空标记：3个小圆圈
+  if (节点.类型 === "目录" && 节点.父节点 && 节点.子节点组.length > 0 && !节点.删除动画) {
+    const 标记 = 配置.目录.非空标记;
+    const 圆圈总数 = 3;
+    const 总宽 = (圆圈总数 - 1) * 标记.圆圈间距;
+    const 起始X = 节点.x - 总宽 / 2;
+    上下文.fillStyle = 标记.圆圈颜色;
+    for (let i = 0; i < 圆圈总数; i++) {
+      上下文.beginPath();
+      上下文.arc(起始X + i * 标记.圆圈间距, 节点.y, 标记.圆圈半径, 0, Math.PI * 2);
+      上下文.fill();
+    }
+  }
+
+  // 名称
+  上下文.fillStyle = 名称颜色;
+  上下文.font = 尺寸.名称字体;
+  上下文.textAlign = "center";
+  const 显示名称 = 截断文本(上下文, 节点.名称, 实际宽 - 8);
+
+  if (节点.类型 === "文件") {
+    // 文件名称放矩形正中
+    上下文.textBaseline = "middle";
+    上下文.fillText(显示名称, 节点.x, 节点.y);
+  } else {
+    // 目录名称放矩形上方
+    上下文.textBaseline = "bottom";
+    上下文.fillText(显示名称, 节点.x, 实际Y + 尺寸.名称偏移);
+  }
+
+  // tar 匹配打勾：节点中心绘制绿色对勾（下方黑色圆做衬底增强对比）
+  if (tar打勾节点组.includes(节点) && !节点.删除动画) {
+    const 勾选尺寸 = Math.min(实际宽, 实际高) * 0.62;
+    const 勾选半径 = 勾选尺寸 / 2;
+    const 勾中心X = 节点.x;
+    const 勾中心Y = 节点.y;
+    上下文.save();
+    // 黑色衬底圆：半径与绿勾相同，圆心向右下各偏移 2px
+    上下文.beginPath();
+    上下文.arc(勾中心X + 2, 勾中心Y + 2, 勾选半径, 0, Math.PI * 2);
+    上下文.fillStyle = "#000";
+    上下文.fill();
+    // 绿色圆形底
+    上下文.beginPath();
+    上下文.arc(勾中心X, 勾中心Y, 勾选半径, 0, Math.PI * 2);
+    上下文.fillStyle = "rgba(30, 170, 70, 0.95)";
+    上下文.fill();
+    上下文.strokeStyle = "#a9f5c3";
+    上下文.lineWidth = 1.5;
+    上下文.stroke();
+    // 白色对勾
+    const 勾长 = 勾选半径 * 0.62;
+    const 勾宽 = 勾选半径 * 0.34;
+    上下文.strokeStyle = "#ffffff";
+    上下文.lineWidth = Math.max(2, 勾选半径 * 0.22);
+    上下文.lineCap = "round";
+    上下文.lineJoin = "round";
+    上下文.beginPath();
+    上下文.moveTo(勾中心X - 勾长 + 1, 勾中心Y + 勾长 * 0.15);
+    上下文.lineTo(勾中心X - 勾宽 * 0.4, 勾中心Y + 勾长 * 0.75);
+    上下文.lineTo(勾中心X + 勾长 - 1, 勾中心Y - 勾长 * 0.7 + 2);
+    上下文.stroke();
+    上下文.restore();
+  }
+
+  // tar 类型图标：.tar / .tar.gz 文件节点上方居中绘制
+  const tar图标类型 = 获取节点tar图标类型(节点);
+  if (tar图标类型 && !节点.删除动画) {
+    const 图标 = tar图标类型 === "tar.gz" ? targz图标 : tar图标;
+    if (图标.complete && 图标.naturalWidth > 0) {
+      const 图标尺寸 = Math.max(26, Math.min(实际高 + 8, 40));
+      const 图标X = 节点.x - 图标尺寸 / 2;
+      const 图标Y = 实际Y - 图标尺寸 - 6;
+      上下文.drawImage(图标, 图标X, 图标Y, 图标尺寸, 图标尺寸);
+    }
+  }
+
+  // 主目录图标：在目录名称上方居中绘制
+  if (节点.是主目录 && !节点.删除动画 && 主目录图标.complete) {
+    const 图标尺寸 = 配置.主目录图标.尺寸;
+    const 名称Y = 实际Y + 尺寸.名称偏移;
+    const 图标X = 节点.x - 图标尺寸 / 2;
+    const 图标Y = 名称Y - 图标尺寸 - 16;
+    上下文.drawImage(主目录图标, 图标X, 图标Y, 图标尺寸, 图标尺寸);
+  }
+
+  // 删除按钮：右上角红色正圆 + 白色叉叉
+  const 按钮几何 = 获取删除按钮几何(节点, 实际宽, 实际高, 当前比例);
+  if (按钮几何) {
+    const 删除配置 = 配置.删除按钮;
+    const 是按钮悬停 = 节点 === 悬停删除节点;
+    上下文.save();
+    上下文.beginPath();
+    上下文.arc(按钮几何.x, 按钮几何.y, 按钮几何.半径, 0, Math.PI * 2);
+    上下文.fillStyle = 是按钮悬停 ? 删除配置.悬停背景色 : 删除配置.背景色;
+    上下文.fill();
+
+    // 叉叉：两条交叉线段（Y 方向整体上移 1 像素，视觉居中）
+    const 叉半长 = 按钮几何.半径 * 删除配置.叉比例;
+    const 叉中心Y = 按钮几何.y - 0.5;
+    上下文.strokeStyle = 删除配置.叉颜色;
+    上下文.lineWidth = 删除配置.线宽 * 当前比例;
+    上下文.lineCap = "round";
+    上下文.beginPath();
+    上下文.moveTo(按钮几何.x - 叉半长, 叉中心Y - 叉半长);
+    上下文.lineTo(按钮几何.x + 叉半长, 叉中心Y + 叉半长);
+    上下文.moveTo(按钮几何.x + 叉半长, 叉中心Y - 叉半长);
+    上下文.lineTo(按钮几何.x - 叉半长, 叉中心Y + 叉半长);
+    上下文.stroke();
+    上下文.restore();
+  }
+}
+
+function 绘制错误提示() {
+  if (!错误提示组.length) return;
+  const 提示 = 错误提示组[0];
+  const 配置错误 =
+    提示.类型 === "警告"
+      ? 配置.警告
+      : 提示.类型 === "信息"
+        ? 配置.信息
+        : 提示.类型 === "过程"
+          ? 配置.过程
+          : 配置.错误;
+
+  const 行高 = 22;
+  const 首行高 = 28;
+  const 行组 = 提示.消息.split("\n");
+  const 行数 = 行组.length;
+
+  // 第一行用更大字体，计算最大宽度时分开算
+  const 首行字体 = "bold 18px 'Google Sans Code', Consolas, 'Noto Sans SC', 微软雅黑, sans-serif";
+  上下文.font = 首行字体;
+  const 首行宽 = 上下文.measureText(行组[0]).width;
+  上下文.font = 配置错误.字体;
+  let 其余最大宽 = 0;
+  for (let i = 1; i < 行组.length; i++) {
+    const 行宽 = 上下文.measureText(行组[i]).width;
+    if (行宽 > 其余最大宽) 其余最大宽 = 行宽;
+  }
+  const 最大文本宽 = Math.max(首行宽, 其余最大宽);
+  const 框宽 = Math.min(最大文本宽 + 40 + 配置错误.内边距 * 2, 配置错误.最大宽度);
+  const 框高 = 首行高 + (行数 - 1) * 行高 + 配置错误.内边距 * 2;
+
+  // 计算透明度
+  let 透明度 = 1;
+  const 现在 = performance.now();
+  if (提示.阶段 === "消失") {
+    透明度 = 1 - (现在 - 提示.消失开始时间) / 配置错误.消失时间;
+  }
+
+  // 位置：Canvas 左下角（左右、下各留 20px 边距）
+  const 中心X = 20 + 框宽 / 2;
+  const 中心Y = 画布高 - 20 - 框高 / 2;
+
+  上下文.save();
+  上下文.globalAlpha = Math.max(0, Math.min(1, 透明度));
+
+  // 阴影
+  上下文.shadowColor = "rgba(0,0,0,0.5)";
+  上下文.shadowBlur = 20;
+  上下文.shadowOffsetY = 4;
+
+  // 背景
+  上下文.fillStyle = 配置错误.背景色;
+  圆角矩形路径(上下文, 中心X - 框宽 / 2, 中心Y - 框高 / 2, 框宽, 框高, 配置错误.圆角);
+  上下文.fill();
+
+  上下文.restore();
+
+  // 文字：第一行大字体，其余行整体居中（取最宽行作为整体宽度），每行在整体内左对齐
+  上下文.textAlign = "left";
+  上下文.textBaseline = "middle";
+  const 文本起始X = 中心X - 最大文本宽 / 2;
+  const 首行Y = 中心Y - 框高 / 2 + 配置错误.内边距 + 首行高 / 2;
+  const 其余起始Y = 首行Y + 首行高 / 2 + 行高 / 2;
+  上下文.globalAlpha = Math.max(0, Math.min(1, 透明度));
+
+  // 第一行：大字体、加亮颜色
+  上下文.font = 首行字体;
+  上下文.fillStyle = "#ffe066";
+  上下文.fillText(行组[0], 文本起始X, 首行Y);
+
+  // 其余行：正常字体、文字颜色
+  上下文.font = 配置错误.字体;
+  上下文.fillStyle = 配置错误.文字颜色;
+  for (let i = 1; i < 行组.length; i++) {
+    上下文.fillText(行组[i], 文本起始X, 其余起始Y + (i - 1) * 行高);
+  }
+  上下文.globalAlpha = 1;
+}
+
+function 绘制波纹() {
+  if (!波纹组.length) return;
+  const 现在 = performance.now();
+  for (const 波纹 of 波纹组) {
+    const 进度 = (现在 - 波纹.起始时间) / 配置.高亮.波纹持续时间;
+    if (进度 > 1) continue;
+    const 半径 = 波纹.最大半径 * 进度;
+    const 透明度 = (1 - 进度) * 0.8;
+    上下文.strokeStyle = 配置.高亮.波纹颜色;
+    上下文.lineWidth = 配置.高亮.波纹线宽;
+    上下文.globalAlpha = 透明度;
+    上下文.beginPath();
+    上下文.arc(波纹.x, 波纹.y, 半径, 0, Math.PI * 2);
+    上下文.stroke();
+    上下文.globalAlpha = 1;
+  }
+}
+
+// 计算三次贝塞尔曲线上的点
+function 计算贝塞尔点(t, p0x, p0y, p1x, p1y, p2x, p2y, p3x, p3y) {
+  const u = 1 - t;
+  const tt = t * t;
+  const uu = u * u;
+  const uuu = uu * u;
+  const ttt = tt * t;
+
+  const x = uuu * p0x + 3 * uu * t * p1x + 3 * u * tt * p2x + ttt * p3x;
+  const y = uuu * p0y + 3 * uu * t * p1y + 3 * u * tt * p2y + ttt * p3y;
+
+  return { x, y };
+}
+
+function 绘制cd动画() {
+  if (!cd动画组.length) return;
+  const 现在 = performance.now();
+
+  for (const 动画 of cd动画组) {
+    const 进度 = (现在 - 动画.起始时间) / 500; // 匀速，500ms
+    if (进度 > 1) continue;
+
+    // 根据进度找到当前所在的段
+    const 当前距离 = 进度 * 动画.总长度;
+    let 已遍历距离 = 0;
+    let 当前段索引 = 0;
+    let 段内进度 = 0;
+
+    for (let i = 0; i < 动画.段长度组.length; i++) {
+      if (当前距离 <= 已遍历距离 + 动画.段长度组[i] || i === 动画.段长度组.length - 1) {
+        当前段索引 = i;
+        段内进度 = 动画.段长度组[i] > 0
+          ? (当前距离 - 已遍历距离) / 动画.段长度组[i]
+          : 0;
+        段内进度 = Math.max(0, Math.min(1, 段内进度));
+        break;
+      }
+      已遍历距离 += 动画.段长度组[i];
+    }
+
+    const 参数 = 动画.段参数组[当前段索引];
+    if (!参数) continue;
+
+    const 点 = 计算贝塞尔点(
+      段内进度,
+      参数.起点X, 参数.起点Y,
+      参数.控制点1X, 参数.控制点1Y,
+      参数.控制点2X, 参数.控制点2Y,
+      参数.终点X, 参数.终点Y
+    );
+
+    // 绘制圆形
+    const 半径 = 8;
+    const 透明度 = 进度 < 0.8 ? 1 : 1 - (进度 - 0.8) / 0.2; // 最后 20% 淡出
+
+    上下文.globalAlpha = 透明度;
+    上下文.fillStyle = "#555555ff";
+    上下文.strokeStyle = "#ffffffff";
+    上下文.lineWidth = 2;
+    上下文.beginPath();
+    上下文.arc(点.x, 点.y, 半径, 0, Math.PI * 2);
+    上下文.fill();
+    上下文.stroke();
+    上下文.globalAlpha = 1;
+  }
+}
+
+function 绘制tar打包动画() {
+  if (!tar打包动画组.length) return;
+  const 现在 = performance.now();
+
+  // 清理已完成的动画
+  tar打包动画组 = tar打包动画组.filter((动画) => {
+    return (现在 - 动画.起始时间) / 1000 <= 1;
+  });
+  if (!tar打包动画组.length) return;
+
+  for (const 动画 of tar打包动画组) {
+    const 进度 = Math.min(1, (现在 - 动画.起始时间) / 1000); // 500ms 匀速
+
+    // 不透明度：0~75% 保持 50%，75%~100% 线性降到 0
+    let 不透明度;
+    if (进度 <= 0.75) {
+      不透明度 = 0.5;
+    } else {
+      不透明度 = 0.5 * (1 - (进度 - 0.75) / 0.25);
+    }
+
+    // 缩放：0~25% 保持 100%，25%~100% 线性缩到 25%
+    let 缩放;
+    if (进度 <= 0.25) {
+      缩放 = 1;
+    } else {
+      缩放 = 1 - (进度 - 0.25) / 0.75 * 0.75; // 1 → 0.25
+    }
+
+    // 位置：从节点本体向目标点线性移动
+    const x = 动画.起始X + (动画.目标X - 动画.起始X) * 进度;
+    const y = 动画.起始Y + (动画.目标Y - 动画.起始Y) * 进度;
+
+    上下文.save();
+    上下文.globalAlpha = 不透明度;
+    上下文.translate(x, y);
+    上下文.scale(缩放, 缩放);
+    上下文.translate(-x, -y);
+    // 冻结当前位置过渡，避免目录放大效果引入缓动
+    const 原过渡 = 动画.节点.当前位置过渡;
+    动画.节点.当前位置过渡 = 0;
+    绘制节点(动画.节点);
+    动画.节点.当前位置过渡 = 原过渡;
+    上下文.restore();
+  }
+}
+
+// ==================== 主渲染循环 ====================
+function 渲染循环(当前时间) {
+  动画帧ID = null;
+
+  // 更新错误提示
+  let 有重绘需求 = false;
+  if (错误提示组.length) {
+    const 提示 = 错误提示组[0];
+    if (提示.阶段 === "显示" && 当前时间 - 提示.开始时间 > 配置.错误.停留时间) {
+      提示.阶段 = "消失";
+      提示.消失开始时间 = 当前时间;
+    }
+    if (提示.阶段 === "消失" && 当前时间 - 提示.消失开始时间 > 配置.错误.消失时间) {
+      错误提示组.shift();
+    }
+    有重绘需求 = true;
+  }
+
+  // 清理已完成的波纹
+  if (波纹组.length) {
+    const 原长度 = 波纹组.length;
+    波纹组 = 波纹组.filter((波纹) => 当前时间 - 波纹.起始时间 < 配置.高亮.波纹持续时间);
+    if (波纹组.length > 0 || 原长度 !== 波纹组.length) 有重绘需求 = true;
+  }
+
+  // 清理已完成的 cd 动画
+  if (cd动画组.length) {
+    const 原长度 = cd动画组.length;
+    cd动画组 = cd动画组.filter((动画) => 当前时间 - 动画.起始时间 < 500);
+    if (cd动画组.length > 0 || 原长度 !== cd动画组.length) 有重绘需求 = true;
+  }
+
+  // 清除画布（背景不受视图偏移影响）
+  上下文.fillStyle = 配置.画布.背景色;
+  上下文.fillRect(0, 0, 画布宽, 画布高);
+
+  // 应用视图平移
+  上下文.save();
+  上下文.translate(视图偏移X, 视图偏移Y);
+
+  if (根节点) {
+    // 先更新所有节点动画
+    const 所有节点 = 收集所有节点(根节点);
+    let 有动画进行中 = false;
+
+    for (const 节点 of 所有节点) {
+      if (节点.删除动画) {
+        节点.删除动画.更新(当前时间);
+        if (!节点.删除动画.已完成) 有动画进行中 = true;
+      } else if (节点.动画) {
+        const 结果 = 节点.动画.更新(当前时间);
+        节点.x = 结果.x;
+        节点.y = 结果.y;
+        if (!节点.动画.已完成) 有动画进行中 = true;
+      }
+    }
+
+    // 检查当前位置过渡动画
+    for (const 节点 of 所有节点) {
+      if (节点.当前位置动画) {
+        节点.当前位置过渡 = 节点.当前位置动画.更新(当前时间);
+        if (!节点.当前位置动画.已完成) 有动画进行中 = true;
+        else 节点.当前位置动画 = null;
+      }
+    }
+
+    // 分离正常节点和删除中的节点
+    const 正常节点 = 所有节点.filter((n) => !n.删除动画 || n.删除动画.当前值 < 1);
+    const 删除节点 = 所有节点.filter((n) => n.删除动画);
+
+    // 绘制连接线（只绘制两个端点都未在删除中的）
+    for (const 节点 of 正常节点) {
+      if (!节点.父节点) continue;
+      if (节点.父节点.删除动画) continue;
+      绘制连接线(节点.父节点, 节点);
+    }
+
+    // 按层级从低到高绘制节点（层级高的后绘制，显示在上层）
+    const 按层级排序 = [...正常节点].sort((a, b) => a.层级 - b.层级);
+    for (const 节点 of 按层级排序) {
+      绘制节点(节点);
+    }
+
+    // 清理已完成删除动画的节点
+    let 有节点被移除 = false;
+    for (const 节点 of [...删除节点]) {
+      if (节点.删除动画.已完成) {
+        // 从父节点中移除
+        if (节点.父节点) {
+          const 索引 = 节点.父节点.子节点组.indexOf(节点);
+          if (索引 > -1) 节点.父节点.子节点组.splice(索引, 1);
+        }
+        节点表.delete(节点.id);
+        有节点被移除 = true;
+      }
+    }
+
+    if (有动画进行中 || 有节点被移除) 有重绘需求 = true;
+  }
+
+  绘制波纹();
+  绘制cd动画();
+  绘制tar打包动画();
+
+  // 恢复视图平移，错误提示框固定位置绘制
+  上下文.restore();
+  绘制错误提示();
+
+  if (有重绘需求) {
+    动画帧ID = requestAnimationFrame(渲染循环);
+  }
+}
+
+function 请求重绘() {
+  if (!动画帧ID) {
+    动画帧ID = requestAnimationFrame(渲染循环);
+  }
+}
+
+function 更新节点位置(节点, 时间) {
+  if (节点.删除动画) {
+    节点.删除动画.更新(时间);
+    return !节点.删除动画.已完成;
+  }
+  if (节点.动画) {
+    const 结果 = 节点.动画.更新(时间);
+    节点.x = 结果.x;
+    节点.y = 结果.y;
+    return !节点.动画.已完成;
+  }
+  return false;
+}
+
+function 更新当前位置过渡(节点, 时间) {
+  if (节点.当前位置动画) {
+    节点.当前位置过渡 = 节点.当前位置动画.更新(时间);
+    if (节点.当前位置动画.已完成) 节点.当前位置动画 = null;
+    return true;
+  }
+  return false;
+}
+
+// ==================== 鼠标交互 ====================
+function 获取鼠标坐标(事件) {
+  const 矩形 = 画布.getBoundingClientRect();
+  return {
+    x: 事件.clientX - 矩形.left - 视图偏移X,
+    y: 事件.clientY - 矩形.top - 视图偏移Y,
+  };
+}
+
+function 查找命中节点(x, y) {
+  if (!根节点) return null;
+  const 所有节点 = 收集所有节点(根节点);
+  let 最高命中节点 = null;
+  let 最高命中层级 = -1;
+  // 只命中层级最高的节点
+  for (const 节点 of 所有节点) {
+    if (节点.删除动画) continue;
+    const { 实际宽, 实际高 } = 获取节点实际尺寸(节点);
+    const 半宽 = 实际宽 / 2;
+    const 半高 = 实际高 / 2;
+    if (x >= 节点.x - 半宽 && x <= 节点.x + 半宽 && y >= 节点.y - 半高 && y <= 节点.y + 半高) {
+      if (节点.层级 > 最高命中层级) {
+        最高命中层级 = 节点.层级;
+        最高命中节点 = 节点;
+      }
+    }
+  }
+  return 最高命中节点;
+}
+
+// 计算节点右上角删除按钮的几何信息；不可见/不可删时返回 null
+function 获取删除按钮几何(节点, 已知宽, 已知高, 已知比例) {
+  if (!节点.父节点) return null; // 根目录不可删除
+  if (节点.删除动画) return null;
+
+  let 实际宽 = 已知宽, 实际高 = 已知高, 当前比例 = 已知比例;
+  if (实际宽 === undefined) {
+    const 尺寸 = 获取节点实际尺寸(节点);
+    实际宽 = 尺寸.实际宽;
+    实际高 = 尺寸.实际高;
+    当前比例 = 尺寸.当前比例;
+  }
+  const 半径 = 配置.删除按钮.半径 * 当前比例;
+  // 圆心位于节点矩形右上角顶点
+  return {
+    x: 节点.x + 实际宽 / 2,
+    y: 节点.y - 实际高 / 2,
+    半径,
+  };
+}
+
+// 查找点击是否命中某节点的删除按钮（返回层级最高的命中节点）
+function 查找删除按钮命中(x, y) {
+  if (!根节点) return null;
+  const 所有节点 = 收集所有节点(根节点);
+  let 最高命中节点 = null;
+  let 最高命中层级 = -1;
+  for (const 节点 of 所有节点) {
+    const 几何 = 获取删除按钮几何(节点);
+    if (!几何) continue;
+    const 距离平方 = (x - 几何.x) ** 2 + (y - 几何.y) ** 2;
+    if (距离平方 <= 几何.半径 ** 2 && 节点.层级 > 最高命中层级) {
+      最高命中层级 = 节点.层级;
+      最高命中节点 = 节点;
+    }
+  }
+  return 最高命中节点;
+}
+
+function 处理鼠标按下(事件) {
+  // 按住鼠标中键（滚轮）时拖拽：拖拽 Canvas 视图
+  if (事件.button === 1) {
+    // 阻止默认的浏览器自动滚动模式
+    事件.preventDefault();
+    正在拖拽视图 = true;
+    中键按下位置X = 事件.clientX;
+    中键按下位置Y = 事件.clientY;
+    中键已移动 = false;
+    视图拖拽起始X = 事件.clientX;
+    视图拖拽起始Y = 事件.clientY;
+    视图拖拽初始偏移X = 视图偏移X;
+    视图拖拽初始偏移Y = 视图偏移Y;
+    return;
+  }
+  // 非中键：标记已移动，避免误判
+  中键已移动 = true;
+
+  const { x, y } = 获取鼠标坐标(事件);
+
+  // 左键按下删除按钮：记录候选和按下位置，待松开时确认（移动则转为拖拽并取消）
+  if (事件.button === 0) {
+    const 删除命中 = 查找删除按钮命中(x, y);
+    if (删除命中) {
+      按下删除节点 = 删除命中;
+      删除按钮按下X = 事件.clientX;
+      删除按钮按下Y = 事件.clientY;
+      return;
+    }
+  }
+
+  const 命中节点 = 查找命中节点(x, y);
+  鼠标按下时间 = performance.now();
+  鼠标按下节点 = 命中节点;
+
+  if (命中节点) {
+    拖拽节点 = 命中节点;
+    拖拽起始X = x;
+    拖拽起始Y = y;
+    拖拽当前X = x;
+    拖拽当前Y = y;
+    命中节点.拖拽偏移X = x - 命中节点.x;
+    命中节点.拖拽偏移Y = y - 命中节点.y;
+    拖拽时按住Ctrl = 事件.ctrlKey;
+  }
+}
+
+// 根据当前 Ctrl 状态更新拖拽跟随组：按住 Ctrl 时后代不跟随，松开时后代跟随
+function 更新拖拽跟随组() {
+  拖拽跟随偏移组 = [];
+  if (拖拽时按住Ctrl || !拖拽节点) return;
+  const 收集后代偏移 = (节点) => {
+    for (const 子节点 of 节点.子节点组) {
+      const 相对偏移X = 子节点.x - 拖拽节点.x;
+      const 相对偏移Y = 子节点.y - 拖拽节点.y;
+      拖拽跟随偏移组.push({ 节点: 子节点, 偏移X: 相对偏移X, 偏移Y: 相对偏移Y });
+      子节点.动画 = null; // 停止子节点自身动画，避免冲突
+      收集后代偏移(子节点);
+    }
+  };
+  收集后代偏移(拖拽节点);
+}
+
+function 处理鼠标移动(事件) {
+  // 拖拽视图：更新视图偏移（使用原始 clientX/Y）
+  if (正在拖拽视图) {
+    const 移动距离 = Math.sqrt(
+      (事件.clientX - 中键按下位置X) ** 2 + (事件.clientY - 中键按下位置Y) ** 2
+    );
+    if (移动距离 > 配置.交互.拖拽阈值) {
+      if (!中键已移动) {
+        画布.style.cursor = 'url("/Images/Common/鼠标-移动抓手.cur"), grabbing';
+      }
+      中键已移动 = true;
+      // 阻止默认行为，避免中键自动滚动等
+      事件.preventDefault();
+    }
+    视图偏移X = 视图拖拽初始偏移X + (事件.clientX - 视图拖拽起始X);
+    视图偏移Y = 视图拖拽初始偏移Y + (事件.clientY - 视图拖拽起始Y);
+    请求重绘();
+    return;
+  }
+
+  const { x, y } = 获取鼠标坐标(事件);
+
+  // 在删除按钮上按下后移动：转为拖拽该节点，并取消删除
+  if (按下删除节点 && !拖拽节点) {
+    const 移动距离 = Math.sqrt(
+      (事件.clientX - 删除按钮按下X) ** 2 + (事件.clientY - 删除按钮按下Y) ** 2
+    );
+    if (移动距离 > 配置.交互.拖拽阈值) {
+      const 目标节点 = 按下删除节点;
+      按下删除节点 = null;
+      鼠标按下时间 = performance.now();
+      鼠标按下节点 = 目标节点;
+      拖拽节点 = 目标节点;
+      拖拽起始X = x;
+      拖拽起始Y = y;
+      拖拽当前X = x;
+      拖拽当前Y = y;
+      目标节点.拖拽偏移X = x - 目标节点.x;
+      目标节点.拖拽偏移Y = y - 目标节点.y;
+      拖拽时按住Ctrl = 事件.ctrlKey;
+    }
+  }
+
+  // 未拖拽时：优先检测删除按钮悬停，其次检测悬停节点
+  if (!拖拽节点) {
+    const 删除命中 = 查找删除按钮命中(x, y);
+    if (删除命中) {
+      let 需要重绘 = false;
+      if (悬停节点) { 悬停节点 = null; 需要重绘 = true; }
+      if (悬停删除节点 !== 删除命中) { 悬停删除节点 = 删除命中; 需要重绘 = true; }
+      画布.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
+      if (需要重绘) 请求重绘();
+      return;
+    }
+    const 命中 = 查找命中节点(x, y);
+    let 需要重绘 = false;
+    if (悬停删除节点) { 悬停删除节点 = null; 需要重绘 = true; }
+    if (命中 !== 悬停节点) {
+      悬停节点 = 命中;
+      画布.style.cursor = 命中 ? 'url("/Images/Common/鼠标-指向.cur"), pointer' : "var(--光标-默认)";
+      需要重绘 = true;
+    }
+    if (需要重绘) 请求重绘();
+    return;
+  }
+
+  拖拽当前X = x;
+  拖拽当前Y = y;
+
+  if (!拖拽节点.被拖拽) {
+    const 移动距离 = Math.sqrt((x - 拖拽起始X) ** 2 + (y - 拖拽起始Y) ** 2);
+    if (移动距离 <= 配置.交互.拖拽阈值) return;
+    // 开始拖拽
+    拖拽节点.被拖拽 = true;
+    拖拽节点.动画 = null;
+    更新拖拽跟随组();
+  }
+
+  // 拖拽中：持续更新拖拽节点位置
+  const 新X = x - 拖拽节点.拖拽偏移X;
+  const 新Y = y - 拖拽节点.拖拽偏移Y;
+  const 移动差X = 新X - 拖拽节点.x;
+  const 移动差Y = 新Y - 拖拽节点.y;
+  拖拽节点.x = 新X;
+  拖拽节点.y = 新Y;
+
+  // 所有后代节点跟随移动，保持相对位置
+  for (const 跟随项 of 拖拽跟随偏移组) {
+    跟随项.节点.x += 移动差X;
+    跟随项.节点.y += 移动差Y;
+  }
+
+  请求重绘();
+}
+
+function 处理鼠标松开(事件) {
+  // 结束视图拖拽
+  if (正在拖拽视图) {
+    正在拖拽视图 = false;
+    画布.style.cursor = "var(--光标-默认)";
+    按下删除节点 = null;
+    return;
+  }
+
+  // 在删除按钮上按下后松开：
+  if (按下删除节点) {
+    if (!拖拽节点) {
+      // 未移动：执行删除
+      点击删除节点(按下删除节点);
+    }
+    // 已移动转为拖拽：不删除
+    按下删除节点 = null;
+    return;
+  }
+
+  if (!拖拽节点) return;
+
+  const 按下时长 = performance.now() - 鼠标按下时间;
+  const 是点击 = !拖拽节点.被拖拽 && 按下时长 < 配置.交互.点击时间阈值;
+
+  if (是点击 && 鼠标按下节点 && 鼠标按下节点.类型 === "目录") {
+    // 点击目录：设为当前目录
+    撤销栈.push({ 快照: 创建快照(), 来自命令: false });
+    执行cd(鼠标按下节点);
+  }
+
+  if (拖拽节点.被拖拽) {
+    // 拖拽结束：记录快照后标记为固定位置，不再自动布局
+    撤销栈.push({ 快照: 创建快照(), 来自命令: false });
+    拖拽节点.被拖拽 = false;
+    拖拽节点.固定位置 = true;
+    拖拽节点.动画 = null;
+    // 后代节点也标记为固定位置
+    for (const 跟随项 of 拖拽跟随偏移组) {
+      跟随项.节点.固定位置 = true;
+      跟随项.节点.动画 = null;
+    }
+    拖拽跟随偏移组 = [];
+    布局并动画();
+  }
+
+  拖拽节点 = null;
+  鼠标按下节点 = null;
+}
+
+// ==================== 命令系统 ====================
+function 规范化路径(路径) {
+  if (!路径 || 路径 === "/") return "/";
+  const 部分组 = 路径.split("/").filter((p) => p !== "" && p !== ".");
+  const 结果 = [];
+  for (const 部分 of 部分组) {
+    if (部分 === "..") {
+      if (结果.length) 结果.pop();
+    } else {
+      结果.push(部分);
+    }
+  }
+  return "/" + 结果.join("/");
+}
+
+// 花括号展开：parent/{a,b,c} → parent/a parent/b parent/c，支持嵌套和多段
+function 展开花括号(文本) {
+  // 找到第一对花括号
+  let 开括号位置 = -1;
+  let 闭括号位置 = -1;
+  let 深度 = 0;
+  for (let i = 0; i < 文本.length; i++) {
+    if (文本[i] === "{") {
+      if (深度 === 0) 开括号位置 = i;
+      深度++;
+    } else if (文本[i] === "}") {
+      深度--;
+      if (深度 === 0) {
+        闭括号位置 = i;
+        break;
+      }
+    }
+  }
+
+  // 没有花括号，原样返回
+  if (开括号位置 === -1 || 闭括号位置 === -1) return [文本];
+
+  const 前缀 = 文本.slice(0, 开括号位置);
+  const 后缀 = 文本.slice(闭括号位置 + 1);
+  const 内部 = 文本.slice(开括号位置 + 1, 闭括号位置);
+
+  // 按逗号拆分顶层（不拆分嵌套花括号内的逗号）
+  const 选项组 = [];
+  let 当前 = "";
+  let 嵌套深度 = 0;
+  for (const 字符 of 内部) {
+    if (字符 === "{") 嵌套深度++;
+    else if (字符 === "}") 嵌套深度--;
+    if (字符 === "," && 嵌套深度 === 0) {
+      选项组.push(当前);
+      当前 = "";
+    } else {
+      当前 += 字符;
+    }
+  }
+  if (当前 || 选项组.length === 0) 选项组.push(当前);
+
+  // 逐个选项与前缀后缀拼接（修剪选项前后空格），再递归展开剩余花括号
+  const 结果 = [];
+  for (const 选项 of 选项组) {
+    const 拼接 = 前缀 + 选项.trim() + 后缀;
+    结果.push(...展开花括号(拼接));
+  }
+  return 结果;
+}
+
+// 通配符展开：路径中含 * 时，匹配所在目录下的所有子节点
+// 返回 { 节点组, 匹配目录 } 或 null（路径不含 * 或无匹配）
+function 展开通配符(路径) {
+  if (!路径.includes("*")) return null;
+  const 星号位置 = 路径.indexOf("*");
+  const 斜杠位置 = 路径.lastIndexOf("/", 星号位置);
+  const 目录部分 = 斜杠位置 === -1 ? "" : 路径.slice(0, 斜杠位置);
+  const 目录节点 = 目录部分 ? 解析相对路径(目录部分) : 当前位置节点;
+  if (!目录节点 || 目录节点.类型 !== "目录") return null;
+  return { 节点组: [...目录节点.子节点组], 匹配目录: 目录节点 };
+}
+
+function 解析路径(路径) {
+  const 规范化 = 规范化路径(路径);
+  if (规范化 === "/") return 根节点;
+  const 部分组 = 规范化.split("/").filter(Boolean);
+  let 节点 = 根节点;
+  for (const 部分 of 部分组) {
+    if (!节点) return null;
+    const 子节点 = 节点.子节点组.find((n) => n.名称 === 部分);
+    if (!子节点) return null;
+    节点 = 子节点;
+  }
+  return 节点;
+}
+
+function 获取当前路径() {
+  if (!当前位置节点 || 当前位置节点 === 根节点) return "/";
+  const 部分组 = [];
+  let 节点 = 当前位置节点;
+  while (节点 && 节点 !== 根节点) {
+    部分组.unshift(节点.名称);
+    节点 = 节点.父节点;
+  }
+  return "/" + 部分组.join("/");
+}
+
+const 路径显示区 = document.getElementById("路径显示区");
+
+function 更新路径显示() {
+  const 路径 = 获取当前路径();
+  // 将斜杠包成灰色 span
+  const 高亮路径 = 路径.replace(/\//g, '<span class="路径斜杠">/</span>');
+  路径显示区.innerHTML = 高亮路径;
+}
+
+function 更新提示符() {
+  const 目录名 = 当前位置节点 ? 当前位置节点.名称 : "/";
+  命令提示符.innerHTML = '<span class="提示符目录">' + 目录名 + '</span> <span class="提示符符号">$</span>';
+  更新路径显示();
+}
+
+// ==================== 命令语法高亮 ====================
+const 命令高亮层 = document.getElementById("命令高亮层");
+
+const 命令输入区 = document.querySelector(".命令输入区");
+
+function 高亮命令语法(文本) {
+  const 有效命令组 = ["cd", "mkdir", "rmdir", "rm", "touch", "cp", "mv", "tar"];
+  const 转义 = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  // 路径中的特殊字符用单独颜色高亮
+  const 转义路径 = (s) =>
+    转义(s)
+      .replace(/\//g, '<span class="语法-斜杠">/</span>')
+      .replace(/\{/g, '<span class="语法-花括号">{</span>')
+      .replace(/\}/g, '<span class="语法-花括号">}</span>')
+      .replace(/,/g, '<span class="语法-逗号">,</span>');
+  const 部分组 = 文本.split(/(\s+)/);
+  let 结果 = "";
+  let 已遇到命令 = false;
+
+  for (const 部分 of 部分组) {
+    if (!部分) continue;
+    if (/^\s+$/.test(部分)) {
+      结果 += 转义(部分);
+      continue;
+    }
+    if (!已遇到命令) {
+      // 第一个非空白部分是命令
+      const 小写 = 部分.toLowerCase();
+      if (有效命令组.includes(小写)) {
+        结果 += `<span class="语法-命令">${转义(部分)}</span>`;
+        已遇到命令 = true;
+      } else {
+        结果 += 转义(部分);
+        已遇到命令 = true;
+      }
+      continue;
+    }
+    // 后续部分：参数或路径
+    if (部分.startsWith("-")) {
+      // 横杠参数，拆出横杠和参数字母
+      const 横杠 = 部分[0];
+      const 字母 = 部分.slice(1);
+      结果 += `<span class="语法-横杠">${转义(横杠)}</span>`;
+      if (字母) {
+        结果 += `<span class="语法-参数">${转义(字母)}</span>`;
+      }
+    } else {
+      结果 += `<span class="语法-路径">${转义路径(部分)}</span>`;
+    }
+  }
+
+  return 结果;
+}
+
+function 更新命令高亮() {
+  const 文本 = 命令输入框.value;
+  if (!文本) {
+    命令高亮层.innerHTML = "";
+    命令输入区.style.width = "";
+    return;
+  }
+
+  命令高亮层.innerHTML = 高亮命令语法(文本);
+
+  // 根据内容实际宽度自动扩展输入区，最大宽度由 CSS max-width 限制
+  命令高亮层.style.width = "max-content";
+  const 内容宽度 = 命令高亮层.offsetWidth;
+  命令高亮层.style.width = "";
+  命令输入区.style.width = Math.max(内容宽度, 340) + 命令提示符.offsetWidth + 命令执行按钮.offsetWidth + 30 + "px";
+}
+
+function 解析相对路径(路径) {
+  if (!路径 || 路径 === "/") return 根节点;
+  // ~ 表示当前用户主目录，动态查找实际主目录节点
+  if (路径 === "~") {
+    const 主目录 = 查找主目录();
+    if (主目录) return 主目录;
+    return 解析路径("/home/user");
+  }
+  if (路径.startsWith("~/")) {
+    const 主目录 = 查找主目录();
+    if (主目录) {
+      const 子路径 = 路径.slice(2);
+      const 部分组 = 子路径.split("/").filter((p) => p !== "" && p !== ".");
+      let 节点 = 主目录;
+      for (const 部分 of 部分组) {
+        if (部分 === "..") {
+          if (节点.父节点) 节点 = 节点.父节点;
+        } else {
+          const 子节点 = 节点.子节点组.find((n) => n.名称 === 部分);
+          if (!子节点) return null;
+          节点 = 子节点;
+        }
+      }
+      return 节点;
+    }
+    路径 = "/home/user" + 路径.slice(1);
+  }
+  if (路径.startsWith("/")) {
+    // 绝对路径：从根开始
+    return 解析路径(路径);
+  }
+  // 相对路径：从当前位置开始
+  const 部分组 = 路径.split("/").filter((p) => p !== "" && p !== ".");
+  let 节点 = 当前位置节点;
+  for (const 部分 of 部分组) {
+    if (部分 === "..") {
+      if (节点.父节点) 节点 = 节点.父节点;
+    } else {
+      const 子节点 = 节点.子节点组.find((n) => n.名称 === 部分);
+      if (!子节点) return null;
+      节点 = 子节点;
+    }
+  }
+  return 节点;
+}
+
+// 智能分割：按空格分割，但跳过花括号 {} 内和引号内的空格；引号本身被移除
+function 智能分割命令(输入) {
+  const 结果 = [];
+  let 当前 = "";
+  let 花括号深度 = 0;
+  let 引号 = null; // 当前所在的引号字符（" 或 '），null 表示不在引号内
+  let 已有内容 = false; // 标记当前词是否已开始（让 "" 也能成为空参数）
+  for (const 字符 of 输入.trim()) {
+    if (引号) {
+      // 引号内：空格、花括号都按字面量处理，直到遇到匹配的结束引号
+      if (字符 === 引号) 引号 = null;
+      else 当前 += 字符;
+      continue;
+    }
+    if (字符 === '"' || 字符 === "'") {
+      引号 = 字符;
+      已有内容 = true;
+      continue;
+    }
+    if (字符 === "{") 花括号深度++;
+    else if (字符 === "}") 花括号深度--;
+    if (/\s/.test(字符) && 花括号深度 === 0) {
+      if (当前 || 已有内容) {
+        结果.push(当前);
+        当前 = "";
+        已有内容 = false;
+      }
+    } else {
+      当前 += 字符;
+    }
+  }
+  if (当前 || 已有内容) 结果.push(当前);
+  return 结果;
+}
+
+// 将路径开头的 ~ 展开为主目录的绝对路径（~ 或 ~/... → 主目录路径/...）
+function 展开主目录路径(路径) {
+  if (路径 !== "~" && !路径.startsWith("~/")) return 路径;
+  let 主目录路径 = "/home/user";
+  const 主目录 = 查找主目录();
+  if (主目录) {
+    const 部分组 = [];
+    let 节点 = 主目录;
+    while (节点 && 节点.父节点) {
+      部分组.unshift(节点.名称);
+      节点 = 节点.父节点;
+    }
+    主目录路径 = "/" + 部分组.join("/");
+  }
+  return 主目录路径 + 路径.slice(1);
+}
+
+function 解析命令(输入) {
+  const 错误 = { 有错误: false, 消息: "" };
+
+  if (!输入.trim()) {
+    return { 有效: false };
+  }
+
+  const 部分组 = 智能分割命令(输入);
+  const 命令 = 部分组[0].toLowerCase();
+  // 统一展开参数开头的 ~ 为主目录绝对路径，让所有命令都能识别 ~
+  const 参数组 = 部分组.slice(1).map(展开主目录路径);
+
+  const 有效命令组 = ["cd", "mkdir", "rmdir", "rm", "touch", "cp", "mv", "tar"];
+  if (!有效命令组.includes(命令)) {
+    return { 有效: false, 错误: { 有错误: true, 消息: `未知命令：${命令}\n支持：cd / mkdir / rmdir / rm / touch / cp / mv / tar` } };
+  }
+
+  switch (命令) {
+    case "tar": {
+      const 解析结果 = 解析tar参数(参数组);
+      if (解析结果.无效) {
+        return { 有效: false, 错误: { 有错误: true, 消息: `tar：无效参数 -${解析结果.无效}\n支持：-c -x -t -f -v -z -j -J -k` } };
+      }
+      const { 标志, 文件参数组 } = 解析结果;
+      const 操作数 = [标志.c, 标志.x, 标志.t].filter(Boolean).length;
+      if (操作数 === 0) {
+        return { 有效: false, 错误: { 有错误: true, 消息: "tar：必须指定操作\n-c 打包 / -x 解包 / -t 查看" } };
+      }
+      if (操作数 > 1) {
+        return { 有效: false, 错误: { 有错误: true, 消息: "tar：只能指定一种操作\n-c / -x / -t 不可同时使用" } };
+      }
+
+      if (标志.c) {
+        if (!标志.f) {
+          return { 有效: false, 错误: { 有错误: true, 消息: "tar：缺少 -f 参数\n用法：tar -c[f] [v] [z|j|J] 打包文件名 来源…" } };
+        }
+        if (文件参数组.length < 2) {
+          return { 有效: false, 错误: { 有错误: true, 消息: "tar：缺少打包文件名或来源\n用法：tar -cf 打包文件名 来源…" } };
+        }
+        const 打包文件名 = 文件参数组[0];
+        if (!打包文件名.endsWith(".tar") && !打包文件名.endsWith(".tar.gz") && !打包文件名.endsWith(".tgz") && !打包文件名.endsWith(".tar.bz2") && !打包文件名.endsWith(".tar.xz")) {
+          return { 有效: false, 错误: { 有错误: true, 消息: `tar：打包文件名应以 .tar / .tar.gz 等结尾：${打包文件名}` } };
+        }
+        const 同名 = 当前位置节点.子节点组.find((n) => n.名称 === 打包文件名 && !n.删除动画);
+        if (同名) {
+          return { 有效: false, 错误: { 有错误: true, 消息: `tar：已存在同名文件：${打包文件名}` } };
+        }
+        const 来源组 = 文件参数组.slice(1);
+        const 来源节点组 = [];
+        for (const 模式 of 来源组) {
+          const 匹配组 = 匹配tar来源(模式);
+          if (匹配组.length === 0) {
+            return { 有效: false, 错误: { 有错误: true, 消息: `tar：来源不存在或无匹配：${模式}` } };
+          }
+          for (const 节点 of 匹配组) {
+            if (!来源节点组.includes(节点)) 来源节点组.push(节点);
+          }
+        }
+        return { 有效: true, 命令: "tar", 操作: "c", 标志, 打包文件名, 来源节点组 };
+      }
+
+      if (标志.t) {
+        if (!标志.f || 文件参数组.length < 1) {
+          return { 有效: false, 错误: { 有错误: true, 消息: "tar：缺少打包文件名\n用法：tar -tf 打包文件名 [来源…]" } };
+        }
+        const 打包文件名 = 文件参数组[0];
+        const 打包节点 = 当前位置节点.子节点组.find((n) => n.名称 === 打包文件名 && !n.删除动画);
+        if (!打包节点) {
+          return { 有效: false, 错误: { 有错误: true, 消息: `tar：${打包文件名}：无法 open：没有那个文件或目录` } };
+        }
+        if (打包节点.类型 !== "文件") {
+          return { 有效: false, 错误: { 有错误: true, 消息: `tar：${打包文件名}：无法读取：是个目录` } };
+        }
+        const 是压缩包 = 打包节点.名称.endsWith(".gz");
+        return { 有效: true, 命令: "tar", 操作: "t", 标志, 打包节点, 是压缩包, 打包文件名 };
+      }
+
+      // 解包 -x
+      let 打包文件名 = null;
+      let 打包节点 = null;
+      let 来源组 = [];
+      if (标志.f) {
+        if (文件参数组.length < 1) {
+          return { 有效: false, 错误: { 有错误: true, 消息: "tar：缺少打包文件名\n用法：tar -xf 打包文件名 [来源…]" } };
+        }
+        打包文件名 = 文件参数组[0];
+        打包节点 = 当前位置节点.子节点组.find((n) => n.名称 === 打包文件名 && !n.删除动画);
+        if (!打包节点) {
+          return { 有效: false, 错误: { 有错误: true, 消息: `tar：${打包文件名}：无法 open：没有那个文件或目录` } };
+        }
+        if (打包节点.类型 !== "文件") {
+          return { 有效: false, 错误: { 有错误: true, 消息: `tar：${打包文件名}：无法读取：是个目录` } };
+        }
+        来源组 = 文件参数组.slice(1);
+      }
+      let 内容组 = null;
+      if (打包节点 && 打包节点.内容) {
+        内容组 = 打包节点.内容;
+        if (来源组.length > 0) {
+          // 展平为路径字符串后再筛选
+          const 展平路径组 = [];
+          const 展平 = (条目列表, 前缀 = "") => {
+            for (const 条目 of 条目列表) {
+              const 路径 = 前缀 ? 前缀 + "/" + 条目.名称 : 条目.名称;
+              展平路径组.push(路径);
+              if (条目.类型 === "目录" && 条目.子项) 展平(条目.子项, 路径);
+            }
+          };
+          if (typeof 内容组[0] === "object") 展平(内容组);
+          else 展平路径组.push(...内容组);
+          const 筛选后 = 展平路径组.filter((条目) => 来源组.some((模式) => 匹配tar字符串(模式, 条目)));
+          if (筛选后.length === 0) {
+            return { 有效: false, 错误: { 有错误: true, 消息: "tar：来源与包内容无匹配" } };
+          }
+          内容组 = 筛选后;
+        }
+      } else if (来源组.length > 0) {
+        const 解包节点组 = [];
+        for (const 模式 of 来源组) {
+          const 匹配组 = 匹配tar来源(模式);
+          if (匹配组.length === 0) {
+            return { 有效: false, 错误: { 有错误: true, 消息: `tar：来源不存在或无匹配：${模式}` } };
+          }
+          for (const 节点 of 匹配组) {
+            if (!解包节点组.includes(节点)) 解包节点组.push(节点);
+          }
+        }
+        return { 有效: true, 命令: "tar", 操作: "x", 标志, 打包节点, 解包节点组 };
+      }
+      if (标志.k && 打包节点) {
+        // 展平内容为路径字符串列表，检测同名冲突
+        const 展平路径组 = [];
+        const 展平 = (条目列表, 前缀 = "") => {
+          for (const 条目 of 条目列表) {
+            const 路径 = 前缀 ? 前缀 + "/" + 条目.名称 : 条目.名称;
+            展平路径组.push(路径);
+            if (条目.类型 === "目录" && 条目.子项) 展平(条目.子项, 路径);
+          }
+        };
+        const 原始内容 = 内容组 || 打包节点.内容 || [];
+        if (原始内容.length && typeof 原始内容[0] === "object") {
+          展平(原始内容);
+        } else {
+          展平路径组.push(...原始内容);
+        }
+        const 冲突组 = 展平路径组.filter((路径) => 当前位置节点.子节点组.some((n) => n.名称 === 路径 && !n.删除动画));
+        if (冲突组.length > 0) {
+          return {
+            有效: false,
+            错误: {
+              有错误: true,
+              消息: `tar：${打包文件名}：无法 open：文件已存在\n` +
+                `tar：无法创建文件：已存在同名文件（-k 选项阻止覆盖）\n` +
+                冲突组.map((n) => `${n}`).join("\n") +
+                `\ntar：由于前次错误，将以上次的错误状态退出`,
+            },
+          };
+        }
+      }
+      return { 有效: true, 命令: "tar", 操作: "x", 标志, 打包节点, 内容组 };
+    }
+
+    case "cd": {
+      if (参数组.length === 0) {
+        return { 有效: false, 错误: { 有错误: true, 消息: "cd：缺少目标路径\n用法：cd <路径>" } };
+      }
+      if (参数组.length > 1) {
+        return { 有效: false, 错误: { 有错误: true, 消息: "cd：参数过多\n用法：cd <路径>" } };
+      }
+      const 目标 = 参数组[0];
+      if (目标.startsWith("-")) {
+        return { 有效: false, 错误: { 有错误: true, 消息: "cd：不支持该参数\n支持：cd / cd .. / cd <路径>" } };
+      }
+      // 使用相对路径解析，支持 .. 和子目录名
+      const 目标节点 = 解析相对路径(目标);
+      if (!目标节点) {
+        return { 有效: false, 错误: { 有错误: true, 消息: `cd：路径不存在：${目标}` } };
+      }
+      if (目标节点.类型 !== "目录") {
+        return { 有效: false, 错误: { 有错误: true, 消息: `cd：${目标} 不是目录\n无法进入文件` } };
+      }
+      return { 有效: true, 命令: "cd", 目标: 目标节点, 目标路径: 目标 };
+    }
+
+    case "mkdir": {
+      let 创建父级 = false;
+      let 原始路径组 = [];
+
+      for (const 参数 of 参数组) {
+        if (参数.startsWith("-")) {
+          const 标志组 = 参数.slice(1).split("");
+          for (const 标志 of 标志组) {
+            if (标志 === "p") 创建父级 = true;
+            else return { 有效: false, 错误: { 有错误: true, 消息: `mkdir：无效参数 -${标志}\n支持：-p（创建父级目录）` } };
+          }
+        } else {
+          原始路径组.push(参数);
+        }
+      }
+
+      // 花括号展开：parent/{a,b,c} → parent/a parent/b parent/c
+      const 路径组 = [];
+      for (const 原始路径 of 原始路径组) {
+        路径组.push(...展开花括号(原始路径));
+      }
+
+      if (路径组.length === 0) {
+        return { 有效: false, 错误: { 有错误: true, 消息: "mkdir：缺少目录名\n用法：mkdir [-p] <目录名/路径> [目录名/路径...]" } };
+      }
+
+      // 多目录支持：每个路径独立解析，返回创建任务组
+      const 创建任务组 = [];
+      for (const 路径 of 路径组) {
+        // 解析路径，支持相对路径和绝对路径
+        let 父节点;
+        let 目录名组;
+
+        if (路径.startsWith("/")) {
+          // 绝对路径
+          const 规范化后路径 = 规范化路径(路径);
+          if (规范化后路径 === "/") {
+            return { 有效: false, 错误: { 有错误: true, 消息: "mkdir：目录已存在：/" } };
+          }
+          const 部分组 = 规范化后路径.split("/").filter((p) => p);
+          目录名组 = 部分组;
+          父节点 = 根节点;
+        } else {
+          // 相对路径
+          const 部分组 = 路径.split("/").filter((p) => p && p !== ".");
+          if (部分组.length === 0) {
+            return { 有效: false, 错误: { 有错误: true, 消息: "mkdir：无效的目录名" } };
+          }
+          目录名组 = 部分组;
+          父节点 = 当前位置节点;
+        }
+
+        // 处理 ".." 和 "."
+        let 当前节点 = 父节点;
+        for (let i = 0; i < 目录名组.length - 1; i++) {
+          const 名 = 目录名组[i];
+          if (名 === "..") {
+            if (当前节点.父节点) 当前节点 = 当前节点.父节点;
+          } else if (名 !== ".") {
+            const 子节点 = 当前节点.子节点组.find((n) => n.名称 === 名);
+            if (!子节点) {
+              if (!创建父级) {
+                return { 有效: false, 错误: { 有错误: true, 消息: `mkdir：目录不存在：${名}\n使用 -p 参数自动创建父级目录` } };
+              }
+              // 创建中间目录
+              const 新目录 = 创建节点("目录", 名, 当前节点);
+              新目录.x = 当前节点.x + 当前节点.宽 + 配置.布局.子节点水平间距;
+              新目录.y = 当前节点.y;
+              新目录.固定位置 = true;
+              当前节点.子节点组.push(新目录);
+              节点表.set(新目录.id, 新目录);
+              当前节点 = 新目录;
+            } else if (子节点.类型 !== "目录") {
+              return { 有效: false, 错误: { 有错误: true, 消息: `mkdir：${名} 不是目录` } };
+            } else {
+              当前节点 = 子节点;
+            }
+          }
+        }
+
+        const 最终目录名 = 目录名组[目录名组.length - 1];
+        if (最终目录名 === ".." || 最终目录名 === ".") {
+          return { 有效: false, 错误: { 有错误: true, 消息: "mkdir：无效的目录名" } };
+        }
+
+        const 重复 = 当前节点.子节点组.find((n) => n.名称 === 最终目录名);
+        if (重复) {
+          if (创建父级) {
+            // -p 模式下已存在则静默成功
+            continue;
+          }
+          return { 有效: false, 错误: { 有错误: true, 消息: `mkdir：已存在同名项：${最终目录名}` } };
+        }
+
+        创建任务组.push({ 名称: 最终目录名, 父节点: 当前节点 });
+      }
+
+      if (创建任务组.length === 0) {
+        // -p 模式下全部已存在
+        return { 有效: true, 命令: "mkdir", 静默忽略: true };
+      }
+
+      return { 有效: true, 命令: "mkdir", 创建任务组, 创建父级 };
+    }
+
+    case "rmdir": {
+      if (参数组.length === 0) {
+        return { 有效: false, 错误: { 有错误: true, 消息: "rmdir：缺少目录名\n用法：rmdir <目录名/路径>" } };
+      }
+
+      // 花括号展开：parent/{a,b} → parent/a parent/b
+      const 路径组 = [];
+      for (const 参数 of 参数组) {
+        路径组.push(...展开花括号(参数));
+      }
+
+      // 多目录支持：逐个解析路径，返回目标组
+      const 目标组 = [];
+      for (const 路径 of 路径组) {
+        const 目标节点 = 解析相对路径(路径);
+        if (!目标节点) {
+          return { 有效: false, 错误: { 有错误: true, 消息: `rmdir：目录不存在：${路径}` } };
+        }
+        if (目标节点.类型 !== "目录") {
+          return { 有效: false, 错误: { 有错误: true, 消息: `rmdir：${路径} 不是目录\n请使用 rm 删除文件` } };
+        }
+        if (目标节点 === 根节点) {
+          return { 有效: false, 错误: { 有错误: true, 消息: "rmdir：不能删除根目录 /" } };
+        }
+        if (目标节点.子节点组.length > 0) {
+          return { 有效: false, 错误: { 有错误: true, 消息: `rmdir：目录非空：${路径}\n请先删除目录内的所有内容` } };
+        }
+        目标组.push(目标节点);
+      }
+
+      return { 有效: true, 命令: "rmdir", 目标组 };
+    }
+
+    case "rm": {
+      let 强制 = false;
+      let 递归 = false;
+      let 名称组 = [];
+
+      for (const 参数 of 参数组) {
+        if (参数.startsWith("-")) {
+          const 标志组 = 参数.slice(1).split("");
+          for (const 标志 of 标志组) {
+            if (标志 === "f") 强制 = true;
+            else if (标志 === "r" || 标志 === "R") 递归 = true;
+            else return { 有效: false, 错误: { 有错误: true, 消息: `rm：无效参数 -${标志}\n支持：-f（强制）-r（递归）` } };
+          }
+        } else {
+          名称组.push(参数);
+        }
+      }
+
+      if (名称组.length === 0) {
+        return { 有效: false, 错误: { 有错误: true, 消息: "rm：缺少文件名\n用法：rm [-f] [-r] <文件名/路径> [文件名/路径...]" } };
+      }
+
+      // 花括号展开：parent/{a,b} → parent/a parent/b
+      const 展开名称组 = [];
+      for (const 名称 of 名称组) {
+        展开名称组.push(...展开花括号(名称));
+      }
+
+      // 多目标支持：逐个解析路径（含通配符展开），返回目标组
+      const 目标组 = [];
+      for (const 名称 of 展开名称组) {
+        const 通配 = 展开通配符(名称);
+        if (通配) {
+          if (通配.节点组.length === 0) {
+            if (强制) continue;
+            return { 有效: false, 错误: { 有错误: true, 消息: `rm：通配符无匹配：${名称}` } };
+          }
+          for (const 节点 of 通配.节点组) {
+            if (节点 === 根节点) {
+              return { 有效: false, 错误: { 有错误: true, 消息: "rm：不能删除根目录" } };
+            }
+            if (节点.类型 === "目录") {
+              if (!递归) {
+                return { 有效: false, 错误: { 有错误: true, 消息: `rm：${节点.名称} 是目录\n请使用 rm -r 或 rmdir 删除目录` } };
+              }
+              目标组.push({ 目标: 节点, 递归: true });
+            } else {
+              目标组.push({ 目标: 节点, 递归: false });
+            }
+          }
+          continue;
+        }
+        const 目标节点 = 解析相对路径(名称);
+        if (!目标节点) {
+          if (强制) {
+            return { 有效: false, 静默忽略: true };
+          }
+          return { 有效: false, 错误: { 有错误: true, 消息: `rm：文件不存在：${名称}` } };
+        }
+        if (目标节点.类型 === "目录") {
+          if (!递归) {
+            return { 有效: false, 错误: { 有错误: true, 消息: `rm：${名称} 是目录\n请使用 rm -r 或 rmdir 删除目录` } };
+          }
+          目标组.push({ 目标: 目标节点, 递归: true });
+        } else {
+          目标组.push({ 目标: 目标节点, 递归: false });
+        }
+      }
+
+      if (目标组.length === 0) {
+        return { 有效: false, 静默忽略: true };
+      }
+
+      return { 有效: true, 命令: "rm", 目标组, 强制 };
+    }
+
+    case "touch": {
+      if (参数组.length === 0) {
+        return { 有效: false, 错误: { 有错误: true, 消息: "touch：缺少文件名\n用法：touch <文件名/路径> [文件名/路径...]" } };
+      }
+
+      // 花括号展开：dir/{a,b} → dir/a dir/b
+      const 展开参数组 = [];
+      for (const 原始参数 of 参数组) {
+        if (原始参数.startsWith("-")) {
+          return { 有效: false, 错误: { 有错误: true, 消息: "touch：不支持该参数\n用法：touch <文件名/路径> [文件名/路径...]" } };
+        }
+        展开参数组.push(...展开花括号(原始参数));
+      }
+
+      const 创建任务组 = [];
+      for (const 参数 of 展开参数组) {
+        // 解析路径，支持相对路径和绝对路径
+        let 父节点;
+        let 文件名;
+
+        if (参数.startsWith("/")) {
+          // 绝对路径
+          const 规范化后路径 = 规范化路径(参数);
+          const 部分组 = 规范化后路径.split("/").filter((p) => p);
+          if (部分组.length === 0) {
+            return { 有效: false, 错误: { 有错误: true, 消息: "touch：无效的文件路径" } };
+          }
+          文件名 = 部分组[部分组.length - 1];
+          // 解析父目录
+          父节点 = 根节点;
+          for (let i = 0; i < 部分组.length - 1; i++) {
+            const 名 = 部分组[i];
+            const 子节点 = 父节点.子节点组.find((n) => n.名称 === 名);
+            if (!子节点 || 子节点.类型 !== "目录") {
+              return { 有效: false, 错误: { 有错误: true, 消息: `touch：目录不存在：${部分组.slice(0, i + 1).join("/")}` } };
+            }
+            父节点 = 子节点;
+          }
+        } else {
+          // 相对路径
+          const 部分组 = 参数.split("/").filter((p) => p && p !== ".");
+          if (部分组.length === 0) {
+            return { 有效: false, 错误: { 有错误: true, 消息: "touch：无效的文件名" } };
+          }
+          文件名 = 部分组[部分组.length - 1];
+          if (文件名 === ".." || 文件名 === ".") {
+            return { 有效: false, 错误: { 有错误: true, 消息: "touch：无效的文件名" } };
+          }
+          // 解析父目录
+          父节点 = 当前位置节点;
+          for (let i = 0; i < 部分组.length - 1; i++) {
+            const 名 = 部分组[i];
+            if (名 === "..") {
+              if (父节点.父节点) 父节点 = 父节点.父节点;
+            } else {
+              const 子节点 = 父节点.子节点组.find((n) => n.名称 === 名);
+              if (!子节点 || 子节点.类型 !== "目录") {
+                return { 有效: false, 错误: { 有错误: true, 消息: `touch：目录不存在：${部分组.slice(0, i + 1).join("/")}` } };
+              }
+              父节点 = 子节点;
+            }
+          }
+        }
+
+        const 重复 = 父节点.子节点组.find((n) => n.名称 === 文件名);
+        if (重复) {
+          return { 有效: false, 静默忽略: true, 消息: `touch：${参数} 已存在（已更新）` };
+        }
+        创建任务组.push({ 名称: 文件名, 父节点 });
+      }
+      return { 有效: true, 命令: "touch", 创建任务组 };
+    }
+
+    case "cp": {
+      let 递归 = false;
+      let 路径组 = [];
+      for (const 参数 of 参数组) {
+        if (参数.startsWith("-")) {
+          const 标志组 = 参数.slice(1).split("");
+          for (const 标志 of 标志组) {
+            if (标志 === "r" || 标志 === "R") 递归 = true;
+            else return { 有效: false, 错误: { 有错误: true, 消息: `cp：无效参数 -${标志}\n支持：-r（递归复制目录）` } };
+          }
+        } else {
+          路径组.push(参数);
+        }
+      }
+      if (路径组.length < 2) {
+        return { 有效: false, 错误: { 有错误: true, 消息: "cp：缺少源或目标\n用法：cp [-r] <源> <目标>" } };
+      }
+
+      // 花括号展开：{a,b} → a b，parent/{a,b} → parent/a parent/b
+      const 展开路径组 = [];
+      for (const 路径 of 路径组) {
+        展开路径组.push(...展开花括号(路径));
+      }
+
+      const 目标路径 = 展开路径组[展开路径组.length - 1];
+
+      // 解析目标：多源时必须是已存在的目录；单源时可以是目录或新名称
+      let 目标父节点;
+      let 新名称 = null;
+      if (展开路径组.length > 2) {
+        const 目标节点 = 解析相对路径(目标路径);
+        if (!目标节点 || 目标节点.类型 !== "目录") {
+          return { 有效: false, 错误: { 有错误: true, 消息: `cp：多源复制时目标必须是已存在的目录：${目标路径}` } };
+        }
+        目标父节点 = 目标节点;
+      } else if (目标路径.endsWith("/")) {
+        // 目标必须是已存在的目录
+        const 目标目录 = 解析相对路径(目标路径.slice(0, -1));
+        if (!目标目录 || 目标目录.类型 !== "目录") {
+          return { 有效: false, 错误: { 有错误: true, 消息: `cp：目标目录不存在：${目标路径}` } };
+        }
+        目标父节点 = 目标目录;
+      } else {
+        const 目标节点 = 解析相对路径(目标路径);
+        if (目标节点) {
+          if (目标节点.类型 === "目录") {
+            目标父节点 = 目标节点;
+          } else {
+            // 目标是已存在文件：覆盖
+            目标父节点 = 目标节点.父节点;
+            新名称 = 目标节点.名称;
+          }
+        } else {
+          // 目标不存在：作为新名称，父目录必须存在
+          const 规范路径 = 规范化路径(目标路径.startsWith("/") ? 目标路径 : 获取当前路径() + "/" + 目标路径);
+          const 部分组 = 规范路径.split("/").filter(Boolean);
+          新名称 = 部分组.pop();
+          let 父路径 = "/" + 部分组.join("/");
+          if (!部分组.length) 父路径 = "/";
+          目标父节点 = 解析路径(父路径);
+          if (!目标父节点) {
+            return { 有效: false, 错误: { 有错误: true, 消息: `cp：目标父目录不存在：${父路径}` } };
+          }
+        }
+      }
+
+      // 展开所有源（支持 * 通配符和花括号展开），并逐个校验
+      const 任务组 = [];
+      const 警告组 = [];
+      for (let i = 0; i < 展开路径组.length - 1; i++) {
+        const 源路径 = 展开路径组[i];
+        const 通配 = 展开通配符(源路径);
+        const 源节点组 = 通配 ? 通配.节点组 : [解析相对路径(源路径)];
+        const 源不存在 = !通配 && !源节点组[0];
+        if (源不存在) {
+          return { 有效: false, 错误: { 有错误: true, 消息: `cp：源路径不存在：${源路径}` } };
+        }
+        if (通配 && 通配.节点组.length === 0) {
+          return { 有效: false, 错误: { 有错误: true, 消息: `cp：通配符无匹配：${源路径}` } };
+        }
+        for (const 源节点 of 源节点组) {
+          if (源节点 === 根节点) {
+            return { 有效: false, 错误: { 有错误: true, 消息: "cp：不能复制根目录" } };
+          }
+          if (源节点.类型 === "目录" && !递归) {
+            // 未指定 -r：略过目录并给出黄色警告
+            警告组.push(`未指定 -r，略过目录：${源节点.名称}`);
+            continue;
+          }
+          // 单源且目标是新名称时沿用该名称，否则保持源名称
+          const 任务名称 = 展开路径组.length === 2 && 新名称 ? 新名称 : 源节点.名称;
+          // 源和目标解析到同一节点：不能复制
+          if (目标父节点 === 源节点.父节点 && 任务名称 === 源节点.名称) {
+            if (展开路径组.length > 2) continue; // 多源时源和目标同目录则跳过
+            return { 有效: false, 错误: { 有错误: true, 消息: `cp：${源路径} 和 ${目标路径} 是同一文件` } };
+          }
+          // 目标是源目录本身或其后代：会导致无限递归
+          let 检查节点 = 目标父节点;
+          let 是自身或后代 = false;
+          while (检查节点) {
+            if (检查节点 === 源节点) { 是自身或后代 = true; break; }
+            检查节点 = 检查节点.父节点;
+          }
+          if (是自身或后代) {
+            if (递归) {
+              return { 有效: false, 错误: { 有错误: true, 消息: `cp：不能将目录复制到自身或其子目录中` } };
+            }
+            continue; // 非递归时目录已被略过，不会走到这里
+          }
+          // 检查目标父目录下是否已有同名项
+          const 同名 = 目标父节点.子节点组.find((n) => n.名称 === 任务名称);
+          if (同名 && 同名 !== 源节点) {
+            return { 有效: false, 错误: { 有错误: true, 消息: `cp：目标已存在同名项：${任务名称}` } };
+          }
+          任务组.push({ 源: 源节点, 新名称: 任务名称 });
+        }
+      }
+      if (任务组.length === 0) {
+        if (警告组.length) {
+          return { 有效: false, 静默忽略: true, 消息: 警告组.join("\n") };
+        }
+        return { 有效: false, 错误: { 有错误: true, 消息: "cp：没有可复制的文件" } };
+      }
+      // 多条警告合并为一条，避免逐条闪烁
+      const 警告消息 = 警告组.length ? 警告组.join("\n") : null;
+      return { 有效: true, 命令: "cp", 任务组, 目标父节点, 递归, 警告消息 };
+    }
+
+    case "mv": {
+      let 路径组 = [];
+      for (const 参数 of 参数组) {
+        if (参数.startsWith("-")) {
+          return { 有效: false, 错误: { 有错误: true, 消息: "mv：不支持该参数\n用法：mv <源> <目标>" } };
+        }
+        路径组.push(参数);
+      }
+      if (路径组.length < 2) {
+        return { 有效: false, 错误: { 有错误: true, 消息: "mv：缺少源或目标\n用法：mv <源> <目标>" } };
+      }
+
+      // 花括号展开：{a,b} → a b，parent/{a,b} → parent/a parent/b
+      const 展开路径组 = [];
+      for (const 路径 of 路径组) {
+        展开路径组.push(...展开花括号(路径));
+      }
+
+      const 目标路径 = 展开路径组[展开路径组.length - 1];
+
+      // 解析目标：多源时必须是已存在的目录；单源时可以是目录或新名称
+      let 目标父节点;
+      let 新名称 = null;
+      if (展开路径组.length > 2) {
+        const 目标节点 = 解析相对路径(目标路径);
+        if (!目标节点 || 目标节点.类型 !== "目录") {
+          return { 有效: false, 错误: { 有错误: true, 消息: `mv：多源移动时目标必须是已存在的目录：${目标路径}` } };
+        }
+        目标父节点 = 目标节点;
+      } else if (目标路径.endsWith("/")) {
+        const 目标目录 = 解析相对路径(目标路径.slice(0, -1));
+        if (!目标目录 || 目标目录.类型 !== "目录") {
+          return { 有效: false, 错误: { 有错误: true, 消息: `mv：目标目录不存在：${目标路径}` } };
+        }
+        目标父节点 = 目标目录;
+      } else {
+        const 目标节点 = 解析相对路径(目标路径);
+        if (目标节点) {
+          if (目标节点.类型 === "目录") {
+            目标父节点 = 目标节点;
+          } else {
+            目标父节点 = 目标节点.父节点;
+            新名称 = 目标节点.名称;
+          }
+        } else {
+          const 规范路径 = 规范化路径(目标路径.startsWith("/") ? 目标路径 : 获取当前路径() + "/" + 目标路径);
+          const 部分组 = 规范路径.split("/").filter(Boolean);
+          新名称 = 部分组.pop();
+          let 父路径 = "/" + 部分组.join("/");
+          if (!部分组.length) 父路径 = "/";
+          目标父节点 = 解析路径(父路径);
+          if (!目标父节点) {
+            return { 有效: false, 错误: { 有错误: true, 消息: `mv：目标父目录不存在：${父路径}` } };
+          }
+        }
+      }
+
+      // 展开所有源（支持 * 通配符和花括号展开），并逐个校验
+      const 任务组 = [];
+      for (let i = 0; i < 展开路径组.length - 1; i++) {
+        const 源路径 = 展开路径组[i];
+        const 通配 = 展开通配符(源路径);
+        const 源节点组 = 通配 ? 通配.节点组 : [解析相对路径(源路径)];
+        const 源不存在 = !通配 && !源节点组[0];
+        if (源不存在) {
+          return { 有效: false, 错误: { 有错误: true, 消息: `mv：源路径不存在：${源路径}` } };
+        }
+        if (通配 && 通配.节点组.length === 0) {
+          return { 有效: false, 错误: { 有错误: true, 消息: `mv：通配符无匹配：${源路径}` } };
+        }
+        for (const 源节点 of 源节点组) {
+          if (源节点 === 根节点) {
+            return { 有效: false, 错误: { 有错误: true, 消息: "mv：不能移动根目录" } };
+          }
+          // 单源且目标是新名称时沿用该名称，否则保持源名称
+          const 任务名称 = 展开路径组.length === 2 && 新名称 ? 新名称 : 源节点.名称;
+          // 不能移动到自己或自己的后代
+          let 检查节点 = 目标父节点;
+          let 是自身或后代 = false;
+          while (检查节点) {
+            if (检查节点 === 源节点) { 是自身或后代 = true; break; }
+            检查节点 = 检查节点.父节点;
+          }
+          if (是自身或后代) {
+            if (展开路径组.length > 2 || 通配) continue; // 多源/通配时跳过会导致循环的项
+            return { 有效: false, 错误: { 有错误: true, 消息: "mv：不能将目录移动到自己的子目录中" } };
+          }
+          const 同名 = 目标父节点.子节点组.find((n) => n.名称 === 任务名称);
+          if (同名 && 同名 !== 源节点) {
+            return { 有效: false, 错误: { 有错误: true, 消息: `mv：目标已存在同名项：${任务名称}` } };
+          }
+          // 源路径和目标路径相同且名称相同：不能移动
+          if (目标父节点 === 源节点.父节点 && 任务名称 === 源节点.名称) {
+            if (展开路径组.length > 2 || 通配) continue;
+            return { 有效: false, 错误: { 有错误: true, 消息: `mv：${源路径} 和 ${目标路径} 是同一文件` } };
+          }
+          任务组.push({ 源: 源节点, 新名称: 任务名称 });
+        }
+      }
+      if (任务组.length === 0) {
+        return { 有效: false, 错误: { 有错误: true, 消息: "mv：没有可移动的文件" } };
+      }
+      return { 有效: true, 命令: "mv", 任务组, 目标父节点 };
+    }
+  }
+}
+
+// ==================== 撤销 ====================
+// 序列化整棵节点树为纯数据（不含循环引用）
+function 创建快照() {
+  function 序列化节点(节点) {
+    return {
+      id: 节点.id,
+      类型: 节点.类型,
+      名称: 节点.名称,
+      x: 节点.x,
+      y: 节点.y,
+      固定位置: 节点.固定位置,
+      是主目录: 节点.是主目录,
+      子节点组: 节点.子节点组.map(序列化节点),
+    };
+  }
+  return {
+    根节点: 根节点 ? 序列化节点(根节点) : null,
+    当前位置ID: 当前位置节点 ? 当前位置节点.id : null,
+    下一节点ID: 下一节点ID,
+    全局层级计数器: 全局层级计数器,
+  };
+}
+
+// 从快照重建节点树
+function 恢复快照(快照) {
+  if (!快照.根节点) return;
+  节点表.clear();
+
+  function 重建节点(数据, 父节点) {
+    const 节点 = {
+      id: 数据.id,
+      类型: 数据.类型,
+      名称: 数据.名称,
+      父节点,
+      子节点组: [],
+      x: 数据.x,
+      y: 数据.y,
+      宽: 0,
+      高: 0,
+      层级: 全局层级计数器++,
+      动画: null,
+      删除动画: null,
+      当前位置动画: null,
+      当前位置过渡: 0,
+      是当前位置: false,
+      是主目录: 数据.是主目录,
+      被拖拽: false,
+      固定位置: 数据.固定位置,
+      拖拽偏移X: 0,
+      拖拽偏移Y: 0,
+    };
+    节点表.set(节点.id, 节点);
+    for (const 子数据 of 数据.子节点组) {
+      节点.子节点组.push(重建节点(子数据, 节点));
+    }
+    return 节点;
+  }
+
+  根节点 = 重建节点(快照.根节点, null);
+  当前位置节点 = 快照.当前位置ID !== null ? 节点表.get(快照.当前位置ID) || 根节点 : 根节点;
+  当前位置节点.是当前位置 = true;
+  当前位置节点.当前位置过渡 = 1;
+  下一节点ID = 快照.下一节点ID;
+  更新主目录();
+}
+
+// Ctrl+Z 撤销上一条命令
+function 撤销() {
+  if (撤销栈.length === 0) return;
+  const 条目 = 撤销栈.pop();
+  恢复快照(条目.快照);
+  // 仅命令来源的撤销才从历史记录中删除上一条
+  if (条目.来自命令 && 命令记录组.length > 0) 命令记录组.pop();
+  错误提示组 = [];
+  tar打勾节点组 = [];
+  更新主目录();
+  更新提示符();
+  布局并动画();
+  请求重绘();
+}
+
+function 执行命令() {
+  const 输入 = 命令输入框.value;
+  if (!输入.trim()) return;
+
+  // 清除之前的错误提示与 tar 打勾
+  错误提示组 = [];
+  tar打勾节点组 = [];
+  // 加入历史
+  命令历史.push(输入);
+  if (命令历史.length > 10) 命令历史.shift();
+  历史索引 = -1;
+  临时输入 = "";
+
+  // 在解析前创建快照（解析阶段可能已修改树，如 mkdir -p 创建中间目录）
+  const 快照 = 创建快照();
+
+  const 解析 = 解析命令(输入);
+  命令输入框.value = "";
+  更新命令高亮(); // 同步清空高亮层
+
+  // 记录命令（无论对错）
+  const 命令正确 = 解析.有效 || !!解析.静默忽略;
+  命令记录组.push({ 命令: 输入, 正确: 命令正确 });
+
+  if (!解析.有效) {
+    if (解析.静默忽略) {
+      if (解析.消息) 显示警告(解析.消息);
+      更新提示符();
+      return;
+    }
+    if (解析.错误) {
+      显示错误(解析.错误.消息);
+    }
+    return;
+  }
+
+  switch (解析.命令) {
+    case "cd":
+      执行cd(解析.目标);
+      break;
+    case "mkdir":
+      if (解析.静默忽略) break; // -p 模式下已存在则静默成功
+      for (const 任务 of 解析.创建任务组) {
+        执行mkdir(任务.名称, 任务.父节点);
+      }
+      break;
+    case "rmdir":
+      for (const 目标 of 解析.目标组) {
+        执行rmdir(目标);
+      }
+      break;
+    case "rm":
+      for (const 任务 of 解析.目标组) {
+        执行rm(任务.目标, 任务.递归);
+      }
+      break;
+    case "touch":
+      for (const 任务 of 解析.创建任务组) {
+        执行touch(任务.名称, 任务.父节点);
+      }
+      break;
+    case "cp": {
+      if (解析.警告消息) 显示警告(解析.警告消息);
+      for (const 任务 of 解析.任务组) {
+        执行cp(任务.源, 解析.目标父节点, 任务.新名称, 解析.递归);
+      }
+      break;
+    }
+    case "mv":
+      for (const 任务 of 解析.任务组) {
+        执行mv(任务.源, 解析.目标父节点, 任务.新名称);
+      }
+      break;
+    case "tar":
+      执行tar(解析);
+      break;
+  }
+
+  // 执行成功（无错误提示）则压入撤销栈，否则丢弃快照
+  if (错误提示组.length === 0) {
+    撤销栈.push({ 快照, 来自命令: true });
+  }
+
+  更新提示符();
+}
+
+// 获取节点的祖先路径（从根到该节点）
+function 获取祖先路径(节点) {
+  const 路径 = [];
+  let 当前 = 节点;
+  while (当前) {
+    路径.unshift(当前);
+    当前 = 当前.父节点;
+  }
+  return 路径;
+}
+
+// 查找两个节点的最近共同祖先
+function 查找共同祖先(节点A, 节点B) {
+  const 路径A = 获取祖先路径(节点A);
+  const 路径B = 获取祖先路径(节点B);
+  let 共同祖先 = null;
+  for (let i = 0; i < Math.min(路径A.length, 路径B.length); i++) {
+    if (路径A[i] === 路径B[i]) {
+      共同祖先 = 路径A[i];
+    } else {
+      break;
+    }
+  }
+  return 共同祖先;
+}
+
+function 执行cd(目标节点) {
+  if (当前位置节点 === 目标节点) return;
+
+  const 起始节点 = 当前位置节点;
+
+  // 构建路径段：从起始节点向上到共同祖先，再向下到目标节点
+  const 路径段组 = [];
+  if (起始节点) {
+    const 共同祖先 = 查找共同祖先(起始节点, 目标节点);
+
+    // 从起始节点向上到共同祖先（不含共同祖先）
+    let 当前 = 起始节点;
+    while (当前 !== 共同祖先 && 当前.父节点) {
+      路径段组.push({ 从: 当前.父节点, 到: 当前, 反向: true }); // 反向=向上
+      当前 = 当前.父节点;
+    }
+
+    // 从共同祖先向下到目标节点
+    const 目标路径 = 获取祖先路径(目标节点);
+    const 共同祖先索引 = 目标路径.indexOf(共同祖先);
+    for (let i = 共同祖先索引; i < 目标路径.length - 1; i++) {
+      路径段组.push({ 从: 目标路径[i], 到: 目标路径[i + 1], 反向: false }); // 正向=向下
+    }
+  }
+
+  // 移除旧高亮
+  if (当前位置节点) {
+    const 旧节点 = 当前位置节点;
+    旧节点.当前位置动画 = 创建补间(旧节点.当前位置过渡, 0, 配置.动画时长);
+    旧节点.是当前位置 = false;
+  }
+
+  // 设置新高亮
+  当前位置节点 = 目标节点;
+  目标节点.是当前位置 = true;
+  目标节点.当前位置过渡 = 0;
+  目标节点.当前位置动画 = 创建补间(0, 1, 配置.动画时长);
+
+  // 添加 cd 滑动动画（沿连接线贝塞尔曲线）
+  if (起始节点 && 路径段组.length > 0) {
+    // 预计算每段的贝塞尔参数和长度
+    const 段参数组 = 路径段组.map((段) => {
+      // 计算连接线参数（始终用父→子的方向）
+      const 参数 = 计算连接线参数(段.从, 段.到);
+      // 如果是反向（向上），交换起点终点和控制点
+      if (段.反向) {
+        return {
+          起点X: 参数.终点X, 起点Y: 参数.终点Y,
+          控制点1X: 参数.控制点2X, 控制点1Y: 参数.控制点2Y,
+          控制点2X: 参数.控制点1X, 控制点2Y: 参数.控制点1Y,
+          终点X: 参数.起点X, 终点Y: 参数.起点Y,
+        };
+      }
+      return 参数;
+    });
+
+    // 计算每段的近似长度（用于均分时间）
+    const 段长度组 = 段参数组.map((参数) => {
+      // 用采样点估算贝塞尔曲线长度
+      let 长度 = 0;
+      let 前一点 = { x: 参数.起点X, y: 参数.起点Y };
+      for (let i = 1; i <= 10; i++) {
+        const t = i / 10;
+        const 点 = 计算贝塞尔点(t, 参数.起点X, 参数.起点Y, 参数.控制点1X, 参数.控制点1Y, 参数.控制点2X, 参数.控制点2Y, 参数.终点X, 参数.终点Y);
+        长度 += Math.hypot(点.x - 前一点.x, 点.y - 前一点.y);
+        前一点 = 点;
+      }
+      return 长度;
+    });
+
+    const 总长度 = 段长度组.reduce((sum, len) => sum + len, 0);
+
+    // 清除之前的 cd 动画，只保留最新的
+    cd动画组.length = 0;
+    cd动画组.push({
+      起始时间: performance.now(),
+      段参数组,
+      段长度组,
+      总长度,
+    });
+  }
+
+  // 添加波纹效果
+  波纹组.push({
+    x: 目标节点.x,
+    y: 目标节点.y,
+    起始时间: performance.now(),
+    最大半径: 配置.高亮.波纹最大半径,
+  });
+
+  布局并动画();
+  更新提示符();
+}
+
+// 为新节点寻找不重叠且尽量靠近参考节点的位置
+function 寻找近处空位(参考节点, 新宽, 新高) {
+  if (!根节点) return { x: 参考节点.x, y: 参考节点.y };
+  const 所有节点 = 收集所有节点(根节点);
+  const 间距 = 配置.布局.子节点垂直间距;
+  const 步长 = 新高 + 间距;
+  const 基准X = 参考节点.x + 参考节点.宽 / 2 + 配置.布局.子节点水平间距 + 新宽 / 2;
+  const 基准Y = 参考节点.y;
+
+  const 有重叠 = (x, y) => {
+    for (const 节点 of 所有节点) {
+      if (节点.删除动画) continue;
+      if (!节点.宽) 测量节点尺寸(节点);
+      const 水平重叠 = Math.abs(x - 节点.x) < (新宽 + 节点.宽) / 2 + 间距 * 0.5;
+      const 垂直重叠 = Math.abs(y - 节点.y) < (新高 + 节点.高) / 2 + 间距 * 0.5;
+      if (水平重叠 && 垂直重叠) return true;
+    }
+    return false;
+  };
+
+  // 从参考节点 y 开始，逐步向上下两侧扫描最近的空位
+  for (let k = 0; k < 200; k++) {
+    const 偏移组 = k === 0 ? [0] : [k * 步长, -k * 步长];
+    for (const 偏移 of 偏移组) {
+      const x = 基准X;
+      const y = 基准Y + 偏移;
+      if (!有重叠(x, y)) return { x, y };
+    }
+  }
+  return { x: 基准X, y: 基准Y };
+}
+
+function 执行mkdir(名称, 父节点 = 当前位置节点) {
+  const 新节点 = 创建节点("目录", 名称, 父节点);
+  测量节点尺寸(新节点);
+  // 寻找不重叠且靠近父节点的位置
+  const 空位 = 寻找近处空位(父节点, 新节点.宽, 新节点.高);
+  新节点.x = 空位.x;
+  新节点.y = 空位.y;
+  新节点.固定位置 = true; // 固定位置，不参与自动布局
+  父节点.子节点组.push(新节点);
+  节点表.set(新节点.id, 新节点);
+  更新主目录();
+  布局并动画();
+}
+
+function 执行rmdir(目标节点) {
+  目标节点.删除动画 = 创建补间(0, 1, 配置.动画时长);
+  // 延迟后真正从树中移除
+  setTimeout(() => {
+    if (目标节点.父节点) {
+      const 索引 = 目标节点.父节点.子节点组.indexOf(目标节点);
+      if (索引 > -1) 目标节点.父节点.子节点组.splice(索引, 1);
+    }
+    节点表.delete(目标节点.id);
+    更新主目录();
+    布局并动画();
+    更新提示符();
+  }, 配置.动画时长);
+  布局并动画();
+}
+
+// 点击节点右上角删除按钮：递归删除节点及其各级子节点
+function 点击删除节点(节点) {
+  if (!节点.父节点 || 节点.删除动画) return; // 根目录及删除中的节点不可删
+
+  // 删除前创建快照用于撤销（必须在 cd 之前，否则快照里的当前位置会被改变）
+  撤销栈.push({ 快照: 创建快照(), 来自命令: false });
+
+  // 当前位置若处于被删子树内，先回到被删节点的父目录
+  if (当前位置节点) {
+    let 当前 = 当前位置节点;
+    let 在子树内 = false;
+    while (当前) {
+      if (当前 === 节点) { 在子树内 = true; break; }
+      当前 = 当前.父节点;
+    }
+    if (在子树内) 执行cd(节点.父节点);
+  }
+
+  悬停删除节点 = null;
+  执行rm(节点, true);
+}
+
+function 执行rm(目标节点, 递归) {
+  const 待删除 = [];
+  function 收集删除节点(节点) {
+    待删除.push(节点);
+    for (const 子节点 of 节点.子节点组) {
+      收集删除节点(子节点);
+    }
+  }
+  收集删除节点(目标节点);
+
+  for (const 节点 of 待删除) {
+    节点.删除动画 = 创建补间(0, 1, 配置.动画时长);
+  }
+
+  setTimeout(() => {
+    for (const 节点 of 待删除) {
+      if (节点.父节点) {
+        const 索引 = 节点.父节点.子节点组.indexOf(节点);
+        if (索引 > -1) 节点.父节点.子节点组.splice(索引, 1);
+      }
+      节点表.delete(节点.id);
+    }
+    更新主目录();
+    布局并动画();
+    更新提示符();
+  }, 配置.动画时长);
+  布局并动画();
+}
+
+function 执行touch(名称, 父节点 = 当前位置节点) {
+  const 新节点 = 创建节点("文件", 名称, 父节点);
+  测量节点尺寸(新节点);
+  // 寻找不重叠且靠近当前节点的位置
+  const 空位 = 寻找近处空位(父节点, 新节点.宽, 新节点.高);
+  新节点.x = 空位.x;
+  新节点.y = 空位.y;
+  新节点.固定位置 = true; // 固定位置，不参与自动布局
+  父节点.子节点组.push(新节点);
+  节点表.set(新节点.id, 新节点);
+  布局并动画();
+}
+
+// 深拷贝子树（用于 cp 递归复制目录），每个节点都寻找不重叠的空位
+function 克隆子树(源节点, 新父节点) {
+  const 新节点 = 创建节点(源节点.类型, 源节点.名称, 新父节点);
+  测量节点尺寸(新节点);
+  const 空位 = 寻找近处空位(新父节点, 新节点.宽, 新节点.高);
+  新节点.x = 空位.x;
+  新节点.y = 空位.y;
+  新节点.固定位置 = true;
+  节点表.set(新节点.id, 新节点);
+  新父节点.子节点组.push(新节点);
+  for (const 子 of 源节点.子节点组) {
+    克隆子树(子, 新节点);
+  }
+  return 新节点;
+}
+
+function 执行cp(源节点, 目标父节点, 新名称, 递归) {
+  if (源节点.类型 === "目录" && 递归) {
+    // 递归复制整个子树
+    const 新节点 = 创建节点("目录", 新名称, 目标父节点);
+    测量节点尺寸(新节点);
+    const 空位 = 寻找近处空位(目标父节点, 新节点.宽, 新节点.高);
+    新节点.x = 空位.x;
+    新节点.y = 空位.y;
+    新节点.固定位置 = true;
+    节点表.set(新节点.id, 新节点);
+    目标父节点.子节点组.push(新节点);
+    for (const 子 of 源节点.子节点组) {
+      克隆子树(子, 新节点);
+    }
+  } else {
+    // 复制单个文件
+    const 新节点 = 创建节点("文件", 新名称, 目标父节点);
+    测量节点尺寸(新节点);
+    const 空位 = 寻找近处空位(目标父节点, 新节点.宽, 新节点.高);
+    新节点.x = 空位.x;
+    新节点.y = 空位.y;
+    新节点.固定位置 = true;
+    目标父节点.子节点组.push(新节点);
+    节点表.set(新节点.id, 新节点);
+  }
+  // 添加波纹效果提示操作成功
+  波纹组.push({
+    x: 目标父节点.x,
+    y: 目标父节点.y,
+    起始时间: performance.now(),
+    最大半径: 配置.高亮.波纹最大半径,
+  });
+  更新主目录();
+  布局并动画();
+}
+
+function 执行mv(源节点, 目标父节点, 新名称) {
+  // 从原父节点移除
+  const 原父节点 = 源节点.父节点;
+  if (原父节点) {
+    const 索引 = 原父节点.子节点组.indexOf(源节点);
+    if (索引 > -1) 原父节点.子节点组.splice(索引, 1);
+  }
+  // 更新父节点和名称，但保持位置不动，只更新连接线
+  源节点.父节点 = 目标父节点;
+  源节点.名称 = 新名称;
+  // 保持固定位置，不触发自动布局移动
+  源节点.固定位置 = true;
+  源节点.动画 = null;
+  目标父节点.子节点组.push(源节点);
+  // 后代也保持固定位置
+  const 保持后代 = (节点) => {
+    for (const 子 of 节点.子节点组) {
+      子.固定位置 = true;
+      子.动画 = null;
+      保持后代(子);
+    }
+  };
+  保持后代(源节点);
+  // 添加波纹效果
+  波纹组.push({
+    x: 目标父节点.x,
+    y: 目标父节点.y,
+    起始时间: performance.now(),
+    最大半径: 配置.高亮.波纹最大半径,
+  });
+  更新主目录();
+  请求重绘();
+}
+
+// ==================== tar 命令执行 ====================
+function 执行tar(解析) {
+  const { 操作, 标志 } = 解析;
+
+  if (操作 === "c") {
+    const { 打包文件名, 来源节点组 } = 解析;
+    const 新节点 = 创建节点("文件", 打包文件名, 当前位置节点);
+    测量节点尺寸(新节点);
+    const 空位 = 寻找近处空位(当前位置节点, 新节点.宽, 新节点.高);
+    新节点.x = 空位.x;
+    新节点.y = 空位.y;
+    新节点.固定位置 = true;
+    当前位置节点.子节点组.push(新节点);
+    节点表.set(新节点.id, 新节点);
+    // 记录包内容，供 -t 查看 / -x 解包使用
+    // 多级路径（如 a/b/c）拆成嵌套的 { 名称, 类型, 子项 } 结构，目录递归记录后代
+    // 保留打包文件自身的"内容"字段，使再解包可以正常进行
+    const 记录条目 = (节点) => {
+      const 部分组 = 节点.名称.split("/").filter(Boolean);
+      const 类型 = 节点.类型;
+      const 构建嵌套 = (名称组, 子项) => {
+        if (名称组.length === 1) {
+          const 条目 = { 名称: 名称组[0], 类型, 子项 };
+          if (节点.内容) 条目.内容 = 节点.内容;
+          return 条目;
+        }
+        return { 名称: 名称组[0], 类型: "目录", 子项: [构建嵌套(名称组.slice(1), 子项)] };
+      };
+      const 后代 = 节点.类型 === "目录" && 节点.子节点组.length
+        ? 节点.子节点组.map(记录条目)
+        : undefined;
+      return 构建嵌套(部分组, 后代);
+    };
+    新节点.内容 = 来源节点组.map(记录条目);
+
+    // 递归收集所有打勾节点（含后代），都参与飞入动画
+    const 收集动画节点 = (节点, 结果) => {
+      结果.push(节点);
+      if (节点.类型 === "目录") {
+        for (const 子 of 节点.子节点组) 收集动画节点(子, 结果);
+      }
+    };
+    const 动画节点组 = [];
+    for (const 来源节点 of 来源节点组) 收集动画节点(来源节点, 动画节点组);
+
+    // 启动飞入动画：为每个打勾节点（含后代）生成半透明副本，向归档文件移动
+    const 现在 = performance.now();
+    for (const 来源节点 of 动画节点组) {
+      tar打包动画组.push({
+        节点: 来源节点,
+        起始X: 来源节点.x,
+        起始Y: 来源节点.y,
+        目标X: 新节点.x,
+        目标Y: 新节点.y,
+        起始时间: 现在,
+      });
+    }
+
+    if (标志.v) {
+      const 压缩方式 = 标志.z ? "gzip" : 标志.j ? "bzip2" : 标志.J ? "xz" : "无（仅打包）";
+      显示过程(
+        `tar：打包 ${来源节点组.length} 个条目 → ${打包文件名}\n` +
+          来源节点组.map((n) => `${n.名称}`).join("\n") +
+          `\n压缩方式：${压缩方式}`
+      );
+    }
+    布局并动画();
+    return;
+  }
+
+  if (操作 === "t") {
+    const { 打包节点, 是压缩包, 打包文件名 } = 解析;
+    // 将包内容展平为 tar -t 风格的路径列表（目录加 / 后缀，递归子项）
+    const 展平条目组 = [];
+    const 展平 = (条目列表, 前缀) => {
+      for (const 条目 of 条目列表) {
+        const 完整路径 = 前缀 ? 前缀 + "/" + 条目.名称 : 条目.名称;
+        if (条目.类型 === "目录") {
+          展平条目组.push(完整路径 + "/");
+          if (条目.子项) 展平(条目.子项, 完整路径);
+        } else {
+          展平条目组.push(完整路径);
+        }
+      }
+    };
+    // 打包时记录的内容是 { 名称, 类型 }，且目录条目带子项
+    if (打包节点.内容 && 打包节点.内容.length) {
+      展平(打包节点.内容, "");
+    } else {
+      // 非本工具打包的文件：只显示外层名称
+      展平条目组.push(打包节点.名称.replace(/\.(tar\.gz|tgz|tar\.bz2|tar\.xz|tar)$/i, ""));
+    }
+
+    if (标志.v) {
+      const 大小列表 = 展平条目组.map((n) => {
+        const 是目录 = n.endsWith("/");
+        const 权限 = 是目录 ? "drwxr-xr-x" : "-rw-r--r--";
+        return `${权限} root/root      1024 2026-09-26 10:00 ${n}`;
+      });
+      显示信息(
+        `${打包文件名} 的内容：\n` +
+          大小列表.join("\n")
+      );
+    } else {
+      显示信息(
+        `${打包文件名} 的内容：\n` +
+          展平条目组.join("\n")
+      );
+    }
+    请求重绘();
+    return;
+  }
+
+  // 操作 === "x"：解包
+  const { 打包节点, 内容组, 解包节点组 } = 解析;
+
+  // 场景：无 -f，来源为当前目录下的节点（模拟解压到当前目录）
+  if (解包节点组) {
+    波纹组.push({
+      x: 当前位置节点.x,
+      y: 当前位置节点.y,
+      起始时间: performance.now(),
+      最大半径: 配置.高亮.波纹最大半径,
+    });
+    if (标志.v) {
+      显示过程(`tar：已解包 ${解包节点组.length} 个条目\n` + 解包节点组.map((n) => `${n.名称}`).join("\n"));
+    }
+    布局并动画();
+    return;
+  }
+
+  // 按嵌套结构创建节点：目录递归创建子目录和文件
+  const 原始内容 = 内容组 || (打包节点 && 打包节点.内容) || [];
+  const 新节点组 = [];
+
+  // 将字符串路径（如 "a/b/c"）转为嵌套条目
+  const 路径转条目 = (路径) => {
+    const 部分组 = 路径.split("/").filter(Boolean);
+    const 构建 = (名称组) => {
+      if (名称组.length === 1) return { 名称: 名称组[0], 类型: "文件" };
+      return { 名称: 名称组[0], 类型: "目录", 子项: [构建(名称组.slice(1))] };
+    };
+    return 构建(部分组);
+  };
+
+  const 创建嵌套节点 = (条目, 父节点) => {
+    // 字符串路径先转为嵌套条目
+    if (typeof 条目 === "string") 条目 = 路径转条目(条目);
+    // 同名时覆盖：删除旧节点，创建新节点
+    const 旧节点 = 父节点.子节点组.find((n) => n.名称 === 条目.名称 && !n.删除动画);
+    if (旧节点) {
+      // 删除旧节点及其引用
+      父节点.子节点组 = 父节点.子节点组.filter((n) => n !== 旧节点);
+      节点表.delete(旧节点.id);
+    }
+    const 新节点 = 创建节点(条目.类型, 条目.名称, 父节点);
+    // 保留打包信息，使再打包/解包可以正常进行
+    if (条目.内容) 新节点.内容 = 条目.内容;
+    if (条目.子项) 新节点.子节点组 = [];
+    测量节点尺寸(新节点);
+    const 空位 = 寻找近处空位(父节点, 新节点.宽, 新节点.高);
+    新节点.x = 空位.x;
+    新节点.y = 空位.y;
+    新节点.固定位置 = true;
+    父节点.子节点组.push(新节点);
+    节点表.set(新节点.id, 新节点);
+    新节点组.push(新节点);
+    if (条目.子项) {
+      for (const 子 of 条目.子项) {
+        创建嵌套节点(子, 新节点);
+      }
+    }
+  };
+
+  for (const 条目 of 原始内容) {
+    创建嵌套节点(条目, 当前位置节点);
+  }
+
+  波纹组.push({
+    x: 当前位置节点.x,
+    y: 当前位置节点.y,
+    起始时间: performance.now(),
+    最大半径: 配置.高亮.波纹最大半径,
+  });
+
+  if (标志.v) {
+    if (新节点组.length > 0) {
+      显示过程(`tar：已解包 ${新节点组.length} 个条目\n` + 新节点组.map((n) => `${n.名称}`).join("\n"));
+    } else {
+      显示过程("tar：没有可解包的条目");
+    }
+  }
+  布局并动画();
+}
+
+function 显示错误(消息) {
+  错误提示组.push({
+    消息,
+    阶段: "显示",
+    开始时间: performance.now(),
+  });
+  请求重绘();
+}
+
+function 显示警告(消息) {
+  // 新警告立刻替换正在显示的提示（与错误行为一致，避免逐条闪烁）
+  错误提示组 = [
+    {
+      消息,
+      类型: "警告",
+      阶段: "显示",
+      开始时间: performance.now(),
+    },
+  ];
+  请求重绘();
+}
+
+// 天蓝色信息提示（用于 tar -t 查看结果）
+function 显示信息(消息) {
+  错误提示组 = [
+    {
+      消息,
+      类型: "信息",
+      阶段: "显示",
+      开始时间: performance.now(),
+    },
+  ];
+  请求重绘();
+}
+
+// 绿色过程提示（用于 tar -v 打包/解包过程）
+function 显示过程(消息) {
+  错误提示组 = [
+    {
+      消息,
+      类型: "过程",
+      阶段: "显示",
+      开始时间: performance.now(),
+    },
+  ];
+  请求重绘();
+}
+
+// ==================== 历史记录 ====================
+function 处理键盘事件(事件) {
+  // Ctrl+Z 撤销
+  if (事件.key === "z" && (事件.ctrlKey || 事件.metaKey) && !事件.shiftKey) {
+    事件.preventDefault();
+    撤销();
+    return;
+  }
+
+  if (事件.key === "Enter") {
+    执行命令();
+    return;
+  }
+
+  if (事件.key === "ArrowUp") {
+    事件.preventDefault();
+    if (命令历史.length === 0) return;
+    if (历史索引 === -1) {
+      临时输入 = 命令输入框.value;
+      历史索引 = 命令历史.length - 1;
+    } else if (历史索引 > 0) {
+      历史索引--;
+    }
+    命令输入框.value = 命令历史[历史索引];
+    更新命令高亮();
+    tar打勾节点组 = 计算tar匹配节点组();
+    请求重绘();
+    return;
+  }
+
+  if (事件.key === "ArrowDown") {
+    事件.preventDefault();
+    if (历史索引 === -1) return;
+    if (历史索引 < 命令历史.length - 1) {
+      历史索引++;
+      命令输入框.value = 命令历史[历史索引];
+    } else {
+      历史索引 = -1;
+      命令输入框.value = 临时输入;
+    }
+    更新命令高亮();
+    tar打勾节点组 = 计算tar匹配节点组();
+    请求重绘();
+    return;
+  }
+}
+
+// ==================== 初始化 ====================
+function 随机初始化() {
+  根节点 = 创建节点("目录", "/", null);
+  节点表.clear();
+  节点表.set(根节点.id, 根节点);
+
+  const 已用名称 = new Set();
+  const 所有目录组 = [根节点];
+
+  // 先随机决定总层数：2-8（1 层 = 只有根目录）
+  const 最大层数 = 2 + Math.floor(Math.random() * 7); // 2~8
+
+  if (最大层数 >= 2) {
+    const 根子节点数 = 2 + Math.floor(Math.random() * 2); // 2-3
+    for (let i = 0; i < 根子节点数; i++) {
+      const 名称 = 取随机名称(目录名称池, 已用名称);
+      const 隐藏前缀 = Math.random() < 0.1 ? "." : "";
+      const 子目录 = 创建节点("目录", 隐藏前缀 + 名称, 根节点);
+      根节点.子节点组.push(子目录);
+      节点表.set(子目录.id, 子目录);
+      所有目录组.push(子目录);
+    }
+
+    // 逐层向下扩展
+    let 当前层节点组 = [...根节点.子节点组];
+    for (let 层 = 3; 层 <= 最大层数; 层++) {
+      const 下一层节点组 = [];
+      for (const 父节点 of 当前层节点组) {
+        // 每个节点 60% 概率继续生子节点
+        if (Math.random() > 0.4) {
+          const 子节点数 = 1 + Math.floor(Math.random() * 2); // 1-2
+          for (let j = 0; j < 子节点数; j++) {
+            const 名称 = 取随机名称(目录名称池, 已用名称);
+            const 隐藏前缀 = Math.random() < 0.1 ? "." : "";
+            const 子目录 = 创建节点("目录", 隐藏前缀 + 名称, 父节点);
+            父节点.子节点组.push(子目录);
+            节点表.set(子目录.id, 子目录);
+            所有目录组.push(子目录);
+            下一层节点组.push(子目录);
+          }
+        }
+      }
+      if (下一层节点组.length === 0) break; // 该层没有节点，停止扩展
+      当前层节点组 = 下一层节点组;
+    }
+  }
+
+  // 随机分配文件到目录
+  if (所有目录组.length > 1) {
+    const 文件数 = 2 + Math.floor(Math.random() * 3); // 2-4
+    for (let i = 0; i < 文件数; i++) {
+      const 随机目录 = 所有目录组[Math.floor(Math.random() * 所有目录组.length)];
+      const 文件名称 = 取随机名称(文件名称池, 已用名称);
+      const 隐藏前缀 = Math.random() < 0.1 ? "." : "";
+      const 文件 = 创建节点("文件", 隐藏前缀 + 文件名称, 随机目录);
+      随机目录.子节点组.push(文件);
+      节点表.set(文件.id, 文件);
+    }
+  }
+
+  // 随机选择当前位置
+  当前位置节点 = 所有目录组[Math.floor(Math.random() * 所有目录组.length)];
+  当前位置节点.是当前位置 = true;
+  当前位置节点.当前位置过渡 = 1;
+
+  布局并动画();
+  更新提示符();
+}
+
+function 取随机名称(名称池, 已用名称) {
+  const 可用名称组 = 名称池.filter((n) => !已用名称.has(n));
+  if (可用名称组.length === 0) {
+    const 随机名 = 名称池[Math.floor(Math.random() * 名称池.length)] + "_" + Math.floor(Math.random() * 100);
+    已用名称.add(随机名);
+    return 随机名;
+  }
+  const 名称 = 可用名称组[Math.floor(Math.random() * 可用名称组.length)];
+  已用名称.add(名称);
+  return 名称;
+}
+
+function 重置() {
+  错误提示组 = [];
+  波纹组 = [];
+  cd动画组 = [];
+  tar打勾节点组 = [];
+  根节点 = null;
+  当前位置节点 = null;
+  节点表.clear();
+  全局层级计数器 = 1; // 重置层级计数器
+  视图偏移X = 0;
+  视图偏移Y = 0;
+  正在拖拽视图 = false;
+  悬停删除节点 = null;
+  按下删除节点 = null;
+  命令记录组 = [];
+  撤销栈 = [];
+  命令历史 = [];
+  历史索引 = -1;
+  临时输入 = "";
+
+  // 清空命令输入框并同步高亮层
+  命令输入框.value = "";
+  更新命令高亮();
+  tar打勾节点组 = [];
+
+  // 固定使用随机创建模式
+  随机初始化();
+}
+
+function 调整画布尺寸() {
+  const 容器 = 画布.parentElement;
+  画布宽 = 容器.clientWidth;
+  画布高 = 容器.clientHeight;
+  const dpr = window.devicePixelRatio || 1;
+  画布.width = 画布宽 * dpr;
+  画布.height = 画布高 * dpr;
+  上下文.setTransform(dpr, 0, 0, dpr, 0, 0);
+  // 窗体尺寸变化时仅更新画布，不重新布局，保持各节点当前位置
+  请求重绘();
+}
+
+// 监听窗口尺寸变化，实时调整画布
+window.addEventListener("resize", 调整画布尺寸);
+
+// ==================== 历史记录 ====================
+function 打开历史记录() {
+  渲染历史记录表格();
+  历史记录模态.classList.add("显示");
+}
+
+function 关闭历史记录() {
+  历史记录模态.classList.remove("显示");
+  聚焦命令输入框();
+}
+
+function 渲染历史记录表格() {
+  历史记录表格体.innerHTML = "";
+  if (命令记录组.length === 0) {
+    const 空行 = document.createElement("tr");
+    const 空单元格 = document.createElement("td");
+    空单元格.colSpan = 3;
+    空单元格.textContent = "暂无历史记录";
+    空单元格.style.textAlign = "center";
+    空单元格.style.color = "#666";
+    空单元格.style.padding = "20px";
+    空行.appendChild(空单元格);
+    历史记录表格体.appendChild(空行);
+    return;
+  }
+  命令记录组.forEach((记录, 索引) => {
+    const 行 = document.createElement("tr");
+
+    const 序号单元格 = document.createElement("td");
+    序号单元格.textContent = 索引 + 1;
+    行.appendChild(序号单元格);
+
+    const 命令单元格 = document.createElement("td");
+    命令单元格.innerHTML = 高亮命令语法(记录.命令);
+    行.appendChild(命令单元格);
+
+    const 结果单元格 = document.createElement("td");
+    const 图标 = document.createElement("i");
+    if (记录.正确) {
+      图标.className = "fa-solid fa-check 结果图标-正确";
+    } else {
+      图标.className = "fa-solid fa-xmark 结果图标-错误";
+    }
+    结果单元格.appendChild(图标);
+    行.appendChild(结果单元格);
+
+    历史记录表格体.appendChild(行);
+  });
+}
+
+function 导出历史记录() {
+  let 内容 = "# 命令历史记录\n\n";
+  内容 += "| 序号 | 命令 | 结果 |\n";
+  内容 += "| --- | --- | --- |\n";
+  命令记录组.forEach((记录, 索引) => {
+    const 转义命令 = 记录.命令.replace(/\|/g, "\\|");
+    内容 += `| ${索引 + 1} | ${转义命令} | ${记录.正确 ? "✅" : "❌"} |\n`;
+  });
+  const Blob对象 = new Blob([内容], { type: "text/markdown;charset=utf-8" });
+  const 链接 = document.createElement("a");
+  链接.href = URL.createObjectURL(Blob对象);
+  链接.download = "命令历史记录.md";
+  document.body.appendChild(链接);
+  链接.click();
+  document.body.removeChild(链接);
+  URL.revokeObjectURL(链接.href);
+}
+
+历史记录按钮.addEventListener("click", 打开历史记录);
+历史记录关闭按钮.addEventListener("click", 关闭历史记录);
+历史记录导出按钮.addEventListener("click", 导出历史记录);
+历史记录模态.addEventListener("click", (事件) => {
+  if (事件.target === 历史记录模态) 关闭历史记录();
+});
+
+// ==================== 事件绑定 ====================
+命令执行按钮.addEventListener("click", 执行命令);
+命令输入框.addEventListener("keydown", 处理键盘事件);
+命令输入框.addEventListener("input", () => {
+  更新命令高亮();
+  tar打勾节点组 = 计算tar匹配节点组();
+  请求重绘();
+});
+// 同步输入框与高亮层的水平滚动位置，防止高亮层文本溢出
+命令输入框.addEventListener("scroll", () => {
+  命令高亮层.scrollLeft = 命令输入框.scrollLeft;
+});
+重置按钮.addEventListener("click", 重置);
+画布.addEventListener("mousedown", 处理鼠标按下);
+画布.addEventListener("mousemove", 处理鼠标移动);
+画布.addEventListener("mouseup", 处理鼠标松开);
+画布.addEventListener("mouseleave", 处理鼠标松开);
+
+// ==================== 命令输入区拖拽 ====================
+// 拖拽热区：边框向内 2px、向外 6px
+const 命令输入区拖拽 = {
+  激活: false,
+  起始X: 0,
+  起始Y: 0,
+  偏移X: 0,
+  偏移Y: 0,
+  按下时宽: 0,
+  按下时高: 0,
+};
+
+function 命令输入区热区判定(事件) {
+  const 矩形 = 命令输入区.getBoundingClientRect();
+  const 内边距 = 2;
+  const x = 事件.clientX;
+  const y = 事件.clientY;
+
+  // 命令提示符区域始终可拖拽
+  const 提示符矩形 = 命令提示符.getBoundingClientRect();
+  if (x >= 提示符矩形.left && x <= 提示符矩形.right && y >= 提示符矩形.top && y <= 提示符矩形.bottom) {
+    return true;
+  }
+
+  // 不在元素范围内
+  if (x < 矩形.left || x > 矩形.right || y < 矩形.top || y > 矩形.bottom) {
+    return false;
+  }
+
+  // 在上边框热区（向内 2px）
+  if (y >= 矩形.top && y <= 矩形.top + 内边距) return true;
+  // 在下边框热区（向内 2px）
+  if (y >= 矩形.bottom - 内边距 && y <= 矩形.bottom) return true;
+  // 在左边框热区（向内 2px）
+  if (x >= 矩形.left && x <= 矩形.left + 内边距) return true;
+  // 在右边框热区（向内 2px）
+  if (x >= 矩形.right - 内边距 && x <= 矩形.right) return true;
+
+  return false;
+}
+
+命令输入区.addEventListener("mousedown", (事件) => {
+  if (事件.button !== 0) return; // 仅左键
+  if (!命令输入区热区判定(事件)) return;
+
+  // 阻止文本选择
+  事件.preventDefault();
+
+  const 矩形 = 命令输入区.getBoundingClientRect();
+  命令输入区拖拽.激活 = true;
+  命令输入区拖拽.起始X = 事件.clientX;
+  命令输入区拖拽.起始Y = 事件.clientY;
+  命令输入区拖拽.按下时宽 = 矩形.width;
+  命令输入区拖拽.按下时高 = 矩形.height;
+  // 记录元素左上角当前视口坐标作为拖拽基准
+  命令输入区拖拽.基准X = 矩形.left;
+  命令输入区拖拽.基准Y = 矩形.top;
+  // 将 fixed 定位改为以当前位置为基准
+  命令输入区.style.left = 矩形.left + "px";
+  命令输入区.style.top = 矩形.top + "px";
+  命令输入区.style.transform = "none";
+  命令输入区.style.cursor = 'url("/Images/Common/鼠标-移动抓手.cur"), grabbing';
+});
+
+document.addEventListener("mousemove", (事件) => {
+  if (!命令输入区拖拽.激活) return;
+
+  const 视口宽 = window.innerWidth;
+  const 视口高 = window.innerHeight;
+  const 元素宽 = 命令输入区拖拽.按下时宽;
+  const 元素高 = 命令输入区拖拽.按下时高;
+
+  let 新X = 命令输入区拖拽.基准X + (事件.clientX - 命令输入区拖拽.起始X);
+  let 新Y = 命令输入区拖拽.基准Y + (事件.clientY - 命令输入区拖拽.起始Y);
+
+  // 限制在视口内：left 0 ~ 视口宽-元素宽，top 0 ~ 视口高-元素高
+  新X = Math.max(0, Math.min(新X, 视口宽 - 元素宽));
+  新Y = Math.max(0, Math.min(新Y, 视口高 - 元素高));
+
+  命令输入区.style.left = 新X + "px";
+  命令输入区.style.top = 新Y + "px";
+});
+
+document.addEventListener("mouseup", () => {
+  if (!命令输入区拖拽.激活) return;
+  命令输入区拖拽.激活 = false;
+  命令输入区.style.cursor = "";
+});
+
+// 热区悬停时光标提示可拖拽
+命令输入区.addEventListener("mousemove", (事件) => {
+  if (命令输入区拖拽.激活) return;
+  if (命令输入区热区判定(事件)) {
+    命令输入区.style.cursor = 'url("/Images/Common/鼠标-移动抓手.cur"), grab';
+  } else {
+    命令输入区.style.cursor = "";
+  }
+});
+
+// 在指定区域松开鼠标后自动聚焦命令输入框
+function 聚焦命令输入框() {
+  命令输入框.focus();
+}
+重置按钮.addEventListener("mouseup", 聚焦命令输入框);
+画布.addEventListener("mouseup", 聚焦命令输入框);
+document.querySelector(".设置区").addEventListener("mouseup", 聚焦命令输入框);
+
+// Ctrl 键：拖拽中按下/松开时，实时切换子节点是否跟随
+window.addEventListener("keydown", (事件) => {
+  // Ctrl+Z 撤销（全局，输入框未聚焦时也可触发）
+  if (事件.key === "z" && (事件.ctrlKey || 事件.metaKey) && !事件.shiftKey && document.activeElement !== 命令输入框) {
+    事件.preventDefault();
+    撤销();
+    return;
+  }
+  if (事件.key === "Control" && 拖拽节点 && 拖拽节点.被拖拽 && !拖拽时按住Ctrl) {
+    拖拽时按住Ctrl = true;
+    更新拖拽跟随组();
+  }
+});
+window.addEventListener("keyup", (事件) => {
+  if (事件.key === "Control" && 拖拽时按住Ctrl) {
+    拖拽时按住Ctrl = false;
+    if (拖拽节点 && 拖拽节点.被拖拽) 更新拖拽跟随组();
+  }
+});
+
+// ==================== 启动 ====================
+调整画布尺寸();
+重置();
+聚焦命令输入框();

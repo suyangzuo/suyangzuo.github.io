@@ -20,3 +20,464 @@ body {
 .总区 {
   padding-top: 50px;
 }
+
+/* ------------------------- ↓ 设置区 ------------------------- */
+.设置区 {
+  position: fixed;
+  bottom: 25px;
+  left: 25px;
+  display: flex;
+  /* gap: 20px; */
+  /* padding: 10px 20px; */
+  background: rgba(17, 17, 17, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+}
+
+.设置区 > div {
+  padding: 10px 25px;
+}
+
+/* ------------------------- ↑ 设置区 ------------------------- */
+
+.Canvas容器 {
+  position: relative;
+  width: 100%;
+  height: clamp(500px, calc(100vh - 50px), 3000px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#canvas {
+  width: 100%;
+  height: 100%;
+  cursor: var(--光标-默认);
+}
+
+/* ------------------------- ↓ 提示区 ------------------------- */
+.提示区 {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 1000;
+  user-select: none;
+}
+
+.提示容器 {
+  padding: 8px 14px;
+  background: rgba(17, 17, 17, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  font-size: 14px;
+  color: #aaa;
+  white-space: nowrap;
+}
+
+.提示容器 .按键-Ctrl,
+.提示容器 .按键-空格 {
+  color: #e8a33d;
+  font-weight: 600;
+}
+
+.提示容器 .按键-图标 {
+  height: 1.2em;
+  vertical-align: -0.25em;
+}
+/* ------------------------- ↑ 提示区 ------------------------- */
+
+/* ------------------------- ↓ 命令输入区 ------------------------- */
+/* ------------------------- ↓ 路径显示区 ------------------------- */
+.路径显示区 {
+  position: fixed;
+  bottom: calc(25px + 44px + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 18px;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+  font-size: 16px;
+  color: #6ee7a0;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.路径显示区 .路径斜杠 {
+  color: #aaa;
+  margin: 0 1px;
+}
+/* ------------------------- ↑ 路径显示区 ------------------------- */
+
+.命令输入区 {
+  position: fixed;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  /* padding: 8px 14px; */
+  /* background: rgba(17, 17, 17, 0.9); */
+  border: 2px solid #555;
+  border-radius: 10px;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  z-index: 1001;
+  width: max-content;
+  min-width: 550px;
+  max-width: min(85vw, 1200px);
+  /* 拖拽时保持可移动 */
+  user-select: none;
+}
+
+.命令提示符 {
+  color: #4a9eff;
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  white-space: nowrap;
+  height: 100%;
+  padding: 0 14px;
+  align-content: center;
+  background-color: #333;
+}
+
+.命令提示符 .路径斜杠 {
+  color: #aaa;
+}
+
+.命令提示符 .提示符符号 {
+  color: darkgoldenrod;
+}
+
+.命令输入包装 {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.命令高亮层 {
+  position: absolute;
+  inset: 0;
+  padding: 4px 6px;
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+  font-size: 15px;
+  line-height: 1.4;
+  color: #e0e0e0;
+  pointer-events: none;
+  white-space: pre;
+  overflow-x: auto;
+  scrollbar-width: none;
+  display: block;
+}
+
+.命令高亮层::-webkit-scrollbar {
+  display: none;
+}
+
+.命令高亮层 .语法-命令 {
+  color: #ffffff;
+}
+
+.命令高亮层 .语法-参数 {
+  color: #e8a33d;
+}
+
+.命令高亮层 .语法-横杠 {
+  color: #a6a6a6;
+}
+
+.命令高亮层 .语法-路径 {
+  color: #38a368;
+}
+
+.命令高亮层 .语法-斜杠 {
+  color: rgb(164, 221, 221);
+}
+
+.命令高亮层 .语法-花括号 {
+  color: #d374a8;
+}
+
+.命令高亮层 .语法-逗号 {
+  color: gray;
+}
+
+.历史记录表格 .语法-命令 {
+  color: #ffffff;
+}
+
+.历史记录表格 .语法-参数 {
+  color: #e8a33d;
+}
+
+.历史记录表格 .语法-横杠 {
+  color: #a6a6a6;
+}
+
+.历史记录表格 .语法-路径 {
+  color: #38a368;
+}
+
+.历史记录表格 .语法-斜杠 {
+  color: rgb(164, 221, 221);
+}
+
+.历史记录表格 .语法-花括号 {
+  color: #d374a8;
+}
+
+.历史记录表格 .语法-逗号 {
+  color: gray;
+}
+
+.命令输入框 {
+  position: relative;
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: transparent;
+  caret-color: #e0e0e0;
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+  font-size: 15px;
+  line-height: 1.4;
+  padding: 4px 6px;
+}
+
+.命令输入框::placeholder {
+  color: #666;
+  font-size: 13px;
+}
+
+.命令输入框:focus::placeholder {
+  color: transparent;
+}
+
+.命令执行按钮 {
+  background: rgba(74, 158, 255, 0.25);
+  /* border: 1px solid rgba(74, 158, 255, 0.4); */
+  /* border-radius: 6px; */
+  color: #4a9eff;
+  aspect-ratio: 1;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: var(--光标-指向);
+  transition: 0.2s;
+}
+
+.命令执行按钮:hover {
+  background: rgba(74, 158, 255, 0.3);
+  transform: scale(1.05);
+}
+/* ------------------------- ↑ 命令输入区 ------------------------- */
+
+/* ------------------------- ↓ 历史记录按钮 ------------------------- */
+.历史记录按钮 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(17, 17, 17, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  color: #aaa;
+  font-size: 14px;
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+  cursor: var(--光标-指向);
+  transition: 0.2s;
+  user-select: none;
+}
+
+.历史记录按钮:hover {
+  background: rgba(74, 158, 255, 0.2);
+  border-color: rgba(74, 158, 255, 0.4);
+  color: #4a9eff;
+}
+/* ------------------------- ↑ 历史记录按钮 ------------------------- */
+
+/* ------------------------- ↓ 历史记录模态对话框 ------------------------- */
+.历史记录模态 {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+}
+
+.历史记录模态.显示 {
+  display: flex;
+}
+
+.历史记录对话框 {
+  width: min(90vw, 800px);
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+}
+
+.历史记录头部 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.历史记录标题 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #e0e0e0;
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+}
+
+.历史记录头部按钮组 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.历史记录导出按钮 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(74, 158, 255, 0.15);
+  border: 1px solid rgba(74, 158, 255, 0.35);
+  border-radius: 8px;
+  color: #4a9eff;
+  font-size: 13px;
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+  cursor: var(--光标-指向);
+  transition: 0.2s;
+  user-select: none;
+}
+
+.历史记录导出按钮:hover {
+  background: rgba(74, 158, 255, 0.28);
+  border-color: rgba(74, 158, 255, 0.55);
+}
+
+.历史记录关闭按钮 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  color: #aaa;
+  font-size: 15px;
+  cursor: var(--光标-指向);
+  transition: 0.2s;
+  user-select: none;
+}
+
+.历史记录关闭按钮:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.45);
+  color: #ef4444;
+}
+
+.历史记录表格容器 {
+  flex: 1;
+  overflow: auto;
+  padding: 20px 24px;
+}
+
+.历史记录表格 {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+  font-family: "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+}
+
+.历史记录表格 thead {
+  position: sticky;
+  top: 0;
+  background: #222;
+  z-index: 1;
+}
+
+.历史记录表格 th {
+  padding: 10px 14px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #e8a33d;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-collapse: collapse;
+  white-space: nowrap;
+}
+
+.历史记录表格 th:nth-child(1),
+.历史记录表格 td:nth-child(1) {
+  width: 4%;
+  white-space: nowrap;
+}
+
+.历史记录表格 th:nth-child(3),
+.历史记录表格 td:nth-child(3) {
+  width: 4%;
+  white-space: nowrap;
+}
+
+.历史记录表格 td {
+  padding: 9px 14px;
+  font-size: 14px;
+  color: #ccc;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-collapse: collapse;
+}
+
+.历史记录表格 td:first-of-type {
+  color: gray;
+  text-align: right;
+}
+
+.历史记录表格 td:last-of-type{
+  text-align: center;
+}
+
+.历史记录表格 tbody tr:nth-child(odd) {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.历史记录表格 tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.历史记录表格 .结果图标-正确 {
+  color: #22c55e;
+  font-weight: 700;
+}
+
+.历史记录表格 .结果图标-错误 {
+  color: #ef4444;
+  font-weight: 700;
+}
+/* ------------------------- ↑ 历史记录模态对话框 ------------------------- */
