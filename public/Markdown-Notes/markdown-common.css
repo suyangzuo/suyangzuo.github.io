@@ -472,6 +472,10 @@ table thead {
   border-bottom: 2px solid #fff4;
 }
 
+table tr td:first-of-type {
+  text-wrap: nowrap;
+}
+
 table th,
 table td {
   border: 1px solid #fff2;
