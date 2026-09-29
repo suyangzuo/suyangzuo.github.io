@@ -541,6 +541,11 @@
   cursor: var(--光标-手指);
 }
 
+/* 未完成的笔记条目：整体降低亮度 */
+.条目链接.未完成 {
+  filter: brightness(50%);
+}
+
 .条目链接:hover .条目链接旋转容器 {
   transform: translateY(-5px);
   background: var(--悬停效果);
