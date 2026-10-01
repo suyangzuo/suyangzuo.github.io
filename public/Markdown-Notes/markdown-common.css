@@ -295,7 +295,7 @@ a:link.一级目录 {
 .二级目录 {
   font-size: 15px;
   color: #eee;
-  padding: 5px 12px 5px 28px;
+  padding: 5px 12px 5px 32px;
   border-left: 2px solid transparent;
   position: relative;
 }
@@ -303,9 +303,8 @@ a:link.一级目录 {
 .二级目录::before {
   content: "📰";
   position: absolute;
-  left: 5px;
   top: 50%;
-  translate: -0.2em -50%;
+  translate: -1.65em -50%;
   color: #aaa;
   font-size: 16px;
   vertical-align: center;
@@ -315,7 +314,7 @@ a:link.一级目录 {
 .三级目录 {
   font-size: 14px;
   color: #a0a0a0;
-  padding: 4px 12px 4px 42px;
+  padding: 4px 12px 4px 50px;
   border-left: 2px solid transparent;
   position: relative;
   color: gray;
@@ -324,9 +323,8 @@ a:link.一级目录 {
 .三级目录::before {
   content: "🔷";
   position: absolute;
-  left: 30px;
   top: 50%;
-  translate: -0.75em -50%;
+  translate: -1.75em -50%;
   color: #888;
   font-size: 12px;
   transition: all 0.3s ease;
@@ -754,39 +752,15 @@ a:visited {
     width: 280px;
   }
 
-  .笔记目录容器 {
-    padding: 15px 10px 15px 15px;
-  }
-
   .一级目录 {
     font-size: 14px;
     padding: 8px 10px;
-  }
-
-  .二级目录 {
-    font-size: 12px;
-    padding: 6px 10px 6px 15px;
-  }
-
-  .二级目录::before {
-    left: 0;
   }
 }
 
 @media screen and (max-width: 1200px) {
   .笔记目录区 {
-    position: fixed;
-    left: auto;
-    right: 20px;
-    top: 100px;
-    width: 250px;
-    height: calc(100vh - 140px);
-    z-index: 1000;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .笔记目录容器 {
-    padding: 15px;
+    display: none;
   }
 }
 
