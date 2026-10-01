@@ -123,7 +123,7 @@ body {
   background-color: #ffffff12;
   color: silver;
   font-family: var(--中文代码混合字体) !important;
-  outline: solid 2px #def3;
+  outline: solid 1px #def3;
 }
 
 .笔记区 strong {
@@ -146,6 +146,7 @@ body {
 .笔记区 ul:not(ul ul, ol ul),
 .笔记区 ol:not(ul ol, ol ol) {
   list-style-position: outside;
+  padding-left: 1em;
 }
 
 ul ul,
@@ -266,10 +267,6 @@ ol ol {
   }
 }
 
-.目录分级容器:hover {
-  background: rgba(255, 255, 255, 0.03);
-}
-
 .一级目录,
 .二级目录,
 .三级目录 {
@@ -290,7 +287,7 @@ a:link.一级目录 {
   color: #6eabe8;
   font-size: 17px;
   font-weight: 500;
-  padding: 10px 12px;
+  padding: 10px;
   letter-spacing: 0.3px;
   border-left: 3px solid transparent;
 }
@@ -298,35 +295,38 @@ a:link.一级目录 {
 .二级目录 {
   font-size: 15px;
   color: #eee;
-  padding: 5px 12px 5px 20px;
+  padding: 5px 12px 5px 28px;
   border-left: 2px solid transparent;
   position: relative;
 }
 
 .二级目录::before {
-  content: "•";
+  content: "📰";
   position: absolute;
   left: 5px;
+  top: 50%;
+  translate: -0.2em -50%;
   color: #aaa;
   font-size: 16px;
+  vertical-align: center;
   transition: all 0.3s ease;
 }
 
 .三级目录 {
-  font-size: 13px;
+  font-size: 14px;
   color: #a0a0a0;
-  padding: 4px 12px 4px 45px;
+  padding: 4px 12px 4px 42px;
   border-left: 2px solid transparent;
   position: relative;
   color: gray;
 }
 
 .三级目录::before {
-  content: "□";
+  content: "🔷";
   position: absolute;
   left: 30px;
   top: 50%;
-  translate: 0 -50%;
+  translate: -0.75em -50%;
   color: #888;
   font-size: 12px;
   transition: all 0.3s ease;
@@ -354,7 +354,6 @@ a:link.一级目录 {
 .二级目录:not(.当前目录):hover::before,
 .三级目录:not(.当前目录):hover::before {
   color: #999;
-  transform: scale(1.2);
 }
 
 .一级目录.当前目录,
@@ -380,13 +379,12 @@ a:link.一级目录 {
 .二级目录.当前目录::before,
 .三级目录.当前目录::before {
   color: #9c6b9d;
-  transform: scale(1.3);
 }
 
 .一级目录 code,
 .二级目录 code,
 .三级目录 code {
-  color: #ffd700;
+  color: rgb(227, 207, 95);
   background: rgba(255, 215, 0, 0.1);
   padding: 1px 4px;
   border-radius: 3px;
@@ -835,10 +833,11 @@ a:visited {
 }
 
 .笔记区 h3::before {
-  content: "◊";
+  content: "🔷";
   color: rgba(42, 151, 140, 0.8);
   margin-right: 8px;
   font-size: 0.9em;
+  vertical-align: center;
 }
 
 .笔记区 h3::after {
