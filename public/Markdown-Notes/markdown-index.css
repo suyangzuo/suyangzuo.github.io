@@ -644,11 +644,9 @@
   font-weight: 400;
 }
 
-/* 分组切换按钮：放在二级目录区内部 */
+/* 分组切换按钮：放在目录总区内，随布局流动 */
 .分组切换按钮 {
-  position: absolute;
-  top: 0;
-  left: calc(100% + 25px);
+  width: 128px;
   padding: 8px 18px;
   font-family: var(--中文字体);
   font-size: 14px;
@@ -662,6 +660,8 @@
   transition: all 0.25s ease;
   white-space: nowrap;
   z-index: 10;
+  align-self: flex-start;
+  flex-shrink: 0;
 }
 
 .分组切换按钮:hover {

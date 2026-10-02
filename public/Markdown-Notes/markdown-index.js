@@ -47,6 +47,7 @@ const 知识库 = {
 
 const 二级目录区 = document.querySelector(".二级目录区");
 const 目录区 = document.querySelector(".目录区");
+const 目录总区 = document.querySelector(".目录总区");
 const 笔记对话框 = document.getElementById("笔记对话框");
 const 笔记区 = 笔记对话框.querySelector(".笔记区");
 const 笔记信息区 = 笔记对话框.querySelector(".笔记信息区");
@@ -56,18 +57,15 @@ const 笔记区目录组 = [];
 const 笔记目录区标题组 = [];
 let 当前选中目录 = null;
 
-// 每个大类的分组状态独立存储，无记录时默认不分组
+// 分组状态为全局共享：所有目录大类共用，无记录时默认不分组
 const 分组状态存储键 = "二级目录分组状态";
 
-function 获取分组状态(键) {
-  const 状态表 = JSON.parse(localStorage.getItem(分组状态存储键) || "{}");
-  return 状态表[键] === true;
+function 获取分组状态() {
+  return localStorage.getItem(分组状态存储键) === "true";
 }
 
-function 设置分组状态(键, 状态) {
-  const 状态表 = JSON.parse(localStorage.getItem(分组状态存储键) || "{}");
-  状态表[键] = 状态;
-  localStorage.setItem(分组状态存储键, JSON.stringify(状态表));
+function 设置分组状态(状态) {
+  localStorage.setItem(分组状态存储键, 状态 ? "true" : "false");
 }
 
 // 添加 URL 处理函数
@@ -280,7 +278,7 @@ function 生成二级目录(键) {
   当前选中目录 = 键;
   const 笔记对象组 = 知识库[键].笔记;
 
-  if (获取分组状态(键)) {
+  if (获取分组状态()) {
     生成分组视图(键, 笔记对象组);
   } else {
     生成平铺视图(键, 笔记对象组);
@@ -440,7 +438,7 @@ function 更新分组按钮() {
 
   const 按钮 = document.createElement("button");
   按钮.className = "分组切换按钮";
-  const 已分组 = 获取分组状态(当前选中目录);
+  const 已分组 = 获取分组状态();
   按钮.textContent = "按作者分组";
   if (已分组) {
     const 勾选标记 = document.createElement("span");
@@ -449,14 +447,14 @@ function 更新分组按钮() {
     按钮.appendChild(勾选标记);
   }
   按钮.addEventListener("click", () => {
-    const 新状态 = !获取分组状态(当前选中目录);
-    设置分组状态(当前选中目录, 新状态);
+    const 新状态 = !获取分组状态();
+    设置分组状态(新状态);
     二级目录区.innerHTML = "";
     生成二级目录(当前选中目录);
     更新分组按钮();
   });
-  // 按钮放到二级目录区内部末尾
-  二级目录区.appendChild(按钮);
+  // 按钮放到目录总区内，与目录区、二级目录区并列
+  目录总区.appendChild(按钮);
 }
 
 function 加载并展示笔记(技术栈, 笔记文件名, { 更新历史 = true } = {}) {
