@@ -355,13 +355,13 @@ a:link.一级目录 {
 }
 
 .一级目录.当前目录,
+a:link.一级目录.当前目录,
 .二级目录.当前目录,
 .三级目录.当前目录 {
   background: linear-gradient(135deg, rgba(78, 48, 79, 0.9) 0%, rgba(78, 48, 79, 0.7) 50%, rgba(78, 48, 79, 0.5) 100%);
-  box-shadow: 0 2px 8px rgba(78, 48, 79, 0.4);
   border-left-color: #9c6b9d;
   color: #fff;
-  animation: highlightPulse 2s ease-in-out infinite;
+  /* animation: highlightPulse 2s ease-in-out infinite; */
 }
 
 @keyframes highlightPulse {
