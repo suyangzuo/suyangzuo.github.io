@@ -54,6 +54,21 @@ const 笔记目录区 = 笔记对话框.querySelector(".笔记目录区");
 const 关闭对话框按钮 = 笔记对话框.querySelector("#关闭对话框");
 const 笔记区目录组 = [];
 const 笔记目录区标题组 = [];
+let 当前选中目录 = null;
+
+// 每个大类的分组状态独立存储，无记录时默认不分组
+const 分组状态存储键 = "二级目录分组状态";
+
+function 获取分组状态(键) {
+  const 状态表 = JSON.parse(localStorage.getItem(分组状态存储键) || "{}");
+  return 状态表[键] === true;
+}
+
+function 设置分组状态(键, 状态) {
+  const 状态表 = JSON.parse(localStorage.getItem(分组状态存储键) || "{}");
+  状态表[键] = 状态;
+  localStorage.setItem(分组状态存储键, JSON.stringify(状态表));
+}
 
 // 添加 URL 处理函数
 function 更新URL(技术栈, 笔记文件名, { shouldPush = true } = {}) {
@@ -258,59 +273,192 @@ function 切换目录(键, { 更新历史 = true } = {}) {
     生成二级目录(标准键);
   }
 
+  更新分组按钮();
+
   document.title = `知识库 - ${标准键}`;
 }
 
 function 生成二级目录(键) {
+  当前选中目录 = 键;
   const 笔记对象组 = 知识库[键].笔记;
-  for (const [index, 笔记对象] of 笔记对象组.entries()) {
-    const 条目链接 = document.createElement("div");
-    条目链接.className = "条目链接";
-    // 日期为 0年0月0日 表示笔记未完成，标记未完成样式（CSS 控制亮度）
-    if (!笔记对象.时间.年 && !笔记对象.时间.月 && !笔记对象.时间.日) {
-      条目链接.classList.add("未完成");
-    }
-    二级目录区.appendChild(条目链接);
-    const 条目链接旋转容器 = document.createElement("div");
-    条目链接旋转容器.className = "条目链接旋转容器";
-    条目链接.appendChild(条目链接旋转容器);
-    const 链接序号 = document.createElement("span");
-    链接序号.className = "链接序号";
-    链接序号.textContent = index + 1;
-    const 链接标题 = document.createElement("span");
-    链接标题.className = "链接标题";
-    链接标题.textContent = 笔记对象.标题;
-    const 链接序号与标题 = document.createElement("div");
-    链接序号与标题.className = "链接序号与标题";
-    链接序号与标题.append(链接序号, 链接标题);
 
-    const 链接作者与照片 = document.createElement("div");
-    链接作者与照片.className = "链接作者与照片";
-    const 链接作者 = document.createElement("span");
-    链接作者.className = "链接作者";
-    链接作者.textContent = 笔记对象.作者;
-    const 链接作者照片 = document.createElement("img");
-    链接作者照片.className = "链接作者照片";
-    链接作者照片.src = 笔记对象.作者
-      ? `/Images/Contributors/${笔记对象.作者}.jpg`
-      : "/Images/Contributors/Mystery_Men.jpg";
-    链接作者照片.alt = "链接作者照片";
-    链接作者与照片.append(链接作者照片, 链接作者);
-    const 链接时间 = document.createElement("span");
-    链接时间.className = "链接时间";
-    链接时间.textContent = `${笔记对象.时间.年}.${笔记对象.时间.月}.${笔记对象.时间.日}`;
-    const 作者与时间 = document.createElement("div");
-    作者与时间.className = "链接作者与时间";
-    作者与时间.append(链接作者与照片, 链接时间);
-    条目链接旋转容器.append(链接序号与标题, 作者与时间);
-
-    const 笔记文件名 = 笔记对象.标题.replaceAll(" ", "");
-    条目链接.dataset.技术栈 = 键;
-    条目链接.dataset.笔记文件名 = 笔记文件名;
-    条目链接.addEventListener("click", () => {
-      加载并展示笔记(键, 笔记文件名);
-    });
+  if (获取分组状态(键)) {
+    生成分组视图(键, 笔记对象组);
+  } else {
+    生成平铺视图(键, 笔记对象组);
   }
+}
+
+function 生成平铺视图(键, 笔记对象组) {
+  for (const [index, 笔记对象] of 笔记对象组.entries()) {
+    const 条目链接 = 创建条目链接(键, 笔记对象, index);
+    二级目录区.appendChild(条目链接);
+  }
+}
+
+function 生成分组视图(键, 笔记对象组) {
+  // 按作者分组，作者为空的放到最后一组
+  const 分组表 = new Map();
+  const 空作者组 = [];
+
+  for (const 笔记对象 of 笔记对象组) {
+    const 作者 = 笔记对象.作者 || "";
+    if (!作者) {
+      空作者组.push(笔记对象);
+    } else {
+      if (!分组表.has(作者)) 分组表.set(作者, []);
+      分组表.get(作者).push(笔记对象);
+    }
+  }
+
+  // 作者分组按作者名排序
+  const 排序作者组 = Array.from(分组表.keys()).sort((a, b) => a.localeCompare(b, "zh-Hans-CN"));
+
+  let 全局序号 = 0;
+
+  // 渲染有作者的分组
+  for (const 作者 of 排序作者组) {
+    const 分组容器 = document.createElement("div");
+    分组容器.className = "作者分组容器";
+
+    const 分组标题 = document.createElement("div");
+    分组标题.className = "作者分组标题";
+    const 作者头像 = document.createElement("img");
+    作者头像.className = "作者分组头像";
+    作者头像.src = `/Images/Contributors/${作者}.jpg`;
+    作者头像.alt = 作者;
+    const 作者名称 = document.createElement("span");
+    作者名称.className = "作者分组名称";
+    作者名称.textContent = 作者;
+    const 条目计数 = document.createElement("span");
+    条目计数.className = "作者分组计数";
+    const 条目计数数字 = document.createElement("span");
+    条目计数数字.className = "作者分组计数数字";
+    条目计数数字.textContent = 分组表.get(作者).length;
+    条目计数.append(条目计数数字, "篇");
+    分组标题.append(作者头像, 作者名称, 条目计数);
+    分组容器.appendChild(分组标题);
+
+    const 条目容器 = document.createElement("div");
+    条目容器.className = "作者分组条目容器";
+    分组表.get(作者).forEach((笔记对象, 索引) => {
+      const 条目链接 = 创建条目链接(键, 笔记对象, 索引);
+      条目容器.appendChild(条目链接);
+    });
+    分组容器.appendChild(条目容器);
+    二级目录区.appendChild(分组容器);
+  }
+
+  // 空作者放到最后一组
+  if (空作者组.length > 0) {
+    const 分组容器 = document.createElement("div");
+    分组容器.className = "作者分组容器";
+
+    const 分组标题 = document.createElement("div");
+    分组标题.className = "作者分组标题";
+    const 作者头像 = document.createElement("img");
+    作者头像.className = "作者分组头像";
+    作者头像.src = "/Images/Contributors/Mystery_Men.jpg";
+    作者头像.alt = "匿名";
+    const 作者名称 = document.createElement("span");
+    作者名称.className = "作者分组名称";
+    作者名称.textContent = "未完成";
+    const 条目计数 = document.createElement("span");
+    条目计数.className = "作者分组计数";
+    const 条目计数数字 = document.createElement("span");
+    条目计数数字.className = "作者分组计数数字";
+    条目计数数字.textContent = 空作者组.length;
+    条目计数.append(条目计数数字, "篇");
+    分组标题.append(作者头像, 作者名称, 条目计数);
+    分组容器.appendChild(分组标题);
+
+    const 条目容器 = document.createElement("div");
+    条目容器.className = "作者分组条目容器";
+    空作者组.forEach((笔记对象, 索引) => {
+      const 条目链接 = 创建条目链接(键, 笔记对象, 索引);
+      条目容器.appendChild(条目链接);
+    });
+    分组容器.appendChild(条目容器);
+    二级目录区.appendChild(分组容器);
+  }
+}
+
+function 创建条目链接(键, 笔记对象, 序号) {
+  const 条目链接 = document.createElement("div");
+  条目链接.className = "条目链接";
+  // 日期为 0年0月0日 表示笔记未完成，标记未完成样式（CSS 控制亮度）
+  if (!笔记对象.时间.年 && !笔记对象.时间.月 && !笔记对象.时间.日) {
+    条目链接.classList.add("未完成");
+  }
+  const 条目链接旋转容器 = document.createElement("div");
+  条目链接旋转容器.className = "条目链接旋转容器";
+  条目链接.appendChild(条目链接旋转容器);
+  const 链接序号 = document.createElement("span");
+  链接序号.className = "链接序号";
+  链接序号.textContent = 序号 + 1;
+  const 链接标题 = document.createElement("span");
+  链接标题.className = "链接标题";
+  链接标题.textContent = 笔记对象.标题;
+  const 链接序号与标题 = document.createElement("div");
+  链接序号与标题.className = "链接序号与标题";
+  链接序号与标题.append(链接序号, 链接标题);
+
+  const 链接作者与照片 = document.createElement("div");
+  链接作者与照片.className = "链接作者与照片";
+  const 链接作者 = document.createElement("span");
+  链接作者.className = "链接作者";
+  链接作者.textContent = 笔记对象.作者;
+  const 链接作者照片 = document.createElement("img");
+  链接作者照片.className = "链接作者照片";
+  链接作者照片.src = 笔记对象.作者
+    ? `/Images/Contributors/${笔记对象.作者}.jpg`
+    : "/Images/Contributors/Mystery_Men.jpg";
+  链接作者照片.alt = "链接作者照片";
+  链接作者与照片.append(链接作者照片, 链接作者);
+  const 链接时间 = document.createElement("span");
+  链接时间.className = "链接时间";
+  链接时间.textContent = `${笔记对象.时间.年}.${笔记对象.时间.月}.${笔记对象.时间.日}`;
+  const 作者与时间 = document.createElement("div");
+  作者与时间.className = "链接作者与时间";
+  作者与时间.append(链接作者与照片, 链接时间);
+  条目链接旋转容器.append(链接序号与标题, 作者与时间);
+
+  const 笔记文件名 = 笔记对象.标题.replaceAll(" ", "");
+  条目链接.dataset.技术栈 = 键;
+  条目链接.dataset.笔记文件名 = 笔记文件名;
+  条目链接.addEventListener("click", () => {
+    加载并展示笔记(键, 笔记文件名);
+  });
+  return 条目链接;
+}
+
+function 更新分组按钮() {
+  // 移除旧按钮
+  const 旧按钮 = document.querySelector(".分组切换按钮");
+  if (旧按钮) 旧按钮.remove();
+
+  // 只在有笔记的目录显示按钮
+  if (!当前选中目录 || 知识库[当前选中目录].笔记.length === 0) return;
+
+  const 按钮 = document.createElement("button");
+  按钮.className = "分组切换按钮";
+  const 已分组 = 获取分组状态(当前选中目录);
+  按钮.textContent = "按作者分组";
+  if (已分组) {
+    const 勾选标记 = document.createElement("span");
+    勾选标记.className = "分组勾选标记";
+    勾选标记.textContent = "✔";
+    按钮.appendChild(勾选标记);
+  }
+  按钮.addEventListener("click", () => {
+    const 新状态 = !获取分组状态(当前选中目录);
+    设置分组状态(当前选中目录, 新状态);
+    二级目录区.innerHTML = "";
+    生成二级目录(当前选中目录);
+    更新分组按钮();
+  });
+  // 按钮放到二级目录区内部末尾
+  二级目录区.appendChild(按钮);
 }
 
 function 加载并展示笔记(技术栈, 笔记文件名, { 更新历史 = true } = {}) {

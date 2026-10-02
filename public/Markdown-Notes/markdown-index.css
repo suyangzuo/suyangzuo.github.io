@@ -424,7 +424,7 @@
 
 .目录总区 {
   width: max(95vw, 1200px);
-  height: max(800px, calc(100vh - 100px));
+  height: fit-content;
   flex-grow: 1;
   display: flex;
   justify-content: center;
@@ -518,7 +518,8 @@
 .二级目录区 {
   flex-shrink: 0;
   width: min(1200px, calc(100% - 300px));
-  min-height: calc(100vh - 200px);
+  min-height: calc(100vh - 400px);
+  height: fit-content;
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
@@ -530,6 +531,7 @@
   backdrop-filter: blur(15px);
   padding: 30px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  position: relative;
 }
 
 .条目链接 {
@@ -640,6 +642,97 @@
 .链接时间 {
   color: var(--文字次色);
   font-weight: 400;
+}
+
+/* 分组切换按钮：放在二级目录区内部 */
+.分组切换按钮 {
+  position: absolute;
+  top: 0;
+  left: calc(100% + 25px);
+  padding: 8px 18px;
+  font-family: var(--中文字体);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--文字主色);
+  background: rgba(0, 212, 255, 0.08);
+  border: 1px solid rgba(0, 212, 255, 0.25);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  cursor: var(--光标-手指);
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+.分组切换按钮:hover {
+  background: rgba(0, 212, 255, 0.15);
+  border-color: rgba(0, 212, 255, 0.5);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+.分组勾选标记 {
+  /* font-weight: 700; */
+  color: greenyellow;
+  margin-left: 10px;
+}
+
+/* 作者分组容器 */
+.作者分组容器 {
+  width: 100%;
+  margin-bottom: 50px;
+}
+
+.作者分组容器:last-child {
+  margin-bottom: 0;
+}
+
+/* 作者分组标题栏 */
+.作者分组标题 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.作者分组头像 {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid rgba(0, 212, 255, 0.3);
+  box-shadow: 0 0 8px rgba(0, 212, 255, 0.2);
+}
+
+.作者分组名称 {
+  font-family: var(--中文字体);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--文字主色);
+  letter-spacing: 0.5px;
+}
+
+.作者分组计数 {
+  font-family: var(--中文代码混合字体);
+  font-size: 12px;
+  color: var(--文字次色);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 3px 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.作者分组计数数字 {
+  color: #cde;
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+/* 作者分组条目容器 */
+.作者分组条目容器 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 /* 响应式设计 */
