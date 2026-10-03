@@ -1347,8 +1347,8 @@ function 查找权限字母命中(x, y) {
 
     for (let i = 0; i < 3; i++) {
       const 主行基线 = 几何.首行基线Y + i * 几何.行距 + (几何.显示二进制 ? 几何.小行高 : 0);
-      const 顶Y = 主行基线 - 上延;
-      const 底Y = 主行基线 + 下延;
+      const 顶Y = 主行基线 - 上延 + 1 * window.devicePixelRatio;
+      const 底Y = 主行基线 + 下延 + 2.5 * window.devicePixelRatio;
       if (y < 顶Y || y > 底Y) continue;
       for (let j = 0; j < 3; j++) {
         const 左X = 几何.字母区起始X + j * 几何.字母槽宽 - 半间隔;
@@ -1367,8 +1367,8 @@ function 查找权限字母命中(x, y) {
       const 小上延 = 度量小.actualBoundingBoxAscent ?? 0;
       for (let i = 0; i < 3; i++) {
         const 小行基线 = 几何.首行基线Y + i * 几何.行距 - 1;
-        const 顶Y = 小行基线 - 小上延 - 4;
-        const 底Y = 几何.首行基线Y + i * 几何.行距 + 几何.小行高 - 上延;
+        const 顶Y = 小行基线 - 小上延;
+        const 底Y = 几何.首行基线Y + i * 几何.行距 + 几何.小行高;
         if (y < 顶Y || y > 底Y) continue;
         for (let j = 0; j < 3; j++) {
           const 左X = 几何.字母区起始X + j * 几何.字母槽宽 - 半间隔;
