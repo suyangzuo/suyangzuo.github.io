@@ -16,6 +16,10 @@
   --Canvas-垂直偏移: 0px;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   min-height: 100vh;
 }
@@ -63,6 +67,53 @@ body {
   justify-content: center;
   gap: 100px;
   height: 100%;
+}
+
+.交互页 {
+  scroll-margin-top: 60px;
+}
+
+.导航条 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.导航条链接 {
+  width: 50px;
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  filter: drop-shadow(2px 2px 2px #000a);
+  transition: scale 200ms;
+}
+
+.导航条链接:hover {
+  scale: 1.15;
+  cursor: url(/Images/Common/鼠标-指向.cur), pointer;
+}
+
+.导航条容器 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.导航条.固定 {
+  position: fixed;
+  z-index: 9999;
+  top: 50%;
+  left: 15px;
+  translate: 0 -50%;
+  flex-direction: column;
+}
+
+.导航条链接 > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .交互页 {
