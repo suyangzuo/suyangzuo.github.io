@@ -54,372 +54,111 @@
   z-index: 0;
 }
 
+/* ===== 标题区：全新设计 ===== */
+
 .标题区 {
+  width: 100%;
+  padding: 96px 24px 72px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
   position: relative;
   z-index: 1;
-  margin-bottom: 30px;
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  background: linear-gradient(
-    135deg,
-    rgba(0, 212, 255, 0.1) 0%,
-    rgba(0, 102, 204, 0.05) 50%,
-    rgba(0, 212, 255, 0.08) 100%
-  );
-  border-bottom: 1px solid rgba(0, 212, 255, 0.2);
-  box-shadow:
-    0 4px 20px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  overflow: hidden;
+  margin-bottom: 48px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 0%, transparent 100%);
 }
 
-/* 添加动态背景效果 */
-.标题区::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background:
-    radial-gradient(circle at 25% 25%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 75% 75%, rgba(0, 102, 204, 0.06) 0%, transparent 50%),
-    linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.03) 50%, transparent 100%);
-  pointer-events: none;
-  z-index: 0;
-  animation: backgroundShift 12s ease-in-out infinite;
+/* 容器：限制最大宽度，整体左对齐 */
+.标题区内部 {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
 }
 
-/* 添加移动光影效果 */
+/* 眉标：小字 + 状态灯 */
+.眉标 {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--代码字体);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  color: var(--主色调);
+  text-transform: uppercase;
+}
+
+.眉标指示灯 {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--主色调);
+  opacity: 0.85;
+}
+
+/* 大标题：白 + 品牌色强调 */
+.大标题 {
+  display: flex;
+  margin: 0;
+  font-family: var(--中文字体);
+  font-size: 52px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  color: var(--文字主色);
+}
+
+.大标题强调 {
+  font-style: normal;
+  color: var(--主色调);
+}
+
+/* 描述文字 */
+.标题描述 {
+  margin: 0;
+  font-family: var(--中文字体);
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 1.7;
+  color: var(--文字次色);
+  max-width: 480px;
+}
+
+/* 元信息行 */
+.标题元信息 {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 8px;
+  font-family: var(--代码字体);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  color: var(--文字次色);
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.元信息分隔 {
+  color: var(--主色调);
+  opacity: 0.5;
+}
+
+/* 底部品牌色强调短线 */
 .标题区::after {
   content: "";
   position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(0, 212, 255, 0.08) 15%,
-    rgba(0, 212, 255, 0.15) 30%,
-    rgba(0, 212, 255, 0.2) 50%,
-    rgba(0, 212, 255, 0.15) 70%,
-    rgba(0, 212, 255, 0.08) 85%,
-    transparent 100%
-  );
-  pointer-events: none;
-  z-index: 0;
-  animation: lightSweep 8s ease-in-out infinite;
-}
-
-@keyframes backgroundShift {
-  0% {
-    background:
-      radial-gradient(circle at 25% 25%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 75% 75%, rgba(0, 102, 204, 0.06) 0%, transparent 50%),
-      linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.03) 50%, transparent 100%);
-  }
-  16.67% {
-    background:
-      radial-gradient(circle at 30% 30%, rgba(0, 212, 255, 0.09) 0%, transparent 50%),
-      radial-gradient(circle at 70% 70%, rgba(0, 102, 204, 0.07) 0%, transparent 50%),
-      linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.04) 50%, transparent 100%);
-  }
-  33.33% {
-    background:
-      radial-gradient(circle at 35% 35%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 65% 65%, rgba(0, 102, 204, 0.08) 0%, transparent 50%),
-      linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.05) 50%, transparent 100%);
-  }
-  50% {
-    background:
-      radial-gradient(circle at 40% 40%, rgba(0, 212, 255, 0.11) 0%, transparent 50%),
-      radial-gradient(circle at 60% 60%, rgba(0, 102, 204, 0.09) 0%, transparent 50%),
-      linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.06) 50%, transparent 100%);
-  }
-  66.67% {
-    background:
-      radial-gradient(circle at 35% 35%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 65% 65%, rgba(0, 102, 204, 0.08) 0%, transparent 50%),
-      linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.05) 50%, transparent 100%);
-  }
-  83.33% {
-    background:
-      radial-gradient(circle at 30% 30%, rgba(0, 212, 255, 0.09) 0%, transparent 50%),
-      radial-gradient(circle at 70% 70%, rgba(0, 102, 204, 0.07) 0%, transparent 50%),
-      linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.04) 50%, transparent 100%);
-  }
-  100% {
-    background:
-      radial-gradient(circle at 25% 25%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 75% 75%, rgba(0, 102, 204, 0.06) 0%, transparent 50%),
-      linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.03) 50%, transparent 100%);
-  }
-}
-
-@keyframes lightSweep {
-  0% {
-    left: -100%;
-    opacity: 0;
-  }
-  10% {
-    opacity: 0.3;
-  }
-  20% {
-    opacity: 0.8;
-  }
-  30% {
-    opacity: 1;
-  }
-  70% {
-    opacity: 1;
-  }
-  80% {
-    opacity: 0.8;
-  }
-  90% {
-    opacity: 0.3;
-  }
-  100% {
-    left: 100%;
-    opacity: 0;
-  }
-}
-
-.大标题 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 75px 40px;
-  font-size: 38px;
-  gap: 0;
-  position: relative;
-  z-index: 1;
-  max-width: 1400px;
-  margin: 0 auto;
-  width: 100%;
-}
-
-/* 重新设计三个元素的布局 */
-.标题英文:first-child {
-  /* Mark */
-  font-family: var(--代码字体);
-  font-size: 0.72em;
-  font-weight: 700;
-  color: var(--主色调);
-  text-shadow: 0 0 18px rgba(0, 212, 255, 0.6);
-  letter-spacing: 2.4px;
-  position: relative;
-  padding: 12px 18px;
-  border-radius: 10px;
-  background: rgba(0, 212, 255, 0.1);
-  border: 1.2px solid rgba(0, 212, 255, 0.3);
-  backdrop-filter: blur(15px);
-  box-shadow:
-    0 5px 19px rgba(0, 212, 255, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
-  transform: translateY(0);
-  /* 确保文字清晰渲染 */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-}
-
-.标题英文:first-child:hover {
-  transform: translateY(-5px) scale(1.05);
-  background: rgba(0, 212, 255, 0.15);
-  border-color: rgba(0, 212, 255, 0.5);
-  box-shadow:
-    0 10px 29px rgba(0, 212, 255, 0.3),
-    0 0 0 1px rgba(0, 212, 255, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
-
-.标题中文 {
-  /* 知识 */
-  font-family: var(--中文字体);
-  font-weight: 500;
-  font-size: 0.84em;
-  color: var(--文字主色);
-  text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
-  letter-spacing: 1.8px;
-  position: relative;
-  padding: 15px 24px;
-  margin: 0 12px;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  border: 1.2px solid rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(15px);
-  box-shadow:
-    0 5px 19px rgba(255, 255, 255, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  /* 确保文字清晰渲染 */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-}
-
-.标题中文:hover {
-  transform: translateY(-4px) scale(1.03);
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.25);
-  box-shadow:
-    0 7px 24px rgba(255, 255, 255, 0.15),
-    0 0 0 1px rgba(255, 255, 255, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
-
-.标题英文:last-child {
-  /* Down */
-  font-family: var(--代码字体);
-  font-size: 0.72em;
-  font-weight: 700;
-  color: var(--主色调);
-  text-shadow: 0 0 18px rgba(0, 212, 255, 0.6);
-  letter-spacing: 2.4px;
-  position: relative;
-  padding: 12px 18px;
-  border-radius: 10px;
-  background: rgba(0, 212, 255, 0.1);
-  border: 1.2px solid rgba(0, 212, 255, 0.3);
-  backdrop-filter: blur(15px);
-  box-shadow:
-    0 5px 19px rgba(0, 212, 255, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
-  transform: translateY(0);
-  /* 确保文字清晰渲染 */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-}
-
-.标题英文:last-child:hover {
-  transform: translateY(-5px) scale(1.05);
-  background: rgba(0, 212, 255, 0.15);
-  border-color: rgba(0, 212, 255, 0.5);
-  box-shadow:
-    0 10px 29px rgba(0, 212, 255, 0.3),
-    0 0 0 1px rgba(0, 212, 255, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
-
-/* 添加连接线效果 */
-.大标题::before {
-  content: "";
-  position: absolute;
-  top: 50%;
+  bottom: -1px;
   left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80%;
+  transform: translateX(-50%);
+  width: 56px;
   height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(0, 212, 255, 0.3) 20%,
-    rgba(0, 212, 255, 0.6) 50%,
-    rgba(0, 212, 255, 0.3) 80%,
-    transparent 100%
-  );
-  z-index: 0;
-  opacity: 0.6;
-}
-
-/* 添加装饰性元素 */
-.大标题::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(0, 212, 255, 0.08) 0%, transparent 70%);
-  border-radius: 50%;
-  z-index: 0;
-  animation: subtleGlow 10s ease-in-out infinite;
-  pointer-events: none;
-}
-
-@keyframes subtleGlow {
-  0%,
-  100% {
-    opacity: 0.3;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  25% {
-    opacity: 0.4;
-    transform: translate(-50%, -50%) scale(1.02);
-  }
-  50% {
-    opacity: 0.6;
-    transform: translate(-50%, -50%) scale(1.05);
-  }
-  75% {
-    opacity: 0.4;
-    transform: translate(-50%, -50%) scale(1.02);
-  }
-}
-
-/* 添加额外的装饰性光点 */
-.标题区 .装饰光点 {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.标题区 .装饰光点::before,
-.标题区 .装饰光点::after {
-  content: "";
-  position: absolute;
-  width: 3px;
-  height: 3px;
   background: var(--主色调);
-  border-radius: 50%;
-  box-shadow: 0 0 8px var(--主色调);
-  animation: floatingLight 15s ease-in-out infinite;
-}
-
-.标题区 .装饰光点::before {
-  top: 20%;
-  left: 15%;
-  animation-delay: 0s;
-}
-
-.标题区 .装饰光点::after {
-  top: 80%;
-  right: 15%;
-  animation-delay: 7.5s;
-}
-
-@keyframes floatingLight {
-  0%,
-  100% {
-    opacity: 0.3;
-    transform: translateY(0) scale(1);
-  }
-  25% {
-    opacity: 0.6;
-    transform: translateY(-10px) scale(1.2);
-  }
-  50% {
-    opacity: 0.8;
-    transform: translateY(-5px) scale(1.1);
-  }
-  75% {
-    opacity: 0.5;
-    transform: translateY(-15px) scale(1.3);
-  }
+  opacity: 0.55;
 }
 
 .目录总区 {
@@ -437,7 +176,7 @@
 }
 
 .目录区 {
-  width: 200px;
+  width: 153px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -470,7 +209,7 @@
 .目录链接 {
   width: 100%;
   height: 45px;
-  padding: 0 15px;
+  padding: 0 25px 0 15px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -552,7 +291,6 @@
   transform: translateY(-5px);
   background: var(--悬停效果);
   border-color: var(--主色调);
-  box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
 }
 
 .条目链接旋转容器 {
@@ -634,6 +372,15 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+/* 作者视图下：链接图片为技术栈图标，20px，无圆角/阴影/边框 */
+.作者视图 .链接作者照片 {
+  width: 20px;
+  height: 20px;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+}
+
 .链接作者 {
   color: var(--文字次色);
   font-weight: 400;
@@ -644,9 +391,19 @@
   font-weight: 400;
 }
 
-/* 分组切换按钮：放在目录总区内，随布局流动 */
+/* 按钮容器：放在二级目录区之后，内部按钮上下排列 */
+.按钮容器 {
+  width: 136px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-self: flex-start;
+  flex-shrink: 0;
+}
+
+/* 分组切换按钮 */
 .分组切换按钮 {
-  width: 128px;
+  width: 100%;
   padding: 8px 18px;
   font-family: var(--中文字体);
   font-size: 14px;
@@ -660,21 +417,83 @@
   transition: all 0.25s ease;
   white-space: nowrap;
   z-index: 10;
-  align-self: flex-start;
-  flex-shrink: 0;
 }
 
 .分组切换按钮:hover {
   background: rgba(0, 212, 255, 0.15);
   border-color: rgba(0, 212, 255, 0.5);
-  box-shadow: 0 0 20px rgba(0, 212, 255, 0.15);
-  transform: translateY(-1px);
 }
 
 .分组勾选标记 {
   /* font-weight: 700; */
   color: greenyellow;
   margin-left: 10px;
+}
+
+/* 切换一级目录按钮：双 radio 切换器容器 */
+.切换一级目录按钮 {
+  display: flex;
+  width: 100%;
+  border: 1px solid #777;
+  border-radius: 8px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  z-index: 10;
+}
+
+/* 单个视图选项：相对定位作为 radio 绝对定位的参照 */
+.视图选项 {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0;
+  font-family: var(--中文字体);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--文字主色);
+  cursor: var(--光标-手指);
+  transition: background 0.25s ease;
+  user-select: none;
+}
+
+/* 原生 radio：绝对定位覆盖整个选项区域，透明不可见但可点击 */
+.视图选项 input[type="radio"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  cursor: var(--光标-手指);
+  z-index: 2;
+}
+
+/* 选项文本 */
+.视图选项文本 {
+  position: relative;
+  z-index: 1;
+  transition: color 0.25s ease;
+}
+
+/* 选中态：整个选项背景变色 */
+.视图选项:has(input[type="radio"]:checked) {
+  background: #fffa;
+}
+
+.视图选项:has(input[type="radio"]:checked) .视图选项文本 {
+  color: black;
+}
+
+/* 悬停态 */
+.视图选项:hover {
+  background: #fff1;
+}
+
+.切换一级目录按钮:hover {
+  border-color: #aaa;
 }
 
 /* 作者分组容器 */
@@ -702,6 +521,15 @@
   object-fit: cover;
   border: 1.5px solid rgba(0, 212, 255, 0.3);
   box-shadow: 0 0 8px rgba(0, 212, 255, 0.2);
+}
+
+/* 作者视图下：分组图标为技术栈图标，22px，无圆角/边框/阴影 */
+.作者视图 .作者分组头像 {
+  width: 22px;
+  height: 22px;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
 }
 
 .作者分组名称 {
@@ -738,119 +566,60 @@
 /* 响应式设计 */
 @media (max-width: 768px) {
   .标题区 {
-    margin-bottom: 20px;
+    padding: 64px 20px 52px;
+    margin-bottom: 32px;
+  }
+
+  .标题区内部 {
+    gap: 16px;
   }
 
   .大标题 {
-    font-size: 30px;
-    padding: 80px 20px;
-    gap: 0;
+    font-size: 38px;
   }
 
-  .标题英文:first-child,
-  .标题英文:last-child {
-    font-size: 0.72em;
-    padding: 10px 15px;
-    letter-spacing: 2px;
+  .标题描述 {
+    font-size: 14px;
+    max-width: 100%;
   }
 
-  .标题中文 {
-    font-size: 0.84em;
-    padding: 12px 18px;
-    margin: 0 10px;
-    letter-spacing: 1.5px;
-  }
-
-  .大标题::after {
-    width: 150px;
-    height: 150px;
-  }
-
-  .大标题::before {
-    width: 90%;
+  .标题元信息 {
+    font-size: 11px;
+    gap: 10px;
+    flex-wrap: wrap;
   }
 }
 
 @media (max-width: 480px) {
   .标题区 {
-    margin-bottom: 15px;
+    padding: 48px 16px 40px;
+    margin-bottom: 24px;
   }
 
   .大标题 {
-    font-size: 24px;
-    padding: 60px 15px;
-    flex-direction: column;
-    gap: 15px;
+    font-size: 30px;
   }
 
-  .标题英文:first-child,
-  .标题英文:last-child {
-    font-size: 0.72em;
-    padding: 8px 12px;
-    letter-spacing: 1.5px;
+  .标题描述 {
+    font-size: 13px;
+    line-height: 1.6;
   }
 
-  .标题中文 {
-    font-size: 0.84em;
-    padding: 10px 15px;
-    margin: 0;
-    letter-spacing: 1px;
-  }
-
-  .大标题::after {
-    width: 120px;
-    height: 120px;
-  }
-
-  .大标题::before {
-    display: none;
-  }
-}
-
-/* 深色模式优化 */
-@media (prefers-color-scheme: dark) {
-  .标题区 {
-    background: linear-gradient(
-      135deg,
-      rgba(0, 212, 255, 0.12) 0%,
-      rgba(0, 102, 204, 0.08) 50%,
-      rgba(0, 212, 255, 0.1) 100%
-    );
-    border-bottom-color: rgba(0, 212, 255, 0.25);
-  }
-
-  .标题中文 {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.2);
+  .标题元信息 {
+    font-size: 10px;
+    gap: 8px;
   }
 }
 
 /* 减少动画偏好支持 */
 @media (prefers-reduced-motion: reduce) {
-  .大标题::after {
-    animation: none;
-  }
-
-  .标题区::before,
-  .标题区::after {
-    animation: none;
-  }
-
-  .标题区 .装饰光点::before,
-  .标题区 .装饰光点::after {
-    animation: none;
-  }
-
+  .标题区,
+  .标题区内部,
+  .眉标,
   .大标题,
-  .标题英文:first-child,
-  .标题英文:last-child,
-  .标题中文 {
+  .大标题强调,
+  .标题描述,
+  .标题元信息 {
     transition: none;
-  }
-
-  .标题英文:first-child:hover,
-  .标题英文:last-child:hover,
-  .标题中文:hover {
-    transform: none;
   }
 }

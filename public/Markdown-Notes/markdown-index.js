@@ -57,15 +57,55 @@ const 笔记区目录组 = [];
 const 笔记目录区标题组 = [];
 let 当前选中目录 = null;
 
-// 分组状态为全局共享：所有目录大类共用，无记录时默认不分组
-const 分组状态存储键 = "二级目录分组状态";
+// 分组状态按视图独立记录：技术栈视图与作者视图互不影响
+const 技术栈分组状态存储键 = "技术栈视图分组状态";
+const 作者分组状态存储键 = "作者视图分组状态";
+// 一级目录分组方式：技术栈 或 作者
+const 一级目录分组方式存储键 = "一级目录分组方式";
+// 各视图下当前选中的一级目录（独立记录，切换视图时恢复）
+const 技术栈当前目录存储键 = "技术栈视图当前目录";
+const 作者当前目录存储键 = "作者视图当前目录";
+
+// 兼容旧的共享存储键：若视图专属键无记录，则从旧键迁移一次
+function 迁移旧分组状态(存储键) {
+  const 旧值 = localStorage.getItem("二级目录分组状态");
+  if (旧值 !== null) {
+    localStorage.setItem(存储键, 旧值);
+    localStorage.removeItem("二级目录分组状态");
+  }
+}
 
 function 获取分组状态() {
-  return localStorage.getItem(分组状态存储键) === "true";
+  const 视图 = 获取一级目录分组方式();
+  const 存储键 = 视图 === "作者" ? 作者分组状态存储键 : 技术栈分组状态存储键;
+  const 值 = localStorage.getItem(存储键);
+  if (值 === null) {
+    迁移旧分组状态(存储键);
+    return localStorage.getItem(存储键) === "true";
+  }
+  return 值 === "true";
 }
 
 function 设置分组状态(状态) {
-  localStorage.setItem(分组状态存储键, 状态 ? "true" : "false");
+  const 视图 = 获取一级目录分组方式();
+  const 存储键 = 视图 === "作者" ? 作者分组状态存储键 : 技术栈分组状态存储键;
+  localStorage.setItem(存储键, 状态 ? "true" : "false");
+}
+
+function 获取一级目录分组方式() {
+  return localStorage.getItem(一级目录分组方式存储键) || "技术栈";
+}
+
+function 设置一级目录分组方式(方式) {
+  localStorage.setItem(一级目录分组方式存储键, 方式);
+}
+
+function 获取视图当前目录(视图) {
+  return localStorage.getItem(视图 === "作者" ? 作者当前目录存储键 : 技术栈当前目录存储键);
+}
+
+function 设置视图当前目录(视图, 目录名) {
+  localStorage.setItem(视图 === "作者" ? 作者当前目录存储键 : 技术栈当前目录存储键, 目录名);
 }
 
 // 添加 URL 处理函数
@@ -152,61 +192,112 @@ function 关闭笔记对话框({ 更新历史 = true } = {}) {
 document.addEventListener("DOMContentLoaded", () => {
   const URL参数 = 从URL获取笔记信息();
   const 笔记状态 = JSON.parse(localStorage.getItem("笔记状态") || "null");
-  const 技术栈列表 = Object.keys(知识库);
-  const 默认目录 = 技术栈列表[0];
+  const 一级目录方式 = 获取一级目录分组方式();
 
-  for (const 键 of 技术栈列表) {
-    生成一级目录(键);
-  }
+  // 根据一级目录方式生成目录
+  生成一级目录();
+
+  // 创建切换一级目录分组方式按钮
+  创建切换一级目录按钮();
 
   let 目标目录 = null;
-  if (URL参数.技术栈) {
-    const 匹配目录 = 标准化技术栈名称(URL参数.技术栈);
-    if (匹配目录) {
-      目标目录 = 匹配目录;
-    } else if (笔记状态?.当前目录) {
-      console.warn(`未找到匹配的技术栈: ${URL参数.技术栈}`);
-      目标目录 = 笔记状态.当前目录;
+  if (一级目录方式 === "作者") {
+    // 作者视图：优先从作者视图专属存储恢复，其次兼容旧笔记状态，最后第一个作者
+    let 记录的作者 = 获取视图当前目录("作者") || 笔记状态?.当前目录;
+    if (记录的作者 && !Array.from(目录区.children).some((目录元素) => 目录元素.dataset?.作者 === 记录的作者)) {
+      记录的作者 = null;
+    }
+    if (记录的作者) {
+      目标目录 = 记录的作者;
     } else {
-      目标目录 = 默认目录;
+      const 第一个作者 = 目录区.querySelector("[data-作者]");
+      目标目录 = 第一个作者?.dataset.作者;
     }
-  } else if (笔记状态?.当前目录) {
-    目标目录 = 笔记状态.当前目录;
+    if (目标目录) 切换作者目录(目标目录);
   } else {
-    目标目录 = 默认目录;
-  }
-
-  切换目录(目标目录, { 更新历史: false });
-
-  const 目录数据 = 知识库[目标目录];
-  const 要打开的笔记 =
-    URL参数.技术栈 && URL参数.笔记 && 目录数据?.笔记.some((笔记) => 笔记.标题.replaceAll(" ", "") === URL参数.笔记)
-      ? URL参数.笔记
-      : null;
-
-  if (要打开的笔记) {
-    加载并展示笔记(目标目录, 要打开的笔记, { 更新历史: false }).catch(() => {
-      if (笔记对话框.open) {
-        关闭笔记对话框({ 更新历史: false });
+    // 技术栈视图：URL 参数优先，其次视图专属存储，最后默认第一个
+    if (URL参数.技术栈) {
+      const 匹配目录 = 标准化技术栈名称(URL参数.技术栈);
+      if (匹配目录) {
+        目标目录 = 匹配目录;
+      } else {
+        const 记录的技术栈 = 获取视图当前目录("技术栈") || 笔记状态?.当前目录;
+        if (记录的技术栈 && 知识库[标准化技术栈名称(记录的技术栈) || 记录的技术栈]) {
+          console.warn(`未找到匹配的技术栈: ${URL参数.技术栈}`);
+          目标目录 = 记录的技术栈;
+        } else {
+          目标目录 = Object.keys(知识库)[0];
+        }
       }
-    });
-  } else if (!URL参数.技术栈) {
-    更新URL(目标目录, null);
-  } else if (URL参数.技术栈 && !URL参数.笔记) {
-    const 标准URL技术栈 = 标准化技术栈名称(URL参数.技术栈);
-    if (标准URL技术栈 !== 目标目录) {
-      更新URL(目标目录, null);
+    } else {
+      const 记录的技术栈 = 获取视图当前目录("技术栈") || 笔记状态?.当前目录;
+      if (记录的技术栈 && 知识库[标准化技术栈名称(记录的技术栈) || 记录的技术栈]) {
+        目标目录 = 记录的技术栈;
+      } else {
+        目标目录 = Object.keys(知识库)[0];
+      }
     }
+    切换目录(目标目录, { 更新历史: false });
   }
 
-  const 新笔记状态 = 笔记状态 || {};
-  新笔记状态.当前目录 = 目标目录;
-  localStorage.setItem("笔记状态", JSON.stringify(新笔记状态));
+  // 技术栈视图下才处理 URL 笔记参数与历史记录；作者视图跳过（笔记 URL 基于技术栈）
+  if (一级目录方式 !== "作者") {
+    const 目录数据 = 知识库[目标目录];
+    const 要打开的笔记 =
+      URL参数.技术栈 && URL参数.笔记 && 目录数据?.笔记.some((笔记) => 笔记.标题.replaceAll(" ", "") === URL参数.笔记)
+        ? URL参数.笔记
+        : null;
+
+    if (要打开的笔记) {
+      加载并展示笔记(目标目录, 要打开的笔记, { 更新历史: false }).catch(() => {
+        if (笔记对话框.open) {
+          关闭笔记对话框({ 更新历史: false });
+        }
+      });
+    } else if (!URL参数.技术栈) {
+      更新URL(目标目录, null);
+    } else if (URL参数.技术栈 && !URL参数.笔记) {
+      const 标准URL技术栈 = 标准化技术栈名称(URL参数.技术栈);
+      if (标准URL技术栈 !== 目标目录) {
+        更新URL(目标目录, null);
+      }
+    }
+
+    const 新笔记状态 = 笔记状态 || {};
+    新笔记状态.当前目录 = 目标目录;
+    localStorage.setItem("笔记状态", JSON.stringify(新笔记状态));
+  }
 
   window.addEventListener("popstate", 处理浏览器历史导航);
 });
 
-function 生成一级目录(键) {
+function 生成一级目录() {
+  目录区.innerHTML = "";
+  const 一级目录方式 = 获取一级目录分组方式();
+
+  if (一级目录方式 === "作者") {
+    // 收集所有作者
+    const 作者组 = new Set();
+    for (const 技术栈数据 of Object.values(知识库)) {
+      for (const 笔记对象 of 技术栈数据.笔记) {
+        if (笔记对象.作者) 作者组.add(笔记对象.作者);
+      }
+    }
+    // 按作者名排序生成一级目录
+    const 排序作者组 = Array.from(作者组).sort((a, b) => a.localeCompare(b, "zh-Hans-CN"));
+    for (const 作者 of 排序作者组) {
+      生成作者一级目录(作者);
+    }
+  } else {
+    // 按技术栈生成一级目录
+    const 技术栈列表 = Object.keys(知识库);
+    for (const 键 of 技术栈列表) {
+      生成技术栈一级目录(键);
+    }
+  }
+}
+
+function 生成技术栈一级目录(键) {
   const 目录 = document.createElement("div");
   目录.className = "目录";
   目录.dataset.技术栈 = 键;
@@ -235,12 +326,44 @@ function 生成一级目录(键) {
   });
 }
 
+function 生成作者一级目录(作者) {
+  const 目录 = document.createElement("div");
+  目录.className = "目录";
+  目录.dataset.作者 = 作者;
+  目录区.appendChild(目录);
+
+  const 目录链接 = document.createElement("div");
+  目录链接.className = "目录链接";
+  目录.appendChild(目录链接);
+
+  const 目录标题 = document.createElement("h3");
+  目录标题.className = "目录标题";
+  目录标题.textContent = 作者;
+
+  const 目录Logo容器 = document.createElement("figure");
+  目录Logo容器.className = "目录Logo容器";
+  const 目录Logo = document.createElement("img");
+  目录Logo.className = "目录Logo";
+  目录Logo.src = `/Images/Contributors/${作者}.jpg`;
+  目录Logo.alt = "作者头像";
+  目录Logo容器.appendChild(目录Logo);
+
+  目录链接.append(目录Logo容器, 目录标题);
+
+  目录.addEventListener("click", () => {
+    切换作者目录(作者);
+  });
+}
+
 function 切换目录(键, { 更新历史 = true } = {}) {
   const 标准键 = 标准化技术栈名称(键) || 键;
   if (!知识库[标准键]) return;
 
+  当前选中目录 = 标准键;
+
   // 清空二级目录
   二级目录区.innerHTML = "";
+  二级目录区.classList.remove("作者视图");
 
   // 更新一级目录的高亮状态
   const 当前目录 = 目录区.querySelector(".当前目录");
@@ -256,10 +379,11 @@ function 切换目录(键, { 更新历史 = true } = {}) {
     目标目录元素.classList.add("当前目录");
   }
 
-  // 保存当前目录状态
+  // 保存当前目录状态（技术栈视图）
   const 笔记状态 = JSON.parse(localStorage.getItem("笔记状态") || "null") || {};
   笔记状态.当前目录 = 标准键;
   localStorage.setItem("笔记状态", JSON.stringify(笔记状态));
+  设置视图当前目录("技术栈", 标准键);
 
   if (更新历史) {
     更新URL(标准键, null);
@@ -272,6 +396,104 @@ function 切换目录(键, { 更新历史 = true } = {}) {
   更新分组按钮();
 
   document.title = `知识库 - ${标准键}`;
+}
+
+function 切换作者目录(作者) {
+  当前选中目录 = 作者;
+  二级目录区.innerHTML = "";
+  二级目录区.classList.add("作者视图");
+
+  // 更新一级目录的高亮状态
+  const 当前目录 = 目录区.querySelector(".当前目录");
+  if (当前目录) {
+    当前目录.classList.remove("当前目录");
+  }
+
+  const 目标目录元素 = Array.from(目录区.children).find((目录元素) => 目录元素.dataset?.作者 === 作者);
+  if (目标目录元素) {
+    目标目录元素.classList.add("当前目录");
+  }
+
+  // 保存当前目录状态（作者视图）
+  const 笔记状态 = JSON.parse(localStorage.getItem("笔记状态") || "null") || {};
+  笔记状态.当前目录 = 作者;
+  localStorage.setItem("笔记状态", JSON.stringify(笔记状态));
+  设置视图当前目录("作者", 作者);
+
+  // 收集该作者的所有笔记
+  const 作者笔记组 = [];
+  for (const [技术栈名, 技术栈数据] of Object.entries(知识库)) {
+    for (const 笔记对象 of 技术栈数据.笔记) {
+      if (笔记对象.作者 === 作者) {
+        作者笔记组.push({ ...笔记对象, 所属技术栈: 技术栈名 });
+      }
+    }
+  }
+
+  // 根据分组状态决定显示方式
+  if (获取分组状态()) {
+    // 按技术栈分组
+    按技术栈分组作者笔记(作者笔记组);
+  } else {
+    // 平铺显示，生成二级目录，显示技术栈
+    for (const [index, 笔记对象] of 作者笔记组.entries()) {
+      const 条目链接 = 创建条目链接(笔记对象.所属技术栈, 笔记对象, index, true);
+      二级目录区.appendChild(条目链接);
+    }
+  }
+
+  更新分组按钮();
+
+  document.title = `知识库 - ${作者}`;
+}
+
+// 按技术栈分组显示作者的笔记
+function 按技术栈分组作者笔记(作者笔记组) {
+  // 按技术栈分组
+  const 分组表 = new Map();
+
+  for (const 笔记对象 of 作者笔记组) {
+    const 技术栈名 = 笔记对象.所属技术栈;
+    if (!分组表.has(技术栈名)) 分组表.set(技术栈名, []);
+    分组表.get(技术栈名).push(笔记对象);
+  }
+
+  // 技术栈分组按名称排序
+  const 排序技术栈组 = Array.from(分组表.keys()).sort((a, b) => a.localeCompare(b, "zh-Hans-CN"));
+
+  // 渲染所有技术栈分组
+  for (const 技术栈名 of 排序技术栈组) {
+    const 笔记列表 = 分组表.get(技术栈名);
+    const 分组容器 = document.createElement("div");
+    分组容器.className = "作者分组容器";
+
+    const 分组标题 = document.createElement("div");
+    分组标题.className = "作者分组标题";
+    const 技术栈图标 = document.createElement("img");
+    技术栈图标.className = "作者分组头像";
+    技术栈图标.src = 知识库[技术栈名]?.图标 || "/Images/Contributors/Mystery_Men.jpg";
+    技术栈图标.alt = 技术栈名;
+    const 技术栈名称 = document.createElement("span");
+    技术栈名称.className = "作者分组名称";
+    技术栈名称.textContent = 技术栈名;
+    const 条目计数 = document.createElement("span");
+    条目计数.className = "作者分组计数";
+    const 条目计数数字 = document.createElement("span");
+    条目计数数字.className = "作者分组计数数字";
+    条目计数数字.textContent = 笔记列表.length;
+    条目计数.append(条目计数数字, "篇");
+    分组标题.append(技术栈图标, 技术栈名称, 条目计数);
+    分组容器.appendChild(分组标题);
+
+    const 条目容器 = document.createElement("div");
+    条目容器.className = "作者分组条目容器";
+    笔记列表.forEach((笔记对象, 索引) => {
+      const 条目链接 = 创建条目链接(技术栈名, 笔记对象, 索引, true);
+      条目容器.appendChild(条目链接);
+    });
+    分组容器.appendChild(条目容器);
+    二级目录区.appendChild(分组容器);
+  }
 }
 
 function 生成二级目录(键) {
@@ -293,6 +515,11 @@ function 生成平铺视图(键, 笔记对象组) {
 }
 
 function 生成分组视图(键, 笔记对象组) {
+  // 一级目录为技术栈时，二级目录按作者分组
+  按作者分组(键, 笔记对象组);
+}
+
+function 按作者分组(键, 笔记对象组) {
   // 按作者分组，作者为空的放到最后一组
   const 分组表 = new Map();
   const 空作者组 = [];
@@ -379,7 +606,7 @@ function 生成分组视图(键, 笔记对象组) {
   }
 }
 
-function 创建条目链接(键, 笔记对象, 序号) {
+function 创建条目链接(键, 笔记对象, 序号, 显示技术栈 = false) {
   const 条目链接 = document.createElement("div");
   条目链接.className = "条目链接";
   // 日期为 0年0月0日 表示笔记未完成，标记未完成样式（CSS 控制亮度）
@@ -403,13 +630,25 @@ function 创建条目链接(键, 笔记对象, 序号) {
   链接作者与照片.className = "链接作者与照片";
   const 链接作者 = document.createElement("span");
   链接作者.className = "链接作者";
-  链接作者.textContent = 笔记对象.作者;
   const 链接作者照片 = document.createElement("img");
   链接作者照片.className = "链接作者照片";
-  链接作者照片.src = 笔记对象.作者
-    ? `/Images/Contributors/${笔记对象.作者}.jpg`
-    : "/Images/Contributors/Mystery_Men.jpg";
-  链接作者照片.alt = "链接作者照片";
+
+  // 根据参数决定显示作者还是技术栈
+  if (显示技术栈) {
+    // 显示技术栈
+    const 所属技术栈 = 笔记对象.所属技术栈 || 键;
+    链接作者.textContent = 所属技术栈;
+    链接作者照片.src = 知识库[所属技术栈]?.图标 || "/Images/Contributors/Mystery_Men.jpg";
+    链接作者照片.alt = "技术栈图标";
+  } else {
+    // 显示作者
+    链接作者.textContent = 笔记对象.作者;
+    链接作者照片.src = 笔记对象.作者
+      ? `/Images/Contributors/${笔记对象.作者}.jpg`
+      : "/Images/Contributors/Mystery_Men.jpg";
+    链接作者照片.alt = "链接作者照片";
+  }
+
   链接作者与照片.append(链接作者照片, 链接作者);
   const 链接时间 = document.createElement("span");
   链接时间.className = "链接时间";
@@ -429,32 +668,209 @@ function 创建条目链接(键, 笔记对象, 序号) {
 }
 
 function 更新分组按钮() {
-  // 移除旧按钮
-  const 旧按钮 = document.querySelector(".分组切换按钮");
+  // 获取或创建按钮容器（放在二级目录区之后）
+  let 按钮容器 = document.querySelector(".按钮容器");
+  if (!按钮容器) {
+    按钮容器 = document.createElement("div");
+    按钮容器.className = "按钮容器";
+    二级目录区.after(按钮容器);
+  }
+
+  // 移除旧分组按钮
+  const 旧按钮 = 按钮容器.querySelector(".分组切换按钮");
   if (旧按钮) 旧按钮.remove();
 
   // 只在有笔记的目录显示按钮
-  if (!当前选中目录 || 知识库[当前选中目录].笔记.length === 0) return;
+  if (!当前选中目录) return;
+
+  const 一级目录方式 = 获取一级目录分组方式();
+  let 有笔记 = false;
+
+  if (一级目录方式 === "作者") {
+    // 检查选中作者是否有笔记
+    for (const 技术栈数据 of Object.values(知识库)) {
+      if (技术栈数据.笔记.some((笔记) => 笔记.作者 === 当前选中目录)) {
+        有笔记 = true;
+        break;
+      }
+    }
+  } else {
+    // 检查选中的技术栈是否有笔记
+    有笔记 = 知识库[当前选中目录]?.笔记.length > 0;
+  }
+
+  if (!有笔记) return;
 
   const 按钮 = document.createElement("button");
   按钮.className = "分组切换按钮";
   const 已分组 = 获取分组状态();
-  按钮.textContent = "按作者分组";
+
+  // 根据一级目录方式决定分组按钮文本
+  // 一级目录为技术栈时，按作者分组；一级目录为作者时，按技术栈分组
+  if (一级目录方式 === "作者") {
+    按钮.textContent = "按技术栈分组";
+  } else {
+    按钮.textContent = "按作者分组";
+  }
+
   if (已分组) {
     const 勾选标记 = document.createElement("span");
     勾选标记.className = "分组勾选标记";
     勾选标记.textContent = "✔";
     按钮.appendChild(勾选标记);
   }
+
+  // 点击切换分组状态
   按钮.addEventListener("click", () => {
     const 新状态 = !获取分组状态();
     设置分组状态(新状态);
+
+    // 清空并重新生成二级目录
     二级目录区.innerHTML = "";
-    生成二级目录(当前选中目录);
+    if (一级目录方式 === "作者") {
+      切换作者目录(当前选中目录);
+    } else {
+      生成二级目录(当前选中目录);
+    }
     更新分组按钮();
   });
-  // 按钮放到目录总区内，与目录区、二级目录区并列
-  目录总区.appendChild(按钮);
+
+  // 分组按钮放在视图按钮之后（容器内第二个位置）
+  const 视图按钮 = 按钮容器.querySelector(".切换一级目录按钮");
+  if (视图按钮) {
+    视图按钮.after(按钮);
+  } else {
+    按钮容器.appendChild(按钮);
+  }
+}
+
+// 切换一级目录分组方式（技术栈 ↔ 作者）
+// 调用前需已通过 设置一级目录分组方式 写入新方式
+function 切换一级目录分组方式() {
+  const 新方式 = 获取一级目录分组方式();
+
+  // 记录切换前的当前目录，作为新视图无记录时的映射后备
+  const 之前的目录 = 当前选中目录;
+
+  // 重新生成一级目录
+  生成一级目录();
+
+  // 清空二级目录
+  二级目录区.innerHTML = "";
+
+  // 更新切换按钮文本
+  更新切换一级目录按钮();
+
+  // 优先恢复该视图自己上次选择的目录；无记录时从旧视图映射；最后才用第一个
+  if (新方式 === "作者") {
+    let 目标作者 = 获取视图当前目录("作者");
+    // 校验该作者仍存在
+    if (目标作者 && !Array.from(目录区.children).some((目录元素) => 目录元素.dataset?.作者 === 目标作者)) {
+      目标作者 = null;
+    }
+    // 从旧技术栈映射：该技术栈下第一个有作者的笔记的作者
+    if (!目标作者 && 之前的目录 && 知识库[之前的目录]) {
+      const 首个有作者的笔记 = 知识库[之前的目录].笔记.find((笔记) => 笔记.作者);
+      if (首个有作者的笔记) 目标作者 = 首个有作者的笔记.作者;
+    }
+    if (!目标作者) {
+      const 第一个作者 = 目录区.querySelector("[data-作者]");
+      目标作者 = 第一个作者?.dataset.作者;
+    }
+    if (目标作者) 切换作者目录(目标作者);
+  } else {
+    let 目标技术栈 = 获取视图当前目录("技术栈");
+    // 校验该技术栈仍存在且有笔记
+    if (目标技术栈 && !知识库[目标技术栈]) {
+      目标技术栈 = null;
+    }
+    // 从旧作者映射：该作者第一个笔记所属的技术栈
+    if (!目标技术栈 && 之前的目录) {
+      for (const [技术栈名, 技术栈数据] of Object.entries(知识库)) {
+        if (技术栈数据.笔记.some((笔记) => 笔记.作者 === 之前的目录)) {
+          目标技术栈 = 技术栈名;
+          break;
+        }
+      }
+    }
+    if (!目标技术栈) 目标技术栈 = Object.keys(知识库)[0];
+    切换目录(目标技术栈);
+  }
+}
+
+// 更新切换一级目录按钮（同步 radio 选中状态）
+function 更新切换一级目录按钮() {
+  const 容器 = document.querySelector(".切换一级目录按钮");
+  if (!容器) return;
+
+  const 当前方式 = 获取一级目录分组方式();
+  const 技术栈Radio = 容器.querySelector('input[value="技术栈"]');
+  const 作者Radio = 容器.querySelector('input[value="作者"]');
+  if (技术栈Radio) 技术栈Radio.checked = 当前方式 === "技术栈";
+  if (作者Radio) 作者Radio.checked = 当前方式 === "作者";
+}
+
+// 创建切换一级目录按钮（双 radio 切换器）
+function 创建切换一级目录按钮() {
+  // 获取或创建按钮容器（放在二级目录区之后）
+  let 按钮容器 = document.querySelector(".按钮容器");
+  if (!按钮容器) {
+    按钮容器 = document.createElement("div");
+    按钮容器.className = "按钮容器";
+    二级目录区.after(按钮容器);
+  }
+
+  // 移除旧按钮
+  const 旧按钮 = 按钮容器.querySelector(".切换一级目录按钮");
+  if (旧按钮) 旧按钮.remove();
+
+  const 当前方式 = 获取一级目录分组方式();
+
+  // 创建双 radio 切换器容器
+  const 切换器 = document.createElement("div");
+  切换器.className = "切换一级目录按钮";
+
+  // 技术栈选项
+  const 技术栈标签 = document.createElement("label");
+  技术栈标签.className = "视图选项";
+  const 技术栈Radio = document.createElement("input");
+  技术栈Radio.type = "radio";
+  技术栈Radio.name = "一级目录视图";
+  技术栈Radio.value = "技术栈";
+  技术栈Radio.checked = 当前方式 === "技术栈";
+  const 技术栈文本 = document.createElement("span");
+  技术栈文本.className = "视图选项文本";
+  技术栈文本.textContent = "技术栈";
+  技术栈标签.append(技术栈Radio, 技术栈文本);
+
+  // 作者选项
+  const 作者标签 = document.createElement("label");
+  作者标签.className = "视图选项";
+  const 作者Radio = document.createElement("input");
+  作者Radio.type = "radio";
+  作者Radio.name = "一级目录视图";
+  作者Radio.value = "作者";
+  作者Radio.checked = 当前方式 === "作者";
+  const 作者文本 = document.createElement("span");
+  作者文本.className = "视图选项文本";
+  作者文本.textContent = "作者";
+  作者标签.append(作者Radio, 作者文本);
+
+  // 切换时：先更新 localStorage 方式，再执行视图切换（切换函数会重新生成目录并同步 radio 状态）
+  const 处理切换 = (event) => {
+    const 新方式 = event.target.value;
+    if (新方式 === 获取一级目录分组方式()) return;
+    设置一级目录分组方式(新方式);
+    切换一级目录分组方式();
+  };
+
+  技术栈Radio.addEventListener("change", 处理切换);
+  作者Radio.addEventListener("change", 处理切换);
+
+  切换器.append(技术栈标签, 作者标签);
+
+  // 视图按钮放在容器内第一个位置
+  按钮容器.prepend(切换器);
 }
 
 function 加载并展示笔记(技术栈, 笔记文件名, { 更新历史 = true } = {}) {

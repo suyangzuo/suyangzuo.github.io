@@ -1,65 +1,75 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>知识库</title>
-    <link rel="icon" href="/Images/Markdown-Notes/知识库-01.webp" type="image/x-icon" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Titillium+Web&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Roboto+Mono&family=M+PLUS+Code+Latin&family=Ubuntu+Mono&family=M+PLUS+1+Code:wght@100..700&display=swap"
-      rel="stylesheet"
-    />
-    <!-- <link rel="stylesheet" type="text/css" href="/Styles/common.css" /> -->
-    <link rel="stylesheet" type="text/css" href="/Styles/top-banner-common.css" />
-    <link rel="stylesheet" href="./markdown-index.css" />
-    <link rel="stylesheet" href="./markdown-common.css" />
-    <link rel="stylesheet" href="/Font-Awesome-Free/css/fontawesome.css" />
-    <link rel="stylesheet" href="/Font-Awesome-Free/css/brands.css" />
-    <link rel="stylesheet" href="/Font-Awesome-Free/css/solid.css" />
-    <script src="https://cdn.lordicon.com/lordicon.js"></script>
-    <script src="/Scripts/top-banner.js" defer></script>
-    <script src="/Scripts/footer.js" defer></script>
-    <script src="./marked.umd.js"></script>
-    <script src="./markdown-index.js" defer></script>
-    <link rel="stylesheet" href="./atom-one-dark.min.css" />
-    <script src="./highlight.min.js"></script>
-  </head>
 
-  <body>
-    <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
-    <script src="/Scripts/html-include.js" target="/top-banner.html" position="afterbegin"></script>
-    <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>知识库</title>
+  <link rel="icon" href="/Images/Markdown-Notes/知识库-01.webp" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Titillium+Web&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Roboto+Mono&family=M+PLUS+Code+Latin&family=Ubuntu+Mono&family=M+PLUS+1+Code:wght@100..700&display=swap"
+    rel="stylesheet" />
+  <!-- <link rel="stylesheet" type="text/css" href="/Styles/common.css" /> -->
+  <link rel="stylesheet" type="text/css" href="/Styles/top-banner-common.css" />
+  <link rel="stylesheet" href="./markdown-index.css" />
+  <link rel="stylesheet" href="./markdown-common.css" />
+  <link rel="stylesheet" href="/Font-Awesome-Free/css/fontawesome.css" />
+  <link rel="stylesheet" href="/Font-Awesome-Free/css/brands.css" />
+  <link rel="stylesheet" href="/Font-Awesome-Free/css/solid.css" />
+  <script src="https://cdn.lordicon.com/lordicon.js"></script>
+  <script src="/Scripts/top-banner.js" defer></script>
+  <script src="/Scripts/footer.js" defer></script>
+  <script src="./marked.umd.js"></script>
+  <script src="./markdown-index.js" defer></script>
+  <link rel="stylesheet" href="./atom-one-dark.min.css" />
+  <script src="./highlight.min.js"></script>
+</head>
 
-    <div class="总区">
-      <div class="标题区">
-        <div class="装饰光点"></div>
-        <h2 class="大标题">
-          <span class="标题英文">Mark</span><span class="标题中文">知识</span><span class="标题英文">Down</span>
-        </h2>
-      </div>
-      <div class="目录总区">
-        <div class="目录区"></div>
-        <div class="二级目录区"></div>
-      </div>
-      <dialog id="笔记对话框">
-        <button id="关闭对话框" class="按钮">×</button>
-        <div class="容器区">
-          <div class="笔记目录区">
-            <div class="笔记目录容器"></div>
-          </div>
-          <div class="笔记信息区">
-            <div class="笔记信息容器"></div>
-          </div>
-          <div class="笔记区"></div>
+<body>
+  <!-- --------------------------- ↓ 顶部横幅 -------------------------------- -->
+  <script src="/Scripts/html-include.js" target="/top-banner.html" position="afterbegin"></script>
+  <!-- --------------------------- ↑ 顶部横幅 -------------------------------- -->
+
+  <div class="总区">
+    <div class="标题区">
+      <div class="标题区内部">
+        <span class="眉标"><span class="眉标指示灯"></span>KNOWLEDGE BASE</span>
+        <h2 class="大标题">笔记<em class="大标题强调">知识库</em><img src="/Images/Markdown-Notes/Markdown-logo.png"
+            style="height: 70px; aspect-ratio: 1; object-fit: contain; margin-left: 20px"></h2>
+        <p class="标题描述">以 Markdown 沉淀结构与经验，持续打磨的个人知识体系。</p>
+        <div class="标题元信息">
+          <span>Markdown Native</span>
+          <span class="元信息分隔">/</span>
+          <span>Structured</span>
+          <span class="元信息分隔">/</span>
+          <span>Continuously Updated</span>
         </div>
-      </dialog>
+      </div>
     </div>
+    <div class="目录总区">
+      <div class="目录区"></div>
+      <div class="二级目录区"></div>
+    </div>
+    <dialog id="笔记对话框">
+      <button id="关闭对话框" class="按钮">×</button>
+      <div class="容器区">
+        <div class="笔记目录区">
+          <div class="笔记目录容器"></div>
+        </div>
+        <div class="笔记信息区">
+          <div class="笔记信息容器"></div>
+        </div>
+        <div class="笔记区"></div>
+      </div>
+    </dialog>
+  </div>
 
-    <!-- --------------------------- ↓ 底部横幅 -------------------------------- -->
-    <script src="/Scripts/html-include.js" target="/bottom-banner.html" position="beforeend"></script>
-    <!-- --------------------------- ↑ 底部横幅 -------------------------------- -->
-  </body>
+  <!-- --------------------------- ↓ 底部横幅 -------------------------------- -->
+  <script src="/Scripts/html-include.js" target="/bottom-banner.html" position="beforeend"></script>
+  <!-- --------------------------- ↑ 底部横幅 -------------------------------- -->
+</body>
+
 </html>
