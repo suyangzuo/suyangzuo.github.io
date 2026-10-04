@@ -713,12 +713,11 @@ function 更新分组按钮() {
     按钮.textContent = "按作者分组";
   }
 
-  if (已分组) {
-    const 勾选标记 = document.createElement("span");
-    勾选标记.className = "分组勾选标记";
-    勾选标记.textContent = "✔";
-    按钮.appendChild(勾选标记);
-  }
+  const 勾选标记 = document.createElement("img");
+  勾选标记.className = "分组勾选标记";
+  勾选标记.src = 已分组 ? "/Images/Markdown-Notes/Check.png" : "/Images/Markdown-Notes/Uncheck.svg";
+  勾选标记.alt = 已分组 ? "已勾选" : "未勾选";
+  按钮.appendChild(勾选标记);
 
   // 点击切换分组状态
   按钮.addEventListener("click", () => {
@@ -833,6 +832,7 @@ function 创建切换一级目录按钮() {
   // 技术栈选项
   const 技术栈标签 = document.createElement("label");
   技术栈标签.className = "视图选项";
+  技术栈标签.style.flex = "3";
   const 技术栈Radio = document.createElement("input");
   技术栈Radio.type = "radio";
   技术栈Radio.name = "一级目录视图";
@@ -846,6 +846,7 @@ function 创建切换一级目录按钮() {
   // 作者选项
   const 作者标签 = document.createElement("label");
   作者标签.className = "视图选项";
+  作者标签.style.flex = "2";
   const 作者Radio = document.createElement("input");
   作者Radio.type = "radio";
   作者Radio.name = "一级目录视图";

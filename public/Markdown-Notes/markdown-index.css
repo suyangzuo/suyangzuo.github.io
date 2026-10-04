@@ -74,7 +74,7 @@
   max-width: 1200px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 20px;
 }
 
@@ -403,6 +403,8 @@
 
 /* 分组切换按钮 */
 .分组切换按钮 {
+  display: flex;
+  align-items: center;
   width: 100%;
   padding: 8px 18px;
   font-family: var(--中文字体);
@@ -425,9 +427,12 @@
 }
 
 .分组勾选标记 {
-  /* font-weight: 700; */
-  color: greenyellow;
-  margin-left: 10px;
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+  vertical-align: middle;
+  margin-left: 8px;
+  filter: brightness(2);
 }
 
 /* 切换一级目录按钮：双 radio 切换器容器 */
@@ -439,12 +444,43 @@
   overflow: hidden;
   backdrop-filter: blur(10px);
   z-index: 10;
+  position: relative;
+}
+
+/* 滑动指示块：纯 CSS 实现选中背景滑动，宽度与 flex 比例匹配（技术栈3 : 作者2） */
+.切换一级目录按钮::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60%;
+  height: 100%;
+  background: #fffa;
+  border-radius: 6px 0 0 6px;
+  transition:
+    transform 250ms ease-out,
+    width 250ms ease-out,
+    border-radius 250ms ease-out;
+  pointer-events: none;
+}
+
+/* 技术栈选中：占 3/5，右侧无圆角 */
+.切换一级目录按钮:has(.视图选项:nth-child(1) input[type="radio"]:checked)::before {
+  width: 60%;
+  transform: translateX(0);
+  border-radius: 6px 0 0 6px;
+}
+
+/* 作者选中：占 2/5，右移至 3/5 处，左侧无圆角 */
+.切换一级目录按钮:has(.视图选项:nth-child(2) input[type="radio"]:checked)::before {
+  width: 40%;
+  transform: translateX(150%);
+  border-radius: 0 6px 6px 0;
 }
 
 /* 单个视图选项：相对定位作为 radio 绝对定位的参照 */
 .视图选项 {
   position: relative;
-  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -478,10 +514,7 @@
   transition: color 0.25s ease;
 }
 
-/* 选中态：整个选项背景变色 */
-.视图选项:has(input[type="radio"]:checked) {
-  background: #fffa;
-}
+/* 选中态：由 .切换一级目录按钮::before 滑动指示块实现 */
 
 .视图选项:has(input[type="radio"]:checked) .视图选项文本 {
   color: black;
