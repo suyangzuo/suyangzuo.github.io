@@ -176,6 +176,9 @@
 .目录区 {
   width: 153px;
   flex-shrink: 0;
+  height: fit-content;
+  position: sticky;
+  top: 100px;
   display: flex;
   flex-direction: column;
   font-family: var(--中文代码混合字体);
@@ -398,6 +401,8 @@
   gap: 10px;
   align-self: flex-start;
   flex-shrink: 0;
+  position: sticky;
+  top: 100px;
 }
 
 /* 分组切换按钮 */
