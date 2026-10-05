@@ -174,7 +174,7 @@
 }
 
 .目录区 {
-  width: 153px;
+  width: 190px;
   flex-shrink: 0;
   height: fit-content;
   position: sticky;
@@ -187,6 +187,15 @@
 
 .目录 {
   position: relative;
+  padding: 0 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  background: var(--卡片背景);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
   transition: all 0.25s ease;
 }
 
@@ -194,32 +203,59 @@
   cursor: var(--光标-手指);
 }
 
-.目录.当前目录 .目录链接 {
+.目录.当前目录 {
   background: rgba(0, 212, 255, 0.1);
   border-color: var(--主色调);
   box-shadow: var(--边框发光);
 }
 
-.目录:not(.当前目录):hover .目录链接 {
+.目录:not(.当前目录):hover {
   transform: translateY(-1px);
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.目录:not(.当前目录):hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.35);
   box-shadow: 0 3px 12px rgba(255, 255, 255, 0.075);
 }
 
 .目录链接 {
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   height: 45px;
-  padding: 0 25px 0 15px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px;
-  background: var(--卡片背景);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  gap: 12px;
   backdrop-filter: blur(10px);
   transition: all 0.25s ease;
+}
+
+/* 文章数量徽标：位于目录链接之后，数量靠右显示 */
+.文章数量 {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: baseline;
+  font-family: var(--中文代码混合字体);
+  font-size: 11px;
+  color: var(--文字次色);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 3px 7px;
+  border-radius: 11px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  white-space: nowrap;
+  transition: all 0.25s ease;
+}
+
+.文章数量数字 {
+  color: #cde;
+  font-weight: 600;
+}
+
+.目录.当前目录 .文章数量 {
+  color: var(--主色调);
+  border-color: rgba(0, 212, 255, 0.4);
+  background: rgba(0, 212, 255, 0.08);
 }
 
 .目录Logo容器 {

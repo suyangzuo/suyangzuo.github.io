@@ -321,6 +321,15 @@ function 生成技术栈一级目录(键) {
 
   目录链接.append(目录Logo容器, 目录标题);
 
+  // 文章数量：该技术栈包含的总文章数量
+  const 文章数量 = document.createElement("span");
+  文章数量.className = "文章数量";
+  const 文章数量数字 = document.createElement("span");
+  文章数量数字.className = "文章数量数字";
+  文章数量数字.textContent = 知识库[键].笔记.length;
+  文章数量.append(文章数量数字);
+  目录.appendChild(文章数量);
+
   目录.addEventListener("click", () => {
     切换目录(键);
   });
@@ -349,6 +358,21 @@ function 生成作者一级目录(作者) {
   目录Logo容器.appendChild(目录Logo);
 
   目录链接.append(目录Logo容器, 目录标题);
+
+  // 文章数量：该作者包含的总文章数量（跨所有技术栈统计）
+  let 作者文章数 = 0;
+  for (const 技术栈数据 of Object.values(知识库)) {
+    for (const 笔记对象 of 技术栈数据.笔记) {
+      if (笔记对象.作者 === 作者) 作者文章数++;
+    }
+  }
+  const 文章数量 = document.createElement("span");
+  文章数量.className = "文章数量";
+  const 文章数量数字 = document.createElement("span");
+  文章数量数字.className = "文章数量数字";
+  文章数量数字.textContent = 作者文章数;
+  文章数量.append(文章数量数字);
+  目录.appendChild(文章数量);
 
   目录.addEventListener("click", () => {
     切换作者目录(作者);
