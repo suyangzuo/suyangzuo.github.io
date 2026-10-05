@@ -65,7 +65,7 @@ body {
   background-color: var(--bg-color);
   color: var(--f-color);
   width: 100dvw;
-  overflow-x: hidden;
+  overflow-x: clip;
   position: relative;
   z-index: 0;
   cursor: url("/Images/Common/鼠标-默认.cur"), auto;

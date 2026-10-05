@@ -35,7 +35,6 @@
   align-items: center;
   background: var(--背景渐变);
   position: relative;
-  overflow: hidden;
 }
 
 /* 添加科技感背景效果 */
@@ -164,12 +163,11 @@
 .目录总区 {
   width: max(95vw, 1200px);
   height: fit-content;
-  flex-grow: 1;
   display: flex;
   justify-content: center;
   gap: 30px;
   position: sticky;
-  top: 50px;
+  top: 100px;
   z-index: 1;
   --目录背景色: var(--主色调);
   --未选目录背景色: rgba(255, 255, 255, 0.05);
@@ -304,6 +302,7 @@
   flex-direction: column;
   align-items: center;
   gap: 25px;
+  box-shadow: 2px 2px 6px 0 #0006;
   transition: all 0.25s ease;
   backdrop-filter: blur(5px);
 }
@@ -330,12 +329,12 @@
 }
 
 .链接序号 {
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: #37c;
   color: var(--文字主色);
-  font-size: 12px;
+  font-size: 10px;
   font-family: "Google Sans Code", monospace;
   text-align: center;
   align-content: center;
@@ -435,20 +434,63 @@
   filter: brightness(2);
 }
 
-/* 切换一级目录按钮：双 radio 切换器容器 */
+/* 切换一级目录按钮：视图标题 + 双 radio 切换器 */
 .切换一级目录按钮 {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
-  border: 1px solid #777;
+  border: 1px solid #fff3;
   border-radius: 8px;
   overflow: hidden;
   backdrop-filter: blur(10px);
   z-index: 10;
   position: relative;
+  transition: 250ms;
 }
 
-/* 滑动指示块：纯 CSS 实现选中背景滑动，宽度与 flex 比例匹配（技术栈3 : 作者2） */
-.切换一级目录按钮::before {
+/* 视图标题 */
+.视图标题 {
+  width: 100%;
+  flex-shrink: 0;
+  padding: 8px 12px;
+  font-family: var(--中文字体);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--文字次色);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  user-select: none;
+  text-align: center;
+  color: lightseagreen;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.视图图标 {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  vertical-align: middle;
+  margin-left: 5px;
+  filter: invert(1);
+  transition: scale 250ms;
+}
+
+.切换一级目录按钮:hover .视图图标 {
+  scale: 1.2;
+}
+
+/* 视图选项包装器：占据剩余宽度，内部选项按比例分配，作为滑动指示块的定位参照 */
+.视图选项包装器 {
+  flex: 1;
+  display: flex;
+  position: relative;
+  width: 100%;
+}
+
+/* 滑动指示块：相对包装器定位，宽度与 flex 比例匹配（技术栈3 : 作者2） */
+.视图选项包装器::before {
   content: "";
   position: absolute;
   top: 0;
@@ -458,24 +500,24 @@
   background: #fffa;
   border-radius: 6px 0 0 6px;
   transition:
-    transform 250ms ease-out,
-    width 250ms ease-out,
-    border-radius 250ms ease-out;
+    transform 150ms ease,
+    width 150ms ease,
+    border-radius 150ms ease;
   pointer-events: none;
 }
 
-/* 技术栈选中：占 3/5，右侧无圆角 */
-.切换一级目录按钮:has(.视图选项:nth-child(1) input[type="radio"]:checked)::before {
+/* 技术栈选中：占包装器的 3/5，右侧无圆角 */
+.视图选项包装器:has(.视图选项:nth-child(1) input[type="radio"]:checked)::before {
   width: 60%;
   transform: translateX(0);
-  border-radius: 6px 0 0 6px;
+  border-radius: 0 0 0 6px;
 }
 
-/* 作者选中：占 2/5，右移至 3/5 处，左侧无圆角 */
-.切换一级目录按钮:has(.视图选项:nth-child(2) input[type="radio"]:checked)::before {
+/* 作者选中：占包装器的 2/5，右移至 3/5 处，左侧无圆角 */
+.视图选项包装器:has(.视图选项:nth-child(2) input[type="radio"]:checked)::before {
   width: 40%;
   transform: translateX(150%);
-  border-radius: 0 6px 6px 0;
+  border-radius: 0 0 6px 0;
 }
 
 /* 单个视图选项：相对定位作为 radio 绝对定位的参照 */
@@ -526,7 +568,7 @@
 }
 
 .切换一级目录按钮:hover {
-  border-color: #aaa;
+  border-color: #fff6;
 }
 
 /* 作者分组容器 */

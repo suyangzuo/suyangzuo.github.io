@@ -829,6 +829,20 @@ function 创建切换一级目录按钮() {
   const 切换器 = document.createElement("div");
   切换器.className = "切换一级目录按钮";
 
+  // 视图标题
+  const 视图标题 = document.createElement("span");
+  视图标题.className = "视图标题";
+  视图标题.textContent = "视图";
+
+  const 视图图标 = document.createElement("img");
+  视图图标.className = "视图图标";
+  视图图标.src = "/Images/Markdown-Notes/view.svg";
+  视图标题.appendChild(视图图标);
+
+  // 视图选项包装器（与技术栈、作者选项并列）
+  const 视图选项包装器 = document.createElement("div");
+  视图选项包装器.className = "视图选项包装器";
+
   // 技术栈选项
   const 技术栈标签 = document.createElement("label");
   技术栈标签.className = "视图选项";
@@ -868,7 +882,8 @@ function 创建切换一级目录按钮() {
   技术栈Radio.addEventListener("change", 处理切换);
   作者Radio.addEventListener("change", 处理切换);
 
-  切换器.append(技术栈标签, 作者标签);
+  视图选项包装器.append(技术栈标签, 作者标签);
+  切换器.append(视图标题, 视图选项包装器);
 
   // 视图按钮放在容器内第一个位置
   按钮容器.prepend(切换器);
