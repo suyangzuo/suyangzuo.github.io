@@ -349,9 +349,31 @@ function 获取节点tar图标类型(节点) {
 
 // 解析 tar 命令的参数与文件参数（非横杠开头的参数）
 function 解析tar参数(参数组) {
-  const 标志 = { c: false, x: false, t: false, f: false, v: false, z: false, j: false, J: false, k: false };
+  const 标志 = { c: false, x: false, t: false, f: false, v: false, z: false, j: false, J: false, k: false, wildcards: false };
+  let 目标目录 = null;
   const 文件参数组 = [];
-  for (const 参数 of 参数组) {
+  for (let i = 0; i < 参数组.length; i++) {
+    const 参数 = 参数组[i];
+    // 长选项：--wildcards 等
+    if (参数.startsWith("--")) {
+      const 长选项 = 参数.slice(2);
+      if (长选项 === "wildcards") {
+        标志.wildcards = true;
+      } else {
+        return { 无效: 长选项 || "long-option" };
+      }
+      continue;
+    }
+    // -C <目录> 或 -C<目录>：指定解压目标目录
+    if (参数 === "-C") {
+      if (i + 1 >= 参数组.length) return { 无效: "C" };
+      目标目录 = 参数组[++i];
+      continue;
+    }
+    if (参数.startsWith("-C") && 参数.length > 2) {
+      目标目录 = 参数.slice(2);
+      continue;
+    }
     if (参数.startsWith("-")) {
       for (const 字母 of 参数.slice(1)) {
         if (字母 in 标志) 标志[字母] = true;
@@ -361,7 +383,7 @@ function 解析tar参数(参数组) {
       文件参数组.push(参数);
     }
   }
-  return { 标志, 文件参数组 };
+  return { 标志, 文件参数组, 目标目录 };
 }
 
 // 匹配单个 tar 来源参数（支持路径、* 与 *.ext 通配符），返回匹配的节点组
@@ -387,14 +409,87 @@ function 匹配tar来源(模式) {
   return 子节点组.filter((n) => n.名称 === 名称模式);
 }
 
-// 字符串级通配符匹配（用于 tar -x 按来源筛选包内容）
+// glob 通配符匹配：* 和 ? 默认不跨越目录分隔符 /（与 tar --wildcards 默认行为一致）
+function 通配符匹配(模式, 文本) {
+  let 正则 = "^";
+  for (const 字符 of 模式) {
+    if (字符 === "*") 正则 += "[^/]*";
+    else if (字符 === "?") 正则 += "[^/]";
+    else if ("\\.+^${}()|[]".includes(字符)) 正则 += "\\" + 字符;
+    else 正则 += 字符;
+  }
+  正则 += "$";
+  return new RegExp(正则).test(文本);
+}
+
+// 匹配归档内成员：选择器匹配成员路径
+// - 未启用 --wildcards：字面量匹配（成员路径等于选择器，或成员位于选择器目录之下）
+// - 启用 --wildcards：glob 通配符匹配成员完整路径
+function 匹配tar成员(选择器, 成员路径, 启用通配符) {
+  if (启用通配符) {
+    return 通配符匹配(选择器, 成员路径);
+  }
+  return 成员路径 === 选择器 || 成员路径.startsWith(选择器 + "/");
+}
+
+// 字符串级通配符匹配（旧接口，保留兼容）
 function 匹配tar字符串(模式, 文本) {
-  if (模式 === "*") return true;
-  const 星号位置 = 模式.indexOf("*");
-  if (星号位置 === -1) return 模式 === 文本;
-  const 前缀 = 模式.slice(0, 星号位置);
-  const 后缀 = 模式.slice(星号位置 + 1);
-  return 文本.startsWith(前缀) && 文本.endsWith(后缀);
+  return 通配符匹配(模式, 文本);
+}
+
+// 将字符串路径数组转为嵌套条目结构（根据路径前缀推断目录）
+function 字符串路径转嵌套(路径组) {
+  // 预计算所有"目录路径"：作为某条路径前缀出现的中间段
+  const 目录集合 = new Set();
+  for (const 路径 of 路径组) {
+    const 部分组 = 路径.split("/").filter(Boolean);
+    for (let i = 1; i < 部分组.length; i++) {
+      目录集合.add(部分组.slice(0, i).join("/"));
+    }
+  }
+  const 根 = [];
+  for (const 路径 of 路径组) {
+    const 部分组 = 路径.split("/").filter(Boolean);
+    let 当前列表 = 根;
+    let 累计 = "";
+    for (let i = 0; i < 部分组.length; i++) {
+      const 名称 = 部分组[i];
+      累计 = 累计 ? 累计 + "/" + 名称 : 名称;
+      let 节点 = 当前列表.find((e) => e.名称 === 名称);
+      if (!节点) {
+        const 是目录 = 目录集合.has(累计);
+        节点 = { 名称, 类型: 是目录 ? "目录" : "文件", 子项: 是目录 ? [] : undefined };
+        当前列表.push(节点);
+      }
+      当前列表 = 节点.子项 || [];
+    }
+  }
+  return 根;
+}
+
+// 按成员选择器筛选归档内容，保留目录类型与层级结构
+function 筛选归档成员(条目列表, 选择器组, 启用通配符, 前缀 = "") {
+  const 结果 = [];
+  for (const 条目 of 条目列表) {
+    const 完整路径 = 前缀 ? 前缀 + "/" + 条目.名称 : 条目.名称;
+    const 自身匹配 = 选择器组.some((sel) => 匹配tar成员(sel, 完整路径, 启用通配符));
+    let 保留子项 = [];
+    if (条目.类型 === "目录" && 条目.子项) {
+      if (自身匹配) {
+        // 目录本身被选中：保留其全部子项
+        保留子项 = 条目.子项;
+      } else {
+        保留子项 = 筛选归档成员(条目.子项, 选择器组, 启用通配符, 完整路径);
+      }
+    }
+    if (自身匹配 || 保留子项.length > 0) {
+      const 新条目 = { 名称: 条目.名称, 类型: 条目.类型 };
+      if (条目.内容 !== undefined) 新条目.内容 = 条目.内容;
+      if (条目.类型 === "目录") 新条目.子项 = 保留子项;
+      结果.push(新条目);
+    }
+  }
+  return 结果;
 }
 
 // 根据当前输入实时计算需要打勾的节点（tar 命令的"来源"参数）
@@ -407,7 +502,7 @@ function 计算tar匹配节点组() {
   if (命令 !== "tar") return [];
   const 参数组 = 部分组.slice(1).map(展开主目录路径);
   const 解析结果 = 解析tar参数(参数组);
-  if (解析结果.无效) return [];
+  if (解析结果.无效 !== undefined) return [];
   const { 标志, 文件参数组 } = 解析结果;
   // 需要 c/x/t 之一，打包/查看必须带 f 并已有打包文件名
   const 操作数 = [标志.c, 标志.x, 标志.t].filter(Boolean).length;
@@ -421,6 +516,8 @@ function 计算tar匹配节点组() {
   const 来源组 = (标志.c || 标志.t) ? 文件参数组.slice(1) : (标志.f ? 文件参数组.slice(1) : 文件参数组);
   // -t 只是浏览归档内容，不需要绿勾匹配
   if (标志.t) return [];
+  // -x 且带 -f 时，紧跟的参数是包内成员名（非文件系统节点），不做绿勾匹配
+  if (标志.x && 标志.f) return [];
   const 节点组 = [];
   const 加入节点及后代 = (节点) => {
     if (!节点组.includes(节点)) 节点组.push(节点);
@@ -1799,12 +1896,21 @@ function 高亮命令语法(文本) {
     }
     // 后续部分：参数或路径
     if (部分.startsWith("-")) {
-      // 横杠参数，拆出横杠和参数字母
-      const 横杠 = 部分[0];
-      const 字母 = 部分.slice(1);
-      结果 += `<span class="语法-横杠">${转义(横杠)}</span>`;
-      if (字母) {
-        结果 += `<span class="语法-参数">${转义(字母)}</span>`;
+      // 长选项（--xxx）：两个横杠同色，后面为选项名
+      if (部分.startsWith("--")) {
+        结果 += `<span class="语法-横杠">${转义("--")}</span>`;
+        const 选项名 = 部分.slice(2);
+        if (选项名) {
+          结果 += `<span class="语法-参数">${转义(选项名)}</span>`;
+        }
+      } else {
+        // 短选项（-xxx）：单个横杠 + 参数字母
+        const 横杠 = 部分[0];
+        const 字母 = 部分.slice(1);
+        结果 += `<span class="语法-横杠">${转义(横杠)}</span>`;
+        if (字母) {
+          结果 += `<span class="语法-参数">${转义(字母)}</span>`;
+        }
       }
     } else {
       结果 += `<span class="语法-路径">${转义路径(部分)}</span>`;
@@ -1949,10 +2055,10 @@ function 解析命令(输入) {
   switch (命令) {
     case "tar": {
       const 解析结果 = 解析tar参数(参数组);
-      if (解析结果.无效) {
-        return { 有效: false, 错误: { 有错误: true, 消息: `tar：无效参数 -${解析结果.无效}\n支持：-c -x -t -f -v -z -j -J -k` } };
+      if (解析结果.无效 !== undefined) {
+        return { 有效: false, 错误: { 有错误: true, 消息: `tar：无效参数 -${解析结果.无效}\n支持：-c -x -t -f -v -z -j -J -k -C --wildcards` } };
       }
-      const { 标志, 文件参数组 } = 解析结果;
+      const { 标志, 文件参数组, 目标目录 } = 解析结果;
       const 操作数 = [标志.c, 标志.x, 标志.t].filter(Boolean).length;
       if (操作数 === 0) {
         return { 有效: false, 错误: { 有错误: true, 消息: "tar：必须指定操作\n-c 打包 / -x 解包 / -t 查看" } };
@@ -2010,9 +2116,21 @@ function 解析命令(输入) {
       let 打包文件名 = null;
       let 打包节点 = null;
       let 来源组 = [];
+      let 目标节点 = 当前位置节点;
+      // -C <目录>：解压到指定目录
+      if (目标目录) {
+        const 解析目标 = 解析相对路径(目标目录);
+        if (!解析目标) {
+          return { 有效: false, 错误: { 有错误: true, 消息: `tar：-C：目录不存在：${目标目录}` } };
+        }
+        if (解析目标.类型 !== "目录") {
+          return { 有效: false, 错误: { 有错误: true, 消息: `tar：-C：${目标目录} 不是目录` } };
+        }
+        目标节点 = 解析目标;
+      }
       if (标志.f) {
         if (文件参数组.length < 1) {
-          return { 有效: false, 错误: { 有错误: true, 消息: "tar：缺少打包文件名\n用法：tar -xf 打包文件名 [来源…]" } };
+          return { 有效: false, 错误: { 有错误: true, 消息: "tar：缺少打包文件名\n用法：tar -xf 打包文件名 [成员…]" } };
         }
         打包文件名 = 文件参数组[0];
         打包节点 = 当前位置节点.子节点组.find((n) => n.名称 === 打包文件名 && !n.删除动画);
@@ -2022,28 +2140,23 @@ function 解析命令(输入) {
         if (打包节点.类型 !== "文件") {
           return { 有效: false, 错误: { 有错误: true, 消息: `tar：${打包文件名}：无法读取：是个目录` } };
         }
+        // 紧跟在打包文件名之后的参数是"想要解压的成员名"（包内路径），而非文件系统路径
         来源组 = 文件参数组.slice(1);
       }
       let 内容组 = null;
       if (打包节点 && 打包节点.内容) {
         内容组 = 打包节点.内容;
         if (来源组.length > 0) {
-          // 展平为路径字符串后再筛选
-          const 展平路径组 = [];
-          const 展平 = (条目列表, 前缀 = "") => {
-            for (const 条目 of 条目列表) {
-              const 路径 = 前缀 ? 前缀 + "/" + 条目.名称 : 条目.名称;
-              展平路径组.push(路径);
-              if (条目.类型 === "目录" && 条目.子项) 展平(条目.子项, 路径);
-            }
-          };
-          if (typeof 内容组[0] === "object") 展平(内容组);
-          else 展平路径组.push(...内容组);
-          const 筛选后 = 展平路径组.filter((条目) => 来源组.some((模式) => 匹配tar字符串(模式, 条目)));
-          if (筛选后.length === 0) {
-            return { 有效: false, 错误: { 有错误: true, 消息: "tar：来源与包内容无匹配" } };
+          // 统一为嵌套对象形式（保留目录/文件类型与层级）
+          let 嵌套内容 = 内容组;
+          if (typeof 嵌套内容[0] === "string") {
+            嵌套内容 = 字符串路径转嵌套(嵌套内容);
           }
-          内容组 = 筛选后;
+          // 按成员选择器筛选，保留目录类型与层级结构
+          内容组 = 筛选归档成员(嵌套内容, 来源组, 标志.wildcards);
+          if (内容组.length === 0) {
+            return { 有效: false, 错误: { 有错误: true, 消息: "tar：指定成员在包中不存在" } };
+          }
         }
       } else if (来源组.length > 0) {
         const 解包节点组 = [];
@@ -2056,10 +2169,10 @@ function 解析命令(输入) {
             if (!解包节点组.includes(节点)) 解包节点组.push(节点);
           }
         }
-        return { 有效: true, 命令: "tar", 操作: "x", 标志, 打包节点, 解包节点组 };
+        return { 有效: true, 命令: "tar", 操作: "x", 标志, 打包节点, 解包节点组, 目标节点 };
       }
       if (标志.k && 打包节点) {
-        // 展平内容为路径字符串列表，检测同名冲突
+        // 展平内容为路径字符串列表，检测目标目录下的同名冲突（仅顶层）
         const 展平路径组 = [];
         const 展平 = (条目列表, 前缀 = "") => {
           for (const 条目 of 条目列表) {
@@ -2069,12 +2182,14 @@ function 解析命令(输入) {
           }
         };
         const 原始内容 = 内容组 || 打包节点.内容 || [];
-        if (原始内容.length && typeof 原始内容[0] === "object") {
-          展平(原始内容);
-        } else {
-          展平路径组.push(...原始内容);
+        if (原始内容.length) {
+          if (typeof 原始内容[0] === "object") 展平(原始内容);
+          else 展平路径组.push(...原始内容);
         }
-        const 冲突组 = 展平路径组.filter((路径) => 当前位置节点.子节点组.some((n) => n.名称 === 路径 && !n.删除动画));
+        const 冲突组 = 展平路径组.filter((路径) => {
+          const 顶层名称 = 路径.split("/")[0];
+          return 目标节点.子节点组.some((n) => n.名称 === 顶层名称 && !n.删除动画);
+        });
         if (冲突组.length > 0) {
           return {
             有效: false,
@@ -2088,7 +2203,7 @@ function 解析命令(输入) {
           };
         }
       }
-      return { 有效: true, 命令: "tar", 操作: "x", 标志, 打包节点, 内容组 };
+      return { 有效: true, 命令: "tar", 操作: "x", 标志, 打包节点, 内容组, 目标节点 };
     }
 
     case "cd": {
@@ -3271,18 +3386,19 @@ function 执行tar(解析) {
   }
 
   // 操作 === "x"：解包
-  const { 打包节点, 内容组, 解包节点组 } = 解析;
+  const { 打包节点, 内容组, 解包节点组, 目标节点 } = 解析;
+  const 解压目标 = 目标节点 || 当前位置节点;
 
-  // 场景：无 -f，来源为当前目录下的节点（模拟解压到当前目录）
+  // 场景：无 -f，来源为当前目录下的节点（模拟解压到目标目录）
   if (解包节点组) {
     波纹组.push({
-      x: 当前位置节点.x,
-      y: 当前位置节点.y,
+      x: 解压目标.x,
+      y: 解压目标.y,
       起始时间: performance.now(),
       最大半径: 配置.高亮.波纹最大半径,
     });
     if (标志.v) {
-      显示过程(`tar：已解包 ${解包节点组.length} 个条目\n` + 解包节点组.map((n) => 获取相对路径(n, 当前位置节点)).join("\n"));
+      显示过程(`tar：已解包 ${解包节点组.length} 个条目\n` + 解包节点组.map((n) => 获取相对路径(n, 解压目标)).join("\n"));
     }
     布局并动画();
     return;
@@ -3332,12 +3448,12 @@ function 执行tar(解析) {
   };
 
   for (const 条目 of 原始内容) {
-    创建嵌套节点(条目, 当前位置节点);
+    创建嵌套节点(条目, 解压目标);
   }
 
   // 启动解包动画：节点本体隐藏，副本从归档/压缩包位置飞出
-  const 解包起始X = 打包节点 ? 打包节点.x : 当前位置节点.x;
-  const 解包起始Y = 打包节点 ? 打包节点.y : 当前位置节点.y;
+  const 解包起始X = 打包节点 ? 打包节点.x : 解压目标.x;
+  const 解包起始Y = 打包节点 ? 打包节点.y : 解压目标.y;
   const 解包起始时间 = performance.now();
   for (const 新节点 of 新节点组) {
     新节点.解包动画中 = true;
@@ -3356,15 +3472,15 @@ function 执行tar(解析) {
   }
 
   波纹组.push({
-    x: 当前位置节点.x,
-    y: 当前位置节点.y,
+    x: 解压目标.x,
+    y: 解压目标.y,
     起始时间: performance.now(),
     最大半径: 配置.高亮.波纹最大半径,
   });
 
   if (标志.v) {
     if (新节点组.length > 0) {
-      显示过程(`tar：已解包 ${新节点组.length} 个条目\n` + 新节点组.map((n) => 获取相对路径(n, 当前位置节点)).join("\n"));
+      显示过程(`tar：已解包 ${新节点组.length} 个条目\n` + 新节点组.map((n) => 获取相对路径(n, 解压目标)).join("\n"));
     } else {
       显示过程("tar：没有可解包的条目");
     }
