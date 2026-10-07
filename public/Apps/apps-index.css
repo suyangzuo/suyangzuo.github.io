@@ -330,7 +330,7 @@ body {
 }
 
 .轮播图卡片标题 {
-  font-size: clamp(18px, 1.05vw, 30px);
+  font-size: clamp(16px, 1.05vw, 24px);
   font-weight: 700;
   color: #f1f5f9;
   margin: 0 0 12px 0;
@@ -344,7 +344,7 @@ body {
 }
 
 .轮播图卡片描述 {
-  font-size: clamp(16px, 0.8vw, 20px);
+  font-size: clamp(14px, 0.8vw, 18px);
   color: #94a3b8;
   line-height: 1.5;
   margin: 0 0 16px 0;
@@ -374,7 +374,7 @@ body {
   text-decoration: none;
   border-radius: 8px;
   font-weight: 600;
-  font-size: clamp(14px, 0.75vw, 20px);
+  font-size: clamp(14px, 0.75vw, 18px);
   transition: all 0.3s ease;
   border: 1px solid rgba(129, 140, 248, 0.3);
 }
@@ -415,7 +415,7 @@ body {
 }
 
 .轮播图卡片作者名称 {
-  font-size: clamp(14px, 0.75vw, 20px);
+  font-size: clamp(14px, 0.75vw, 18px);
   color: #94a3b8;
   font-weight: 500;
   transition: color 0.3s ease;
