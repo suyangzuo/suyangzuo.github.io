@@ -2,7 +2,7 @@ const 知识库 = {
   通用: {
     图标: "/Images/Markdown-Notes/知识库-01.webp",
     笔记: [
-      { 标题: "包管理器", 作者: "", 时间: { 年: 0, 月: 0, 日: 0 } },
+      { 标题: "包管理器", 作者: "苏扬", 时间: { 年: 2026, 月: 10, 日: 8 } },
       { 标题: "常用字符的 Unicode 编码", 作者: "苏扬", 时间: { 年: 2025, 月: 8, 日: 22 } },
       { 标题: "clangd配置", 作者: "凌子轩", 时间: { 年: 2025, 月: 12, 日: 21 } },
       { 标题: "自定义 FireFox 开发者工具字体", 作者: "苏扬", 时间: { 年: 2026, 月: 1, 日: 17 } },
@@ -962,6 +962,11 @@ function 处理浏览器历史导航() {
 
 function 生成笔记区内容(技术栈, 笔记文件名, 文本, { 更新历史 = true } = {}) {
   笔记区.innerHTML = marked.parse(文本);
+  const links = 笔记区.querySelectorAll("a");
+  for (const link of links) {
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+  }
   const images = 笔记区.querySelectorAll("img");
   for (const img of images) {
     const src_split = img.src.split("Markdown-Notes");
