@@ -467,6 +467,7 @@ table {
 
 table thead {
   border-bottom: 2px solid #fff4;
+  color: lightskyblue;
 }
 
 table tr td:first-of-type {

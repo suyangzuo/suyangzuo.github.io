@@ -6,6 +6,7 @@ const 知识库 = {
       { 标题: "常用字符的 Unicode 编码", 作者: "苏扬", 时间: { 年: 2025, 月: 8, 日: 22 } },
       { 标题: "clangd配置", 作者: "凌子轩", 时间: { 年: 2025, 月: 12, 日: 21 } },
       { 标题: "自定义 FireFox 开发者工具字体", 作者: "苏扬", 时间: { 年: 2026, 月: 1, 日: 17 } },
+      { 标题: "正则表达式", 作者: "苏扬", 时间: { 年: 2026, 月: 10, 日: 9 } },
     ],
   },
   Linux: {
@@ -986,9 +987,14 @@ function 生成笔记区内容(技术栈, 笔记文件名, 文本, { 更新历�
     前缀符号.innerHTML = "📰 ";
     h2.prepend(前缀符号);
   }
-  hljs.highlightAll();
   笔记对话框.showModal();
   笔记对话框.scrollTop = 0;
+  // 高亮笔记区内的代码块（而非整个页面）
+  笔记区.querySelectorAll("pre code").forEach((el) => {
+    if (!el.dataset.highlighted) {
+      hljs.highlightElement(el);
+    }
+  });
   if (更新历史) {
     更新URL(技术栈, 笔记文件名);
   }

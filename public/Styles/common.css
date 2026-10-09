@@ -237,8 +237,7 @@ li > a > i {
 }
 
 .页脚信息分区链接:hover {
-  background-color: #252a2e;
-  box-shadow: 0 0 0 1px #888;
+  background-color: #2e3438;
   border-radius: 5px;
 }
 

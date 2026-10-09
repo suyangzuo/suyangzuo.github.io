@@ -473,6 +473,7 @@
   vertical-align: middle;
   margin-left: 8px;
   filter: brightness(2);
+  translate: 0 0.1275ch;
 }
 
 /* 切换一级目录按钮：视图标题 + 双 radio 切换器 */
