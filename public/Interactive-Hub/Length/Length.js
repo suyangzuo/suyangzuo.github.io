@@ -2,6 +2,10 @@ class LengthVisualizer {
   constructor() {
     this.canvas = document.getElementById("lengthCanvas");
     this.ctx = this.canvas.getContext("2d");
+    this.dpr = window.devicePixelRatio || 1;
+    this.canvas.width = this.canvas.offsetWidth * this.dpr;
+    this.canvas.height = this.canvas.offsetHeight * this.dpr;
+    this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
     // 优先读取浏览器刷新后恢复的radio选中状态，保证JS状态与DOM一致；
     // 否则重复点击刷新前已选中的单位时，radio状态不变，不会触发change事件
     const checkedUnitRadio = document.querySelector('input[name="unit"]:checked');
@@ -97,9 +101,10 @@ class LengthVisualizer {
       rootFontInput.value = this.rootFontSize;
     }
 
-    // 确保根元素控制区初始状态是隐藏的
+    // 非rem单位时，确保根元素控制区初始状态是隐藏的；
+    // rem单位时保留updateUnitSelection()已添加的show（刷新恢复选中rem的场景）
     const rootFontControl = document.getElementById("rootFontSizeControl");
-    if (rootFontControl) {
+    if (rootFontControl && this.currentUnit !== "rem") {
       rootFontControl.classList.remove("show");
     }
 
@@ -108,26 +113,37 @@ class LengthVisualizer {
   }
 
   setupCanvas() {
-    // 设置Canvas尺寸为全屏
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
-    
+    // 重新读取DPR：窗口跨显示器拖动时缩放比例可能变化
+    this.dpr = window.devicePixelRatio || 1;
+
+    // Canvas的CSS显示尺寸（全屏）
+    this.cssWidth = this.canvas.offsetWidth;
+    this.cssHeight = this.canvas.offsetHeight;
+
+    // backing store按DPR放大，保证高清屏下线条和文字清晰
+    this.canvas.width = this.cssWidth * this.dpr;
+    this.canvas.height = this.cssHeight * this.dpr;
+
+    // 注意：修改canvas.width会重置上下文变换，必须重新应用DPR缩放，
+    // 之后所有绘制坐标仍使用CSS像素
+    this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+
     // 计算线条的垂直位置（交互标题下边界与控制区上边界之间的50%处）
     const titleElement = document.querySelector(".交互标题");
     const controlArea = document.querySelector(".控制区");
-    let verticalCenter = this.canvas.height * 0.5; // 默认居中
-    
+    let verticalCenter = this.cssHeight * 0.5; // 默认居中
+
     if (titleElement && controlArea && this.currentUnit !== "vh") {
       const titleRect = titleElement.getBoundingClientRect();
       const controlRect = controlArea.getBoundingClientRect();
-      
+
       // 计算交互标题下边界与控制区上边界之间的中点
       const titleBottom = titleRect.bottom;
       const controlTop = controlRect.top; // 使用真实的控制区位置
-      
+
       verticalCenter = titleBottom + (controlTop - titleBottom) * 0.5;
     }
-    
+
     // 初始化线条位置
     if (this.currentUnit === "vw") {
       // vw单位：从视口左边缘开始
@@ -137,11 +153,11 @@ class LengthVisualizer {
       this.lineEndY = verticalCenter;
     } else if (this.currentUnit === "vh") {
       // vh单位：从视口顶部开始
-      this.lineStartX = this.canvas.width * 0.5;
+      this.lineStartX = this.cssWidth * 0.5;
       this.lineStartY = 0;
       this.lineEndX = this.lineStartX;
       this.lineEndY = this.getPixelValue();
-      
+
       // 立即检查与交互标题的重叠状态
       requestAnimationFrame(() => {
         this.checkTitleOverlap();
@@ -149,7 +165,7 @@ class LengthVisualizer {
     } else if (["px", "rem", "em", "ch"].includes(this.currentUnit)) {
       // px、rem、em、ch单位：居中显示
       const maxPixelValue = this.getMaxPixelValue();
-      this.lineStartX = (this.canvas.width - maxPixelValue) / 2;
+      this.lineStartX = (this.cssWidth - maxPixelValue) / 2;
       this.lineStartY = verticalCenter;
       this.lineEndX = this.lineStartX + this.getPixelValue();
       this.lineEndY = verticalCenter;
@@ -162,19 +178,19 @@ class LengthVisualizer {
       radio.addEventListener("change", (e) => {
         const oldUnit = this.currentUnit;
         const newUnit = e.target.value;
-        
+
         // 保存当前单位的数值
         this.unitValues[oldUnit] = this.currentValue;
-        
+
         // 切换到新单位
         this.currentUnit = newUnit;
-        
+
         // 恢复新单位的数值
         this.currentValue = this.unitValues[newUnit];
-        
+
         this.updateUnitSelection();
         this.updateSliderRange();
-        
+
         // 如果是vh单位，立即检查与交互标题的重叠
         if (newUnit === "vh") {
           // 延迟一帧确保DOM更新完成后再检查重叠
@@ -184,7 +200,7 @@ class LengthVisualizer {
         } else {
           this.checkTitleOverlap(); // 检查与交互标题的重叠
         }
-        
+
         this.draw();
       });
     });
@@ -194,11 +210,11 @@ class LengthVisualizer {
     slider.addEventListener("input", (e) => {
       // 如果正在动画中，不处理滑块输入
       if (this.isAnimating) return;
-      
+
       this.currentValue = parseFloat(e.target.value);
       // 更新当前单位的存储值
       this.unitValues[this.currentUnit] = this.currentValue;
-      
+
       this.updateValueDisplay();
       this.updateLinePosition();
       this.checkControlAreaOverlap(); // 检查重叠并更新透明度
@@ -250,7 +266,7 @@ class LengthVisualizer {
     window.addEventListener("resize", () => {
       setTimeout(() => {
         this.setupCanvas();
-        
+
         // 对于vw和vh单位，保持百分比值不变，只更新线条的实际像素长度
         if (this.currentUnit === "vw" || this.currentUnit === "vh") {
           // 保持currentValue（百分比值）不变，只更新线条位置
@@ -263,10 +279,10 @@ class LengthVisualizer {
             this.updateLinePosition();
           }
         }
-        
+
         // 确保z-index设置正确
         this.updateUnitSelection();
-        
+
         // 如果是vh单位，立即检查与交互标题的重叠
         if (this.currentUnit === "vh") {
           requestAnimationFrame(() => {
@@ -275,7 +291,7 @@ class LengthVisualizer {
         } else {
           this.checkTitleOverlap(); // 检查与交互标题的重叠
         }
-        
+
         this.draw();
       }, 100);
     });
@@ -348,7 +364,7 @@ class LengthVisualizer {
       // vh单位：Canvas在顶栏上方，但在后退区、重置区、控制区下方
       canvas.style.zIndex = "9999";
       canvasContainer.style.zIndex = "9999";
-      
+
       // 立即检查与交互标题的重叠状态
       requestAnimationFrame(() => {
         this.checkTitleOverlap();
@@ -366,15 +382,15 @@ class LengthVisualizer {
     slider.min = 1;
     slider.max = unit.maxValue;
     slider.step = this.currentUnit === "px" ? 1 : 0.1; // px单位step=1，其他单位step=0.1
-    
+
     // 更新滑块的datalist属性，提供停顿感
     slider.setAttribute("list", `${this.currentUnit}-datalist`);
-    
+
     // 只有在非动画状态下才更新滑块值
     if (!this.isAnimating) {
       slider.value = this.currentValue;
     }
-    
+
     this.updateValueDisplay();
   }
 
@@ -402,20 +418,20 @@ class LengthVisualizer {
   updateLinePosition() {
     // 如果正在动画中，不更新位置
     if (this.isAnimating) return;
-    
+
     // 计算线条的垂直位置（交互标题下边界与控制区上边界之间的50%处）
     const titleElement = document.querySelector(".交互标题");
     const controlArea = document.querySelector(".控制区");
-    let verticalCenter = this.canvas.height * 0.5; // 默认居中
+    let verticalCenter = this.cssHeight * 0.5; // 默认居中
 
     if (titleElement && controlArea && this.currentUnit !== "vh") {
       const titleRect = titleElement.getBoundingClientRect();
       const controlRect = controlArea.getBoundingClientRect();
-      
+
       // 计算交互标题下边界与控制区上边界之间的中点
       const titleBottom = titleRect.bottom;
       const controlTop = controlRect.top; // 使用真实的控制区位置
-      
+
       verticalCenter = titleBottom + (controlTop - titleBottom) * 0.5;
     }
 
@@ -427,20 +443,20 @@ class LengthVisualizer {
       this.lineEndY = verticalCenter;
     } else if (this.currentUnit === "vh") {
       // vh单位：从视口顶部开始
-      this.lineStartX = this.canvas.width * 0.5;
+      this.lineStartX = this.cssWidth * 0.5;
       this.lineStartY = 0;
       this.lineEndX = this.lineStartX;
       this.lineEndY = this.getPixelValue();
     } else if (["px", "rem", "em", "ch"].includes(this.currentUnit)) {
       // px、rem、em、ch单位：居中显示
       const maxPixelValue = this.getMaxPixelValue();
-      this.lineStartX = (this.canvas.width - maxPixelValue) / 2;
+      this.lineStartX = (this.cssWidth - maxPixelValue) / 2;
       this.lineStartY = verticalCenter;
       this.lineEndX = this.lineStartX + this.getPixelValue();
       this.lineEndY = verticalCenter;
     } else if (this.isHorizontal) {
       // 其他水平单位：保持适当的边距
-      const margin = Math.min(this.canvas.width, this.canvas.height) * 0.1; // 10%的边距
+      const margin = Math.min(this.cssWidth, this.cssHeight) * 0.1; // 10%的边距
       this.lineStartX = margin;
       this.lineStartY = verticalCenter;
       this.lineEndX = this.lineStartX + this.getPixelValue();
@@ -594,14 +610,14 @@ class LengthVisualizer {
       if (this.currentUnit === "vw") {
         // vw单位：起点固定在视口左边缘，只能拖拽终点
         // 直接根据鼠标位置计算百分比值
-        const percentage = (x / this.canvas.width) * 100;
+        const percentage = (x / this.cssWidth) * 100;
         const processedValue = Math.round(percentage * 10) / 10;
         this.currentValue = Math.max(1, Math.min(this.units[this.currentUnit].maxValue, processedValue));
         this.lineEndX = this.getPixelValue(); // 根据百分比值计算像素位置
       } else if (this.currentUnit === "vh") {
         // vh单位：起点固定在视口顶部，只能拖拽终点
         // 直接根据鼠标位置计算百分比值
-        const percentage = (y / this.canvas.height) * 100;
+        const percentage = (y / this.cssHeight) * 100;
         const processedValue = Math.round(percentage * 10) / 10;
         this.currentValue = Math.max(1, Math.min(this.units[this.currentUnit].maxValue, processedValue));
         this.lineEndY = this.getPixelValue(); // 根据百分比值计算像素位置
@@ -630,7 +646,7 @@ class LengthVisualizer {
       if (this.currentUnit === "vw") {
         // vw单位：起点固定在视口左边缘，只能拖拽终点
         // 直接根据鼠标位置计算百分比值
-        const percentage = (x / this.canvas.width) * 100;
+        const percentage = (x / this.cssWidth) * 100;
         const processedValue = Math.round(percentage * 10) / 10;
         this.currentValue = Math.max(1, Math.min(this.units[this.currentUnit].maxValue, processedValue));
         this.lineStartX = 0; // 保持起点在视口左边缘
@@ -638,7 +654,7 @@ class LengthVisualizer {
       } else if (this.currentUnit === "vh") {
         // vh单位：起点固定在视口顶部，只能拖拽终点
         // 直接根据鼠标位置计算百分比值
-        const percentage = (y / this.canvas.height) * 100;
+        const percentage = (y / this.cssHeight) * 100;
         const processedValue = Math.round(percentage * 10) / 10;
         this.currentValue = Math.max(1, Math.min(this.units[this.currentUnit].maxValue, processedValue));
         this.lineStartY = 0; // 保持起点在视口顶部
@@ -652,7 +668,7 @@ class LengthVisualizer {
           this.currentValue = Math.max(1, Math.min(this.units[this.currentUnit].maxValue, processedValue));
           // 重新计算居中位置
           const maxPixelValue = this.getMaxPixelValue();
-          this.lineStartX = (this.canvas.width - maxPixelValue) / 2;
+          this.lineStartX = (this.cssWidth - maxPixelValue) / 2;
         }
       } else if (["px", "rem", "em", "ch"].includes(this.currentUnit)) {
         // px、rem、em、ch单位：保持居中，只能拖拽终点
@@ -663,11 +679,11 @@ class LengthVisualizer {
           this.currentValue = Math.max(1, Math.min(this.units[this.currentUnit].maxValue, processedValue));
           // 重新计算居中位置
           const maxPixelValue = this.getMaxPixelValue();
-          this.lineStartX = (this.canvas.width - maxPixelValue) / 2;
+          this.lineStartX = (this.cssWidth - maxPixelValue) / 2;
         }
       } else if (this.isHorizontal) {
         // 其他水平单位：保持最小边距
-        const margin = Math.min(this.canvas.width, this.canvas.height) * 0.1; // 10%的边距
+        const margin = Math.min(this.cssWidth, this.cssHeight) * 0.1; // 10%的边距
         const newLength = this.lineEndX - x;
         if (newLength > 0 && x >= margin) {
           // 将像素值转换为单位值
@@ -679,7 +695,7 @@ class LengthVisualizer {
         }
       } else {
         // 其他垂直单位：保持最小边距
-        const margin = Math.min(this.canvas.width, this.canvas.height) * 0.1; // 10%的边距
+        const margin = Math.min(this.cssWidth, this.cssHeight) * 0.1; // 10%的边距
         const newLength = this.lineEndY - y;
         if (newLength > 0 && y >= margin) {
           // 将像素值转换为单位值
@@ -718,7 +734,7 @@ class LengthVisualizer {
 
   draw() {
     // 清空Canvas
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.clearRect(0, 0, this.cssWidth, this.cssHeight);
 
     // 设置线条样式
     this.ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--线条颜色");
@@ -977,23 +993,23 @@ class LengthVisualizer {
   // 切换线条方向（用于vw/vh单位）
   setLineDirection(isHorizontal) {
     this.isHorizontal = isHorizontal;
-    
+
     // 计算线条的垂直位置（交互标题下边界与控制区上边界之间的50%处）
     const titleElement = document.querySelector(".交互标题");
     const controlArea = document.querySelector(".控制区");
-    let verticalCenter = this.canvas.height * 0.5; // 默认居中
-    
+    let verticalCenter = this.cssHeight * 0.5; // 默认居中
+
     if (titleElement && controlArea && this.currentUnit !== "vh") {
       const titleRect = titleElement.getBoundingClientRect();
       const controlRect = controlArea.getBoundingClientRect();
-      
+
       // 计算交互标题下边界与控制区上边界之间的中点
       const titleBottom = titleRect.bottom;
       const controlTop = controlRect.top; // 使用真实的控制区位置
-      
+
       verticalCenter = titleBottom + (controlTop - titleBottom) * 0.5;
     }
-    
+
     if (this.currentUnit === "vw") {
       // vw单位：从视口左边缘开始，更好地体现"视口宽度"概念
       this.lineStartX = 0;
@@ -1002,33 +1018,33 @@ class LengthVisualizer {
       this.lineEndY = verticalCenter;
     } else if (this.currentUnit === "vh") {
       // vh单位：从视口顶部开始，更好地体现"视口高度"概念
-      this.lineStartX = this.canvas.width * 0.5;
+      this.lineStartX = this.cssWidth * 0.5;
       this.lineStartY = 0;
       this.lineEndX = this.lineStartX;
       this.lineEndY = this.getPixelValue();
     } else if (["px", "rem", "em", "ch"].includes(this.currentUnit)) {
       // px、rem、em、ch单位：居中显示
       const maxPixelValue = this.getMaxPixelValue();
-      this.lineStartX = (this.canvas.width - maxPixelValue) / 2;
+      this.lineStartX = (this.cssWidth - maxPixelValue) / 2;
       this.lineStartY = verticalCenter;
       this.lineEndX = this.lineStartX + this.getPixelValue();
       this.lineEndY = verticalCenter;
     } else if (isHorizontal) {
       // 其他水平单位：保持适当的边距
-      const margin = Math.min(this.canvas.width, this.canvas.height) * 0.1; // 10%的边距
+      const margin = Math.min(this.cssWidth, this.cssHeight) * 0.1; // 10%的边距
       this.lineStartX = margin;
       this.lineStartY = verticalCenter;
       this.lineEndX = this.lineStartX + this.getPixelValue();
       this.lineEndY = verticalCenter;
     } else {
       // 其他垂直单位：保持适当的边距
-      const margin = Math.min(this.canvas.width, this.canvas.height) * 0.1; // 10%的边距
-      this.lineStartX = this.canvas.width * 0.5;
+      const margin = Math.min(this.cssWidth, this.cssHeight) * 0.1; // 10%的边距
+      this.lineStartX = this.cssWidth * 0.5;
       this.lineStartY = margin;
       this.lineEndX = this.lineStartX;
       this.lineEndY = this.lineStartY + this.getPixelValue();
     }
-    
+
     this.draw();
   }
 
@@ -1057,7 +1073,7 @@ class LengthVisualizer {
       controlRect.left,
       controlRect.top,
       controlRect.right,
-      controlRect.bottom
+      controlRect.bottom,
     );
 
     // 设置控制区的透明度
@@ -1093,7 +1109,7 @@ class LengthVisualizer {
       titleRect.left,
       titleRect.top,
       titleRect.right,
-      titleRect.bottom
+      titleRect.bottom,
     );
 
     // 设置交互标题的透明度
@@ -1134,7 +1150,7 @@ class LengthVisualizer {
           rectLine[0],
           rectLine[1],
           rectLine[2],
-          rectLine[3]
+          rectLine[3],
         )
       ) {
         return true;
@@ -1365,16 +1381,16 @@ class LengthVisualizer {
       x1: this.lineStartX,
       y1: this.lineStartY,
       x2: this.lineEndX,
-      y2: this.lineEndY
+      y2: this.lineEndY,
     };
-    
+
     // 记录动画结束位置
     this.animationEndPos = targetPos;
-    
+
     // 开始动画
     this.isAnimating = true;
     this.animationStartTime = performance.now();
-    
+
     // 启动动画循环
     this.animateLine();
   }
@@ -1382,37 +1398,37 @@ class LengthVisualizer {
   // 动画循环
   animateLine() {
     if (!this.isAnimating) return;
-    
+
     const currentTime = performance.now();
     const elapsed = currentTime - this.animationStartTime;
     const progress = Math.min(elapsed / this.animationDuration, 1);
-    
+
     // 使用缓动函数（ease-out）
     const easeProgress = 1 - Math.pow(1 - progress, 3);
-    
+
     // 计算当前位置
     this.lineStartX = this.animationStartPos.x1 + (this.animationEndPos.x1 - this.animationStartPos.x1) * easeProgress;
     this.lineStartY = this.animationStartPos.y1 + (this.animationEndPos.y1 - this.animationStartPos.y1) * easeProgress;
     this.lineEndX = this.animationStartPos.x2 + (this.animationEndPos.x2 - this.animationStartPos.x2) * easeProgress;
     this.lineEndY = this.animationStartPos.y2 + (this.animationEndPos.y2 - this.animationStartPos.y2) * easeProgress;
-    
+
     // 实时更新滑块值，实现thumb的平滑过渡
     const slider = document.getElementById("lengthSlider");
     if (slider) {
       slider.value = this.currentValue;
     }
-    
+
     // 实时检查控制区重叠状态
     this.checkControlAreaOverlap();
-    
+
     // 如果是vh单位，实时检查与交互标题的重叠状态
     if (this.currentUnit === "vh") {
       this.checkTitleOverlap();
     }
-    
+
     // 重新绘制
     this.draw();
-    
+
     // 检查动画是否完成
     if (progress < 1) {
       requestAnimationFrame(() => this.animateLine());
@@ -1421,15 +1437,15 @@ class LengthVisualizer {
       this.isAnimating = false;
       this.updateLinePosition();
       this.updateValueDisplay();
-      
+
       // 更新当前单位的存储值
       this.unitValues[this.currentUnit] = this.currentValue;
-      
+
       // 确保滑块值精确
       if (slider) {
         slider.value = this.currentValue;
       }
-      
+
       this.draw();
     }
   }
@@ -1439,16 +1455,16 @@ class LengthVisualizer {
     // 计算线条的垂直位置（交互标题下边界与控制区上边界之间的50%处）
     const titleElement = document.querySelector(".交互标题");
     const controlArea = document.querySelector(".控制区");
-    let verticalCenter = this.canvas.height * 0.5; // 默认居中
+    let verticalCenter = this.cssHeight * 0.5; // 默认居中
 
     if (titleElement && controlArea && this.currentUnit !== "vh") {
       const titleRect = titleElement.getBoundingClientRect();
       const controlRect = controlArea.getBoundingClientRect();
-      
+
       // 计算交互标题下边界与控制区上边界之间的中点
       const titleBottom = titleRect.bottom;
       const controlTop = controlRect.top; // 使用真实的控制区位置
-      
+
       verticalCenter = titleBottom + (controlTop - titleBottom) * 0.5;
     }
 
@@ -1460,33 +1476,33 @@ class LengthVisualizer {
         x1: 0,
         y1: verticalCenter,
         x2: this.getPixelValue(),
-        y2: verticalCenter
+        y2: verticalCenter,
       };
     } else if (this.currentUnit === "vh") {
       // vh单位：从视口顶部开始
       targetPos = {
-        x1: this.canvas.width * 0.5,
+        x1: this.cssWidth * 0.5,
         y1: 0,
-        x2: this.canvas.width * 0.5,
-        y2: this.getPixelValue()
+        x2: this.cssWidth * 0.5,
+        y2: this.getPixelValue(),
       };
     } else if (["px", "rem", "em", "ch"].includes(this.currentUnit)) {
       // px、rem、em、ch单位：居中显示
       const maxPixelValue = this.getMaxPixelValue();
       targetPos = {
-        x1: (this.canvas.width - maxPixelValue) / 2,
+        x1: (this.cssWidth - maxPixelValue) / 2,
         y1: verticalCenter,
-        x2: (this.canvas.width - maxPixelValue) / 2 + this.getPixelValue(),
-        y2: verticalCenter
+        x2: (this.cssWidth - maxPixelValue) / 2 + this.getPixelValue(),
+        y2: verticalCenter,
       };
     } else if (this.isHorizontal) {
       // 其他水平单位：保持适当的边距
-      const margin = Math.min(this.canvas.width, this.canvas.height) * 0.1; // 10%的边距
+      const margin = Math.min(this.cssWidth, this.cssHeight) * 0.1; // 10%的边距
       targetPos = {
         x1: margin,
         y1: verticalCenter,
         x2: margin + this.getPixelValue(),
-        y2: verticalCenter
+        y2: verticalCenter,
       };
     } else {
       // 其他垂直单位：保持原有逻辑
@@ -1494,7 +1510,7 @@ class LengthVisualizer {
         x1: this.lineStartX,
         y1: this.lineStartY,
         x2: this.lineStartX,
-        y2: this.lineStartY + this.getPixelValue()
+        y2: this.lineStartY + this.getPixelValue(),
       };
     }
 
@@ -1506,74 +1522,74 @@ class LengthVisualizer {
     const duration = 250;
     const startTime = performance.now();
     this.isAnimating = true;
-    
+
     // 记录动画开始时的线条位置
     const startPos = {
       x1: this.lineStartX,
       y1: this.lineStartY,
       x2: this.lineEndX,
-      y2: this.lineEndY
+      y2: this.lineEndY,
     };
-    
+
     // 记录动画开始时的滑块值
     const slider = document.getElementById("lengthSlider");
     const startSliderValue = parseFloat(slider.value);
-    
+
     const animate = () => {
       const now = performance.now();
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      
+
       // 使用缓动函数（ease-out）
       const easeProgress = 1 - Math.pow(1 - progress, 3);
-      
+
       // 临时禁用动画检查，让updateLinePosition可以执行
       const wasAnimating = this.isAnimating;
       this.isAnimating = false;
-      
+
       // 计算当前帧的目标位置
       this.updateLinePosition();
       const targetPos = {
         x1: this.lineStartX,
         y1: this.lineStartY,
         x2: this.lineEndX,
-        y2: this.lineEndY
+        y2: this.lineEndY,
       };
-      
+
       // 恢复动画状态
       this.isAnimating = wasAnimating;
-      
+
       // 计算方向向量
       const startDirectionX = startPos.x2 - startPos.x1;
       const startDirectionY = startPos.y2 - startPos.y1;
       const targetDirectionX = targetPos.x2 - targetPos.x1;
       const targetDirectionY = targetPos.y2 - targetPos.y1;
-      
+
       // 计算当前帧的方向向量（平滑过渡）
       const currentDirectionX = startDirectionX + (targetDirectionX - startDirectionX) * easeProgress;
       const currentDirectionY = startDirectionY + (targetDirectionY - startDirectionY) * easeProgress;
-      
+
       // 计算线条中心点
       const startCenterX = (startPos.x1 + startPos.x2) / 2;
       const startCenterY = (startPos.y1 + startPos.y2) / 2;
       const targetCenterX = (targetPos.x1 + targetPos.x2) / 2;
       const targetCenterY = (targetPos.y1 + targetPos.y2) / 2;
-      
+
       // 计算当前帧的中心点位置
       const currentCenterX = startCenterX + (targetCenterX - startCenterX) * easeProgress;
       const currentCenterY = startCenterY + (targetCenterY - startCenterY) * easeProgress;
-      
+
       // 计算当前帧的像素长度
       const startPixelLength = Math.sqrt(startDirectionX * startDirectionX + startDirectionY * startDirectionY);
       const targetPixelLength = Math.sqrt(targetDirectionX * targetDirectionX + targetDirectionY * targetDirectionY);
       const currentPixelLength = startPixelLength + (targetPixelLength - startPixelLength) * easeProgress;
-      
+
       // 标准化方向向量并应用当前长度
       const directionLength = Math.sqrt(currentDirectionX * currentDirectionX + currentDirectionY * currentDirectionY);
       if (directionLength > 0) {
         const normalizedDirectionX = currentDirectionX / directionLength;
         const normalizedDirectionY = currentDirectionY / directionLength;
-        
+
         // 计算当前帧的线条位置
         const halfLength = currentPixelLength / 2;
         this.lineStartX = currentCenterX - normalizedDirectionX * halfLength;
@@ -1598,22 +1614,22 @@ class LengthVisualizer {
           this.lineEndY = currentCenterY;
         }
       }
-      
+
       // 实时更新滑块值，实现thumb的平滑过渡
       if (slider) {
         slider.value = this.currentValue;
       }
-      
+
       // 实时检查控制区重叠状态
       this.checkControlAreaOverlap();
-      
+
       // 如果是vh单位，实时检查与交互标题的重叠状态
       if (this.currentUnit === "vh") {
         this.checkTitleOverlap();
       }
-      
+
       this.draw();
-      
+
       if (elapsed < duration) {
         requestAnimationFrame(animate);
       } else {
@@ -1621,15 +1637,15 @@ class LengthVisualizer {
         this.isAnimating = false;
         this.updateLinePosition();
         this.updateValueDisplay();
-        
+
         // 更新当前单位的存储值
         this.unitValues[this.currentUnit] = this.currentValue;
-        
+
         // 确保滑块值精确
         if (slider) {
           slider.value = this.currentValue;
         }
-        
+
         this.draw();
       }
     };
@@ -1641,67 +1657,65 @@ class LengthVisualizer {
     const duration = 300; // 稍微增加动画时长，让过渡更自然
     const startTime = performance.now();
     this.isAnimating = true;
-    
+
     // 记录动画开始时的线条位置和长度
     const startPos = {
       x1: this.lineStartX,
       y1: this.lineStartY,
       x2: this.lineEndX,
-      y2: this.lineEndY
+      y2: this.lineEndY,
     };
-    
+
     // 计算当前单位值对应的像素长度
-    const startPixelLength = Math.sqrt(
-      Math.pow(startPos.x2 - startPos.x1, 2) + Math.pow(startPos.y2 - startPos.y1, 2)
-    );
-    
+    const startPixelLength = Math.sqrt(Math.pow(startPos.x2 - startPos.x1, 2) + Math.pow(startPos.y2 - startPos.y1, 2));
+
     // 计算目标位置和长度
     const targetPos = this.calculateTargetPosition();
     const targetPixelLength = Math.sqrt(
-      Math.pow(targetPos.x2 - targetPos.x1, 2) + Math.pow(targetPos.y2 - targetPos.y1, 2)
+      Math.pow(targetPos.x2 - targetPos.x1, 2) + Math.pow(targetPos.y2 - targetPos.y1, 2),
     );
-    
+
     // 计算线条中心点（用于保持中心对齐）
     const startCenterX = (startPos.x1 + startPos.x2) / 2;
     const startCenterY = (startPos.y1 + startPos.y2) / 2;
     const targetCenterX = (targetPos.x1 + targetPos.x2) / 2;
     const targetCenterY = (targetPos.y1 + targetPos.y2) / 2;
-    
+
     // 计算方向向量
     const startDirectionX = startPos.x2 - startPos.x1;
     const startDirectionY = startPos.y2 - startPos.y1;
     const targetDirectionX = targetPos.x2 - targetPos.x1;
     const targetDirectionY = targetPos.y2 - targetPos.y1;
-    
+
     // 记录动画开始时的滑块值
     const slider = document.getElementById("lengthSlider");
     const startSliderValue = parseFloat(slider.value);
-    
+
     const animate = () => {
       const now = performance.now();
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      
+
       // 使用缓动函数（ease-out）
       const easeProgress = 1 - Math.pow(1 - progress, 3);
-      
+
       // 计算当前帧的中心点位置
       const currentCenterX = startCenterX + (targetCenterX - startCenterX) * easeProgress;
       const currentCenterY = startCenterY + (targetCenterY - startCenterY) * easeProgress;
-      
+
       // 计算当前帧的像素长度（平滑过渡）
       const currentPixelLength = startPixelLength + (targetPixelLength - startPixelLength) * easeProgress;
-      
+
       // 计算当前帧的方向向量（平滑过渡）
       const currentDirectionX = startDirectionX + (targetDirectionX - startDirectionX) * easeProgress;
       const currentDirectionY = startDirectionY + (targetDirectionY - startDirectionY) * easeProgress;
-      
+
       // 标准化方向向量并应用当前长度
       const directionLength = Math.sqrt(currentDirectionX * currentDirectionX + currentDirectionY * currentDirectionY);
       if (directionLength > 0) {
         const normalizedDirectionX = currentDirectionX / directionLength;
         const normalizedDirectionY = currentDirectionY / directionLength;
-        
+
         // 计算当前帧的线条位置
         const halfLength = currentPixelLength / 2;
         this.lineStartX = currentCenterX - normalizedDirectionX * halfLength;
@@ -1726,25 +1740,25 @@ class LengthVisualizer {
           this.lineEndY = currentCenterY;
         }
       }
-      
+
       // 更新显示的值（实时计算当前像素长度对应的单位值）
       this.updateDisplayValueFromPixelLength(currentPixelLength);
-      
+
       // 实时更新滑块值，实现thumb的平滑过渡
       if (slider) {
         slider.value = this.currentValue;
       }
-      
+
       // 实时检查控制区重叠状态
       this.checkControlAreaOverlap();
-      
+
       // 如果是vh单位，实时检查与交互标题的重叠状态
       if (this.currentUnit === "vh") {
         this.checkTitleOverlap();
       }
-      
+
       this.draw();
-      
+
       if (elapsed < duration) {
         requestAnimationFrame(animate);
       } else {
@@ -1752,15 +1766,15 @@ class LengthVisualizer {
         this.isAnimating = false;
         this.updateLinePosition();
         this.updateValueDisplay();
-        
+
         // 更新当前单位的存储值
         this.unitValues[this.currentUnit] = this.currentValue;
-        
+
         // 确保滑块值精确
         if (slider) {
           slider.value = this.currentValue;
         }
-        
+
         this.draw();
       }
     };
@@ -1774,19 +1788,19 @@ class LengthVisualizer {
       // 保持currentValue不变，只更新显示
       const formattedValue = Number.isInteger(this.currentValue) ? this.currentValue : this.currentValue.toFixed(1);
       document.getElementById("lengthValue").textContent = formattedValue;
-      
+
       // 更新长度信息显示
       const lengthValue = document.querySelector(".length-value");
       const lengthUnit = document.querySelector(".length-unit");
       const unitDetails = document.querySelector(".unit-details");
-      
+
       if (lengthValue) lengthValue.textContent = formattedValue;
       if (lengthUnit) lengthUnit.textContent = this.currentUnit;
-      
+
       if (unitDetails) unitDetails.textContent = this.units[this.currentUnit].name;
       return;
     }
-    
+
     // 将像素长度转换为当前单位的值
     let unitValue;
     switch (this.currentUnit) {
@@ -1805,25 +1819,25 @@ class LengthVisualizer {
       default:
         unitValue = pixelLength;
     }
-    
+
     // 更新当前值（不触发滑块更新，避免冲突）
     this.currentValue = unitValue;
-    
+
     // 更新当前单位的存储值
     this.unitValues[this.currentUnit] = unitValue;
-    
+
     // 更新显示
     const formattedValue = Number.isInteger(unitValue) ? unitValue : unitValue.toFixed(1);
     document.getElementById("lengthValue").textContent = formattedValue;
-    
+
     // 更新长度信息显示
     const lengthValue = document.querySelector(".length-value");
     const lengthUnit = document.querySelector(".length-unit");
     const unitDetails = document.querySelector(".unit-details");
-    
+
     if (lengthValue) lengthValue.textContent = formattedValue;
     if (lengthUnit) lengthUnit.textContent = this.currentUnit;
-    
+
     // 动态更新rem单位的描述
     if (this.currentUnit === "rem") {
       if (unitDetails) unitDetails.textContent = `根元素字体大小 (${this.rootFontSize}px)`;
