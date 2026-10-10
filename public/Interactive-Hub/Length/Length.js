@@ -2,7 +2,10 @@ class LengthVisualizer {
   constructor() {
     this.canvas = document.getElementById("lengthCanvas");
     this.ctx = this.canvas.getContext("2d");
-    this.currentUnit = "px";
+    // 优先读取浏览器刷新后恢复的radio选中状态，保证JS状态与DOM一致；
+    // 否则重复点击刷新前已选中的单位时，radio状态不变，不会触发change事件
+    const checkedUnitRadio = document.querySelector('input[name="unit"]:checked');
+    this.currentUnit = checkedUnitRadio ? checkedUnitRadio.value : "px";
     this.currentValue = 100;
     this.isDragging = false;
     this.dragStartX = 0;
@@ -11,7 +14,7 @@ class LengthVisualizer {
     this.lineStartY = 0;
     this.lineEndX = 0;
     this.lineEndY = 0;
-    this.isHorizontal = true;
+    this.isHorizontal = this.currentUnit !== "vh"; // vh为垂直线条，其他为水平线条
     this.hoveredPoint = null; // 悬停的拖拽点
 
     // 根元素font-size相关属性
@@ -771,7 +774,7 @@ class LengthVisualizer {
     const formattedValue = Number.isInteger(this.currentValue) ? this.currentValue : this.currentValue.toFixed(1);
 
     // 设置字体样式
-    this.ctx.font = '14px "JetBrains Mono", Consolas, monospace';
+    this.ctx.font = '14px "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif';
     this.ctx.textAlign = "left"; // 改为左对齐，便于控制间距
     this.ctx.textBaseline = "bottom";
 
@@ -891,7 +894,7 @@ class LengthVisualizer {
     const textY = this.lineStartY + 30; // 在线条下方30px
 
     // 设置数字字体样式
-    this.ctx.font = '12px "JetBrains Mono", Consolas, monospace';
+    this.ctx.font = '12px "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif';
     this.ctx.textAlign = "left";
     this.ctx.textBaseline = "top";
     this.ctx.fillStyle = "#888"; // 灰色数字

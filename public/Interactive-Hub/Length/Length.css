@@ -23,6 +23,8 @@
   --深色文本: #e0e0e0;
   --深色次要文本: #aaa;
   --深色悬停背景: #3a3a3a;
+
+  --中文代码混合字体: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 /* 主容器布局 */
@@ -214,7 +216,7 @@
 }
 
 .数值标签 {
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: var(--中文代码混合字体);
   font-size: 14px;
   color: var(--深色文本);
   min-width: 40px;
@@ -235,7 +237,7 @@
 }
 
 .数值显示 {
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: var(--中文代码混合字体);
   font-size: 14px;
   color: var(--进度条颜色-已填充);
   font-weight: 500;
@@ -500,7 +502,7 @@
 }
 
 .根元素标签 {
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: var(--中文代码混合字体);
   font-size: 14px;
   color: var(--深色文本);
   font-weight: 500;
@@ -562,7 +564,7 @@
   color: var(--深色文本);
   border-radius: 6px;
   text-align: center;
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: var(--中文代码混合字体);
   font-size: 14px;
   outline: none;
   transition: border-color 0.2s ease;
@@ -584,7 +586,7 @@
 }
 
 .根元素单位 {
-  font-family: "JetBrains Mono", Consolas, monospace;
+  font-family: var(--中文代码混合字体);
   font-size: 14px;
   color: var(--深色次要文本);
   font-weight: 500;
