@@ -27,6 +27,21 @@ hr {
   color: #626d7d !important;
 }
 
+.hljs-copy-container {
+  transition: 100ms;
+}
+
+.hljs-copy-container[data-autohide="true"] {
+  transform: none;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.hljs-copy-wrapper:hover .hljs-copy-container {
+  visibility: visible;
+  opacity: 1;
+}
+
 .top-banner,
 #公共页脚 {
   box-sizing: border-box;
@@ -138,9 +153,13 @@ body {
   color: lightsteelblue;
 }
 
+tbody > tr:nth-child(odd) {
+  background-color: #fff1;
+}
+
 .笔记区 li,
 .笔记区 p {
-  line-height: 1.75em;
+  line-height: 1.5em;
 }
 
 .笔记区 ul:not(ul ul, ol ul),
@@ -305,7 +324,7 @@ ol ol {
   content: "📰";
   position: absolute;
   top: 50%;
-  translate: -1.65em -50%;
+  translate: -1.65em -57.5%;
   color: #aaa;
   font-size: 16px;
   vertical-align: center;
@@ -466,7 +485,7 @@ table {
 }
 
 table thead {
-  border-bottom: 2px solid #fff4;
+  border-bottom: 2px solid #888;
   color: lightskyblue;
 }
 
@@ -665,8 +684,7 @@ a:visited {
 }
 
 .页脚信息分区链接:hover {
-  background-color: #252a2e;
-  box-shadow: 0 0 0 1px #888;
+  background-color: #2e3438;
   border-radius: 5px;
 }
 
