@@ -81,12 +81,12 @@ body {
 }
 
 .导航条链接 {
-  width: 50px;
+  width: 45px;
   aspect-ratio: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  filter: drop-shadow(2px 2px 2px #000a);
+  filter: drop-shadow(2px 2px 6px #000c);
   transition: scale 200ms;
 }
 
