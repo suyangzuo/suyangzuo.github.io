@@ -127,8 +127,17 @@ body {
 }
 
 .交互页 > h1 {
-  padding: 0 10px;
+  padding: 0 15px;
   color: darkgoldenrod;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.标题-图 {
+  aspect-ratio: 1;
+  height: 30px;
+  object-fit: contain;
 }
 
 .分割线 {
