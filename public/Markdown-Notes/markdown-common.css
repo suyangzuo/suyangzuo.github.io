@@ -168,10 +168,10 @@ tbody > tr:nth-child(odd) {
   padding-left: 1em;
 }
 
-ul ul,
-ol ul,
-ul ol,
-ol ol {
+.笔记区 ul ul,
+.笔记区 ol ul,
+.笔记区 ul ol,
+.笔记区 ol ol {
   padding-left: 1.5em;
 }
 
