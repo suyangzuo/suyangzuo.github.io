@@ -26,6 +26,11 @@ class LengthVisualizer {
     this.isRootFontButtonPressed = false; // 是否正在按住根元素font按钮
     this.rootFontButtonInterval = null; // 连续增减的定时器
 
+    // 父元素font-size相关属性
+    this.parentFontSize = 16; // 默认父元素font-size
+    this.isParentFontButtonPressed = false; // 是否正在按住父元素font按钮
+    this.parentFontButtonInterval = null; // 连续增减的定时器
+
     // 线条位置动画相关属性
     this.isAnimating = false; // 是否正在动画中
     this.animationStartTime = 0; // 动画开始时间
@@ -90,6 +95,22 @@ class LengthVisualizer {
   }
 
   init() {
+    // 先根据当前单位设置font-size控制区的展开状态，
+    // 确保setupCanvas()计算线条位置时能读到展开态高度
+    const fontSizeContainer = document.getElementById("fontSizeControlContainer");
+    const rootFontControl = document.getElementById("rootFontSizeControl");
+    const parentFontControl = document.getElementById("parentFontSizeControl");
+
+    if (this.currentUnit === "rem" || this.currentUnit === "em") {
+      if (fontSizeContainer) fontSizeContainer.classList.add("show");
+      if (rootFontControl) rootFontControl.classList.toggle("show", this.currentUnit === "rem");
+      if (parentFontControl) parentFontControl.classList.toggle("show", this.currentUnit === "em");
+    } else {
+      if (fontSizeContainer) fontSizeContainer.classList.remove("show");
+      if (rootFontControl) rootFontControl.classList.remove("show");
+      if (parentFontControl) parentFontControl.classList.remove("show");
+    }
+
     this.setupCanvas();
     this.setupEventListeners();
     this.updateSliderRange();
@@ -101,14 +122,15 @@ class LengthVisualizer {
       rootFontInput.value = this.rootFontSize;
     }
 
-    // 非rem单位时，确保根元素控制区初始状态是隐藏的；
-    // rem单位时保留updateUnitSelection()已添加的show（刷新恢复选中rem的场景）
-    const rootFontControl = document.getElementById("rootFontSizeControl");
-    if (rootFontControl && this.currentUnit !== "rem") {
-      rootFontControl.classList.remove("show");
+    // 初始化父元素font-size输入框的值
+    const parentFontInput = document.getElementById("parentFontSizeInput");
+    if (parentFontInput) {
+      parentFontInput.value = this.parentFontSize;
     }
 
     this.checkTitleOverlap(); // 检查与交互标题的重叠
+
+    // 初始化控制区最大高度缓存（此时无CSS过渡，offsetHeight是稳定值）
     this.draw();
   }
 
@@ -128,21 +150,8 @@ class LengthVisualizer {
     // 之后所有绘制坐标仍使用CSS像素
     this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
 
-    // 计算线条的垂直位置（交互标题下边界与控制区上边界之间的50%处）
-    const titleElement = document.querySelector(".交互标题");
-    const controlArea = document.querySelector(".控制区");
-    let verticalCenter = this.cssHeight * 0.5; // 默认居中
-
-    if (titleElement && controlArea && this.currentUnit !== "vh") {
-      const titleRect = titleElement.getBoundingClientRect();
-      const controlRect = controlArea.getBoundingClientRect();
-
-      // 计算交互标题下边界与控制区上边界之间的中点
-      const titleBottom = titleRect.bottom;
-      const controlTop = controlRect.top; // 使用真实的控制区位置
-
-      verticalCenter = titleBottom + (controlTop - titleBottom) * 0.5;
-    }
+    // 计算线条的垂直位置（始终按展开态计算，保证控制区高度变化时线条位置不变）
+    const verticalCenter = this.calculateVerticalCenter();
 
     // 初始化线条位置
     if (this.currentUnit === "vw") {
@@ -306,6 +315,9 @@ class LengthVisualizer {
 
     // 根元素font-size控制事件
     this.setupRootFontSizeControls();
+
+    // 父元素font-size控制事件
+    this.setupParentFontSizeControls();
   }
 
   updateUnitSelection() {
@@ -324,35 +336,54 @@ class LengthVisualizer {
       }
     });
 
-    // 显示/隐藏根元素font-size控制区
+    // 显示/隐藏font-size控制容器和内部控制区
+    const fontSizeContainer = document.getElementById("fontSizeControlContainer");
     const rootFontControl = document.getElementById("rootFontSizeControl");
+    const parentFontControl = document.getElementById("parentFontSizeControl");
     // 记录切换前的单位
     if (!this._lastUnit) this._lastUnit = this.currentUnit;
     const oldUnit = this._lastUnit;
     this._lastUnit = this.currentUnit;
 
-    if (rootFontControl) {
-      if (this.currentUnit === "rem") {
+    const isFontSizeUnit = this.currentUnit === "rem" || this.currentUnit === "em";
+    const wasFontSizeUnit = oldUnit === "rem" || oldUnit === "em";
+
+    if (fontSizeContainer) {
+      fontSizeContainer.classList.toggle("show", isFontSizeUnit);
+    }
+    // rem↔em互相切换时，两段式动画：先消失，再出现；其他情况直接用show类
+    const isRemToEm = oldUnit === "rem" && this.currentUnit === "em";
+    const isEmToRem = oldUnit === "em" && this.currentUnit === "rem";
+
+    if (isRemToEm && rootFontControl && parentFontControl) {
+      // rem→em：根元素控制区先消失，父元素控制区再出现
+      rootFontControl.classList.remove("show");
+      rootFontControl.classList.add("slide-down");
+      setTimeout(() => {
+        rootFontControl.classList.remove("slide-down");
+        parentFontControl.classList.add("show");
+      }, 250);
+    } else if (isEmToRem && rootFontControl && parentFontControl) {
+      // em→rem：父元素控制区先消失，根元素控制区再出现
+      parentFontControl.classList.remove("show");
+      parentFontControl.classList.add("slide-down");
+      setTimeout(() => {
+        parentFontControl.classList.remove("slide-down");
         rootFontControl.classList.add("show");
-        if (oldUnit !== "rem") {
-          // 涉及rem切换时，使用跟随控制区的动画
-          this.animateLineFollowControlArea();
-        } else {
-          // 其他单位切换到rem时，使用普通动画
-          this.animateUnitTransition(oldUnit);
-        }
-      } else {
-        rootFontControl.classList.remove("show");
-        if (oldUnit === "rem") {
-          // 从rem切换到其他单位时，使用跟随控制区的动画
-          this.animateLineFollowControlArea();
-        } else {
-          // 其他单位之间切换时，使用普通动画
-          this.animateUnitTransition(oldUnit);
-        }
-      }
+      }, 250);
     } else {
-      // 如果没有根元素控制区，所有切换都使用普通动画
+      if (rootFontControl) {
+        rootFontControl.classList.toggle("show", this.currentUnit === "rem");
+      }
+      if (parentFontControl) {
+        parentFontControl.classList.toggle("show", this.currentUnit === "em");
+      }
+    }
+
+    // 涉及font-size控制区展开/收起时，使用跟随控制区的动画
+    if (isFontSizeUnit !== wasFontSizeUnit) {
+      this.animateLineFollowControlArea();
+    } else {
       this.animateUnitTransition(oldUnit);
     }
 
@@ -407,9 +438,11 @@ class LengthVisualizer {
     lengthValue.textContent = formattedValue;
     lengthUnit.textContent = this.currentUnit;
 
-    // 动态更新rem单位的描述
+    // 动态更新rem/em单位的描述
     if (this.currentUnit === "rem") {
       unitDetails.textContent = `根元素字体大小 (${this.rootFontSize}px)`;
+    } else if (this.currentUnit === "em") {
+      unitDetails.textContent = `父元素字体大小 (${this.parentFontSize}px)`;
     } else {
       unitDetails.textContent = this.units[this.currentUnit].name;
     }
@@ -419,21 +452,7 @@ class LengthVisualizer {
     // 如果正在动画中，不更新位置
     if (this.isAnimating) return;
 
-    // 计算线条的垂直位置（交互标题下边界与控制区上边界之间的50%处）
-    const titleElement = document.querySelector(".交互标题");
-    const controlArea = document.querySelector(".控制区");
-    let verticalCenter = this.cssHeight * 0.5; // 默认居中
-
-    if (titleElement && controlArea && this.currentUnit !== "vh") {
-      const titleRect = titleElement.getBoundingClientRect();
-      const controlRect = controlArea.getBoundingClientRect();
-
-      // 计算交互标题下边界与控制区上边界之间的中点
-      const titleBottom = titleRect.bottom;
-      const controlTop = controlRect.top; // 使用真实的控制区位置
-
-      verticalCenter = titleBottom + (controlTop - titleBottom) * 0.5;
-    }
+    const verticalCenter = this.calculateVerticalCenter();
 
     if (this.currentUnit === "vw") {
       // vw单位：从视口左边缘开始
@@ -476,7 +495,7 @@ class LengthVisualizer {
       case "rem":
         return this.currentValue * this.rootFontSize; // 使用自定义的根元素font-size
       case "em":
-        return this.currentValue * parseFloat(getComputedStyle(document.body).fontSize);
+        return this.currentValue * this.parentFontSize; // 使用自定义的父元素font-size
       case "vw":
         return (this.currentValue / 100) * window.innerWidth;
       case "vh":
@@ -497,7 +516,7 @@ class LengthVisualizer {
       case "rem":
         return maxValue * this.rootFontSize; // 使用自定义的根元素font-size
       case "em":
-        return maxValue * parseFloat(getComputedStyle(document.body).fontSize);
+        return maxValue * this.parentFontSize; // 使用自定义的父元素font-size
       case "vw":
         return (maxValue / 100) * window.innerWidth;
       case "vh":
@@ -517,7 +536,7 @@ class LengthVisualizer {
       case "rem":
         return pixelValue / this.rootFontSize; // 使用自定义的根元素font-size
       case "em":
-        return pixelValue / parseFloat(getComputedStyle(document.body).fontSize);
+        return pixelValue / this.parentFontSize; // 使用自定义的父元素font-size
       case "vw":
         return (pixelValue / window.innerWidth) * 100;
       case "vh":
@@ -994,21 +1013,7 @@ class LengthVisualizer {
   setLineDirection(isHorizontal) {
     this.isHorizontal = isHorizontal;
 
-    // 计算线条的垂直位置（交互标题下边界与控制区上边界之间的50%处）
-    const titleElement = document.querySelector(".交互标题");
-    const controlArea = document.querySelector(".控制区");
-    let verticalCenter = this.cssHeight * 0.5; // 默认居中
-
-    if (titleElement && controlArea && this.currentUnit !== "vh") {
-      const titleRect = titleElement.getBoundingClientRect();
-      const controlRect = controlArea.getBoundingClientRect();
-
-      // 计算交互标题下边界与控制区上边界之间的中点
-      const titleBottom = titleRect.bottom;
-      const controlTop = controlRect.top; // 使用真实的控制区位置
-
-      verticalCenter = titleBottom + (controlTop - titleBottom) * 0.5;
-    }
+    const verticalCenter = this.calculateVerticalCenter();
 
     if (this.currentUnit === "vw") {
       // vw单位：从视口左边缘开始，更好地体现"视口宽度"概念
@@ -1200,6 +1205,13 @@ class LengthVisualizer {
       rootFontInput.value = this.rootFontSize;
     }
 
+    // 重置父元素font-size
+    this.parentFontSize = 16;
+    const parentFontInput = document.getElementById("parentFontSizeInput");
+    if (parentFontInput) {
+      parentFontInput.value = this.parentFontSize;
+    }
+
     // 更新单位选择状态
     this.updateUnitSelection();
 
@@ -1374,6 +1386,147 @@ class LengthVisualizer {
     }
   }
 
+  setupParentFontSizeControls() {
+    const decreaseBtn = document.getElementById("decreaseParentFont");
+    const increaseBtn = document.getElementById("increaseParentFont");
+    const parentFontInput = document.getElementById("parentFontSizeInput");
+    const resetBtn = document.getElementById("resetParentFont");
+
+    if (!decreaseBtn || !increaseBtn || !parentFontInput) return;
+
+    // 减少按钮事件
+    decreaseBtn.addEventListener("mousedown", () => {
+      this.isParentFontButtonPressed = true;
+      this.decreaseParentFontSize();
+      this.startContinuousParentDecrease();
+    });
+
+    increaseBtn.addEventListener("mousedown", () => {
+      this.isParentFontButtonPressed = true;
+      this.increaseParentFontSize();
+      this.startContinuousParentIncrease();
+    });
+
+    // 重置按钮事件
+    if (resetBtn) {
+      resetBtn.addEventListener("click", () => {
+        this.parentFontSize = 16;
+        if (parentFontInput) {
+          parentFontInput.value = this.parentFontSize;
+        }
+        this.updateValueDisplay(); // 更新描述
+        if (!this.isAnimating) {
+          this.updateLinePosition();
+        }
+        this.draw();
+      });
+    }
+
+    // 鼠标释放事件
+    document.addEventListener("mouseup", () => {
+      if (this.isParentFontButtonPressed) {
+        this.isParentFontButtonPressed = false;
+        this.stopContinuousParentChange();
+      }
+    });
+
+    // 鼠标离开按钮事件
+    decreaseBtn.addEventListener("mouseleave", () => {
+      if (this.isParentFontButtonPressed) {
+        this.stopContinuousParentChange();
+      }
+    });
+
+    increaseBtn.addEventListener("mouseleave", () => {
+      if (this.isParentFontButtonPressed) {
+        this.stopContinuousParentChange();
+      }
+    });
+
+    // 数值框输入事件
+    parentFontInput.addEventListener("input", (e) => {
+      const value = parseInt(e.target.value);
+      if (value >= 8 && value <= 32) {
+        this.parentFontSize = value;
+        this.updateValueDisplay(); // 更新描述
+        if (!this.isAnimating) {
+          this.updateLinePosition();
+        }
+        this.draw();
+      }
+    });
+
+    // 数值框失去焦点事件
+    parentFontInput.addEventListener("blur", (e) => {
+      const value = parseInt(e.target.value);
+      if (value < 8) {
+        this.parentFontSize = 8;
+        e.target.value = 8;
+      } else if (value > 32) {
+        this.parentFontSize = 32;
+        e.target.value = 32;
+      }
+      this.updateValueDisplay(); // 更新描述
+      if (!this.isAnimating) {
+        this.updateLinePosition();
+      }
+      this.draw();
+    });
+  }
+
+  decreaseParentFontSize() {
+    if (this.parentFontSize > 8) {
+      this.parentFontSize--;
+      const parentFontInput = document.getElementById("parentFontSizeInput");
+      if (parentFontInput) {
+        parentFontInput.value = this.parentFontSize;
+      }
+      this.updateValueDisplay(); // 更新描述
+      if (!this.isAnimating) {
+        this.updateLinePosition();
+      }
+      this.draw();
+    }
+  }
+
+  increaseParentFontSize() {
+    if (this.parentFontSize < 32) {
+      this.parentFontSize++;
+      const parentFontInput = document.getElementById("parentFontSizeInput");
+      if (parentFontInput) {
+        parentFontInput.value = this.parentFontSize;
+      }
+      this.updateValueDisplay(); // 更新描述
+      if (!this.isAnimating) {
+        this.updateLinePosition();
+      }
+      this.draw();
+    }
+  }
+
+  startContinuousParentDecrease() {
+    this.parentFontButtonInterval = setInterval(() => {
+      if (this.isParentFontButtonPressed) {
+        this.decreaseParentFontSize();
+      }
+    }, 100); // 每100ms减少一次
+  }
+
+  startContinuousParentIncrease() {
+    this.parentFontButtonInterval = setInterval(() => {
+      if (this.isParentFontButtonPressed) {
+        this.increaseParentFontSize();
+      }
+    }, 100); // 每100ms增加一次
+  }
+
+  stopContinuousParentChange() {
+    if (this.parentFontButtonInterval) {
+      clearInterval(this.parentFontButtonInterval);
+      this.parentFontButtonInterval = null;
+    }
+  }
+
   // 开始线条位置动画
   startLineAnimation(targetPos) {
     // 记录动画开始位置
@@ -1450,23 +1603,23 @@ class LengthVisualizer {
     }
   }
 
-  // 计算目标位置但不立即应用
-  calculateTargetPosition() {
-    // 计算线条的垂直位置（交互标题下边界与控制区上边界之间的50%处）
-    const titleElement = document.querySelector(".交互标题");
-    const controlArea = document.querySelector(".控制区");
-    let verticalCenter = this.cssHeight * 0.5; // 默认居中
-
-    if (titleElement && controlArea && this.currentUnit !== "vh") {
-      const titleRect = titleElement.getBoundingClientRect();
-      const controlRect = controlArea.getBoundingClientRect();
-
-      // 计算交互标题下边界与控制区上边界之间的中点
-      const titleBottom = titleRect.bottom;
-      const controlTop = controlRect.top; // 使用真实的控制区位置
-
-      verticalCenter = titleBottom + (controlTop - titleBottom) * 0.5;
+  // 计算Canvas绘制的垂直中心位置
+  // 不读DOM，用纯CSS常量推算，避免刷新时浏览器恢复表单状态导致布局时序不确定
+  // 控制区: fixed, bottom:20px, padding:20px, border:2px
+  // 展开态高度 = 40(选择区+margin) + 36(滑块组) + 10(margin) + 135(font-size控制区) + 40+4 = 265
+  calculateVerticalCenter() {
+    if (this.currentUnit === "vh") {
+      return this.cssHeight * 0.5;
     }
+    // 展开态控制区顶部 = 视口高度 - 20(bottom) - 265(展开态总高度)
+    const expandedControlTop = this.cssHeight - 20 - 265;
+    // 交互标题底部 ≈ 150（标题在展示区上方，留出适当空间）
+    const titleBottom = 150;
+    return titleBottom + (expandedControlTop - titleBottom) * 0.5;
+  }
+
+  calculateTargetPosition() {
+    const verticalCenter = this.calculateVerticalCenter();
 
     let targetPos = { x1: 0, y1: 0, x2: 0, y2: 0 };
 
@@ -1489,10 +1642,11 @@ class LengthVisualizer {
     } else if (["px", "rem", "em", "ch"].includes(this.currentUnit)) {
       // px、rem、em、ch单位：居中显示
       const maxPixelValue = this.getMaxPixelValue();
+      const startX = (this.cssWidth - maxPixelValue) / 2;
       targetPos = {
-        x1: (this.cssWidth - maxPixelValue) / 2,
+        x1: startX,
         y1: verticalCenter,
-        x2: (this.cssWidth - maxPixelValue) / 2 + this.getPixelValue(),
+        x2: startX + this.getPixelValue(),
         y2: verticalCenter,
       };
     } else if (this.isHorizontal) {
@@ -1811,7 +1965,7 @@ class LengthVisualizer {
         unitValue = pixelLength / this.rootFontSize;
         break;
       case "em":
-        unitValue = pixelLength / parseFloat(getComputedStyle(document.body).fontSize);
+        unitValue = pixelLength / this.parentFontSize;
         break;
       case "ch":
         unitValue = pixelLength / 8; // 近似值

@@ -21,7 +21,7 @@
   --深色边框: #444;
   --深色卡片背景: #2d2d2d;
   --深色文本: #e0e0e0;
-  --深色次要文本: #aaa;
+  --深色次要文本: gray;
   --深色悬停背景: #3a3a3a;
 
   --中文代码混合字体: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
@@ -245,40 +245,46 @@
   text-align: left;
 }
 
-/* 单位说明区域 */
+/* 单位说明区域 - 独立fixed定位到视口右下角 */
 .单位说明区 {
-  margin-top: 20px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  margin: 0;
   padding: 15px;
-  background: var(--深色卡片背景);
-  border-left: 4px solid var(--选中单位颜色);
+  background: #1e1e1e;
+  /* border: 2px solid var(--深色边框); */
+  /* border-left: 4px solid var(--选中单位颜色); */
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   overflow-y: auto;
-  min-width: 600px; /* 确保有足够的宽度 */
+  max-height: calc(100vh - 240px);
+  width: 280px;
+  z-index: 9999;
 }
 
 .单位说明标题 {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
-  color: var(--深色文本);
-  margin-bottom: 12px;
-  padding-left: 5px;
   color: white;
+  margin-bottom: 10px;
+  padding-left: 2px;
 }
 
 .单位说明内容 {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--深色次要文本);
-  line-height: 1.6;
-  width: 1200px;
+  line-height: 1.5;
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .unit-item {
   display: flex;
   flex-direction: column;
-  width: calc(50% - 5px);
-  padding: 8px 10px;
+  width: 100%;
+  padding: 6px 8px;
   background: rgba(255, 255, 255, 0.05);
   border-left: 3px solid transparent;
   transition: all 0.3s ease;
@@ -302,13 +308,14 @@
   font-weight: 600;
   display: flex;
   align-items: center;
-  margin-bottom: 5px;
+  gap: 4px;
+  margin-bottom: 3px;
 }
 
 .unit-item .unit-description {
   text-wrap: nowrap;
   color: var(--深色次要文本);
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.4;
 }
 
@@ -316,8 +323,9 @@
   font-family: "JetBrains Mono", Consolas, monospace;
   color: var(--选中单位颜色);
   font-weight: 600;
-  font-size: 15px;
-  margin-right: 5px;
+  font-size: 13px;
+  width: 24px;
+  margin-right: 4px;
   text-align: right;
 }
 
@@ -400,14 +408,11 @@
     left: -70px;
   }
 
-  /* 响应式单位说明区域 */
+  /* 响应式单位说明区域 - 中屏缩小宽度 */
   .单位说明区 {
-    min-width: auto;
-    max-width: 100%;
-  }
-
-  .unit-item {
-    width: 100%;
+    width: 220px;
+    bottom: 10px;
+    right: 10px;
   }
 }
 
@@ -447,19 +452,9 @@
     font-size: 10px;
   }
 
-  /* 响应式单位说明区域 */
+  /* 小屏隐藏单位说明区，避免与控制区重叠 */
   .单位说明区 {
-    min-width: auto;
-    padding: 10px;
-  }
-
-  .unit-item {
-    width: 100%;
-    padding: 6px;
-  }
-
-  .unit-item .unit-description {
-    font-size: 12px;
+    display: none;
   }
 }
 
@@ -473,8 +468,25 @@
   opacity: 0.25;
 }
 
+/* font-size控制容器 - 包裹根元素/父元素控制区，两者绝对定位叠加 */
+.font-size控制容器 {
+  position: relative;
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  transition: height 250ms ease-out;
+}
+
+.font-size控制容器.show {
+  height: 135px;
+}
+
 /* 根元素font-size控制区样式 */
 .根元素控制区 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -483,22 +495,28 @@
   background: var(--深色卡片背景);
   border: 2px solid var(--深色边框);
   border-radius: 8px;
-  transition: all 250ms ease-out;
+  transition: opacity 250ms ease-out, transform 250ms ease-out;
   opacity: 0;
+  transform: translateY(24px);
   overflow: hidden;
   pointer-events: none;
-  margin-top: 0;
+  margin: 0;
   padding: 15px;
-  margin-bottom: 0;
   padding-top: 0;
   padding-bottom: 0;
-  height: 0;
+  height: 135px;
 }
 
 .根元素控制区.show {
   opacity: 1;
+  transform: translateY(0);
   pointer-events: auto;
-  height: 135px;
+}
+
+/* 向下消失（当前控制区退出） */
+.根元素控制区.slide-down {
+  opacity: 0;
+  transform: translateY(24px);
 }
 
 .根元素标签 {
@@ -614,6 +632,155 @@
 }
 
 .根元素重置按钮:active {
+  transform: scale(0.95);
+}
+
+/* 父元素font-size控制区样式 */
+.父元素控制区 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+  background: var(--深色卡片背景);
+  border: 2px solid var(--深色边框);
+  border-radius: 8px;
+  transition: opacity 250ms ease-out, transform 250ms ease-out;
+  opacity: 0;
+  transform: translateY(24px);
+  overflow: hidden;
+  pointer-events: none;
+  margin: 0;
+  padding: 15px;
+  padding-top: 0;
+  padding-bottom: 0;
+  height: 135px;
+}
+
+.父元素控制区.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* 向下消失（当前控制区退出） */
+.父元素控制区.slide-down {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.父元素标签 {
+  font-family: var(--中文代码混合字体);
+  font-size: 14px;
+  color: var(--深色文本);
+  font-weight: 500;
+}
+
+.父元素文本 {
+  color: var(--深色文本);
+  margin-right: 2px;
+}
+
+.父元素数值组 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.父元素按钮 {
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--深色边框);
+  background: var(--深色卡片背景);
+  color: var(--深色文本);
+  border-radius: 6px;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.父元素按钮:hover {
+  border-color: var(--单位悬停颜色);
+  background: var(--深色悬停背景);
+  color: var(--单位悬停颜色);
+}
+
+.父元素按钮:active {
+  transform: scale(0.95);
+}
+
+.父元素按钮.减少按钮 {
+  color: #ff6b6b;
+}
+
+.父元素按钮.增加按钮 {
+  color: #4ecdc4;
+}
+
+.父元素数值框 {
+  width: 60px;
+  height: 32px;
+  border: 2px solid var(--深色边框);
+  background: var(--深色卡片背景);
+  color: var(--深色文本);
+  border-radius: 6px;
+  text-align: center;
+  font-family: var(--中文代码混合字体);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.父元素数值框:focus {
+  border-color: var(--选中单位颜色);
+}
+
+/* 去掉原生增减按钮 */
+.父元素数值框::-webkit-outer-spin-button,
+.父元素数值框::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.父元素数值框[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.父元素单位 {
+  font-family: var(--中文代码混合字体);
+  font-size: 14px;
+  color: var(--深色次要文本);
+  font-weight: 500;
+}
+
+.父元素重置按钮 {
+  margin-top: 5px;
+  padding: 6px 12px;
+  border: 2px solid var(--深色边框);
+  background: var(--深色卡片背景);
+  color: var(--深色文本);
+  border-radius: 6px;
+  cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+  font-family: var(--中文代码混合字体);
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.父元素重置按钮:hover {
+  border-color: var(--单位悬停颜色);
+  background: var(--深色悬停背景);
+  color: var(--单位悬停颜色);
+}
+
+.父元素重置按钮:active {
   transform: scale(0.95);
 }
 
