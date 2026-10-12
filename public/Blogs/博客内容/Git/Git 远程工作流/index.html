@@ -186,7 +186,14 @@
       <span class="行内专业名词">克隆</span>远程仓库
     </h3>
     <p class="分区普通文本">
-      如果你的电脑上没有相应的本地仓库，那就要先克隆远程仓库；如果已有相应的本地仓库，则只需要拉取即可。首先要得到远程仓库的地址：
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <span class="专业名词">电脑<span class="强调">没有</span>本地仓库</span>：将远程仓库克隆到本地。
+      </li>
+      <li class="分区列表项">
+        <span class="专业名词">电脑<span class="强调">已有</span>本地仓库</span>：无需克隆，直接拉取<span class="次要">/</span>推送。
+      </li>
+    </ul>
     </p>
     <p class="分区普通文本">想要克隆远程仓库，首先要得到远程仓库的地址：</p>
     <figure class="截图容器">
@@ -236,10 +243,8 @@
           <span class="分区普通文本">通过克隆得到的文件夹中有隐藏的<span class="行内专业名词">.git</span>子文件夹。</span>
         </li>
       </ul>
-      <p>
-        如果只是对一个 GitHub
-        项目好奇，想自己研究研究，下载即可。如果想要正式参与此项目的开发，就必须克隆。
-      </p>
+      <p>如果只是对一个 GitHub
+        项目好奇，想自己研究研究，下载即可。如果想要正式参与此项目的开发，就必须克隆。</p>
     </section>
     <p class="分区普通文本">
       克隆之后，使用<span class="代码">git log</span>和<span class="代码">git status</span>进行检查。
@@ -258,24 +263,46 @@
       出现提示：<span class="行内专业名词">在<span class="专业名词">main</span>分支上，没有任何提交，也没有什么可提交的。</span>说明工作区也是空的。接下来我们就要往工作区添加一些文件。
     </p>
 
-    <h3 class="分区标题 分区3级标题">
-      进入<span class="行内专业名词">本地工作流</span>
-    </h3>
+    <h3 class="分区标题 分区3级标题">为远程仓库添加名称</h3>
     <p class="分区普通文本">
-      既然远程仓库被克隆到了本地，接下来就是在本地进行更改、暂存、提交了<span class="附加说明">具体内容可查看<span class="行内专业名词">Git 本地工作流</span></span>。这就是<span
-        class="专业名词">分布式</span>版本控制系统的强大之处：每个人在各自的电脑上处理自己的本地更改<span class="附加说明">本地工作流完全无需联网</span>，再将自己的更改推送到统一的远程仓库。
+      假设这是远程仓库的地址：<span
+        class="行内专业名词">https://github.com/suyangzuo/test.git</span>，每次推送都要用到，但是这个网址太长太难记，写起来也很不方便，因此，我们要为远程仓库地址添加名称。
     </p>
+    <pre>
+      <code class="lang-bash">
+        git remote add 远程仓库名称 远程仓库地址  #远程仓库名称是自定义的，用得比较多的是"origin"
+      </code>
+    </pre>
     <figure class="截图容器">
-      <img src="/Images/Blogs/Git/Git 远程工作流/Git-本地初始提交.png" alt="Git 初始提交" />
+      <img src="/Images/Blogs/Git/Git 远程工作流/Git-添加远程仓库别名.gif" alt="Git 添加远程仓库别名" />
     </figure>
     <p class="分区普通文本">
-      在本地新增了 3 个文件，包含一个名为<span class="行内专业名词">README.md</span>的<span class="专业名词">Markdown</span>文档。并将这些更改进行了提交，这是本地仓库的第
-      1
-      次提交，因此附加信息写了<span class="行内专业名词">初始提交</span>。
+      为远程仓库地址添加了名称：<span class="专业名词">origin</span>。这个名称可以起自己喜欢的，只是<span class="行内专业名词">origin</span>用得比较广泛。
     </p>
     <p class="分区普通文本">
-      完成本地工作后，就要将本地提交推送到远程仓库；推送之前，我们还要做一些准备工作。
+      仔细观察截图，会发现添加名称后给了一条提示：<span class="代码">错误：远程<span
+          class="行内专业名词">origin</span>已存在</span>。为什么会出现这个错误？因为你的仓库是从远程仓库<span
+        class="行内专业名词">克隆</span>过来的，而远程仓库在创建时，会自动把名称也添加好<span class="附加说明">就叫<span class="行内专业名词">origin</span></span>。
     </p>
+    <section class="提醒">
+      <h3 class="提醒标题">何时需要为远程仓库地址添加名称？</h3>
+      <ul class="分区列表">
+        <li class="分区列表项">
+          <span class="行内专业名词">第<span class="行内专业名词 等宽">1</span>次提交是在<span
+              class="强调">远程</span>仓库完成</span>：不用添加名称，因为远程仓库创建时已经添加好了。
+        </li>
+        <li class="分区列表项">
+          <span class="行内专业名词">第<span class="行内专业名词 等宽">1</span>次提交是在<span class="强调">本地</span>仓库完成</span>：需要添加名称。
+        </li>
+      </ul>
+    </section>
+    <p class="分区普通文本">
+      可以使用<span class="代码">-v</span>参数来查看远程仓库名称和地址的对应关系：
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Git/Git 远程工作流/Git-远程别名和远程仓库地址.gif" alt="Git 远程仓库别名和地址" />
+    </figure>
+    <p class="分区普通文本">哪个名称对应哪个地址，清清楚楚。</p>
 
     <h3 class="分区标题 分区3级标题">
       <span class="行内专业名词">推送<span class="代码">push</span></span><span class="附加说明" style="font-size: 0.75em">本地
@@ -283,148 +310,83 @@
     </h3>
     <section class="提醒">
       <h3 class="提醒标题">何时需要推送 ？</h3>
-      <p>
-        推送的目的：<span class="行内专业名词">推送</span>是为了<span class="强调">保证远程仓库和本地仓库是一致的</span>。
-      </p>
-      <p>
-        本地仓库的提交，要推送到远程仓库，方可保持一致。当然，可以多次提交后再推送。
-      </p>
+      <p>推送的目的：<span class="行内专业名词">推送</span>是为了保证<span class="强调">远程</span>仓库和<span class="强调">本地</span>仓库是<span
+          class="强调">一致</span>的。</p>
+      <p>本地仓库的提交，要推送到远程仓库，方可保持一致。当然，可以多次提交后再推送。</p>
     </section>
-    <ol class="分区列表 有序列表">
+    <ul class="分区列表">
       <li class="分区列表项">
-        为远程仓库添加<span class="专业名词">别名</span>
-        <div class="有序列表项缩进区">
-          <p class="分区普通文本">
-            这是远程仓库的 https 地址：<span
-              class="行内专业名词">https://github.com/suyangzuo/test.git</span>，每次推送都要用到，但是这个网址太长太难记，写起来也很不方便，因此，我们要为远程仓库地址添加别名。
-          </p>
-          <figure class="截图容器">
-            <img src="/Images/Blogs/Git/Git 远程工作流/Git-添加远程仓库别名.gif" alt="Git 添加远程仓库别名" />
-          </figure>
-          <p class="分区普通文本">
-            为远程仓库地址添加了别名：<span class="专业名词">origin</span>。这个名称可以起自己喜欢的，只是<span class="行内专业名词">origin</span>用得比较广泛。
-          </p>
-          <p class="分区普通文本">
-            仔细观察截图，会发现添加别名后给了一条提示：<span class="代码">错误：远程<span
-                class="行内专业名词">origin</span>已存在</span>。为什么会出现这个错误？因为你的仓库是从远程仓库<span
-              class="行内专业名词">克隆</span>过来的，而远程仓库在创建时，会自动把别名也添加好<span class="附加说明">就叫<span
-                class="行内专业名词">origin</span></span>。
-          </p>
-          <section class="提醒">
-            <h3 class="提醒标题">何时需要为远程仓库地址添加别名？</h3>
-            <ul class="分区列表">
-              <li class="分区列表项">
-                <span class="行内专业名词">仓库是从远程创建的</span>：不用添加别名，因为远程仓库创建时已经添加好了。
-              </li>
-              <li class="分区列表项">
-                <span class="行内专业名词">仓库是从本地创建的</span>：需要添加别名。
-              </li>
-            </ul>
-          </section>
-          <p class="分区普通文本">
-            可以添加<span class="代码">-v</span>参数来查看远程别名和远程地址的对应关系：
-          </p>
-          <figure class="截图容器">
-            <img src="/Images/Blogs/Git/Git 远程工作流/Git-远程别名和远程仓库地址.gif" alt="Git 远程仓库别名和地址" />
-          </figure>
-          <p class="分区普通文本">哪个别名对应哪个地址，清清楚楚。</p>
-        </div>
+        <p class="分区普通文本">
+          <span class="行内专业名词">第<span class="代码">1</span>次推送</span>：需要将远程仓库的名称与本地仓库的分支名称建立关联。
+        </p>
+        <pre>
+          <code class="lang-bash">
+            git push -u 远程仓库名称 本地分支名称
+          </code>
+        </pre>
+        <figure class="截图容器">
+          <img src="/Images/Blogs/Git/Git 远程工作流/git-push-u.gif" alt="git push -u origin main" />
+        </figure>
+        <p class="分区普通文本">运行命令后，会看到类似的文本。这就表示推送成功了！</p>
+        <p class="分区普通文本">如果<span class="强调">失败</span>，会看到些许不同的信息：</p>
+        <figure class="截图容器">
+          <img src="/Images/Blogs/Git/Git 远程工作流/GitHub-推送失败.png" alt="GitHub 推送失败" />
+        </figure>
+        <p class="分区普通文本">红框中的错误信息，说明推送时跟远程服务器失去了连接，此时就要再次推送。</p>
       </li>
       <li class="分区列表项">
-        查看本地分支与远程分支的对应关系
-        <div class="有序列表项缩进区">
-          <p class="分区普通文本">
-            Git 最强大的功能莫过于<span class="专业名词">分支<span class="附加说明">详情请看<span class="行内专业名词">Git
-                  分支</span></span></span>。虽然目前只有一个分支<span
-              class="行内专业名词">main</span>，但依然要确定本地分支和远程分支的对应关系，也就是本地的哪个分支对应远程的哪个分支。
-          </p>
-          <p class="分区普通文本">
-            <span class="代码">git branch</span>命令可以处理与分支有关的操作，加上<span class="代码">-vv</span>参数就能查看本地和远程的对应关系。
-          </p>
+        <p class="分区普通文本">
+          <span class="行内专业名词">第<span class="代码">2+</span>次推送</span>：远程仓库的名称与本地仓库的分支名称已建立关联。
+        </p>
+        <pre>
+          <code class="lang-bash">
+            git push  #关联已建立，则无需再用"-u"参数进行建立
+          </code>
+        </pre>
+      </li>
+    </ul>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <ul class="分区列表">
+        <li class="分区列表项">
+          <p class="分区普通文本" style="padding: 0">本地远程关系是否已对应，可用<span class="代码">git branch -vv</span>进行查看。</p>
           <figure class="截图容器">
             <img src="/Images/Blogs/Git/Git 远程工作流/git-branch-vv.gif" alt="git branch -vv" />
           </figure>
-          <p class="分区普通文本">
+          <p class="分区普通文本" style="padding-bottom: 10px">
             绿色的<span class="专业名词">main</span>代表本地<span class="行内专业名词">main</span>分支，深蓝色的<span
               class="专业名词">origin/main</span>代表远程仓库的<span class="行内专业名词">main</span>分支。这样的对应关系是正确的。
           </p>
-          <section class="提醒">
-            <h3 class="提醒标题">提醒</h3>
-            <p>
-              本地分支和对应的远程分支名称能否不同？应该可以，但强烈建议别这么做，这会引起巨大的歧义和麻烦，尤其是多人合作背景下，名称不同更是兵家大忌。
-            </p>
-            <p>
-              <span class="强调">注意</span>：如果是从远程克隆过来的仓库，会自动将<span class="专业名词">本地<span
-                  class="行内专业名词">main</span></span>和<span class="专业名词">远程<span
-                  class="行内专业名词">main</span></span>对应好。<span
-                class="强调">但是</span>：如果是直接在本地创建的仓库，就需要手动添加对应关系了，只需要在第一次推送时添加几个额外参数就行。
-            </p>
-          </section>
-        </div>
-      </li>
-      <li class="分区列表项">
-        <span class="行内专业名词">推送</span><span class="附加说明">本地仓库
-          <i style="color: gold" class="fa-solid fa-angles-right"></i>
-          远程仓库</span>
-        <div class="有序列表项缩进区">
-          <ul class="分区列表">
-            <li class="分区列表项">
-              <span class="行内专业名词">本地与远程关系<span class="强调">已</span>对应</span>：<span class="代码">git push</span>
-            </li>
-            <li class="分区列表项">
-              <span class="行内专业名词">本地与远程关系<span class="强调">未</span>对应</span>：<span class="代码">git push -u origin
-                main</span>
-            </li>
-          </ul>
-          <section class="提醒">
-            <h3 class="提醒标题">提醒</h3>
-            <ul class="分区列表">
-              <li class="分区列表项">
-                本地远程关系是否已对应，用<span class="代码">git branch -vv</span>进行查看。
-              </li>
-              <li class="分区列表项">
-                只要运行 1 次<span class="代码">git push -u origin main</span>，<span class="行内专业名词">本地 main 分支</span>就会和<span
-                  class="行内专业名词">远程 main 分支</span>对应，以后的推送只需要<span class="代码">git push</span>即可。
-              </li>
-              <li class="分区列表项">
-                即使本地远程关系已对应，再次运行<span class="代码">git push -u origin main</span>也无伤大雅。
-              </li>
-              <li class="分区列表项">
-                假如本地添加了新分支，那<span class="代码">-u</span>参数就必须再用 1 次。比如：本地添加了<span
-                  class="专业名词">dev</span>分支，初次推送此分支，必须使用<span class="代码">git push -u origin dev</span>。
-              </li>
-            </ul>
-          </section>
-          <figure class="截图容器">
-            <img src="/Images/Blogs/Git/Git 远程工作流/git-push-u.gif" alt="git push -u origin main" />
-          </figure>
-          <p class="分区普通文本">
-            运行命令后，会看到类似的文本。这就表示推送成功了！
+        </li>
+        <li class="分区列表项" style="margin-top: 0">
+          只要运行 1 次<span class="代码">git push -u origin main</span>，<span class="行内专业名词">本地 main 分支</span>就会和<span
+            class="行内专业名词">远程 main 分支</span>对应，以后的推送只需要<span class="代码">git push</span>即可。
+        </li>
+        <li class="分区列表项">
+          假如本地添加了新分支，那<span class="代码">-u</span>参数就必须再用 1 次。比如：本地添加了<span class="专业名词">dev</span>分支，初次推送此分支，必须使用<span
+            class="代码">git push -u origin dev</span>。
+        </li>
+        <li class="分区列表项">
+          <p>
+            本地分支和对应的远程分支名称能否不同？应该可以，但强烈建议别这么做，这会引起巨大的歧义和麻烦，尤其是多人合作背景下，名称不同更是兵家大忌。
           </p>
-          <p class="分区普通文本">
-            如果<span class="强调">失败</span>，会看到些许不同的信息：
+          <p>
+            <span class="强调">注意</span>：如果是从远程克隆的<span class="强调">非空</span>仓库，会自动将<span class="专业名词">本地分支</span>和<span
+              class="专业名词">远程分支</span>对应好。<span class="强调">但是</span>：如果是直接在本地创建的仓库，就需要手动添加对应关系了，只需要在第一次推送时添加几个额外参数就行。
           </p>
-          <figure class="截图容器">
-            <img src="/Images/Blogs/Git/Git 远程工作流/GitHub-推送失败.png" alt="GitHub 推送失败" />
-          </figure>
-          <p class="分区普通文本">
-            红框中的错误信息，说明推送时跟远程服务器失去了连接，此时就要再次推送。
-          </p>
-        </div>
-      </li>
-      <li class="分区列表项">
-        刷新远程仓库页面
-        <div class="有序列表项缩进区">
-          <figure class="截图容器">
-            <img src="/Images/Blogs/Git/Git 远程工作流/GitHub-推送成功.png" alt="git 有内容的仓库主页面" />
-          </figure>
-          <p class="分区普通文本">
-            远程仓库页面焕然一新，上方是项目文件列表，下方则是由 GitHub
-            自动解析的 README.md 文档内容。
-          </p>
-        </div>
-      </li>
-    </ol>
+        </li>
+      </ul>
+    </section>
+    <p class="分区普通文本">
+      推送完成后，刷新远程仓库页面，观察结果：
+    </p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Git/Git 远程工作流/GitHub-推送成功.png" alt="git 有内容的仓库主页面" />
+    </figure>
+    <p class="分区普通文本">
+      远程仓库页面焕然一新，上方是项目文件列表，下方则是由 GitHub
+      自动解析的 README.md 文档内容。
+    </p>
 
     <h3 class="分区标题 分区3级标题">
       <span class="行内专业名词">拉取<span class="代码">pull</span></span><span class="附加说明" style="font-size: 0.75em">本地
