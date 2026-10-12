@@ -2226,6 +2226,14 @@ pre::-webkit-scrollbar-thumb:hover {
   visibility: hidden;
 }
 
+pre .token.block-comment,
+pre .token.cdata,
+pre .token.comment,
+pre .token.doctype,
+pre .token.prolog {
+  color: #666;
+}
+
 pre[class*="language-"] {
   border-radius: 10px;
   /* background: linear-gradient(315deg, #424e59 0%, #36434f 74%) !important; */
