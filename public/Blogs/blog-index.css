@@ -26,7 +26,7 @@
     "Jetbrains Mono", "Google Sans Code", "Segoe UI Emoji", "Noto Sans SC", 微软雅黑, sans-serif !important;
   --分区列表项-字体颜色: #9ab;
   --已激活章节标题-字体颜色: rgb(129, 206, 129) !important;
-  --正文字体: "Google Sans Flex", "Segoe UI Emoji", "Noto Sans SC", 微软雅黑, sans-serif;
+  --正文字体: "Inter", "Segoe UI Emoji", "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 html {
@@ -1038,7 +1038,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   padding: 0 10px;
   font-size: 1rem;
   color: rgb(255, 255, 255);
-  font-family: "Titillium Web", "Noto Sans SC", sans-serif;
+  font-family: "Inter", "Noto Sans SC", sans-serif;
   font-weight: 600;
   display: flex;
   justify-content: flex-start;
@@ -1129,7 +1129,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .专题-内容 {
-  font-family: "Noto Sans SC", sans-serif, "Noto Sans Mono", monospace;
+  font-family: "Inter", "Noto Sans SC", sans-serif;
   display: flex;
   align-items: center;
   overflow-x: hidden;
@@ -1150,7 +1150,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 
 .专题-内容 .专题内名词,
 .专题-内容 .行内专业名词 {
-  font-family: "Fira Sans", "Noto Sans SC", sans-serif;
+  font-family: "Inter", "Noto Sans SC", sans-serif;
   color: #5e7ccb;
   font-weight: 500;
 }
@@ -1214,7 +1214,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .超链接 {
-  font-family: "Fira Sans", "Noto Sans SC", sans-serif;
+  font-family: "Inter", "Noto Sans SC", 微软雅黑, sans-serif;
   color: var(--超链接颜色-正文);
   margin: 0 3px;
   text-decoration: underline;
@@ -1282,10 +1282,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .简介标题 {
-  font-family:
-    “Fira Sans”,
-    "Noto Sans SC",
-    sans-serif;
+  font-family: "Inter", "Noto Sans SC", 微软雅黑, sans-serif;
   font-size: 2.25rem;
   letter-spacing: 1px;
   display: flex;
@@ -1383,7 +1380,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 .日期文本 {
   color: rgb(131, 150, 175);
   /* color: rgb(106, 132, 209); */
-  font-family: "Google Sans Code", "Noto Sans SC", sans-serif;
+  font-family: "Google Sans Code", "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 .日期文本-数字 {
@@ -1523,7 +1520,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .标题序号-2级 {
-  font-family: "Google Sans Code", monospace;
+  font-family: "Google Sans Code", Consolas, monospace;
   font-size: 0.65em;
   display: inline-flex;
   justify-content: center;
@@ -1557,7 +1554,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .标题序号-3级 {
-  font-family: "Google Sans Code", monospace;
+  font-family: "Google Sans Code", Consolas, monospace;
   font-size: 0.65em;
   display: inline-flex;
   justify-content: center;
@@ -1761,19 +1758,14 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   justify-content: center;
   align-items: center;
   gap: 15px;
-  font-family:
-    "Google Sans Code",
-    "JetBrains Mono" "Consolas",
-    "Noto Sans SC",
-    微软雅黑,
-    sans-serif;
+  font-family: "Google Sans Code", "JetBrains Mono", "Consolas", "Noto Sans SC", 微软雅黑, sans-serif;
   color: #abc;
 }
 
 .截图序号 {
   color: #ccc;
   font-size: 15px;
-  font-family: "Google Sans Code", "Consolas", sans-serif;
+  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 .行内截图序号 {
@@ -1800,7 +1792,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   padding: 2px 5px;
   margin: 0 0.25em;
   font-size: 0.925em;
-  font-family: "JetBrains Mono", "Ubuntu Mono", "Noto Sans SC", sans-serif;
+  font-family: "JetBrains Mono", "Google Sans Code", "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 .专业名词.亮 {
@@ -1859,12 +1851,12 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .等宽 {
-  font-family: "Google Sans Code", "Consolas", "Noto Sans SC", sans-serif;
+  font-family: "Google Sans Code", "Consolas", "Noto Sans SC", 微软雅黑, sans-serif;
   font-size: 0.95em;
 }
 
 .专题内名词.等宽 {
-  font-family: "Google Sans Code", "Fira Sans", "Noto Sans SC", sans-serif;
+  font-family: "Google Sans Code", "Fira Sans", "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 .行内代码 {
