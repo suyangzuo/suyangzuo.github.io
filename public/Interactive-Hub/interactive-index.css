@@ -14,6 +14,10 @@
   --数据结构与算法-垂直偏移: 0px;
   --Canvas-水平偏移: 0px;
   --Canvas-垂直偏移: 0px;
+  --Git-水平偏移: 0px;
+  --Git-垂直偏移: 0px;
+  --正则表达式-水平偏移: 0px;
+  --正则表达式-垂直偏移: 0px;
 }
 
 html {
@@ -196,6 +200,16 @@ body {
 .Canvas交互列表 .四角线框 {
   left: calc(var(--Canvas-水平偏移) - var(--四角线框间隙));
   top: calc(var(--Canvas-垂直偏移) - var(--四角线框间隙));
+}
+
+.Git交互列表 .四角线框 {
+  left: calc(var(--Git-水平偏移) - var(--四角线框间隙));
+  top: calc(var(--Git-垂直偏移) - var(--四角线框间隙));
+}
+
+.正则表达式交互列表 .四角线框 {
+  left: calc(var(--正则表达式-水平偏移) - var(--四角线框间隙));
+  top: calc(var(--正则表达式-垂直偏移) - var(--四角线框间隙));
 }
 
 .交互单项 {
