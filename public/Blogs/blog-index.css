@@ -24,7 +24,7 @@
   --font-awesome-字体集: "Font Awesome 7 Free", ui-rounded;
   --代码块字体集:
     "Jetbrains Mono", "Google Sans Code", "Segoe UI Emoji", "Noto Sans SC", 微软雅黑, sans-serif !important;
-  --分区列表项-字体颜色: #9ab;
+  --分区列表项-字体颜色: #8a949d;
   --已激活章节标题-字体颜色: rgb(129, 206, 129) !important;
   --正文字体: "Inter", "Segoe UI Emoji", "Noto Sans SC", 微软雅黑, sans-serif;
 }
@@ -1599,6 +1599,10 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   line-height: 1.5em;
 }
 
+.分区列表项 > h4 {
+  color: lightskyblue;
+}
+
 .分区列表项 > .分区列表 {
   margin-top: 5px;
 }
@@ -1775,7 +1779,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 
 .截图描述 {
   font-size: 14px;
-  padding: 5px 16px;
+  padding: 2px 16px;
   border-radius: 99px;
   background-color: #0007;
   display: flex;

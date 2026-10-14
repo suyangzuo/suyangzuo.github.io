@@ -10,11 +10,16 @@
       </p>
       <p class="日期">
         <span class="日期前缀 前缀">日期：</span>
-        <span class="日期文本">待定</span>
+        <span class="日期文本"
+          ><span class="日期文本-数字 日期文本-年">2026</span>年<span class="日期文本-数字 日期文本-月">10</span>月<span
+            class="日期文本-数字 日期文本-日"
+            >14</span
+          >日</span
+        >
       </p>
     </section>
     <section class="简介信息图像">
-      <img src="/Images/Contributors/Extreme Hunter.jpg" alt="苏扬" />
+      <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
     </section>
   </div>
   <ul class="联系方式列表">
@@ -65,6 +70,251 @@
 </article>
 <div class="专题正文区">
   <article class="正文分区">
-    <h2 class="分区标题 分区2级标题"><span class="行内专业名词">Git</span>本地工作流简介</h2>
+    <h2 class="分区标题 分区2级标题">分支简介</h2>
+
+    <h3 class="分区标题 分区3级标题">分支的用途</h3>
+    <p class="分区普通文本">
+      试想一下，如果你有个规模较大的项目，需要十几个人一起合作，这些人对代码的修改该如何处理？<span
+        class="行内专业名词 等宽"
+        >a</span
+      >修改了代码，发到<span class="行内专业名词">QQ群</span>，然后其余的人下载？那这个<span class="行内专业名词"
+        >QQ群</span
+      >每天可热闹了，比如<span class="行内专业名词 等宽">f</span>下载了群里<span class="行内专业名词 等宽">c</span
+      >上传的代码，然而<span class="行内专业名词 等宽">f</span>怎么能确定这个代码包含了哪些修改呢？<span
+        class="行内专业名词 等宽"
+        >c</span
+      >上传的代码是否曾经被<span class="行内专业名词 等宽">e</span
+      >修改过？如何追溯？如何管理？这对于开发者来说简直就是管理地狱！我们需要一个专业的版本控制系统！而<span
+        class="行内专业名词"
+        >Git</span
+      >就是其中的佼佼者。
+    </p>
+    <p class="分区普通文本">
+      <span class="行内专业名词">Git</span
+      >分支是版本控制的核心能力，它通过轻量的独立提交指针设计，从根本上解决了传统开发中的协作混乱、风险不可控等核心问题。
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <h4>🚀 实现高效并行开发</h4>
+        <span
+          >多人可同时在各自分支开发不同功能，互不干扰，无需等待他人工作完成；新功能开发、紧急Bug修复、版本迭代可多条时间线同步推进，大幅提升团队开发效率。</span
+        >
+      </li>
+      <li class="分区列表项">
+        <h4>️🛡️ 实现严格风险隔离</h4>
+        <span
+          >主分支<span class="专业名词 等宽">main<span class="次要">/</span>master</span
+          >始终保留稳定可上线的代码，未完成的新功能、实验性代码完全不会污染主分支；线上出现紧急问题时，可拉出独立分支快速修复，无需中断当前正在进行的新功能开发。</span
+        >
+      </li>
+      <li class="分区列表项">
+        <h4>️👥 支撑规范团队协作</h4>
+        <span
+          >每个人的修改都在独立分支中管理，从根源上避免多人直接修改同一处代码导致的冲突问题，天然适配代码合并、审核等协作流程，让每一次修改都可追溯、可审核。</span
+        >
+      </li>
+      <li class="分区列表项">
+        <h4>️⚡ 极低的性能开销</h4>
+        <span
+          >分支只是一个指向提交记录的指针，仅占用几十字节存储空间，几乎零开销，切换分支的本质只是移动<span
+            class="行内专业名词 等宽"
+            >HEAD</span
+          >指针，速度极快，无需复制完整代码副本。</span
+        >
+      </li>
+      <li class="分区列表项">
+        <h4>️📌 灵活的版本回溯能力</h4>
+        <span
+          >每个分支都保留完整独立的提交历史，出现问题时可快速定位、精准回滚，不会打乱整体开发节奏；支持基于不同分支维护多个发布版本，方便对历史版本进行补丁迭代</span
+        >
+      </li>
+    </ul>
+
+    <h3 class="分区标题 分区3级标题">分支的本质</h3>
+    <p class="分区普通文本">
+      分支其实就是一个<span class="行内专业名词">指针</span>，指向提交记录。而<span class="行内专业名词">当前分支</span
+      ><span class="附加说明">称为<span class="行内代码">HEAD</span></span
+      >也是一个指针，指向<span class="行内专业名词">分支</span>。因此，切换分支其实就是在<span class="强调"
+        >移动<span class="行内代码">HEAD</span>指针</span
+      >，在不同的分支之间切换，这也是为何切换分支如此之快的根本原因。
+    </p>
+    <figure class="截图容器" data-desc="HEAD 所指就是当前分支">
+      <img style="background-color: #111" src="/Images/Blogs/Git/Git 分支/Git分支.png" alt="git 分支" />
+    </figure>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">分支操作</h2>
+
+    <h3 class="分区标题 分区3级标题">查看分支</h3>
+    <pre>
+      <code class="lang-bash">
+        git branch     #查看本地分支
+        git branch -r  #查看远程分支
+        git branch -a  #查看所有分支
+      </code>
+    </pre>
+    <figure class="截图容器" data-desc="查看分支">
+      <img style="background-color: #111" src="/Images/Blogs/Git/Git 分支/git-branch.png" alt="git branch" />
+    </figure>
+    <p class="分区普通文本">
+      分支名称前面的<span class="行内专业名词 等宽">*</span>表示<span class="行内专业名词">当前分支</span>。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">创建分支</h3>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <h4>直接在本地创建</h4>
+        <pre>
+          <code class="lang-bash">
+            #如果"分支名称"已存在，会弹出错误提示
+            git branch 分支名称  #创建分支，但是不切换
+          </code>
+        </pre>
+        <figure class="截图容器" data-desc="创建分支">
+          <img style="background-color: #111" src="/Images/Blogs/Git/Git 分支/创建分支.png" alt="git branch 分支名称" />
+        </figure>
+        <p class="分区普通文本">虽然在本地创建了<span class="行内专业名词 等宽">bugfix</span>分支，但是：</p>
+        <ul class="分区列表">
+          <li class="分区列表项">当前分支依然是<span class="行内专业名词 等宽">main</span></li>
+          <li class="分区列表项">远程分支并没有<span class="行内专业名词 等宽">bugfix</span>，因为尚未推送。</li>
+        </ul>
+      </li>
+      <li class="分区列表项">
+        <h4>️以远程分支创建本地分支</h4>
+        <pre>
+          <code class="lang-bash">
+            git switch -c 本地分支名称 origin/远程分支名称  #创建+切换
+
+            #或者
+
+            git branch 本地分支名称 origin/远程分支名称  #创建
+            git switch 本地分支名称  #切换
+          </code>
+        </pre>
+        <figure class="截图容器" data-desc="以远程分支创建本地分支">
+          <img src="/Images/Blogs/Git/Git 分支/以远程分支创建本地分支.png" alt="以远程分支创建本地分支" />
+        </figure>
+        <p class="分区普通文本">
+          在本地创建了一个和远程分支同步的分支<span class="行内专业名词 等宽">feature</span>并切换到了该分支。
+        </p>
+      </li>
+    </ul>
+
+    <h3 class="分区标题 分区3级标题">切换分支</h3>
+    <pre>
+      <code class="lang-bash">
+        git switch 分支名称
+        git switch -c 分支名称  #创建分支的同时切换过去
+      </code>
+    </pre>
+    <figure class="截图容器" data-desc="切换分支">
+      <img style="background-color: #111" src="/Images/Blogs/Git/Git 分支/切换分支.png" alt="git switch 分支名称" />
+    </figure>
+    <p class="分区普通文本">运行命令后，当前分支变成了<span class="行内专业名词 等宽">bugfix</span>。</p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p>在本地创建新分支后，如果需要推送到远程仓库，则首次推送时，需要运行以下命令：</p>
+      <pre>
+        <code class="lang-bash">
+          #仅首次推送分支时，需要 "-u 远程仓库名称 本地分支名称" 这部分
+          git push -u 远程仓库名称 本地分支名称
+        </code>
+      </pre>
+      <figure class="截图容器" data-desc="本地分支首次推送到远程仓库">
+        <img src="/Images/Blogs/Git/Git 分支/新分支首次推送.png" alt="git push -u 远程仓库名称 本地分支名称" />
+      </figure>
+      <p>推送后，远程仓库也出现了<span class="行内专业名词 等宽">bugfix</span>分支。</p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">删除分支</h3>
+    <pre>
+      <code class="lang-bash">
+        git branch -d 本地分支名称  #删除已合并的分支
+        git branch -D 本地分支名称  #强制删除未合并的本地分支，慎用！！！
+        git push origin --delete 远程分支名称  #删除远程分支
+        git fetch -p  #删除本地对远程分支的引用，最后执行
+      </code>
+    </pre>
+    <section class="提醒">
+      <h3 class="提醒标题">不能自己删除自己</h3>
+      <p>
+        如果当前分支是<span class="行内专业名词 等宽">bugfix</span>，则无法删除<span class="行内专业名词 等宽"
+          >bugfix</span
+        >分支，必须先切换到别的分支。
+      </p>
+      <figure class="截图容器" data-desc="当前分支删除自身">
+        <img src="/Images/Blogs/Git/Git 分支/当前分支删除自己.png" alt="当前分支删除自身" />
+      </figure>
+      <p>无法删除，报错信息为：<span class="强调">无法删除正在被工作树使用的分支</span>。</p>
+    </section>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <h4><span class="强调">未完全合并</span>，正常删除报错</h4>
+        <figure class="截图容器" data-desc="提交后未合并，正常删除报错">
+          <img src="/Images/Blogs/Git/Git 分支/提交后未合并删除报错.png" alt="提交后未合并，正常删除报错" />
+        </figure>
+        <p class="分区普通文本">报错信息为：</p>
+        <ul class="分区列表">
+          <li
+            class="分区列表项"
+            style="
+              color: white;
+              font-family:
+                &quot;Google Sans Code&quot;, &quot;JetBrains Mono&quot;, Consolas, &quot;Noto Sans SC&quot;, 微软雅黑,
+                sans-serif;
+            "
+          >
+            错误：分支 'bugfix' 未完全合并
+          </li>
+          <li
+            class="分区列表项"
+            style="
+              color: #ecac62;
+              font-family:
+                &quot;Google Sans Code&quot;, &quot;JetBrains Mono&quot;, Consolas, &quot;Noto Sans SC&quot;, 微软雅黑,
+                sans-serif;
+            "
+          >
+            提示：如果你确定要删除，运行 'git branch -D bugfix'
+          </li>
+          <li
+            class="分区列表项"
+            style="
+              color: #ecac62;
+              font-family:
+                &quot;Google Sans Code&quot;, &quot;JetBrains Mono&quot;, Consolas, &quot;Noto Sans SC&quot;, 微软雅黑,
+                sans-serif;
+            "
+          >
+            提示：运行 "git config set device.forceDeleteBranch false" 可屏蔽此提示
+          </li>
+        </ul>
+      </li>
+      <li class="分区列表项">
+        <h4>️<span class="强调">已完全合并</span>，正常删除</h4>
+        <section class="提醒">
+          <h3 class="提醒标题">什么是<span class="强调">完全合并</span></h3>
+          <p class="分区普通文本 等宽" style="padding: 10px 0">
+            完全合并 <span class="行内专业名词">=</span> 推送到远程分支
+            <span class="行内代码">+</span> 合并到本地其它分支
+          </p>
+          <p class="分区普通文本" style="padding: 10px 0">
+            <span class="强调">注意</span>：本地其它分支不一定是主分支，也可以是别的分支。
+          </p>
+          <p class="分区普通文本" style="padding: 10px 0">经过完全合并，代表此分支所做的修改在本地和远程都已经同步。</p>
+        </section>
+        <figure class="截图容器" data-desc="完全合并 ➔ 正常删除">
+          <img src="/Images/Blogs/Git/Git 分支/完全合并后可正常删除本地分支.png" alt="完全合并，正常删除" />
+        </figure>
+      </li>
+      <li class="分区列表项">
+        <h4>️<span class="强调">删除远程分支</span></h4>
+        <figure class="截图容器" data-desc="删除远程分支">
+          <img src="/Images/Blogs/Git/Git 分支/删除远程分支.png" alt="删除远程分支" />
+        </figure>
+        <p class="分区普通文本">删除后，远程仓库已经没有<span class="行内专业名词 等宽">bugfix</span>分支了。</p>
+      </li>
+    </ul>
   </article>
 </div>
