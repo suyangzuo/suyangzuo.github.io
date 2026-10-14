@@ -789,8 +789,8 @@ input[type="number"]::-webkit-inner-spin-button {
 
 #关闭对话框-摘要层,
 #关闭对话框-详情层 {
-  width: 125px;
-  height: 60px;
+  width: 100px;
+  height: 50px;
   border-radius: 5px;
   background-color: #234;
   color: white;
@@ -1041,7 +1041,7 @@ input[type="number"]::-webkit-inner-spin-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 2px;
   text-align: center;
   font-size: 14px;
   position: relative;
@@ -1087,7 +1087,7 @@ input[type="number"]::-webkit-inner-spin-button {
   color: #9ab;
   font-size: 12px;
   font-weight: 600;
-  padding: 2px 6px;
+  padding: 2px;
   border-radius: 3px;
   cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
   transition: all 100ms ease;
@@ -1152,7 +1152,6 @@ input[type="number"]::-webkit-inner-spin-button {
 .正确次数 {
   color: #4caf50;
   font-weight: 500;
-  margin-right: 8px;
 }
 
 .正确数字,

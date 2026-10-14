@@ -1384,8 +1384,8 @@ function 生成详情() {
   平均用时列标题.innerHTML = `
     <span>平均用时</span>
     <div class="排序按钮组">
-      <button class="排序按钮 升序" data-field="平均用时" data-order="asc" title="升序"><i class="fa-solid fa-up-long"></i></button>
-      <button class="排序按钮 降序" data-field="平均用时" data-order="desc" title="降序"><i class="fa-solid fa-down-long"></i></button>
+      <button class="排序按钮 升序" data-field="平均用时" data-order="asc" title="升序"><i class="fa-solid fa-angle-up"></i></button>
+      <button class="排序按钮 降序" data-field="平均用时" data-order="desc" title="降序"><i class="fa-solid fa-angle-down"></i></button>
     </div>
   `;
 
@@ -1395,8 +1395,8 @@ function 生成详情() {
   最快用时列标题.innerHTML = `
     <span>最快用时</span>
     <div class="排序按钮组">
-      <button class="排序按钮 升序" data-field="最快用时" data-order="asc" title="升序"><i class="fa-solid fa-up-long"></i></button>
-      <button class="排序按钮 降序" data-field="最快用时" data-order="desc" title="降序"><i class="fa-solid fa-down-long"></i></button>
+      <button class="排序按钮 升序" data-field="最快用时" data-order="asc" title="升序"><i class="fa-solid fa-angle-up"></i></button>
+      <button class="排序按钮 降序" data-field="最快用时" data-order="desc" title="降序"><i class="fa-solid fa-angle-down"></i></button>
     </div>
   `;
 
@@ -1406,8 +1406,8 @@ function 生成详情() {
   最慢用时列标题.innerHTML = `
     <span>最慢用时</span>
     <div class="排序按钮组">
-      <button class="排序按钮 升序" data-field="最慢用时" data-order="asc" title="升序"><i class="fa-solid fa-up-long"></i></button>
-      <button class="排序按钮 降序" data-field="最慢用时" data-order="desc" title="降序"><i class="fa-solid fa-down-long"></i></button>
+      <button class="排序按钮 升序" data-field="最慢用时" data-order="asc" title="升序"><i class="fa-solid fa-angle-up"></i></button>
+      <button class="排序按钮 降序" data-field="最慢用时" data-order="desc" title="降序"><i class="fa-solid fa-angle-down"></i></button>
     </div>
   `;
 
@@ -1470,7 +1470,7 @@ function 生成功能数据行() {
     正确次数容器.className = "正确次数";
     const 正确符号 = document.createElement("span");
     正确符号.className = "正确符号";
-    正确符号.textContent = "✓";
+    正确符号.innerHTML = '<i class="fa-solid fa-square-check"></i>';
     const 正确数字 = document.createElement("span");
     正确数字.className = "正确数字";
     正确数字.textContent = 正确次数.toString();
@@ -1481,7 +1481,7 @@ function 生成功能数据行() {
     错误次数容器.className = "错误次数";
     const 错误符号 = document.createElement("span");
     错误符号.className = "错误符号";
-    错误符号.textContent = "✕";
+    错误符号.innerHTML = '<i class="fa-solid fa-square-xmark"></i>';
     const 错误数字 = document.createElement("span");
     错误数字.className = "错误数字";
     错误数字.textContent = 错误次数.toString();
