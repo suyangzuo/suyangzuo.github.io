@@ -1601,6 +1601,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 
 .分区列表项 > h4 {
   color: lightskyblue;
+  font-weight: normal;
 }
 
 .分区列表项 > .分区列表 {
