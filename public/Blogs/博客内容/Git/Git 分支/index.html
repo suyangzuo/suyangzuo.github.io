@@ -353,5 +353,31 @@
         <p class="分区普通文本">删除后，远程仓库已经没有<span class="行内专业名词 等宽">bugfix</span>分支了。</p>
       </li>
     </ul>
+
+    <h3 class="分区标题 分区3级标题">一次性推送所有分支</h3>
+    <p class="分区普通文本">
+      假设有多个分支要推送到远程仓库，不需要一个个切换再<span class="代码">git push</span>，用<span class="代码"
+        >git push --all</span
+      >即可。
+    </p>
+    <figure class="截图容器" data-desc="一次性推送所有分支">
+      <img src="/Images/Blogs/Git/Git 分支/git-push-all.png" alt="一次性推送所有分支" />
+    </figure>
+    <p class="分区普通文本">
+      推送完成后，如能看到红框内的信息，代表推送成功，所有本地分支都已经成功推送到对应的远程分支。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p>
+        即使本地分支与远程分支没有建立关联，甚至远程分支不存在，<span class="代码">git push --all</span
+        >也能成功推送。这条命令的含义为：如果远程分支不存在，就创建一个与本地分支同名的远程分支。
+      </p>
+      <p class="分区普通文本">
+        <span class="强调">注意</span>：<span class="代码">git push --all</span
+        ><span class="强调">不会建立本地分支与远程分支的关联</span>。因此，如果创建了新分支，并且是<span class="强调"
+          >首次推送</span
+        >，强烈建议使用<span class="代码">git push -u 远程仓库名称 本地分支名称</span>的方式建立关联。
+      </p>
+    </section>
   </article>
 </div>
