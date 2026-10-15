@@ -160,6 +160,24 @@
     <p class="分区普通文本">
       分支名称前面的<span class="行内专业名词 等宽">*</span>表示<span class="行内专业名词">当前分支</span>。
     </p>
+    <p class="分区普通文本">
+      除了查看分支名称外，还可以查看重要的额外信息，如：分支最近一次提交的<span class="行内专业名词">检验码</span
+      >、<span class="行内专业名词">提交说明</span>、<span class="行内专业名词">本地分支与远程分支的关联</span>。
+    </p>
+    <pre>
+      <code class="lang-bash">
+        git branch -v   #查看本地分支最近一次提交的校验码、提交说明
+        git branch -vv  #同上，同时查看本地分支与远程分支的关联
+      </code>
+    </pre>
+    <figure class="截图容器" data-desc="查看分支的信息">
+      <img style="background-color: #111" src="/Images/Blogs/Git/Git 分支/git-branch-v-vv.png" alt="git branch" />
+    </figure>
+    <p class="分区普通文本">
+      <span class="代码">git branch -vv</span>可以查看本地分支与远程分支的关联，从图中可知，<span class="行内代码"
+        >bugfix</span
+      >分支并未与远程分支关联，需要用<span class="代码">git push -u origin bugfix</span>建立关联。
+    </p>
 
     <h3 class="分区标题 分区3级标题">创建分支</h3>
     <ul class="分区列表">
@@ -184,11 +202,11 @@
         <h4>️以远程分支创建本地分支</h4>
         <pre>
           <code class="lang-bash">
-            git switch -c 本地分支名称 origin/远程分支名称  #创建+切换
+            git switch -c 本地分支名称 远程仓库名称/远程分支名称  #创建+切换
 
             #或者
 
-            git branch 本地分支名称 origin/远程分支名称  #创建
+            git branch 本地分支名称 远程仓库名称/远程分支名称  #创建
             git switch 本地分支名称  #切换
           </code>
         </pre>
@@ -226,6 +244,25 @@
       </figure>
       <p>推送后，远程仓库也出现了<span class="行内专业名词 等宽">bugfix</span>分支。</p>
     </section>
+
+    <h3 class="分区标题 分区3级标题">合并分支</h3>
+    <p class="分区普通文本">
+      分支的主要功能，是为了开发其它功能或者修复bug时不影响主干；但是在功能开发完毕，或者bug修复完成后，要把成果合并到主干。不仅如此，当项目较大，由多人合作时，分支合并的情况更加复杂。
+    </p>
+    <pre>
+      <code class="lang-bash">
+        #将分支b合并到分支a ➔ 确保当前分支是a，然后合并b
+        git switch a  #如当前分支已经是a，则无需切换
+        git merge b   #将分支b合并到分支a
+      </code>
+    </pre>
+    <figure class="截图容器" data-desc="合并分支">
+      <img style="background-color: #111" src="/Images/Blogs/Git/Git 分支/git-merge.webp" alt="合并分支" />
+    </figure>
+    <p class="分区普通文本">
+      我先切换到<span class="行内专业名词 等宽">main</span>分支，然后将<span class="行内专业名词 等宽">bugfix</span
+      >分支合并到<span class="行内专业名词 等宽">main</span>分支。
+    </p>
 
     <h3 class="分区标题 分区3级标题">删除分支</h3>
     <pre>

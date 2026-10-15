@@ -1764,6 +1764,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   gap: 15px;
   font-family: "Google Sans Code", "JetBrains Mono", "Consolas", "Noto Sans SC", 微软雅黑, sans-serif;
   color: #abc;
+  line-height: initial;
 }
 
 .截图序号 {
@@ -1779,7 +1780,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 
 .截图描述 {
   font-size: 14px;
-  padding: 2px 16px;
+  padding: 8px 16px;
   border-radius: 99px;
   background-color: #0007;
   display: flex;
