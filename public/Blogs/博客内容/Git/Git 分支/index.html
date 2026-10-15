@@ -248,6 +248,64 @@
       >分支合并到<span class="行内专业名词 等宽">main</span>分支。
     </p>
 
+    <h3 class="分区标题 分区3级标题">
+      <span class="行内专业名词">合并</span><span class="次要" style="margin: 0">与</span
+      ><span class="行内专业名词">变基</span>
+    </h3>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <h4>️合并</h4>
+        <figure class="截图容器" data-desc="合并">
+          <img style="background-color: #111" src="/Images/Blogs/Git/Git 分支/合并与变基-git-merge.webp" alt="合并" />
+        </figure>
+        <p class="分区普通文本">
+          合并不会改变<span class="强调">提交的基础</span>，<span class="行内专业名词 等宽">main</span>分支<span
+            class="强调"
+            >独有</span
+          >的提交<span class="代码">添加了log.txt</span>的<span class="强调"
+            >基础<span class="代码">初始提交</span>没有改变</span
+          >，但是会生成一条额外的<span class="强调">合并提交</span>。
+        </p>
+        <figure class="截图容器" data-desc="合并后查看提交记录">
+          <img style="background-color: #111" src="/Images/Blogs/Git/Git 分支/git-log-合并后.png" alt="git log" />
+        </figure>
+        <p class="分区普通文本">
+          合并会生成一条额外的<span class="强调">合并提交</span>，其默认信息为<span class="代码"
+            >Merge branch '合并分支名称'</span
+          >，问题是，从这条信息你根本搞不清楚合并过来的分支到底做了哪些工作。
+        </p>
+      </li>
+      <li class="分区列表项">
+        <h4>️变基</h4>
+        <pre>
+          <code class="lang-bash">
+            #变基是一种特殊的合并
+            git rebase 被合并分支
+          </code>
+        </pre>
+        <figure class="截图容器" data-desc="合并">
+          <img style="background-color: #111" src="/Images/Blogs/Git/Git 分支/合并与变基-git-rebase.webp" alt="变基" />
+        </figure>
+        <p class="分区普通文本">
+          变基会改变<span class="强调">提交的基础</span>，<span class="行内专业名词 等宽">main</span>分支<span
+            class="强调"
+            >独有</span
+          >的提交<span class="代码">添加了log.txt</span>的<span class="强调">基础</span>变成了<span
+            class="行内专业名词 等宽"
+            >feature</span
+          >分支最新的提交<span class="代码">添加了切换分支标题</span>。
+        </p>
+        <figure class="截图容器" data-desc="变基后查看提交记录">
+          <img style="background-color: #111" src="/Images/Blogs/Git/Git 分支/git-log-变基后.png" alt="git log" />
+        </figure>
+        <p class="分区普通文本">
+          变基不会生成额外的提交，其本质是找到两个分支的共同祖先，再将<span class="行内专业名词">被合并分支</span
+          >插入到共同祖先与<span class="行内专业名词 等宽">合并分支</span
+          >的独有提交记录之间，最终使得提交树看上去非常干净。
+        </p>
+      </li>
+    </ul>
+
     <h3 class="分区标题 分区3级标题">删除分支</h3>
     <pre>
       <code class="lang-bash">
