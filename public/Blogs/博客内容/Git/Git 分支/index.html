@@ -229,6 +229,32 @@
       <p>推送后，远程仓库也出现了<span class="行内专业名词 等宽">bugfix</span>分支。</p>
     </section>
 
+    <h3 class="分区标题 分区3级标题">修改分支名称</h3>
+    <pre>
+      <code class="lang-bash">
+        #修改当前分支名称
+        git branch -m 新名称
+
+        #修改任意分支名称
+        git branch -m 旧名称 新名称
+      </code>
+    </pre>
+    <figure class="截图容器" data-desc="修改分支名称">
+      <img style="background-color: #111" src="/Images/Blogs/Git/Git 分支/git-branch-m.png" alt="修改分支名称" />
+    </figure>
+    <p class="分区普通文本">
+      修改本地分支名称后，远程分支名称并未变动，且二者的关联依然保留。我们往往希望本地和远程相关联的分支能够同名，操作步骤如下：
+    </p>
+    <pre>
+      <code class="lang-bash">
+        # 1. 删除远程旧名分支
+        git push 远程仓库名称 --delete 远程分支旧名
+
+        # 2. 推送本地新名分支，并且和远程同名分支建立关联
+        git push -u 远程仓库名称 本地分支新名
+      </code>
+    </pre>
+
     <h3 class="分区标题 分区3级标题">合并分支</h3>
     <p class="分区普通文本">
       分支的主要功能，是为了开发其它功能或者修复bug时不影响主干；但是在功能开发完毕，或者bug修复完成后，要把成果合并到主干。不仅如此，当项目较大，由多人合作时，分支合并的情况更加复杂。
