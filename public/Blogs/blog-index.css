@@ -1604,6 +1604,11 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   font-weight: normal;
 }
 
+.有序列表 > .分区列表项 > h4 {
+  display: inline-flex;
+  align-items: center;
+}
+
 .分区列表项 > .分区列表 {
   margin-top: 5px;
 }
@@ -1676,7 +1681,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   border-radius: 3em;
   margin-right: 0.5em;
   background-color: #222;
-  box-shadow: inset 0 1px 0 1px #555;
+  box-shadow: inset 0 1px 0 1px #666;
   color: silver;
   translate: 0 -0.075em;
 }

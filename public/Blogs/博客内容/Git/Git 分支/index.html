@@ -245,34 +245,116 @@
     </figure>
     <p class="分区普通文本">
       我先切换到<span class="行内专业名词 等宽">main</span>分支，然后将<span class="行内专业名词 等宽">bugfix</span
-      >分支合并到<span class="行内专业名词 等宽">main</span>分支。
+      >分支合并到<span class="行内专业名词 等宽">main</span
+      >分支。然而，并非每次合并都像图中这么简单，根据分支的情况，一般会有两种形式的合并：<span class="专业名词"
+        >快进合并</span
+      >和<span class="专业名词">三路合并</span>。
     </p>
+    <section class="提醒">
+      <h3 class="提醒标题"><span class="专业名词">快进合并</span>和<span class="专业名词">三路合并</span>的产生原因</h3>
+      <p class="分区普通文本">
+        假设有两个分支：<span class="行内专业名词 等宽">main</span>和<span class="行内专业名词 等宽">feature</span
+        >，它们都有共同的祖先提交：<span class="代码">初始提交</span>。
+      </p>
+      <ul class="分区列表">
+        <li class="分区列表项">
+          <h4><span class="专业名词">快进合并</span>产生的原因</h4>
+          <figure class="截图容器" data-desc="快进合并产生的原因">
+            <img
+              style="background-color: #111"
+              src="/Images/Blogs/Git/Git 分支/共同祖先-仅1个分支进行提交.webp"
+              alt="共同祖先-仅1个分支进行提交"
+            />
+          </figure>
+          <p class="分区普通文本">
+            在共同祖先提交<span class="附加说明">初始提交</span>的基础上，只有<span class="行内专业名词 等宽"
+              >feature</span
+            >进行了后续提交，无论提交多少次，整个提交记录都是<span class="强调">单线</span
+            >，这种情况下进行合并就是快进合并。
+          </p>
+          <figure class="截图容器" data-desc="快进合并">
+            <img style="background-color: #111" src="/Images/Blogs/Git/Git 分支/快进合并.webp" alt="快进合并" />
+          </figure>
+          <p class="分区普通文本">
+            快进合并只需要把<span class="行内专业名词 等宽">main</span>指针移动到和<span class="行内专业名词 等宽"
+              >feature</span
+            >指针相同的位置即可，快进合并是合并中最简单、最快的一种情况，这种情况<span class="强调">无需变基</span>。
+          </p>
+        </li>
+        <li class="分区列表项">
+          <h4><span class="专业名词">三路合并</span>产生的原因</h4>
+          <figure class="截图容器" data-desc="三路合并产生的原因">
+            <img
+              style="background-color: #111"
+              src="/Images/Blogs/Git/Git 分支/三路合并产生原因.png"
+              alt="三路合并产生的原因"
+            />
+          </figure>
+          <p class="分区普通文本">
+            每个分支在共同祖先的基础上都有自己的<span class="强调">独特提交</span
+            >，此时，整个提交树不再是一条直线，<span class="强调">无法实现</span
+            ><span class="行内专业名词">快进合并</span>。这种情况下，我们有两种选择：
+          </p>
+          <ol class="分区列表 有序列表">
+            <li class="分区列表项"><h4>三路合并</h4></li>
+            <li class="分区列表项"><h4>变基</h4></li>
+          </ol>
+          <p class="分区普通文本">
+            具体做法可查看<span class="专业名词 等宽">2<span class="次要">-</span>5</span>章节。
+          </p>
+        </li>
+      </ul>
+    </section>
 
     <h3 class="分区标题 分区3级标题">
-      <span class="行内专业名词">合并</span><span class="次要" style="margin: 0">与</span
+      <span class="行内专业名词">三路合并</span><span class="次要" style="margin: 0">与</span
       ><span class="行内专业名词">变基</span>
     </h3>
     <ul class="分区列表">
       <li class="分区列表项">
-        <h4>️合并</h4>
-        <figure class="截图容器" data-desc="合并">
-          <img style="background-color: #111" src="/Images/Blogs/Git/Git 分支/合并与变基-git-merge.webp" alt="合并" />
+        <h4>️三路合并</h4>
+        <p class="分区普通文本" style="padding-bottom: 0">三路是哪三路？</p>
+        <figure class="截图容器" data-desc="三路的含义">
+          <img style="background-color: #111" src="/Images/Blogs/Git/Git 分支/三路的含义.png" alt="三路的含义" />
         </figure>
         <p class="分区普通文本">
-          合并不会改变<span class="强调">提交的基础</span>，<span class="行内专业名词 等宽">main</span>分支<span
+          三路分别是：<span class="行内专业名词">共同祖先提交</span>、<span class="行内专业名词"
+            >被合并分支最近的独特提交</span
+          >、<span class="行内专业名词">合并分支最近的独特提交</span>。进行三路合并时，如果只使用<span class="代码"
+            >git merge 被合并分支名称</span
+          >，会打开文本编辑器，让你填写合并提交信息。如果不想自己写，可以使用<span class="代码"
+            >git merge 被合并分支名称 --no-edit</span
+          >，这样会自动填写默认的合并提交信息。
+        </p>
+        <figure class="截图容器" data-desc="三路合并">
+          <img
+            style="background-color: #111"
+            src="/Images/Blogs/Git/Git 分支/合并与变基-git-merge.webp"
+            alt="三路合并"
+          />
+        </figure>
+        <p class="分区普通文本">
+          三路合并不会改变<span class="强调">独有提交的基础</span>，<span class="行内专业名词 等宽">main</span>分支<span
             class="强调"
             >独有</span
           >的提交<span class="代码">添加了log.txt</span>的<span class="强调"
             >基础<span class="代码">初始提交</span>没有改变</span
           >，但是会生成一条额外的<span class="强调">合并提交</span>。
         </p>
-        <figure class="截图容器" data-desc="合并后查看提交记录">
-          <img style="background-color: #111" src="/Images/Blogs/Git/Git 分支/git-log-合并后.png" alt="git log" />
+        <figure class="截图容器" data-desc="三路合并后查看提交记录">
+          <img
+            style="background-color: #111"
+            src="/Images/Blogs/Git/Git 分支/git-log-合并后.png"
+            alt="三路合并后查看提交记录"
+          />
         </figure>
         <p class="分区普通文本">
-          合并会生成一条额外的<span class="强调">合并提交</span>，其默认信息为<span class="代码"
+          三路合并会生成一条额外的<span class="强调">合并提交</span>，其默认信息为<span class="代码"
             >Merge branch '合并分支名称'</span
-          >，问题是，从这条信息你根本搞不清楚合并过来的分支到底做了哪些工作。
+          >，问题是，从这条信息你根本搞不清楚合并过来的分支到底做了哪些工作，因此，在三路合并过程中，建议不要使用<span
+            class="代码"
+            >--no-edit</span
+          >选项，而是自己填写必要的合并提交信息。
         </p>
       </li>
       <li class="分区列表项">
@@ -283,11 +365,11 @@
             git rebase 被合并分支
           </code>
         </pre>
-        <figure class="截图容器" data-desc="合并">
+        <figure class="截图容器" data-desc="变基">
           <img style="background-color: #111" src="/Images/Blogs/Git/Git 分支/合并与变基-git-rebase.webp" alt="变基" />
         </figure>
         <p class="分区普通文本">
-          变基会改变<span class="强调">提交的基础</span>，<span class="行内专业名词 等宽">main</span>分支<span
+          变基会改变<span class="强调">独有提交的基础</span>，<span class="行内专业名词 等宽">main</span>分支<span
             class="强调"
             >独有</span
           >的提交<span class="代码">添加了log.txt</span>的<span class="强调">基础</span>变成了<span
