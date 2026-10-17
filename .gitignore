@@ -1,5 +1,6 @@
 .env
 .DS_Store
+**/AGENTs.md
 **/.idea/
 **/.vscode/
 **/.VSCodeCounter/

@@ -1,7 +1,6 @@
 <article class="专题简介">
   <h1 class="简介标题">
-    <span><span class="简介标题内名词 左">Git</span>冲突</span
-    ><span class="原创">原创</span>
+    <span><span class="简介标题内名词 左">Git</span>冲突</span><span class="原创">原创</span>
   </h1>
   <div class="简介信息">
     <section class="简介信息文本">
@@ -11,11 +10,16 @@
       </p>
       <p class="日期">
         <span class="日期前缀 前缀">日期：</span>
-        <span class="日期文本">待定</span>
+        <span class="日期文本"
+          ><span class="日期文本-数字 日期文本-年">2026</span>年<span class="日期文本-数字 日期文本-月">10</span>月<span
+            class="日期文本-数字 日期文本-日"
+            >17</span
+          >日</span
+        >
       </p>
     </section>
     <section class="简介信息图像">
-      <img src="/Images/Contributors/Extreme Hunter.jpg" alt="苏扬" />
+      <img src="/Images/Contributors/苏扬.jpg" alt="苏扬" />
     </section>
   </div>
   <ul class="联系方式列表">
@@ -25,67 +29,260 @@
       </a>
     </li>
     <li class="联系方式项">
-      <a
-        class="联系方式链接"
-        href="https://github.com/suyangzuo"
-        target="_blank"
+      <a class="联系方式链接" href="https://github.com/suyangzuo" target="_blank"
         ><i class="fa-brands fa-github"></i
       ></a>
     </li>
     <li class="联系方式项">
-      <a
-        class="联系方式链接"
-        href="https://www.deviantart.com/suyangzuo"
-        target="_blank"
+      <a class="联系方式链接" href="https://www.deviantart.com/suyangzuo" target="_blank"
         ><i class="fa-brands fa-deviantart"></i
       ></a>
     </li>
     <li class="联系方式项">
-      <a class="联系方式链接" href="https://dev.to/suyangzuo" target="_blank"
-        ><i class="fa-brands fa-dev"></i
-      ></a>
+      <a class="联系方式链接" href="https://dev.to/suyangzuo" target="_blank"><i class="fa-brands fa-dev"></i></a>
     </li>
     <li class="联系方式项">
-      <a
-        class="联系方式链接"
-        href="https://www.freecodecamp.org/suyangzuo"
-        target="_blank"
+      <a class="联系方式链接" href="https://www.freecodecamp.org/suyangzuo" target="_blank"
         ><i class="fa-brands fa-free-code-camp"></i
       ></a>
     </li>
     <li class="联系方式项">
-      <a
-        class="联系方式链接"
-        href="https://codepen.io/suyangzuo"
-        target="_blank"
+      <a class="联系方式链接" href="https://codepen.io/suyangzuo" target="_blank"
         ><i class="fa-brands fa-codepen"></i
       ></a>
     </li>
     <li class="联系方式项">
-      <a
-        class="联系方式链接"
-        href="https://dribbble.com/suyangzuo"
-        target="_blank"
+      <a class="联系方式链接" href="https://dribbble.com/suyangzuo" target="_blank"
         ><i class="fa-brands fa-dribbble"></i
       ></a>
     </li>
     <li class="联系方式项">
-      <a
-        class="联系方式链接"
-        href="https://www.artstation.com/user-7893655"
-        target="_blank"
+      <a class="联系方式链接" href="https://www.artstation.com/user-7893655" target="_blank"
         ><i class="fa-brands fa-artstation"></i
       ></a>
     </li>
     <li class="联系方式项">
-      <a
-        class="联系方式链接"
-        href="https://codesandbox.io/u/suyangzuo"
-        target="_blank"
-      >
+      <a class="联系方式链接" href="https://codesandbox.io/u/suyangzuo" target="_blank">
         <img src="/Images/Page-Logos/CodeSandbox.png" alt="CodeSandbox"
       /></a>
     </li>
   </ul>
 </article>
-<div class="专题正文区"></div>
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">理解冲突</h2>
+
+    <h3 class="分区标题 分区3级标题">冲突的起源</h3>
+    <p class="分区普通文本">
+      冲突常见于<span class="行内专业名词">三路合并</span
+      >场景，当两个提交对同一个文件的同一个地方做了不同的修改时，就会产生冲突。
+    </p>
+    <figure class="截图容器" data-desc="冲突示意图">
+      <img src="/Images/Blogs/Git/Git 冲突/冲突示意图.png" alt="冲突示意图" />
+    </figure>
+    <p class="分区普通文本">不要害怕！冲突是一件很常见的事情，尤其在多人合作场景中。</p>
+
+    <h3 class="分区标题 分区3级标题">如何避免冲突</h3>
+    <p class="分区普通文本">为了尽量避免冲突，需要做到以下几点：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <h4>单人项目，拥有多台电脑</h4>
+        <span
+          >每次更换电脑，都要先<span class="行内专业名词">拉取</span>远程仓库的最新修改，然后再开始本地的工作。</span
+        >
+      </li>
+      <li class="分区列表项">
+        <h4>多人合作</h4>
+        <ul class="分区列表">
+          <li class="分区列表项">
+            <span
+              >项目主持人制定合理、严格的合作规范，确保贡献者遵守。拒绝不合理的<span class="行内专业名词">拉取请求</span
+              >。</span
+            >
+          </li>
+          <li class="分区列表项">
+            <span
+              >贡献者每次开始本地工作之前，都要先<span class="强调">同步主持人与自己的远程仓库</span>，再<span
+                class="行内专业名词"
+                >拉取</span
+              >自己的远程仓库。</span
+            >
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p class="分区普通文本" style="padding-top: 0">说白了，就是尽量确保工作之前大家位于同一个祖先提交。</p>
+    <section class="提醒">
+      <h3 class="提醒标题">该来的总会来</h3>
+      <p class="分区普通文本">
+        多人合作时，无论主持人如何小心翼翼，也无法完全避免冲突，因此，处理冲突其实是一件很常见的事情，无需过分紧张。
+      </p>
+    </section>
+  </article>
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">处理冲突</h2>
+
+    <h3 class="分区标题 分区3级标题">三路合并，产生冲突</h3>
+    <p class="分区普通文本">
+      假设我们有<span class="行内专业名词 等宽">main</span>分支和<span class="行内专业名词 等宽">test</span
+      >分支，二者拥有共同的祖先提交<span class="附加说明 等宽">初始提交</span>，并且二者都有独特提交：
+    </p>
+    <figure class="截图容器" data-desc="合并前分支示意图">
+      <img src="/Images/Blogs/Git/Git 冲突/合并前分支示意图.png" alt="合并前分支示意图" />
+    </figure>
+    <p class="分区普通文本">
+      此时如果在<span class="行内专业名词 等宽">main</span>分支使用<span class="代码">git merge test</span
+      >进行三路合并，本来应该弹出文本编辑器，填写合并提交信息，但如果有冲突，就会在终端进行提示：
+    </p>
+    <figure class="截图容器" data-desc="三路合并时的冲突信息">
+      <img src="/Images/Blogs/Git/Git 冲突/git-merge-出现冲突.png" alt="三路合并时的冲突信息" />
+    </figure>
+    <p class="分区普通文本">冲突信息翻译如下：</p>
+    <ul class="分区列表">
+      <li class="分区列表项 等宽">
+        <span>自动合并 index.css</span>
+      </li>
+      <li class="分区列表项 等宽">
+        <span>冲突（内容）：index.css 出现合并冲突</span>
+      </li>
+      <li class="分区列表项 等宽">
+        <span>自动合并失败；修复冲突然后提交结果。</span>
+      </li>
+    </ul>
+    <section class="提醒">
+      <h3 class="提醒标题">取消合并</h3>
+      <p class="分区普通文本">
+        此时工作区处于<span class="行内专业名词">合并中</span>状态，可以使用<span class="代码">git merge --abort</span
+        >取消合并，回到合并之前的状态。
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">查看冲突情况</h3>
+    <p class="分区普通文本">
+      虽然之前的信息中已经提示<span class="专业名词 等宽">index.css</span>文件存在冲突，但最好还是用<span class="代码"
+        >git status</span
+      >来确认情况：
+    </p>
+    <figure class="截图容器" data-desc="查看冲突情况">
+      <img src="/Images/Blogs/Git/Git 冲突/查看冲突情况.png" alt="查看冲突情况" />
+    </figure>
+    <p class="分区普通文本">
+      红色信息显示：<span class="强调 等宽">都修改了 index.css</span>，因此我们要手动解决冲突。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">编辑冲突文件</h3>
+    <p class="分区普通文本">
+      如果你是在<span class="行内专业名词">VSCode</span
+      >的终端里运行命令，合并冲突后会自动打开冲突的文件。如果是在外部终端运行命令，就手动打开冲突的文件。任何一个文本编辑器都可以，但我仍然推荐专业的代码编辑器，比如<span
+        class="行内专业名词"
+        >VSCode</span
+      >。
+    </p>
+    <figure class="截图容器" data-desc="传统合并编辑器">
+      <img src="/Images/Blogs/Git/Git 冲突/传统合并编辑器.png" alt="传统合并编辑器" />
+    </figure>
+    <p class="分区普通文本">
+      只有在专业编辑器上，你才能看到<span class="行内专业名词">采用当前更改</span>、<span class="行内专业名词"
+        >采用传入的更改</span
+      >这些鼠标可选项。
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项 等宽">
+        <h4 style="display: inline">采用当前更改</h4>
+        <span>：只保留合并分支<span class="行内专业名词 等宽">main</span>的内容</span>
+      </li>
+      <li class="分区列表项 等宽">
+        <h4 style="display: inline">采用传入的更改</h4>
+        <span>：只保留被合并分支<span class="行内专业名词 等宽">test</span>的内容</span>
+      </li>
+      <li class="分区列表项 等宽">
+        <h4 style="display: inline">保留双方更改</h4>
+        <span>：将二者的内容都保留下来</span>
+      </li>
+    </ul>
+    <p class="分区普通文本">无论怎么修改，最后都要保存文件，冲突就算处理完毕了。</p>
+    <section class="提醒">
+      <h3 class="提醒标题">提醒</h3>
+      <p class="分区普通文本">
+        无论选择哪个选项，都要检查有没有错误。如果你仔细观察，会发现<span class="专业名词 等宽"
+          >图<span class="行内专业名词 等宽">5</span></span
+        >中<span class="行内代码">html</span>和<span class="行内代码">input</span>的后标签合二为一了<span
+          class="附加说明 等宽"
+          ><span class="行内专业名词 等宽">17</span>行</span
+        >，如果选择<span class="行内专业名词">将二者的内容都保留下来</span>就会产生代码错误，需要手动修复。
+      </p>
+    </section>
+
+    <h3 class="分区标题 分区3级标题">三路合并编辑器</h3>
+    <p class="分区普通文本">
+      在<span class="专业名词 等宽">图<span class="行内专业名词 等宽">5</span></span
+      >中点击<span class="行内专业名词">在合并编辑器中解决</span>，会打开<span class="行内专业名词">VSCode</span
+      >专门设计的三路合并编辑器，其功能更为强大。
+    </p>
+    <figure class="截图容器" data-desc="传统合并编辑器">
+      <img src="/Images/Blogs/Git/Git 冲突/三路合并编辑器.png" alt="三路合并编辑器" />
+    </figure>
+    <p class="分区普通文本">三路合并编辑器的视图更为清晰，</p>
+    <ul class="分区列表">
+      <li class="分区列表项 等宽">
+        <span
+          >左上为<span class="行内专业名词 等宽">传入</span>，代表被合并分支<span class="行内专业名词 等宽">test</span
+          >的内容。</span
+        >
+      </li>
+      <li class="分区列表项 等宽">
+        <span
+          >右上为<span class="行内专业名词 等宽">当前</span>，代表合并分支<span class="行内专业名词 等宽">main</span
+          >的内容。</span
+        >
+      </li>
+      <li class="分区列表项 等宽">
+        <span
+          >下方为<span class="行内专业名词 等宽">结果</span>，代表合并后<span class="行内专业名词 等宽">main</span
+          >分支的最终内容。</span
+        >
+      </li>
+    </ul>
+    <p class="分区普通文本">
+      高亮的方框中就是冲突的内容，你可以手动编辑，也可以用鼠标选择高亮方框上的各种选项。最终，以下方的<span
+        class="行内专业名词 等宽"
+        >结果</span
+      >为准。
+    </p>
+    <p class="分区普通文本">
+      编辑完毕并保存后，如果点击<span class="行内专业名词">完成合并</span>，则<span class="行内专业名词">VSCode</span
+      >会自动<span class="行内专业名词">暂存</span>此文件，否则需要手动暂存：
+    </p>
+    <figure class="截图容器" data-desc="暂存解决了冲突的文件">
+      <img src="/Images/Blogs/Git/Git 冲突/git-add-resolved.png" alt="暂存解决了冲突的文件" />
+    </figure>
+    <p class="分区普通文本">
+      <span class="代码">git add resolved</span>用来暂存<span class="行内专业名词">解决冲突后的文件</span
+      >。当然，也可以用<span class="代码">git add .</span>来暂存所有改动的文件。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">完成合并</h3>
+    <p class="分区普通文本">
+      冲突处理完，并暂存后，就该提交了。解决冲突后可用专门的<span class="代码">git merge --continue</span>来进行提交。
+    </p>
+    <figure class="截图容器" data-desc="继续合并，相当于提交">
+      <img src="/Images/Blogs/Git/Git 冲突/git-merge-continue.png" alt="继续合并，相当于提交" />
+    </figure>
+    <p class="分区普通文本">
+      当然，也可以用<span class="代码">git commit</span
+      >提交。此时进入正常的三路合并流程，会弹出文本编辑器，让你填写提交说明：
+    </p>
+    <figure class="截图容器" data-desc="填写三路合并信息">
+      <img src="/Images/Blogs/Git/Git 冲突/填写三路合并信息.png" alt="填写三路合并信息" />
+    </figure>
+    <p class="分区普通文本">写好后，保存文件并关闭，完成提交。</p>
+    <figure class="截图容器" data-desc="完成合并">
+      <img src="/Images/Blogs/Git/Git 冲突/完成合并.png" alt="完成合并" />
+    </figure>
+    <p class="分区普通文本">冲突已解决，合并已完成，终端显示了本次合并提交的说明。</p>
+    <figure class="截图容器" data-desc="合并后分支示意图">
+      <img src="/Images/Blogs/Git/Git 冲突/合并后分支示意图.png" alt="合并后分支示意图" />
+    </figure>
+    <p class="分区普通文本"><span class="专业名词">Git Graph</span>扩展中也显示合并已完成。</p>
+  </article>
+</div>
