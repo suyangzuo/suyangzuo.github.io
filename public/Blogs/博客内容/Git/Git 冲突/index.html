@@ -215,7 +215,8 @@
 
     <h3 class="分区标题 分区3级标题">三路合并编辑器</h3>
     <p class="分区普通文本">
-      在<span class="专业名词 等宽">图<span class="行内专业名词 等宽">5</span></span
+      如果觉得传统的冲突处理界面不能满足自己的需求，可在<span class="专业名词 等宽"
+        >图<span class="行内专业名词 等宽">5</span></span
       >中点击<span class="行内专业名词">在合并编辑器中解决</span>，会打开<span class="行内专业名词">VSCode</span
       >专门设计的三路合并编辑器，其功能更为强大。
     </p>
@@ -247,7 +248,9 @@
       高亮的方框中就是冲突的内容，你可以手动编辑，也可以用鼠标选择高亮方框上的各种选项。最终，以下方的<span
         class="行内专业名词 等宽"
         >结果</span
-      >为准。
+      >为准。编辑完毕并保存后，如果点击<span class="行内专业名词">完成合并</span>，则<span class="行内专业名词"
+        >VSCode</span
+      >会自动<span class="行内专业名词">暂存</span>此文件，否则需要手动暂存。
     </p>
     <section class="提醒">
       <h3 class="提醒标题">举一反三</h3>
@@ -265,21 +268,19 @@
         >，并且你最终需要关注的永远是<span class="行内专业名词">结果</span>。
       </p>
     </section>
+
+    <h3 class="分区标题 分区3级标题">完成合并</h3>
     <p class="分区普通文本">
-      编辑完毕并保存后，如果点击<span class="行内专业名词">完成合并</span>，则<span class="行内专业名词">VSCode</span
-      >会自动<span class="行内专业名词">暂存</span>此文件，否则需要手动暂存：
+      冲突处理完成后，文件还处于<span class="行内专业名词">未暂存</span>状态，可用<span class="代码"
+        >git add resolved</span
+      >暂存<span class="行内专业名词">解决冲突后的文件</span>。当然，也可以用<span class="代码">git add .</span
+      >来暂存所有改动的文件。
     </p>
     <figure class="截图容器" data-desc="暂存解决了冲突的文件">
       <img src="/Images/Blogs/Git/Git 冲突/git-add-resolved.png" alt="暂存解决了冲突的文件" />
     </figure>
     <p class="分区普通文本">
-      <span class="代码">git add resolved</span>用来暂存<span class="行内专业名词">解决冲突后的文件</span
-      >。当然，也可以用<span class="代码">git add .</span>来暂存所有改动的文件。
-    </p>
-
-    <h3 class="分区标题 分区3级标题">完成合并</h3>
-    <p class="分区普通文本">
-      冲突处理完，并暂存后，就该提交了。解决冲突后可用专门的<span class="代码">git merge --continue</span>来进行提交。
+      暂存后，就该提交了。解决冲突后可用专门的<span class="代码">git merge --continue</span>来进行提交。
     </p>
     <figure class="截图容器" data-desc="继续合并，相当于提交">
       <img src="/Images/Blogs/Git/Git 冲突/git-merge-continue.png" alt="继续合并，相当于提交" />
