@@ -1,22 +1,17 @@
 const root = document.querySelector(":root");
-const 中心标题动画持续时间 = Number.parseFloat(
-  getComputedStyle(root).getPropertyValue("--中心标题动画持续时间")
-);
+const 中心标题动画持续时间 = Number.parseFloat(getComputedStyle(root).getPropertyValue("--中心标题动画持续时间"));
 
 const 中心标题组 = document.querySelectorAll(".中心标题");
 for (const 中心标题 of 中心标题组) {
   const 字符组 = 中心标题.querySelectorAll("span");
   字符组.forEach((字符, 索引) => {
     const 轴 = 索引 % 2 === 0 ? "rotateY" : "rotateX";
-    字符.animate(
-      [{ transform: `${轴}(90deg)` }, { transform: `${轴}(0deg)` }],
-      {
-        duration: 中心标题动画持续时间 * 1000,
-        delay: 中心标题动画持续时间 * 1000 * 索引,
-        easing: "ease-in",
-        fill: "forwards",
-      }
-    );
+    字符.animate([{ transform: `${轴}(90deg)` }, { transform: `${轴}(0deg)` }], {
+      duration: 中心标题动画持续时间 * 1000,
+      delay: 中心标题动画持续时间 * 1000 * 索引,
+      easing: "ease-in",
+      fill: "forwards",
+    });
   });
 }
 
@@ -45,8 +40,7 @@ for (const 交互单项 of 交互单向组) {
       y: `${交互单项.offsetTop}px`,
     };
 
-    const 标题 =
-      交互单项.parentElement.parentElement.querySelector("h1").textContent;
+    const 标题 = 交互单项.parentElement.parentElement.id;
 
     root.style.setProperty("--交互单项宽度", 尺寸.宽);
     root.style.setProperty("--交互单项高度", 尺寸.高);
@@ -85,6 +79,6 @@ const 导航条观察器 = new IntersectionObserver(
   {
     rootMargin: `${-触发边界}px 0px 0px 0px`,
     threshold: 0,
-  }
+  },
 );
 导航条观察器.observe(导航条哨兵);
