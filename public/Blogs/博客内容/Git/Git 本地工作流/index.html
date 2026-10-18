@@ -422,7 +422,7 @@
     </p>
     <section class="提醒">
       <h3 class="提醒标题">提醒</h3>
-      <p><span class="代码">git restore</span>无法删除新增的文件。</p>
+      <p><span class="代码">git restore</span>无法删除新增且未追踪的文件。</p>
     </section>
 
     <h3 class="分区标题 分区3级标题">
@@ -439,7 +439,11 @@
             >未暂存</span
           ></span
         >
-        <pre><code class="lang-bash">git reset 文件名</code></pre>
+        <pre>
+          <code class="lang-bash">
+            git restore --staged 文件名  #新方法，推荐
+            git reset 文件名  #旧方法
+          </code></pre>
       </li>
       <li class="分区列表项">
         <span>恢复被删除和被修改的文件</span>
