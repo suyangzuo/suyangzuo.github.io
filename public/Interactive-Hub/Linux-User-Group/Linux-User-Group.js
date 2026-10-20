@@ -1367,6 +1367,7 @@ function 绘制错误提示() {
   上下文.restore();
 
   // 文字
+  上下文.save();
   上下文.fillStyle = 配置错误.文字颜色;
   上下文.font = 配置错误.字体;
   上下文.textAlign = "center";
@@ -1376,7 +1377,7 @@ function 绘制错误提示() {
   for (let i = 0; i < 行组.length; i++) {
     上下文.fillText(行组[i], 中心X, 起始Y + i * 行高);
   }
-  上下文.globalAlpha = 1;
+  上下文.restore();
 }
 
 function 绘制波纹() {
