@@ -149,6 +149,11 @@ body {
   color: rgb(255, 100, 100);
 }
 
+.笔记区 em > strong,
+.笔记区 strong > em {
+  color: #d5a;
+}
+
 .前缀符号 {
   color: lightsteelblue;
 }
