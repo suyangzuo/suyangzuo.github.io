@@ -2105,7 +2105,7 @@ const 命令高亮层 = document.getElementById("命令高亮层");
 const 命令输入区 = document.querySelector(".命令输入区");
 
 function 高亮命令语法(文本) {
-  const 有效命令组 = ["cd", "mkdir", "rmdir", "rm", "touch", "cp", "mv", "chmod", "chown", "useradd", "su", "usermod", "userdel", "groupdel"];
+  const 有效命令组 = ["cd", "mkdir", "rmdir", "rm", "touch", "cp", "mv", "chmod", "chown", "useradd", "su", "usermod", "userdel", "groupdel", "gpasswd"];
   const 转义 = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   // 路径中的特殊字符用单独颜色高亮
   const 转义路径 = (s) =>
@@ -2317,19 +2317,19 @@ function 解析命令(输入) {
   // 统一展开参数开头的 ~ 为主目录绝对路径，让所有命令都能识别 ~
   const 参数组 = 部分组.slice(1).map(展开主目录路径);
 
-  const 有效命令组 = ["cd", "mkdir", "rmdir", "rm", "touch", "cp", "mv", "chmod", "chown", "useradd", "su", "usermod", "userdel", "groupdel"];
+  const 有效命令组 = ["cd", "mkdir", "rmdir", "rm", "touch", "cp", "mv", "chmod", "chown", "useradd", "su", "usermod", "userdel", "groupdel", "gpasswd"];
   if (!有效命令组.includes(命令)) {
     return {
       有效: false,
       错误: {
         有错误: true,
-        消息: `未知命令：${命令}\n支持：cd / mkdir / rmdir / rm / touch / cp / mv / chmod / chown / useradd / su / usermod / userdel / groupdel（可加 sudo 前缀提权）`,
+        消息: `未知命令：${命令}\n支持：cd / mkdir / rmdir / rm / touch / cp / mv / chmod / chown / useradd / su / usermod / userdel / groupdel / gpasswd（可加 sudo 前缀提权）`,
       },
     };
   }
 
   // 需要 root 提权的管理类命令：未加 sudo 时直接报错
-  const 需提权命令组 = ["chown", "useradd", "usermod", "userdel", "groupdel"];
+  const 需提权命令组 = ["chown", "useradd", "usermod", "userdel", "groupdel", "gpasswd"];
   if (需提权命令组.includes(命令) && !提权) {
     return { 有效: false, 错误: { 有错误: true, 消息: `${命令}：权限不足\n该命令需要 root 权限，请使用 sudo` } };
   }
@@ -3199,6 +3199,32 @@ function 解析命令(输入) {
       if (!面板组组.some((g) => g.名称 === 名称)) return { 有效: false, 错误: { 有错误: true, 消息: `groupdel：组不存在：${名称}` } };
       return 包装({ 有效: true, 命令: "groupdel", 组名: 名称 });
     }
+
+    case "gpasswd": {
+      // 支持：gpasswd -d <用户名> <组名>（将用户从附加组中删除）
+      let 删除用户 = null;
+      let 组名 = null;
+      for (let i = 0; i < 参数组.length; i++) {
+        const 参数 = 参数组[i];
+        if (参数 === "-d") {
+          const 值 = 参数组[++i];
+          if (!值) return { 有效: false, 错误: { 有错误: true, 消息: "gpasswd：-d 需要指定用户名\n用法：gpasswd -d <用户名> <组名>" } };
+          删除用户 = 值;
+        } else if (参数.startsWith("-")) {
+          return { 有效: false, 错误: { 有错误: true, 消息: `gpasswd：无效参数 ${参数}\n支持：-d（将用户从附加组中删除）` } };
+        } else if (!组名) {
+          组名 = 参数;
+        } else {
+          return { 有效: false, 错误: { 有错误: true, 消息: "gpasswd：参数过多\n用法：gpasswd -d <用户名> <组名>" } };
+        }
+      }
+      if (!删除用户) return { 有效: false, 错误: { 有错误: true, 消息: "gpasswd：缺少 -d 参数\n用法：gpasswd -d <用户名> <组名>" } };
+      if (!组名) return { 有效: false, 错误: { 有错误: true, 消息: "gpasswd：缺少组名\n用法：gpasswd -d <用户名> <组名>" } };
+      const 用户 = 面板用户组.find((u) => u.名称 === 删除用户);
+      if (!用户) return { 有效: false, 错误: { 有错误: true, 消息: `gpasswd：用户不存在：${删除用户}` } };
+      if (!面板组组.some((g) => g.名称 === 组名)) return { 有效: false, 错误: { 有错误: true, 消息: `gpasswd：组不存在：${组名}` } };
+      return 包装({ 有效: true, 命令: "gpasswd", 用户, 组名 });
+    }
   }
 }
 
@@ -3436,6 +3462,10 @@ function 执行命令() {
     }
     case "groupdel": {
       执行groupdel(解析.组名);
+      break;
+    }
+    case "gpasswd": {
+      执行gpasswd(解析.用户, 解析.组名);
       break;
     }
   }
@@ -4381,6 +4411,23 @@ function 执行groupdel(组名) {
 
   同步用户组界面();
   if (警告) 显示警告(警告);
+}
+
+// gpasswd -d：将用户从附加组中删除
+function 执行gpasswd(用户, 组名) {
+  // 目标组是用户的主组：报错（主组不能通过 -d 删除）
+  if (用户.主组 === 组名) {
+    显示错误(`gpasswd：无法将用户 ${用户.名称} 从组 ${组名} 中删除：该组是用户的主组`);
+    return;
+  }
+  // 用户不在该附加组中：给出警告提示
+  if (!用户.附加组组.includes(组名)) {
+    显示警告(`gpasswd：用户 ${用户.名称} 不在组 ${组名} 中，无需删除`);
+    return;
+  }
+  用户.附加组组 = 用户.附加组组.filter((g) => g !== 组名);
+  同步用户组界面();
+  显示成功(`已将用户 ${用户.名称} 从组 ${组名} 中删除`);
 }
 
 // ==================== 历史记录 ====================
