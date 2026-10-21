@@ -7,6 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Git 单人工作流</title>
   <link rel="icon" href="/Images/Interactive-Hub/HQ/Git-本地工作流.svg" type="image/x-icon" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&family=Noto+Sans+Mono&family=Noto+Sans+SC:wght@400;500&family=JetBrains+Mono:ital@0;1&family=Ubuntu+Mono&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="/Styles/common.css" />
   <link rel="stylesheet" href="/Styles/top-banner-common.css" />
   <link rel="stylesheet" href="../control.css" />
@@ -30,7 +33,38 @@
       <canvas id="canvas"></canvas>
     </figure>
     <div id="设置区">
-      <div class="设置分区"></div>
+      <div class="设置分区">
+        <label class="复选框项">
+          <input type="checkbox" id="SHA校验码" checked />
+          <span class="复选框框体"></span>
+          <span class="复选框文本">SHA校验码</span>
+        </label>
+        <label class="复选框项">
+          <input type="checkbox" id="提交说明" />
+          <span class="复选框框体"></span>
+          <span class="复选框文本">提交说明</span>
+        </label>
+      </div>
+    </div>
+    <div id="电脑区">
+      <div class="电脑分区">
+        <label for="电脑1" class="标签 单选标签 定制标签">
+          <figure class="图像容器">
+            <img class="图像" src="./Images/电脑1.webp" alt="电脑1">
+          </figure>
+          <span class="标题 单选标题">电脑<span class="标签序号">1</span></span>
+          <input class="单选框 定制单选框" type="radio" name="个人电脑" id="电脑1" checked>
+        </label>
+      </div>
+      <div class="电脑分区">
+        <label for="电脑2" class="标签 单选标签 定制标签">
+          <figure class="图像容器">
+            <img class="图像" src="./Images/电脑2.webp" alt="电脑2">
+          </figure>
+          <span class="标题 单选标题">电脑<span class="标签序号">2</span></span>
+          <input class="单选框 定制单选框" type="radio" name="个人电脑" id="电脑2">
+        </label>
+      </div>
     </div>
   </section>
 </body>
