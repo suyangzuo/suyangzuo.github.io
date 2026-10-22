@@ -28,7 +28,7 @@ body {
 #设置区 {
   position: fixed;
   bottom: 35px;
-  left: 50px;
+  left: 1.5vw;
 }
 
 /* ==================== 设置区分区 ==================== */
@@ -98,11 +98,10 @@ body {
 #电脑区 {
   position: fixed;
   bottom: 25px;
-  right: 50px;
+  right: 1.5vw;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px;
   z-index: 0;
 }
 
@@ -111,7 +110,7 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: calc(50% - 7.5px);
+  width: 50%;
   height: 100%;
   border-radius: 10px;
   background: linear-gradient(180deg, transparent 0%, #345 100%);
@@ -125,15 +124,26 @@ body {
 }
 
 #电脑区:has(#电脑2:checked)::after {
-  transform: translateX(calc(100% + 15px));
+  transform: translateX(100%);
 }
 
 .电脑分区 {
   position: relative;
   padding: 15px 20px;
   border-radius: 10px;
-  overflow: hidden;
   transition: 125ms;
+}
+
+.电脑分区:hover::before {
+  content: "";
+  background: center/contain no-repeat url("./Images/向下箭头动画.svg");
+  position: absolute;
+  bottom: 95%;
+  left: 50%;
+  translate: -50% 0;
+  width: 40px;
+  height: 40px;
+  scale: 1.25;
 }
 
 .电脑分区:hover,
@@ -178,8 +188,4 @@ body {
   height: 100%;
   appearance: none;
   background-color: transparent;
-}
-
-.电脑分区:hover .单选框:not(:checked) {
-  background: linear-gradient(180deg, transparent 0%, #ffffff15 100%);
 }
