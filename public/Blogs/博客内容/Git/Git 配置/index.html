@@ -86,8 +86,40 @@
     <pre><code class="lang-bash">git config --global core.ignoreCase false</code></pre>
 
     <h3 class="分区标题 分区3级标题">配置默认分支名称</h3>
-    <p class="分区普通文本">如果在安装<span class="行内专业名词">Git</span>的过程中没有修改默认分支名称，安装完成后可以用如下命令进行修改：</p>
+    <p class="分区普通文本">
+      如果在安装<span class="行内专业名词">Git</span>的过程中没有修改默认分支名称，安装完成后可以用如下命令进行修改：
+    </p>
     <pre><code class="lang-bash">git config --global init.defaultBranch 默认分支名称  #默认分支名称通常设置为"main"</code></pre>
+
+    <h3 class="分区标题 分区3级标题">配置删除未追踪内容强制开关</h3>
+    <p class="分区普通文本">
+      删除目录和文件属于危险操作，如果配置为<span class="行内代码">false</span>，则输入清理命令后就能直接删除，强烈建议配置为<span class="行内代码">true</span>。
+    </p>
+    <pre>
+      <code class="lang-bash">
+        #如果为true，则删除未追踪目录或文件时，必须加上"-f"参数，相当于多了一层保险
+        git config --global clean.requireForce true  #不配置则默认为true，为了保险还是配置一下
+      </code>
+    </pre>
+
+    <h3 class="分区标题 分区3级标题">配置异常字符转义</h3>
+    <p class="分区普通文本">
+      所谓的<span class="行内专业名词">异常</span>，是指<span class="强调">大于</span><span class="专业名词 等宽">0x80</span>的字符，比如中文。
+    </p>
+    <pre>
+      <code class="lang-bash">
+        #默认为true，中文会被转义为八进制数字
+        git config --global core.quotepath false
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Git/Git 配置/quotepath-true.png" alt="git config --global core.quotepath true" />
+    </figure>
+    <p class="分区普通文本">配置为<span class="行内代码">true</span>，中文等异常字符会被转义为八进制数字。</p>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Git/Git 配置/quotepath-false.png" alt="git config --global core.quotepath false" />
+    </figure>
+    <p class="分区普通文本">配置为<span class="行内代码">false</span>后，中文等异常字符不会被转义。</p>
 
     <h3 class="分区标题 分区3级标题">配置代理</h3>
     <p class="分区普通文本">
@@ -96,6 +128,7 @@
     </p>
     <pre>
       <code class="lang-bash">
+        #配置代理后，必须开代理软件，否则无法推送拉取
         git config --global http.proxy 127.0.0.1:端口
         git config --global https.proxy 127.0.0.1:端口
       </code>
@@ -140,7 +173,7 @@
   <article class="正文分区">
     <h2 class="分区标题 分区2级标题">查看配置</h2>
 
-    <h3 class="分区标题 分区3级标题">查看用户名配置</h3>
+    <h3 class="分区标题 分区3级标题">查看用户名</h3>
     <p class="分区普通文本">在终端运行如下命令：</p>
     <pre>
       <code class="lang-bash">
@@ -151,7 +184,7 @@
       <img src="/Images/Blogs/Git/Git 配置/查看用户名.gif" alt="查看 Git 用户名" />
     </figure>
 
-    <h3 class="分区标题 分区3级标题">查看邮箱配置</h3>
+    <h3 class="分区标题 分区3级标题">查看邮箱</h3>
     <p class="分区普通文本">在终端运行如下命令：</p>
     <pre>
       <code class="lang-bash">
@@ -182,6 +215,28 @@
     </pre>
     <figure class="截图容器">
       <img src="/Images/Blogs/Git/Git 配置/查看默认分支名称.png" alt="查看默认分支名称" />
+    </figure>
+
+    <h3 class="分区标题 分区3级标题">查看删除未追踪内容强制开关</h3>
+    <p class="分区普通文本">在终端运行如下命令：</p>
+    <pre>
+      <code class="lang-bash">
+        git config --global clean.requireForce
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Git/Git 配置/查看删除未追踪文件强制开关.png" alt="查看删除未追踪内容强制开关" />
+    </figure>
+
+    <h3 class="分区标题 分区3级标题">查看异常字符转义</h3>
+    <p class="分区普通文本">在终端运行如下命令：</p>
+    <pre>
+      <code class="lang-bash">
+        git config --global core.quotepath
+      </code>
+    </pre>
+    <figure class="截图容器">
+      <img src="/Images/Blogs/Git/Git 配置/quotepath.png" alt="查看异常字符转义" />
     </figure>
 
     <h3 class="分区标题 分区3级标题">查看代理</h3>

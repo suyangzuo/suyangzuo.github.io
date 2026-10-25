@@ -227,7 +227,7 @@ tbody > tr:nth-child(odd) {
 .笔记区 code,
 .笔记目录区 code {
   font-size: 14px;
-  font-family: var(--中文代码混合字体);
+  font-family: "JetBrains Mono", "Google Sans Code", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
   line-height: 1.5em;
 }
 

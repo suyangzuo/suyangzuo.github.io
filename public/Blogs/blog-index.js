@@ -69,10 +69,24 @@ let 专题文件路径 = `./博客内容/${技术栈名称}/${专题名称}/inde
 let 前一专题 = null;
 let 内容加载请求序号 = 0;
 
+// 阻止浏览器自动恢复滚动位置，改由代码按专题恢复
+window.history.scrollRestoration = "manual";
+
+// 滚动停止后记录当前滚动位置，键为“技术栈-专题”，刷新后据此恢复
+let 滚动位置保存计时器 = null;
+window.addEventListener("scroll", () => {
+  clearTimeout(滚动位置保存计时器);
+  滚动位置保存计时器 = setTimeout(() => {
+    const 记录 = JSON.parse(sessionStorage.getItem("滚动位置记录") || "{}");
+    记录[`${技术栈名称}-${专题名称}`] = window.scrollY;
+    sessionStorage.setItem("滚动位置记录", JSON.stringify(记录));
+  }, 200);
+});
+
 从网址获取技术栈和专题();
 
 设置侧边栏();
-设置内容().then((结果) => {
+设置内容(true).then((结果) => {
   if (结果.已过期) return;
   生成章节区();
   生成章节();
@@ -374,7 +388,7 @@ async function 加载专题CSS文件(技术栈名称, 专题名称) {
   return false;
 }
 
-async function 设置内容() {
+async function 设置内容(是否初次加载 = false) {
   const 当前请求序号 = ++内容加载请求序号;
   const 请求已过期 = () => 当前请求序号 !== 内容加载请求序号;
 
@@ -446,11 +460,16 @@ async function 设置内容() {
 
   const 选项卡标题 = document.querySelector("title");
   选项卡标题.textContent = `${技术栈名称}-${专题名称}`;
+
+  // 初次加载（含刷新）时恢复上次浏览位置；切换技术栈或专题时滚到顶部
+  const 记录 = JSON.parse(sessionStorage.getItem("滚动位置记录") || "{}");
+  const 保存的位置 = 记录[`${技术栈名称}-${专题名称}`] || 0;
   window.scrollTo({
-    top: 0,
+    top: 是否初次加载 ? 保存的位置 : 0,
     left: 0,
     behavior: "instant",
   });
+
   特殊元素样式补充();
   刷新第三方库();
   插入转载提醒内容();
