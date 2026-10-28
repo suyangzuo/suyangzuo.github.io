@@ -152,6 +152,7 @@ body {
 .笔记区 em > strong,
 .笔记区 strong > em {
   color: #d5a;
+  font-style: normal;
 }
 
 .前缀符号 {
@@ -1018,7 +1019,7 @@ a:visited {
   }
 
   .目录分级容器 > .三级目录 {
-    font-size: 12px;
+    font-size: 13px;
     padding: 2px 12px 2px 50px;
   }
 
