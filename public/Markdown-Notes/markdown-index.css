@@ -34,6 +34,7 @@
   justify-content: center;
   align-items: center;
   background: var(--背景渐变);
+  background-attachment: fixed;
   position: relative;
 }
 
@@ -45,10 +46,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background:
-    radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(0, 102, 204, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(0, 212, 255, 0.05) 0%, transparent 50%);
+  background: radial-gradient(circle at 30% 60%, rgba(0, 212, 255, 0.07) 0%, transparent 60%);
   pointer-events: none;
   z-index: 0;
 }
@@ -227,7 +225,6 @@
   justify-content: center;
   align-items: center;
   gap: 12px;
-  backdrop-filter: blur(10px);
   transition: all 0.25s ease;
 }
 
@@ -304,7 +301,7 @@
   background: var(--卡片背景);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
-  backdrop-filter: blur(15px);
+  /* 移除 backdrop-filter，避免多层模糊叠加造成的合成开销 */
   padding: 30px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
   position: relative;
@@ -343,7 +340,6 @@
   gap: 25px;
   box-shadow: 2px 2px 6px 0 #0006;
   transition: all 0.25s ease;
-  backdrop-filter: blur(5px);
 }
 
 .条目链接旋转容器:hover .链接作者,
@@ -454,7 +450,6 @@
   background: rgba(0, 212, 255, 0.08);
   border: 1px solid rgba(0, 212, 255, 0.25);
   border-radius: 8px;
-  backdrop-filter: blur(10px);
   cursor: var(--光标-手指);
   transition: all 0.25s ease;
   white-space: nowrap;
@@ -485,7 +480,6 @@
   border: 1px solid #fff3;
   border-radius: 8px;
   overflow: hidden;
-  backdrop-filter: blur(10px);
   z-index: 10;
   position: relative;
   transition: 250ms;
