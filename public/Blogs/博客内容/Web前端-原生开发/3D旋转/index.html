@@ -1,6 +1,6 @@
 <article class="专题简介">
   <h1 class="简介标题">
-    <span><span class="行内专业名词" style="margin-left: 0">3D</span>旋转</span><span class="原创">原创</span>
+    <span><span class="行内专业名词 等宽" style="margin-left: 0">3D</span>旋转</span><span class="原创">原创</span>
   </h1>
   <div class="简介信息">
     <section class="简介信息文本">
@@ -71,12 +71,13 @@
 <div class="专题正文区">
   <article class="正文分区">
     <h2 class="分区标题 分区2级标题">
-      <span class="行内专业名词">2D</span><span class="次要">和</span><span class="行内专业名词">3D</span>
+      <span class="行内专业名词 等宽">2D</span><span class="次要">和</span><span class="行内专业名词 等宽">3D</span>
     </h2>
 
     <h3 class="分区标题 分区3级标题">效果比较</h3>
     <p class="分区普通文本">
-      首先，直观地观察一下<span class="行内专业名词">2D</span>和<span class="行内专业名词">3D</span>旋转的区别：
+      首先，直观地观察一下<span class="行内专业名词 等宽">2D</span>和<span class="行内专业名词 等宽">3D</span
+      >旋转的区别：
     </p>
     <figure class="截图容器">
       <div
@@ -134,7 +135,7 @@
       </div>
     </figure>
     <p class="分区普通文本">
-      虽然都是旋转，但<span class="行内专业名词">3D</span>旋转展现出了明显的立体效果，更符合现实世界中的真实维度。
+      虽然都是旋转，但<span class="行内专业名词 等宽">3D</span>旋转展现出了明显的立体效果，更符合现实世界中的真实维度。
     </p>
 
     <h3 class="分区标题 分区3级标题">透视</h3>
@@ -150,7 +151,8 @@
     </figure>
     <p class="分区普通文本">
       学过美术的人肯定知道答案：<span class="行内专业名词">透视</span>。<span class="行内专业名词">透视</span
-      >的作用就是在 <span class="行内专业名词">2D</span>平面上展现<span class="行内专业名词">3D</span>立体效果。
+      >的作用就是在 <span class="行内专业名词 等宽">2D</span>平面上展现<span class="行内专业名词 等宽">3D</span
+      >立体效果。
     </p>
     <p class="分区普通文本">
       把美术的概念挪用到代码上，就要在元素样式中加上<span class="行内专业名词"
@@ -160,19 +162,22 @@
   </article>
 
   <article class="正文分区">
-    <h2 class="分区标题 分区2级标题"><span class="行内专业名词">3D</span>旋转</h2>
+    <h2 class="分区标题 分区2级标题"><span class="行内专业名词 等宽">3D</span>旋转</h2>
 
     <h3 class="分区标题 分区3级标题">添加<span class="行内专业名词">透视</span></h3>
     <p class="分区普通文本">
-      为了获得<span class="行内专业名词">3D</span>效果，我们需要为元素添加<span class="行内专业名词">透视</span
+      为了获得<span class="行内专业名词 等宽">3D</span>效果，我们需要为元素添加<span class="行内专业名词">透视</span
       >，这里有两个注意点：
     </p>
     <ul class="分区列表">
       <li class="分区列表项">
-        添加<span class="行内专业名词">透视</span>的元素，必须永远与视线垂直，因此该元素不能旋转。
+        添加<span class="行内专业名词">透视</span>的元素，必须永远与视线垂直，因此该元素<span class="强调"
+          >不能旋转</span
+        >。
       </li>
       <li class="分区列表项">
-        <span class="行内专业名词">透视</span>的距离，既不能太远，也不能太近。太远会看不出<span class="行内专业名词"
+        <span class="行内专业名词">透视</span>的距离，既不能太远，也不能太近。太远会看不出<span
+          class="行内专业名词 等宽"
           >3D</span
         >效果，太近则<span class="行内专业名词">透视</span>效果过于夸张。
       </li>
@@ -190,7 +195,7 @@
       透视元素不能旋转，那需要旋转的元素，就要作为透视元素的子元素。旋转是<span class="行内专业名词"
         >变换<span class="代码">transform</span></span
       >的一种，而<span class="行内专业名词">变换风格</span>默认是<span class="行内专业名词">平面</span
-      >，我们需要将其改成<span class="行内专业名词">3D</span>。
+      >，我们需要将其改成<span class="行内专业名词 等宽">3D</span>。
     </p>
     <pre>
       <code class="lang-html">
@@ -209,7 +214,9 @@
     </pre>
 
     <h3 class="分区标题 分区3级标题">添加<span class="行内专业名词">旋转</span>属性</h3>
-    <p class="分区普通文本">现在，只要为变换元素添加旋转属性，即可看到<span class="行内专业名词">3D</span>旋转效果：</p>
+    <p class="分区普通文本">
+      现在，只要为变换元素添加旋转属性，即可看到<span class="行内专业名词 等宽">3D</span>旋转效果：
+    </p>
     <pre>
       <code class="lang-css">
         .变换元素 {
@@ -361,7 +368,7 @@
   <article class="正文分区">
     <h2 class="分区标题 分区2级标题">卡片翻转</h2>
 
-    <h3 class="分区标题 分区3级标题"><span class="行内专业名词">3D</span>旋转的应用</h3>
+    <h3 class="分区标题 分区3级标题"><span class="行内专业名词 等宽">3D</span>旋转的应用</h3>
     <p class="分区普通文本">
       旋转的一个常见应用场景，就是做翻转的卡片。不过这里有一个问题：我们希望卡片翻转过来后是空白的，而不是像之前一样只是把原有的内容翻转过来。
     </p>
@@ -448,10 +455,8 @@
 
     <h3 class="分区标题 分区3级标题">隐藏反面</h3>
     <p class="分区普通文本">
-      相信你已经看出问题所在，卡片翻转过来后，不是空白。这里需要使用<span class="行内专业名词">CSS</span>属性：<span
-        class="行内专业名词"
-        >反面可见性</span
-      >。
+      相信你已经看出问题所在，卡片翻转过来后，不是空白。这里需要使用<span class="行内专业名词 等宽">CSS</span
+      >属性：<span class="行内专业名词">反面可见性</span>。
     </p>
     <pre>
       <code class="lang-css">
@@ -529,7 +534,9 @@
         </div>
       </div>
     </figure>
-    <p class="分区普通文本">好多了，不是吗？不过，两张图片应该是一正一反，因此，反面元素平时就应该水平翻转180°：</p>
+    <p class="分区普通文本">
+      好多了，不是吗？不过，两张图片应该是一正一反，因此，反面元素平时就应该水平翻转<span class="等宽">180°</span>：
+    </p>
     <pre>
       <code class="lang-css">
         .反面元素 {
