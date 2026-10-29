@@ -222,7 +222,8 @@ tbody > tr:nth-child(odd) {
 }
 
 .笔记区 pre {
-  border: solid 1px #def3;
+  border-radius: 10px;
+  border: solid 1.5px #456;
 }
 
 .笔记区 code,
@@ -234,6 +235,10 @@ tbody > tr:nth-child(odd) {
 
 .笔记区 :is(h1, h2, h3, h4, h5, h6) code {
   font-size: 1em;
+}
+
+code.hljs {
+  background: #202a33;
 }
 
 .笔记区 code:not(pre code) {
