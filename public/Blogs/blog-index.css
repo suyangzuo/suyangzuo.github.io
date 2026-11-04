@@ -944,6 +944,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   align-items: flex-start;
   row-gap: 20px;
   padding-top: 150px;
+  padding-bottom: 15px;
   z-index: 9991;
   transition: translate 500ms;
 }
@@ -1079,7 +1080,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 
 .专题 {
   width: 100%;
-  padding: 3px 8px 3px 12px;
+  padding: 3px 8px 3px 10px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -1103,7 +1104,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 
 .专题-标记 {
   flex-shrink: 0;
-  width: 15px;
+  width: 3ch;
   height: 100%;
   text-align: center;
   font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
@@ -1282,6 +1283,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .简介标题 {
+  position: relative;
   font-family: "Inter", "Noto Sans SC", 微软雅黑, sans-serif;
   font-size: 2.25rem;
   letter-spacing: 1px;
@@ -1311,20 +1313,24 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 
 .原创,
 .转载 {
-  font-size: 1rem;
+  font-size: 14px;
   letter-spacing: normal;
-  background-color: #ffffff15;
-  padding: 5px 30px;
+  padding: 3px 10px;
   border-radius: 5px;
-  border: solid 2px #fff2;
+  position: absolute;
+  bottom: 5px;
+  left: calc(100% + 15px);
+  text-wrap: nowrap;
 }
 
 .原创 {
-  color: var(--专题标记-原创);
+  background-color: rgb(40, 101, 90);
+  color: #ddd;
 }
 
 .转载 {
-  color: var(--专题标记-转载);
+  background-color: orange;
+  color: #222;
 }
 
 .简介信息 {
