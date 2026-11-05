@@ -72,8 +72,190 @@
 
     <h3 class="分区标题 分区3级标题">什么是<span class="行内专业名词">抖动</span></h3>
     <p class="分区普通文本">
-      <span class="行内专业名词">抖动</span
-      >是指短时间内频发触发某个事件，导致性能下降、页面卡顿的现象。哪些事件最容易被频繁触发呢？
+      <span class="行内专业名词">抖动</span>是指<span class="强调">高频事件</span
+      ><span class="附加说明">短时间内频繁触发</span>绑定了对性能需求较大的函数<span class="附加说明">热点函数</span
+      >，导致程序或页面不断卡顿的现象，给人感觉像是在抖动。
     </p>
+    <pre class="line-numbers">
+      <code class="lang-js">
+        //短时间内会被频繁触发的事件，绑定了比较消耗性能的函数，会导致"抖动"，即频繁的卡顿
+        元素.addEventListener("高频事件", 热点函数);
+      </code>
+    </pre>
+
+    <h3 class="分区标题 分区3级标题">高频事件</h3>
+    <p class="分区普通文本">短时间内被频繁触发的事件主要有这么几种：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <h4>视口尺寸改变</h4>
+        <pre>
+          <code class="lang-js">
+            //此事件会在视口尺寸改变时频繁触发
+            window.addEventListener("resize", 函数);
+          </code>
+        </pre>
+        <figure class="截图容器" data-desc="视口尺寸改变">
+          <img src="./Images/高频事件-resize.webp" alt="视口尺寸改变" />
+        </figure>
+        <p class="分区普通文本">用鼠标拖拽的方式改变浏览器窗口大小时，会频繁触发此事件。</p>
+      </li>
+      <li class="分区列表项">
+        <h4>滚动</h4>
+        <pre>
+          <code class="lang-js">
+            //此事件会在元素内部滚动时频繁触发
+            元素.addEventListener("scroll", 函数);
+          </code>
+        </pre>
+        <figure class="截图容器" data-desc="滚动">
+          <img src="./Images/高频事件-元素scroll.webp" alt="滚动" />
+        </figure>
+        <p class="分区普通文本">在元素内部滚动时，会频繁触发此事件。</p>
+      </li>
+      <li class="分区列表项">
+        <h4>鼠标移动</h4>
+        <pre>
+          <code class="lang-js">
+            //此事件会在元素内部移动鼠标时频繁触发
+            元素.addEventListener("mousemove", 函数);
+          </code>
+        </pre>
+        <figure class="截图容器" data-desc="鼠标移动">
+          <img src="./Images/高频事件-mousemove.webp" alt="鼠标移动" />
+        </figure>
+        <p class="分区普通文本">在元素内部移动鼠标时，会频繁触发此事件。</p>
+      </li>
+      <li class="分区列表项">
+        <h4>拖拽滑块</h4>
+        <pre>
+          <code class="lang-js">
+            //此事件会在拖拽滑块时频繁触发
+            input[type="range"].addEventListener("input", 函数);
+          </code>
+        </pre>
+        <figure class="截图容器" data-desc="拖拽滑块">
+          <img src="./Images/高频事件-滑块input.webp" alt="拖拽滑块" />
+        </figure>
+        <p class="分区普通文本">
+          <span class="行内代码">input</span
+          >事件主要用于需要实时显示数据的场景，比如一边拖拽滑块，一边实时显示滑块的数值。如果没有实时显示数据的需求，可以改用<span
+            class="行内代码"
+            >change</span
+          >事件，此事件只会在滑块位置最终确定<span class="附加说明">比如松开鼠标</span
+          >且值有变化时才会触发，这种情况下就无需防抖。
+        </p>
+      </li>
+      <li class="分区列表项">
+        <h4>输入文本</h4>
+        <pre>
+          <code class="lang-js">
+            //此事件会在每次输入文本时触发
+            input[type="text"].addEventListener("input", 函数);
+          </code>
+        </pre>
+        <figure class="截图容器" data-desc="输入文本">
+          <img src="./Images/高频事件-文本框input.webp" alt="输入文本" />
+        </figure>
+        <p class="分区普通文本">在文本框中每次输入字符都会触发<span class="行内代码">input</span>事件。</p>
+      </li>
+    </ul>
+
+    <h3 class="分区标题 分区3级标题">热点函数</h3>
+    <p class="分区普通文本">
+      事件被频繁触发是无法改变的，因为事件被触发的底层代码写在浏览器的<span class="专业名词"
+        ><span class="行内专业名词">JavaScript</span>引擎</span
+      >中。是否抖动，取决于绑定事件的函数对性能的消耗高低。对性能影响较大的函数，就属于热点函数。
+    </p>
+    <p class="分区普通文本">什么样的函数属于热点函数呢？这里举几个例子：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <h4>复杂的渲染</h4>
+      </li>
+      <li class="分区列表项">
+        <h4>大幅度变动<span class="行内专业名词 等宽">DOM</span>树</h4>
+      </li>
+      <li class="分区列表项">
+        <h4>深度循环或递归</h4>
+      </li>
+      <li class="分区列表项">
+        <h4>构造重型对象，比如复杂的<span class="行内专业名词 等宽">JSON</span></h4>
+      </li>
+    </ul>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题"><span class="行内专业名词">防抖</span>的实现</h2>
+
+    <h3 class="分区标题 分区3级标题"><span class="行内专业名词">防抖</span>的实现思路</h3>
+    <p class="分区普通文本">
+      用一个计时器，从事件触发时开始计时，如果在限定时间内再次触发事件，就重新计时；只有计时器到达限定时间，才会执行绑定的函数。如此，可确保限定时间内函数只会执行一次。
+    </p>
+    <figure class="截图容器" data-desc="防抖实现思路">
+      <iframe class="防抖可视化" src="./防抖实现思路.html" title="防抖实现思路交互演示"></iframe>
+    </figure>
+    <p class="分区普通文本">只有防抖计时器到达限定时间，才会更新数值，在限定时间内不会重复更新。</p>
+
+    <h3 class="分区标题 分区3级标题"><span class="行内专业名词">闭包</span>计时器</h3>
+    <p class="分区普通文本">计时器变量，这个变量必须放在函数的外部，才能保证清空和启动的是同一个计时器。</p>
+    <pre>
+      <code class="lang-js">
+        //错误写法
+        function 函数() {
+          let timer = null;  //错误，timer为局部变量，每次声明的timer都是新的
+          clearTimeout(timer);  //清空的timer是新的，不是上一次的timer
+          timer = setTimeout(() => {
+            业务逻辑;
+          }, 计时时长));
+        }
+
+        //--------------------------------------------------
+
+        //正确写法
+        let timer = null;  //timer必须写在函数外部
+        function 函数() {
+          clearTimeout(timer);  //清空的timer是上一次的timer
+          timer = setTimeout(() => {
+            业务逻辑;
+          }, 计时时长);
+        }
+      </code>
+    </pre>
+    <p class="分区普通文本">然而，这样的设计带来两个问题：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <h4>计时器暴露在全局环境中，降低了程序的健壮性</h4>
+      </li>
+      <li class="分区列表项">
+        <h4>多个计时器，就需要多个变量，不利于管理维护</h4>
+      </li>
+    </ul>
+    <p class="分区普通文本">
+      为了解决上述问题，又不能让计时器成为函数内部的局部变量，我们需要用<span class="行内专业名词">闭包</span
+      >来实现这个需求。
+    </p>
+    <pre>
+      <code class="lang-js">
+        function 普通函数() {
+          热点业务逻辑;
+        }
+
+        //传入普通函数，返回防抖函数
+        function 防抖(函数, 计时时长) {
+          //此"timer"在"防抖"函数结束后不会消失，因为它被内部的"返回函数"引用，形成闭包
+          //同时此"timer"也不是全局变量，它只在"防抖"函数的作用域中存在，外部无法访问
+          //每次调用"防抖"函数，都会创建一个新的"timer"，彼此独立，互不干扰
+          let timer = null;
+          return function (...args) {
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+              函数.apply(this, args);  //此处的"this"指向防抖的调用者
+            }, 计时时长);
+          };
+        }
+
+        const 防抖普通函数 = 防抖(普通函数, 计时时长);
+        元素.addEventListener("高频事件", 防抖普通函数);
+      </code>
+    </pre>
   </article>
 </div>

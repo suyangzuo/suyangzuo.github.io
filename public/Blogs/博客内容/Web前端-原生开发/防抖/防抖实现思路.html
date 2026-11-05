@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>防抖思路</title>
+    <style>
+      :root {
+        --value-accent: rgb(161, 116, 49);
+        --value-accent-soft: #00d4aa88;
+        --value-accent-light: orange;
+        --progress-fill-start: #a43b44;
+        --progress-fill-end: #b83f3f;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: #0b0f15;
+        font-family: "Google Sans Code", "JetBrains Mono", Consolas, MiSans, "Noto Sans SC", 微软雅黑, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        color: #e8edf2;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .card {
+        /* background: #141a23; */
+        /* border-radius: 36px; */
+        padding: 20px 30px;
+        /* box-shadow:
+        0 25px 50px -12px rgba(0, 0, 0, 0.8),
+        inset 0 1px 1px rgba(255, 255, 255, 0.05); */
+        width: 100%;
+        height: 100%;
+        /* max-width: 620px; */
+        /* border: 1px solid #1f2a36; */
+        transition: border-color 0.2s ease;
+        position: relative;
+      }
+
+      /* .card:hover {
+      border-color: #2b3a4a;
+    } */
+
+      .header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 36px;
+      }
+
+      .title {
+        font-size: 18px;
+        font-weight: 500;
+        letter-spacing: -0.02em;
+        color: #dae4f1;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .counter-area {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+      }
+
+      .counter-label {
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #6a7c8e;
+        font-weight: 500;
+        margin-bottom: 4px;
+      }
+
+      .counter-number {
+        font-size: 50px;
+        font-weight: 600;
+        line-height: 1;
+        color: orange;
+        letter-spacing: -0.03em;
+        font-feature-settings: "tnum";
+        transition: color 0.2s;
+        text-shadow: 0 0 12px rgba(62, 166, 255, 0.3);
+      }
+
+      /* 防抖复选框 */
+      .checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: 60px;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+        cursor: pointer;
+        user-select: none;
+        width: fit-content;
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        margin: 0;
+        z-index: 10;
+      }
+
+      .checkbox-wrapper input[type="checkbox"] {
+        appearance: none;
+        -webkit-appearance: none;
+        background: #0b1117;
+        border: 1.5px solid #34495e;
+        width: 20px;
+        height: 20px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          border-color 0.15s,
+          box-shadow 0.15s;
+        position: relative;
+        flex-shrink: 0;
+      }
+
+      .checkbox-wrapper input[type="checkbox"]:checked {
+        background: #2a7fff;
+        border-color: #2a7fff;
+        box-shadow: 0 0 12px #2a7fff60;
+      }
+
+      .checkbox-wrapper input[type="checkbox"]::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        margin: auto;
+        width: 14px;
+        height: 12px;
+        background: #ffffff;
+        clip-path: polygon(10% 45%, 40% 70%, 85% 14%, 96% 24%, 40% 94%, 4% 51%);
+        opacity: 0;
+        transform: scale(0.6);
+        transition:
+          opacity 0.12s ease,
+          transform 0.12s ease;
+      }
+
+      .checkbox-wrapper input[type="checkbox"]:checked::after {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .checkbox-label {
+        font-size: 16px;
+        font-weight: 500;
+        color: #d4e0ed;
+        letter-spacing: 0.2px;
+      }
+
+      .progress-section {
+        margin-bottom: 40px;
+      }
+
+      .progress-label-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        font-size: 14px;
+        color: #8b9bb0;
+        font-weight: 500;
+      }
+
+      /* 时间显示样式 — 单位 ms 单独着色 */
+      .progress-time {
+        font-size: 14px;
+        font-feature-settings: "tnum";
+        color: #b0c1d6;
+        border-radius: 20px;
+        display: inline-flex;
+        align-items: baseline;
+        gap: 2px;
+      }
+
+      .time-number {
+        font-weight: 600;
+        color: #e8edf2;
+        transition: color 0.1s;
+      }
+
+      .time-unit {
+        font-weight: 500;
+        font-size: 0.85em;
+        color: #ff8c00;
+        margin-left: 2px;
+      }
+
+      .progress-time .time-unit {
+        color: #ffb347;
+        text-shadow: 0 0 6px #ff8c0040;
+      }
+
+      .slider-value .time-unit {
+        color: #5ba0ff;
+        font-weight: 600;
+      }
+
+      .progress-track {
+        height: 5px;
+        background: #1b232e;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+        position: relative;
+      }
+
+      .progress-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, var(--progress-fill-start), var(--progress-fill-end));
+        border-radius: 20px;
+        box-shadow: 0 0 12px color-mix(in srgb, var(--progress-fill-start) 55%, transparent);
+        transition: width 0.03s linear;
+        will-change: width;
+      }
+
+      .controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 30px;
+        margin-top: 12px;
+      }
+
+      .slider-container {
+        flex: 1;
+        min-width: 220px;
+      }
+
+      .slider-header {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        color: #8b9bb0;
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      .slider-value {
+        color: #b0c1d6;
+        font-feature-settings: "tnum";
+        display: inline-flex;
+        align-items: baseline;
+        gap: 2px;
+      }
+
+      input[type="range"] {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 5px;
+        background: #1e2936;
+        border-radius: 20px;
+        outline: none;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 7px;
+        height: 20px;
+        background: #2a7fff;
+        border-radius: 4px;
+        box-shadow:
+          0 4px 12px rgba(0, 0, 0, 0.6),
+          0 0 0 2px #2a7fff;
+        cursor: grab;
+        transition:
+          transform 0.1s,
+          box-shadow 0.2s,
+          background 0.1s;
+        border: none;
+        margin-top: -7px;
+      }
+
+      input[type="range"] {
+        background:
+          linear-gradient(#2a7fff, #2a7fff) 0/0% no-repeat,
+          #1e2936;
+        transition: background-size 0.05s linear;
+      }
+
+      input[type="range"]::-moz-range-progress {
+        background: #2a7fff;
+        height: 5px;
+        border-radius: 20px;
+      }
+
+      input[type="range"]::-moz-range-track {
+        background: #1e2936;
+        height: 5px;
+        border-radius: 20px;
+      }
+
+      input[type="range"]::-moz-range-thumb {
+        width: 7px;
+        height: 20px;
+        background: #2a7fff;
+        border: none;
+        border-radius: 4px;
+        box-shadow:
+          0 4px 12px rgba(0, 0, 0, 0.6),
+          0 0 0 2px #2a7fff;
+        cursor: grab;
+        transition:
+          transform 0.1s,
+          box-shadow 0.2s,
+          background 0.1s;
+      }
+
+      input[type="range"]::-moz-range-thumb:hover {
+        transform: scale(1.15);
+        box-shadow:
+          0 4px 16px #2a7fff66,
+          0 0 0 3px #2a7fff;
+      }
+
+      input[type="range"]::-webkit-slider-thumb:hover {
+        transform: scale(1.15);
+        box-shadow:
+          0 4px 16px #2a7fff66,
+          0 0 0 3px #2a7fff;
+      }
+
+      input[type="range"]::-webkit-slider-thumb:active {
+        cursor: grabbing;
+        transform: scale(1.05);
+      }
+
+      .value-slider-container {
+        margin: 36px 0 0;
+      }
+
+      .value-slider-header {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        color: #a0b2c6;
+        margin-bottom: 8px;
+        font-weight: 500;
+        letter-spacing: 0.2px;
+      }
+
+      /* ===== 值滑块专用样式（青绿色系），高度与其它滑块一致 ===== */
+      input[type="range"].value-range {
+        width: 100%;
+        height: 5px;
+        /* 与全局一致 */
+        -webkit-appearance: none;
+        appearance: none;
+        background:
+          linear-gradient(var(--value-accent), var(--value-accent-light)) 0/0% no-repeat,
+          #1e2936;
+        border-radius: 20px;
+        outline: none;
+        cursor: pointer;
+        transition: background-size 0.05s linear;
+      }
+
+      input[type="range"].value-range::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 7px;
+        height: 20px;
+        background: var(--thumb-color, var(--value-accent));
+        border-radius: 4px;
+        box-shadow:
+          0 4px 12px rgba(0, 0, 0, 0.7),
+          0 0 0 2px var(--thumb-color, var(--value-accent));
+        cursor: grab;
+        transition:
+          transform 0.1s,
+          box-shadow 0.2s,
+          background 0.1s;
+        border: none;
+        margin-top: -7px;
+        /* (5 - 20) / 2 = -7.5，接近 -7 居中 */
+      }
+
+      input[type="range"].value-range::-webkit-slider-thumb:hover {
+        transform: scale(1.15);
+        box-shadow:
+          0 4px 18px color-mix(in srgb, var(--thumb-color, var(--value-accent)) 60%, transparent),
+          0 0 0 3px var(--thumb-color, var(--value-accent));
+      }
+
+      input[type="range"].value-range::-moz-range-progress {
+        background: linear-gradient(90deg, var(--value-accent), var(--value-accent-light));
+        height: 5px;
+        border-radius: 20px;
+      }
+
+      input[type="range"].value-range::-moz-range-track {
+        background: #1e2936;
+        height: 5px;
+        border-radius: 20px;
+      }
+
+      input[type="range"].value-range::-moz-range-thumb {
+        width: 7px;
+        height: 20px;
+        background: var(--thumb-color, var(--value-accent));
+        border: none;
+        border-radius: 4px;
+        box-shadow:
+          0 4px 12px rgba(0, 0, 0, 0.7),
+          0 0 0 2px var(--thumb-color, var(--value-accent));
+        cursor: grab;
+        transition:
+          transform 0.1s,
+          box-shadow 0.2s,
+          background 0.1s;
+      }
+
+      input[type="range"].value-range::-moz-range-thumb:hover {
+        transform: scale(1.15);
+        box-shadow:
+          0 4px 18px color-mix(in srgb, var(--thumb-color, var(--value-accent)) 60%, transparent),
+          0 0 0 3px var(--thumb-color, var(--value-accent));
+      }
+
+      .status-hint {
+        display: flex;
+        justify-content: flex-end;
+        font-size: 14px;
+        color: #5e7185;
+        letter-spacing: 0.2px;
+        margin-top: 8px;
+      }
+
+      .debounce-state {
+        color: #6b8aaf;
+      }
+
+      @media (max-width: 500px) {
+        .card {
+          padding: 24px 20px;
+        }
+
+        .counter-number {
+          font-size: 48px;
+        }
+
+        .controls {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .checkbox-wrapper {
+          top: 24px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="card">
+      <div class="checkbox-wrapper" id="checkboxWrapper">
+        <input type="checkbox" id="debounceCheckbox" checked />
+        <span class="checkbox-label">防抖</span>
+      </div>
+
+      <div class="header">
+        <div class="title">防抖实现思路</div>
+        <div class="counter-area">
+          <span class="counter-label">数值</span>
+          <span class="counter-number" id="counterDisplay">0</span>
+        </div>
+      </div>
+
+      <!-- 防抖计时器进度 + 实时计时数字 -->
+      <div class="progress-section">
+        <div class="progress-label-row">
+          <span>防抖计时器</span>
+          <span class="progress-time" id="progressTimeDisplay">
+            <span class="time-number" id="progressTimeNumber">0</span>
+            <span class="time-unit">ms</span>
+          </span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+
+      <!-- 控制区: 只有防抖时间滑块 -->
+      <div class="controls">
+        <div class="slider-container">
+          <div class="slider-header">
+            <span>计时时长</span>
+            <span class="slider-value" id="sliderValueLabel">
+              <span class="time-number" id="sliderValueNumber">1000</span>
+              <span class="time-unit">ms</span>
+            </span>
+          </div>
+          <input type="range" id="delaySlider" min="16" max="2000" value="1000" step="1" />
+        </div>
+      </div>
+
+      <!-- 值滑块 (0-500) -->
+      <div class="value-slider-container">
+        <div class="value-slider-header">
+          <span>拖动更新数值</span>
+        </div>
+        <input type="range" id="valueSlider" class="value-range" min="0" max="500" value="0" step="1" />
+        <div class="status-hint">
+          <span class="debounce-state" id="debounceStateHint">防抖生效中</span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        // --- DOM 元素 ---
+        const counterEl = document.getElementById("counterDisplay");
+        const progressFill = document.getElementById("progressFill");
+        const progressTimeNumber = document.getElementById("progressTimeNumber");
+        const sliderValueNumber = document.getElementById("sliderValueNumber");
+        const delaySlider = document.getElementById("delaySlider");
+        const debounceCheckbox = document.getElementById("debounceCheckbox");
+        const valueSlider = document.getElementById("valueSlider");
+        const debounceStateHint = document.getElementById("debounceStateHint");
+
+        // --- 状态 ---
+        let currentValue = 0;
+        let delay = 1000;
+        let isDebounceMode = true;
+
+        // 防抖相关
+        let timerId = null;
+        let rafId = null;
+        let startTime = 0;
+
+        // 滑块输入最新值
+        let pendingValue = 0;
+
+        // --- 工具函数 ---
+
+        // 将 "#rrggbb" 或 "rgb(r,g,b)" 解析为 [r,g,b]
+        function parseColor(c) {
+          if (!c) return [0, 0, 0];
+          if (c.startsWith("#")) {
+            const hex = c.slice(1);
+            const full =
+              hex.length === 3
+                ? hex
+                    .split("")
+                    .map((h) => h + h)
+                    .join("")
+                : hex;
+            return [parseInt(full.slice(0, 2), 16), parseInt(full.slice(2, 4), 16), parseInt(full.slice(4, 6), 16)];
+          }
+          const m = c.match(/rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/);
+          if (m) return [Number(m[1]), Number(m[2]), Number(m[3])];
+          // 命名色 orange 等：临时映射
+          const named = { orange: [255, 165, 0] };
+          if (named[c]) return named[c];
+          return [0, 0, 0];
+        }
+
+        function lerp(a, b, t) {
+          return Math.round(a + (b - a) * t);
+        }
+
+        function lerpColor(c1, c2, t) {
+          const a = parseColor(c1);
+          const b = parseColor(c2);
+          return `rgb(${lerp(a[0], b[0], t)}, ${lerp(a[1], b[1], t)}, ${lerp(a[2], b[2], t)})`;
+        }
+
+        function updateRangeFill(rangeEl) {
+          const min = Number(rangeEl.min);
+          const max = Number(rangeEl.max);
+          const val = Number(rangeEl.value);
+          const percent = max > min ? ((val - min) / (max - min)) * 100 : 0;
+          rangeEl.style.backgroundSize = percent + "% 100%, 100% 100%";
+
+          // valueSlider 的 thumb 颜色跟随渐变位置
+          if (rangeEl === valueSlider) {
+            const start = getComputedStyle(document.documentElement).getPropertyValue("--value-accent").trim();
+            const end = getComputedStyle(document.documentElement).getPropertyValue("--value-accent-light").trim();
+            const thumbColor = lerpColor(start, end, percent / 100);
+            valueSlider.style.setProperty("--thumb-color", thumbColor);
+          }
+        }
+
+        function updateDelaySliderFill() {
+          updateRangeFill(delaySlider);
+        }
+
+        function updateValueSliderFill() {
+          updateRangeFill(valueSlider);
+        }
+
+        function updateProgressBarWidth(elapsed, total) {
+          if (total <= 0) {
+            progressFill.style.width = "0%";
+            return;
+          }
+          let percent = (Math.max(0, elapsed) / total) * 100;
+          if (percent > 100) percent = 100;
+          if (percent < 0) percent = 0;
+          progressFill.style.width = percent + "%";
+        }
+
+        function resetProgressBar() {
+          progressFill.style.width = "0%";
+          progressTimeNumber.textContent = "0";
+        }
+
+        function clearAllTimers() {
+          if (timerId !== null) {
+            clearTimeout(timerId);
+            timerId = null;
+          }
+          if (rafId !== null) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
+          }
+        }
+
+        function setDisplayValue(val) {
+          currentValue = val;
+          counterEl.textContent = val;
+        }
+
+        function updateDebounceHint() {
+          if (isDebounceMode) {
+            if (timerId !== null) {
+              debounceStateHint.textContent = "防抖等待中…";
+            } else {
+              debounceStateHint.textContent = "函数就绪";
+            }
+          } else {
+            debounceStateHint.textContent = "防抖已关闭 · 实时更新";
+          }
+        }
+
+        function updateDelayDisplay(newDelay) {
+          sliderValueNumber.textContent = newDelay;
+        }
+
+        // --- 防抖核心逻辑（已修复负数问题）---
+
+        function startDebounceCycle() {
+          if (!isDebounceMode) return;
+
+          if (timerId !== null) {
+            clearTimeout(timerId);
+            timerId = null;
+          }
+          if (rafId !== null) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
+          }
+
+          resetProgressBar();
+          startTime = performance.now();
+
+          function step() {
+            const elapsed = Math.max(0, performance.now() - startTime);
+            const displayElapsed = Math.min(Math.floor(elapsed), delay);
+            progressTimeNumber.textContent = displayElapsed;
+
+            if (elapsed >= delay) {
+              progressFill.style.width = "100%";
+              progressTimeNumber.textContent = delay;
+              rafId = null;
+              return;
+            }
+            updateProgressBarWidth(elapsed, delay);
+            rafId = requestAnimationFrame(step);
+          }
+
+          progressTimeNumber.textContent = "0";
+          updateProgressBarWidth(0, delay);
+          rafId = requestAnimationFrame(step);
+
+          timerId = setTimeout(() => {
+            if (timerId !== null) {
+              setDisplayValue(pendingValue);
+              timerId = null;
+              if (rafId !== null) {
+                cancelAnimationFrame(rafId);
+                rafId = null;
+              }
+              progressFill.style.width = "100%";
+              progressTimeNumber.textContent = delay;
+              updateDebounceHint();
+            }
+          }, delay);
+
+          updateDebounceHint();
+        }
+
+        function onValueSliderInput(e) {
+          const newVal = Number(e.target.value);
+          updateValueSliderFill();
+          pendingValue = newVal;
+
+          if (isDebounceMode) {
+            startDebounceCycle();
+          } else {
+            setDisplayValue(newVal);
+            clearAllTimers();
+            resetProgressBar();
+            updateDebounceHint();
+          }
+        }
+
+        function onDebounceToggle() {
+          const newMode = debounceCheckbox.checked;
+          if (newMode === isDebounceMode) return;
+
+          isDebounceMode = newMode;
+
+          clearAllTimers();
+          resetProgressBar();
+          pendingValue = Number(valueSlider.value);
+
+          if (isDebounceMode) {
+            if (pendingValue !== currentValue) {
+              startDebounceCycle();
+            } else {
+              updateDebounceHint();
+            }
+          } else {
+            setDisplayValue(pendingValue);
+            updateDebounceHint();
+          }
+        }
+
+        function onDelayChange(value) {
+          const newDelay = Number(value);
+          delay = newDelay;
+          updateDelayDisplay(newDelay);
+          updateDelaySliderFill();
+
+          if (isDebounceMode && timerId !== null) {
+            pendingValue = Number(valueSlider.value);
+            startDebounceCycle();
+          } else if (isDebounceMode && timerId === null) {
+            updateDebounceHint();
+            progressTimeNumber.textContent = "0";
+          } else if (!isDebounceMode) {
+            resetProgressBar();
+          }
+        }
+
+        function init() {
+          delay = Number(delaySlider.value);
+          sliderValueNumber.textContent = delay;
+          progressTimeNumber.textContent = "0";
+
+          updateDelaySliderFill();
+
+          valueSlider.value = "0";
+          updateValueSliderFill();
+          pendingValue = 0;
+          setDisplayValue(0);
+          updateDebounceHint();
+          resetProgressBar();
+
+          delaySlider.addEventListener("input", (e) => {
+            onDelayChange(e.target.value);
+          });
+
+          debounceCheckbox.addEventListener("change", onDebounceToggle);
+
+          document.getElementById("checkboxWrapper").addEventListener("click", (e) => {
+            if (e.target.tagName !== "INPUT") {
+              debounceCheckbox.checked = !debounceCheckbox.checked;
+              onDebounceToggle();
+            }
+          });
+
+          valueSlider.addEventListener("input", onValueSliderInput);
+
+          updateDebounceHint();
+          progressTimeNumber.textContent = "0";
+        }
+
+        init();
+      })();
+    </script>
+  </body>
+</html>

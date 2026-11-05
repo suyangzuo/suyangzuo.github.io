@@ -388,6 +388,54 @@ async function 加载专题CSS文件(技术栈名称, 专题名称) {
   return false;
 }
 
+// 将 HTML 中所有相对路径的 src/href 转换为相对于专题目录的站点根绝对路径
+function 转换相对路径为绝对路径(根元素, 专题文件路径) {
+  // 计算专题目录的完整 URL，作为解析相对路径的基准
+  const 专题完整URL = new URL(专题文件路径, window.location.href);
+  const 专题目录URL = new URL("./", 专题完整URL.href); // 去掉 index.html，保留目录
+
+  // 需要处理 src 属性的元素
+  const src元素组 = 根元素.querySelectorAll(
+    "img[src], script[src], video[src], audio[src], source[src], iframe[src], embed[src]"
+  );
+  src元素组.forEach((元素) => {
+    const 原路径 = 元素.getAttribute("src");
+    转换路径并设置(元素, "src", 原路径, 专题目录URL);
+  });
+
+  // 需要处理 href 属性的元素
+  const href元素组 = 根元素.querySelectorAll("a[href], link[href]");
+  href元素组.forEach((元素) => {
+    const 原路径 = 元素.getAttribute("href");
+    转换路径并设置(元素, "href", 原路径, 专题目录URL);
+  });
+}
+
+function 转换路径并设置(元素, 属性名, 原路径, 专题目录URL) {
+  if (!原路径) return;
+
+  // 已经是绝对路径或特殊协议，不需要转换
+  if (
+    原路径.startsWith("/") ||
+    原路径.startsWith("http://") ||
+    原路径.startsWith("https://") ||
+    原路径.startsWith("data:") ||
+    原路径.startsWith("#") ||
+    原路径.startsWith("mailto:") ||
+    原路径.startsWith("javascript:") ||
+    原路径.startsWith("tel:")
+  ) {
+    return;
+  }
+
+  try {
+    const 绝对URL = new URL(原路径, 专题目录URL);
+    元素.setAttribute(属性名, 绝对URL.pathname);
+  } catch (e) {
+    // 路径无效，忽略
+  }
+}
+
 async function 设置内容(是否初次加载 = false) {
   const 当前请求序号 = ++内容加载请求序号;
   const 请求已过期 = () => 当前请求序号 !== 内容加载请求序号;
@@ -425,6 +473,9 @@ async function 设置内容(是否初次加载 = false) {
       if (请求已过期()) return { 发生了回退: false, 已过期: true };
       专题内容区.innerHTML = content;
     }
+
+    // 将内容中的相对路径转换为绝对路径，确保从 Blogs/index.html 加载时资源仍能正确引用
+    转换相对路径为绝对路径(专题内容区, 专题文件路径);
 
     // 加载专题的外部 JS 和 CSS 文件（如果存在）
     await 加载专题CSS文件(技术栈名称, 专题名称);
