@@ -1,0 +1,25 @@
+figure[data-desc*="背景"]:has(iframe) {
+  width: 100%;
+}
+
+figure[data-desc="背景图像"] {
+  height: 450px;
+}
+
+figure[data-desc="背景尺寸"] {
+  height: 600px;
+}
+
+figure[data-desc="背景重复"] {
+  height: 600px;
+}
+
+figure[data-desc="背景位置"] {
+  height: 700px;
+}
+
+figure[data-desc*="背景"] > iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}

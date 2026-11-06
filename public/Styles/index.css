@@ -1,5 +1,50 @@
+:root {
+  /* ===== 背景色系 ===== */
+  --页面底色: #0a0d12;
+  --区块底色: #0e1219;
+  --卡片底色: rgba(255, 255, 255, 0.028);
+  --卡片底色悬停: rgba(255, 255, 255, 0.055);
+  --遮罩底色: rgba(10, 13, 18, 0.55);
+
+  /* ===== 边框与分割线 ===== */
+  --边框颜色: rgba(255, 255, 255, 0.07);
+  --边框颜色-强: rgba(255, 255, 255, 0.16);
+
+  /* ===== 文字色系 ===== */
+  --主标题颜色: #f4f6fa;
+  --正文颜色: #b9c2d0;
+  --次要文字颜色: #76828f;
+  --反白文字颜色: #0a0d12;
+
+  /* ===== 品牌强调色 ===== */
+  --品牌色: rgb(40, 133, 123);
+  --品牌色-亮: #379688;
+  --品牌色-暗: #1d6f66;
+  --品牌色-柔光: rgba(42, 151, 140, 0.16);
+
+  /* ===== 辅助点缀色 ===== */
+  --点缀-紫: #7a5cff;
+  --点缀-紫柔光: rgba(122, 92, 255, 0.16);
+  --点缀-蓝: #4f8dff;
+  --点缀-蓝柔光: rgba(79, 141, 255, 0.16);
+  --点缀-金: #e8b34b;
+  --点缀-金柔光: rgba(232, 179, 75, 0.16);
+  --点缀-粉: #ff6d8d;
+  --点缀-粉柔光: rgba(255, 109, 141, 0.16);
+
+  /* ===== 氛围光晕 ===== */
+  --光晕-品牌色: rgba(42, 151, 140, 0.35);
+  --光晕-紫: rgba(122, 92, 255, 0.32);
+  --光晕-蓝: rgba(79, 141, 255, 0.28);
+}
+
+/* ---------- 基础 ---------- */
 html {
   scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--页面底色);
 }
 
 .fas,
@@ -15,251 +60,565 @@ html {
   width: auto;
 }
 
+::selection {
+  background: var(--品牌色);
+  color: var(--反白文字颜色);
+}
+
+/* ---------- 主容器 ---------- */
 .主容器 {
   width: 100%;
   min-height: 100vh;
-  background: radial-gradient(
-    ellipse 150% 1500px at 50% -150px,
-    rgb(53, 22, 114) 0%,
-    rgb(22, 54, 114) 25%,
-    #11151a 65%
-  );
+  background: var(--页面底色);
+  color: var(--正文颜色);
   font-family: var(--中文代码混合字体);
-  padding-bottom: 100px;
+  padding-bottom: 140px;
+  overflow: hidden;
 }
 
-.简介区 {
+/* ============================ Hero 区 ============================ */
+.英雄区 {
   position: relative;
   width: 100%;
-  padding: 150px 0 75px;
+  padding: 160px 24px 110px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-shadow: 2px 2px 2px #000a;
+  text-align: center;
 }
 
-.简介区 > * {
+/* 氛围光斑 */
+.英雄区::before,
+.英雄区::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(130px);
+  pointer-events: none;
+}
+
+.英雄区::before {
+  width: 620px;
+  height: 620px;
+  top: -240px;
+  left: 50%;
+  translate: -75% 0;
+  background: var(--光晕-紫);
+  opacity: 0.55;
+}
+
+.英雄区::after {
+  width: 520px;
+  height: 520px;
+  top: -120px;
+  left: 50%;
+  translate: 25% 0;
+  background: var(--光晕-品牌色);
+  opacity: 0.5;
+}
+
+/* 顶部细网格纹理 */
+.英雄区网格纹理 {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--边框颜色) 1px, transparent 1px),
+    linear-gradient(90deg, var(--边框颜色) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 70% 55% at 50% 35%, #000 30%, transparent 75%);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.英雄区 > * {
+  position: relative;
   z-index: 1;
 }
 
-.简介区::before {
-  position: absolute;
-  content: "";
-  width: 100%;
-  height: 250%;
-  top: 0;
-  left: 0;
-  background: center/cover url("/Images/Background-Images/背景-04.png");
-  filter: brightness(75%);
-  mask-image: linear-gradient(#aaa 30%, transparent 55%);
-}
-
-.简介标题 {
-  font-size: clamp(48px, 5vh, 100px);
-}
-
-.简介副标题 {
-  color: rgb(211, 211, 211);
-  font-weight: normal;
-}
-
-.技术栈区 {
-  margin: 50px 0;
-  display: flex;
-  gap: 10px;
-}
-
-.技术栈 {
-  width: 45px;
-  height: 45px;
-  border-radius: 999px;
-  background-color: #123;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
+.英雄徽章 {
+  display: inline-flex;
   align-items: center;
-  overflow: hidden;
-  font-size: 20px;
+  gap: 8px;
+  padding: 7px 16px;
+  border: 1px solid var(--边框颜色-强);
+  border-radius: 999px;
+  background: var(--卡片底色);
+  backdrop-filter: blur(8px);
+  font-size: 13px;
+  color: var(--次要文字颜色);
+  letter-spacing: 0.04em;
+  margin-bottom: 34px;
 }
 
-.模块标题区 {
-  width: 100%;
-  margin: 0 auto 50px;
+.英雄徽章点 {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--品牌色-亮);
+  box-shadow: 0 0 10px var(--品牌色-亮);
+  animation: 徽章呼吸 2.4s ease-in-out infinite;
+}
+
+@keyframes 徽章呼吸 {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.英雄标题 {
+  font-size: clamp(46px, 7vw, 96px);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--主标题颜色);
+  line-height: 1.12;
+}
+
+.英雄标题-强调 {
+  background: linear-gradient(100deg, var(--品牌色-亮) 10%, var(--点缀-蓝) 55%, var(--点缀-紫) 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.英雄副标题 {
+  margin-top: 26px;
+  max-width: 640px;
+  font-size: clamp(15px, 1.6vw, 19px);
+  line-height: 1.9;
+  color: var(--次要文字颜色);
+  font-weight: 400;
+}
+
+.英雄操作区 {
+  margin-top: 48px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+
+.按钮 {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 32px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    background 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.按钮-主要 {
+  background: var(--品牌色);
+  color: var(--反白文字颜色);
+  box-shadow: 0 10px 32px -8px var(--品牌色);
+}
+
+.按钮-主要:hover {
+  transform: translateY(-2px);
+  background: var(--品牌色-亮);
+  box-shadow: 0 16px 40px -8px var(--品牌色-亮);
+}
+
+.按钮-次要 {
+  border: 1px solid var(--边框颜色-强);
+  color: var(--主标题颜色);
+  background: var(--卡片底色);
+  backdrop-filter: blur(6px);
+}
+
+.按钮-次要:hover {
+  transform: translateY(-2px);
+  background: var(--卡片底色悬停);
+  border-color: var(--品牌色);
+}
+
+.英雄统计区 {
+  margin-top: 90px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(32px, 6vw, 88px);
+}
+
+.英雄统计项 {
   display: flex;
   flex-direction: column;
-  text-shadow: 1px 1px 1px #000a;
+  align-items: center;
+  gap: 6px;
+}
+
+.英雄统计数值 {
+  font-size: clamp(30px, 3.4vw, 44px);
+  font-weight: 700;
+  color: var(--主标题颜色);
+  font-feature-settings: "tnum";
+}
+
+.英雄统计数值 em {
+  font-style: normal;
+  color: var(--品牌色-亮);
+}
+
+.英雄统计标签 {
+  font-size: 13px;
+  color: var(--次要文字颜色);
+  letter-spacing: 0.1em;
+}
+
+/* ============================ 通用分区 ============================ */
+.分区 {
+  width: min(1240px, 92%);
+  margin: 0 auto;
+  padding: 90px 0 0;
+}
+
+.分区头部 {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 44px;
+}
+
+.分区标题组 {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.分区眉标 {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: var(--品牌色-亮);
+  text-transform: uppercase;
+}
+
+.分区眉标::before {
+  content: "";
+  width: 26px;
+  height: 2px;
+  background: var(--品牌色-亮);
+  border-radius: 2px;
 }
 
 .分区标题 {
-  font-size: clamp(20px, 2vw, 24px);
-  font-weight: bold;
+  font-size: clamp(28px, 3.4vw, 42px);
+  font-weight: 700;
+  color: var(--主标题颜色);
+  letter-spacing: 0.02em;
 }
 
-.分区标题描述 {
-  font-size: clamp(14px, 1.75vw, 16px);
-  color: rgb(201, 201, 201);
+.分区描述 {
+  max-width: 460px;
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--次要文字颜色);
 }
 
-.主模块区 {
+/* ============================ 特色展示（全宽卡片） ============================ */
+.特色卡片 {
   position: relative;
-  margin: 25px auto 0;
-  width: clamp(750px, 55%, 2000px);
-}
-
-.主模块内容区 {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 50px;
-  margin: 0 auto 100px;
-}
-
-.主模块 {
-  position: relative;
-  width: calc(50% - 50px);
-  aspect-ratio: 1.5;
-  border-radius: 10px;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  border: 1px solid var(--边框颜色);
+  border-radius: 24px;
+  background: var(--区块底色);
   overflow: hidden;
-  transition: 250ms;
 }
 
-.主模块::before {
+.特色卡片信息 {
+  padding: clamp(36px, 4.5vw, 64px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+.特色卡片标签 {
+  width: fit-content;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: var(--品牌色-柔光);
+  border: 1px solid var(--品牌色-暗);
+  color: var(--品牌色-亮);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+}
+
+.特色卡片标题 {
+  font-size: clamp(24px, 2.6vw, 34px);
+  font-weight: 700;
+  color: var(--主标题颜色);
+  line-height: 1.35;
+}
+
+.特色卡片描述 {
+  font-size: 15px;
+  line-height: 1.95;
+  color: var(--次要文字颜色);
+}
+
+.特色卡片链接 {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--品牌色-亮);
+  transition: gap 0.2s ease;
+}
+
+.特色卡片链接:hover {
+  gap: 14px;
+}
+
+.特色卡片图区 {
+  position: relative;
+  min-height: 340px;
+  border-left: 1px solid var(--边框颜色);
+}
+
+.特色卡片图区 > img {
   position: absolute;
-  z-index: 1;
-  content: "";
-  width: 100%;
-  height: 95px;
-  bottom: 0;
-  left: 0;
-  translate: 0 100%;
-  background-color: #0005;
-  backdrop-filter: blur(8px);
-  transition: 150ms;
-}
-
-.主模块:hover::before {
-  translate: 0 0;
-}
-
-.主模块背景图容器 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.主模块背景图 {
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: 500ms;
+  transition: transform 0.6s ease;
 }
 
-.主模块:hover .主模块背景图 {
-  scale: 1.1;
+.特色卡片:hover .特色卡片图区 > img {
+  transform: scale(1.05);
 }
 
-.主模块标题 {
+.特色卡片图区::after {
+  content: "";
   position: absolute;
-  bottom: 15px;
-  left: 20px;
-  font-size: clamp(20px, 1.5vw, 24px);
-  text-wrap: nowrap;
-  text-shadow: 2px 2px 2px #000a;
-  display: flex;
-  flex-direction: column;
-  font-weight: bold;
-  transition: 250ms;
-  z-index: 2;
+  inset: 0;
+  background: linear-gradient(90deg, var(--区块底色) 0%, transparent 30%);
+  pointer-events: none;
 }
 
-.主模块:hover .主模块标题 {
-  left: 50%;
-  translate: -50% 0;
-  align-items: center;
+/* ============================ 模块网格 ============================ */
+.模块网格 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
 }
 
-.主模块描述 {
-  font-weight: normal;
-  font-size: 0.75em;
-  color: silver;
-}
-
-.数据区 {
-  padding: 50px 0 100px;
-  display: flex;
-  justify-content: center;
-  gap: 50px;
-}
-
-.数据分区 {
+.模块卡片 {
   position: relative;
-  padding: 12px 40px;
   display: flex;
   flex-direction: column;
+  gap: 18px;
+  padding: 32px 28px;
+  border: 1px solid var(--边框颜色);
+  border-radius: 18px;
+  background: var(--卡片底色);
+  overflow: hidden;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease;
 }
 
-.数值 {
-  color: gold;
-  font-size: 65px;
-}
-
-.符号 {
-  color: darkgoldenrod;
-}
-
-.数据描述 {
-  color: silver;
-  font-size: 24px;
-}
-
-.展示区 {
-  position: relative;
-  width: 100%;
-  padding: 50px 0 100px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 50px;
-}
-
-.展示区标题区 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-}
-
-.展示区标题 {
-  font-size: clamp(24px, 2vw, 48px);
-}
-
-.展示区描述 {
-  text-align: center;
-  max-width: 75ch;
-  font-size: clamp(16px, 1.75vw, 20px);
-  color: rgb(166, 166, 166);
-}
-
-.展示区背景区 {
+.模块卡片::before {
+  content: "";
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  right: 0;
+  height: 2px;
+  background: var(--模块强调色, var(--品牌色-亮));
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.模块卡片:hover {
+  transform: translateY(-5px);
+  border-color: var(--边框颜色-强);
+  background: var(--卡片底色悬停);
+}
+
+.模块卡片:hover::before {
+  opacity: 1;
+}
+
+.模块图标区 {
+  width: 50px;
+  height: 50px;
   display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 50px;
+  border-radius: 13px;
+  background: var(--模块柔光, var(--品牌色-柔光));
+  color: var(--模块强调色, var(--品牌色-亮));
+  font-size: 21px;
 }
 
-.展示区图片容器 {
-  width: 30%;
-  height: 100%;
-  outline: solid 1px #def3;
+.模块卡片标题 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--主标题颜色);
 }
 
-.展示区图片 {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+.模块卡片描述 {
+  flex: 1;
+  font-size: 13.5px;
+  line-height: 1.85;
+  color: var(--次要文字颜色);
+}
+
+.模块卡片数据 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  border-top: 1px solid var(--边框颜色);
+  font-size: 13px;
+  color: var(--次要文字颜色);
+}
+
+.模块卡片数据 strong {
+  font-weight: 600;
+  color: var(--模块强调色, var(--品牌色-亮));
+  font-feature-settings: "tnum";
+}
+
+.模块卡片箭头 {
+  color: var(--次要文字颜色);
+  transition:
+    transform 0.22s ease,
+    color 0.22s ease;
+}
+
+.模块卡片:hover .模块卡片箭头 {
+  transform: translateX(4px);
+  color: var(--模块强调色, var(--品牌色-亮));
+}
+
+/* ============================ 亮点列表 ============================ */
+.亮点区 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.亮点卡片 {
+  padding: 30px 28px;
+  border: 1px solid var(--边框颜色);
+  border-radius: 18px;
+  background: var(--卡片底色);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.亮点卡片:hover {
+  transform: translateY(-4px);
+  border-color: var(--边框颜色-强);
+}
+
+.亮点图标 {
+  font-size: 22px;
+  color: var(--品牌色-亮);
+}
+
+.亮点卡片标题 {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--主标题颜色);
+}
+
+.亮点卡片描述 {
+  font-size: 13.5px;
+  line-height: 1.85;
+  color: var(--次要文字颜色);
+}
+
+/* ============================ 结尾 CTA ============================ */
+.结尾行动区 {
+  margin-top: 110px;
+  position: relative;
+  border: 1px solid var(--边框颜色);
+  border-radius: 26px;
+  padding: clamp(48px, 6vw, 84px) 32px;
+  text-align: center;
+  background:
+    radial-gradient(ellipse 60% 120% at 50% 0%, var(--品牌色-柔光), transparent 70%),
+    var(--区块底色);
+  overflow: hidden;
+}
+
+.结尾行动区标题 {
+  font-size: clamp(26px, 3.2vw, 40px);
+  font-weight: 700;
+  color: var(--主标题颜色);
+  line-height: 1.4;
+}
+
+.结尾行动区描述 {
+  margin: 18px auto 0;
+  max-width: 520px;
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--次要文字颜色);
+}
+
+.结尾行动区 .英雄操作区 {
+  margin-top: 38px;
+}
+
+/* ============================ 响应式 ============================ */
+@media (max-width: 1024px) {
+  .模块网格 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .特色卡片 {
+    grid-template-columns: 1fr;
+  }
+
+  .特色卡片图区 {
+    border-left: none;
+    border-top: 1px solid var(--边框颜色);
+    min-height: 260px;
+  }
+
+  .特色卡片图区::after {
+    background: linear-gradient(180deg, var(--区块底色) 0%, transparent 30%);
+  }
+
+  .亮点区 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .英雄区 {
+    padding: 120px 18px 70px;
+  }
+
+  .模块网格 {
+    grid-template-columns: 1fr;
+  }
+
+  .分区头部 {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }

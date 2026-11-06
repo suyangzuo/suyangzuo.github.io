@@ -265,6 +265,15 @@ function 设置侧边栏(event) {
 
   专题标记组 = document.querySelectorAll(".专题-标记");
 
+  // 根据专题数量的位数动态设置专题-标记宽度（如 100 个专题 → 3ch），保证序号对齐
+  const 专题数量 = 侧边栏.querySelector(".专题列表")?.getElementsByClassName("专题").length ?? 0;
+  if (专题数量 > 0) {
+    const 标记宽度 = `${String(专题数量).length}ch`;
+    专题标记组.forEach((标记) => {
+      标记.style.width = 标记宽度;
+    });
+  }
+
   index = JSON.parse(localStorage.getItem("专题索引记录")).find((记录) => 记录.技术栈 === 技术栈名称).专题索引;
 
   专题组[index]?.classList.add("当前专题");

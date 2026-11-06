@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>背景尺寸</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: #0e0f13;
+        font-family: "JetBrains Mono", "Consolas", "MiSans", "Noto Sans SC", 微软雅黑, sans-serif;
+        height: 100vh;
+        color: #e9edf2;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      .container {
+        width: 100%;
+        height: 100%;
+        background-color: #0e0f13;
+        background-image: url("/Images/Background-Images/轮播图-06.jpg");
+        background-size: auto auto;
+        background-position: center;
+        padding: 15px 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        transition: background-size 0.1s ease;
+      }
+
+      .header {
+        padding-bottom: 1.4rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+
+      .header h1 {
+        font-size: 1.9rem;
+        font-weight: 500;
+        letter-spacing: -0.02em;
+        color: #f0f3f8;
+        line-height: 1.2;
+        text-shadow: 2px 2px 2px #222;
+      }
+
+      .control-panel {
+        background: rgba(20, 23, 30, 0.95);
+        border-radius: 10px;
+        padding: 15px;
+        backdrop-filter: blur(2px);
+        display: flex;
+        flex-direction: column;
+        gap: 0.9rem;
+      }
+
+      .slider-row {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .slider-value {
+        flex-shrink: 0;
+        width: 45px;
+        text-align: left;
+        font-size: 0.95rem;
+        font-weight: 500;
+        border-radius: 100px;
+      }
+
+      .slider-value .num {
+        color: #ffd479;
+      }
+
+      .slider-value .pct {
+        color: #7ee0a3;
+      }
+
+      input[type="range"] {
+        flex: 1;
+        min-width: 0;
+        appearance: none;
+        -webkit-appearance: none;
+        height: 6px;
+        border-radius: 100px;
+        background: linear-gradient(to right, #4f7aff 0%, #4f7aff 50%, #303642 50%, #303642 100%);
+        outline: none;
+        cursor: pointer;
+        transition: opacity 0.2s ease;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 4px solid #4f7aff;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+        transition:
+          transform 0.15s ease,
+          border-color 0.2s ease,
+          background-color 0.2s ease;
+      }
+
+      input[type="range"]::-webkit-slider-thumb:hover {
+        transform: scale(1.15);
+      }
+
+      input[type="range"]::-moz-range-thumb {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 4px solid #4f7aff;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+        transition:
+          transform 0.15s ease,
+          border-color 0.2s ease,
+          background-color 0.2s ease;
+      }
+
+      input[type="range"]::-moz-range-thumb:hover {
+        transform: scale(1.15);
+      }
+
+      input[type="range"]::-moz-range-track {
+        height: 6px;
+        border-radius: 100px;
+        background: transparent;
+      }
+
+      input[type="range"]:focus-visible {
+        outline: 2px solid #4f7aff;
+        outline-offset: 4px;
+      }
+
+      /* cover/contain 选中时的“被屏蔽”外观（仍可操作） */
+      input[type="range"].slider-blocked {
+        opacity: 0.45;
+        background: repeating-linear-gradient(
+          -45deg,
+          #3a4150 0px,
+          #3a4150 6px,
+          #262c38 6px,
+          #262c38 12px
+        ) !important;
+      }
+
+      input[type="range"].slider-blocked::-webkit-slider-thumb {
+        background: #8b93a3;
+        border-color: #5a6372;
+      }
+
+      input[type="range"].slider-blocked::-moz-range-thumb {
+        background: #8b93a3;
+        border-color: #5a6372;
+      }
+
+      .code-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .code-block {
+        display: flex;
+        border-radius: 10px;
+        font-family: "Google Sans Code", Consolas, "MiSans", "Noto Sans SC", 微软雅黑, sans-serif;
+        font-size: 0.85rem;
+        line-height: 1.55;
+        color: #d6e2ff;
+        border: none;
+      }
+
+      .code-block span {
+        display: inline;
+        text-align: left;
+      }
+
+      .code-block .prop {
+        color: #9dbbff;
+        text-wrap: nowrap;
+      }
+
+      .code-block .num {
+        color: #ffd479;
+      }
+
+      .code-block .pct {
+        color: #7ee0a3;
+      }
+
+      .code-block .value {
+        color: #c7d6ff;
+      }
+
+      .code-block .keyword {
+        color: #d2a8ff;
+      }
+
+      .code-block .semi {
+        color: #ff8fa3;
+      }
+
+      .size-options {
+        display: flex;
+        gap: 0.5rem;
+        flex-shrink: 0;
+      }
+
+      .size-option {
+        font-family: "Google Sans Code", Consolas, "MiSans", "Noto Sans SC", 微软雅黑, sans-serif;
+        font-size: 0.8rem;
+        color: #b3bccd;
+        background: #222832;
+        border: 1px solid #303642;
+        border-radius: 100px;
+        padding: 0.2rem 0.85rem;
+        cursor: pointer;
+        user-select: none;
+        transition:
+          background 0.15s ease,
+          border-color 0.15s ease,
+          color 0.15s ease;
+      }
+
+      .size-option:hover {
+        background: #2a303d;
+        color: #eef2f9;
+      }
+
+      .size-option.selected {
+        background: rgba(79, 122, 255, 0.18);
+        border-color: #4f7aff;
+        color: #9dbbff;
+      }
+
+      .size-option:focus-visible {
+        outline: 2px solid #4f7aff;
+        outline-offset: 2px;
+      }
+
+      @media (max-width: 550px) {
+        .container {
+          padding: 15px;
+        }
+
+        .header h1 {
+          font-size: 1.5rem;
+        }
+
+        .code-block {
+          font-size: 0.78rem;
+        }
+
+        .slider-row {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 0.6rem;
+        }
+
+        .slider-value {
+          align-self: flex-end;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" id="mainContainer">
+      <div class="header">
+        <h1>背景尺寸</h1>
+      </div>
+
+      <div class="control-panel">
+        <div class="slider-row">
+          <input
+            type="range"
+            id="sizeSlider"
+            class="slider-blocked"
+            min="1"
+            max="200"
+            value="100"
+            step="1"
+            aria-label="背景尺寸百分比"
+          />
+          <span class="slider-value" id="sliderValue"><span class="num" id="sliderNum">100</span><span class="pct">%</span></span>
+        </div>
+        <div class="code-row">
+          <div class="code-block">
+            <span class="prop">background-size</span>:&nbsp;<span id="codeValue"><span class="keyword">auto auto</span><span class="semi">;</span></span>
+          </div>
+          <div class="size-options" role="group" aria-label="背景尺寸关键字">
+            <button type="button" class="size-option selected" data-value="auto auto" aria-pressed="true">auto</button>
+            <button type="button" class="size-option" data-value="cover" aria-pressed="false">cover</button>
+            <button type="button" class="size-option" data-value="contain" aria-pressed="false">contain</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const container = document.getElementById("mainContainer");
+        const slider = document.getElementById("sizeSlider");
+        const sliderNum = document.getElementById("sliderNum");
+        const codeValue = document.getElementById("codeValue");
+        const sizeOptions = document.querySelectorAll(".size-option");
+
+        const 填充色 = "#4f7aff";
+        const 未填充色 = "#303642";
+
+        function 渲染百分比代码(百分比) {
+          codeValue.innerHTML = `<span class="num">${百分比}</span><span class="pct">%</span><span class="value"> auto</span><span class="semi">;</span>`;
+        }
+
+        function 渲染关键字代码(关键字) {
+          codeValue.innerHTML = `<span class="keyword">${关键字}</span><span class="semi">;</span>`;
+        }
+
+        function 取消关键字选中() {
+          sizeOptions.forEach((option) => {
+            option.classList.remove("selected");
+            option.setAttribute("aria-pressed", "false");
+          });
+          slider.classList.remove("slider-blocked");
+        }
+
+        function 应用百分比() {
+          const 百分比 = Number(slider.value);
+          container.style.backgroundSize = `${百分比}% auto`;
+          sliderNum.textContent = 百分比;
+          渲染百分比代码(百分比);
+
+          const 进度 = ((百分比 - slider.min) / (slider.max - slider.min)) * 100;
+          slider.style.background = `linear-gradient(to right, ${填充色} 0%, ${填充色} ${进度}%, ${未填充色} ${进度}%, ${未填充色} 100%)`;
+        }
+
+        slider.addEventListener("input", () => {
+          取消关键字选中();
+          应用百分比();
+        });
+
+        sizeOptions.forEach((option) => {
+          option.addEventListener("click", () => {
+            const 已选中 = option.classList.contains("selected");
+            取消关键字选中();
+
+            if (已选中) {
+              应用百分比();
+              return;
+            }
+
+            const 关键字 = option.dataset.value;
+            option.classList.add("selected");
+            option.setAttribute("aria-pressed", "true");
+            slider.classList.add("slider-blocked");
+            container.style.backgroundSize = 关键字;
+            渲染关键字代码(关键字);
+          });
+        });
+
+      })();
+    </script>
+  </body>
+</html>
