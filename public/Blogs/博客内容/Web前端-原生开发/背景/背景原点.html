@@ -1,0 +1,820 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>背景原点</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: #0e0f13;
+        font-family: "JetBrains Mono", "Consolas", "MiSans", "Noto Sans SC", 微软雅黑, sans-serif;
+        height: 100vh;
+        color: #e9edf2;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      .container {
+        --边框宽度: 25px;
+        --内边距宽度: 30px;
+        /* 重复时默认透明；取消重复后由 .显示盒子边界 改为辅助色 */
+        --边框色: transparent;
+        --内边距色: transparent;
+        width: 100%;
+        height: 100%;
+        background-color: #0e0f13;
+        background-image: url("/Images/Background-Images/轮播图-06.jpg");
+        background-size: auto auto;
+        background-position: 0% 0%;
+        border: solid var(--边框宽度) var(--边框色);
+        padding: var(--内边距宽度);
+        /* 给内边距区域单独着色，不受 background-clip 裁剪，方便看清内边距范围 */
+        box-shadow: inset 0 0 0 var(--内边距宽度) var(--内边距色);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        /* transition: background-size 0.1s ease; */
+        position: relative;
+      }
+
+      /* 不重复时显示边框与内边距的辅助色，便于辨认两个盒子的范围 */
+      .container.显示盒子边界 {
+        --边框色: #345;
+        --内边距色: #362;
+      }
+
+      /* 内边距盒子：内边距透明，便于看清背景图从内边距边缘开始铺 */
+      .container[data-origin="padding-box"] {
+        --内边距色: transparent;
+      }
+
+      /* 边框盒子：边框与内边距都透明，便于看清背景图铺到边框区域 */
+      .container[data-origin="border-box"] {
+        --边框色: transparent;
+        --内边距色: transparent;
+      }
+
+      /* 重复时，用红框标出“原始背景”所占的范围（区别于 repeat 平铺出来的其余部分） */
+      .original-bg-outline {
+        position: absolute;
+        z-index: 0;
+        display: none;
+        pointer-events: none;
+        border: 2px solid red;
+      }
+
+      .position-dot {
+        position: absolute;
+        left: 0%;
+        top: 0%;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #ff4d4f;
+        border: 3px solid #ffffff;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .header {
+        padding-bottom: 1.4rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        position: relative;
+        z-index: 99;
+      }
+
+      .header h1 {
+        font-size: 1.9rem;
+        font-weight: 500;
+        letter-spacing: -0.02em;
+        color: #f0f3f8;
+        line-height: 1.2;
+        text-shadow: 2px 2px 2px #222;
+      }
+
+      .control-panel {
+        background: rgba(20, 23, 30, 0.95);
+        border-radius: 10px;
+        padding: 15px;
+        backdrop-filter: blur(2px);
+        display: flex;
+        flex-direction: column;
+        gap: 0.9rem;
+        position: relative;
+        z-index: 99;
+      }
+
+      .checkbox-row {
+        display: flex;
+        align-items: center;
+      }
+
+      .custom-checkbox {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        cursor: pointer;
+        user-select: none;
+        font-size: 0.9rem;
+        color: #c7cfdd;
+        transition: color 0.15s ease;
+      }
+
+      .custom-checkbox:hover {
+        color: #eef2f9;
+      }
+
+      .custom-checkbox input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .custom-checkbox .checkbox-box {
+        position: relative;
+        width: 19px;
+        height: 19px;
+        flex-shrink: 0;
+        border-radius: 5px;
+        border: 2px solid #4a5262;
+        background: #1a1f29;
+        transition:
+          background 0.15s ease,
+          border-color 0.15s ease,
+          transform 0.1s ease;
+      }
+
+      .custom-checkbox:hover .checkbox-box {
+        border-color: #6b7484;
+      }
+
+      .custom-checkbox .checkbox-box::after {
+        content: "";
+        position: absolute;
+        left: 4px;
+        top: 1px;
+        width: 4.5px;
+        height: 9.5px;
+        border: solid #ffffff;
+        border-width: 0 2.5px 2.5px 0;
+        transform: rotate(45deg) scale(0);
+        transition: transform 0.15s ease;
+      }
+
+      .custom-checkbox input:checked + .checkbox-box {
+        background: #4f7aff;
+        border-color: #4f7aff;
+      }
+
+      .custom-checkbox input:checked + .checkbox-box::after {
+        transform: rotate(45deg) scale(1);
+      }
+
+      .custom-checkbox input:focus-visible + .checkbox-box {
+        outline: 2px solid #4f7aff;
+        outline-offset: 3px;
+      }
+
+      .custom-checkbox:active .checkbox-box {
+        transform: scale(0.92);
+      }
+
+      .slider-row {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .slider-row:has(#positionXSlider) {
+        padding-top: 15px;
+        border-top: dashed 1px #bdf7;
+      }
+
+      .slider-label {
+        flex-shrink: 0;
+        width: 4.2em;
+        font-size: 0.9rem;
+        color: #c7cfdd;
+      }
+
+      .slider-value {
+        flex-shrink: 0;
+        width: 45px;
+        text-align: left;
+        font-size: 0.95rem;
+        font-weight: 500;
+        border-radius: 100px;
+      }
+
+      .slider-value .num {
+        color: #ffd479;
+      }
+
+      .slider-value .pct {
+        color: #7ee0a3;
+        margin-left: 2px;
+      }
+
+      input[type="range"] {
+        flex: 1;
+        min-width: 0;
+        appearance: none;
+        -webkit-appearance: none;
+        height: 6px;
+        border-radius: 100px;
+        background: linear-gradient(to right, #4f7aff 0%, #4f7aff 50%, #303642 50%, #303642 100%);
+        outline: none;
+        cursor: pointer;
+        transition: opacity 0.2s ease;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 4px solid #4f7aff;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+        transition:
+          transform 0.15s ease,
+          border-color 0.2s ease,
+          background-color 0.2s ease;
+      }
+
+      input[type="range"]::-webkit-slider-thumb:hover {
+        transform: scale(1.15);
+      }
+
+      input[type="range"]::-moz-range-thumb {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 4px solid #4f7aff;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+        transition:
+          transform 0.15s ease,
+          border-color 0.2s ease,
+          background-color 0.2s ease;
+      }
+
+      input[type="range"]::-moz-range-thumb:hover {
+        transform: scale(1.15);
+      }
+
+      input[type="range"]::-moz-range-track {
+        height: 6px;
+        border-radius: 100px;
+        background: transparent;
+      }
+
+      input[type="range"]:focus-visible {
+        outline: 2px solid #4f7aff;
+        outline-offset: 4px;
+      }
+
+      /* cover/contain 选中时的“被屏蔽”外观（仍可操作） */
+      input[type="range"].slider-blocked {
+        opacity: 0.45;
+        background: repeating-linear-gradient(-45deg, #3a4150 0px, #3a4150 6px, #262c38 6px, #262c38 12px) !important;
+      }
+
+      input[type="range"].slider-blocked::-webkit-slider-thumb {
+        background: #8b93a3;
+        border-color: #5a6372;
+      }
+
+      input[type="range"].slider-blocked::-moz-range-thumb {
+        background: #8b93a3;
+        border-color: #5a6372;
+      }
+
+      .code-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .code-block {
+        display: flex;
+        border-radius: 10px;
+        font-family: "Google Sans Code", Consolas, "MiSans", "Noto Sans SC", 微软雅黑, sans-serif;
+        font-size: 0.85rem;
+        line-height: 1.55;
+        color: #d6e2ff;
+        border: none;
+      }
+
+      .code-block span {
+        display: inline;
+        text-align: left;
+      }
+
+      .code-block .prop {
+        color: #9dbbff;
+        text-wrap: nowrap;
+      }
+
+      .code-block .num {
+        color: #ffd479;
+      }
+
+      .code-block .pct {
+        color: #7ee0a3;
+        margin-left: 1px;
+      }
+
+      .code-block .value {
+        color: #c7d6ff;
+      }
+
+      .code-block .keyword {
+        color: #d2a8ff;
+      }
+
+      .code-block .semi {
+        color: #ff8fa3;
+      }
+
+      .size-options {
+        display: flex;
+        gap: 0.5rem;
+        flex-shrink: 0;
+      }
+
+      .size-option {
+        font-family: "Google Sans Code", Consolas, "MiSans", "Noto Sans SC", 微软雅黑, sans-serif;
+        font-size: 0.8rem;
+        color: #b3bccd;
+        background: #222832;
+        border: 1px solid #303642;
+        border-radius: 100px;
+        padding: 0.2rem 0.85rem;
+        cursor: pointer;
+        user-select: none;
+        transition:
+          background 0.15s ease,
+          border-color 0.15s ease,
+          color 0.15s ease;
+      }
+
+      .size-option:hover {
+        background: #2a303d;
+        color: #eef2f9;
+      }
+
+      .size-option.selected {
+        background: rgba(79, 122, 255, 0.18);
+        border-color: #4f7aff;
+        color: #9dbbff;
+      }
+
+      .size-option:focus-visible {
+        outline: 2px solid #4f7aff;
+        outline-offset: 2px;
+      }
+
+      .radio-row {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        flex-shrink: 0;
+      }
+
+      /* 单选框：文字即按钮，取消“方框+文本”的双元素结构以节省空间 */
+      .radio-option {
+        display: inline-flex;
+        cursor: pointer;
+        user-select: none;
+        font-family: "Google Sans Code", Consolas, "MiSans", "Noto Sans SC", 微软雅黑, sans-serif;
+        font-size: 0.8rem;
+      }
+
+      .radio-option input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .radio-option span {
+        color: #b3bccd;
+        background: #222832;
+        border: 1px solid #303642;
+        border-radius: 100px;
+        padding: 0.2rem 0.85rem;
+        transition:
+          background 0.15s ease,
+          border-color 0.15s ease,
+          color 0.15s ease;
+      }
+
+      .radio-option:hover span {
+        background: #2a303d;
+        color: #eef2f9;
+      }
+
+      .radio-option input:checked + span {
+        background: rgba(79, 122, 255, 0.28);
+        border-color: lightskyblue;
+        color: lightcyan;
+      }
+
+      .radio-option input:focus-visible + span {
+        outline: 2px solid #4f7aff;
+        outline-offset: 2px;
+      }
+
+      @media (max-width: 550px) {
+        .container {
+          padding: 15px;
+        }
+
+        .header h1 {
+          font-size: 1.5rem;
+        }
+
+        .code-block {
+          font-size: 0.78rem;
+        }
+
+        .slider-row {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 0.6rem;
+        }
+
+        .slider-value {
+          align-self: flex-end;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" id="mainContainer" data-origin="padding-box">
+      <div class="position-dot" id="positionDot" aria-hidden="true"></div>
+      <div class="header">
+        <h1>背景原点</h1>
+      </div>
+
+      <div class="control-panel">
+        <div class="checkbox-row">
+          <label class="custom-checkbox">
+            <input type="checkbox" id="repeatCheckbox" checked />
+            <span class="checkbox-box" aria-hidden="true"></span>
+            <span>背景重复</span>
+          </label>
+        </div>
+        <div class="slider-row">
+          <input
+            type="range"
+            id="sizeSlider"
+            class="slider-blocked"
+            min="1"
+            max="200"
+            value="100"
+            step="1"
+            aria-label="背景尺寸百分比"
+          />
+          <span class="slider-value" id="sliderValue"
+            ><span class="num" id="sliderNum">100</span><span class="pct">%</span></span
+          >
+        </div>
+        <div class="code-row" style="padding-bottom: 5px">
+          <div class="code-block">
+            <span class="prop">background-size</span>:&nbsp;<span id="codeValue"
+              ><span class="keyword">auto auto</span><span class="semi">;</span></span
+            >
+          </div>
+          <div class="size-options" role="group" aria-label="背景尺寸关键字">
+            <button type="button" class="size-option selected" data-value="auto auto" aria-pressed="true">auto</button>
+            <button type="button" class="size-option" data-value="cover" aria-pressed="false">cover</button>
+            <button type="button" class="size-option" data-value="contain" aria-pressed="false">contain</button>
+          </div>
+        </div>
+        <div class="slider-row">
+          <span class="slider-label">水平位置</span>
+          <input
+            type="range"
+            id="positionXSlider"
+            min="-200"
+            max="200"
+            value="0"
+            step="1"
+            aria-label="背景水平位置百分比"
+          />
+          <span class="slider-value"><span class="num" id="positionXNum">0</span><span class="pct">%</span></span>
+        </div>
+        <div class="slider-row">
+          <span class="slider-label">垂直位置</span>
+          <input
+            type="range"
+            id="positionYSlider"
+            min="-200"
+            max="200"
+            value="0"
+            step="1"
+            aria-label="背景垂直位置百分比"
+          />
+          <span class="slider-value"><span class="num" id="positionYNum">0</span><span class="pct">%</span></span>
+        </div>
+        <div class="code-row">
+          <div class="code-block">
+            <span class="prop">background-position</span>:&nbsp;<span id="positionCodeValue"
+              ><span class="num">0</span><span class="pct">%</span> <span class="num">0</span><span class="pct">%</span
+              ><span class="semi">;</span></span
+            >
+          </div>
+        </div>
+        <div class="code-row">
+          <div class="code-block">
+            <span class="prop">background-origin</span>:&nbsp;<span id="originCodeValue"
+              ><span class="keyword">padding-box</span><span class="semi">;</span></span
+            >
+          </div>
+          <div class="radio-row" role="radiogroup" aria-label="背景原点模式">
+            <label class="radio-option">
+              <input type="radio" name="originMode" value="border-box" />
+              <span>边框盒子</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="originMode" value="padding-box" checked />
+              <span>内边距盒子</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="originMode" value="content-box" />
+              <span>内容盒子</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const container = document.getElementById("mainContainer");
+        const slider = document.getElementById("sizeSlider");
+        const sliderNum = document.getElementById("sliderNum");
+        const codeValue = document.getElementById("codeValue");
+        const sizeOptions = document.querySelectorAll(".size-option");
+        const repeatCheckbox = document.getElementById("repeatCheckbox");
+        const positionXSlider = document.getElementById("positionXSlider");
+        const positionYSlider = document.getElementById("positionYSlider");
+        const positionXNum = document.getElementById("positionXNum");
+        const positionYNum = document.getElementById("positionYNum");
+        const positionCodeValue = document.getElementById("positionCodeValue");
+        const positionDot = document.getElementById("positionDot");
+
+        // “原始背景”范围提示：开启重复时，用红框标出原始那张背景
+        const 原始背景边框 = document.createElement("div");
+        原始背景边框.className = "original-bg-outline";
+        container.appendChild(原始背景边框);
+
+        const 背景图 = new Image();
+        背景图.onload = () => 更新原始背景边框();
+        背景图.src = getComputedStyle(container).backgroundImage.slice(5, -2);
+
+        // 当前 background-size 的取值，用于推算原始背景的实际尺寸
+        let 当前背景尺寸 = "auto auto";
+        // 当前 background-origin 的取值，决定“定位区域”的范围
+        let 当前背景原点 = "padding-box";
+
+        // 返回定位区域相对 padding box 左上角的坐标与尺寸
+        function 获取定位区域() {
+          const 样式 = getComputedStyle(container);
+          const 内左 = parseFloat(样式.paddingLeft);
+          const 内右 = parseFloat(样式.paddingRight);
+          const 内上 = parseFloat(样式.paddingTop);
+          const 内下 = parseFloat(样式.paddingBottom);
+          const 框左 = parseFloat(样式.borderLeftWidth);
+          const 框右 = parseFloat(样式.borderRightWidth);
+          const 框上 = parseFloat(样式.borderTopWidth);
+          const 框下 = parseFloat(样式.borderBottomWidth);
+
+          // clientWidth/clientHeight 即 padding box 的尺寸
+          const 宽 = container.clientWidth;
+          const 高 = container.clientHeight;
+
+          if (当前背景原点 === "border-box") {
+            return { 左: -框左, 上: -框上, 宽: 宽 + 框左 + 框右, 高: 高 + 框上 + 框下 };
+          }
+
+          if (当前背景原点 === "content-box") {
+            return { 左: 内左, 上: 内上, 宽: 宽 - 内左 - 内右, 高: 高 - 内上 - 内下 };
+          }
+
+          return { 左: 0, 上: 0, 宽, 高 };
+        }
+
+        // 返回背景绘制区域（background-clip: border-box，即边框盒子）相对 padding box 的边界
+        function 获取绘制区域() {
+          const 样式 = getComputedStyle(container);
+          const 框左 = parseFloat(样式.borderLeftWidth);
+          const 框右 = parseFloat(样式.borderRightWidth);
+          const 框上 = parseFloat(样式.borderTopWidth);
+          const 框下 = parseFloat(样式.borderBottomWidth);
+          return {
+            左: -框左,
+            上: -框上,
+            右: container.clientWidth + 框右,
+            下: container.clientHeight + 框下,
+          };
+        }
+
+        function 计算原始背景尺寸(容器宽, 容器高) {
+          const 自然宽 = 背景图.naturalWidth;
+          const 自然高 = 背景图.naturalHeight;
+          const 自然比例 = 自然宽 / 自然高;
+
+          if (当前背景尺寸 === "cover" || 当前背景尺寸 === "contain") {
+            const 缩放比例 =
+              当前背景尺寸 === "cover"
+                ? Math.max(容器宽 / 自然宽, 容器高 / 自然高)
+                : Math.min(容器宽 / 自然宽, 容器高 / 自然高);
+            return { 宽: 自然宽 * 缩放比例, 高: 自然高 * 缩放比例 };
+          }
+
+          if (当前背景尺寸 === "auto auto") {
+            return { 宽: 自然宽, 高: 自然高 };
+          }
+
+          // 百分比写法：`X% auto`，高度按图片原始比例推算
+          const 宽 = (容器宽 * Number.parseFloat(当前背景尺寸)) / 100;
+          return { 宽: 宽, 高: 宽 / 自然比例 };
+        }
+
+        function 更新原始背景边框() {
+          if (!repeatCheckbox.checked || !背景图.naturalWidth) {
+            原始背景边框.style.display = "none";
+            return;
+          }
+
+          // background-size 的百分比、cover、contain 都以定位区域为基准，偏移量同理
+          const 区域 = 获取定位区域();
+          const 尺寸 = 计算原始背景尺寸(区域.宽, 区域.高);
+
+          // background-position 的百分比：偏移量 =（定位区域尺寸 − 图片尺寸）× 百分比
+          const 左 = 区域.左 + ((区域.宽 - 尺寸.宽) * Number(positionXSlider.value)) / 100;
+          const 上 = 区域.上 + ((区域.高 - 尺寸.高) * Number(positionYSlider.value)) / 100;
+
+          // 只描出落在绘制区域（边框盒子）内的部分，避免边框跑到屏幕外看不见
+          const 绘制 = 获取绘制区域();
+          const 可见左 = Math.max(绘制.左, 左);
+          const 可见上 = Math.max(绘制.上, 上);
+          const 可见宽 = Math.min(绘制.右, 左 + 尺寸.宽) - 可见左;
+          const 可见高 = Math.min(绘制.下, 上 + 尺寸.高) - 可见上;
+
+          if (可见宽 <= 0 || 可见高 <= 0) {
+            原始背景边框.style.display = "none";
+            return;
+          }
+
+          原始背景边框.style.display = "block";
+          原始背景边框.style.left = `${可见左}px`;
+          原始背景边框.style.top = `${可见上}px`;
+          原始背景边框.style.width = `${可见宽}px`;
+          原始背景边框.style.height = `${可见高}px`;
+        }
+
+        // 窗口尺寸变化时，定位区域和圆点像素坐标都要重算；窄屏下 padding 也会变
+        window.addEventListener("resize", () => {
+          更新定位点();
+          更新原始背景边框();
+        });
+
+        repeatCheckbox.addEventListener("change", () => {
+          container.style.backgroundRepeat = repeatCheckbox.checked ? "repeat" : "no-repeat";
+          // 重复时边框与内边距保持透明；不重复时才显示辅助色
+          container.classList.toggle("显示盒子边界", !repeatCheckbox.checked);
+          更新原始背景边框();
+        });
+
+        const 填充色 = "#4f7aff";
+        const 未填充色 = "#303642";
+
+        function 渲染百分比代码(百分比) {
+          codeValue.innerHTML = `<span class="num">${百分比}</span><span class="pct">%</span><span class="value"> auto</span><span class="semi">;</span>`;
+        }
+
+        function 渲染关键字代码(关键字) {
+          codeValue.innerHTML = `<span class="keyword">${关键字}</span><span class="semi">;</span>`;
+        }
+
+        function 取消关键字选中() {
+          sizeOptions.forEach((option) => {
+            option.classList.remove("selected");
+            option.setAttribute("aria-pressed", "false");
+          });
+          slider.classList.remove("slider-blocked");
+        }
+
+        function 更新滑块填充(滑块) {
+          const 进度 = ((滑块.value - 滑块.min) / (滑块.max - 滑块.min)) * 100;
+          滑块.style.background = `linear-gradient(to right, ${填充色} 0%, ${填充色} ${进度}%, ${未填充色} ${进度}%, ${未填充色} 100%)`;
+        }
+
+        function 应用百分比() {
+          const 百分比 = Number(slider.value);
+          当前背景尺寸 = `${百分比}% auto`;
+          container.style.backgroundSize = 当前背景尺寸;
+          sliderNum.textContent = 百分比;
+          渲染百分比代码(百分比);
+          更新滑块填充(slider);
+          更新原始背景边框();
+        }
+
+        // 圆点表示 background-position 的对齐点，即定位区域宽高的 x% / y% 处
+        function 更新定位点() {
+          const 区域 = 获取定位区域();
+          const x百分比 = Number(positionXSlider.value);
+          const y百分比 = Number(positionYSlider.value);
+          positionDot.style.left = `${区域.左 + (区域.宽 * x百分比) / 100}px`;
+          positionDot.style.top = `${区域.上 + (区域.高 * y百分比) / 100}px`;
+        }
+
+        function 应用位置() {
+          const x百分比 = Number(positionXSlider.value);
+          const y百分比 = Number(positionYSlider.value);
+          container.style.backgroundPosition = `${x百分比}% ${y百分比}%`;
+          positionXNum.textContent = x百分比;
+          positionYNum.textContent = y百分比;
+          positionCodeValue.innerHTML = `<span class="num">${x百分比}</span><span class="pct">%</span> <span class="num">${y百分比}</span><span class="pct">%</span><span class="semi">;</span>`;
+          更新定位点();
+          更新滑块填充(positionXSlider);
+          更新滑块填充(positionYSlider);
+          更新原始背景边框();
+        }
+
+        positionXSlider.addEventListener("input", 应用位置);
+        positionYSlider.addEventListener("input", 应用位置);
+        应用位置();
+
+        const 原点单选框 = document.querySelectorAll('input[name="originMode"]');
+        const 原点代码 = document.getElementById("originCodeValue");
+
+        function 应用原点(值) {
+          当前背景原点 = 值;
+          container.style.backgroundOrigin = 值;
+          // 供 CSS 判断是否需要把内边距辅助色设为透明
+          container.dataset.origin = 值;
+          原点代码.innerHTML = `<span class="keyword">${值}</span><span class="semi">;</span>`;
+          // 定位区域改变后，圆点与红框都需要按新的区域重新计算
+          更新定位点();
+          更新原始背景边框();
+        }
+
+        原点单选框.forEach((radio) => {
+          radio.addEventListener("change", () => {
+            if (radio.checked) {
+              应用原点(radio.value);
+            }
+          });
+        });
+
+        slider.addEventListener("input", () => {
+          取消关键字选中();
+          应用百分比();
+        });
+
+        sizeOptions.forEach((option) => {
+          option.addEventListener("click", () => {
+            const 已选中 = option.classList.contains("selected");
+            取消关键字选中();
+
+            if (已选中) {
+              应用百分比();
+              return;
+            }
+
+            const 关键字 = option.dataset.value;
+            option.classList.add("selected");
+            option.setAttribute("aria-pressed", "true");
+            slider.classList.add("slider-blocked");
+            当前背景尺寸 = 关键字;
+            container.style.backgroundSize = 关键字;
+            渲染关键字代码(关键字);
+            更新原始背景边框();
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>

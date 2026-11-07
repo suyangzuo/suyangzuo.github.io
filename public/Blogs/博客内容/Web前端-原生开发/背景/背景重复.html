@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>背景尺寸</title>
+    <title>背景重复</title>
     <style>
       * {
         margin: 0;
@@ -22,6 +22,7 @@
       }
 
       .container {
+        position: relative;
         width: 100%;
         height: 100%;
         background-color: #0e0f13;
@@ -32,10 +33,12 @@
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
-        transition: background-size 0.1s ease;
+        /* transition: background-size 0.1s ease; */
       }
 
       .header {
+        position: relative;
+        z-index: 1;
         padding-bottom: 1.4rem;
         display: flex;
         justify-content: space-between;
@@ -54,6 +57,8 @@
       }
 
       .control-panel {
+        position: relative;
+        z-index: 1;
         background: rgba(20, 23, 30, 0.95);
         border-radius: 10px;
         padding: 15px;
@@ -61,6 +66,15 @@
         display: flex;
         flex-direction: column;
         gap: 0.9rem;
+      }
+
+      /* 重复时，用红框标出“原始背景”所占的范围（区别于 repeat 平铺出来的其余部分） */
+      .original-bg-outline {
+        position: absolute;
+        z-index: 0;
+        display: none;
+        pointer-events: none;
+        border: 2px solid red;
       }
 
       .checkbox-row {
@@ -358,7 +372,7 @@
   <body>
     <div class="container" id="mainContainer">
       <div class="header">
-        <h1>背景尺寸</h1>
+        <h1>背景重复</h1>
       </div>
 
       <div class="control-panel">
@@ -404,8 +418,67 @@
         const sizeOptions = document.querySelectorAll(".size-option");
         const repeatCheckbox = document.getElementById("repeatCheckbox");
 
+        // “原始背景”范围提示：开启重复时，用红框标出原始那张背景
+        const 原始背景边框 = document.createElement("div");
+        原始背景边框.className = "original-bg-outline";
+        container.appendChild(原始背景边框);
+
+        const 背景图 = new Image();
+        背景图.onload = () => 更新原始背景边框();
+        背景图.src = getComputedStyle(container).backgroundImage.slice(5, -2);
+
+        // 当前 background-size 的取值，用于推算原始背景的实际尺寸
+        let 当前背景尺寸 = "auto auto";
+
+        function 计算原始背景尺寸(容器宽, 容器高) {
+          const 自然宽 = 背景图.naturalWidth;
+          const 自然高 = 背景图.naturalHeight;
+          const 自然比例 = 自然宽 / 自然高;
+
+          if (当前背景尺寸 === "cover" || 当前背景尺寸 === "contain") {
+            const 缩放比例 =
+              当前背景尺寸 === "cover"
+                ? Math.max(容器宽 / 自然宽, 容器高 / 自然高)
+                : Math.min(容器宽 / 自然宽, 容器高 / 自然高);
+            return { 宽: 自然宽 * 缩放比例, 高: 自然高 * 缩放比例 };
+          }
+
+          if (当前背景尺寸 === "auto auto") {
+            return { 宽: 自然宽, 高: 自然高 };
+          }
+
+          // 百分比写法：`X% auto`，高度按图片原始比例推算
+          const 宽 = (容器宽 * Number.parseFloat(当前背景尺寸)) / 100;
+          return { 宽: 宽, 高: 宽 / 自然比例 };
+        }
+
+        function 更新原始背景边框() {
+          if (!repeatCheckbox.checked || !背景图.naturalWidth) {
+            原始背景边框.style.display = "none";
+            return;
+          }
+
+          const 容器宽 = container.clientWidth;
+          const 容器高 = container.clientHeight;
+          const 尺寸 = 计算原始背景尺寸(容器宽, 容器高);
+
+          // background-position: center，原始背景居中放置；
+          // 若原始背景比容器还大，则只描出它落在容器内的那部分，避免边框跑到屏幕外看不见
+          const 左 = Math.max(0, (容器宽 - 尺寸.宽) / 2);
+          const 上 = Math.max(0, (容器高 - 尺寸.高) / 2);
+
+          原始背景边框.style.display = "block";
+          原始背景边框.style.left = `${左}px`;
+          原始背景边框.style.top = `${上}px`;
+          原始背景边框.style.width = `${Math.min(容器宽, 尺寸.宽)}px`;
+          原始背景边框.style.height = `${Math.min(容器高, 尺寸.高)}px`;
+        }
+
+        window.addEventListener("resize", 更新原始背景边框);
+
         repeatCheckbox.addEventListener("change", () => {
           container.style.backgroundRepeat = repeatCheckbox.checked ? "repeat" : "no-repeat";
+          更新原始背景边框();
         });
 
         const 填充色 = "#4f7aff";
@@ -429,12 +502,14 @@
 
         function 应用百分比() {
           const 百分比 = Number(slider.value);
-          container.style.backgroundSize = `${百分比}% auto`;
+          当前背景尺寸 = `${百分比}% auto`;
+          container.style.backgroundSize = 当前背景尺寸;
           sliderNum.textContent = 百分比;
           渲染百分比代码(百分比);
 
           const 进度 = ((百分比 - slider.min) / (slider.max - slider.min)) * 100;
           slider.style.background = `linear-gradient(to right, ${填充色} 0%, ${填充色} ${进度}%, ${未填充色} ${进度}%, ${未填充色} 100%)`;
+          更新原始背景边框();
         }
 
         slider.addEventListener("input", () => {
@@ -456,8 +531,10 @@
             option.classList.add("selected");
             option.setAttribute("aria-pressed", "true");
             slider.classList.add("slider-blocked");
+            当前背景尺寸 = 关键字;
             container.style.backgroundSize = 关键字;
             渲染关键字代码(关键字);
+            更新原始背景边框();
           });
         });
 

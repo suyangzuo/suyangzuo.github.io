@@ -11,7 +11,7 @@
         <span class="日期文本"
           ><span class="日期文本-数字 日期文本-年">2026</span>年<span class="日期文本-数字 日期文本-月">11</span>月<span
             class="日期文本-数字 日期文本-日"
-            >6</span
+            >7</span
           >日</span
         >
       </p>
@@ -68,7 +68,7 @@
 </article>
 <div class="专题正文区">
   <article class="正文分区">
-    <h2 class="分区标题 分区2级标题"><span class="行内专业名词">背景</span>的定义</h2>
+    <h2 class="分区标题 分区2级标题"><span class="行内专业名词">背景</span>定义</h2>
 
     <h3 class="分区标题 分区3级标题"><span class="行内代码">background</span>简写属性</h3>
     <p class="分区普通文本">
@@ -77,30 +77,55 @@
     </p>
     <ul class="分区列表">
       <li class="分区列表项">
-        <h4 class="等宽"><span class="专业名词">背景颜色</span>background-color</h4>
+        <h4><span class="行内专业名词">背景颜色</span>：<span class="行内代码">background-color</span></h4>
       </li>
       <li class="分区列表项">
-        <h4 class="等宽"><span class="专业名词">背景图像</span>background-image</h4>
+        <h4><span class="行内专业名词">背景图像</span>：<span class="行内代码">background-image</span></h4>
       </li>
       <li class="分区列表项">
-        <h4 class="等宽"><span class="专业名词">背景重复</span>background-repeat</h4>
+        <h4><span class="行内专业名词">背景重复</span>：<span class="行内代码">background-repeat</span></h4>
       </li>
       <li class="分区列表项">
-        <h4 class="等宽"><span class="专业名词">背景尺寸</span>background-size</h4>
+        <h4><span class="行内专业名词">背景尺寸</span>：<span class="行内代码">background-size</span></h4>
       </li>
       <li class="分区列表项">
-        <h4 class="等宽"><span class="专业名词">背景位置</span>background-position</h4>
+        <h4><span class="行内专业名词">背景位置</span>：<span class="行内代码">background-position</span></h4>
       </li>
       <li class="分区列表项">
-        <h4 class="等宽"><span class="专业名词">背景原点</span>background-origin</h4>
+        <h4><span class="行内专业名词">背景原点</span>：<span class="行内代码">background-origin</span></h4>
       </li>
       <li class="分区列表项">
-        <h4 class="等宽"><span class="专业名词">背景修剪</span>background-clip</h4>
+        <h4><span class="行内专业名词">背景修剪</span>：<span class="行内代码">background-clip</span></h4>
       </li>
       <li class="分区列表项">
-        <h4 class="等宽"><span class="专业名词">背景附着</span>background-attachment</h4>
+        <h4><span class="行内专业名词">背景附着</span>：<span class="行内代码">background-attachment</span></h4>
       </li>
     </ul>
+
+    <h3 class="分区标题 分区3级标题"><span class="行内代码">background</span>简写语法</h3>
+    <p class="分区普通文本"><span class="行内代码">background</span>的语法如下：</p>
+    <pre>
+      <code class="lang-css">
+        background: 第1层背景, 第2层背景, 第3层背景, ...;  /* 每一层背景都可以是一套完整的背景语法 */
+
+        /* 一层背景的语法如下 */
+        /* 属性的顺序可以任意摆放 */
+        /* 背景位置/背景尺寸：这个写法不能变 */
+        /* 背景位置、背景尺寸、背景重复、背景图像、背景附着、背景盒子，这6个属性可以省略 */
+        /* 背景盒子如果写1次，则同时设置背景原点和背景修剪；如果写两次，则顺序为"背景原点 背景修剪" */
+        /* 如果有多层背景，则"背景颜色"只能写在最后一层 */
+        background: 背景位置/背景尺寸 背景重复 背景附着 背景颜色 背景图像 背景盒子;
+
+        /* 双层背景范例 */
+        background:
+          center/cover no-repeat fixed url(图像链接) padding-box content-box,    /* 第1层 */
+          0% 0%/100% repeat fixed linear-gradient(渐变语法) border-box #234;   /* 第2层 */
+      </code>
+    </pre>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题"><span class="行内专业名词">背景</span>属性</h2>
 
     <h3 class="分区标题 分区3级标题">
       <span class="专业名词">背景颜色</span><span class="行内代码">background-color</span>
@@ -194,7 +219,7 @@
     <h3 class="分区标题 分区3级标题">
       <span class="专业名词">背景重复</span><span class="行内代码">background-repeat</span>
     </h3>
-    <figure class="截图容器" data-desc="背景重复">
+    <figure class="截图容器" data-desc="背景重复" style="border-radius: 0 0 10px 10px">
       <iframe class="背景重复" src="./背景重复.html" title="背景重复"></iframe>
     </figure>
     <p class="分区普通文本">
@@ -207,12 +232,13 @@
     <p class="分区普通文本">
       <span class="行内专业名词">背景位置</span>理解起来有点复杂，下方的演示中，使用了两个百分比值来定位背景位置：
     </p>
-    <figure class="截图容器" data-desc="背景位置">
+    <figure class="截图容器" data-desc="背景位置" style="border-radius: 0 0 10px 10px">
       <iframe class="背景位置" src="背景位置.html" title="背景位置"></iframe>
     </figure>
     <p class="分区普通文本">
-      背景位置的<span class="强调">默认值</span>是<span class="代码">0% 0%</span>，该位置也是<span class="强调"
-        >背景尺寸缩放的锚点</span
+      背景位置的<span class="强调">默认值</span>是<span class="代码">0% 0%</span>，即容器盒子的左上角，也是背景尺寸<span
+        class="强调"
+        >缩放的锚点</span
       >。
     </p>
     <p class="分区普通文本">
@@ -270,25 +296,114 @@
       </code>
     </pre>
 
-    <h3 class="分区标题 分区3级标题"><span class="行内代码">background</span>简写语法</h3>
-    <p class="分区普通文本"><span class="行内代码">background</span>的语法如下：</p>
-    <pre>
-      <code class="lang-css">
-        background: 第1层背景, 第2层背景, 第3层背景, ...;  /* 每一层背景都可以是一套完整的背景语法 */
+    <h3 class="分区标题 分区3级标题">
+      <span class="专业名词">背景原点</span><span class="行内代码">background-origin</span>
+    </h3>
+    <p class="分区普通文本">
+      背景原点是指背景位置的参照系，参照系只有<span class="行内专业名词 等宽">3</span>个关键字：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <h4 等宽>边框盒子<span class="次要">：</span><span class="代码">border-box</span></h4>
+      </li>
+      <li class="分区列表项">
+        <h4 等宽>
+          内边距盒子<span class="次要">：</span><span class="代码">padding-box</span><span class="次要">，</span
+          ><span class="强调">默认值</span>
+        </h4>
+      </li>
+      <li class="分区列表项">
+        <h4 等宽>内容盒子<span class="次要">：</span><span class="代码">content-box</span></h4>
+      </li>
+    </ul>
+    <figure class="截图容器" data-desc="背景原点" style="border-radius: 0 0 10px 10px">
+      <iframe class="背景原点" src="./背景原点.html" title="背景原点"></iframe>
+    </figure>
+    <p class="分区普通文本">
+      如果容器盒子的边框或者内边距的宽度不为<span class="行内专业名词 等宽">0</span
+      >，即使背景位置相同，在不同的背景原点参考系下，实际的视觉位置也会不同。
+    </p>
 
-        /* 一层背景的语法如下 */
-        /* 以下属性的顺序可以任意摆放 */
-        /* 背景位置/背景尺寸：这个写法不能变 */
-        /* 背景位置、背景尺寸、背景重复、背景图像、背景附着、背景盒子，这6个属性可以省略 */
-        /* 背景盒子如果写1次，则同时设置背景原点和背景修剪；如果写两次，则顺序为"背景原点 背景修剪" */
-        /* 如果有多层背景，则"背景颜色"只能写在最后一层 */
-        background: 背景位置/背景尺寸 背景重复 背景附着 背景颜色 背景图像 背景盒子;
+    <h3 class="分区标题 分区3级标题">
+      <span class="专业名词">背景修剪</span><span class="行内代码">background-clip</span>
+    </h3>
+    <p class="分区普通文本">背景修剪的值只有<span class="行内专业名词 等宽">4</span>个关键字：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <h4 等宽>
+          边框盒子<span class="次要">：</span><span class="代码">border-box</span><span class="次要">，</span
+          ><span class="强调">默认值</span>
+        </h4>
+      </li>
+      <li class="分区列表项">
+        <h4 等宽>内边距盒子<span class="次要">：</span><span class="代码">padding-box</span></h4>
+      </li>
+      <li class="分区列表项">
+        <h4 等宽>内容盒子<span class="次要">：</span><span class="代码">content-box</span></h4>
+      </li>
+      <li class="分区列表项">
+        <h4 等宽>文本<span class="次要">：</span><span class="代码">text</span></h4>
+      </li>
+    </ul>
+    <figure class="截图容器" data-desc="背景修剪" style="border-radius: 0 0 10px 10px">
+      <iframe class="背景修剪" src="./背景修剪.html" title="背景修剪"></iframe>
+    </figure>
+    <p class="分区普通文本">
+      背景修剪的<span class="强调">默认值</span>是<span class="代码">border-box</span>，即容器盒子的<span
+        class="行内专业名词"
+        >边框</span
+      >区域。
+    </p>
 
-        /* 双层背景范例 */
-        background:
-          center/cover no-repeat fixed url(图像链接) padding-box content-box,    /* 第1层 */
-          0% 0%/100% repeat fixed linear-gradient(渐变语法) border-box #234;   /* 第2层 */
-      </code>
-    </pre>
+    <h3 class="分区标题 分区3级标题">
+      <span class="专业名词">背景附着</span><span class="行内代码">background-attachment</span>
+    </h3>
+    <p class="分区普通文本">背景附着的值只有<span class="行内专业名词 等宽">3</span>个关键字：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <h4 等宽>固定<span class="次要">：</span><span class="代码">fixed</span></h4>
+      </li>
+      <li class="分区列表项">
+        <h4 等宽>内容<span class="次要">：</span><span class="代码">local</span></h4>
+      </li>
+      <li class="分区列表项">
+        <h4 等宽>
+          滚动<span class="次要"
+            >：<span class="代码">scroll</span><span class="次要">，</span><span class="强调">默认值</span></span
+          >
+        </h4>
+      </li>
+    </ul>
+    <figure class="截图容器" data-desc="背景附着" style="border-radius: 0 0 10px 10px">
+      <iframe class="背景附着" src="./背景附着.html" title="背景附着"></iframe>
+    </figure>
+    <p class="分区普通文本"><span class="代码">background-attchment: fixed</span>常用来做廉价的视差效果。</p>
+    <table class="表格" style="text-align: center">
+      <caption class="表格标题">
+        背景附着
+      </caption>
+      <thead class="表头区">
+        <tr>
+          <th><span class="行内专业名词">滚动形式</span></th>
+          <th><span class="行内代码">fixed</span></th>
+          <th><span class="行内代码">local</span></th>
+          <th><span class="行内代码">scroll</span></th>
+        </tr>
+      </thead>
+      <tbody class="表身区">
+        <tr>
+          <th style="color: #fff">容器<span class="强调">内部</span>滚动</th>
+          <td>固定不动</td>
+          <td>滚动</td>
+          <td>固定不动</td>
+        </tr>
+        <tr>
+          <th style="color: #fff">容器<span class="强调">外部</span>滚动</th>
+          <td>固定不动</td>
+          <td>滚动</td>
+          <td>滚动</td>
+        </tr>
+      </tbody>
+    </table>
   </article>
 </div>

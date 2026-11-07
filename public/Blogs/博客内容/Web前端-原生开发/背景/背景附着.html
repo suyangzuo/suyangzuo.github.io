@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS Background Attachment | Scroll vs Local</title>
+    <style>
+      :root {
+        --bg: #090d18;
+        --panel: #111827;
+        --border: #253149;
+        --text: #e5edf9;
+        --muted: #8996ad;
+        --blue: #60a5fa;
+        --purple: #c084fc;
+        --green: #4ade80;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 12px 24px 100px;
+        background: radial-gradient(ellipse at 50% 0%, #192849 0%, transparent 55%), var(--bg);
+        color: var(--text);
+        font-family: "Google Sans Code", "Consolas", "MiSans", "Noto Sans SC", 微软雅黑, sans-serif;
+      }
+
+      .container {
+        max-width: 1120px;
+        margin: auto;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 44px;
+      }
+
+      h1 {
+        font-size: clamp(30px, 5vw, 48px);
+        margin: 20px 0 12px;
+        letter-spacing: -1.5px;
+      }
+
+      h1 span {
+        color: var(--blue);
+      }
+
+      .subtitle {
+        color: var(--muted);
+        font-size: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+      }
+
+      .card {
+        background: rgba(17, 24, 39, 0.88);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 15px 45px #0005;
+      }
+
+      .card-header {
+        padding: 22px 24px 10px 24px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .card-header h2 {
+        margin: 0 0 8px;
+        font-size: 20px;
+      }
+
+      .card-header p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.6;
+        height: 42px;
+      }
+
+      .blue {
+        color: var(--blue);
+      }
+      .purple {
+        color: var(--purple);
+      }
+      .green {
+        color: var(--green);
+      }
+
+      .card-full {
+        grid-column: 1 / -1;
+        width: 100%;
+      }
+
+      .demo {
+        height: 310px;
+        margin: 20px;
+        overflow-y: auto;
+        border: 1px solid #34425c;
+        border-radius: 10px;
+        position: relative;
+        scrollbar-color: #52617d #172033;
+        scrollbar-width: thin;
+
+        background-image: url("/Images/Background-Images/轮播图-06.jpg");
+        background-size: 50%;
+        background-position: center;
+        text-shadow: 2px 2px 2px #222;
+      }
+
+      .demo.scroll {
+        background-attachment: scroll, scroll, scroll;
+      }
+
+      .demo.local {
+        background-attachment: local, local, local;
+      }
+
+      .demo.fixed {
+        background-attachment: fixed;
+      }
+
+      .demo-content {
+        min-height: 760px;
+        padding: 24px;
+      }
+
+      .demo-content h3 {
+        font-size: 22px;
+        margin: 10px 0 14px;
+        padding: 10px;
+        background-color: #000a;
+        width: fit-content;
+      }
+
+      .demo-content p {
+        color: #d1d9e9;
+        font-size: 14px;
+        line-height: 1.9;
+      }
+
+      .demo-block {
+        background: #0a1226a8;
+        border: 1px solid #ffffff25;
+        border-radius: 10px;
+        padding: 15px;
+        margin: 18px 0;
+        backdrop-filter: blur(5px);
+      }
+
+      .demo-block strong {
+        display: block;
+        margin-bottom: 8px;
+        color: white;
+      }
+
+      .demo-block span {
+        font-size: 12px;
+        color: #bac7dc;
+      }
+
+      @media (max-width: 760px) {
+        body {
+          padding: 30px 14px;
+        }
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .keywords {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <header>
+        <h1>背景<span>附着</span></h1>
+        <p class="subtitle" style="margin-bottom: 5px">
+          <span style="font-size: 1.25rem; color: gold">滚动</span><span style="margin: 0 5px; color: gray">vs</span
+          ><span style="font-size: 1.25rem; color: gold">内容</span><span style="margin: 0 5px; color: gray">vs</span
+          ><span style="font-size: 1.25rem; color: gold">固定</span><br />
+        </p>
+        <p style="margin-top: 0; color: silver; font-size: 16px">滚动下面的区域，观察背景图案如何移动</p>
+      </header>
+
+      <div class="grid">
+        <!-- SCROLL -->
+        <section class="card">
+          <div class="card-header">
+            <h2><span class="blue">background</span><span style="margin: 0 4px 0 2px">:</span>scroll</h2>
+            <p>容器外部滚动，背景随之滚动；<br />容器内部滚动，背景固定不动。</p>
+          </div>
+
+          <div class="demo scroll">
+            <div class="demo-content">
+              <h3>背景附着：滚动</h3>
+              <p>尝试向下滚动这个容器。</p>
+
+              <div class="demo-block">
+                <strong>Content Block 01</strong>
+                <span>背景保持在滚动容器的固定位置。</span>
+              </div>
+              <div class="demo-block">
+                <strong>Content Block 02</strong>
+                <span>滚动内容，背景不动。</span>
+              </div>
+              <div class="demo-block">
+                <strong>Content Block 03</strong>
+                <span>继续滚动，观察背景图案的位置。</span>
+              </div>
+              <div class="demo-block">
+                <strong>Content Block 04</strong>
+                <span>Background Attachment: Scroll</span>
+              </div>
+              <div class="demo-block">
+                <strong>Content Block 05</strong>
+                <span>滚动到容器底部。</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- LOCAL -->
+        <section class="card">
+          <div class="card-header">
+            <h2><span class="purple">background</span><span style="margin: 0 4px 0 2px">:</span>local</h2>
+            <p>无论容器内外滚动，背景均随之滚动。</p>
+          </div>
+
+          <div class="demo local">
+            <div class="demo-content">
+              <h3>背景附着：内容</h3>
+              <p>尝试向下滚动这个容器。</p>
+
+              <div class="demo-block">
+                <strong>Content Block 01</strong>
+                <span>背景跟随滚动内容一起移动。</span>
+              </div>
+              <div class="demo-block">
+                <strong>Content Block 02</strong>
+                <span>滚动内容，背景同步滚动。</span>
+              </div>
+              <div class="demo-block">
+                <strong>Content Block 03</strong>
+                <span>继续滚动，观察背景图案的位置。</span>
+              </div>
+              <div class="demo-block">
+                <strong>Content Block 04</strong>
+                <span>Background Attachment: Local</span>
+              </div>
+              <div class="demo-block">
+                <strong>Content Block 05</strong>
+                <span>滚动到容器底部。</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- FIXED -->
+        <section class="card card-full">
+          <div class="card-header">
+            <h2><span class="green">background</span><span style="margin: 0 4px 0 2px">:</span>fixed</h2>
+            <p>无论容器内外滚动，背景均固定不动。</p>
+          </div>
+
+          <div class="demo fixed">
+            <div class="demo-content">
+              <h3>背景附着：固定</h3>
+              <p>尝试向下滚动这个容器，或滚动整个页面。</p>
+
+              <div class="demo-block">
+                <strong>Content Block 01</strong>
+                <span>背景锚定在浏览器视口上，不随任何滚动移动。</span>
+              </div>
+              <div class="demo-block">
+                <strong>Content Block 02</strong>
+                <span>容器内部滚动，背景不动。</span>
+              </div>
+              <div class="demo-block">
+                <strong>Content Block 03</strong>
+                <span>继续滚动，观察背景图案是否跟随内容。</span>
+              </div>
+              <div class="demo-block">
+                <strong>Content Block 04</strong>
+                <span>Background Attachment: Fixed</span>
+              </div>
+              <div class="demo-block">
+                <strong>Content Block 05</strong>
+                <span>滚动到容器底部，背景依然不动。</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </body>
+</html>

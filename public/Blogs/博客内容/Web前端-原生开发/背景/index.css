@@ -18,6 +18,18 @@ figure[data-desc="背景位置"] {
   height: 700px;
 }
 
+figure[data-desc="背景修剪"] {
+  height: 500px;
+}
+
+figure[data-desc="背景原点"] {
+  height: 700px;
+}
+
+figure[data-desc="背景附着"] {
+  height: 700px;
+}
+
 figure[data-desc*="背景"] > iframe {
   width: 100%;
   height: 100%;

@@ -1565,8 +1565,9 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  width: 3.25em;
+  width: fit-content;
   height: 1.625em;
+  padding: 0 8px;
   margin-right: 20px;
   border-radius: 10em;
   border: solid 2px #333;
