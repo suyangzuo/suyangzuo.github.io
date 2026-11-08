@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0c0b'/%3E%3Crect x='6' y='6' width='13' height='13' rx='2' fill='none' stroke='%23b8cf9b' stroke-width='2'/%3E%3Crect x='12' y='12' width='13' height='13' rx='2' fill='none' stroke='%23b8cf9b' stroke-width='2'/%3E%3C/svg%3E"
+    />
+    <title>层叠上下文实验室 · backdrop-filter</title>
+    <style>
+      :root {
+        /* primitives */
+        --p-ink-0: oklch(0.145 0.006 100);
+        --p-ink-1: oklch(0.185 0.008 110);
+        --p-ink-2: oklch(0.235 0.009 110);
+        --p-paper: oklch(0.955 0.014 90);
+        --p-muted: oklch(0.72 0.015 100);
+        --p-sage: oklch(0.79 0.105 135);
+        --p-terracotta: oklch(0.72 0.12 45);
+        --p-mustard: oklch(0.73 0.12 82);
+        --p-blue: oklch(0.62 0.12 255);
+        /* semantics */
+        --bg: var(--p-ink-0);
+        --surface: var(--p-ink-1);
+        --surface-raised: var(--p-ink-2);
+        --text: var(--p-paper);
+        --text-muted: var(--p-muted);
+        --line: oklch(0.34 0.012 110);
+        --accent: var(--p-sage);
+        --mode: var(--p-sage);
+        --mode-soft: oklch(0.79 0.105 135 / 0.1);
+        /* components */
+        --radius: 14px;
+        --font-sans: "JetBrains Mono", "Consolas", "MiSans", "Noto Sans SC", 微软雅黑, sans-serif;
+        --font-mono: "JetBrains Mono", "Consolas", "MiSans", "Noto Sans SC", 微软雅黑, sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+        background: var(--bg);
+      }
+      body {
+        height: 100dvh;
+        width: 100%;
+        font: 16px/1.65 var(--font-sans);
+        color: var(--text);
+        background: var(--bg);
+        -webkit-font-smoothing: antialiased;
+      }
+      button,
+      input {
+        font: inherit;
+      }
+      button {
+        color: inherit;
+        cursor: pointer;
+      }
+      button:focus-visible,
+      input:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+      }
+      ::selection {
+        color: var(--p-ink-0);
+        background: var(--p-sage);
+      }
+      [hidden] {
+        display: none !important;
+      }
+      .shell {
+        width: 100%;
+        margin-inline: auto;
+      }
+      .workbench {
+        overflow: hidden;
+      }
+      .switch-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 16px 18px;
+        border-bottom: 1px solid var(--line);
+        background: oklch(0.17 0.007 110);
+      }
+      .mode-switch {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+        width: min(100%, 520px);
+        padding: 5px;
+        border: 1px solid var(--line);
+        border-radius: 5px;
+        background: var(--p-ink-0);
+      }
+      .mode-option {
+        position: relative;
+        min-width: 0;
+        cursor: pointer;
+      }
+      .mode-option input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        pointer-events: none;
+      }
+      .option-content {
+        min-height: 46px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        padding: 8px 14px;
+        border: 1px solid transparent;
+        color: var(--text-muted);
+        font-size: 14px;
+        font-weight: 550;
+        transition:
+          color 0.18s ease-out,
+          background-color 0.18s ease-out,
+          border-color 0.18s ease-out;
+      }
+      .option-content::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        flex: 0 0 auto;
+        border: 1px solid currentColor;
+        border-radius: 50%;
+        translate: -4px 0;
+      }
+      .mode-option:hover .option-content {
+        color: var(--text);
+        background: oklch(0.24 0.01 110);
+      }
+      .mode-option input:focus-visible + .option-content {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+      .mode-option input:checked + .option-content {
+        color: var(--text);
+        border-color: rgba(199, 208, 147, 1);
+        background: rgba(46, 46, 39, 1);
+      }
+      .mode-option input:checked + .option-content::before {
+        border-color: var(--option-color);
+        background: var(--option-color);
+        box-shadow: 0 0 0 3px color-mix(in oklch, var(--option-color) 12%, transparent);
+      }
+      .mode-option.correct {
+        --option-color: var(--p-sage);
+      }
+      .mode-option.wrong {
+        --option-color: var(--p-terracotta);
+      }
+      .mode-option .keyword {
+        color: var(--option-color);
+      }
+      .workspace {
+        display: grid;
+        grid-template-columns: minmax(0, 1.65fr) minmax(350px, 0.85fr);
+      }
+      .preview-panel {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        border-right: 1px solid var(--line);
+      }
+      .scene {
+        position: relative;
+        flex: 1;
+        min-height: 448px;
+        overflow: hidden;
+        isolation: isolate;
+        background: oklch(0.22 0.015 125);
+        touch-action: pan-y;
+      }
+      .scene-art {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        background-color: oklch(0.24 0.018 125);
+        background-image:
+          linear-gradient(oklch(0.95 0.014 90 / 0.07) 1px, transparent 1px),
+          linear-gradient(90deg, oklch(0.95 0.014 90 / 0.07) 1px, transparent 1px);
+        background-size: 32px 32px;
+      }
+      .scene-art::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(110deg, transparent 30%, oklch(0.145 0.006 100 / 0.35) 100%);
+        pointer-events: none;
+      }
+      .poster-word {
+        position: absolute;
+        left: 5%;
+        top: 9%;
+        color: var(--p-paper);
+        font: 800 clamp(72px, 9vw, 138px)/0.78 var(--font-sans);
+        letter-spacing: -0.075em;
+        opacity: 0.88;
+        transform: translate3d(calc(var(--mx, 0) * -10px), calc(var(--my, 0) * -7px), 0);
+        transition: transform 0.18s ease-out;
+      }
+      .shape {
+        position: absolute;
+        will-change: transform;
+        transition: transform 0.18s ease-out;
+      }
+      .shape-a {
+        width: 38%;
+        aspect-ratio: 1;
+        left: -7%;
+        bottom: -19%;
+        border-radius: 50%;
+        background: var(--p-mustard);
+        transform: translate3d(calc(var(--mx, 0) * 18px), calc(var(--my, 0) * 12px), 0);
+      }
+      .shape-b {
+        width: 19%;
+        height: 78%;
+        right: 8%;
+        top: -15%;
+        background: var(--p-terracotta);
+        transform: rotate(19deg) translate3d(calc(var(--mx, 0) * 13px), calc(var(--my, 0) * 18px), 0);
+      }
+      .shape-c {
+        width: 34%;
+        aspect-ratio: 1;
+        right: 8%;
+        bottom: -19%;
+        border: 28px solid var(--p-sage);
+        border-radius: 50%;
+        transform: translate3d(calc(var(--mx, 0) * -20px), calc(var(--my, 0) * -12px), 0);
+      }
+      .shape-d {
+        width: 31%;
+        height: 24%;
+        left: 33%;
+        bottom: 4%;
+        background: repeating-linear-gradient(135deg, var(--p-blue) 0 9px, transparent 9px 18px);
+        transform: translate3d(calc(var(--mx, 0) * 22px), calc(var(--my, 0) * -10px), 0);
+      }
+      .scene-caption {
+        position: absolute;
+        right: 4%;
+        top: 42%;
+        writing-mode: vertical-rl;
+        color: var(--p-paper);
+        font: 11px/1 var(--font-mono);
+        letter-spacing: 0.28em;
+        opacity: 0.8;
+      }
+      .glass-card {
+        position: absolute;
+        z-index: auto;
+        isolation: isolate;
+        inset: 0;
+        width: 75%;
+        height: 75%;
+        min-height: 0;
+        margin: auto;
+        border: 1px solid oklch(0.95 0.014 90 / 0.27);
+        border-radius: 20px;
+        background: oklch(0.145 0.006 100 / 0.74);
+        box-shadow: 0 22px 60px oklch(0.1 0.005 100 / 0.25);
+      }
+      .glass-card__blur {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        border-radius: inherit;
+        background: oklch(0.95 0.014 90 / 0.045);
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+        pointer-events: none;
+      }
+      .glass-card__content {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        min-height: 242px;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 28px 30px;
+      }
+      .card-kicker {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        color: var(--text-muted);
+        font: 10px/1.4 var(--font-mono);
+        letter-spacing: 0.13em;
+      }
+      .card-kicker .card-index {
+        color: var(--mode);
+      }
+      .glass-card h2 {
+        margin: 20px 0 8px;
+        font-size: clamp(24px, 2.5vw, 34px);
+        font-weight: 580;
+        line-height: 1.25;
+        letter-spacing: -0.03em;
+      }
+      .glass-card p {
+        color: var(--text-muted);
+        font-size: 14px;
+      }
+      .card-foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-top: 24px;
+        padding-top: 16px;
+        border-top: 1px solid oklch(0.95 0.014 90 / 0.17);
+        font: 11px/1.4 var(--font-mono);
+        color: var(--text-muted);
+      }
+      .card-foot strong {
+        color: var(--mode);
+        font-weight: 500;
+      }
+      .inspector {
+        min-width: 0;
+        background: oklch(0.155 0.006 110);
+      }
+      .code-wrap {
+        padding: 7px 0 10px;
+        border-bottom: 1px solid var(--line);
+      }
+      .code-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 22px;
+        color: var(--text-muted);
+        font: 10px/1 var(--font-mono);
+        letter-spacing: 0.12em;
+      }
+      .copy-button {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 32px;
+        padding: 5px 7px;
+        border: 0;
+        border-radius: 5px;
+        background: transparent;
+        color: var(--text-muted);
+        font: 11px/1 var(--font-sans);
+        letter-spacing: 0;
+        transition:
+          color 0.16s ease-out,
+          background-color 0.16s ease-out;
+      }
+      .copy-button:hover {
+        color: var(--text);
+        background: var(--surface-raised);
+      }
+      .copy-button:active {
+        transform: scale(0.96);
+      }
+      .copy-button svg {
+        width: 14px;
+        height: 14px;
+      }
+      pre {
+        overflow: auto;
+        padding: 0 22px;
+        color: oklch(0.84 0.018 110);
+        font: 14px/1.85 var(--font-mono);
+        tab-size: 2;
+        scrollbar-width: thin;
+        line-height: 1.25em;
+      }
+      .code-line {
+        display: block;
+        min-width: max-content;
+        padding-inline: 8px;
+        margin-inline: -8px;
+        border-radius: 3px;
+      }
+      .code-line.changed {
+        color: var(--mode);
+        background: var(--mode-soft);
+      }
+      .code-comment {
+        color: oklch(0.61 0.015 110);
+        font-family: var(--font-sans);
+      }
+      .code-property {
+        color: oklch(0.79 0.06 220);
+      }
+      .code-value {
+        color: oklch(0.82 0.09 82);
+      }
+      .layer-section {
+        padding: 18px 22px 20px;
+      }
+      .layer-title {
+        margin-bottom: 12px;
+        color: var(--text-muted);
+        font: 10px/1 var(--font-mono);
+        letter-spacing: 0.12em;
+      }
+      .layer-list {
+        display: grid;
+        gap: 7px;
+        list-style: none;
+      }
+      .layer-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        min-height: 34px;
+        padding: 6px 10px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        color: var(--text-muted);
+        font-size: 12px;
+      }
+      .layer-item strong {
+        color: var(--text);
+        font: 11px/1 var(--font-mono);
+        font-weight: 500;
+      }
+      .layer-item.is-blur {
+        border-color: color-mix(in oklch, var(--mode) 45%, var(--line));
+        color: var(--text);
+        background: var(--mode-soft);
+      }
+      .layer-item.is-covered {
+        opacity: 0.6;
+      }
+      .toast {
+        position: fixed;
+        z-index: 10;
+        left: 50%;
+        bottom: 24px;
+        min-width: 150px;
+        padding: 11px 16px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--p-paper);
+        color: var(--p-ink-0);
+        font-size: 13px;
+        text-align: center;
+        opacity: 0;
+        pointer-events: none;
+        transform: translate(-50%, 8px);
+        transition:
+          opacity 0.18s ease-out,
+          transform 0.18s ease-out;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+      body[data-mode="wrong"] {
+        --mode: var(--p-terracotta);
+        --mode-soft: oklch(0.72 0.12 45 / 0.1);
+      }
+      body[data-mode="wrong"] .glass-card {
+        isolation: auto;
+      }
+      @media (max-width: 980px) {
+        .workspace {
+          grid-template-columns: 1fr;
+        }
+        .preview-panel {
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+        .scene {
+          min-height: 400px;
+        }
+        .inspector {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+        }
+        .code-wrap {
+          border-bottom: 0;
+          border-right: 1px solid var(--line);
+        }
+      }
+      @media (max-width: 640px) {
+        .shell {
+          width: min(100% - 28px, 1380px);
+        }
+        .switch-row {
+          align-items: stretch;
+          flex-direction: column;
+          gap: 12px;
+          padding: 12px;
+        }
+        .mode-switch {
+          width: 100%;
+        }
+        .option-content {
+          padding: 8px 6px;
+          font-size: 13px;
+        }
+        .scene {
+          min-height: 440px;
+        }
+        .glass-card {
+          width: calc(100% - 44px);
+        }
+        .glass-card__content {
+          padding: 24px 22px;
+        }
+        .glass-card h2 {
+          font-size: 26px;
+        }
+        .shape-b {
+          right: 2%;
+        }
+        .shape-c {
+          right: -4%;
+        }
+        .poster-word {
+          font-size: 74px;
+        }
+        .inspector {
+          display: block;
+        }
+        .code-wrap {
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+        .card-kicker,
+        .card-foot,
+        .code-title,
+        .copy-button,
+        .layer-title {
+          font-size: 12px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        *,
+        *::before,
+        *::after {
+          transition: none !important;
+          animation: none !important;
+        }
+        .shape,
+        .poster-word {
+          transform: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body data-mode="correct">
+    <main class="shell">
+      <section class="workbench" aria-label="层叠上下文交互演示">
+        <div class="switch-row">
+          <div class="mode-switch" role="radiogroup" aria-label="选择层叠上下文模式">
+            <label class="mode-option correct">
+              <input type="radio" name="stacking-mode" value="correct" checked />
+              <span class="option-content"><span class="keyword">正确</span>层叠上下文</span>
+            </label>
+            <label class="mode-option wrong">
+              <input type="radio" name="stacking-mode" value="wrong" />
+              <span class="option-content"><span class="keyword">错误</span>层叠上下文</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="workspace">
+          <div class="preview-panel">
+            <div class="scene" id="scene">
+              <div class="scene-art" aria-hidden="true">
+                <div class="poster-word">BACK<br />DROP</div>
+                <div class="shape shape-a"></div>
+                <div class="shape shape-b"></div>
+                <div class="shape shape-c"></div>
+                <div class="shape shape-d"></div>
+                <span class="scene-caption">PAINT ORDER MATTERS</span>
+              </div>
+              <div class="glass-card">
+                <div class="glass-card__blur" aria-hidden="true"></div>
+                <div class="glass-card__content">
+                  <div>
+                    <div class="card-kicker">
+                      <span>FROSTED GLASS</span><span class="card-index" id="card-index">ISOLATED</span>
+                    </div>
+                    <h2>保留细节，<br />柔化背景。</h2>
+                    <p>内容层始终清晰，只有背景参与模糊。</p>
+                  </div>
+                  <div class="card-foot">
+                    <span>backdrop-filter</span><strong id="card-result">blur(20px) 可见</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="inspector" aria-label="CSS 代码和绘制顺序">
+            <div class="code-wrap">
+              <div class="code-title">
+                <span>CURRENT CSS</span
+                ><button class="copy-button" id="copy-css" type="button" aria-label="复制当前 CSS">
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <rect x="5" y="5" width="8" height="8" rx="1" stroke="currentColor" />
+                    <path d="M10 3H3a1 1 0 0 0-1 1v7" stroke="currentColor" /></svg
+                  >复制 CSS
+                </button>
+              </div>
+              <pre
+                aria-label="当前模式的 CSS 代码"
+              ><code id="css-code"><span class="code-line">.glass-card {</span><span class="code-line changed">  <span class="code-property">isolation</span>: <span class="code-value">isolate</span>; <span class="code-comment">/* 关键修复 */</span></span><span class="code-line">}</span><span class="code-line"> </span><span class="code-line">.glass-card__blur {</span><span class="code-line">  <span class="code-property">position</span>: <span class="code-value">absolute</span>;</span><span class="code-line">  <span class="code-property">inset</span>: <span class="code-value">0</span>;</span><span class="code-line">  <span class="code-property">z-index</span>: <span class="code-value">-1</span>;</span><span class="code-line">  <span class="code-property">backdrop-filter</span>: <span class="code-value">blur(20px)</span>;</span><span class="code-line">}</span><span class="code-line"> </span><span class="code-line">.glass-card__content {</span><span class="code-line">  <span class="code-property">position</span>: <span class="code-value">relative</span>;</span><span class="code-line">  <span class="code-property">z-index</span>: <span class="code-value">2</span>;</span><span class="code-line">}</span></code></pre>
+            </div>
+            <div class="layer-section">
+              <h3 class="layer-title">PAINT ORDER · 从后到前</h3>
+              <ol class="layer-list" id="layer-list">
+                <li class="layer-item"><span>卡片背景 background</span><strong>BACKGROUND</strong></li>
+                <li class="layer-item is-blur">
+                  <span>背景模糊 blur · 被隔离在卡片内</span><strong>z-index: -1</strong>
+                </li>
+                <li class="layer-item"><span>文字内容 content</span><strong>z-index: 2</strong></li>
+              </ol>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+    <div class="toast" id="toast" role="status" aria-live="polite">CSS 已复制</div>
+    <script>
+      const state = { mode: "correct" };
+      const body = document.body;
+      const scene = document.getElementById("scene");
+      const cardResult = document.getElementById("card-result");
+      const toast = document.getElementById("toast");
+      let toastTimer;
+
+      function cssForMode() {
+        return `.glass-card {\n  isolation: ${state.mode === "correct" ? "isolate" : "auto"};${state.mode === "correct" ? " /* 关键修复 */" : " /* 没有建立层叠上下文 */"}\n}\n\n.glass-card__blur {\n  position: absolute;\n  inset: 0;\n  z-index: -1;\n  backdrop-filter: blur(20px);\n}\n\n.glass-card__content {\n  position: relative;\n  z-index: 2;\n}`;
+      }
+
+      function renderCss() {
+        const changedLine =
+          state.mode === "correct"
+            ? '  <span class="code-property">isolation</span>: <span class="code-value">isolate</span>; <span class="code-comment">/* 关键修复 */</span>'
+            : '  <span class="code-property">isolation</span>: <span class="code-value">auto</span>; <span class="code-comment">/* 未建立层叠上下文 */</span>';
+        document.getElementById("css-code").innerHTML = [
+          ".glass-card {",
+          `<span class="code-line changed">${changedLine}</span>`,
+          "}",
+          " ",
+          ".glass-card__blur {",
+          '  <span class="code-property">position</span>: <span class="code-value">absolute</span>;',
+          '  <span class="code-property">inset</span>: <span class="code-value">0</span>;',
+          '  <span class="code-property">z-index</span>: <span class="code-value">-1</span>;',
+          `  <span class="code-property">backdrop-filter</span>: <span class="code-value">blur(20px)</span>;`,
+          "}",
+          " ",
+          ".glass-card__content {",
+          '  <span class="code-property">position</span>: <span class="code-value">relative</span>;',
+          '  <span class="code-property">z-index</span>: <span class="code-value">2</span>;',
+          "}",
+        ]
+          .map((line) =>
+            line.startsWith('<span class="code-line changed"') ? line : `<span class="code-line">${line}</span>`,
+          )
+          .join("");
+      }
+
+      function renderLayers() {
+        const blur = `<li class="layer-item is-blur${state.mode === "wrong" ? " is-covered" : ""}"><span>背景模糊 blur${state.mode === "wrong" ? " · 掉到场景后方" : " · 被隔离在卡片内"}</span><strong>z-index: -1</strong></li>`;
+        const background = `<li class="layer-item"><span>${state.mode === "correct" ? "卡片背景 background" : "场景与卡片背景"}</span><strong>BACKGROUND</strong></li>`;
+        const content = '<li class="layer-item"><span>文字内容 content</span><strong>z-index: 2</strong></li>';
+        document.getElementById("layer-list").innerHTML =
+          state.mode === "correct" ? background + blur + content : blur + background + content;
+      }
+
+      function renderMode(mode) {
+        state.mode = mode;
+        body.dataset.mode = mode;
+        document.getElementById("card-index").textContent = mode === "correct" ? "ISOLATED" : "NO ISOLATION";
+        cardResult.textContent = mode === "correct" ? "blur(20px) 可见" : "blur(20px) 被背景覆盖";
+        renderCss();
+        renderLayers();
+      }
+
+      document.querySelectorAll('input[name="stacking-mode"]').forEach((radio) => {
+        radio.addEventListener("change", (event) => renderMode(event.target.value));
+      });
+
+      scene.addEventListener("pointermove", (event) => {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        const rect = scene.getBoundingClientRect();
+        scene.style.setProperty("--mx", ((event.clientX - rect.left) / rect.width - 0.5).toFixed(3));
+        scene.style.setProperty("--my", ((event.clientY - rect.top) / rect.height - 0.5).toFixed(3));
+      });
+      scene.addEventListener("pointerleave", () => {
+        scene.style.setProperty("--mx", 0);
+        scene.style.setProperty("--my", 0);
+      });
+
+      document.getElementById("copy-css").addEventListener("click", async () => {
+        const text = cssForMode();
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          const textarea = document.createElement("textarea");
+          textarea.value = text;
+          textarea.style.position = "fixed";
+          textarea.style.opacity = "0";
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand("copy");
+          textarea.remove();
+        }
+        clearTimeout(toastTimer);
+        toast.classList.add("show");
+        toastTimer = setTimeout(() => toast.classList.remove("show"), 1600);
+      });
+
+      renderMode("correct");
+    </script>
+  </body>
+</html>

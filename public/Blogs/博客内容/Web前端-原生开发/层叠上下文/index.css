@@ -1,0 +1,13 @@
+figure[data-desc="层叠上下文"] {
+  height: 862px;
+}
+
+figure[data-desc*="层叠"]:has(iframe) {
+  width: 100%;
+}
+
+figure[data-desc*="层叠"] > iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
