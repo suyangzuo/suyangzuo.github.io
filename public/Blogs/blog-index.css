@@ -24,7 +24,7 @@
   --font-awesome-字体集: "Font Awesome 7 Free", ui-rounded;
   --代码块字体集:
     "Jetbrains Mono", "Google Sans Code", "Segoe UI Emoji", "Noto Sans SC", 微软雅黑, sans-serif !important;
-  --分区列表项-字体颜色: #8a949d;
+  --分区列表项-字体颜色: #8ca7bf;
   --已激活章节标题-字体颜色: rgb(129, 206, 129) !important;
   --正文字体: "Inter", "Segoe UI Emoji", "Noto Sans SC", 微软雅黑, sans-serif;
 }
@@ -1164,7 +1164,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 .次要 {
   color: #aaa;
   font-size: 0.965em;
-  margin: 0 0.175ch;
+  margin: 0 0.1ch;
 }
 
 .代码 .次要 {
@@ -1611,6 +1611,10 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   font-weight: normal;
 }
 
+.分区列表项 > h4:has(+ span, + ul) {
+  font-weight: bold;
+}
+
 .有序列表 > .分区列表项 > h4 {
   display: inline-flex;
   align-items: center;
@@ -1811,7 +1815,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
   padding: 2px 5px;
   margin: 0 0.25em;
   font-size: 0.925em;
-  font-family: "JetBrains Mono", "Google Sans Code", "Noto Sans SC", 微软雅黑, sans-serif;
+  font-family: "Inter", "JetBrains Mono", "Google Sans Code", "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 .专业名词.亮 {
@@ -1826,7 +1830,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 
 .行内专业名词 {
   color: var(--行内专业名词颜色);
-  margin: 0 0.25ch;
+  margin: 0 0.125ch;
 }
 
 .代码 .行内专业名词 {
@@ -1834,7 +1838,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .提醒 .行内专业名词 {
-  color: #92c4ec;
+  color: #69a5f2;
 }
 
 .附加说明 .行内专业名词 {
@@ -2139,6 +2143,7 @@ br + :is(.代码, .专业名词, .附加说明) {
   font-size: 2rem;
   font-weight: bolder;
   filter: drop-shadow(0 2px 2px #0006);
+  text-shadow: 1px 1px 2px #222;
 }
 
 .表头区 {

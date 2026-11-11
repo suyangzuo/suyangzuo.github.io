@@ -10,7 +10,12 @@
       </p>
       <p class="日期">
         <span class="日期前缀 前缀">日期：</span>
-        <span class="日期文本">待定</span>
+        <span class="日期文本"
+          ><span class="日期文本-数字 日期文本-年">2026</span>年<span class="日期文本-数字 日期文本-月">11</span>月<span
+            class="日期文本-数字 日期文本-日"
+            >11</span
+          >日</span
+        >
       </p>
     </section>
     <section class="简介信息图像">
@@ -63,4 +68,397 @@
     </li>
   </ul>
 </article>
-<div class="专题正文区"></div>
+<div class="专题正文区">
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">层叠</h2>
+
+    <h3 class="分区标题 分区3级标题"><span class="行内专业名词">层叠</span>是什么</h3>
+    <p class="分区普通文本">
+      <span class="行内专业名词">层叠</span>用来解决多个<span class="行内专业名词 等宽">CSS</span
+      >规则应到到同一个元素的同一个属性时，如何决定最终生效的<span class="行内专业名词 等宽">CSS</span>规则。
+    </p>
+    <p class="分区普通文本">
+      比如，下列代码对<span class="代码">span</span>元素应用了多个<span class="代码">color</span>属性，最后<span
+        class="代码"
+        >span</span
+      >是什么颜色呢？这个时候就会使用<span class="行内专业名词">层叠</span>来决定最终生效的<span
+        class="行内专业名词 等宽"
+        >CSS</span
+      >规则。
+    </p>
+    <pre>
+      <code class="lang-css">
+        span#magic-span.fancy:hover {
+          color: #6b21a8;
+        }
+
+        span.highlight[data-role="demo"]:focus-visible {
+          color: #b45309;
+        }
+
+        span.glow:nth-of-type(1):active {
+          color: #f59e0b;
+        }
+
+        div.card:has(> p > span:hover)::before span {
+          color: #c026d3;
+        }
+
+        p.container:focus-within::after span {
+          color: #1e3bcb;
+        }
+
+        section:not(.empty) > div.card::first-line span {
+          color: #2bb1b6;
+        }
+      </code>
+    </pre>
+    <p class="分区普通文本">
+      <span class="行内专业名词">层叠</span>由<span class="行内专业名词 等宽">3</span>个因素组成，优先级从高到低：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <h4>样式来源<span class="次要">与</span>重要声明</h4>
+        <span
+          >首先比较<span class="专业名词">样式来源<span class="次要">与</span>重要声明</span
+          >，如能分出结果，则不再参考<span class="行内专业名词">特定性</span>和<span class="行内专业名词">源顺序</span
+          >。</span
+        >
+      </li>
+      <li class="分区列表项">
+        <h4>特定性<span class="附加说明">权重</span></h4>
+        <span
+          ><span class="行内专业名词">重要声明</span>不能分出结果，则比较<span class="行内专业名词">特定性</span
+          >，如能分出结果，则不再参考<span class="行内专业名词">源顺序</span>；</span
+        >
+      </li>
+      <li class="分区列表项">
+        <h4>源顺序</h4>
+        <span>如仍不能分出结果，则比较<span class="行内专业名词">源顺序</span>，至此，一定能分出结果。</span>
+      </li>
+    </ul>
+
+    <h3 class="分区标题 分区3级标题">
+      重要性<span class="附加说明">样式来源<span class="次要">与</span>重要声明</span>
+    </h3>
+    <p class="分区普通文本">样式来源有<span class="行内专业名词 等宽">3</span>种：</p>
+    <figure class="截图容器" data-desc="样式来源">
+      <img src="./Images/样式来源.png" alt="样式来源" />
+    </figure>
+    <p class="分区普通文本"><span class="行内专业名词 等宽">3</span>种来源简介如下：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <h4>用户代理样式</h4>
+        <span>浏览器的模式样式。</span>
+        <figure class="截图容器" data-desc="用户代理样式">
+          <img style="margin-top: 15px" src="./Images/用户代理样式.png" alt="用户代理样式" />
+        </figure>
+        <p class="分区普通文本" style="padding-bottom: 0">
+          当作者和用户没有指定样式时，浏览器会对页面元素的每一个<span class="行内专业名词 等宽">CSS</span
+          >属性应用一个默认样式，即<span class="行内专业名词">用户代理样式</span>。
+        </p>
+      </li>
+      <li class="分区列表项" style="margin-top: 10px">
+        <h4>用户样式</h4>
+        <span
+          >浏览器扩展提供的样式；比如<span class="专业名词">Dark Reader</span>，或者用户通过其它方式自行添加的<span
+            class="行内专业名词 等宽"
+            >CSS</span
+          >样式：</span
+        >
+        <figure class="截图容器" data-desc="Dark Reader">
+          <img src="./Images/DarkReader.png" alt="样式来源" />
+          <img style="margin-top: 15px" src="./Images/用户样式.png" alt="用户样式" />
+        </figure>
+        <p class="分区普通文本" style="padding-bottom: 0">
+          <span class="专业名词">Dark Reader</span>是一个让页面变成深色模式的浏览器扩展，它产生的样式就叫<span
+            class="行内专业名词"
+            >用户样式</span
+          >。
+        </p>
+      </li>
+      <li class="分区列表项" style="margin-top: 10px">
+        <h4>作者样式</h4>
+        <span>程序员写的<span class="行内专业名词 等宽">CSS</span>代码。</span>
+      </li>
+    </ul>
+    <p class="分区普通文本">
+      <span class="行内专业名词">重要声明</span>比较简单，即<span class="行内专业名词 等宽">CSS</span
+      >代码中是否包含<span class="代码">!important</span>标志。
+    </p>
+    <pre>
+      <code class="lang-css">
+        选择器 {
+          属性: 值;             /* 普通声明 */
+          属性: 值 !important;  /* 重要声明 */
+        }
+      </code>
+    </pre>
+    <section class="提醒">
+      <h3 class="提醒标题">不要滥用<span class="代码" style="font-weight: normal">!important</span></h3>
+
+      <figure class="截图容器" data-desc="MDN 重要声明备注">
+        <img src="./Images/重要声明备注.png" alt="重要声明备注" />
+      </figure>
+      <p class="分区普通文本">以下是来自<span class="行内专业名词">MDN</span>官网的提示：</p>
+      <ul class="分区列表">
+        <li class="分区列表项">
+          <h4>一定要优先考虑使用样式规则的优先级来解决问题而不是<span class="代码">!important</span></h4>
+        </li>
+        <li class="分区列表项">
+          <h4>
+            只有在需要覆盖全站或外部<span class="行内专业名词 等宽">CSS</span>的特定页面中使用<span class="代码"
+              >!important</span
+            >
+          </h4>
+        </li>
+        <li class="分区列表项">
+          <h4>永远不要在你的插件中使用<span class="代码">!important</span></h4>
+        </li>
+        <li class="分区列表项">
+          <h4>
+            永远不要在全站范围的<span class="行内专业名词 等宽">CSS</span>代码中使用<span class="代码">!important</span>
+          </h4>
+        </li>
+      </ul>
+    </section>
+    <p class="分区普通文本">
+      结合<span class="行内专业名词">样式来源</span>和<span class="行内专业名词">重要声明</span>，优先级<span
+        class="强调"
+        >降序</span
+      >排列如下：
+    </p>
+    <ol class="分区列表 有序列表">
+      <li class="分区列表项">
+        <span>用户代理样式，重要声明</span>
+      </li>
+      <li class="分区列表项">
+        <span>用户样式，重要声明</span>
+      </li>
+      <li class="分区列表项">
+        <span>作者样式，重要声明</span>
+      </li>
+      <li class="分区列表项">
+        <span>作者样式，普通声明</span>
+      </li>
+      <li class="分区列表项">
+        <span>用户样式，普通声明</span>
+      </li>
+      <li class="分区列表项">
+        <span>用户代理样式，普通声明</span>
+      </li>
+    </ol>
+    <p class="分区普通文本">
+      可以看出，如果没有<span class="代码">!important</span>，则程序员编写的<span class="行内专业名词 等宽">CSS</span
+      >样式<span class="附加说明">作者样式</span>优先级最高。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">特定性<span class="附加说明">权重</span></h3>
+    <p class="分区普通文本">
+      如果<span class="行内专业名词">重要性</span>无法分出结果，就要比较样式的<span class="行内专业名词">特定性</span
+      >。<span class="行内专业名词">特定性</span>由<span class="行内专业名词 等宽">4</span>个<span
+        class="行内专业名词 等宽"
+        >10进制</span
+      >数字组成：
+    </p>
+    <table class="表格" style="text-align: center; margin-top: 10px">
+      <caption class="表格标题">
+        特定性权重
+      </caption>
+      <thead class="表头区">
+        <tr style="font-size: 16px">
+          <th><span class="行内专业名词">内联样式</span></th>
+          <th><span class="行内专业名词 等宽">ID</span></th>
+          <th><span class="行内专业名词">类、属性、伪类</span></th>
+          <th><span class="行内专业名词">元素、伪元素</span></th>
+        </tr>
+      </thead>
+      <tbody class="表身区">
+        <tr>
+          <td>
+            内联样式：<span class="行内专业名词 等宽">1</span><br />普通样式：<span
+              class="行内专业名词 等宽"
+              style="width: 1ch; display: inline-block; text-align: left"
+              >0</span
+            >
+          </td>
+          <td><span class="行内专业名词 等宽">1</span><span class="次要 等宽">/</span>个</td>
+          <td><span class="行内专业名词 等宽">1</span><span class="次要 等宽">/</span>个</td>
+          <td><span class="行内专业名词 等宽">1</span><span class="次要 等宽">/</span>个</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="分区普通文本">
+      特定性<span class="行内专业名词 等宽">4</span>个数字并非比较它们的总和，而是<span class="强调">从左到右</span
+      >依次比较，只要能分出结果，就不再比较右边的数字。
+    </p>
+    <section class="提醒">
+      <h3 class="提醒标题">注意</h3>
+
+      <p class="分区普通文本">
+        <span class="代码">*</span>、<span class="代码">+</span>、<span class="代码">></span>、<span class="代码"
+          >~</span
+        >、<span class="代码">:where()</span>不影响特定性。
+      </p>
+      <p class="分区普通文本">
+        <span class="代码">:not()</span>和<span class="代码">:is()</span
+        >本身对特定性没有影响，但它们的参数则会带来影响。参数的特定性最大值将作为该伪类选择器的特定性。
+      </p>
+    </section>
+    <p class="分区普通文本">
+      如果都是普通样式，那么特定性就只看<span class="行内专业名词 等宽">后3位</span>，试看如下案例：
+    </p>
+    <pre>
+      <code class="lang-css">
+        /* 特定性：1,5,3 */
+        div#page .content > article[ready="true"]:not(.draft, table):first-child h2.title {
+          color: #64c;
+        }
+      </code>
+    </pre>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <h4 class="等宽">
+          <span class="专业名词 等宽">ID</span>共<span class="行内专业名词 等宽">1</span>个<span class="次要">：</span
+          ><span class="代码">#page</span>
+        </h4>
+      </li>
+      <li class="分区列表项">
+        <h4>
+          <span class="专业名词 等宽">类</span>、<span class="专业名词 等宽">属性</span>、<span class="专业名词 等宽"
+            >伪类</span
+          >共<span class="行内专业名词 等宽">5</span>个<span class="次要">：</span
+          ><span class="代码">.content</span>、<span class="代码">[ready="true"]</span>、<span class="代码">.draft</span
+          >、<span class="代码">:first-child</span>、<span class="代码">.title</span>。
+        </h4>
+      </li>
+      <li class="分区列表项">
+        <h4>
+          <span class="专业名词 等宽">元素</span>、<span class="专业名词 等宽">伪元素</span>共<span
+            class="行内专业名词 等宽"
+            >3</span
+          >个<span class="次要">：</span><span class="代码">div</span>、<span class="代码">article</span>、<span
+            class="代码"
+            >h2</span
+          >。
+        </h4>
+      </li>
+    </ul>
+    <section class="提醒">
+      <h3 class="提醒标题"><span class="代码">:not()</span>和<span class="代码">:is()</span></h3>
+
+      <p class="分区普通文本">
+        <span class="代码">:not(.draft, table)</span>这一段，<span class="代码">:not</span
+        >本身对特定性没有影响，但是其内部参数<span class="代码">.draft, table</span
+        >对特定性有影响，并且取影响的最大值<span class="附加说明">而非总和</span>。<span class="代码">.draft</span
+        >是<span class="行内专业名词">类</span>，位于特定性<span class="行内专业名词 等宽"
+          >第<span style="color: rgb(140, 255, 243)">2</span>位</span
+        >；<span class="代码">table</span>是<span class="行内专业名词">元素</span>，位于特定性<span
+          class="行内专业名词 等宽"
+          >第<span style="color: rgb(140, 255, 243)">1</span>位</span
+        >。<span class="行内专业名词 等宽">第<span style="color: rgb(140, 255, 243)">2</span>位</span>优先级<span
+          class="强调"
+          >高于</span
+        ><span class="行内专业名词 等宽">第<span style="color: rgb(140, 255, 243)">1</span>位</span>，因此<span
+          class="代码"
+          >:not(.draft, table)</span
+        >的特定性就是<span class="代码">.draft</span>的特定性。
+      </p>
+    </section>
+    <p class="分区普通文本">下面用一个简单的案例来说明特定性的比较规则：</p>
+    <pre>
+      <code class="lang-html">
+        &lt;div class="容器" id="方块"&gt;&lt;/div&gt;
+      </code>
+    </pre>
+    <pre>
+      <code class="lang-css">
+        /* 类：1个（.容器）；伪类：1个（:hover）*/
+        /* 特定性：0,2,0 */
+        .容器:hover {
+          background-color: indianred;
+        }
+        
+        /* ID：1个（#方块）*/
+        /* 特定性：1,0,0 */
+        #方块 {
+          background-color: lightblue;
+        }
+      </code>
+    </pre>
+    <figure class="截图容器" data-desc="特定性比较">
+      <img style="margin-top: 15px" src="./Images/特定性020.png" alt="特定性020" />
+      <img style="margin-top: 15px" src="./Images/特定性100.png" alt="特定性100" />
+    </figure>
+    <p class="分区普通文本">
+      特定性<span class="代码">1<span class="次要">,</span>0<span class="次要">,</span>0</span>要优先于<span
+        class="代码"
+        >0<span class="次要">,</span>2<span class="次要">,</span>0</span
+      >，因此这个元素在鼠标悬停时是不会改变背景色的。
+    </p>
+    <figure class="截图容器" data-desc="特定性比较">
+      <img style="margin-top: 15px" src="./Images/特定性比较规则.webp" alt="特定性比较规则" />
+    </figure>
+
+    <h3 class="分区标题 分区3级标题">源顺序</h3>
+    <p class="分区普通文本">如果两个选择器的特定性数值相同，则看源代码的书写顺序。后面的覆盖前面的。</p>
+    <pre>
+      <code class="lang-css">
+        /* 特定性：030 */
+        .文章.社会新闻.已定稿 {
+          color: white;
+        }
+
+        /* 特定性：030，此选择器最终生效 */
+        .文章.社会新闻[状态="审核中"] {
+          color: gray;
+        }
+      </code>
+    </pre>
+    <p class="分区普通文本">至此，层叠优先级一定能分出结果，确定最终生效的选择器。</p>
+  </article>
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">继承</h2>
+
+    <h3 class="分区标题 分区3级标题"><span class="行内专业名词">继承</span>是什么</h3>
+    <p class="分区普通文本">
+      当一个<span class="行内专业名词 等宽">CSS</span>属性没有指定值时，根据此属性的类型，会做不同处理：
+    </p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <h4><span class="专业名词">继承属性</span>：继承父元素的属性值</h4>
+      </li>
+      <li class="分区列表项">
+        <h4><span class="专业名词">非继承属性</span>：使用初始值</h4>
+      </li>
+    </ul>
+    <p class="分区普通文本">
+      举个例子，<span class="行内代码">color</span>为继承属性，<span class="行内代码">border</span>为非继承属性。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">控制<span class="行内专业名词">继承</span></h3>
+    <p class="分区普通文本">我们可以通过<span class="行内专业名词 等宽">4</span>个属性来控制继承：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <h4><span class="行内代码">inherit</span><span class="次要">：</span>强制开启继承。</h4>
+      </li>
+      <li class="分区列表项">
+        <h4><span class="行内代码">initial</span><span class="次要">：</span>强制使用初始值。</h4>
+      </li>
+      <li class="分区列表项">
+        <h4><span class="行内代码">revert</span><span class="次要">：</span>强制使用浏览器默认样式。</h4>
+      </li>
+      <li class="分区列表项">
+        <h4>
+          <span class="行内代码">unset</span><span class="次要">：</span>如果属性继承了父值，则等同于<span
+            class="行内代码"
+            >inherit</span
+          >；否则等同于<span class="行内代码">initial</span>。
+        </h4>
+      </li>
+    </ul>
+    <figure class="截图容器" data-desc="继承">
+      <iframe class="继承" src="./继承.html" title="继承"></iframe>
+    </figure>
+  </article>
+</div>
