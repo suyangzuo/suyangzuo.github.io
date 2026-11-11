@@ -78,13 +78,8 @@
       >规则应到到同一个元素的同一个属性时，如何决定最终生效的<span class="行内专业名词 等宽">CSS</span>规则。
     </p>
     <p class="分区普通文本">
-      比如，下列代码对<span class="代码">span</span>元素应用了多个<span class="代码">color</span>属性，最后<span
-        class="代码"
-        >span</span
-      >是什么颜色呢？这个时候就会使用<span class="行内专业名词">层叠</span>来决定最终生效的<span
-        class="行内专业名词 等宽"
-        >CSS</span
-      >规则。
+      比如，下列代码对<span class="代码">span</span>元素应用了多个<span class="行内专业名词 等宽">CSS</span
+      >规则，每条规则都设置了<span class="代码">color</span>属性。
     </p>
     <pre>
       <code class="lang-css">
@@ -100,7 +95,7 @@
           color: #f59e0b;
         }
 
-        div.card:has(> p > span:hover)::before span {
+        div.card:has(&gt; p &gt; span:hover)::before span {
           color: #c026d3;
         }
 
@@ -108,27 +103,34 @@
           color: #1e3bcb;
         }
 
-        section:not(.empty) > div.card::first-line span {
+        section:not(.empty) &gt; div.card span {
           color: #2bb1b6;
         }
       </code>
     </pre>
     <p class="分区普通文本">
+      最后<span class="代码">span</span>的文本是什么颜色呢？这个时候就会使用<span class="行内专业名词">层叠</span
+      >来决定最终生效的<span class="行内专业名词 等宽">CSS</span>规则。
+    </p>
+    <p class="分区普通文本">
       <span class="行内专业名词">层叠</span>由<span class="行内专业名词 等宽">3</span>个因素组成，优先级从高到低：
     </p>
     <ul class="分区列表">
       <li class="分区列表项">
-        <h4>样式来源<span class="次要">与</span>重要声明</h4>
+        <h4>
+          <span class="行内专业名词">重要性</span
+          ><span class="附加说明">样式来源<span class="次要">与</span>重要声明</span>
+        </h4>
         <span
-          >首先比较<span class="专业名词">样式来源<span class="次要">与</span>重要声明</span
-          >，如能分出结果，则不再参考<span class="行内专业名词">特定性</span>和<span class="行内专业名词">源顺序</span
-          >。</span
+          >首先比较<span class="行内专业名词">重要性</span>，如能分出结果，则不再参考<span class="行内专业名词"
+            >特定性</span
+          >和<span class="行内专业名词">源顺序</span>。</span
         >
       </li>
       <li class="分区列表项">
         <h4>特定性<span class="附加说明">权重</span></h4>
         <span
-          ><span class="行内专业名词">重要声明</span>不能分出结果，则比较<span class="行内专业名词">特定性</span
+          ><span class="行内专业名词">重要性</span>不能分出结果，则比较<span class="行内专业名词">特定性</span
           >，如能分出结果，则不再参考<span class="行内专业名词">源顺序</span>；</span
         >
       </li>
