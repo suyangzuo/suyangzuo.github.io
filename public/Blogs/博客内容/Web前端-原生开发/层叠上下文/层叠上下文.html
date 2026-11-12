@@ -8,7 +8,7 @@
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0c0b'/%3E%3Crect x='6' y='6' width='13' height='13' rx='2' fill='none' stroke='%23b8cf9b' stroke-width='2'/%3E%3Crect x='12' y='12' width='13' height='13' rx='2' fill='none' stroke='%23b8cf9b' stroke-width='2'/%3E%3C/svg%3E"
     />
-    <title>层叠上下文实验室 · backdrop-filter</title>
+    <title>层叠上下文实验室 · backdrop-filter 为何失效</title>
     <style>
       :root {
         /* primitives */
@@ -46,7 +46,7 @@
         background: var(--bg);
       }
       body {
-        height: 100dvh;
+        min-height: 100dvh;
         width: 100%;
         font: 16px/1.65 var(--font-sans);
         color: var(--text);
@@ -91,9 +91,9 @@
       }
       .mode-switch {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(4, 1fr);
         gap: 6px;
-        width: min(100%, 520px);
+        width: 100%;
         padding: 5px;
         border: 1px solid var(--line);
         border-radius: 5px;
@@ -117,11 +117,12 @@
         align-items: center;
         justify-content: center;
         gap: 2px;
-        padding: 8px 14px;
+        padding: 8px 10px;
         border: 1px solid transparent;
         color: var(--text-muted);
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 550;
+        text-align: center;
         transition:
           color 0.18s ease-out,
           background-color 0.18s ease-out,
@@ -154,10 +155,10 @@
         background: var(--option-color);
         box-shadow: 0 0 0 3px color-mix(in oklch, var(--option-color) 12%, transparent);
       }
-      .mode-option.correct {
+      .mode-option.ok {
         --option-color: var(--p-sage);
       }
-      .mode-option.wrong {
+      .mode-option.bad {
         --option-color: var(--p-terracotta);
       }
       .mode-option .keyword {
@@ -165,7 +166,7 @@
       }
       .workspace {
         display: grid;
-        grid-template-columns: minmax(0, 1.65fr) minmax(350px, 0.85fr);
+        grid-template-columns: minmax(0, 1.5fr) minmax(380px, 1fr);
       }
       .preview-panel {
         min-width: 0;
@@ -176,39 +177,54 @@
       .scene {
         position: relative;
         flex: 1;
-        min-height: 448px;
+        min-height: 300px;
         overflow: hidden;
         isolation: isolate;
-        background: oklch(0.22 0.015 125);
+        background-color: oklch(0.2 0.014 125);
+        background-image:
+          linear-gradient(oklch(0.95 0.014 90 / 0.06) 1px, transparent 1px),
+          linear-gradient(90deg, oklch(0.95 0.014 90 / 0.06) 1px, transparent 1px);
+        background-size: 32px 32px;
         touch-action: pan-y;
       }
-      .scene-art {
+      /* 前方元素：代码在前，先绘制，位于下层 */
+      .poster {
         position: absolute;
-        inset: 0;
+        width: 100%;
+        height: 100%;
         overflow: hidden;
-        background-color: oklch(0.24 0.018 125);
-        background-image:
-          linear-gradient(oklch(0.95 0.014 90 / 0.07) 1px, transparent 1px),
-          linear-gradient(90deg, oklch(0.95 0.014 90 / 0.07) 1px, transparent 1px);
-        background-size: 32px 32px;
+        border: 1px solid oklch(0.95 0.014 90 / 0.14);
+        background: oklch(0.26 0.03 120);
       }
-      .scene-art::after {
-        content: "";
+      .poster-tag,
+      .panel-tag {
         position: absolute;
-        inset: 0;
-        background: linear-gradient(110deg, transparent 30%, oklch(0.145 0.006 100 / 0.35) 100%);
-        pointer-events: none;
+        left: 16px;
+        top: 14px;
+        z-index: 3;
+        padding: 4px 9px;
+        border: 1px solid oklch(0.95 0.014 90 / 0.25);
+        border-radius: 999px;
+        background: oklch(0.145 0.006 100 / 0.55);
+        color: var(--p-paper);
+        font: 12px/1.4 var(--font-mono);
+        letter-spacing: 0.12em;
+      }
+      .panel-tag {
+        position: static;
+        align-self: flex-start;
       }
       .poster-word {
         position: absolute;
-        left: 5%;
-        top: 9%;
+        left: 13%;
+        top: 16%;
         color: var(--p-paper);
-        font: 800 clamp(72px, 9vw, 138px)/0.78 var(--font-sans);
-        letter-spacing: -0.075em;
-        opacity: 0.88;
+        font: 800 clamp(64px, 7.5vw, 118px)/0.82 var(--font-sans);
+        letter-spacing: -0.06em;
+        opacity: 0.9;
         transform: translate3d(calc(var(--mx, 0) * -10px), calc(var(--my, 0) * -7px), 0);
         transition: transform 0.18s ease-out;
+        line-height: 1.1em;
       }
       .shape {
         position: absolute;
@@ -216,117 +232,100 @@
         transition: transform 0.18s ease-out;
       }
       .shape-a {
-        width: 38%;
+        width: 25%;
         aspect-ratio: 1;
-        left: -7%;
-        bottom: -19%;
+        left: -10%;
+        bottom: -22%;
         border-radius: 50%;
         background: var(--p-mustard);
         transform: translate3d(calc(var(--mx, 0) * 18px), calc(var(--my, 0) * 12px), 0);
       }
       .shape-b {
-        width: 19%;
-        height: 78%;
-        right: 8%;
-        top: -15%;
+        width: 22%;
+        height: 86%;
+        right: 9%;
+        top: -18%;
         background: var(--p-terracotta);
         transform: rotate(19deg) translate3d(calc(var(--mx, 0) * 13px), calc(var(--my, 0) * 18px), 0);
       }
       .shape-c {
-        width: 34%;
+        width: 40%;
         aspect-ratio: 1;
-        right: 8%;
-        bottom: -19%;
-        border: 28px solid var(--p-sage);
+        right: 10%;
+        bottom: -22%;
+        border: 26px solid var(--p-sage);
         border-radius: 50%;
         transform: translate3d(calc(var(--mx, 0) * -20px), calc(var(--my, 0) * -12px), 0);
       }
       .shape-d {
-        width: 31%;
-        height: 24%;
-        left: 33%;
-        bottom: 4%;
+        width: 36%;
+        height: 26%;
+        left: 36%;
+        bottom: 6%;
         background: repeating-linear-gradient(135deg, var(--p-blue) 0 9px, transparent 9px 18px);
         transform: translate3d(calc(var(--mx, 0) * 22px), calc(var(--my, 0) * -10px), 0);
       }
-      .scene-caption {
-        position: absolute;
-        right: 4%;
-        top: 42%;
-        writing-mode: vertical-rl;
-        color: var(--p-paper);
-        font: 11px/1 var(--font-mono);
-        letter-spacing: 0.28em;
-        opacity: 0.8;
-      }
-      .glass-card {
-        position: absolute;
-        z-index: auto;
-        isolation: isolate;
-        inset: 0;
-        width: 75%;
-        height: 75%;
-        min-height: 0;
-        margin: auto;
-        border: 1px solid oklch(0.95 0.014 90 / 0.27);
-        border-radius: 20px;
-        background: oklch(0.145 0.006 100 / 0.74);
-        box-shadow: 0 22px 60px oklch(0.1 0.005 100 / 0.25);
-      }
-      .glass-card__blur {
+      /* 浮层容器：铺满场景，保证演示中移动 DOM 节点时视觉位置不变 */
+      .panel-wrapper {
         position: absolute;
         inset: 0;
-        z-index: -1;
-        border-radius: inherit;
-        background: oklch(0.95 0.014 90 / 0.045);
-        -webkit-backdrop-filter: blur(20px);
-        backdrop-filter: blur(20px);
         pointer-events: none;
       }
-      .glass-card__content {
-        position: relative;
-        z-index: 2;
+      .panel-wrapper.has-filter {
+        filter: drop-shadow(12px 12px 12px oklch(0.1 0.005 100 / 0.45));
+      }
+      /* 后方元素：代码在后，后绘制，位于上层 */
+      .glass-panel {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        translate: -25% -50%;
+        width: min(44%, 320px);
+        min-height: 62%;
         display: flex;
-        min-height: 242px;
         flex-direction: column;
-        justify-content: space-between;
-        padding: 28px 30px;
+        gap: 14px;
+        padding: 22px 22px 18px;
+        border: 1px solid oklch(0.95 0.014 90 / 0.25);
+        border-radius: 18px;
+        background: oklch(0.18 0.008 110 / 0.42);
+        -webkit-backdrop-filter: blur(16px) saturate(1.3);
+        backdrop-filter: blur(16px) saturate(1.3);
+        pointer-events: auto;
       }
-      .card-kicker {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        color: var(--text-muted);
-        font: 10px/1.4 var(--font-mono);
-        letter-spacing: 0.13em;
+      .glass-panel.with-box-shadow {
+        box-shadow: 12px 12px 12px rgb(0 0 0 / 0.45);
       }
-      .card-kicker .card-index {
-        color: var(--mode);
-      }
-      .glass-card h2 {
-        margin: 20px 0 8px;
-        font-size: clamp(24px, 2.5vw, 34px);
+      .glass-panel h2 {
+        margin-top: 6px;
+        font-size: clamp(20px, 2vw, 27px);
         font-weight: 580;
-        line-height: 1.25;
-        letter-spacing: -0.03em;
+        line-height: 1.3;
+        letter-spacing: -0.02em;
       }
-      .glass-card p {
+      .glass-panel p {
         color: var(--text-muted);
-        font-size: 14px;
+        font-size: 13px;
       }
-      .card-foot {
+      .panel-status {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        margin-top: 24px;
-        padding-top: 16px;
-        border-top: 1px solid oklch(0.95 0.014 90 / 0.17);
-        font: 11px/1.4 var(--font-mono);
+        gap: 8px;
+        margin-top: auto;
+        padding-top: 14px;
+        border-top: 1px solid oklch(0.95 0.014 90 / 0.16);
         color: var(--text-muted);
+        font: 11px/1.5 var(--font-mono);
       }
-      .card-foot strong {
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        flex: 0 0 auto;
+        border-radius: 50%;
+        background: var(--mode);
+        box-shadow: 0 0 0 3px var(--mode-soft);
+      }
+      .panel-status strong {
         color: var(--mode);
         font-weight: 500;
       }
@@ -351,7 +350,7 @@
         display: flex;
         align-items: center;
         gap: 6px;
-        min-height: 32px;
+        min-height: 24px;
         padding: 5px 7px;
         border: 0;
         border-radius: 5px;
@@ -378,7 +377,7 @@
         overflow: auto;
         padding: 0 22px;
         color: oklch(0.84 0.018 110);
-        font: 14px/1.85 var(--font-mono);
+        font: 13px/1.85 var(--font-mono);
         tab-size: 2;
         scrollbar-width: thin;
         line-height: 1.25em;
@@ -386,6 +385,7 @@
       .code-line {
         display: block;
         min-width: max-content;
+        min-height: 1.25em;
         padding-inline: 8px;
         margin-inline: -8px;
         border-radius: 3px;
@@ -404,44 +404,14 @@
       .code-value {
         color: oklch(0.82 0.09 82);
       }
-      .layer-section {
-        padding: 18px 22px 20px;
+      .code-tag {
+        color: var(--p-sage);
       }
-      .layer-title {
-        margin-bottom: 12px;
-        color: var(--text-muted);
-        font: 10px/1 var(--font-mono);
-        letter-spacing: 0.12em;
+      .code-attr {
+        color: oklch(0.79 0.06 220);
       }
-      .layer-list {
-        display: grid;
-        gap: 7px;
-        list-style: none;
-      }
-      .layer-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        min-height: 34px;
-        padding: 6px 10px;
-        border: 1px solid var(--line);
-        border-radius: 6px;
-        color: var(--text-muted);
-        font-size: 12px;
-      }
-      .layer-item strong {
-        color: var(--text);
-        font: 11px/1 var(--font-mono);
-        font-weight: 500;
-      }
-      .layer-item.is-blur {
-        border-color: color-mix(in oklch, var(--mode) 45%, var(--line));
-        color: var(--text);
-        background: var(--mode-soft);
-      }
-      .layer-item.is-covered {
-        opacity: 0.6;
+      .code-attr-value {
+        color: oklch(0.82 0.09 82);
       }
       .toast {
         position: fixed;
@@ -467,12 +437,9 @@
         opacity: 1;
         transform: translate(-50%, 0);
       }
-      body[data-mode="wrong"] {
+      body[data-mode="problem"] {
         --mode: var(--p-terracotta);
         --mode-soft: oklch(0.72 0.12 45 / 0.1);
-      }
-      body[data-mode="wrong"] .glass-card {
-        isolation: auto;
       }
       @media (max-width: 980px) {
         .workspace {
@@ -482,68 +449,40 @@
           border-right: 0;
           border-bottom: 1px solid var(--line);
         }
-        .scene {
-          min-height: 400px;
-        }
-        .inspector {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-        }
-        .code-wrap {
-          border-bottom: 0;
-          border-right: 1px solid var(--line);
-        }
       }
       @media (max-width: 640px) {
-        .shell {
-          width: min(100% - 28px, 1380px);
-        }
         .switch-row {
-          align-items: stretch;
-          flex-direction: column;
-          gap: 12px;
           padding: 12px;
-        }
-        .mode-switch {
-          width: 100%;
         }
         .option-content {
           padding: 8px 6px;
-          font-size: 13px;
+          font-size: 12px;
         }
-        .scene {
-          min-height: 440px;
+        .poster {
+          left: 4%;
+          width: 78%;
+          height: 62%;
         }
-        .glass-card {
-          width: calc(100% - 44px);
+        .glass-panel {
+          right: 4%;
+          top: auto;
+          bottom: 5%;
+          translate: 0 0;
+          width: min(70%, 300px);
+          min-height: 0;
         }
-        .glass-card__content {
-          padding: 24px 22px;
-        }
-        .glass-card h2 {
-          font-size: 26px;
+        .poster-word {
+          font-size: 64px;
         }
         .shape-b {
           right: 2%;
         }
         .shape-c {
-          right: -4%;
-        }
-        .poster-word {
-          font-size: 74px;
-        }
-        .inspector {
-          display: block;
-        }
-        .code-wrap {
-          border-right: 0;
-          border-bottom: 1px solid var(--line);
+          right: -6%;
         }
         .card-kicker,
-        .card-foot,
         .code-title,
-        .copy-button,
-        .layer-title {
+        .copy-button {
           font-size: 12px;
         }
       }
@@ -564,18 +503,26 @@
       }
     </style>
   </head>
-  <body data-mode="correct">
+  <body data-mode="problem">
     <main class="shell">
-      <section class="workbench" aria-label="层叠上下文交互演示">
+      <section class="workbench" aria-label="backdrop-filter 与层叠上下文交互演示">
         <div class="switch-row">
-          <div class="mode-switch" role="radiogroup" aria-label="选择层叠上下文模式">
-            <label class="mode-option correct">
-              <input type="radio" name="stacking-mode" value="correct" checked />
-              <span class="option-content"><span class="keyword">正确</span>层叠上下文</span>
+          <div class="mode-switch" role="radiogroup" aria-label="选择问题复现或解决方案">
+            <label class="mode-option bad">
+              <input type="radio" name="solution-mode" value="problem" checked />
+              <span class="option-content"><span class="keyword">问题复现</span>·失效</span>
             </label>
-            <label class="mode-option wrong">
-              <input type="radio" name="stacking-mode" value="wrong" />
-              <span class="option-content"><span class="keyword">错误</span>层叠上下文</span>
+            <label class="mode-option ok">
+              <input type="radio" name="solution-mode" value="remove" />
+              <span class="option-content">方案一·<span class="keyword">移除 filter</span></span>
+            </label>
+            <label class="mode-option ok">
+              <input type="radio" name="solution-mode" value="move-out" />
+              <span class="option-content">方案二·<span class="keyword">移出容器</span></span>
+            </label>
+            <label class="mode-option ok">
+              <input type="radio" name="solution-mode" value="move-in" />
+              <span class="option-content">方案三·<span class="keyword">移入前方元素</span></span>
             </label>
           </div>
         </div>
@@ -583,123 +530,228 @@
         <div class="workspace">
           <div class="preview-panel">
             <div class="scene" id="scene">
-              <div class="scene-art" aria-hidden="true">
-                <div class="poster-word">BACK<br />DROP</div>
-                <div class="shape shape-a"></div>
-                <div class="shape shape-b"></div>
-                <div class="shape shape-c"></div>
-                <div class="shape shape-d"></div>
-                <span class="scene-caption">PAINT ORDER MATTERS</span>
+              <!-- 前方元素：代码在前 -->
+              <div class="poster" id="poster">
+                <span class="poster-tag">.poster · 前方元素</span>
+                <div class="poster-word" aria-hidden="true">底层<br />背景</div>
+                <div class="shape shape-a" aria-hidden="true"></div>
+                <div class="shape shape-b" aria-hidden="true"></div>
+                <div class="shape shape-c" aria-hidden="true"></div>
+                <div class="shape shape-d" aria-hidden="true"></div>
               </div>
-              <div class="glass-card">
-                <div class="glass-card__blur" aria-hidden="true"></div>
-                <div class="glass-card__content">
-                  <div>
-                    <div class="card-kicker">
-                      <span>FROSTED GLASS</span><span class="card-index" id="card-index">ISOLATED</span>
-                    </div>
-                    <h2>保留细节，<br />柔化背景。</h2>
-                    <p>内容层始终清晰，只有背景参与模糊。</p>
-                  </div>
-                  <div class="card-foot">
-                    <span>backdrop-filter</span><strong id="card-result">blur(20px) 可见</strong>
+              <!-- 浮层容器 + 后方元素：代码在后 -->
+              <div class="panel-wrapper has-filter" id="panel-wrapper">
+                <div class="glass-panel" id="glass-panel">
+                  <span class="panel-tag">.glass-panel · 后方元素</span>
+                  <h2>毛玻璃面板</h2>
+                  <p>backdrop-filter: blur(16px) saturate(1.3)</p>
+                  <p>代码写在后方、绘制在上层，本应模糊到它身后的前方元素。</p>
+                  <div class="panel-status">
+                    <span class="status-dot" aria-hidden="true"></span>
+                    <strong id="status-text">失效：采样不到前方元素</strong>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <aside class="inspector" aria-label="CSS 代码和绘制顺序">
+          <aside class="inspector" aria-label="相关代码与原理说明">
             <div class="code-wrap">
               <div class="code-title">
-                <span>CURRENT CSS</span
+                <span>HTML</span
+                ><button class="copy-button" id="copy-html" type="button" aria-label="复制当前 HTML">
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <rect x="5" y="5" width="8" height="8" rx="1" stroke="currentColor" />
+                    <path d="M10 3H3a1 1 0 0 0-1 1v7" stroke="currentColor" /></svg
+                  >复制
+                </button>
+              </div>
+              <pre aria-label="当前方案的 HTML 代码"><code id="html-code"></code></pre>
+            </div>
+            <div class="code-wrap">
+              <div class="code-title">
+                <span>CSS</span
                 ><button class="copy-button" id="copy-css" type="button" aria-label="复制当前 CSS">
                   <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
                     <rect x="5" y="5" width="8" height="8" rx="1" stroke="currentColor" />
                     <path d="M10 3H3a1 1 0 0 0-1 1v7" stroke="currentColor" /></svg
-                  >复制 CSS
+                  >复制
                 </button>
               </div>
-              <pre
-                aria-label="当前模式的 CSS 代码"
-              ><code id="css-code"><span class="code-line">.glass-card {</span><span class="code-line changed">  <span class="code-property">isolation</span>: <span class="code-value">isolate</span>; <span class="code-comment">/* 关键修复 */</span></span><span class="code-line">}</span><span class="code-line"> </span><span class="code-line">.glass-card__blur {</span><span class="code-line">  <span class="code-property">position</span>: <span class="code-value">absolute</span>;</span><span class="code-line">  <span class="code-property">inset</span>: <span class="code-value">0</span>;</span><span class="code-line">  <span class="code-property">z-index</span>: <span class="code-value">-1</span>;</span><span class="code-line">  <span class="code-property">backdrop-filter</span>: <span class="code-value">blur(20px)</span>;</span><span class="code-line">}</span><span class="code-line"> </span><span class="code-line">.glass-card__content {</span><span class="code-line">  <span class="code-property">position</span>: <span class="code-value">relative</span>;</span><span class="code-line">  <span class="code-property">z-index</span>: <span class="code-value">2</span>;</span><span class="code-line">}</span></code></pre>
-            </div>
-            <div class="layer-section">
-              <h3 class="layer-title">PAINT ORDER · 从后到前</h3>
-              <ol class="layer-list" id="layer-list">
-                <li class="layer-item"><span>卡片背景 background</span><strong>BACKGROUND</strong></li>
-                <li class="layer-item is-blur">
-                  <span>背景模糊 blur · 被隔离在卡片内</span><strong>z-index: -1</strong>
-                </li>
-                <li class="layer-item"><span>文字内容 content</span><strong>z-index: 2</strong></li>
-              </ol>
+              <pre aria-label="当前方案的 CSS 代码"><code id="css-code"></code></pre>
             </div>
           </aside>
         </div>
       </section>
     </main>
-    <div class="toast" id="toast" role="status" aria-live="polite">CSS 已复制</div>
+    <div class="toast" id="toast" role="status" aria-live="polite">代码已复制</div>
     <script>
-      const state = { mode: "correct" };
-      const body = document.body;
-      const scene = document.getElementById("scene");
-      const cardResult = document.getElementById("card-result");
-      const toast = document.getElementById("toast");
-      let toastTimer;
-
-      function cssForMode() {
-        return `.glass-card {\n  isolation: ${state.mode === "correct" ? "isolate" : "auto"};${state.mode === "correct" ? " /* 关键修复 */" : " /* 没有建立层叠上下文 */"}\n}\n\n.glass-card__blur {\n  position: absolute;\n  inset: 0;\n  z-index: -1;\n  backdrop-filter: blur(20px);\n}\n\n.glass-card__content {\n  position: relative;\n  z-index: 2;\n}`;
+      // ---------- 代码片段（纯文本，渲染时再做高亮） ----------
+      function htmlLines(mode) {
+        if (mode === "move-out") {
+          return [
+            ['<div class="stage">', 0],
+            ["  <!-- 前方元素：代码在前，先绘制，位于下层 -->", 0],
+            ['  <div class="poster">…</div>', 0],
+            ["", 0],
+            ["  <!-- 浮层容器保留 filter，供其内部其他内容使用 -->", 0],
+            ['  <div class="panel-wrapper">…</div>', 0],
+            ["", 0],
+            ["  <!-- 后方元素移出容器，与前方元素同级 -->", 1],
+            ['  <div class="glass-panel">…</div>', 1],
+            ["</div>", 0],
+          ];
+        }
+        if (mode === "move-in") {
+          return [
+            ['<div class="stage">', 0],
+            ["  <!-- 浮层容器：filter 使其成为 Backdrop Root -->", 0],
+            ['  <div class="panel-wrapper">', 0],
+            ["    <!-- 前方元素移入容器，进入采样范围 -->", 1],
+            ['    <div class="poster">…</div>', 1],
+            ["    <!-- 后方元素：代码在后，绘制在上层 -->", 0],
+            ['    <div class="glass-panel">…</div>', 0],
+            ["  </div>", 0],
+            ["</div>", 0],
+          ];
+        }
+        // problem / remove 的 DOM 结构相同
+        return [
+          ['<div class="stage">', 0],
+          ["  <!-- 前方元素：代码在前，先绘制，位于下层 -->", 0],
+          ['  <div class="poster">…</div>', 0],
+          ["", 0],
+          ["  <!-- 浮层容器：filter 使其成为 Backdrop Root -->", mode === "problem" ? 1 : 0],
+          ['  <div class="panel-wrapper">', 0],
+          ["    <!-- 后方元素：代码在后，绘制在上层 -->", 0],
+          ['    <div class="glass-panel">…</div>', 0],
+          ["  </div>", 0],
+          ["</div>", 0],
+        ];
       }
 
-      function renderCss() {
-        const changedLine =
-          state.mode === "correct"
-            ? '  <span class="code-property">isolation</span>: <span class="code-value">isolate</span>; <span class="code-comment">/* 关键修复 */</span>'
-            : '  <span class="code-property">isolation</span>: <span class="code-value">auto</span>; <span class="code-comment">/* 未建立层叠上下文 */</span>';
-        document.getElementById("css-code").innerHTML = [
-          ".glass-card {",
-          `<span class="code-line changed">${changedLine}</span>`,
-          "}",
-          " ",
-          ".glass-card__blur {",
-          '  <span class="code-property">position</span>: <span class="code-value">absolute</span>;',
-          '  <span class="code-property">inset</span>: <span class="code-value">0</span>;',
-          '  <span class="code-property">z-index</span>: <span class="code-value">-1</span>;',
-          `  <span class="code-property">backdrop-filter</span>: <span class="code-value">blur(20px)</span>;`,
-          "}",
-          " ",
-          ".glass-card__content {",
-          '  <span class="code-property">position</span>: <span class="code-value">relative</span>;',
-          '  <span class="code-property">z-index</span>: <span class="code-value">2</span>;',
-          "}",
-        ]
-          .map((line) =>
-            line.startsWith('<span class="code-line changed"') ? line : `<span class="code-line">${line}</span>`,
+      function cssLines(mode) {
+        if (mode === "remove") {
+          return [
+            [".panel-wrapper {", 0],
+            ["  /* 移除 filter，不再创建 Backdrop Root */", 1],
+            ["}", 0],
+            ["", 0],
+            [".glass-panel {", 0],
+            ["  background: rgb(26 28 26 / 0.42);", 0],
+            ["  backdrop-filter: blur(16px); /* 生效 */", 1],
+            ["  /* 投影改由自身承担，不连累后代 */", 1],
+            ["  box-shadow: 12px 12px 12px rgb(0 0 0 / 0.45);", 1],
+            ["}", 0],
+          ];
+        }
+        const blurComment =
+          mode === "problem"
+            ? "/* 采样被限制在容器内：失效 */"
+            : mode === "move-out"
+              ? "/* 与前方元素同处一个层叠上下文：生效 */"
+              : "/* 前方元素已在 Backdrop Root 边界内：生效 */";
+        return [
+          [".panel-wrapper {", 0],
+          ["  /* 只想给浮层加投影，却创建了 Backdrop Root */", 0],
+          ["  filter: drop-shadow(12px 12px 12px rgb(0 0 0 / 0.45));", mode === "problem" ? 1 : 0],
+          ["}", 0],
+          ["", 0],
+          [".glass-panel {", 0],
+          ["  background: rgb(26 28 26 / 0.42);", 0],
+          [`  backdrop-filter: blur(16px); ${blurComment}`, 1],
+          ["}", 0],
+        ];
+      }
+
+      const STATUS = {
+        problem: "失效：采样不到前方元素",
+        remove: "生效：blur(16px) 可见",
+        "move-out": "生效：blur(16px) 可见",
+        "move-in": "生效：blur(16px) 可见",
+      };
+
+      // ---------- 轻量语法高亮 ----------
+      function esc(text) {
+        return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      }
+      function hlHtmlLine(line) {
+        const e = esc(line);
+        if (e.includes("&lt;!--")) return `<span class="code-comment">${e}</span>`;
+        return e.replace(/(&lt;\/?)([a-zA-Z][\w-]*)((?:(?!&gt;).)*?)(\/?&gt;)/g, (match, open, tag, attrs, close) => {
+          const highlightedAttrs = attrs.replace(
+            /([\w-]+)="([^"]*)"/g,
+            '<span class="code-attr">$1</span>=<span class="code-attr-value">"$2"</span>',
+          );
+          return `${open}<span class="code-tag">${tag}</span>${highlightedAttrs}${close}`;
+        });
+      }
+      function hlCssLine(line) {
+        const e = esc(line);
+        // 拆分行尾注释，只对注释前的代码部分做属性高亮
+        const commentIndex = e.indexOf("/*");
+        const code = commentIndex === -1 ? e : e.slice(0, commentIndex);
+        const comment = commentIndex === -1 ? "" : e.slice(commentIndex);
+        const m = code.match(/^(\s*)([a-zA-Z-]+)(\s*:\s*)(.+?)(;?)\s*$/);
+        const highlightedCode = m
+          ? `${m[1]}<span class="code-property">${m[2]}</span>${m[3]}<span class="code-value">${m[4]}</span>${m[5]}`
+          : code;
+        return highlightedCode + (comment ? ` <span class="code-comment">${comment}</span>` : "");
+      }
+      function renderCode(el, lines, highlighter) {
+        el.innerHTML = lines
+          .map(
+            ([text, changed]) =>
+              `<span class="code-line${changed ? " changed" : ""}">${text ? highlighter(text) : ""}</span>`,
           )
           .join("");
       }
 
-      function renderLayers() {
-        const blur = `<li class="layer-item is-blur${state.mode === "wrong" ? " is-covered" : ""}"><span>背景模糊 blur${state.mode === "wrong" ? " · 掉到场景后方" : " · 被隔离在卡片内"}</span><strong>z-index: -1</strong></li>`;
-        const background = `<li class="layer-item"><span>${state.mode === "correct" ? "卡片背景 background" : "场景与卡片背景"}</span><strong>BACKGROUND</strong></li>`;
-        const content = '<li class="layer-item"><span>文字内容 content</span><strong>z-index: 2</strong></li>';
-        document.getElementById("layer-list").innerHTML =
-          state.mode === "correct" ? background + blur + content : blur + background + content;
+      // ---------- 演示场景的真实 DOM / 样式切换 ----------
+      const body = document.body;
+      const scene = document.getElementById("scene");
+      const poster = document.getElementById("poster");
+      const wrapper = document.getElementById("panel-wrapper");
+      const glass = document.getElementById("glass-panel");
+      const statusText = document.getElementById("status-text");
+      const toast = document.getElementById("toast");
+      let toastTimer;
+
+      function applyScene(mode) {
+        if (mode === "move-in") {
+          // 方案三：前方元素移入容器，进入 Backdrop Root 边界之内
+          wrapper.hidden = false;
+          wrapper.classList.add("has-filter");
+          if (poster.parentElement !== wrapper) wrapper.prepend(poster);
+          if (glass.parentElement !== wrapper) wrapper.appendChild(glass);
+        } else if (mode === "move-out") {
+          // 方案二：后方元素移出容器，与前方元素同级
+          if (poster.parentElement !== scene) scene.insertBefore(poster, wrapper);
+          scene.appendChild(glass);
+          wrapper.hidden = true;
+        } else {
+          // 问题复现 / 方案一：DOM 不变，只切换容器上的 filter
+          if (poster.parentElement !== scene) scene.insertBefore(poster, wrapper);
+          if (glass.parentElement !== wrapper) wrapper.appendChild(glass);
+          wrapper.hidden = false;
+          wrapper.classList.toggle("has-filter", mode === "problem");
+        }
+        glass.classList.toggle("with-box-shadow", mode === "remove");
       }
 
       function renderMode(mode) {
-        state.mode = mode;
         body.dataset.mode = mode;
-        document.getElementById("card-index").textContent = mode === "correct" ? "ISOLATED" : "NO ISOLATION";
-        cardResult.textContent = mode === "correct" ? "blur(20px) 可见" : "blur(20px) 被背景覆盖";
-        renderCss();
-        renderLayers();
+        applyScene(mode);
+        statusText.textContent = STATUS[mode];
+        renderCode(document.getElementById("html-code"), htmlLines(mode), hlHtmlLine);
+        renderCode(document.getElementById("css-code"), cssLines(mode), hlCssLine);
       }
 
-      document.querySelectorAll('input[name="stacking-mode"]').forEach((radio) => {
+      document.querySelectorAll('input[name="solution-mode"]').forEach((radio) => {
         radio.addEventListener("change", (event) => renderMode(event.target.value));
       });
 
+      // 指针视差
       scene.addEventListener("pointermove", (event) => {
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
         const rect = scene.getBoundingClientRect();
@@ -711,26 +763,38 @@
         scene.style.setProperty("--my", 0);
       });
 
-      document.getElementById("copy-css").addEventListener("click", async () => {
-        const text = cssForMode();
-        try {
-          await navigator.clipboard.writeText(text);
-        } catch {
-          const textarea = document.createElement("textarea");
-          textarea.value = text;
-          textarea.style.position = "fixed";
-          textarea.style.opacity = "0";
-          document.body.appendChild(textarea);
-          textarea.select();
-          document.execCommand("copy");
-          textarea.remove();
-        }
-        clearTimeout(toastTimer);
-        toast.classList.add("show");
-        toastTimer = setTimeout(() => toast.classList.remove("show"), 1600);
-      });
+      // 复制当前代码
+      function bindCopy(buttonId, getLines) {
+        document.getElementById(buttonId).addEventListener("click", async () => {
+          const mode = body.dataset.mode;
+          const text = getLines(mode)
+            .map(([line]) => line)
+            .join("\n");
+          try {
+            await navigator.clipboard.writeText(text);
+          } catch {
+            const textarea = document.createElement("textarea");
+            textarea.value = text;
+            textarea.style.position = "fixed";
+            textarea.style.opacity = "0";
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand("copy");
+            textarea.remove();
+          }
+          clearTimeout(toastTimer);
+          toast.classList.add("show");
+          toastTimer = setTimeout(() => toast.classList.remove("show"), 1600);
+        });
+      }
+      bindCopy("copy-html", htmlLines);
+      bindCopy("copy-css", cssLines);
 
-      renderMode("correct");
+      // 支持 ?mode= 直接定位到某个方案
+      const initialMode = new URLSearchParams(location.search).get("mode");
+      const startMode = ["problem", "remove", "move-out", "move-in"].includes(initialMode) ? initialMode : "problem";
+      document.querySelector(`input[name="solution-mode"][value="${startMode}"]`).checked = true;
+      renderMode(startMode);
     </script>
   </body>
 </html>
