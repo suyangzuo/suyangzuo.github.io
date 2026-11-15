@@ -3203,7 +3203,7 @@ class 圆镜像缩放 {
 
 const 圆镜像缩放实例 = new 圆镜像缩放("#cvs-圆镜像缩放");
 
-class 几何角和离心角 {
+class 角度均分和弧长均分 {
   constructor(画布元素) {
     this.画布 = typeof 画布元素 === "string" ? document.querySelector(画布元素) : 画布元素;
     if (!this.画布 || this.画布.tagName !== "CANVAS") {
@@ -3211,9 +3211,9 @@ class 几何角和离心角 {
     }
     this.上下文 = this.画布.getContext("2d");
     this.设备像素比 = window.devicePixelRatio || 1;
-    this.角度模式 = "几何角";
-    this.悬停几何角 = false;
-    this.悬停离心角 = false;
+    this.角度模式 = "角度均分";
+    this.悬停角度均分 = false;
+    this.悬停弧长均分 = false;
     this.线条过渡开始时间 = null;
     this.线条过渡起始模式 = null;
     this.复选框字体 = "14px 'Noto Sans SC', 微软雅黑, sans-serif";
@@ -3335,14 +3335,14 @@ class 几何角和离心角 {
     }
   }
 
-  位于几何角单选框(鼠标X, 鼠标Y) {
+  位于角度均分单选框(鼠标X, 鼠标Y) {
     const 边距 = 10;
     const 文案Y = this.画布.clientHeight - 边距;
     const 内边距 = 6;
     const rb高 = 30;
     this.上下文.font = this.复选框字体;
-    const 几何宽 = this.上下文.measureText("几何角").width;
-    const 参数宽 = this.上下文.measureText("离心角").width;
+    const 几何宽 = this.上下文.measureText("角度均分").width;
+    const 参数宽 = this.上下文.measureText("弧长均分").width;
     const 总宽 = 几何宽 + 参数宽 + 内边距 * 4;
     const rb左 = (this.画布.clientWidth - 总宽) / 2;
     const rbY = 文案Y - rb高 + 6;
@@ -3351,14 +3351,14 @@ class 几何角和离心角 {
     return 鼠标X >= 几何左 && 鼠标X <= 几何右 && 鼠标Y >= rbY - 6 && 鼠标Y <= rbY - 6 + rb高;
   }
 
-  位于离心角单选框(鼠标X, 鼠标Y) {
+  位于弧长均分单选框(鼠标X, 鼠标Y) {
     const 边距 = 10;
     const 文案Y = this.画布.clientHeight - 边距;
     const 内边距 = 6;
     const rb高 = 30;
     this.上下文.font = this.复选框字体;
-    const 几何宽 = this.上下文.measureText("几何角").width;
-    const 参数宽 = this.上下文.measureText("离心角").width;
+    const 几何宽 = this.上下文.measureText("角度均分").width;
+    const 参数宽 = this.上下文.measureText("弧长均分").width;
     const 总宽 = 几何宽 + 参数宽 + 内边距 * 4;
     const rb左 = (this.画布.clientWidth - 总宽) / 2;
     const rbY = 文案Y - rb高 + 6;
@@ -3367,11 +3367,11 @@ class 几何角和离心角 {
     return 鼠标X >= 参数左 && 鼠标X <= 参数右 && 鼠标Y >= rbY - 6 && 鼠标Y <= rbY - 6 + rb高;
   }
 
-  几何角转参数角(几何角, rx, ry) {
-    return Math.atan2(rx * Math.sin(几何角), ry * Math.cos(几何角));
+  角度均分转参数角(角度均分, rx, ry) {
+    return Math.atan2(rx * Math.sin(角度均分), ry * Math.cos(角度均分));
   }
 
-  参数角转几何角(θ, rx, ry) {
+  参数角转角度均分(θ, rx, ry) {
     return Math.atan2(ry * Math.sin(θ), rx * Math.cos(θ));
   }
 
@@ -3397,8 +3397,8 @@ class 几何角和离心角 {
     const rx = this.椭圆半径.rx;
     const ry = this.椭圆半径.ry;
     return 边界角度列表.map((角) => {
-      const θ起始 = this.线条过渡起始模式 === "离心角" ? 角 : this.几何角转参数角(角, rx, ry);
-      const θ结束 = this.角度模式 === "离心角" ? 角 : this.几何角转参数角(角, rx, ry);
+      const θ起始 = this.线条过渡起始模式 === "弧长均分" ? 角 : this.角度均分转参数角(角, rx, ry);
+      const θ结束 = this.角度模式 === "弧长均分" ? 角 : this.角度均分转参数角(角, rx, ry);
       let 差 = θ结束 - θ起始;
       if (差 > Math.PI) 差 -= 2 * Math.PI;
       if (差 < -Math.PI) 差 += 2 * Math.PI;
@@ -3435,7 +3435,7 @@ class 几何角和离心角 {
       边界θ组 = this.获取边界θ列表(过渡t);
     } else {
       const 边界角度列表 = [-π8, π8, 3 * π8, 5 * π8, 7 * π8, -7 * π8, -5 * π8, -3 * π8];
-      边界θ组 = 边界角度列表.map((角) => (this.角度模式 === "离心角" ? 角 : this.几何角转参数角(角, rx, ry)));
+      边界θ组 = 边界角度列表.map((角) => (this.角度模式 === "弧长均分" ? 角 : this.角度均分转参数角(角, rx, ry)));
     }
 
     const 扇形范围列表 = [
@@ -3526,20 +3526,20 @@ class 几何角和离心角 {
               ? 对角扩展系数
               : 1
             : 平滑(absCos, 0.55, 0.85, 是否对角 ? 对角扩展系数 : 1, 1);
-      const 几何角度 = 45;
-      const 几何角起 = this.参数角转几何角(startθ, rx, ry);
-      let 几何角终 = this.参数角转几何角(endθ, rx, ry);
-      if (几何角终 < 几何角起) 几何角终 += 2 * Math.PI;
-      const 离心角度 = Math.round(((几何角终 - 几何角起) * 180) / Math.PI);
+      const 角度均分角度 = 45;
+      const 角度均分起 = this.参数角转角度均分(startθ, rx, ry);
+      let 角度均分终 = this.参数角转角度均分(endθ, rx, ry);
+      if (角度均分终 < 角度均分起) 角度均分终 += 2 * Math.PI;
+      const 弧长均分角度 = Math.round(((角度均分终 - 角度均分起) * 180) / Math.PI);
       let 角度度;
       if (this.线条过渡开始时间 == null || this.线条过渡起始模式 == null) {
-        角度度 = this.角度模式 === "几何角" ? 几何角度 : 离心角度;
+        角度度 = this.角度模式 === "角度均分" ? 角度均分角度 : 弧长均分角度;
       } else {
         const t = 过渡t;
-        if (this.线条过渡起始模式 === "离心角") {
-          角度度 = Math.round(离心角度 * (1 - t) + 几何角度 * t);
+        if (this.线条过渡起始模式 === "弧长均分") {
+          角度度 = Math.round(弧长均分角度 * (1 - t) + 角度均分角度 * t);
         } else {
-          角度度 = Math.round(几何角度 * (1 - t) + 离心角度 * t);
+          角度度 = Math.round(角度均分角度 * (1 - t) + 弧长均分角度 * t);
         }
       }
       let Δθ = endθ - startθ;
@@ -3605,26 +3605,26 @@ class 几何角和离心角 {
     const 边距 = 10;
     const 文案Y = this.画布.clientHeight - 边距;
     this.上下文.font = this.复选框字体;
-    const 几何宽 = this.上下文.measureText("几何角").width;
-    const 参数宽 = this.上下文.measureText("离心角").width;
+    const 几何宽 = this.上下文.measureText("角度均分").width;
+    const 参数宽 = this.上下文.measureText("弧长均分").width;
     const 内边距 = 6;
     const rb高 = 30;
     const 总宽 = 几何宽 + 参数宽 + 内边距 * 4;
     const rb左 = (this.画布.clientWidth - 总宽) / 2;
     const rbY = 文案Y - rb高 + 6;
-    const 几何选 = this.角度模式 === "几何角";
-    const 参数选 = this.角度模式 === "离心角";
+    const 几何选 = this.角度模式 === "角度均分";
+    const 参数选 = this.角度模式 === "弧长均分";
     const 文本垂直中心Y = rbY - 5 + rb高 / 2;
     this.上下文.textBaseline = "middle";
-    this.上下文.fillStyle = 几何选 ? "#2d854d" : this.悬停几何角 ? "#1a243a" : "#0b1220";
+    this.上下文.fillStyle = 几何选 ? "#2d854d" : this.悬停角度均分 ? "#1a243a" : "#0b1220";
     roundRect(this.上下文, rb左, rbY - 6, 几何宽 + 内边距 * 2, rb高, 0, true, false);
-    this.上下文.fillStyle = 几何选 ? "lightcyan" : this.悬停几何角 ? "#94a3b8" : "#64748b";
-    this.上下文.fillText("几何角", rb左 + 内边距, 文本垂直中心Y);
-    this.上下文.fillStyle = 参数选 ? "#2d854d" : this.悬停离心角 ? "#1a243a" : "#0b1220";
+    this.上下文.fillStyle = 几何选 ? "lightcyan" : this.悬停角度均分 ? "#94a3b8" : "#64748b";
+    this.上下文.fillText("角度均分", rb左 + 内边距, 文本垂直中心Y);
+    this.上下文.fillStyle = 参数选 ? "#2d854d" : this.悬停弧长均分 ? "#1a243a" : "#0b1220";
     const 参数左 = rb左 + 几何宽 + 内边距 * 2;
     roundRect(this.上下文, 参数左, rbY - 6, 参数宽 + 内边距 * 2, rb高, 0, true, false);
-    this.上下文.fillStyle = 参数选 ? "lightcyan" : this.悬停离心角 ? "#94a3b8" : "#64748b";
-    this.上下文.fillText("离心角", 参数左 + 内边距, 文本垂直中心Y);
+    this.上下文.fillStyle = 参数选 ? "lightcyan" : this.悬停弧长均分 ? "#94a3b8" : "#64748b";
+    this.上下文.fillText("弧长均分", 参数左 + 内边距, 文本垂直中心Y);
     this.上下文.textBaseline = "bottom";
 
     if (需要继续动画) {
@@ -3644,51 +3644,51 @@ class 几何角和离心角 {
     }
     const 鼠标X = p.x,
       鼠标Y = p.y;
-    if (this.位于几何角单选框(鼠标X, 鼠标Y)) {
-      if (this.角度模式 !== "几何角") {
+    if (this.位于角度均分单选框(鼠标X, 鼠标Y)) {
+      if (this.角度模式 !== "角度均分") {
         this.线条过渡起始模式 = this.角度模式;
         this.线条过渡开始时间 = performance.now();
       }
-      this.角度模式 = "几何角";
+      this.角度模式 = "角度均分";
       this.绘制();
       return;
     }
-    if (this.位于离心角单选框(鼠标X, 鼠标Y)) {
-      if (this.角度模式 !== "离心角") {
+    if (this.位于弧长均分单选框(鼠标X, 鼠标Y)) {
+      if (this.角度模式 !== "弧长均分") {
         this.线条过渡起始模式 = this.角度模式;
         this.线条过渡开始时间 = performance.now();
       }
-      this.角度模式 = "离心角";
+      this.角度模式 = "弧长均分";
       this.绘制();
     }
   }
 
   鼠标移动(事件) {
     const p = this.获取画布坐标(事件);
-    const 上次悬停几何 = this.悬停几何角;
-    const 上次悬停参数 = this.悬停离心角;
+    const 上次悬停几何 = this.悬停角度均分;
+    const 上次悬停参数 = this.悬停弧长均分;
     const 上次悬停滑块 = this.悬停滑块;
-    this.悬停几何角 = this.位于几何角单选框(p.x, p.y);
-    this.悬停离心角 = this.位于离心角单选框(p.x, p.y);
+    this.悬停角度均分 = this.位于角度均分单选框(p.x, p.y);
+    this.悬停弧长均分 = this.位于弧长均分单选框(p.x, p.y);
     const 滑块命中 = this.滑块命中检测(p);
     this.悬停滑块 = 滑块命中 ? 滑块命中.index : null;
-    if (上次悬停几何 !== this.悬停几何角 || 上次悬停参数 !== this.悬停离心角 || 上次悬停滑块 !== this.悬停滑块) {
+    if (上次悬停几何 !== this.悬停角度均分 || 上次悬停参数 !== this.悬停弧长均分 || 上次悬停滑块 !== this.悬停滑块) {
       this.绘制();
     }
-    this.画布.style.cursor = this.悬停几何角 || this.悬停离心角 || this.悬停滑块 != null ? 光标.指向 : 光标.默认;
+    this.画布.style.cursor = this.悬停角度均分 || this.悬停弧长均分 || this.悬停滑块 != null ? 光标.指向 : 光标.默认;
   }
 
   鼠标离开(事件) {
-    const hadHover = this.悬停几何角 || this.悬停离心角 || this.悬停滑块 != null;
-    this.悬停几何角 = false;
-    this.悬停离心角 = false;
+    const hadHover = this.悬停角度均分 || this.悬停弧长均分 || this.悬停滑块 != null;
+    this.悬停角度均分 = false;
+    this.悬停弧长均分 = false;
     this.悬停滑块 = null;
     if (hadHover) this.绘制();
     if (!this.activeSlider) this.画布.style.cursor = 光标.默认;
   }
 }
 
-const 几何角和离心角实例 = new 几何角和离心角("#cvs-几何角离心角");
+const 角度均分和弧长均分实例 = new 角度均分和弧长均分("#cvs-角度均分弧长均分");
 
 class 圆水平垂直独立镜像缩放 {
   constructor(画布元素) {
@@ -3722,9 +3722,9 @@ class 圆水平垂直独立镜像缩放 {
 
     this.标准化 = true;
     this.悬停标准化复选框 = false;
-    this.角度模式 = "几何角"; // "几何角" | "离心角"，默认几何角
-    this.悬停几何角 = false;
-    this.悬停离心角 = false;
+    this.角度模式 = "角度均分"; // "角度均分" | "弧长均分"，默认角度均分
+    this.悬停角度均分 = false;
+    this.悬停弧长均分 = false;
     this.线条过渡开始时间 = null;
     this.线条过渡起始模式 = null;
     this.复选框字体 = "14px 'Noto Sans SC', 微软雅黑, sans-serif";
@@ -3796,14 +3796,14 @@ class 圆水平垂直独立镜像缩放 {
     return null;
   }
 
-  位于几何角单选框(鼠标X, 鼠标Y) {
+  位于角度均分单选框(鼠标X, 鼠标Y) {
     const 边距 = 10;
     const 文案Y = this.画布.clientHeight - 边距;
     const 内边距 = 6;
     const rb高 = 30;
     this.上下文.font = this.复选框字体;
-    const 几何宽 = this.上下文.measureText("几何角").width;
-    const 参数宽 = this.上下文.measureText("离心角").width;
+    const 几何宽 = this.上下文.measureText("角度均分").width;
+    const 参数宽 = this.上下文.measureText("弧长均分").width;
     const 总宽 = 几何宽 + 参数宽 + 内边距 * 4;
     const rb左 = (this.画布.clientWidth - 总宽) / 2;
     const rbY = 文案Y - rb高 + 6;
@@ -3812,14 +3812,14 @@ class 圆水平垂直独立镜像缩放 {
     return 鼠标X >= 几何左 && 鼠标X <= 几何右 && 鼠标Y >= rbY - 6 && 鼠标Y <= rbY - 6 + rb高;
   }
 
-  位于离心角单选框(鼠标X, 鼠标Y) {
+  位于弧长均分单选框(鼠标X, 鼠标Y) {
     const 边距 = 10;
     const 文案Y = this.画布.clientHeight - 边距;
     const 内边距 = 6;
     const rb高 = 30;
     this.上下文.font = this.复选框字体;
-    const 几何宽 = this.上下文.measureText("几何角").width;
-    const 参数宽 = this.上下文.measureText("离心角").width;
+    const 几何宽 = this.上下文.measureText("角度均分").width;
+    const 参数宽 = this.上下文.measureText("弧长均分").width;
     const 总宽 = 几何宽 + 参数宽 + 内边距 * 4;
     const rb左 = (this.画布.clientWidth - 总宽) / 2;
     const rbY = 文案Y - rb高 + 6;
@@ -3828,8 +3828,8 @@ class 圆水平垂直独立镜像缩放 {
     return 鼠标X >= 参数左 && 鼠标X <= 参数右 && 鼠标Y >= rbY - 6 && 鼠标Y <= rbY - 6 + rb高;
   }
 
-  获取缩放用角度(几何角, rx, ry) {
-    return this.角度模式 === "离心角" ? this.几何角转参数角(几何角, rx, ry) : 几何角;
+  获取缩放用角度(角度均分, rx, ry) {
+    return this.角度模式 === "弧长均分" ? this.角度均分转参数角(角度均分, rx, ry) : 角度均分;
   }
 
   根据角度获取缩放光标(角度) {
@@ -3853,11 +3853,11 @@ class 圆水平垂直独立镜像缩放 {
     return "等比";
   }
 
-  几何角转参数角(几何角, rx, ry) {
-    return Math.atan2(rx * Math.sin(几何角), ry * Math.cos(几何角));
+  角度均分转参数角(角度均分, rx, ry) {
+    return Math.atan2(rx * Math.sin(角度均分), ry * Math.cos(角度均分));
   }
 
-  根据离心角获取扇形范围(参数角) {
+  根据弧长均分获取扇形范围(参数角) {
     const π = Math.PI;
     const π8 = π / 8;
     if (参数角 >= -π8 && 参数角 < π8) return { startAngle: -π8, endAngle: π8 };
@@ -3873,7 +3873,7 @@ class 圆水平垂直独立镜像缩放 {
   根据角度获取扇形范围(角度, rx, ry) {
     const π = Math.PI;
     const π8 = π / 8;
-    const 转 = (α) => this.几何角转参数角(α, rx, ry);
+    const 转 = (α) => this.角度均分转参数角(α, rx, ry);
     if (角度 >= -π8 && 角度 < π8) return { startAngle: 转(-π8), endAngle: 转(π8) };
     if (角度 >= π8 && 角度 < 3 * π8) return { startAngle: 转(π8), endAngle: 转(3 * π8) };
     if (角度 >= 3 * π8 && 角度 < 5 * π8) return { startAngle: 转(3 * π8), endAngle: 转(5 * π8) };
@@ -3896,12 +3896,12 @@ class 圆水平垂直独立镜像缩放 {
     this.上下文.fill();
 
     if (this.当前悬停 === "缩放") {
-      const 几何角 =
+      const 角度均分 =
         this.当前操作 === "缩放" ? this.缩放起始角度 : Math.atan2(this.最后鼠标Y - cy, this.最后鼠标X - cx);
-      const 缩放用角度 = this.获取缩放用角度(几何角, rx, ry);
+      const 缩放用角度 = this.获取缩放用角度(角度均分, rx, ry);
       const { startAngle, endAngle } =
-        this.角度模式 === "离心角"
-          ? this.根据离心角获取扇形范围(缩放用角度)
+        this.角度模式 === "弧长均分"
+          ? this.根据弧长均分获取扇形范围(缩放用角度)
           : this.根据角度获取扇形范围(缩放用角度, rx, ry);
       this.上下文.fillStyle = "#ffffff15";
       this.上下文.beginPath();
@@ -3933,8 +3933,8 @@ class 圆水平垂直独立镜像缩放 {
         需要继续动画 = true;
       }
       for (const 角 of 边界角度列表) {
-        let θ起始 = this.线条过渡起始模式 === "离心角" ? 角 : this.几何角转参数角(角, rx, ry);
-        let θ结束 = this.角度模式 === "离心角" ? 角 : this.几何角转参数角(角, rx, ry);
+        let θ起始 = this.线条过渡起始模式 === "弧长均分" ? 角 : this.角度均分转参数角(角, rx, ry);
+        let θ结束 = this.角度模式 === "弧长均分" ? 角 : this.角度均分转参数角(角, rx, ry);
         let 差 = θ结束 - θ起始;
         if (差 > Math.PI) 差 -= 2 * Math.PI;
         if (差 < -Math.PI) 差 += 2 * Math.PI;
@@ -3948,7 +3948,7 @@ class 圆水平垂直独立镜像缩放 {
       }
     } else {
       for (const 角 of 边界角度列表) {
-        const θ = this.角度模式 === "离心角" ? 角 : this.几何角转参数角(角, rx, ry);
+        const θ = this.角度模式 === "弧长均分" ? 角 : this.角度均分转参数角(角, rx, ry);
         const ex = cx + rx * Math.cos(θ);
         const ey = cy + ry * Math.sin(θ);
         this.上下文.beginPath();
@@ -4035,26 +4035,26 @@ class 圆水平垂直独立镜像缩放 {
     this.上下文.textBaseline = "bottom";
     const 文案Y = this.画布.clientHeight - 边距;
     this.上下文.font = this.复选框字体;
-    const 几何宽 = this.上下文.measureText("几何角").width;
-    const 参数宽 = this.上下文.measureText("离心角").width;
+    const 几何宽 = this.上下文.measureText("角度均分").width;
+    const 参数宽 = this.上下文.measureText("弧长均分").width;
     const 内边距 = 6;
     const rb高 = 30;
     const 总宽 = 几何宽 + 参数宽 + 内边距 * 4;
     const rb左 = (this.画布.clientWidth - 总宽) / 2;
     const rbY = 文案Y - rb高 + 6;
-    const 几何选 = this.角度模式 === "几何角";
-    const 参数选 = this.角度模式 === "离心角";
+    const 几何选 = this.角度模式 === "角度均分";
+    const 参数选 = this.角度模式 === "弧长均分";
     const 文本垂直中心Y = rbY - 5 + rb高 / 2;
     this.上下文.textBaseline = "middle";
-    this.上下文.fillStyle = 几何选 ? "#2d854d" : this.悬停几何角 ? "#1a243a" : "#0b1220";
+    this.上下文.fillStyle = 几何选 ? "#2d854d" : this.悬停角度均分 ? "#1a243a" : "#0b1220";
     roundRect(this.上下文, rb左, rbY - 6, 几何宽 + 内边距 * 2, rb高, 0, true, false);
-    this.上下文.fillStyle = 几何选 ? "lightcyan" : this.悬停几何角 ? "#94a3b8" : "#64748b";
-    this.上下文.fillText("几何角", rb左 + 内边距, 文本垂直中心Y);
-    this.上下文.fillStyle = 参数选 ? "#2d854d" : this.悬停离心角 ? "#1a243a" : "#0b1220";
+    this.上下文.fillStyle = 几何选 ? "lightcyan" : this.悬停角度均分 ? "#94a3b8" : "#64748b";
+    this.上下文.fillText("角度均分", rb左 + 内边距, 文本垂直中心Y);
+    this.上下文.fillStyle = 参数选 ? "#2d854d" : this.悬停弧长均分 ? "#1a243a" : "#0b1220";
     const 参数左 = rb左 + 几何宽 + 内边距 * 2;
     roundRect(this.上下文, 参数左, rbY - 6, 参数宽 + 内边距 * 2, rb高, 0, true, false);
-    this.上下文.fillStyle = 参数选 ? "lightcyan" : this.悬停离心角 ? "#94a3b8" : "#64748b";
-    this.上下文.fillText("离心角", 参数左 + 内边距, 文本垂直中心Y);
+    this.上下文.fillStyle = 参数选 ? "lightcyan" : this.悬停弧长均分 ? "#94a3b8" : "#64748b";
+    this.上下文.fillText("弧长均分", 参数左 + 内边距, 文本垂直中心Y);
     this.上下文.textBaseline = "bottom";
     const cbX = 边距;
     const cbY = 文案Y - 45;
@@ -4098,21 +4098,21 @@ class 圆水平垂直独立镜像缩放 {
     const 拖拽热区 = this.获取命中拖拽热区(鼠标X, 鼠标Y);
     this.按下命中热区 = 拖拽热区;
     if (!拖拽热区) {
-      if (this.位于几何角单选框(鼠标X, 鼠标Y)) {
-        if (this.角度模式 !== "几何角") {
+      if (this.位于角度均分单选框(鼠标X, 鼠标Y)) {
+        if (this.角度模式 !== "角度均分") {
           this.线条过渡起始模式 = this.角度模式;
           this.线条过渡开始时间 = performance.now();
         }
-        this.角度模式 = "几何角";
+        this.角度模式 = "角度均分";
         this.绘制();
         return;
       }
-      if (this.位于离心角单选框(鼠标X, 鼠标Y)) {
-        if (this.角度模式 !== "离心角") {
+      if (this.位于弧长均分单选框(鼠标X, 鼠标Y)) {
+        if (this.角度模式 !== "弧长均分") {
           this.线条过渡起始模式 = this.角度模式;
           this.线条过渡开始时间 = performance.now();
         }
-        this.角度模式 = "离心角";
+        this.角度模式 = "弧长均分";
         this.绘制();
         return;
       }
@@ -4142,9 +4142,9 @@ class 圆水平垂直独立镜像缩放 {
     } else {
       this.当前操作 = "缩放";
       const { cx, cy, rx, ry } = this.椭圆;
-      const 几何角 = Math.atan2(鼠标Y - cy, 鼠标X - cx);
-      this.缩放起始角度 = 几何角;
-      const 缩放用角度 = this.获取缩放用角度(几何角, Math.abs(rx), Math.abs(ry));
+      const 角度均分 = Math.atan2(鼠标Y - cy, 鼠标X - cx);
+      this.缩放起始角度 = 角度均分;
+      const 缩放用角度 = this.获取缩放用角度(角度均分, Math.abs(rx), Math.abs(ry));
       this.缩放模式 = this.根据角度获取缩放模式(缩放用角度);
       const π = Math.PI;
       const π8 = π / 8;
@@ -4226,30 +4226,30 @@ class 圆水平垂直独立镜像缩放 {
 
     const 命中 = this.获取命中拖拽热区(鼠标X, 鼠标Y);
     const 上次悬停复选框 = this.悬停标准化复选框;
-    const 上次悬停几何 = this.悬停几何角;
-    const 上次悬停参数 = this.悬停离心角;
+    const 上次悬停几何 = this.悬停角度均分;
+    const 上次悬停参数 = this.悬停弧长均分;
     this.悬停标准化复选框 = this.是否在标准化复选框(鼠标X, 鼠标Y);
-    this.悬停几何角 = this.位于几何角单选框(鼠标X, 鼠标Y);
-    this.悬停离心角 = this.位于离心角单选框(鼠标X, 鼠标Y);
+    this.悬停角度均分 = this.位于角度均分单选框(鼠标X, 鼠标Y);
+    this.悬停弧长均分 = this.位于弧长均分单选框(鼠标X, 鼠标Y);
     if (
       命中 !== this.当前悬停 ||
       上次悬停复选框 !== this.悬停标准化复选框 ||
-      上次悬停几何 !== this.悬停几何角 ||
-      上次悬停参数 !== this.悬停离心角 ||
+      上次悬停几何 !== this.悬停角度均分 ||
+      上次悬停参数 !== this.悬停弧长均分 ||
       命中 === "缩放"
     ) {
       this.当前悬停 = 命中;
     }
     this.绘制();
     let 光标值 = 光标.默认;
-    if (this.悬停标准化复选框 || this.悬停几何角 || this.悬停离心角) 光标值 = 光标.指向;
+    if (this.悬停标准化复选框 || this.悬停角度均分 || this.悬停弧长均分) 光标值 = 光标.指向;
     else if (命中 === "本体") 光标值 = 光标.拖拽;
     else if (命中 === "缩放") {
       const { cx, cy } = this.椭圆;
       const rx = Math.abs(this.椭圆.rx);
       const ry = Math.abs(this.椭圆.ry);
-      const 几何角 = Math.atan2(鼠标Y - cy, 鼠标X - cx);
-      const 缩放用角度 = this.获取缩放用角度(几何角, rx, ry);
+      const 角度均分 = Math.atan2(鼠标Y - cy, 鼠标X - cx);
+      const 缩放用角度 = this.获取缩放用角度(角度均分, rx, ry);
       光标值 = this.根据角度获取缩放光标(缩放用角度);
     }
     this.画布.style.cursor = 光标值;
@@ -4266,10 +4266,10 @@ class 圆水平垂直独立镜像缩放 {
     if (!this.当前操作) this.画布.style.cursor = 光标.默认;
     this.当前操作 = null;
     if (this.当前悬停 !== null) this.当前悬停 = null;
-    if (this.悬停标准化复选框 || this.悬停几何角 || this.悬停离心角) {
+    if (this.悬停标准化复选框 || this.悬停角度均分 || this.悬停弧长均分) {
       this.悬停标准化复选框 = false;
-      this.悬停几何角 = false;
-      this.悬停离心角 = false;
+      this.悬停角度均分 = false;
+      this.悬停弧长均分 = false;
     }
     this.绘制();
   }
@@ -4286,7 +4286,7 @@ const 实例集合 = [
   圆热区实例,
   圆镜像缩放实例,
   圆水平垂直独立镜像缩放实例,
-  几何角和离心角实例,
+  角度均分和弧长均分实例,
 ];
 let 全局滚动定时器 = null;
 window.addEventListener(
