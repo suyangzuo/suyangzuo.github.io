@@ -1830,7 +1830,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 
 .行内专业名词 {
   color: var(--行内专业名词颜色);
-  margin: 0 0.125ch;
+  margin: 0 0.125em;
 }
 
 .代码 .行内专业名词 {
@@ -1851,7 +1851,7 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .代码 {
-  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Segoe UI Emoji", "Noto Sans SC", sans-serif;
+  font-family: "JetBrains Mono", Consolas, "Segoe UI Emoji", "Noto Sans SC", sans-serif;
   background-color: #222;
   box-shadow:
     inset 0 1px 1px 0 #fff5,
@@ -1874,17 +1874,17 @@ body:has(.图像对话框[open], #收藏栏[open], .技术栈对话框[open]) .�
 }
 
 .等宽 {
-  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+  font-family: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
   font-size: 0.95em;
 }
 
 .专题内名词.等宽,
 .行内专业名词.等宽 {
-  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
+  font-family: "JetBrains Mono", Consolas, "Noto Sans SC", 微软雅黑, sans-serif;
 }
 
 .行内代码 {
-  font-family: "Google Sans Code", "JetBrains Mono", Consolas, "Segoe UI Emoji", "Noto Sans SC", monospace;
+  font-family: "JetBrains Mono", Consolas, "Segoe UI Emoji", "Noto Sans SC", monospace;
   color: var(--行内代码颜色);
   margin: 0 0.25em;
   font-size: 0.95em;

@@ -1,0 +1,13 @@
+figure[data-desc="背景根"] {
+  height: 861px;
+}
+
+figure[data-desc*="背景根"]:has(iframe) {
+  width: 100%;
+}
+
+figure[data-desc*="背景根"] > iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
