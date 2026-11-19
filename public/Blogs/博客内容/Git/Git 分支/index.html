@@ -273,19 +273,19 @@
       我先切换到<span class="行内专业名词 等宽">main</span>分支，然后将<span class="行内专业名词 等宽">bugfix</span
       >分支合并到<span class="行内专业名词 等宽">main</span
       >分支。然而，并非每次合并都像图中这么简单，根据分支的情况，一般会有两种形式的合并：<span class="专业名词"
-        >快进合并</span
+        >快进</span
       >和<span class="专业名词">三路合并</span>。
     </p>
     <section class="提醒">
-      <h3 class="提醒标题"><span class="专业名词">快进合并</span>和<span class="专业名词">三路合并</span>的产生原因</h3>
+      <h3 class="提醒标题"><span class="专业名词">快进</span>和<span class="专业名词">三路合并</span>的产生原因</h3>
       <p class="分区普通文本">
         假设有两个分支：<span class="行内专业名词 等宽">main</span>和<span class="行内专业名词 等宽">feature</span
         >，它们都有共同的祖先提交：<span class="代码">初始提交</span>。
       </p>
       <ul class="分区列表">
         <li class="分区列表项">
-          <h4><span class="专业名词">快进合并</span>产生的原因</h4>
-          <figure class="截图容器" data-desc="快进合并产生的原因">
+          <h4><span class="专业名词">快进</span>产生的原因</h4>
+          <figure class="截图容器" data-desc="快进产生的原因">
             <img
               style="background-color: #111"
               src="/Images/Blogs/Git/Git 分支/共同祖先-仅1个分支进行提交.webp"
@@ -296,15 +296,15 @@
             在共同祖先提交<span class="附加说明">初始提交</span>的基础上，只有<span class="行内专业名词 等宽"
               >feature</span
             >进行了后续提交，无论提交多少次，整个提交记录都是<span class="强调">单线</span
-            >，这种情况下进行合并就是快进合并。
+            >，这种情况下进行合并就是快进。
           </p>
-          <figure class="截图容器" data-desc="快进合并">
-            <img style="background-color: #111" src="/Images/Blogs/Git/Git 分支/快进合并.webp" alt="快进合并" />
+          <figure class="截图容器" data-desc="快进">
+            <img style="background-color: #111" src="/Images/Blogs/Git/Git 分支/快进合并.webp" alt="快进" />
           </figure>
           <p class="分区普通文本">
-            快进合并只需要把<span class="行内专业名词 等宽">main</span>指针移动到和<span class="行内专业名词 等宽"
+            快进只需要把<span class="行内专业名词 等宽">main</span>指针移动到和<span class="行内专业名词 等宽"
               >feature</span
-            >指针相同的位置即可，快进合并是合并中最简单、最快的一种情况，这种情况<span class="强调">无需变基</span>。
+            >指针相同的位置即可，快进是合并中最简单、最快的一种情况，这种情况<span class="强调">无需变基</span>。
           </p>
         </li>
         <li class="分区列表项">
@@ -319,7 +319,7 @@
           <p class="分区普通文本">
             每个分支在共同祖先的基础上都有自己的<span class="强调">独特提交</span
             >，此时，整个提交树不再是一条直线，<span class="强调">无法实现</span
-            ><span class="行内专业名词">快进合并</span>。这种情况下，我们有两种选择：
+            ><span class="行内专业名词">快进</span>。这种情况下，我们有两种选择：
           </p>
           <ol class="分区列表 有序列表">
             <li class="分区列表项"><h4>三路合并</h4></li>

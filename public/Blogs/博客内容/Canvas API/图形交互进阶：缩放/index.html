@@ -649,22 +649,22 @@
     <p class="分区普通文本">我这里介绍的是第<span class="行内代码">2</span>种方式。</p>
     <pre class="line-numbers">
       <code class="language-javascript">
-        几何角转离心角(几何角, 水平半径, 垂直半径) {
-          return Math.atan2(水平半径 * Math.sin(几何角), 垂直半径 * Math.cos(几何角));
+        角度均分转弧长均分(角度均分, 水平半径, 垂直半径) {
+          return Math.atan2(水平半径 * Math.sin(角度均分), 垂直半径 * Math.cos(角度均分));
         }
 
-        离心角转几何角(θ, 水平半径, 垂直半径) {
+        弧长均分转角度均分(θ, 水平半径, 垂直半径) {
           return Math.atan2(垂直半径 * Math.sin(θ), 水平半径 * Math.cos(θ));
         }
 
-        获取缩放弧度(几何角, rx, ry) {
-          return this.角度模式 === "离心角" ? this.几何角转离心角(几何角, rx, ry) : 几何角;
+        获取缩放弧度(角度均分, rx, ry) {
+          return this.角度模式 === "弧长均分" ? this.角度均分转弧长均分(角度均分, rx, ry) : 角度均分;
         }
         
-        //缩放弧度可能是几何角，也可能是θ
-        const 缩放弧度 = this.获取缩放弧度(几何角, Math.abs(rx), Math.abs(ry));
+        //缩放弧度可能是角度，也可能是θ
+        const 缩放弧度 = this.获取缩放弧度(角度均分, Math.abs(rx), Math.abs(ry));
 
-        //无论是几何角还是θ，都调用此函数获取缩放模式
+        //无论是角度还是θ，都调用此函数获取缩放模式
         function 根据弧度获取缩放模式(缩放弧度) {
           //将360°分为8份，左右2份为水平缩放，上下2份为垂直缩放，另外4份为等比缩放
           const 八分角 = Math.PI / 8; //注意这里用的是弧度制
@@ -682,26 +682,25 @@
       <h3 class="提醒标题">提醒</h3>
       <p class="分区普通文本">
         椭圆的<span class="行内专业名词">水平半径</span>和<span class="行内专业名词">垂直半径</span
-        >往往不同，进行角度<span class="行内专业名词">均分</span>时，要考虑使用<span class="行内专业名词">几何角</span
-        >还是<span class="行内专业名词">离心角</span>。
+        >往往不同，对椭圆进行<span class="行内专业名词">均分</span>时，有两种方式可供选择：
       </p>
       <ul class="分区列表">
         <li class="分区列表项">
-          <span><span class="专业名词">几何角</span>：角度均分</span>
+          <span><span class="专业名词">角度均分</span>：每份对应的角度相等</span>
         </li>
         <li class="分区列表项">
-          <span><span class="专业名词">离心角</span>：<span class="行内专业名词">θ</span>均分</span>
+          <span><span class="专业名词">弧长均分</span>：每份对应的弧长相等</span>
         </li>
       </ul>
       <p class="分区普通文本">
-        这两者在正圆中没有区别，但在椭圆中则不同。用哪个要看场景需求，如果需要严格按照角度均分，则使用<span
+        这两者在正圆中没有区别，但在椭圆中则不同。用哪个要看场景需求，如果需要每份的角度严格相等，则使用<span
           class="行内专业名词"
-          >几何角</span
-        >；如果更注重用户的视觉感受，则使用<span class="行内专业名词">离心角</span>。
+          >角度均分</span
+        >；如果更注重用户的视觉感受，则使用<span class="行内专业名词">弧长均分</span>。
       </p>
-      <figure class="截图容器" style="width: 100%; aspect-ratio: 1.4" data-desc="几何角和离心角">
+      <figure class="截图容器" style="width: 100%; aspect-ratio: 1.4" data-desc="角度均分和弧长均分">
         <canvas
-          id="cvs-几何角离心角"
+          id="cvs-角度均分弧长均分"
           style="width: 100%; height: calc(100% - 42px); background-color: #0f1720"
         ></canvas>
       </figure>
