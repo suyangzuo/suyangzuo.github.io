@@ -12,11 +12,9 @@
       }
       #controls-note {
         position: absolute;
-        top: 5px;
+        top: 8px;
         left: 10px;
-        background: rgba(0, 0, 0, 0.5);
         color: #ccc;
-        padding: 10px;
         border-radius: 20px;
         backdrop-filter: blur(5px);
         font-size: 13px;
@@ -25,18 +23,17 @@
       }
       #panel {
         position: absolute;
-        top: 5px;
-        right: 5px;
+        top: 8px;
+        right: 10px;
         backdrop-filter: blur(12px);
         color: #e0e0ff;
         border-radius: 20px;
         z-index: 200;
         width: 420px;
-        padding: 14px 16px;
         pointer-events: auto;
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 6px;
       }
       .ctrl-row {
         display: flex;
@@ -236,7 +233,7 @@
         transition: all 0.2s;
         font-weight: 600;
       }
-      .auto-btn:hover {
+      .auto-btn:hover:not(:disabled):not(.inactive):not(.active) {
         border-color: rgba(255, 255, 255, 0.6);
         background: rgba(255, 255, 255, 0.15);
       }
@@ -244,6 +241,22 @@
         background: rgba(100, 200, 120, 0.25);
         border-color: #7bd88f;
         color: #7bd88f;
+        cursor: default;
+      }
+      /* 非定位（disabled）或 z-index 设值（inactive）时的统一样式 */
+      .auto-btn:disabled,
+      .auto-btn.inactive {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        opacity: 0.35;
+        cursor: not-allowed;
+      }
+      /* inactive 状态下 hover 时略微亮一点 */
+      .auto-btn.inactive:hover {
+        border-color: rgba(255, 255, 255, 0.6);
+        color: rgba(255, 255, 255, 0.7);
+        opacity: 0.75;
+        cursor: pointer;
       }
       #code-panel {
         position: absolute;
@@ -307,7 +320,7 @@
           <input type="range" class="z-slider" min="-50" max="50" value="0" data-action="z" disabled />
           <span class="z-value">0</span>
         </div>
-        <button class="auto-btn active" data-action="auto">auto</button>
+        <button class="auto-btn" data-action="auto">auto</button>
       </div>
       <!-- 行2：容器 -->
       <div class="ctrl-row" data-idx="1">
@@ -317,7 +330,7 @@
           <input type="range" class="z-slider" min="-50" max="50" value="0" data-action="z" disabled />
           <span class="z-value">0</span>
         </div>
-        <button class="auto-btn active" data-action="auto">auto</button>
+        <button class="auto-btn" data-action="auto">auto</button>
       </div>
       <!-- 行3：盒子2（容器内） -->
       <div class="ctrl-row indented" data-idx="2">
@@ -327,7 +340,7 @@
           <input type="range" class="z-slider" min="-50" max="50" value="0" data-action="z" disabled />
           <span class="z-value">0</span>
         </div>
-        <button class="auto-btn active" data-action="auto">auto</button>
+        <button class="auto-btn" data-action="auto">auto</button>
       </div>
       <!-- 行4：盒子3（容器内） -->
       <div class="ctrl-row indented" data-idx="3">
@@ -337,7 +350,7 @@
           <input type="range" class="z-slider" min="-50" max="50" value="0" data-action="z" disabled />
           <span class="z-value">0</span>
         </div>
-        <button class="auto-btn active" data-action="auto">auto</button>
+        <button class="auto-btn" data-action="auto">auto</button>
       </div>
       <!-- 行5：盒子4 -->
       <div class="ctrl-row" data-idx="4">
@@ -347,7 +360,7 @@
           <input type="range" class="z-slider" min="-50" max="50" value="0" data-action="z" disabled />
           <span class="z-value">0</span>
         </div>
-        <button class="auto-btn active" data-action="auto">auto</button>
+        <button class="auto-btn" data-action="auto">auto</button>
       </div>
       <!-- 行6：盒子5 -->
       <div class="ctrl-row" data-idx="5">
@@ -357,7 +370,7 @@
           <input type="range" class="z-slider" min="-50" max="50" value="0" data-action="z" disabled />
           <span class="z-value">0</span>
         </div>
-        <button class="auto-btn active" data-action="auto">auto</button>
+        <button class="auto-btn" data-action="auto">auto</button>
       </div>
     </div>
 
@@ -403,7 +416,7 @@
       controls.zoomSpeed = 1.2;
       controls.rotateSpeed = 0.8;
       controls.target.set(0, 3, 0);
-      controls.maxPolarAngle = Math.PI / 1.8;
+      controls.maxPolarAngle = Math.PI;
       controls.minDistance = 5;
       controls.maxDistance = 30;
 
@@ -435,7 +448,7 @@
       scene.add(fillLight);
 
       // --- 辅助视觉元素 ---
-      const gridHelper = new THREE.GridHelper(80, 80, 0x88aaff, 0x335588);
+      const gridHelper = new THREE.GridHelper(80, 80, 0x445566, 0x2a2a2a);
       gridHelper.position.y = -0.01;
       scene.add(gridHelper);
 
@@ -465,6 +478,8 @@
 
       const SPACING = 0.9;
       const BASE_Y = 0.6;
+      const BOX_THICKNESS = 0.24;
+      const BOX_TOP_TEXT_Y = BOX_THICKNESS / 2 + 0.01;
 
       const TRANSITION_DURATION = 250;
       let transitionStartTime = 0;
@@ -487,162 +502,104 @@
       let containerGroup = null;
       let wrapperMesh = null; // 半透明白色底板
       let wrapperEdges = null; // 边框线
-      let wrapperLabelSprite = null; // "容器" 标签
 
       // --- 辅助函数 ---
 
       /**
-       * 计算层叠顺序（slot 数组）
-       * CSS 层叠规则（同一层叠上下文内，从底到顶）：
-       *   1. 非定位元素（DOM 顺序）
-       *   2. 定位元素 z-index < 0（按 z-index 升序，同值 DOM 顺序）
-       *   3. 定位元素 z-index = auto / 0（DOM 顺序）
-       *   4. 定位元素 z-index > 0（按 z-index 升序，同值 DOM 顺序）
+       * 计算层叠顺序（slot 数组，从底到顶）。
+       * 本案例只有块级盒子，顺序为：负 z-index → 非定位盒子 → z-index:auto/0 → 正 z-index。
        *
-       * 容器（索引1）如果有定位 + z-index 非 auto，则创建层叠上下文，
-       * 盒子2(2)、盒子3(3) 在容器内部比较。
+       * 定位且 z-index:auto 的元素不创建真正的层叠上下文，但绘制时仍是一个原子单元：
+       * 它自身和非定位后代一起绘制，定位后代则继续参与外部层叠上下文的排序。
        */
       function computeSlots() {
-        const n = layerDefs.length;
-        const slots = new Array(n).fill(-1);
-        let slotCursor = 0;
+        const rootChildren = [0, 1, 4, 5];
+        const getChildren = (idx) => (idx === 1 ? [2, 3] : []);
+        const isStackingContext = (idx) => states[idx].positioned && !states[idx].isAuto;
+        const getStackLevel = (idx) => (states[idx].isAuto ? 0 : states[idx].zIndex);
 
-        // 判断容器是否创建独立层叠上下文
-        // CSS 规定：positioned + z-index 不为 auto 时建立层叠上下文
-        const containerCreatesContext = states[1].positioned && !states[1].isAuto;
-
-        if (!containerCreatesContext) {
-          // 所有元素在同一层叠上下文内
-          const all = [];
-          for (let i = 0; i < n; i++) {
-            const s = states[i];
-            const entry = { idx: i, positioned: s.positioned, zIndex: s.zIndex, isAuto: s.isAuto };
-            if (!s.positioned) {
-              // 容器即使非定位，作为包含块仍然参与层叠
-              all.push({ ...entry, category: 0, key: i });
-            } else if (s.isAuto || s.zIndex === 0) {
-              all.push({ ...entry, category: 2, key: i });
-            } else if (s.zIndex < 0) {
-              all.push({ ...entry, category: 1, key: s.zIndex * 1000 + i });
-            } else {
-              all.push({ ...entry, category: 3, key: s.zIndex * 1000 + i });
-            }
-          }
-          all.sort((a, b) => {
-            if (a.category !== b.category) return a.category - b.category;
-            return a.key - b.key;
-          });
-          all.forEach((e) => {
-            slots[e.idx] = slotCursor++;
-          });
-        } else {
-          // 容器创建了层叠上下文
-          // 外部元素：盒子1、容器整体、盒子4、盒子5
-          // 容器内部：盒子2、盒子3
-
-          // 先处理外部层叠上下文
-          const outerIdxs = [0, 1, 4, 5];
-          const outerSorted = [];
-          for (const i of outerIdxs) {
-            const s = states[i];
-            if (!s.positioned) {
-              outerSorted.push({ idx: i, category: 0, key: i });
-            } else if (s.isAuto || s.zIndex === 0) {
-              outerSorted.push({ idx: i, category: 2, key: i });
-            } else if (s.zIndex < 0) {
-              outerSorted.push({ idx: i, category: 1, key: s.zIndex * 1000 + i });
-            } else {
-              outerSorted.push({ idx: i, category: 3, key: s.zIndex * 1000 + i });
-            }
-          }
-          outerSorted.sort((a, b) => {
-            if (a.category !== b.category) return a.category - b.category;
-            return a.key - b.key;
-          });
-
-          // 处理容器内部层叠上下文（盒子2、盒子3）
-          const innerIdxs = [2, 3];
-          const innerSorted = [];
-          for (const i of innerIdxs) {
-            const s = states[i];
-            if (!s.positioned) {
-              innerSorted.push({ idx: i, category: 0, key: i });
-            } else if (s.isAuto || s.zIndex === 0) {
-              innerSorted.push({ idx: i, category: 2, key: i });
-            } else if (s.zIndex < 0) {
-              innerSorted.push({ idx: i, category: 1, key: s.zIndex * 1000 + i });
-            } else {
-              innerSorted.push({ idx: i, category: 3, key: s.zIndex * 1000 + i });
-            }
-          }
-          innerSorted.sort((a, b) => {
-            if (a.category !== b.category) return a.category - b.category;
-            return a.key - b.key;
-          });
-
-          // 分配 slot：容器内部的 slot 值要落在容器所在 slot 附近
-          // 为简单起见，内部子元素的 slot = 容器 slot 偏移 + 内部顺序
-          // 先给外部元素分配
-          const containerSlotInOuter = outerSorted.findIndex((e) => e.idx === 1);
-          // 给容器内的子元素预留空间：在容器 slot 之后
-          const containerInnerCount = innerSorted.length;
-          // 调整：为内部元素在容器 slot 附近分配区间
-          // 方案：外部元素各占 1 个 slot，内部元素插入到容器 slot 后面
-          // 但内部元素之间有先后，且容器本身也要占一个 slot
-
-          // 重新规划 slot 分配
-          // 容器本体 + 内部元素 = 1 + 2 = 3 个 slot
-          // 外部其他元素（盒子1、4、5）各占 1 个 slot
-          // 总共 = 3 + 3 = 6 slot
-          // 分配方案：
-          //   容器本体 slot = 容器在 outer 排序中的位置（考虑内部元素占位后偏移）
-
-          // 简化方案：容器内元素始终紧贴容器上方或下方
-          // 实际上应该：容器创建层叠上下文后，其内部元素在 3D 中就是贴着容器堆叠
-          // 我们把容器本体放在 slot C，内部元素根据 z-index 在容器上方从 C+1 开始堆
-          // 但如果外部有元素 z-index 介于容器和内部元素之间...不对，CSS 规定
-          // 容器内部的 z-index 不影响外部，外部的也不影响内部。
-          // 所以内部元素只在容器内部排，它们的 slot 值可以独立计算
-          // 3D 展示上：容器本体在 slot X，内部元素紧贴容器按顺序堆叠
-
-          // 让我们用更简单的方案：
-          // 1. 先假设容器不存在内部元素，计算 4 个外部元素的 slot（0-3）
-          // 2. 容器本体 slot = C
-          // 3. 把 slot >= C+1 的外部元素 slot + 2（为 2 个内部元素腾位置）
-          // 4. 内部元素 slot 从 C+1 开始按内部顺序分配
-
-          // 先给 4 个外部元素预分配（不考虑内部占位）
-          const outerSlots = new Array(6).fill(-1); // 暂存
-          let tmpSlot = 0;
-          for (const e of outerSorted) {
-            outerSlots[e.idx] = tmpSlot++;
-          }
-          const C = outerSlots[1]; // 容器的预分配 slot（0-based）
-
-          // 腾位置：slot > C 的外部元素 slot + containerInnerCount
-          for (const i of outerIdxs) {
-            if (outerSlots[i] > C) {
-              outerSlots[i] += containerInnerCount;
-            }
-          }
-
-          // 容器本体的 slot 就是 C
-          slots[1] = outerSlots[1]; // = C
-
-          // 内部元素：紧贴容器上方（slot 更大）
-          let innerSlot = slots[1] + 1;
-          for (const e of innerSorted) {
-            slots[e.idx] = innerSlot++;
-          }
-
-          // 外部其他元素
-          for (const i of outerIdxs) {
-            if (i !== 1) {
-              slots[i] = outerSlots[i];
-            }
+        // 展开元素自身及其非定位后代；定位后代不并入这个绘制单元。
+        function flattenFlowSubtree(idx, output) {
+          output.push(idx);
+          for (const child of getChildren(idx)) {
+            if (!states[child].positioned) flattenFlowSubtree(child, output);
           }
         }
 
+        function paintContext(rootIdx = null) {
+          const output = [];
+          const flowRoots = [];
+          const positionedEntries = [];
+          let treeOrder = 0;
+
+          // 层叠上下文根的背景和边框最先绘制。
+          if (rootIdx !== null) output.push(rootIdx);
+
+          function collectPositioned(idx) {
+            const atomic = isStackingContext(idx);
+            positionedEntries.push({ idx, atomic, level: getStackLevel(idx), order: treeOrder++ });
+
+            // auto 定位元素的后代仍属于当前层叠上下文；真正的层叠上下文则整体封存。
+            if (!atomic) {
+              function collectPositionedDescendants(parentIdx) {
+                for (const child of getChildren(parentIdx)) {
+                  if (states[child].positioned) collectPositioned(child);
+                  else collectPositionedDescendants(child);
+                }
+              }
+              collectPositionedDescendants(idx);
+            }
+          }
+
+          function collectFlowPositioned(parentIdx) {
+            for (const child of getChildren(parentIdx)) {
+              if (states[child].positioned) collectPositioned(child);
+              else collectFlowPositioned(child);
+            }
+          }
+
+          const children = rootIdx === null ? rootChildren : getChildren(rootIdx);
+          for (const idx of children) {
+            if (states[idx].positioned) {
+              collectPositioned(idx);
+            } else {
+              flowRoots.push(idx);
+              collectFlowPositioned(idx);
+            }
+          }
+
+          function appendPositionedEntry(entry) {
+            if (entry.atomic) output.push(...paintContext(entry.idx));
+            else flattenFlowSubtree(entry.idx, output);
+          }
+
+          const compareByLevel = (a, b) => a.level - b.level || a.order - b.order;
+          const compareByTreeOrder = (a, b) => a.order - b.order;
+
+          positionedEntries
+            .filter((entry) => entry.level < 0)
+            .sort(compareByLevel)
+            .forEach(appendPositionedEntry);
+          for (const idx of flowRoots) flattenFlowSubtree(idx, output);
+          positionedEntries
+            .filter((entry) => entry.level === 0)
+            .sort(compareByTreeOrder)
+            .forEach(appendPositionedEntry);
+          positionedEntries
+            .filter((entry) => entry.level > 0)
+            .sort(compareByLevel)
+            .forEach(appendPositionedEntry);
+
+          return output;
+        }
+
+        const slots = new Array(layerDefs.length).fill(-1);
+        // 容器不占垂直 slot；五个盒子始终使用连续的 0–4，保证相邻间距都是 SPACING。
+        paintContext()
+          .filter((idx) => idx !== 1)
+          .forEach((idx, slot) => {
+            slots[idx] = slot;
+          });
         return slots;
       }
 
@@ -762,7 +719,7 @@
         const group = new THREE.Group();
 
         // 平板
-        const planeGeo = new THREE.BoxGeometry(def.size, 0.08, def.size);
+        const planeGeo = new THREE.BoxGeometry(def.size, BOX_THICKNESS, def.size);
         const planeMat = new THREE.MeshPhongMaterial({
           color: def.color,
           transparent: true,
@@ -808,7 +765,7 @@
             depthTest: true,
           });
           zText = new THREE.Mesh(zTextGeo, zTextMat);
-          zText.position.y = 0.18;
+          zText.position.y = BOX_TOP_TEXT_Y;
           zText.rotation.x = -Math.PI / 2;
           group.add(zText);
         }
@@ -826,10 +783,30 @@
           depthTest: true,
         });
         const idxMesh = new THREE.Mesh(idxGeo, idxMat);
-        idxMesh.position.set(-def.size * 0.5 + idxWidth * 0.5, 0.22, -def.size * 0.5 + idxHeight * 0.5);
+        idxMesh.position.set(
+          -def.size * 0.5 + idxWidth * 0.5,
+          BOX_TOP_TEXT_Y,
+          -def.size * 0.5 + idxHeight * 0.5,
+        );
         idxMesh.rotation.x = -Math.PI / 2;
         idxMesh.renderOrder = 5;
         group.add(idxMesh);
+
+        // 前面（+Z）和右面（+X）使用与顶视图相同的纹理和文字配色。
+        const sideIdxHeight = BOX_THICKNESS * 1.44;
+        const sideIdxWidth = sideIdxHeight * idxTexture.userData.aspect;
+        const sideIdxGeo = new THREE.PlaneGeometry(sideIdxWidth, sideIdxHeight);
+
+        const frontIdxMesh = new THREE.Mesh(sideIdxGeo, idxMat);
+        frontIdxMesh.position.set(0, 0, def.size / 2 + 0.003);
+        frontIdxMesh.renderOrder = 5;
+        group.add(frontIdxMesh);
+
+        const rightIdxMesh = new THREE.Mesh(sideIdxGeo, idxMat);
+        rightIdxMesh.position.set(def.size / 2 + 0.003, 0, 0);
+        rightIdxMesh.rotation.y = Math.PI / 2;
+        rightIdxMesh.renderOrder = 5;
+        group.add(rightIdxMesh);
 
         group.userData = {
           def,
@@ -895,7 +872,7 @@
             depthTest: true,
           });
           const newZText = new THREE.Mesh(zTextGeo, zTextMat);
-          newZText.position.y = 0.18;
+          newZText.position.y = BOX_TOP_TEXT_Y;
           newZText.rotation.x = -Math.PI / 2;
           group.add(newZText);
           group.userData.zText = newZText;
@@ -926,7 +903,9 @@
         wrapperMesh = new THREE.Mesh(wrapperGeo, wrapperMat);
         wrapperMesh.receiveShadow = true;
         wrapperMesh.userData.isContainerWrapper = true;
-        wrapperMesh.renderOrder = -1; // 先渲染
+        // 在平板之后渲染：不写深度，但用深度测试与已写入的平板深度比较，
+        // 这样玻璃面板只有在真正位于物体前方时才叠加，位于后方时被正确遮挡
+        wrapperMesh.renderOrder = 1;
         containerGroup.add(wrapperMesh);
 
         const edges = new THREE.EdgesGeometry(wrapperGeo);
@@ -937,26 +916,13 @@
             transparent: true,
             opacity: 0.5,
             depthWrite: false, // 核心：线框也不写深度
+            depthTest: true,
           }),
         );
-        wrapperEdges.renderOrder = -1;
+        // 关键：线框必须在平板之后渲染。否则线框先画完且不写深度，
+        // 后面的平板会无差别覆盖它们，导致“明明在物体前方却看起来被挡住”
+        wrapperEdges.renderOrder = 2;
         containerGroup.add(wrapperEdges);
-
-        const labelTex = createIndexTexture("容");
-        const labelHeight = 0.6;
-        const labelWidth = labelHeight * labelTex.userData.aspect;
-        const labelGeo = new THREE.PlaneGeometry(labelWidth, labelHeight);
-        const labelMat = new THREE.MeshBasicMaterial({
-          map: labelTex,
-          transparent: true,
-          side: THREE.DoubleSide,
-          depthWrite: false,
-          depthTest: true,
-        });
-        wrapperLabelSprite = new THREE.Mesh(labelGeo, labelMat);
-        wrapperLabelSprite.renderOrder = 0;
-        wrapperLabelSprite.rotation.x = -Math.PI / 2;
-        containerGroup.add(wrapperLabelSprite);
 
         return containerGroup;
       }
@@ -983,8 +949,7 @@
         const minZ = Math.min(wp2.z - half2, wp3.z - half3) - WRAPPER_PADDING;
         const maxZ = Math.max(wp2.z + half2, wp3.z + half3) + WRAPPER_PADDING;
 
-        // Y：平板高度 0.08，中心在 slot Y，所以平板从 slotY - 0.04 到 slotY + 0.04
-        // 与 X/Z 一致，只紧贴盒子本体 + padding
+        // 容器 slot 只决定整体层叠位置；包围盒厚度仍按盒子2/3计算，避免底部额外延伸。
         const minYBoxes = Math.min(wp2.y, wp3.y) - 0.15;
         const maxYBoxes = Math.max(wp2.y, wp3.y) + 0.15;
         const yLow = minYBoxes - WRAPPER_BOTTOM;
@@ -1056,13 +1021,6 @@
         wrapperMesh.geometry = newGeo;
         wrapperEdges.geometry.dispose();
         wrapperEdges.geometry = new THREE.EdgesGeometry(newGeo);
-        if (wrapperLabelSprite) {
-          wrapperLabelSprite.position.set(
-            -bounds.width / 2 + 0.35,
-            -bounds.height / 2 + 0.22,
-            -bounds.depth / 2 + 0.35,
-          );
-        }
       }
 
       // --- 拖拽逻辑 ---
@@ -1329,17 +1287,13 @@
           layerGroups.forEach((group, index) => {
             if (group === null) return; // 跳过容器占位
             const targetSlot = slots[index];
-            let targetY;
-            if (index === 2 || index === 3) {
-              // containerGroup 子元素：Y 是 local space
-              targetY = getYFromSlot(targetSlot) - containerGroup.position.y;
-            } else {
-              targetY = getYFromSlot(targetSlot);
-            }
+            group.updateMatrixWorld(true);
+            const worldPosition = new THREE.Vector3();
+            group.getWorldPosition(worldPosition);
             transitionData.push({
               group,
-              fromY: group.position.y,
-              toY: targetY,
+              fromWorldY: worldPosition.y,
+              toWorldY: getYFromSlot(targetSlot),
               targetSlot,
               index,
             });
@@ -1427,7 +1381,7 @@
         });
 
         // 4. 输出
-        let css = '<span class="comment">/* CSS 样式 */</span>\n\n';
+        let css = '<span class="comment">/* CSS 样式 */</span>\n';
 
         if (allGroups.length === 0) {
           css += `<span class="comment">/* 所有元素均为静态定位 */</span>\n`;
@@ -1468,7 +1422,7 @@
 
         orderedShared.forEach(({ selectors, ruleHtml }) => {
           css += selectors.map((s) => `<span class="prop">${s}</span>`).join(",\n");
-          css += ` { ${ruleHtml} }\n\n`;
+          css += ` { ${ruleHtml} }\n`;
         });
 
         // 4b. 再输出每个 group 独有的规则（去除已被共享块覆盖的）
@@ -1479,13 +1433,13 @@
           if (remainingRules.length === 1) {
             const r = remainingRules[0];
             const rHtml = `<span class="prop">${r.prop}</span>: <span class="value">${r.val}</span>;`;
-            css += selStr + ` { ${rHtml} }\n\n`;
+            css += selStr + ` { ${rHtml} }\n`;
           } else {
             css += selStr + " {\n";
             remainingRules.forEach((r) => {
               css += `  <span class="prop">${r.prop}</span>: <span class="value">${r.val}</span>;\n`;
             });
-            css += "}\n\n";
+            css += "}\n";
           }
         });
 
@@ -1514,6 +1468,9 @@
 
         // 初始化 fill
         updateSliderFill(slider);
+        // 初始均为非定位，滑块和 auto 按钮都禁用
+        slider.disabled = true;
+        autoBtn.disabled = true;
 
         // 拖拽滑块时 refreshScene 做 50ms 防抖：UI（滑块、数值）立即更新，
         // 3D 场景在停止拖动 50ms 后才重算层叠顺序。
@@ -1544,10 +1501,11 @@
           slider.value = String(val);
           zValue.textContent = String(val);
           updateSliderFill(slider);
-          // 拉动滑块 → auto 自动关闭
+          // 拉动滑块 → auto 自动关闭，按钮变为 inactive
           if (states[idx].isAuto) {
             states[idx].isAuto = false;
             autoBtn.classList.remove("active");
+            autoBtn.classList.add("inactive");
             slider.classList.remove("low-bright");
           }
           // 3D 场景重算做 50ms 防抖，UI 即时更新
@@ -1576,11 +1534,8 @@
           // 落在 thumb 上：不修改值，但立刻关闭 auto / 去掉低亮
           // 落在轨道上（thumb 以外）：立刻跳到该位置
           if (hitThumb(e.clientX)) {
-            if (states[idx].isAuto) {
-              states[idx].isAuto = false;
-              autoBtn.classList.remove("active");
-              slider.classList.remove("low-bright");
-            }
+            // thumb 的值可能仍是 0，不会触发后续值变化；按下时也要关闭 auto 并重绘。
+            applySliderValue(parseInt(slider.value, 10));
           } else {
             const newVal = computeSliderValueFromX(e.clientX);
             applySliderValue(newVal);
@@ -1607,12 +1562,19 @@
           const on = states[idx].positioned;
           switchBtn.classList.toggle("active", on);
           thumb.textContent = on ? "定位" : "非定位";
-          // 非定位时屏蔽滑块
+          // 非定位时屏蔽滑块和 auto 按钮
           slider.disabled = !on;
-          // 切换到定位后，若 auto 仍是激活，则滑块应为低亮样式
-          if (on && states[idx].isAuto) {
-            slider.classList.add("low-bright");
-          } else if (!on) {
+          autoBtn.disabled = !on;
+          if (on) {
+            // 定位时：auto 激活则显示 active，否则显示 inactive
+            autoBtn.classList.toggle("active", states[idx].isAuto);
+            autoBtn.classList.toggle("inactive", !states[idx].isAuto);
+            // 若 auto 仍是激活，则滑块应为低亮样式
+            if (states[idx].isAuto) {
+              slider.classList.add("low-bright");
+            }
+          } else {
+            autoBtn.classList.remove("active", "inactive");
             slider.classList.remove("low-bright");
           }
           refreshScene();
@@ -1623,6 +1585,7 @@
           if (states[idx].isAuto) return; // 已开启则不做任何改变
           states[idx].isAuto = true;
           autoBtn.classList.add("active");
+          autoBtn.classList.remove("inactive");
           // 滑块变成低亮（但不屏蔽）
           slider.classList.add("low-bright");
           // 非定位时仍然屏蔽
@@ -1668,7 +1631,7 @@
         size: 0.15,
         map: createCircleTexture(),
         transparent: true,
-        opacity: 0.6,
+        opacity: 0.1 + Math.random() * 0.4,
         blending: THREE.AdditiveBlending,
         depthWrite: false,
         alphaTest: 0.01,
@@ -1695,18 +1658,21 @@
           const eased = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
 
           transitionData.forEach((item) => {
-            item.group.position.y = item.fromY + (item.toY - item.fromY) * eased;
+            const worldY = item.fromWorldY + (item.toWorldY - item.fromWorldY) * eased;
+            const parent = item.group.parent;
+            const parentY = parent && parent !== scene ? parent.position.y : 0;
+            item.group.position.y = worldY - parentY;
           });
+
+          // 每一帧都按盒子2/3的当前世界位置重建包围盒，避免容器滞后或结束时跳动。
+          updateWrapperBoundsKeepChildren();
 
           if (progress >= 1) {
             isTransitioning = false;
             transitionData.forEach((item) => {
-              item.group.position.y = item.toY;
               item.group.userData.currentSlot = item.targetSlot;
             });
             transitionData = [];
-            // Y 位置变化后 wrapper 高度也需要更新
-            updateWrapperBoundsKeepChildren();
           }
         }
 
