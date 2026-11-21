@@ -15,7 +15,7 @@
         top: 8px;
         left: 10px;
         color: #ccc;
-        border-radius: 20px;
+        border-radius: 10px;
         backdrop-filter: blur(5px);
         font-size: 13px;
         z-index: 100;
@@ -27,9 +27,9 @@
         right: 10px;
         backdrop-filter: blur(12px);
         color: #e0e0ff;
-        border-radius: 20px;
+        border-radius: 10px;
         z-index: 200;
-        width: 420px;
+        width: 395px;
         pointer-events: auto;
         display: flex;
         flex-direction: column;
@@ -39,9 +39,33 @@
         display: flex;
         align-items: center;
         gap: 8px;
+        cursor: grab;
+        user-select: none;
       }
       .ctrl-row.indented {
         padding-left: 4ch;
+      }
+      .ctrl-row.container-row.empty {
+        opacity: 0.35;
+      }
+      .ctrl-row.is-dragging {
+        cursor: grabbing;
+      }
+      body.panel-dragging,
+      body.panel-dragging * {
+        cursor: grabbing !important;
+        user-select: none !important;
+      }
+      .drag-placeholder {
+        flex-shrink: 0;
+        pointer-events: none;
+      }
+      .drag-placeholder.preview {
+        border-radius: 6px;
+        background: rgba(224, 224, 255, 0.12);
+      }
+      .drag-placeholder.preview.inside {
+        margin-left: 4ch;
       }
       .ctrl-label {
         font-size: 12px;
@@ -52,6 +76,9 @@
         justify-content: flex-end;
         align-items: baseline;
         gap: 0;
+      }
+      .ctrl-label .label-container {
+        color: mediumaquamarine;
       }
       .ctrl-label .label-num {
         font-weight: 700;
@@ -71,9 +98,12 @@
       .ctrl-row[data-idx="4"] .label-num {
         color: #b54a6b;
       } /* 盒子4 */
-      .ctrl-row[data-idx="5"] .label-num {
+      .ctrl-row[data-idx="6"] .label-num {
         color: #8787cb;
       } /* 盒子5 */
+      .ctrl-row[data-idx="7"] .label-num {
+        color: #8b6fae;
+      } /* 盒子6 */
       /* 手机样式开关 */
       .switch {
         position: relative;
@@ -303,7 +333,7 @@
       }
       @media (max-width: 1000px) {
         #panel {
-          width: fit-content;
+          width: 395px;
         }
       }
     </style>
@@ -312,8 +342,7 @@
     <div id="controls-note">🖱️ 左键旋转 · 右键平移 · 滚轮缩放</div>
 
     <div id="panel">
-      <!-- 行1：盒子1 -->
-      <div class="ctrl-row" data-idx="0">
+      <div class="ctrl-row box-row" data-idx="0">
         <span class="ctrl-label">盒子<span class="label-num">1</span></span>
         <button class="switch" data-action="pos"><span class="thumb">非定位</span></button>
         <div class="z-slider-wrap">
@@ -322,9 +351,8 @@
         </div>
         <button class="auto-btn" data-action="auto">auto</button>
       </div>
-      <!-- 行2：容器 -->
-      <div class="ctrl-row" data-idx="1">
-        <span class="ctrl-label">容器</span>
+      <div class="ctrl-row container-row" data-idx="1" data-container-id="1">
+        <span class="ctrl-label"><span class="label-container">容器</span><span class="label-num">1</span></span>
         <button class="switch" data-action="pos"><span class="thumb">非定位</span></button>
         <div class="z-slider-wrap">
           <input type="range" class="z-slider" min="-50" max="50" value="0" data-action="z" disabled />
@@ -332,8 +360,7 @@
         </div>
         <button class="auto-btn" data-action="auto">auto</button>
       </div>
-      <!-- 行3：盒子2（容器内） -->
-      <div class="ctrl-row indented" data-idx="2">
+      <div class="ctrl-row box-row indented" data-idx="2" data-container="1">
         <span class="ctrl-label">盒子<span class="label-num">2</span></span>
         <button class="switch" data-action="pos"><span class="thumb">非定位</span></button>
         <div class="z-slider-wrap">
@@ -342,8 +369,7 @@
         </div>
         <button class="auto-btn" data-action="auto">auto</button>
       </div>
-      <!-- 行4：盒子3（容器内） -->
-      <div class="ctrl-row indented" data-idx="3">
+      <div class="ctrl-row box-row indented" data-idx="3" data-container="1">
         <span class="ctrl-label">盒子<span class="label-num">3</span></span>
         <button class="switch" data-action="pos"><span class="thumb">非定位</span></button>
         <div class="z-slider-wrap">
@@ -352,8 +378,7 @@
         </div>
         <button class="auto-btn" data-action="auto">auto</button>
       </div>
-      <!-- 行5：盒子4 -->
-      <div class="ctrl-row" data-idx="4">
+      <div class="ctrl-row box-row" data-idx="4">
         <span class="ctrl-label">盒子<span class="label-num">4</span></span>
         <button class="switch" data-action="pos"><span class="thumb">非定位</span></button>
         <div class="z-slider-wrap">
@@ -362,9 +387,26 @@
         </div>
         <button class="auto-btn" data-action="auto">auto</button>
       </div>
-      <!-- 行6：盒子5 -->
-      <div class="ctrl-row" data-idx="5">
+      <div class="ctrl-row container-row" data-idx="5" data-container-id="2">
+        <span class="ctrl-label"><span class="label-container">容器</span><span class="label-num">2</span></span>
+        <button class="switch" data-action="pos"><span class="thumb">非定位</span></button>
+        <div class="z-slider-wrap">
+          <input type="range" class="z-slider" min="-50" max="50" value="0" data-action="z" disabled />
+          <span class="z-value">0</span>
+        </div>
+        <button class="auto-btn" data-action="auto">auto</button>
+      </div>
+      <div class="ctrl-row box-row indented" data-idx="6" data-container="2">
         <span class="ctrl-label">盒子<span class="label-num">5</span></span>
+        <button class="switch" data-action="pos"><span class="thumb">非定位</span></button>
+        <div class="z-slider-wrap">
+          <input type="range" class="z-slider" min="-50" max="50" value="0" data-action="z" disabled />
+          <span class="z-value">0</span>
+        </div>
+        <button class="auto-btn" data-action="auto">auto</button>
+      </div>
+      <div class="ctrl-row box-row indented" data-idx="7" data-container="2">
+        <span class="ctrl-label">盒子<span class="label-num">6</span></span>
         <button class="switch" data-action="pos"><span class="thumb">非定位</span></button>
         <div class="z-slider-wrap">
           <input type="range" class="z-slider" min="-50" max="50" value="0" data-action="z" disabled />
@@ -457,19 +499,22 @@
       axesHelper.material.opacity = 0;
       scene.add(axesHelper);
 
-      // --- 层定义（6个：盒子1, 容器, 盒子2, 盒子3, 盒子4, 盒子5）---
+      // --- 层定义 ---
       const layerDefs = [
         { id: "box1", label: "盒子1", color: 0x4a6fa5, size: 2.8, opacity: 0.95, name: "盒子1" },
-        { id: "container", label: "容", color: 0xffffff, size: 3.2, opacity: 0.1, name: "容器" },
+        { id: "container1", label: "容器1", color: 0xffffff, size: 3.2, opacity: 0.1, name: "容器1" },
         { id: "box2", label: "盒子2", color: 0x5a8f7c, size: 2.2, opacity: 0.95, name: "盒子2" },
         { id: "box3", label: "盒子3", color: 0xa56b4a, size: 2.0, opacity: 0.95, name: "盒子3" },
         { id: "box4", label: "盒子4", color: 0xb54a6b, size: 2.4, opacity: 0.95, name: "盒子4" },
+        { id: "container2", label: "容器2", color: 0xffffff, size: 3.2, opacity: 0.1, name: "容器2" },
         { id: "box5", label: "盒子5", color: 0x3a3a5a, size: 2.6, opacity: 0.95, name: "盒子5" },
+        { id: "box6", label: "盒子6", color: 0x8b6fae, size: 2.3, opacity: 0.95, name: "盒子6" },
       ];
+      const CONTAINER_INDEXES = [1, 5];
+      const panel = document.getElementById("panel");
 
       // --- 状态管理 ---
       // 每个元素: { positioned: bool, zIndex: number, isAuto: bool }
-      // 索引: 0=盒子1, 1=容器, 2=盒子2, 3=盒子3, 4=盒子4, 5=盒子5
       const states = layerDefs.map(() => ({
         positioned: false,
         zIndex: 0,
@@ -486,22 +531,21 @@
       let isTransitioning = false;
       let transitionData = [];
 
-      // 拖拽相关
+      // 3D 拖拽相关
       let raycaster = new THREE.Raycaster();
       let mouse = new THREE.Vector2();
       let selectedGroup = null;
-      let dragStartWorldPos = new THREE.Vector3(); // 用 world position 锚定起点，不受 containerGroup 移动影响
+      let dragStartWorldPos = new THREE.Vector3();
       let dragStartPoint = new THREE.Vector3();
       let isDragging = false;
       let dragPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
-      // 容器拖拽
       let selectedContainerGroup = null;
+      let selectedContainerIdx = null;
       let dragStartContainerPos = new THREE.Vector3();
 
-      // --- 容器包裹（包裹盒子2 + 盒子3）---
-      let containerGroup = null;
-      let wrapperMesh = null; // 半透明白色底板
-      let wrapperEdges = null; // 边框线
+      const containerGroups = new Array(layerDefs.length).fill(null);
+      const wrapperMeshes = new Array(layerDefs.length).fill(null);
+      const wrapperEdges = new Array(layerDefs.length).fill(null);
 
       // --- 辅助函数 ---
 
@@ -512,9 +556,26 @@
        * 定位且 z-index:auto 的元素不创建真正的层叠上下文，但绘制时仍是一个原子单元：
        * 它自身和非定位后代一起绘制，定位后代则继续参与外部层叠上下文的排序。
        */
+      function getPanelHierarchy() {
+        const rootChildren = [];
+        const childrenByContainer = new Map(CONTAINER_INDEXES.map((idx) => [idx, []]));
+        panel.querySelectorAll(".ctrl-row").forEach((row) => {
+          const idx = Number(row.dataset.idx);
+          if (row.classList.contains("container-row") || !row.dataset.container) {
+            rootChildren.push(idx);
+          } else {
+            const containerIdx = CONTAINER_INDEXES.find(
+              (containerIdx) => layerDefs[containerIdx].id === `container${row.dataset.container}`,
+            );
+            if (containerIdx !== undefined) childrenByContainer.get(containerIdx).push(idx);
+          }
+        });
+        return { rootChildren, childrenByContainer };
+      }
+
       function computeSlots() {
-        const rootChildren = [0, 1, 4, 5];
-        const getChildren = (idx) => (idx === 1 ? [2, 3] : []);
+        const { rootChildren, childrenByContainer } = getPanelHierarchy();
+        const getChildren = (idx) => childrenByContainer.get(idx) || [];
         const isStackingContext = (idx) => states[idx].positioned && !states[idx].isAuto;
         const getStackLevel = (idx) => (states[idx].isAuto ? 0 : states[idx].zIndex);
 
@@ -594,9 +655,9 @@
         }
 
         const slots = new Array(layerDefs.length).fill(-1);
-        // 容器不占垂直 slot；五个盒子始终使用连续的 0–4，保证相邻间距都是 SPACING。
+        // 容器不占垂直 slot；六个盒子始终使用连续的 0–5，保证相邻间距都是 SPACING。
         paintContext()
-          .filter((idx) => idx !== 1)
+          .filter((idx) => !CONTAINER_INDEXES.includes(idx))
           .forEach((idx, slot) => {
             slots[idx] = slot;
           });
@@ -881,15 +942,14 @@
       }
 
       // --- 容器包裹创建 ---
-      // wrapper 是一个真正的 3D 盒子（半透明白色），在 XYZ 三个维度上包住 box2/box3
-      // 关键：wrapper 的材质 depthWrite=false，避免写入深度缓冲，
-      //       这样相机在任意角度下 box2/box3 都不会被 wrapper 遮挡/吃掉。
-      const WRAPPER_PADDING = 0.12; // X/Z 方向每边额外空间
-      const WRAPPER_BOTTOM = 0.08; // Y 方向底部向下延伸
-      const WRAPPER_TOP = 0.08; // Y 方向顶部向上延伸
+      // 半透明白色 wrapper 在 XYZ 三个维度上包住当前容器内的全部盒子。
+      const WRAPPER_PADDING = 0.12;
+      const WRAPPER_BOTTOM = 0.08;
+      const WRAPPER_TOP = 0.08;
 
-      function createContainerWrapper() {
-        containerGroup = new THREE.Group();
+      function createContainerWrapper(containerIdx) {
+        const containerGroup = new THREE.Group();
+        containerGroups[containerIdx] = containerGroup;
 
         const wrapperGeo = new THREE.BoxGeometry(4, 4, 3);
         const wrapperMat = new THREE.MeshPhongMaterial({
@@ -898,129 +958,94 @@
           opacity: 0.1,
           side: THREE.DoubleSide,
           shininess: 20,
-          depthWrite: false, // 核心：不写深度缓冲 → g2/g3 永远可见
+          depthWrite: false,
         });
-        wrapperMesh = new THREE.Mesh(wrapperGeo, wrapperMat);
+        const wrapperMesh = new THREE.Mesh(wrapperGeo, wrapperMat);
         wrapperMesh.receiveShadow = true;
-        wrapperMesh.userData.isContainerWrapper = true;
-        // 在平板之后渲染：不写深度，但用深度测试与已写入的平板深度比较，
-        // 这样玻璃面板只有在真正位于物体前方时才叠加，位于后方时被正确遮挡
+        wrapperMesh.userData.containerIdx = containerIdx;
         wrapperMesh.renderOrder = 1;
         containerGroup.add(wrapperMesh);
+        wrapperMeshes[containerIdx] = wrapperMesh;
 
-        const edges = new THREE.EdgesGeometry(wrapperGeo);
-        wrapperEdges = new THREE.LineSegments(
-          edges,
+        const edges = new THREE.LineSegments(
+          new THREE.EdgesGeometry(wrapperGeo),
           new THREE.LineBasicMaterial({
             color: 0xffffff,
             transparent: true,
             opacity: 0.5,
-            depthWrite: false, // 核心：线框也不写深度
+            depthWrite: false,
             depthTest: true,
           }),
         );
-        // 关键：线框必须在平板之后渲染。否则线框先画完且不写深度，
-        // 后面的平板会无差别覆盖它们，导致“明明在物体前方却看起来被挡住”
-        wrapperEdges.renderOrder = 2;
-        containerGroup.add(wrapperEdges);
+        edges.renderOrder = 2;
+        containerGroup.add(edges);
+        wrapperEdges[containerIdx] = edges;
 
         return containerGroup;
       }
 
-      function computeWrapperBounds() {
-        if (!containerGroup || !layerGroups[2] || !layerGroups[3]) return null;
+      function getContainerChildren(containerIdx) {
+        return getPanelHierarchy()
+          .childrenByContainer.get(containerIdx)
+          .map((idx) => layerGroups[idx])
+          .filter(Boolean);
+      }
 
-        const g2 = layerGroups[2];
-        const g3 = layerGroups[3];
-        g2.updateMatrixWorld(true);
-        g3.updateMatrixWorld(true);
+      function computeWrapperBounds(containerIdx) {
+        const children = getContainerChildren(containerIdx);
+        if (!containerGroups[containerIdx] || children.length === 0) return null;
 
-        const wp2 = new THREE.Vector3();
-        g2.getWorldPosition(wp2);
-        const wp3 = new THREE.Vector3();
-        g3.getWorldPosition(wp3);
+        const worldPositions = children.map((group) => {
+          group.updateMatrixWorld(true);
+          return group.getWorldPosition(new THREE.Vector3());
+        });
+        const halfSizes = children.map((group) => group.userData.def.size / 2);
 
-        const half2 = g2.userData.def.size / 2;
-        const half3 = g3.userData.def.size / 2;
-
-        // X/Z：两个平板的 AABB + padding
-        const minX = Math.min(wp2.x - half2, wp3.x - half3) - WRAPPER_PADDING;
-        const maxX = Math.max(wp2.x + half2, wp3.x + half3) + WRAPPER_PADDING;
-        const minZ = Math.min(wp2.z - half2, wp3.z - half3) - WRAPPER_PADDING;
-        const maxZ = Math.max(wp2.z + half2, wp3.z + half3) + WRAPPER_PADDING;
-
-        // 容器 slot 只决定整体层叠位置；包围盒厚度仍按盒子2/3计算，避免底部额外延伸。
-        const minYBoxes = Math.min(wp2.y, wp3.y) - 0.15;
-        const maxYBoxes = Math.max(wp2.y, wp3.y) + 0.15;
+        const minX = Math.min(...worldPositions.map((pos, i) => pos.x - halfSizes[i])) - WRAPPER_PADDING;
+        const maxX = Math.max(...worldPositions.map((pos, i) => pos.x + halfSizes[i])) + WRAPPER_PADDING;
+        const minZ = Math.min(...worldPositions.map((pos, i) => pos.z - halfSizes[i])) - WRAPPER_PADDING;
+        const maxZ = Math.max(...worldPositions.map((pos, i) => pos.z + halfSizes[i])) + WRAPPER_PADDING;
+        const minYBoxes = Math.min(...worldPositions.map((pos) => pos.y)) - 0.15;
+        const maxYBoxes = Math.max(...worldPositions.map((pos) => pos.y)) + 0.15;
         const yLow = minYBoxes - WRAPPER_BOTTOM;
         const yHigh = maxYBoxes + WRAPPER_TOP;
 
-        const width = maxX - minX;
-        const depth = maxZ - minZ;
-        const height = yHigh - yLow;
-
         return {
-          width,
-          height,
-          depth,
+          width: maxX - minX,
+          height: yHigh - yLow,
+          depth: maxZ - minZ,
           centerX: (minX + maxX) / 2,
           centerY: (yLow + yHigh) / 2,
           centerZ: (minZ + maxZ) / 2,
         };
       }
 
-      function updateWrapperBoundsKeepChildren() {
-        const bounds = computeWrapperBounds();
+      function updateWrapperBoundsKeepChildren(containerIdx) {
+        const bounds = computeWrapperBounds(containerIdx);
         if (!bounds) return;
-        const g2 = layerGroups[2];
-        const g3 = layerGroups[3];
-
-        const wp2 = new THREE.Vector3();
-        g2.getWorldPosition(wp2);
-        const wp3 = new THREE.Vector3();
-        g3.getWorldPosition(wp3);
+        const containerGroup = containerGroups[containerIdx];
+        const children = getContainerChildren(containerIdx);
+        const worldPositions = children.map((group) => group.getWorldPosition(new THREE.Vector3()));
 
         containerGroup.position.set(bounds.centerX, bounds.centerY, bounds.centerZ);
         containerGroup.updateMatrixWorld(true);
+        const containerWorldPos = containerGroup.getWorldPosition(new THREE.Vector3());
+        children.forEach((group, i) => {
+          const pos = worldPositions[i];
+          group.position.set(pos.x - containerWorldPos.x, pos.y - containerWorldPos.y, pos.z - containerWorldPos.z);
+        });
 
-        const cgWp = new THREE.Vector3();
-        containerGroup.getWorldPosition(cgWp);
-        g2.position.set(wp2.x - cgWp.x, wp2.y - cgWp.y, wp2.z - cgWp.z);
-        g3.position.set(wp3.x - cgWp.x, wp3.y - cgWp.y, wp3.z - cgWp.z);
-
-        rebuildWrapperGeometry(bounds);
+        rebuildWrapperGeometry(containerIdx, bounds);
       }
 
-      function rebuildWrapperFromChildrenWorld() {
-        const bounds = computeWrapperBounds();
-        if (!bounds) return;
-        const g2 = layerGroups[2];
-        const g3 = layerGroups[3];
-
-        g2.updateMatrixWorld(true);
-        g3.updateMatrixWorld(true);
-        const wp2 = new THREE.Vector3();
-        g2.getWorldPosition(wp2);
-        const wp3 = new THREE.Vector3();
-        g3.getWorldPosition(wp3);
-
-        containerGroup.position.set(bounds.centerX, bounds.centerY, bounds.centerZ);
-        containerGroup.updateMatrixWorld(true);
-
-        const cgWp = new THREE.Vector3();
-        containerGroup.getWorldPosition(cgWp);
-        g2.position.set(wp2.x - cgWp.x, wp2.y - cgWp.y, wp2.z - cgWp.z);
-        g3.position.set(wp3.x - cgWp.x, wp3.y - cgWp.y, wp3.z - cgWp.z);
-
-        rebuildWrapperGeometry(bounds);
-      }
-
-      function rebuildWrapperGeometry(bounds) {
+      function rebuildWrapperGeometry(containerIdx, bounds) {
         const newGeo = new THREE.BoxGeometry(bounds.width, bounds.height, bounds.depth);
+        const wrapperMesh = wrapperMeshes[containerIdx];
+        const edges = wrapperEdges[containerIdx];
         wrapperMesh.geometry.dispose();
         wrapperMesh.geometry = newGeo;
-        wrapperEdges.geometry.dispose();
-        wrapperEdges.geometry = new THREE.EdgesGeometry(newGeo);
+        edges.geometry.dispose();
+        edges.geometry = new THREE.EdgesGeometry(newGeo);
       }
 
       // --- 拖拽逻辑 ---
@@ -1032,20 +1057,15 @@
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
         raycaster.setFromCamera(mouse, camera);
 
-        const planes = layerGroups
-          .filter((g) => g !== null)
-          .map((g) => g.userData.plane)
-          .filter(Boolean);
+        const planes = layerGroups.filter(Boolean).map((group) => group.userData.plane);
         const planeHits = raycaster.intersectObjects(planes);
-        if (planeHits.length > 0) {
-          return { type: "plane", obj: planeHits[0].object.parent };
-        }
+        if (planeHits.length > 0) return { type: "plane", obj: planeHits[0].object.parent };
 
-        if (wrapperMesh) {
-          const wrapperHits = raycaster.intersectObject(wrapperMesh);
-          if (wrapperHits.length > 0) {
-            return { type: "wrapper", obj: containerGroup };
-          }
+        const visibleWrappers = wrapperMeshes.filter((mesh) => mesh && containerGroups[mesh.userData.containerIdx].visible);
+        const wrapperHits = raycaster.intersectObjects(visibleWrappers);
+        if (wrapperHits.length > 0) {
+          const containerIdx = wrapperHits[0].object.userData.containerIdx;
+          return { type: "wrapper", obj: containerGroups[containerIdx], containerIdx };
         }
         return null;
       }
@@ -1053,44 +1073,43 @@
       function setHoverState(group, isHovered) {
         if (!group) return;
         const plane = group.userData.plane;
-        if (plane) {
-          const def = group.userData.def;
-          if (isHovered) {
-            plane.material.emissiveIntensity = Math.min(group.userData.baseIntensity + 0.8, 1.5);
-            plane.material.emissive = new THREE.Color(def.color).multiplyScalar(0.6);
-          } else {
-            plane.material.emissiveIntensity = group.userData.baseIntensity ?? 0.15;
-            plane.material.emissive = new THREE.Color(def.color).multiplyScalar(0.15);
-          }
+        if (!plane) return;
+        const def = group.userData.def;
+        if (isHovered) {
+          plane.material.emissiveIntensity = Math.min(group.userData.baseIntensity + 0.8, 1.5);
+          plane.material.emissive = new THREE.Color(def.color).multiplyScalar(0.6);
+        } else {
+          plane.material.emissiveIntensity = group.userData.baseIntensity ?? 0.15;
+          plane.material.emissive = new THREE.Color(def.color).multiplyScalar(0.15);
         }
       }
 
-      function setWrapperHover(isHovered) {
-        if (!wrapperEdges) return;
-        wrapperEdges.material.opacity = isHovered ? 0.75 : 0.35;
-        if (wrapperMesh) wrapperMesh.material.opacity = isHovered ? 0.18 : 0.1;
+      function setWrapperHover(containerIdx, isHovered) {
+        const edges = wrapperEdges[containerIdx];
+        const mesh = wrapperMeshes[containerIdx];
+        if (!edges || !mesh) return;
+        edges.material.opacity = isHovered ? 0.75 : 0.35;
+        mesh.material.opacity = isHovered ? 0.18 : 0.1;
+      }
+
+      function clearWrapperHover() {
+        CONTAINER_INDEXES.forEach((containerIdx) => setWrapperHover(containerIdx, false));
       }
 
       function onHoverMove(event) {
         if (isDragging) return;
         const hit = getPlaneUnderMouse(event);
-        if (hit) {
-          if (hit.type === "plane") {
-            setHoverState(hoveredGroup, false);
-            hoveredGroup = hit.obj;
-            setHoverState(hoveredGroup, true);
-            setWrapperHover(false);
-            renderer.domElement.style.cursor = "grab";
-          } else {
-            setHoverState(hoveredGroup, false);
-            hoveredGroup = null;
-            setWrapperHover(true);
-            renderer.domElement.style.cursor = "grab";
-          }
+        setHoverState(hoveredGroup, false);
+        clearWrapperHover();
+        hoveredGroup = null;
+        if (hit?.type === "plane") {
+          hoveredGroup = hit.obj;
+          setHoverState(hoveredGroup, true);
+          renderer.domElement.style.cursor = "grab";
+        } else if (hit?.type === "wrapper") {
+          setWrapperHover(hit.containerIdx, true);
+          renderer.domElement.style.cursor = "grab";
         } else {
-          setHoverState(hoveredGroup, false);
-          hoveredGroup = null;
-          setWrapperHover(false);
           renderer.domElement.style.cursor = "default";
         }
       }
@@ -1103,46 +1122,30 @@
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
         raycaster.setFromCamera(mouse, camera);
+        renderer.domElement.style.cursor = "grabbing";
+        isDragging = true;
+        controls.enabled = false;
 
         if (hit.type === "plane") {
           const group = hit.obj;
           setHoverState(hoveredGroup, false);
           hoveredGroup = null;
-          renderer.domElement.style.cursor = "grabbing";
           selectedGroup = group;
-          isDragging = true;
-          controls.enabled = false;
-          // 拖拽平面用 world space Y（平板自身中心的 Y）
           group.updateMatrixWorld(true);
-          const wp = new THREE.Vector3();
-          group.getWorldPosition(wp);
-          dragPlane.constant = -wp.y;
-          const startPoint = new THREE.Vector3();
-          raycaster.ray.intersectPlane(dragPlane, startPoint);
-          dragStartPoint.copy(startPoint);
-          // 起点锚定到 group 的当前 world position，
-          // 这样 containerGroup 后续怎么移动都不影响我们计算目标 world 位置。
-          dragStartWorldPos.copy(wp);
-          const plane = group.userData.plane;
-          if (plane) {
-            const def = group.userData.def;
-            plane.material.emissiveIntensity = Math.min(group.userData.baseIntensity + 0.8, 1.5);
-            plane.material.emissive = new THREE.Color(def.color).multiplyScalar(0.6);
-          }
+          const worldPos = group.getWorldPosition(new THREE.Vector3());
+          dragPlane.constant = -worldPos.y;
+          raycaster.ray.intersectPlane(dragPlane, dragStartPoint);
+          dragStartWorldPos.copy(worldPos);
+          setHoverState(group, true);
         } else {
-          setWrapperHover(false);
-          renderer.domElement.style.cursor = "grabbing";
-          selectedContainerGroup = containerGroup;
-          isDragging = true;
-          controls.enabled = false;
-          const cgWp = new THREE.Vector3();
-          containerGroup.getWorldPosition(cgWp);
-          dragPlane.constant = -cgWp.y;
-          const startPoint = new THREE.Vector3();
-          raycaster.ray.intersectPlane(dragPlane, startPoint);
-          dragStartPoint.copy(startPoint);
-          dragStartContainerPos.copy(containerGroup.position);
-          setWrapperHover(true);
+          clearWrapperHover();
+          selectedContainerIdx = hit.containerIdx;
+          selectedContainerGroup = hit.obj;
+          const worldPos = selectedContainerGroup.getWorldPosition(new THREE.Vector3());
+          dragPlane.constant = -worldPos.y;
+          raycaster.ray.intersectPlane(dragPlane, dragStartPoint);
+          dragStartContainerPos.copy(selectedContainerGroup.position);
+          setWrapperHover(selectedContainerIdx, true);
         }
       }
 
@@ -1152,68 +1155,53 @@
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
         raycaster.setFromCamera(mouse, camera);
         const currentPoint = new THREE.Vector3();
-        raycaster.ray.intersectPlane(dragPlane, currentPoint);
-        if (!currentPoint) return;
+        if (!raycaster.ray.intersectPlane(dragPlane, currentPoint)) return;
         const delta = currentPoint.clone().sub(dragStartPoint);
 
         if (selectedContainerGroup) {
-          containerGroup.position.x = dragStartContainerPos.x + delta.x;
-          containerGroup.position.z = dragStartContainerPos.z + delta.z;
+          selectedContainerGroup.position.x = dragStartContainerPos.x + delta.x;
+          selectedContainerGroup.position.z = dragStartContainerPos.z + delta.z;
         } else if (selectedGroup) {
-          // 目标 world 位置：XZ 跟随鼠标，Y 固定在 slot 位置
           const targetWorldX = dragStartWorldPos.x + delta.x;
-          const targetWorldZ = dragStartWorldPos.z + delta.z;
           const targetWorldY = getYFromSlot(selectedGroup.userData.currentSlot);
-
+          const targetWorldZ = dragStartWorldPos.z + delta.z;
           const parent = selectedGroup.parent;
-          const hasParent = parent && parent !== scene;
-          if (hasParent) {
-            // containerGroup 的 world pos 每次 rebuild 都会变，
-            // 所以这里每次都从 parent 的当前 world pos 转回 local。
+
+          if (parent && parent !== scene) {
             parent.updateMatrixWorld(true);
-            const parentWp = new THREE.Vector3();
-            parent.getWorldPosition(parentWp);
-            selectedGroup.position.x = targetWorldX - parentWp.x;
-            selectedGroup.position.z = targetWorldZ - parentWp.z;
-            selectedGroup.position.y = targetWorldY - parentWp.y;
+            const parentWorldPos = parent.getWorldPosition(new THREE.Vector3());
+            selectedGroup.position.set(
+              targetWorldX - parentWorldPos.x,
+              targetWorldY - parentWorldPos.y,
+              targetWorldZ - parentWorldPos.z,
+            );
+            const containerIdx = CONTAINER_INDEXES.find((idx) => containerGroups[idx] === parent);
+            if (containerIdx !== undefined) updateWrapperBoundsKeepChildren(containerIdx);
           } else {
             selectedGroup.position.set(targetWorldX, targetWorldY, targetWorldZ);
-          }
-
-          const idx = layerGroups.indexOf(selectedGroup);
-          if (idx === 2 || idx === 3) {
-            rebuildWrapperFromChildrenWorld();
           }
         }
       }
 
       function onPointerUp(event) {
-        if (event.button !== 0) return;
-        if (selectedGroup) {
-          const plane = selectedGroup.userData.plane;
-          if (plane) {
-            const def = selectedGroup.userData.def;
-            plane.material.emissiveIntensity = selectedGroup.userData.baseIntensity ?? 0.15;
-            plane.material.emissive = new THREE.Color(def.color).multiplyScalar(0.15);
-          }
-        }
-        if (selectedContainerGroup) setWrapperHover(false);
+        if (!isDragging || event.button !== 0) return;
+        setHoverState(selectedGroup, false);
+        if (selectedContainerIdx !== null) setWrapperHover(selectedContainerIdx, false);
 
         isDragging = false;
         selectedGroup = null;
         selectedContainerGroup = null;
+        selectedContainerIdx = null;
         controls.enabled = true;
 
         const hit = getPlaneUnderMouse(event);
-        if (hit) {
-          if (hit.type === "plane") {
-            hoveredGroup = hit.obj;
-            setHoverState(hoveredGroup, true);
-            renderer.domElement.style.cursor = "grab";
-          } else {
-            setWrapperHover(true);
-            renderer.domElement.style.cursor = "grab";
-          }
+        if (hit?.type === "plane") {
+          hoveredGroup = hit.obj;
+          setHoverState(hoveredGroup, true);
+          renderer.domElement.style.cursor = "grab";
+        } else if (hit?.type === "wrapper") {
+          setWrapperHover(hit.containerIdx, true);
+          renderer.domElement.style.cursor = "grab";
         } else {
           renderer.domElement.style.cursor = "default";
         }
@@ -1227,51 +1215,37 @@
       // --- 根据状态刷新 3D 场景 ---
       function refreshScene() {
         const slots = computeSlots();
+        const hierarchy = getPanelHierarchy();
         const zIndices = states.map((s) => (s.isAuto ? null : s.zIndex));
         const positioned = states.map((s) => s.positioned);
 
         if (layerGroups.length === 0) {
-          // === 首次创建 ===
+          CONTAINER_INDEXES.forEach((containerIdx, i) => {
+            const containerGroup = createContainerWrapper(containerIdx);
+            containerGroup.position.set(0, BASE_Y, i === 0 ? 0 : 2);
+            scene.add(containerGroup);
+          });
 
-          // 创建 container wrapper
-          createContainerWrapper();
-          // containerGroup 初始位置在盒子2/3 附近中心
-          containerGroup.position.set(0, BASE_Y, 0);
-          scene.add(containerGroup);
-
-          // 遍历 layerDefs 创建各 layerGroup
           layerDefs.forEach((def, index) => {
-            if (index === 1) {
-              // 容器本身不再是独立平板（它变成了 wrapper）
+            if (CONTAINER_INDEXES.includes(index)) {
               layerGroups.push(null);
               return;
             }
 
-            const z = zIndices[index];
-            const pos = positioned[index];
-            const group = createLayerGroup(def, z, pos);
+            const group = createLayerGroup(def, zIndices[index], positioned[index]);
             const slot = slots[index];
-
-            // slot -> Y：盒子2/3 在 containerGroup 的 local space 里
-            if (index === 2 || index === 3) {
-              group.position.y = getYFromSlot(slot) - containerGroup.position.y;
-              // 初始 XZ 布局
-              group.position.x = index === 2 ? -0.5 : 0.5;
-              group.position.z = 0;
+            const containerIdx = CONTAINER_INDEXES.find((idx) => hierarchy.childrenByContainer.get(idx).includes(index));
+            if (containerIdx !== undefined) {
+              const containerGroup = containerGroups[containerIdx];
+              const siblings = hierarchy.childrenByContainer.get(containerIdx);
+              group.position.set(
+                siblings.indexOf(index) - (siblings.length - 1) / 2,
+                getYFromSlot(slot) - containerGroup.position.y,
+                0,
+              );
               containerGroup.add(group);
             } else {
-              group.position.y = getYFromSlot(slot);
-              // 其他元素分散开
-              if (index === 0) {
-                group.position.x = -2.2;
-                group.position.z = -1.0;
-              } else if (index === 4) {
-                group.position.x = 2.2;
-                group.position.z = -1.0;
-              } else if (index === 5) {
-                group.position.x = 0;
-                group.position.z = 2.0;
-              }
+              group.position.set(index === 0 ? -2.2 : index === 4 ? 2.2 : 0, getYFromSlot(slot), -1);
               scene.add(group);
             }
 
@@ -1279,28 +1253,32 @@
             layerGroups.push(group);
           });
 
-          // 让 wrapper 自动包围盒子2和盒子3
-          updateWrapperBoundsKeepChildren();
+          CONTAINER_INDEXES.forEach(updateWrapperBoundsKeepChildren);
         } else {
-          // === 过渡动画 ===
+          scene.updateMatrixWorld(true);
+          layerGroups.forEach((group, index) => {
+            if (!group) return;
+            const containerIdx = CONTAINER_INDEXES.find((idx) => hierarchy.childrenByContainer.get(idx).includes(index));
+            const targetParent = containerIdx === undefined ? scene : containerGroups[containerIdx];
+            if (group.parent !== targetParent) targetParent.attach(group);
+          });
+
           transitionData = [];
           layerGroups.forEach((group, index) => {
-            if (group === null) return; // 跳过容器占位
+            if (!group) return;
             const targetSlot = slots[index];
             group.updateMatrixWorld(true);
-            const worldPosition = new THREE.Vector3();
-            group.getWorldPosition(worldPosition);
+            const worldPosition = group.getWorldPosition(new THREE.Vector3());
             transitionData.push({
               group,
               fromWorldY: worldPosition.y,
               toWorldY: getYFromSlot(targetSlot),
               targetSlot,
-              index,
             });
           });
 
           layerGroups.forEach((group, index) => {
-            if (group === null) return;
+            if (!group) return;
             const newZ = zIndices[index];
             const isPos = positioned[index];
             group.userData.zIndex = newZ;
@@ -1308,17 +1286,18 @@
             updateZText(group, newZ, isPos);
 
             const plane = group.userData.plane;
-            if (plane) {
-              const intensity = newZ !== null ? Math.min(0.1 + Math.abs(newZ) * 0.02, 0.6) : 0.15;
-              plane.material.emissiveIntensity = intensity;
-              group.userData.baseIntensity = intensity;
-            }
+            const intensity = newZ !== null ? Math.min(0.1 + Math.abs(newZ) * 0.02, 0.6) : 0.15;
+            plane.material.emissiveIntensity = intensity;
+            group.userData.baseIntensity = intensity;
           });
 
           transitionStartTime = performance.now();
           isTransitioning = true;
         }
 
+        CONTAINER_INDEXES.forEach((containerIdx) => {
+          containerGroups[containerIdx].visible = hierarchy.childrenByContainer.get(containerIdx).length > 0;
+        });
         updateCodePanel();
       }
 
@@ -1326,7 +1305,7 @@
       function updateCodePanel() {
         const cssBlock = document.getElementById("code-css");
 
-        const names = [".盒子-1", ".容器", ".盒子-2", ".盒子-3", ".盒子-4", ".盒子-5"];
+        const names = [".盒子-1", ".容器-1", ".盒子-2", ".盒子-3", ".盒子-4", ".容器-2", ".盒子-5", ".盒子-6"];
 
         // 1. 收集每个选择器的原始规则（带内部标记）
         // rawRules[i] = [{ prop: "position", val: "relative", key: "position:relative" }, ...]
@@ -1594,7 +1573,273 @@
         });
       });
 
+      // --- 面板垂直拖拽 ---
+      let panelDrag = null;
+
+      function readPanelTree() {
+        const tree = [];
+        panel.querySelectorAll(".ctrl-row").forEach((row) => {
+          if (row.classList.contains("container-row")) {
+            tree.push({ row, children: [] });
+            return;
+          }
+          const container = row.dataset.container
+            ? tree.findLast((entry) => entry.row.dataset.containerId === row.dataset.container)
+            : null;
+          if (container) container.children.push(row);
+          else tree.push({ row, children: null });
+        });
+        return tree;
+      }
+
+      function flattenPanelTree(tree) {
+        return tree.flatMap((entry) => [entry.row, ...(entry.children || [])]);
+      }
+
+      function clonePanelTree(tree) {
+        return tree.map((entry) => ({ row: entry.row, children: entry.children ? [...entry.children] : null }));
+      }
+
+      function updateEmptyContainerRows() {
+        readPanelTree().forEach((entry) => {
+          if (entry.children) entry.row.classList.toggle("empty", entry.children.length === 0);
+        });
+      }
+
+      function captureRowRects(rows) {
+        return new Map(rows.map((row) => [row, row.getBoundingClientRect()]));
+      }
+
+      function animateRowsFromRects(rows, oldRects) {
+        rows.forEach((row) => {
+          const oldRect = oldRects.get(row);
+          if (!oldRect) return;
+          const deltaY = oldRect.top - row.getBoundingClientRect().top;
+          if (Math.abs(deltaY) < 0.5) return;
+          row.animate([{ transform: `translateY(${deltaY}px)` }, { transform: "translateY(0)" }], {
+            duration: TRANSITION_DURATION / 2,
+            easing: "linear",
+          });
+        });
+      }
+
+      function getSourceTarget(tree, row) {
+        const rootIndex = tree.findIndex((entry) => entry.row === row);
+        if (rootIndex !== -1) return { type: "root", index: rootIndex };
+        for (const entry of tree) {
+          const childIndex = entry.children?.indexOf(row) ?? -1;
+          if (childIndex !== -1) {
+            return { type: "child", containerId: entry.row.dataset.containerId, index: childIndex };
+          }
+        }
+        return { type: "root", index: tree.length };
+      }
+
+      function getContainerDropTarget(tree, clientY) {
+        for (let index = 0; index < tree.length; index++) {
+          const rects = flattenPanelTree([tree[index]]).map((row) => row.getBoundingClientRect());
+          const top = Math.min(...rects.map((rect) => rect.top));
+          const bottom = Math.max(...rects.map((rect) => rect.bottom));
+          if (clientY < (top + bottom) / 2) return { type: "root", index };
+        }
+        return { type: "root", index: tree.length };
+      }
+
+      function getBoxDropTarget(tree, clientY) {
+        for (const entry of tree) {
+          if (!entry.children) continue;
+          const rect = entry.row.getBoundingClientRect();
+          if (clientY >= rect.top && clientY <= rect.bottom) {
+            return { type: "child", containerId: entry.row.dataset.containerId, index: entry.children.length };
+          }
+        }
+
+        const remainingRows = flattenPanelTree(tree);
+        for (const row of remainingRows) {
+          const rect = row.getBoundingClientRect();
+          if (clientY >= rect.top + rect.height / 2) continue;
+          if (row.classList.contains("container-row")) {
+            return { type: "root", index: tree.findIndex((entry) => entry.row === row) };
+          }
+          if (row.dataset.container) {
+            const entry = tree.find((item) => item.row.dataset.containerId === row.dataset.container);
+            return {
+              type: "child",
+              containerId: row.dataset.container,
+              index: entry.children.indexOf(row),
+            };
+          }
+          return { type: "root", index: tree.findIndex((entry) => entry.row === row) };
+        }
+        return { type: "root", index: tree.length };
+      }
+
+      function getPlaceholderReference(tree, target) {
+        if (target.type === "root") return tree[target.index]?.row || null;
+        const containerIndex = tree.findIndex((entry) => entry.row.dataset.containerId === target.containerId);
+        const container = tree[containerIndex];
+        return container.children[target.index] || tree[containerIndex + 1]?.row || null;
+      }
+
+      function updatePanelDropIndicator(drag, target) {
+        drag.placeholder.classList.toggle("preview", !drag.isContainer);
+        drag.placeholder.classList.toggle("inside", !drag.isContainer && target.type === "child");
+      }
+
+      function movePanelPlaceholder(target) {
+        const drag = panelDrag;
+        const oldRects = captureRowRects(flattenPanelTree(drag.originalTree).filter((row) => !drag.rows.includes(row)));
+        oldRects.forEach((_, row) => row.getAnimations().forEach((animation) => animation.cancel()));
+        updatePanelDropIndicator(drag, target);
+        panel.insertBefore(drag.placeholder, getPlaceholderReference(drag.tree, target));
+        animateRowsFromRects([...oldRects.keys()], oldRects);
+        drag.target = target;
+      }
+
+      function startPanelDrag(event, row) {
+        if (event.button !== 0 || panelDrag || event.target.closest("button, input")) return;
+        event.preventDefault();
+        event.stopPropagation();
+
+        const allRows = [...panel.querySelectorAll(".ctrl-row")];
+        allRows.forEach((item) => item.getAnimations().forEach((animation) => animation.finish()));
+        const originalTree = readPanelTree();
+        const tree = clonePanelTree(originalTree);
+        const isContainer = row.classList.contains("container-row");
+        let draggedEntry;
+
+        if (isContainer) {
+          const rootIndex = tree.findIndex((entry) => entry.row === row);
+          draggedEntry = tree.splice(rootIndex, 1)[0];
+        } else {
+          const rootIndex = tree.findIndex((entry) => entry.row === row);
+          if (rootIndex !== -1) {
+            draggedEntry = tree.splice(rootIndex, 1)[0];
+          } else {
+            const container = tree.find((entry) => entry.children?.includes(row));
+            const childIndex = container.children.indexOf(row);
+            draggedEntry = { row, children: null };
+            container.children.splice(childIndex, 1);
+          }
+        }
+
+        const rowsToDrag = flattenPanelTree([draggedEntry]);
+        const target = getSourceTarget(originalTree, row);
+        const rects = captureRowRects(rowsToDrag);
+        const panelRect = panel.getBoundingClientRect();
+        const placeholder = document.createElement("div");
+        placeholder.className = "drag-placeholder";
+        placeholder.style.height = `${rects.get(rowsToDrag.at(-1)).bottom - rects.get(rowsToDrag[0]).top}px`;
+        panel.insertBefore(placeholder, rowsToDrag[0]);
+
+        rowsToDrag.forEach((item) => {
+          const rect = rects.get(item);
+          item.classList.add("is-dragging");
+          item.style.position = "absolute";
+          item.style.left = `${rect.left - panelRect.left}px`;
+          item.style.top = `${rect.top - panelRect.top}px`;
+          item.style.width = `${rect.width}px`;
+          item.style.height = `${rect.height}px`;
+          item.style.boxSizing = "border-box";
+          item.style.margin = "0";
+          item.style.zIndex = "1000";
+          item.style.pointerEvents = "none";
+        });
+
+        panelDrag = {
+          pointerId: event.pointerId,
+          row,
+          rows: rowsToDrag,
+          entry: draggedEntry,
+          originalTree,
+          tree,
+          target,
+          placeholder,
+          startY: event.clientY,
+          isContainer,
+          moved: false,
+        };
+        updatePanelDropIndicator(panelDrag, target);
+        document.body.classList.add("panel-dragging");
+        row.setPointerCapture(event.pointerId);
+      }
+
+      function movePanelDrag(event) {
+        const drag = panelDrag;
+        if (!drag || event.pointerId !== drag.pointerId) return;
+        event.preventDefault();
+        const deltaY = event.clientY - drag.startY;
+        drag.rows.forEach((row) => {
+          row.style.transform = `translateY(${deltaY}px)`;
+        });
+        if (Math.abs(deltaY) < 2) return;
+        drag.moved = true;
+        const placeholderRect = drag.placeholder.getBoundingClientRect();
+        if (event.clientY >= placeholderRect.top && event.clientY <= placeholderRect.bottom) return;
+
+        const target = drag.isContainer
+          ? getContainerDropTarget(drag.tree, event.clientY)
+          : getBoxDropTarget(drag.tree, event.clientY);
+        if (JSON.stringify(target) !== JSON.stringify(drag.target)) movePanelPlaceholder(target);
+      }
+
+      function finishPanelDrag(event, cancelled = false) {
+        const drag = panelDrag;
+        if (!drag || event.pointerId !== drag.pointerId) return;
+        event.preventDefault();
+
+        const shouldCancel = cancelled || !drag.moved;
+        const finalTree = shouldCancel ? drag.originalTree : drag.tree;
+        if (!shouldCancel) {
+          if (drag.target.type === "root") {
+            finalTree.splice(drag.target.index, 0, drag.entry);
+          } else {
+            const container = finalTree.find((entry) => entry.row.dataset.containerId === drag.target.containerId);
+            container.children.splice(drag.target.index, 0, drag.row);
+          }
+        }
+
+        const allRows = flattenPanelTree(drag.originalTree);
+        const oldRects = captureRowRects(allRows);
+        allRows.forEach((row) => row.getAnimations().forEach((animation) => animation.cancel()));
+        drag.placeholder.remove();
+        drag.rows.forEach((row) => {
+          row.classList.remove("is-dragging");
+          ["position", "left", "top", "width", "height", "box-sizing", "margin", "z-index", "pointer-events", "transform"].forEach(
+            (property) => row.style.removeProperty(property),
+          );
+        });
+
+        finalTree.forEach((entry) => {
+          if (entry.children) entry.row.classList.toggle("empty", entry.children.length === 0);
+          if (!entry.row.classList.contains("container-row")) {
+            delete entry.row.dataset.container;
+            entry.row.classList.remove("indented");
+          }
+          entry.children?.forEach((row) => {
+            row.dataset.container = entry.row.dataset.containerId;
+            row.classList.add("indented");
+          });
+        });
+        flattenPanelTree(finalTree).forEach((row) => panel.appendChild(row));
+        animateRowsFromRects(allRows, oldRects);
+
+        document.body.classList.remove("panel-dragging");
+        try {
+          drag.row.releasePointerCapture(drag.pointerId);
+        } catch (_) {}
+        panelDrag = null;
+        if (!shouldCancel) refreshScene();
+      }
+
+      rows.forEach((row) => row.addEventListener("pointerdown", (event) => startPanelDrag(event, row)));
+      panel.addEventListener("dragstart", (event) => event.preventDefault());
+      window.addEventListener("pointermove", movePanelDrag, { passive: false });
+      window.addEventListener("pointerup", (event) => finishPanelDrag(event));
+      window.addEventListener("pointercancel", (event) => finishPanelDrag(event, true));
+
       // --- 初始化 ---
+      updateEmptyContainerRows();
       refreshScene();
 
       // 粒子
@@ -1655,17 +1900,16 @@
           const now = performance.now();
           const elapsed = now - transitionStartTime;
           const progress = Math.min(elapsed / TRANSITION_DURATION, 1);
-          const eased = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
 
           transitionData.forEach((item) => {
-            const worldY = item.fromWorldY + (item.toWorldY - item.fromWorldY) * eased;
+            const worldY = item.fromWorldY + (item.toWorldY - item.fromWorldY) * progress;
             const parent = item.group.parent;
             const parentY = parent && parent !== scene ? parent.position.y : 0;
             item.group.position.y = worldY - parentY;
           });
 
-          // 每一帧都按盒子2/3的当前世界位置重建包围盒，避免容器滞后或结束时跳动。
-          updateWrapperBoundsKeepChildren();
+          // 每一帧都按当前子盒子的世界坐标重建两个包围盒，避免容器滞后或结束时跳动。
+          CONTAINER_INDEXES.forEach(updateWrapperBoundsKeepChildren);
 
           if (progress >= 1) {
             isTransitioning = false;
