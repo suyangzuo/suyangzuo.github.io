@@ -21,6 +21,83 @@
         z-index: 100;
         pointer-events: none;
       }
+      .spacing-control {
+        position: absolute;
+        top: 34px;
+        left: 10px;
+        z-index: 200;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 7px 9px 7px 12px;
+        color: #ace;
+        border-radius: 10px;
+        backdrop-filter: blur(12px);
+        font-size: 13px;
+        user-select: none;
+      }
+      .spacing-control label {
+        width: 6em;
+        flex-shrink: 0;
+        text-align: right;
+      }
+      .spacing-input-wrap {
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        border: 1px solid #343b4d;
+        border-radius: 7px;
+        background: #0c101c;
+      }
+      .spacing-btn {
+        width: 28px;
+        height: 28px;
+        padding: 0;
+        border: none;
+        background: #202635;
+        color: #c8d4ff;
+        font: 600 18px/1 "Google Sans Code", Consolas, sans-serif;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          color 0.15s;
+      }
+      .spacing-btn:hover {
+        background: #313b50;
+        color: #ffffff;
+      }
+      .spacing-btn:active {
+        background: #151b28;
+      }
+      .spacing-btn:focus-visible,
+      .spacing-input:focus-visible {
+        outline: 2px solid #718fd4;
+        outline-offset: -2px;
+      }
+      .spacing-input {
+        width: 54px;
+        height: 28px;
+        padding: 0 4px;
+        border: none;
+        border-right: 1px solid #343b4d;
+        border-left: 1px solid #343b4d;
+        border-radius: 0;
+        outline: none;
+        background: #0c101c;
+        color: #eef1ff;
+        font: 13px "Google Sans Code", Consolas, sans-serif;
+        text-align: center;
+        appearance: textfield;
+        -moz-appearance: textfield;
+      }
+      .spacing-input::-webkit-inner-spin-button,
+      .spacing-input::-webkit-outer-spin-button {
+        margin: 0;
+        -webkit-appearance: none;
+      }
+      .container-opacity-control {
+        top: 72px;
+      }
       #panel {
         position: absolute;
         top: 8px;
@@ -340,6 +417,22 @@
   </head>
   <body>
     <div id="controls-note">🖱️ 左键旋转 · 右键平移 · 滚轮缩放</div>
+    <div class="spacing-control">
+      <label for="spacing-input">间隔距离</label>
+      <div class="spacing-input-wrap">
+        <button class="spacing-btn" id="spacing-decrease" type="button" aria-label="减少间隔距离" title="减少">−</button>
+        <input class="spacing-input" id="spacing-input" type="number" min="0" step="0.05" value="0.9" />
+        <button class="spacing-btn" id="spacing-increase" type="button" aria-label="增加间隔距离" title="增加">+</button>
+      </div>
+    </div>
+    <div class="spacing-control container-opacity-control">
+      <label for="container-opacity-input">容器不透明度</label>
+      <div class="spacing-input-wrap">
+        <button class="spacing-btn" id="container-opacity-decrease" type="button" aria-label="减少容器不透明度" title="减少">−</button>
+        <input class="spacing-input" id="container-opacity-input" type="number" min="0" max="1" step="0.05" value="0.1" />
+        <button class="spacing-btn" id="container-opacity-increase" type="button" aria-label="增加容器不透明度" title="增加">+</button>
+      </div>
+    </div>
 
     <div id="panel">
       <div class="ctrl-row box-row" data-idx="0">
@@ -494,10 +587,51 @@
       gridHelper.position.y = -0.01;
       scene.add(gridHelper);
 
-      const axesHelper = new THREE.AxesHelper(40);
-      axesHelper.material.transparent = true;
-      axesHelper.material.opacity = 0;
-      scene.add(axesHelper);
+      function createAxisLabel(text, color) {
+        const canvas = document.createElement("canvas");
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext("2d");
+        ctx.font = 'bold 72px "Google Sans Code", Consolas, sans-serif';
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.lineWidth = 8;
+        ctx.lineJoin = "round";
+        ctx.strokeStyle = "#10101c";
+        ctx.strokeText(text, 64, 68);
+        ctx.fillStyle = color;
+        ctx.fillText(text, 64, 68);
+
+        const texture = new THREE.CanvasTexture(canvas);
+        const material = new THREE.SpriteMaterial({
+          map: texture,
+          transparent: true,
+          depthTest: false,
+          depthWrite: false,
+        });
+        const label = new THREE.Sprite(material);
+        label.scale.set(0.72, 0.72, 1);
+        label.renderOrder = 20;
+        return label;
+      }
+
+      const axisOrigin = new THREE.Vector3(0, 0, 0);
+      const axisLength = 5.5;
+      const axisDefs = [
+        { label: "X", color: 0xff6b6b, direction: new THREE.Vector3(1, 0, 0), labelPosition: [6, 0, 0] },
+        { label: "Y", color: 0x51cf66, direction: new THREE.Vector3(0, 0, 1), labelPosition: [0, 0, 6] },
+        { label: "Z", color: 0x5c7cfa, direction: new THREE.Vector3(0, 1, 0), labelPosition: [0, 6, 0] },
+      ];
+      axisDefs.forEach(({ label, color, direction, labelPosition }) => {
+        const arrow = new THREE.ArrowHelper(direction, axisOrigin, axisLength, color, 0.38, 0.22);
+        arrow.cone.geometry.dispose();
+        arrow.cone.geometry = new THREE.ConeGeometry(0.5, 1, 64);
+        arrow.cone.geometry.translate(0, -0.5, 0);
+        scene.add(arrow);
+        const axisLabel = createAxisLabel(label, `#${color.toString(16).padStart(6, "0")}`);
+        axisLabel.position.set(...labelPosition);
+        scene.add(axisLabel);
+      });
 
       // --- 层定义 ---
       const layerDefs = [
@@ -521,7 +655,8 @@
         isAuto: true,
       }));
 
-      const SPACING = 0.9;
+      let spacing = 0.9;
+      let containerOpacity = 0.1;
       const BASE_Y = 0.6;
       const BOX_THICKNESS = 0.24;
       const BOX_TOP_TEXT_Y = BOX_THICKNESS / 2 + 0.01;
@@ -655,7 +790,7 @@
         }
 
         const slots = new Array(layerDefs.length).fill(-1);
-        // 容器不占垂直 slot；六个盒子始终使用连续的 0–5，保证相邻间距都是 SPACING。
+        // 容器不占垂直 slot；六个盒子始终使用连续的 0–5，保证相邻间距一致。
         paintContext()
           .filter((idx) => !CONTAINER_INDEXES.includes(idx))
           .forEach((idx, slot) => {
@@ -665,7 +800,7 @@
       }
 
       function getYFromSlot(slot) {
-        return BASE_Y + slot * SPACING;
+        return BASE_Y + slot * spacing;
       }
 
       // --- 3D 纹理与几何体 ---
@@ -955,7 +1090,7 @@
         const wrapperMat = new THREE.MeshPhongMaterial({
           color: 0xffffff,
           transparent: true,
-          opacity: 0.1,
+          opacity: containerOpacity,
           side: THREE.DoubleSide,
           shininess: 20,
           depthWrite: false,
@@ -1088,8 +1223,8 @@
         const edges = wrapperEdges[containerIdx];
         const mesh = wrapperMeshes[containerIdx];
         if (!edges || !mesh) return;
-        edges.material.opacity = isHovered ? 0.75 : 0.35;
-        mesh.material.opacity = isHovered ? 0.18 : 0.1;
+        edges.material.opacity = isHovered ? 1 : 0.5;
+        mesh.material.opacity = isHovered ? Math.min(containerOpacity + 0.08, 1) : containerOpacity;
       }
 
       function clearWrapperHover() {
@@ -1220,9 +1355,9 @@
         const positioned = states.map((s) => s.positioned);
 
         if (layerGroups.length === 0) {
-          CONTAINER_INDEXES.forEach((containerIdx, i) => {
+          CONTAINER_INDEXES.forEach((containerIdx) => {
             const containerGroup = createContainerWrapper(containerIdx);
-            containerGroup.position.set(0, BASE_Y, i === 0 ? 0 : 2);
+            containerGroup.position.set(0, BASE_Y, 0);
             scene.add(containerGroup);
           });
 
@@ -1237,15 +1372,10 @@
             const containerIdx = CONTAINER_INDEXES.find((idx) => hierarchy.childrenByContainer.get(idx).includes(index));
             if (containerIdx !== undefined) {
               const containerGroup = containerGroups[containerIdx];
-              const siblings = hierarchy.childrenByContainer.get(containerIdx);
-              group.position.set(
-                siblings.indexOf(index) - (siblings.length - 1) / 2,
-                getYFromSlot(slot) - containerGroup.position.y,
-                0,
-              );
+              group.position.set(0, getYFromSlot(slot) - containerGroup.position.y, 0);
               containerGroup.add(group);
             } else {
-              group.position.set(index === 0 ? -2.2 : index === 4 ? 2.2 : 0, getYFromSlot(slot), -1);
+              group.position.set(0, getYFromSlot(slot), 0);
               scene.add(group);
             }
 
@@ -1573,6 +1703,85 @@
         });
       });
 
+      const spacingInput = document.getElementById("spacing-input");
+
+      function setSpacing(value) {
+        const nextSpacing = Math.max(0, Math.round(value * 20) / 20);
+        spacingInput.value = String(nextSpacing);
+        spacing = nextSpacing;
+        refreshScene();
+      }
+
+      function bindAutoRepeatButton(id, action) {
+        const button = document.getElementById(id);
+        let startTimer = null;
+        let repeatTimer = null;
+
+        function stopAutoRepeat() {
+          clearTimeout(startTimer);
+          clearInterval(repeatTimer);
+          startTimer = null;
+          repeatTimer = null;
+        }
+
+        button.addEventListener("pointerdown", (event) => {
+          if (event.button !== 0) return;
+          stopAutoRepeat();
+          action();
+          startTimer = setTimeout(() => {
+            action();
+            repeatTimer = setInterval(action, 200);
+          }, 500);
+        });
+        button.addEventListener("pointerleave", stopAutoRepeat);
+        button.addEventListener("pointerup", stopAutoRepeat);
+        button.addEventListener("pointercancel", stopAutoRepeat);
+        window.addEventListener("pointerup", stopAutoRepeat);
+        button.addEventListener("click", (event) => {
+          if (event.detail === 0) action();
+        });
+      }
+
+      bindAutoRepeatButton("spacing-decrease", () => setSpacing(spacing - 0.05));
+      bindAutoRepeatButton("spacing-increase", () => setSpacing(spacing + 0.05));
+      spacingInput.addEventListener("input", () => {
+        const value = spacingInput.valueAsNumber;
+        if (!Number.isFinite(value) || value < 0) return;
+        spacing = value;
+        refreshScene();
+      });
+      spacingInput.addEventListener("change", () => {
+        setSpacing(Number.isFinite(spacingInput.valueAsNumber) ? spacingInput.valueAsNumber : spacing);
+      });
+
+      const containerOpacityInput = document.getElementById("container-opacity-input");
+
+      function applyContainerOpacity(value) {
+        containerOpacity = value;
+        wrapperMeshes.forEach((mesh) => {
+          if (mesh) mesh.material.opacity = value;
+        });
+      }
+
+      function setContainerOpacity(value) {
+        const nextOpacity = Math.min(1, Math.max(0, Math.round(value * 20) / 20));
+        containerOpacityInput.value = String(nextOpacity);
+        applyContainerOpacity(nextOpacity);
+      }
+
+      bindAutoRepeatButton("container-opacity-decrease", () => setContainerOpacity(containerOpacity - 0.05));
+      bindAutoRepeatButton("container-opacity-increase", () => setContainerOpacity(containerOpacity + 0.05));
+      containerOpacityInput.addEventListener("input", () => {
+        const value = containerOpacityInput.valueAsNumber;
+        if (!Number.isFinite(value) || value < 0 || value > 1) return;
+        applyContainerOpacity(value);
+      });
+      containerOpacityInput.addEventListener("change", () => {
+        setContainerOpacity(
+          Number.isFinite(containerOpacityInput.valueAsNumber) ? containerOpacityInput.valueAsNumber : containerOpacity,
+        );
+      });
+
       // --- 面板垂直拖拽 ---
       let panelDrag = null;
 
@@ -1883,13 +2092,6 @@
       });
       const particles = new THREE.Points(particlesGeo, particlesMat);
       scene.add(particles);
-
-      // 垂直轴线
-      const zAxisLineMaterial = new THREE.LineBasicMaterial({ color: 0x88aaff, transparent: true, opacity: 0.2 });
-      const zAxisPoints = [new THREE.Vector3(0, -4, 0), new THREE.Vector3(0, 40, 0)];
-      const zAxisGeometry = new THREE.BufferGeometry().setFromPoints(zAxisPoints);
-      const zAxisLine = new THREE.Line(zAxisGeometry, zAxisLineMaterial);
-      scene.add(zAxisLine);
 
       // --- 动画循环 ---
       function animate() {

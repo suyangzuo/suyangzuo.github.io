@@ -1,5 +1,5 @@
 figure[data-desc="层叠上下文"] {
-  height: 800px;
+  height: max(700px, 75vh);
 }
 
 figure[data-desc*="层叠"]:has(iframe) {
