@@ -328,6 +328,7 @@
           background 0.1s;
       }
 
+      input[type="range"]:active::-moz-range-thumb,
       input[type="range"]::-moz-range-thumb:hover {
         transform: scale(1.15);
         box-shadow:
@@ -335,6 +336,7 @@
           0 0 0 3px #2a7fff;
       }
 
+      input[type="range"]:active::-webkit-slider-thumb,
       input[type="range"]::-webkit-slider-thumb:hover {
         transform: scale(1.15);
         box-shadow:
@@ -342,13 +344,25 @@
           0 0 0 3px #2a7fff;
       }
 
-      input[type="range"]::-webkit-slider-thumb:active {
+      input[type="range"]:active::-webkit-slider-thumb {
         cursor: grabbing;
-        transform: scale(1.05);
+        transform: scale(1.15);
+      }
+
+      input[type="range"]:active::-moz-range-thumb {
+        cursor: grabbing;
+        transform: scale(1.15);
+      }
+
+      .debounce-demo-group {
+        margin-top: 36px;
+        padding: 20px;
+        background-color: #fff1;
+        border-radius: 12px;
       }
 
       .value-slider-container {
-        margin: 36px 0 0;
+        margin: 0;
       }
 
       .value-slider-header {
@@ -396,6 +410,7 @@
         /* (5 - 20) / 2 = -7.5，接近 -7 居中 */
       }
 
+      input[type="range"].value-range:active::-webkit-slider-thumb,
       input[type="range"].value-range::-webkit-slider-thumb:hover {
         transform: scale(1.15);
         box-shadow:
@@ -431,11 +446,54 @@
           background 0.1s;
       }
 
+      input[type="range"].value-range:active::-moz-range-thumb,
       input[type="range"].value-range::-moz-range-thumb:hover {
         transform: scale(1.15);
         box-shadow:
           0 4px 18px color-mix(in srgb, var(--thumb-color, var(--value-accent)) 60%, transparent),
           0 0 0 3px var(--thumb-color, var(--value-accent));
+      }
+
+      .text-input-container {
+        margin-top: 0;
+      }
+
+      .text-input-header {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        color: #a0b2c6;
+        margin-bottom: 8px;
+        font-weight: 500;
+        letter-spacing: 0.2px;
+      }
+
+      .text-input {
+        display: block;
+        width: 100%;
+        min-height: 96px;
+        padding: 12px 14px;
+        resize: vertical;
+        border: 1px solid #2b3a4a;
+        border-radius: 8px;
+        outline: none;
+        background: #101720;
+        color: #e8edf2;
+        font: inherit;
+        font-size: 14px;
+        line-height: 1.6;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+
+      .text-input::placeholder {
+        color: #5e7185;
+      }
+
+      .text-input:focus {
+        border-color: #2a7fff;
+        box-shadow: 0 0 0 3px #2a7fff20;
       }
 
       .status-hint {
@@ -515,14 +573,24 @@
         </div>
       </div>
 
-      <!-- 值滑块 (0-500) -->
-      <div class="value-slider-container">
-        <div class="value-slider-header">
-          <span>拖动更新数值</span>
+      <!-- 防抖输入演示区 -->
+      <div class="debounce-demo-group">
+        <!-- 值滑块 (0-500) -->
+        <div class="value-slider-container">
+          <div class="value-slider-header">
+            <span>拖动更新数值</span>
+          </div>
+          <input type="range" id="valueSlider" class="value-range" min="0" max="500" value="0" step="1" />
+          <div class="status-hint">
+            <span class="debounce-state" id="debounceStateHint">防抖生效中</span>
+          </div>
         </div>
-        <input type="range" id="valueSlider" class="value-range" min="0" max="500" value="0" step="1" />
-        <div class="status-hint">
-          <span class="debounce-state" id="debounceStateHint">防抖生效中</span>
+
+        <div class="text-input-container">
+          <div class="text-input-header">
+            <label for="textInput">输入文本</label>
+          </div>
+          <textarea id="textInput" class="text-input" placeholder="请输入文本…"></textarea>
         </div>
       </div>
     </div>
@@ -531,26 +599,31 @@
       (function () {
         // --- DOM 元素 ---
         const counterEl = document.getElementById("counterDisplay");
+        const counterLabel = document.querySelector(".counter-label");
         const progressFill = document.getElementById("progressFill");
         const progressTimeNumber = document.getElementById("progressTimeNumber");
         const sliderValueNumber = document.getElementById("sliderValueNumber");
         const delaySlider = document.getElementById("delaySlider");
         const debounceCheckbox = document.getElementById("debounceCheckbox");
         const valueSlider = document.getElementById("valueSlider");
+        const textInput = document.getElementById("textInput");
         const debounceStateHint = document.getElementById("debounceStateHint");
 
         // --- 状态 ---
-        let currentValue = 0;
         let delay = 1000;
         let isDebounceMode = true;
+        let isComposing = false;
 
         // 防抖相关
         let timerId = null;
         let rafId = null;
         let startTime = 0;
 
-        // 滑块输入最新值
+        // 当前输入来源及待提交值
+        let pendingInputType = "slider";
         let pendingValue = 0;
+        let previousSliderValue = 0;
+        let previousTextLength = 0;
 
         // --- 工具函数 ---
 
@@ -638,11 +711,23 @@
         }
 
         function setDisplayValue(val) {
-          currentValue = val;
           counterEl.textContent = val;
         }
 
+        function updateCounterLabel(inputType) {
+          counterLabel.textContent = inputType === "text" ? "字数" : "数值";
+        }
+
+        function getTextLength() {
+          return Array.from(textInput.value).length;
+        }
+
         function updateDebounceHint() {
+          if (isComposing) {
+            debounceStateHint.textContent = "中文输入中…";
+            return;
+          }
+
           if (isDebounceMode) {
             if (timerId !== null) {
               debounceStateHint.textContent = "防抖等待中…";
@@ -713,8 +798,17 @@
 
         function onValueSliderInput(e) {
           const newVal = Number(e.target.value);
+          const isSwitchingFromText = pendingInputType === "text";
           updateValueSliderFill();
+
+          if (isSwitchingFromText) {
+            setDisplayValue(previousSliderValue);
+          }
+
+          pendingInputType = "slider";
           pendingValue = newVal;
+          previousSliderValue = newVal;
+          updateCounterLabel(pendingInputType);
 
           if (isDebounceMode) {
             startDebounceCycle();
@@ -726,26 +820,56 @@
           }
         }
 
+        function onTextInput(e) {
+          const isCompositionInput = e?.inputType === "insertCompositionText" || e?.inputType === "insertFromComposition";
+          if (isComposing || e?.isComposing || isCompositionInput) return;
+
+          const newTextLength = getTextLength();
+          const isSwitchingFromSlider = pendingInputType === "slider";
+
+          if (isSwitchingFromSlider) {
+            setDisplayValue(previousTextLength);
+          }
+
+          pendingInputType = "text";
+          pendingValue = newTextLength;
+          previousTextLength = newTextLength;
+          updateCounterLabel(pendingInputType);
+
+          if (isDebounceMode) {
+            startDebounceCycle();
+          } else {
+            setDisplayValue(pendingValue);
+            clearAllTimers();
+            resetProgressBar();
+            updateDebounceHint();
+          }
+        }
+
+        function onCompositionStart() {
+          isComposing = true;
+          updateDebounceHint();
+        }
+
+        function onCompositionEnd() {
+          isComposing = false;
+          onTextInput();
+        }
+
         function onDebounceToggle() {
           const newMode = debounceCheckbox.checked;
           if (newMode === isDebounceMode) return;
 
+          const hasPendingValue = timerId !== null;
           isDebounceMode = newMode;
+
+          if (!isDebounceMode && hasPendingValue) {
+            setDisplayValue(pendingValue);
+          }
 
           clearAllTimers();
           resetProgressBar();
-          pendingValue = Number(valueSlider.value);
-
-          if (isDebounceMode) {
-            if (pendingValue !== currentValue) {
-              startDebounceCycle();
-            } else {
-              updateDebounceHint();
-            }
-          } else {
-            setDisplayValue(pendingValue);
-            updateDebounceHint();
-          }
+          updateDebounceHint();
         }
 
         function onDelayChange(value) {
@@ -755,7 +879,6 @@
           updateDelaySliderFill();
 
           if (isDebounceMode && timerId !== null) {
-            pendingValue = Number(valueSlider.value);
             startDebounceCycle();
           } else if (isDebounceMode && timerId === null) {
             updateDebounceHint();
@@ -774,7 +897,11 @@
 
           valueSlider.value = "0";
           updateValueSliderFill();
+          pendingInputType = "slider";
           pendingValue = 0;
+          previousSliderValue = 0;
+          previousTextLength = 0;
+          updateCounterLabel(pendingInputType);
           setDisplayValue(0);
           updateDebounceHint();
           resetProgressBar();
@@ -793,6 +920,9 @@
           });
 
           valueSlider.addEventListener("input", onValueSliderInput);
+          textInput.addEventListener("input", onTextInput);
+          textInput.addEventListener("compositionstart", onCompositionStart);
+          textInput.addEventListener("compositionend", onCompositionEnd);
 
           updateDebounceHint();
           progressTimeNumber.textContent = "0";

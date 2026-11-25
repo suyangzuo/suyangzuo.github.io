@@ -8,7 +8,12 @@
       </p>
       <p class="日期">
         <span class="日期前缀 前缀">日期：</span>
-        <span class="日期文本">待定</span>
+        <span class="日期文本"
+          ><span class="日期文本-数字 日期文本-年">2026</span>年<span class="日期文本-数字 日期文本-月">11</span>月<span
+            class="日期文本-数字 日期文本-日"
+            >25</span
+          >日</span
+        >
       </p>
     </section>
     <section class="简介信息图像">
@@ -79,7 +84,122 @@
   <article class="正文分区">
     <h2 class="分区标题 分区2级标题">层叠上下文</h2>
 
-    <h3 class="分区标题 分区3级标题">案例</h3>
+    <h3 class="分区标题 分区3级标题">层叠</h3>
+    <p class="分区普通文本">
+      在页面上，元素有自身的<span class="行内专业名词">宽</span><span class="附加说明 等宽">width</span>和<span
+        class="行内专业名词"
+        >高</span
+      ><span class="附加说明 等宽">height</span>，相当于<span class="行内专业名词 等宽">X</span>轴和<span
+        class="行内专业名词 等宽"
+        >Y</span
+      >轴。现在，想象一条从元素到用户眼睛的轴，这条轴就是<span class="行内专业名词 等宽">Z</span>轴，元素在<span
+        class="行内专业名词 等宽"
+        >Z</span
+      >轴上有一个位置，这个位置就是<span class="行内专业名词">层叠顺序</span>。
+    </p>
+    <figure class="截图容器" data-desc="Z轴示意图">
+      <img src="./Images/Z轴示意图.png" alt="Z轴示意图" />
+    </figure>
+    <p class="分区普通文本">
+      当这些元素重叠时，谁会遮住谁？谁在上<span class="附加说明">离眼睛近</span>？谁在下<span class="附加说明"
+        >离眼睛远</span
+      >？这里面有一套规则，即<span class="行内专业名词">层叠规则</span>，应用这套规则的<span class="行内专业名词"
+        >情境</span
+      >，就是<span class="行内专业名词">层叠上下文</span>。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">上下文</h3>
+    <p class="分区普通文本">
+      我们在编程领域经常会听到<span class="行内专业名词">上下文</span>这个词，其实它和现实生活中的<span
+        class="行内专业名词"
+        >上下文</span
+      >是一样的意思，指的是<span class="行内专业名词">情境</span>，没有<span class="行内专业名词">情境</span
+      >，很多事物都毫无意义。
+    </p>
+    <p class="分区普通文本">
+      举个生活中的例子：我拿了比赛<span class="专业名词 等宽">第1名</span
+      >，如果只有这么一句，会让人觉得莫名其妙，因为<span class="强调">缺少情境</span>。这个第<span class="等宽">1</span
+      >名，是什么比赛的第<span class="等宽">1</span>名？是校运会的第<span class="等宽">1</span>名，还是亚运会的第<span
+        class="等宽"
+        >1</span
+      >名？或者是奥运会的第<span class="等宽">1</span
+      >名？是游泳还是短跑？没有这些具体的信息，名次毫无意义。这些具体的信息，共同构成了<span class="行内专业名词"
+        >情境</span
+      >，也就是<span class="行内专业名词">上下文</span>。
+    </p>
+    <p class="分区普通文本">
+      编程领域，也是如此。比如，某个元素顺位是<span class="行内专业名词">5</span>，是在全部页面元素中排第<span
+        class="等宽"
+        >5</span
+      >，还是在某个容器内排第<span class="等宽">5</span>？不同的上下文，<span class="行内专业名词">5</span
+      >的意义是不一样的。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">创建层叠上下文</h3>
+    <p class="分区普通文本">在以下情况下，元素会创建一个新的<span class="行内专业名词">层叠上下文</span>：</p>
+    <ul class="分区列表">
+      <li class="分区列表项">
+        <h4>
+          根元素<span class="附加说明 等宽">&lt;<span class="行内代码" style="margin: 0">html</span>&gt;</span>
+        </h4>
+      </li>
+      <li class="分区列表项">
+        <h4>
+          相对定位<span class="次要">或</span>绝对定位，且<span class="行内代码">z-index</span
+          ><span class="强调" style="margin-left: 0">不是</span><span class="行内代码">auto</span>
+        </h4>
+      </li>
+      <li class="分区列表项">
+        <h4>固定定位<span class="次要">或</span>粘滞定位</h4>
+      </li>
+      <li class="分区列表项">
+        <h4>
+          <span class="行内专业名词">弹性布局</span><span class="次要">或</span
+          ><span class="行内专业名词">网格布局</span>的<span class="行内专业名词">子元素</span>，且<span
+            class="行内代码"
+            >z-index</span
+          ><span class="强调" style="margin-left: 0">不是</span><span class="行内代码">auto</span>
+        </h4>
+      </li>
+      <li class="分区列表项">
+        <h4>不透明度<span class="代码"><= 1</span></h4>
+      </li>
+      <li class="分区列表项">
+        <h4 style="font-weight: normal">以下属性<span class="强调">不是</span><span class="行内代码">none</span></h4>
+        <ul class="分区列表" style="margin-bottom: 0">
+          <li class="分区列表项">
+            <span class="代码">transform</span>
+          </li>
+          <li class="分区列表项">
+            <span class="代码">filter</span><span class="次要">或</span><span class="代码">backdrop-filter</span>
+          </li>
+          <li class="分区列表项">
+            <span class="代码">clip-path</span>
+          </li>
+          <li class="分区列表项">
+            <span class="代码">perspective</span>
+          </li>
+          <li class="分区列表项">
+            <span class="代码">mask</span>
+          </li>
+        </ul>
+      </li>
+      <li class="分区列表项">
+        <h4 class="等宽">
+          isolation<span class="次要">:</span> <span class="行内代码" style="font-size: 1em">isolate</span>
+        </h4>
+      </li>
+      <li class="分区列表项">
+        <h4 class="等宽">mix-blend-mode<span class="强调">不是</span><span class="行内代码">normal</span></h4>
+      </li>
+    </ul>
+  </article>
+
+  <article class="正文分区">
+    <h2 class="分区标题 分区2级标题">层叠规则</h2>
+
+    <h3 class="分区标题 分区3级标题">范例</h3>
+    <p class="分区普通文本">在下面的示例中，调整各种属性，观察层叠顺序的变化，了解层叠规则。</p>
     <figure class="截图容器" data-desc="层叠上下文">
       <iframe class="层叠上下文3D" src="./层叠上下文.html" title="层叠上下文"></iframe>
     </figure>

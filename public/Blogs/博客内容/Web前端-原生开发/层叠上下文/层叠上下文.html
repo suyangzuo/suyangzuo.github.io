@@ -56,7 +56,10 @@
         border: none;
         background: #202635;
         color: #c8d4ff;
-        font: 600 18px/1 "Google Sans Code", Consolas, sans-serif;
+        font:
+          600 18px/1 "Google Sans Code",
+          Consolas,
+          sans-serif;
         cursor: pointer;
         transition:
           background 0.15s,
@@ -85,7 +88,10 @@
         outline: none;
         background: #0c101c;
         color: #eef1ff;
-        font: 13px "Google Sans Code", Consolas, sans-serif;
+        font:
+          13px "Google Sans Code",
+          Consolas,
+          sans-serif;
         text-align: center;
         appearance: textfield;
         -moz-appearance: textfield;
@@ -97,6 +103,9 @@
       }
       .container-opacity-control {
         top: 72px;
+      }
+      .rotation-damping-control {
+        top: 110px;
       }
       #panel {
         position: absolute;
@@ -388,6 +397,7 @@
         width: 220px;
         height: fit-content;
         border-radius: 8px;
+        user-select: none;
       }
       .code-block .tag {
         color: #7ec8ff;
@@ -420,17 +430,65 @@
     <div class="spacing-control">
       <label for="spacing-input">间隔距离</label>
       <div class="spacing-input-wrap">
-        <button class="spacing-btn" id="spacing-decrease" type="button" aria-label="减少间隔距离" title="减少">−</button>
+        <button class="spacing-btn" id="spacing-decrease" type="button" aria-label="减少间隔距离" title="减少">
+          −
+        </button>
         <input class="spacing-input" id="spacing-input" type="number" min="0" step="0.05" value="0.9" />
-        <button class="spacing-btn" id="spacing-increase" type="button" aria-label="增加间隔距离" title="增加">+</button>
+        <button class="spacing-btn" id="spacing-increase" type="button" aria-label="增加间隔距离" title="增加">
+          +
+        </button>
       </div>
     </div>
     <div class="spacing-control container-opacity-control">
       <label for="container-opacity-input">容器不透明度</label>
       <div class="spacing-input-wrap">
-        <button class="spacing-btn" id="container-opacity-decrease" type="button" aria-label="减少容器不透明度" title="减少">−</button>
-        <input class="spacing-input" id="container-opacity-input" type="number" min="0" max="1" step="0.05" value="0.1" />
-        <button class="spacing-btn" id="container-opacity-increase" type="button" aria-label="增加容器不透明度" title="增加">+</button>
+        <button
+          class="spacing-btn"
+          id="container-opacity-decrease"
+          type="button"
+          aria-label="减少容器不透明度"
+          title="减少"
+        >
+          −
+        </button>
+        <input
+          class="spacing-input"
+          id="container-opacity-input"
+          type="number"
+          min="0"
+          max="1"
+          step="0.05"
+          value="0.1"
+        />
+        <button
+          class="spacing-btn"
+          id="container-opacity-increase"
+          type="button"
+          aria-label="增加容器不透明度"
+          title="增加"
+        >
+          +
+        </button>
+      </div>
+    </div>
+    <div class="spacing-control rotation-damping-control">
+      <label for="rotation-damping-input">旋转阻尼</label>
+      <div class="spacing-input-wrap">
+        <button class="spacing-btn" id="rotation-damping-decrease" type="button" aria-label="减少旋转阻尼" title="减少">
+          −
+        </button>
+        <input
+          class="spacing-input"
+          id="rotation-damping-input"
+          type="number"
+          min="0.01"
+          max="0.2"
+          step="0.01"
+          value="0.05"
+        />
+        <button class="spacing-btn" id="rotation-damping-increase" type="button" aria-label="增加旋转阻尼" title="增加">
+          +
+        </button>
       </div>
     </div>
 
@@ -532,8 +590,8 @@
       scene.fog = new THREE.FogExp2(0x0a0a18, 0.02);
 
       const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.set(8, 6, 12);
-      camera.lookAt(0, 2, 0);
+      camera.position.set(8, 3, 12);
+      camera.lookAt(0, 0, 0);
 
       const renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setSize(window.innerWidth, window.innerHeight);
@@ -550,10 +608,65 @@
       controls.enableZoom = true;
       controls.zoomSpeed = 1.2;
       controls.rotateSpeed = 0.8;
-      controls.target.set(0, 3, 0);
+      controls.enablePan = false;
+      controls.target.set(0, 0, 0);
       controls.maxPolarAngle = Math.PI;
       controls.minDistance = 5;
       controls.maxDistance = 30;
+
+      // 右键平移只改变视口偏移，旋转目标始终保持在坐标轴原点。
+      const initialViewCamera = camera.clone();
+      initialViewCamera.position.set(8, 6, 12);
+      initialViewCamera.lookAt(0, 3, 0);
+      initialViewCamera.updateMatrixWorld();
+      const initialAxisOrigin = new THREE.Vector3().project(initialViewCamera);
+      let cameraViewOffsetX = (initialAxisOrigin.x * window.innerWidth) / 2;
+      let cameraViewOffsetY = (initialAxisOrigin.y * window.innerHeight) / 2;
+      let cameraPan = null;
+
+      function updateCameraViewOffset() {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        camera.setViewOffset(width, height, cameraViewOffsetX, cameraViewOffsetY, width, height);
+      }
+
+      updateCameraViewOffset();
+
+      renderer.domElement.addEventListener(
+        "pointerdown",
+        (event) => {
+          if (event.button !== 2 || !controls.enabled) return;
+          cameraPan = {
+            pointerId: event.pointerId,
+            startX: event.clientX,
+            startY: event.clientY,
+            offsetX: cameraViewOffsetX,
+            offsetY: cameraViewOffsetY,
+          };
+          renderer.domElement.setPointerCapture(event.pointerId);
+        },
+        { capture: true },
+      );
+
+      window.addEventListener("pointermove", (event) => {
+        if (!cameraPan || event.pointerId !== cameraPan.pointerId) return;
+        cameraViewOffsetX = cameraPan.offsetX - (event.clientX - cameraPan.startX);
+        cameraViewOffsetY = cameraPan.offsetY - (event.clientY - cameraPan.startY);
+        updateCameraViewOffset();
+      });
+
+      function finishCameraPan(event) {
+        if (!cameraPan || (event.type === "pointerup" && event.button !== 2)) return;
+        if (event.type !== "blur" && event.pointerId !== cameraPan.pointerId) return;
+        try {
+          renderer.domElement.releasePointerCapture(cameraPan.pointerId);
+        } catch (_) {}
+        cameraPan = null;
+      }
+
+      window.addEventListener("pointerup", finishCameraPan);
+      window.addEventListener("pointercancel", finishCameraPan);
+      window.addEventListener("blur", finishCameraPan);
 
       // --- 灯光 ---
       const ambientLight = new THREE.AmbientLight(0x404060);
@@ -606,12 +719,11 @@
         const material = new THREE.SpriteMaterial({
           map: texture,
           transparent: true,
-          depthTest: false,
+          depthTest: true,
           depthWrite: false,
         });
         const label = new THREE.Sprite(material);
         label.scale.set(0.72, 0.72, 1);
-        label.renderOrder = 20;
         return label;
       }
 
@@ -681,6 +793,7 @@
       const containerGroups = new Array(layerDefs.length).fill(null);
       const wrapperMeshes = new Array(layerDefs.length).fill(null);
       const wrapperEdges = new Array(layerDefs.length).fill(null);
+      const containerLabels = new Array(layerDefs.length).fill(null);
 
       // --- 辅助函数 ---
 
@@ -864,21 +977,29 @@
       }
 
       // 创建序号纹理（支持可变宽度，避免中文+数字溢出）
-      function createIndexTexture(label) {
-        // 把 "盒子N" 拆成 "盒子" 与 "N"，中间留 4px 间距
-        const match = label.match(/^盒子(.+)$/);
-        const parts = match ? ["盒子", match[1]] : [label];
-        // "盒子" 用灰色，数字统一用白色；容器的 "容" 整段白色
+      function createIndexTexture(label, fontSize = 24, isPositioned = null, zIndex = null, textureScale = 1) {
+        // 把 "盒子N" 或 "容器N" 拆成文字与数字，中间留 4px 间距
+        const match = label.match(/^(盒子|容器)(.+)$/);
+        const parts = match ? [match[1], match[2]] : [label];
         const colors = match ? ["#b0b6c0", "#ffffff"] : parts.map(() => "#ffffff");
-        const GAP = 4;
+        const gaps = match ? [4] : [];
+        if (typeof isPositioned === "boolean") {
+          parts.push(isPositioned ? "定位" : "非定位");
+          colors.push(isPositioned ? "#aaccff" : "#b0b6c0");
+          gaps.push(12);
+          if (isPositioned) {
+            parts.push(String(zIndex ?? "auto"));
+            colors.push("#ffffff");
+            gaps.push(12);
+          }
+        }
 
         const measureCanvas = document.createElement("canvas");
         const measureCtx = measureCanvas.getContext("2d");
-        const fontSize = 24;
         const font = `bold ${fontSize}px "Google Sans Code", Consolas, "微软雅黑", sans-serif`;
         measureCtx.font = font;
         const partWidths = parts.map((p) => measureCtx.measureText(p).width);
-        const textWidth = partWidths.reduce((a, b) => a + b, 0) + (parts.length - 1) * GAP;
+        const textWidth = partWidths.reduce((a, b) => a + b, 0) + gaps.reduce((total, gap) => total + gap, 0);
 
         const paddingX = 24;
         const paddingY = 18;
@@ -886,27 +1007,78 @@
         const canvasHeight = Math.ceil(fontSize * 1.3 + paddingY * 2);
 
         const canvas = document.createElement("canvas");
-        canvas.width = canvasWidth;
-        canvas.height = canvasHeight;
+        canvas.width = canvasWidth * textureScale;
+        canvas.height = canvasHeight * textureScale;
         const ctx = canvas.getContext("2d");
+        ctx.scale(textureScale, textureScale);
         ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
         ctx.font = font;
         ctx.textAlign = "left";
         ctx.textBaseline = "middle";
         ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
-        ctx.shadowBlur = 12;
+        ctx.shadowBlur = textureScale > 1 ? 4 : 12;
         let x = (canvasWidth - textWidth) / 2;
         parts.forEach((p, i) => {
           ctx.fillStyle = colors[i];
           ctx.fillText(p, x, canvasHeight / 2);
-          x += partWidths[i] + GAP;
+          x += partWidths[i] + (gaps[i] ?? 0);
         });
         ctx.shadowColor = "transparent";
 
         const texture = new THREE.CanvasTexture(canvas);
         texture.needsUpdate = true;
-        texture.userData = { aspect: canvasWidth / canvasHeight };
+        texture.userData = {
+          aspect: canvasWidth / canvasHeight,
+          paddingX: (canvasWidth - textWidth) / 2,
+          width: canvasWidth,
+          height: canvasHeight,
+        };
+        return texture;
+      }
+
+      function createStatusTexture(isPositioned, paddingX) {
+        const canvas = document.createElement("canvas");
+        canvas.width = 192;
+        canvas.height = 68;
+        const ctx = canvas.getContext("2d");
+        ctx.font = 'bold 24px "Google Sans Code", Consolas, "微软雅黑", sans-serif';
+        ctx.textAlign = "right";
+        ctx.textBaseline = "middle";
+        ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
+        ctx.shadowBlur = 12;
+        ctx.fillStyle = isPositioned ? "#aaccff" : "#b0b6c0";
+        const text = isPositioned ? "定位" : "非定位";
+        ctx.fillText(text, canvas.width - paddingX, canvas.height / 2);
+
+        const texture = new THREE.CanvasTexture(canvas);
+        texture.needsUpdate = true;
+        texture.userData = { aspect: canvas.width / canvas.height };
+        return texture;
+      }
+
+      function createSideZTextTexture(zIndex) {
+        const text = String(zIndex ?? "auto");
+        const font = '600 24px "Google Sans Code", Consolas, "微软雅黑", sans-serif';
+        const measureCanvas = document.createElement("canvas");
+        const measureCtx = measureCanvas.getContext("2d");
+        measureCtx.font = font;
+
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.ceil(measureCtx.measureText(text).width) + 24;
+        canvas.height = 68;
+        const ctx = canvas.getContext("2d");
+        ctx.font = font;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
+        ctx.shadowBlur = 12;
+        ctx.fillStyle = "#ffffff";
+        ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+
+        const texture = new THREE.CanvasTexture(canvas);
+        texture.needsUpdate = true;
+        texture.userData = { aspect: canvas.width / canvas.height };
         return texture;
       }
 
@@ -941,11 +1113,11 @@
         );
         group.add(line);
 
-        // z-index 文本：只在 positioned 且 zIndex 非 auto 时显示
+        // z-index 文本：定位时显示，包括 z-index: auto
         let zText = null;
         let zTexture = null;
-        if (zIndex !== null && isPositioned) {
-          const textStr = `z-index: ${zIndex}`;
+        if (isPositioned) {
+          const textStr = `z-index: ${zIndex ?? "auto"}`;
           const colorStr = "#" + def.color.toString(16).padStart(6, "0");
           zTexture = createZTextTexture(textStr, colorStr);
           const zAspect = zTexture.userData.aspect;
@@ -979,30 +1151,86 @@
           depthTest: true,
         });
         const idxMesh = new THREE.Mesh(idxGeo, idxMat);
-        idxMesh.position.set(
-          -def.size * 0.5 + idxWidth * 0.5,
-          BOX_TOP_TEXT_Y,
-          -def.size * 0.5 + idxHeight * 0.5,
-        );
+        idxMesh.position.set(-def.size * 0.5 + idxWidth * 0.5, BOX_TOP_TEXT_Y, -def.size * 0.5 + idxHeight * 0.5);
         idxMesh.rotation.x = -Math.PI / 2;
         idxMesh.renderOrder = 5;
         group.add(idxMesh);
 
-        // 前面（+Z）和右面（+X）使用与顶视图相同的纹理和文字配色。
+        const statusTexture = createStatusTexture(isPositioned, idxTexture.userData.paddingX);
+        const statusAspect = statusTexture.userData.aspect;
+        const statusMat = new THREE.MeshBasicMaterial({
+          map: statusTexture,
+          transparent: true,
+          side: THREE.DoubleSide,
+          depthWrite: false,
+          depthTest: true,
+        });
+
+        const topStatusHeight = idxHeight;
+        const topStatusWidth = topStatusHeight * statusAspect;
+        const topStatusMesh = new THREE.Mesh(new THREE.PlaneGeometry(topStatusWidth, topStatusHeight), statusMat);
+        topStatusMesh.position.set(
+          def.size * 0.5 - topStatusWidth * 0.5,
+          BOX_TOP_TEXT_Y,
+          -def.size * 0.5 + topStatusHeight * 0.5,
+        );
+        topStatusMesh.rotation.x = -Math.PI / 2;
+        topStatusMesh.renderOrder = 6;
+        group.add(topStatusMesh);
+
+        // 前面（+Z）和右面（+X）的编号与定位状态分别位于两侧，定位时中间显示 z-index 值。
         const sideIdxHeight = BOX_THICKNESS * 1.44;
         const sideIdxWidth = sideIdxHeight * idxTexture.userData.aspect;
         const sideIdxGeo = new THREE.PlaneGeometry(sideIdxWidth, sideIdxHeight);
+        const sideStatusWidth = sideIdxHeight * statusAspect;
+        const sideIdxX = -def.size / 2 + sideIdxWidth / 2;
+        const sideStatusX = def.size / 2 - sideStatusWidth / 2;
 
         const frontIdxMesh = new THREE.Mesh(sideIdxGeo, idxMat);
-        frontIdxMesh.position.set(0, 0, def.size / 2 + 0.003);
+        frontIdxMesh.position.set(sideIdxX, 0, def.size / 2 + 0.003);
         frontIdxMesh.renderOrder = 5;
         group.add(frontIdxMesh);
 
         const rightIdxMesh = new THREE.Mesh(sideIdxGeo, idxMat);
-        rightIdxMesh.position.set(def.size / 2 + 0.003, 0, 0);
+        rightIdxMesh.position.set(def.size / 2 + 0.003, 0, -sideIdxX);
         rightIdxMesh.rotation.y = Math.PI / 2;
         rightIdxMesh.renderOrder = 5;
         group.add(rightIdxMesh);
+
+        const frontStatusMesh = new THREE.Mesh(new THREE.PlaneGeometry(sideStatusWidth, sideIdxHeight), statusMat);
+        frontStatusMesh.position.set(sideStatusX, 0, def.size / 2 + 0.003);
+        frontStatusMesh.renderOrder = 6;
+        group.add(frontStatusMesh);
+
+        const rightStatusMesh = new THREE.Mesh(new THREE.PlaneGeometry(sideStatusWidth, sideIdxHeight), statusMat);
+        rightStatusMesh.position.set(def.size / 2 + 0.003, 0, -sideStatusX);
+        rightStatusMesh.rotation.y = Math.PI / 2;
+        rightStatusMesh.renderOrder = 6;
+        group.add(rightStatusMesh);
+
+        const sideZTexture = createSideZTextTexture(zIndex);
+        const sideZWidth = sideIdxHeight * sideZTexture.userData.aspect;
+        const sideZGeometry = new THREE.PlaneGeometry(sideZWidth, sideIdxHeight);
+        const sideZMaterial = new THREE.MeshBasicMaterial({
+          map: sideZTexture,
+          transparent: true,
+          side: THREE.DoubleSide,
+          depthWrite: false,
+          depthTest: true,
+        });
+
+        const frontZMesh = new THREE.Mesh(sideZGeometry, sideZMaterial);
+        frontZMesh.position.set(0, 0, def.size / 2 + 0.004);
+        frontZMesh.renderOrder = 5;
+        frontZMesh.visible = isPositioned;
+        group.add(frontZMesh);
+
+        const rightZMesh = new THREE.Mesh(sideZGeometry, sideZMaterial);
+        rightZMesh.position.set(def.size / 2 + 0.004, 0, 0);
+        rightZMesh.rotation.y = Math.PI / 2;
+        rightZMesh.renderOrder = 5;
+        rightZMesh.visible = isPositioned;
+        group.add(rightZMesh);
 
         group.userData = {
           def,
@@ -1012,6 +1240,16 @@
           zText,
           zTexture,
           idxMesh,
+          statusMaterial: statusMat,
+          statusTexture,
+          statusPaddingX: idxTexture.userData.paddingX,
+          statusIsPositioned: isPositioned,
+          sideZMaterial,
+          sideZTexture,
+          sideZGeometry,
+          sideZMeshes: [frontZMesh, rightZMesh],
+          sideZHeight: sideIdxHeight,
+          sideZValue: zIndex ?? "auto",
           label: def.label,
           currentSlot: 0,
         };
@@ -1029,8 +1267,8 @@
         const def = group.userData.def;
         const zText = group.userData.zText;
 
-        // 非定位元素的 z-index 无效，不显示；auto 也不显示
-        if (zIndex === null || !isPositioned) {
+        // 非定位元素的 z-index 无效，不显示
+        if (!isPositioned) {
           if (zText) {
             zText.visible = false;
           }
@@ -1038,7 +1276,7 @@
         }
 
         const colorStr = "#" + def.color.toString(16).padStart(6, "0");
-        const newTexture = createZTextTexture(`z-index: ${zIndex}`, colorStr);
+        const newTexture = createZTextTexture(`z-index: ${zIndex ?? "auto"}`, colorStr);
 
         if (zText) {
           // 更新现有
@@ -1076,11 +1314,72 @@
         }
       }
 
+      function updateStatusText(group, isPositioned) {
+        if (group.userData.statusIsPositioned === isPositioned) return;
+        const newTexture = createStatusTexture(isPositioned, group.userData.statusPaddingX);
+        group.userData.statusTexture.dispose();
+        group.userData.statusTexture = newTexture;
+        group.userData.statusMaterial.map = newTexture;
+        group.userData.statusMaterial.needsUpdate = true;
+        group.userData.statusIsPositioned = isPositioned;
+      }
+
+      function updateSideZText(group, zIndex, isPositioned) {
+        group.userData.sideZMeshes.forEach((mesh) => {
+          mesh.visible = isPositioned;
+        });
+        if (!isPositioned) return;
+        const value = zIndex ?? "auto";
+        if (group.userData.sideZValue === value) return;
+        const newTexture = createSideZTextTexture(zIndex);
+        const newGeometry = new THREE.PlaneGeometry(
+          group.userData.sideZHeight * newTexture.userData.aspect,
+          group.userData.sideZHeight,
+        );
+        group.userData.sideZTexture.dispose();
+        group.userData.sideZGeometry.dispose();
+        group.userData.sideZTexture = newTexture;
+        group.userData.sideZGeometry = newGeometry;
+        group.userData.sideZMeshes.forEach((mesh) => {
+          mesh.geometry = newGeometry;
+        });
+        group.userData.sideZMaterial.map = newTexture;
+        group.userData.sideZMaterial.needsUpdate = true;
+        group.userData.sideZValue = value;
+      }
+
       // --- 容器包裹创建 ---
       // 半透明白色 wrapper 在 XYZ 三个维度上包住当前容器内的全部盒子。
       const WRAPPER_PADDING = 0.12;
       const WRAPPER_BOTTOM = 0.08;
       const WRAPPER_TOP = 0.08;
+      // 修改此值即可调整 3D 场景中“容器+数字”的字号（单位：px）
+      const CONTAINER_LABEL_FONT_SIZE = 16;
+      const CONTAINER_LABEL_TEXTURE_SCALE = 2;
+
+      function createContainerLabelTexture(containerIdx) {
+        const state = states[containerIdx];
+        return createIndexTexture(
+          layerDefs[containerIdx].label,
+          CONTAINER_LABEL_FONT_SIZE,
+          state.positioned,
+          state.isAuto ? null : state.zIndex,
+          CONTAINER_LABEL_TEXTURE_SCALE,
+        );
+      }
+
+      function updateContainerLabelTexture(containerIdx) {
+        const label = containerLabels[containerIdx];
+        const state = states[containerIdx];
+        const stateKey = `${state.positioned}:${state.isAuto}:${state.zIndex}`;
+        if (label.userData.stateKey === stateKey) return;
+
+        const newTexture = createContainerLabelTexture(containerIdx);
+        label.material.map?.dispose();
+        label.material.map = newTexture;
+        label.material.needsUpdate = true;
+        label.userData.stateKey = stateKey;
+      }
 
       function createContainerWrapper(containerIdx) {
         const containerGroup = new THREE.Group();
@@ -1115,6 +1414,17 @@
         edges.renderOrder = 2;
         containerGroup.add(edges);
         wrapperEdges[containerIdx] = edges;
+
+        const labelMaterial = new THREE.SpriteMaterial({
+          transparent: true,
+          depthTest: true,
+          depthWrite: false,
+        });
+        const label = new THREE.Sprite(labelMaterial);
+        label.visible = false;
+        containerLabels[containerIdx] = label;
+        updateContainerLabelTexture(containerIdx);
+        scene.add(label);
 
         return containerGroup;
       }
@@ -1183,6 +1493,64 @@
         edges.geometry = new THREE.EdgesGeometry(newGeo);
       }
 
+      const CONTAINER_LABEL_GAP = -5;
+      const containerCorner = new THREE.Vector3();
+      const labelLeftEdge = new THREE.Vector3();
+      const labelViewPosition = new THREE.Vector3();
+      const cameraRight = new THREE.Vector3();
+
+      function updateContainerLabels() {
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+
+        CONTAINER_INDEXES.forEach((containerIdx) => {
+          const label = containerLabels[containerIdx];
+          const containerGroup = containerGroups[containerIdx];
+          const wrapperMesh = wrapperMeshes[containerIdx];
+          if (!label || !containerGroup || !wrapperMesh) return;
+          label.visible = containerGroup.visible;
+          if (!containerGroup.visible) return;
+
+          if (!wrapperMesh.geometry.boundingBox) wrapperMesh.geometry.computeBoundingBox();
+          const bounds = wrapperMesh.geometry.boundingBox;
+          let maxX = -Infinity;
+          let minY = Infinity;
+          let maxY = -Infinity;
+          let rightmostZ = 0;
+
+          for (const x of [bounds.min.x, bounds.max.x]) {
+            for (const y of [bounds.min.y, bounds.max.y]) {
+              for (const z of [bounds.min.z, bounds.max.z]) {
+                containerCorner.set(x, y, z).applyMatrix4(wrapperMesh.matrixWorld).project(camera);
+                if (containerCorner.x > maxX) {
+                  maxX = containerCorner.x;
+                  rightmostZ = containerCorner.z;
+                }
+                minY = Math.min(minY, containerCorner.y);
+                maxY = Math.max(maxY, containerCorner.y);
+              }
+            }
+          }
+
+          labelLeftEdge
+            .set(maxX + (CONTAINER_LABEL_GAP * 2) / viewportWidth, (minY + maxY) / 2, rightmostZ)
+            .unproject(camera);
+          labelViewPosition.copy(labelLeftEdge).applyMatrix4(camera.matrixWorldInverse);
+          const depth = -labelViewPosition.z;
+          if (depth <= 0) {
+            label.visible = false;
+            return;
+          }
+
+          const texture = label.material.map;
+          const perspectiveScale = 2 * depth * Math.tan(THREE.MathUtils.degToRad(camera.fov * 0.5));
+          const labelHeight = (perspectiveScale * texture.userData.height) / viewportHeight;
+          label.scale.set(labelHeight * texture.userData.aspect, labelHeight, 1);
+          cameraRight.set(1, 0, 0).applyQuaternion(camera.quaternion);
+          label.position.copy(labelLeftEdge).addScaledVector(cameraRight, label.scale.x / 2);
+        });
+      }
+
       // --- 拖拽逻辑 ---
       let hoveredGroup = null;
       let layerGroups = [];
@@ -1196,7 +1564,9 @@
         const planeHits = raycaster.intersectObjects(planes);
         if (planeHits.length > 0) return { type: "plane", obj: planeHits[0].object.parent };
 
-        const visibleWrappers = wrapperMeshes.filter((mesh) => mesh && containerGroups[mesh.userData.containerIdx].visible);
+        const visibleWrappers = wrapperMeshes.filter(
+          (mesh) => mesh && containerGroups[mesh.userData.containerIdx].visible,
+        );
         const wrapperHits = raycaster.intersectObjects(visibleWrappers);
         if (wrapperHits.length > 0) {
           const containerIdx = wrapperHits[0].object.userData.containerIdx;
@@ -1369,7 +1739,9 @@
 
             const group = createLayerGroup(def, zIndices[index], positioned[index]);
             const slot = slots[index];
-            const containerIdx = CONTAINER_INDEXES.find((idx) => hierarchy.childrenByContainer.get(idx).includes(index));
+            const containerIdx = CONTAINER_INDEXES.find((idx) =>
+              hierarchy.childrenByContainer.get(idx).includes(index),
+            );
             if (containerIdx !== undefined) {
               const containerGroup = containerGroups[containerIdx];
               group.position.set(0, getYFromSlot(slot) - containerGroup.position.y, 0);
@@ -1388,7 +1760,9 @@
           scene.updateMatrixWorld(true);
           layerGroups.forEach((group, index) => {
             if (!group) return;
-            const containerIdx = CONTAINER_INDEXES.find((idx) => hierarchy.childrenByContainer.get(idx).includes(index));
+            const containerIdx = CONTAINER_INDEXES.find((idx) =>
+              hierarchy.childrenByContainer.get(idx).includes(index),
+            );
             const targetParent = containerIdx === undefined ? scene : containerGroups[containerIdx];
             if (group.parent !== targetParent) targetParent.attach(group);
           });
@@ -1414,6 +1788,8 @@
             group.userData.zIndex = newZ;
             group.userData.isPositioned = isPos;
             updateZText(group, newZ, isPos);
+            updateStatusText(group, isPos);
+            updateSideZText(group, newZ, isPos);
 
             const plane = group.userData.plane;
             const intensity = newZ !== null ? Math.min(0.1 + Math.abs(newZ) * 0.02, 0.6) : 0.15;
@@ -1427,6 +1803,7 @@
 
         CONTAINER_INDEXES.forEach((containerIdx) => {
           containerGroups[containerIdx].visible = hierarchy.childrenByContainer.get(containerIdx).length > 0;
+          updateContainerLabelTexture(containerIdx);
         });
         updateCodePanel();
       }
@@ -1460,7 +1837,10 @@
         for (let i = 0; i < states.length; i++) {
           const rules = rawRules[i];
           if (rules.length === 0) continue;
-          const key = rules.map((r) => r.key).sort().join("|");
+          const key = rules
+            .map((r) => r.key)
+            .sort()
+            .join("|");
           if (!groupMap.has(key)) {
             const g = { selectorIdxs: [], rules };
             groupMap.set(key, g);
@@ -1505,9 +1885,7 @@
         // 把 rule 按 key 分组：哪些 ruleKey 被同一组 selector 集合覆盖？
         // 为简洁：按 rule 维度分别输出
         sharedRuleKeys.forEach((rk) => {
-          const selectors = [...ruleRefCount.get(rk)].flatMap((gi) =>
-            allGroups[gi].selectorIdxs.map((i) => names[i]),
-          );
+          const selectors = [...ruleRefCount.get(rk)].flatMap((gi) => allGroups[gi].selectorIdxs.map((i) => names[i]));
           // 去重 + 保持原顺序
           const uniqueSel = [];
           const seen = new Set();
@@ -1712,7 +2090,7 @@
         refreshScene();
       }
 
-      function bindAutoRepeatButton(id, action) {
+      function bindAutoRepeatButton(id, action, repeatInterval = 200) {
         const button = document.getElementById(id);
         let startTimer = null;
         let repeatTimer = null;
@@ -1730,7 +2108,7 @@
           action();
           startTimer = setTimeout(() => {
             action();
-            repeatTimer = setInterval(action, 200);
+            repeatTimer = setInterval(action, repeatInterval);
           }, 500);
         });
         button.addEventListener("pointerleave", stopAutoRepeat);
@@ -1779,6 +2157,34 @@
       containerOpacityInput.addEventListener("change", () => {
         setContainerOpacity(
           Number.isFinite(containerOpacityInput.valueAsNumber) ? containerOpacityInput.valueAsNumber : containerOpacity,
+        );
+      });
+
+      const rotationDampingInput = document.getElementById("rotation-damping-input");
+
+      function applyRotationDamping(value) {
+        controls.enableDamping = true;
+        controls.dampingFactor = value;
+      }
+
+      function setRotationDamping(value) {
+        const nextDamping = Math.min(0.2, Math.max(0.01, Math.round(value * 100) / 100));
+        rotationDampingInput.value = String(nextDamping);
+        applyRotationDamping(nextDamping);
+      }
+
+      bindAutoRepeatButton("rotation-damping-decrease", () => setRotationDamping(controls.dampingFactor - 0.01), 100);
+      bindAutoRepeatButton("rotation-damping-increase", () => setRotationDamping(controls.dampingFactor + 0.01), 100);
+      rotationDampingInput.addEventListener("input", () => {
+        const value = rotationDampingInput.valueAsNumber;
+        if (!Number.isFinite(value) || value < 0.01 || value > 0.2) return;
+        applyRotationDamping(value);
+      });
+      rotationDampingInput.addEventListener("change", () => {
+        setRotationDamping(
+          Number.isFinite(rotationDampingInput.valueAsNumber)
+            ? rotationDampingInput.valueAsNumber
+            : controls.dampingFactor,
         );
       });
 
@@ -2014,9 +2420,18 @@
         drag.placeholder.remove();
         drag.rows.forEach((row) => {
           row.classList.remove("is-dragging");
-          ["position", "left", "top", "width", "height", "box-sizing", "margin", "z-index", "pointer-events", "transform"].forEach(
-            (property) => row.style.removeProperty(property),
-          );
+          [
+            "position",
+            "left",
+            "top",
+            "width",
+            "height",
+            "box-sizing",
+            "margin",
+            "z-index",
+            "pointer-events",
+            "transform",
+          ].forEach((property) => row.style.removeProperty(property));
         });
 
         finalTree.forEach((entry) => {
@@ -2124,6 +2539,9 @@
 
         particles.rotation.y += 0.0002;
         particles.rotation.x += 0.0001;
+        scene.updateMatrixWorld(true);
+        camera.updateMatrixWorld();
+        updateContainerLabels();
         renderer.render(scene, camera);
       }
 
@@ -2131,12 +2549,9 @@
 
       // --- 窗口自适应 ---
       window.addEventListener("resize", () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
+        updateCameraViewOffset();
         renderer.setSize(window.innerWidth, window.innerHeight);
       });
-
-      console.log("3D 层叠上下文可视化已启动！");
     </script>
   </body>
 </html>
