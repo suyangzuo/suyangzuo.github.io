@@ -11,7 +11,7 @@
         <span class="日期文本"
           ><span class="日期文本-数字 日期文本-年">2026</span>年<span class="日期文本-数字 日期文本-月">11</span>月<span
             class="日期文本-数字 日期文本-日"
-            >25</span
+            >26</span
           >日</span
         >
       </p>
@@ -103,9 +103,8 @@
     <p class="分区普通文本">
       当这些元素重叠时，谁会遮住谁？谁在上<span class="附加说明">离眼睛近</span>？谁在下<span class="附加说明"
         >离眼睛远</span
-      >？这里面有一套规则，即<span class="行内专业名词">层叠规则</span>，应用这套规则的<span class="行内专业名词"
-        >情境</span
-      >，就是<span class="行内专业名词">层叠上下文</span>。
+      >？这里面有一套规则，即<span class="行内专业名词">层叠规则</span>，而<span class="行内专业名词">层叠上下文</span
+      >是这套规则的一部分。
     </p>
 
     <h3 class="分区标题 分区3级标题">上下文</h3>
@@ -113,16 +112,18 @@
       我们在编程领域经常会听到<span class="行内专业名词">上下文</span>这个词，其实它和现实生活中的<span
         class="行内专业名词"
         >上下文</span
-      >是一样的意思，指的是<span class="行内专业名词">情境</span>，没有<span class="行内专业名词">情境</span
+      >是一样的意思，指的是<span class="行内专业名词">情境</span>，没有具体的<span class="行内专业名词">情境</span
       >，很多事物都毫无意义。
     </p>
     <p class="分区普通文本">
-      举个生活中的例子：我拿了比赛<span class="专业名词 等宽">第1名</span
-      >，如果只有这么一句，会让人觉得莫名其妙，因为<span class="强调">缺少情境</span>。这个第<span class="等宽">1</span
-      >名，是什么比赛的第<span class="等宽">1</span>名？是校运会的第<span class="等宽">1</span>名，还是亚运会的第<span
+      举个生活中的例子：我拿了比赛<span class="专业名词 等宽">第1名</span>，如果只有这么一句，<span class="等宽"
+        >第1名</span
+      >是没有意义的，因为<span class="强调">缺少情境</span>。这个第<span class="等宽">1</span>名，是什么比赛的第<span
         class="等宽"
         >1</span
-      >名？或者是奥运会的第<span class="等宽">1</span
+      >名？是校运会的第<span class="等宽">1</span>名，还是亚运会的第<span class="等宽">1</span>名？或者是奥运会的第<span
+        class="等宽"
+        >1</span
       >名？是游泳还是短跑？没有这些具体的信息，名次毫无意义。这些具体的信息，共同构成了<span class="行内专业名词"
         >情境</span
       >，也就是<span class="行内专业名词">上下文</span>。
@@ -133,6 +134,9 @@
         >5</span
       >，还是在某个容器内排第<span class="等宽">5</span>？不同的上下文，<span class="行内专业名词">5</span
       >的意义是不一样的。
+    </p>
+    <p class="分区普通文本">
+      简单地说，<span class="行内专业名词">层叠上下文</span>的意思就是：元素的层叠顺序到底是在哪个范围内进行比较。
     </p>
 
     <h3 class="分区标题 分区3级标题">创建层叠上下文</h3>
@@ -199,9 +203,75 @@
     <h2 class="分区标题 分区2级标题">层叠规则</h2>
 
     <h3 class="分区标题 分区3级标题">范例</h3>
-    <p class="分区普通文本">在下面的示例中，调整各种属性，观察层叠顺序的变化，了解层叠规则。</p>
+    <p class="分区普通文本">假设有如下的<span class="行内专业名词 等宽">HTML</span>结构：</p>
+    <!--<figure class="截图容器" data-desc="HTML结构">
+      <img src="./Images/HTML结构.png" alt="HTML结构" />
+    </figure>-->
+    <pre class="line-numbers">
+      <code class="lang-html">
+        &lt;div class="盒子 盒子1"&gt;&lt;/div&gt;
+        &lt;div class="容器 容器1"&gt;
+            &lt;div class="盒子 盒子2"&gt;&lt;/div&gt;
+            &lt;div class="盒子 盒子3"&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="盒子 盒子4"&gt;&lt;/div&gt;
+        &lt;div class="容器 容器2"&gt;
+            &lt;div class="盒子 盒子5"&gt;&lt;/div&gt;
+            &lt;div class="盒子 盒子6"&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      </code>
+    </pre>
+    <p class="分区普通文本">在下面的三维场景示例中，调整各种属性，观察层叠顺序的变化，了解层叠规则。</p>
     <figure class="截图容器" data-desc="层叠上下文">
       <iframe class="层叠上下文3D" src="./层叠上下文.html" title="层叠上下文"></iframe>
     </figure>
+    <p class="分区普通文本">尤其要注意容器的参数对其内部元素的影响。</p>
+
+    <h3 class="分区标题 分区3级标题">源代码顺序</h3>
+    <p class="分区普通文本">默认情况下，源代码顺序越靠后，则层叠顺位越高<span class="附加说明">越靠近眼睛</span>。</p>
+    <figure class="截图容器" data-desc="默认层叠顺序">
+      <img src="./Images/默认层叠顺序.png" alt="默认层叠顺序" />
+    </figure>
+    <p class="分区普通文本">
+      所有元素都是默认状态<span class="附加说明">非定位</span>时，层叠顺序非常简单：谁的代码在<span class="强调"
+        >后</span
+      >，谁就在<span class="强调">上方</span>。
+    </p>
+
+    <h3 class="分区标题 分区3级标题">定位元素<span class="强调">高于</span>非定位元素</h3>
+    <p class="分区普通文本">
+      如果有定位元素，且<span class="行内代码">z-index</span>未写，或者设置为<span class="行内代码">auto</span>，则<span
+        class="强调"
+        >不会</span
+      >创建新的上下文。这种情况下，规则依然简单：<span class="行内专业名词">定位</span>元素<span class="强调">高于</span
+      ><span class="行内专业名词">非定位</span>元素。
+    </p>
+    <figure class="截图容器" data-desc="定位高于非定位">
+      <img src="./Images/层叠顺序-仅定位.png" alt="定位高于非定位" />
+    </figure>
+    <p class="分区普通文本">所有定位元素都在上方。当二者均为定位元素时，代码在后的更高。</p>
+    <p class="分区普通文本">此外，祖先元素的定位会抬高所有后代元素的层叠顺序，即使后代元素是非定位的。</p>
+    <figure class="截图容器" data-desc="祖先元素定位影响后代元素">
+      <img src="./Images/祖先元素定位影响后代元素.png" alt="祖先元素定位影响后代元素" />
+    </figure>
+    <p class="分区普通文本 等宽">容器1定位后，所有容器1内部盒子的层叠顺序均被提高，即使它们都是非定位的。</p>
+
+    <h3 class="分区标题 分区3级标题">不同层叠上下文</h3>
+    <p class="分区普通文本 等宽">
+      当一个元素定位，并且<span class="行内代码">z-index</span>设置为<span class="行内专业名词">数值</span
+      >，就会创建一个新的层叠上下文，这个上下文会影响此元素内部的所有后代元素。
+    </p>
+    <figure class="截图容器" data-desc="不同层叠上下文">
+      <img src="./Images/不同层叠上下文.png" alt="不同层叠上下文" />
+    </figure>
+    <p class="分区普通文本 等宽">
+      盒子5是定位的，并且<span class="代码">z-index: 50</span
+      >，为什么不在最上方呢？因为盒子5的父元素容器2创建了一个新的层叠上下文，此时盒子3的<span class="行内代码"
+        >z-index</span
+      >就只在容器2内部进行比较，与容器2外部的元素无关，哪怕把盒子5的<span class="行内代码">z-index</span>写到<span
+        class="行内专业名词"
+        >99999</span
+      >也是一样的。
+    </p>
   </article>
 </div>

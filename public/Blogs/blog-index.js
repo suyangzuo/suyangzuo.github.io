@@ -405,7 +405,7 @@ function 转换相对路径为绝对路径(根元素, 专题文件路径) {
 
   // 需要处理 src 属性的元素
   const src元素组 = 根元素.querySelectorAll(
-    "img[src], script[src], video[src], audio[src], source[src], iframe[src], embed[src]"
+    "img[src], script[src], video[src], audio[src], source[src], iframe[src], embed[src]",
   );
   src元素组.forEach((元素) => {
     const 原路径 = 元素.getAttribute("src");
@@ -752,9 +752,7 @@ function 特殊元素样式补充() {
   }
 
   // 先清理旧序号，确保重复调用时不会叠加。
-  const 已有标题序号组 = document.querySelectorAll(
-    ".分区2级标题 > .标题序号-2级, .分区3级标题 > .标题序号-3级"
-  );
+  const 已有标题序号组 = document.querySelectorAll(".分区2级标题 > .标题序号-2级, .分区3级标题 > .标题序号-3级");
   已有标题序号组.forEach((序号) => 序号.remove());
 
   const 分区2级标题组 = document.querySelectorAll(".分区2级标题");
@@ -1131,7 +1129,7 @@ function 更新图像序号() {
     container.appendChild(包装);
 
     const containerSibling = container.nextElementSibling;
-    if (containerSibling !== null && containerSibling.className === "分区普通文本") {
+    if (containerSibling !== null && containerSibling.className.includes("分区普通文本")) {
       const 行内截图序号 = document.createElement("span");
       行内截图序号.className = "行内截图序号";
       行内截图序号.innerHTML = `<span style="margin: 0 1px 0 2px; color: #ba8e23">·</span><span style="margin-right: 2px; color: #63a4dc">图</span><span style="color: lightblue">${imageIndex + 1}</span><span style="margin: 0 2px 0 1px; color: #ba8e23">·</span>`;

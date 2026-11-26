@@ -107,6 +107,85 @@
       .rotation-damping-control {
         top: 110px;
       }
+      .container-display-control {
+        top: 148px;
+      }
+      .container-display-title {
+        width: 6em;
+        flex-shrink: 0;
+        text-align: right;
+      }
+      .container-display-options {
+        display: flex;
+        gap: 0;
+      }
+      .container-display-control .container-display-option {
+        position: relative;
+        width: auto;
+        flex-shrink: 0;
+        text-align: center;
+        cursor: pointer;
+      }
+      .container-display-option + .container-display-option {
+        margin-left: -1px;
+      }
+      .container-display-option:hover,
+      .container-display-option:focus-within {
+        z-index: 2;
+      }
+      .container-display-option:has(input:checked) {
+        z-index: 3;
+      }
+      .container-display-option input {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        opacity: 0;
+        cursor: pointer;
+      }
+      .container-display-option-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 52px;
+        padding: 5px 12px;
+        box-sizing: border-box;
+        border: 1px solid #343b4d;
+        background: #0c101c;
+        color: #9aa7bb;
+        transition:
+          border-color 0.15s,
+          background 0.15s,
+          color 0.15s,
+          box-shadow 0.15s;
+      }
+      .container-display-option:first-child .container-display-option-content {
+        border-radius: 7px 0 0 7px;
+      }
+      .container-display-option:last-child .container-display-option-content {
+        border-radius: 0 7px 7px 0;
+      }
+      .container-display-option:hover .container-display-option-content {
+        border-color: #354b7f;
+        background: #1a2334;
+        color: #eef1ff;
+        box-shadow: 0 0 8px rgba(113, 143, 212, 0.18);
+      }
+      .container-display-option input:focus-visible + .container-display-option-content {
+        outline: 2px solid #718fd4;
+        outline-offset: 2px;
+      }
+      .container-display-option input:checked + .container-display-option-content {
+        position: relative;
+        z-index: 1;
+        border-color: #7c9ee0;
+        background: #203659;
+        color: #ffffff;
+        box-shadow: inset 0 0 0 1px rgba(172, 204, 255, 0.12);
+      }
       #panel {
         position: absolute;
         top: 8px;
@@ -491,6 +570,19 @@
         </button>
       </div>
     </div>
+    <div class="spacing-control container-display-control">
+      <span class="container-display-title" id="container-display-title">容器表现形式</span>
+      <div class="container-display-options" role="radiogroup" aria-labelledby="container-display-title">
+        <label class="container-display-option">
+          <input type="radio" name="container-display" value="framework" checked />
+          <span class="container-display-option-content">框架</span>
+        </label>
+        <label class="container-display-option">
+          <input type="radio" name="container-display" value="connections" />
+          <span class="container-display-option-content">连线</span>
+        </label>
+      </div>
+    </div>
 
     <div id="panel">
       <div class="ctrl-row box-row" data-idx="0">
@@ -769,6 +861,7 @@
 
       let spacing = 0.9;
       let containerOpacity = 0.1;
+      let containerDisplayMode = "framework";
       const BASE_Y = 0.6;
       const BOX_THICKNESS = 0.24;
       const BOX_TOP_TEXT_Y = BOX_THICKNESS / 2 + 0.01;
@@ -794,6 +887,7 @@
       const wrapperMeshes = new Array(layerDefs.length).fill(null);
       const wrapperEdges = new Array(layerDefs.length).fill(null);
       const containerLabels = new Array(layerDefs.length).fill(null);
+      const containerConnections = new Array(layerDefs.length).fill(null);
 
       // --- 辅助函数 ---
 
@@ -1356,6 +1450,60 @@
       // 修改此值即可调整 3D 场景中“容器+数字”的字号（单位：px）
       const CONTAINER_LABEL_FONT_SIZE = 16;
       const CONTAINER_LABEL_TEXTURE_SCALE = 2;
+      const CONTAINER_CONNECTION_CIRCLE_SIZE = 12;
+      const CONTAINER_CONNECTION_LABEL_GAP = 2;
+      const CONTAINER_CONNECTION_EDGE_GAP = 1;
+
+      function createConnectionCircleTexture(strokeColor) {
+        const canvas = document.createElement("canvas");
+        canvas.width = 64;
+        canvas.height = 64;
+        const ctx = canvas.getContext("2d");
+        ctx.beginPath();
+        ctx.arc(32, 32, 20, 0, Math.PI * 2);
+        ctx.fillStyle = "#31527f";
+        ctx.fill();
+        ctx.lineWidth = 12;
+        ctx.strokeStyle = strokeColor;
+        ctx.stroke();
+        return new THREE.CanvasTexture(canvas);
+      }
+
+      const connectionCircleMaterial = new THREE.SpriteMaterial({
+        map: createConnectionCircleTexture("#d9e8ff"),
+        transparent: true,
+        depthTest: true,
+        depthWrite: false,
+      });
+      const connectionLabelCircleMaterial = new THREE.SpriteMaterial({
+        map: createConnectionCircleTexture("gold"),
+        transparent: true,
+        depthTest: true,
+        depthWrite: false,
+      });
+      const connectionLineMaterial = new THREE.LineBasicMaterial({
+        color: 0xaaccff,
+        transparent: true,
+        opacity: 0.85,
+        depthTest: true,
+        depthWrite: false,
+      });
+
+      function createContainerConnections(containerIdx) {
+        const group = new THREE.Group();
+        group.visible = false;
+
+        const labelCircle = new THREE.Sprite(connectionLabelCircleMaterial);
+        labelCircle.renderOrder = 8;
+        group.add(labelCircle);
+        scene.add(group);
+
+        containerConnections[containerIdx] = {
+          group,
+          labelCircle,
+          children: new Map(),
+        };
+      }
 
       function createContainerLabelTexture(containerIdx) {
         const state = states[containerIdx];
@@ -1425,6 +1573,7 @@
         containerLabels[containerIdx] = label;
         updateContainerLabelTexture(containerIdx);
         scene.add(label);
+        createContainerConnections(containerIdx);
 
         return containerGroup;
       }
@@ -1434,6 +1583,45 @@
           .childrenByContainer.get(containerIdx)
           .map((idx) => layerGroups[idx])
           .filter(Boolean);
+      }
+
+      function syncContainerConnections(containerIdx) {
+        const connection = containerConnections[containerIdx];
+        if (!connection) return;
+        const childIndexes = getPanelHierarchy().childrenByContainer.get(containerIdx);
+
+        connection.children.forEach((childConnection, childIdx) => {
+          if (childIndexes.includes(childIdx)) return;
+          connection.group.remove(childConnection.line, childConnection.circle);
+          childConnection.line.geometry.dispose();
+          connection.children.delete(childIdx);
+        });
+
+        childIndexes.forEach((childIdx) => {
+          if (connection.children.has(childIdx)) return;
+          const circle = new THREE.Sprite(connectionCircleMaterial);
+          circle.renderOrder = 8;
+
+          const geometry = new THREE.BufferGeometry();
+          geometry.setAttribute("position", new THREE.BufferAttribute(new Float32Array(6), 3));
+          const line = new THREE.Line(geometry, connectionLineMaterial);
+          line.frustumCulled = false;
+          line.renderOrder = 7;
+
+          connection.group.add(line, circle);
+          connection.children.set(childIdx, { circle, line });
+        });
+      }
+
+      function applyContainerDisplayMode() {
+        const showFramework = containerDisplayMode === "framework";
+        CONTAINER_INDEXES.forEach((containerIdx) => {
+          const wrapperMesh = wrapperMeshes[containerIdx];
+          const edges = wrapperEdges[containerIdx];
+          if (wrapperMesh) wrapperMesh.visible = showFramework;
+          if (edges) edges.visible = showFramework;
+        });
+        clearWrapperHover();
       }
 
       function computeWrapperBounds(containerIdx) {
@@ -1551,6 +1739,91 @@
         });
       }
 
+      const connectionNdc = new THREE.Vector3();
+      const connectionLabelPoint = new THREE.Vector3();
+      const connectionChildPoint = new THREE.Vector3();
+      const connectionEdgeStart = new THREE.Vector3();
+      const connectionEdgeEnd = new THREE.Vector3();
+      const connectionViewPosition = new THREE.Vector3();
+
+      function positionConnectionCircle(circle, position) {
+        connectionViewPosition.copy(position).applyMatrix4(camera.matrixWorldInverse);
+        const depth = -connectionViewPosition.z;
+        circle.visible = depth > 0;
+        if (depth <= 0) return false;
+
+        const perspectiveScale = 2 * depth * Math.tan(THREE.MathUtils.degToRad(camera.fov * 0.5));
+        const circleScale = (perspectiveScale * CONTAINER_CONNECTION_CIRCLE_SIZE) / window.innerHeight;
+        circle.position.copy(position);
+        circle.scale.set(circleScale, circleScale, 1);
+        return true;
+      }
+
+      function updateContainerConnections(containerIdx) {
+        const connection = containerConnections[containerIdx];
+        const containerGroup = containerGroups[containerIdx];
+        const label = containerLabels[containerIdx];
+        if (!connection || !containerGroup || !label) return;
+
+        connection.group.visible =
+          containerDisplayMode === "connections" && containerGroup.visible && label.visible;
+        if (!connection.group.visible) return;
+
+        connectionNdc
+          .copy(label.position)
+          .addScaledVector(cameraRight, -label.scale.x / 2)
+          .project(camera);
+        const labelTextLeftPadding = label.material.map.userData.paddingX;
+        connectionNdc.x +=
+          ((labelTextLeftPadding - CONTAINER_CONNECTION_LABEL_GAP - CONTAINER_CONNECTION_CIRCLE_SIZE / 2) * 2) /
+          window.innerWidth;
+        connectionLabelPoint.copy(connectionNdc).unproject(camera);
+        const labelCircleVisible = positionConnectionCircle(connection.labelCircle, connectionLabelPoint);
+
+        connection.children.forEach((childConnection, childIdx) => {
+          const layerGroup = layerGroups[childIdx];
+          if (!layerGroup || !labelCircleVisible) {
+            childConnection.circle.visible = false;
+            childConnection.line.visible = false;
+            return;
+          }
+
+          const plane = layerGroup.userData.plane;
+          if (!plane.geometry.boundingBox) plane.geometry.computeBoundingBox();
+          const bounds = plane.geometry.boundingBox;
+          let rightmostEdgeX = -Infinity;
+          let rightmostX = 0;
+          let rightmostY = 0;
+          let rightmostZ = 0;
+
+          for (const x of [bounds.min.x, bounds.max.x]) {
+            for (const z of [bounds.min.z, bounds.max.z]) {
+              connectionEdgeStart.set(x, bounds.min.y, z).applyMatrix4(plane.matrixWorld).project(camera);
+              connectionEdgeEnd.set(x, bounds.max.y, z).applyMatrix4(plane.matrixWorld).project(camera);
+              const edgeRightmostX = Math.max(connectionEdgeStart.x, connectionEdgeEnd.x);
+              if (edgeRightmostX > rightmostEdgeX) {
+                rightmostEdgeX = edgeRightmostX;
+                rightmostX = (connectionEdgeStart.x + connectionEdgeEnd.x) / 2;
+                rightmostY = (connectionEdgeStart.y + connectionEdgeEnd.y) / 2;
+                rightmostZ = (connectionEdgeStart.z + connectionEdgeEnd.z) / 2;
+              }
+            }
+          }
+
+          const edgeCircleOffset =
+            ((CONTAINER_CONNECTION_CIRCLE_SIZE / 2 + CONTAINER_CONNECTION_EDGE_GAP) * 2) / window.innerWidth;
+          connectionChildPoint.set(rightmostX + edgeCircleOffset, rightmostY, rightmostZ).unproject(camera);
+          const childCircleVisible = positionConnectionCircle(childConnection.circle, connectionChildPoint);
+          childConnection.line.visible = childCircleVisible;
+          if (!childCircleVisible) return;
+
+          const positions = childConnection.line.geometry.attributes.position;
+          positions.setXYZ(0, connectionChildPoint.x, connectionChildPoint.y, connectionChildPoint.z);
+          positions.setXYZ(1, connectionLabelPoint.x, connectionLabelPoint.y, connectionLabelPoint.z);
+          positions.needsUpdate = true;
+        });
+      }
+
       // --- 拖拽逻辑 ---
       let hoveredGroup = null;
       let layerGroups = [];
@@ -1565,7 +1838,7 @@
         if (planeHits.length > 0) return { type: "plane", obj: planeHits[0].object.parent };
 
         const visibleWrappers = wrapperMeshes.filter(
-          (mesh) => mesh && containerGroups[mesh.userData.containerIdx].visible,
+          (mesh) => mesh && mesh.visible && containerGroups[mesh.userData.containerIdx].visible,
         );
         const wrapperHits = raycaster.intersectObjects(visibleWrappers);
         if (wrapperHits.length > 0) {
@@ -1804,6 +2077,7 @@
         CONTAINER_INDEXES.forEach((containerIdx) => {
           containerGroups[containerIdx].visible = hierarchy.childrenByContainer.get(containerIdx).length > 0;
           updateContainerLabelTexture(containerIdx);
+          syncContainerConnections(containerIdx);
         });
         updateCodePanel();
       }
@@ -2188,6 +2462,14 @@
         );
       });
 
+      document.querySelectorAll('input[name="container-display"]').forEach((input) => {
+        input.addEventListener("change", () => {
+          if (!input.checked) return;
+          containerDisplayMode = input.value;
+          applyContainerDisplayMode();
+        });
+      });
+
       // --- 面板垂直拖拽 ---
       let panelDrag = null;
 
@@ -2465,6 +2747,7 @@
       // --- 初始化 ---
       updateEmptyContainerRows();
       refreshScene();
+      applyContainerDisplayMode();
 
       // 粒子
       const particleCount = 400;
@@ -2542,6 +2825,7 @@
         scene.updateMatrixWorld(true);
         camera.updateMatrixWorld();
         updateContainerLabels();
+        CONTAINER_INDEXES.forEach(updateContainerConnections);
         renderer.render(scene, camera);
       }
 
