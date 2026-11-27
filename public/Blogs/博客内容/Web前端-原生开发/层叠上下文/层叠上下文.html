@@ -110,6 +110,58 @@
       .container-display-control {
         top: 148px;
       }
+      .axis-display-control {
+        top: 186px;
+        gap: 0;
+      }
+      .axis-display-control label {
+        padding-right: 10px;
+      }
+      .axis-display-input {
+        -webkit-appearance: none;
+        appearance: none;
+        display: inline-grid;
+        place-content: center;
+        width: 16px;
+        height: 16px;
+        box-sizing: border-box;
+        flex-shrink: 0;
+        padding: 0;
+        margin: 0;
+        border: 1px solid #565f78;
+        border-radius: 3px;
+        background: #0c101c;
+        cursor: pointer;
+        transition:
+          border-color 75ms,
+          background 75ms,
+          box-shadow 75ms;
+      }
+      .axis-display-input::before {
+        content: "";
+        width: 4px;
+        height: 8px;
+        margin-top: -2px;
+        border: solid #ffffff;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg) scale(0);
+        transition: transform 75ms;
+      }
+      .axis-display-input:hover {
+        border-color: #718fd4;
+      }
+      .axis-display-input:checked {
+        border-color: #7c9ee0;
+        background: #203659;
+        box-shadow: inset 0 0 0 1px rgba(172, 204, 255, 0.12);
+      }
+      .axis-display-input:checked::before {
+        transform: rotate(45deg) scale(1);
+      }
+      .axis-display-input:focus-visible {
+        outline: 2px solid #718fd4;
+        outline-offset: 2px;
+      }
       .container-display-title {
         width: 6em;
         flex-shrink: 0;
@@ -414,6 +466,10 @@
         text-align: left;
         font-variant-numeric: tabular-nums;
       }
+      .z-slider:disabled + .z-value,
+      .z-slider.low-bright + .z-value {
+        opacity: 0.35;
+      }
       /* auto 按钮 */
       .auto-btn {
         flex-shrink: 0;
@@ -583,6 +639,10 @@
         </label>
       </div>
     </div>
+    <div class="spacing-control axis-display-control">
+      <label for="axis-display-input">轴标示</label>
+      <input class="axis-display-input" id="axis-display-input" type="checkbox" checked />
+    </div>
 
     <div id="panel">
       <div class="ctrl-row box-row" data-idx="0">
@@ -681,7 +741,7 @@
       scene.background = new THREE.Color(0x0a0a18);
       scene.fog = new THREE.FogExp2(0x0a0a18, 0.02);
 
-      const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+      const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
       camera.position.set(8, 3, 12);
       camera.lookAt(0, 0, 0);
 
@@ -712,8 +772,8 @@
       initialViewCamera.lookAt(0, 3, 0);
       initialViewCamera.updateMatrixWorld();
       const initialAxisOrigin = new THREE.Vector3().project(initialViewCamera);
-      let cameraViewOffsetX = (initialAxisOrigin.x * window.innerWidth) / 2;
-      let cameraViewOffsetY = (initialAxisOrigin.y * window.innerHeight) / 2;
+      let cameraViewOffsetX = (initialAxisOrigin.x * window.innerWidth) / 2 + 35;
+      let cameraViewOffsetY = (initialAxisOrigin.y * window.innerHeight) / 1.25;
       let cameraPan = null;
 
       function updateCameraViewOffset() {
@@ -821,6 +881,8 @@
 
       const axisOrigin = new THREE.Vector3(0, 0, 0);
       const axisLength = 5.5;
+      const axisGroup = new THREE.Group();
+      scene.add(axisGroup);
       const axisDefs = [
         { label: "X", color: 0xff6b6b, direction: new THREE.Vector3(1, 0, 0), labelPosition: [6, 0, 0] },
         { label: "Y", color: 0x51cf66, direction: new THREE.Vector3(0, 0, 1), labelPosition: [0, 0, 6] },
@@ -831,10 +893,10 @@
         arrow.cone.geometry.dispose();
         arrow.cone.geometry = new THREE.ConeGeometry(0.5, 1, 64);
         arrow.cone.geometry.translate(0, -0.5, 0);
-        scene.add(arrow);
+        axisGroup.add(arrow);
         const axisLabel = createAxisLabel(label, `#${color.toString(16).padStart(6, "0")}`);
         axisLabel.position.set(...labelPosition);
-        scene.add(axisLabel);
+        axisGroup.add(axisLabel);
       });
 
       // --- 层定义 ---
@@ -2468,6 +2530,11 @@
           containerDisplayMode = input.value;
           applyContainerDisplayMode();
         });
+      });
+
+      const axisDisplayInput = document.getElementById("axis-display-input");
+      axisDisplayInput.addEventListener("change", () => {
+        axisGroup.visible = axisDisplayInput.checked;
       });
 
       // --- 面板垂直拖拽 ---
