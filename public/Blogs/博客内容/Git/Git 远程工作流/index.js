@@ -565,7 +565,7 @@ class 拉取演示动画 {
     });
 
     this.canvas.addEventListener("mouseleave", () => {
-      this.canvas.style.cursor = "default";
+      this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
       this.鼠标X = -1;
       this.鼠标Y = -1;
     });

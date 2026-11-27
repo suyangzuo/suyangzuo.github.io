@@ -255,7 +255,7 @@ class CubicBezierEditor {
   onMouseLeave() {
     // 鼠标离开Canvas时不停止拖拽，只更新悬停状态
     this.hoveredPoint = null;
-    this.canvas.style.cursor = "default";
+    this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
     this.draw();
   }
 

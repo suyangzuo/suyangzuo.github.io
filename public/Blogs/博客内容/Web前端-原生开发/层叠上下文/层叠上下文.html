@@ -60,7 +60,7 @@
           600 18px/1 "Google Sans Code",
           Consolas,
           sans-serif;
-        cursor: pointer;
+        cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
         transition:
           background 0.15s,
           color 0.15s;
@@ -112,10 +112,25 @@
       }
       .axis-display-control {
         top: 186px;
-        gap: 0;
+        gap: 20px;
+      }
+      .axis-display-option {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        gap: 5px;
+      }
+      .axis-display-option:hover,
+      .axis-display-control label:hover {
+        cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
+      }
+      .axis-display-option:first-child {
+        width: calc(6em + 26px);
+        justify-content: flex-end;
       }
       .axis-display-control label {
-        padding-right: 10px;
+        width: fit-content;
+        padding-right: 0;
       }
       .axis-display-input {
         -webkit-appearance: none;
@@ -131,7 +146,7 @@
         border: 1px solid #565f78;
         border-radius: 3px;
         background: #0c101c;
-        cursor: pointer;
+        cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
         transition:
           border-color 75ms,
           background 75ms,
@@ -176,7 +191,7 @@
         width: auto;
         flex-shrink: 0;
         text-align: center;
-        cursor: pointer;
+        cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
       }
       .container-display-option + .container-display-option {
         margin-left: -1px;
@@ -196,7 +211,7 @@
         height: 100%;
         margin: 0;
         opacity: 0;
-        cursor: pointer;
+        cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
       }
       .container-display-option-content {
         display: flex;
@@ -256,7 +271,7 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        cursor: grab;
+        cursor: url("/Images/Common/鼠标-移动抓手.cur"), grab;
         user-select: none;
       }
       .ctrl-row.indented {
@@ -266,11 +281,11 @@
         opacity: 0.35;
       }
       .ctrl-row.is-dragging {
-        cursor: grabbing;
+        cursor: url("/Images/Common/鼠标-移动抓手.cur"), grabbing;
       }
       body.panel-dragging,
       body.panel-dragging * {
-        cursor: grabbing !important;
+        cursor: url("/Images/Common/鼠标-移动抓手.cur"), grabbing !important;
         user-select: none !important;
       }
       .drag-placeholder {
@@ -328,7 +343,7 @@
         height: 20px;
         border-radius: 13px;
         background: rgba(255, 255, 255, 0.15);
-        cursor: pointer;
+        cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
         transition: background 0.25s ease;
         flex-shrink: 0;
         border: none;
@@ -380,7 +395,7 @@
         background: rgba(255, 255, 255, 0.12);
         border-radius: 3px;
         outline: none;
-        cursor: pointer;
+        cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
         transition:
           opacity 0.2s,
           background 0.2s;
@@ -397,7 +412,7 @@
         height: 14px;
         border-radius: 50%;
         background: #6c87b0;
-        cursor: pointer;
+        cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
         border: 2px solid #fff;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
         transition: transform 0.15s;
@@ -410,7 +425,7 @@
         height: 14px;
         border-radius: 50%;
         background: #6c87b0;
-        cursor: pointer;
+        cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
         border: 2px solid #fff;
       }
       .z-slider::-moz-range-progress {
@@ -435,15 +450,15 @@
         cursor: not-allowed !important;
       }
       .z-slider.low-bright {
-        cursor: pointer;
+        cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
       }
       .z-slider.low-bright::-webkit-slider-thumb,
       .z-slider.low-bright::-webkit-slider-runnable-track {
-        cursor: pointer !important;
+        cursor: url("/Images/Common/鼠标-指向.cur"), pointer !important;
       }
       .z-slider.low-bright::-moz-range-thumb,
       .z-slider.low-bright::-moz-range-track {
-        cursor: pointer !important;
+        cursor: url("/Images/Common/鼠标-指向.cur"), pointer !important;
       }
       .z-slider:disabled::-webkit-slider-thumb,
       .z-slider.low-bright::-webkit-slider-thumb {
@@ -479,7 +494,7 @@
         border: 1px solid rgba(255, 255, 255, 0.2);
         background: rgba(255, 255, 255, 0.04);
         color: #7a8a9a;
-        cursor: pointer;
+        cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
         font-family: inherit;
         transition: all 0.2s;
         font-weight: 600;
@@ -507,7 +522,7 @@
         border-color: rgba(255, 255, 255, 0.6);
         color: rgba(255, 255, 255, 0.7);
         opacity: 0.75;
-        cursor: pointer;
+        cursor: url("/Images/Common/鼠标-指向.cur"), pointer;
       }
       #code-panel {
         position: absolute;
@@ -640,8 +655,14 @@
       </div>
     </div>
     <div class="spacing-control axis-display-control">
-      <label for="axis-display-input">轴标示</label>
-      <input class="axis-display-input" id="axis-display-input" type="checkbox" checked />
+      <div class="axis-display-option">
+        <label for="axis-display-input">轴标示</label>
+        <input class="axis-display-input" id="axis-display-input" type="checkbox" checked />
+      </div>
+      <div class="axis-display-option">
+        <label for="particle-display-input">粒子</label>
+        <input class="axis-display-input" id="particle-display-input" type="checkbox" checked />
+      </div>
     </div>
 
     <div id="panel">
@@ -1827,8 +1848,7 @@
         const label = containerLabels[containerIdx];
         if (!connection || !containerGroup || !label) return;
 
-        connection.group.visible =
-          containerDisplayMode === "connections" && containerGroup.visible && label.visible;
+        connection.group.visible = containerDisplayMode === "connections" && containerGroup.visible && label.visible;
         if (!connection.group.visible) return;
 
         connectionNdc
@@ -1945,12 +1965,12 @@
         if (hit?.type === "plane") {
           hoveredGroup = hit.obj;
           setHoverState(hoveredGroup, true);
-          renderer.domElement.style.cursor = "grab";
+          renderer.domElement.style.cursor = 'url("/Images/Common/鼠标-移动抓手.cur"), grab';
         } else if (hit?.type === "wrapper") {
           setWrapperHover(hit.containerIdx, true);
-          renderer.domElement.style.cursor = "grab";
+          renderer.domElement.style.cursor = 'url("/Images/Common/鼠标-移动抓手.cur"), grab';
         } else {
-          renderer.domElement.style.cursor = "default";
+          renderer.domElement.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
         }
       }
 
@@ -1962,7 +1982,7 @@
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
         raycaster.setFromCamera(mouse, camera);
-        renderer.domElement.style.cursor = "grabbing";
+        renderer.domElement.style.cursor = 'url("/Images/Common/鼠标-移动抓手.cur"), grab';
         isDragging = true;
         controls.enabled = false;
 
@@ -2038,12 +2058,12 @@
         if (hit?.type === "plane") {
           hoveredGroup = hit.obj;
           setHoverState(hoveredGroup, true);
-          renderer.domElement.style.cursor = "grab";
+          renderer.domElement.style.cursor = 'url("/Images/Common/鼠标-移动抓手.cur"), grab';
         } else if (hit?.type === "wrapper") {
           setWrapperHover(hit.containerIdx, true);
-          renderer.domElement.style.cursor = "grab";
+          renderer.domElement.style.cursor = 'url("/Images/Common/鼠标-移动抓手.cur"), grab';
         } else {
-          renderer.domElement.style.cursor = "default";
+          renderer.domElement.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
         }
       }
 
@@ -2857,6 +2877,11 @@
       });
       const particles = new THREE.Points(particlesGeo, particlesMat);
       scene.add(particles);
+
+      const particleDisplayInput = document.getElementById("particle-display-input");
+      particleDisplayInput.addEventListener("change", () => {
+        particles.visible = particleDisplayInput.checked;
+      });
 
       // --- 动画循环 ---
       function animate() {

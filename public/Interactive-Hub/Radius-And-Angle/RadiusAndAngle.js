@@ -438,7 +438,7 @@ class RadiusAndAngleCanvas {
         新的悬停控制点 = 2;
         this.canvas.style.cursor = "grab";
       } else {
-        this.canvas.style.cursor = "default";
+        this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
       }
 
       // 如果悬停状态发生变化，重新渲染
@@ -451,7 +451,7 @@ class RadiusAndAngleCanvas {
 
   handleMouseUp() {
     this.拖拽的控制点 = null;
-    this.canvas.style.cursor = "default";
+    this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
 
     // 拖拽结束后保存设置到localStorage
     this.saveToLocalStorage();
@@ -818,7 +818,7 @@ class RadiusAndAngleCanvas {
     // 清除拖拽和悬停状态
     this.拖拽的控制点 = null;
     this.悬停的控制点 = null;
-    this.canvas.style.cursor = "default";
+    this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
 
     // 标记需要更新缓存
     this.缓存.需要更新 = true;

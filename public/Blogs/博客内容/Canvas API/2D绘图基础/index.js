@@ -136,7 +136,7 @@ class CanvasDrawer {
     if (this.draggingPointIndex === -1) {
       this.hoveredPointIndex = -1;
     }
-    this.canvas.style.cursor = "default";
+    this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
     this.render();
   }
 
@@ -564,7 +564,7 @@ class RectCanvasDemo {
   handleMouseLeave() {
     if (!this.dragRegion) {
       this.hoverRegion = null;
-      this.canvas.style.cursor = "default";
+      this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
     }
   }
 
@@ -1047,7 +1047,7 @@ class CircleDemo {
     } else if (hoverMode === "radius") {
       this.canvas.style.cursor = this.getRadiusCursorByAngle(x, y);
     } else {
-      this.canvas.style.cursor = "default";
+      this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
     }
 
     if (hasChange) {
@@ -1072,7 +1072,7 @@ class CircleDemo {
       }
     });
     this.dragMode = null;
-    this.canvas.style.cursor = "default";
+    this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
     if (hasChange) {
       this.render();
     }

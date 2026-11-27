@@ -205,7 +205,7 @@ class GomokuGame {
       ai思考提示.style.zIndex = "";
 
       // 恢复鼠标箭头
-      document.body.style.cursor = "default";
+      document.body.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
     }
   }
 

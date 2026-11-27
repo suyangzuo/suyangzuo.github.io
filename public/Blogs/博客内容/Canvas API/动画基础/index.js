@@ -209,7 +209,7 @@ class SpeedControlAnimation {
     if (isHovering || this.isDragging) {
       this.canvas.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
     } else {
-      this.canvas.style.cursor = "default";
+      this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
     }
   }
 
@@ -220,7 +220,7 @@ class SpeedControlAnimation {
 
   // 处理鼠标离开事件
   handleMouseLeave() {
-    this.canvas.style.cursor = "default";
+    this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
   }
 
   // 绑定事件
@@ -956,7 +956,7 @@ class 固定速度 {
     if (isHovering || this.isDragging) {
       this.canvas.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
     } else {
-      this.canvas.style.cursor = "default";
+      this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
     }
   }
 
@@ -967,7 +967,7 @@ class 固定速度 {
 
   // 处理鼠标离开事件
   handleMouseLeave() {
-    this.canvas.style.cursor = "default";
+    this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
   }
 
   // 绑定事件
@@ -1255,7 +1255,7 @@ class 固定时间 {
     if (isHovering || this.isDragging) {
       this.canvas.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
     } else {
-      this.canvas.style.cursor = "default";
+      this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
     }
   }
 
@@ -1266,7 +1266,7 @@ class 固定时间 {
 
   // 处理鼠标离开事件
   handleMouseLeave() {
-    this.canvas.style.cursor = "default";
+    this.canvas.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
   }
 
   // 绑定事件
@@ -1576,7 +1576,7 @@ canvas_delay.addEventListener("mousemove", function (e) {
   } else if (isButtonHovering) {
     canvas_delay.style.cursor = 'url("/Images/Common/鼠标-指向.cur"), pointer';
   } else {
-    canvas_delay.style.cursor = "default";
+    canvas_delay.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
   }
 });
 
@@ -1642,7 +1642,7 @@ canvas_delay.addEventListener("mousemove", function (e) {
 });
 
 canvas_delay.addEventListener("mouseleave", function () {
-  canvas_delay.style.cursor = "default";
+  canvas_delay.style.cursor = 'url("/Images/Common/鼠标-默认.cur"), auto';
   isDragging_delay = false;
 });
 
